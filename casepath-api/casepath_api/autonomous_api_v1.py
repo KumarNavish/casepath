@@ -18,6 +18,7 @@ from .autonomous_controller_v1 import AutonomousController, execution_capability
 from .autonomous_corpus_v1 import CanonicalCorpus
 from .autonomous_policy_v1 import POLICY_ID, INTERPRET_SCHEMA, VERIFY_SCHEMA
 from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError
+from .photo_reading_v1 import PhotoReadingError, read_photo
 from .workspace_corpus import digest_value
 
 
@@ -572,20 +573,38 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             return service.reconcile_saved_results(claim_id, work_store=saved_work_getter(), **body.model_dump())
         return invoke(apply)
 
+    def native(service, claim_id, artifact_id):
+        corpus = original(claim_id)
+        if corpus is not None:
+            state = corpus.preview_state(claim_id)
+            source_ids = {r['artifact_id'] for r in state['source_descriptors']} | {
+                          r['original_artifact_id'] for r in state['original_binding']['source_map']}
+            if artifact_id in source_ids:
+                return corpus.artifact(claim_id, artifact_id)
+        return service.store.artifact(claim_id, artifact_id)
+
+    @router.get('/sources/{claim_id}/{artifact_id}/photo-reading')
+    def photo_reading(claim_id: str, artifact_id: str):
+        # A pixel measurement of the exact original photo. Like a preview, it
+        # admits no evidence and changes no state.
+        def read(service):
+            raw, descriptor = native(service, claim_id, artifact_id)
+            if not descriptor['media_type'].split(';', 1)[0].strip().lower().startswith('image/'):
+                raise HTTPException(415, 'Only photos and images have a photo reading.')
+            try:
+                reading = read_photo(raw)
+            except PhotoReadingError as error:
+                raise HTTPException(422, str(error)) from error
+            if reading['image_sha256'] != descriptor['sha256']:
+                raise HTTPException(409, 'The photo differs from its recorded fingerprint.')
+            return {**reading, 'claim_id': claim_id, 'artifact_id': descriptor['artifact_id'],
+                    'file_name': descriptor['file_name'], 'evidence_admitted': False}
+        return invoke(read)
+
     @router.get('/sources/{claim_id}/{artifact_id}')
     def source(claim_id: str, artifact_id: str):
         def read(service):
-            corpus = original(claim_id)
-            if corpus is not None:
-                state = corpus.preview_state(claim_id)
-                source_ids = {r['artifact_id'] for r in state['source_descriptors']} | {
-                              r['original_artifact_id'] for r in state['original_binding']['source_map']}
-                if artifact_id in source_ids:
-                    raw, descriptor = corpus.artifact(claim_id, artifact_id)
-                else:
-                    raw, descriptor = service.store.artifact(claim_id, artifact_id)
-            else:
-                raw, descriptor = service.store.artifact(claim_id, artifact_id)
+            raw, descriptor = native(service, claim_id, artifact_id)
             return Response(raw, media_type=descriptor['media_type'], headers={
                 'Content-Disposition': f"attachment; filename*=UTF-8''{quote(descriptor['file_name'])}",
                 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store', 'X-Content-SHA256': descriptor['sha256']})

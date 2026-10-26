@@ -2,7 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {gunzipSync}=require('node:zlib'),{chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),load=name=>JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures',name+'.json.gz'))));
-const wire=load('presentation-v1').responses,recorded=load('desk-v3');
+// The photo scene reads one recorded customer photo and the service's reading of it.
+const photo=load('photo-reading-v1'),wire={...load('presentation-v1').responses,...photo.responses},recorded=load('desk-v3');
+const original=(route,key)=>{const file=photo.binary[key];return file&&route.fulfill({contentType:file.media_type,headers:{'x-content-sha256':file.sha256},body:Buffer.from(file.base64,'base64')});};
 
 test('the admitted six-act product uses one deterministic clock, preserves sources and handles pause',async()=>{
  const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':chromium.executablePath())});
@@ -15,6 +17,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   if(/\/fonts\/[^/]+\.ttf$/.test(url.pathname))return route.fulfill({contentType:'font/ttf',path:path.join(root,'casepath/assets/fonts',path.basename(url.pathname))});
   const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
   if(record)return route.fulfill({contentType:'application/x-ndjson',body:record.trace});
+  if(photo.binary[key])return original(route,key);
   if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
   missing.push(key);return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
  });
@@ -29,11 +32,12 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   await page.locator('[data-au-demo-stop]').click();const at=await page.evaluate(()=>CasepathPresentation.active.time);await page.waitForTimeout(60);assert.equal(await page.evaluate(()=>CasepathPresentation.active.time),at);
   await page.locator('[data-au-demo-resume]').click();await page.waitForTimeout(60);assert.ok(await page.evaluate(()=>CasepathPresentation.active.time)>at);
   const orientation=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(0);return {purpose:document.querySelector('[data-au-ns-purpose]').textContent,transport:document.querySelector('.au-executive-transport').textContent};});
-  assert.match(orientation.purpose,/From customer documents/);assert.match(orientation.purpose,/You make the decision/);assert.match(orientation.transport,/Recorded replay/);
+  assert.match(orientation.purpose,/From a customer’s documents/);assert.match(orientation.purpose,/A person decides/);assert.match(orientation.transport,/Example case · all names are made up/);
   const documentary=await page.evaluate(()=>{
    const a=CasepathPresentation.active,m=a.manifest,failures=[],sentences=[];
    for(const cue of m.guidance){const previous=sentences.at(-1);if(previous?.id===cue.id)previous.end=cue.end;else sentences.push({...cue});}
-   for(const cue of sentences)if(cue.end-cue.start<2000)failures.push({reason:'caption too brief',cue});
+   // Live work between captions carries no card; only shown captions need reading time.
+   for(const cue of sentences)if(cue.card!==false&&cue.end-cue.start<2000)failures.push({reason:'caption too brief',cue});
    for(const beat of m.beats.filter(b=>!b.phase.endsWith('transition'))){
     a.advanceTo(beat.start+Math.min(beat.duration-1,Math.max(450,beat.duration*.75)));
     const guide=document.querySelector('.au-documentary-guide'),scene={top:document.querySelector('.au-identity-header').getBoundingClientRect().bottom,bottom:document.querySelector('.au-executive-transport').getBoundingClientRect().top},card=guide.querySelector('.au-doc-card'),copy=guide.querySelector('[data-au-guide-headline]'),focus=guide.querySelector('.au-doc-focus').getBoundingClientRect(),shown=+getComputedStyle(card).opacity>.05,lit=+getComputedStyle(guide.querySelector('.au-doc-focus-layer')).opacity>.05;
@@ -63,21 +67,10 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const reducedRing=await page.evaluate(at=>{const a=CasepathPresentation.active;a.advanceTo(at);const before=document.querySelector('.au-ns-building-ring').style.transform;a.advanceTo(at+300);return [before,document.querySelector('.au-ns-building-ring').style.transform];},documentary.at);
   assert.deepEqual(reducedRing,['rotate(0deg)','rotate(0deg)']);await page.emulateMedia({reducedMotion:'no-preference'});
   const teachingState=recorded.cases[7].envelope.state;
-  const teachingLaw=teachingState.semantic_contexts[teachingState.run_id].rule_packs.find(pack=>pack.family===teachingState.graph.family).legal_authority.find(row=>row.article==='269d').text;
-  const teaching=await page.evaluate(({lawText,draftBody})=>{
+  const teaching=await page.evaluate(({draftBody})=>{
    const a=CasepathPresentation.active,m=a.manifest,failures=[];
    const inside=(box,outer)=>box.width>4&&box.height>4&&box.left>=outer.left-1&&box.right<=outer.right+1&&box.top>=outer.top-1&&box.bottom<=outer.bottom+1;
    const guide=()=>document.querySelector('.au-documentary-guide'),focus=()=>guide().querySelector('.au-doc-focus').getBoundingClientRect();
-   const lawBeat=m.beats.find(b=>b.phase==='law-rest'),lawAt=lawBeat.end-400;
-   const lawSnapshot=()=>{const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');return JSON.stringify({text:pre?.textContent,html:pre?.innerHTML,target:guide().dataset.auGuideTarget,box:guide().querySelector('.au-doc-focus').style.cssText});};
-   a.advanceTo(lawAt);
-   const mark=document.querySelector('[data-au-guide-law]'),pre=mark?.closest('pre');
-   if(!mark||document.querySelectorAll('[data-au-guide-law]').length!==1)failures.push('law clause not uniquely marked');
-   if(pre?.textContent!==lawText)failures.push('law source text changed');
-   if(mark?.textContent!=='b.sie nicht begründet;'||mark?.dataset.auRuleArticle!=='269d'||mark?.dataset.auRuleParagraph!=='2(b)')failures.push('wrong exact law clause or identity');
-   if(!pre||pre.querySelectorAll('.au-ns-text-break').length<4)failures.push('recorded law paragraph layout lost');
-   if(!mark||!inside(mark.getBoundingClientRect(),focus())||guide().dataset.auGuideTarget!=='law'||guide().dataset.auGuideVisible!=='true')failures.push('exact law clause is not visibly focused');
-   const directLaw=lawSnapshot();
    const draftBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='draft-rest');
    a.advanceTo(draftBeat.start+1500);
    const draft=document.querySelector('[data-au-recorded-draft]'),body=draft?.querySelector('pre'),bodyBox=focus(),bodyHeadline=guide().querySelector('[data-au-guide-headline]').textContent;
@@ -89,21 +82,20 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    if(guide().dataset.auGuideTarget!=='draft'||guide().dataset.auGuideVisible!=='true'||!status||!inside(status.getBoundingClientRect(),focus()))failures.push('draft focus does not hand off to human review');
    if(guide().querySelector('[data-au-guide-headline]').textContent!==bodyHeadline)failures.push('draft caption changes during target handoff');
    if(document.querySelector('[data-au-recorded-draft] pre')?.textContent!==draftBody)failures.push('draft text changed at review boundary');
-   a.advanceTo(m.duration-1);a.advanceTo(lawAt);if(lawSnapshot()!==directLaw)failures.push('law source or focus changes after backward seek');
    return {failures,duration:m.duration};
-  },{lawText:teachingLaw,draftBody:teachingState.outcome.request_draft.body});
-  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,98550);
+  },{draftBody:teachingState.outcome.request_draft.body});
+  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,149850);
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{
    const active=CasepathPresentation.active,manifest=active.manifest,failures=[];
-   for(const beat of manifest.beats){for(const at of [beat.start,beat.start+beat.duration/2,beat.end-.001]){active.advanceTo(at);const host=document.querySelector('[data-au-view]');if(document.getAnimations().length)failures.push('native motion');if(Number(host.dataset.auPresentationTime)!==at)failures.push('wrong clock');if(beat.act==='process'&&host.querySelector('[data-au-film-speed]').textContent!=='Condensed replay')failures.push('missing pace');if(host.querySelector('[data-au-demo-stop]')?.textContent!=='Pause'||host.querySelector('[data-au-demo-resume]'))failures.push('capture transport');if(['answer','cases'].includes(beat.view)&&!host.querySelector('[data-au-operation-skip]').hidden)failures.push('skip on answer/cases');if([...host.querySelectorAll('[data-au-desk-watch]')].some(el=>!el.hidden&&!el.closest('.au-executive-transition')))failures.push('watch during playback');if(beat.act==='cases'&&beat.phase!=='act-transition'&&host.querySelector('.au-ns-sources'))failures.push('case sources beside roster');}}
+   for(const beat of manifest.beats){for(const at of [beat.start,beat.start+beat.duration/2,beat.end-.001]){active.advanceTo(at);const host=document.querySelector('[data-au-view]');if(document.getAnimations().length)failures.push('native motion');if(Number(host.dataset.auPresentationTime)!==at)failures.push('wrong clock');if(beat.act==='process'&&host.querySelector('[data-au-film-speed]').textContent!=='Sped up')failures.push('missing pace');if(host.querySelector('[data-au-demo-stop]')?.textContent!=='Pause'||host.querySelector('[data-au-demo-resume]'))failures.push('capture transport');if((['answer','cases'].includes(beat.view)||['library','cases'].includes(beat.act))&&!host.querySelector('[data-au-operation-skip]').hidden)failures.push('skip on answer, library or cases');if([...host.querySelectorAll('[data-au-desk-watch]')].some(el=>!el.hidden&&!el.closest('.au-executive-transition')))failures.push('watch during playback');if(beat.act==='cases'&&beat.phase!=='act-transition'&&host.querySelector('.au-ns-sources'))failures.push('case sources beside roster');}}
    active.seek(manifest.beats.find(b=>b.phase==='fact-rest').start);
    const fact=document.querySelector('[data-au-ns-fact]'),citation=JSON.parse(fact.dataset.auCitation);
    return {manifest,failures,citation,factOperation:fact.dataset.auNsFact,animations:document.getAnimations().length};
   });
   for(const beat of proof.manifest.beats){if(beat.operation){const bound=recorded.cases.find(c=>c.id===beat.claim)?.trace.trim().split('\n').map(JSON.parse).find(row=>row.id===beat.operation);assert.ok(bound,'recorded operation '+beat.operation);assert.equal(bound.seq,beat.seq);}}
-  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','plan','reading','process','decision','learning','library','cases']);
+  assert.deepEqual(proof.failures,[]);assert.deepEqual(proof.manifest.acts.map(a=>a.id),['customer','plan','reading','process','decision','learning','photo','library','cases']);
   const continuity=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
    const visible=()=>{const outer=document.querySelector('[data-au-ns],.au-executive-cases'),inner=document.querySelector('.au-ns-canvas,.au-ns-completed-canvas');return Number(getComputedStyle(outer).opacity)*(inner?Number(getComputedStyle(inner).opacity):1);};
@@ -126,8 +118,8 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   },recordedOrder);assert.deepEqual(acceptance,[],'accepted steps never disappear and active nodes follow process order');
   const deterministic=await page.evaluate(()=>{
    const a=CasepathPresentation.active,failures=[];
-   const snapshot=()=>{const selectors=['[data-au-ns]','.au-ns-canvas','.au-ns-completed-canvas','[data-au-ns-paper]','[data-au-ns-plan]','.au-ns-memory footer','.au-cinema-finale'];return JSON.stringify({styles:selectors.map(s=>{const el=document.querySelector(s);return el?[s,getComputedStyle(el).opacity,el.style.transform]:[s,null];}),nodes:[...document.querySelectorAll('[data-au-ns-node]')].filter(e=>!e.closest('.au-executive-transition')).map(e=>[e.dataset.auNsNode,e.dataset.state]),source:document.querySelector('[data-au-ns-quote]')?.textContent,scroll:document.querySelector('.au-ns-view-content')?.scrollTop});};
-   for(const phase of ['fact-rest','node-rest','overview','answer-rest','later-case-rest','memory-notice-rest','wordmark-rest']){
+   const snapshot=()=>{const selectors=['[data-au-ns]','.au-ns-canvas','.au-ns-completed-canvas','[data-au-ns-paper]','[data-au-ns-plan]','[data-au-ns-procedure]','[data-au-photo-frame]','[data-au-photo-findings]','.au-ns-memory footer','.au-cinema-finale'];return JSON.stringify({styles:selectors.map(s=>{const el=document.querySelector(s);return el?[s,getComputedStyle(el).opacity,el.style.transform]:[s,null];}),nodes:[...document.querySelectorAll('[data-au-ns-node]')].filter(e=>!e.closest('.au-executive-transition')).map(e=>[e.dataset.auNsNode,e.dataset.state]),source:document.querySelector('[data-au-ns-quote]')?.textContent,marks:[...document.querySelectorAll('.au-photo-mark')].map(e=>getComputedStyle(e).opacity).join(),scroll:document.querySelector('.au-ns-view-content')?.scrollTop});};
+   for(const phase of ['plan-rest','fact-rest','node-rest','answer-rest','later-case-rest','memory-notice-rest','photo-rest','library-rest','wordmark-rest']){
     const b=a.manifest.beats.find(b=>b.phase===phase),target=b.end-1;a.advanceTo(0);a.advanceTo(target);const first=snapshot();a.advanceTo(a.manifest.duration-1);a.advanceTo(target);if(snapshot()!==first)failures.push(phase);
    }return failures;
   });assert.deepEqual(deterministic,[],'direct and backward seeks produce the same visible state');
@@ -144,7 +136,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   });
   assert.equal(w10.selection.claimId,recorded.cases[7].id);assert.deepEqual(w10.counts,[1,2,3]);assert.equal(w10.mapping.length,3);assert.ok(w10.mapping.every(row=>row.landed==='true'&&row.request));
   assert.ok(w10.checks.every(row=>row.center<2&&row.font==='17px'&&row.line==='25.5px'&&row.context==='0.45'&&row.badge===1&&row.highlight==='0'),JSON.stringify(w10.checks));assert.ok(w10.connector);assert.match(w10.path,/H.*V.*H.*V/);
-  if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['completed','chain-rest'],['learning','memory-notice-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
+  if(process.env.CASEPATH_W10_SHOTS){for(const [name,phase]of [['reading','fact-rest'],['answer','answer-rest'],['learning','memory-notice-rest']]){await page.evaluate(phase=>{const a=CasepathPresentation.active,b=a.manifest.beats.find(b=>b.phase===phase);a.advanceTo(b.end-1);},phase);await page.screenshot({path:process.env.CASEPATH_W10_SHOTS+'/'+name+'.png'});}}
   const {auditPresentation}=await import('../design-plans/w9-20261021/audit_presentation.mjs');
   const {auditChecklistGeometry}=await import('../design-plans/tools/checklist_geometry_audit.mjs');
   await page.evaluate(`window.auditChecklistGeometry=${auditChecklistGeometry.toString()}`);
@@ -176,7 +168,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const clipped=await page.addStyleTag({content:'.au-workspace .au-ns-plan ol {max-height:30px;overflow:hidden}'});
   assert.equal((await page.evaluate(auditChecklistGeometry)).passed,false,'the audit detects a clipped checklist row');
   await clipped.evaluate(el=>el.remove());
-  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['case-list-rest','.au-executive-cases .au-claim-title'],['chain-rest','.au-ns-passage-group > h3']]){
+  for(const [phase,selector] of [['legal-test-rest','.au-desk-tests > li > button'],['plan-rest','.au-ns-procedure li'],['fact-rest','.au-executive-checklist li'],['photo-rest','.au-ns-photo-findings li'],['library-rest','.au-library-index button > strong']]){
    await page.evaluate(at=>CasepathPresentation.active.advanceTo(at),proof.manifest.beats.find(b=>b.phase===phase).end-1);
    assert.equal((await page.evaluate(auditChecklistGeometry)).passed,true,'unmodified '+phase+' labels fit');
    const crop=await page.addStyleTag({content:selector+' {height:5px!important;min-height:0!important;overflow:hidden!important}'});
@@ -199,7 +191,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   assert.ok((await page.evaluate(auditPresentation)).length===0,'the coach-mark card is audited by its own spotlight check, not as page content');
   await obstructingCard.evaluate(el=>el.remove());
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const finale=document.querySelector('.au-cinema-finale'),heading=finale.querySelector('h2').getBoundingClientRect(),notice=finale.querySelector('small').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:heading.top,below:footer.top-notice.bottom,visible:getComputedStyle(finale).opacity,roster:getComputedStyle(document.querySelector('.au-claim-list')).opacity,title:finale.querySelector('h2').textContent,hidden:finale.getAttribute('aria-hidden')};});
-  assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/The reasoning stays visible/);
+  assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/A person always decides/);
 
   const completions=Object.fromEntries(recorded.cases.flatMap(c=>c.trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete').map(o=>[o.id,o.source])));
   const bindings=await page.evaluate(completions=>{
@@ -216,27 +208,34 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    }
    active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='decision').start);
    const tests=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')].map(e=>({step:+e.dataset.auLegalStep,label:e.querySelector('.au-executive-step-label')?.textContent,ring:e.querySelector('.au-executive-step')?.getBoundingClientRect().width}));
-   const stepContext=document.querySelector('.au-executive-test-context').textContent;
-   active.advanceTo(m.beats.find(b=>b.phase==='source-check-rest').start);const sourceCheck={text:document.querySelector('.au-ns-role-purpose').textContent,role:document.querySelector('[data-au-ns]').dataset.auNsRoleActive,passages:document.querySelectorAll('[data-au-ns-verified]').length};
    active.advanceTo(m.beats.find(b=>b.phase==='draft-rest').start);const draft=document.querySelector('[data-au-recorded-draft]').textContent;
-   active.advanceTo(m.beats.find(b=>b.phase==='law-rest').start);const law=document.querySelector('[data-au-ns-law-source]').textContent,publisher=document.querySelector('[data-au-law-article]').href;
-   active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='learning').end-1);const laterResult=(document.querySelector('.au-ns-initial-date')?.textContent||'')+document.querySelector('.au-desk-lead').textContent;
+   active.advanceTo(m.beats.find(b=>b.phase==='plan-rest').end-1);const plan={documents:[...document.querySelectorAll('[data-au-ns-procedure] li')].map(e=>e.dataset.auNsChecklistDoc),planned:document.querySelectorAll('[data-au-ns-planned]').length,heading:document.querySelector('[data-au-ns-procedure] h2').textContent};
+   active.advanceTo(m.beats.find(b=>b.phase==='node-rest'&&b.act==='process').end-1);const checklist=document.querySelector('[data-au-ns-checklist] h2').textContent;
+   const scan=m.beats.find(b=>b.phase==='photo-scan');active.advanceTo(scan.start+1);const litAtStart=[...document.querySelectorAll('.au-photo-mark')].filter(e=>+getComputedStyle(e).opacity>0).length;
+   active.advanceTo(m.beats.find(b=>b.phase==='photo-rest').end-1);const photo={marks:document.querySelectorAll('.au-photo-mark').length,lit:[...document.querySelectorAll('.au-photo-mark')].filter(e=>+getComputedStyle(e).opacity===1).length,litAtStart,image:document.querySelector('[data-au-photo-frame] img').src,findings:document.querySelector('[data-au-photo-findings]').textContent};
    const later=m.beats.find(b=>b.phase==='later-case-rest');active.advanceTo(later.start+899);
    const canvasVisible=getComputedStyle(document.querySelector('.au-ns-completed-canvas')).opacity==='1',label=document.querySelector('.au-executive-later').textContent,title=document.querySelector('[data-au-claim-title]').textContent;
    active.advanceTo(m.beats.find(b=>b.phase==='memory-landed').start);
-   return {failures,checked,tests,stepContext,sourceCheck,draft,law,publisher,laterResult,laterDuration:later.duration,canvasVisible,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
+   return {failures,checked,tests,draft,plan,checklist,photo,laterDuration:later.duration,canvasVisible,label,title,sourceHeading:document.querySelector('.au-ns-memory-source h3').textContent,border:getComputedStyle(document.querySelector('.au-ns-memory-source blockquote')).borderTop};
   },completions);
   assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>0);
-  assert.ok(proof.manifest.duration<105000,'the complete recorded story stays below 105 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));assert.match(bindings.law,/publisher: Fedlex/);assert.match(bindings.publisher,/^https:\/\/www.fedlex.admin.ch\//);assert.ok(bindings.laterResult.includes(recorded.cases[8].envelope.state.outcome.summary.split('. ')[0]+'.'));
+  assert.ok(proof.manifest.duration<155000,'the complete recorded story stays below 155 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
   assert.deepEqual(bindings.tests.map(t=>t.step),[2,2,2,3,3]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label===String(t.step)));
-  assert.match(bindings.stepContext,/3 process steps · 5 legal tests/);assert.match(bindings.stepContext,/Numbers link each legal test to its process step/);
-  assert.equal(bindings.sourceCheck.role,'checker');assert.ok(bindings.sourceCheck.passages>0);assert.match(bindings.sourceCheck.text,/matches quoted passages to received files/);
+  // The plan shows only what the recording required: one row per document.require, one circle per evaluated step.
+  const mainOps=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation');
+  assert.equal(bindings.plan.documents.length,mainOps.filter(o=>o.kind==='document.require').length);assert.equal(new Set(bindings.plan.documents).size,bindings.plan.documents.length);
+  assert.equal(bindings.plan.planned,new Set(mainOps.filter(o=>o.kind==='node.evaluate').map(o=>o.object.id)).size);assert.match(bindings.plan.heading,/rent increase/i);
+  assert.match(bindings.checklist,/3 of 3 checked/);
+  // The photo scene draws every measured mark from the service reading, revealed by the scan, never before it.
+  const photoReading=Object.entries(photo.responses).find(([key])=>key.endsWith('/photo-reading'))[1];
+  assert.equal(photoReading.evidence_admitted,false);assert.equal(bindings.photo.marks,photoReading.regions[0].segments.length);assert.equal(bindings.photo.lit,bindings.photo.marks);assert.ok(bindings.photo.litAtStart<bindings.photo.marks/4);
+  assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,/Dark spots found/);assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
   assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<8000,'intake stops before repeated document reading');
-  assert.equal(bindings.laterDuration,1800);assert.equal(bindings.canvasVisible,true);assert.equal(bindings.label,'Later case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'Later case source');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
-  assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===250));
+  assert.equal(bindings.laterDuration,2400);assert.equal(bindings.canvasVisible,true);assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);assert.equal(bindings.sourceHeading,'From the new case');assert.equal(bindings.border,'1px solid rgb(46, 107, 53)');
+  assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===(b.act==='process'?250:500)));
   await page.evaluate(at=>CasepathPresentation.active.seek(at),proof.manifest.beats.find(b=>b.phase==='fact-rest').start);
   const op=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===proof.factOperation);assert.deepEqual(proof.citation,op.source);const reading=proof.manifest.beats.find(b=>b.act==='reading'&&b.phase==='fact-rest'),readingOp=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).find(row=>row.id===reading.operation);const recordingRows=recorded.cases[7].trace.trim().split('\n').map(JSON.parse).filter(row=>row.type==='operation'),catalogue=require('../casepath/assets/autonomous-workspace-v1.js').northStarPlanModel(recorded.cases[7].envelope.state,recordingRows),nextCompletion=proof.manifest.beats.find(b=>b.phase==='node-rest'&&b.start>reading.end),completionOp=recordingRows.find(row=>row.id===nextCompletion.operation);
-  assert.equal(catalogue.links.get(readingOp.id),completionOp.object.id,'shown fact belongs to the next completed process node');assert.ok(readingOp.seq<completionOp.seq);assert.ok(reading.through>=readingOp.seq);assert.equal(await page.locator('[data-au-ns-fact-proposed]').first().textContent(),'Proposed: not supported');
+  assert.equal(catalogue.links.get(readingOp.id),completionOp.object.id,'shown fact belongs to the next completed process node');assert.ok(readingOp.seq<completionOp.seq);assert.ok(reading.through>=readingOp.seq);assert.equal(await page.locator('[data-au-ns-fact-proposed]').first().textContent(),'The documents say no');
   await page.locator('[data-au-ns-fact]').first().click();await page.locator('dialog[open]').waitFor();assert.equal(await page.evaluate(()=>CasepathPresentation.active.paused),true);
   await page.keyboard.press('Escape');await page.locator('dialog[open]').waitFor({state:'detached'});await page.locator('[data-au-demo-resume]').click();
   await page.evaluate(()=>product.showWork());assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);assert.equal(await page.locator('html[data-casepath-presentation]').count(),0);await page.evaluate(()=>product.destroy());
@@ -257,6 +256,7 @@ test('a slow cold read keeps the north-star frame on landing and on opening a re
   const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
   // A cold hosted read: the recorded operations arrive well after the verified head.
   if(record){await new Promise(resolve=>setTimeout(resolve,1500));return route.fulfill({contentType:'application/x-ndjson',body:record.trace});}
+  if(photo.binary[key])return original(route,key);
   if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
   return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
  });
@@ -315,6 +315,7 @@ for(const ending of ['ready','cancelled','invalid','visibility'])test(`public pr
   if(/\/fonts\/[^/]+\.ttf$/.test(url.pathname))return route.fulfill({contentType:'font/ttf',path:path.join(root,'casepath/assets/fonts',path.basename(url.pathname))});
   const id=url.pathname.match(/\/claims\/([^/]+)\/operations$/)?.[1],record=id&&recorded.cases.find(row=>row.id===id);
   if(record)return route.fulfill({contentType:'application/x-ndjson',body:record.trace});
+  if(photo.binary[key])return original(route,key);
   if(wire[key])return route.fulfill({contentType:'application/json',body:JSON.stringify(wire[key])});
   missing.push(key);return route.fulfill({status:404,contentType:'application/json',body:JSON.stringify({detail:'No recorded fixture for '+key})});
  });
@@ -338,7 +339,7 @@ for(const ending of ['ready','cancelled','invalid','visibility'])test(`public pr
    window.product=CasePathAutonomous.mount(document.querySelector('#workspace'),{fetch});
    return {preparing:!!document.querySelector('[data-au-presentation-preparing][aria-busy="true"]'),purpose:document.querySelector('[data-au-ns-purpose]')?.textContent,title:document.title,caseTitle:document.querySelector('[data-au-claim-title]')?.textContent};
   },recorded.cases[0].id);
-  assert.equal(initial.preparing,true,'the introduction exists synchronously before any response');assert.match(initial.purpose,/From customer documents/);assert.match(initial.purpose,/You make the decision/);assert.equal(initial.caseTitle,undefined);assert.equal(initial.title,'Demonstration — CasePath');
+  assert.equal(initial.preparing,true,'the introduction exists synchronously before any response');assert.match(initial.purpose,/From a customer’s documents/);assert.match(initial.purpose,/A person decides/);assert.equal(initial.caseTitle,undefined);assert.equal(initial.title,'Demonstration — CasePath');
   await page.waitForFunction(()=>typeof window.releaseOpening==='function',{},{timeout:45000});
   assert.equal(await page.locator('[data-au-presentation-preparing]').count(),1);assert.equal(await page.evaluate(()=>Boolean(CasepathPresentation.active)),false);
   await page.evaluate(()=>window.releaseOpening());

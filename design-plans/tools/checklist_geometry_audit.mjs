@@ -119,7 +119,10 @@ export function auditChecklistGeometry(options = {}) {
     + '.au-ns-memory-cards li,.au-ns-memory-cards strong,.au-ns-memory-cards blockquote,'
     + '.au-ns-memory-cards button,.au-ns-law-source h2,.au-ns-law-source h3,'
     + '.au-ns-law-source > p,.au-ns-draft-content > p,.au-ns-draft-content > h3,'
-    + '.au-ns-initial-date > h3,.au-ns-initial-date > p,.au-ns-initial-date > blockquote';
+    + '.au-ns-initial-date > h3,.au-ns-initial-date > p,.au-ns-initial-date > blockquote,'
+    + '.au-ns-procedure > h2,.au-ns-procedure > h3,.au-ns-procedure > p,.au-ns-procedure li,'
+    + '.au-executive-checklist > h2,.au-executive-checklist li,'
+    + '.au-library .au-page-heading,.au-library-index button > *,.au-procedure-stage > h3';
   const outsideScrollport = (element, box) => {
     for (let parent = element.parentElement; parent; parent = parent.parentElement) {
       const css = style(parent), boundary = clipBox(parent);

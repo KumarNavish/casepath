@@ -11,7 +11,7 @@ for(const c of fixture.cases)test(`north-star plans and exact locators remain bo
  let role=null,pins=0;
  for(const o of rows){if(o.kind==='source.open')sources.set(o.object.id,{...state.source_descriptors.find(s=>s.artifact_id===o.object.id),...o.result});role=ui.northStarRole(o,role);if(o.source){const pin=ui.northStarPin(o,sources);assert.ok(pin);assert.equal(pin.quote,Array.from(sources.get(pin.artifact_id).text).slice(pin.start_char,pin.end_char).join(''));assert.equal(ui.northStarPin({...o,source:{...pin,start_char:pin.start_char+1}},sources),null);assert.equal(ui.northStarPin({...o,source:{...pin,text_sha256:'0'.repeat(64)}},sources),null);pins++;}else assert.equal(ui.northStarPin(o,sources),null);}
  assert.equal(role,'result');assert.ok(pins>20);
- for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,`Decide: ${ui.northStarQuestion(node)}`);let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','fact.extract','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
+ for(const node of state.graph.nodes){const plan=model.plans.get(node.node_id),complete=rows.find(o=>o.kind==='step.complete'&&o.object.id===node.node_id&&o.result.status==='completed');assert.ok(plan.length);assert.equal(plan.at(-1).operation.id,complete.id);assert.equal(plan.at(-1).label,`Answer: ${ui.northStarQuestion(node)}`);let seq=0;for(const r of plan){assert.equal(r.operation,byId.get(r.operation.id));assert.equal(model.links.get(r.operation.id),node.node_id);assert.ok(r.operation.seq>seq&&r.operation.seq<=complete.seq);seq=r.operation.seq;assert.ok(['source.open','span.read','fact.extract','verification.check','document.check','step.complete'].includes(r.operation.kind));}}
  const html=ui.northStarMarkup(state,{headState:state,rows:[],sources:new Map(),nsReady:true,nsCatalogue:model},{});assert.match(html,/Watch the analysis/);assert.doesNotMatch(html,/UI fixture|Reading now|Wants:|files read|facts found|checks run|steps done|From the customer/);assert.doesNotMatch(html,/data-au-ns-node=/);
 });
 test('unlinked and ambiguous source reads cannot be attributed to a node',()=>{
@@ -56,12 +56,12 @@ test('an unrelated passage cannot replace the selected node evidence',()=>{const
 test('only node-bound missing evidence and references enter the local chain',()=>{const c=fixture.cases[0],state=structuredClone(c.envelope.state),trace=completedTrace(c);state.outcome.missing_evidence=[{label:'Current lease',node_ids:['dh_scope'],document_type:'new_doc'},{label:'Other',node_ids:['dh_notice'],document_type:'another'}];state.knowledge_uses=[{knowledge_id:'local',node_id:'dh_scope',version:1},{knowledge_id:'whole-procedure',version:2}];const m=ui.northStarCompletedModel(state,trace,'dh_scope');assert.deepEqual(m.missing.map(g=>g.label),['Current lease']);assert.deepEqual(m.references.map(r=>r.knowledge_id),['local']);assert.deepEqual(m.columns.map(c=>c.id),['facts','law','evidence','missing','reference']);});
 const knowledge=JSON.parse(gunzipSync(fs.readFileSync(path.join(__dirname,'fixtures/knowledge-w6.json.gz'))));
 for(const c of fixture.cases)test(`memory payoff uses the exact checklist and case-local evidence: ${c.id}`,()=>{
- const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('saved from an earlier case'),Boolean(m.earlierCase));assert.match(html,/data-au-memory-count>3<\/span> checklist items reused/);assert.match(html,/Facts come from this case only/);assert.match(html,/Qualified review is still required/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
+ const trace={...completedTrace(c),journal:c.envelope.events},state=c.envelope.state,m=ui.northStarMemoryModel(state,trace,knowledge),html=ui.northStarMemoryMarkup(state,trace,{knowledge});assert.ok(m);assert.equal(m.operation.input.receiving_claim_id,state.claim_id);assert.equal(m.reuse.pin.knowledge_sha256,m.operation.input.knowledge_sha256);assert.equal(m.recipes.length,m.operation.result.reused_evidence_recipes);const version=knowledge.versions.find(v=>v.knowledge_id===m.reuse.pin.knowledge_id&&v.version===m.reuse.pin.version);assert.equal(Boolean(m.earlierCase),Boolean(version.source_claim_id&&version.source_claim_id!==state.claim_id));assert.equal(html.includes('saved from an earlier case'),Boolean(m.earlierCase));assert.match(html,/data-au-memory-count>3<\/span> checks reused/);assert.match(html,/The facts come from this case's own documents/);assert.match(html,/A person still reviews the result/);assert.doesNotMatch(html,/expert-reviewed|Edited by reviewer|reviewed memory|Before|Now ·|Recorded checklist reuse|Recorded effect|Used an earlier checklist/);
  for(const node of state.graph.nodes){const n=ui.northStarMemoryModel(state,trace,knowledge,node.node_id);assert.equal(n.local.nodeId,node.node_id);assert.ok(n.localRecipes.every(r=>n.recipes.includes(r)));if(node.document_types.length&&n.recipes.some(r=>node.document_types.includes(r.document_type)))assert.ok(n.localRecipes.every(r=>node.document_types.includes(r.document_type)));}
 });
 test('memory connections fail closed on an unverified trace or a mismatched identity',()=>{const c=fixture.cases[0],trace={...completedTrace(c),journal:c.envelope.events};assert.equal(ui.northStarMemoryModel(c.envelope.state,{...trace,verifiedResult:false},knowledge),null);const bad=structuredClone(trace);bad.rows.find(o=>o.kind==='knowledge.reuse').input.knowledge_sha256='0'.repeat(64);assert.equal(ui.northStarMemoryModel(c.envelope.state,bad,knowledge),null);});
 test('whole-case wording changes never imply a changed step decision',()=>{const c=fixture.cases[0],trace={...completedTrace(c),journal:c.envelope.events};const html=ui.northStarMemoryMarkup(c.envelope.state,trace,{knowledge});assert.doesNotMatch(html,/Before|NOW|whole.case|au-ns-memory-comparison/);});
-test('node marks separate failed and open legal tests from completed operations',()=>{const c=fixture.cases[3],trace=completedTrace(c),state=c.envelope.state,m=ui.northStarCompletedModel(state,trace,'lt_intake'),form=m.desk.nodes.find(n=>n.node_id==='lt_form');assert.equal(ui.northStarNodeVerdict(m,form),'failed');let html=ui.northStarCompletedMarkup(state,trace,'step',{chosenNode:'lt_intake'});assert.match(html,/data-au-ns-node-verdict="failed"/);assert.match(html,/A mapped legal test failed">✕/);html=ui.northStarCompletedMarkup(state,trace,'step',{chosenNode:'lt_form'});assert.ok(html.indexOf('✕ Notice given on the canton-approved form')<html.indexOf('CO 266l'));const open={...m,predicatesByNode:new Map([['lt_form',[{status:'unresolved'}]]])};assert.equal(ui.northStarNodeVerdict(open,form),'open');assert.equal(ui.northStarQuestion({node_id:'dh_cause'}),'Is it outside the tenant’s responsibility?');});
+test('node marks separate failed and open legal tests from completed operations',()=>{const c=fixture.cases[3],trace=completedTrace(c),state=c.envelope.state,m=ui.northStarCompletedModel(state,trace,'lt_intake'),form=m.desk.nodes.find(n=>n.node_id==='lt_form');assert.equal(ui.northStarNodeVerdict(m,form),'failed');let html=ui.northStarCompletedMarkup(state,trace,'step',{chosenNode:'lt_intake'});assert.match(html,/data-au-ns-node-verdict="failed"/);assert.match(html,/A mapped legal test failed">✕/);html=ui.northStarCompletedMarkup(state,trace,'step',{chosenNode:'lt_form'});assert.ok(html.indexOf('✕ Notice given on the canton-approved form')<html.indexOf('CO 266l'));const open={...m,predicatesByNode:new Map([['lt_form',[{status:'unresolved'}]]])};assert.equal(ui.northStarNodeVerdict(open,form),'open');assert.equal(ui.northStarQuestion({node_id:'dh_cause'}),'Is the tenant not to blame?');});
 test('preview whitespace remains identical to the immutable source, including its missing spaces',()=>{const c=fixture.cases[3],trace=completedTrace(c),m=ui.northStarCompletedModel(c.envelope.state,trace),p=ui.northStarSourcePreview(m.source,m.pin);assert.ok(p.text.includes('forSeefeldstrasse'));assert.ok(p.text.includes('On2026'));assert.ok(p.text.includes('toTaylor'));assert.equal(p.before+m.pin.quote+p.after,Array.from(m.source.text).slice(p.offset).join(''));});
 test('Source checker lists each accepted exact passage once and retains its source identity',()=>{for(const c of fixture.cases){const trace=completedTrace(c),pins=new Map();for(const o of trace.rows){const p=o.kind==='verification.check'&&o.result.accepted&&ui.northStarPin(o,trace.sources);if(p)pins.set(`${p.artifact_id}:${p.start_char}:${p.end_char}`,p);}const html=ui.northStarCompletedMarkup(c.envelope.state,trace,'verified',{});assert.equal((html.match(/data-au-ns-verified=/g)||[]).length,pins.size);for(const p of pins.values())assert.ok(html.includes(`data-au-source="${p.artifact_id}"`));}});
 
@@ -123,12 +123,12 @@ test('customer envelope is formatted only from recorded fields, without losing U
 });
 test('intake and law expose recorded provenance; draft uses the saved body without sending',()=>{
  const c=fixture.cases[0],state=c.envelope.state,trace=completedTrace(c),m=ui.northStarCompletedModel(state,trace,'dh_scope');
- assert.match(ui.northStarIntakeMarkup(state),/Customer intake · phone note/);
+ assert.match(ui.northStarIntakeMarkup(state),/Arrived by phone note/);
  const law=ui.northStarLawMarkup(state,m);assert.match(law,/publisher: Fedlex/);assert.match(law,/https:\/\/www.fedlex.admin.ch/);assert.match(law,/Qualified legal review is still required/);
  const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.ok(draft.includes(state.outcome.request_draft.body));assert.match(draft,/Not sent — you decide/);assert.doesNotMatch(draft,/data-au-draft-save/);
  assert.match(ui.northStarInitialDateMarkup(fixture.cases[1].envelope.state),/Ein genaues Anfangsdatum/);assert.equal(ui.northStarInitialDateMarkup(state),'');
  assert.match(ui.northStarTabsMarkup('reader'),/automated assistant; recorded work/);
- assert.match(ui.northStarTabsMarkup('checker'),/Checks quoted passages against recorded sources/);
+ assert.match(ui.northStarTabsMarkup('checker'),/Checks every quote against the original file/);
  const checks=ui.northStarCompletedMarkup(state,trace,'verified',{});assert.match(checks,/matches quoted passages to received files/);assert.match(checks,/Qualified legal review is still required/);
 });
 
@@ -151,10 +151,10 @@ test('completion evidence answers the question using only that completion’s re
 });
 test('clarity labels distinguish document readiness, draft content and checklist provenance',()=>{
  const c=fixture.cases[1],state=c.envelope.state,trace={...completedTrace(c),journal:c.envelope.events},html=ui.northStarMemoryMarkup(state,trace,{knowledge}),m=ui.northStarMemoryModel(state,trace,knowledge);
- assert.ok(html.includes(`data-au-claim="${m.earlierCase}"`));assert.match(html,/Automated checklist checks passed. Human review is still required/);
- assert.match(html,/Built from document checks in/);assert.match(html,/Reused for the same case type/);assert.match(html,/Reuse the checks. Recheck the facts/);
- assert.match(ui.deskNextStepMarkup(state),/Evidence files checked. Review the legal findings before replying/);
- const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.match(draft,/Assessment draft/);assert.match(draft,/Review and complete this draft/);assert.ok(draft.includes(state.outcome.request_draft.body));
+ assert.ok(html.includes(`data-au-claim="${m.earlierCase}"`));assert.match(html,/A person still reviews the result/);
+ assert.match(html,/Learned from/);assert.match(html,/saved from an earlier case/);assert.match(html,/Same checks. New facts/);
+ assert.match(ui.deskNextStepMarkup(state),/All documents checked. Please review before replying/);
+ const draft=ui.deskDraftReadMarkup(ui.deskDraftBinding(state));assert.match(draft,/Draft reply/);assert.match(draft,/Review and complete this draft/);assert.ok(draft.includes(state.outcome.request_draft.body));
 });
 
 test('W10 showcase ranks original recorded fields and keeps absent gaps and forks absent',()=>{
@@ -181,10 +181,10 @@ test('W10 absence evidence and completed checks do not assert that reasons were 
  const c=fixture.cases[7],state=c.envelope.state,trace={...completedTrace(c),journal:c.envelope.events};
  const before=JSON.stringify(state),documents=ui.northStarCompletedMarkup(state,trace,'documents',{knowledge}),completed=ui.northStarCompletedMarkup(state,trace,'step',{knowledge}),memory=ui.northStarMemoryMarkup(state,trace,{knowledge});
  assert.ok(state.evaluation.documents.some(d=>d.label==='Reasons supplied with the increase notice'&&d.review_state==='sufficient'));
- assert.match(documents,/>What accompanied the original notice<\/h3><p>Evidence received/);
+ assert.match(documents,/>What came with the notice<\/h3><p>Evidence received/);
  assert.doesNotMatch(documents,/Reasons supplied with the increase notice/);
- assert.match(memory,/What accompanied the original notice/);assert.doesNotMatch(memory,/Reasons supplied with the increase notice/);
- assert.match(completed,/data-au-ns-node="ri_form"[\s\S]*?au-ns-test-verdict">1 legal test failed/);
+ assert.match(memory,/What came with the notice/);assert.doesNotMatch(memory,/Reasons supplied with the increase notice/);
+ assert.match(completed,/data-au-ns-node="ri_form"[\s\S]*?au-ns-test-verdict">1 check failed/);
  assert.match(completed,/data-au-ns-node="ri_reason"[\s\S]*?au-ns-test-verdict">Checked/);
  assert.match(completed,/An increase form with missing original reasons/);
  assert.doesNotMatch(completed, /au-ns-node-badge[^>]*>✓/);
@@ -192,11 +192,11 @@ test('W10 absence evidence and completed checks do not assert that reasons were 
  assert.doesNotMatch(ui.northStarCompletedMarkup(state,trace,'answer',{knowledge}), /Initial report: start date uncertain/);
  const done=trace.rows.find(o=>o.kind==='step.complete'&&o.object.id==='ri_reason');
  const live=ui.northStarMarkup(state,{...trace,current:done,rows:trace.rows.filter(o=>o.seq<=done.seq),nsCatalogue:ui.northStarPlanModel(state,trace.rows)},{});
- assert.match(live,/Is the increase notice valid\?<\/span><small class="au-ns-step-status">Checked/);
+ assert.match(live,/Is the increase valid\?<\/span><small class="au-ns-step-status">Checked/);
  assert.match(live,/au-ns-circle" aria-hidden="true">3<\/span>/);
  assert.match(ui.northStarCompletedMarkup(state,trace,'answer',{knowledge}),/Open assessment draft/);
  const model=ui.northStarCompletedModel(state,trace,'ri_form',null,knowledge);
- assert.equal(model.node.label,'Assess notification context');assert.equal(ui.northStarQuestion(model.node),'What accompanied the original notice?');
+ assert.equal(model.node.label,'Assess notification context');assert.equal(ui.northStarQuestion(model.node),'Did the landlord give reasons?');
  assert.deepEqual(model.predicatesByNode.get('ri_form').map(p=>[p.predicate_id,p.status]),[['residential_tenancy_scope','supported'],['ordinary_non269c_tenancy','supported'],['contemporaneous_substantive_reasons','failed']]);
  assert.match(completed,/title="Assess notification context"/);
  assert.equal(JSON.stringify(state),before,'presentation leaves recorded evidence and outcomes untouched');

@@ -6,17 +6,18 @@
 })(typeof globalThis === 'object' ? globalThis : this, function () {
   'use strict';
   const EASING = 'cubic-bezier(.2,.8,.2,1)';
-  const ACTS = Object.freeze(['customer','plan','reading','process','decision','learning','library','cases']);
+  const ACTS = Object.freeze(['customer','plan','reading','process','decision','learning','photo','library','cases']);
   // Editorial labels describe the recorded scene; they never claim live work.
   const CHAPTERS = Object.freeze({
-    customer: Object.freeze({number:'01',label:'The question',title:'Start with the question.'}),
-    plan: Object.freeze({number:'02',label:'The plan',title:'Turn the question into steps.'}),
-    reading: Object.freeze({number:'03',label:'The evidence',title:'Find the exact evidence.'}),
-    process: Object.freeze({number:'03',label:'The evidence',title:'Build each step from evidence.'}),
-    decision: Object.freeze({number:'04',label:'The assessment',title:'Make the answer reviewable.'}),
-    learning: Object.freeze({number:'05',label:'The next case',title:'Reuse the checklist. Recheck the evidence.'}),
-    library: Object.freeze({number:'06',label:'Knowledge',title:'Learn once. Reuse across cases.'}),
-    cases: Object.freeze({number:'07',label:'CasePath',title:'Every step has a reason.'})
+    customer: Object.freeze({number:'01',label:'The request',title:'A customer asks for help.'}),
+    plan: Object.freeze({number:'02',label:'The plan',title:'Turn the case into simple questions.'}),
+    reading: Object.freeze({number:'03',label:'The checks',title:'Find the proof in the documents.'}),
+    process: Object.freeze({number:'03',label:'The checks',title:'Find the proof in the documents.'}),
+    decision: Object.freeze({number:'04',label:'The answer',title:'Suggest an answer a person can check.'}),
+    learning: Object.freeze({number:'05',label:'The next case',title:'Reuse what was learned.'}),
+    photo: Object.freeze({number:'06',label:'Photos',title:'Read photos like documents.'}),
+    library: Object.freeze({number:'07',label:'Learning',title:'Learn once. Reuse across cases.'}),
+    cases: Object.freeze({number:'08',label:'CasePath',title:'Every answer shows its proof.'})
   });
   function chapter(act) {
     if (!Object.hasOwn(CHAPTERS,act)) throw new TypeError('Unknown presentation chapter.');
@@ -186,55 +187,54 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   if (b.act === 'customer') {
     if (phase === 'ready' || phase === '') {
       if (local < 2600) return live('intro', 'CasePath', 'purpose');
-      return cue('sources', "A customer's question arrives with documents.", "CasePath's assistants work through them step by step.", 'The documents', 'sources', {mode: 'hold', align: 'end', part: 'introduction'});
+      return cue('sources', 'A customer writes in, with documents.', 'CasePath’s assistants take it from here.', 'The documents', 'sources', {mode: 'hold', align: 'end', part: 'introduction'});
     }
-    return cue('question', decisive ? 'The tenant asks us to check a rent-increase notice.' : "Start with the customer's question.",
-      'The assistant finds the request in the message.', 'The question', 'source', {part: 'quote'});
+    return cue('question', decisive ? 'The tenant wants a rent increase checked.' : 'First, find what the customer wants.',
+      'The assistant marks the request in the message.', 'The question', 'source', {part: 'quote'});
   }
 
   if (b.act === 'plan') {
     if (phase === 'plan-reuse') {
-      return cue('procedure', 'CasePath recognises the kind of case.', context.procedureScope
-        ? `It reuses the ${String(context.procedureScope).toLowerCase()} checklist learned from an earlier case.` : 'It reuses a checklist learned from an earlier case.',
+      return cue('procedure', 'CasePath knows this kind of case.', context.procedureScope
+        ? `It reuses its ${String(context.procedureScope).toLowerCase()} checklist, learned from an earlier case.` : 'It reuses a checklist learned from an earlier case.',
         'Reused checklist', 'procedure', {mode: 'hold'});
     }
     if (phase.startsWith('plan-node')) {
-      return cue('questions', "The checklist becomes this case's questions.", 'Each circle is one question the case must answer.', 'The process', 'spine');
+      return cue('questions', context.questionCount ? `It breaks the case into ${context.questionCount} questions.` : 'It breaks the case into questions.', 'Each circle is one question.', 'The process', 'spine');
     }
     if (phase === 'plan-rest') {
-      return cue('plan-ready', context.questionCount && context.documentCount ? `The plan: ${context.questionCount} questions, ${context.documentCount} documents to check.` : 'The plan is ready.',
-        'Now the assistants go to work.', 'The plan', 'procedure', {mode: 'hold'});
+      return cue('plan-ready', 'The plan is ready.', context.questionCount && context.documentCount ? `${context.questionCount} questions. ${context.documentCount} documents to check.` : 'Now the assistants go to work.', 'The plan', 'procedure', {mode: 'hold'});
     }
-    return cue('requirements', 'Each question names the evidence it needs.', 'The document checklist comes straight from the process.', 'Evidence checklist', 'procedure');
+    return cue('requirements', 'Then it lists the documents it needs.', 'Each document helps answer one question.', 'Evidence checklist', 'procedure');
   }
 
   if (b.act === 'reading' || b.act === 'process') {
     if (kind === 'document.check') {
       if (operationId !== context.firstCheckId) return live('document-checks', 'Document check');
       return ['document', 'document-rest', 'plan-tick', 'camera-out'].includes(phase)
-        ? cue('document-checked', 'Checked. The checklist updates.', 'Each document is confirmed against its exact passage.', 'Document check', 'checklist-row', {mode: 'hold', side: 'right', ...(op.object?.id ? {targetId: op.object.id} : {})})
-        : cue('document-check', 'Now the assistant checks each document.', 'It looks for the exact passage the checklist asks for.', 'Document check', 'source', {part: 'quote'});
+        ? cue('document-checked', 'Checked, with proof.', 'The checklist ticks itself off.', 'Document check', 'checklist-row', {mode: 'hold', side: 'below', align: 'start', ...(op.object?.id ? {targetId: op.object.id} : {})})
+        : cue('document-check', 'Now it checks each document.', 'It finds the exact sentence that proves it.', 'Document check', 'source', {part: 'quote'});
     }
     if (b.act === 'process') {
       return accepted
-        ? cue('process-complete', context.questionCount ? `All ${context.questionCount} questions answered.` : 'All questions answered.', 'Every answer points back to its documents.', 'The process', 'spine', {mode: 'hold'})
-        : cue('final-check', 'The last question is answered the same way.', 'Shown faster: read, mark, decide.', 'The final process question', 'source', {part: 'quote'});
+        ? cue('process-complete', context.questionCount ? `All ${context.questionCount} questions answered.` : 'All questions answered.', 'Each answer points to its proof.', 'The process', 'spine', {mode: 'hold'})
+        : cue('final-check', 'The last question, the same way.', 'Shown faster.', 'The final process question', 'source', {part: 'quote'});
     }
     const firstFact = operationId && operationId === context.firstFactId;
     const factPhase = ['fact', 'connector', 'fact-rest', 'plan-tick', 'camera-out'].includes(phase);
     if (firstFact) {
       if (factPhase) {
-        return cue('source-fact', decisive ? 'Proposed finding: the original notice gave no reasons.' : 'The passage becomes a proposed fact.',
-          'The finding stays linked to the exact sentence it came from.', 'From source to fact', 'fact', {
+        return cue('source-fact', decisive ? 'Found: no reasons were given.' : 'Found: a fact, with its proof.',
+          'Linked to the exact sentence.', 'From source to fact', 'fact', {
             mode: 'hold', ...(operationId ? {targetId: operationId} : {}), part: phase === 'connector' ? 'connection' : 'proposed-fact'
           });
       }
-      return cue('decisive-source', decisive ? 'Next: what accompanied the original notice?' : 'Next: the passage behind a fact.',
-        decisive ? 'The assistant looks for the reasons the landlord gave.' : 'The assistant marks the sentence that matters, word for word.', 'The decisive passage', 'source', {part: 'quote'});
+      return cue('decisive-source', decisive ? 'The key question: did the landlord give reasons?' : 'The key question.',
+        'The assistant searches the documents.', 'The decisive passage', 'source', {part: 'quote'});
     }
     if (accepted) {
-      return cue('question-answered', operationId && operationId === context.firstCompletionId ? 'First question answered.' : 'Question answered. The process moves on.',
-        'A circle is ticked once the documents answer it.', 'The process', 'node', {mode: 'hold', ...(nodeTarget ? {targetId: nodeTarget} : {}), part: 'completed-question'});
+      return cue('question-answered', operationId && operationId === context.firstCompletionId ? 'First question answered.' : 'Next question answered.',
+        'A tick means the documents answered it.', 'The process', 'node', {mode: 'hold', ...(nodeTarget ? {targetId: nodeTarget} : {}), part: 'completed-question'});
     }
     return live('reading', 'Recorded work');
   }
@@ -258,12 +258,12 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
         context.decisiveRule === true ? 'Article 269d, paragraph 2(b)' : 'Rule', 'law', {mode: 'hold'});
     }
     if (phase === 'legal-test-lead') {
-      return cue('legal-tests', 'Now each legal test is checked.', 'Facts and rule, one requirement at a time.', 'Recorded legal tests', 'tests', {part: 'check'});
+      return cue('legal-tests', 'Next, it checks the rules one by one.', context.testCount ? `${context.testCount} checks, from the law that applies.` : 'Each check comes from the law that applies.', 'Recorded legal tests', 'tests', {part: 'check'});
     }
     if (['legal-test', 'legal-test-rest'].includes(phase)) {
       const failed = (b.predicate_status || b.predicate?.status) === 'failed';
       if (failed) {
-        return cue('unmet', 'The recorded assessment flags one unmet requirement.', 'Every other legal test is supported by the facts.', 'Recorded legal tests', 'predicate', {
+        return cue('unmet', decisive ? 'One check fails: no reasons were given.' : 'One check fails.', 'All the other checks pass.', 'Recorded legal tests', 'predicate', {
           mode: 'hold', ...(predicateId ? {targetId: predicateId} : {}), part: 'unmet', spotlight: Boolean(predicateId)
         });
       }
@@ -271,40 +271,47 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
     }
     if (['answer', 'answer-rest'].includes(phase)) {
       if (phase === 'answer-rest' && local >= 3000) {
-        return cue('open-questions', 'Other questions remain unanswered.', 'CasePath says plainly what it could not decide.', 'Still open', 'open', {mode: 'hold'});
+        return cue('open-questions', 'It also lists what is still open.', 'Open points are flagged, not guessed.', 'Still open', 'open', {mode: 'hold'});
       }
-      return cue('proposed-assessment', context.assessmentSupportsInvalidity === true ? 'Proposed assessment: invalid on this ground.' : 'Read the proposed assessment.',
-        'A proposal for a person to review, not a final decision.', 'Proposed assessment', 'lead', {mode: 'hold'});
+      return cue('proposed-assessment', context.assessmentSupportsInvalidity === true ? 'Suggested answer: the increase is not valid.' : 'A suggested answer is ready.',
+        'A person reviews it before anything happens.', 'Proposed assessment', 'lead', {mode: 'hold', side: 'above'});
     }
     if (['draft', 'draft-rest'].includes(phase)) {
       const review = phase === 'draft-rest' && local >= 3000;
-      return cue('human-review', 'A draft for a person to review. Nothing is sent.', 'The handler decides what the customer receives.', 'Human review', review ? 'draft' : 'draft-body', {mode: 'hold', part: review ? 'review-boundary' : 'prepared-reply'});
+      return cue('human-review', 'A reply is drafted. A person decides.', 'Nothing is sent automatically.', 'Human review', review ? 'draft' : 'draft-body', {mode: 'hold', part: review ? 'review-boundary' : 'prepared-reply'});
     }
   }
 
   if (b.act === 'learning') {
     if (['later-case-rest', 'memory-open', 'memory-overview'].includes(phase)) {
-      return cue('later-evidence', 'A later case of the same kind. It brings its own evidence.', 'A different tenant, with their own documents.', 'A later case', 'memory-source', {mode: 'hold'});
+      return cue('later-evidence', 'A new case of the same kind arrives.', 'A different tenant, with different documents.', 'A later case', 'memory-source', {mode: 'hold'});
     }
     if (['memory-transfer', 'memory-landed'].includes(phase)) {
       const landed = phase === 'memory-landed', first = !(Number.isSafeInteger(b.item) && b.item > 0);
       if (!first) return live('reuse-items', 'Checklist reuse', landed ? 'memory-target' : 'memory-item');
-      return cue('reuse-checklist', "Reuse the checklist. Recheck this case's evidence.", 'The same checks, run on the new documents.', 'Checklist reuse', landed ? 'memory-target' : 'memory-item', {
+      return cue('reuse-checklist', 'CasePath reuses what it learned.', 'The same checks, on the new documents.', 'Checklist reuse', landed ? 'memory-target' : 'memory-item', {
         ...(Number.isSafeInteger(b.item) && b.item >= 0 ? {targetId: b.item} : {}),
         part: landed ? 'destination' : 'origin',
         spotlight: Number.isSafeInteger(b.item) && b.item >= 0
       });
     }
     if (['memory-notice', 'memory-notice-rest'].includes(phase)) {
-      return cue('fresh-facts', 'The checks are reused. The facts belong to this case.', "Every fact still comes from this case's own documents.", 'Checklist reuse', 'count', {mode: 'hold'});
+      return cue('fresh-facts', 'The checks are reused. The facts are new.', 'Every fact comes from the new case’s own documents.', 'Checklist reuse', 'count', {mode: 'hold', side: 'below', align: 'end'});
     }
     if (['answer', 'answer-rest'].includes(phase)) {
-      return cue('later-assessment', 'This case receives its own proposed assessment.', 'Based on its own evidence, for a person to review.', "The later case's assessment", 'lead', {mode: 'hold'});
+      return cue('later-assessment', 'The new case gets its own answer.', 'Based on its own documents.', "The later case's assessment", 'lead', {mode: 'hold'});
     }
   }
 
+  if (b.act === 'photo') {
+    if (['photo-open', 'photo-lead', 'photo-scan', 'photo-region'].includes(phase)) {
+      return cue('photo', 'Customers send photos too.', 'CasePath reads them like documents.', 'A photo', 'photo');
+    }
+    return cue('photo-findings', 'It marks the spots and reads the date.', 'Each finding points to the exact place in the photo.', 'What the photo shows', 'photo-findings', {mode: 'hold'});
+  }
+
   if (b.act === 'library') {
-    return cue('library', 'Learned once. Reused across cases.', 'Each kind of case has a checklist learned from one case and reused in later ones.', 'Knowledge', 'library-entry', {mode: 'hold', ...(b.family ? {targetId: b.family} : {})});
+    return cue('library', 'It learns across different kinds of case.', 'Each checklist is learned once, then reused.', 'Knowledge', 'library-entry', {mode: 'hold', side: 'corner', ...(b.family ? {targetId: b.family} : {})});
   }
 
   if (b.act === 'cases') {

@@ -67,10 +67,10 @@ test('documentary cues preserve source to proposed fact to process meaning',()=>
   const source=documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const fact=documentaryCue({act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const node=documentaryCue({act:'reading',phase:'node-rest',op:{id:'second',kind:'step.complete',object:{id:'n2'}}},600,context);
-  assert.match(source.headline,/what accompanied the original notice/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
-  assert.match(fact.headline,/Proposed finding: the original notice gave no reasons/);assert.equal(fact.targetId,'fact');assert.equal(fact.mode,'hold');
+  assert.match(source.headline,/did the landlord give reasons/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
+  assert.match(fact.headline,/Found: no reasons were given/);assert.equal(fact.targetId,'fact');assert.equal(fact.mode,'hold');
   assert.equal(node.target,'node');assert.equal(node.targetId,'n2');assert.equal(node.mode,'hold');
-  assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/original notice/);
+  assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/reasons/);
   // Recorded work between explanations plays without a caption or dim.
   const work=documentaryCue({act:'reading',phase:'cursor',op:{id:'other',kind:'span.read'}},0,context);assert.equal(work.card,false);assert.equal(work.spotlight,false);
 });
@@ -84,17 +84,20 @@ test('documentary legal focus requires semantic predicate identity',()=>{
 test('documentary answer and checklist cues distinguish open questions and independent evidence',()=>{
   const answer={act:'decision',phase:'answer-rest',duration:6000};
   assert.equal(documentaryCue(answer,2999).target,'lead');assert.equal(documentaryCue(answer,3000).target,'open');
-  assert.match(documentaryCue({act:'learning',phase:'memory-overview'}).headline,/own evidence/);
+  assert.match(documentaryCue({act:'learning',phase:'memory-overview'}).headline,/new case of the same kind/);
   const move=documentaryCue({act:'learning',phase:'memory-transfer',item:0}),land=documentaryCue({act:'learning',phase:'memory-landed',item:0});
   assert.equal(move.headline,land.headline);assert.equal(move.targetId,0);assert.equal(land.targetId,0);assert.equal(move.target,'memory-item');assert.equal(land.target,'memory-target');
   assert.equal(documentaryCue({act:'learning',phase:'memory-transfer',item:1}).card,false);
-  assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/person to review/);
+  assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/A person decides/);
 });
 test('plan, document-check and knowledge cues state only what their context records',()=>{
-  assert.match(documentaryCue({act:'plan',phase:'plan-reuse'},0,{procedureScope:'Rent increases'}).detail,/rent increases checklist learned from an earlier case/);
+  assert.match(documentaryCue({act:'plan',phase:'plan-reuse'},0,{procedureScope:'Rent increases'}).detail,/rent increases checklist, learned from an earlier case/);
   assert.doesNotMatch(documentaryCue({act:'plan',phase:'plan-reuse'},0,{}).detail,/rent/);
-  assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{questionCount:3,documentCount:3}).headline,'The plan: 3 questions, 3 documents to check.');
-  assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{}).headline,'The plan is ready.');
+  assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{questionCount:3,documentCount:3}).detail,'3 questions. 3 documents to check.');
+  assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{}).detail,'Now the assistants go to work.');
+  assert.equal(documentaryCue({act:'plan',phase:'plan-node'},0,{questionCount:3}).headline,'It breaks the case into 3 questions.');
+  const scanning=documentaryCue({act:'photo',phase:'photo-scan'}),found=documentaryCue({act:'photo',phase:'photo-rest'});
+  assert.equal(scanning.target,'photo');assert.equal(scanning.mode,'lead');assert.equal(found.target,'photo-findings');assert.equal(found.mode,'hold');
   const check={act:'reading',phase:'cursor',op:{id:'c1',kind:'document.check',object:{id:'tenancy_terms_evidence'}}};
   assert.equal(documentaryCue(check,0,{firstCheckId:'c1'}).id,'document-check');
   const done=documentaryCue({...check,phase:'document-rest'},0,{firstCheckId:'c1'});assert.equal(done.target,'checklist-row');assert.equal(done.targetId,'tenancy_terms_evidence');assert.equal(done.mode,'hold');
@@ -117,13 +120,13 @@ test('documentary law focus needs the exact unique clause and matching recorded 
 
 test('specific documentary explanations require their recorded evidence and draft focus hands off at three seconds',()=>{
  const evidence={firstFactId:'fact',decisivePredicate:'contemporaneous_substantive_reasons'};
- assert.match(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,evidence).headline,/rent-increase notice/);
- assert.doesNotMatch(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{}).headline,/rent-increase/);
+ assert.match(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,evidence).headline,/rent increase checked/);
+ assert.doesNotMatch(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{}).headline,/rent/);
  const fact={act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}};
- assert.match(documentaryCue(fact,0,evidence).headline,/gave no reasons/);assert.match(documentaryCue(fact,0,{firstFactId:'fact'}).headline,/proposed fact/);
+ assert.match(documentaryCue(fact,0,evidence).headline,/no reasons were given/);assert.match(documentaryCue(fact,0,{firstFactId:'fact'}).headline,/a fact, with its proof/);
  const law={act:'decision',phase:'law-rest'},answer={act:'decision',phase:'answer-rest',duration:6000};
  assert.doesNotMatch(documentaryCue(law,0,evidence).headline,/invalid notice/);assert.match(documentaryCue(law,0,{...evidence,decisiveRule:true}).headline,/invalid notice/);
- assert.doesNotMatch(documentaryCue(answer,1000,{...evidence,decisiveRule:true}).headline,/invalid on this ground/);assert.match(documentaryCue(answer,1000,{...evidence,decisiveRule:true,assessmentSupportsInvalidity:true}).headline,/invalid on this ground/);
+ assert.doesNotMatch(documentaryCue(answer,1000,{...evidence,decisiveRule:true}).headline,/not valid/);assert.match(documentaryCue(answer,1000,{...evidence,decisiveRule:true,assessmentSupportsInvalidity:true}).headline,/the increase is not valid/);
  const draft={act:'decision',phase:'draft-rest',duration:6000},body=documentaryCue(draft,2999),review=documentaryCue(draft,3000);
- assert.equal(body.target,'draft-body');assert.equal(body.part,'prepared-reply');assert.equal(review.target,'draft');assert.equal(review.part,'review-boundary');assert.equal(body.id,review.id);assert.equal(body.headline,review.headline);assert.match(review.headline,/Nothing is sent/);
+ assert.equal(body.target,'draft-body');assert.equal(body.part,'prepared-reply');assert.equal(review.target,'draft');assert.equal(review.part,'review-boundary');assert.equal(body.id,review.id);assert.equal(body.headline,review.headline);assert.match(review.detail,/Nothing is sent/);
 });

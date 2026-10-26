@@ -2360,3 +2360,35 @@ html[data-casepath-presentation] .au-workspace [data-au-recorded-draft] pre { fo
  html[data-casepath-presentation] .au-executive-library { padding:0 27px; }
 }
 @media (min-width:701px) { html[data-casepath-presentation] .au-ns-sources .au-executive-checklist li:before { content:none; } }
+
+/* Presentation reading: plain words only. Citations, counts of internal
+   steps and navigation the film never uses stay one click away in the product. */
+@media (min-width:701px) {
+ html[data-casepath-presentation] .au-desk-law,
+ html[data-casepath-presentation] .au-checklist-note,
+ html[data-casepath-presentation] .au-library .au-work-head > div:last-child,
+ html[data-casepath-presentation] .au-library-entry-head a,
+ html[data-casepath-presentation] .au-library-entry-head button,
+ html[data-casepath-presentation] .au-checklist-records { display:none; }
+ html[data-casepath-film] .au-executive-transport > div { visibility:hidden; }
+ /* A customer photo, its measured marks and what was found. */
+ html[data-casepath-presentation] .au-ns-photo-work { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:36px; align-items:start; }
+ html[data-casepath-presentation] .au-ns-photo-desk .au-ns-paper.au-ns-photo { height:calc(100dvh - 190px); padding:18px; box-sizing:border-box; background:#fff; overflow:hidden; }
+ html[data-casepath-presentation] .au-ns-photo-frame { position:relative; width:100%; height:100%; transform-origin:50% 50%; }
+ html[data-casepath-presentation] .au-ns-photo-frame img,
+ html[data-casepath-presentation] .au-ns-photo-frame svg { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; }
+ html[data-casepath-presentation] .au-photo-mark { fill:rgba(196,18,64,.26); stroke:rgba(196,18,64,.95); stroke-width:1.5; vector-effect:non-scaling-stroke; }
+ html[data-casepath-presentation] .au-photo-region { fill:none; stroke:#82072a; stroke-width:3; vector-effect:non-scaling-stroke; }
+ html[data-casepath-presentation] .au-photo-scan { fill:rgba(130,7,42,.75); }
+ html[data-casepath-presentation] .au-ns-photo-findings { margin-top:24px; }
+ html[data-casepath-presentation] .au-ns-photo-findings ol { list-style:none; margin:0; padding:0; }
+ html[data-casepath-presentation] .au-ns-photo-findings li { display:grid; grid-template-columns:24px minmax(0,1fr); gap:12px; align-items:start; padding:14px 0; border-top:1px solid #ebebee; }
+ html[data-casepath-presentation] .au-ns-photo-findings li b { display:block; color:#141516; font:700 16px/1.35 Mulish,sans-serif; }
+ html[data-casepath-presentation] .au-ns-photo-findings li small { display:block; margin-top:2px; color:#4c4b4d; font:400 13.5px/1.4 Mulish,sans-serif; }
+ html[data-casepath-presentation] .au-ns-photo-desk .au-ns-sources li button small { display:block; color:#61636b; font-size:12.5px; }
+}
+@media (min-width:701px) {
+ html[data-casepath-presentation] .au-ns-intake { display:none; }
+ html[data-casepath-presentation] .au-desk-plain { margin:20px 0 6px; color:#141516; font:700 22px/1.35 Mulish,sans-serif; letter-spacing:-.2px; }
+ html[data-casepath-presentation] .au-desk-plain + .au-desk-lead { color:#61636b; font-size:14px; line-height:1.5; }
+}
