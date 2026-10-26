@@ -1,0 +1,96 @@
+{
+ "lens": "visual-editor",
+ "summary": "The cinematic base is strong. The numbered case openers (6.0s, 118.6s, 134.0s), the persistent case sidebar, the dark narration cards and the finding-to-sentence links in the email all work. The biggest problem is that case 1 fades the whole stage, sidebar included, to blank white about 8 times. That is the same white-out used between cases, so steps inside a case look like scene breaks and the real case changes lose their weight. A stray \"01 \u00b7 ...\" chapter block also flashes into the sidebar during these fades. The second group of problems hurts \"where to look\": quote highlight frames cut through the lines above and below, leader lines cross the text they explain, and several spotlights open on empty boxes. There is also a 13-second stretch with no narration (47.8\u201361.1s). The email draft, meant to be the memorable moment, reads as analyst fragments rather than a reply. Cases 2 and 3 end without an answer or action.",
+ "findings": [
+  {
+   "where": "Within case 1: 15.3\u201315.9s (frames 458\u2013477), 38.2\u201338.5, 47.9\u201348.2, 53.1\u201353.4, 63.9\u201364.2, 80.0\u201380.3, 88.2\u201388.6, 105.5\u2013105.8s. Chapter-block pop: frames 456\u2013458, 1146\u20131150, 1436\u20131440, 1592, 4014",
+   "problem": "At every step change inside case 1, the whole area below the header fades to pure white, including the persistent 'CASE 1 \u00b7 Elin Ziegler' sidebar. In the measured frames the content area is completely blank for up to 0.6s. This is the same treatment as a real case change (118.7s, 134.0s), so steps look like new scenes and case changes stop standing out. For 3\u20134 frames before each fade, a leftover sidebar block ('01 \u00b7 The request / A customer asks for help', '01 \u00b7 The plan\u2026', '01 \u00b7 The checks\u2026') pops in and pushes the Sources list down about 70px.",
+   "severity": "blocker",
+   "fix": "Keep the header and sidebar mounted during step swaps inside a case. Crossfade only the main stage (about 200ms, never through a white frame). Use the full white-out plus numbered opener only between cases. Hide the '01 \u00b7 \u2026' chapter block in film mode (display:none) so it cannot render during transitions."
+  },
+  {
+   "where": "9.5\u201312.5s (frame 320), 64.5\u201369.5s (frame 1980), 80.5\u201383.5s (frame 2430)",
+   "problem": "The quote highlight is one rectangle across the whole line width. Its top and bottom borders strike through the lines above and below (e.g. 'zeigen: ob die E-Mail\u2026', 'Mietzinserhoehung_Formular\u2026', 'Subject: Reply to your question\u2026'). Its right edge cuts words ('Erh\u00f6hungsfor|mular', 'its'), and it encloses grey text that is not part of the quote. This is the main 'look here' device and it reads as a misdrawn frame.",
+   "severity": "major",
+   "fix": "Draw the highlight from Range.getClientRects(): one rounded rect per line fragment, padded inside the line-height (2\u20134px), or an outline on the existing pink inline mark. Anchor the leader dot to the last fragment's end."
+  },
+  {
+   "where": "43.7\u201347.8s (frame 1330), 61.0\u201363.8s (frame 1870), 77.0\u201379.9s, 99.0\u2013105.4s (frame 3050)",
+   "problem": "Narration leader lines cross the very content being explained. 'Checked, with proof.' draws a diagonal from the bottom-right card through the highlighted lease paragraph to the sidebar row. 'Question 1 answered.' and 'Question 2 answered.' slash diagonally through the highlighted passage up to the question node. 'Answer: the increase is not valid.' drops a vertical line through 'under CO 269d' and 'undetermined'.",
+   "severity": "major",
+   "fix": "Route leaders orthogonally through empty gutters, e.g. up the right gutter at x\u22481390 and then horizontally at the target's y. Reject any path that intersects the highlighted rect or a text block. Alternatively, dock the narration card next to its target for these beats."
+  },
+  {
+   "where": "47.8\u201361.1s",
+   "problem": "No narration for 13.3s while the rent increase form and the landlord's later email are checked and question 1 is completed. The viewer gets no what/why for the most important evidence ('Begr\u00fcndung gem\u00e4ss separatem Begleitschreiben'). Every other gap in the film is 3\u20137s.",
+   "severity": "major",
+   "fix": "Add 2\u20133 short beats anchored to each highlight, e.g. at about 49s 'The form: reason field points to a letter that never came.', at about 54s 'The later email came after the notice.', at about 58.5s 'Question 1: what the tenant received.'"
+  },
+  {
+   "where": "105.5\u2013118.5s (frame 3400)",
+   "problem": "The email draft does not read as a reply. The body is one analysis sentence split into fragments: line 1 ends 'CO 269d(2)(b);', line 2 starts lowercase 'the later market reply remains contextual evidence.' It is in jargon ('supporting invalidity', 'contextual evidence'), has no greeting or sign-off, and is in English under a German subject that is clipped with an ellipsis ('\u2026ohne eingetragene Begr\u00fcndu\u2026').",
+   "severity": "major",
+   "fix": "Render each finding as a complete, capitalised, customer-facing sentence ending in a period, e.g. 'Your increase form gave no reasons, so the increase is not valid.' Add a 'Dear Ms Ziegler,' line and a sign-off. Wrap the subject to 2 lines or shorten it (e.g. 'Re: Your rent increase')."
+  },
+  {
+   "where": "15.9\u201316.4s (frame 480), 24.4\u201326.1s (frame 765), 88.2\u201391.0s (frame 2700), 137.5\u2013138.0s, 152.1\u2013155.5s",
+   "problem": "Several spotlights and narration cards open on empty or ghosted content. The shelf is an empty white box under 'A shelf of learned checklists'. A full-width empty box sits under 'The checklist becomes 3 questions. One circle per question.' with no circles yet, and its bottom edge overlaps the top of the 'Checklist from the shelf' card. The rules list is at about 15% opacity under 'Now the rules, one by one'. The library shows '0 checklists 0 cases 0 uses' with ghosted rows for 3.5s.",
+   "severity": "major",
+   "fix": "Start each spotlight and narration only after the first item has landed, or pre-render the first card, circle or rule at full opacity. Fit the spotlight to the populated content's bounds, not the empty container. Start library counters together with the first row."
+  },
+  {
+   "where": "134.2\u2013134.4s and 136.7\u2013137.4s (frames 4024\u20134032, 4100\u20134120)",
+   "problem": "The case 3 opener ('3 Drew Shaw') crossfades over a half-faded 'Checklist from the shelf \u00b7 Rent increases' card. 'Rent increases' collides with the big '3' and with 'Drew Shaw'. The card is also the end result of the reuse, so it appears before the shelf is shown (137.5s) and picked (140.7s), which spoils the reuse beat.",
+   "severity": "major",
+   "fix": "Reset the plan stage to empty when the case changes. Render the opener over a blank stage and mount case 3's plan only after the opener has fully faded and the shelf beat begins."
+  },
+  {
+   "where": "21.4\u201321.6s (frames 640\u2013650); same morph at about 140.7\u2013141.8s",
+   "problem": "When the picked shelf card morphs into the 'Checklist from the shelf' banner, both layouts' text are visible at once: 'Rent increases' appears twice and '3 documents' overprints 'Learned from\u2026'. A ghost outline of the destination rectangle and a stray 1px horizontal rule (y\u2248650) also show.",
+   "severity": "minor",
+   "fix": "Use a single-element FLIP transform, or fade the outgoing card's text to 0 before the destination text passes 0.3 opacity. Remove the leftover shelf divider rule before the morph."
+  },
+  {
+   "where": "48.3\u201353.0s (frame 1535)",
+   "problem": "The Rent increase form, badged as a PDF in the sidebar, is shown as raw extracted lines ('pro Monat / Fr. / Fr. / pro Monat / Fr. \u2026'). It looks broken and nothing like a form, which undercuts the attachment-type clarity.",
+   "severity": "major",
+   "fix": "Show a rendered page image of the PDF form with the highlight over the 'Begr\u00fcndung der Erh\u00f6hung' field, plus a 'PDF \u00b7 page 1 of 3' header. At minimum, collapse the empty label lines."
+  },
+  {
+   "where": "51.0\u201352.5s (frame 1535), 64.5\u201369.5s (frame 1980)",
+   "problem": "The checklist panel contradicts the sidebar. The right panel says '3 done' while the sidebar says 'Evidence checklist 2 of 3 checked', and 'Read rent increase form' is still unticked right after the form was read. At 64.5s the panel restarts 'Checking \"Did the landlord give reasons?\"' with every step unticked, although 3 of 3 evidence items are checked and question 2 was already worked. It looks like the work is being redone.",
+   "severity": "minor",
+   "fix": "Tick completed steps in place instead of collapsing them into 'N done', and keep counts consistent with the sidebar. Label the second pass explicitly (e.g. 'Verifying each quote against the original') with prior ticks kept."
+  },
+  {
+   "where": "69.6\u201374.3s (frame 2150)",
+   "problem": "'Found: no reasons were given. \u2192 Linked to the exact sentence.' The narration leader shares its path with the dotted connector, and that connector runs to question node 2, not to the highlighted sentence. Its open-circle end floats in empty space at about (1381, 938). The pointer contradicts the copy.",
+   "severity": "minor",
+   "fix": "Draw the link from the fact card to the highlighted sentence, or change the copy to 'Linked to question 2'. Offset the narration leader so it never overlaps a product connector."
+  },
+  {
+   "where": "Case 1 sidebar and opener (0\u2013118s) vs case 2/3 sidebar and openers (118.6s+, 134.0s+)",
+   "problem": "Attachment icons are inconsistent and only partly type-specific. 'Customer's message' uses a chat bubble in case 1 but an envelope in cases 2 and 3 (same kind of file). 'The landlord's later email' uses the generic page icon, not an email icon. 'Lease and original notice' is a generic page with no DOC/Word badge. Only the PDF and the photo thumbnail are recognisable.",
+   "severity": "minor",
+   "fix": "Choose the icon by file type everywhere: email \u2192 envelope, .docx \u2192 'DOC' badge, PDF \u2192 PDF badge, image \u2192 thumbnail with magnifier (as already done for the photo). Use the same icon for the same file across all cases."
+  },
+  {
+   "where": "Case 2 ends at 133.8s; case 3 ends at 152.0s; library 156\u2013168s (frame 5100)",
+   "problem": "Case 2 poses 'Mould keeps coming back. What is causing it?' but ends at 'Spots marked. Date read.' with no conclusion or next action. Case 3 ends at the plan with no answer. The library's Defects and repairs row shows only heating cases, so the mould case never connects to 'what CasePath learned'. This fails the 'what action / what learned' test for 2 of 3 cases.",
+   "severity": "major",
+   "fix": "Add one outcome beat per case, e.g. case 2 'Next step: ask the landlord for a damp assessment, with the photo as proof', case 3 'Same path, same answer: not valid \u2014 draft ready'. Show case 2 as a ring on the Defects row, or label the rings as other recorded cases."
+  },
+  {
+   "where": "5.97\u20136.0s, 74.3s, 79.9s, 97.1s, 105.4s, 118.6s, 144.4s (and about 25 dim on/off toggles overall)",
+   "problem": "The spotlight dim overlay snaps on and off in 1\u20132 frames. Mean frame luminance jumps by about 30 levels in a single frame at these points, which reads as a flash or flicker before scene changes. The intro-to-case-1-opener cut at 6.0s is a hard pop: the narration card and dim vanish in one frame.",
+   "severity": "minor",
+   "fix": "Ease overlay opacity over 250\u2013300ms. Fade the narration card out before any scene swap, and never cut the dim off in the same frame as a layout change."
+  },
+  {
+   "where": "38.5\u201361s (frames 1180, 1330), 64.5\u201377s (frames 1980, 2150), 80.5\u201385s (frame 2430)",
+   "problem": "The document viewer looks half-broken. The toolbar shows only lone '\u2190 \u2192' arrows with no title. A blank band of about 130px sits between the Date row and the body. Once scrolled, the top body line is sliced in half under the Date row ('advance CHF 180 and water/other advance\u2026'). The bottom line is also cut mid-height.",
+   "severity": "minor",
+   "fix": "Put the document title and type badge in the toolbar, collapse the empty gap, and add top and bottom fade masks or padding to the scroll container so lines are never sliced at the edges."
+  }
+ ]
+}

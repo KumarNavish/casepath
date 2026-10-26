@@ -1,0 +1,95 @@
+{
+ "summary": "I judged all 30 frames (t003 to t177) on the five questions. Pass rates: which case 30/30 (100%), because the persistent case card in the sidebar works. What problem 25/25 of the frames where it applies (100%); the 5 recap and end frames are N/A. What action 24/29 (83%); fails at 009, 015, 069, 093 and 129. Why it matters 16/30 (53%); fails at 009, 015, 027, 033, 051, 057, 069, 075, 081, 093, 099, 129, 147 and 159. What CasePath learned 20/27 (74%); N/A before t021, fails at 093 to 117 and 123 to 129. Only 12 of 30 frames (40%) answer every question that applies. Verdict: not yet passing. The narration card style, the Case 1 evidence beats (021 to 045, 063, 087), the verdict at t105, the Case 3 opener and the knowledge payoff at t171 all pass cleanly. The failures cluster in four places: gaps where no narration card is on screen; Case 2, which never reaches a result; the Case 1 answer pass, which looks like a re-run; and an email draft that reads as internal notes rather than a reply to the customer.",
+ "findings": [
+  {
+   "where": "t123, t129 (Case 2), then t135 jumps straight to the Case 3 opener",
+   "problem": "The mould photo gets a red box with dozens of pink circles, but the 'What CasePath found' panel stays empty and there is no narration card at t129. The case's question in the sidebar ('Mould keeps coming back. What is causing it?') is never answered on screen before Case 3 starts. Case 2 fails what action, why it matters and what learned: the viewer sees a problem with no fix.",
+   "severity": "major",
+   "fix": "When the box draws, fill the 'What CasePath found' panel with the recorded photo finding, and add a narration card ('It finds the mould behind the sofa. Proof for the repair claim.'). Before the Case 3 opener, add a 2 to 3 s result card for Case 2 built from recorded data (finding plus next step)."
+  },
+  {
+   "where": "t051, t057, t069, t075, t093, t099, t147, t159",
+   "problem": "No narration card is on screen, so nothing says why the beat matters. These eight frames account for most of the 'why it matters' failures.",
+   "severity": "major",
+   "fix": "Keep each narration card on screen until the next one replaces it, so there are no empty gaps. Or add one short card per beat, for example t051 'Two of three documents proven', t093 'Now it checks the answer', t147 'Same questions, Drew's documents', t159 'Three checklists, each learned once'."
+  },
+  {
+   "where": "t051 \u2192 t057 \u2192 t063 \u2192 t069 \u2192 t075",
+   "problem": "Case 1 seems to do the same work twice. At t051 question 2 shows '2 done'. At t057 its circle is blank again. At t063 the film is back at question 1. At t069 the tab switches to Source checker, and the same 'Checking \"Did the landlord give reasons?\"' panel is shown again with every step unticked. An executive reads this as a loop or a reset, not as progress.",
+   "severity": "major",
+   "fix": "Keep finished stepper and checklist states ticked through the switch. Rename the second-pass panel header from 'Checking \u2026' to 'Answering \u2026'. Add one narration card at the start of the second pass (about t060): 'Now it answers each question from that proof.'"
+  },
+  {
+   "where": "t111, t117 (reply draft)",
+   "problem": "The draft doesn't read as a reply to the customer. The body is two findings pasted together. Line 1 ends in '\u2026under CO 269d(2)(b);', line 2 starts in lowercase ('the later market reply remains contextual evidence.'), and both are legal jargon. There is no greeting and nothing telling Elin what to do. The subject is truncated German above an English body. The headline verdict, 'The rent increase is not valid' (t105), is not in the draft at all, so understanding never visibly turns into action.",
+   "severity": "major",
+   "fix": "Make the recorded verdict sentence from t105 the bold first line of the draft body. Add a greeting line ('Dear Ms Ziegler,'). Start line 2 with a capital letter and remove the trailing ';'. Show an English version of the subject, or add a '(German original)' tag."
+  },
+  {
+   "where": "t009, t015 (first working beat of Case 1)",
+   "problem": "At t009 the Case 1 opener is about 10% opaque and barely readable. At t015 the screen is a German email with one highlighted phrase, no narration card and no English gloss. A non-German-speaking executive can't tell what is being read or why.",
+   "severity": "major",
+   "fix": "Hold the Case 1 opener fully opaque for at least 2.5 s. At t015, add a narration card ('It reads what Elin is asking for.') and an English chip on the highlighted phrase ('Asks: check the form, secure the deadline')."
+  },
+  {
+   "where": "t093, t099 (Result checker)",
+   "problem": "For about 12 s the Answer card has a blank band under 'Answer' where the verdict appears later (only at t105). At t093 there is also no narration card and no checks-not-met line. The viewer sees a result screen with no result.",
+   "severity": "major",
+   "fix": "Show the verdict line ('The rent increase is not valid: no reasons were given with it.') when the Answer card first appears, or remove the empty band until the verdict lands. Add a short card at t093 ('It double-checks every finding.')."
+  },
+  {
+   "where": "t039, t051 (sidebar evidence checklist)",
+   "problem": "The counts contradict what is on screen. At t039 the Lease row already shows 'Proof for question 2' but the checklist says '0 of 3 checked' with The lease unticked. At t051 two items have green ticks but the counter says '1 of 3 checked', while the right panel says '2 done'. In a film whose message is 'every answer shows its proof', visible counting errors undercut trust.",
+   "severity": "major",
+   "fix": "Update the 'N of 3 checked' counter and the item tick in the same frame as the 'Proof for question N' mark appears."
+  },
+  {
+   "where": "t141 \u2192 t147 \u2192 t153 (Case 3)",
+   "problem": "Case 3 shows the checklist being reused (t141, t147), then cuts to the cross-case recap at t153 with no Case 3 answer. The reuse never visibly pays off with a faster answer. t147 also has no narration card.",
+   "severity": "major",
+   "fix": "Add a short closing beat for Case 3 from recorded data: its verdict line plus a 'Same checklist, its own proof' card. Add a narration card at t147 ('Same 3 questions, checked on Drew's documents')."
+  },
+  {
+   "where": "t153, t159, t165, t171 (knowledge recap)",
+   "problem": "The labels say 'ALL 9 CASES' but the viewer has watched 3. The map labels CASE 1 and CASE 3 but nothing is marked as Case 2: the Defects and repairs row shows heating cases, not the mould case. '15 uses' doesn't match the 6 reuse nodes on screen, and 'uses' is never explained. At t159 the counter reads '0 uses' right after the reuse beat.",
+   "severity": "major",
+   "fix": "Mark Case 2 on the map if it is in the data. If not, change the card to 'The 3 cases you saw, plus 6 more'. Rename '15 uses' to something countable on screen (for example '6 reuses'), or explain the unit in the narration card. Start the counters at their final values, or finish counting before the card appears."
+  },
+  {
+   "where": "t141",
+   "problem": "The lifted 'Rent increases' card sits on top of the Lease termination card. That card's '3 documents / 4 checks / Learned from \"An emailed termination\u2026\"' shows underneath, so it reads as if Rent increases had 4 checks and was learned from a termination case. The card also clips the heading 'Checklists CasePath has learned'.",
+   "severity": "minor",
+   "fix": "Lift the card into the empty middle slot, or hide or dim the card underneath while it is lifted. Keep the heading clear."
+  },
+  {
+   "where": "t093\u2013t117 (Case 1 result), t123\u2013t129 (Case 2)",
+   "problem": "The link to learned knowledge disappears. The sidebar's 'From the rent increases checklist' block, visible from t039 to t087, is gone in Result checker, and Case 2 never names its Defects and repairs checklist. 'What CasePath learned' can't be answered in these frames.",
+   "severity": "minor",
+   "fix": "Keep a one-line 'Using: Rent increases checklist (learned once)' tag in the sidebar through Result checker. Show the matching tag for Case 2."
+  },
+  {
+   "where": "t027, t033, t081 (narration second lines)",
+   "problem": "The second lines describe the interface or the edit, not the value: 'One circle per question.', 'Each answers one question.', 'Same method, shown faster.' The 'why it matters' slot is used up without saying why it matters.",
+   "severity": "minor",
+   "fix": "Rewrite as benefit lines, for example 'So nothing gets missed.', 'Only the documents that matter.', 'Every question gets the same rigour.'"
+  },
+  {
+   "where": "t123, t129, t135 (case roster)",
+   "problem": "Case 2 has no customer name. The sidebar shows only 'CASE 2 \u00b7 DEFECTS AND REPAIRS', and the roster at t135 calls it 'A tenant', while Cases 1 and 3 are named people. That breaks the pattern the viewer uses to track cases.",
+   "severity": "minor",
+   "fix": "Give Case 2 a name line in the sidebar and in the roster, in the same pattern as Elin Ziegler and Drew Shaw."
+  },
+  {
+   "where": "t093, t099, t105 (Answer rows)",
+   "problem": "Each check row starts with an unlabelled circled '2' or '3', and there are no rows for question 1. A first-time viewer can't tell what the numbers mean.",
+   "severity": "minor",
+   "fix": "Label the circles 'Q2' and 'Q3', or add a small 'Question' column header."
+  },
+  {
+   "where": "t135, t153\u2013t171",
+   "problem": "The header highlights 'Process builder' during the Case 3 opener and the whole 'What CasePath has learned' recap. Neither screen is Process builder work, so the main 'what is happening' cue is misleading.",
+   "severity": "minor",
+   "fix": "Remove the active-tab highlight during case openers and the knowledge recap."
+  }
+ ]
+}

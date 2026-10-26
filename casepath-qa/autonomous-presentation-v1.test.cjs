@@ -67,7 +67,7 @@ test('documentary cues preserve source to proposed fact to process meaning',()=>
   const source=documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const fact=documentaryCue({act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const node=documentaryCue({act:'reading',phase:'node-rest',op:{id:'second',kind:'step.complete',object:{id:'n2'}}},600,context);
-  assert.match(source.headline,/were reasons given/);assert.match(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,{...context,decisiveRule:true}).detail,/Without reasons, the increase is not valid/);assert.doesNotMatch(source.detail,/not valid/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
+  assert.match(source.headline,/were reasons given/);assert.match(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,{...context,decisiveRule:true}).detail,/Missing reasons can make it invalid/);assert.doesNotMatch(source.detail,/not valid/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
   assert.match(fact.headline,/Found: no reasons were given/);assert.equal(fact.targetId,'fact');assert.equal(fact.mode,'hold');
   assert.equal(node.target,'node');assert.equal(node.targetId,'n2');assert.equal(node.mode,'hold');
   assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/reasons/);
@@ -78,7 +78,8 @@ test('documentary legal focus requires semantic predicate identity',()=>{
   const beat={act:'decision',phase:'legal-test-rest',test:3,predicate:'reasons',predicate_status:'failed'};
   const cue=documentaryCue(beat,1500);assert.equal(cue.targetId,'reasons');assert.equal(cue.part,'unmet');assert.equal(cue.spotlight,true);assert.equal(cue.mode,'hold');
   assert.equal(documentaryCue({...beat,predicate:undefined},1500).spotlight,false);
-  const supported=documentaryCue({...beat,predicate:'tenancy',predicate_status:'supported'},100);assert.equal(supported.card,false);assert.equal(supported.spotlight,false);
+  // Passing checks continue the lead sentence, so the narration never drops out.
+  const supported=documentaryCue({...beat,predicate:'tenancy',predicate_status:'supported'},100);assert.equal(supported.id,'legal-tests');assert.equal(supported.target,'tests');
   const lead=documentaryCue({act:'decision',phase:'legal-test-lead',test:0});assert.equal(lead.target,'tests');assert.equal(lead.mode,'lead');
 });
 test('documentary answer and checklist cues distinguish open questions and independent evidence',()=>{
@@ -89,12 +90,13 @@ test('documentary answer and checklist cues distinguish open questions and indep
   // The reply replaces the answer's open-points caption: its third finding carries them.
   assert.equal(documentaryCue(answer,3000,{emailFindings:true}).target,'lead');
   assert.equal(documentaryCue({act:'decision',phase:'email'}).target,'email');assert.equal(documentaryCue({act:'decision',phase:'email-clause',clause:1}).mode,'hold');
-  const sealed=documentaryCue({act:'decision',phase:'email-rest'});assert.equal(sealed.target,'email-status');assert.match(sealed.headline,/A person decides/);assert.match(sealed.detail,/Nothing is sent/);
+  const sealed=documentaryCue({act:'decision',phase:'email-rest'});assert.equal(sealed.target,'email-status');assert.match(sealed.headline,/A person decides/);assert.match(sealed.detail,/not sent/);
   // Each case opens on its own card; the card is the narration.
   for(const act of ['customer','photo','learning']){const opener=documentaryCue({act,phase:'case-open'});assert.equal(opener.card,false);assert.equal(opener.spotlight,false);}
   const pick=documentaryCue({act:'learning',phase:'plan-pick'}),open=documentaryCue({act:'learning',phase:'plan-reuse'});
   assert.equal(pick.id,open.id);assert.equal(pick.target,'shelf-card');assert.equal(open.target,'procedure');
-  assert.equal(documentaryCue({act:'learning',phase:'plan-node'}).card,false);assert.match(documentaryCue({act:'learning',phase:'plan-rest'}).headline,/Same checklist/);
+  assert.equal(documentaryCue({act:'learning',phase:'plan-node'},0,{laterName:'Drew Shaw'}).headline,'Same questions, for Drew Shaw.');assert.equal(documentaryCue({act:'learning',phase:'plan-node'}).target,'spine');
+  assert.match(documentaryCue({act:'learning',phase:'answer-rest'},0,{laterSupportsInvalidity:true}).headline,/not valid, here too/);assert.doesNotMatch(documentaryCue({act:'learning',phase:'answer-rest'},0,{}).headline,/not valid/);assert.match(documentaryCue({act:'learning',phase:'plan-rest'}).headline,/Same checklist/);
   assert.match(documentaryCue({act:'decision',phase:'draft-rest'}).headline,/A person decides/);
 });
 test('plan, document-check and knowledge cues state only what their context records',()=>{
@@ -109,13 +111,14 @@ test('plan, document-check and knowledge cues state only what their context reco
   const check={act:'reading',phase:'cursor',op:{id:'c1',kind:'document.check',object:{id:'tenancy_terms_evidence'}}};
   assert.equal(documentaryCue(check,0,{firstCheckId:'c1'}).id,'document-check');
   const done=documentaryCue({...check,op:{...check.op,source:{artifact_id:'src_lease'}},phase:'document-rest'},0,{firstCheckId:'c1'});assert.equal(done.target,'source-proof');assert.equal(done.targetId,'src_lease');assert.equal(done.mode,'hold');
-  assert.equal(documentaryCue(check,0,{firstCheckId:'other'}).card,false);
+  const next=documentaryCue(check,0,{firstCheckId:'other'});assert.equal(next.id,'document-checks');assert.equal(next.target,'source');
   const opening=documentaryCue({act:'customer',phase:'ready',duration:6000},1000),sources=documentaryCue({act:'customer',phase:'ready',duration:6000},3000);
   assert.equal(opening.card,false);assert.equal(opening.spotlight,false);assert.equal(sources.target,'sources');
   // The knowledge totals are only the recorded counts passed in.
   assert.equal(documentaryCue({act:'library',phase:'map-rest'},0,{knowledgeUses:15,knowledgeCases:9}).detail,'15 recorded uses across 9 cases.');
   assert.doesNotMatch(documentaryCue({act:'library',phase:'map-rest'},0,{}).detail,/\d/);
-  assert.equal(documentaryCue({act:'library',phase:'map-use',use:3}).card,false);
+  assert.equal(documentaryCue({act:'library',phase:'map-use',use:3}).id,'map-use');
+  assert.equal(documentaryCue({act:'library',phase:'map-lead'},0,{knowledgeCases:9,mapCases:[1,3]}).detail,'9 recorded cases, including cases 1 and 3.');assert.doesNotMatch(documentaryCue({act:'library',phase:'map-lead'},0,{}).detail,/\d/);
   assert.equal(documentaryCue({act:'cases',phase:'wordmark-rest'}).card,false);
 });
 

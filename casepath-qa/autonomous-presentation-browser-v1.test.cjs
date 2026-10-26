@@ -87,7 +87,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    if(document.querySelector('[data-au-email] button,[data-au-email] a'))failures.push('the reply offers a send control');
    return {failures,duration:m.duration};
   },{draftBody:teachingState.outcome.request_draft.body});
-  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,179880);
+  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,184080);
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{
@@ -200,7 +200,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   assert.ok((await page.evaluate(auditPresentation)).length===0,'the coach-mark card is audited by its own spotlight check, not as page content');
   await obstructingCard.evaluate(el=>el.remove());
   const ending=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(a.manifest.duration-1);const finale=document.querySelector('.au-cinema-finale'),heading=finale.querySelector('h2').getBoundingClientRect(),notice=finale.querySelector('small').getBoundingClientRect(),footer=document.querySelector('.au-executive-transport').getBoundingClientRect();return {above:heading.top,below:footer.top-notice.bottom,visible:getComputedStyle(finale).opacity,roster:getComputedStyle(document.querySelector('.au-claim-list')).opacity,title:finale.querySelector('h2').textContent,hidden:finale.getAttribute('aria-hidden')};});
-  assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/A person always decides/);
+  assert.ok(ending.above>=32&&ending.below>=32,JSON.stringify(ending));assert.equal(ending.visible,'1');assert.equal(ending.roster,'0');assert.equal(ending.hidden,'false');assert.match(ending.title,/A person decides/);
 
   const completions=Object.fromEntries(recorded.cases.flatMap(c=>c.trace.trim().split('\n').map(JSON.parse).filter(o=>o.kind==='step.complete').map(o=>[o.id,o.source])));
   const bindings=await page.evaluate(completions=>{
@@ -239,7 +239,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   // The photo scene draws every measured mark from the service reading, revealed by the scan, never before it.
   const photoReading=Object.entries(photo.responses).find(([key])=>key.endsWith('/photo-reading'))[1];
   assert.equal(photoReading.evidence_admitted,false);assert.equal(bindings.photo.marks,photoReading.regions[0].segments.length);assert.equal(bindings.photo.lit,bindings.photo.marks);assert.ok(bindings.photo.litAtStart<bindings.photo.marks/4);
-  assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,/Dark spots found/);assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
+  assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,new RegExp(`${bindings.photo.marks} dark spots measured`));assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
   assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<16000,'intake stops before repeated document reading');
   assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);
   assert.equal(bindings.laterDocuments,planned(recorded.cases[8]).documents.size);

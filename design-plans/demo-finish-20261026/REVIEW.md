@@ -1,225 +1,155 @@
-# Demo finish: guided film with plan, photo reading and knowledge
+# Demo finish: a clear, case-by-case product film
 
 The user asked for a finished, self-explanatory product film for executives
-without legal or technical background. It shows CasePath working end to end:
-it takes a learned checklist off its shelf and turns it into the case's
-questions and documents, checks documents with proof, gives a suggested
-answer, reads a customer photo, reuses the same checklist for a new case, and
-ends on everything it has learned. Every step is labelled in plain language,
-and the film shows live work between short explanations. The film is a
-deterministic replay of the product's own presentation mode
-(`?present=1#autonomous/demonstration`) from frozen fixtures. It makes no
-writes and no model calls.
+seeing CasePath for the first time. The film is a deterministic replay of the
+product's own presentation mode (`?present=1#autonomous/demonstration`) from
+frozen fixtures. It makes no writes and no model calls.
 
-After the first finished cut, the user asked for four things:
+The latest request was to make the film clear, intuitive and memorable. It
+named four refinements:
 
-1. the five-tab concept header in every frame;
-2. a memorable knowledge base;
-3. a cinematic plan and new-case reuse;
-4. a simple, clear edit.
+1. clear case storytelling;
+2. crisp guiding narration;
+3. a memorable email draft;
+4. intuitive attachments.
 
-This receipt covers the cut that answers those requests.
+The test it set: at any moment, an executive understands which case, what
+problem, what action, why it matters, and what CasePath learned.
 
-## What the film shows, and where each part comes from
+## The film, case by case
 
-| Chapter | On screen | Source |
+| Time | On screen | Source |
 | --- | --- | --- |
-| 01 The request | Customer message; the request passage is marked | Recorded customer source and `deskRequest` span |
-| 02 The plan | A shelf of the three learned checklists; the rent-increase card lifts off the shelf; its questions fly onto the case as circles, then its documents drop into the checklist | Knowledge index (three procedures, version 1); `knowledge.reuse` (seq 123), `node.evaluate` (128, 131, 134), `document.require` (135–137) |
-| 03 The checks | Each document is checked against its exact passage and the checklist ticks; the decisive passage becomes a fact; questions are answered | `document.check` (165, 194, 223), fact and `step.complete` operations (265, 306, 347) |
-| 04 The answer | Five rule checks, one unmet; suggested answer, open points, unsent draft | Recorded legal predicates, outcome and request draft |
-| 05 Photos | A scan line lights 144 measured dark spots, outlines the area, and reads the capture date | `GET …/sources/{claim}/{artifact}/photo-reading` on the corpus photo |
-| 06 The next case | A different tenant's case: the same shelf, the same card, the same gesture, bound to that case's own recorded operations | `knowledge.reuse`, `node.evaluate` and `document.require` of `clm_7dbd7c7d1c4ddf90` |
-| 07 Knowledge | A map that replays the recorded history: each checklist is learned from its first case, then every recorded use lands as a ring on the case that used it. The counters reach 3 checklists, 9 cases and 15 uses | `learning_replay` of the knowledge fixture: 3 `knowledge.published`, 15 `knowledge.used` |
-| 08 CasePath | Closing card | Static copy |
+| Title | "From a customer's documents to a clear answer" | Static copy |
+| Case 1 opener | A big "1", Elin Ziegler, the problem in one line, the four documents with their file icons, and a docket of the three cases. The card then settles into the case block at the top of the file list. | Name from the recorded customer message header. Problem restates the recorded subject. Documents from the recorded source descriptors. |
+| Case 1 · request | The customer message, with the request marked | Recorded customer source and request span |
+| Case 1 · plan | The shelf of three learned checklists; the rent-increase card comes off it; its 3 questions and 3 documents land on the case | Knowledge index; `knowledge.reuse` (seq 123), `node.evaluate` (128, 131, 134), `document.require` (135–137) |
+| Case 1 · checks | Each document is checked against its exact sentence. The file then shows "Proof for question N" and the checklist ticks. | `document.check` (165, 194, 223), facts and `step.complete` (265, 306, 347) |
+| Case 1 · answer | Five rule checks, one unmet; "The rent increase is not valid: no reasons were given with it." | Recorded legal predicates and assessment |
+| Case 1 · reply | Left, "What it found": three findings, each with the file that proves it. Right, the reply draft: each recorded clause appears as its finding links to it. The draft ends sealed "Draft · not sent — you decide". | Recorded `request_draft` (`prepared_not_sent`), the failed and later-email predicates and their citations, and the recorded open points |
+| Case 2 opener · photo | "Case 2 · First look · Only the photo is read". The photo opens out of its own thumbnail in the file list. A scan lights 144 measured dark spots, outlines the area and reads the capture date. | `GET …/photo-reading` on the corpus photo, frozen in `photo-reading-v1` |
+| Case 3 opener · reuse · answer | Drew Shaw, "Same kind as case 1". The same shelf, card and gesture, bound to this case's own operations, then its own recorded answer. | `knowledge.reuse`, `node.evaluate`, `document.require` and the outcome of `clm_7dbd7c7d1c4ddf90` |
+| Knowledge | A map that replays the recorded history: 3 checklists, 9 cases and 15 uses, with cases 1 and 3 named where their rings land | `learning_replay`: 3 `knowledge.published`, 15 `knowledge.used` |
+| Finale | "Every answer shows its proof. A person decides. … Nothing in this recording was sent." | Static copy |
 
-## Changes for the four requests
+## How the four refinements were met
 
-- **Header.** The film header is the concept bar in every scene: the brand,
-  then *Claim reader · Source checker · Process builder · Document finder ·
-  Result checker* with 1.5 px line icons. The active tab is crimson with an
-  underline. Claim reader is active while the request is read. Process builder
-  is active for the plan, the reuse and the knowledge map. During checks, the
-  active tab follows the recorded role. Title cards show no active tab.
-- **Knowledge.** The checklist shelf is the recurring device. Chapter 02 picks
-  a card from it, chapter 06 picks the same card for a new case, and chapter
-  07 shows where every card came from and where it was used. Every number on
-  the map is counted from the recorded events.
-- **Plan and reuse.** The plan is one continuous gesture:
-  1. shelf;
-  2. lift;
-  3. the card flies to the case;
-  4. question slips fly onto the case's questions;
-  5. documents drop in.
-
-  The later case replays the same gesture from its own recorded operations,
-  so the viewer sees the reuse without a separate explanation scene.
-- **Edit.** The memory view and the static library page were removed. Photos
-  now come before the next case, so the film ends on what was learned.
-  Captions are one short headline and one detail line.
-
-## Photo reading (no model)
-
-`casepath-api/casepath_api/photo_reading_v1.py` is a deterministic Pillow
-measurement. It reads the EXIF capture date. On light, low-colour surfaces it
-finds small dark marks against the locally smoothed surface, and it finds
-light brown staining. It returns at most three areas, with their position,
-share and the measured marks in original pixels. It names no cause, material
-or legal consequence.
-
-The read-only endpoint binds the reading to the original's SHA-256. It
-returns 415 for non-images, and it always reports `evidence_admitted: false`.
-`casepath-api/tests/test_photo_reading_v1.py` covers the following:
-
-- synthetic spotting and staining;
-- a clean wall;
-- determinism;
-- EXIF presence and absence;
-- corrupt bytes;
-- the API, against the real corpus photo, with no store writes.
-
-The film's photo, `clm_731b214dde882f89 / src_8291405543acf1003fa5b7c1824e8551`,
-comes from a frozen fixture, `casepath-qa/fixtures/photo-reading-v1.json.gz`,
-that the real endpoint generated.
+- **Case storytelling.**
+  - Each case opens on its own card: case number, customer, problem and documents.
+  - The card docks into a case block that stays at the top of the file list. The block shows the number, kind, customer, problem and, once reused, the learned checklist.
+  - A docket shows where the case sits among the three.
+  - Narration names the case: "Case 1 · Elin Ziegler".
+  - Case 3 is "Same kind as case 1", with its own problem line and its own answer.
+- **Narration.**
+  - Each card is dark, with a crimson edge, so it cannot be mistaken for the white product.
+  - It has two lines: what is happening, then why it matters, after an arrow.
+  - Cards dock bottom right, with a leader line to the spotlight.
+  - Narration stays on screen through every scene.
+  - The first time each assistant's tab lights, a tooltip says what that assistant does.
+- **Email.** The checked findings, each with its proof file, link one by one into the recorded clauses of the draft. "In short" carries the plain answer beside the draft, not inside it. The draft ends sealed as not sent. No letter text, greeting or send control is added.
+- **Attachments.**
+  - Each file has a recognisable icon: a PDF tag, a Word tag (supported; no Word file is in the recordings), an envelope for email, and a text page.
+  - A photo shows its own thumbnail with a preview badge, and the photo opens out of it.
+  - Each file used as proof shows "Proof for question N". Questions answered by its passage are included, and the line appears only once its check is shown.
 
 ## North-star self-review
 
-1. **Fidelity.** [Side-by-side images](proof/fidelity) of the final cut were
-   inspected for all three concepts. Mean difference is the mean absolute
-   RGB difference with the frame resized to the concept, as recorded in
-   [film.json](proof/film.json).
+1. **Fidelity.** [Side-by-side images](proof/fidelity) of the final cut were inspected for all three concepts. The mean difference is the mean absolute RGB difference, with the frame resized to the concept (see [film.json](proof/film.json)).
 
-   | Concept | Mean difference | Film frame |
-   | --- | --- | --- |
-   | 01 | 3.90% | 48.85 s, live document reading |
-   | 02 | 3.94% | 89.85 s, rule checks |
-   | 03 | 3.53% | 130.6 s, the new case's checklist after reuse |
+| Concept | Product layer | As filmed (with narration dim) | Film frame |
+   | --- | --- | --- | --- |
+   | 01 | 4.78% | 24.58% | 43.45 s |
+   | 02 | 4.06% | 20.71% | 93.45 s |
+   | 03 | 3.81% | 18.99% | 148.2 s |
 
-   Layout, palette, type, question spine, source pane and the source →
-   checklist → result chain match. The header now matches the concept tab bar.
-   The deliberate differences are listed below, and no item is pending.
-2. **Motion.** The film shows one change at a time, and the cursor arrives
-   before the highlight. Live work runs between captions. Lead captions clear
-   within 2.6 s, and hold captions frame a result. The recorded-trace browser
-   test covers the following:
+   Layout, palette, type, question spine, source pane, the source → checklist → result chain and the concept header match. The deliberate differences are listed below.
+2. **Motion.** The film shows one change at a time, and the cursor arrives before the highlight. Live work runs under narration that always names the case. The recorded-trace browser test covers:
    - the clock;
-   - plan rows and question circles, bound to the case's recorded operations
-     after reuse;
-   - shelf cards and the selected checklist for both cases;
-   - knowledge-map counters, rings and lit cases against the recorded replay;
-   - exact source citations;
+   - plan rows and question circles bound to each case's recorded operations;
+   - shelf cards;
+   - knowledge-map counts;
+   - the reply: a byte-exact recorded body, three linked clauses, an unsent boundary and no send control;
+   - exact citations;
    - operation order;
-   - one current spinner;
-   - acceptance order;
-   - backward-seek determinism.
+   - backward-seek determinism;
+   - geometry on every frame.
+3. **Review panel.** Four independent reviewers saw the cut before the final fixes. Their outputs are kept in [proof/reviews](proof/reviews), with the cold viewer's [verbatim response](proof/cold-viewer/response.md).
+   - **Cold executive.** Understood three cases, the proof-first answers, the unsent reply and the reuse. It would remember "Every answer shows its proof. A person always decides."
+   - **Ultimate-test audit** (30 frames, every 6 s).
 
-   It also audits geometry on every frame at 60 fps.
-3. **Cold viewer.** A fresh reviewer received 24 evenly spaced frames of the
-   cut before the final fixes, with no context. Its brief was a nontechnical
-   insurance executive watching a silent video. Its
-   [verbatim response](proof/cold-viewer/response.md) is kept.
+     | Question | Pass rate |
+     | --- | --- |
+     | Which case | 100% |
+     | What problem | 100% |
+     | What action | 83% |
+     | Why it matters | 53% |
+     | What was learned | 74% |
 
-   It described the whole flow correctly:
-   1. the checklist taken from the shelf;
-   2. three questions;
-   3. highlighted proof sentences;
-   4. five checks with one failure;
-   5. the suggested answer;
-   6. the unsent draft;
-   7. the photo reading;
-   8. the reuse for a new case;
-   9. 3 checklists, 9 cases and 15 uses.
+     Most failures were frames without narration.
+   - **Honesty.** No invented numbers, names or amounts. It flagged result cards shown before their beat, overclaiming captions, the photo case staged as fully handled, and incomplete proof badges.
+   - **Visual editor.** The openers, case block, narration cards and reply links work. It flagged:
+     - full white dips between steps inside a case;
+     - leader lines crossing text;
+     - case 3's checklist showing through its opener;
+     - the dim snapping off at scene changes;
+     - a 13 s narration gap.
 
-   It would remember that "every answer points to the exact highlighted
-   sentence … and a person always makes the final decision", with "a checklist
-   that is learned once and reused on later cases" a close second.
-
-   Fixed in the product and recaptured:
-   - Claim reader was not active while the request was read.
-   - The counters read "1 cases".
-   - The rings touched the case names.
-   - A wire's moving dot ran ahead of its line.
-   - The first-case wires crossed their labels.
-   - The ring caption now says "Each ring is one recorded use."
-
-   Its other points are recorded content or deliberate, and are listed under
-   *Limits*. It also flagged that the email is addressed to Protekta. Protekta
-   is the client's own brand, so the address is kept. The footer says the
-   customers and cases are made up.
+   Fixed before the final cut:
+   - narration stays on screen through every scene;
+   - fact cards appear only at their own beat;
+   - "Proof" marks and checklist ticks change in the same frame;
+   - the file being checked shows a magnifier, not a tick;
+   - a passage that answers a question marks its file as proof for that question too;
+   - Case 2 is "First look · Only the photo is read" and its caption names no cause;
+   - Case 3 has its own problem line and ends on its own recorded answer;
+   - "Reused: Rent increases" stays in the case block;
+   - no active tab on openers or the map;
+   - map labels name the film's cases;
+   - the captions "every time", "always", "traces back to proof" and "Nothing is sent automatically" became scoped wording;
+   - the finale says "Nothing in this recording was sent";
+   - the reply header says "Draft reply · assessment text";
+   - inside a case, the file list stays put and only the work area dips; full fades are kept for case changes;
+   - leader lines were removed;
+   - case 3's checklist stays hidden under its opener;
+   - the dim and outgoing caption ease out over a scene change;
+   - proof lines list every question a file answers ("questions 1, 2 and 3").
 4. **Real function.** See *Verification*.
 
 ## Deliberate differences
 
-- **Captions.** The north star asked for a film without captions. The user
-  later asked for onboarding-style spotlights with short explanations between
-  live work, and that instruction prevails. The captions explain only. Every
-  claim they make is bound to recorded context.
-- **Transitions.** Scene changes are 0.7 s dips. The old view fades out fully
-  before the new one fades in. They are not 0.5 s crossfades, because
-  crossfades of dense pages read as clutter.
-- **Speed label.** The condensed final question is labelled "Sped up" in plain
-  language, not "4×".
-- **Concept 02.** The completed-process overview, chain, law and source-check
-  scenes were removed at the user's request ("show really magical work without
-  wasting their time"). The answer view carries the rule checks.
-- **Concept 03.** It shows "Before / Now · Edited by reviewer" and an
-  expert-reviewed memory. The recordings contain no reviewer edit and no
-  expert review, so the film claims neither. The knowledge map shows only
-  recorded learning and use.
-- **Copy.** Role names, questions, fact labels and checklist rows use plain
-  words. Recorded document text is shown unchanged.
+- **Captions.** The north star asked for a film without captions. The user later asked for onboarding-style guidance, and that instruction prevails. Every claim in a caption is bound to recorded context.
+- **Transitions.** Scene changes are 0.7 s dips; a case opener docks into its case block instead of dipping.
+- **Concept 02.** The completed-process overview, chain, law and source-check scenes stay out at the user's request; the answer view carries the rule checks.
+- **Concept 03.** It shows "Edited by reviewer" and an expert-reviewed memory. The recordings contain neither, so the film claims neither.
 
 ## Limits
 
-- **Recorded text.** Recorded content is not rewritten:
-  - The customer email and rent form are in German.
-  - The lease text and the later email are dense legal English.
-  - The recorded outcome summary and the draft reply cite "CO 269d(2)(b)".
-
-  A plain answer line is shown above them, derived only from the recorded
-  assessment and the failed predicate.
-- **Recorded order.** The recording checks question 2's documents before
-  question 1 is answered. It ties the lease to question 2. The active tab
-  follows the recorded role, so it moves between assistants during the checks.
-- **Later case.** The synthetic later case has a different tenant. Its
-  document types match the main case, and its landlord's email repeats the
-  main case's wording. The film shows its reuse, not its answer.
-- **Uses.** A "use" is one recorded `knowledge.used` event. Each reused three
-  document rules. The film claims no time saved, accuracy or cost, because
-  none was measured.
-- **Photo.** The photo case is not one of the nine recorded runs; only its
-  photo reading is real. The reading is pixel measurement. It misses part of
-  the darker upper mould area, names no cause and admits no evidence. On other
-  corpus photos the detector also gave false hits (a window, wardrobe wood)
-  and missed some mould.
-- **Knowledge.** The learned checklists passed automated checks only. No
-  expert review is claimed.
-- **Things left unexplained.** The question numbers beside the rule checks are
-  not explained.
-- **Hosted site.** The public site does not yet include the new endpoint,
-  fixture or assets; that needs the Mac release.
+- **Recorded text.** The customer email and form are in German. The lease and later email are dense legal English. The draft body is a legal assessment citing "CO 269d(2)(b)", not a customer letter. Recorded text is not rewritten. Plain lines ("In short", the answer line) are derived only from the recorded assessment and failed check.
+- **Recorded order.** Question 2's documents are checked before question 1 is answered. In the answering pass, the right-hand step list shows that node's steps afresh. The active tab follows the recorded role.
+- **Case 2.** Not one of the nine recorded runs. Only its photo reading is real: pixel measurement, no cause, no evidence admitted. No customer name is recorded for it.
+- **Case 3.** Its document types match case 1, and its landlord email repeats case 1's wording.
+- **Uses.** A "use" is one recorded `knowledge.used` event. No time saved, accuracy or cost is claimed.
+- **Knowledge.** Automated checks only; no expert review is claimed.
+- **Hosted site.** The public site does not yet include the new endpoint, fixture or assets.
 
 ## Film and source binding
 
-See [film.json](proof/film.json). It records:
-
-- the capture source;
-- the asset SHA-256 values;
-- the duration and frame count;
-- that there were no writes, page errors or missing fixture reads.
+See [film.json](proof/film.json): the capture source, asset SHA-256 values, duration, frame count, and the absence of writes, page errors and missing fixture reads.
 
 ## Verification
 
-On the sealed assets of `ea57a2fa`:
+On the final assets (film and asset hashes in [film.json](proof/film.json)):
 
-- **Film capture.** 4,896 frames, 163.2 s, with no writes, page errors or
-  missing fixture reads. The asset hashes in [film.json](proof/film.json)
-  equal the committed assets.
-- **Front-end suites.** All 33 non-browser suites pass (939 tests). The
-  presentation browser test passes. It checks every film frame, the plan and
-  map bindings, and backward-seek determinism.
-- **Sealing.** The `CONTRIBUTING.md` sealing commands ran, and the release
-  manifest verifies.
-- **Pending.** The review and unified-product browser suites, and the full
-  `./bin/casepath test` in a fresh clone, are still running. The full suite
-  refuses to run in a Git worktree.
+- **Film capture.** 5,523 frames, 184.1 s, with no writes, page errors or missing fixture reads.
+- **Front-end.**
+  - All 33 non-browser suites pass (939 tests).
+  - The presentation browser test passes (6/6). It checks every film frame, the case openers, the reply bindings and backward-seek determinism.
+  - The review north-star browser test passes.
+- **API.** The photo-reading and autonomous API tests pass (8).
+- **Sealing.** The `CONTRIBUTING.md` sealing commands ran after the final commit of these assets.
+- **Full suite.** `./bin/casepath test` refuses to run in a Git worktree, so it ran in a fresh clone of the earlier sealed commit `ea57a2fa`, before the clarity changes: 2,901 passed, 13 skipped, 29 failed. The failures are environmental:
+  - two browser suites could not launch Chromium inside the runner's sandboxed home (the same suites pass in the worktree);
+  - 27 local-data-root tests require a trusted `lsof` and a memory-map audit that this container does not provide.
+
+  It was not rerun on the final commit.
+- **Unified-product browser suite.** It fails in this container at the pre-demo baseline `07935305` as well, so its failures predate this work.

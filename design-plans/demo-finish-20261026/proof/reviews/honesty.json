@@ -1,0 +1,77 @@
+{
+ "summary": "I found no invented numbers, names or amounts. The case names, the 3 questions and 3 documents, the 5 checks with 1 failed, the 3/9/15 knowledge totals, the 14 March 2025 photo date and the recorded draft text all match the brief, and the draft is clearly labelled not sent. The serious problems are about order and implication. Two fact results, including \"Reasons given \u2014 The documents say no\", are on screen about 30 s before the film says they were found. Evidence files are marked \"Proof for question N\" before their check finishes. The email captions claim more verification than happened. The photo case is staged like a handled case when only the photo was measured. Several captions make product-wide promises, such as \"A person always decides\" and \"Nothing is sent automatically\", that the recorded facts don't support. The question and proof numbering also contradicts itself, which will confuse an executive about what answered what.",
+ "findings": [
+  {
+   "where": "38.5\u201347.9 s (frames 1155\u20131437), 48.5\u201352 s (frames 1455\u20131560), 53.5\u201358 s (frames 1605\u20131740)",
+   "problem": "Results appear before the work that produces them. At 38.5 s, with the caption \"Now it checks each document\" and the evidence checklist at \"0 of 3 checked\", two fact cards are already visible under the document: \"A normal lease \u2014 The documents say yes\" and \"Reasons given with the increase \u2014 The documents say no\". The film only declares that finding at 69.5 s (\"Found: no reasons were given\"). The rail also tags the lease \"Proof for question 2\" at 38.5 s, before \"Check the lease\" ticks at about 44 s. The same happens with the rent increase form at 48.5 s (\"1 of 3 checked\", check still running) and with the later email at 53.5 s, where the cards \"Sent by the right person, in full \u2014 yes\" and \"The later email is separate from the notice \u2014 yes\" show before \"What came with the notice\" is checked. A sceptical viewer will read the replay as staged. It also undercuts the \"live agentic work\" story.",
+   "severity": "blocker",
+   "fix": "Hide each fact card until its own fact beat. For example, reveal \"Reasons given\u2026 say no\" only at 69.5 s. Add a document's \"Proof for question N\" badge only on the frame where its row ticks in the evidence checklist."
+  },
+  {
+   "where": "105.4\u2013114 s (frames 3162\u20133420), especially frame 3450",
+   "problem": "The email captions claim more verification than happened. \"Each sentence traces back to proof\" is contradicted on screen: clause 3 maps to the \"Still open \u2014 Rent level, amount and deadlines\" card, which has no proof line because it lists what was not established. \"Nothing in it is unchecked\" is an absolute accuracy claim. Clause 1 contains a legal conclusion (\"supporting invalidity under CO 269d(2)(b)\") that nobody reviewed, so the line implies legal or expert verification.",
+   "severity": "major",
+   "fix": "Change the detail lines to recorded-safe wording, for example \"Each sentence comes from a finding.\" and \"What is still open stays open.\" Delete \"Nothing in it is unchecked.\""
+  },
+  {
+   "where": "118.6\u2013133.8 s (frames 3558\u20134014), plus the case strip at 6\u20139.4 s",
+   "problem": "The photo case is staged like a handled case, with a big \"2\", \"THE PROBLEM: Mould keeps coming back. What is causing it?\" and \"What CasePath found\". The film never says this case was not processed. Only the photo measurement and the date from the photo file are real, and the reading names no cause. \"CasePath reads it like a document\" suggests the full document pipeline (facts, checks, answer) runs on photos. Showing \"Dark spots found\" right under a mould headline implies CasePath detected mould, which is a judgement the measurement does not make. The question \"What is causing it?\" is left unanswered and the film moves on, so an executive will assume it was dealt with.",
+   "severity": "major",
+   "fix": "Add one plain line to the opener or caption, such as \"Not yet assessed. Only the photo is read.\" Replace \"CasePath reads it like a document\" with \"It measures the photo. It does not name a cause.\" Optionally show the recorded count: \"144 dark spots measured\"."
+  },
+  {
+   "where": "173.7\u2013179.9 s (frames 5211\u20135397); also 114\u2013118.6 s, 99\u2013105.4 s and 2.6\u20136 s",
+   "problem": "Several product-wide promises are not in the recorded facts, and some are contradicted on screen:\n- \"Every answer shows its proof.\" fails for clause 3 and for case 2, which has no answer at all.\n- \"A person always decides.\" is a guarantee about every case.\n- \"Every new case is checked on its own documents.\" fails for case 2, which was never checked.\n- \"Nothing is sent automatically.\" describes the product's design, but the recorded fact is only that this one draft was prepared and not sent.\n- \"CasePath takes it from here.\" overstates autonomy and clashes with \"A person decides\".\nThe recorded limit says only that no communication was performed in this run.",
+   "severity": "major",
+   "fix": "Tie the claims to the recording, for example \"Here, every answer showed its proof. Nothing was sent.\" and \"This reply was not sent. A person decides.\" Drop \"always\" and \"Every new case\u2026\", or add \"in these recorded cases\". Change \"CasePath takes it from here.\" to \"CasePath prepares the assessment.\""
+  },
+  {
+   "where": "30.1\u201335.4 s, 39\u201344 s (frame 1170), 61\u201363.9 s (frame 1860), 91.5\u201399 s (frame 2925)",
+   "problem": "The question-to-proof mapping contradicts itself:\n- The evidence list assigns no document to question 1, yet the caption says \"Each answers one question\".\n- At 61 s, \"Question 1 answered. The documents gave the answer.\" highlights the lease clause (residential lease, rent amounts) as the answer to \"What did the tenant receive?\". That clause does not say what the tenant received.\n- The same file carries the badge \"Proof for question 2\".\n- The rule check \"It is a residential tenancy\" is tagged with question 2.\nAn executive cannot tell what answered question 1.",
+   "severity": "major",
+   "fix": "Make the badge list every question the file serves, for example \"Proof for questions 1 and 2\", using the recorded links. Change \"Each answers one question.\" to \"Each is tied to a question.\" If the recorded question 1 is about the tenancy, use a plain label that matches the highlighted passage."
+  },
+  {
+   "where": "137.5\u2013173.7 s (frames 4125\u20135211), especially 152\u2013162 s and frames 4620 and 4290\u20134380",
+   "problem": "The knowledge chapter conflicts with the numbered cases:\n- The caption \"Every new case reuses one\" comes right after case 2, a new \"Defects and repairs\" case that reused no checklist.\n- The \"ALL 9 CASES\" label and \"15 recorded uses across 9 cases\" exclude that photo case without saying so.\n- On the map, Elin Ziegler's \"CASE 1\" sits in the later-cases column beside a row labelled \"FIRST CASE\". Combined with \"From the first case of its kind\", this invites the wrong belief that case 1 is where the checklist was learned.\n- \"Learned once. Reused every time.\" generalises beyond the 9 recorded cases.",
+   "severity": "minor",
+   "fix": "Label the counts \"9 recorded cases (the photo case is not one of them)\". Change \"Every new case reuses one\" to \"Each later case reused one\" and \"Reused every time\" to \"Reused in every later case here\". On the map, add \"later case\" next to \"CASE 1\"."
+  },
+  {
+   "where": "63.9\u201369.5 s (frame 1965)",
+   "problem": "\"Without reasons, the increase is not valid.\" is stated as a general legal rule by CasePath's narration. The recorded outcome is hedged: the missing reasons are \"supporting invalidity\", and other questions stay undetermined. The caption also appears before the finding, as if the conclusion were known in advance.",
+   "severity": "minor",
+   "fix": "Use \"This decides whether the increase holds.\" or \"Missing reasons can make an increase invalid.\""
+  },
+  {
+   "where": "6\u20139.4 s (case strip), 118.6\u2013133.8 s (frames 3600, 3720, 3930)",
+   "problem": "The kind \"DEFECTS AND REPAIRS\" is shown for the photo case (clm_731b214dde882f89). The brief does not record this kind, and the corpus index entry for the claim has no family or kind field. The label implies CasePath classified the case, which also links it visually to the Defects and repairs checklist it never used.",
+   "severity": "minor",
+   "fix": "Drop the kind label for case 2, or use the plain title wording \"Mould \u00b7 first look\" without a checklist-family name."
+  },
+  {
+   "where": "63.9\u201377 s (frames 1920\u20132310; crop of frame 2190)",
+   "problem": "In the second pass, the right-hand step list shows \"Read rent increase form\", \"Read lease and original notice\", \"Check the lease\" and \"Check the rent increase notice\" all unticked. Those steps were shown done (\"2 done\") at 44\u201352 s, and the left rail says \"3 of 3 checked\" at the same moment. It looks as if completed work was undone or repeated.",
+   "severity": "minor",
+   "fix": "Keep completed steps ticked or collapsed (\"\u2713 4 done\") in the reading pass, so only \"Answer: Did the landlord give reasons?\" is shown as active."
+  },
+  {
+   "where": "133.8\u2013137.5 s (frames 4020\u20134110), 152\u2013173.7 s",
+   "problem": "Case 3's opener uses exactly the same problem line as case 1: \"The rent went up on a form that gives no reason.\" Its recorded issue is the unclear chronology (\"Chronology still unclear\u2026\", display title \"An increase form and the later email chronology\"). A first-time viewer cannot tell it is a different case rather than a replay of case 1, which is the confusion the owner asked to remove.",
+   "severity": "minor",
+   "fix": "Use the recorded display title as the problem line: \"An increase form, and an unclear order of later emails.\""
+  },
+  {
+   "where": "105.4\u2013118.6 s (frame 3450)",
+   "problem": "Under \"THE REPLY IT DRAFTED\", the draft carries a German subject (\"Re: Bitte um Pr\u00fcfung\u2026\") to a customer who wrote in German. The body is the English internal assessment text with a statute citation and no greeting. Framed as \"the reply\", this suggests CasePath produces customer-ready letters. The recorded artefact is an assessment message with no customer letter text. The brief allows the reply framing, but the impression still overstates.",
+   "severity": "minor",
+   "fix": "Retitle the header \"Draft reply: assessment text to complete\", or make \"Review and complete this draft\" more prominent next to the body. Add no new letter text."
+  },
+  {
+   "where": "6\u20139.4 s (frame 210) and 133.8\u2013137.5 s",
+   "problem": "\"FILES RECEIVED \u00b7 4\" is shown as a received count. The brief records two more .txt revisions of documents 3 and 4 in case A's roster, so 6 files were on record. The count matches the product's \"Sources 4\" display, not the full roster.",
+   "severity": "minor",
+   "fix": "Use \"DOCUMENTS \u00b7 4\" (current versions), which matches the Sources rail, or check the count against the recorded roster before calling it \"received\"."
+  }
+ ]
+}
