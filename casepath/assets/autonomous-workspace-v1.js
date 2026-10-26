@@ -6077,7 +6077,7 @@
             opacity(n.desk||select('.au-executive-cases'),dipIn);opacity(transitionLayer,1-dipOut);opacity(header,headerChanges?dipIn:1);
             const headerCopy=transitionLayer?.querySelector('.au-transition-header');if(headerCopy)headerCopy.style.visibility=headerChanges?'':'hidden';
           }
-          all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','library','cases'].includes(b.view));
+          all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','library','map','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
           renderGuide(sample,b,transition);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
