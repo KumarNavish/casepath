@@ -71,20 +71,23 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    const a=CasepathPresentation.active,m=a.manifest,failures=[];
    const inside=(box,outer)=>box.width>4&&box.height>4&&box.left>=outer.left-1&&box.right<=outer.right+1&&box.top>=outer.top-1&&box.bottom<=outer.bottom+1;
    const guide=()=>document.querySelector('.au-documentary-guide'),focus=()=>guide().querySelector('.au-doc-focus').getBoundingClientRect();
-   const draftBeat=m.beats.find(b=>b.act==='decision'&&b.phase==='draft-rest');
-   a.advanceTo(draftBeat.start+1500);
-   const draft=document.querySelector('[data-au-recorded-draft]'),body=draft?.querySelector('pre'),bodyBox=focus(),bodyHeadline=guide().querySelector('[data-au-guide-headline]').textContent;
+   // The reply: each recorded clause appears beside the recorded finding it states,
+   // the body stays byte-exact, and the unsent boundary is the last thing in focus.
+   const clauses=m.beats.filter(b=>b.act==='decision'&&b.phase==='email-clause-rest'),rest=m.beats.find(b=>b.act==='decision'&&b.phase==='email-rest');
+   if(clauses.length!==3||!rest)failures.push('the reply does not link three recorded findings');
+   a.advanceTo(rest.start+1500);
+   const draft=document.querySelector('[data-au-recorded-draft]'),body=draft?.querySelector('[data-au-email-body]');
    if(body?.textContent!==draftBody)failures.push('recorded draft text changed');
-   if(guide().dataset.auGuideTarget!=='draft-body'||guide().dataset.auGuideVisible!=='true'||!draft||!inside(draft.getBoundingClientRect(),bodyBox))failures.push('draft artifact is not focused before review boundary');
    if(body&&!getComputedStyle(body).fontFamily.includes('Mulish'))failures.push('draft typography is not presentation font');
-   a.advanceTo(draftBeat.start+4500);
+   const lit=[...document.querySelectorAll('[data-au-email-clause]')].filter(el=>+getComputedStyle(el).opacity===1).length;if(lit!==3)failures.push(`only ${lit} clauses written`);
+   const linked=[...document.querySelectorAll('[data-au-email-links] path')].filter(el=>+el.style.strokeDashoffset===0).length;if(linked!==3)failures.push(`only ${linked} findings linked`);
    const status=document.querySelector('[data-au-draft-status]');
-   if(guide().dataset.auGuideTarget!=='draft'||guide().dataset.auGuideVisible!=='true'||!status||!inside(status.getBoundingClientRect(),focus()))failures.push('draft focus does not hand off to human review');
-   if(guide().querySelector('[data-au-guide-headline]').textContent!==bodyHeadline)failures.push('draft caption changes during target handoff');
-   if(document.querySelector('[data-au-recorded-draft] pre')?.textContent!==draftBody)failures.push('draft text changed at review boundary');
+   if(guide().dataset.auGuideTarget!=='email-status'||guide().dataset.auGuideVisible!=='true'||!status||!inside(status.getBoundingClientRect(),focus()))failures.push('the reply does not end on the unsent boundary');
+   if(!/not sent/u.test(status?.textContent||'')||document.querySelector('[data-au-email-boundary]')?.dataset.sealed!=='true')failures.push('the reply is not marked unsent');
+   if(document.querySelector('[data-au-email] button,[data-au-email] a'))failures.push('the reply offers a send control');
    return {failures,duration:m.duration};
   },{draftBody:teachingState.outcome.request_draft.body});
-  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,163180);
+  assert.deepEqual(teaching.failures,[]);assert.equal(teaching.duration,179880);
   const controls=await page.evaluate(()=>{const a=CasepathPresentation.active,footer=document.querySelector('.au-executive-transport'),button=footer.querySelector('[data-au-demo-stop]');const mutations=[];const observer=new MutationObserver(rows=>mutations.push(...rows));observer.observe(footer,{childList:true,subtree:true,attributes:true});for(const beat of a.manifest.beats)a.advanceTo(beat.start);const pending=observer.takeRecords();observer.disconnect();return {connected:footer.isConnected,sameButton:button===document.querySelector('.au-executive-transport [data-au-demo-stop]'),labelChanges:[...mutations,...pending].filter(row=>row.target===button).length};});
   assert.equal(controls.connected,true);assert.equal(controls.sameButton,true);assert.equal(controls.labelChanges,0,'unchanged Pause control does not repaint on every frame');
   const proof=await page.evaluate(()=>{
@@ -214,7 +217,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    }
    active.advanceTo(m.beats.find(b=>b.phase==='answer-rest'&&b.act==='decision').start);
    const tests=[...document.querySelectorAll('[data-au-desk-answer] > .au-desk-tests > li')].map(e=>({step:+e.dataset.auLegalStep,label:e.querySelector('.au-executive-step-label')?.textContent,ring:e.querySelector('.au-executive-step')?.getBoundingClientRect().width}));
-   active.advanceTo(m.beats.find(b=>b.phase==='draft-rest').start);const draft=document.querySelector('[data-au-recorded-draft]').textContent;
+   active.advanceTo(m.beats.find(b=>b.phase==='email-rest').start);const draft=document.querySelector('[data-au-recorded-draft]').textContent;
    active.advanceTo(m.beats.find(b=>b.phase==='plan-rest').end-1);const plan={documents:[...document.querySelectorAll('[data-au-ns-procedure] li')].map(e=>e.dataset.auNsChecklistDoc),planned:document.querySelectorAll('[data-au-ns-planned]').length,heading:document.querySelector('[data-au-ns-procedure] h2').textContent};
    active.advanceTo(m.beats.find(b=>b.phase==='node-rest'&&b.act==='process').end-1);const checklist=document.querySelector('[data-au-ns-checklist] h2').textContent;
    const scan=m.beats.find(b=>b.phase==='photo-scan');active.advanceTo(scan.start+1);const litAtStart=[...document.querySelectorAll('.au-photo-mark')].filter(e=>+getComputedStyle(e).opacity>0).length;
@@ -224,7 +227,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
    return {failures,checked,tests,draft,plan,checklist,photo,label,title,laterDocuments};
   },completions);
   assert.deepEqual(bindings.failures,[]);assert.ok(bindings.checked>0);
-  assert.ok(proof.manifest.duration<170000,'the complete recorded story stays below 170 seconds');assert.match(bindings.draft,/Not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
+  assert.ok(proof.manifest.duration<186000,'the complete recorded story stays below 186 seconds');assert.match(bindings.draft,/not sent — you decide/);assert.ok(bindings.draft.includes(recorded.cases[7].envelope.state.outcome.request_draft.body));
   assert.deepEqual(bindings.tests.map(t=>t.step),[2,2,2,3,3]);assert.ok(bindings.tests.every(t=>t.ring===20&&t.label===String(t.step)));
   // The plan shows only what the recording required after the checklist was reused: one row per required catalogue document, one circle per evaluated step.
   const planned=row=>{const ops=row.trace.trim().split('\n').map(JSON.parse).filter(op=>op.type==='operation'),reuse=ops.find(op=>op.kind==='knowledge.reuse').seq,graph=row.envelope.state.graph,ids=(kind,keep)=>new Set(ops.filter(op=>op.kind===kind&&op.seq>reuse&&keep(op.object.id)).map(op=>op.object.id));
@@ -237,7 +240,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   const photoReading=Object.entries(photo.responses).find(([key])=>key.endsWith('/photo-reading'))[1];
   assert.equal(photoReading.evidence_admitted,false);assert.equal(bindings.photo.marks,photoReading.regions[0].segments.length);assert.equal(bindings.photo.lit,bindings.photo.marks);assert.ok(bindings.photo.litAtStart<bindings.photo.marks/4);
   assert.match(bindings.photo.image,/^blob:/);assert.match(bindings.photo.findings,/Dark spots found/);assert.match(bindings.photo.findings,/Photo taken 14 March 2025/);
-  assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<13000,'intake stops before repeated document reading');
+  assert.ok(proof.manifest.acts.find(a=>a.id==='customer').end-proof.manifest.acts.find(a=>a.id==='customer').start<16000,'intake stops before repeated document reading');
   assert.equal(bindings.label,'New case');assert.ok(bindings.title.length);
   assert.equal(bindings.laterDocuments,planned(recorded.cases[8]).documents.size);
   assert.ok(proof.manifest.beats.filter(b=>b.phase==='source-swap').every(b=>b.duration===(b.act==='process'?250:500)));

@@ -1812,6 +1812,17 @@ html[data-autonomous-workspace=true] { scroll-padding-top:calc(var(--au-header-h
  .au-workspace .au-ns-sources li .au-ns-icon { width:30px; height:30px; }
  .au-workspace .au-ns-sources li button { background:none; border:0; padding:0; text-align:left; font:inherit; color:#4c4b4d; min-width:0; }
  .au-workspace .au-ns-sources small { display:block; font-size:12.5px; color:#61636b; margin-top:4px; }
+.au-workspace .au-file-icon { position:relative; flex:none; display:inline-grid; place-items:center; width:34px; height:38px; color:#4c4b4d; }
+.au-workspace .au-ns-sources li .au-file-icon .au-ns-icon { width:30px; height:30px; }
+.au-workspace .au-file-icon b { position:absolute; left:-4px; bottom:1px; padding:2px 4px; border-radius:3px; color:#fff; background:#5f6368; font:800 9px/1.1 Mulish,sans-serif; letter-spacing:.04em; }
+.au-workspace .au-file-icon[data-au-file-kind=pdf] b { background:#c4261d; }
+.au-workspace .au-file-icon[data-au-file-kind=word] b { background:#2b5cab; }
+.au-workspace .au-file-icon .au-file-zoom { position:absolute; right:-5px; bottom:-3px; display:grid; place-items:center; width:16px; height:16px; border:1px solid #d6d6d7; border-radius:50%; background:#fff; }
+.au-workspace .au-file-icon .au-file-zoom .au-ns-icon { width:10px !important; height:10px !important; stroke-width:2.2; }
+.au-workspace .au-file-icon[data-au-file-kind=image] b { background:#1f6f4a; }
+.au-workspace .au-file-icon img { width:38px; height:38px; object-fit:cover; border-radius:6px; border:1px solid #d9d9de; box-sizing:border-box; }
+.au-workspace .au-file-use { display:flex !important; align-items:center; gap:4px; color:#82072a !important; font-size:11.5px !important; font-weight:700; white-space:nowrap; }
+.au-workspace .au-file-use .au-ns-icon { width:14px; height:14px; stroke-width:2.2; }
  .au-workspace .au-ns-canvas { min-width:0; padding:0 129px 35px 36px; }
  .au-workspace .au-ns-spine { list-style:none; padding:35px 0 0; margin:0 -94px 0 -8px; min-height:159px; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); row-gap:24px; }
  .au-workspace .au-ns-spine li { position:relative; display:flex; align-items:center; flex-direction:column; gap:14px; text-align:center; padding:0 8px 15px; min-width:0; }
@@ -2323,10 +2334,12 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  .au-workspace .au-documentary-guide { display:block; pointer-events:none; position:relative; z-index:10; }
  .au-workspace .au-doc-focus-layer { position:fixed; top:75px; bottom:36px; left:0; right:0; overflow:hidden; opacity:0; }
  .au-workspace .au-doc-focus { position:absolute; box-sizing:border-box; border:1.5px solid rgba(130,7,42,.9); border-radius:10px; box-shadow:0 0 0 4px rgba(255,255,255,.5),0 0 0 200vmax rgba(20,21,22,.28); }
- .au-workspace .au-doc-card { position:fixed; left:0; top:0; width:372px; box-sizing:border-box; padding:15px 20px 17px; border-radius:12px; background:#fff; box-shadow:0 18px 44px rgba(20,21,22,.26),0 2px 6px rgba(20,21,22,.10); opacity:0; will-change:transform,opacity; }
- .au-workspace .au-doc-chapter { display:block; margin:0 0 6px; color:#82072a; font:700 11.5px/1.4 Mulish,sans-serif; letter-spacing:.08em; text-transform:uppercase; }
- .au-workspace [data-au-guide-headline] { margin:0; color:#141516; font:700 20px/1.3 Mulish,sans-serif; letter-spacing:-.2px; }
- .au-workspace [data-au-guide-detail] { display:block; margin-top:6px; color:#4c4b4d; font:400 15px/1.45 Mulish,sans-serif; }
+ .au-workspace .au-doc-card { position:fixed; left:0; top:0; width:372px; box-sizing:border-box; padding:16px 22px 18px 26px; border-radius:14px; background:#141516; box-shadow:0 22px 50px rgba(20,21,22,.36),0 2px 8px rgba(20,21,22,.18); opacity:0; will-change:transform,opacity; overflow:hidden; }
+ .au-workspace .au-doc-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:5px; background:#c8325c; }
+ .au-workspace .au-doc-chapter { display:block; margin:0 0 7px; color:#f3a9bd; font:800 11.5px/1.4 Mulish,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+ .au-workspace [data-au-guide-headline] { margin:0; color:#fff; font:700 21px/1.28 Mulish,sans-serif; letter-spacing:-.2px; }
+ .au-workspace [data-au-guide-detail] { display:block; margin-top:7px; color:#d9dade; font:500 15.5px/1.42 Mulish,sans-serif; }
+ .au-workspace [data-au-guide-detail]::before { content:'→'; margin-right:7px; color:#f3a9bd; font-weight:800; }
  html[data-casepath-presentation] .au-ns-plan [data-au-ns-plan-current][data-state=active] .au-ns-plan-status { border-color:#82072a; background:#f6eff0; }
  html[data-casepath-presentation] .au-ns-plan [data-au-ns-plan-current][data-state=active] .au-ns-plan-status:empty:after { content:''; width:5px; height:5px; border-radius:50%; background:#82072a; }
  html[data-casepath-presentation] .au-ns-circle { position:relative; }
@@ -2451,3 +2464,81 @@ html[data-casepath-presentation] .au-km-wire { fill:none; stroke:#82072a; stroke
 html[data-casepath-presentation] .au-km-ring { fill:none; stroke:#82072a; stroke-width:1.5; opacity:0; transform-box:fill-box; transform-origin:center; }
 html[data-casepath-presentation] .au-km-pulse { fill:#82072a; opacity:0; }
 
+
+/* Case storytelling: each case opens on its own card, then stays named in the file list. */
+.au-workspace .au-case-opener { position:fixed; top:75px; bottom:36px; left:0; right:0; z-index:6; pointer-events:none; background:rgba(255,255,255,var(--au-opener-veil,1)); }
+.au-workspace .au-case-opener[hidden] { display:none; }
+.au-workspace .au-case-opener-card { position:absolute; left:50%; top:46%; display:flex; gap:44px; width:900px; margin:-200px 0 0 -450px; transform-origin:0 0; color:#141516; font-family:Mulish,sans-serif; }
+.au-workspace .au-case-numeral { flex:none; color:#82072a; font:200 210px/.8 Mulish,sans-serif; letter-spacing:-8px; }
+.au-workspace .au-case-copy { min-width:0; padding-top:6px; }
+.au-workspace .au-case-kicker { display:flex; align-items:center; gap:12px; margin:0 0 12px; color:#82072a; font:800 14px/1.2 Mulish,sans-serif; letter-spacing:.16em; text-transform:uppercase; }
+.au-workspace .au-case-kicker em { padding:3px 10px; border:1.5px solid #82072a; border-radius:999px; font:700 12px/1.2 Mulish,sans-serif; font-style:normal; letter-spacing:.04em; text-transform:none; }
+.au-workspace .au-case-opener-card h2 { margin:0 0 20px; font:300 54px/1.1 Mulish,sans-serif; letter-spacing:-.6px; }
+.au-workspace .au-case-copy small { display:block; margin:0 0 6px; color:#61636b; font:700 12px/1.3 Mulish,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+.au-workspace .au-case-problem { margin:0 0 24px; color:#141516; font:500 26px/1.35 Mulish,sans-serif; }
+.au-workspace .au-case-files { display:flex; flex-wrap:wrap; gap:12px; margin:0; padding:0; list-style:none; }
+.au-workspace .au-case-files li { display:flex; align-items:center; gap:10px; height:52px; padding:0 16px 0 12px; border:1px solid #d6d6d7; border-radius:8px; color:#141516; font:500 15px/1.2 Mulish,sans-serif; }
+.au-workspace .au-case-files li .au-file-icon { width:30px; height:34px; }
+.au-workspace .au-case-files li .au-ns-icon { width:28px; height:28px; }
+.au-workspace .au-case-files li img { width:34px; height:34px; }
+.au-workspace .au-case-docket { position:absolute; left:50%; bottom:34px; display:flex; gap:16px; margin:0; padding:0; transform:translateX(-50%); list-style:none; font-family:Mulish,sans-serif; opacity:var(--au-opener-veil,1); }
+.au-workspace .au-case-docket li { display:grid; grid-template-columns:22px auto; column-gap:10px; align-items:center; min-width:200px; padding:10px 16px; border:1px solid #e3dfe1; border-radius:8px; background:#fff; opacity:.4; }
+.au-workspace .au-case-docket li[data-state=past] { opacity:.6; }
+.au-workspace .au-case-docket li[data-state=current] { border-color:#82072a; box-shadow:0 8px 22px rgba(130,7,42,.14); opacity:1; }
+.au-workspace .au-case-docket b { grid-row:1 / span 2; display:grid; place-items:center; width:22px; height:22px; border:1.5px solid #82072a; border-radius:50%; color:#82072a; font:800 12px/1 Mulish,sans-serif; }
+.au-workspace .au-case-docket li[data-state=current] b { background:#82072a; color:#fff; }
+.au-workspace .au-case-docket span { color:#141516; font:700 13.5px/1.25 Mulish,sans-serif; }
+.au-workspace .au-case-docket small { color:#61636b; font:500 12px/1.25 Mulish,sans-serif; }
+.au-workspace .au-case-block { margin:0 22px 18px 27px; padding:0 0 16px; border-bottom:1px solid #ebebee; font-family:Mulish,sans-serif; }
+.au-workspace .au-case-block p { margin:0 0 6px; color:#82072a; font:700 11.5px/1.4 Mulish,sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+.au-workspace .au-case-block p b { font-weight:800; }
+.au-workspace .au-case-block em { margin-left:4px; white-space:nowrap; padding:1px 6px; border-radius:999px; background:#82072a; color:#fff; font-style:normal; font-size:10px; letter-spacing:.06em; }
+.au-workspace .au-case-block strong { display:block; margin:0 0 4px; color:#141516; font:600 18px/1.3 Mulish,sans-serif; }
+.au-workspace .au-case-block span { display:block; color:#4c4b4d; font:400 13.5px/1.4 Mulish,sans-serif; }
+html[data-casepath-presentation] .au-case-block ~ h1[data-au-claim-title] { position:absolute; width:1px; height:1px; margin:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* The reply moment: checked findings flow into the recorded draft, which waits for a person. */
+.au-workspace .au-email-stage { position:relative; display:grid; grid-template-columns:340px minmax(0,640px); column-gap:96px; align-items:start; justify-content:center; box-sizing:border-box; width:100%; padding:44px 40px 24px; font-family:Mulish,sans-serif; }
+.au-workspace .au-email-kicker { margin:0 0 14px; color:#82072a; font:800 12px/1.4 Mulish,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+.au-workspace .au-email-findings ol { display:grid; gap:14px; margin:0; padding:0; list-style:none; }
+.au-workspace .au-email-findings li { display:grid; grid-template-columns:26px minmax(0,1fr); gap:12px; padding:14px 16px; border:1px solid #e3e3e7; border-radius:12px; background:#fff; box-shadow:0 1px 2px rgba(20,21,22,.05); }
+.au-workspace .au-email-findings li[data-active=true] { border-color:#82072a; box-shadow:0 0 0 3px rgba(130,7,42,.12),0 8px 22px rgba(20,21,22,.10); }
+.au-workspace .au-email-findings b { display:block; color:#141516; font:700 15.5px/1.3 Mulish,sans-serif; }
+.au-workspace .au-email-findings small { display:block; margin-top:3px; color:#82072a; font:700 13.5px/1.35 Mulish,sans-serif; }
+.au-workspace .au-email-findings li[data-status=supported] small { color:#1f6f4a; }
+.au-workspace .au-email-findings li[data-status=open] small { color:#61636b; }
+.au-workspace .au-email-num { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:#82072a; color:#fff; font:800 13px/1 Mulish,sans-serif; }
+.au-workspace .au-email-proof { display:flex; align-items:center; gap:8px; margin-top:9px; color:#4c4b4d; font:600 12.5px/1.3 Mulish,sans-serif; }
+.au-workspace .au-email-proof .au-file-icon { width:24px; height:28px; }
+.au-workspace .au-email-proof .au-file-icon .au-ns-icon { width:22px; height:22px; }
+.au-workspace .au-email-proof .au-file-icon b { left:-5px; bottom:0; padding:1px 3px; font-size:7.5px; }
+.au-workspace .au-email { overflow:hidden; border:1px solid #d9d9de; border-radius:14px; background:#fff; box-shadow:0 18px 40px rgba(20,21,22,.10); }
+.au-workspace .au-email header { display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:1px solid #ebebee; background:#faf7f8; }
+.au-workspace .au-email-icon .au-ns-icon { width:24px; height:24px; color:#82072a; }
+.au-workspace .au-email header b { color:#141516; font:700 17px/1.3 Mulish,sans-serif; }
+.au-workspace .au-email-role { display:flex; align-items:center; gap:6px; margin-left:auto; color:#61636b; font:600 13px/1.2 Mulish,sans-serif; }
+.au-workspace .au-email-role .au-ns-icon { width:16px; height:16px; }
+.au-workspace .au-email-status { flex:none; padding:4px 10px; border:1.5px solid #c4c5c6; border-radius:999px; color:#61636b; font:700 12.5px/1.2 Mulish,sans-serif; white-space:nowrap; }
+.au-workspace [data-au-email-boundary][data-sealed=true] .au-email-status { border-color:#82072a; background:#82072a; color:#fff; }
+.au-workspace .au-email dl { margin:0; padding:10px 20px; border-bottom:1px solid #ebebee; }
+.au-workspace .au-email dl div { display:grid; grid-template-columns:70px minmax(0,1fr); gap:8px; padding:3px 0; }
+.au-workspace .au-email dt { color:#8a8b90; font:600 13px/1.45 Mulish,sans-serif; }
+.au-workspace .au-email dd { overflow:hidden; margin:0; color:#141516; font:500 13.5px/1.45 Mulish,sans-serif; text-overflow:ellipsis; white-space:nowrap; }
+.au-workspace .au-email-body { padding:16px 20px 4px; counter-reset:clause; }
+.au-workspace .au-email-body p { position:relative; margin:0 0 12px; padding:8px 12px 8px 44px; border-left:3px solid #82072a; border-radius:0 8px 8px 0; background:#fbf6f7; color:#141516; font:500 15.5px/1.5 Mulish,sans-serif; counter-increment:clause; }
+.au-workspace .au-email-body p::before { content:counter(clause); position:absolute; left:10px; top:9px; width:22px; height:22px; border-radius:50%; background:#82072a; color:#fff; font:800 12px/22px Mulish,sans-serif; text-align:center; }
+.au-workspace .au-email footer { display:flex; align-items:center; gap:12px; padding:12px 20px 16px; border-top:1px solid #ebebee; color:#4c4b4d; font:500 13.5px/1.35 Mulish,sans-serif; }
+.au-workspace .au-email footer .au-ns-icon { width:20px; height:20px; color:#82072a; }
+.au-workspace .au-email-links { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; }
+.au-workspace .au-email-links path { fill:none; stroke:#82072a; stroke-width:1.6; stroke-dasharray:1; stroke-dashoffset:1; opacity:0; }
+
+.au-workspace .au-doc-leader { position:fixed; left:0; top:0; width:100vw; height:100vh; overflow:visible; pointer-events:none; opacity:0; }
+.au-workspace .au-doc-leader path { fill:none; stroke:#82072a; stroke-width:1.5; }
+.au-workspace .au-doc-leader circle { fill:#82072a; stroke:#fff; stroke-width:2; }
+
+.au-workspace .au-ns-learned { display:flex; align-items:center; gap:6px; margin:0 0 8px; color:#82072a; font:700 12px/1.3 Mulish,sans-serif; }
+.au-workspace .au-ns-learned .au-ns-icon { width:15px; height:15px; }
+.au-workspace .au-km-case small.au-km-film { color:#141516; }
+.au-workspace .au-km-case:not([data-lit=true]) small.au-km-film { visibility:hidden; }
+.au-workspace .au-tab-tip { position:fixed; z-index:8; padding:7px 12px; border-radius:6px; background:#141516; color:#fff; font:500 13px/1.35 Mulish,sans-serif; white-space:nowrap; pointer-events:none; }
+.au-workspace .au-tab-tip::before { content:''; position:absolute; left:50%; top:-5px; margin-left:-5px; border:5px solid transparent; border-top:0; border-bottom-color:#141516; }

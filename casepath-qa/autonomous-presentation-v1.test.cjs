@@ -67,7 +67,7 @@ test('documentary cues preserve source to proposed fact to process meaning',()=>
   const source=documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const fact=documentaryCue({act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}},1200,context);
   const node=documentaryCue({act:'reading',phase:'node-rest',op:{id:'second',kind:'step.complete',object:{id:'n2'}}},600,context);
-  assert.match(source.headline,/did the landlord give reasons/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
+  assert.match(source.headline,/were reasons given/);assert.match(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact',kind:'fact.extract'}},1200,{...context,decisiveRule:true}).detail,/Without reasons, the increase is not valid/);assert.doesNotMatch(source.detail,/not valid/);assert.equal(source.target,'source');assert.equal(source.mode,'lead');
   assert.match(fact.headline,/Found: no reasons were given/);assert.equal(fact.targetId,'fact');assert.equal(fact.mode,'hold');
   assert.equal(node.target,'node');assert.equal(node.targetId,'n2');assert.equal(node.mode,'hold');
   assert.doesNotMatch(documentaryCue({act:'reading',phase:'passage-rest',op:{id:'fact'}},0,{...context,decisivePredicate:'different'}).headline,/reasons/);
@@ -85,7 +85,13 @@ test('documentary answer and checklist cues distinguish open questions and indep
   const answer={act:'decision',phase:'answer-rest',duration:6000};
   assert.equal(documentaryCue(answer,2999).target,'lead');assert.equal(documentaryCue(answer,3000).target,'open');
   // The next case repeats the plan gesture: the same card comes off the shelf, then works silently.
-  assert.match(documentaryCue({act:'learning',phase:'plan-shelf'}).headline,/new case of the same kind/);
+  assert.match(documentaryCue({act:'learning',phase:'plan-shelf'}).headline,/same kind/);assert.equal(documentaryCue({act:'learning',phase:'plan-shelf'},0,{sameKindCase:1}).headline,'Same kind as case 1.');
+  // The reply replaces the answer's open-points caption: its third finding carries them.
+  assert.equal(documentaryCue(answer,3000,{emailFindings:true}).target,'lead');
+  assert.equal(documentaryCue({act:'decision',phase:'email'}).target,'email');assert.equal(documentaryCue({act:'decision',phase:'email-clause',clause:1}).mode,'hold');
+  const sealed=documentaryCue({act:'decision',phase:'email-rest'});assert.equal(sealed.target,'email-status');assert.match(sealed.headline,/A person decides/);assert.match(sealed.detail,/Nothing is sent/);
+  // Each case opens on its own card; the card is the narration.
+  for(const act of ['customer','photo','learning']){const opener=documentaryCue({act,phase:'case-open'});assert.equal(opener.card,false);assert.equal(opener.spotlight,false);}
   const pick=documentaryCue({act:'learning',phase:'plan-pick'}),open=documentaryCue({act:'learning',phase:'plan-reuse'});
   assert.equal(pick.id,open.id);assert.equal(pick.target,'shelf-card');assert.equal(open.target,'procedure');
   assert.equal(documentaryCue({act:'learning',phase:'plan-node'}).card,false);assert.match(documentaryCue({act:'learning',phase:'plan-rest'}).headline,/Same checklist/);
@@ -97,12 +103,12 @@ test('plan, document-check and knowledge cues state only what their context reco
   assert.equal(documentaryCue({act:'plan',phase:'plan-shelf'}).target,'shelf');
   assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{questionCount:3,documentCount:3}).detail,'3 questions. 3 documents to check.');
   assert.equal(documentaryCue({act:'plan',phase:'plan-rest'},0,{}).detail,'Now the assistants go to work.');
-  assert.equal(documentaryCue({act:'plan',phase:'plan-node'},0,{questionCount:3}).headline,'The checklist becomes this case’s questions.');
+  assert.equal(documentaryCue({act:'plan',phase:'plan-node'},0,{questionCount:3}).headline,'The checklist becomes 3 questions.');assert.doesNotMatch(documentaryCue({act:'plan',phase:'plan-node'},0,{}).headline,/\d/);
   const scanning=documentaryCue({act:'photo',phase:'photo-scan'}),found=documentaryCue({act:'photo',phase:'photo-rest'});
   assert.equal(scanning.target,'photo');assert.equal(scanning.mode,'lead');assert.equal(found.target,'photo-findings');assert.equal(found.mode,'hold');
   const check={act:'reading',phase:'cursor',op:{id:'c1',kind:'document.check',object:{id:'tenancy_terms_evidence'}}};
   assert.equal(documentaryCue(check,0,{firstCheckId:'c1'}).id,'document-check');
-  const done=documentaryCue({...check,phase:'document-rest'},0,{firstCheckId:'c1'});assert.equal(done.target,'checklist-row');assert.equal(done.targetId,'tenancy_terms_evidence');assert.equal(done.mode,'hold');
+  const done=documentaryCue({...check,op:{...check.op,source:{artifact_id:'src_lease'}},phase:'document-rest'},0,{firstCheckId:'c1'});assert.equal(done.target,'source-proof');assert.equal(done.targetId,'src_lease');assert.equal(done.mode,'hold');
   assert.equal(documentaryCue(check,0,{firstCheckId:'other'}).card,false);
   const opening=documentaryCue({act:'customer',phase:'ready',duration:6000},1000),sources=documentaryCue({act:'customer',phase:'ready',duration:6000},3000);
   assert.equal(opening.card,false);assert.equal(opening.spotlight,false);assert.equal(sources.target,'sources');
@@ -125,8 +131,9 @@ test('documentary law focus needs the exact unique clause and matching recorded 
 
 test('specific documentary explanations require their recorded evidence and draft focus hands off at three seconds',()=>{
  const evidence={firstFactId:'fact',decisivePredicate:'contemporaneous_substantive_reasons'};
- assert.match(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,evidence).headline,/rent increase checked/);
- assert.doesNotMatch(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{}).headline,/rent/);
+ assert.match(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,evidence).headline,/wants the increase checked/);assert.equal(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{...evidence,customerName:'Elin Ziegler'}).headline,'Elin Ziegler wants the increase checked.');
+ assert.doesNotMatch(documentaryCue({act:'customer',phase:'customer-passage-rest'},0,{}).headline,/increase/);
+ const answeredSecond=documentaryCue({act:'reading',phase:'node-rest',op:{id:'b',kind:'step.complete',object:{id:'n2'}}},0,{completionIds:['a','b','c']});assert.equal(answeredSecond.headline,'Question 2 answered.');
  const fact={act:'reading',phase:'fact-rest',op:{id:'fact',kind:'fact.extract'}};
  assert.match(documentaryCue(fact,0,evidence).headline,/no reasons were given/);assert.match(documentaryCue(fact,0,{firstFactId:'fact'}).headline,/a fact, with its proof/);
  const law={act:'decision',phase:'law-rest'},answer={act:'decision',phase:'answer-rest',duration:6000};

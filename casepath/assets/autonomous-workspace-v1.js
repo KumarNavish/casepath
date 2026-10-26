@@ -35,6 +35,14 @@
   // Source-inspected original IDs. These labels are navigation metadata only.
   // A recorded customer photo the walkthrough reads with the photo-reading service.
   const PHOTO_SHOWCASE = Object.freeze({claim_id:'clm_731b214dde882f89',artifact_id:'src_8291405543acf1003fa5b7c1824e8551'});
+  // The film's cases in plain words. Each problem restates the customer's
+  // recorded subject line; the kind is the case's recorded domain.
+  const SHOWCASE_PROBLEMS = Object.freeze({
+    clm_543f08f2415b2a33:'The rent went up on a form that gives no reason.',
+    clm_731b214dde882f89:'Mould keeps coming back. What is causing it?',
+    clm_7dbd7c7d1c4ddf90:'The rent went up on a form that gives no reason.'
+  });
+  const CASE_KINDS = Object.freeze({rent_increase_dispute:'Rent increase',lease_termination_dispute:'Lease termination',defect_mold_heating:'Defects and repairs'});
   const REFERENCE_DEMO_CASES = Object.freeze([
     {claim_id:'clm_314f2d309fea25e6',domain:'defect_mold_heating',label:'Repeated heating failure and reported repair calls'},
     {claim_id:'clm_4a07dbbbd859a3ce',domain:'defect_mold_heating',label:'Heating resets and an uncertain onset date'},
@@ -1595,7 +1603,7 @@
     return previous;
   }
   function northStarIcon(kind) {
-    const paths={reader:'M13 21H5V3h9l4 4v5M14 3v4h4M8 9h7M8 12h7M8 15h3m4 6 .6-2.6 4.4-4.4 2 2-4.4 4.4z',checker:'M12 21H5V3h9l4 4v4M14 3v4h4M20 16a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-5.1.1 1.1 1.1 1.9-2.3',builder:'M14 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0M12 7v7.5M6 17v-2.5h12V17M8 19a2 2 0 1 1-4 0 2 2 0 0 1 4 0m12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0',finder:'M11 21H5V3h9l4 4v3M14 3v4h4M8 9h6M8 12h3m10 3.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1 2.5 3 3',result:'m12 2 9 4v7c0 5-9 9-9 9S3 18 3 13V6l9-4m-4 10 3 3 5-6',message:'M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7',file:'M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8',check:'m4 12 5 5L20 6',search:'M15 15l7 7M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',help:'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5m0 4v.1'};
+    const paths={reader:'M13 21H5V3h9l4 4v5M14 3v4h4M8 9h7M8 12h7M8 15h3m4 6 .6-2.6 4.4-4.4 2 2-4.4 4.4z',checker:'M12 21H5V3h9l4 4v4M14 3v4h4M20 16a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-5.1.1 1.1 1.1 1.9-2.3',builder:'M14 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0M12 7v7.5M6 17v-2.5h12V17M8 19a2 2 0 1 1-4 0 2 2 0 0 1 4 0m12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0',finder:'M11 21H5V3h9l4 4v3M14 3v4h4M8 9h6M8 12h3m10 3.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1 2.5 3 3',result:'m12 2 9 4v7c0 5-9 9-9 9S3 18 3 13V6l9-4m-4 10 3 3 5-6',message:'M3 3h18v15h-7l-4 4v-4H3V3m4 5h10M7 12h7',file:'M5 2h9l5 5v15H5V2m9 0v6h5M8 12h8M8 16h8',page:'M5 2h9l5 5v15H5V2m9 0v6h5M8 11h8M8 14.5h8M8 18h5',zoom:'M14.5 14.5 20 20M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0',mail:'M3 5h18v14H3V5m0 .5 9 7 9-7',image:'M3 4h18v16H3V4m0 12 5-5 4 4 3-3 6 6M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0',check:'m4 12 5 5L20 6',search:'M15 15l7 7M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',help:'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5m0 4v.1'};
     return `<svg class="au-ns-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[kind]||paths.file}"/></svg>`;
   }
   function northStarTabsMarkup(role, interactive = false) {
@@ -1663,8 +1671,8 @@
     return {head,rows,op,catalogue,nodes,nodeId,node,evaluated,done,role,pin,source,facts,plans,through};
   }
   function northStarMarkup(state, trace, presentation) {
-    const m=northStarModel(state,trace),ready=Boolean(trace.nsReady),opening=trace.nsOpening||'',files=deskOperationModel(state,trace).files,index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=presentation.tour?.cases||REFERENCE_DEMO_CASES;
-    const active=m.source?.artifact_id,sourceRows=opening==='replay'?'':files.map(file=>`<li${file.ids.includes(active)?' aria-current="true"':''}><span>${northStarIcon(file.source.role==='customer_message'?'message':'file')}</span><button type="button" data-au-source="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
+    const m=northStarModel(state,trace),ready=Boolean(trace.nsReady),opening=trace.nsOpening||'',desk=deskOperationModel(state,trace),files=desk.files,index=REFERENCE_DEMO_CASES.findIndex(row=>row.claim_id===state.claim_id),roster=presentation.tour?.cases||REFERENCE_DEMO_CASES;
+    const active=m.source?.artifact_id,sourceRows=opening==='replay'?'':files.map(file=>`<li data-au-file-ids="${h(file.ids.join(' '))}"${file.ids.includes(active)?' aria-current="true"':''}${desk.proof.has(file.key)?' data-au-file-used':''}><span>${deskFileIcon(file.source)}</span><button type="button" data-au-source="${h(file.ids.at(-1))}" title="${h(file.source.file_name)}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}${deskFileProof(file,desk)}</button></li>`).join('');
     const buildingId=trace.nsPlanning||m.done.has(m.nodeId)?null:m.nodeId;
     const spine=ready||opening==='saved'?'':m.nodes.map((node,i)=>{const done=m.done.has(node.node_id),building=!done&&node.node_id===buildingId;return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':building?'building':'waiting'}"><span class="au-ns-circle" aria-hidden="true">${done?i+1:building?'<svg class="au-ns-building-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19"/></svg>'+(trace.executive?'<b class="au-ns-current-number">'+(i+1)+'</b>':''):''}</span><span class="au-ns-node-label" title="${h(node.label||node.title||node.node_id)}">${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span>${done?'<small class="au-ns-step-status">Checked</small>':trace.executive&&building?'<small class="au-ns-step-status">Checking</small>':''}${i<m.nodes.length-1?'<svg class="au-ns-arrow" viewBox="0 0 70 16" aria-hidden="true"><path d="M1 8h66m-6-5 6 5-6 5"/></svg>':''}</li>`;}).join('');
     const pin=m.pin,preview=m.source&&northStarSourcePreview(m.source,pin),sourceText=preview?(pin?northStarSourceBody(preview,pin):h(preview.text)):'';
@@ -1696,6 +1704,31 @@
     [/later-email-and-original-absence-of-reasons/u,'The landlord’s later email'],[/^Mietzinserhoehung_Formular_/u,'Rent increase form'],
     [/^(?:Kuendigung_per_E-Mail|Termination_by_email)_/u,'Termination by email'],[/^IMG_\d+\.jpe?g$/iu,'Photo from the tenant']
   ]);
+  // The recorded media type decides the file icon; the name is only a fallback.
+  function deskFileKind(source) {
+    const type=String(source?.media_type || '').toLowerCase(),name=String(source?.file_name || '').toLowerCase();
+    if (type.startsWith('image/') || /\.(jpe?g|png|gif|webp|heic|tiff?)$/u.test(name)) return 'image';
+    if (type === 'application/pdf' || name.endsWith('.pdf')) return 'pdf';
+    if (/msword|wordprocessingml/u.test(type) || /\.docx?$/u.test(name)) return 'word';
+    if (type === 'message/rfc822' || name.endsWith('.eml')) return 'email';
+    return 'text';
+  }
+  // A recognisable file icon: a type tag for documents, an envelope for email
+  // and the picture itself when its bytes are already on the page.
+  function deskFileIcon(source, thumbnail = '') {
+    const kind=deskFileKind(source),extension=(String(source?.file_name || '').match(/\.([a-z0-9]{2,4})$/iu)?.[1] || String(source?.media_type || '').match(/^image\/([a-z0-9]+)/iu)?.[1] || '').toUpperCase();
+    if (kind === 'image' && thumbnail) return `<span class="au-file-icon" data-au-file-kind="image"><img src="${h(thumbnail)}" alt=""><i class="au-file-zoom">${northStarIcon('zoom')}</i></span>`;
+    const message=source?.role === 'customer_message' && kind === 'text';
+    const glyph=northStarIcon(message ? 'message' : kind === 'email' ? 'mail' : kind === 'image' ? 'image' : kind === 'text' ? 'page' : 'file');
+    const tag={pdf:'PDF',word:'W',text:'',email:'',image:''}[kind];
+    return `<span class="au-file-icon" data-au-file-kind="${message ? 'message' : kind}">${glyph}${tag ? `<b>${h(tag)}</b>` : ''}</span>`;
+  }
+  // Which questions a file has proved so far: recorded sufficient document checks only.
+  function deskFileProof(file, model) {
+    const order=model.nodes.map(node => node.node_id),numbers=[...(model.proof.get(file.key) || [])].map(id => order.indexOf(id)+1).filter(n => n > 0).sort((a,b) => a-b);
+    if (!numbers.length) return '';
+    return `<small class="au-file-use" data-au-file-proof="${numbers.join(' ')}">${northStarIcon('check')}Proof for question${numbers.length === 1 ? '' : 's'} ${numbers.join(' and ')}</small>`;
+  }
   function deskFileLabel(source) {
     if (source.role === 'customer_message') return 'Customer’s message';
     const plain = PLAIN_FILE_LABELS.find(([pattern]) => pattern.test(String(source.file_name || '')));
@@ -1717,7 +1750,7 @@
       const key=`${source.role || ''}:${source.file_name || source.artifact_id}`;
       if(!grouped.has(key))grouped.set(key,{key,source,ids:[]});grouped.get(key).ids.push(source.artifact_id);fileById.set(source.artifact_id,key);
     }
-    const read=new Set(),received=new Set(),met=new Set(),evidence=new Map(),required=new Set(),activated=new Set();let facts=0,rules=0,reuse=null;
+    const read=new Set(),received=new Set(),met=new Set(),evidence=new Map(),required=new Set(),activated=new Set(),proof=new Map();let facts=0,rules=0,reuse=null;
     for(const operation of rows){
       const artifact=operation.source?.artifact_id || operation.object?.id,file=fileById.get(artifact);
       if(operation.kind==='span.read'&&file)read.add(file);
@@ -1733,7 +1766,7 @@
       if(operation.kind==='node.evaluate'&&operation.result?.activation==='true')activated.add(operation.object.id);
       if(operation.kind==='step.complete'&&operation.result?.status==='completed'&&nodes.some(row=>row.node_id===operation.object.id)){met.add(operation.object.id);activated.add(operation.object.id);if(operation.source&&!evidence.has(operation.object.id))evidence.set(operation.object.id,operation);}
       if(operation.kind==='document.require'&&operation.result?.activation==='true')required.add(operation.object.id);
-      if(operation.kind==='document.check'&&operation.result?.assessment==='sufficient'&&operation.source){received.add(operation.object.id);if(node)evidence.set(node,operation);}
+      if(operation.kind==='document.check'&&operation.result?.assessment==='sufficient'&&operation.source){received.add(operation.object.id);if(node){evidence.set(node,operation);if(file){if(!proof.has(file))proof.set(file,new Set());proof.get(file).add(node);}}}
       if(operation.kind==='knowledge.reuse'&&Number.isSafeInteger(operation.input?.version))reuse=operation;
     }
     const known=Boolean(trace?.binding || trace?.verifiedResult);
@@ -1742,7 +1775,7 @@
       for(const document of list(state.evaluation?.documents))if(document.review_state==='sufficient')received.add(document.document_type);
       for(const obligation of list(state.obligations))required.add(obligation.document_type);
     }
-    return {head,graph,nodes,files:[...grouped.values()],fileById,factFiles,read,received,met,evidence,required,activated,laws,operationNodes,reuse,documents:list(head.obligations),counts:{documents:known?read.size:null,facts:known?facts:null,rules:known?rules:null,met:met.size,total:nodes.length}};
+    return {head,graph,nodes,proof,files:[...grouped.values()],fileById,factFiles,read,received,met,evidence,required,activated,laws,operationNodes,reuse,documents:list(head.obligations),counts:{documents:known?read.size:null,facts:known?facts:null,rules:known?rules:null,met:met.size,total:nodes.length}};
   }
   function deskDraftBinding(state) {
     const draft=state.outcome?.request_draft;
@@ -1889,7 +1922,7 @@
   }
   function northStarCompletedMarkup(state, trace, detail, presentation) {
     const m=northStarCompletedModel(state,trace,presentation.chosenNode||(detail==='knowledge'?list(state.graph?.nodes).at(-1)?.node_id:null),presentation.deskSelection,presentation.knowledge),role={step:'builder',sources:'reader',verified:'checker',documents:'finder',answer:'result',draft:'result'}[detail]||'builder';
-    const files=m.desk.files.map(file=>`<li${file.ids.includes(m.source?.artifact_id)?' aria-current="true"':''}>${northStarIcon(file.source.role==='customer_message'?'message':'file')}<button type="button" data-au-source="${h(file.ids.at(-1))}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}</button></li>`).join('');
+    const files=m.desk.files.map(file=>`<li data-au-file-ids="${h(file.ids.join(' '))}"${file.ids.includes(m.source?.artifact_id)?' aria-current="true"':''}${m.desk.proof.has(file.key)?' data-au-file-used':''}>${deskFileIcon(file.source)}<button type="button" data-au-source="${h(file.ids.at(-1))}">${h(deskFileLabel(file.source))}${file.source.received_at?`<small>Received ${h(file.source.received_at)}</small>`:''}${deskFileProof(file,m.desk)}</button></li>`).join('');
     const spine=m.desk.nodes.map((node,i)=>{const done=m.desk.met.has(node.node_id),verdict=northStarNodeVerdict(m,node),decisive=verdict==='failed',failedCount=(m.predicatesByNode.get(node.node_id)||[]).filter(test=>test.status==='failed').length,edge=list(state.graph?.edges).find(edge=>edge.source_node_id===node.node_id&&edge.target_node_id===m.desk.nodes[i+1]?.node_id),taken=edge&&done&&m.desk.met.has(edge.target_node_id)&&list(state.evaluation?.edges).find(row=>row.edge_id===edge.edge_id)?.activation==='true';return `<li data-au-ns-node="${h(node.node_id)}" data-state="${done?'done':'waiting'}" data-selected="${node===m.node}" data-decisive="${decisive}" data-au-ns-node-verdict="${verdict}"><button type="button" data-au-desk-select="${h(node.node_id)}" aria-pressed="${node===m.node}" title="${h(node.label)}"><strong>${i+1}</strong><span>${h(northStarQuestion(node,m.catalogue?.plans.get(node.node_id)?.at(-1)?.operation.result||m.rows?.find(op=>op.kind==='step.complete'&&op.object.id===node.node_id)?.result))}</span><i class="au-ns-node-badge" aria-label="${decisive?'A mapped legal test failed':done?'Process step checked':'Process step pending'}">${decisive?'✕':''}</i><small class="au-ns-test-verdict">${decisive?`${failedCount} check${failedCount===1?'':'s'} failed`:done?'Checked':'Pending'}</small></button>${edge?`<svg class="au-ns-edge" data-taken="${Boolean(taken)}" viewBox="0 0 70 16" aria-hidden="true"><path d="M0 8h66m-6-5 6 5-6 5"/></svg>`:''}</li>`;}).join('');
     const chain=m.columns.map(column=>`<button type="button" class="au-ns-chain-column" data-au-ns-chain="${column.id}" data-au-ns-chain-node="${h(m.nodeId)}"><strong>${northStarIcon(column.icon)}${column.label}</strong><span>${column.id==='law'?m.predicates.filter(test=>test.status==='failed').map(test=>`<span class="au-ns-failed-test">✕ ${h(deskLegalLabel(test.predicate_id))}</span>`).join(''):''}${column.rows.slice(0,2).map(row=>`<span>${column.id==='facts'?'<i aria-hidden="true">✓</i>':''}${h(northStarChainLabel(column.id,row))}</span>`).join('')}${column.rows.length>2?`<small>+ ${column.rows.length-2} more</small>`:''}</span><b aria-hidden="true">›</b></button>`).join('');
     const pin=m.pin,previewSource=m.source&&northStarSourcePreview(m.source,pin),body=pin?`${northStarReadableText(previewSource.before)}<mark data-au-ns-page-pin>${northStarReadableText(pin.quote)}</mark>${northStarReadableText(previewSource.after)}`:'';
@@ -5459,7 +5492,36 @@
         }
         reading(act,main,op);motion(act,'combine',400,main,op);motion(act,'plan-recede',400,main,op);motion(act,'node-accepted',300,main,op);hold(act,'node-rest',main,op);
       };
+      // Which case is on screen, as one line each: number, kind, customer, problem.
+      const customerName=record=>String(list(record.state.acquired_sources).find(source=>source.role==='customer_message')?.text||'').match(/^(?:From|Von):[ \t]*([^<\r\n]+?)[ \t]*</mu)?.[1]||'';
+      const caseOf=(claimId,record,files)=>({claim:claimId,kind:CASE_KINDS[featuredCase(claimId)?.domain||catalogRow(claims,claimId)?.browse_metadata?.domain]||'',name:record?customerName(record):'',problem:SHOWCASE_PROBLEMS[claimId]||caseLabel(claimId,{title:catalogRow(claims,claimId)?.title}).primary,files});
+      const filesOf=record=>deskOperationModel(record.state,{...record.trace,rows:[]}).files.map(file=>file.source);
+      const filmCases=[caseOf(main.state.claim_id,main,filesOf(main))];
+      if(photo)filmCases.push(caseOf(PHOTO_SHOWCASE.claim_id,null,[{role:'customer_message',media_type:'message/rfc822'},{media_type:'image/jpeg',thumbnail:photo.url}]));
+      const laterShown=laterPlan.planned&&laterPlan.version?.knowledge_id===procedureVersion?.knowledge_id;
+      if(laterShown)filmCases.push(caseOf(later.state.claim_id,later,filesOf(later)));
+      filmCases.forEach((row,i)=>{row.number=i+1;row.total=filmCases.length;});
+      const filmCase=claimId=>filmCases.find(row=>row.claim===claimId)||null;
+      const emailMarkup=model=>`<section class="au-email-stage" data-au-email><div class="au-email-findings" data-au-email-findings><p class="au-email-kicker">What it found</p><ol>${model.findings.map((row,i)=>`<li data-au-email-finding="${i}" data-status="${h(row.status)}"><span class="au-email-num">${i+1}</span><div><b>${h(row.label)}</b><small>${h(row.verdict)}</small>${row.source?`<span class="au-email-proof">${deskFileIcon(row.source)}Proof: ${h(deskFileLabel(row.source))}</span>`:''}</div></li>`).join('')}</ol></div><div class="au-email-column"><p class="au-email-kicker">The reply it drafted</p><article class="au-email" data-au-recorded-draft><header><span class="au-email-icon">${northStarIcon('mail')}</span><b>Reply draft</b><span class="au-email-role">${northStarIcon('result')}Result checker</span></header><dl><div><dt>To</dt><dd>${h(model.from)}</dd></div><div><dt>Subject</dt><dd>Re: ${h(model.subject)}</dd></div></dl><div class="au-email-body" data-au-email-body>${model.parts.map((part,i)=>`<p data-au-email-clause="${i}">${h(part)}</p>`).join(' ')}</div><footer data-au-email-boundary><span class="au-email-status" data-au-draft-status>Draft · not sent — you decide</span><span>Review and complete this draft before replying to the customer.</span></footer></article></div><svg class="au-email-links" data-au-email-links aria-hidden="true"></svg></section>`;
+      const sameKindAs=row=>filmCases.find(other=>other.number<row.number&&other.kind&&other.kind===row.kind);
+      const caseBlockMarkup=(row,fresh)=>`<div class="au-case-block" data-au-case-block="${h(row.claim)}"><p><b>Case ${row.number}</b> · ${h(row.kind)}${fresh?' <em class="au-executive-later">New case</em>':''}</p>${row.name?`<strong>${h(row.name)}</strong>`:''}<span>${h(row.problem)}</span></div>`;
+      const caseOpenerMarkup=row=>{const same=sameKindAs(row);return `<div class="au-case-opener-card"><span class="au-case-numeral" aria-hidden="true">${row.number}</span><div class="au-case-copy"><p class="au-case-kicker">Case ${row.number} · ${h(row.kind)}${same?`<em>Same kind as case ${same.number}</em>`:''}</p><h2>${h(row.name||'A tenant’s photo')}</h2><small>The problem</small><p class="au-case-problem">${h(row.problem)}</p><small>Files received · ${row.files.length}</small><ul class="au-case-files">${row.files.map(file=>`<li>${deskFileIcon(file,file.thumbnail||'')}<span>${h(file.role==='customer_message'?'Customer’s message':file.thumbnail?'Photo':deskFileLabel(file))}</span></li>`).join('')}</ul></div></div><ol class="au-case-docket">${filmCases.map(other=>`<li data-state="${other.number<row.number?'past':other.number===row.number?'current':'next'}"><b>${other.number}</b><span>${h(other.name||'A tenant')}</span><small>${h(other.kind)}</small></li>`).join('')}</ol>`;};
+      // The reply draft, built only from the recorded draft and the checks it states.
+      // Each recorded clause is paired with the recorded finding it restates.
+      const emailModel=(()=>{
+        const draft=deskDraftBinding(main.state);if(!draft)return null;
+        const text=String(list(main.state.acquired_sources).find(source=>source.role==='customer_message')?.text||'');
+        const field=key=>text.match(new RegExp(`^(?:${key}):[ \\t]*(.+)$`,'mu'))?.[1]?.trim()||'';
+        const parts=draft.body.split(/(?<=;)\s+|(?<=\.)\s+(?=\p{Lu})/u),predicates=list(main.state.outcome?.legal_predicates);
+        const failed=predicates.find(row=>row.status==='failed'),context=predicates.find(row=>row.status==='supported'&&/later/u.test(row.predicate_id));
+        const mapped=parts.length===3&&parts.join(' ')===draft.body&&/reason/iu.test(parts[0])&&/later/iu.test(parts[1])&&/undetermined/iu.test(parts[2])&&failed&&context;
+        const source=row=>{const pin=list(row.citations)[0];return pin?list(main.state.source_descriptors).find(item=>item.artifact_id===pin.artifact_id)||null:null;};
+        const finding=(row,verdict)=>({label:NS_FACT_TYPES[row.predicate_id]||deskLegalLabel(row.predicate_id),verdict,status:row.status,source:source(row)});
+        return {from:field('From|Von'),to:field('To|An'),subject:field('Subject|Betreff')||main.state.title||'',body:draft.body,parts:mapped?parts:[draft.body],
+          findings:mapped?[finding(failed,'The documents say no'),finding(context,'The documents say yes'),{label:'Still open',verdict:'Rent level, amount and deadlines',status:'open',source:null}]:[]};
+      })();
       add('customer','ready',6000,main);
+      add('customer','case-open',3400,main,null,{caseOpen:main.state.claim_id});
       motion('customer','customer-source-open',400,main);add('customer','customer-source-open',2400,main,null,{entryRevealed:true,lead:true});
       motion('customer','customer-cursor',550,main);motion('customer','customer-highlight',250,main);add('customer','customer-passage-rest',2200,main);
       if(planned){
@@ -5489,17 +5551,23 @@
       add('decision','legal-test-lead',2600,main,null,{view:'answer',test:0});
       for(let i=0;i<tests.length;i++){const identity={view:'answer',test:i,predicate:tests[i].predicate_id,predicate_status:tests[i].status};motion('decision','legal-test',350,main,null,identity);add('decision','legal-test-rest',tests[i].status==='failed'?3400:600,main,null,identity);}
       motion('decision','answer',400,main,null,{view:'answer',test:tests.length});add('decision','answer-rest',6000,main,null,{view:'answer',test:tests.length});
-      motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',4600,main,null,{view:'draft'});
+      if(emailModel?.findings.length){
+        motion('decision','email',700,main,null,{view:'email'});
+        emailModel.parts.forEach((part,i)=>{motion('decision','email-clause',900,main,null,{view:'email',clause:i});add('decision','email-clause-rest',1500,main,null,{view:'email',clause:i});});
+        add('decision','email-rest',4600,main,null,{view:'email',clause:emailModel.parts.length-1});
+      }else{motion('decision','draft',400,main,null,{view:'draft'});add('decision','draft-rest',4600,main,null,{view:'draft'});}
       // A customer photo, read by the service's own pixel measurement.
       if(photo){
         const view={view:'photo'};
-        motion('photo','photo-open',400,main,null,view);add('photo','photo-lead',2600,main,null,view);
+        add('photo','case-open',3000,main,null,{...view,caseOpen:PHOTO_SHOWCASE.claim_id});
+        motion('photo','photo-open',900,main,null,view);add('photo','photo-lead',2600,main,null,view);
         add('photo','photo-scan',2600,main,null,{...view,motion:true});motion('photo','photo-region',600,main,null,view);
         motion('photo','photo-finding',500,main,null,{...view,finding:0});motion('photo','photo-finding',500,main,null,{...view,finding:1});
         add('photo','photo-rest',3800,main,null,{...view,finding:1});
       }
       // The next case of the same kind: the identical gesture, from its own recording.
-      if(laterPlan.planned&&laterPlan.version?.knowledge_id===procedureVersion?.knowledge_id){
+      if(laterShown){
+        add('learning','case-open',3000,later,null,{planning:true,through:laterPlan.reuse.seq,caseOpen:later.state.claim_id});
         planBeats('learning',laterPlan,{shelf:3200,pick:1300,reuse:2400,node:520,nodeRest:260,doc:380,docRest:260,rest:3400});
       }
       // Everything learned: each checklist from the first case of its kind,
@@ -5534,12 +5602,12 @@
       if(shelfCards.length===3&&procedureVersion){const i=shelfCards.findIndex(card=>card.id===procedureVersion.knowledge_id);if(i>=0)shelfCards.splice(1,0,...shelfCards.splice(i,1));}
       const shelfCard=(card,selected)=>`<article class="au-shelf-card" data-au-shelf-card="${h(card.id)}"${selected?' data-selected':''}><p class="au-shelf-kicker">${northStarIcon('builder')}Checklist</p><h3>${h(card.label)}</h3><ul><li>${northStarIcon('builder')}<b>${card.questions}</b> questions</li><li>${northStarIcon('finder')}<b>${card.documents}</b> documents</li><li>${northStarIcon('result')}<b>${card.checks}</b> checks</li></ul><p class="au-shelf-origin">Learned from “${h(card.cases[0]?.title||'')}”</p></article>`;
       const shelfMarkup=selected=>`<div class="au-ns-shelf" data-au-ns-shelf aria-hidden="true"><header><p>Knowledge</p><h2>Checklists CasePath has learned</h2></header><div class="au-ns-shelf-row">${shelfCards.map(card=>shelfCard(card,card.id===selected)).join('')}</div></div>`;
-      const mapMarkup=model=>`<section class="au-executive-cases au-executive-map"><section class="au-km" data-au-map><header class="au-km-head"><div><p>Knowledge</p><h1>What CasePath has learned</h1></div><dl class="au-km-counters" data-au-map-counters>${[['checklists','checklists'],['cases','cases'],['uses','uses']].map(([key,label])=>`<div><dd data-au-map-count="${key}">0</dd><dt>${label}</dt></div>`).join('')}</dl></header><div class="au-km-lanes">${model.checklists.map(card=>`<div class="au-km-lane" data-au-map-lane="${h(card.id)}">${card.cases.map((row,i)=>`<div class="au-km-case" data-au-map-case="${h(row.id)}" data-lane="${h(card.id)}"${i?'':' data-first'} style="grid-column:${i?i+2:1}"><span class="au-km-dot"></span>${i?'':'<small>First case</small>'}<p>${h(row.title)}</p></div>`).join('')}<article class="au-km-card" data-au-map-card="${h(card.id)}" style="grid-column:2"><p>${northStarIcon('builder')}Checklist</p><h3>${h(card.label)}</h3><ul><li><b>${card.questions}</b> questions</li><li><b>${card.documents}</b> documents</li><li><b>${card.checks}</b> checks</li></ul></article></div>`).join('')}</div><svg class="au-km-wires" data-au-map-wires aria-hidden="true"></svg></section></section>`;
-      const railChecklist=(docs,current)=>`<section class="au-executive-checklist" data-au-ns-checklist><h2>Evidence checklist <span>${docs.filter(doc=>doc.checked).length} of ${docs.length} checked</span></h2><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}" data-state="${doc.checked?'checked':'needed'}"${doc.type===current?' data-au-ns-checklist-current':''}><span class="au-ns-check-mark" aria-hidden="true">${doc.checked||doc.type===current?northStarIcon('check'):''}</span><span>${h(doc.label)}</span></li>`).join('')}</ol></section>`;
+      const mapMarkup=model=>`<section class="au-executive-cases au-executive-map"><section class="au-km" data-au-map><header class="au-km-head"><div><p>Knowledge</p><h1>What CasePath has learned</h1></div><dl class="au-km-counters" data-au-map-counters>${[['checklists','checklists'],['cases','cases'],['uses','uses']].map(([key,label])=>`<div><dd data-au-map-count="${key}">0</dd><dt>${label}</dt></div>`).join('')}</dl></header><div class="au-km-lanes">${model.checklists.map(card=>`<div class="au-km-lane" data-au-map-lane="${h(card.id)}">${card.cases.map((row,i)=>`<div class="au-km-case" data-au-map-case="${h(row.id)}" data-lane="${h(card.id)}"${i?'':' data-first'} style="grid-column:${i?i+2:1}"><span class="au-km-dot"></span>${i?filmCase(row.id)?`<small class="au-km-film">Case ${filmCase(row.id).number}</small>`:'':'<small>First case</small>'}<p>${h(row.title)}</p></div>`).join('')}<article class="au-km-card" data-au-map-card="${h(card.id)}" style="grid-column:2"><p>${northStarIcon('builder')}Checklist</p><h3>${h(card.label)}</h3><ul><li><b>${card.questions}</b> questions</li><li><b>${card.documents}</b> documents</li><li><b>${card.checks}</b> checks</li></ul></article></div>`).join('')}</div><svg class="au-km-wires" data-au-map-wires aria-hidden="true"></svg></section></section>`;
+      const railChecklist=(docs,current)=>`<section class="au-executive-checklist" data-au-ns-checklist>${procedureVersion?`<p class="au-ns-learned">${northStarIcon('builder')}From the ${h(procedureScope(procedureVersion).toLowerCase())} checklist</p>`:''}<h2>Evidence checklist <span>${docs.filter(doc=>doc.checked).length} of ${docs.length} checked</span></h2><ol>${docs.map(doc=>`<li data-au-ns-checklist-doc="${h(doc.type)}" data-state="${doc.checked?'checked':'needed'}"${doc.type===current?' data-au-ns-checklist-current':''}><span class="au-ns-check-mark" aria-hidden="true">${doc.checked||doc.type===current?northStarIcon('check'):''}</span><span>${h(doc.label)}</span></li>`).join('')}</ol></section>`;
       const staged=[];
       for(const beat of beats){
         const previous=staged.at(-1),actChange=previous&&previous.act!==beat.act;
-        const sceneChange=previous&&(previous.view!==beat.view||beat.phase==='customer-source-open'&&!beat.lead||beat.phase==='camera-in'&&previous.op?.id!==beat.op?.id||beat.phase==='library-switch');
+        const sceneChange=previous&&(previous.view!==beat.view||beat.phase==='customer-source-open'&&!beat.lead&&previous.phase!=='case-open'||beat.phase==='camera-in'&&previous.op?.id!==beat.op?.id||beat.phase==='library-switch');
         if(actChange||sceneChange){
           staged.push({...beat,phase:actChange?'act-transition':'scene-transition',nextPhase:beat.phase,duration:700,motion:true,entryRevealed:true});
           staged.push({...beat,entryRevealed:true});
@@ -5587,7 +5655,7 @@
         const trace=operationTrace,op=beat.op,phase=beat.nextPhase||beat.phase,completion=op?.kind==='step.complete';
         if(completion&&!['node-accepted','node-rest'].includes(phase))trace.nsPendingCompletion=op.id;
         if(['plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','fact-rest','document-rest'].includes(phase)&&op)trace.nsCues.add(op.id);
-        const customerScene=phase==='ready'||phase.startsWith('customer-');
+        const customerScene=phase==='ready'||phase.startsWith('customer-')||beat.act==='customer'&&phase==='case-open';
         trace.nsReady=false;
         let customerPin=null;
         if(customerScene){
@@ -5599,7 +5667,7 @@
           customerPin={artifact_id:customer.artifact_id,sha256:customer.sha256,text_sha256:customer.text_sha256,offset_unit:'unicode_code_point',start_char:start,end_char:start+Array.from(request).length,quote:request};
           trace.sources.set(customer.artifact_id,customer);trace.displaySource={artifact_id:customer.artifact_id};
         }
-        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:'',beat.family||'',Boolean(beat.planning)].join(':');
+        const identity=[record.state.claim_id,viewName||op?.id||(phase==='ready'?'purpose':'customer'),beat.through||0,Boolean(trace.nsPendingCompletion),Boolean(op&&trace.nsCues.has(op.id)),viewName==='knowledge'&&Number.isSafeInteger(beat.item)?beat.item:'',beat.family||'',Boolean(beat.planning),beat.caseOpen?'opener':''].join(':');
         markBeat(beat,phase,op,viewName);
         if(!force&&sceneIdentity===identity)return;
         sceneIdentity=identity;
@@ -5617,7 +5685,15 @@
             const taken=r.captured_at&&day?`${day} ${['January','February','March','April','May','June','July','August','September','October','November','December'][month-1]} ${year}`:'';
             const kind={dark_spotting:'Dark spots found',brown_staining:'Brown stain found'}[g.kind]||'Marked area found';
             const finding=(index,title,detail)=>`<li data-au-photo-finding="${index}" data-state="done"><span class="au-ns-plan-status" aria-hidden="true">${northStarIcon('check')}</span><span><b>${h(title)}</b><small>${h(detail)}</small></span></li>`;
-            setScene(`<section class="au-agent-desk au-northstar au-ns-photo-desk" data-au-agent-desk data-au-ns data-au-ns-role-active="reader"><aside class="au-ns-sources"><h1 data-au-claim-title tabindex="-1">${h(photo.title)}</h1><h2>Sources <span>2</span></h2><ul><li><span>${northStarIcon('message')}</span><button type="button">Customer’s message</button></li><li aria-current="true"><span>${northStarIcon('file')}</span><button type="button">Photo from the tenant${taken?`<small>Taken ${h(taken)}</small>`:''}</button></li></ul></aside><div class="au-ns-canvas"><div class="au-ns-work au-ns-photo-work"><div class="au-ns-reading"><section class="au-ns-paper au-ns-photo" data-au-ns-paper><div class="au-ns-photo-frame" data-au-photo-frame><img src="${h(photo.url)}" alt="Photo from the tenant"><svg viewBox="0 0 ${r.width} ${r.height}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${list(g.segments).map(([x,y,w,hh])=>`<ellipse class="au-photo-mark" cx="${x+w/2}" cy="${y+hh/2}" rx="${Math.max(2,w/2)}" ry="${Math.max(2,hh/2)}" data-y="${y+hh/2}"/>`).join('')}<rect class="au-photo-region" x="${g.x}" y="${g.y}" width="${g.width}" height="${g.height}" rx="${Math.round(Math.max(r.width,r.height)*.008)}"/><rect class="au-photo-scan" x="0" y="0" width="${r.width}" height="${Math.max(2,Math.round(r.height*.01))}"/></svg></div></section></div><aside class="au-ns-plan au-ns-photo-findings" data-au-photo-findings><h2>What CasePath found</h2><ol>${finding(0,kind,'Marked on the photo')}${taken?finding(1,`Photo taken ${taken}`,'Read from the photo file'):''}</ol></aside></div></div></section>${transport()}`);
+            setScene(`<section class="au-agent-desk au-northstar au-ns-photo-desk" data-au-agent-desk data-au-ns data-au-ns-role-active="reader"><aside class="au-ns-sources"><h1 data-au-claim-title tabindex="-1">${h(photo.title)}</h1><h2>Sources <span>2</span></h2><ul><li><span>${deskFileIcon({role:'customer_message',media_type:'message/rfc822'})}</span><button type="button">Customer’s message</button></li><li aria-current="true" data-au-photo-source><span>${deskFileIcon({media_type:'image/jpeg'},photo.url)}</span><button type="button" aria-label="Preview photo from the tenant">Photo from the tenant${taken?`<small>Taken ${h(taken)}</small>`:''}</button></li></ul></aside><div class="au-ns-canvas"><div class="au-ns-work au-ns-photo-work"><div class="au-ns-reading"><section class="au-ns-paper au-ns-photo" data-au-ns-paper><div class="au-ns-photo-frame" data-au-photo-frame><img src="${h(photo.url)}" alt="Photo from the tenant"><svg viewBox="0 0 ${r.width} ${r.height}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${list(g.segments).map(([x,y,w,hh])=>`<ellipse class="au-photo-mark" cx="${x+w/2}" cy="${y+hh/2}" rx="${Math.max(2,w/2)}" ry="${Math.max(2,hh/2)}" data-y="${y+hh/2}"/>`).join('')}<rect class="au-photo-region" x="${g.x}" y="${g.y}" width="${g.width}" height="${g.height}" rx="${Math.round(Math.max(r.width,r.height)*.008)}"/><rect class="au-photo-scan" x="0" y="0" width="${r.width}" height="${Math.max(2,Math.round(r.height*.01))}"/></svg></div></section></div><aside class="au-ns-plan au-ns-photo-findings" data-au-photo-findings><h2>What CasePath found</h2><ol>${finding(0,kind,'Marked on the photo')}${taken?finding(1,`Photo taken ${taken}`,'Read from the photo file'):''}</ol></aside></div></div></section>${transport()}`);
+          }
+        }else if(viewName==='email'){
+          // The case workspace stays; its centre becomes the reply being written.
+          if(!select('[data-au-email]')){
+            const cacheKey=[record.state.claim_id,'answer-shell'].join(':');
+            if(!markupCache.has(cacheKey))markupCache.set(cacheKey,northStarCompletedMarkup(current,trace,'answer',opts));
+            setScene(markupCache.get(cacheKey)+transport());
+            const canvas=select('.au-ns-completed-canvas,.au-ns-canvas');if(canvas)canvas.innerHTML=emailMarkup(emailModel);
           }
         }else if(viewName==='map'){
           if(!select('[data-au-map]'))setScene(`${mapMarkup(knowledgeMap)}${transport()}`);
@@ -5660,6 +5736,11 @@
           const seen=new Set(trace.rows.filter(row=>row.kind==='node.evaluate'&&(!plan.reuse||row.seq>plan.reuse.seq)).map(row=>row.object.id));
           for(const node of all('[data-au-ns-node]')){node.dataset.auNsPlanned=String(seen.has(node.dataset.auNsNode));if(trace.rows.some(row=>row.kind==='node.evaluate'&&row.seq===beat.through&&row.object.id===node.dataset.auNsNode))node.dataset.auNsNew='';}
         }
+        // The case on screen stays named at the top of its file list.
+        const shownCase=viewName==='photo'?filmCase(PHOTO_SHOWCASE.claim_id):['map','cases','library'].includes(viewName)?null:filmCase(record.state.claim_id);
+        const rail=select('.au-ns-sources');
+        if(shownCase&&rail&&!rail.querySelector('[data-au-case-block]'))rail.insertAdjacentHTML('afterbegin',caseBlockMarkup(shownCase,record===later));
+        if(beat.caseOpen){const row=filmCase(beat.caseOpen);if(row&&caseOpener.dataset.auCase!==row.claim){caseOpener.dataset.auCase=row.claim;caseOpener.innerHTML=caseOpenerMarkup(row);}}
         const ns=select('[data-au-ns]'),tabs=container.querySelector('.au-ns-tabs');
         // The film keeps one tab bar in every scene; a beat may name its own active role.
         const role=beat.tab??(beat.planning||['library','map'].includes(beat.view)?'builder':beat.act==='customer'?(phase==='ready'?'':'reader'):ns?ns.dataset.auNsRoleActive:'');
@@ -5680,9 +5761,22 @@
           }
         }
         if(viewName==='map')frameNodes.map=mapGeometry();
+        if(viewName==='email'){
+          const stage=select('[data-au-email]'),svg=stage?.querySelector('[data-au-email-links]');
+          if(stage&&svg){
+            const box=stage.getBoundingClientRect();svg.setAttribute('width',String(box.width));svg.setAttribute('height',String(box.height));svg.innerHTML='';
+            const links=all('[data-au-email-finding]').map(item=>{
+              const clause=select(`[data-au-email-clause="${item.dataset.auEmailFinding}"]`);if(!clause)return null;
+              const a=item.getBoundingClientRect(),b=clause.getBoundingClientRect(),x1=a.right-box.left+4,y1=a.top+a.height/2-box.top,x2=b.left-box.left-6,y2=b.top+Math.min(22,b.height/2)-box.top;
+              const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',`M${x1} ${y1}C${x1+50} ${y1} ${x2-50} ${y2} ${x2} ${y2}`);path.setAttribute('pathLength','1');svg.appendChild(path);return path;
+            });
+            frameNodes.email={stage,links,findings:all('[data-au-email-finding]'),clauses:all('[data-au-email-clause]'),card:select('.au-email-column'),column:select('[data-au-email-findings]'),boundary:select('[data-au-email-boundary]')};
+          }
+        }
+        if(beat.caseOpen){const card=caseOpener.querySelector('.au-case-opener-card'),block=select('[data-au-case-block]');if(card&&block){card.style.transform='';frameNodes.opener={card,from:card.getBoundingClientRect(),to:block.getBoundingClientRect()};}}
         const {mark,paper}=frameNodes;
         if(mark){
-          mark.dataset.arrived=['ready','cursor','camera-in','source-open'].includes(phase.replace(/^customer-/,''))?'false':'true';
+          mark.dataset.arrived=['ready','case-open','cursor','camera-in','source-open'].includes(phase.replace(/^customer-/,''))?'false':'true';
           // Background highlights are fixed rectangles; only their opacity moves.
           mark.style.background='transparent';
           const pane=select('.au-ns-source-scroll'),layer=paper||ns,area=layer.getBoundingClientRect(),clip=pane.getBoundingClientRect();
@@ -5736,8 +5830,6 @@
         }
         if(record===later){
           if(viewName==='answer')select('[data-au-desk-answer] > .au-desk-tests')?.remove();
-          select('.au-ns-sources h1')?.insertAdjacentHTML('beforebegin','<p class="au-executive-later">New case</p>');
-          select('.au-ns-sources h1')?.insertAdjacentHTML('afterend',`<p class="au-ns-intake">Case ${sessionCases(session).findIndex(row=>row.claim_id===record.state.claim_id)+1} of ${sessionCases(session).length} · its own documents</p>`);
           const heading=select('.au-ns-memory-source h3');if(heading)heading.textContent='From the new case';
         }
         if(viewName==='knowledge'&&Number.isSafeInteger(beat.item)){
@@ -5754,7 +5846,7 @@
       }
       // Narration and its single focal target share the recorded presentation
       // clock. The guide lives outside the replaceable scene and its clones.
-      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null,firstCheckId:planned?checks[0]?.id:null,questionCount:graphNodes.length,documentCount:requirements.length,testCount:tests.length,procedureScope:procedureVersion?procedureScope(procedureVersion):null,knowledgeUses:knowledgeMap?.uses.length||0,knowledgeCases:knowledgeMap?.caseCount||0};
+      const guideContext={firstCompletionId:completed[0]?.id,firstFactId:firstFact.id,decisivePredicate:failedIds.has(firstFact.object.id)?firstFact.object.id:null,firstCheckId:planned?checks[0]?.id:null,questionCount:graphNodes.length,documentCount:requirements.length,testCount:tests.length,procedureScope:procedureVersion?procedureScope(procedureVersion):null,knowledgeUses:knowledgeMap?.uses.length||0,knowledgeCases:knowledgeMap?.caseCount||0,completionIds:completed.map(op=>op.id),customerName:filmCases[0]?.name||'',emailFindings:Boolean(emailModel?.findings.length),sameKindCase:laterShown?sameKindAs(filmCase(later.state.claim_id))?.number||0:0};
       guideContext.decisiveRule=Boolean(P.documentaryRuleFocus(legalAuthorityRows(main.state).find(row=>row.article==='269d')?.text,{...guideContext,article:'269d'}));
       guideContext.assessmentSupportsInvalidity=guideContext.decisiveRule&&main.state.outcome?.assessment_scope==='rent_increase_reasons_nullity_assessment'&&String(main.state.outcome?.summary||'').includes('supporting invalidity under CO 269d(2)(b)');
       const guideWindows=[];
@@ -5770,10 +5862,16 @@
       }
       // One coach mark at a time: the scene dims around a single spotlight and
       // a short caption sits beside it. It never covers or rewrites the target.
+      // Each case opens on its own card, which then settles into the file list.
+      const caseOpener=doc.createElement('div');caseOpener.className='au-case-opener';caseOpener.setAttribute('aria-hidden','true');caseOpener.style.opacity='0';caseOpener.hidden=true;
+      container.appendChild(caseOpener);
+      const tabTip=doc.createElement('div');tabTip.className='au-tab-tip';tabTip.setAttribute('aria-hidden','true');tabTip.style.opacity='0';container.appendChild(tabTip);
+      const tipBeats=new Set();
+      {const seen=new Set();for(const beat of story.beats){const key=beat.phase==='customer-source-open'&&beat.lead?'reader':beat.act==='plan'&&beat.phase==='plan-shelf'?'builder':beat.act==='reading'&&beat.phase==='camera-in'&&beat.op?.id===guideContext.firstFactId?'checker':beat.act==='reading'&&beat.phase==='camera-in'?'finder':beat.phase==='legal-test-lead'?'result':null;if(key&&!seen.has(key)){seen.add(key);tipBeats.add(beat.index);}}}
       const guideLayer=doc.createElement('div');guideLayer.className='au-documentary-guide';
-      guideLayer.innerHTML='<div class="au-doc-focus-layer" aria-hidden="true"><div class="au-doc-focus"></div></div><section class="au-doc-card" aria-live="polite" aria-atomic="true"><small class="au-doc-chapter"></small><p data-au-guide-headline></p><span data-au-guide-detail></span></section>';
+      guideLayer.innerHTML='<div class="au-doc-focus-layer" aria-hidden="true"><div class="au-doc-focus"></div></div><svg class="au-doc-leader" aria-hidden="true"><path/><circle r="4.5"/></svg><section class="au-doc-card" aria-live="polite" aria-atomic="true"><small class="au-doc-chapter"></small><p data-au-guide-headline></p><span data-au-guide-detail></span></section>';
       container.appendChild(guideLayer);
-      const guideNodes={card:guideLayer.querySelector('.au-doc-card'),chapter:guideLayer.querySelector('.au-doc-chapter'),headline:guideLayer.querySelector('[data-au-guide-headline]'),detail:guideLayer.querySelector('[data-au-guide-detail]'),layer:guideLayer.querySelector('.au-doc-focus-layer'),focus:guideLayer.querySelector('.au-doc-focus')};
+      const guideNodes={card:guideLayer.querySelector('.au-doc-card'),chapter:guideLayer.querySelector('.au-doc-chapter'),headline:guideLayer.querySelector('[data-au-guide-headline]'),detail:guideLayer.querySelector('[data-au-guide-detail]'),layer:guideLayer.querySelector('.au-doc-focus-layer'),focus:guideLayer.querySelector('.au-doc-focus'),leader:guideLayer.querySelector('.au-doc-leader')};
       const cutAt=row=>Boolean(row)&&['act-transition','scene-transition'].includes(story.beats[row.beatIndex]?.phase);
       const settled=row=>row.start+(cutAt(row)?story.beats[row.beatIndex].duration:0);
       function guideTarget(cue,beat){
@@ -5805,6 +5903,10 @@
           case 'lead':return select('.au-desk-plain')||select('.au-desk-lead');
           case 'open':return select('.au-desk-open');
           case 'draft-body':return select('[data-au-recorded-draft]');
+          case 'email':return select('[data-au-email]');
+          case 'source-proof':return all('.au-ns-sources li[data-au-file-ids]').find(row=>row.dataset.auFileIds.split(' ').includes(String(cue.targetId)))||select(`[data-au-ns-checklist-doc="${beat.op?.object?.id}"]`);
+          case 'email-clause':return select(`[data-au-email-clause="${Number.isSafeInteger(beat.clause)?beat.clause:0}"]`);
+          case 'email-status':return select('[data-au-email-boundary]');
           case 'draft':return select('[data-au-draft-status]');
           case 'memory-source':return select('.au-ns-memory-source blockquote')||select('.au-ns-memory-source');
           case 'memory-item':return (beat.nextPhase||beat.phase)==='memory-transfer'&&frameNodes.transfers?.[0]?.clone||item;
@@ -5827,14 +5929,15 @@
           while(first>0&&guideWindows[first-1].id===id&&!cutAt(guideWindows[first]))first--;
           while(last<guideWindows.length-1&&guideWindows[last+1].id===id&&!cutAt(guideWindows[last+1]))last++;
           const head=guideWindows[first],start=settled(head),end=guideWindows[last].end,lead=head.mode!=='hold';
-          return {first,last,start,end,lead,visibleEnd:lead?start+Math.max(0,Math.min(2600,end-start-400)):end,spot:guideWindows.slice(first,last+1).some(row=>row.spotlight),card:head.card!==false};
+          return {first,last,start,end,lead,visibleEnd:lead?start+Math.max(0,Math.min(3200,end-start-400)):end,spot:guideWindows.slice(first,last+1).some(row=>row.spotlight),card:head.card!==false};
         };
         const now=sentence(windowIndex),before=now.first>0?sentence(now.first-1):null,next=now.last<guideWindows.length-1?sentence(now.last+1):null;
         const joinsBefore=Boolean(before&&!before.lead&&before.spot&&!cutAt(guideWindows[now.first])),joinsNext=Boolean(next&&!now.lead&&next.spot&&!cutAt(guideWindows[next.first]));
         const dimLevel=Math.min(joinsBefore?1:after(sample.at-now.start,400),now.lead?1-after(sample.at-now.visibleEnd,450):joinsNext?1:after(now.end-sample.at,300));
         const cardLevel=now.card?Math.min(after(sample.at-now.start,350),now.lead?1-after(sample.at-now.visibleEnd,350):next?after(now.end-sample.at,300):1):0;
         if(!guideLayer.isConnected)container.appendChild(guideLayer);
-        const chapterText=`${chapter.number} · ${chapter.label}`,detail=cue.detail||'';
+        const caseShown=beat.act==='photo'?filmCase(PHOTO_SHOWCASE.claim_id):['library','cases'].includes(beat.act)?null:filmCase(beat.record?.state?.claim_id);
+        const chapterText=caseShown?`Case ${caseShown.number} · ${caseShown.name||caseShown.kind}`:beat.act==='library'&&guideContext.knowledgeCases?`All ${guideContext.knowledgeCases} cases`:chapter.label,detail=cue.detail||'';
         if(nodes.chapter.textContent!==chapterText)nodes.chapter.textContent=chapterText;
         if(nodes.headline.textContent!==cue.headline)nodes.headline.textContent=cue.headline;
         if(nodes.detail.textContent!==detail)nodes.detail.textContent=detail;nodes.detail.hidden=!detail;
@@ -5872,6 +5975,7 @@
         if(spot)nodes.focus.style.cssText=`left:${left}px;top:${top-topLimit}px;width:${right-left}px;height:${bottom-top}px;`;
         const showCard=!transition&&cue.card!==false&&(resolved||!cue.spotlight),cardOpacity=showCard?cardLevel:0;
         nodes.card.style.opacity=String(cardOpacity);guideLayer.dataset.auGuideCard=String(cardOpacity>0);
+        nodes.leader.style.opacity='0';
         if(!showCard)return;
         // The caption sits beside its target, inside the scene, never on it.
         const cw=nodes.card.offsetWidth,ch=nodes.card.offsetHeight,gap=18,margin=24,minY=topLimit+14,maxY=bottomLimit-14,width=root.innerWidth;
@@ -5883,13 +5987,21 @@
             right:{x:right+gap,y:clampY(cy-ch/2),ok:right+gap+cw<=width-margin},left:{x:left-gap-cw,y:clampY(cy-ch/2),ok:left-gap-cw>=margin}};
           // A corner caption keeps a long hold clear of the content it explains.
           options.corner={x:width-margin-cw,y:maxY-ch-12};options.corner.ok=!cue.spotlight||!(options.corner.x<right&&options.corner.x+cw>left&&options.corner.y<bottom&&options.corner.y+ch>top);
-          side=[cue.side,...(bottom-top>300?['right','left','below','above']:['below','above','right','left'])].find(key=>options[key]?.ok)||'inside';
+          // One place to read: the caption docks bottom right when that keeps it
+          // clear of, and close to, what it explains; a leader points the way.
+          const gapTo=o=>Math.hypot(Math.max(left-(o.x+cw),o.x-right,0),Math.max(top-(o.y+ch),o.y-bottom,0));
+          const docked=cue.spotlight&&options.corner.ok&&gapTo(options.corner)<=1200;
+          side=[docked?'corner':null,cue.side,...(bottom-top>300?['right','left','below','above']:['below','above','right','left'])].find(key=>key&&options[key]?.ok)||'inside';
           ({x,y}=side==='inside'?{x:clampX(right-cw-12),y:clampY(bottom-ch-12)}:options[side]);
           if(cue.align==='end'&&['right','left'].includes(side))y=clampY(bottom-ch-24);
           if(cue.align&&['below','above'].includes(side))x=clampX(cue.align==='end'?right-cw:left);
         }
         guideLayer.dataset.auGuideSide=side;
         nodes.card.style.transform=`translate(${Math.round(x)}px,${Math.round(y)}px)`;
+        if(side==='corner'&&spot){
+          const fromX=x,fromY=y+ch/2,toX=Math.max(left,Math.min(right,fromX)),toY=Math.max(top,Math.min(bottom,fromY));
+          if(Math.hypot(fromX-toX,fromY-toY)>60){nodes.leader.querySelector('path').setAttribute('d',`M${fromX} ${fromY}L${toX} ${toY}`);const dot=nodes.leader.querySelector('circle');dot.setAttribute('cx',String(toX));dot.setAttribute('cy',String(toY));nodes.leader.style.opacity=String(cardOpacity);}
+        }
       }
       // The knowledge map's moving parts, measured once per scene. Each recorded
       // use has one ring around the case it reached and one pulse on its wire.
@@ -5956,13 +6068,14 @@
           for(const column of all('[data-au-ns-chain]'))opacity(column,1);
           for(const tick of all('.au-ns-plan-status,.au-ns-circle'))tick.style.transform='none';
           for(const ring of all('.au-ns-building-ring'))ring.style.transform=P.ringTransform(sample.at,Boolean(reduced?.matches));
-          if(n.mark)n.mark.dataset.arrived=String(!['ready','camera-in','cursor','source-open','source-swap'].includes(phase));
+          if(n.mark)n.mark.dataset.arrived=String(!['ready','case-open','camera-in','cursor','source-open','source-swap'].includes(phase));
           const preFact=['camera-in','cursor','highlight','passage-rest'].includes(phase),postFact=['connector','fact-rest','plan-tick','camera-out','combine','plan-recede','node-accepted','node-rest','document','document-rest'].includes(phase);
           if(n.fact){opacity(n.fact,preFact?0:phase==='fact'?p:1);n.fact.style.transform=phase==='fact'?`translateY(${12*(1-p)}px)`:'none';}
           if(n.link){n.link.style.visibility='visible';opacity(n.link,preFact||phase==='fact'?0:phase==='connector'||phase==='combine'?p:1);n.link.style.transform=phase==='connector'||phase==='combine'?`scaleX(${p})`:'none';}
-          opacity(n.ink,['ready','camera-in','cursor','source-open','source-swap'].includes(phase)?0:phase==='highlight'?p:1);
-          if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='camera-in'||phase==='source-open'||phase==='source-swap'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(0,${-40*(1-p)}px)`:'none';}
+          opacity(n.ink,['ready','case-open','camera-in','cursor','source-open','source-swap'].includes(phase)?0:phase==='highlight'?p:1);
+          if(n.pointer){opacity(n.pointer,phase==='ready'||phase==='case-open'||phase==='camera-in'||phase==='source-open'||phase==='source-swap'?0:phase==='cursor'?p:1);n.pointer.style.transform=phase==='cursor'?`translate(0,${-40*(1-p)}px)`:'none';}
           if(phase==='source-open')opacity(n.paper,b.entryRevealed?1:p);
+          if(phase==='case-open'){opacity(n.paper,0);opacity(select('[data-au-ns-procedure]'),0);}
           // A change of scene dips: the outgoing view leaves before the next arrives,
           // so two screens are never visible at once.
           const dipOut=reduced?.matches?1:P.ease(Math.min(1,sample.progress*2)),dipIn=reduced?.matches?1:P.ease(Math.max(0,sample.progress*2-1));
@@ -6028,9 +6141,19 @@
             if(phase==='memory-open')opacity(n.canvas,1);
             opacity(select('.au-ns-memory footer'),complete?(phase==='memory-notice'?p:1):0);
           }
+          if(b.view==='email'&&n.email){
+            // Each recorded finding is carried into the clause of the draft that states it.
+            const e=n.email,clause=Number.isSafeInteger(b.clause)?b.clause:-1,arrive=phase==='email'?p:1;
+            opacity(e.column,arrive);opacity(e.card,arrive);if(e.card)e.card.style.transform=`translateY(${18*(1-arrive)}px)`;
+            const at=i=>i<clause||i===clause&&phase!=='email-clause'?1:i===clause?p:0;
+            e.clauses.forEach((row,i)=>{const k=phase==='email'?0:at(i);opacity(row,k);row.style.transform=`translateX(${-14*(1-k)}px)`;});
+            e.links.forEach((path,i)=>{if(!path)return;const k=phase==='email'?0:at(i);path.style.strokeDashoffset=String(1-k);path.style.opacity=String(k>0?1:0);});
+            e.findings.forEach((row,i)=>{row.dataset.used=String(phase!=='email'&&at(i)>=1);row.dataset.active=String(i===clause&&phase!=='email-rest');});
+            if(e.boundary)e.boundary.dataset.sealed=String(phase==='email-rest');
+          }
           if(b.view==='photo'){
             // The scan line passes down the photo; each measured mark lights as it is reached.
-            const scanning=phase==='photo-scan',done=!['photo-open','photo-lead','photo-scan'].includes(phase),height=photo.reading.height;
+            const scanning=phase==='photo-scan',done=!['case-open','photo-open','photo-lead','photo-scan'].includes(phase),height=photo.reading.height;
             const line=reduced?.matches?(done||scanning?height*2:-1):scanning?sample.progress*height*1.02:done?height*2:-1;
             for(const mark of all('.au-photo-mark'))opacity(mark,Number(mark.dataset.y)<=line?1:0);
             const scan=select('.au-photo-scan');if(scan){opacity(scan,scanning&&!reduced?.matches?1:0);scan.setAttribute('y',String(Math.max(0,Math.min(height,line))));}
@@ -6039,6 +6162,12 @@
             opacity(select('[data-au-photo-findings]'),phase==='photo-region'?p:done?1:0);
             for(const row of all('[data-au-photo-finding]')){const index=Number(row.dataset.auPhotoFinding),shown=phase==='photo-finding'?index<b.finding?1:index===b.finding?p:0:phase==='photo-rest'?1:0;opacity(row,shown);row.style.transform=`translateY(${8*(1-shown)}px)`;}
             const frame=select('[data-au-photo-frame]');if(frame)frame.style.transform=`scale(${1+.035*(scanning?P.ease(sample.progress):done?1:0)})`;
+            // The photo opens out of its own thumbnail in the file list.
+            const thumb=select('[data-au-photo-source] img');
+            if(frame&&thumb&&['case-open','photo-open'].includes(phase)){
+              frame.style.transform='none';const from=thumb.getBoundingClientRect(),to=frame.getBoundingClientRect(),k=phase==='case-open'?0:p,scale=from.width/to.width;
+              frame.style.transformOrigin='0 0';frame.style.transform=`translate(${(from.left-to.left)*(1-k)}px,${(from.top-to.top)*(1-k)}px) scale(${scale+(1-scale)*k})`;opacity(frame,phase==='case-open'?0:Math.min(1,k*4));
+            }else if(frame){frame.style.transformOrigin='';opacity(frame,1);}
           }
           if(b.view==='map'&&n.map){
             const p=reduced?.matches?1:transition?0:sample.progress;
@@ -6081,6 +6210,20 @@
           }
           all('[data-au-operation-skip]').forEach(el=>el.hidden=['answer','library','map','cases'].includes(b.view));
           all('[data-au-desk-watch]').forEach(el=>el.hidden=!clock.paused);
+          // The case card arrives with the scene change, holds, then settles into
+          // the case name at the top of the file list as the workspace appears.
+          if(b.caseOpen){
+            const q=reduced?.matches?1:sample.progress,dock=transition||reduced?.matches?0:P.ease(Math.max(0,(q-.7)/.3)),shown=transition?dipIn:b.entryRevealed?1:P.ease(Math.min(1,q/.12));
+            caseOpener.hidden=false;caseOpener.style.opacity=String(shown);caseOpener.style.setProperty('--au-opener-veil',String(1-dock));caseOpener.dataset.auDocking=String(dock>0);
+            const o=n.opener;
+            if(o){const scale=1+(Math.min(1,o.to.width/o.from.width)-1)*dock;o.card.style.transform=`translate(${(o.to.left-o.from.left)*dock}px,${(o.to.top-o.from.top)*dock}px) scale(${scale})`;opacity(o.card,1-Math.max(0,(dock-.55)/.45));}
+          }else if(!caseOpener.hidden){caseOpener.hidden=true;caseOpener.style.opacity='0';}
+          const tipTab=tipBeats.has(b.index)?container.querySelector('.au-ns-tabs [aria-current]'):null;
+          if(tipTab&&NS_ROLE_WORK[tipTab.dataset.auNsRole]){
+            if(tabTip.textContent!==NS_ROLE_WORK[tipTab.dataset.auNsRole])tabTip.textContent=NS_ROLE_WORK[tipTab.dataset.auNsRole];
+            const r=tipTab.getBoundingClientRect(),k=reduced?.matches?1:Math.min(P.ease(Math.min(1,sample.elapsed/250)),1-P.ease(Math.max(0,(sample.elapsed-2850)/250)));
+            tabTip.style.left=`${Math.round(r.left+r.width/2-tabTip.offsetWidth/2)}px`;tabTip.style.top=`${Math.round(r.bottom+8)}px`;tabTip.style.opacity=String(Math.max(0,k));
+          }else if(tabTip.style.opacity!=='0')tabTip.style.opacity='0';
           renderGuide(sample,b,transition);
           if(sample.at>=story.duration){clock.pause();waiting=false;pausedPresentation=session;demoSession=null;syncControls();}
         }finally{rendering=false;}
