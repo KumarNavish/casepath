@@ -147,9 +147,7 @@ On the final assets (film and asset hashes in [film.json](proof/film.json)):
   - The review north-star browser test passes.
 - **API.** The photo-reading and autonomous API tests pass (8).
 - **Sealing.** The `CONTRIBUTING.md` sealing commands ran after the final commit of these assets.
-- **Full suite.** `./bin/casepath test` refuses to run in a Git worktree, so it ran in a fresh clone of the earlier sealed commit `ea57a2fa`, before the clarity changes: 2,901 passed, 13 skipped, 29 failed. The failures are environmental:
-  - two browser suites could not launch Chromium inside the runner's sandboxed home (the same suites pass in the worktree);
-  - 27 local-data-root tests require a trusted `lsof` and a memory-map audit that this container does not provide.
-
-  It was not rerun on the final commit.
-- **Unified-product browser suite.** It fails in this container at the pre-demo baseline `07935305` as well, so its failures predate this work.
+- **Full suite.** `./bin/casepath test` refuses to run in a Git worktree, so it ran in a fresh clone of the final commit `a194236c`: 2,901 passed, 13 skipped and 29 failed, in 70 min. All 29 failures come from the container, not the code:
+  - 27 local-data-root tests fail closed by design. The audit cannot read the memory map of the container's own init process (PID 1, the Firecracker `process_api`), which shares the tests' user. On macOS the audit uses `lsof` instead.
+  - The 2 browser suites failed because the clone sat under a long scratch path. The runner's temporary directory was 112 characters, and Chromium's socket paths exceed the 108-character Unix limit, so it crashes with SIGTRAP; a 47-character path launches. Both suites then pass through the runner's own `test_frontend_node_suites_v1.py`, with its clean environment, from this short-path checkout: 2 passed in 4 min.
+- **Unified-product browser suite.** It is not part of the release gate. It also fails in this container at `0dccfd6b`, the commit that last edited it, with a full environment, on a viewport-fit check. It predates this work. An earlier note citing `07935305` used a checkout without a Python environment and has been corrected.
