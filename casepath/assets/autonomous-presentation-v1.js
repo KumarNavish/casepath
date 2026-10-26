@@ -234,7 +234,7 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
     }
     if (accepted) {
       return cue('question-answered', operationId && operationId === context.firstCompletionId ? 'First question answered.' : 'Next question answered.',
-        'A tick means the documents answered it.', 'The process', 'node', {mode: 'hold', ...(nodeTarget ? {targetId: nodeTarget} : {}), part: 'completed-question'});
+        'The documents gave the answer.', 'The process', 'node', {mode: 'hold', ...(nodeTarget ? {targetId: nodeTarget} : {}), part: 'completed-question'});
     }
     return live('reading', 'Recorded work');
   }
@@ -264,7 +264,7 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
       const failed = (b.predicate_status || b.predicate?.status) === 'failed';
       if (failed) {
         return cue('unmet', decisive ? 'One check fails: no reasons were given.' : 'One check fails.', 'All the other checks pass.', 'Recorded legal tests', 'predicate', {
-          mode: 'hold', ...(predicateId ? {targetId: predicateId} : {}), part: 'unmet', spotlight: Boolean(predicateId)
+          mode: 'hold', side: 'left', ...(predicateId ? {targetId: predicateId} : {}), part: 'unmet', spotlight: Boolean(predicateId)
         });
       }
       return live('legal-checks', 'Recorded legal tests', 'predicate');
@@ -284,7 +284,7 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
 
   if (b.act === 'learning') {
     if (['later-case-rest', 'memory-open', 'memory-overview'].includes(phase)) {
-      return cue('later-evidence', 'A new case of the same kind arrives.', 'A different tenant, with different documents.', 'A later case', 'memory-source', {mode: 'hold'});
+      return cue('later-evidence', 'A new case of the same kind arrives.', 'A different tenant, with their own documents.', 'A later case', 'memory-source', {mode: 'hold'});
     }
     if (['memory-transfer', 'memory-landed'].includes(phase)) {
       const landed = phase === 'memory-landed', first = !(Number.isSafeInteger(b.item) && b.item > 0);
@@ -311,7 +311,7 @@ function documentaryCue(beat, elapsed = 0, context = {}) {
   }
 
   if (b.act === 'library') {
-    return cue('library', 'It learns across different kinds of case.', 'Each checklist is learned once, then reused.', 'Knowledge', 'library-entry', {mode: 'hold', side: 'corner', ...(b.family ? {targetId: b.family} : {})});
+    return cue('library', 'It learns across different kinds of case.', 'Each checklist is learned once, then reused.', 'Knowledge', 'library-index', {mode: 'hold', side: 'corner', ...(b.family ? {targetId: b.family} : {})});
   }
 
   if (b.act === 'cases') {

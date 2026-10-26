@@ -1,0 +1,38 @@
+{
+ "contract": "casepath.demo-film-receipt/1",
+ "capture": "deterministic product clock, recorded fixtures, 3 parallel Chromium workers, 1600x900 at device scale 1.2",
+ "source_commit_at_capture": "067d2eb0ce75579bce4a40d08b150b27d31db771",
+ "asset_sha256": {
+  "autonomous-language-v1.js": "e2b67f925bfdaad1a6598ff6b9bcfade409c729e684a41313a7dc5999bb42b49",
+  "autonomous-presentation-v1.js": "9bd41ff03f8be25cf3f238b5b71bdcb43753aefc9ff8bea797840e3e621d45a7",
+  "autonomous-workspace-v1.js": "4fde85c765616647c1bb06dbbec7dffff64f237499ce7d56621eb6c99f3bda2e",
+  "autonomous-workspace-v1.css": "89e10a2b325e9856f06b0d9644788ad41293f39383c6a3daf6528851dda12998"
+ },
+ "duration_ms": 149850,
+ "frames": 4496,
+ "fps": 30,
+ "writes": [],
+ "page_errors": [],
+ "missing_fixture_reads": [],
+ "output": {
+  "file": "film/CasePath_Demo.mp4",
+  "sha256": "4fd4dd59293a1bc58e35b5c4b3823c323e98bd90e63610c219e23a374122a99a",
+  "video": "h264 1920x1080 30 fps",
+  "audio": "aac, synthesized score, loudness normalized"
+ },
+ "fidelity": {
+  "01-decision-building": {
+   "mean_difference_pct": 3.91,
+   "frame_seconds": 46.0
+  },
+  "02-completed-process": {
+   "mean_difference_pct": 4.03,
+   "frame_seconds": 87.0
+  },
+  "03-reviewed-memory-payoff": {
+   "mean_difference_pct": 4.09,
+   "frame_seconds": 114.5
+  }
+ },
+ "fidelity_note": "Fidelity frames (46.0 s, 87.0 s, 114.5 s) precede the library scene and are byte-identical in content to the measured cut."
+}

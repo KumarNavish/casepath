@@ -32,7 +32,7 @@ test('the admitted six-act product uses one deterministic clock, preserves sourc
   await page.locator('[data-au-demo-stop]').click();const at=await page.evaluate(()=>CasepathPresentation.active.time);await page.waitForTimeout(60);assert.equal(await page.evaluate(()=>CasepathPresentation.active.time),at);
   await page.locator('[data-au-demo-resume]').click();await page.waitForTimeout(60);assert.ok(await page.evaluate(()=>CasepathPresentation.active.time)>at);
   const orientation=await page.evaluate(()=>{const a=CasepathPresentation.active;a.advanceTo(0);return {purpose:document.querySelector('[data-au-ns-purpose]').textContent,transport:document.querySelector('.au-executive-transport').textContent};});
-  assert.match(orientation.purpose,/From a customer’s documents/);assert.match(orientation.purpose,/A person decides/);assert.match(orientation.transport,/Example case · all names are made up/);
+  assert.match(orientation.purpose,/From a customer’s documents/);assert.match(orientation.purpose,/A person decides/);assert.match(orientation.transport,/Example case · made-up customers and cases/);
   const documentary=await page.evaluate(()=>{
    const a=CasepathPresentation.active,m=a.manifest,failures=[],sentences=[];
    for(const cue of m.guidance){const previous=sentences.at(-1);if(previous?.id===cue.id)previous.end=cue.end;else sentences.push({...cue});}

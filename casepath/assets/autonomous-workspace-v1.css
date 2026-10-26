@@ -2311,6 +2311,8 @@ html[data-casepath-presentation] .au-workspace:has(.au-executive-cases) .au-acce
  html[data-casepath-presentation] .au-ns-view-content { max-height:calc(100dvh - 200px); overflow:auto; scrollbar-width:thin; }
  html[data-casepath-presentation] .au-ns-view-content:has([data-au-desk-answer]) { max-height:calc(100dvh - 200px); }
  html[data-casepath-presentation] .au-cinema-finale { min-height:calc(100dvh - 150px); }
+ /* The closing card centres on the screen, not on the narrower case column. */
+ html[data-casepath-presentation] .au-cinema-finale { position:fixed; inset:75px 0 36px 0; min-height:0; }
  html[data-casepath-presentation] .au-executive-cases .au-request-row { padding-block:2px; }
  .au-workspace .au-documentary-guide { display:block; pointer-events:none; position:relative; z-index:10; }
  .au-workspace .au-doc-focus-layer { position:fixed; top:75px; bottom:36px; left:0; right:0; overflow:hidden; opacity:0; }

@@ -1512,7 +1512,7 @@
   }
   const NS_FACT_TYPES=Object.freeze({
     tenancy_terms_evidence:'The lease',landlord_knowledge_evidence:'What the landlord knew',objective_defect_observation:'A dated report of the problem',received_termination_packet:'The termination notice',received_rent_increase_packet:'The rent increase notice',original_notification_context:'What came with the notice',
-    residential_tenancy_scope:'It is a rented home',landlord_first_knowledge:'When the landlord found out',continuing_defect_without_remedy:'The problem is still not fixed',objective_use_impairment:'How the problem affects the home',outside_small_tenant_maintenance_and_no_tenant_cause:'The tenant is not to blame',canton_approved_form:'The official form was used',complete_channel_archive:'All messages are on file',issuer_authority_and_received_packet:'Sent by the right person',ordinary_non269c_tenancy:'A normal lease',issuer_authority_and_complete_packet:'Sent by the right person, in full',contemporaneous_substantive_reasons:'Reasons given with the increase',later_email_is_not_original_reasons:'A later email is not a reason'
+    residential_tenancy_scope:'It is a rented home',landlord_first_knowledge:'When the landlord found out',continuing_defect_without_remedy:'The problem is still not fixed',objective_use_impairment:'How the problem affects the home',outside_small_tenant_maintenance_and_no_tenant_cause:'The tenant is not to blame',canton_approved_form:'The official form was used',complete_channel_archive:'All messages are on file',issuer_authority_and_received_packet:'Sent by the right person',ordinary_non269c_tenancy:'A normal lease',issuer_authority_and_complete_packet:'Sent by the right person, in full',contemporaneous_substantive_reasons:'Reasons given with the increase',later_email_is_not_original_reasons:'The later email is separate from the notice'
   });
   function northStarFactCopy(state, operation) {
     const key=operation.input?.document_type||operation.object.id.replace(/^fact:/,''),label=NS_FACT_TYPES[key];
@@ -1681,7 +1681,7 @@
     return northStarMarkup(state,{rows:[],sources:new Map(),headState:state,nsOpening:mode},presentation);
   }
   function northStarPurposeMarkup(claimId = null) {
-    return `<section class="au-ns-purpose" data-au-ns-purpose><p>Legal protection · example case</p><h2>From a customer’s documents<br>to a clear answer</h2><p>CasePath’s assistants read the documents, check the facts and draft an answer. A person decides.</p><div aria-label="How it works">Documents <span>→</span> Facts <span>→</span> Answer</div><small>A replay of real CasePath work on made-up cases.</small>${claimId?`<button type="button" class="au-link" data-au-claim="${h(claimId)}">Open completed example ↗</button>`:''}</section>`;
+    return `<section class="au-ns-purpose" data-au-ns-purpose><p>Legal protection · example case</p><h2>From a customer’s documents<br>to a clear answer</h2><p>CasePath’s assistants read the documents, check the facts and draft an answer. A person decides.</p><div aria-label="How it works">Documents <span>→</span> Facts <span>→</span> Answer</div><small>Recorded CasePath work. The cases are made up.</small>${claimId?`<button type="button" class="au-link" data-au-claim="${h(claimId)}">Open completed example ↗</button>`:''}</section>`;
   }
   function northStarPreparationMarkup(failed = false) {
     // The showcase is not selected or admitted yet. Orient the visitor without
@@ -5522,7 +5522,7 @@
         const sources=new Map([...record.trace.sources].filter(([id])=>opened.has(id)));
         return {state:checkpoint.state,projection:checkpoint.projection,replay:checkpoint.replay,events:checkpoint.events||[],trace:{...record.trace,rows:prefix,sources,headState:record.state,current:op,northStar:true,executive:true,nsCatalogue:record.catalogue,finished:false,verifiedResult:false,nsCues:new Set(),displaySource:op?{artifact_id:op.source?.artifact_id||op.object.id}:null}};
       };
-      const transport=()=>`<footer class="au-executive-transport"><span class="au-cinema-progress" aria-hidden="true"></span><span data-au-film-speed></span><span>Example case · all names are made up</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
+      const transport=()=>`<footer class="au-executive-transport"><span class="au-cinema-progress" aria-hidden="true"></span><span data-au-film-speed></span><span>Example case · made-up customers and cases</span><div>${button(waiting?'Watch the analysis':clock.paused?'Resume':'Pause',waiting?'data-au-ns-start':clock.paused?'data-au-demo-resume':'data-au-demo-stop')}${waiting?'':button('Skip to answer','data-au-operation-skip')}</div></footer>`;
       const opacity=(element,value)=>{if(element)element.style.opacity=String(value);};
       const select=(selector)=>host.querySelector(selector),all=(selector)=>[...host.querySelectorAll(selector)].filter(el=>!el.closest('.au-executive-transition'));
       function markBeat(beat,phase,op,viewName){
@@ -5735,7 +5735,7 @@
           case 'photo-findings':return select('[data-au-photo-findings]');
           case 'checklist-row':return select(`[data-au-ns-checklist] [data-au-ns-checklist-doc="${cue.targetId}"]`)||select('[data-au-ns-checklist]');
           case 'tests':return select('[data-au-desk-answer] > .au-desk-tests');
-          case 'library-entry':return select('[data-au-library-entry][data-pinned=true] .au-library-entry-head');
+          case 'library-index':return select('.au-library-index');
           case 'node':return byId('[data-au-ns-node]','data-au-ns-node',nodeId);
           case 'fact':return byId('[data-au-ns-fact]','data-au-ns-fact',cue.targetId||firstFact.id)||frameNodes.fact||all('[data-au-ns-fact]').at(-1);
           case 'chain':return cue.column||cue.targetId||beat.column?byId('[data-au-ns-chain]','data-au-ns-chain',cue.column||cue.targetId||beat.column):select('[data-au-ns-chain-strip]');
@@ -5823,7 +5823,7 @@
             below:{x:clampX(cx-cw/2),y:bottom+gap,ok:bottom+gap+ch<=maxY},above:{x:clampX(cx-cw/2),y:top-gap-ch,ok:top-gap-ch>=minY},
             right:{x:right+gap,y:clampY(cy-ch/2),ok:right+gap+cw<=width-margin},left:{x:left-gap-cw,y:clampY(cy-ch/2),ok:left-gap-cw>=margin}};
           // A corner caption keeps a long hold clear of the content it explains.
-          options.corner={x:width-margin-cw,y:maxY-ch-12,ok:true};
+          options.corner={x:width-margin-cw,y:maxY-ch-12};options.corner.ok=!(options.corner.x<right&&options.corner.x+cw>left&&options.corner.y<bottom&&options.corner.y+ch>top);
           side=[cue.side,...(bottom-top>300?['right','left','below','above']:['below','above','right','left'])].find(key=>options[key]?.ok)||'inside';
           ({x,y}=side==='inside'?{x:clampX(right-cw-12),y:clampY(bottom-ch-12)}:options[side]);
           if(cue.align==='end'&&['right','left'].includes(side))y=clampY(bottom-ch-24);
