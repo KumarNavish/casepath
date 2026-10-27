@@ -59,23 +59,24 @@ def in_cloud_shell(env=os.environ):
 def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ):
     """Return a callable giving a fresh bearer token from the runtime identity.
 
-    ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) is ``cli`` for the person's `az` sign-in (Cloud Shell, a development
-    workspace), ``managed_identity`` for an operated service, or ``auto``: `az` first, then a managed identity. In Azure
-    Cloud Shell the managed-identity endpoint is the same portal relay `az` uses, so it is left out rather than waited
-    on twice. `az` gets up to ``timeout`` seconds, since the Cloud Shell relay can be slow.
+    ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) follows the DSL Handbook's credential selection: ``cli`` (the default)
+    is the person's `az` sign-in, as on an AML DSW, where `az login --use-device-code` is the documented route and the
+    attached managed identity must not be picked up; ``managed_identity`` is for a deployed service whose identity has
+    been granted access; ``auto`` tries `az`, then a managed identity, except in Azure Cloud Shell, where that endpoint
+    is the same portal relay `az` uses. `az` gets up to ``timeout`` seconds.
     """
     try:
         from azure.identity import AzureCliCredential, ManagedIdentityCredential
     except ImportError as error:
         raise ModelError("identity_unavailable", "Install azure-identity in the internal runtime to sign in with Entra.") from error
-    source = source or env.get("CASEPATH_AZURE_CREDENTIAL", "auto")
+    source = source or env.get("CASEPATH_AZURE_CREDENTIAL", "cli")
     chain = []
     if source in {"auto", "cli"}:
         chain.append(("az", AzureCliCredential(process_timeout=timeout)))
     if source == "managed_identity" or (source == "auto" and not in_cloud_shell(env)):
         chain.append(("managed identity", ManagedIdentityCredential()))
-    hint = (" In Cloud Shell, check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
-            " if it waits for the portal, sign in inside Cloud Shell with `az login --use-device-code`.") if in_cloud_shell(env) else ""
+    hint = (" Check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
+            " on an AML DSW, sign in first with `az login --use-device-code`.") if source != "managed_identity" else ""
     return token_provider(chain, scope, timeout=timeout + 15, hint=hint)
 
 

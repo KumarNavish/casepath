@@ -42,6 +42,8 @@ The tests use a synthetic workflow and a scripted model. They make no network ca
 
 ## Run it on the development workspace
 
+The development workspace is an AML DSW. Its compute instance's name starts with `dsw`, so the Mobiliar proxy reaches it. Sign-in follows the DSL Handbook: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default).
+
 1. Clone the repository on the workspace.
 2. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there.
 3. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
