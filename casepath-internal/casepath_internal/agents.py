@@ -55,7 +55,10 @@ the file is there but cannot serve (illegible, incomplete, wrong period). Check 
 summary; a one-line answer for the case handler; the open points; a reply draft whose every clause names the accepted
 facts or documents it rests on (the draft is not sent); and what CasePath should learn for later cases of this family:
 a new document need or question with its condition and a quote, a refinement of a Knowledge item that was applied, or a
-contradiction when an applied item did not hold here. Propose learning only when this case shows it.""",
+contradiction when an applied item did not hold here. Propose learning only when this case shows it.
+When the evaluated path reaches a step that produces a letter (see letters in the process), the reply draft is that
+letter, written as the step describes it (for example from the customer to the counterparty) and resting only on
+accepted findings.""",
         "tools": ["open_process", "evaluate", "get_findings", "read_file", "search"],
     },
 }
@@ -162,12 +165,15 @@ def _process_view(work):
             "facts": [{k: f.get(k) for k in ("id", "question", "type", "values")} | {"from": f["source_refs"][0].split("#")[0]}
                       for f in work.graph["facts"]],
             "steps": [{"id": s["id"], "title": s["title"], "role": s.get("role"), "documents": s.get("documents", []),
+                       **({"produces": s["produces"]} if s.get("produces") else {}),
                        "next": [{"to": e["to"], "label": e.get("label")} for e in s.get("next", [])]} for s in work.graph["steps"]],
             "documents": [{"id": d["id"], "title": d["title"], "why": d["why"], "suggested": bool(d.get("suggested")),
                            "from": d["source_refs"][0].split("#")[0]} for d in work.graph["documents"]],
             "current_step": evaluation["current"] and evaluation["current"]["title"],
             "checklist": [{"document": c["document"], "required": c["required"]} for c in evaluation["documents"]],
-            "open_questions": [q["text"] for q in work.graph.get("open_questions", [])]}
+            "open_questions": [q["text"] for q in work.graph.get("open_questions", [])],
+            "rules": [n["text"] for n in work.graph.get("notes", [])],
+            "letters": [{"step": s["id"], **s["produces"]} for s in work.graph["steps"] if s.get("produces")]}
 
 
 def _tool_specs(work, names):

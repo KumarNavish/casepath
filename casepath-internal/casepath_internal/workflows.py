@@ -160,10 +160,11 @@ def validate_workflow(data):
                 raise CatalogueError(f"step {step['id']}: transition to an unknown step")
             _check_condition(edge.get("when", True), facts, f"step {step['id']} → {edge.get('to')}")
     _check_condition(data.get("applies_when"), facts, "applies_when")
-    for question in data.get("open_questions", []):
-        if not question.get("text"):
-            raise CatalogueError("an open question needs text")
-        _refs(question, sources, "open question")
+    for kind in ("open_questions", "notes"):
+        for item in data.get(kind, []):
+            if not item.get("text"):
+                raise CatalogueError(f"each of {kind} needs text")
+            _refs(item, sources, kind)
     seen, frontier = set(), [data["start"]]
     while frontier:
         current = frontier.pop()
@@ -245,6 +246,18 @@ def route(catalogue, facts):
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}
 
 
+def _join(steps, edges):
+    """The step every branch reaches next, when each branch is one plain step."""
+    joins = set()
+    for edge in edges:
+        branch = steps[edge["to"]]
+        onward = branch.get("next", [])
+        if len(onward) != 1 or onward[0].get("when", True) is not True or branch.get("documents") or branch.get("outcome"):
+            return None
+        joins.add(onward[0]["to"])
+    return joins.pop() if len(joins) == 1 else None
+
+
 def _document_status(document, findings, checked):
     finding = findings.get(document["id"])
     if finding is not None:
@@ -263,11 +276,17 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
     findings = findings or {}
     steps = {s["id"]: s for s in workflow["steps"]}
     fact_defs = {f["id"]: f for f in workflow["facts"]}
-    path, waiting, gaps, outcome = [], [], [], None
-    current, via, seen = workflow["start"], None, set()
+    path, waiting, gaps, outcome, unmet = [], [], [], None, []
+    current, via, seen, last_edge = workflow["start"], None, set(), None
     while True:
         step = steps[current]
         if current in seen:
+            when = (last_edge or {}).get("when")
+            # A gate that sends the case back names the conditions that failed.
+            if isinstance(when, dict) and "any" in when:
+                failing = sorted({f for c in when["any"] if evaluate_condition(c, facts) is True for f in condition_facts(c)})
+                unmet = [{"fact": f, "question": fact_defs[f]["question"], "value": facts.get(f), "source_refs": fact_defs[f]["source_refs"]}
+                         for f in failing]
             gaps.append({"kind": "loop", "text": f"The workflow returns to “{step['title']}”; it is shown as the current step.",
                          "source_refs": step["source_refs"]})
             path.append({"step": current, "title": step["title"], "role": step.get("role"), "via": via, "state": "current"})
@@ -293,6 +312,14 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
             if verdict is None:
                 blocked |= condition_facts(edge["when"]) - {k for k, v in facts.items() if v is not None}
                 break
+        if chosen is None and blocked:
+            join = _join(steps, edges)
+            if join is not None:
+                # Every branch rejoins one step later without asking for anything,
+                # so an open answer here does not hold the case up.
+                row["either"] = sorted(blocked)
+                current, via = join, None
+                continue
         if chosen is None:
             row["state"] = "current"
             waiting = [{"fact": f, "question": fact_defs[f]["question"], "source_refs": fact_defs[f]["source_refs"]}
@@ -301,7 +328,7 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
                 gaps.append({"kind": "no_transition", "text": f"No transition from “{step['title']}” matches the established facts.",
                              "source_refs": step["source_refs"]})
             break
-        current, via = chosen["to"], chosen.get("label")
+        current, via, last_edge = chosen["to"], chosen.get("label"), chosen
     reached = {row["step"] for row in path}
     attached = {d for s in workflow["steps"] for d in s.get("documents", [])}
     needed = {}
@@ -318,17 +345,18 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
             continue
         status, files, citations = _document_status(document, findings, checked)
         # A suggestion from not-yet-active Knowledge is checked but never counted as missing.
-        need = "suggested" if document.get("suggested") else "yes" if required else "depends"
+        need = "suggested" if document.get("suggested") else "optional" if document.get("optional") else "yes" if required else "depends"
         checklist.append({"document": document["id"], "title": document["title"], "why": document["why"],
                           "step": step_id, "required": need,
                           "condition_facts": sorted(condition_facts(document.get("required_when"))) if required is None else [],
                           "status": status, "files": files, "citations": citations,
                           "source_refs": document["source_refs"]})
     next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
+    next_actions += [{"kind": "resolve", "fact": u["fact"], "text": u["question"], "value": u["value"]} for u in unmet]
     next_actions += [{"kind": "obtain", "document": c["document"], "text": c["title"], "why": c["why"]}
-                     for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] != "suggested"]
+                     for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] not in {"suggested", "optional"}]
     current_row = next((row for row in path if row["state"] == "current"), None)
-    return {"workflow": ref(workflow), "path": path, "current": current_row, "waiting_for": waiting,
+    return {"workflow": ref(workflow), "path": path, "current": current_row, "waiting_for": waiting, "unmet": unmet,
             "outcome": outcome, "documents": checklist, "next_actions": next_actions,
             "gaps": gaps + [{"kind": "open_question", **q} for q in workflow.get("open_questions", [])],
             "reached": sorted(reached)}

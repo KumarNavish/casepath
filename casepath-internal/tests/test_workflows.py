@@ -97,3 +97,36 @@ class RoutingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ConvergenceAndOptionalTests(unittest.TestCase):
+    def test_converging_branches_do_not_block_and_optional_is_not_missing(self):
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "channel", "type": "enum", "values": ["login", "guest"], "question": "Login?", "source_refs": ["fixture#c"]})
+        data["steps"][0]["next"] = [{"to": "via_login", "when": {"fact": "channel", "is": "login"}},
+                                    {"to": "via_guest", "when": {"fact": "channel", "is": "guest"}}]
+        data["steps"] += [{"id": "via_login", "title": "Login", "source_refs": ["fixture#l"], "next": [{"to": "notice", "when": True}]},
+                          {"id": "via_guest", "title": "Guest", "source_refs": ["fixture#g"], "next": [{"to": "notice", "when": True}]}]
+        data["documents"][1]["optional"] = True
+        data["notes"] = [{"text": "Uploads are checked at every step.", "source_refs": ["fixture#n"]}]
+        validate_workflow(data)
+        result = evaluate(data, {"landlord_notified": True}, {}, checked=True)
+        self.assertEqual(result["outcome"]["id"], "reported")
+        self.assertEqual(result["path"][0]["either"], ["channel"])
+        photo = next(d for d in result["documents"] if d["document"] == "photo")
+        self.assertEqual(photo["required"], "optional")
+        self.assertNotIn("photo", [a.get("document") for a in result["next_actions"]])
+
+
+class GateTests(unittest.TestCase):
+    def test_a_failed_gate_names_its_unmet_conditions(self):
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "details", "type": "boolean", "question": "Are personal details known?", "source_refs": ["fixture#p"]})
+        assess = next(s for s in data["steps"] if s["id"] == "assess")
+        assess.pop("outcome")
+        assess["next"] = [{"to": "done", "when": {"all": [{"fact": "details", "is": True}]}},
+                          {"to": "assess", "when": {"any": [{"fact": "details", "is": False}]}}]
+        data["steps"].append({"id": "done", "title": "Report", "source_refs": ["fixture#d"], "outcome": "reported"})
+        result = evaluate(data, {"landlord_notified": True, "details": False}, {}, checked=True)
+        self.assertEqual(result["current"]["step"], "assess")
+        self.assertEqual([(a["kind"], a["fact"]) for a in result["next_actions"] if a["kind"] == "resolve"], [("resolve", "details")])

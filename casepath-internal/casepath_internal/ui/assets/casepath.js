@@ -407,7 +407,7 @@ function chain() {
   const ev = S.data.evaluation, r = result() || {};
   const accepted = (r.facts || []).filter((f) => f.verdict === "accepted");
   const present = ev.documents.filter((d) => d.status === "present");
-  const missing = ev.documents.filter((d) => d.status === "missing" && d.required !== "suggested");
+  const missing = ev.documents.filter((d) => d.status === "missing" && !["suggested", "optional"].includes(d.required));
   const knowledge = ((S.data.provenance || {}).knowledge || []).filter((k) => k.applied);
   const sources = (S.data.process.sources || []).filter((s) => !["knowledge", "edit"].includes(s.id));
   const list = (items, empty) => items.length ? `<ul>${items.join("")}</ul>` : `<span class="cp-muted">${empty}</span>`;
@@ -573,12 +573,12 @@ function documentsView() {
   if (!ev) return `<p class="cp-empty">The document checklist appears once the case has a process.</p>`;
   const rows = recorded("document");
   const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {}; return d.knowledge ? "From Knowledge" : d.edit ? "Added for this case" : "From the process"; };
-  const missing = ev.documents.filter((d) => d.status === "missing" && d.required !== "suggested").length;
+  const missing = ev.documents.filter((d) => d.status === "missing" && !["suggested", "optional"].includes(d.required)).length;
   return `<h1 class="cp-title">Documents <span class="cp-muted">· ${missing} missing</span></h1>
     <table class="cp-table"><thead><tr><th>Document</th><th>Why</th><th>Status</th><th>Proof</th><th>Origin</th></tr></thead><tbody>${ev.documents.map((d) => {
       const row = rows[d.document] || {};
-      const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (d.required === "suggested" ? "wait" : "bad") : "wait";
-      return `<tr><td><b>${esc(d.title)}</b>${d.required === "depends" ? '<br><small class="cp-muted">depends on an open answer</small>' : d.required === "suggested" ? '<br><small class="cp-muted">suggested by Knowledge</small>' : ""}</td>
+      const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
+      return `<tr><td><b>${esc(d.title)}</b>${d.required === "depends" ? '<br><small class="cp-muted">depends on an open answer</small>' : d.required === "suggested" ? '<br><small class="cp-muted">suggested by Knowledge</small>' : d.required === "optional" ? '<br><small class="cp-muted">optional</small>' : ""}</td>
         <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(d.status)}</span></td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;
     }).join("")}</tbody></table>`;
@@ -591,6 +591,7 @@ function resultView() {
   return `<h1 class="cp-title">Answer</h1><p class="cp-answer">${esc(r.answer)}</p><p>${esc(r.summary)}</p>
     ${ev && ev.current ? `<p class="cp-muted">Current step: <b>${esc(ev.current.title)}</b>${ev.waiting_for.length ? ` · waiting for: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>` : ""}
     ${ev && ev.outcome ? `<p class="cp-muted">Outcome in the process: <b>${esc(ev.outcome.title)}</b></p>` : ""}
+    ${ev && ev.next_actions.length ? `<h2 class="cp-section">Next steps</h2><ul>${ev.next_actions.map((a) => `<li>${esc(a.kind === "answer" ? "Answer: " : a.kind === "resolve" ? "Not met: " : "Obtain: ")}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}
     ${(r.open_points || []).length ? `<h2 class="cp-section">Open points</h2><ul>${r.open_points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
     ${r.reply && r.reply.needed ? `<h2 class="cp-section">Reply draft</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(r.reply.label || "AI-generated draft")}</span></header>
       <div class="clauses">${r.reply.clauses.map((c) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}</p>
