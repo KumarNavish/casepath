@@ -51,12 +51,17 @@ class Turn:
 
 
 def entra_token_provider(scope=SCOPE):
-    """Return a callable giving a fresh bearer token from the runtime identity."""
+    """Return a callable giving a fresh bearer token from the runtime identity.
+
+    The person's `az` sign-in comes first (Cloud Shell, a development workspace),
+    then a managed identity (an operated service). Azure's default chain tries the
+    managed identity first, which in Cloud Shell can time out before `az` is tried.
+    """
     try:
-        from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+        from azure.identity import AzureCliCredential, ChainedTokenCredential, ManagedIdentityCredential, get_bearer_token_provider
     except ImportError as error:
         raise ModelError("identity_unavailable", "Install azure-identity in the internal runtime to sign in with Entra.") from error
-    return get_bearer_token_provider(DefaultAzureCredential(exclude_interactive_browser_credential=True), scope)
+    return get_bearer_token_provider(ChainedTokenCredential(AzureCliCredential(), ManagedIdentityCredential()), scope)
 
 
 def wire_schema(schema):
