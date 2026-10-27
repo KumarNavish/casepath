@@ -4,6 +4,7 @@ It sends no case data. It prints only the deployment, latency, token counts
 and whether the answer matched its schema. Run it only with approval.
 """
 import sys
+import time
 
 from casepath_internal.azure_model import AzureOpenAIModel, ModelError, entra_token_provider
 from casepath_internal.config import load_settings
@@ -14,7 +15,14 @@ def main():
     settings = load_settings().model
     if settings is None:
         sys.exit("No model is configured in ~/.casepath/env.")
-    model = AzureOpenAIModel(settings, entra_token_provider())
+    token = entra_token_provider()
+    started = time.monotonic()
+    try:
+        token()
+    except ModelError as error:
+        sys.exit(f"sign-in failed after {time.monotonic() - started:.0f} s: {error}")
+    print(f"sign-in ok in {time.monotonic() - started:.1f} s")
+    model = AzureOpenAIModel(settings, token)
     schema = obj(status=choice(["ok"]))
     try:
         result = model.respond_json(name="casepath_check", instructions="Answer with status ok.",

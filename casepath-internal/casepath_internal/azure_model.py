@@ -11,6 +11,8 @@ items. Tokens are never logged or stored.
 """
 from dataclasses import dataclass
 import json
+import os
+import threading
 import time
 
 import httpx
@@ -50,18 +52,73 @@ class Turn:
     seconds: float
 
 
-def entra_token_provider(scope=SCOPE):
+def in_cloud_shell(env=os.environ):
+    return env.get("AZUREPS_HOST_ENVIRONMENT", "").startswith("cloud-shell") or "ACC_CLOUD" in env
+
+
+def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ):
     """Return a callable giving a fresh bearer token from the runtime identity.
 
-    The person's `az` sign-in comes first (Cloud Shell, a development workspace),
-    then a managed identity (an operated service). Azure's default chain tries the
-    managed identity first, which in Cloud Shell can time out before `az` is tried.
+    ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) is ``cli`` for the person's `az` sign-in (Cloud Shell, a development
+    workspace), ``managed_identity`` for an operated service, or ``auto``: `az` first, then a managed identity. In Azure
+    Cloud Shell the managed-identity endpoint is the same portal relay `az` uses, so it is left out rather than waited
+    on twice. `az` gets up to ``timeout`` seconds, since the Cloud Shell relay can be slow.
     """
     try:
-        from azure.identity import AzureCliCredential, ChainedTokenCredential, ManagedIdentityCredential, get_bearer_token_provider
+        from azure.identity import AzureCliCredential, ManagedIdentityCredential
     except ImportError as error:
         raise ModelError("identity_unavailable", "Install azure-identity in the internal runtime to sign in with Entra.") from error
-    return get_bearer_token_provider(ChainedTokenCredential(AzureCliCredential(), ManagedIdentityCredential()), scope)
+    source = source or env.get("CASEPATH_AZURE_CREDENTIAL", "auto")
+    chain = []
+    if source in {"auto", "cli"}:
+        chain.append(("az", AzureCliCredential(process_timeout=timeout)))
+    if source == "managed_identity" or (source == "auto" and not in_cloud_shell(env)):
+        chain.append(("managed identity", ManagedIdentityCredential()))
+    hint = (" In Cloud Shell, check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
+            " if it waits for the portal, sign in inside Cloud Shell with `az login --use-device-code`.") if in_cloud_shell(env) else ""
+    return token_provider(chain, scope, timeout=timeout + 15, hint=hint)
+
+
+def token_provider(chain, scope, *, timeout, hint=""):
+    """Try each (name, credential) in turn, each within `timeout` seconds; cache the token until shortly before expiry.
+
+    A failure names every source and why it gave no token. Tokens are never logged.
+    """
+    cached, lock = {"token": None, "expires": 0}, threading.Lock()
+
+    def attempt(credential):
+        box = {}
+
+        def run():
+            try:
+                box["token"] = credential.get_token(scope)
+            except Exception as error:  # Reported by name below; any failure moves on to the next source.
+                box["error"] = error
+        worker = threading.Thread(target=run, daemon=True)
+        worker.start()
+        worker.join(timeout)
+        if worker.is_alive():
+            raise TimeoutError(f"no answer within {timeout} s")
+        if "error" in box:
+            raise box["error"]
+        return box["token"]
+
+    def provider():
+        with lock:
+            if cached["token"] and cached["expires"] - time.time() > 300:
+                return cached["token"]
+            reasons = []
+            for name, credential in chain:
+                try:
+                    token = attempt(credential)
+                except Exception as error:
+                    first = (str(error).strip().splitlines() or [type(error).__name__])[0]
+                    reasons.append(f"{name}: {first[:300]}")
+                    continue
+                cached.update(token=token.token, expires=token.expires_on)
+                return token.token
+            raise ModelError("sign_in", "No Entra token for Azure OpenAI (" + "; ".join(reasons or ["no sign-in source"]) + ")." + hint)
+    return provider
 
 
 def wire_schema(schema):

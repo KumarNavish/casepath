@@ -4,7 +4,7 @@ import unittest
 
 import httpx
 
-from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn
+from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn, in_cloud_shell, token_provider
 from casepath_internal.config import ModelSettings, SettingsError, load_settings
 from casepath_internal.schema import obj, text
 
@@ -32,6 +32,41 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(loaded.model.endpoint, ENDPOINT)
         with self.assertRaises(SettingsError):
             load_settings({"CASEPATH_IDENTITY_HEADER": "x-identity", "CASEPATH_DEV_USER": "dev"})
+
+
+class Credential:
+    def __init__(self, outcome, delay=0):
+        self.outcome, self.delay, self.calls = outcome, delay, 0
+
+    def get_token(self, scope):
+        import time
+        from types import SimpleNamespace
+        self.calls += 1
+        time.sleep(self.delay)
+        if isinstance(self.outcome, Exception):
+            raise self.outcome
+        return SimpleNamespace(token=self.outcome, expires_on=time.time() + 3600)
+
+
+class SignInTests(unittest.TestCase):
+    def test_a_slow_or_failing_source_is_named_and_the_next_one_is_tried(self):
+        cli, managed = Credential(RuntimeError("Timeout waiting for token from portal\nmore"), 0), Credential("tok")
+        provider = token_provider([("az", cli), ("managed identity", managed)], "scope", timeout=1)
+        self.assertEqual(provider(), "tok")
+        self.assertEqual(provider(), "tok")
+        self.assertEqual(managed.calls, 1)  # cached until shortly before expiry
+
+    def test_a_hanging_source_times_out_with_its_reason(self):
+        provider = token_provider([("az", Credential("late", delay=2))], "scope", timeout=0.2, hint=" Try az login.")
+        with self.assertRaises(ModelError) as caught:
+            provider()
+        self.assertEqual(caught.exception.reason, "sign_in")
+        self.assertIn("az: no answer within 0.2 s", str(caught.exception))
+        self.assertIn("Try az login.", str(caught.exception))
+
+    def test_cloud_shell_is_recognised(self):
+        self.assertTrue(in_cloud_shell({"AZUREPS_HOST_ENVIRONMENT": "cloud-shell/1.0"}))
+        self.assertFalse(in_cloud_shell({}))
 
 
 class ModelTests(unittest.TestCase):
