@@ -42,7 +42,7 @@ def report(agent, **fields):
         "process_builder": {"summary": "Built.", "questions": []},
         "document_finder": {"summary": "Found."},
         "result_checker": {"summary": "Checked.", "answer": "An answer.", "open_points": [],
-                           "reply": {"needed": False, "subject": "", "clauses": []}, "learn": []},
+                           "reply": {"needed": False, "subject": "", "clauses": []}, "learn": [], "case_summary": []},
     }
     return ("report", {**defaults[agent], **fields})
 

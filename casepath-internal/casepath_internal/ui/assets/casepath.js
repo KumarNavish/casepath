@@ -32,7 +32,7 @@ const AGENT_TITLE = Object.fromEntries(AGENTS.map(([id, title]) => [id, title]).
 const AGENT_ICON = Object.fromEntries(AGENTS.map(([id, , i]) => [id, i]).concat([["lead", "nodes"]]));
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const $ = (selector, root = document) => root.querySelector(selector);
-const S = { me: null, route: {}, data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null,
+const S = { me: null, route: {}, data: null, pages: {}, file: null, page: null, step: null, editing: false, lastEdit: null,
             events: [], poll: null, follow: true, knowledge: null, workflows: null, message: "" };
 
 async function api(path, options = {}) {
@@ -165,7 +165,7 @@ function renderRail() {
     const proof = proofFor(f.id);
     return `<button class="cp-source" data-file="${esc(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
       <span class="cp-source-label">${esc(f.name)}<small>Received ${dateText(f.created_at)}${f.extraction && f.extraction.pages ? ` · ${f.extraction.pages} pages` : ""}</small>
-      ${proof ? `<span class="cp-proof">${icon("tick")}${esc(proof)}</span>` : ""}</span></button>`;
+      ${proof ? `<span class="cp-proof">${icon("tick")}${esc(proof)}</span>` : ""}</span></button>${segmentRows(f)}`;
   }).join("");
   const chooser = !d.case.workflow_id && S.workflows && S.workflows.length
     ? `<label class="cp-status">Process <select id="workflow" aria-label="Process for this case"><option value="">Find it from the documents</option>
@@ -185,8 +185,15 @@ function renderRail() {
   </aside>`;
 }
 
+function segmentRows(file) {
+  const segments = (file.extraction && file.extraction.segments) || [];
+  if (!segments.length) return "";
+  return `<ol class="cp-segs" aria-label="Documents in ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}">
+    <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `S. ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}</small></button></li>`).join("")}</ol>`;
+}
+
 function bindRail() {
-  for (const button of document.querySelectorAll("[data-file]")) button.addEventListener("click", () => { S.file = button.dataset.file; renderCase(); });
+  for (const button of document.querySelectorAll("[data-file]")) button.addEventListener("click", () => { S.file = button.dataset.file; S.page = Number(button.dataset.page) || null; renderCase(); });
   const upload = $("#upload");
   if (upload) upload.addEventListener("change", () => uploadFiles(upload.files));
   const drop = $("#drop") || $(".cp-rail");
@@ -290,7 +297,7 @@ async function sourceCard(fileId) {
   const head = doc.headers ? `<dl class="cp-doc-head">${["From", "To", "Date", "Subject"].filter((k) => doc.headers[k]).map((k) => `<dt>${k}:</dt><dd>${esc(doc.headers[k])}</dd>`).join("")}</dl>` : "";
   // An e-mail's header lines are shown above; its body starts after the first blank line.
   const skip = (p) => (doc.headers && p === doc.pages[0] && p.text.indexOf("\n\n") >= 0 ? p.text.indexOf("\n\n") + 2 : 0);
-  const body = doc.pages.length ? doc.pages.map((p) => `${p.page ? `<span class="page">Page ${p.page}</span>` : ""}${highlight(p.text, p.page, cites, skip(p))}`).join("\n")
+  const body = doc.pages.length ? doc.pages.map((p) => `${p.page ? `<span class="page" id="page-${p.page}">Page ${p.page}</span>` : ""}${highlight(p.text, p.page, cites, skip(p))}`).join("\n")
     : doc.kind === "image" ? `<img alt="${esc(doc.name)}" src="/api/files/${esc(fileId)}/original" style="max-width:100%">` : `<span class="cp-muted">No readable text.</span>`;
   return `<article class="cp-card" aria-label="${esc(doc.name)}"><div class="cp-doc-toolbar">
       <button class="cp-icon-button" data-step-file="${esc(files[index - 1] || "")}" aria-label="Previous source" ${index <= 0 ? "disabled" : ""}>${icon("left")}</button>
@@ -588,7 +595,14 @@ function resultView() {
   const r = result();
   if (!r || !r.answer) return `<p class="cp-empty">The result checker’s answer, open points and reply draft appear here after the case is prepared.</p>`;
   const ev = S.data.evaluation;
-  return `<h1 class="cp-title">Answer</h1><p class="cp-answer">${esc(r.answer)}</p><p>${esc(r.summary)}</p>
+  const today = new Date();
+  const days = (iso) => Math.round((new Date(iso) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
+  const deadlines = (r.deadlines || []).map((d) => { const n = days(d.date); return `<li><b>${dateText(d.date)}</b> · ${esc(d.question)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : n < 0 ? `abgelaufen seit ${-n} Tagen` : n === 0 ? "heute" : `in ${n} Tagen`}</span></li>`; }).join("");
+  const summary = (r.case_summary || []).length ? `<section class="cp-card" style="padding:16px 20px;max-width:900px;margin-bottom:18px"><h2 class="cp-section" style="margin-top:0">Fallzusammenfassung</h2>
+      <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}</dd>`).join("")}</dl></section>` : "";
+  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">Entwurf als .docx</a>` : "";
+  return `${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">Fristen</h2><ul>${deadlines}</ul>` : ""}
+    <h1 class="cp-title">Answer</h1><p class="cp-answer">${esc(r.answer)}</p><p>${esc(r.summary)}</p>
     ${ev && ev.current ? `<p class="cp-muted">Current step: <b>${esc(ev.current.title)}</b>${ev.waiting_for.length ? ` · waiting for: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>` : ""}
     ${ev && ev.outcome ? `<p class="cp-muted">Outcome in the process: <b>${esc(ev.outcome.title)}</b></p>` : ""}
     ${ev && ev.next_actions.length ? `<h2 class="cp-section">Next steps</h2><ul>${ev.next_actions.map((a) => `<li>${esc(a.kind === "answer" ? "Answer: " : a.kind === "resolve" ? "Not met: " : "Obtain: ")}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}
@@ -596,7 +610,7 @@ function resultView() {
     ${r.reply && r.reply.needed ? `<h2 class="cp-section">Reply draft</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(r.reply.label || "AI-generated draft")}</span></header>
       <div class="clauses">${r.reply.clauses.map((c) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}</p>
         <small class="cp-muted">${c.supported ? "Rests on: " + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; ") : "Not supported by an accepted finding: review before use"}</small></div>`).join("")}</div>
-      <footer>${icon("shield")}Draft · not sent — a person decides</footer></article>` : ""}
+      <footer>${icon("shield")}Draft · not sent — a person decides</footer></article><p>${draft}</p>` : ""}
     ${(r.learning || []).length ? `<h2 class="cp-section">What CasePath proposes to learn</h2><ul>${r.learning.map((l) => `<li><b>${esc(l.action)}</b> · ${esc(l.title || l.question || l.note)} <span class="cp-muted">— ${esc(l.reason)}</span></li>`).join("")}</ul>
       <p><a href="#/knowledge">Review in Knowledge</a></p>` : ""}
     <h2 class="cp-section">Work log</h2>${workLog()}`;
@@ -663,6 +677,7 @@ async function renderCase() {
   bindEdit();
   const hit = $("#live-hit");
   if (hit) hit.scrollIntoView({ block: "center", behavior: "smooth" });
+  else if (S.page && $(`#page-${S.page}`)) $(`#page-${S.page}`).scrollIntoView({ block: "start" });
   const notice = $("#notice");
   const used = ((S.data.provenance || {}).knowledge || []).some((k) => k.applied);
   notice.hidden = !used;

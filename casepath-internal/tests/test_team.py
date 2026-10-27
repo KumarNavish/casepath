@@ -178,3 +178,17 @@ class EditTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HandlerDeliverableTests(unittest.TestCase):
+    def test_case_summary_and_deadlines(self):
+        workflow = copy.deepcopy(FIXTURE)
+        workflow["summary"] = [{"id": "gegenpartei", "label": "Gegenpartei", "source_refs": ["fixture#s"]}]
+        workflow["facts"].append({"id": "frist", "type": "date", "deadline": True, "question": "Welche Frist gilt?", "source_refs": ["fixture#f"]})
+        files = [{"id": "f1", "name": "m.eml", "kind": "email", "text": f"Subject: Schimmel\n\n{QUOTE} Bitte beheben Sie den Mangel bis zum 15. März 2025."}]
+        script = standard_script(finder_calls=[], result_fields={"case_summary": [{"field": "gegenpartei", "text": "Immo Aare AG, Bern"}]})
+        script[7].insert(1, ("record_fact", {"fact": "frist", "status": "established", "value": "2025-03-15",
+                                             "citations": [{"file": "f1", "quote": "Bitte beheben Sie den Mangel bis zum 15. März 2025."}]}))
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=files, workflow=workflow)
+        self.assertEqual(result["case_summary"], [{"field": "gegenpartei", "label": "Gegenpartei", "text": "Immo Aare AG, Bern"}])
+        self.assertEqual(result["deadlines"], [{"fact": "frist", "question": "Welche Frist gilt?", "date": "2025-03-15"}])

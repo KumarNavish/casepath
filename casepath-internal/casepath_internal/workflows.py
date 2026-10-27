@@ -160,6 +160,10 @@ def validate_workflow(data):
                 raise CatalogueError(f"step {step['id']}: transition to an unknown step")
             _check_condition(edge.get("when", True), facts, f"step {step['id']} → {edge.get('to')}")
     _check_condition(data.get("applies_when"), facts, "applies_when")
+    for field in data.get("summary", []):
+        if not ID.match(str(field.get("id"))) or not field.get("label"):
+            raise CatalogueError("each summary field needs an id and a label")
+        _refs(field, sources, f"summary field {field.get('id')}")
     for kind in ("open_questions", "notes"):
         for item in data.get(kind, []):
             if not item.get("text"):

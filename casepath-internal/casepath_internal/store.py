@@ -140,6 +140,11 @@ class CaseStore:
         row["extraction"] = extraction
         return row
 
+    def update_extraction(self, file_id, extraction):
+        with self._lock:
+            self._db.execute("update files set extraction=? where id=?", (json.dumps(extraction, ensure_ascii=False), file_id))
+        return self.get_file(file_id)
+
     def list_files(self, case_id, with_text=False):
         return [self.get_file(r["id"], with_text) for r in self._all("select id from files where case_id=? order by created_at, rowid", case_id)]
 

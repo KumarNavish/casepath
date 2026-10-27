@@ -18,6 +18,7 @@ from . import casegraph, knowledge as kb, workflows
 from .agents import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
 from .azure_model import ModelError
 from .evidence import Evidence
+from .reading import prepare_file
 from .schema import arr, choice, obj, text
 from .store import now
 
@@ -53,8 +54,9 @@ def case_state(store, catalogue, case_id):
 
 
 class RunService:
-    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium"):
+    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True):
         self.store, self.catalogue, self.model_factory, self.effort = store, catalogue, model_factory, effort
+        self.read_scans = read_scans
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self.store.interrupt_unfinished()
 
@@ -127,6 +129,10 @@ class RunService:
             if not files:
                 raise TeamError("no_files", "The case has no files to read.")
             model = self._model(run_id)
+            if self.read_scans:
+                for row in self.store.list_files(case_id, with_text=True):
+                    prepare_file(model, self.store, row, on_event=lambda e: self._event(run_id, e))
+                files = case_files(self.store, case_id)
             decision, workflow = self._route(model, case, files, run_id)
             self.store.update_run(run_id, routing=decision)
             if workflow is None:

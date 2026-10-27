@@ -194,6 +194,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     def get_run(run_id: str, after: int = 0, who=Depends(user)):
         return found(store.get_run, run_id, after)
 
+    @app.get("/api/runs/{run_id}/draft.docx")
+    def draft_docx(run_id: str, who=Depends(user)):
+        run = found(store.get_run, run_id)
+        reply = ((run.get("result") or {}).get("reply")) or {}
+        if not reply.get("clauses"):
+            raise HTTPException(404, "This run has no draft.")
+        data = _docx(reply.get("subject") or "Entwurf", [c["text"] for c in reply["clauses"]])
+        return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        headers={"Content-Disposition": "attachment; filename=Entwurf.docx", "Cache-Control": "private, no-store"})
+
     # Editing the case's process
     @app.post("/api/cases/{case_id}/edits", status_code=201)
     def edit_process(case_id: str, body: EditRequest, who=Depends(user)):
@@ -282,3 +292,27 @@ def _headers(text):
         if key in {"From", "To", "Date", "Subject"} and value:
             fields[key] = value
     return fields
+
+
+def _docx(subject, paragraphs):
+    """A minimal Word document: the draft, clearly marked as not sent."""
+    import io
+    import zipfile
+    from xml.sax.saxutils import escape
+
+    def para(text_value, bold=False):
+        run = f"<w:r>{'<w:rPr><w:b/></w:rPr>' if bold else ''}<w:t xml:space=\"preserve\">{escape(text_value)}</w:t></w:r>"
+        return f"<w:p>{run}</w:p>"
+    body = para("Entwurf — nicht versendet. Eine Person prüft und entscheidet.", True) + para(subject, True) + "".join(para(p) for p in paragraphs)
+    document = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + body + "</w:body></w:document>")
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+                         '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+                         '<Default Extension="xml" ContentType="application/xml"/>'
+                         '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>')
+        archive.writestr("_rels/.rels", '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                         '<Relationship Id="r1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>')
+        archive.writestr("word/document.xml", document)
+    return out.getvalue()
