@@ -28,13 +28,15 @@ class Evidence:
             pages = []
             raw = row.get("text") or ""
             marks = list(PAGE.finditer(raw))
+            raws = []
             if marks:
                 for index, mark in enumerate(marks):
                     end = marks[index + 1].start() if index + 1 < len(marks) else len(raw)
-                    pages.append((int(mark.group(1)), normalise(raw[mark.end():end])))
+                    raws.append((int(mark.group(1)), raw[mark.end():end]))
             elif raw.strip():
-                pages.append((None, normalise(raw)))
-            self.files[row["id"]] = {**{k: v for k, v in row.items() if k != "text"}, "pages_text": pages}
+                raws.append((None, raw))
+            pages = [(page, normalise(chunk)) for page, chunk in raws]
+            self.files[row["id"]] = {**{k: v for k, v in row.items() if k != "text"}, "pages_text": pages, "pages_raw": raws}
 
     def catalogue(self):
         return [{"file": fid, "name": f.get("name"), "kind": f.get("kind"), "readable": bool(f["pages_text"]),

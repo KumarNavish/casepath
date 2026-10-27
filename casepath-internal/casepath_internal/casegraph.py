@@ -138,8 +138,8 @@ def apply_edit(graph, edit):
 def build(base, *, knowledge=(), edits=(), facts_known=None, case_id=None):
     """Return the case's process and what each Knowledge item and edit did.
 
-    Knowledge made from this case's own edit is not applied back to it: the
-    edit itself governs this case, so undoing it removes it here.
+    Knowledge learned from this case is not applied back to it: the case's own
+    findings and edits govern it, and only later cases count as reuse.
     """
     graph = deepcopy(base)
     graph["sources"] = [s for s in graph["sources"] if s["id"] not in {"knowledge", "edit"}] + deepcopy(EXTRA_SOURCES)
@@ -147,8 +147,7 @@ def build(base, *, knowledge=(), edits=(), facts_known=None, case_id=None):
     for item in knowledge:
         if item["family"] != base["id"] or item["status"] not in {"active", "candidate"}:
             continue
-        origin = item.get("origin") or {}
-        if case_id is not None and origin.get("kind") == "case_edit" and origin.get("case_id") == case_id:
+        if case_id is not None and (item.get("origin") or {}).get("case_id") == case_id:
             continue
         trial = deepcopy(graph)
         try:

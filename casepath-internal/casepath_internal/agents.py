@@ -211,7 +211,8 @@ def _record_fact(work, agent, args):
             return {"accepted": False, "reason": reason}
     work.facts[args["fact"]] = {"fact": args["fact"], "status": args["status"], "value": value, "citations": located,
                                 "verdict": None if args["status"] == "established" else "not_checked", "by": agent}
-    work.emit("source_checker", "fact.located", fact=args["fact"], status=args["status"], quotes=len(located), missed=missed)
+    work.emit("source_checker", "fact.located", fact=args["fact"], status=args["status"], quotes=len(located), missed=missed,
+              cite=located[0] if located else None)
     return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed}
 
 
@@ -224,7 +225,8 @@ def _record_document(work, agent, args):
     work.documents[args["document"]] = {"document": args["document"], "status": status, "files": args["files"],
                                         "citations": located, "note": args["note"], "by": agent,
                                         "verdict": None if status != "missing" else "not_checked"}
-    work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"])
+    work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"],
+              cite=located[0] if located else None)
     return {"accepted": True, "status": status, "located_quotes": len(located), "missed_quotes": missed}
 
 
@@ -356,7 +358,9 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=24)
                     if call["name"] == "report":
                         report = call["arguments"]
                         continue
-                    work.emit(agent, "tool", tool=call["name"])
+                    args = call["arguments"]
+                    work.emit(agent, "tool", tool=call["name"], file=args.get("file"), query=args.get("query"),
+                              target=args.get("fact") or args.get("document"))
                     result = _dispatch(work, agent, call["name"], call["arguments"])
             conversation.append({"type": "function_call_output", "call_id": call["call_id"],
                                  "output": json.dumps(result, ensure_ascii=False, default=str)})

@@ -18,6 +18,7 @@ from pydantic import BaseModel
 from . import casegraph, knowledge as kb, workflows
 from .azure_model import AzureOpenAIModel, entra_token_provider
 from .config import load_settings
+from .evidence import Evidence
 from .extract import extract
 from .runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
@@ -169,6 +170,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
         row = found(store.get_file, file_id, True)
         return {"id": row["id"], "name": row["name"], "text": row["extraction"].get("text", ""), "note": row["extraction"].get("note")}
 
+    @app.get("/api/files/{file_id}/pages")
+    def file_pages(file_id: str, who=Depends(user)):
+        row = found(store.get_file, file_id, True)
+        evidence = Evidence([{"id": row["id"], "name": row["name"], "kind": row["kind"], **row["extraction"]}])
+        # Raw page text keeps the document's lines; quote offsets refer to its normalised form,
+        # which the browser rebuilds with the same rules to place each highlight exactly.
+        pages = evidence.files[row["id"]]["pages_raw"]
+        return {"id": row["id"], "name": row["name"], "kind": row["kind"], "media_type": row["media_type"],
+                "note": row["extraction"].get("note"), "headers": _headers(row["extraction"].get("text", "")) if row["kind"] == "email" else None,
+                "pages": [{"page": page, "text": text} for page, text in pages]}
+
     @app.post("/api/cases/{case_id}/runs", status_code=202)
     def start_run(case_id: str, who=Depends(user)):
         try:
@@ -260,3 +272,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
             return FileResponse(UI / "index.html", headers={"Cache-Control": "no-store"})
 
     return app
+
+
+def _headers(text):
+    """The From/To/Date/Subject lines the e-mail reader put first."""
+    fields = {}
+    for line in text.split("\n\n", 1)[0].split("\n"):
+        key, _, value = line.partition(": ")
+        if key in {"From", "To", "Date", "Subject"} and value:
+            fields[key] = value
+    return fields
