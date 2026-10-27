@@ -64,7 +64,7 @@ def load_settings(env=None):
             deployment=deployment,
             reasoning=_flag(env, "CASEPATH_MODEL_REASONING", "gpt-5" in deployment or "-o" in deployment),
             timeout_seconds=float(env.get("CASEPATH_MODEL_TIMEOUT_SECONDS", "120")),
-            max_output_tokens=int(env.get("CASEPATH_MODEL_MAX_OUTPUT_TOKENS", "6000")),
+            max_output_tokens=int(env.get("CASEPATH_MODEL_MAX_OUTPUT_TOKENS", "16000")),
             ca_bundle=env.get("CASEPATH_CA_BUNDLE") or None,
             trust_env=_flag(env, "CASEPATH_MODEL_TRUST_ENV", True),
         )
