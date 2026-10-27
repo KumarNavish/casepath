@@ -134,6 +134,7 @@ mark.cp-hit.cited { background: var(--yellow); }
 .cp-lines div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 4px 6px; border-radius: 3px; }
 .cp-lines div.cited { background: var(--yellow); }
 .cp-lines time { color: var(--crimson); }
+.cp-lines .cp-link { text-align: left; font: inherit; }
 .cp-page { box-shadow: 0 2px 12px rgba(0,0,0,.12); padding: 18px 22px; font: 14px/1.6 Georgia, "Times New Roman", serif; white-space: pre-wrap; max-height: 280px; overflow: auto; }
 
 /* Edit decision and BEFORE -> NOW (03) */

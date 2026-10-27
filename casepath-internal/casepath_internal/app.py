@@ -178,7 +178,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
         # which the browser rebuilds with the same rules to place each highlight exactly.
         pages = evidence.files[row["id"]]["pages_raw"]
         return {"id": row["id"], "name": row["name"], "kind": row["kind"], "media_type": row["media_type"],
-                "note": row["extraction"].get("note"), "headers": _headers(row["extraction"].get("text", "")) if row["kind"] == "email" else None,
+                "note": row["extraction"].get("note"), "pages_transcribed": row["extraction"].get("pages_transcribed") or [],
+                "pages_without_text": row["extraction"].get("pages_without_text") or [],
+                "headers": _headers(row["extraction"].get("text", "")) if row["kind"] == "email" else None,
                 "pages": [{"page": page, "text": text} for page, text in pages]}
 
     @app.post("/api/cases/{case_id}/runs", status_code=202)
