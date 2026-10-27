@@ -1,12 +1,15 @@
 """Bring real case files into a running CasePath and work through them one case at a time.
 
-    python -m casepath_internal.batch import <folder> [--url http://127.0.0.1:8080]
+    python -m casepath_internal.batch import <folder> [--workflow <id>] [--url http://127.0.0.1:8080]
     python -m casepath_internal.batch next [--url ...]
+    python -m casepath_internal.batch retry [--workflow <id>] [--url ...]
 
-``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file. ``next`` starts the
-next case that has not been prepared and waits for it. Each command prints one content-free line: run status, pages
-read, documents found in the dossier, where the case stands in its workflow, and the tokens used. One case per command
-keeps an interactive session (such as Cloud Shell) active between cases.
+``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file; with ``--workflow``
+the case worker's choice of process is set instead of routing from the documents. ``next`` starts the next case that
+has not been prepared and waits for it. ``retry`` runs the first case whose last run failed, was interrupted or found
+no process, optionally choosing the process first; pages already read are not read again. Each command prints one
+content-free line: run status, pages read, documents found in the dossier, where the case stands in its workflow, and
+the tokens used. One case per command keeps an interactive session (such as Cloud Shell) active between cases.
 """
 import argparse
 import json
@@ -36,7 +39,7 @@ def upload(url, case_id, path):
     return call(url, f"/api/cases/{case_id}/files", "POST", raw=body, content_type=f"multipart/form-data; boundary={boundary}")
 
 
-def import_folder(url, folder):
+def import_folder(url, folder, workflow=None):
     existing = {c["title"] for c in call(url, "/api/cases")["cases"]}
     created = 0
     for path in sorted(Path(folder).rglob("*.pdf")):
@@ -44,6 +47,8 @@ def import_folder(url, folder):
         if title in existing:
             continue
         case = call(url, "/api/cases", "POST", {"title": title, "intake": {"source": "imported"}})
+        if workflow:
+            call(url, f"/api/cases/{case['id']}/workflow", "PUT", {"workflow_id": workflow})
         upload(url, case["id"], path)
         created += 1
     print(json.dumps({"imported": created, "skipped_existing": len(existing)}))
@@ -69,29 +74,48 @@ def line(url, case, run):
             "output_tokens": sum(u.get("output_tokens", 0) for u in usage)}
 
 
+def prepare(url, case, poll):
+    run = call(url, f"/api/cases/{case['id']}/runs", "POST")
+    while run["status"] in ("queued", "running"):
+        time.sleep(poll)
+        run = call(url, f"/api/runs/{run['id']}")
+    print(json.dumps(line(url, case, run)))
+
+
 def run_next(url, poll=5):
     for case in call(url, "/api/cases")["cases"]:
         if (case.get("intake") or {}).get("synthetic") or case.get("run_status"):
             continue
-        run = call(url, f"/api/cases/{case['id']}/runs", "POST")
-        while run["status"] in ("queued", "running"):
-            time.sleep(poll)
-            run = call(url, f"/api/runs/{run['id']}")
-        print(json.dumps(line(url, case, run)))
-        return
+        return prepare(url, case, poll)
     print(json.dumps({"next": None, "note": "every case has been prepared"}))
+
+
+def retry(url, workflow=None, poll=5):
+    for case in call(url, "/api/cases")["cases"]:
+        if (case.get("intake") or {}).get("synthetic") or case.get("run_status") in (None, "queued", "running"):
+            continue
+        run = call(url, f"/api/cases/{case['id']}")["run"]
+        if run["status"] == "completed" and run.get("workflow_id"):
+            continue
+        if workflow:
+            call(url, f"/api/cases/{case['id']}/workflow", "PUT", {"workflow_id": workflow})
+        return prepare(url, case, poll)
+    print(json.dumps({"retry": None, "note": "no case needs another run"}))
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="casepath_internal.batch")
-    parser.add_argument("command", choices=["import", "next"])
+    parser.add_argument("command", choices=["import", "next", "retry"])
     parser.add_argument("folder", nargs="?")
+    parser.add_argument("--workflow")
     parser.add_argument("--url", default="http://127.0.0.1:8080")
     args = parser.parse_args(argv)
     if args.command == "import":
         if not args.folder:
             sys.exit("import needs a folder")
-        import_folder(args.url, args.folder)
+        import_folder(args.url, args.folder, args.workflow)
+    elif args.command == "retry":
+        retry(args.url, args.workflow)
     else:
         run_next(args.url)
 

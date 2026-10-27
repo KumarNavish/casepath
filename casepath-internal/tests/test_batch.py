@@ -33,13 +33,17 @@ class BatchTests(unittest.TestCase):
                 batch.import_folder(url, folder)
                 batch.run_next(url, poll=0.05)
                 batch.run_next(url, poll=0.05)
+                batch.retry(url, "example-defect", poll=0.05)
             printed = [json.loads(c.args[0]) for c in out.write.call_args_list if c.args[0].strip()]
+            cases = batch.call(url, "/api/cases")["cases"]
             server.should_exit = True
             thread.join(5)
             self.assertEqual(printed[0]["imported"], 1)
             self.assertEqual(printed[1]["imported"], 0)
             self.assertEqual((printed[2]["status"], printed[2]["error_kind"], printed[2]["pages"]), ("failed", "model_not_configured", 1))
             self.assertIsNone(printed[3]["next"])
+            self.assertEqual(printed[4]["status"], "failed")  # retried, still without a model
+            self.assertEqual(cases[0]["workflow_id"], "example-defect")
             self.assertNotIn("Badezimmer", json.dumps(printed))
 
 
