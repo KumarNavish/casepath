@@ -130,3 +130,17 @@ class GateTests(unittest.TestCase):
         result = evaluate(data, {"landlord_notified": True, "details": False}, {}, checked=True)
         self.assertEqual(result["current"]["step"], "assess")
         self.assertEqual([(a["kind"], a["fact"]) for a in result["next_actions"] if a["kind"] == "resolve"], [("resolve", "details")])
+
+    def test_a_loop_on_missing_details_asks_for_them(self):
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "party", "type": "text", "question": "Who is the other party?", "source_refs": ["fixture#p"]})
+        assess = next(s for s in data["steps"] if s["id"] == "assess")
+        assess.pop("outcome")
+        assess["next"] = [{"to": "done", "when": {"all": [{"fact": "party", "known": True}]}},
+                          {"to": "assess", "when": {"any": [{"fact": "party", "known": False}]}}]
+        data["steps"].append({"id": "done", "title": "Report", "source_refs": ["fixture#d"], "outcome": "reported"})
+        result = evaluate(data, {"landlord_notified": True}, {}, checked=True)
+        self.assertEqual(result["current"]["step"], "assess")
+        self.assertIn(("answer", "party"), [(a["kind"], a.get("fact")) for a in result["next_actions"]])
+        self.assertNotIn("resolve", [a["kind"] for a in result["next_actions"]])
+        self.assertEqual(evaluate(data, {"landlord_notified": True, "party": "Immo AG"}, {}, checked=True)["outcome"]["id"], "reported")

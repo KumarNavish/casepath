@@ -356,7 +356,9 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
                           "status": status, "files": files, "citations": citations,
                           "source_refs": document["source_refs"]})
     next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
-    next_actions += [{"kind": "resolve", "fact": u["fact"], "text": u["question"], "value": u["value"]} for u in unmet]
+    # An unmet condition on a fact nobody has established is a question to answer, not a value to resolve.
+    next_actions += [{"kind": "answer", "fact": u["fact"], "text": u["question"]} if u["value"] is None else
+                     {"kind": "resolve", "fact": u["fact"], "text": u["question"], "value": u["value"]} for u in unmet]
     next_actions += [{"kind": "obtain", "document": c["document"], "text": c["title"], "why": c["why"]}
                      for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] not in {"suggested", "optional"}]
     current_row = next((row for row in path if row["state"] == "current"), None)
