@@ -1,0 +1,39 @@
+{
+  "format": "casepath.workflow/1",
+  "id": "example-defect",
+  "version": "2026-01-01",
+  "title": "Example: rental defect (synthetic test fixture)",
+  "status": "draft",
+  "sources": [{"id": "fixture", "kind": "process_guidance", "title": "Synthetic test fixture, not a Mobiliar process"}],
+  "applies_when": {"fact": "legal_area", "is": "tenancy_defect"},
+  "facts": [
+    {"id": "legal_area", "type": "enum", "values": ["tenancy_defect", "loan", "other"],
+     "question": "Which legal area does the request concern?", "source_refs": ["fixture#area"]},
+    {"id": "landlord_notified", "type": "boolean",
+     "question": "Has the tenant told the landlord about the defect?", "source_refs": ["fixture#notice"]}
+  ],
+  "start": "intake",
+  "steps": [
+    {"id": "intake", "title": "Read the request", "role": "system", "source_refs": ["fixture#s1"],
+     "documents": ["customer_message"], "next": [{"to": "notice", "when": true}]},
+    {"id": "notice", "title": "Check whether the landlord was told", "role": "system", "source_refs": ["fixture#s2"],
+     "next": [
+       {"to": "assess", "label": "told", "when": {"fact": "landlord_notified", "is": true}},
+       {"to": "advise_notice", "label": "not told", "when": {"fact": "landlord_notified", "is": false}}
+     ]},
+    {"id": "assess", "title": "Assess the defect with its evidence", "source_refs": ["fixture#s3"],
+     "documents": ["photo", "notice_letter"], "outcome": "reported"},
+    {"id": "advise_notice", "title": "Advise telling the landlord first", "source_refs": ["fixture#s4"], "outcome": "advice"}
+  ],
+  "documents": [
+    {"id": "customer_message", "title": "The customer's message", "why": "It states the request.", "source_refs": ["fixture#d1"]},
+    {"id": "photo", "title": "Photo of the defect", "why": "It shows the defect.", "source_refs": ["fixture#d2"]},
+    {"id": "notice_letter", "title": "Notice to the landlord", "why": "It proves the landlord was told.",
+     "required_when": {"fact": "landlord_notified", "is": true}, "source_refs": ["fixture#d3"]}
+  ],
+  "outcomes": [
+    {"id": "reported", "title": "Case reported", "source_refs": ["fixture#o1"]},
+    {"id": "advice", "title": "Advice given", "source_refs": ["fixture#o2"]}
+  ],
+  "open_questions": [{"text": "Synthetic open question for tests.", "source_refs": ["fixture#q1"]}]
+}
