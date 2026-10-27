@@ -51,7 +51,8 @@ body.with-notice { padding-bottom: 58px; }
 .cp-fileicon img { width: 34px; height: 34px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
 .cp-fileicon .tag { position: absolute; left: -4px; bottom: 0; font-size: 8.5px; font-weight: 800; color: #fff; background: var(--crimson); border-radius: 2px; padding: 0 3px; letter-spacing: .02em; }
 .cp-fileicon .tag.word { background: #2b579a; }
-.cp-rail-foot { margin-top: auto; padding: 22px 20px 0; display: grid; gap: 10px; }
+.cp-rail-foot { margin-top: auto; padding: 22px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.cp-rail-foot select { display: block; width: 100%; margin-top: 4px; }
 .cp-button { border: 1px solid var(--border); background: var(--bg); border-radius: var(--radius); padding: 10px 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14.5px; }
 .cp-button.primary { background: var(--crimson); border-color: var(--crimson); color: #fff; font-weight: 600; }
 .cp-button:disabled { opacity: .55; cursor: default; }
@@ -198,3 +199,11 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-seg { border: 0; background: none; text-align: left; padding: 5px 8px; border-left: 2px solid var(--line); width: 100%; font-size: 13px; display: grid; }
 .cp-seg:hover { border-left-color: var(--crimson); background: var(--crimson-wash); }
 .cp-seg small { color: var(--ink-2); font-size: 11.5px; }
+.cp-contents { padding: 16px 18px; margin-top: 16px; max-height: 70vh; overflow: auto; }
+.cp-contents h3 { font-size: 13px; margin: 10px 0 4px; color: var(--ink-2); }
+.cp-contents ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.cp-contents .cp-link { display: grid; gap: 2px; text-align: left; font: inherit; font-size: 13.5px; text-decoration: none; padding: 6px 8px; border-left: 2px solid var(--line); width: 100%; }
+.cp-contents .cp-link:hover { border-left-color: var(--crimson); background: var(--crimson-wash); }
+.cp-contents .cp-link span { color: var(--crimson); font-size: 12.5px; }
+.cp-contents .cp-link b { color: var(--ink); font-weight: 600; }
+.cp-contents .cp-link small { color: var(--ink-2); font-size: 12.5px; line-height: 1.45; }

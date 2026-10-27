@@ -19,12 +19,15 @@ This folder contains no Mobiliar content. Workflows built from Mobiliar's proces
 | `workflows.py` | Workflow catalogue format and validation. Every fact, step, branch and document need names its source. Routing selects a workflow, asks for missing facts, or says the case is unmapped. Evaluation finds the current step and the case's document checklist, using three-valued logic. |
 | `drawio.py` | Turns a draw.io process diagram into a draft workflow. Each step and branch is traced to its diagram cell, and ambiguities become open questions. |
 | `extract.py`, `evidence.py` | Read PDF, e-mail, Word and text files, and count pages without a text layer. Locate quotes word for word, and search. |
+| `reading.py` | Real dossiers: scanned pages are read from their page images (in parallel; a page the model cannot read stays listed and is tried again on the next run), and each file is split into its documents with a page range, date, sender and a summary. In a dossier of hundreds of pages, the agents use these summaries to choose what to read. |
 | `azure_model.py`, `config.py` | Azure OpenAI client with Entra sign-in and the exact deployment name. It uses the Responses API with tools (`store: false`), and chat completions for deployments without Responses. It refuses any endpoint that is not an Azure OpenAI resource. |
 | `agents.py` | The agent team on one deployment. A lead delegates to the claim reader, process builder, document finder, source checker and result checker; each has its own instructions, tools and context. Only located quotes count, and the source checker verifies them independently. |
 | `casegraph.py` | A case's own process: workflow, applicable Knowledge and validated edits. Edits re-evaluate the case, show a before-and-after diff, and can be undone. |
 | `knowledge.py` | Knowledge items with versions, evidence and use statistics. Candidates are applied as suggestions, a person activates them, and later cases refine or contradict them. |
 | `synthetic.py` | Synthetic cases made inside Mobiliar: profile, generation, copy guard, realistic PDF rendering (including scans) and a blind judge. |
 | `store.py`, `runner.py`, `app.py` | Fresh case store, background runs with honest statuses, and the API. The API serves only with a configured sign-in. |
+| `ui/` | The case worker's workspace on the API, in German (`?lang=en` switches to English): the five agents' live work, the case's process with editable decisions, document checklist, case summary, deadlines, reply draft (also as Word), the contents of each dossier, and Knowledge. |
+| `batch.py`, `mining.py` | Import a folder of case PDFs into a running CasePath and prepare them one case at a time, printing content-free lines. Reconstruct each real case's course and the pattern across cases. |
 | `scorecard.py` | Content-free run scorecards, guarded against free text, for results that may leave Mobiliar. |
 | `deploy/workspace/` | One script for setup, start, update and checks on the development workspace, and a private env template. |
 
@@ -60,8 +63,7 @@ A draft gets its routing condition and document needs from a reviewer before it 
 
 ## Not done yet
 
-- The case-worker interface. The next step is to port the product's workspace UI to this API.
-- Page images for scanned PDFs (vision input), and photo reading.
-- Running the synthetic pipeline and the agent team on the internal model. This needs the internal runtime.
+- A completed run on the internal model, first on the made-up example and then on the Hackathon cases (in Azure Cloud Shell).
+- Running the synthetic pipeline on the internal model.
 - Comparing results with reviewer-labelled references on the Hackathon cases, beyond the structural scorecard.
 - Operated hosting (frontend, business service, agent service).

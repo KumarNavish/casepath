@@ -25,13 +25,15 @@ Copy quotes character for character from the file, in the file's own language. N
 deadlines or outcomes; leave unknown what the files do not settle. Nothing is sent; a person decides.
 Write everything a case handler reads (summaries, answers, open points, questions, notes, drafts) in the language of the
 case files, usually German, with Swiss spelling (ss, not ß). A file may bundle several documents; list_files shows them
-with their pages. When your task is done, call report."""
+with their pages and a short summary of each. In a long file, use those summaries and search to choose the pages to read;
+quote only what you have read. When your task is done, call report."""
 
 AGENTS = {
     "claim_reader": {
         "title": "Claim reader",
-        "instructions": """You are the claim reader. Read the case files the lead points you to (all of them when asked for a
-brief). For a brief: state the customer's request in one sentence, the parties and their roles, and a dated timeline,
+        "instructions": """You are the claim reader. Read the case files the lead points you to. For a brief, cover every file:
+read short files whole, and in a dossier read the documents that carry the request, the parties and the course of events
+(the document summaries tell you which). For a brief: state the customer's request in one sentence, the parties and their roles, and a dated timeline,
 each timeline entry with an exact quote. For facts: open the process, and for each fact it asks about record what the
 files say with record_fact: established with quotes, unknown, or conflicting with quotes for both sides.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_fact"],

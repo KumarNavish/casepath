@@ -42,7 +42,7 @@ class Evidence:
         return [{"file": fid, "name": f.get("name"), "kind": f.get("kind"), "readable": bool(f["pages_text"]),
                  "pages": f.get("pages"), "pages_without_text": len(f.get("pages_without_text") or []),
                  "note": f.get("note"),
-                 **({"documents": [{k: s.get(k) for k in ("first_page", "last_page", "kind", "date", "sender", "recipient", "title")}
+                 **({"documents": [{k: s.get(k) for k in ("first_page", "last_page", "kind", "date", "sender", "recipient", "title", "summary")}
                                    for s in f["segments"]]} if f.get("segments") else {})} for fid, f in self.files.items()]
 
     def read(self, file_id, from_page=None, to_page=None, limit=24000):

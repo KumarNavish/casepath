@@ -212,7 +212,7 @@ function renderRail() {
 function segmentRows(file) {
   const segments = (file.extraction && file.extraction.segments) || [];
   if (!segments.length) return "";
-  return `<ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}">
+  return `<ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
     <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}</small></button></li>`).join("")}</ol>`;
 }
 
@@ -365,6 +365,7 @@ function describe(e) {
     "reading.scanned": () => T(`reads ${e.pages} scanned page(s) of ${fileName(e.file)}`, `liest ${e.pages} gescannte Seite(n) von ${fileName(e.file)}`),
     "reading.progress": () => T(`${e.done} of ${e.of} pages read`, `${e.done} von ${e.of} Seiten gelesen`),
     "reading.segmented": () => T(`found ${e.documents} documents in ${fileName(e.file)}`, `${e.documents} Dokumente in ${fileName(e.file)} erkannt`),
+    "reading.unread": () => T(`${e.pages} page(s) of ${fileName(e.file)} could not be read`, `${e.pages} Seite(n) von ${fileName(e.file)} nicht lesbar`),
     "tool": () => e.tool === "read_file" ? `${T("reads", "liest")} ${fileName(e.file)}` : e.tool === "search" ? `${T("searches", "sucht")} «${e.query}»`
       : (LANG === "de" && TOOL_DE[e.tool]) || e.tool.replace(/_/g, " "),
   }[e.kind];
@@ -609,7 +610,18 @@ function claimView(card) {
         const c = (t.citations || [])[0];
         return `<div><time>${esc(t.date)}</time><span>${c ? `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}</span></div>`;
       }).join("")}</div>` : ""}
-    </section>` : `<p class="cp-empty">${T("The claim reader’s brief appears here after the case is prepared.", "Die Übersicht des Falllesers erscheint hier, sobald der Fall vorbereitet ist.")}</p>`}</aside></div>`;
+    </section>` : `<p class="cp-empty">${T("The claim reader’s brief appears here after the case is prepared.", "Die Übersicht des Falllesers erscheint hier, sobald der Fall vorbereitet ist.")}</p>`}${dossierContents()}</aside></div>`;
+}
+
+// What each bundled file contains, document by document, from the reading step.
+function dossierContents() {
+  const files = (S.data.files || []).filter((f) => ((f.extraction || {}).segments || []).length);
+  if (!files.length) return "";
+  const count = files.reduce((n, f) => n + f.extraction.segments.length, 0);
+  return `<section class="cp-card cp-contents"><h2 class="cp-section" style="margin-top:0">${T(`Contents of the files · ${count} documents`, `Inhalt der Dossiers · ${count} Dokumente`)}</h2>
+    ${files.map((f) => `${files.length > 1 ? `<h3>${esc(f.name)}</h3>` : ""}<ol>${f.extraction.segments.map((s) => `<li><button class="cp-link" data-cite-file="${esc(f.id)}" data-page="${s.first_page}">
+      <span>${esc([s.date, s.kind].filter(Boolean).join(" · "))} <small>${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}</small></span>
+      <b>${esc(s.title)}</b>${s.summary ? `<small>${esc(s.summary)}</small>` : ""}</button></li>`).join("")}</ol>`).join("")}</section>`;
 }
 
 function checkerView() {

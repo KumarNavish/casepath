@@ -24,7 +24,7 @@ def call(url, path, method="GET", body=None, raw=None, content_type=None):
     elif body is not None:
         data, headers = json.dumps(body).encode(), {"Content-Type": "application/json"}
     request = urllib.request.Request(url + path, data=data, headers=headers, method=method)
-    with urllib.request.urlopen(request, timeout=120) as response:
+    with urllib.request.urlopen(request, timeout=900) as response:
         return json.loads(response.read() or b"null")
 
 

@@ -85,7 +85,7 @@ def _usage(payload):
 
 
 class AzureOpenAIModel:
-    def __init__(self, settings, token_provider, *, transport=None, max_attempts=3, sleep=time.sleep):
+    def __init__(self, settings, token_provider, *, transport=None, max_attempts=5, sleep=time.sleep):
         self.settings, self._token, self._sleep = settings, token_provider, sleep
         self.max_attempts = max_attempts
         self._client = httpx.Client(timeout=settings.timeout_seconds, follow_redirects=False,

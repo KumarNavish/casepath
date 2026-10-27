@@ -54,9 +54,9 @@ def case_state(store, catalogue, case_id):
 
 
 class RunService:
-    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True):
+    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1):
         self.store, self.catalogue, self.model_factory, self.effort = store, catalogue, model_factory, effort
-        self.read_scans = read_scans
+        self.read_scans, self.reading_workers = read_scans, reading_workers
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self.store.interrupt_unfinished()
 
@@ -104,7 +104,8 @@ class RunService:
         answer = model.respond_json(name="casepath_route", instructions=ROUTE_INSTRUCTIONS, schema=schema, effort="low",
                                     input=[{"role": "user", "content": json.dumps(
                                         {"routing_facts": [{k: f.get(k) for k in ("id", "question", "type", "values")} for f in facts],
-                                         "case": {"title": case["title"], "intake": case["intake"]}, "files": documents},
+                                         "case": {"title": case["title"], "intake": case["intake"]},
+                                         "catalogue": evidence.catalogue(), "files": documents},
                                         ensure_ascii=False)}])
         known, cited = {}, {}
         definitions = {f["id"]: f for f in facts}
@@ -131,7 +132,7 @@ class RunService:
             model = self._model(run_id)
             if self.read_scans:
                 for row in self.store.list_files(case_id, with_text=True):
-                    prepare_file(model, self.store, row, on_event=lambda e: self._event(run_id, e))
+                    prepare_file(model, self.store, row, on_event=lambda e: self._event(run_id, e), workers=self.reading_workers)
                 files = case_files(self.store, case_id)
             decision, workflow = self._route(model, case, files, run_id)
             self.store.update_run(run_id, routing=decision)

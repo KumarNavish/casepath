@@ -65,7 +65,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     settings = settings or load_settings()
     store = store or CaseStore(settings.data_dir)
     catalogue = catalogue or workflows.Catalogue.load(settings.catalogue_dir)
-    runs = RunService(store, catalogue, model_factory or default_model_factory(settings))
+    runs = RunService(store, catalogue, model_factory or default_model_factory(settings), reading_workers=settings.reading_workers)
 
     @asynccontextmanager
     async def lifespan(_):

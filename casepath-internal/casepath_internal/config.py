@@ -47,6 +47,7 @@ class Settings:
     dev_user: str | None
     max_upload_bytes: int
     max_text_chars: int
+    reading_workers: int = 6
 
 
 def _flag(env, name, default):
@@ -78,5 +79,6 @@ def load_settings(env=None):
         identity_header=env.get("CASEPATH_IDENTITY_HEADER") or None,
         dev_user=env.get("CASEPATH_DEV_USER") or None,
         max_upload_bytes=int(env.get("CASEPATH_MAX_UPLOAD_BYTES", str(100 * 1024 * 1024))),
-        max_text_chars=int(env.get("CASEPATH_MAX_TEXT_CHARS", "400000")),
+        max_text_chars=int(env.get("CASEPATH_MAX_TEXT_CHARS", "4000000")),
+        reading_workers=int(env.get("CASEPATH_READING_WORKERS", "6")),
     )
