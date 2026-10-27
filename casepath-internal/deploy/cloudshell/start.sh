@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Run CasePath inside an Azure Cloud Shell session (ephemeral, no storage account).
 #
-#   bash deploy/cloudshell/start.sh <resource-endpoint> <deployment-name> [port]
+#   bash deploy/cloudshell/start.sh <resource-endpoint> <deployment-name> [port] [--example]
 #
+# --example adds the synthetic example workflow and one made-up case to try it with.
 # The endpoint and deployment are given on the command line, so they never live in code.
 # Sign-in uses the Cloud Shell identity of the person running it. Open the app with
 # Cloud Shell's "Web preview" on the port printed at the end. Everything, including
@@ -12,6 +13,7 @@ set -euo pipefail
 endpoint="${1:?resource endpoint, e.g. https://<resource>.openai.azure.com}"
 deployment="${2:?exact deployment name}"
 port="${3:-8080}"
+example="${4:-}"
 here="$(cd "$(dirname "$0")/../.." && pwd)"
 home="$HOME/.casepath"
 mkdir -p "$home/data" "$home/catalogue"
@@ -30,6 +32,9 @@ CASEPATH_AZURE_OPENAI_ENDPOINT=$endpoint
 CASEPATH_AZURE_OPENAI_DEPLOYMENT=$deployment
 CASEPATH_MODEL_REASONING=true
 EOF
+if [ "$example" = "--example" ] && [ ! -f "$home/example-seeded" ]; then
+  "$home/venv/bin/python" -m casepath_internal.examples "$home/data" "$home/catalogue" "${USER:-cloudshell}" && touch "$home/example-seeded"
+fi
 "$home/venv/bin/python" -m casepath_internal check-catalogue "$home/catalogue" || true
 
 if [ "${CASEPATH_CHECK_MODEL:-0}" = "1" ]; then
