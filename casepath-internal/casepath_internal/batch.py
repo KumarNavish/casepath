@@ -60,6 +60,10 @@ def line(url, case, run):
     result = run.get("result") or {}
     evaluation = detail.get("evaluation") or {}
     usage = result.get("usage") or []
+    learned = result.get("learned") or {}
+    outcomes = {}
+    for row in learned.get("outcomes") or []:
+        outcomes[row["outcome"]] = outcomes.get(row["outcome"], 0) + 1
     return {"case": case["id"][-8:], "status": run["status"], "error_kind": (run.get("error") or "").split(":", 1)[0] or None,
             "pages": sum(f["extraction"].get("pages") or 0 for f in files),
             "pages_read_from_images": sum(len(f["extraction"].get("pages_transcribed") or []) for f in files),
@@ -70,6 +74,9 @@ def line(url, case, run):
             "facts_accepted": sum(1 for f in result.get("facts", []) if f.get("verdict") == "accepted"),
             "documents_present": sum(1 for d in evaluation.get("documents", []) if d["status"] == "present"),
             "documents_missing": sum(1 for d in evaluation.get("documents", []) if d["status"] == "missing" and d["required"] == "yes"),
+            "knowledge_applied": sum(1 for k in (result.get("provenance") or {}).get("knowledge", []) if k.get("applied")),
+            "knowledge_outcomes": outcomes, "knowledge_proposed": len(learned.get("proposals") or []),
+            "knowledge_refinements": sum(1 for p in learned.get("proposals") or [] if p.get("action") == "refine"),
             "model_turns": len(usage), "input_tokens": sum(u.get("input_tokens", 0) for u in usage),
             "output_tokens": sum(u.get("output_tokens", 0) for u in usage)}
 
