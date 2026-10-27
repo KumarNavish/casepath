@@ -4,7 +4,6 @@ import unittest
 
 import httpx
 
-from casepath_internal.agent import AgentError, CaseAgent
 from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn
 from casepath_internal.config import ModelSettings, SettingsError, load_settings
 from casepath_internal.schema import obj, text
@@ -109,78 +108,3 @@ class ScriptedModel:
                            usage={}, deployment="d", response_id="v", attempts=1, seconds=0)
 
 
-FILES = [
-    {"id": "f1", "name": "message.eml", "kind": "email", "text": "Subject: Schimmel im Bad\n\nIch habe den Vermieter am 2. März schriftlich informiert."},
-    {"id": "f2", "name": "photo.jpg", "kind": "image", "text": "", "note": "Kept as an original."},
-]
-FINISH = {"summary": "The tenant reports mould and told the landlord.", "answer": "The landlord was told; evidence is incomplete.",
-          "open_points": ["No photo text"], "reply": {"needed": True, "subject": "Re: Schimmel im Bad", "clauses": [
-              {"text": "You told your landlord in writing.", "basis": ["fact:landlord_notified"]},
-              {"text": "We still need the notice letter.", "basis": ["document:notice_letter"]}]},
-          "lessons": [{"text": "Ask for the written notice.", "applies_when": "defect cases", "citations": [
-              {"file": "f1", "quote": "Ich habe den Vermieter am 2. März schriftlich informiert."}]}]}
-
-
-class AgentTests(unittest.TestCase):
-    def run_agent(self, turns, verdict="supported"):
-        model = ScriptedModel(turns, verdict)
-        return CaseAgent(model).run(case={"title": "Example"}, files=FILES, workflow=FIXTURE), model
-
-    def test_case_prepared_with_located_and_verified_findings(self):
-        quote = "Ich habe den Vermieter am 2. März schriftlich informiert."
-        result, model = self.run_agent([
-            [("open_workflow", {}), ("list_files", {})],
-            [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes",
-                              "citations": [{"file": "f1", "quote": quote}]}),
-             ("record_fact", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
-                              "citations": [{"file": "f1", "quote": "Schimmel im Bad, frei erfunden"}]}),
-             ("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],
-                                  "citations": [{"file": "f1", "quote": "Subject: Schimmel im Bad"}], "note": ""}),
-             ("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""})],
-            [("evaluate", {}), ("finish", FINISH)],
-        ])
-        self.assertIn("record_fact", model.seen[0])
-        facts = {f["fact"]: f for f in result["facts"]}
-        self.assertEqual(facts["landlord_notified"]["value"], True)
-        self.assertEqual(facts["landlord_notified"]["verdict"], "accepted")
-        self.assertNotIn("legal_area", facts)  # its quote is not in the file
-        evaluation = result["evaluation"]
-        self.assertEqual(evaluation["outcome"]["id"], "reported")
-        statuses = {d["document"]: d["status"] for d in evaluation["documents"]}
-        self.assertEqual(statuses, {"customer_message": "present", "photo": "missing", "notice_letter": "missing"})
-        self.assertEqual([c["supported"] for c in result["reply"]["clauses"]], [True, True])
-        self.assertEqual(result["reply"]["status"], "draft_not_sent")
-        self.assertEqual(len(result["lessons"]), 1)
-        roles = {e["role"] for e in result["events"]}
-        self.assertTrue({"claim_reader", "process_builder", "document_finder", "source_checker", "result_checker"} <= roles)
-
-    def test_independent_check_can_overrule(self):
-        quote = "Ich habe den Vermieter am 2. März schriftlich informiert."
-        result, _ = self.run_agent([
-            [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes",
-                              "citations": [{"file": "f1", "quote": quote}]})],
-            [("finish", FINISH)],
-        ], verdict="uncertain")
-        self.assertEqual(result["facts"][0]["verdict"], "rejected")
-        self.assertEqual(result["evaluation"]["current"]["step"], "notice")
-        self.assertEqual(result["reply"]["clauses"][0]["supported"], False)
-
-    def test_bad_arguments_are_returned_to_the_model(self):
-        result, _ = self.run_agent([
-            [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "maybe",
-                              "citations": [{"file": "f1", "quote": "Ich habe den Vermieter am 2. März schriftlich informiert."}]}),
-             ("read_file", {"file": "nope", "from_page": None, "to_page": None})],
-            [("finish", FINISH)],
-        ])
-        self.assertEqual(result["facts"], [])
-        self.assertIn("fact.rejected", [e["kind"] for e in result["events"]])
-
-    def test_turn_limit(self):
-        model = ScriptedModel([[("list_files", {})]] * 3)
-        with self.assertRaises(AgentError) as caught:
-            CaseAgent(model, max_turns=3).run(case={}, files=FILES, workflow=FIXTURE)
-        self.assertEqual(caught.exception.reason, "turn_limit")
-
-
-if __name__ == "__main__":
-    unittest.main()

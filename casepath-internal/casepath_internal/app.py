@@ -8,17 +8,18 @@ The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
 from pathlib import Path
+from urllib.parse import quote
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import workflows
+from . import casegraph, knowledge as kb, workflows
 from .azure_model import AzureOpenAIModel, entra_token_provider
 from .config import load_settings
-from .extract import extract, media_type
-from .runner import RunService
+from .extract import extract
+from .runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
 
 UI = Path(__file__).parent / "ui"
@@ -32,6 +33,19 @@ class NewCase(BaseModel):
 class WorkflowChoice(BaseModel):
     workflow_id: str
     version: str | None = None
+
+
+class EditRequest(BaseModel):
+    op: str
+    args: dict
+    reason: str
+    use_for_similar: bool = False
+    activate: bool = False
+    recheck: bool = True
+
+
+class StatusChange(BaseModel):
+    reason: str = ""
 
 
 def default_model_factory(settings):
@@ -77,23 +91,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
         except NotFound:
             raise HTTPException(404, "Not found.") from None
 
-    def evaluation_for(case, run):
-        workflow_ref = (run or {}).get("routing", {}) or {}
-        workflow = None
-        if case.get("workflow_id"):
-            workflow = catalogue.get(case["workflow_id"], case.get("workflow_version"))
-        elif workflow_ref.get("workflow"):
-            workflow = catalogue.get(workflow_ref["workflow"]["id"], workflow_ref["workflow"]["version"])
-        if workflow is None:
-            return None
-        if run and run.get("result") and run["result"].get("evaluation") and run["workflow_id"] == workflow["id"]:
-            return run["result"]["evaluation"]
-        return workflows.evaluate(workflow, {}, {}, checked=False)
+    def state(case_id):
+        found(store.get_case, case_id)
+        return case_state(store, catalogue, case_id)
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok", "model_configured": settings.model is not None,
-                "workflows": len(catalogue.workflows), "sign_in": "gateway" if settings.identity_header else "dev" if settings.dev_user else "none"}
+        return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
+                "sign_in": "gateway" if settings.identity_header else "dev" if settings.dev_user else "none"}
 
     @app.get("/api/me")
     def me(who=Depends(user)):
@@ -125,10 +130,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
 
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
-        case = found(store.get_case, case_id)
-        run = store.latest_run(case_id)
-        return {"case": case, "files": store.list_files(case_id), "run": run,
-                "evaluation": evaluation_for(case, store.latest_run(case_id, "completed"))}
+        current = state(case_id)
+        return {"case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
+                "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
+                "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False)}
 
     @app.put("/api/cases/{case_id}/workflow")
     def choose_workflow(case_id: str, body: WorkflowChoice, who=Depends(user)):
@@ -156,8 +161,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     def original(file_id: str, who=Depends(user)):
         data, row = found(store.file_bytes, file_id)
         return Response(data, media_type=row["media_type"],
-                        headers={"Content-Disposition": f"inline; filename*=UTF-8''{_quote(row['name'])}",
+                        headers={"Content-Disposition": f"inline; filename*=UTF-8''{quote(row['name'], safe='')}",
                                  "X-Content-Type-Options": "nosniff", "Cache-Control": "private, no-store"})
+
+    @app.get("/api/files/{file_id}/text")
+    def file_text(file_id: str, who=Depends(user)):
+        row = found(store.get_file, file_id, True)
+        return {"id": row["id"], "name": row["name"], "text": row["extraction"].get("text", ""), "note": row["extraction"].get("note")}
 
     @app.post("/api/cases/{case_id}/runs", status_code=202)
     def start_run(case_id: str, who=Depends(user)):
@@ -172,27 +182,81 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     def get_run(run_id: str, after: int = 0, who=Depends(user)):
         return found(store.get_run, run_id, after)
 
-    @app.get("/api/knowledge")
-    def knowledge(workflow_id: str | None = None, status: str | None = None, who=Depends(user)):
-        return {"knowledge": store.list_knowledge(workflow_id, status)}
-
-    @app.post("/api/knowledge/{knowledge_id}/publish")
-    def publish(knowledge_id: str, who=Depends(user)):
+    # Editing the case's process
+    @app.post("/api/cases/{case_id}/edits", status_code=201)
+    def edit_process(case_id: str, body: EditRequest, who=Depends(user)):
+        before = state(case_id)
+        if before["process"] is None:
+            raise HTTPException(409, "Choose or route a workflow before editing the process.")
+        if not body.reason.strip():
+            raise HTTPException(422, "Say why the process changes.")
         try:
-            return found(store.publish_knowledge, knowledge_id, who)
-        except Conflict as error:
-            raise HTTPException(409, str(error)) from None
+            casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
+        except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
+            raise HTTPException(422, f"This change cannot be applied: {error}") from None
+        edit = store.add_edit(case_id, body.op, body.args, who, body.reason.strip())
+        learned = None
+        if body.use_for_similar:
+            try:
+                item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
+            except kb.KnowledgeError as error:
+                raise HTTPException(422, str(error)) from None
+            if body.activate:
+                item = kb.set_status(item, "active", by=who, reason="activated by the case worker who made the change")
+            learned = store.save_knowledge(item)
+        after = state(case_id)
+        change = casegraph.diff(before["evaluation"], after["evaluation"])
+        recheck = None
+        added = [d["document"] for d in change["documents_added"]]
+        if body.recheck and added and before["run"] is not None:
+            try:
+                recheck = runs.recheck(case_id, added, who)
+            except Conflict:
+                recheck = None
+        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"]}
+
+    @app.post("/api/edits/{edit_id}/undo")
+    def undo(edit_id: str, who=Depends(user)):
+        edit = found(store.get_edit, edit_id)
+        before = state(edit["case_id"])
+        store.set_edit_status(edit_id, "undone", who)
+        after = state(edit["case_id"])
+        return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
+
+    # Knowledge
+    @app.get("/api/knowledge")
+    def list_knowledge(family: str | None = None, status: str | None = None, who=Depends(user)):
+        items = store.list_knowledge(family, {status} if status else None)
+        return {"knowledge": items, "uses": store.knowledge_uses()}
+
+    @app.get("/api/knowledge/{knowledge_id}")
+    def get_knowledge(knowledge_id: str, who=Depends(user)):
+        return {"item": found(store.get_knowledge, knowledge_id), "uses": store.knowledge_uses(knowledge_id)}
+
+    @app.post("/api/knowledge/{knowledge_id}/activate")
+    def activate(knowledge_id: str, body: StatusChange, who=Depends(user)):
+        item = found(store.get_knowledge, knowledge_id)
+        if item.get("refines"):
+            target = found(store.get_knowledge, item["refines"])
+            merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"],
+                               applies_when_text=item["applies_when_text"], by=who,
+                               case_id=item["origin"].get("case_id"), reason=body.reason or "refined from a later case")
+            store.save_knowledge(merged)
+            store.save_knowledge(kb.set_status(item, "retired", by=who, reason=f"merged into {target['id']} v{merged['version']}"))
+            return merged
+        return store.save_knowledge(kb.set_status(item, "active", by=who, reason=body.reason))
+
+    @app.post("/api/knowledge/{knowledge_id}/retire")
+    def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):
+        item = found(store.get_knowledge, knowledge_id)
+        return store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason))
 
     if UI.is_dir():
-        app.mount("/assets", StaticFiles(directory=UI / "assets"), name="assets")
+        if (UI / "assets").is_dir():
+            app.mount("/assets", StaticFiles(directory=UI / "assets"), name="assets")
 
         @app.get("/")
         def index():
             return FileResponse(UI / "index.html", headers={"Cache-Control": "no-store"})
 
     return app
-
-
-def _quote(name):
-    from urllib.parse import quote
-    return quote(name, safe="")

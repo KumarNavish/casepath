@@ -19,7 +19,7 @@ FORMAT = "casepath.workflow/1"
 ID = re.compile(r"^[a-z0-9][a-z0-9_.-]{0,79}$")
 FACT_TYPES = {"enum", "boolean", "text", "date"}
 STATUSES = {"draft", "reviewed"}
-SOURCE_KINDS = {"process_diagram", "process_guidance", "case_example", "expert_review"}
+SOURCE_KINDS = {"process_diagram", "process_guidance", "case_example", "expert_review", "knowledge", "case_edit"}
 
 
 class CatalogueError(ValueError):
@@ -317,14 +317,16 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         if (document["id"] in attached and step_id is None) or required is False:
             continue
         status, files, citations = _document_status(document, findings, checked)
+        # A suggestion from not-yet-active Knowledge is checked but never counted as missing.
+        need = "suggested" if document.get("suggested") else "yes" if required else "depends"
         checklist.append({"document": document["id"], "title": document["title"], "why": document["why"],
-                          "step": step_id, "required": "yes" if required else "depends",
+                          "step": step_id, "required": need,
                           "condition_facts": sorted(condition_facts(document.get("required_when"))) if required is None else [],
                           "status": status, "files": files, "citations": citations,
                           "source_refs": document["source_refs"]})
     next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
     next_actions += [{"kind": "obtain", "document": c["document"], "text": c["title"], "why": c["why"]}
-                     for c in checklist if c["status"] in {"missing", "unusable"}]
+                     for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] != "suggested"]
     current_row = next((row for row in path if row["state"] == "current"), None)
     return {"workflow": ref(workflow), "path": path, "current": current_row, "waiting_for": waiting,
             "outcome": outcome, "documents": checklist, "next_actions": next_actions,

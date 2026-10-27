@@ -17,7 +17,8 @@ from .store import CaseStore
 SAFE = re.compile(r"^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$")
 STATUSES = {"completed", "failed", "interrupted", "queued", "running", "selected", "fallback", "ambiguous",
             "needs_facts", "unmapped", "present", "unusable", "missing", "unchecked", "established", "unknown",
-            "conflicting", "accepted", "rejected", "yes", "depends", "draft", "reviewed"}
+            "conflicting", "accepted", "rejected", "yes", "depends", "draft", "reviewed", "suggested", "applied",
+            "contradicted", "not_checked"}
 
 
 class ScorecardLeak(ValueError):
@@ -67,13 +68,22 @@ def run_card(run, salt):
         "documents": {d["document"]: d["status"] for d in documents},
         "reply_clauses": len((result.get("reply") or {}).get("clauses") or []),
         "reply_clauses_supported": sum(1 for c in (result.get("reply") or {}).get("clauses") or [] if c.get("supported")),
-        "lessons": len(result.get("lessons") or []),
-        "knowledge_used": len(result.get("knowledge_used") or []),
-        "model_turns": len(usage),
+        "process_edits_by_agents": len(result.get("agent_edits") or []),
+        "knowledge_applied": sum(1 for k in (result.get("provenance") or {}).get("knowledge", []) if k.get("applied")),
+        "knowledge_proposed": len(((result.get("learned") or {}).get("proposals")) or []),
+        "knowledge_outcomes": {o["item"]: o["outcome"] for o in ((result.get("learned") or {}).get("outcomes")) or []},
+        "agent_turns": _turns(usage),
         "input_tokens": sum(u.get("input_tokens", 0) for u in usage),
         "output_tokens": sum(u.get("output_tokens", 0) for u in usage),
     }
     return guard(card)
+
+
+def _turns(usage):
+    turns = {}
+    for row in usage:
+        turns[row.get("agent", "model")] = turns.get(row.get("agent", "model"), 0) + 1
+    return turns
 
 
 def scorecard(store, salt):

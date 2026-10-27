@@ -29,12 +29,13 @@ create table if not exists run_events(
   run_id text not null references runs(id), seq integer not null, at text not null, data text not null,
   primary key(run_id, seq));
 create table if not exists knowledge(
-  id text primary key, workflow_id text not null, kind text not null, text text not null,
-  applies_when text not null, status text not null, source text not null, created_at text not null,
-  published_by text, published_at text);
+  id text primary key, family text not null, status text not null, data text not null, updated_at text not null);
 create table if not exists knowledge_uses(
-  knowledge_id text not null, run_id text not null, case_id text not null, at text not null,
+  knowledge_id text not null, run_id text not null, case_id text not null, at text not null, outcome text not null,
   primary key(knowledge_id, run_id));
+create table if not exists case_edits(
+  id text primary key, case_id text not null references cases(id), data text not null, status text not null,
+  created_at text not null);
 """
 ACTIVE = ("queued", "running")
 
@@ -201,39 +202,61 @@ class CaseStore:
                                  ("The service restarted before this run finished.", now(), run_id))
         return ids
 
-    # Knowledge
-    def add_knowledge(self, workflow_id, kind, text, applies_when, source):
-        knowledge_id = new_id("know")
+    # Knowledge: whole items, versioned by the knowledge module
+    def save_knowledge(self, item):
         with self._lock:
-            self._db.execute("insert into knowledge(id,workflow_id,kind,text,applies_when,status,source,created_at) values(?,?,?,?,?,?,?,?)",
-                             (knowledge_id, workflow_id, kind, text, applies_when, "candidate",
-                              json.dumps(source, ensure_ascii=False), now()))
-        return self.get_knowledge(knowledge_id)
+            self._db.execute("insert into knowledge values(?,?,?,?,?) on conflict(id) do update set "
+                             "family=excluded.family, status=excluded.status, data=excluded.data, updated_at=excluded.updated_at",
+                             (item["id"], item["family"], item["status"], json.dumps(item, ensure_ascii=False), now()))
+        return item
 
     def get_knowledge(self, knowledge_id):
-        row = self._one("select * from knowledge where id=?", knowledge_id)
+        row = self._one("select data from knowledge where id=?", knowledge_id)
         if row is None:
             raise NotFound(knowledge_id)
-        row["source"] = json.loads(row["source"])
-        row["uses"] = self._one("select count(*) as n from knowledge_uses where knowledge_id=?", knowledge_id)["n"]
-        return row
+        return json.loads(row["data"])
 
-    def list_knowledge(self, workflow_id=None, status=None):
-        sql, args = "select id from knowledge where 1=1", []
-        if workflow_id:
-            sql, args = sql + " and workflow_id=?", args + [workflow_id]
-        if status:
-            sql, args = sql + " and status=?", args + [status]
-        return [self.get_knowledge(r["id"]) for r in self._all(sql + " order by created_at", *args)]
+    def list_knowledge(self, family=None, statuses=None):
+        sql, args = "select data from knowledge where 1=1", []
+        if family:
+            sql, args = sql + " and family=?", args + [family]
+        rows = [json.loads(r["data"]) for r in self._all(sql + " order by rowid", *args)]
+        return [r for r in rows if statuses is None or r["status"] in statuses]
 
-    def publish_knowledge(self, knowledge_id, user):
+    def record_use(self, knowledge_id, run_id, case_id, outcome):
         with self._lock:
-            row = self.get_knowledge(knowledge_id)
-            if row["status"] != "candidate":
-                raise Conflict("only a candidate can be published")
-            self._db.execute("update knowledge set status='published', published_by=?, published_at=? where id=?", (user, now(), knowledge_id))
-        return self.get_knowledge(knowledge_id)
+            self._db.execute("insert or replace into knowledge_uses values(?,?,?,?,?)", (knowledge_id, run_id, case_id, now(), outcome))
 
-    def record_use(self, knowledge_id, run_id, case_id):
+    def knowledge_uses(self, knowledge_id=None):
+        if knowledge_id:
+            return self._all("select * from knowledge_uses where knowledge_id=? order by at", knowledge_id)
+        return self._all("select * from knowledge_uses order by at")
+
+    # Edits to a case's process
+    def add_edit(self, case_id, op, args, user, reason):
+        self.get_case(case_id)
+        edit = {"id": new_id("ed"), "case_id": case_id, "op": op, "args": args, "by": user, "reason": reason,
+                "status": "active", "at": now()}
         with self._lock:
-            self._db.execute("insert or ignore into knowledge_uses values(?,?,?,?)", (knowledge_id, run_id, case_id, now()))
+            self._db.execute("insert into case_edits values(?,?,?,?,?)",
+                             (edit["id"], case_id, json.dumps(edit, ensure_ascii=False), "active", edit["at"]))
+            self._db.execute("update cases set updated_at=? where id=?", (edit["at"], case_id))
+        return edit
+
+    def list_edits(self, case_id, active_only=True):
+        rows = [json.loads(r["data"]) | {"status": r["status"]} for r in
+                self._all("select data, status from case_edits where case_id=? order by created_at, rowid", case_id)]
+        return [r for r in rows if r["status"] == "active" or not active_only]
+
+    def get_edit(self, edit_id):
+        row = self._one("select data, status from case_edits where id=?", edit_id)
+        if row is None:
+            raise NotFound(edit_id)
+        return json.loads(row["data"]) | {"status": row["status"]}
+
+    def set_edit_status(self, edit_id, status, user):
+        edit = self.get_edit(edit_id)
+        with self._lock:
+            self._db.execute("update case_edits set status=? where id=?", (status, edit_id))
+            self._db.execute("update cases set updated_at=? where id=?", (now(), edit["case_id"]))
+        return self.get_edit(edit_id) | {"changed_by": user}
