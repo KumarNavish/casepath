@@ -207,3 +207,11 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-contents .cp-link span { color: var(--crimson); font-size: 12.5px; }
 .cp-contents .cp-link b { color: var(--ink); font-weight: 600; }
 .cp-contents .cp-link small { color: var(--ink-2); font-size: 12.5px; line-height: 1.45; }
+.cp-rate { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; }
+.cp-rate button { width: 26px; height: 26px; display: inline-grid; place-items: center; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--ghost); cursor: pointer; padding: 0; }
+.cp-rate button .cp-icon { width: 15px; height: 15px; }
+.cp-rate button:hover { color: var(--ink-2); border-color: var(--ink-2); }
+.cp-rate button[data-verdict="correct"][aria-pressed="true"] { color: var(--green); border-color: var(--green); background: #eef5ef; }
+.cp-rate button[data-verdict="wrong"][aria-pressed="true"] { color: var(--crimson); border-color: var(--crimson); background: var(--crimson-wash); }
+.cp-feedback-line { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 0 0 16px; font-size: 13.5px; }
+.cp-feedback-line .cp-icon { width: 16px; height: 16px; }

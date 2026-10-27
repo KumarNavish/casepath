@@ -8,12 +8,13 @@ The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Literal
 from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from . import casegraph, knowledge as kb, workflows
 from .azure_model import AzureOpenAIModel, entra_token_provider
@@ -47,6 +48,13 @@ class EditRequest(BaseModel):
 
 class StatusChange(BaseModel):
     reason: str = ""
+
+
+class Feedback(BaseModel):
+    """A case worker's verdict on one result item; target names the item, never its content."""
+    target: str = Field(pattern=r"^(answer|(fact|document|summary|timeline|deadline|open_point|reply):[A-Za-z0-9_.-]{1,80})$")
+    verdict: Literal["correct", "wrong"] | None
+    note: str = Field("", max_length=500)
 
 
 def default_model_factory(settings):
@@ -132,9 +140,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
         current = state(case_id)
+        completed = current["run"]
         return {"case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
-                "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False)}
+                "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
+                "feedback": store.list_feedback(completed["id"]) if completed else []}
 
     @app.put("/api/cases/{case_id}/workflow")
     def choose_workflow(case_id: str, body: WorkflowChoice, who=Depends(user)):
@@ -195,6 +205,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     @app.get("/api/runs/{run_id}")
     def get_run(run_id: str, after: int = 0, who=Depends(user)):
         return found(store.get_run, run_id, after)
+
+    @app.put("/api/runs/{run_id}/feedback")
+    def feedback(run_id: str, body: Feedback, who=Depends(user)):
+        return {"feedback": found(store.set_feedback, run_id, body.target, body.verdict, body.note, who)}
 
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):

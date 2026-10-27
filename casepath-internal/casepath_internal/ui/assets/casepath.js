@@ -373,6 +373,30 @@ function describe(e) {
 }
 const valueText = (v) => (v === true ? T("yes", "ja") : v === false ? T("no", "nein") : String(v));
 const learnAction = (a) => ({ new: T("new", "neu"), refine: T("refine", "verfeinern"), contradict: T("contradict", "widerspricht") }[a] || a);
+
+// ---------- case workers' feedback on a prepared case ----------
+// One verdict per person and item. Notes stay with the case; only counts are evaluated.
+function ratedRun() { return S.data && S.data.lastCompleted ? S.data.lastCompleted.id : null; }
+function verdictOf(target) { const row = (S.data.feedback || []).find((f) => f.target === target && f.by === S.me); return row ? row.verdict : null; }
+function rate(target) {
+  if (!ratedRun()) return "";
+  const v = verdictOf(target);
+  return `<span class="cp-rate" role="group" aria-label="${T("Your feedback", "Ihre Rückmeldung")}">
+    <button type="button" data-rate="${esc(target)}" data-verdict="correct" aria-pressed="${v === "correct"}" title="${T("Correct", "Stimmt")}" aria-label="${T("Correct", "Stimmt")}">${icon("tick")}</button>
+    <button type="button" data-rate="${esc(target)}" data-verdict="wrong" aria-pressed="${v === "wrong"}" title="${T("Not correct", "Stimmt nicht")}" aria-label="${T("Not correct", "Stimmt nicht")}">${icon("xcircle")}</button></span>`;
+}
+async function sendRating(button) {
+  const target = button.dataset.rate, verdict = verdictOf(target) === button.dataset.verdict ? null : button.dataset.verdict;
+  const response = await api(`/api/runs/${ratedRun()}/feedback`, { method: "PUT", body: JSON.stringify({ target, verdict }) });
+  S.data.feedback = response.feedback;
+  renderCase();
+}
+function feedbackLine() {
+  const mine = (S.data.feedback || []).filter((f) => f.by === S.me);
+  const right = mine.filter((f) => f.verdict === "correct").length, wrong = mine.length - right;
+  return `<p class="cp-muted cp-feedback-line">${icon("check")}${T("Mark each item as correct or not. Your feedback stays with the case; only the counts are evaluated.",
+    "Markieren Sie, was stimmt und was nicht. Ihre Rückmeldungen bleiben beim Fall; ausgewertet werden nur Anzahlen.")}${mine.length ? ` <b>${T(`${right} correct · ${wrong} not correct`, `${right} stimmt · ${wrong} stimmt nicht`)}</b>` : ""}</p>`;
+}
 const questionOf = (id) => { const f = facts().find((x) => x.id === id); return f ? questionLabel(f) : id; };
 const needOf = (id) => { const d = ((S.data.process || {}).documents || []).find((x) => x.id === id); return d ? d.title : id; };
 
@@ -606,9 +630,9 @@ function claimView(card) {
   return `${spine()}<div class="cp-live"><div>${card}</div><aside>${brief ? `<section class="cp-card" style="padding:16px 18px">
       <h2 class="cp-section" style="margin-top:0">${T("The request", "Das Anliegen")}</h2><p>${esc(brief.request || "")}</p>
       ${(brief.parties || []).length ? `<h2 class="cp-section">${T("Parties", "Parteien")}</h2><ul>${brief.parties.map((p) => `<li>${esc(p.name)} <span class="cp-muted">· ${esc(p.role)}</span></li>`).join("")}</ul>` : ""}
-      ${(brief.timeline || []).length ? `<h2 class="cp-section">${T("Timeline", "Chronologie")}</h2><div class="cp-lines">${brief.timeline.map((t) => {
+      ${(brief.timeline || []).length ? `<h2 class="cp-section">${T("Timeline", "Chronologie")}</h2><div class="cp-lines">${brief.timeline.map((t, i) => {
         const c = (t.citations || [])[0];
-        return `<div><time>${esc(t.date)}</time><span>${c ? `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}</span></div>`;
+        return `<div><time>${esc(t.date)}</time><span>${c ? `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}${rate(`timeline:${i}`)}</span></div>`;
       }).join("")}</div>` : ""}
     </section>` : `<p class="cp-empty">${T("The claim reader’s brief appears here after the case is prepared.", "Die Übersicht des Falllesers erscheint hier, sobald der Fall vorbereitet ist.")}</p>`}${dossierContents()}</aside></div>`;
 }
@@ -627,9 +651,9 @@ function dossierContents() {
 function checkerView() {
   const rows = Object.values(recorded("fact")).map((f) => [questionOf(f.fact), f]).concat(Object.values(recorded("document")).map((d) => [needOf(d.document), d]));
   if (!rows.length) return `<p class="cp-empty">${T("The source checker’s verdicts appear here: every finding with the exact sentence it rests on.", "Hier erscheinen die Prüfergebnisse des Quellenprüfers: jede Feststellung mit dem genauen Satz, auf dem sie beruht.")}</p>`;
-  return `<table class="cp-table"><thead><tr><th>${T("Finding", "Feststellung")}</th><th>${T("Verdict", "Prüfung")}</th><th>${T("Exact sentence", "Wörtliche Stelle")}</th></tr></thead><tbody>${rows.map(([label, row]) => `<tr>
+  return `${ratedRun() ? feedbackLine() : ""}<table class="cp-table"><thead><tr><th>${T("Finding", "Feststellung")}</th><th>${T("Verdict", "Prüfung")}</th><th>${T("Exact sentence", "Wörtliche Stelle")}</th></tr></thead><tbody>${rows.map(([label, row]) => `<tr>
     <td>${esc(label)}${row.value !== undefined && row.value !== null ? `: <b>${esc(valueText(row.value))}</b>` : row.status ? ` <span class="cp-muted">(${esc(word(row.status))})</span>` : ""}</td>
-    <td>${row.verdict === "accepted" ? `<span class="cp-chip good">${T("supported", "belegt")}</span>` : row.verdict === "rejected" ? `<span class="cp-chip bad">${T("not supported", "nicht belegt")}</span><br><small class="cp-muted">${esc(row.verdict_reason || "")}</small>` : `<span class="cp-chip wait">${T("not checked", "nicht geprüft")}</span>`}</td>
+    <td>${row.verdict === "accepted" ? `<span class="cp-chip good">${T("supported", "belegt")}</span>` : row.verdict === "rejected" ? `<span class="cp-chip bad">${T("not supported", "nicht belegt")}</span><br><small class="cp-muted">${esc(row.verdict_reason || "")}</small>` : `<span class="cp-chip wait">${T("not checked", "nicht geprüft")}</span>`}${rate(row.fact ? `fact:${row.fact}` : `document:${row.document}`)}</td>
     <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button><br><small class="cp-muted">${esc(fileName(c.file))}${c.page ? `, ${T("page", "Seite")} ${c.page}` : ""}</small>`).join("<br>") || '<span class="cp-muted">—</span>'}</td></tr>`).join("")}</tbody></table>`;
 }
 
@@ -657,19 +681,19 @@ function resultView() {
   const today = new Date();
   const days = (iso) => Math.round((new Date(iso) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
   const left = (n) => (n < 0 ? T(`expired ${-n} days ago`, `abgelaufen seit ${-n} Tagen`) : n === 0 ? T("today", "heute") : T(`in ${n} days`, `in ${n} Tagen`));
-  const deadlines = (r.deadlines || []).map((d) => { const n = days(d.date); return `<li><b>${dateText(d.date)}</b> · ${esc(d.question)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : left(n)}</span></li>`; }).join("");
+  const deadlines = (r.deadlines || []).map((d, i) => { const n = days(d.date); return `<li><b>${dateText(d.date)}</b> · ${esc(d.question)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : left(n)}</span>${rate(`deadline:${i}`)}</li>`; }).join("");
   const summary = (r.case_summary || []).length ? `<section class="cp-card" style="padding:16px 20px;max-width:900px;margin-bottom:18px"><h2 class="cp-section" style="margin-top:0">${T("Case summary", "Fallzusammenfassung")}</h2>
-      <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}</dd>`).join("")}</dl></section>` : "";
+      <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f, i) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}${rate(`summary:${i}`)}</dd>`).join("")}</dl></section>` : "";
   const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
   const action = { answer: T("Answer: ", "Klären: "), resolve: T("Not met: ", "Nicht erfüllt: "), obtain: T("Obtain: ", "Einholen: ") };
-  return `${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
-    <h1 class="cp-title">${T("Answer", "Antwort")}</h1><p class="cp-answer">${esc(r.answer)}</p><p>${esc(r.summary)}</p>
+  return `${ratedRun() ? feedbackLine() : ""}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
+    <h1 class="cp-title">${T("Answer", "Antwort")}</h1><p class="cp-answer">${esc(r.answer)}${rate("answer")}</p><p>${esc(r.summary)}</p>
     ${ev && ev.current ? `<p class="cp-muted">${T("Current step", "Aktueller Schritt")}: <b>${esc(ev.current.title)}</b>${ev.waiting_for.length ? ` · ${T("waiting for", "wartet auf")}: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>` : ""}
     ${ev && ev.outcome ? `<p class="cp-muted">${T("Outcome in the process", "Ergebnis im Prozess")}: <b>${esc(ev.outcome.title)}</b></p>` : ""}
     ${ev && ev.next_actions.length ? `<h2 class="cp-section">${T("Next steps", "Nächste Schritte")}</h2><ul>${ev.next_actions.map((a) => `<li>${esc(action[a.kind])}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}
-    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
     ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
-      <div class="clauses">${r.reply.clauses.map((c) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}</p>
+      <div class="clauses">${r.reply.clauses.map((c, i) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}${rate(`reply:${i}`)}</p>
         <small class="cp-muted">${c.supported ? T("Rests on: ", "Beruht auf: ") + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; ")
           : T("Not supported by an accepted finding: review before use", "Durch keine bestätigte Feststellung gestützt: vor Verwendung prüfen")}</small></div>`).join("")}</div>
       <footer>${icon("shield")}${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</footer></article><p>${draft}</p>` : ""}
@@ -732,6 +756,7 @@ async function renderCase() {
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; renderCase(); } });
   for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; renderCase(); });
+  for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const open = $("#edit-open");
   if (open) open.addEventListener("click", () => { S.editing = true; renderCase(); });
   const undo = $("#undo");

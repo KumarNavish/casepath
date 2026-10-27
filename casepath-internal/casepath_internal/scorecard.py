@@ -18,7 +18,7 @@ SAFE = re.compile(r"^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$")
 STATUSES = {"completed", "failed", "interrupted", "queued", "running", "selected", "fallback", "ambiguous",
             "needs_facts", "unmapped", "present", "unusable", "missing", "unchecked", "established", "unknown",
             "conflicting", "accepted", "rejected", "yes", "depends", "draft", "reviewed", "suggested", "applied",
-            "contradicted", "not_checked"}
+            "contradicted", "not_checked", "correct", "wrong"}
 
 
 class ScorecardLeak(ValueError):
@@ -47,7 +47,7 @@ def guard(value, path="$"):
     raise ScorecardLeak(f"{path}: unsupported value")
 
 
-def run_card(run, salt):
+def run_card(run, salt, feedback=None):
     result = run.get("result") or {}
     evaluation = result.get("evaluation") or {}
     routing = run.get("routing") or {}
@@ -75,8 +75,18 @@ def run_card(run, salt):
         "agent_turns": _turns(usage),
         "input_tokens": sum(u.get("input_tokens", 0) for u in usage),
         "output_tokens": sum(u.get("output_tokens", 0) for u in usage),
+        "feedback": _feedback(feedback or []),
     }
     return guard(card)
+
+
+def _feedback(rows):
+    """Case workers' verdicts per item kind; their notes stay inside."""
+    counts = {}
+    for row in rows:
+        kind = row["target"].split(":", 1)[0]
+        counts.setdefault(kind, {"correct": 0, "wrong": 0})[row["verdict"]] += 1
+    return counts
 
 
 def _turns(usage):
@@ -88,7 +98,7 @@ def _turns(usage):
 
 def scorecard(store, salt):
     runs = [store.latest_run(case["id"]) for case in store.list_cases()]
-    return guard({"format": "casepath.scorecard.v1", "runs": [run_card(r, salt) for r in runs if r]})
+    return guard({"format": "casepath.scorecard.v1", "runs": [run_card(r, salt, store.list_feedback(r["id"])) for r in runs if r]})
 
 
 def main(argv=None):

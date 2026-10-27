@@ -146,6 +146,24 @@ class AppTests(unittest.TestCase):
         self.assertEqual(state["status"], "failed")
         self.assertTrue(state["error"].startswith("model_not_configured"))
 
+    def test_case_worker_feedback_is_kept_per_item_and_only_counted_in_the_scorecard(self):
+        client = self.client()
+        case, uploaded = self.new_case(client, "Feedback")
+        run = self.run_with(client, case["id"], ScriptedModel(team_script(uploaded["id"])))
+        url = f"/api/runs/{run['id']}/feedback"
+        self.assertEqual(client.put(url, json={"target": "fact:landlord_notified", "verdict": "correct"}).status_code, 200)
+        client.put(url, json={"target": "answer", "verdict": "correct"})
+        client.put(url, json={"target": "answer", "verdict": "wrong", "note": "Die Frist ist falsch gelesen."})
+        client.put(url, json={"target": "summary:0", "verdict": "wrong"})
+        client.put(url, json={"target": "summary:0", "verdict": None})
+        self.assertEqual(client.put(url, json={"target": "Der Vermieter", "verdict": "wrong"}).status_code, 422)
+        self.assertEqual(client.put(url, json={"target": "answer", "verdict": "maybe"}).status_code, 422)
+        rows = client.get(f"/api/cases/{case['id']}").json()["feedback"]
+        self.assertEqual({(r["target"], r["verdict"]) for r in rows}, {("fact:landlord_notified", "correct"), ("answer", "wrong")})
+        card = scorecard(client.app.state.store, "salt")["runs"][0]
+        self.assertEqual(card["feedback"], {"fact": {"correct": 1, "wrong": 0}, "answer": {"correct": 0, "wrong": 1}})
+        self.assertNotIn("Frist", json.dumps(card))
+
     def test_restart_marks_unfinished_runs(self):
         store = CaseStore(self.directory.name)
         case = store.create_case("x", {}, "dev")

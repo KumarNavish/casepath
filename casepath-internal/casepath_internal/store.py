@@ -1,4 +1,4 @@
-"""A fresh case store: cases, original files, runs, run progress, results, Knowledge.
+"""A fresh case store: cases, original files, runs, run progress, results, Knowledge, case workers' feedback.
 
 SQLite and a content-addressed file folder serve the development workspace.
 The same operations are what an operated business service will expose; no
@@ -36,6 +36,9 @@ create table if not exists knowledge_uses(
 create table if not exists case_edits(
   id text primary key, case_id text not null references cases(id), data text not null, status text not null,
   created_at text not null);
+create table if not exists feedback(
+  run_id text not null references runs(id), target text not null, by text not null, verdict text not null,
+  note text not null, at text not null, primary key(run_id, target, by));
 """
 ACTIVE = ("queued", "running")
 
@@ -236,6 +239,19 @@ class CaseStore:
         if knowledge_id:
             return self._all("select * from knowledge_uses where knowledge_id=? order by at", knowledge_id)
         return self._all("select * from knowledge_uses order by at")
+
+    # Case workers' feedback on a run's results: one verdict per person and item, the latest kept
+    def set_feedback(self, run_id, target, verdict, note, user):
+        self.get_run(run_id)
+        with self._lock:
+            if verdict is None:
+                self._db.execute("delete from feedback where run_id=? and target=? and by=?", (run_id, target, user))
+            else:
+                self._db.execute("insert or replace into feedback values(?,?,?,?,?,?)", (run_id, target, user, verdict, note or "", now()))
+        return self.list_feedback(run_id)
+
+    def list_feedback(self, run_id):
+        return self._all("select target, by, verdict, note, at from feedback where run_id=? order by at", run_id)
 
     # Edits to a case's process
     def add_edit(self, case_id, op, args, user, reason):
