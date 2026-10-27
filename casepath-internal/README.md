@@ -20,7 +20,10 @@ This folder contains no Mobiliar content. Workflows built from Mobiliar's proces
 | `drawio.py` | Turns a draw.io process diagram into a draft workflow. Each step and branch is traced to its diagram cell, and ambiguities become open questions. |
 | `extract.py`, `evidence.py` | Read PDF, e-mail, Word and text files, and count pages without a text layer. Locate quotes word for word, and search. |
 | `azure_model.py`, `config.py` | Azure OpenAI client with Entra sign-in and the exact deployment name. It uses the Responses API with tools (`store: false`), and chat completions for deployments without Responses. It refuses any endpoint that is not an Azure OpenAI resource. |
-| `agent.py` | The tool loop behind the five roles: claim reader, process builder, document finder, source checker, result checker. Only located quotes count, and an independent pass verifies them. |
+| `agents.py` | The agent team on one deployment. A lead delegates to the claim reader, process builder, document finder, source checker and result checker; each has its own instructions, tools and context. Only located quotes count, and the source checker verifies them independently. |
+| `casegraph.py` | A case's own process: workflow, applicable Knowledge and validated edits. Edits re-evaluate the case, show a before-and-after diff, and can be undone. |
+| `knowledge.py` | Knowledge items with versions, evidence and use statistics. Candidates are applied as suggestions, a person activates them, and later cases refine or contradict them. |
+| `synthetic.py` | Synthetic cases made inside Mobiliar: profile, generation, copy guard, realistic PDF rendering (including scans) and a blind judge. |
 | `store.py`, `runner.py`, `app.py` | Fresh case store, background runs with honest statuses, and the API. The API serves only with a configured sign-in. |
 | `scorecard.py` | Content-free run scorecards, guarded against free text, for results that may leave Mobiliar. |
 | `deploy/workspace/` | One script for setup, start, update and checks on the development workspace, and a private env template. |
@@ -59,5 +62,6 @@ A draft gets its routing condition and document needs from a reviewer before it 
 
 - The case-worker interface. The next step is to port the product's workspace UI to this API.
 - Page images for scanned PDFs (vision input), and photo reading.
+- Running the synthetic pipeline and the agent team on the internal model. This needs the internal runtime.
 - Comparing results with reviewer-labelled references on the Hackathon cases, beyond the structural scorecard.
 - Operated hosting (frontend, business service, agent service).
