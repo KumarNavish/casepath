@@ -1,12 +1,12 @@
 """Bring real case files into a running CasePath and work through them one case at a time.
 
     python -m casepath_internal.batch import <folder> [--workflow <id>] [--url http://127.0.0.1:8080]
-    python -m casepath_internal.batch next [--url ...]
+    python -m casepath_internal.batch next [--synthetic] [--url ...]
     python -m casepath_internal.batch retry [--workflow <id>] [--url ...]
 
 ``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file; with ``--workflow``
 the case worker's choice of process is set instead of routing from the documents. ``next`` starts the next case that
-has not been prepared and waits for it. ``retry`` runs the first case whose last run failed, was interrupted or found
+has not been prepared and waits for it (with ``--synthetic``, the next synthetic case instead). ``retry`` runs the first case whose last run failed, was interrupted or found
 no process, optionally choosing the process first; pages already read are not read again. Each command prints one
 content-free line: run status, pages read, documents found in the dossier, where the case stands in its workflow, and
 the tokens used. One case per command keeps an interactive session (such as Cloud Shell) active between cases.
@@ -89,9 +89,9 @@ def prepare(url, case, poll):
     print(json.dumps(line(url, case, run)))
 
 
-def run_next(url, poll=5):
+def run_next(url, poll=5, synthetic=False):
     for case in call(url, "/api/cases")["cases"]:
-        if (case.get("intake") or {}).get("synthetic") or case.get("run_status"):
+        if bool((case.get("intake") or {}).get("synthetic")) != synthetic or case.get("run_status"):
             continue
         return prepare(url, case, poll)
     print(json.dumps({"next": None, "note": "every case has been prepared"}))
@@ -115,6 +115,7 @@ def main(argv=None):
     parser.add_argument("command", choices=["import", "next", "retry"])
     parser.add_argument("folder", nargs="?")
     parser.add_argument("--workflow")
+    parser.add_argument("--synthetic", action="store_true")
     parser.add_argument("--url", default="http://127.0.0.1:8080")
     args = parser.parse_args(argv)
     if args.command == "import":
@@ -124,7 +125,7 @@ def main(argv=None):
     elif args.command == "retry":
         retry(args.url, args.workflow)
     else:
-        run_next(args.url)
+        run_next(args.url, synthetic=args.synthetic)
 
 
 if __name__ == "__main__":

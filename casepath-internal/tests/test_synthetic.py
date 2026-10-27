@@ -38,25 +38,60 @@ CASE = {"title": "Schimmel im Bad, Kramgasse", "customer": "Lea Brunner",
 
 
 class FakeModel:
+    """Answers in order, or per call name when given a dict of callables (for calls made in parallel)."""
+
     def __init__(self, answers):
-        self.answers = list(answers)
+        self.answers = answers if isinstance(answers, dict) else list(answers)
+        self.inputs = []
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
-        value = self.answers.pop(0)
+        self.inputs.append((name, input))
+        value = self.answers[name](input) if isinstance(self.answers, dict) else self.answers.pop(0)
         validate_result(value, schema)
         return ModelResult(value=value, usage={}, deployment="d", response_id="r", attempts=1, seconds=0)
 
 
 class SyntheticTests(unittest.TestCase):
-    def test_generated_case_matches_its_schema_and_profile_hides_identifiers(self):
+    def test_a_case_is_planned_then_written_document_by_document(self):
         profile = {"family_hint": "Mietmangel", "situation": "Tenant reports mould; landlord replies late.",
                    "documents": [{"kind": "letter", "purpose": "defect notice", "sender_role": "tenant", "recipient_role": "landlord",
                                   "language": "de", "pages": 1, "day_offset": 0, "layout": "letterhead", "features": ["signature"], "register": "formal"}],
                    "messiness": ["the reply crosses a reminder"], "identifiers": ["Anna Muster", "8017.0833.0054"]}
-        model = FakeModel([profile, CASE])
-        made = synthetic.make_profile(model, [{"name": "ref.pdf", "kind": "pdf", "text": REFERENCE[0]}])
-        case = synthetic.generate_case(model, made, FIXTURE, variation="landlord never answers")
+        plan = {**{k: CASE[k] for k in ("title", "customer", "truth")},
+                "documents": [{**{k: d[k] for k in d if k != "blocks"}, "pages": 1, "content": f"Document {i}."} for i, d in enumerate(CASE["documents"])]}
+        model = FakeModel({"casepath_profile": lambda _: profile, "casepath_synthetic_plan": lambda _: plan,
+                           "casepath_synthetic_document": lambda ask: {"blocks": CASE["documents"][json.loads(ask[0]["content"])["write"]]["blocks"]}})
+        files = [{"id": "f1", "name": "ref.pdf", "kind": "pdf", "pages": 3, "pages_transcribed": [2, 3],
+                  "text": "[page 1]\n" + REFERENCE[0] + "\n\n[page 2]\nAntwort der Verwaltung.\n\n[page 3]\nWeiter.",
+                  "segments": [{"first_page": 1, "last_page": 1, "kind": "Mängelrüge", "date": "03.05.2025"},
+                               {"first_page": 2, "last_page": 3, "kind": "Antwort", "date": "20.05.2025"}]}]
+        made = synthetic.make_profile(model, files)
+        sent = json.loads(model.inputs[0][1][0]["content"])
+        self.assertEqual([(d["kind"], d["pages"]) for d in sent["documents"]], [("Mängelrüge", 1), ("Antwort", 2)])
+        self.assertEqual(sent["pages_scanned"], 2)
+        case = synthetic.generate_case(model, made, FIXTURE, variation="landlord never answers", workers=3)
         self.assertEqual(case["truth"]["outcome"], "reported")
+        self.assertEqual([d["blocks"] for d in case["documents"]], [d["blocks"] for d in CASE["documents"]])
+        self.assertNotIn("content", case["documents"][0])
+        written = [json.loads(i[0]["content"]) for n, i in model.inputs if n == "casepath_synthetic_document"]
+        self.assertTrue(all(len(w["plan"]) == 3 and "Anna Muster" in w["blocked_identifiers"] for w in written))
+
+    def test_real_documents_come_from_the_reading_split(self):
+        files = [{"id": "f1", "name": "d.pdf", "kind": "pdf", "text": "[page 1]\nEins.\n\n[page 2]\nZwei.\n\n[page 3]\nDrei.",
+                  "segments": [{"first_page": 1, "last_page": 2, "kind": "Brief", "date": ""}, {"first_page": 3, "last_page": 3, "kind": "Foto", "date": ""}]}]
+        self.assertEqual([r["text"] for r in synthetic.documents_of(files)], ["Eins. Zwei.", "Drei."])
+
+    def test_results_are_scored_against_the_synthetic_truth(self):
+        truth = {"facts": [{"fact": "landlord_notified", "value": "yes"}, {"fact": "legal_area", "value": "tenancy_defect"},
+                           {"fact": "x", "value": None}], "present": ["customer_message", "notice_letter"], "outcome": "reported"}
+        result = {"facts": [{"fact": "landlord_notified", "status": "established", "value": True, "verdict": "accepted"}]}
+        evaluation = {"documents": [{"document": "customer_message", "status": "present"}, {"document": "notice_letter", "status": "missing"},
+                                    {"document": "photo", "status": "present"}], "outcome": {"id": "reported"}}
+        card = synthetic.score_against_truth(truth, result, evaluation)
+        self.assertEqual(card["facts"], {"correct": 1, "wrong": 0, "not_found": 1})
+        self.assertEqual(card["documents"], {"found": 1, "missed": 1, "found_but_absent": 1})
+        self.assertTrue(card["outcome_match"])
+        guard(card)
 
     def test_copy_guard_blocks_reused_text_and_identifiers(self):
         self.assertTrue(synthetic.copy_guard(REFERENCE, CASE, identifiers=["Anna Muster"])["ok"])
@@ -95,6 +130,16 @@ class SyntheticTests(unittest.TestCase):
         card = synthetic.judge_pairs(model, REFERENCE, ["Synthetic text " * 40], pairs=10)
         self.assertEqual(card["pairs"], 10)
         self.assertTrue(0 <= card["accuracy"] <= 1)
+        sides = [json.loads(i[0]["content"]) for _, i in model.inputs]
+        self.assertTrue(all(len(s["A"]) == len(s["B"]) for s in sides))  # same length: length is no tell
+        guard(card)
+
+    def test_page_judge_sees_two_page_images(self):
+        real, fake = synthetic.render_digital(document(), CASE), synthetic.render_scanned(document(layout="scan"), CASE)
+        model = FakeModel([{"real": "B", "confidence": 0.5, "tells": ["scan_quality"]}] * 4)
+        card = synthetic.judge_pages(model, [(real, 1)], [(fake, 1)], pairs=4)
+        images = [c for c in model.inputs[0][1][0]["content"] if c["type"] == "input_image"]
+        self.assertEqual((card["mode"], card["pairs"], len(images)), ("pages", 4, 2))
         guard(card)
 
 
