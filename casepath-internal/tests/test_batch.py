@@ -1,0 +1,47 @@
+import json
+import tempfile
+import threading
+import unittest
+from pathlib import Path
+from unittest import mock
+
+import uvicorn
+
+from casepath_internal import batch
+from casepath_internal.app import create_app
+from casepath_internal.config import load_settings
+from casepath_internal.synthetic import render_digital
+from tests.test_synthetic import CASE, document
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+class BatchTests(unittest.TestCase):
+    def test_import_and_next_against_a_running_app(self):
+        with tempfile.TemporaryDirectory() as data, tempfile.TemporaryDirectory() as folder:
+            Path(folder, "8017.0001.0001_geschwaerzt.pdf").write_bytes(render_digital(document(), CASE))
+            app = create_app(load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(FIXTURES), "CASEPATH_DEV_USER": "dev"}),
+                             model_factory=lambda: None)
+            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=8791, log_level="error"))
+            thread = threading.Thread(target=server.run, daemon=True)
+            thread.start()
+            while not server.started:
+                pass
+            url = "http://127.0.0.1:8791"
+            with mock.patch("sys.stdout") as out:
+                batch.import_folder(url, folder)
+                batch.import_folder(url, folder)
+                batch.run_next(url, poll=0.05)
+                batch.run_next(url, poll=0.05)
+            printed = [json.loads(c.args[0]) for c in out.write.call_args_list if c.args[0].strip()]
+            server.should_exit = True
+            thread.join(5)
+            self.assertEqual(printed[0]["imported"], 1)
+            self.assertEqual(printed[1]["imported"], 0)
+            self.assertEqual((printed[2]["status"], printed[2]["error_kind"], printed[2]["pages"]), ("failed", "model_not_configured", 1))
+            self.assertIsNone(printed[3]["next"])
+            self.assertNotIn("Badezimmer", json.dumps(printed))
+
+
+if __name__ == "__main__":
+    unittest.main()
