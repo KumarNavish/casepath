@@ -23,10 +23,30 @@ load_env() {
 
 running() { [ -f "$pid_file" ] && kill -0 "$(cat "$pid_file")" 2>/dev/null; }
 
+# The DSW reaches the internet only through Mobiliar's firewall, which re-signs TLS. Without its
+# certificates, pip and az fail with certificate errors; the Handbook's script installs them.
+check_tls() {
+  mkdir -p "$home"
+  local index="${PIP_INDEX_URL:-https://pypi.org/simple/}"
+  if ! curl -sS --max-time 20 -o /dev/null "$index" 2>"$home/tls-check.err"; then
+    echo "Cannot reach $index over verified TLS: $(head -c 200 "$home/tls-check.err")" >&2
+    echo "On an AML DSW, first install the firewall certificates with the script on the DSL Handbook page" >&2
+    echo "'AML DSW > Create' (paste it into this terminal), then run setup again." >&2
+    exit 1
+  fi
+}
+
+check_signin() {
+  command -v az >/dev/null || { echo "The Azure CLI (az) is not installed on this machine." >&2; exit 1; }
+  az account show --query user.name -o tsv >/dev/null 2>&1 || { echo "Sign in first: az login --use-device-code" >&2; exit 1; }
+}
+
 case "${1:-}" in
   setup)
     load_env
-    "${CASEPATH_PYTHON:-python3.12}" -m venv "$venv"
+    check_tls
+    python="${CASEPATH_PYTHON:-$(command -v python3.12 || command -v python3.11 || command -v python3.10 || command -v python3)}"
+    "$python" -m venv "$venv"
     "$venv/bin/pip" install --quiet --upgrade pip
     "$venv/bin/pip" install --quiet -e "$here[azure]"
     "$venv/bin/python" -m unittest discover -s "$here/tests" -t "$here"
@@ -57,6 +77,7 @@ case "${1:-}" in
     ;;
   check-model)
     load_env
+    check_signin
     "$venv/bin/python" "$here/deploy/workspace/check_model.py"
     ;;
   scorecard)

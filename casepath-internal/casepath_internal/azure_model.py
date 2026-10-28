@@ -2,7 +2,9 @@
 
 The client calls ``{endpoint}/openai/v1/responses`` (the agent loop, with tools)
 and ``{endpoint}/openai/v1/chat/completions`` (single structured answers, for
-deployments without the Responses API). It authenticates with an Entra bearer
+deployments without the Responses API). With an API version configured it uses
+the dated routes instead (``/openai/responses?api-version=…`` and
+``/openai/deployments/{deployment}/chat/completions?api-version=…``). It authenticates with an Entra bearer
 token from the runtime's own identity: developer sign-in in a workspace,
 managed identity in a service. There are no API keys, provider headers, model
 catalogues or price tables. Responses are requested with ``store: false`` so
@@ -148,7 +150,12 @@ class AzureOpenAIModel:
         self.max_attempts = max_attempts
         self._client = httpx.Client(timeout=settings.timeout_seconds, follow_redirects=False,
                                     trust_env=settings.trust_env, verify=settings.ca_bundle or True, transport=transport)
-        self.base = settings.endpoint + "/openai/v1"
+        if settings.api_version:
+            version = "?api-version=" + settings.api_version
+            self.urls = {"/responses": settings.endpoint + "/openai/responses" + version,
+                         "/chat/completions": f"{settings.endpoint}/openai/deployments/{settings.deployment}/chat/completions{version}"}
+        else:
+            self.urls = {path: settings.endpoint + "/openai/v1" + path for path in ("/responses", "/chat/completions")}
 
     def __repr__(self):
         return f"AzureOpenAIModel(deployment={self.settings.deployment!r}, credential=<entra>)"
@@ -161,7 +168,7 @@ class AzureOpenAIModel:
         while True:
             attempt += 1
             try:
-                response = self._client.post(self.base + path, json=body, headers={"Authorization": "Bearer " + self._token()})
+                response = self._client.post(self.urls[path], json=body, headers={"Authorization": "Bearer " + self._token()})
             except httpx.HTTPError as error:
                 if attempt < self.max_attempts:
                     self._sleep(min(2 ** attempt, 20))

@@ -44,11 +44,12 @@ The tests use a synthetic workflow and a scripted model. They make no network ca
 
 The development workspace is an AML DSW. Its compute instance's name starts with `dsw`, so the Mobiliar proxy reaches it. Sign-in follows the DSL Handbook: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default).
 
-1. Clone the repository on the workspace.
-2. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there.
-3. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
-4. Run `az login --use-device-code` once.
-5. Run:
+1. In the compute instance's terminal, install the firewall certificates with the script on the DSL Handbook page *AML DSW › Create*. Without them, pip and `az` fail with certificate errors. `setup` checks for this first.
+2. Put the code on the workspace: clone the branch, or upload its zip in the Studio file browser and unzip it.
+3. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there. The lab endpoint and deployment are needed, plus `CASEPATH_AZURE_OPENAI_API_VERSION` only if the endpoint answers 404 on `/openai/v1`.
+4. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
+5. Run `az login --use-device-code` and finish the sign-in in the browser. The only role needed is *AzureAI RG dsl azureopenai openai lab User* (IIQ).
+6. Run:
    ```sh
    deploy/workspace/casepath.sh setup
    deploy/workspace/casepath.sh check-model   # one synthetic call, with approval

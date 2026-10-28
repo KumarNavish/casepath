@@ -12,9 +12,9 @@ FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json"
 ENDPOINT = "https://example-resource.openai.azure.com"
 
 
-def settings(reasoning=True):
+def settings(reasoning=True, api_version=None):
     return ModelSettings(endpoint=ENDPOINT, deployment="example-deployment", reasoning=reasoning, timeout_seconds=5,
-                         max_output_tokens=1000, ca_bundle=None, trust_env=False)
+                         max_output_tokens=1000, ca_bundle=None, trust_env=False, api_version=api_version)
 
 
 class SettingsTests(unittest.TestCase):
@@ -94,6 +94,21 @@ class ModelTests(unittest.TestCase):
         self.assertNotIn("provider", body)
         self.assertEqual(turn.calls, [{"call_id": "c1", "name": "list_files", "arguments": {}}])
         self.assertEqual(len(turn.output), 2)
+
+    def test_dated_api_routes_when_a_version_is_configured(self):
+        urls = []
+
+        def handler(request):
+            urls.append(str(request.url))
+            if "chat" in str(request.url):
+                return httpx.Response(200, json={"id": "c", "choices": [{"finish_reason": "stop", "message": {"content": '{"q": "ok"}'}}]})
+            return httpx.Response(200, json={"id": "r", "status": "completed", "output": []})
+
+        model = self.model(handler, api_version="2025-04-01-preview")
+        model.respond(instructions="i", input=[])
+        model.complete_json(name="n", system="s", user="u", schema=obj(q=text(10)))
+        self.assertEqual(urls, [ENDPOINT + "/openai/responses?api-version=2025-04-01-preview",
+                                ENDPOINT + "/openai/deployments/example-deployment/chat/completions?api-version=2025-04-01-preview"])
 
     def test_retries_then_reports_status(self):
         calls = []
