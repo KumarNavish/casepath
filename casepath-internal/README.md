@@ -42,13 +42,13 @@ The tests use a synthetic workflow and a scripted model. They make no network ca
 
 ## Run it on the development workspace
 
-The development workspace is an AML DSW. Its compute instance's name starts with `dsw`, so the Mobiliar proxy reaches it. Sign-in follows the DSL Handbook: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default).
+The development workspace is a managed Azure ML compute instance. Sign-in follows the platform guidance: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default). The platform specifics are in the setup notes of the internal copy, not here.
 
-1. In the compute instance's terminal, install the firewall certificates with the script on the DSL Handbook page *AML DSW › Create*. Without them, pip and `az` fail with certificate errors. `setup` checks for this first.
+1. In the compute instance's terminal, install the network's TLS certificates as the platform guide describes. Without them, pip and `az` fail with certificate errors. `setup` checks for this first.
 2. Put the code on the workspace: clone the branch, or upload its zip in the Studio file browser and unzip it.
 3. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there. The lab endpoint and deployment are needed, plus `CASEPATH_AZURE_OPENAI_API_VERSION` only if the endpoint answers 404 on `/openai/v1`.
 4. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
-5. Run `az login --use-device-code` and finish the sign-in in the browser. The only role needed is *AzureAI RG dsl azureopenai openai lab User* (IIQ).
+5. Run `az login --use-device-code` and finish the sign-in in the browser. The account needs the model-user role on the lab resource.
 6. Run:
    ```sh
    deploy/workspace/casepath.sh setup
@@ -66,7 +66,7 @@ A draft gets its routing condition and document needs from a reviewer before it 
 
 ## Not done yet
 
-- A completed run on the internal model, first on the made-up example and then on the Hackathon cases (in Azure Cloud Shell).
+- A completed run on the internal model, first on the made-up example and then on real cases, on the development workspace.
 - Running the synthetic pipeline on the internal model.
 - Comparing results with reviewer-labelled references on the Hackathon cases, beyond the structural scorecard.
 - Operated hosting (frontend, business service, agent service).

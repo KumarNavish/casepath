@@ -61,9 +61,9 @@ def in_cloud_shell(env=os.environ):
 def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ):
     """Return a callable giving a fresh bearer token from the runtime identity.
 
-    ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) follows the DSL Handbook's credential selection: ``cli`` (the default)
-    is the person's `az` sign-in, as on an AML DSW, where `az login --use-device-code` is the documented route and the
-    attached managed identity must not be picked up; ``managed_identity`` is for a deployed service whose identity has
+    ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) follows the platform's credential guidance: ``cli`` (the
+    default) is the person's `az` sign-in, as on a development compute instance, where `az login --use-device-code`
+    is the documented route and the attached managed identity must not be picked up; ``managed_identity`` is for a deployed service whose identity has
     been granted access; ``auto`` tries `az`, then a managed identity, except in Azure Cloud Shell, where that endpoint
     is the same portal relay `az` uses. `az` gets up to ``timeout`` seconds.
     """
@@ -78,7 +78,7 @@ def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ
     if source == "managed_identity" or (source == "auto" and not in_cloud_shell(env)):
         chain.append(("managed identity", ManagedIdentityCredential()))
     hint = (" Check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
-            " on an AML DSW, sign in first with `az login --use-device-code`.") if source != "managed_identity" else ""
+            " on a development compute instance, sign in first with `az login --use-device-code`.") if source != "managed_identity" else ""
     return token_provider(chain, scope, timeout=timeout + 15, hint=hint)
 
 

@@ -23,15 +23,15 @@ load_env() {
 
 running() { [ -f "$pid_file" ] && kill -0 "$(cat "$pid_file")" 2>/dev/null; }
 
-# The DSW reaches the internet only through Mobiliar's firewall, which re-signs TLS. Without its
-# certificates, pip and az fail with certificate errors; the Handbook's script installs them.
+# The development workspace reaches the internet only through a firewall that re-signs TLS. Without its
+# certificates, pip and az fail with certificate errors; the platform guide's script installs them.
 check_tls() {
   mkdir -p "$home"
   local index="${PIP_INDEX_URL:-https://pypi.org/simple/}"
   if ! curl -sS --max-time 20 -o /dev/null "$index" 2>"$home/tls-check.err"; then
     echo "Cannot reach $index over verified TLS: $(head -c 200 "$home/tls-check.err")" >&2
-    echo "On an AML DSW, first install the firewall certificates with the script on the DSL Handbook page" >&2
-    echo "'AML DSW > Create' (paste it into this terminal), then run setup again." >&2
+    echo "On the development workspace, first install the network's TLS certificates as the platform guide" >&2
+    echo "describes (paste its script into this terminal), then run setup again." >&2
     exit 1
   fi
 }
