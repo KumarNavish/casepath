@@ -26,7 +26,8 @@ deadlines or outcomes; leave unknown what the files do not settle. Nothing is se
 Write everything a case handler reads (summaries, answers, open points, questions, notes, drafts) in the language of the
 case files, usually German, with Swiss spelling (ss, not ß). A file may bundle several documents; list_files shows them
 with their pages and a short summary of each. In a long file, use those summaries and search to choose the pages to read;
-quote only what you have read. When your task is done, call report."""
+quote only what you have read. When you have several items to record, record them in the same turn with parallel tool
+calls. A photo's text is its description, which you may quote. When your task is done, call report."""
 
 AGENTS = {
     "claim_reader": {
@@ -41,9 +42,11 @@ files say with record_fact: established with quotes, unknown, or conflicting wit
     "process_builder": {
         "title": "Process builder",
         "instructions": """You are the process builder. Open this case's process: the workflow from Mobiliar's process diagrams
-plus the Knowledge that applies. Check it against the case brief. You may add a document need or a question only when
-a Knowledge item or an exact quote from the files supports it, using propose_change with that basis. Never remove what
-the workflow requires. Report the case's questions in plain language, one per fact, for the case handler.""",
+plus the Knowledge that applies. Check it against the case brief. Add a document need or a question only when this case
+clearly needs it beyond the workflow and a Knowledge item or an exact quote from the files supports it, using
+propose_change with that basis; at most three, and none when the workflow already covers the case. Your additions are
+suggestions for the case worker until a person confirms them. Never remove what the workflow requires. Report the
+case's questions in plain language, one per fact, for the case handler.""",
         "tools": ["open_process", "view_knowledge", "search", "read_file", "propose_change"],
     },
     "document_finder": {
@@ -242,16 +245,24 @@ def _record_document(work, agent, args):
     return {"accepted": True, "status": status, "located_quotes": len(located), "missed_quotes": missed}
 
 
+MAX_AGENT_EDITS = 3
+
+
 def _propose_change(work, agent, args):
+    if len(work.agent_edits) >= MAX_AGENT_EDITS:
+        return {"accepted": False, "reason": f"at most {MAX_AGENT_EDITS} additions per case; keep only what this case clearly needs"}
     located, _ = work.located(args["citations"])
     knowledge_ids = {k["id"] for k in work.knowledge}
+    active = {k["id"] for k in work.knowledge if k["status"] == "active"}
     if not located and args["basis_knowledge"] not in knowledge_ids:
         return {"accepted": False, "reason": "name an applied Knowledge item or quote the files as the basis"}
     condition = casegraph.conjunction([{"fact": c["fact"], "value": _coerce(work, c["fact"], c["value"])} for c in args["required_when"]])
+    # An agent's addition is a suggestion for the case worker unless an active Knowledge item already requires it.
+    suggested = args["basis_knowledge"] not in active
     if args["op"] == "add_document":
-        edit_args = {"title": args["title"], "why": args["why"], "step": args["step"], "required_when": condition}
+        edit_args = {"title": args["title"], "why": args["why"], "step": args["step"], "required_when": condition, "suggested": suggested}
     else:
-        edit_args = {"question": args["question"], "type": "boolean"}
+        edit_args = {"question": args["question"], "type": "boolean", "suggested": suggested}
     edit = {"id": f"pb{len(work.agent_edits) + 1}", "op": args["op"], "args": edit_args, "by": agent, "reason": args["reason"],
             "basis": {"knowledge": args["basis_knowledge"], "citations": located}, "status": "active"}
     try:

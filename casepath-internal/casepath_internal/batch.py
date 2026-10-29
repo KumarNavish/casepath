@@ -72,7 +72,7 @@ def line(url, case, run):
             "pages": sum(f["extraction"].get("pages") or 0 for f in files),
             "pages_read_from_images": sum(len(f["extraction"].get("pages_transcribed") or []) for f in files),
             "pages_unread": sum(len(f["extraction"].get("pages_without_text") or []) for f in files),
-            "documents_found": sum(len(f["extraction"].get("segments") or []) for f in files),
+            "documents_in_dossiers": sum(len(f["extraction"].get("segments") or []) for f in files),
             "routing": (run.get("routing") or {}).get("status"), "workflow": run.get("workflow_id"),
             "current_step": (evaluation.get("current") or {}).get("step"), "outcome": (evaluation.get("outcome") or {}).get("id"),
             "facts_accepted": sum(1 for f in result.get("facts", []) if f.get("verdict") == "accepted"),

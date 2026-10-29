@@ -92,7 +92,17 @@ class TeamTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
         edit, = result["agent_edits"]
         self.assertEqual(edit["args"]["title"], "Ventilation record")
-        self.assertIn("e-pb1", {d["document"] for d in result["evaluation"]["documents"]})
+        row = next(d for d in result["evaluation"]["documents"] if d["document"] == "e-pb1")
+        self.assertEqual(row["required"], "suggested")  # an agent's addition waits for a person
+        self.assertNotIn("e-pb1", [a.get("document") for a in result["evaluation"]["next_actions"]])
+
+    def test_agents_add_at_most_three_items(self):
+        def question(n):
+            return ("propose_change", {"op": "add_question", "title": "", "why": "", "question": f"Question {n}?", "step": None,
+                                       "required_when": [], "basis_knowledge": None, "citations": [{"file": "f1", "quote": VENT}], "reason": "Raised."})
+        script = standard_script(builder_calls=[question(n) for n in range(5)], finder_calls=[], result_fields={})
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertEqual(len(result["agent_edits"]), 3)
 
 
 class KnowledgeReuseTests(unittest.TestCase):

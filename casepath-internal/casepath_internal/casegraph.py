@@ -91,7 +91,7 @@ def apply_edit(graph, edit):
         validate_condition_facts(condition, facts)
         graph["documents"].append({"id": document_id, "title": args["title"].strip(), "why": args["why"].strip(),
                                    "required_when": condition if condition is not None else True,
-                                   "source_refs": [ref], "edit": edit["id"]})
+                                   "source_refs": [ref], "edit": edit["id"], **({"suggested": True} if args.get("suggested") else {})})
         _attach(graph, args.get("step"), document_id)
     elif op == "remove_document":
         if args["document"] not in documents:
@@ -108,7 +108,8 @@ def apply_edit(graph, edit):
         document["source_refs"] = document["source_refs"] + [ref]
     elif op == "add_question":
         fact_id = f"q-{edit['id']}"
-        fact = {"id": fact_id, "question": args["question"].strip(), "type": args.get("type", "boolean"), "source_refs": [ref]}
+        fact = {"id": fact_id, "question": args["question"].strip(), "type": args.get("type", "boolean"), "source_refs": [ref],
+                **({"suggested": True} if args.get("suggested") else {})}
         if fact["type"] == "enum":
             fact["values"] = list(args["values"])
         graph["facts"].append(fact)

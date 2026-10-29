@@ -113,6 +113,29 @@ class ReadingTests(unittest.TestCase):
         with self.assertRaises(ModelError):
             reading.prepare_file(Reader(unreadable={3, 4, 5}), self.store, self.store.get_file(self.file, True))
 
+    def test_a_photo_is_described_once_so_it_can_be_quoted(self):
+        from PIL import Image
+        out = io.BytesIO()
+        Image.new("RGB", (40, 30), (90, 90, 90)).save(out, format="JPEG")
+        row = extract("wand.jpg", "image/jpeg", out.getvalue())
+        case = self.store.create_case("y", {}, "u")
+        photo = self.store.add_file(case["id"], "wand.jpg", row["media_type"], row["kind"], out.getvalue(), row, "u")["id"]
+
+        class Photo:
+            calls = 0
+
+            def respond_json(self, *, name, instructions, input, schema, effort="medium"):
+                Photo.calls += 1
+                assert name == "casepath_photo" and input[0]["content"][1]["image_url"].startswith("data:image/jpeg;base64,")
+                return ModelResult(value={"description": "[Foto] Dunkle Flecken an der Aussenwand neben dem Fenster."}, usage={},
+                                   deployment="d", response_id="r", attempts=1, seconds=0)
+        events = []
+        extraction = reading.prepare_file(Photo(), self.store, self.store.get_file(photo, True), on_event=events.append)
+        self.assertTrue(extraction["readable"] and extraction["text"].startswith("[Foto]"))
+        self.assertIn("reading.photo", [e["kind"] for e in events])
+        reading.prepare_file(Photo(), self.store, self.store.get_file(photo, True))
+        self.assertEqual(Photo.calls, 1)
+
     def test_windows_keep_page_order_within_a_budget(self):
         pages = [(n, "x" * 20000) for n in range(1, 8)]
         groups = reading.windows(pages, budget=45000, page_cap=30000)

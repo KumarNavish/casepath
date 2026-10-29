@@ -45,7 +45,7 @@ The tests use a synthetic workflow and a scripted model. They make no network ca
 The development workspace is a managed Azure ML compute instance. Sign-in follows the platform guidance: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default). The platform specifics are in the setup notes of the internal copy, not here.
 
 1. In the compute instance's terminal, install the network's TLS certificates as the platform guide describes. Without them, pip and `az` fail with certificate errors. `setup` checks for this first.
-2. Put the code on the workspace: clone the branch, or upload its zip in the Studio file browser and unzip it.
+2. Put the code on the workspace in `~/casepath-internal`: clone the branch, or upload its zip in the Studio file browser and unzip it there.
 3. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there. The lab endpoint and deployment are needed, plus `CASEPATH_AZURE_OPENAI_API_VERSION` only if the endpoint answers 404 on `/openai/v1`.
 4. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
 5. Sign in as yourself. On a compute instance with single sign-on, `az login --identity` signs in as the person the instance belongs to; otherwise run `az login --use-device-code`. The account needs the model-user role on the lab resource. `check-model` says whether the token was issued to a person, and refuses a machine identity.

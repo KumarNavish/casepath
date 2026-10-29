@@ -164,6 +164,9 @@ def _usage(payload):
     reasoning = (raw.get("output_tokens_details") or {}).get("reasoning_tokens")
     if type(reasoning) is int:
         usage["reasoning_tokens"] = reasoning
+    cached = (raw.get("input_tokens_details") or raw.get("prompt_tokens_details") or {}).get("cached_tokens")
+    if type(cached) is int:
+        usage["cached_tokens"] = cached
     return usage
 
 
