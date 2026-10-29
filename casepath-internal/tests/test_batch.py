@@ -47,5 +47,41 @@ class BatchTests(unittest.TestCase):
             self.assertNotIn("Badezimmer", json.dumps(printed))
 
 
+class TraceTests(unittest.TestCase):
+    def test_trace_breaks_a_run_down_by_agent_and_by_id_without_content(self):
+        from casepath_internal.extract import extract
+        from tests.scripted import ScriptedModel
+        from tests.test_app import EMAIL, finder, team_script
+        with tempfile.TemporaryDirectory() as data:
+            app = create_app(load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(FIXTURES), "CASEPATH_DEV_USER": "dev"}),
+                             model_factory=lambda: None)
+            store = app.state.store
+            case = store.create_case("Trace", {}, "dev")
+            row = extract("message.eml", "message/rfc822", EMAIL)
+            added = store.add_file(case["id"], "message.eml", row["media_type"], row["kind"], EMAIL, row, "dev")
+            store.select_workflow(case["id"], "example-defect", "2026-01-01", "dev")
+            app.state.runs.model_factory = lambda: ScriptedModel(team_script(added["id"], finder_calls=[
+                finder(added["id"], "customer_message", "Ich habe den Vermieter am 2. März schriftlich informiert.")]))
+            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=8792, log_level="error"))
+            thread = threading.Thread(target=server.run, daemon=True)
+            thread.start()
+            while not server.started:
+                pass
+            url = "http://127.0.0.1:8792"
+            with mock.patch("sys.stdout") as out:
+                batch.run_next(url, poll=0.05)
+                batch.trace(url, case["id"][-8:])
+            server.should_exit = True
+            thread.join(5)
+            card = json.loads("".join(c.args[0] for c in out.write.call_args_list[1:]))
+            self.assertEqual(card["status"], "completed")
+            self.assertEqual(card["delegations"][:2], ["claim_reader", "process_builder"])
+            self.assertGreaterEqual(card["agents"]["claim_reader"]["turns"], 2)
+            self.assertEqual(card["agents"]["claim_reader"]["tools"].get("record_fact"), 1)
+            self.assertEqual(card["documents"]["customer_message"]["origin"], "workflow")
+            self.assertEqual(card["facts"]["landlord_notified"][0], "established")
+            self.assertNotIn("Vermieter", json.dumps(card))
+
+
 if __name__ == "__main__":
     unittest.main()

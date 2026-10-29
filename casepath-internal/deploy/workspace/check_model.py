@@ -21,7 +21,8 @@ def main():
         token()
     except ModelError as error:
         sys.exit(f"sign-in failed after {time.monotonic() - started:.0f} s: {error}")
-    print(f"sign-in ok in {time.monotonic() - started:.1f} s")
+    who = {"user": "as a person", "app": "as an application identity", "unknown": "identity type not stated"}.get(getattr(token, "identity", None), "")
+    print(f"sign-in ok in {time.monotonic() - started:.1f} s, {who}")
     model = AzureOpenAIModel(settings, token)
     schema = obj(status=choice(["ok"]))
     try:

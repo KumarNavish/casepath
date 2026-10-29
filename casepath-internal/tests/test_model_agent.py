@@ -4,7 +4,7 @@ import unittest
 
 import httpx
 
-from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn, in_cloud_shell, token_provider
+from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn, in_cloud_shell, token_identity, token_provider
 from casepath_internal.config import ModelSettings, SettingsError, load_settings
 from casepath_internal.schema import obj, text
 
@@ -63,6 +63,21 @@ class SignInTests(unittest.TestCase):
         self.assertEqual(caught.exception.reason, "sign_in")
         self.assertIn("az: no answer within 0.2 s", str(caught.exception))
         self.assertIn("Try az login.", str(caught.exception))
+
+    def test_a_machine_identity_is_refused_when_a_person_must_sign_in(self):
+        import base64
+        def jwt(claims):
+            return "h." + base64.urlsafe_b64encode(json.dumps(claims).encode()).decode().rstrip("=") + ".s"
+        person, machine = jwt({"upn": "someone@example.org", "scp": "user_impersonation"}), jwt({"xms_mirid": "/sub/x", "appid": "a"})
+        self.assertEqual(token_identity(person), "user")
+        self.assertEqual(token_identity(machine), "app")
+        self.assertEqual(token_identity("not a token"), "unknown")
+        provider = token_provider([("az", Credential(machine))], "scope", timeout=1, person=True)
+        with self.assertRaises(ModelError) as caught:
+            provider()
+        self.assertIn("not as a person", str(caught.exception))
+        provider = token_provider([("az", Credential(person))], "scope", timeout=1, person=True)
+        self.assertEqual((provider(), provider.identity), (person, "user"))
 
     def test_cloud_shell_is_recognised(self):
         self.assertTrue(in_cloud_shell({"AZUREPS_HOST_ENVIRONMENT": "cloud-shell/1.0"}))

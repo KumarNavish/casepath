@@ -11,6 +11,7 @@ catalogues or price tables. Responses are requested with ``store: false`` so
 the service keeps no copy; reasoning is carried between turns as encrypted
 items. Tokens are never logged or stored.
 """
+import base64
 from dataclasses import dataclass
 import json
 import os
@@ -79,13 +80,29 @@ def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ
         chain.append(("managed identity", ManagedIdentityCredential()))
     hint = (" Check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
             " on a development compute instance, sign in first with `az login --use-device-code`.") if source != "managed_identity" else ""
-    return token_provider(chain, scope, timeout=timeout + 15, hint=hint)
+    return token_provider(chain, scope, timeout=timeout + 15, hint=hint, person=source == "cli")
 
 
-def token_provider(chain, scope, *, timeout, hint=""):
+def token_identity(token):
+    """Whether a token was issued to a person ("user"), an application or managed identity ("app"), or cannot tell."""
+    try:
+        payload = token.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(payload + "=" * (-len(payload) % 4)))
+    except (IndexError, ValueError):
+        return "unknown"
+    if claims.get("idtyp") == "user" or "upn" in claims or "scp" in claims:
+        return "user"
+    if claims.get("idtyp") == "app" or "xms_mirid" in claims or "roles" in claims or "appid" in claims:
+        return "app"
+    return "unknown"
+
+
+def token_provider(chain, scope, *, timeout, hint="", person=False):
     """Try each (name, credential) in turn, each within `timeout` seconds; cache the token until shortly before expiry.
 
-    A failure names every source and why it gave no token. Tokens are never logged.
+    With ``person``, a token issued to an application or managed identity is refused: on a development workspace the
+    model is called as the person signed in, never as the machine. A failure names every source and why it gave no
+    token. Tokens are never logged; ``provider.identity`` says whom the last token was issued to.
     """
     cached, lock = {"token": None, "expires": 0}, threading.Lock()
 
@@ -118,9 +135,15 @@ def token_provider(chain, scope, *, timeout, hint=""):
                     first = (str(error).strip().splitlines() or [type(error).__name__])[0]
                     reasons.append(f"{name}: {first[:300]}")
                     continue
+                identity = token_identity(token.token)
+                if person and identity == "app":
+                    reasons.append(f"{name}: signed in as an application or managed identity, not as a person")
+                    continue
                 cached.update(token=token.token, expires=token.expires_on)
+                provider.identity = identity
                 return token.token
             raise ModelError("sign_in", "No Entra token for Azure OpenAI (" + "; ".join(reasons or ["no sign-in source"]) + ")." + hint)
+    provider.identity = None
     return provider
 
 

@@ -38,7 +38,7 @@ check_tls() {
 
 check_signin() {
   command -v az >/dev/null || { echo "The Azure CLI (az) is not installed on this machine." >&2; exit 1; }
-  az account show --query user.name -o tsv >/dev/null 2>&1 || { echo "Sign in first: az login --use-device-code" >&2; exit 1; }
+  az account show --query user.name -o tsv >/dev/null 2>&1 || { echo "Sign in first: az login --identity (compute instance with single sign-on) or az login --use-device-code" >&2; exit 1; }
 }
 
 case "${1:-}" in

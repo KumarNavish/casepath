@@ -48,7 +48,7 @@ The development workspace is a managed Azure ML compute instance. Sign-in follow
 2. Put the code on the workspace: clone the branch, or upload its zip in the Studio file browser and unzip it.
 3. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there. The lab endpoint and deployment are needed, plus `CASEPATH_AZURE_OPENAI_API_VERSION` only if the endpoint answers 404 on `/openai/v1`.
 4. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
-5. Run `az login --use-device-code` and finish the sign-in in the browser. The account needs the model-user role on the lab resource.
+5. Sign in as yourself. On a compute instance with single sign-on, `az login --identity` signs in as the person the instance belongs to; otherwise run `az login --use-device-code`. The account needs the model-user role on the lab resource. `check-model` says whether the token was issued to a person, and refuses a machine identity.
 6. Run:
    ```sh
    deploy/workspace/casepath.sh setup

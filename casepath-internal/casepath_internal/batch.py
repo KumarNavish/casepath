@@ -3,6 +3,7 @@
     python -m casepath_internal.batch import <folder> [--workflow <id>] [--url http://127.0.0.1:8080]
     python -m casepath_internal.batch next [--synthetic] [--url ...]
     python -m casepath_internal.batch retry [--workflow <id>] [--url ...]
+    python -m casepath_internal.batch trace <case id or its last 8 characters> [--url ...]
 
 ``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file; with ``--workflow``
 the case worker's choice of process is set instead of routing from the documents. ``next`` starts the next case that
@@ -10,8 +11,11 @@ has not been prepared and waits for it (with ``--synthetic``, the next synthetic
 no process, optionally choosing the process first; pages already read are not read again. Each command prints one
 content-free line: run status, pages read, documents found in the dossier, where the case stands in its workflow, and
 the tokens used. One case per command keeps an interactive session (such as Cloud Shell) active between cases.
+``trace`` breaks a case's last run down by agent (turns, tokens, seconds, tools, delegations) and lists each fact and
+document need with its status, check and origin, by id only, to see where a run spends its effort and what it missed.
 """
 import argparse
+from datetime import datetime
 import json
 from pathlib import Path
 import sys
@@ -81,6 +85,48 @@ def line(url, case, run):
             "output_tokens": sum(u.get("output_tokens", 0) for u in usage)}
 
 
+def trace(url, case_ref):
+    """Where a run's effort went and what it found, by agent and by id; guarded as content-free."""
+    from .scorecard import guard
+
+    case = next(c for c in call(url, "/api/cases")["cases"] if c["id"] == case_ref or c["id"].endswith(case_ref))
+    detail = call(url, f"/api/cases/{case['id']}")
+    run = call(url, f"/api/runs/{detail['run']['id']}")
+    result = run.get("result") or {}
+    agents = {}
+    for row in result.get("usage") or []:
+        a = agents.setdefault(row.get("agent", "model"), {"turns": 0, "input_tokens": 0, "output_tokens": 0, "seconds": 0, "tools": {}})
+        a["turns"] += 1
+        a["input_tokens"] += row.get("input_tokens", 0)
+        a["output_tokens"] += row.get("output_tokens", 0)
+    started, order, rejected = {}, [], {}
+    for event in run.get("events") or []:
+        agent, kind = event.get("agent", "model"), event.get("kind", "")
+        a = agents.setdefault(agent, {"turns": 0, "input_tokens": 0, "output_tokens": 0, "seconds": 0, "tools": {}})
+        if kind == "agent.start":
+            started[agent] = datetime.fromisoformat(event["at"])
+        elif kind == "agent.end" and agent in started:
+            a["seconds"] += round((datetime.fromisoformat(event["at"]) - started.pop(agent)).total_seconds())
+        elif kind == "tool":
+            a["tools"][event["tool"]] = a["tools"].get(event["tool"], 0) + 1
+        elif kind == "delegate":
+            order.append(event["to"])
+        if kind.endswith(".rejected"):
+            rejected[kind] = rejected.get(kind, 0) + 1
+    process = {d["id"]: d for d in (detail.get("process") or {}).get("documents", [])}
+    found = {d["document"]: d for d in result.get("documents") or []}
+    documents = {}
+    for d in (detail.get("evaluation") or {}).get("documents", []):
+        need, row = process.get(d["document"], {}), found.get(d["document"], {})
+        documents[d["document"]] = {"status": d["status"], "required": d["required"], "recorded": row.get("status"),
+                                    "check": row.get("verdict"), "origin": "knowledge" if need.get("knowledge") else ("agent" if str(need.get("edit")).startswith("pb") else "case_worker")
+                                    if need.get("edit") else "workflow"}
+    print(json.dumps(guard({"case": case["id"][-8:], "status": run["status"], "agents": agents, "delegations": order,
+                            "facts": {f["fact"]: [f["status"], f.get("verdict")] for f in result.get("facts") or []},
+                            "documents": documents, "agent_edits": [e["op"] for e in result.get("agent_edits") or []],
+                            "rejected": rejected}), indent=1))
+
+
 def prepare(url, case, poll):
     run = call(url, f"/api/cases/{case['id']}/runs", "POST")
     while run["status"] in ("queued", "running"):
@@ -112,7 +158,7 @@ def retry(url, workflow=None, poll=5):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="casepath_internal.batch")
-    parser.add_argument("command", choices=["import", "next", "retry"])
+    parser.add_argument("command", choices=["import", "next", "retry", "trace"])
     parser.add_argument("folder", nargs="?")
     parser.add_argument("--workflow")
     parser.add_argument("--synthetic", action="store_true")
@@ -124,6 +170,10 @@ def main(argv=None):
         import_folder(args.url, args.folder, args.workflow)
     elif args.command == "retry":
         retry(args.url, args.workflow)
+    elif args.command == "trace":
+        if not args.folder:
+            sys.exit("trace needs a case id")
+        trace(args.url, args.folder)
     else:
         run_next(args.url, synthetic=args.synthetic)
 
