@@ -4,6 +4,7 @@
     python -m casepath_internal.batch next [--synthetic] [--url ...]
     python -m casepath_internal.batch retry [--workflow <id>] [--url ...]
     python -m casepath_internal.batch trace <case id or its last 8 characters> [--url ...]
+    python -m casepath_internal.batch rerun <case id or its last 8 characters> [--url ...]
 
 ``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file; with ``--workflow``
 the case worker's choice of process is set instead of routing from the documents. ``next`` starts the next case that
@@ -11,7 +12,7 @@ has not been prepared and waits for it (with ``--synthetic``, the next synthetic
 no process, optionally choosing the process first; pages already read are not read again. Each command prints one
 content-free line: run status, pages read, documents found in the dossier, where the case stands in its workflow, and
 the tokens used. One case per command keeps an interactive session (such as Cloud Shell) active between cases.
-``trace`` breaks a case's last run down by agent (turns, tokens, seconds, tools, delegations) and lists each fact and
+``rerun`` prepares one named case again (files already read are not read again). ``trace`` breaks a case's last run down by agent (turns, tokens, seconds, tools, delegations) and lists each fact and
 document need with its status, check and origin, by id only, to see where a run spends its effort and what it missed.
 """
 import argparse
@@ -85,11 +86,15 @@ def line(url, case, run):
             "output_tokens": sum(u.get("output_tokens", 0) for u in usage)}
 
 
+def find_case(url, case_ref):
+    return next(c for c in call(url, "/api/cases")["cases"] if c["id"] == case_ref or c["id"].endswith(case_ref))
+
+
 def trace(url, case_ref):
     """Where a run's effort went and what it found, by agent and by id; guarded as content-free."""
     from .scorecard import guard
 
-    case = next(c for c in call(url, "/api/cases")["cases"] if c["id"] == case_ref or c["id"].endswith(case_ref))
+    case = find_case(url, case_ref)
     detail = call(url, f"/api/cases/{case['id']}")
     run = call(url, f"/api/runs/{detail['run']['id']}")
     result = run.get("result") or {}
@@ -158,7 +163,7 @@ def retry(url, workflow=None, poll=5):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="casepath_internal.batch")
-    parser.add_argument("command", choices=["import", "next", "retry", "trace"])
+    parser.add_argument("command", choices=["import", "next", "retry", "trace", "rerun"])
     parser.add_argument("folder", nargs="?")
     parser.add_argument("--workflow")
     parser.add_argument("--synthetic", action="store_true")
@@ -170,10 +175,10 @@ def main(argv=None):
         import_folder(args.url, args.folder, args.workflow)
     elif args.command == "retry":
         retry(args.url, args.workflow)
-    elif args.command == "trace":
+    elif args.command in {"trace", "rerun"}:
         if not args.folder:
-            sys.exit("trace needs a case id")
-        trace(args.url, args.folder)
+            sys.exit(f"{args.command} needs a case id")
+        trace(args.url, args.folder) if args.command == "trace" else prepare(args.url, find_case(args.url, args.folder), 5)
     else:
         run_next(args.url, synthetic=args.synthetic)
 

@@ -71,9 +71,12 @@ class TraceTests(unittest.TestCase):
             with mock.patch("sys.stdout") as out:
                 batch.run_next(url, poll=0.05)
                 batch.trace(url, case["id"][-8:])
+                batch.prepare(url, batch.find_case(url, case["id"][-8:]), 0.05)
             server.should_exit = True
             thread.join(5)
-            card = json.loads("".join(c.args[0] for c in out.write.call_args_list[1:]))
+            writes = [c.args[0] for c in out.write.call_args_list]
+            card = json.loads("".join(writes[1:-2]))
+            self.assertEqual(json.loads(writes[-2])["status"], "completed")  # the rerun
             self.assertEqual(card["status"], "completed")
             self.assertEqual(card["delegations"][:2], ["claim_reader", "process_builder"])
             self.assertGreaterEqual(card["agents"]["claim_reader"]["turns"], 2)
