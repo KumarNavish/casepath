@@ -31,6 +31,9 @@ class ScriptedModel:
                     status="completed", attempts=1, seconds=0)
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
+        if name == "casepath_photo":
+            return ModelResult(value={"description": "[Foto] Wand mit dunklen Flecken neben dem Fenster."}, usage={"input_tokens": 5},
+                               deployment="d", response_id="p", attempts=1, seconds=0)
         if name == "casepath_confirm_facts":
             return ModelResult(value={"facts": self.second_reading}, usage={"input_tokens": 5}, deployment="d", response_id="s",
                                attempts=1, seconds=0)

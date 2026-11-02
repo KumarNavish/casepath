@@ -1,12 +1,11 @@
 # CasePath, internal
 
-A fresh CasePath for running inside Mobiliar's own Azure. It keeps the product's core:
-- reading case files;
-- following a source-grounded workflow;
-- checking documents against exact sentences;
-- giving an answer with its proof;
-- drafting a reply that is never sent;
-- learning reusable Knowledge.
+A fresh CasePath for running inside Mobiliar's own Azure. It does three things for the people who handle cases:
+- **Discover the process** of each case type from its cases: steps, decisions and the conditions that choose between them.
+- **Keep the document checklist** of each case: which documents are required, which are present (with the sentence that shows it), which are missing.
+- **Build a Knowledge base that grows with every case**: new document needs and questions learned from cases, reused only after a person approves them.
+
+Everything rests on exact quotes that an independent checker verifies. A short assessment and a reply draft (never sent) are by-products.
 
 It leaves the public demonstration's hosting, ledger and provider machinery behind.
 

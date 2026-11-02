@@ -109,6 +109,8 @@ async function renderCases() {
       <td>${T(`${w.steps} steps · ${w.documents} document needs`, `${w.steps} Schritte · ${w.documents} Dokumente`)}</td><td>${w.open_questions ? T(`${w.open_questions} open questions`, `${w.open_questions} offene Fragen`) : "—"}</td>
       <td class="cp-muted">${w.sources.map((s) => esc(s.title)).join("; ")}</td></tr>`).join("");
   $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
+    <p class="cp-muted" style="max-width:820px">${T("CasePath finds each case's process from its files, keeps its document checklist (required, present, missing) and builds Knowledge that grows with every case. New Knowledge is reused only after a person approves it.",
+      "CasePath erkennt aus den Akten den Prozess jedes Falls, führt seine Dokumenten-Checkliste (nötig, vorhanden, fehlend) und baut Wissen auf, das mit jedem Fall wächst. Neues Wissen wird erst nach Freigabe durch einen Menschen wiederverwendet.")}</p>
     <form class="cp-form" id="new-case"><input name="title" placeholder="${T("New case: a short title", "Neuer Fall: kurzer Titel")}" aria-label="${T("New case title", "Titel des neuen Falls")}" required maxlength="300">
       <button class="cp-button primary">${icon("plus")}${T("Create case", "Fall anlegen")}</button></form>
     ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Updated", "Geändert")}</th></tr></thead><tbody>${rows}</tbody></table>`
@@ -683,7 +685,7 @@ function documentsView() {
 
 function resultView() {
   const r = result();
-  if (!r || !r.answer) return `<p class="cp-empty">${T("The result checker’s answer, open points and reply draft appear here after the case is prepared.", "Antwort, offene Punkte und Antwortentwurf des Ergebnisprüfers erscheinen hier, sobald der Fall vorbereitet ist.")}</p>`;
+  if (!r || !r.answer) return `<p class="cp-empty">${T("Where the case stands in its process, its document checklist, what CasePath proposes to learn and a draft appear here after the case is prepared.", "Stand im Prozess, Dokumenten-Checkliste, Lernvorschläge und ein Entwurf erscheinen hier, sobald der Fall vorbereitet ist.")}</p>`;
   const ev = S.data.evaluation;
   const today = new Date();
   const days = (iso) => Math.round((new Date(iso) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
@@ -693,19 +695,27 @@ function resultView() {
       <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f, i) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}${rate(`summary:${i}`)}</dd>`).join("")}</dl></section>` : "";
   const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
   const action = { answer: T("Answer: ", "Klären: "), resolve: T("Not met: ", "Nicht erfüllt: "), obtain: T("Obtain: ", "Einholen: ") };
-  return `${ratedRun() ? feedbackLine() : ""}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
-    <h1 class="cp-title">${T("Answer", "Antwort")}</h1><p class="cp-answer">${esc(r.answer)}${rate("answer")}</p><p>${esc(r.summary)}</p>
-    ${ev && ev.current ? `<p class="cp-muted">${T("Current step", "Aktueller Schritt")}: <b>${esc(ev.current.title)}</b>${ev.waiting_for.length ? ` · ${T("waiting for", "wartet auf")}: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>` : ""}
-    ${ev && ev.outcome ? `<p class="cp-muted">${T("Outcome in the process", "Ergebnis im Prozess")}: <b>${esc(ev.outcome.title)}</b></p>` : ""}
-    ${ev && ev.next_actions.length ? `<h2 class="cp-section">${T("Next steps", "Nächste Schritte")}</h2><ul>${ev.next_actions.map((a) => `<li>${esc(action[a.kind])}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}
+  const docs = ev ? ev.documents.filter((d) => !["suggested", "optional"].includes(d.required)) : [];
+  const present = docs.filter((d) => d.status === "present").length, missing = docs.filter((d) => d.status !== "present").length;
+  const position = ev ? `<section class="cp-card" style="padding:16px 20px;max-width:900px;margin-bottom:18px">
+      <h2 class="cp-section" style="margin-top:0">${T("Where the case stands in its process", "Stand im Prozess")}</h2>
+      <p>${ev.outcome ? `${T("End of the process", "Prozessende")}: <b>${esc(ev.outcome.title)}</b>` : ev.current ? `${T("Current step", "Aktueller Schritt")}: <b>${esc(ev.current.title)}</b>` : ""}
+        ${ev.waiting_for.length ? ` · ${T("waiting for", "wartet auf")}: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>
+      <p><a href="#/case/${esc(S.route.id)}/document_finder">${T(`Document checklist: ${present} present, ${missing} still needed`, `Dokumenten-Checkliste: ${present} vorhanden, ${missing} noch nötig`)}</a></p>
+      ${ev.next_actions.length ? `<h3 class="cp-section" style="font-size:15px">${T("Next steps", "Nächste Schritte")}</h3><ul>${ev.next_actions.map((a) => `<li>${esc(action[a.kind])}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}</section>` : "";
+  const learning = (r.learning || []).length ? `<h2 class="cp-section">${T("What CasePath proposes to learn", "Was CasePath lernen möchte")}</h2>
+      <p class="cp-muted">${T("Proposals for the Knowledge base. They shape other cases only after a person approves them.", "Vorschläge für das Wissen. Sie prägen andere Fälle erst, wenn ein Mensch sie freigibt.")}</p>
+      <ul>${r.learning.map((l) => `<li><b>${esc(learnAction(l.action))}</b> · ${esc(l.title || l.question || l.note)} <span class="cp-muted">— ${esc(l.reason)}</span></li>`).join("")}</ul>
+      <p><a href="#/knowledge">${T("Review in Knowledge", "Im Wissen prüfen")}</a></p>` : "";
+  return `${ratedRun() ? feedbackLine() : ""}${position}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
     ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
+    ${learning}
+    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}</h2><p class="cp-answer">${esc(r.answer)}${rate("answer")}</p><p>${esc(r.summary)}</p>
     ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
       <div class="clauses">${r.reply.clauses.map((c, i) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}${rate(`reply:${i}`)}</p>
         <small class="cp-muted">${c.supported ? T("Rests on: ", "Beruht auf: ") + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; ")
           : T("Not supported by an accepted finding: review before use", "Durch keine bestätigte Feststellung gestützt: vor Verwendung prüfen")}</small></div>`).join("")}</div>
       <footer>${icon("shield")}${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</footer></article><p>${draft}</p>` : ""}
-    ${(r.learning || []).length ? `<h2 class="cp-section">${T("What CasePath proposes to learn", "Was CasePath lernen möchte")}</h2><ul>${r.learning.map((l) => `<li><b>${esc(learnAction(l.action))}</b> · ${esc(l.title || l.question || l.note)} <span class="cp-muted">— ${esc(l.reason)}</span></li>`).join("")}</ul>
-      <p><a href="#/knowledge">${T("Review in Knowledge", "Im Wissen prüfen")}</a></p>` : ""}
     <h2 class="cp-section">${T("Work log", "Arbeitsprotokoll")}</h2>${workLog()}`;
 }
 
