@@ -7,6 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
+from dataclasses import replace
 from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
@@ -14,6 +15,7 @@ from urllib.parse import quote
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 from . import casegraph, knowledge as kb, workflows
@@ -64,7 +66,10 @@ def default_model_factory(settings):
 
     def factory():
         if "model" not in shared:
-            shared["model"] = AzureOpenAIModel(settings.model, entra_token_provider())
+            token = entra_token_provider()
+            shared["model"] = AzureOpenAIModel(settings.model, token)
+            if settings.model.reading_deployment:  # page reading and dossier splitting on a smaller deployment
+                shared["model"].reading = AzureOpenAIModel(replace(settings.model, deployment=settings.model.reading_deployment), token)
         return shared["model"]
     return factory
 
@@ -146,6 +151,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
                 "feedback": store.list_feedback(completed["id"]) if completed else []}
 
+    @app.delete("/api/cases/{case_id}")
+    def delete_case(case_id: str, who=Depends(user)):
+        try:
+            return {"deleted": case_id, **store.delete_case(case_id)}
+        except NotFound:
+            raise HTTPException(404, "Not found.") from None
+        except Conflict as error:
+            raise HTTPException(409, str(error)) from None
+
     @app.put("/api/cases/{case_id}/workflow")
     def choose_workflow(case_id: str, body: WorkflowChoice, who=Depends(user)):
         workflow = catalogue.get(body.workflow_id, body.version)
@@ -162,11 +176,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
         if not data:
             raise HTTPException(422, "The file is empty.")
         name = Path(file.filename or "file").name[:255]
-        result = extract(name, file.content_type, data)
+        result = await run_in_threadpool(extract, name, file.content_type, data)  # a large PDF must not block the server
         if len(result["text"]) > settings.max_text_chars:
             result["text"] = result["text"][:settings.max_text_chars]
             result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
-        return store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who)
+        return await run_in_threadpool(store.add_file, case_id, name, result["media_type"], result["kind"], data, result, who)
 
     @app.get("/api/files/{file_id}/original")
     def original(file_id: str, who=Depends(user)):

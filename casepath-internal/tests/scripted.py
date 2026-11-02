@@ -1,7 +1,8 @@
 """A scripted stand-in for the model: fixed turns, one per Responses API call.
 
-The team calls the model strictly in sequence (the lead, then the agent it
-delegates to, then the lead again), so one ordered list scripts a whole run.
+The team calls the model strictly in sequence, agent after agent, so one ordered
+list scripts a whole run. Lead turns (delegate, complete) in older scripts are
+skipped: the lead is now a fixed plan that does not call the model.
 """
 import json
 import types
@@ -10,12 +11,15 @@ from casepath_internal.azure_model import ModelResult, Turn
 
 
 class ScriptedModel:
-    def __init__(self, turns, verdicts=None, default_verdict="supported"):
-        self.turns, self.verdicts, self.default = list(turns), verdicts or {}, default_verdict
+    def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=()):
+        self.turns = [t for t in turns if not t or not all(name in {"delegate", "complete"} for name, _ in t)]
+        self.verdicts, self.default, self.second_reading = verdicts or {}, default_verdict, list(second_reading)
+        self.tool_choices = []
         self.instructions, self.tools = [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
 
-    def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium"):
+    def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium", tool_choice=None):
+        self.tool_choices.append(tool_choice)
         if not self.turns:
             raise AssertionError("the script has no turn left")
         self.instructions.append(instructions.split("\n\n")[-1][:40])
@@ -27,6 +31,9 @@ class ScriptedModel:
                     status="completed", attempts=1, seconds=0)
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
+        if name == "casepath_confirm_facts":
+            return ModelResult(value={"facts": self.second_reading}, usage={"input_tokens": 5}, deployment="d", response_id="s",
+                               attempts=1, seconds=0)
         items = json.loads(input[0]["content"])["items"]
         value = {"items": [{"item": i["item"], "verdict": self.verdicts.get(i["item"], self.default), "reason": "checked"} for i in items]}
         return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="v", attempts=1, seconds=0)

@@ -240,6 +240,37 @@ class CaseStore:
             return self._all("select * from knowledge_uses where knowledge_id=? order by at", knowledge_id)
         return self._all("select * from knowledge_uses order by at")
 
+    # Deleting a case removes everything derived from it: files (and their bytes when no other case shares them), runs,
+    # progress, feedback, edits, Knowledge uses, Knowledge learned from it, and its quotes in other Knowledge.
+    def delete_case(self, case_id):
+        self.get_case(case_id)
+        with self._lock:
+            if self._one("select 1 as busy from runs where case_id=? and status in ('queued','running')", case_id):
+                raise Conflict("A run is in progress for this case.")
+            runs = [r["id"] for r in self._all("select id from runs where case_id=?", case_id)]
+            digests = [r["sha256"] for r in self._all("select sha256 from files where case_id=?", case_id)]
+            removed = {"runs": len(runs), "files": len(digests), "knowledge": 0, "knowledge_quotes": 0}
+            for run_id in runs:
+                self._db.execute("delete from feedback where run_id=?", (run_id,))
+                self._db.execute("delete from run_events where run_id=?", (run_id,))
+            for table in ("runs", "case_edits", "knowledge_uses", "files"):
+                self._db.execute(f"delete from {table} where case_id=?", (case_id,))
+            for row in self._all("select id, data from knowledge"):
+                item = json.loads(row["data"])
+                if (item.get("origin") or {}).get("case_id") == case_id:
+                    self._db.execute("delete from knowledge where id=?", (row["id"],))
+                    self._db.execute("delete from knowledge_uses where knowledge_id=?", (row["id"],))
+                    removed["knowledge"] += 1
+                elif any(e.get("case_id") == case_id for e in item.get("evidence", [])):
+                    kept = [e for e in item["evidence"] if e.get("case_id") != case_id]
+                    removed["knowledge_quotes"] += len(item["evidence"]) - len(kept)
+                    self._db.execute("update knowledge set data=? where id=?", (json.dumps({**item, "evidence": kept}, ensure_ascii=False), row["id"]))
+            self._db.execute("delete from cases where id=?", (case_id,))
+            for digest in set(digests):
+                if not self._one("select 1 as used from files where sha256=?", digest):
+                    (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
+        return removed
+
     # Case workers' feedback on a run's results: one verdict per person and item, the latest kept
     def set_feedback(self, run_id, target, verdict, note, user):
         self.get_run(run_id)

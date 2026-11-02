@@ -164,6 +164,22 @@ class AppTests(unittest.TestCase):
         self.assertEqual(card["feedback"], {"fact": {"correct": 1, "wrong": 0}, "answer": {"correct": 0, "wrong": 1}})
         self.assertNotIn("Frist", json.dumps(card))
 
+    def test_deleting_a_case_removes_what_was_derived_from_it(self):
+        client = self.client()
+        case, uploaded = self.new_case(client, "To delete")
+        run = self.run_with(client, case["id"], ScriptedModel(team_script(uploaded["id"], learn_rows=[
+            learn(title="Lüftungsprotokoll", why="Zeigt, wie gelüftet wurde.", citations=[{"file": uploaded["id"], "quote": VENT}])])))
+        client.put(f"/api/runs/{run['id']}/feedback", json={"target": "answer", "verdict": "correct"})
+        store = client.app.state.store
+        self.assertEqual(len(store.list_knowledge()), 1)
+        digest = store.get_file(uploaded["id"])["sha256"]
+        removed = client.delete(f"/api/cases/{case['id']}").json()
+        self.assertEqual((removed["runs"], removed["files"], removed["knowledge"]), (1, 1, 1))
+        self.assertEqual(client.get(f"/api/cases/{case['id']}").status_code, 404)
+        self.assertEqual(store.list_knowledge(), [])
+        self.assertFalse((Path(self.directory.name) / "files" / digest[:2] / digest).exists())
+        self.assertEqual(client.delete(f"/api/cases/{case['id']}").status_code, 404)
+
     def test_restart_marks_unfinished_runs(self):
         store = CaseStore(self.directory.name)
         case = store.create_case("x", {}, "dev")

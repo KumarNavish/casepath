@@ -1,8 +1,9 @@
 """Knowledge that evolves: proposals, versions, activation and use statistics.
 
 An item is a document need, a question or a note learned for one case family.
-It starts as a candidate: candidates are applied to new cases as suggestions
-and checked there, which builds the evidence for a person to activate them.
+It starts as a candidate, shown to reviewers in Knowledge but never given to the
+agents or applied to another case: nothing learned from one case shapes the next
+until a person has reviewed and activated it.
 Refinements create a new version with the change recorded. Use statistics
 come only from completed runs: an applied document need found in the files
 counts as confirmed; one the result checker reports as not holding counts as

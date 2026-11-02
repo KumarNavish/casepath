@@ -217,13 +217,15 @@ class AzureOpenAIModel:
                 raise ModelError("invalid_envelope", "The model response was not JSON.", attempt) from None
 
     # Responses API: the agent loop.
-    def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium"):
+    def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium", tool_choice=None):
         body = {"model": self.settings.deployment, "instructions": instructions, "input": list(input),
                 "store": False, "max_output_tokens": self.settings.max_output_tokens}
         if tools:
             body["tools"] = [{"type": "function", "name": t["name"], "description": t["description"],
                               "parameters": wire_schema(t["parameters"]), "strict": True} for t in tools]
             body["parallel_tool_calls"] = True
+            if tool_choice:
+                body["tool_choice"] = tool_choice
         if text_schema is not None:
             validate_schema(text_schema["schema"])
             body["text"] = {"format": {"type": "json_schema", "name": text_schema["name"], "strict": True,

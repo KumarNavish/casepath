@@ -15,7 +15,7 @@ document.documentElement.lang = LANG;
 const WORDS = {
   completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen",
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
-  not_found: "nicht gefunden", confirmed: "bestätigt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
+  not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
   reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", note: "Hinweis",
 };
 const word = (value) => (LANG === "de" && WORDS[value]) || String(value ?? "").replace(/_/g, " ");
@@ -188,7 +188,8 @@ function renderRail() {
     const proof = proofFor(f.id);
     return `<button class="cp-source" data-file="${esc(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
       <span class="cp-source-label">${esc(f.name)}<small>${T("Received", "Eingegangen")} ${dateText(f.created_at)}${f.extraction && f.extraction.pages ? ` · ${f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
-      ${proof ? `<span class="cp-proof">${icon("tick")}${esc(proof)}</span>` : ""}</span></button>${segmentRows(f)}`;
+      ${proof ? `<span class="cp-proof">${icon("tick")}${esc(proof)}</span>` : ""}
+      ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`;
   }).join("");
   const chooser = !d.case.workflow_id && S.workflows && S.workflows.length
     ? `<label class="cp-status">${T("Process", "Prozess")} <select id="workflow" aria-label="${T("Process for this case", "Prozess für diesen Fall")}"><option value="">${T("Find it from the documents", "Aus den Dokumenten bestimmen")}</option>
@@ -365,6 +366,11 @@ function describe(e) {
     "reading.scanned": () => T(`reads ${e.pages} scanned page(s) of ${fileName(e.file)}`, `liest ${e.pages} gescannte Seite(n) von ${fileName(e.file)}`),
     "reading.progress": () => T(`${e.done} of ${e.of} pages read`, `${e.done} von ${e.of} Seiten gelesen`),
     "reading.segmented": () => T(`found ${e.documents} documents in ${fileName(e.file)}`, `${e.documents} Dokumente in ${fileName(e.file)} erkannt`),
+    "reading.instructions": () => T(`${fileName(e.file)} contains text addressed to an AI; it is treated as evidence, never followed`,
+                                   `${fileName(e.file)} enthält Text, der sich an die KI richtet; er gilt als Inhalt und wird nicht befolgt`),
+    "fact.conflicting": () => T(`two independent readings differ on “${questionOf(e.fact)}”; a person decides`,
+                                `zwei unabhängige Lesungen widersprechen sich bei «${questionOf(e.fact)}»; ein Mensch entscheidet`),
+    "learning.withheld": () => T("a learning proposal with personal details was withheld", "ein Lernvorschlag mit Personendaten wurde zurückgehalten"),
     "reading.photo": () => T(`describes the photo ${fileName(e.file)}`, `beschreibt das Foto ${fileName(e.file)}`),
     "reading.unread": () => T(`${e.pages} page(s) of ${fileName(e.file)} could not be read`, `${e.pages} Seite(n) von ${fileName(e.file)} nicht lesbar`),
     "tool": () => e.tool === "read_file" ? `${T("reads", "liest")} ${fileName(e.file)}` : e.tool === "search" ? `${T("searches", "sucht")} «${e.query}»`
@@ -768,9 +774,13 @@ async function renderCase() {
   else if (S.page && $(`#page-${S.page}`)) $(`#page-${S.page}`).scrollIntoView({ block: "start" });
   const notice = $("#notice");
   const used = ((S.data.provenance || {}).knowledge || []).some((k) => k.applied);
-  notice.hidden = !used;
-  document.body.classList.toggle("with-notice", used);
-  notice.innerHTML = used ? `${icon("shield")}${T("This case used Knowledge from earlier cases. Qualified review is still required.", "Dieser Fall nutzt Wissen aus früheren Fällen. Eine fachliche Prüfung bleibt nötig.")}` : "";
+  const flagged = (S.data.files || []).some((f) => ((f.extraction || {}).instruction_like || []).length);
+  const messages = [flagged ? T("A document contains text addressed to an AI. CasePath treated it as evidence and did not follow it; check the document.",
+                                "Ein Dokument enthält Text, der sich an die KI richtet. CasePath hat ihn als Inhalt behandelt und nicht befolgt; bitte das Dokument prüfen.") : "",
+                    used ? T("This case used Knowledge from earlier cases. Qualified review is still required.", "Dieser Fall nutzt Wissen aus früheren Fällen. Eine fachliche Prüfung bleibt nötig.") : ""].filter(Boolean);
+  notice.hidden = !messages.length;
+  document.body.classList.toggle("with-notice", Boolean(messages.length));
+  notice.innerHTML = messages.length ? `${icon("shield")}${messages.join(" ")}` : "";
 }
 
 // ---------- knowledge ----------

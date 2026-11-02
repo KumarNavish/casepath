@@ -17,7 +17,7 @@ FILES = [
 CASE = {"title": "Schimmel im Bad", "intake": {}}
 
 
-def standard_script(*, finder_calls, result_fields, builder_calls=()):
+def standard_script(*, finder_calls, result_fields, builder_calls=(), retry_turns=()):
     return [
         [delegate("claim_reader", "Brief the case.")],
         [("read_file", {"file": "f1", "from_page": None, "to_page": None})],
@@ -32,6 +32,7 @@ def standard_script(*, finder_calls, result_fields, builder_calls=()):
          report("claim_reader")],
         [delegate("document_finder")],
         [*finder_calls, report("document_finder")],
+        *retry_turns,
         [delegate("result_checker")],
         [("evaluate", {}), report("result_checker", **result_fields)],
         [("complete", {"summary": "Prepared."})],
@@ -51,10 +52,10 @@ class TeamTests(unittest.TestCase):
                                 citations=[{"file": "f1", "quote": VENT}])]})
         model = ScriptedModel(script)
         result = CaseTeam(model).run(case=CASE, files=FILES, workflow=FIXTURE)
-        self.assertEqual(model.tools[0], ["delegate", "complete"])
-        self.assertIn("record_fact", model.tools[1])
-        self.assertNotIn("record_document", model.tools[1])
-        self.assertIn("record_document", model.tools[9])
+        self.assertIn("record_fact", model.tools[0])  # the lead is a fixed plan: the first call is the claim reader's
+        self.assertNotIn("record_document", model.tools[0])
+        self.assertIn("record_document", model.tools[5])
+        self.assertEqual(set(model.tool_choices), {"required"})
         self.assertEqual([t["date"] for t in result["brief"]["timeline"]], ["2 March"])
         fact, = result["facts"]
         self.assertEqual((fact["value"], fact["verdict"]), (True, "accepted"))
@@ -71,16 +72,46 @@ class TeamTests(unittest.TestCase):
     def test_rejected_finding_is_not_used(self):
         script = standard_script(finder_calls=[], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
             {"text": "You told your landlord.", "basis": ["fact:landlord_notified"]}]}})
+        script = standard_script(finder_calls=[], retry_turns=[[report("claim_reader")]], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
+            {"text": "You told your landlord.", "basis": ["fact:landlord_notified"]}]}})
         result = CaseTeam(ScriptedModel(script, verdicts={"fact:landlord_notified": "uncertain"})).run(case=CASE, files=FILES, workflow=FIXTURE)
+        retry = [e for e in result["events"] if e["kind"] == "delegate" and e["to"] == "claim_reader"][-1]
+        self.assertIn("landlord_notified", retry["instruction"])  # one targeted retry before the result
         self.assertEqual(result["facts"][0]["verdict"], "rejected")
         self.assertEqual(result["evaluation"]["current"]["step"], "notice")
         self.assertFalse(result["reply"]["clauses"][0]["supported"])
 
-    def test_guards_and_limits(self):
-        model = ScriptedModel([[delegate("document_finder")], [("complete", {"summary": "x"})]] + [[delegate("source_checker")]] * 20)
+    def test_an_agent_must_report_on_its_last_turn(self):
+        from casepath_internal.agents import CaseWork, run_agent
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        model = ScriptedModel([[("list_files", {})], [("list_files", {})], [report("document_finder")]])
+        run_agent(model, work, "document_finder", "Find.", max_turns=3)
+        self.assertEqual(model.tool_choices, ["required", "required", {"type": "function", "name": "report"}])
         with self.assertRaises(TeamError) as caught:
-            CaseTeam(model, max_lead_turns=4).run(case=CASE, files=FILES, workflow=FIXTURE)
+            run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2)
         self.assertEqual(caught.exception.reason, "turn_limit")
+
+    def test_learning_with_personal_details_is_withheld(self):
+        from casepath_internal.agents import personal_details
+        names = {"Brunner", "Kramgasse"}
+        self.assertFalse(personal_details({"title": "Lüftungsprotokoll", "why": "Zeigt, wie die Mieterin gelüftet hat."}, names))
+        self.assertTrue(personal_details({"title": "Brief an Frau Brunner"}, names))
+        self.assertTrue(personal_details({"why": "Rückruf unter 031 555 12 34"}, names))
+        self.assertTrue(personal_details({"note": "Police 8017.0833.0054"}, set()))
+
+    def test_a_second_reading_surfaces_disagreement_and_fills_gaps(self):
+        from casepath_internal.agents import CaseWork, confirm_facts
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        cite = [{"file": "f1", "quote": QUOTE}]
+        same = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}])
+        self.assertEqual(confirm_facts(same, work)["added"], 1)  # the first reading had not recorded it
+        self.assertEqual(work.facts["landlord_notified"]["value"], True)
+        work.facts["landlord_notified"]["verdict"] = "accepted"
+        other = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "no", "citations": cite}])
+        self.assertEqual(confirm_facts(other, work)["differed"], 1)
+        row = work.facts["landlord_notified"]
+        self.assertEqual((row["status"], row["second_value"]), ("conflicting", False))
+        self.assertNotIn("landlord_notified", work.accepted_facts())  # a person settles it
 
     def test_process_builder_changes_need_a_basis(self):
         unsupported = ("propose_change", {"op": "add_document", "title": "Lease", "why": "Shows the tenancy.", "question": "", "step": None,

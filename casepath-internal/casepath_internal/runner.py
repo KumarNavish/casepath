@@ -43,7 +43,7 @@ def case_state(store, catalogue, case_id):
         workflow = catalogue.get(run["workflow_id"], run.get("workflow_version"))
     if workflow is None:
         return {"case": case, "workflow": None, "process": None, "evaluation": None, "run": run}
-    knowledge = store.list_knowledge(workflow["id"], {"active", "candidate"})
+    knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
     edits = store.list_edits(case_id) + [e for e in result.get("agent_edits", []) if e.get("status", "active") == "active"]
     graph, provenance = casegraph.build(workflow, knowledge=knowledge, edits=edits, case_id=case_id)
     facts = {f["fact"]: f["value"] for f in result.get("facts", []) if f["status"] == "established" and f.get("verdict") == "accepted"}
@@ -132,7 +132,8 @@ class RunService:
             model = self._model(run_id)
             if self.read_scans:
                 for row in self.store.list_files(case_id, with_text=True):
-                    prepare_file(model, self.store, row, on_event=lambda e: self._event(run_id, e), workers=self.reading_workers)
+                    prepare_file(getattr(model, "reading", None) or model, self.store, row, on_event=lambda e: self._event(run_id, e),
+                                 workers=self.reading_workers)
                 files = case_files(self.store, case_id)
             decision, workflow = self._route(model, case, files, run_id)
             self.store.update_run(run_id, routing=decision)
@@ -140,7 +141,7 @@ class RunService:
                 self.store.update_run(run_id, status="completed", result={"assessment": None, "routing": decision}, finished_at=now())
                 return
             self.store.update_run(run_id, workflow_id=workflow["id"], workflow_version=workflow["version"])
-            knowledge = self.store.list_knowledge(workflow["id"], {"active", "candidate"})
+            knowledge = self.store.list_knowledge(workflow["id"], {"active"})
             edits = self.store.list_edits(case_id)
             team = CaseTeam(model, effort=self.effort)
             result = team.run(case=case, files=files, workflow=workflow, knowledge=knowledge, edits=edits,

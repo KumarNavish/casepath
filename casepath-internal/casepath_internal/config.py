@@ -28,6 +28,7 @@ class ModelSettings:
     ca_bundle: str | None
     trust_env: bool
     api_version: str | None = None
+    reading_deployment: str | None = None
 
     def __post_init__(self):
         parsed = urlparse(self.endpoint)
@@ -70,6 +71,7 @@ def load_settings(env=None):
             ca_bundle=env.get("CASEPATH_CA_BUNDLE") or None,
             trust_env=_flag(env, "CASEPATH_MODEL_TRUST_ENV", True),
             api_version=env.get("CASEPATH_AZURE_OPENAI_API_VERSION") or None,
+            reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or None,
         )
     if env.get("CASEPATH_IDENTITY_HEADER") and env.get("CASEPATH_DEV_USER"):
         raise SettingsError("choose either a trusted identity header or a development user, not both")
