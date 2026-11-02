@@ -54,8 +54,9 @@ case's questions in plain language, one per fact, for the case handler.""",
     "document_finder": {
         "title": "Document finder",
         "instructions": """You are the document finder. Open the process and, for each document need, find the file that meets it
-and quote the sentence that shows it, using record_document. Mark a need absent when no file meets it, and unusable when
-the file is there but cannot serve (illegible, incomplete, wrong period). Check suggested needs too.""",
+and quote the sentence that shows it, using record_document. Mark a need absent only when no file of that kind is in
+the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
+needed), mark it unusable, name the file and quote what it does show. Check suggested needs too.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
