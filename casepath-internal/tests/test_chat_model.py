@@ -108,5 +108,47 @@ class StructuredAnswerFallbackTests(unittest.TestCase):
                           (False, {"type": "function", "function": {"name": "check"}})])  # tried once, then remembered
 
 
+
+class MessagesApiTests(unittest.TestCase):
+    def test_the_agent_dialect_runs_on_the_messages_api_with_caching(self):
+        from casepath_internal.anthropic_model import AnthropicMessagesModel, to_messages as to_blocks
+        bodies = []
+
+        def handler(request):
+            body = json.loads(request.content)
+            bodies.append(body)
+            if any("cache_control" in json.dumps(m) for m in body["messages"]) and len(bodies) == 1:
+                return httpx.Response(400, json={"error_code": "BAD_REQUEST"})  # a gateway that refuses cache marks
+            name = body["tools"][0]["name"]
+            return httpx.Response(200, json={"id": "m1", "stop_reason": "tool_use", "content": [
+                {"type": "text", "text": "Recording."}, {"type": "tool_use", "id": "tu_1", "name": name, "input": {"ok": True} if name == "check" else {"fact": "frist"}}],
+                "usage": {"input_tokens": 40, "cache_read_input_tokens": 60, "output_tokens": 9}})
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m", "CASEPATH_MODEL_API": "messages"}).model
+        model = AnthropicMessagesModel(settings, lambda: "t", transport=httpx.MockTransport(handler))
+        self.assertEqual(model.url, HOST + "/ai-gateway/anthropic/v1/messages")
+        tool = {"name": "record_fact", "description": "Record.", "parameters": {"type": "object", "properties": {"fact": {"type": "string", "maxLength": 80}},
+                                                                                 "required": ["fact"], "additionalProperties": False}}
+        turn = model.respond(instructions="You are the claim reader.", input=[{"role": "user", "content": [
+            {"type": "input_text", "text": "Page 1"}, {"type": "input_image", "image_url": "data:image/png;base64,AAAA"}]}], tools=[tool], tool_choice="required")
+        self.assertEqual(turn.calls, [{"call_id": "tu_1", "name": "record_fact", "arguments": {"fact": "frist"}}])
+        self.assertEqual(turn.usage, {"input_tokens": 100, "output_tokens": 9, "cached_tokens": 60})
+        first, second = bodies
+        self.assertEqual(second["tool_choice"], {"type": "any"})
+        self.assertNotIn("cache_control", json.dumps(second))  # retried without the marks, and remembered
+        self.assertEqual(first["system"][0]["cache_control"], {"type": "ephemeral"})
+        self.assertEqual(second["messages"][0]["content"][1], {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": "AAAA"}})
+        self.assertNotIn("maxLength", json.dumps(second["tools"]))  # bounds are checked locally, not sent
+        # a carried turn becomes tool_use, its results one user message with tool_result and the nudge
+        follow = to_blocks([{"role": "user", "content": "go"}, *turn.output,
+                            {"type": "function_call_output", "call_id": "tu_1", "output": '{"accepted": true}'},
+                            {"role": "user", "content": "Continue with your tools, then call report."}])
+        self.assertEqual([m["role"] for m in follow], ["user", "assistant", "user"])
+        self.assertEqual([b["type"] for b in follow[1]["content"]], ["text", "tool_use"])
+        self.assertEqual([b["type"] for b in follow[2]["content"]], ["tool_result", "text"])
+        result = model.respond_json(name="check", instructions="Check.", input=[{"role": "user", "content": "{}"}],
+                                    schema={"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False})
+        self.assertEqual(result.value, {"ok": True})
+        self.assertEqual(bodies[-1]["tool_choice"], {"type": "tool", "name": "check"})
+
 if __name__ == "__main__":
     unittest.main()

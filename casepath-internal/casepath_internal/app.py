@@ -75,18 +75,24 @@ def default_model_factory(settings):
     shared = {}
 
     def factory(user_token=None):
-        if settings.model.auth == "user":  # the person's own token: a fresh client per run, nothing shared
+        def workspace_kind():
+            if settings.model.api == "messages":
+                from .anthropic_model import AnthropicMessagesModel
+                return AnthropicMessagesModel
             from .chat_model import ChatCompletionsModel
+            return ChatCompletionsModel
+        if settings.model.auth == "user":  # the person's own token: a fresh client per run, nothing shared
             if not user_token:
                 return None
-            model = ChatCompletionsModel(settings.model, lambda: user_token)
+            kind = workspace_kind()
+            model = kind(settings.model, lambda: user_token)
             if settings.model.reading_deployment:
-                model.reading = ChatCompletionsModel(replace(settings.model, deployment=settings.model.reading_deployment), lambda: user_token)
+                model.reading = kind(replace(settings.model, deployment=settings.model.reading_deployment), lambda: user_token)
             return model
         if "model" not in shared:
             if settings.model.provider == "databricks":
-                from .chat_model import ChatCompletionsModel, databricks_token_provider
-                token, kind = databricks_token_provider(settings.model.endpoint), ChatCompletionsModel
+                from .chat_model import databricks_token_provider
+                token, kind = databricks_token_provider(settings.model.endpoint), workspace_kind()
             else:
                 token, kind = entra_token_provider(), AzureOpenAIModel
             shared["model"] = kind(settings.model, token)

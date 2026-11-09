@@ -35,10 +35,13 @@ class ModelSettings:
     provider: str = "azure_openai"
     chat_path: str | None = None
     auth: str = "app"  # "user": call the model as the person who started the run, with the token the platform forwards
+    api: str = "chat"  # for a workspace model: "chat" (OpenAI-compatible chat completions) or "messages" (the Messages API)
 
     def __post_init__(self):
         if self.provider not in PROVIDERS:
             raise SettingsError(f"the model provider is one of {', '.join(PROVIDERS)}")
+        if self.api not in {"chat", "messages"}:
+            raise SettingsError("CASEPATH_MODEL_API is chat or messages")
         if self.auth not in {"app", "user"} or (self.auth == "user" and self.provider != "databricks"):
             raise SettingsError("CASEPATH_MODEL_AUTH is app, or user for a Databricks workspace model")
         parsed = urlparse(self.endpoint)
@@ -100,6 +103,7 @@ def load_settings(env=None):
             reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or env.get("CASEPATH_READING_MODEL") or None,
             provider=provider, chat_path=env.get("CASEPATH_CHAT_PATH") or None,
             auth=(env.get("CASEPATH_MODEL_AUTH") or "app").strip().lower(),
+            api=(env.get("CASEPATH_MODEL_API") or "chat").strip().lower(),
             gateway_hosts=tuple(h.strip().lower() for h in env.get("CASEPATH_MODEL_GATEWAY_HOSTS", "").split(",") if h.strip()),
         )
     if env.get("CASEPATH_IDENTITY_HEADER") and env.get("CASEPATH_DEV_USER"):

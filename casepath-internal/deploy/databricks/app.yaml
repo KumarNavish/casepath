@@ -15,8 +15,10 @@ env:
   # authorization for the app so Databricks forwards it); use it when the service principal may not query the model.
   - name: CASEPATH_MODEL_AUTH
     value: app
-  - name: CASEPATH_CHAT_PATH
-    value: /ai-gateway/mlflow/v1/chat/completions
+  # messages: the model's native Messages API on the gateway (/ai-gateway/anthropic/v1/messages), which passes forced
+  # tool calls and prompt caching. chat: the OpenAI-compatible route (/ai-gateway/mlflow/v1/chat/completions).
+  - name: CASEPATH_MODEL_API
+    value: messages
   - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
     value: "8000"
   # Scanned pages are read from images; 1400 px on the long side keeps typed text legible at fewer tokens per page.
