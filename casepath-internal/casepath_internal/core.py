@@ -17,7 +17,7 @@ A job (``casepath.agent-job/1``)::
      "case": {"id", "title", "intake", "workflow_id", "workflow_version", "workflow_selected_by"},
      "files": [{"id", "name", "kind", "media_type", "sha256", "extraction"}],
      "workflows": [every catalogue workflow version], "knowledge": [active Knowledge items, any family],
-     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers"}}
+     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers", "page_image_side"}}
 
 An outcome (``casepath.agent-outcome/1``)::
 
@@ -238,7 +238,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         if options.get("read_scans", True):
             reader = _Counted(getattr(model, "reading", None) or model, "reader", usage)
             for row in job["files"]:
-                prepare_file(reader, storage, storage.rows[row["id"]], on_event=on_event, workers=options.get("reading_workers", 1))
+                prepare_file(reader, storage, storage.rows[row["id"]], on_event=on_event, workers=options.get("reading_workers", 1),
+                             image_side=options.get("page_image_side", 1700))
         files = case_files(storage.rows.values())
         decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
         if workflow is None:

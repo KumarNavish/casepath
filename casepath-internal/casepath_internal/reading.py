@@ -78,9 +78,9 @@ def render_pages(data, numbers, dpi=150, max_side=1700):
     return Renderer(data, dpi, max_side).pages(numbers)
 
 
-def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None):
+def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700):
     """Read the given pages from their images. Returns ({page: text}, [pages that could not be read])."""
-    renderer = Renderer(data)
+    renderer = Renderer(data, max_side=image_side)  # a smaller image costs fewer tokens; typed pages stay legible at ~1400
 
     def read(chunk):
         content = [{"type": "input_text", "text": f"Pages {', '.join(map(str, chunk))} of the file, in this order."}]
@@ -232,7 +232,7 @@ def describe_photo(model, data, max_side=1600):
     return result.value["description"].strip()
 
 
-def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, max_ocr_pages=2000, workers=1):
+def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, max_ocr_pages=2000, workers=1, image_side=1700):
     """Transcribe scanned pages and split the file into documents, once. Returns the updated extraction."""
     extraction = dict(file_row["extraction"])
     changed = False
@@ -248,7 +248,7 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
             if done - reported[0] >= step or done == len(todo):
                 reported[0] = done
                 on_event({"agent": "claim_reader", "kind": "reading.progress", "file": file_row["id"], "done": done, "of": len(todo)})
-        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress)
+        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side)
         extraction = merge_pages(extraction, transcribed)
         if transcribed:
             extraction.pop("segments", None)  # newly read pages change where documents begin and end

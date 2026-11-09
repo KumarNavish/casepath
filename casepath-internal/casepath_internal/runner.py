@@ -37,9 +37,9 @@ def case_state(store, catalogue, case_id):
 
 
 class RunService:
-    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1):
+    def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1, page_image_side=1700):
         self.store, self.catalogue, self.model_factory, self.effort = store, catalogue, model_factory, effort
-        self.read_scans, self.reading_workers = read_scans, reading_workers
+        self.read_scans, self.reading_workers, self.page_image_side = read_scans, reading_workers, page_image_side
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self.store.interrupt_unfinished()
 
@@ -62,7 +62,8 @@ class RunService:
         return {"format": core.JOB, "case": self.store.get_case(case_id), "files": self.store.list_files(case_id, with_text=True),
                 "workflows": list(self.catalogue.workflows), "knowledge": self.store.list_knowledge(None, {"active"}),
                 "edits": self.store.list_edits(case_id),
-                "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers}}
+                "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers,
+                            "page_image_side": self.page_image_side}}
 
     def _event(self, run_id, data):
         self.store.append_event(run_id, data)
