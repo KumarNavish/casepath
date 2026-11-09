@@ -80,6 +80,26 @@ class DirectoryBlobs:
         return (self.directory / file["sha256"]).read_bytes()
 
 
+class _Counted:
+    """The model, with every call's token usage recorded under the name of the part of the job that made it."""
+
+    def __init__(self, model, agent, rows):
+        self.model, self.agent, self.rows = model, agent, rows
+
+    def respond_json(self, **kwargs):
+        result = self.model.respond_json(**kwargs)
+        self.rows.append({"agent": self.agent, **(result.usage or {})})
+        return result
+
+    def respond(self, **kwargs):
+        turn = self.model.respond(**kwargs)
+        self.rows.append({"agent": self.agent, **(turn.usage or {})})
+        return turn
+
+    def __getattr__(self, name):
+        return getattr(self.model, name)
+
+
 class _Files:
     """What page reading needs from storage, kept in memory; the case service saves the extractions afterwards."""
 
@@ -210,17 +230,20 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
             raise TeamError("no_files", "The case has no files to read.")
         if model is None:
             raise ModelError("model_not_configured", "No model deployment is configured for this workspace.")
+        usage = []  # reading and routing; the team records its own
         if options.get("read_scans", True):
+            reader = _Counted(getattr(model, "reading", None) or model, "reader", usage)
             for row in job["files"]:
-                prepare_file(getattr(model, "reading", None) or model, storage, storage.rows[row["id"]], on_event=on_event,
-                             workers=options.get("reading_workers", 1))
+                prepare_file(reader, storage, storage.rows[row["id"]], on_event=on_event, workers=options.get("reading_workers", 1))
         files = case_files(storage.rows.values())
-        decision, workflow = route(model, catalogue_of(job), job["case"], files, on_event)
+        decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
         if workflow is None:
-            return _outcome(routing=decision, result={"assessment": None, "routing": decision}, extractions=storage.extractions)
+            return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
+                            extractions=storage.extractions)
         team = CaseTeam(model, effort=options.get("effort", "medium"))
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event)
+        result["usage"] = usage + result["usage"]
         outcomes, proposals = lessons(workflow, job["case"]["id"], result)
         return _outcome(routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions,
                         knowledge_outcomes=outcomes, knowledge_proposals=proposals)

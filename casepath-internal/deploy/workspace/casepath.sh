@@ -89,7 +89,9 @@ case "${1:-}" in
     load_env
     check_signin
     out="$home/benchmark/$(date +%Y%m%d-%H%M%S)"
-    "$venv/bin/python" -m casepath_internal.evaluate run "$here/benchmark" --catalogue "$CASEPATH_WORKFLOW_CATALOGUE" --out "$out" \
+    # The suite's truth is written against the catalogue shipped next to it, not whatever the workspace has collected.
+    catalogue="$here/catalogue"; [ -d "$catalogue" ] || catalogue="$CASEPATH_WORKFLOW_CATALOGUE"
+    "$venv/bin/python" -m casepath_internal.evaluate run "$here/benchmark" --catalogue "$catalogue" --out "$out" \
       --repeats "${CASEPATH_BENCHMARK_REPEATS:-2}" --parallel "${CASEPATH_BENCHMARK_PARALLEL:-3}" "${@:2}"
     echo "Report: $out/report.md"
     ;;

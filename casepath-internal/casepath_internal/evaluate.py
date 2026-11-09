@@ -220,8 +220,10 @@ def score(case, workflow, run, detail, edits_done=None):
     check("reliability", "run", "status", "completed", run["status"] if run["status"] == "completed" else f"{run['status']}: {(run.get('error') or '')[:160]}",
           run["status"] == "completed")
     result = run.get("result") or {}
-    check("understanding", "routing", "workflow", truth["workflow"], run.get("workflow_id") or (run.get("routing") or {}).get("status"),
-          run.get("workflow_id") == truth["workflow"])
+    routing = run.get("routing") or {}
+    routed = run.get("workflow_id") or " ".join(filter(None, [routing.get("status"), ", ".join(c["id"] for c in routing.get("candidates", [])),
+                                                              ", ".join(f"needs {n}" for n in routing.get("needs", []))])) or None
+    check("understanding", "routing", "workflow", truth["workflow"], routed, run.get("workflow_id") == truth["workflow"])
     if run["status"] != "completed" or run.get("workflow_id") != truth["workflow"]:
         return checks  # nothing after routing can be compared against this workflow's truth
     kinds = {f["id"]: f["type"] for f in workflow["facts"]}
