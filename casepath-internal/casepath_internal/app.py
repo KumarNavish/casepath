@@ -18,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
-from . import casegraph, knowledge as kb, workflows
+from . import casegraph, identity, knowledge as kb, workflows
 from .azure_model import AzureOpenAIModel, entra_token_provider
 from .config import load_settings
 from .evidence import Evidence
@@ -27,6 +27,7 @@ from .runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
 
 UI = Path(__file__).parent / "ui"
+CONTRACT = Path(__file__).parent.parent / "docs" / "contracts" / "case-api.openapi.json"
 
 
 class NewCase(BaseModel):
@@ -91,10 +92,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
 
     def user(request: Request):
         if settings.identity_header:
-            value = request.headers.get(settings.identity_header)
-            if not value:
-                raise HTTPException(401, "Sign-in required.")
-            return value[:200]
+            try:
+                who = identity.from_header(request.headers.get(settings.identity_header), fmt=settings.identity_format,
+                                           user_claim=settings.identity_user_claim, roles_claim=settings.identity_roles_claim)
+            except identity.IdentityError:
+                raise HTTPException(401, "Sign-in required.") from None
+            if settings.required_role and settings.required_role not in who.roles:
+                raise HTTPException(403, "This workspace needs an access role you do not have.")
+            return who.user
         if settings.dev_user:
             return settings.dev_user
         raise HTTPException(503, "Sign-in is not configured for this deployment.")
@@ -112,7 +117,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     @app.get("/api/health")
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
-                "sign_in": "gateway" if settings.identity_header else "dev" if settings.dev_user else "none"}
+                "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
 
     @app.get("/api/me")
     def me(who=Depends(user)):
@@ -154,7 +159,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
     @app.delete("/api/cases/{case_id}")
     def delete_case(case_id: str, who=Depends(user)):
         try:
-            return {"deleted": case_id, **store.delete_case(case_id)}
+            return {"deleted": case_id, **store.delete_case(case_id, who)}
         except NotFound:
             raise HTTPException(404, "Not found.") from None
         except Conflict as error:
@@ -346,3 +351,17 @@ def _docx(subject, paragraphs):
                          '<Relationship Id="r1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>')
         archive.writestr("word/document.xml", document)
     return out.getvalue()
+
+
+def case_api_contract():
+    """The case API as OpenAPI JSON, stable across runs, for docs/contracts/."""
+    import json
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as directory:
+        app = create_app(load_settings({"CASEPATH_DATA_DIR": directory, "CASEPATH_DEV_USER": "contract"}), model_factory=lambda: None)
+        spec = app.openapi()
+        app.state.runs.shutdown()
+        app.state.store.close()
+    spec["info"] = {"title": "CasePath case API", "version": "1"}
+    return json.dumps(spec, indent=1, sort_keys=True, ensure_ascii=False) + "\n"

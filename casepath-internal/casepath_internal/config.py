@@ -29,12 +29,14 @@ class ModelSettings:
     trust_env: bool
     api_version: str | None = None
     reading_deployment: str | None = None
+    gateway_hosts: tuple = ()
 
     def __post_init__(self):
         parsed = urlparse(self.endpoint)
-        if parsed.scheme != "https" or not parsed.hostname or not parsed.hostname.endswith(AZURE_HOST_SUFFIXES):
-            raise SettingsError("the model endpoint must be an https Azure OpenAI resource")
-        if parsed.path not in {"", "/"} or parsed.query:
+        gateway = parsed.hostname in self.gateway_hosts  # an API gateway in front of the resource, named exactly
+        if parsed.scheme != "https" or not parsed.hostname or not (gateway or parsed.hostname.endswith(AZURE_HOST_SUFFIXES)):
+            raise SettingsError("the model endpoint must be an https Azure OpenAI resource or a configured gateway host")
+        if (parsed.path not in {"", "/"} and not gateway) or parsed.query:
             raise SettingsError("give the resource endpoint only; the client adds /openai/v1/")
         if not self.deployment or "/" in self.deployment:
             raise SettingsError("an exact deployment name is required")
@@ -50,6 +52,10 @@ class Settings:
     max_upload_bytes: int
     max_text_chars: int
     reading_workers: int = 6
+    identity_format: str = "plain"
+    identity_user_claim: str = "sub"
+    identity_roles_claim: str = "roles"
+    required_role: str | None = None
 
 
 def _flag(env, name, default):
@@ -72,9 +78,16 @@ def load_settings(env=None):
             trust_env=_flag(env, "CASEPATH_MODEL_TRUST_ENV", True),
             api_version=env.get("CASEPATH_AZURE_OPENAI_API_VERSION") or None,
             reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or None,
+            gateway_hosts=tuple(h.strip().lower() for h in env.get("CASEPATH_MODEL_GATEWAY_HOSTS", "").split(",") if h.strip()),
         )
     if env.get("CASEPATH_IDENTITY_HEADER") and env.get("CASEPATH_DEV_USER"):
         raise SettingsError("choose either a trusted identity header or a development user, not both")
+    identity_format = env.get("CASEPATH_IDENTITY_FORMAT", "plain").strip().lower()
+    if identity_format not in {"plain", "jwt"}:
+        raise SettingsError("CASEPATH_IDENTITY_FORMAT is plain or jwt")
+    required_role = env.get("CASEPATH_REQUIRED_ROLE") or None
+    if required_role and not (env.get("CASEPATH_IDENTITY_HEADER") and identity_format == "jwt"):
+        raise SettingsError("a required role needs a trusted identity header with CASEPATH_IDENTITY_FORMAT=jwt")
     catalogue = env.get("CASEPATH_WORKFLOW_CATALOGUE")
     return Settings(
         data_dir=Path(env.get("CASEPATH_DATA_DIR", ".casepath-internal")).resolve(),
@@ -85,4 +98,8 @@ def load_settings(env=None):
         max_upload_bytes=int(env.get("CASEPATH_MAX_UPLOAD_BYTES", str(100 * 1024 * 1024))),
         max_text_chars=int(env.get("CASEPATH_MAX_TEXT_CHARS", "4000000")),
         reading_workers=int(env.get("CASEPATH_READING_WORKERS", "6")),
+        identity_format=identity_format,
+        identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
+        identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
+        required_role=required_role,
     )

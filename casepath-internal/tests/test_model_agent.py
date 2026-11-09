@@ -33,6 +33,13 @@ class SettingsTests(unittest.TestCase):
         with self.assertRaises(SettingsError):
             load_settings({"CASEPATH_IDENTITY_HEADER": "x-identity", "CASEPATH_DEV_USER": "dev"})
 
+    def test_a_named_gateway_host_may_front_the_model(self):
+        env = {"CASEPATH_AZURE_OPENAI_ENDPOINT": "https://api-gateway.example.ch/aoai", "CASEPATH_AZURE_OPENAI_DEPLOYMENT": "d"}
+        with self.assertRaises(SettingsError):  # an unnamed host stays refused
+            load_settings(env)
+        loaded = load_settings({**env, "CASEPATH_MODEL_GATEWAY_HOSTS": "api-gateway.example.ch"})
+        self.assertEqual(loaded.model.endpoint, "https://api-gateway.example.ch/aoai")
+
 
 class Credential:
     def __init__(self, outcome, delay=0):

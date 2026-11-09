@@ -1,0 +1,51 @@
+# Deploying CasePath beyond the development workspace
+
+CasePath runs end to end on a single development workspace today. This document describes how the same code moves to an operated environment, where:
+
+- a gateway signs people in;
+- runs can outlast a request timeout;
+- cases live in a managed database.
+
+Every piece that differs between the two environments sits behind one of the boundaries below and is chosen by configuration. Tests exercise each boundary, so the application that passes the benchmark on the workspace is the application that is deployed.
+
+## The two halves
+
+**Agent core** (`core.py`, with `agents.py`, `reading.py`, `casegraph.py` and `workflows.py`) is everything that uses a model. It is stateless: a JSON job goes in and a JSON outcome comes out.
+
+- `prepare(job, model, blobs, on_event, on_extraction)` reads scanned pages, routes the case, runs the five agents and works out what the run teaches. It can take many minutes.
+- `recheck(job, prior, documents, model, on_event)` checks only the document needs a process edit added.
+- `evaluate(workflow, knowledge, edits, result, case_id)` gives the case's own process and where the case stands. It uses no model, so it can answer synchronously.
+
+The job and outcome formats (`casepath.agent-job/1`, `casepath.agent-outcome/1`) are specified in `core.py`. `tests/test_core.py` runs a job built from plain JSON with no store at all, as a queue worker would. `python -m casepath_internal.core prepare <job.json> --blobs <dir>` does the same from the command line.
+
+**Case service** (`app.py`, `store.py`, `runner.py`, `knowledge.py`) owns cases, files, runs, events, edits, Knowledge, feedback, deletion and sign-in. It builds jobs (`RunService.job`) and persists outcomes (`RunService.save`):
+
+- each file's reading as soon as it is done;
+- the result;
+- each applied Knowledge item's statistics, on its current version;
+- the result checker's proposals, as candidates.
+
+The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app.py` fails when the code and the saved contract diverge (`python -m casepath_internal contract --write` updates it). The browser workspace, the batch tool and the benchmark evaluator use only this API, so a reimplementation of the case service that honours the contract keeps all three working.
+
+## Boundaries and how each is chosen
+
+| Concern | Development workspace | Operated environment | What changes |
+|---|---|---|---|
+| Sign-in | `CASEPATH_DEV_USER` (one person) | Gateway header: `CASEPATH_IDENTITY_HEADER`, `CASEPATH_IDENTITY_FORMAT=jwt`, the user and roles claims, and `CASEPATH_REQUIRED_ROLE` (403 without it) | Configuration |
+| Model credential | `CASEPATH_AZURE_CREDENTIAL=cli` (the person's `az` sign-in) | `managed_identity` or `workload_identity` | Configuration |
+| Model endpoint | The Azure OpenAI resource | The resource, or a gateway host named in `CASEPATH_MODEL_GATEWAY_HOSTS` (it may carry a path) | Configuration |
+| Model deployment | `CASEPATH_AZURE_OPENAI_DEPLOYMENT`, optional reading deployment and dated API version | Same | Configuration |
+| Long runs | Worker threads in the case service (`RunService`) | A queue consumer that calls `core.prepare` with the same job; events and the outcome go back on the queue, and large outcomes go through blob storage | One adapter around `core.prepare` |
+| File bytes | `core.StoreBlobs` (store files) | A blob-storage reader with the same `read(file)` method (`core.DirectoryBlobs` shows the shape) | One small adapter |
+| Persistence | SQLite plus files (`store.py`) | The case service's database, behind the same API contract | The case service, not the agents |
+| Workflow catalogue | JSON files in `CASEPATH_WORKFLOW_CATALOGUE` | Same files, shipped with the release | None |
+| Retention | `python -m casepath_internal purge --older-than-days N` | The same rule in the case service's scheduled job | Schedule |
+| Deletion | `DELETE /api/cases/{id}` removes the case and everything derived from it, and keeps a content-free deletion record | Same contract | None |
+| Logs | Run errors and events are stored with the run, not logged | Same; access logs carry ids only | None |
+
+## Before an operated deployment
+
+1. Confirm the gateway's token claims and the access role's exact name, then set the identity variables.
+2. Grant the service's identity access to the model deployment, and set the credential and, if one is used, the gateway host.
+3. Build the queue consumer around `core.prepare` and the blob reader. Run `tests/test_core.py`'s job through it.
+4. Point the benchmark evaluator at the deployment: `python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> --url <base url>`. Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.

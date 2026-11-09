@@ -2,6 +2,13 @@
 
     python -m casepath_internal serve [--host 127.0.0.1] [--port 8765]
     python -m casepath_internal check-catalogue <directory>
+    python -m casepath_internal contract [--write]
+    python -m casepath_internal purge --older-than-days <n> [--dry-run]
+
+``contract`` prints the case API as OpenAPI (``--write`` saves it to docs/contracts/case-api.openapi.json). Another
+implementation of the case service, or a gateway in front of it, can be checked against this contract; a test keeps
+the saved contract and the code in step. ``purge`` deletes every case of ``CASEPATH_DATA_DIR`` that has not changed
+for the given number of days, with everything derived from it, and keeps a content-free deletion record for each.
 """
 import argparse
 import sys
@@ -17,7 +24,28 @@ def main(argv=None):
     serve.add_argument("--port", type=int, default=8765)
     check = commands.add_parser("check-catalogue")
     check.add_argument("directory")
+    contract = commands.add_parser("contract")
+    contract.add_argument("--write", action="store_true")
+    purge = commands.add_parser("purge")
+    purge.add_argument("--older-than-days", type=int, required=True)
+    purge.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
+    if args.command == "purge":
+        import json
+        from datetime import datetime, timedelta, timezone
+
+        from .config import load_settings
+        from .store import CaseStore
+
+        before = (datetime.now(timezone.utc) - timedelta(days=args.older_than_days)).isoformat(timespec="seconds")
+        print(json.dumps({"before": before, **CaseStore(load_settings().data_dir).purge(before, dry_run=args.dry_run)}))
+        return
+    if args.command == "contract":
+        from .app import CONTRACT, case_api_contract
+
+        text = case_api_contract()
+        CONTRACT.write_text(text) if args.write else print(text, end="")
+        return
     if args.command == "check-catalogue":
         try:
             catalogue = Catalogue.load(args.directory)

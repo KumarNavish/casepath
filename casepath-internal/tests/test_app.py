@@ -79,6 +79,24 @@ class AppTests(unittest.TestCase):
         self.assertEqual(gateway.get("/api/cases").status_code, 401)
         self.assertEqual(gateway.get("/api/cases", headers={"x-identity": "u1"}).status_code, 200)
 
+    def test_a_gateway_token_names_the_user_and_must_carry_the_access_role(self):
+        import base64
+
+        def token(claims):
+            body = base64.urlsafe_b64encode(json.dumps(claims).encode()).decode().rstrip("=")
+            return f"Bearer e30.{body}.sig"
+        gateway = self.client(CASEPATH_DEV_USER="", CASEPATH_IDENTITY_HEADER="x-identity", CASEPATH_IDENTITY_FORMAT="jwt",
+                              CASEPATH_IDENTITY_USER_CLAIM="preferred_username", CASEPATH_IDENTITY_ROLES_CLAIM="realm_access.roles",
+                              CASEPATH_REQUIRED_ROLE="casepath-user")
+        allowed = {"x-identity": token({"preferred_username": "u123", "realm_access": {"roles": ["casepath-user"]}})}
+        self.assertEqual(gateway.get("/api/me", headers=allowed).json(), {"user": "u123"})
+        other = {"x-identity": token({"preferred_username": "u456", "realm_access": {"roles": ["other"]}})}
+        self.assertEqual(gateway.get("/api/cases", headers=other).status_code, 403)
+        self.assertEqual(gateway.get("/api/cases", headers={"x-identity": "not a token"}).status_code, 401)
+        from casepath_internal.config import SettingsError
+        with self.assertRaises(SettingsError):  # a role cannot be checked on a plain user id
+            load_settings({**self.env, "CASEPATH_DEV_USER": "", "CASEPATH_IDENTITY_HEADER": "x-identity", "CASEPATH_REQUIRED_ROLE": "r"})
+
     def test_learning_reuse_and_edits_across_cases(self):
         client = self.client()
         # Case A: the team runs, and the result checker proposes a document need.
@@ -179,6 +197,18 @@ class AppTests(unittest.TestCase):
         self.assertEqual(store.list_knowledge(), [])
         self.assertFalse((Path(self.directory.name) / "files" / digest[:2] / digest).exists())
         self.assertEqual(client.delete(f"/api/cases/{case['id']}").status_code, 404)
+        record, = store.deletions()  # what remains says only that the case existed, when, who deleted it and how much went
+        self.assertEqual((record["case_id"], record["deleted_by"], record["reason"], record["removed"]["runs"]), (case["id"], "dev", "request", 1))
+        self.assertNotIn("To delete", json.dumps(record))
+
+    def test_retention_deletes_cases_unchanged_for_too_long(self):
+        store = CaseStore(self.directory.name)
+        old, recent = store.create_case("old", {}, "dev"), store.create_case("recent", {}, "dev")
+        store._db.execute("update cases set updated_at='2014-01-01T00:00:00+00:00' where id=?", (old["id"],))
+        self.assertEqual(store.purge("2015-01-01T00:00:00+00:00", dry_run=True), {"due": 1, "deleted": 0, "busy": 0})
+        self.assertEqual(store.purge("2015-01-01T00:00:00+00:00")["deleted"], 1)
+        self.assertEqual([c["id"] for c in store.list_cases()], [recent["id"]])
+        self.assertEqual(store.deletions()[0]["reason"], "retention")
 
     def test_restart_marks_unfinished_runs(self):
         store = CaseStore(self.directory.name)
@@ -186,6 +216,24 @@ class AppTests(unittest.TestCase):
         run = store.create_run(case["id"], "dev")
         self.client()
         self.assertEqual(CaseStore(self.directory.name).get_run(run["id"])["status"], "interrupted")
+
+
+class ContractTests(unittest.TestCase):
+    def test_the_saved_contract_matches_the_api(self):
+        from casepath_internal.app import CONTRACT, case_api_contract
+
+        def shape(spec):  # operations, parameters and request fields; free of library-version details
+            rows = set()
+            for path, methods in spec["paths"].items():
+                for method, op in methods.items():
+                    params = tuple(sorted(p["name"] for p in op.get("parameters", [])))
+                    body = (op.get("requestBody") or {}).get("content", {})
+                    ref = next(iter(body.values()), {}).get("schema", {}).get("$ref", "")
+                    fields = tuple(sorted(spec["components"]["schemas"][ref.split("/")[-1]]["properties"])) if ref else ()
+                    rows.add((path, method, params, fields))
+            return rows
+        self.assertEqual(shape(json.loads(case_api_contract())), shape(json.loads(CONTRACT.read_text())),
+                         "the API changed: run python -m casepath_internal contract --write and review the diff")
 
 
 class GuardTests(unittest.TestCase):

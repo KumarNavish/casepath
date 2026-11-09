@@ -39,6 +39,8 @@ create table if not exists case_edits(
 create table if not exists feedback(
   run_id text not null references runs(id), target text not null, by text not null, verdict text not null,
   note text not null, at text not null, primary key(run_id, target, by));
+create table if not exists deletions(
+  case_id text primary key, deleted_at text not null, deleted_by text not null, reason text not null, removed text not null);
 """
 ACTIVE = ("queued", "running")
 
@@ -242,7 +244,8 @@ class CaseStore:
 
     # Deleting a case removes everything derived from it: files (and their bytes when no other case shares them), runs,
     # progress, feedback, edits, Knowledge uses, Knowledge learned from it, and its quotes in other Knowledge.
-    def delete_case(self, case_id):
+    def delete_case(self, case_id, user="", reason="request"):
+        """Delete the case and everything derived from it; keep a content-free record that it existed and was deleted."""
         self.get_case(case_id)
         with self._lock:
             if self._one("select 1 as busy from runs where case_id=? and status in ('queued','running')", case_id):
@@ -266,10 +269,31 @@ class CaseStore:
                     removed["knowledge_quotes"] += len(item["evidence"]) - len(kept)
                     self._db.execute("update knowledge set data=? where id=?", (json.dumps({**item, "evidence": kept}, ensure_ascii=False), row["id"]))
             self._db.execute("delete from cases where id=?", (case_id,))
+            self._db.execute("insert or replace into deletions values(?,?,?,?,?)", (case_id, now(), user or "", reason, json.dumps(removed)))
             for digest in set(digests):
                 if not self._one("select 1 as used from files where sha256=?", digest):
                     (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
         return removed
+
+    def deletions(self):
+        rows = self._all("select * from deletions order by deleted_at")
+        for row in rows:
+            row["removed"] = json.loads(row["removed"])
+        return rows
+
+    def purge(self, before, user="retention", dry_run=False):
+        """Delete every case last changed before ``before`` (ISO time), for a retention period; runs in progress wait."""
+        due = [r["id"] for r in self._all("select id from cases where updated_at < ? order by updated_at", before)]
+        if dry_run:
+            return {"due": len(due), "deleted": 0, "busy": 0}
+        deleted = busy = 0
+        for case_id in due:
+            try:
+                self.delete_case(case_id, user, "retention")
+                deleted += 1
+            except Conflict:
+                busy += 1
+        return {"due": len(due), "deleted": deleted, "busy": busy}
 
     # Case workers' feedback on a run's results: one verdict per person and item, the latest kept
     def set_feedback(self, run_id, target, verdict, note, user):

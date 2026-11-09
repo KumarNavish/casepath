@@ -65,11 +65,11 @@ def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ
     ``source`` (or ``CASEPATH_AZURE_CREDENTIAL``) follows the platform's credential guidance: ``cli`` (the
     default) is the person's `az` sign-in, as on a development compute instance, where `az login --use-device-code`
     is the documented route and the attached managed identity must not be picked up; ``managed_identity`` is for a deployed service whose identity has
-    been granted access; ``auto`` tries `az`, then a managed identity, except in Azure Cloud Shell, where that endpoint
+    been granted access; ``workload_identity`` is for a service on Kubernetes with a federated identity; ``auto`` tries `az`, then a managed identity, except in Azure Cloud Shell, where that endpoint
     is the same portal relay `az` uses. `az` gets up to ``timeout`` seconds.
     """
     try:
-        from azure.identity import AzureCliCredential, ManagedIdentityCredential
+        from azure.identity import AzureCliCredential, ManagedIdentityCredential, WorkloadIdentityCredential
     except ImportError as error:
         raise ModelError("identity_unavailable", "Install azure-identity in the internal runtime to sign in with Entra.") from error
     source = source or env.get("CASEPATH_AZURE_CREDENTIAL", "cli")
@@ -78,8 +78,12 @@ def entra_token_provider(scope=SCOPE, *, source=None, timeout=90, env=os.environ
         chain.append(("az", AzureCliCredential(process_timeout=timeout)))
     if source == "managed_identity" or (source == "auto" and not in_cloud_shell(env)):
         chain.append(("managed identity", ManagedIdentityCredential()))
+    if source == "workload_identity":  # a service on Kubernetes with a federated workload identity
+        chain.append(("workload identity", WorkloadIdentityCredential()))
+    if not chain:
+        raise ModelError("identity_unavailable", f"CASEPATH_AZURE_CREDENTIAL is cli, managed_identity, workload_identity or auto, not {source!r}.")
     hint = (" Check with `az account get-access-token --resource https://cognitiveservices.azure.com --query expiresOn -o tsv`;"
-            " on a development compute instance, sign in first with `az login --use-device-code`.") if source != "managed_identity" else ""
+            " on a development compute instance, sign in first with `az login --use-device-code`.") if source in {"cli", "auto"} else ""
     return token_provider(chain, scope, timeout=timeout + 15, hint=hint, person=source == "cli")
 
 
