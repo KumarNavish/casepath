@@ -14,7 +14,7 @@ from copy import deepcopy
 
 from .store import new_id, now
 
-KINDS = {"document_need", "question", "note"}
+KINDS = {"document_need", "question", "step", "note"}
 
 
 class KnowledgeError(ValueError):
@@ -28,6 +28,8 @@ def _content(kind, content):
         raise KnowledgeError("a document need needs a title and why it is needed")
     if kind == "question" and not content.get("question"):
         raise KnowledgeError("a question needs its wording")
+    if kind == "step" and not (content.get("title") and content.get("before")):
+        raise KnowledgeError("a step needs a title and the step it comes before")
     if kind == "note" and not content.get("text"):
         raise KnowledgeError("a note needs text")
     return {k: v for k, v in content.items() if v not in (None, "", [])}
@@ -99,6 +101,9 @@ def from_edit(family, edit, graph, *, by):
         return new_item(family, "document_need", {"title": args["title"], "why": args["why"], "step": step,
                                                    "required_when": args.get("required_when")},
                         applies_when=args.get("applies_when"), applies_when_text=args.get("applies_when_text", ""), origin=origin)
+    if edit["op"] == "add_step":
+        return new_item(family, "step", {"title": args["title"], "why": args.get("why"), "before": args["before"],
+                                          "legal_basis": args.get("legal_basis")}, origin=origin)
     if edit["op"] == "add_question":
         return new_item(family, "question", {"question": args["question"], "type": args.get("type", "boolean"),
                                               "values": args.get("values")}, origin=origin)

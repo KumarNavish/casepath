@@ -1,9 +1,11 @@
 """A case's own process: the base workflow, the Knowledge that applies, and edits.
 
 The base workflow comes from the catalogue. Active Knowledge adds the document
-needs and questions learned in earlier cases; candidate Knowledge is added as a
+needs, questions and steps learned in earlier cases; candidate Knowledge is added as a
 suggestion that is checked but never counted as missing. Edits by a case worker
-(or by the Process builder, with its reason) change the case's process only.
+(or by the Process builder, with its reason) change the case's process only: they
+add documents, questions or whole steps the case needs, so a case's process is
+discovered from the case rather than only followed.
 Every addition names its origin, and the result is validated like any workflow.
 """
 from copy import deepcopy
@@ -12,7 +14,7 @@ from .workflows import CatalogueError, evaluate, evaluate_condition, validate_wo
 
 EXTRA_SOURCES = [{"id": "knowledge", "kind": "knowledge", "title": "CasePath Knowledge learned from earlier cases"},
                  {"id": "edit", "kind": "case_edit", "title": "Changes made to this case's process"}]
-EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "set_transition", "rename_step"}
+EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step"}
 
 
 class EditError(ValueError):
@@ -36,6 +38,22 @@ def _attach(graph, step_id, document_id):
         if step_id not in steps:
             raise EditError(f"unknown step {step_id!r}")
         steps[step_id].setdefault("documents", []).append(document_id)
+
+
+def _insert_step(graph, step_id, before, title, why, ref, legal_basis=None, suggested=False):
+    """Put a new step in front of `before`: every way into `before` now leads through the new step."""
+    if before not in {s["id"] for s in graph["steps"]}:
+        raise EditError(f"unknown step {before!r}")
+    for step in graph["steps"]:
+        if step["id"] != before:
+            for edge in step.get("next", []):
+                if edge["to"] == before:
+                    edge["to"] = step_id
+    if graph["start"] == before:
+        graph["start"] = step_id
+    graph["steps"].append({"id": step_id, "title": title.strip(), "role": "Fallbearbeitung", "why": (why or "").strip(),
+                           **({"legal_basis": legal_basis.strip()} if legal_basis else {}), **({"suggested": True} if suggested else {}),
+                           "source_refs": [ref], "documents": [], "next": [{"to": before, "label": None, "when": True}]})
 
 
 def _apply_knowledge(graph, item, facts_known):
@@ -63,6 +81,10 @@ def _apply_knowledge(graph, item, facts_known):
                                **({"values": content["values"]} if content.get("values") else {}),
                                "source_refs": [ref], "knowledge": item["id"]})
         return {"item": item["id"], "applied": True, "fact": fact_id, "suggested": suggested}
+    if item["kind"] == "step":
+        step_id = f"k-{item['id']}"
+        _insert_step(graph, step_id, content["before"], content["title"], content.get("why"), ref, content.get("legal_basis"), suggested)
+        return {"item": item["id"], "applied": True, "step": step_id, "suggested": suggested}
     return {"item": item["id"], "applied": True, "note": content.get("text"), "suggested": suggested}
 
 
@@ -120,6 +142,9 @@ def apply_edit(graph, edit):
             gate = {"fact": fact_id, "is": args.get("gate_value", True)}
             document["required_when"] = _combine(document.get("required_when", True), gate)
             document["source_refs"] = document["source_refs"] + [ref]
+    elif op == "add_step":
+        _insert_step(graph, f"s-{edit['id']}", args.get("before"), args["title"], args.get("why"), ref, args.get("legal_basis"),
+                     bool(args.get("suggested")))
     elif op == "set_transition":
         step = steps.get(args["step"])
         if step is None or not 0 <= args["index"] < len(step.get("next", [])) or args["to"] not in steps:

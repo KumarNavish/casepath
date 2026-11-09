@@ -16,7 +16,7 @@ const WORDS = {
   completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen",
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
   not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
-  reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", note: "Hinweis",
+  reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", step: "Schritt", note: "Hinweis",
 };
 const word = (value) => (LANG === "de" && WORDS[value]) || String(value ?? "").replace(/_/g, " ");
 const TOOL_DE = { list_files: "listet die Dateien", open_process: "öffnet den Prozess", view_knowledge: "sieht das Wissen durch", evaluate: "wertet den Prozess aus",
@@ -510,7 +510,8 @@ function preview() {
 }
 
 const OPS = [["add_document", T("Add a document need", "Dokument verlangen")], ["set_required_when", T("Change when a document is required", "Ändern, wann ein Dokument nötig ist")],
-             ["add_question", T("Add a question", "Frage ergänzen")], ["set_transition", T("Redirect a branch", "Verzweigung umleiten")], ["rename_step", T("Rename this step", "Schritt umbenennen")]];
+             ["add_question", T("Add a question", "Frage ergänzen")], ["add_step", T("Add a step before this one", "Schritt davor ergänzen")],
+             ["set_transition", T("Redirect a branch", "Verzweigung umleiten")], ["rename_step", T("Rename this step", "Schritt umbenennen")]];
 
 function conditionFields(prefix) {
   const options = facts().map((f) => `<option value="${esc(f.id)}">${esc(questionLabel(f))}</option>`).join("");
@@ -529,6 +530,9 @@ function editForm(step) {
     <div data-op="set_required_when" hidden><label>${T("Document", "Dokument")}<select name="document">${docs}</select></label>${conditionFields("set")}</div>
     <div data-op="add_question" hidden><label>${T("Question", "Frage")}<input name="question" maxlength="300"></label>
       <label>${T("Only require this document when the answer is yes", "Dieses Dokument nur verlangen, wenn die Antwort ja ist")}<select name="gates"><option value="">${T("No document", "Kein Dokument")}</option>${docs}</select></label></div>
+    <div data-op="add_step" hidden><label>${T("Step", "Schritt")}<input name="steptitle" maxlength="200" placeholder="${T("e.g. Object to the dismissal in writing", "z. B. Einsprache gegen die Kündigung schreiben")}"></label>
+      <label>${T("Why this case needs it", "Wozu dieser Fall ihn braucht")}<input name="stepwhy" maxlength="400"></label>
+      <label>${T("Legal basis (optional)", "Rechtsgrundlage (freiwillig)")}<input name="steplaw" maxlength="200" placeholder="${T("e.g. Art. 336b OR", "z. B. Art. 336b OR")}"></label></div>
     <div data-op="set_transition" hidden><label>${T("Branch", "Verzweigung")}<select name="edge">${edges}</select></label><label>${T("Now leads to", "Führt neu zu")}<select name="to">${steps}</select></label></div>
     <div data-op="rename_step" hidden><label>${T("New wording", "Neue Bezeichnung")}<input name="rename" maxlength="200" value="${esc(step.title)}"></label></div>
     <label>${T("Why this changes (required)", "Begründung (Pflicht)")}<textarea name="reason" rows="2" required maxlength="500"></textarea></label>
@@ -564,6 +568,7 @@ function bindEdit() {
       add_document: { title: form.title.value, why: form.why.value, step, required_when: condition("add") },
       set_required_when: { document: form.document.value, required_when: condition("set") },
       add_question: { question: form.question.value, type: "boolean", ...(form.gates.value ? { gates_document: form.gates.value } : {}) },
+      add_step: { before: step, title: form.steptitle.value, why: form.stepwhy.value, legal_basis: form.steplaw.value || null },
       set_transition: { step, index: Number(form.edge.value), to: form.to.value },
       rename_step: { step, title: form.rename.value },
     }[op];
@@ -589,6 +594,7 @@ function snapshot(op, args) {
   if (op === "add_document") return T("Not part of this step", "Nicht Teil dieses Schritts");
   if (op === "set_required_when") return `${needOf(args.document)}: ${conditionText((process.documents.find((d) => d.id === args.document) || {}).required_when)}`;
   if (op === "add_question") return T("No such question", "Diese Frage gab es nicht");
+  if (op === "add_step") return T(`Next: ${(process.steps.find((s) => s.id === args.before) || {}).title}`, `Danach: ${(process.steps.find((s) => s.id === args.before) || {}).title}`);
   if (op === "set_transition") { const step = process.steps.find((s) => s.id === args.step); const e = step.next[args.index]; return `${e.label || T("Next", "Weiter")} → ${process.steps.find((s) => s.id === e.to).title}`; }
   if (op === "rename_step") return process.steps.find((s) => s.id === args.step).title;
   return "";
@@ -596,7 +602,7 @@ function snapshot(op, args) {
 function nowText(edit) {
   const a = edit.args;
   return { add_document: `${a.title}: ${a.why}`, set_required_when: `${needOf(a.document)}: ${conditionText(a.required_when)}`,
-           add_question: a.question, set_transition: `→ ${(S.data.process.steps.find((s) => s.id === a.to) || {}).title}`, rename_step: a.title }[edit.op];
+           add_question: a.question, add_step: `${a.title}${a.legal_basis ? ` (${a.legal_basis})` : ""}`, set_transition: `→ ${(S.data.process.steps.find((s) => s.id === a.to) || {}).title}`, rename_step: a.title }[edit.op];
 }
 
 function beforeNow() {

@@ -91,6 +91,21 @@ class TeamTests(unittest.TestCase):
             run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2)
         self.assertEqual(caught.exception.reason, "turn_limit")
 
+    def test_a_case_needs_its_own_step_and_it_can_become_knowledge(self):
+        from casepath_internal.workflows import evaluate
+        edit = {"id": "e1", "op": "add_step", "case_id": "c1", "args": {"before": "assess", "title": "Einsprache schreiben",
+                "why": "Die Kündigung fällt in die Sperrfrist.", "legal_basis": "Art. 336c OR"}, "status": "active"}
+        graph, provenance = casegraph.build(FIXTURE, edits=[edit])
+        self.assertTrue(provenance["edits"][0]["applied"])
+        step = next(s for s in graph["steps"] if s["id"] == "s-e1")
+        self.assertEqual((step["legal_basis"], step["next"][0]["to"]), ("Art. 336c OR", "assess"))
+        path = [p["step"] for p in evaluate(graph, {"landlord_notified": True}, {}, checked=True)["path"]]
+        self.assertLess(path.index("s-e1"), path.index("assess"))  # the case passes through its own step
+        item = kb.set_status(kb.from_edit("example-defect", edit, graph, by="expert"), "active", by="expert")
+        later, used = casegraph.build(FIXTURE, knowledge=[item], case_id="c2")
+        self.assertTrue(used["knowledge"][0]["applied"])
+        self.assertIn(f"k-{item['id']}", {s["id"] for s in later["steps"]})
+
     def test_learning_with_personal_details_is_withheld(self):
         from casepath_internal.agents import personal_details
         names = {"Brunner", "Kramgasse"}
@@ -115,10 +130,10 @@ class TeamTests(unittest.TestCase):
 
     def test_process_builder_changes_need_a_basis(self):
         unsupported = ("propose_change", {"op": "add_document", "title": "Lease", "why": "Shows the tenancy.", "question": "", "step": None,
-                                          "required_when": [], "basis_knowledge": None, "citations": [], "reason": "Usually needed."})
+                                          "required_when": [], "legal_basis": "", "basis_knowledge": None, "citations": [], "reason": "Usually needed."})
         supported = ("propose_change", {"op": "add_document", "title": "Ventilation record", "why": "The tenant says they ventilate.",
                                         "question": "", "step": "assess", "required_when": [{"fact": "landlord_notified", "value": "yes"}],
-                                        "basis_knowledge": None, "citations": [{"file": "f1", "quote": VENT}], "reason": "The customer raises it."})
+                                        "legal_basis": "", "basis_knowledge": None, "citations": [{"file": "f1", "quote": VENT}], "reason": "The customer raises it."})
         script = standard_script(builder_calls=[unsupported, supported], finder_calls=[], result_fields={})
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
         edit, = result["agent_edits"]
@@ -127,13 +142,13 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(row["required"], "suggested")  # an agent's addition waits for a person
         self.assertNotIn("e-pb1", [a.get("document") for a in result["evaluation"]["next_actions"]])
 
-    def test_agents_add_at_most_three_items(self):
+    def test_agents_add_at_most_six_items(self):
         def question(n):
             return ("propose_change", {"op": "add_question", "title": "", "why": "", "question": f"Question {n}?", "step": None,
-                                       "required_when": [], "basis_knowledge": None, "citations": [{"file": "f1", "quote": VENT}], "reason": "Raised."})
-        script = standard_script(builder_calls=[question(n) for n in range(5)], finder_calls=[], result_fields={})
+                                       "required_when": [], "legal_basis": "", "basis_knowledge": None, "citations": [{"file": "f1", "quote": VENT}], "reason": "Raised."})
+        script = standard_script(builder_calls=[question(n) for n in range(8)], finder_calls=[], result_fields={})
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
-        self.assertEqual(len(result["agent_edits"]), 3)
+        self.assertEqual(len(result["agent_edits"]), 6)
 
 
 class KnowledgeReuseTests(unittest.TestCase):
