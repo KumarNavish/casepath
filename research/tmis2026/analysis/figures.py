@@ -195,9 +195,7 @@ CODE = "#1b7a70"   # code-executed (teal)
 FAINT, PANEL = "#b4b3ae", "#f4f3ef"
 TW = 5.4           # figure width in inches (acmsmall text width ~5.5 in)
 import sys as _sys
-from matplotlib.patches import FancyBboxPatch, Rectangle, Polygon
-from matplotlib.lines import Line2D
-import matplotlib.patheffects as _pe
+from matplotlib.patches import Circle, FancyBboxPatch, Rectangle
 
 PREVIEW = None     # directory for print-size PNG previews (set by --png)
 
@@ -227,6 +225,7 @@ def card(ax, x, y, w, h, ec=FAINT, fc="white", lw=0.6, r=0.04, ls="-", z=1):
 
 
 def status(ax, x, y, s, ha="right", size=6.3):
+    x = x - 0.035 if ha == "right" else x
     """Evidence-status tag: schematic / exact computation / measured / post hoc."""
     T(ax, x, y, s, size=size, color=MUTED, ha=ha, va="center", style="italic",
       bbox=dict(boxstyle="round,pad=0.18,rounding_size=0.06", fc="white", ec=FAINT, lw=0.5))
@@ -511,7 +510,7 @@ def fig_reconverge():
             else:
                 hits = sum(D["worlds"][h]["nodes"][n] == "true" for h in ("true", "false"))
                 fc, ec = [("white", SKIP), (HELD, "#b9860c"), (INK, INK)][hits]
-            ax.add_patch(matplotlib.patches.Circle((x, y), 0.036, fc=fc, ec=ec, lw=0.7, zorder=3))
+            ax.add_patch(Circle((x, y), 0.036, fc=fc, ec=ec, lw=0.7, zorder=3))
             # documents of this step, growing outward from the graph
             xx = docx[panel]
             for d in nodes[n].get("document_types", []):
@@ -635,7 +634,7 @@ def fig_fate():
              ("FtoT", "Confidently wrong", "a false condition judged true", "unnecessary in all four")]
     outs = [("deferred", "Held", "behind a question"), ("missed", "Missed", "unsafe error"),
             ("unnecessary", "Unnecessary", "request; unsafe error")]
-    xcol = [2.32, 3.50, 4.48]
+    xcol = [2.30, 3.46, 4.40]
     scale = 0.85 / 15.0             # inches per document per 100 required documents, all columns
     rh, gap = 0.142, 0.13
     ytop = 2.28
@@ -729,66 +728,313 @@ def outcomes_data():
 
 
 def fig_outcomes():
+    """Measured. Unit marks: each design row holds 100 marks, one per required document (largest-remainder
+    rounding of the measured shares), filled column by column so each outcome is one contiguous run.
+    Unnecessary requests sit outside the 100 as hollow marks (per 100 required documents)."""
     D = outcomes_data()
-    W, H = TW, 3.36
+    W, H = TW, 3.50
     fig, ax = canvas(W, H)
-    pitch, ms, gap10 = 0.0455, 0.037, 0.028
-    x0 = 1.62                                   # first unit mark
-    xu = x0 + 50 * pitch + 4 * gap10 + 0.14     # unnecessary marks
-    rowh = 0.175
+    pitch, ms, gap5 = 0.041, 0.033, 0.020
+    x0 = 1.74                                   # first unit mark
+    xmiss = x0 + 50 * pitch + 9 * gap5 + 0.03   # exact missed share (rounding can hide it in the marks)
+    xu = xmiss + 0.28                           # unnecessary marks
+    rowh, dr = 0.172, 0.0215
     kinds = ["requested", "held", "handed", "missed"]
 
-    def mx(i):
-        c = i % 50
-        return x0 + c * pitch + (c // 10) * gap10
+    def mx(base, c):
+        return base + c * pitch + (c // 5) * gap5
 
-    # legend
+    from matplotlib.backends.backend_agg import RendererAgg
+    rend = RendererAgg(W * fig.dpi, H * fig.dpi, fig.dpi)
     ly = H - 0.10
     lx = 0.0
     for kind, name in (("requested", "requested"), ("held", "held behind a question"), ("handed", "handed over to a person"),
-                       ("missed", "missed")):
+                       ("missed", "missed"), ("unnecessary", "unnecessary request (outside the 100)")):
         unit(ax, lx + 0.03, ly, kind, s=ms)
-        lx = T(ax, lx + 0.09, ly, name, 6.8).get_window_extent(
-            renderer=matplotlib.backends.backend_agg.RendererAgg(W * 72, H * 72, 72)).x1 / 72 + 0.14
-    unit(ax, lx + 0.03, ly, "unnecessary", s=ms)
-    T(ax, lx + 0.09, ly, "unnecessary request (outside the 100)", 6.8)
-    T(ax, 0, ly - 0.17, "Each row: 100 marks = 100 required documents; gaps every 10.", 6.3, MUTED, style="italic")
-    status(ax, W, ly - 0.17, "measured, tenancy claims, three runs", ha="right")
-    y = ly - 0.42
+        lx = T(ax, lx + 0.085, ly, name, 6.8).get_window_extent(renderer=rend).x1 / fig.dpi + 0.13
+    T(ax, 0, ly - 0.17, "Each row: 100 marks = 100 required documents, in columns of two; a gap every 10.", 6.3, MUTED,
+      style="italic")
+    status(ax, W, ly - 0.17, "measured: tenancy claims, three runs", ha="right")
+    y = ly - 0.43
     for tag, analysis, mname in MODELS:
         T(ax, 0, y, analysis, 7.4, INK, weight="bold")
-        runs(ax, 0.0 + 1.05, y, [(mname, {"family": "monospace", "color": INK})], 6.6) if False else None
         T(ax, x0, y, mname, 7.0, INK, family="Linux Libertine Mono O")
-        T(ax, xu, y, "unnecessary", 6.6, MUTED, style="italic")
-        y -= 0.18
+        T(ax, xmiss, y, "missed", 6.0, MUTED, style="italic")
+        T(ax, xu, y, "unnecessary per 100", 6.0, MUTED, style="italic")
+        y -= 0.19
         group_y = {}
         for role, key, name in OUTCOME_DESIGNS:
             v = D[(tag, key)]
             group_y.setdefault(role, []).append(y)
-            T(ax, x0 - 0.08, y, name, 6.7, INK, ha="right")
+            T(ax, x0 - 0.07, y, name, 6.7, INK, ha="right")
             if v is None:
                 T(ax, x0, y, "not run with this model", 6.4, MUTED, style="italic")
                 y -= rowh
                 continue
             seq = [k for k, n in zip(kinds, v["units"]) for _ in range(n)]
             for i, kind in enumerate(seq):
-                yy = y + (0.026 if i < 50 else -0.026)
-                unit(ax, mx(i), yy, kind, s=ms)
+                unit(ax, mx(x0, i // 2), y + (dr if i % 2 == 0 else -dr), kind, s=ms)
+            T(ax, xmiss, y, f"{v['pct'][3]:.1f}%", 6.0, MISS if v["pct"][3] >= 0.05 else MUTED)
             nu = round(v["unnec_per100"])
             for i in range(nu):
-                c, r = i % 20, i // 20
-                unit(ax, xu + 0.02 + c * pitch + (c // 10) * gap10, y + (0.026 if r == 0 else -0.026), "unnecessary", s=ms)
-            lab = f"{v['unnec_per100']:.1f}"
-            xl = xu + 0.02 + (min(nu, 20) * pitch + (0.03 if nu > 10 else 0)) + (0.04 if nu else 0)
-            T(ax, xl, y, lab, 6.4, UNNEC if nu else MUTED)
+                unit(ax, mx(xu + 0.02, i // 2), y + (dr if i % 2 == 0 else -dr), "unnecessary", s=ms)
+            ncol = (nu + 1) // 2
+            xl = mx(xu + 0.02, ncol) + (0.01 if nu else 0)
+            T(ax, xl, y, f"{v['unnec_per100']:.1f}", 6.4, UNNEC if nu else MUTED)
             y -= rowh
         for role, ys in group_y.items():
             col = MODEL if role == "model" else CODE
-            ax.plot([0.03, 0.03], [ys[0] + 0.07, ys[-1] - 0.07], color=col, lw=2.0, solid_capstyle="butt")
-            T(ax, 0.075, (ys[0] + ys[-1]) / 2, "model applies\nthe rules" if role == "model" else "code executes\nthe rules",
-              6.0, col, va="center", linespacing=0.95)
+            ax.plot([0.02, 0.02], [ys[0] + 0.07, ys[-1] - 0.07], color=col, lw=2.0, solid_capstyle="butt")
+            T(ax, 0.075, (ys[0] + ys[-1]) / 2, "model applies" if role == "model" else "code executes", 6.0, col,
+              rotation=90, ha="center", va="center")
         y -= 0.10
     save(fig, "fig_outcomes")
+
+
+# ------------------------------------------------------------------ Fig. 5: every wrong theft change, with its address (measured)
+IMPLICATED = ["overlay_rule_042", "overlay_rule_003", "overlay_rule_084", "overlay_rule_074", "overlay_rule_010"]
+RULE_SHORT = {"overlay_rule_042": "Assign third-party claims", "overlay_rule_003": "Preserve traces and items",
+              "overlay_rule_084": "SIM-card misuse losses", "overlay_rule_074": "Listed valuables \u2265 CHF 1,000",
+              "overlay_rule_010": "Date, place, circumstances", "overlay_rule_004": "Mitigate loss after event"}
+ISSUE_SHORT = {"condition_broader_than_source": "condition broader than source",
+               "condition_narrower_than_source": "condition narrower than source",
+               "route_joint_where_alternatives": "both documents where either suffices",
+               "route_asks_more_than_source": "route asks more than source",
+               "route_missing_alternative": "route misses an alternative"}
+IMPLICATED_SHORT = {"route_joint": "both documents where either suffices", "route_more": "route asks more than source",
+                    "condition_missing": "condition missing: always applies", "condition_broad": "condition broader than source"}
+DOC_TRACE = [("Written assignment to the insurer", "written assignment of claims"),
+             ("Insurer's consent to alteration", "insurer's consent, alteration"),
+             ("Police consent to the removal", "police consent, traces"),
+             ("Bank statement showing the misuse", "bank statement + police report"),
+             ("Expert's valuation of the scheduled valuable", "expert valuation"),
+             ("Insurer's instruction (Weisung", "insurer's instruction"),
+             ("The experts' findings", "experts' findings")]
+
+
+def trace_data(tag="gpt-6.1-terra"):
+    """Every wrong change on the held-out changed-fact theft pairs (three runs), for CasePath and Rules in
+    context. CasePath's are attributed to the rules whose requirement produced them (the logic of
+    theft_error_origin.py, which wrote error_causes.json); Rules in context records no rule."""
+    root = HERE.parent
+    if str(root / "harness") not in _sys.path:
+        _sys.path.insert(0, str(root / "harness"))
+    import theft_methods as tm
+    from theft_data import pairs, best_realization
+    from theft_score import delta
+    P = json.loads((root / "runs" / f"plans_theft_{tag}.json").read_text())
+
+    def short(atom):
+        for prefix, s in DOC_TRACE:
+            if atom[1:].startswith(prefix):
+                return s
+        raise KeyError(atom)
+
+    cp, rc = [], []
+    for p in pairs():
+        if p["split"] != "heldout" or p["kind"] != "on":
+            continue
+        for r in range(3):
+            a, b = P[f"CP|{p['off']}|{r}"], P[f"CP|{p['variant']}|{r}"]
+            nu0, nu1 = a["judgments"], b["judgments"]
+            changed = {g for g in tm.GUARDS if nu0[g] != nu1[g]}
+            pred = delta(set(tm.plan(nu0)["requests"]), set(tm.plan(nu1)["requests"]))
+            assert pred == delta(set(a["plan"]["requests"]), set(b["plan"]["requests"]))  # recorded plans agree
+            sel, _ = best_realization(pred, p["reference"])
+            for atom in sorted(set(pred) - set(sel)):
+                prod = (tm.trace(nu1) if atom[0] == "+" else tm.trace(nu0)).get(atom[1:], [])
+                rules = sorted({o["rule"] for o in prod if o["guard"] in changed or o["guard"] is None})
+                cp.append({"run": r, "sign": atom[0], "doc": short(atom), "rules": rules, "condition": p["condition"]})
+            ra = (P.get(f"R|{p['off']}|{r}") or {}).get("plan") or {"requests": []}
+            rb = (P.get(f"R|{p['variant']}|{r}") or {}).get("plan") or {"requests": []}
+            pred = delta(set(ra["requests"]), set(rb["requests"]))
+            sel, _ = best_realization(pred, p["reference"])
+            for atom in sorted(set(pred) - set(sel)):
+                rc.append({"run": r, "sign": atom[0], "doc": short(atom), "condition": p["condition"]})
+    res = load(f"results_{tag}.json")["theft"]
+    assert len(cp) == res["CP"]["on"]["wrong"] and len(rc) == res["R"]["on"]["wrong"]
+    rv = load("rule_verification.json")
+    return {"cp": cp, "rc": rc, "verifier": rv,
+            "flagged": sum(1 for v in rv["results"].values() if v["result"] and v["result"]["verdict"] == "flag"),
+            "rules_total": len(rv["results"])}
+
+
+def fig_trace():
+    """Measured. One mark per wrong change. CasePath's marks hang from the rule that produced them
+    (rule -> verifier flag -> document -> marks); Rules in context's marks are aligned only by the
+    document they changed, because no rule is recorded for them."""
+    D = trace_data()
+    cp, rc, rv = D["cp"], D["rc"], D["verifier"]
+    assert all(len(m["rules"]) == 1 for m in cp)
+    by_rule = {}
+    for m in cp:
+        by_rule.setdefault(m["rules"][0], []).append(m)
+    rules = sorted(by_rule, key=lambda k: -len(by_rule[k]))
+    rules += [k for k in IMPLICATED if k not in rules]          # implicated rules without wrong changes
+    rows = []
+    for k in rules:
+        docs = []
+        for m in by_rule.get(k, []):
+            if m["doc"] not in docs:
+                docs.append(m["doc"])
+        rows += [(k, d) for d in docs] or [(k, None)]
+    seen = {d for _, d in rows}
+    rows += [(None, d) for d in sorted({m["doc"] for m in rc} - seen)]
+    W = TW
+    rowh = 0.235
+    nblocks = len({k for k, _ in rows})
+    H = 0.56 + rowh * len(rows) + 0.06 * (nblocks - 1) + 0.40
+    fig, ax = canvas(W, H)
+    xr, wr, xv, xd, xc, xi = 0.0, 1.66, 1.72, 2.16, 3.34, 4.42   # rule, verifier, document, CasePath, Rules in context
+    pitch, ms = 0.064, 0.048
+    yh = H - 0.11
+    T(ax, xr, yh, "Extracted rule", 7.4, INK, weight="bold")
+    T(ax, xr, yh - 0.15, "and its defect", 6.2, MUTED, style="italic")
+    T(ax, xv, yh, "Verifier", 7.4, INK, weight="bold")
+    T(ax, xd, yh, "Document", 7.4, INK, weight="bold")
+    T(ax, xd, yh - 0.15, "changed wrongly", 6.2, MUTED, style="italic")
+    T(ax, xc, yh, "CasePath", 7.4, CODE, weight="bold")
+    T(ax, xc, yh - 0.15, f"{len(cp)} wrong changes", 6.2, MUTED, style="italic")
+    T(ax, xi, yh, "Rules in context", 7.4, MODEL, weight="bold")
+    T(ax, xi, yh - 0.15, f"{len(rc)}; no rule recorded", 6.2, MUTED, style="italic")
+    y = yh - 0.40
+    prev = "start"
+    blocks = []
+    for k, d in rows:
+        if k != prev:
+            if prev != "start":
+                y -= 0.06
+            blocks.append([k, y, y])
+            prev = k
+        blocks[-1][2] = y
+        if d:
+            T(ax, xd, y, d, 6.6, INK)
+            for col, lst in ((xc, [m for m in by_rule.get(k, []) if m["doc"] == d] if k else []),
+                             (xi, [m for m in rc if m["doc"] == d])):
+                lst = sorted(lst, key=lambda m: (m["sign"] == "-", m["run"]))
+                for i, m in enumerate(lst):
+                    unit(ax, col + 0.03 + i * pitch, y, "unnecessary" if m["sign"] == "+" else "missed", s=ms)
+                if lst:
+                    T(ax, col + 0.03 + len(lst) * pitch, y, f"{len(lst)}", 6.3, MUTED)
+        else:
+            T(ax, xd, y, "none", 6.4, MUTED, style="italic")
+        ax.plot([xd, W], [y - rowh / 2, y - rowh / 2], color=GRID, lw=0.4, zorder=0)
+        y -= rowh
+    for k, y0, y1 in blocks:
+        top, bot = y0 + rowh * 0.44, y1 - rowh * 0.44
+        ym = (top + bot) / 2
+        if k is None:
+            card(ax, xr, bot, wr, top - bot, ec=FAINT, ls=(0, (2, 1.5)))
+            T(ax, xr + 0.07, ym, "no rule produced it", 6.6, MUTED, style="italic")
+            continue
+        res = rv["results"][k]["result"]
+        flag = res["verdict"] == "flag"
+        defect = IMPLICATED_SHORT[rv["implicated"][k]] if k in rv["implicated"] else \
+            ISSUE_SHORT.get(res["issues"][0]["kind"], res["issues"][0]["kind"].replace("_", " "))
+        card(ax, xr, bot, wr, top - bot, ec=INK if k in IMPLICATED else FAINT, lw=0.7 if k in IMPLICATED else 0.6)
+        runs(ax, xr + 0.06, ym + 0.048, [(f"rule {k[-3:]}  ", {"weight": "bold"}), (RULE_SHORT[k], {})], 6.6)
+        T(ax, xr + 0.06, ym - 0.052, defect, 6.0, MUTED, style="italic")
+        ax.plot([xr + wr, xd - 0.05], [ym, ym], color=CODE, lw=0.8, zorder=1)    # the address
+        chip(ax, xv + 0.02, ym, "flagged" if flag else "passed", "#4a4946" if flag else SKIP, 6.0, "white" if flag else INK)
+    unit(ax, 0.03, 0.30, "unnecessary", s=ms)
+    T(ax, 0.09, 0.30, "added wrongly (an unnecessary request)", 6.2, MUTED)
+    unit(ax, 2.16 + 0.03, 0.30, "missed", s=ms)
+    T(ax, 2.16 + 0.09, 0.30, "withdrawn wrongly (a missed document)", 6.2, MUTED)
+    n5 = sum(1 for m in cp if m["rules"][0] in IMPLICATED)
+    T(ax, 0, 0.12, f"Bold outline: the {len(IMPLICATED)} implicated rules ({n5} of {len(cp)} CasePath errors). The verifier "
+      f"flagged them and {D['flagged'] - len(IMPLICATED)} of the other {D['rules_total'] - len(IMPLICATED)} rules.",
+      6.2, MUTED, style="italic")
+    status(ax, W, 0.30, "measured: gpt-6.1-terra, theft, 3 runs", ha="right")
+    save(fig, "fig_trace")
+
+
+# ------------------------------------------------------------------ Fig. 6: the comparison depends on the model (measured)
+def models_data():
+    o = load("original_study.json")["table"]
+    out = []
+    # ordered by capability as described in the paper: cost-efficient, original study's model, frontier
+    for tag, label, sub in (("gpt-6-luna", "gpt-6-luna", "cost-efficient; 3 runs"),
+                            ("gpt-5.6-terra", "gpt-5.6-terra", "original study; 1 run"),
+                            ("gpt-6.1-terra", "gpt-6.1-terra", "frontier; 3 runs")):
+        if tag == "gpt-5.6-terra":
+            row = {"R": {"wpp": o["R"]["wrong_per_pair"], "wrong": o["R"]["wrong"], "ci": None, "dedup": None},
+                   "CP": {"wpp": o["CP-oneroute"]["wrong_per_pair"], "wrong": o["CP-oneroute"]["wrong"], "ci": None,
+                          "dedup": None}, "single": True}
+        else:
+            th = load(f"results_{tag}.json")["theft"]
+            row = {k: {"wpp": th[k]["on"]["wrong_per_pair"], "wrong": th[k]["on"]["wrong"],
+                       "ci": th[k]["on"]["wrong_per_pair_ci"], "dedup": th[k]["sensitivity_offplan_dedup"]["wrong_per_pair"]}
+                   for k in ("R", "CP")}
+            row["single"] = False
+        row.update(tag=tag, label=label, sub=sub)
+        out.append(row)
+    return out
+
+
+def fig_models():
+    """Measured. Three models on one axis; wrong changes per pair for the two designs; the off-plan
+    deduplication (each repeated error counted once) as an open marker joined to the raw value."""
+    M = models_data()
+    W, H = TW, 2.30
+    fig = plt.figure(figsize=(W, H))
+    ax = fig.add_axes([0.10, 0.20, 0.56, 0.68])
+    xs = [0, 1, 2]
+    for d, col, mk, dx in (("R", MODEL, "o", -0.07), ("CP", CODE, "s", 0.07)):
+        pts = [(x + dx, r[d]) for x, r in zip(xs, M)]
+        ax.plot([p[0] for p in pts], [p[1]["wpp"] for p in pts], color=col, lw=1.0, zorder=2, alpha=0.9)
+        for (x, v), r in zip(pts, M):
+            if v["ci"]:
+                ax.plot([x, x], v["ci"], color=col, lw=0.8, zorder=1, alpha=0.55, solid_capstyle="butt")
+            ax.scatter([x], [v["wpp"]], marker=mk, s=26, color=col if not r["single"] else "white", edgecolors=col,
+                       linewidths=1.0, zorder=4)
+            if v["dedup"] is not None and abs(v["dedup"] - v["wpp"]) > 1e-9:
+                ax.annotate("", xy=(x, v["dedup"]), xytext=(x, v["wpp"]),
+                            arrowprops=dict(arrowstyle="-|>,head_length=0.25,head_width=0.12", color=col, lw=0.7,
+                                            ls=(0, (2, 1.4)), shrinkA=3, shrinkB=2), zorder=3)
+                ax.scatter([x], [v["dedup"]], marker=mk, s=18, color="white", edgecolors=col, linewidths=0.8, zorder=4)
+            side = -1 if d == "R" else 1
+            ax.text(x + side * 0.09, v["wpp"] + (0.06 if d == "R" or (v["dedup"] is not None and abs(v["dedup"] - v["wpp"]) > 1e-9) else -0.07), f"{v['wpp']:.2f}", fontsize=6.4,
+                    color=col, ha="right" if side < 0 else "left", va="center")
+            if v["dedup"] is not None and abs(v["dedup"] - v["wpp"]) > 1e-9:
+                ax.text(x + side * 0.09, v["dedup"], f"{v['dedup']:.2f}", fontsize=6.0, color=col, style="italic",
+                        ha="right" if side < 0 else "left", va="center")
+    ax.set_xticks(xs)
+    ax.set_xticklabels([f"{r['label']}\n{r['sub']}" for r in M], fontsize=6.6)
+    for lab in ax.get_xticklabels():
+        lab.set_linespacing(1.1)
+    ax.set_xlim(-0.55, 2.55)
+    ax.set_ylim(0, 1.7)
+    ax.set_yticks([0, 0.5, 1.0, 1.5])
+    ax.set_ylabel("Wrong changes per pair\n\u2190 lower is better", fontsize=7.2, linespacing=1.15)
+    ax.grid(axis="y", color=GRID, lw=0.5); ax.set_axisbelow(True)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    ax.spines["left"].set_color(MUTED); ax.spines["bottom"].set_color(MUTED)
+    ax.tick_params(colors=MUTED, length=2)
+    ax.text(2.55, 1.66, "model capability →", fontsize=6.2, color=MUTED, ha="right", va="top", style="italic")
+    # direct labels and key (right margin)
+    k = fig.add_axes([0.69, 0.20, 0.31, 0.68]); k.axis("off"); k.set_xlim(0, 1); k.set_ylim(0, 1)
+    ys = [0.95, 0.81]
+    for (name, col, mk, sub), yk in zip((("Rules in context", MODEL, "o", "model applies the rules"),
+                                          ("CasePath", CODE, "s", "code executes the rules")), ys):
+        k.scatter([0.04], [yk], marker=mk, s=26, color=col, edgecolors=col, linewidths=1.0)
+        k.text(0.10, yk + 0.005, name, fontsize=7.2, color=col, weight="bold", va="center")
+        k.text(0.10, yk - 0.065, sub, fontsize=6.2, color=MUTED, style="italic", va="center")
+    k.scatter([0.04], [0.60], marker="o", s=26, color="white", edgecolors=INK, linewidths=1.0)
+    k.text(0.10, 0.60, "single run (original study)", fontsize=6.4, color=INK, va="center")
+    k.scatter([0.04], [0.47], marker="o", s=18, color="white", edgecolors=INK, linewidths=0.8)
+    k.annotate("", xy=(0.04, 0.485), xytext=(0.04, 0.56), arrowprops=dict(arrowstyle="-", color=INK, lw=0.6,
+                                                                       ls=(0, (2, 1.4))))
+    k.text(0.10, 0.47, "each repeated error counted once", fontsize=6.4, color=INK, va="center")
+    k.text(0.10, 0.40, "(sensitivity analysis)", fontsize=6.0, color=MUTED, va="center", style="italic")
+    k.plot([0.0, 0.08], [0.29, 0.29], color=INK, lw=0.8, alpha=0.55)
+    k.text(0.10, 0.29, "95% bootstrap interval", fontsize=6.4, color=INK, va="center")
+    k.text(0.10, 0.22, "(clustered by changed fact)", fontsize=6.0, color=MUTED, va="center", style="italic")
+    k.text(0.0, 0.07, "Theft cases, 27 changed-fact pairs;\nprimary analysis: gpt-6.1-terra.", fontsize=6.0,
+           color=MUTED, va="center", style="italic", linespacing=1.1)
+    fig.text(0.995, 0.975, "measured", fontsize=6.3, color=MUTED, ha="right", va="top", style="italic",
+             bbox=dict(boxstyle="round,pad=0.18,rounding_size=0.06", fc="white", ec=FAINT, lw=0.5))
+    save(fig, "fig_models")
 
 
 if __name__ == "__main__":

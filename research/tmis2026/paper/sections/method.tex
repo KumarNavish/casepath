@@ -4,7 +4,7 @@
 \subsection{The decision and its three sources of error}
 \label{sec:problem}
 
-In the running example, a rule ties a proof-of-value requirement, met by a receipt or by an expert valuation, to the condition that the watch was separately insured. A model judges the condition from the claim, and code applies the rule. Table~\ref{tab:glossary} collects the terms.
+In the running example of a stolen watch (Section~\ref{sec:intro}), a rule ties a proof-of-value requirement, met by a receipt or by an expert valuation, to the condition that the watch was separately insured. A model judges the condition from the claim, and code applies the rule. Table~\ref{tab:glossary} collects the terms.
 
 \begin{table}[t]
 \caption{Terms used in this article.}
@@ -99,6 +99,7 @@ Soundness and exactness hold by definition of Equation~\eqref{eq:exact}. If $\re
 \begin{figure}[t]
 \centering
 \fig{fig_reconverge}{\linewidth}
+\Description{Process graph of the tenancy defect process evaluated under strong Kleene logic and under its two completions.}
 \caption{The tenancy defect process with health effects unresolved. Strong Kleene evaluation (left) holds everything downstream of the branch, whereas the two completions (right) reach the same steps, so only the medical confirmation, on which they disagree, needs to be held.}
 \label{fig:reconverge}
 \end{figure}
@@ -126,6 +127,7 @@ To quantify the first two paths without depending on any model, we computed exac
 \begin{figure}[t]
 \centering
 \fig{fig_fate}{\linewidth}
+\Description{Flow from kinds of judgment error to outcomes under four semantics.}
 \caption{What judgment errors become, computed exactly over all \propClaims{} tenancy claims. Three-valued execution turns unresolved judgments into deferrals and two-valued execution turns them into missed or unnecessary requests, while a wrong judgment becomes an error under every semantics.}
 \label{fig:fate}
 \end{figure}
