@@ -15,11 +15,12 @@ class ScriptedModel:
         self.turns = [t for t in turns if not t or not all(name in {"delegate", "complete"} for name, _ in t)]
         self.verdicts, self.default, self.second_reading = verdicts or {}, default_verdict, list(second_reading)
         self.tool_choices = []
-        self.instructions, self.tools = [], []
+        self.instructions, self.tools, self.inputs = [], [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
 
     def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium", tool_choice=None):
         self.tool_choices.append(tool_choice)
+        self.inputs.append(input)  # a scripted argument can be a function that reads what the agent was given
         if not self.turns:
             raise AssertionError("the script has no turn left")
         self.instructions.append(instructions.split("\n\n")[-1][:40])

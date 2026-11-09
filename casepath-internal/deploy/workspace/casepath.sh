@@ -6,6 +6,7 @@
 #   casepath.sh update       pull the branch, reinstall, test, restart
 #   casepath.sh check-model  one synthetic model call (needs approval; no case data)
 #   casepath.sh scorecard    print the content-free scorecard of the latest runs
+#   casepath.sh benchmark    run the synthetic benchmark and score it against its truth (needs approval; add --only B01,K01)
 set -euo pipefail
 
 here="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -84,7 +85,15 @@ case "${1:-}" in
     load_env
     "$venv/bin/python" -m casepath_internal.scorecard "$CASEPATH_DATA_DIR" "${CASEPATH_SCORECARD_SALT:?set a private salt in $env_file}"
     ;;
+  benchmark)
+    load_env
+    check_signin
+    out="$home/benchmark/$(date +%Y%m%d-%H%M%S)"
+    "$venv/bin/python" -m casepath_internal.evaluate run "$here/benchmark" --catalogue "$CASEPATH_WORKFLOW_CATALOGUE" --out "$out" \
+      --repeats "${CASEPATH_BENCHMARK_REPEATS:-2}" --parallel "${CASEPATH_BENCHMARK_PARALLEL:-3}" "${@:2}"
+    echo "Report: $out/report.md"
+    ;;
   *)
-    sed -n '2,9p' "$0"; exit 2
+    sed -n '2,10p' "$0"; exit 2
     ;;
 esac

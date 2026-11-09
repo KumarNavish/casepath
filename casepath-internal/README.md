@@ -27,6 +27,7 @@ This folder contains no Mobiliar content. Workflows built from Mobiliar's proces
 | `store.py`, `runner.py`, `app.py` | Fresh case store, background runs with honest statuses, and the API. The API serves only with a configured sign-in. |
 | `ui/` | The case worker's workspace on the API, in German (`?lang=en` switches to English): the five agents' live work, the case's process with editable decisions, document checklist, case summary, deadlines, reply draft (also as Word), the contents of each dossier, and Knowledge. |
 | `batch.py`, `mining.py` | Import a folder of case PDFs into a running CasePath and prepare them one case at a time, printing content-free lines. Reconstruct each real case's course and the pattern across cases. |
+| `benchmark.py`, `evaluate.py` | Benchmark cases with known answers, and the evaluator. It runs each case through the API, in-process on a fresh store or against a running deployment, and scores routing, facts, documents the case needs beyond its workflow, document needs, outcome, cited evidence, deadlines, next actions, Knowledge reuse across a sequence of cases, flagged instructions and contradictions. Every failed check is listed with what was expected; repeats measure consistency, and `compare` lists regressions between two runs. |
 | `scorecard.py` | Content-free run scorecards, guarded against free text, for results that may leave Mobiliar. |
 | `deploy/workspace/` | One script for setup, start, update and checks on the development workspace, and a private env template. |
 

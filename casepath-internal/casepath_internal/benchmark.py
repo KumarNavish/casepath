@@ -9,7 +9,8 @@ synthetic renderer expects them, and its truth:
 - ``outcome``: the process outcome the case reaches, or null when it stops at a question;
 - ``documents``: each workflow document need as present or missing;
 - ``case_documents``: documents this case needs beyond its workflow, which CasePath should find for itself, matched by
-  keywords in the title CasePath gives them; ``not_required``: documents it must not demand;
+  keywords in the title CasePath gives them (``optional``: need not be asked for, but must not be claimed present);
+  ``not_required``: documents it must not demand;
 - ``deadlines``, ``next_actions`` (by keywords), and ``flags`` (text addressed to the AI, facts the files contradict).
 
 The validator checks that a case is well formed, that its truth uses the workflow's own ids and values, and that every
