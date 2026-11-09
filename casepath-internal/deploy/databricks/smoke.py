@@ -79,7 +79,7 @@ def check_messages(host, token, model, path="/ai-gateway/anthropic/v1/messages")
             {"role": "assistant", "content": [{"type": "tool_use", "id": "toolu_1", "name": "record", "input": {"colour": "red"}}]},
             {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "toolu_1", "content": "{\"accepted\": true}"},
                                          {"type": "text", "text": "Say done."}]}], "max_tokens": 16, "tools": [tool]},
-         lambda r: any(b.get("type") == "text" for b in r["content"])),
+         lambda r: bool(r.get("content"))),  # accepted: any answer after a tool result (text or another tool call)
         ("messages image", {"messages": [{"role": "user", "content": [{"type": "text", "text": "Which colour is this square? One word."},
                                                                        {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": IMAGE.split(",", 1)[1]}}]}],
                             "max_tokens": 16},

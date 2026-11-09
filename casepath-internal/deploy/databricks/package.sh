@@ -14,7 +14,6 @@ pip="${PIP:-$python -m pip}"   # any pip can download; the python must run casep
 here="$(cd "$(dirname "$0")/../.." && pwd)"
 rm -rf "$out" && mkdir -p "$out"
 cp -r "$here/casepath_internal" "$out/"
-find "$out" -name __pycache__ -type d -prune -exec rm -rf {} +
 cp "$here/deploy/databricks/app.yaml" "$out/"
 mkdir -p "$out/check" && cp "$here/deploy/databricks/smoke.py" "$out/check/"   # the model capability check, for a notebook
 [ -d "$here/catalogue" ] && cp -r "$here/catalogue" "$out/catalogue" || echo "note: no catalogue/ here (the GitLab copy has it)" >&2
@@ -44,4 +43,7 @@ for wheel in sorted(pathlib.Path(sys.argv[1]).glob("*.whl")):
 PY
   printf -- '--no-index\n--find-links wheels\nfastapi>=0.115\nuvicorn>=0.30\nhttpx>=0.27\npypdf==5.9.0\npypdfium2==5.14.0\npillow>=10.1\npython-multipart>=0.0.9\n' > "$out/requirements.txt"
 fi
+# Python's caches (made while preparing) are refused by the workspace's file system; none ship.
+find "$out" -name __pycache__ -type d -prune -exec rm -rf {} +
+find "$out" -name "*.pyc" -delete
 echo "$out: $(find "$out" -type f | wc -l) files"
