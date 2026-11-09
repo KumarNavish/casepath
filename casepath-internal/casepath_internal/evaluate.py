@@ -1,7 +1,7 @@
 """Run benchmark cases through CasePath and score each result against the case's truth.
 
     python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> [--repeats 2] [--only B01,K01]
-                                         [--given-workflow] [--parallel 1] [--url http://host:port]
+                                         [--given-workflow] [--parallel 1] [--url http://host:port [--identity-header x-identity]]
     python -m casepath_internal.evaluate report <out>
     python -m casepath_internal.evaluate compare <old out> <new out>
 
@@ -91,20 +91,25 @@ class LocalApi:
 
 
 class RemoteApi:
-    """A running deployment; it keeps what the benchmark creates."""
+    """A running deployment; it keeps what the benchmark creates. Behind a gateway, ``headers`` carries the identity."""
 
-    def __init__(self, url):
-        from . import batch
+    def __init__(self, url, headers=None):
+        self.url, self.headers = url.rstrip("/"), dict(headers or {})
 
-        self.url, self.batch = url.rstrip("/"), batch
-
-    def call(self, method, path, body=None):
+    def _send(self, method, path, data=None, content_type=None):
         import urllib.error
+        import urllib.request
 
+        headers = {**self.headers, **({"Content-Type": content_type} if content_type else {})}
+        request = urllib.request.Request(self.url + path, data=data, headers=headers, method=method)
         try:
-            return self.batch.call(self.url, path, method, body)
+            with urllib.request.urlopen(request, timeout=900) as response:
+                return json.loads(response.read() or b"null")
         except urllib.error.HTTPError as error:
             raise ApiError(error.code, error.read()[:300].decode(errors="replace")) from None
+
+    def call(self, method, path, body=None):
+        return self._send(method, path, None if body is None else json.dumps(body).encode(), "application/json" if body is not None else None)
 
     def upload(self, case_id, name, data):
         import uuid
@@ -112,8 +117,7 @@ class RemoteApi:
         boundary = uuid.uuid4().hex
         body = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{name}\"\r\n"
                 f"Content-Type: application/pdf\r\n\r\n").encode() + data + f"\r\n--{boundary}--\r\n".encode()
-        return self.batch.call(self.url, f"/api/cases/{case_id}/files", "POST", raw=body,
-                               content_type=f"multipart/form-data; boundary={boundary}")
+        return self._send("POST", f"/api/cases/{case_id}/files", body, f"multipart/form-data; boundary={boundary}")
 
     def close(self):
         pass
@@ -348,7 +352,7 @@ def digest(paths):
     return h.hexdigest()[:16]
 
 
-def evaluate_suite(cases, catalogue, catalogue_dir, out, *, model_factory=None, url=None, repeats=1, given_workflow=False,
+def evaluate_suite(cases, catalogue, catalogue_dir, out, *, model_factory=None, url=None, headers=None, repeats=1, given_workflow=False,
                    parallel=1, allow_knowledge_changes=False, deployment=None, env=None, log=print):
     out = Path(out)
     rendered = out / "rendered"
@@ -360,7 +364,7 @@ def evaluate_suite(cases, catalogue, catalogue_dir, out, *, model_factory=None, 
         unit, repeat = task
         rows = []
         if url:
-            api = RemoteApi(url)
+            api = RemoteApi(url, headers)
         else:
             data = out / "work" / f"{unit['name']}-r{repeat}"
             shutil.rmtree(data, ignore_errors=True)
@@ -488,6 +492,7 @@ def main(argv=None):
     parser.add_argument("--parallel", type=int, default=1)
     parser.add_argument("--url")
     parser.add_argument("--allow-knowledge-changes", action="store_true", help="with --url: make the expert corrections there")
+    parser.add_argument("--identity-header", help="with --url: send CASEPATH_EVAL_IDENTITY in this header, as a gateway expects")
     args = parser.parse_args(argv)
     if args.command == "report":
         results = json.loads((Path(args.paths[0]) / "results.json").read_text())
@@ -518,7 +523,12 @@ def main(argv=None):
         if settings.model is None:
             sys.exit("No model is configured: set CASEPATH_AZURE_OPENAI_ENDPOINT and CASEPATH_AZURE_OPENAI_DEPLOYMENT (see deploy/workspace/env.example).")
         model_factory = default_model_factory(settings)
-    results = evaluate_suite(cases, catalogue, args.catalogue, args.out, model_factory=model_factory, url=args.url, repeats=args.repeats,
+    headers = None
+    if args.identity_header:
+        if not os.environ.get("CASEPATH_EVAL_IDENTITY"):
+            sys.exit("--identity-header needs the identity value in CASEPATH_EVAL_IDENTITY (kept out of the command line)")
+        headers = {args.identity_header: os.environ["CASEPATH_EVAL_IDENTITY"]}
+    results = evaluate_suite(cases, catalogue, args.catalogue, args.out, model_factory=model_factory, url=args.url, headers=headers, repeats=args.repeats,
                              given_workflow=args.given_workflow, parallel=args.parallel, allow_knowledge_changes=args.allow_knowledge_changes)
     s = results["summary"]
     print(json.dumps({"runs": s["runs"], "completed": s["completed"], "checks": s["checks"], "failed": s["failed"],

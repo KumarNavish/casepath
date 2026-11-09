@@ -48,4 +48,4 @@ The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app
 1. Confirm the gateway's token claims and the access role's exact name, then set the identity variables.
 2. Grant the service's identity access to the model deployment, and set the credential and, if one is used, the gateway host.
 3. Build the queue consumer around `core.prepare` and the blob reader. Run `tests/test_core.py`'s job through it.
-4. Point the benchmark evaluator at the deployment: `python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> --url <base url>`. Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.
+4. Point the benchmark evaluator at the deployment: `python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> --url <base url> --identity-header <header>` (the identity value in `CASEPATH_EVAL_IDENTITY`). Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.
