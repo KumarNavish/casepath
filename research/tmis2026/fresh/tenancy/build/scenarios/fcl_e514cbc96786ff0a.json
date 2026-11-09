@@ -1,0 +1,52 @@
+{
+ "claim_id": "fcl_e514cbc96786ff0a",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_395204ed0b53a6f1",
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "family_home"
+ ],
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "open",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_true"
+ },
+ "open_flag": "arrears",
+ "open_value": true,
+ "routing_stated": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Chris Lawson",
+  "landlord": "Familie Gasser (private landlord)",
+  "city": "Bern",
+  "canton": "BE",
+  "address": "Gartenweg 61, Bern, 3-room flat",
+  "lease_start": "1 October 2015",
+  "rent": 1550,
+  "utilities": 200,
+  "received_at": "2026-11-01T09:30:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 3100,
+  "new_rent": 1670,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2022",
+  "prior_rent": 1480,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "14 June 2026",
+  "repair_deadline": "6 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "16 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

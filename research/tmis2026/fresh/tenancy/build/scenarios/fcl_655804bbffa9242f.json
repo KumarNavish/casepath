@@ -1,0 +1,52 @@
+{
+ "claim_id": "fcl_655804bbffa9242f",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_b73f5e8d16e30548",
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "mold"
+ ],
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Jordan Reid",
+  "landlord": "Privera Wohnen AG",
+  "city": "St. Gallen",
+  "canton": "SG",
+  "address": "Mattenweg 13, St. Gallen, 2-room flat",
+  "lease_start": "1 June 2020",
+  "rent": 1750,
+  "utilities": 230,
+  "received_at": "2026-10-27T11:15:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 5250,
+  "new_rent": 1950,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2021",
+  "prior_rent": 1670,
+  "prior_rate": "1.5",
+  "defect": "mould stains and damp patches in the children's room",
+  "notified_on": "23 June 2026",
+  "repair_deadline": "23 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "2 November 2026",
+  "health_detail": "breathing problems"
+ },
+ "replacement": 0
+}

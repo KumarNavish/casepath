@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_7032365a2a7cb080",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-09-17T09:15:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_ef6ea93ac87ddc3e",
+  "subject": "Request for help contesting termination of my tenancy at Bahnhofstrasse 37, Aarau",
+  "body": "Dear Sir or Madam,\n\nI am writing to ask for help with a dispute about my tenancy at Bahnhofstrasse 37, Aarau, a 2-room flat that I rent from Livit-Partner Verwaltungen AG. The landlord is ending my lease and I want to contest this.\n\nI believe the termination is retaliation. Earlier this year I complained in writing about defects in the flat, including damp in the bathroom and a heating fault that was not repaired for several weeks. I also challenged the rent, which I considered too high. Shortly afterwards the landlord moved to end the tenancy, and I see a clear connection between my complaints and this step.\n\nMy tenancy began on 1 October 2017. The agreed net rent is CHF 1430 per month. A copy of the tenancy agreement is attached.\n\nI am not sure whether the landlord's stated reasons are genuine, and I would like your assessment of whether the termination is lawful and whether I can challenge it before the conciliation authority. Please let me know what steps your legal team would recommend and what support your policy can provide.\n\nThank you for your help. I look forward to hearing from you.\n\nKind regards,\nCasey Hughes",
+  "sent_at": "2026-09-17T09:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_23d7f2414817008b"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_23d7f2414817008b",
+   "file_name": "tenancy_agreement_Bahnhofstrasse37.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgVEVOQU5DWSBBR1JFRU1FTlQgKE1pZXR2ZXJ0cmFnKQoKTGFuZGxvcmQ6IExpdml0LVBhcnRuZXIgVmVyd2FsdHVuZ2VuIEFHClRlbmFudDogQ2FzZXkgSHVnaGVzCgpSZW50ZWQgcHJvcGVydHk6IEJhaG5ob2ZzdHJhc3NlIDM3LCBBYXJhdQpUeXBlIG9mIGZsYXQ6IDItcm9vbSBmbGF0CgpTdGFydCBkYXRlIG9mIHRlbmFuY3k6IDEgT2N0b2JlciAyMDE3Ck5ldCByZW50OiBDSEYgMTQzMCBwZXIgbW9udGgsIHBsdXMgYW5jaWxsYXJ5IGNvc3RzIGFzIGFncmVlZCBpbiB0aGUgYXR0YWNoZWQgc2NoZWR1bGUKTm90aWNlIHBlcmlvZDogdGhyZWUgbW9udGhzLCB0byB0aGUgZW5kIG9mIGEgbW9udGgKClRoZSBwYXJ0aWVzIGNvbmZpcm0gdGhhdCB0aGlzIGFncmVlbWVudCBoYXMgYmVlbiBjb25jbHVkZWQgaW4gd3JpdGluZyBhbmQgdGhhdCB0aGUgZ2VuZXJhbCB0ZXJtcyBvZiB0aGUgbGFuZGxvcmQgYXBwbHkgaW4gYWRkaXRpb24gdG8gdGhlIHRlcm1zIHNldCBvdXQgYWJvdmUuCgpQbGFjZSBhbmQgZGF0ZTogQWFyYXUsIDIxIFNlcHRlbWJlciAyMDE3CgpTaWduYXR1cmUgbGFuZGxvcmQ6IF9fX19fX19fX19fX19fX19fX19fClNpZ25hdHVyZSB0ZW5hbnQ6IENhc2V5IEh1Z2hlcyBfX19fX19fX19fX19fX19fX19fXw==",
+   "sha256": "43eabd724cbca451c060e083237cf9339f5f3412d08793d3de06dd0d3d9bfab3",
+   "size_bytes": 646
+  }
+ ]
+}

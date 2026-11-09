@@ -1,0 +1,59 @@
+{
+ "claim_id": "fcl_99e24db5f37c7a3c",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_cb831927bc7f8ee1",
+ "combo": [
+  "arrears",
+  "family_home"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "absent",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_6202ebbe27e6f0f4",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "contracting_parties",
+   "sha256": "b06e0f87ba5f33d55a878d043a3ec45984614a6a8fe1341356ea82ed27a0d9f6"
+  }
+ ],
+ "values": {
+  "tenant": "Jordan Reid",
+  "landlord": "Verwaltung Rhein & Partner",
+  "city": "Basel",
+  "canton": "BS",
+  "address": "Gartenweg 83, Basel, 3.5-room flat",
+  "lease_start": "1 April 2012",
+  "rent": 2220,
+  "utilities": 200,
+  "received_at": "2026-11-15T08:30:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 6660,
+  "new_rent": 2450,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2020",
+  "prior_rent": 2180,
+  "prior_rate": "1.25",
+  "defect": "",
+  "notified_on": "28 June 2026",
+  "repair_deadline": "17 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "24 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

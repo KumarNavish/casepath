@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_0f9a9b0f4a043ab5",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-13T15:15:00+01:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_c493179ef89c2b96",
+  "subject": "Kündigung Mietverhältnis Kirchgasse 81, St. Gallen – Bitte um Beratung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie, weil ich von Immobilien Seeblick AG eine Kündigung meines Mietverhältnisses für die 4-Zimmer-Wohnung an der Kirchgasse 81 in St. Gallen erhalten habe. Es handelt sich um unsere Familienwohnung. Mein Ehemann wohnt ebenfalls dort.\n\nDie Kündigung ist per 30. Juni 2027 ausgesprochen und mit einer geplanten Gesamtsanierung des Gebäudes begründet. Ich bin jedoch überzeugt, dass sie eine Reaktion darauf ist, dass ich mich vor Kurzem auf meine Mieterrechte berufen habe, indem ich Mängel gemeldet und den Mietzins beanstandet habe.\n\nEin Auszug bis zu diesem Termin wäre für uns eine grosse Härte. Eine vergleichbare Wohnung haben wir bisher nicht gefunden, und die Wohnungssuche ist schwierig. Ich möchte daher eine Erstreckung des Mietverhältnisses prüfen lassen.\n\nBitte beraten Sie mich, ob die Kündigung anfechtbar ist, und teilen Sie mir mit, welche Unterlagen Sie benötigen. Den Mietvertrag und die Kündigung lege ich bei.\n\nFreundliche Grüsse\n\nBarbara Gerber",
+  "sent_at": "2026-09-13T15:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_58ea1d4f19a8d4ac",
+   "fatt_271e71816e50d68f"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_58ea1d4f19a8d4ac",
+   "file_name": "Kuendigung_Kirchgasse81.txt",
+   "media_type": "text/plain",
+   "content_base64": "S8O8bmRpZ3VuZyBkZXMgTWlldHZlcmjDpGx0bmlzc2VzLiBBYnNlbmRlcmluOiBJbW1vYmlsaWVuIFNlZWJsaWNrIEFHLiBFbXBmw6RuZ2VyaW46IEJhcmJhcmEgR2VyYmVyLCBLaXJjaGdhc3NlIDgxLCA5MDAwIFN0LiBHYWxsZW4uIE1pZXRvYmpla3Q6IDQtWmltbWVyLVdvaG51bmcsIEtpcmNoZ2Fzc2UgODEsIDkwMDAgU3QuIEdhbGxlbi4gSGllcm1pdCBrw7xuZGlnZW4gd2lyIGRhcyBNaWV0dmVyaMOkbHRuaXMgcGVyIDMwLiBKdW5pIDIwMjcuIEdydW5kIGRlciBLw7xuZGlndW5nOiBnZXBsYW50ZSBHZXNhbXRzYW5pZXJ1bmcgZGVzIEdlYsOkdWRlcy4gTWl0IGZyZXVuZGxpY2hlbiBHcsO8c3NlbiwgSW1tb2JpbGllbiBTZWVibGljayBBRywgVW50ZXJzY2hyaWZ0OiBJbW1vYmlsaWVuIFNlZWJsaWNrIEFH",
+   "sha256": "2482ce6603c2ac8015cc89ccd3ee367c7d0cd5cffa50852de4749bca5171ca19",
+   "size_bytes": 405
+  },
+  {
+   "artifact_id": "fatt_271e71816e50d68f",
+   "file_name": "Mietvertrag_Kirchgasse81.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWlldHZlcnRyYWcgZsO8ciBXb2hucmF1bS4gVmVybWlldGVyaW46IEltbW9iaWxpZW4gU2VlYmxpY2sgQUcuIE1pZXRlcmluOiBCYXJiYXJhIEdlcmJlci4gTWlldG9iamVrdDogNC1aaW1tZXItV29obnVuZywgS2lyY2hnYXNzZSA4MSwgOTAwMCBTdC4gR2FsbGVuLiBNaWV0YmVnaW5uOiAxLiBPa3RvYmVyIDIwMTYuIE5ldHRvbWlldGU6IENIRiAyMzEwLuKAkyBwcm8gTW9uYXQuIEvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlLg==",
+   "sha256": "cabe68985457011a51531d55936f67a4ae0ffdf1b099fd96c320266c93781664",
+   "size_bytes": 247
+  }
+ ]
+}

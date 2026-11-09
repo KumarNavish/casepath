@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_5e22217a8f028d99",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-26T13:30:00+01:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "fmsg_656d1615ef4476f6",
+  "subject": "Request for help contesting termination of my lease, Sonnenbergstrasse 87, Luzern",
+  "body": "Dear Sir or Madam, I am writing to ask for help in contesting the termination of my lease for the flat at Sonnenbergstrasse 87 in Luzern, a 4.5-room flat that I rent from Peter Ammann as a private landlord. I have recently received a written notice of termination of the lease from my landlord. The notice states that the tenancy ends on 31 March 2027. The stated reason is that the landlord needs the flat for a close relative. The notice is on the officially approved cantonal form and includes information on how to challenge it at the conciliation authority. The flat is our family home. My spouse lives here with me. Our tenancy began on 1 June 2016 and the agreed terms are a net rent of CHF 1710 per month and a notice period of three months. I have attached the termination notice and the tenancy agreement. I would be grateful if you could advise me on the next steps, including the deadline for challenging the notice and how the conciliation procedure works. Please let me know which further documents you need from me. I look forward to hearing from you. Kind regards, Rowan Price",
+  "sent_at": "2026-10-26T13:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_5eb8540dae0ac4ea",
+   "fatt_21b7eb7361345af4"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_5eb8540dae0ac4ea",
+   "file_name": "termination_notice.txt",
+   "media_type": "text/plain",
+   "content_base64": "Tk9USUNFIE9GIFRFUk1JTkFUSU9OIE9GIFJFU0lERU5USUFMIFRFTkFOQ1kgKE9GRklDSUFMIENBTlRPTkFMIEZPUk0pCgpUbzogUm93YW4gUHJpY2UKUHJvcGVydHk6IFNvbm5lbmJlcmdzdHJhc3NlIDg3LCA2MDAzIEx1emVybiwgNC41LXJvb20gZmxhdAoKVGhlIHRlbmFuY3kgYWdyZWVtZW50IGZvciB0aGUgYWJvdmUgcHJvcGVydHkgaXMgdGVybWluYXRlZCB3aXRoIGVmZmVjdCBhcyBvZiAzMSBNYXJjaCAyMDI3LgoKR3JvdW5kIGZvciB0ZXJtaW5hdGlvbjogdGhlIGxhbmRsb3JkIHJlcXVpcmVzIHRoZSBmbGF0IGZvciBhIGNsb3NlIHJlbGF0aXZlLgoKVGhpcyBub3RpY2UgaXMgZ2l2ZW4gb24gdGhlIG9mZmljaWFsbHkgYXBwcm92ZWQgY2FudG9uYWwgZm9ybS4gSW5mb3JtYXRpb24gb24gaG93IHRvIGNoYWxsZW5nZSB0aGlzIG5vdGljZTogeW91IG1heSBjb250ZXN0IHRoZSB0ZXJtaW5hdGlvbiBpbiB3cml0aW5nIGJlZm9yZSB0aGUgY29uY2lsaWF0aW9uIGF1dGhvcml0eSAoU2NobGljaHR1bmdzYmVow7ZyZGUpIHdpdGhpbiB0aGUgcGVyaW9kIHNldCBieSBsYXcuIFRoZSBjb25jaWxpYXRpb24gYXV0aG9yaXR5IGNhbiBiZSBjb250YWN0ZWQgdGhyb3VnaCB0aGUgY2FudG9uYWwgY291cnQgYWRtaW5pc3RyYXRpb24gaW4gTHV6ZXJuLiBGdXJ0aGVyIGluZm9ybWF0aW9uIGlzIGF2YWlsYWJsZSBvbiB0aGUgZm9ybSdzIGF0dGFjaGVkIGluc3RydWN0aW9uIHNoZWV0LgoKRGF0ZSBvZiBub3RpY2U6IGFzIHN0YXRlZCBvbiB0aGUgY2FudG9uYWwgZm9ybS4=",
+   "sha256": "2b8ad6e3b93dba0fa61204545ca8196004aeb6fbc3e57f5b04a0920f5f6549ce",
+   "size_bytes": 776
+  },
+  {
+   "artifact_id": "fatt_21b7eb7361345af4",
+   "file_name": "tenancy_agreement.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgVEVOQU5DWSBBR1JFRU1FTlQKCkxhbmRsb3JkOiBQZXRlciBBbW1hbm4gKHByaXZhdGUgbGFuZGxvcmQpClRlbmFudDogUm93YW4gUHJpY2UKClJlbnRlZCBwcm9wZXJ0eTogU29ubmVuYmVyZ3N0cmFzc2UgODcsIDYwMDMgTHV6ZXJuLCA0LjUtcm9vbSBmbGF0CgpTdGFydCBkYXRlIG9mIHRlbmFuY3k6IDEgSnVuZSAyMDE2Ck5ldCByZW50OiBDSEYgMTcxMCBwZXIgbW9udGgKQWRkaXRpb25hbCBjaGFyZ2VzOiBhcyBhZ3JlZWQgc2VwYXJhdGVseSBpbiB0aGUgYXR0YWNoZWQgc2NoZWR1bGUKTm90aWNlIHBlcmlvZDogdGhyZWUgbW9udGhzLCBlZmZlY3RpdmUgYXQgdGhlIGVuZCBvZiBhIG1vbnRoCgpUaGUgcGFydGllcyBoYXZlIHNpZ25lZCB0aGlzIGFncmVlbWVudCBpbiBkdXBsaWNhdGUu",
+   "sha256": "f1c4d758b9e88b7b30597eb121dfdeaa5e11ac2d54f3d7a96fbf885ce6078e5b",
+   "size_bytes": 405
+  }
+ ]
+}

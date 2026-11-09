@@ -1,0 +1,67 @@
+{
+ "claim_id": "fcl_495cdb4f0d88d226",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_8385db1fab99eeee",
+ "combo": [
+  "arrears",
+  "family_home",
+  "retaliation_screen"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_ca16a7b77176ba82",
+   "document_type": "termination_notice",
+   "sufficient": false,
+   "omitted_field": "addressee",
+   "sha256": "fca747406e04963b9c010dca05b74e4b85e2f801d5da04506411678c41808a09"
+  },
+  {
+   "artifact_id": "fatt_40cf3f880c4f73eb",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "tenancy_terms",
+   "sha256": "412e7261bab44817f0bfbde17d8b2c78574b19eb2e5938dbd92a086d883638d8"
+  }
+ ],
+ "values": {
+  "tenant": "Martin Egli",
+  "landlord": "Peter Ammann (private landlord)",
+  "city": "Basel",
+  "canton": "BS",
+  "address": "Rosenstrasse 10, Basel, 4-room flat",
+  "lease_start": "1 June 2018",
+  "rent": 1890,
+  "utilities": 180,
+  "received_at": "2026-11-11T09:15:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 5670,
+  "new_rent": 2120,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2022",
+  "prior_rent": 1790,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "6 July 2026",
+  "repair_deadline": "13 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "17 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

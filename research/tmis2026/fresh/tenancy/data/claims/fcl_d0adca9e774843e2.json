@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_d0adca9e774843e2",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-11-11T09:00:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_d6869a178ecf80a7",
+  "subject": "Phone call note: Sam Whitfield, defective heating at Weiherweg 30, Thun, 11 November 2026",
+  "body": "Handler's note of a phone call on 11 November 2026. The caller, Sam Whitfield, rents a 3.5-room flat at Weiherweg 30, Thun, from Hausverwaltung Aare AG. The caller reports that the heating in the flat does not work properly. Rooms stay cold and radiators fail, so that the flat cools down to about 16 degrees. The caller states that the landlord has not yet fixed the defect despite being informed of it. The caller says they would like the insurer's help in getting the defect remedied. The caller was asked whether the landlord has been notified in writing; the caller stated that they have been in contact with the property management by phone and are not sure yet whether a formal written notice has been sent. Regarding the rent, the caller stated that they are not sure yet whether they will pay the rent into the official rent deposit account (Hinterlegung) if the defect is not fixed; they have not made a decision on this. The caller asked what documents should be prepared and what the next steps would be. The handler explained the general claims intake process and advised that the caller send any written correspondence with the landlord to the claims inbox. Follow-up call to be scheduled once the caller has gathered the correspondence available to them.",
+  "sent_at": "2026-11-11T09:00:00+01:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

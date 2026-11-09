@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_284cb44c9617cba6",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-26T10:00:00+01:00",
+  "canton": "SH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_79220f22d2476c34",
+  "subject": "Request for help: mould and damp in children's room, Rosenstrasse 28, Schaffhausen",
+  "body": "Dear Legal Expenses Team,\n\nI am the tenant of the 2-room flat at Rosenstrasse 28, Schaffhausen, rented from Livit-Partner Verwaltungen AG under a lease starting 1 April 2020, with a net rent of CHF 1910 per month and a notice period of three months. I am submitting this form because there is a defect in the flat that the landlord has not fixed.\n\nIn the children's room there are mould stains and damp patches on the walls, and the problem is still present. I reported it to the landlord in writing and have attached the landlord's reply. The landlord acknowledged my report and said the matter will be looked at, and proposed 16 November 2026 as a date for workers to access the flat. Since then I have not seen any real progress, and the stains are still there.\n\nI would like your help in enforcing my rights as a tenant so that the defect is properly remedied. I have the lease and the correspondence available and can send photographs of the affected walls on request.\n\nPlease let me know which documents you need from me and what the next steps are. I would appreciate a response within the next two weeks.\n\nKind regards,\nJordan Reid",
+  "sent_at": "2026-10-26T10:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_3f570e1ab2184a50",
+   "fatt_2443ddce27cb2b0b"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_3f570e1ab2184a50",
+   "file_name": "tenancy_agreement_Rosenstrasse28.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgVEVOQU5DWSBBR1JFRU1FTlQgKExFQVNFIENPTlRSQUNUKQoKTGFuZGxvcmQ6IExpdml0LVBhcnRuZXIgVmVyd2FsdHVuZ2VuIEFHClRlbmFudDogSm9yZGFuIFJlaWQKClJlbnRlZCBwcmVtaXNlczogMi1yb29tIGZsYXQsIFJvc2Vuc3RyYXNzZSAyOCwgU2NoYWZmaGF1c2VuCgpTdGFydCBkYXRlIG9mIHRlbmFuY3k6IDEgQXByaWwgMjAyMApOZXQgcmVudDogQ0hGIDE5MTAgcGVyIG1vbnRoLCBwYXlhYmxlIGluIGFkdmFuY2UgYnkgdGhlIGZpcnN0IGRheSBvZiBlYWNoIG1vbnRoLiBBbmNpbGxhcnkgY29zdHMgYXJlIGJpbGxlZCBzZXBhcmF0ZWx5LgpOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMsIGVmZmVjdGl2ZSBhdCB0aGUgZW5kIG9mIGEgbW9udGgsIGluIHdyaXRpbmcuCgpUaGUgdGVuYW50IHVzZXMgdGhlIHByZW1pc2VzIGFzIGEgcmVzaWRlbmNlIGZvciB0aGUgaG91c2Vob2xkLiBTdWJsZXR0aW5nIHJlcXVpcmVzIHRoZSB3cml0dGVuIGNvbnNlbnQgb2YgdGhlIGxhbmRsb3JkLgoKU2NoYWZmaGF1c2VuLCAyMDIwCgpGb3IgdGhlIGxhbmRsb3JkOiBfX19fX19fX19fX19fX19fX19fXwpGb3IgdGhlIHRlbmFudDogSm9yZGFuIFJlaWQgX19fX19fX19fX19fX19fX19fX18=",
+   "sha256": "ebbac02b8227bd88b0e950ac268ddbc5bafaebb784d5fc8693610d97e8b65b61",
+   "size_bytes": 629
+  },
+  {
+   "artifact_id": "fatt_2443ddce27cb2b0b",
+   "file_name": "landlord_reply_defect.txt",
+   "media_type": "text/plain",
+   "content_base64": "TGl2aXQtUGFydG5lciBWZXJ3YWx0dW5nZW4gQUcKUHJvcGVydHkgTWFuYWdlbWVudAoKVG86IEpvcmRhbiBSZWlkLCBSb3NlbnN0cmFzc2UgMjgsIFNjaGFmZmhhdXNlbgpSZTogWW91ciByZXBvcnQgb2YgYSBkZWZlY3QgaW4gdGhlIDItcm9vbSBmbGF0CgpEZWFyIE1yIFJlaWQsCgpUaGFuayB5b3UgZm9yIHlvdXIgd3JpdHRlbiByZXBvcnQgcmVnYXJkaW5nIHRoZSBtb3VsZCBzdGFpbnMgYW5kIGRhbXAgcGF0Y2hlcyBpbiB0aGUgY2hpbGRyZW4ncyByb29tLiBXZSBhY2tub3dsZWRnZSByZWNlaXB0IG9mIHlvdXIgcmVwb3J0LgoKVGhlIG1hdHRlciB3aWxsIGJlIGxvb2tlZCBhdC4gV2UgaGF2ZSBwcm9wb3NlZCAxNiBOb3ZlbWJlciAyMDI2IGFzIGEgZGF0ZSBvbiB3aGljaCB3b3JrZXJzIG1heSBhY2Nlc3MgdGhlIGZsYXQuIFBsZWFzZSBjb25maXJtIHdoZXRoZXIgdGhpcyBkYXRlIGlzIGNvbnZlbmllbnQgZm9yIHlvdSwgb3IgbGV0IHVzIGtub3cgYW4gYWx0ZXJuYXRpdmUgd2l0aGluIHRoZSBjb21pbmcgd2Vlay4KCldlIHdpbGwgaW5mb3JtIHlvdSBvZiB0aGUgb3V0Y29tZSBvbmNlIHRoZSBtYXR0ZXIgaGFzIGJlZW4gcmV2aWV3ZWQuCgpLaW5kIHJlZ2FyZHMsCgpMaXZpdC1QYXJ0bmVyIFZlcndhbHR1bmdlbiBBRwpQcm9wZXJ0eSBNYW5hZ2VtZW50CkRhdGU6IDIwMjYtMTAtMjY=",
+   "sha256": "38780d9e9714e310625cbd3528e2fa3597acd1724b1aa1ec1c4b97eeb9a6f253",
+   "size_bytes": 677
+  }
+ ]
+}

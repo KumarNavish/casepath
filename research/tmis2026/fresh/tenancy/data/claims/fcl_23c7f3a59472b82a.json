@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_23c7f3a59472b82a",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-04T11:00:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_4d85aaba92f90dfb",
+  "subject": "Request for help: heating defect in flat at Sonnenbergstrasse 66, Aarau",
+  "body": "Dear Privera Wohnen AG team, I am renting the 4-room flat at Sonnenbergstrasse 66 in Aarau and I need help with a defect that the landlord has not fixed. The heating in the flat does not work properly. The radiators in the living room and in both bedrooms stay cold, even when the heating is turned up to the highest setting and runs for several hours. The radiators in the kitchen and bathroom work normally, so the problem is limited to these rooms. I have already reported the problem to the landlord, but nothing has been done. I have received no appointment, no confirmation and no date for a repair. I have not been offered any reduction of rent or any temporary solution. I would like your support in getting the landlord to repair the heating within a reasonable time. Could you please tell me what steps your insurance can take, what documents you need from me, and whether you can contact the landlord on my behalf? I am happy to send any further information. Thank you for your help. Kind regards, Casey Hughes",
+  "sent_at": "2026-10-04T11:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

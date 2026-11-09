@@ -1,0 +1,65 @@
+{
+ "claim_id": "fcl_cb0a6837d3f9d819",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_6265aec93f58160a",
+ "combo": [
+  "mold"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": null,
+ "attachments": [
+  {
+   "artifact_id": "fatt_eea37e244bb2e800",
+   "document_type": "defect_notification",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "5aafa05fb2c33eeb2edb8b3d37332e466a75d4efcce98dd6f7560b0c4eb519a2"
+  },
+  {
+   "artifact_id": "fatt_97a8b974868f79dc",
+   "document_type": "landlord_response_history",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "982b1db9f4a3fe3ba423590173b10894466ee1fbdfed56cbeacd4c27c3100c9a"
+  }
+ ],
+ "values": {
+  "tenant": "Charlie Wade",
+  "landlord": "Peter Ammann (private landlord)",
+  "city": "Schaffhausen",
+  "canton": "SH",
+  "address": "Weiherweg 56, Schaffhausen, 4-room flat",
+  "lease_start": "1 October 2021",
+  "rent": 2490,
+  "utilities": 190,
+  "received_at": "2026-09-14T10:00:00+01:00",
+  "end_date": "30 September 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 7470,
+  "new_rent": 2590,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2020",
+  "prior_rent": 2380,
+  "prior_rate": "1.5",
+  "defect": "black mould spreading on the bedroom wall and around the bathroom window",
+  "notified_on": "19 June 2026",
+  "repair_deadline": "19 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "16 November 2026",
+  "health_detail": "breathing problems"
+ },
+ "replacement": 0
+}

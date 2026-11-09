@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_716f9606b9e15e8f",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-11-03T12:45:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_e896eef815d2bab2",
+  "subject": "Mängelmeldung: Schimmelbefall in meiner Mietwohnung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie, weil in meiner Mietwohnung an der Kirchgasse 62 in Aarau ein Mangel besteht, den die Wincasa Nord AG als Vermieterin bisher nicht behoben hat. Ich bin Mieter dieser Wohnung.\n\nIm Schlafzimmer breitet sich an der Wand schwarzer Schimmel aus. Auch rund um das Fenster im Badezimmer ist Schimmel sichtbar, und er wird mit der Zeit mehr. Ich habe die Vermieterin bereits mündlich auf den Schimmel hingewiesen. Eine schriftliche Antwort habe ich bisher nicht erhalten, und der Mangel wurde nicht behoben.\n\nZusätzlich ist mir aufgefallen, dass einige Räume in der Wohnung kühl bleiben und einzelne Heizkörper nicht richtig warm werden. Ob die Heizung tatsächlich defekt ist, kann ich nicht beurteilen. Ich bin mir da nicht sicher.\n\nIch möchte wissen, wie ich meine Rechte am besten durchsetzen kann. Ausserdem möchte ich fragen, ob Ihre Rechtsschutzversicherung die Kosten für eine erste Beratung durch einen Anwalt oder eine Mieterberatung übernimmt. Den Mietvertrag lege ich bei.\n\nFreundliche Grüsse\n\nThomas Hofmann",
+  "sent_at": "2026-11-03T12:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_a6eb0d15d6c8c724"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_a6eb0d15d6c8c724",
+   "file_name": "Mietvertrag_Hofmann.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgKFdvaG5yYXVtbWlldGUpCgpWZXJtaWV0ZXJpbjogV2luY2FzYSBOb3JkIEFHCk1pZXRlcjogVGhvbWFzIEhvZm1hbm4KCk1pZXRiZWdpbm46IDEuIEFwcmlsIDIwMTQKTmV0dG9taWV0emluczogQ0hGIDE0MTAuMDAgcHJvIE1vbmF0LCB6dXrDvGdsaWNoIE5lYmVua29zdGVuIGdlbcOkc3Mgc2VwYXJhdGVyIEFicmVjaG51bmcKS8O8bmRpZ3VuZ3NmcmlzdDogZHJlaSBNb25hdGUgYXVmIEVuZGUgZWluZXMgTW9uYXRzCgpEaWUgYWxsZ2VtZWluZW4gQmVzdGltbXVuZ2VuIHp1ciBXb2hucmF1bW1pZXRlIGdlbcOkc3MgT2JsaWdhdGlvbmVucmVjaHQgZ2VsdGVuIGVyZ8OkbnplbmQuCgpPcnQgdW5kIERhdHVtOiBBYXJhdSwgMjAuIE3DpHJ6IDIwMTQKClVudGVyc2NocmlmdCBWZXJtaWV0ZXJpbjogX19fX19fX19fX19fX19fX19fX18KVW50ZXJzY2hyaWZ0IE1pZXRlcjogX19fX19fX19fX19fX19fX19fX18=",
+   "sha256": "8e92df02bb2ef0923cba3e4802f3ea80d7e13c8bc623187d2084c036f3076ee4",
+   "size_bytes": 470
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "claim_id": "fcl_f072f22a4d308814",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_32556e62ac304185",
+ "combo": [
+  "heating"
+ ],
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "absent",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Thomas Hofmann",
+  "landlord": "Wohnbau Limmat GmbH",
+  "city": "Basel",
+  "canton": "BS",
+  "address": "Bahnhofstrasse 86, Basel, 3.5-room flat",
+  "lease_start": "1 April 2017",
+  "rent": 2220,
+  "utilities": 230,
+  "received_at": "2026-11-24T17:45:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 6660,
+  "new_rent": 2410,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2022",
+  "prior_rent": 2180,
+  "prior_rate": "1.25",
+  "defect": "the radiators in the living room and bedrooms stay cold",
+  "notified_on": "1 June 2026",
+  "repair_deadline": "8 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "14 November 2026",
+  "health_detail": "repeated colds and bronchitis"
+ },
+ "replacement": 0
+}

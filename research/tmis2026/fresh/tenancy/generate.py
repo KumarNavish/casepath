@@ -265,6 +265,7 @@ def build_reference(c: dict, attachments: list[dict]) -> dict:
         "answered": {"document_states": ans_states,
                      "request_set": sorted(d for d, s in ans_states.items() if s in ("required_now", "supplied_insufficient"))},
         "attachments": [{k: a[k] for k in ("artifact_id", "document_type", "sufficient", "omitted_field")} for a in attachments],
+        "blind_check_reading": c.get("blind_check_reading"),
         "silence_policy": SILENCE_CLAUSE,
         "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)",
     }
@@ -361,11 +362,17 @@ def check_payload(c: dict, written: dict) -> tuple[dict, dict]:
 
 
 EXPECTED = {"stated_true": "stated_true", "absent": "not_mentioned", "open": "open", "unmentioned": "not_mentioned"}
+# Readings that leave the reference unchanged under the silence policy are accepted: an absent branch fact read as
+# stated false is false either way; an unmentioned routing fact read as stated true is presumed true either way.
+# The reading is recorded in the reference (blind_check_reading) so that analyses can stratify by it.
+ACCEPT = {"stated_true": {"stated_true"}, "absent": {"not_mentioned", "stated_false"}, "open": {"open"},
+          "unmentioned": {"not_mentioned", "stated_true"}}
 
 
 def compare(c: dict, written: dict, verdict: dict) -> dict:
     got = {r["fact_id"]: r["status"] for r in verdict["facts"]}
-    facts = {f: {"expected": EXPECTED[s], "got": got.get(f)} for f, s in c["fact_states"].items()}
+    facts = {f: {"expected": EXPECTED[s], "got": got.get(f), "accepted": got.get(f) in ACCEPT[s]}
+             for f, s in c["fact_states"].items()}
     fields = []
     for a, rep in zip(c["attachments"], verdict["attachments"] + [None] * len(c["attachments"])):
         shown = {r["item_id"]: r["shown"] for r in (rep or {}).get("items", [])}
@@ -374,14 +381,15 @@ def compare(c: dict, written: dict, verdict: dict) -> dict:
                            "got": shown.get(k)})
     words = len(written["body"].split())
     return {"facts": facts, "fields": fields, "words": words, "length_ok": 130 <= words <= 220,
-            "facts_agree": all(x["expected"] == x["got"] for x in facts.values()),
+            "facts_agree": all(x["accepted"] for x in facts.values()),
+            "facts_agree_strict": all(x["expected"] == x["got"] for x in facts.values()),
             "fields_agree": all(x["expected"] == x["got"] for x in fields)}
 
 
 def feedback_for(cmp: dict, c: dict) -> list[str]:
     fb = []
     for f, x in cmp["facts"].items():
-        if x["expected"] != x["got"]:
+        if not x["accepted"]:
             want = {"stated_true": "be stated clearly", "not_mentioned": "not be mentioned at all", "open": "be raised but left explicitly open"}[x["expected"]]
             fb.append(f"A reader took this as '{x['got']}', but it must {want}: {FACTS[f]['fact']}")
     for x in cmp["fields"]:
@@ -423,7 +431,7 @@ def call(system, payload, schema, name, run, tag):
 def produce(slot: dict) -> dict:
     """Write and check one design slot: up to three drafts per claim, up to three claims per slot."""
     log = {"slot": [slot["family_index"], slot["slot"]], "claims": []}
-    for replacement in range(3):
+    for replacement in range(6):
         c = realise(slot, replacement)
         feedback, attempts = [], []
         for attempt in range(3):
@@ -441,6 +449,7 @@ def produce(slot: dict) -> dict:
             attempts.append({"attempt": attempt, **cmp})
             if cmp["facts_agree"] and cmp["fields_agree"] and cmp["length_ok"]:
                 log["claims"].append({"claim_id": c["claim_id"], "accepted": True, "attempts": attempts})
+                c["blind_check_reading"] = {f: x["got"] for f, x in cmp["facts"].items()}
                 return {"claim": c, "written": w["result"], "log": log}
             feedback = feedback_for(cmp, c)
         log["claims"].append({"claim_id": c["claim_id"], "accepted": False, "attempts": attempts})

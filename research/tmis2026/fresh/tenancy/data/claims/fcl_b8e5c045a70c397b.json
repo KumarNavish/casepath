@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_b8e5c045a70c397b",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-28T09:45:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_cf0043798077605c",
+  "subject": "Mangel an der Wohnungseingangstür, Sonnenbergstrasse 47, Aarau",
+  "body": "Guten Tag. Ich wohne in der 2-Zimmer-Wohnung an der Sonnenbergstrasse 47 in Aarau. Vermieterin ist die Regimo Liegenschaften AG. Ich melde einen Mangel, den die Vermieterin bisher nicht behoben hat: Die Wohnungseingangstür schliesst nicht mehr richtig ab. Ich habe den Mangel bereits am 2. Juni 2026 schriftlich gemeldet. Die Regimo hat daraufhin geantwortet und eine Reparatur durch einen Unternehmer vorgeschlagen; als Termin für den Zutritt in die Wohnung wurde der 28. November 2026 genannt. Ob diese Reparatur das Problem tatsächlich behebt, kann ich nicht beurteilen. Zusätzlich möchte ich erwähnen, dass ein Mitglied meines Haushalts seit längerer Zeit unter Schlafproblemen und Kopfschmerzen leidet. Wir führen diese Beschwerden auf den Mangel zurück, ob dies medizinisch zutrifft, weiss ich aber nicht. An einer Wand im Wohnzimmer gibt es dunkle Flecken. Ob es sich dabei um Schimmel oder um Feuchtigkeit handelt, weiss ich nicht, und ich habe das bisher nicht abklären lassen. Ich bitte Sie um Unterstützung, wie ich weiter vorgehen soll und wie ich meine Rechte gegenüber der Vermieterin wahren kann. Bitte melden Sie sich bei mir telefonisch oder per E-Mail. Freundliche Grüsse, Monika Wyss",
+  "sent_at": "2026-11-28T09:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_dd8036c4a895dbec",
+   "fatt_e481b333f9daf811"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_dd8036c4a895dbec",
+   "file_name": "Antwort_Regimo_Mangel.txt",
+   "media_type": "text/plain",
+   "content_base64": "UmVnaW1vIExpZWdlbnNjaGFmdGVuIEFHLCBCYWhuaG9mc3RyYXNzZSAxMiwgNTAwMCBBYXJhdS4gQW4gRnJhdSBNb25pa2EgV3lzcywgU29ubmVuYmVyZ3N0cmFzc2UgNDcsIDUwMDAgQWFyYXUuIEFhcmF1LCA5LiBKdWxpIDIwMjYuIEJldHJlZmY6IElocmUgTWVsZHVuZyBhbiBSZWdpbW8gTGllZ2Vuc2NoYWZ0ZW4gQUcsIExpZWdlbnNjaGFmdCBTb25uZW5iZXJnc3RyYXNzZSA0Ny4gU2VociBnZWVocnRlIEZyYXUgV3lzcy4gV2lyIGJlc3TDpHRpZ2VuIGRlbiBFaW5nYW5nIElocmVzIFNjaHJlaWJlbnMgdm9tIDIuIEp1bmkgMjAyNi4gV2lyIHNjaGxhZ2VuIHZvciwgZGllIEFyYmVpdGVuIGR1cmNoIGVpbmVuIFVudGVybmVobWVyIGF1c2bDvGhyZW4genUgbGFzc2VuLiBEZXIgVW50ZXJuZWhtZXIgYmVuw7Z0aWd0IGbDvHIgZGllIEFyYmVpdGVuIFp1dHJpdHQgenUgSWhyZXIgV29obnVuZy4gV2lyIGJpdHRlbiBTaWUsIGRpZXNlbiBhbSAyOC4gTm92ZW1iZXIgMjAyNiB6dSBnZXfDpGhyZW4uIEJpdHRlIHRlaWxlbiBTaWUgdW5zIG1pdCwgb2IgZGVyIFRlcm1pbiBmw7xyIFNpZSBwYXNzdCwgb2RlciBtZWxkZW4gU2llIHNpY2ggYmVpIGRlciBCZXdpcnRzY2hhZnR1bmcuIEZyZXVuZGxpY2hlIEdyw7xzc2UsIFJlZ2ltbyBMaWVnZW5zY2hhZnRlbiBBRywgQmV3aXJ0c2NoYWZ0dW5n",
+   "sha256": "01f98023d11bda046289ee8fda06b7ac47ac792f52edca6419c1107c96b6486d",
+   "size_bytes": 675
+  },
+  {
+   "artifact_id": "fatt_e481b333f9daf811",
+   "file_name": "Meldung_Mangel_Wyss.txt",
+   "media_type": "text/plain",
+   "content_base64": "TW9uaWthIFd5c3MsIFNvbm5lbmJlcmdzdHJhc3NlIDQ3LCA1MDAwIEFhcmF1LiBSZWdpbW8gTGllZ2Vuc2NoYWZ0ZW4gQUcsIEJhaG5ob2ZzdHJhc3NlIDEyLCA1MDAwIEFhcmF1LiBBYXJhdSwgMi4gSnVuaSAyMDI2LiBCZXRyZWZmOiBNZWxkdW5nIGVpbmVzIE1hbmdlbHMsIFNvbm5lbmJlcmdzdHJhc3NlIDQ3LiBTZWhyIGdlZWhydGUgRGFtZW4gdW5kIEhlcnJlbi4gSGllcm1pdCBtZWxkZSBpY2ggZWluZW4gTWFuZ2VsIGluIG1laW5lciBXb2hudW5nIHVuZCBiaXR0ZSBTaWUsIGRpZXNlbiBmYWNoZ2VyZWNodCBiZWhlYmVuIHp1IGxhc3Nlbi4gSWNoIGJpdHRlIHVtIGVpbmUgUsO8Y2ttZWxkdW5nIGlubmVydCBhbmdlbWVzc2VuZXIgRnJpc3QuIEZyZXVuZGxpY2hlIEdyw7xzc2UsIE1vbmlrYSBXeXNz",
+   "sha256": "42966a8b29449cb568064582daaf371ec35239037508f460f66e99c8b6a2d3bb",
+   "size_bytes": 402
+  }
+ ]
+}

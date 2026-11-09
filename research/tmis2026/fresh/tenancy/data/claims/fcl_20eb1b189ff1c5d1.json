@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_20eb1b189ff1c5d1",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-10-08T16:45:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_7f66cd0cae3ac38e",
+  "subject": "Schimmel in meiner Mietwohnung an der Feldstrasse 65, Thun – Unterstützung benötigt",
+  "body": "Sehr geehrte Damen und Herren. Ich wende mich an Sie wegen eines Mangels in meiner Mietwohnung an der Feldstrasse 65 in 3600 Thun, einer 2-Zimmer-Wohnung. Ich bewohne die Wohnung seit dem 1. Oktober 2019 und zahle einen Nettomietzins von CHF 1690 pro Monat. Im Schlafzimmer hat sich an der Wand schwarzer Schimmel ausgebreitet, und auch rund um das Badezimmerfenster ist der Schimmel deutlich sichtbar. Die Verwaltung Rhein & Partner hat diesen Mangel bisher nicht behoben. Eine Person in meinem Haushalt leidet seit einiger Zeit unter Atembeschwerden. Ich führe diese Beschwerden auf den Mangel in der Wohnung zurück. Ich möchte, dass der Mangel rasch behoben wird, und bitte Sie um Unterstützung, damit ich meine Rechte als Mieterin gegenüber dem Vermieter wahrnehmen kann. Den Mietvertrag lege ich als Beilage bei. Bitte teilen Sie mir mit, welche Schritte Sie empfehlen und welche Unterlagen Sie von mir benötigen. Vielen Dank für Ihre Rückmeldung. Freundliche Grüsse. Simone Baumann",
+  "sent_at": "2026-10-08T16:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_371f90acd05d6ba1"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_371f90acd05d6ba1",
+   "file_name": "Mietvertrag_Feldstrasse_65.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgZnVlciBXb2hucmF1bS4gTWlldG9iamVrdDogRmVsZHN0cmFzc2UgNjUsIDM2MDAgVGh1biwgMi1aaW1tZXItV29obnVuZy4gVmVybWlldGVyc2NoYWZ0OiBzaWVoZSBWZXJ0cmFnc3BhcnRlaWVuIGF1ZiBTZWl0ZSAxLiBNaWV0ZXJpbjogU2ltb25lIEJhdW1hbm4uIE1pZXRiZWdpbm46IDEuIE9rdG9iZXIgMjAxOS4gTmV0dG9taWV0emluczogQ0hGIDE2OTAuMDAgcHJvIE1vbmF0LCB6YWhsYmFyIG1vbmF0bGljaCBpbSBWb3JhdXMuIE5lYmVua29zdGVuOiBnZW1hZXNzIHNlcGFyYXRlciBBYnJlY2hudW5nLiBLdWVuZGlndW5nc2ZyaXN0OiBkcmVpIE1vbmF0ZSBhdWYgRW5kZSBlaW5lcyBNb25hdHMuIERlciBNaWV0Z2VnZW5zdGFuZCB3aXJkIGluIGRlbSBadXN0YW5kIHVlYmVyZ2ViZW4sIGluIGRlbSBlciBzaWNoIGJlaSBWZXJ0cmFnc2Fic2NobHVzcyBiZWZpbmRldC4gRGllIFZlcm1pZXRlcnNjaGFmdCB2ZXJwZmxpY2h0ZXQgc2ljaCwgZGllIFdvaG51bmcgaW4gZWluZW0genVtIHZlcnRyYWdzZ2VtYWVzc2VuIEdlYnJhdWNoIHRhdWdsaWNoZW4gWnVzdGFuZCB6dSBlcmhhbHRlbi4gQWVuZGVydW5nZW4gdW5kIE5lYmVuYWJyZWRlbiBiZWR1ZXJmZW4gZGVyIFNjaHJpZnRmb3JtLiBPcnQgdW5kIERhdHVtOiBUaHVuLCAyMDE5LiBVbnRlcnNjaHJpZnRlbiBkZXIgUGFydGVpZW4gdm9yaGFuZGVuLg==",
+   "sha256": "9d7808e3bf7124121171afd7208480552bda6045ba519752cb5ba44d71de73e7",
+   "size_bytes": 697
+  }
+ ]
+}

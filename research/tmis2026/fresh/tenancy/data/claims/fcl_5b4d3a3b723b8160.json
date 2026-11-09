@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_5b4d3a3b723b8160",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-05T13:45:00+01:00",
+  "canton": "GR"
+ },
+ "customer_message": {
+  "message_id": "fmsg_8a60220f9ec7a27f",
+  "subject": "Kündigung Mietverhältnis Rosenstrasse 21, Chur – Bitte um Unterstützung und Erstreckung",
+  "body": "Guten Tag. Ich habe von der Regimo Liegenschaften AG eine schriftliche Kündigung meines Mietverhältnisses für die 4.5-Zimmer-Wohnung an der Rosenstrasse 21 in Chur erhalten. Die Kündigung begründet die Vermieterin mit ausstehenden Mietzinsen. Gemäss Schreiben beläuft sich der Rückstand auf rund CHF 4840. Ich war mit der Zahlung im Verzug. Die frühere Zahlungserinnerung habe ich im Anhang beigelegt. Sie setzte eine Frist von 30 Tagen zur Bezahlung und enthielt den Hinweis, dass das Mietverhältnis gekündigt wird, falls der Betrag nicht fristgerecht bezahlt wird. Ich möchte die Kündigung nicht einfach hinnehmen. Ein Auszug auf den genannten Termin wäre für mich eine grosse Härte, weil die Wohnungssuche in Chur in so kurzer Zeit kaum machbar ist und mein Kind die Schule am bisherigen Ort abschliessen soll. Ich beantrage deshalb eine Erstreckung des Mietverhältnisses. Bitte prüfen Sie, ob Sie mich bei der Anfechtung der Kündigung und beim Antrag auf Erstreckung unterstützen können. Ich bin telefonisch erreichbar und stelle Ihnen gerne alle weiteren Unterlagen zur Verfügung. Freundliche Grüsse. Sandra Kälin",
+  "sent_at": "2026-11-05T13:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_c70689f45e57c015"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_c70689f45e57c015",
+   "file_name": "Zahlungserinnerung_Regimo_Rosenstrasse21.txt",
+   "media_type": "text/plain",
+   "content_base64": "UmVnaW1vIExpZWdlbnNjaGFmdGVuIEFHLCBCYWhuaG9mc3RyYXNzZSAxMiwgNzAwMCBDaHVyLiBaYWhsdW5nc2VyaW5uZXJ1bmcuIE1pZXRlcmluOiBTYW5kcmEgS8OkbGluLiBPYmpla3Q6IFJvc2Vuc3RyYXNzZSAyMSwgNzAwMCBDaHVyLCA0LjUtWmltbWVyLVdvaG51bmcuIFNlaHIgZ2VlaHJ0ZSBGcmF1IEvDpGxpbi4gUGVyIGhldXRpZ2VtIERhdHVtIGlzdCBmw7xyIElocmUgV29obnVuZyBlaW4gTWlldHppbnNyw7xja3N0YW5kIHZvbiBDSEYgNDg0MCBvZmZlbi4gV2lyIGZvcmRlcm4gU2llIGhpZXJtaXQgYXVmLCBkZW4gYXVzc3RlaGVuZGVuIEJldHJhZyBpbm5lcnQgZWluZXIgRnJpc3Qgdm9uIDMwIFRhZ2VuIGFiIEVyaGFsdCBkaWVzZXMgU2NocmVpYmVucyB2b2xsc3TDpG5kaWcgenUgYmV6YWhsZW4uIFNvbGx0ZSBkZXIgQmV0cmFnIG5pY2h0IGZyaXN0Z2VyZWNodCBiZXphaGx0IHdlcmRlbiwgYmVoYWx0ZW4gd2lyIHVucyB2b3IsIGRhcyBNaWV0dmVyaMOkbHRuaXMgZ2VzdMO8dHp0IGF1ZiBkaWUgZ2VzZXR6bGljaGVuIEJlc3RpbW11bmdlbiB6dSBrw7xuZGlnZW4uIEZyZXVuZGxpY2hlIEdyw7xzc2UuIFJlZ2ltbyBMaWVnZW5zY2hhZnRlbiBBRy4gQmV3aXJ0c2NoYWZ0dW5nIFdvaG5lbi4=",
+   "sha256": "6ca2a2baafe8941610e194c9ce10246bb8fe40e67150f8bf1158b07d0bb63f92",
+   "size_bytes": 629
+  }
+ ]
+}

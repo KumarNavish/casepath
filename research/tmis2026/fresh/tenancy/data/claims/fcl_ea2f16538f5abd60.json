@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_ea2f16538f5abd60",
+  "channel": "phone_note",
+  "language": "de-CH",
+  "received_at": "2026-11-28T18:15:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_a16f81c7b655af41",
+  "subject": "Telefonnotiz: Kündigung Mietverhältnis Sonnenbergstrasse 38, Bern – Beat Widmer",
+  "body": "Telefonnotiz vom 28.11.2026. Herr Beat Widmer hat sich telefonisch bei der Rechtsschutzabteilung gemeldet. Er wohnt mit seiner Ehefrau in der 3.5-Zimmer-Wohnung an der Sonnenbergstrasse 38 in Bern. Vermieterin ist die Wohnbau Limmat GmbH. Herr Widmer hat von der Vermieterin eine schriftliche Kündigung des Mietverhältnisses erhalten. Als Grund wird der Mietzinsrückstand genannt; es geht um ausstehende Mietzinse von rund CHF 4800. Die Wohnung dient der Familie als Familienwohnung, seine Ehefrau lebt ebenfalls dort. Herr Widmer möchte die Kündigung anfechten und wünscht eine Erstreckung des Mietverhältnisses. Ein Auszug auf den Kündigungstermin wäre für die Familie eine Härte, da die Wohnungssuche schwierig ist und die Kinder die Schule am bisherigen Standort besuchen. Herr Widmer wurde darauf hingewiesen, dass für die Erstreckung eine Frist einzuhalten ist und die Unterlagen rechtzeitig eingereicht werden müssen. Er wird die Kündigung, das Schreiben der Vermieterin und die Unterlagen zu den Mietzahlungen zusammenstellen und an uns senden. Eine Deckungsabklärung erfolgt nach Eingang der Unterlagen. Rückruf durch die Sachbearbeitung nach Eingang der Dokumente.",
+  "sent_at": "2026-11-28T18:15:00+01:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

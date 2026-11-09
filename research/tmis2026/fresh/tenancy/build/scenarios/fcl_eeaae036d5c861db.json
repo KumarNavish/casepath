@@ -1,0 +1,64 @@
+{
+ "claim_id": "fcl_eeaae036d5c861db",
+ "family": "rent_increase_dispute",
+ "family_id": "ffam_8f8c20178ede48c7",
+ "combo": [
+  "reference_rate",
+  "renovation"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "claim_received": "stated_true",
+  "reference_rate": "stated_true",
+  "renovation": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_077efce05e85777c",
+   "document_type": "prior_rent_adjustment",
+   "sufficient": false,
+   "omitted_field": "adjusted_amount",
+   "sha256": "b48bd12c6e281b980d01d73ad2f2994a77782b3763cf40538fb4ac47517fc6ed"
+  },
+  {
+   "artifact_id": "fatt_c519117d46133fb9",
+   "document_type": "current_rent_evidence",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "f36c512942eb2f6c755b38c1264723a4f15a5019393b9ea4b4e00102ed1547b0"
+  }
+ ],
+ "values": {
+  "tenant": "Monika Wyss",
+  "landlord": "Regimo Liegenschaften AG",
+  "city": "Olten",
+  "canton": "SO",
+  "address": "Lindenstrasse 53, Olten, 4-room flat",
+  "lease_start": "1 June 2021",
+  "rent": 1890,
+  "utilities": 210,
+  "received_at": "2026-09-01T12:45:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 5670,
+  "new_rent": 2020,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2019",
+  "prior_rent": 1830,
+  "prior_rate": "1.25",
+  "defect": "",
+  "notified_on": "24 June 2026",
+  "repair_deadline": "1 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "20 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

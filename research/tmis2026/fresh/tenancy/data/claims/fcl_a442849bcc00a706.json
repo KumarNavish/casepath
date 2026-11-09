@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_a442849bcc00a706",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-03T18:15:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_5d9ac353da415e31",
+  "subject": "Defect in flat Seestrasse 8, Thun: mould and cold radiators, request for help",
+  "body": "Dear Claims Team,\n\nI am writing to request help with a defect in my rented flat at Seestrasse 8, Thun, a 4.5-room flat rented from Wincasa Nord AG. I have reported the problem to the landlord several times, but it has not been fixed.\n\nThere is black mould spreading on the bedroom wall and around the bathroom window. The radiators in the living room and the bedrooms stay cold, so the heating does not work properly in these rooms. I first noticed the mould in late summer and it has become larger since then.\n\nA member of my household has been unwell lately. I have not yet clarified whether this has anything to do with the defect, so I cannot say at this point whether there is a connection.\n\nI have attached a copy of the tenancy agreement. Please let me know which documents you need from me next and what the next steps are for my claim. I would appreciate a reply within the next two weeks, as the situation is becoming difficult to live with.\n\nKind regards,\nChris Lawson",
+  "sent_at": "2026-10-03T18:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_15f7e7adbb0f91bf"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_15f7e7adbb0f91bf",
+   "file_name": "tenancy_agreement_Seestrasse_8_Thun.txt",
+   "media_type": "text/plain",
+   "content_base64": "VEVOQU5DWSBBR1JFRU1FTlQgKExFQVNFIENPTlRSQUNUKQoKTGFuZGxvcmQ6IFdpbmNhc2EgTm9yZCBBRwpUZW5hbnQ6IENocmlzIExhd3NvbgoKUmVudGVkIHByb3BlcnR5OiBTZWVzdHJhc3NlIDgsIFRodW4KVHlwZTogNC41LXJvb20gZmxhdAoKVGhlIGxhbmRsb3JkIGxlYXNlcyB0aGUgYWJvdmUtbWVudGlvbmVkIHJlc2lkZW50aWFsIHByb3BlcnR5IHRvIHRoZSB0ZW5hbnQgb24gdGhlIHRlcm1zIHNldCBvdXQgaW4gdGhpcyBhZ3JlZW1lbnQgYW5kIGluIHRoZSBhcHBsaWNhYmxlIHByb3Zpc2lvbnMgb2YgdGhlIFN3aXNzIENvZGUgb2YgT2JsaWdhdGlvbnMuCgpTaWduZWQgYXQgVGh1biBvbiB0aGUgZGF0ZSBzdGF0ZWQgaW4gdGhlIHNpZ25hdHVyZSBibG9jayBiZWxvdy4KCkxhbmRsb3JkIHNpZ25hdHVyZTogX19fX19fX19fX19fX19fX19fX18KClRlbmFudCBzaWduYXR1cmU6IF9fX19fX19fX19fX19fX19fX19f",
+   "sha256": "c4462afe06dbe74f9e73c4c2803b2f836af17fba74688e841c50841d23aa0d39",
+   "size_bytes": 468
+  }
+ ]
+}

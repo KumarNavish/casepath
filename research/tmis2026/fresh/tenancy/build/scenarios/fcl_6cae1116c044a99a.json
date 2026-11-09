@@ -1,0 +1,58 @@
+{
+ "claim_id": "fcl_6cae1116c044a99a",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_bf0bf3cbade6d649",
+ "combo": [
+  "health_effects"
+ ],
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "absent",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": null,
+ "attachments": [
+  {
+   "artifact_id": "fatt_0e784e9b5076e9c4",
+   "document_type": "defect_notification",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "071e5f7ac0d15b1b4a95bc991cadcd8ed4034c230e0a923093962564a72688c2"
+  }
+ ],
+ "values": {
+  "tenant": "Martin Egli",
+  "landlord": "Wohnbau Limmat GmbH",
+  "city": "Luzern",
+  "canton": "LU",
+  "address": "Mattenweg 73, Luzern, 4-room flat",
+  "lease_start": "1 October 2020",
+  "rent": 2400,
+  "utilities": 180,
+  "received_at": "2026-11-23T11:30:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 4800,
+  "new_rent": 2480,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2023",
+  "prior_rent": 2320,
+  "prior_rate": "1.25",
+  "defect": "the ventilation fan in the windowless bathroom is defective and rattles loudly day and night",
+  "notified_on": "14 July 2026",
+  "repair_deadline": "23 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "2 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

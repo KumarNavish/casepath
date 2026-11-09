@@ -1,0 +1,873 @@
+{
+ "contract": "casepath.fresh-tenancy-cohort/1.0.0",
+ "cases": [
+  {
+   "case_id": "fcl_d3dc581ee564f805",
+   "family_id": "ffam_8f8c20178ede48c7",
+   "domain": "rent_increase_dispute",
+   "combination": [
+    "reference_rate",
+    "renovation"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_eeaae036d5c861db",
+   "family_id": "ffam_8f8c20178ede48c7",
+   "domain": "rent_increase_dispute",
+   "combination": [
+    "reference_rate",
+    "renovation"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_09bf4c849ef1ee44",
+   "family_id": "ffam_8f8c20178ede48c7",
+   "domain": "rent_increase_dispute",
+   "combination": [
+    "reference_rate",
+    "renovation"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_3b9600e267ebc9f8",
+   "family_id": "ffam_8f8c20178ede48c7",
+   "domain": "rent_increase_dispute",
+   "combination": [
+    "reference_rate",
+    "renovation"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_63770af748d8f3f7",
+   "family_id": "ffam_e91b2fc5fab33794",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_d51f04e4cc47ab0c",
+   "family_id": "ffam_e91b2fc5fab33794",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_c03f5f5c1caa60f2",
+   "family_id": "ffam_e91b2fc5fab33794",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_5e22217a8f028d99",
+   "family_id": "ffam_e91b2fc5fab33794",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_1132fdb1876df85f",
+   "family_id": "ffam_b18eb3bf85906174",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2dffd4707bf2bbad",
+   "family_id": "ffam_b18eb3bf85906174",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_7032365a2a7cb080",
+   "family_id": "ffam_b18eb3bf85906174",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_9a62e6a839c5bbfa",
+   "family_id": "ffam_b18eb3bf85906174",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_8cd148548c0c667a",
+   "family_id": "ffam_8f8d7d240d534fc3",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_5b4d3a3b723b8160",
+   "family_id": "ffam_8f8d7d240d534fc3",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_67f3fc97edbdf375",
+   "family_id": "ffam_8f8d7d240d534fc3",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_c40e2e2d27b46049",
+   "family_id": "ffam_8f8d7d240d534fc3",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_020f2bacedc162a9",
+   "family_id": "ffam_cb831927bc7f8ee1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_ef44a7661ccf81b6",
+   "family_id": "ffam_cb831927bc7f8ee1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_99e24db5f37c7a3c",
+   "family_id": "ffam_cb831927bc7f8ee1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_e77ee7d1e1be2112",
+   "family_id": "ffam_cb831927bc7f8ee1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_a53b7aae8525d0d4",
+   "family_id": "ffam_abdf9da08a90822a",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2021cff640ced3a7",
+   "family_id": "ffam_abdf9da08a90822a",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_5f53fea2fcbaf192",
+   "family_id": "ffam_abdf9da08a90822a",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_3004e9cd625e0c4b",
+   "family_id": "ffam_abdf9da08a90822a",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_ea2f16538f5abd60",
+   "family_id": "ffam_395204ed0b53a6f1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant",
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "phone_note",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_3660a91a8038bf36",
+   "family_id": "ffam_395204ed0b53a6f1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant",
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_e1a3a168b9bcb5b1",
+   "family_id": "ffam_395204ed0b53a6f1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant",
+    "family_home"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_e514cbc96786ff0a",
+   "family_id": "ffam_395204ed0b53a6f1",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "extension_relevant",
+    "family_home"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_0f9a9b0f4a043ab5",
+   "family_id": "ffam_aefb7a00fc910352",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_ef2f5c99ca9ab008",
+   "family_id": "ffam_aefb7a00fc910352",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_d4c3b6ed8d30f2f9",
+   "family_id": "ffam_aefb7a00fc910352",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_881c44fa0cda8200",
+   "family_id": "ffam_aefb7a00fc910352",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_5a191bddbf50f630",
+   "family_id": "ffam_8385db1fab99eeee",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_495cdb4f0d88d226",
+   "family_id": "ffam_8385db1fab99eeee",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_09252315095aa169",
+   "family_id": "ffam_8385db1fab99eeee",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_815414e86c968c16",
+   "family_id": "ffam_8385db1fab99eeee",
+   "domain": "lease_termination_dispute",
+   "combination": [
+    "arrears",
+    "family_home",
+    "retaliation_screen"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_284cb44c9617cba6",
+   "family_id": "ffam_6265aec93f58160a",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "mold"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2cab6f06f58d2ebd",
+   "family_id": "ffam_6265aec93f58160a",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_cb0a6837d3f9d819",
+   "family_id": "ffam_6265aec93f58160a",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "mold"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_716f9606b9e15e8f",
+   "family_id": "ffam_6265aec93f58160a",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_f072f22a4d308814",
+   "family_id": "ffam_32556e62ac304185",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_938145a10416cfa4",
+   "family_id": "ffam_32556e62ac304185",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_3144174d4eaa6a32",
+   "family_id": "ffam_32556e62ac304185",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_23c7f3a59472b82a",
+   "family_id": "ffam_32556e62ac304185",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_893dbc47ca84663f",
+   "family_id": "ffam_bf0bf3cbade6d649",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects"
+   ],
+   "language": "en",
+   "channel": "phone_note",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_77b05646bbfc654b",
+   "family_id": "ffam_bf0bf3cbade6d649",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_6cae1116c044a99a",
+   "family_id": "ffam_bf0bf3cbade6d649",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_1d7e0a19ee376c16",
+   "family_id": "ffam_bf0bf3cbade6d649",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_99be3b386d6fe5d8",
+   "family_id": "ffam_5bbde07477eeff85",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "phone_note",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_820ed84f0e81363f",
+   "family_id": "ffam_5bbde07477eeff85",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_20eb1b189ff1c5d1",
+   "family_id": "ffam_5bbde07477eeff85",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_b8e5c045a70c397b",
+   "family_id": "ffam_5bbde07477eeff85",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_a362784e299e172d",
+   "family_id": "ffam_fee18152d1089ffe",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_fb6908e2671dae22",
+   "family_id": "ffam_fee18152d1089ffe",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_a442849bcc00a706",
+   "family_id": "ffam_fee18152d1089ffe",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_48ad1556596f887c",
+   "family_id": "ffam_fee18152d1089ffe",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "heating",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_4f31932d66dafbf9",
+   "family_id": "ffam_96dcc313b7edcf68",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_4c8a58711c423e41",
+   "family_id": "ffam_96dcc313b7edcf68",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_e7ec69ccf6911516",
+   "family_id": "ffam_96dcc313b7edcf68",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_d0adca9e774843e2",
+   "family_id": "ffam_96dcc313b7edcf68",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating"
+   ],
+   "language": "en",
+   "channel": "phone_note",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2e51df9903135af2",
+   "family_id": "ffam_ba42a866b3f94c0b",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "language": "de-CH",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_d991bc5ba67d6aff",
+   "family_id": "ffam_ba42a866b3f94c0b",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_3b8ec390e5f4fbc8",
+   "family_id": "ffam_ba42a866b3f94c0b",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_1f01a092db41c4bb",
+   "family_id": "ffam_ba42a866b3f94c0b",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2534a534b97da50f",
+   "family_id": "ffam_09ccdcd94e6958ff",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "phone_note",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_79cd16a5ca76b01b",
+   "family_id": "ffam_09ccdcd94e6958ff",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_62814fb6c5c0f470",
+   "family_id": "ffam_09ccdcd94e6958ff",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_2e14148317fc5787",
+   "family_id": "ffam_09ccdcd94e6958ff",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "heating",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_e731dc82c6481239",
+   "family_id": "ffam_b73f5e8d16e30548",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "health_effects",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "portal",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_655804bbffa9242f",
+   "family_id": "ffam_b73f5e8d16e30548",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "health_effects",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "chat",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_6497fc47bf76f74f",
+   "family_id": "ffam_b73f5e8d16e30548",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "health_effects",
+    "mold"
+   ],
+   "language": "en",
+   "channel": "email",
+   "split": "fresh_test"
+  },
+  {
+   "case_id": "fcl_699677dc46b1150f",
+   "family_id": "ffam_b73f5e8d16e30548",
+   "domain": "defect_mold_heating",
+   "combination": [
+    "deposit_considered",
+    "health_effects",
+    "mold"
+   ],
+   "language": "de-CH",
+   "channel": "email",
+   "split": "fresh_test"
+  }
+ ]
+}

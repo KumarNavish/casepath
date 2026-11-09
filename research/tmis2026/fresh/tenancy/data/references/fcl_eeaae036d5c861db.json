@@ -1,0 +1,98 @@
+{
+ "claim_id": "fcl_eeaae036d5c861db",
+ "family": "rent_increase_dispute",
+ "family_id": "ffam_8f8c20178ede48c7",
+ "scenario": {
+  "reference_rate": true,
+  "renovation": true
+ },
+ "implicit_flags": {
+  "claim_received": true
+ },
+ "fact_states": {
+  "claim_received": "stated_true",
+  "reference_rate": "stated_true",
+  "renovation": "stated_true"
+ },
+ "policy_verdicts": {
+  "claim_received": "true",
+  "reference_rate": "true",
+  "renovation": "true"
+ },
+ "open_fact": null,
+ "document_states": {
+  "lease_contract": "required_now",
+  "rent_increase_notice": "required_now",
+  "proof_of_receipt": "required_now",
+  "current_rent_evidence": "supplied_sufficient",
+  "prior_rent_adjustment": "supplied_insufficient",
+  "stated_calculation": "required_now",
+  "reference_rate_basis": "required_now",
+  "renovation_cost_breakdown": "required_now",
+  "landlord_correspondence": "not_needed"
+ },
+ "engine_routes": {
+  "lease_contract": "needed_later",
+  "rent_increase_notice": "needed_later",
+  "proof_of_receipt": "needed_later",
+  "current_rent_evidence": "established",
+  "prior_rent_adjustment": "needed_later",
+  "stated_calculation": "needed_later",
+  "reference_rate_basis": "needed_later",
+  "renovation_cost_breakdown": "needed_later",
+  "landlord_correspondence": "optional"
+ },
+ "request_set": [
+  "lease_contract",
+  "prior_rent_adjustment",
+  "proof_of_receipt",
+  "reference_rate_basis",
+  "renovation_cost_breakdown",
+  "rent_increase_notice",
+  "stated_calculation"
+ ],
+ "held_set": [],
+ "answered": {
+  "document_states": {
+   "lease_contract": "required_now",
+   "rent_increase_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "current_rent_evidence": "supplied_sufficient",
+   "prior_rent_adjustment": "supplied_insufficient",
+   "stated_calculation": "required_now",
+   "reference_rate_basis": "required_now",
+   "renovation_cost_breakdown": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "request_set": [
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_077efce05e85777c",
+   "document_type": "prior_rent_adjustment",
+   "sufficient": false,
+   "omitted_field": "adjusted_amount"
+  },
+  {
+   "artifact_id": "fatt_c519117d46133fb9",
+   "document_type": "current_rent_evidence",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "blind_check_reading": {
+  "claim_received": "stated_true",
+  "reference_rate": "stated_true",
+  "renovation": "stated_true"
+ },
+ "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+ "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+}

@@ -1,0 +1,58 @@
+{
+ "claim_id": "fcl_2dffd4707bf2bbad",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_b18eb3bf85906174",
+ "combo": [
+  "retaliation_screen"
+ ],
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "absent",
+  "arrears": "absent",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_d9256473932f9f31",
+   "document_type": "termination_notice",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "4f3b5fa9023aa2afcf3ad7c1b38c673ad6a675e493b656659c3d20b05e0fe8f8"
+  }
+ ],
+ "values": {
+  "tenant": "Martin Egli",
+  "landlord": "Familie Gasser (private landlord)",
+  "city": "Olten",
+  "canton": "SO",
+  "address": "Lindenstrasse 76, Olten, 4.5-room flat",
+  "lease_start": "1 April 2022",
+  "rent": 1570,
+  "utilities": 240,
+  "received_at": "2026-09-17T10:45:00+01:00",
+  "end_date": "30 September 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 4710,
+  "new_rent": 1720,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2023",
+  "prior_rent": 1480,
+  "prior_rate": "1.25",
+  "defect": "",
+  "notified_on": "15 August 2026",
+  "repair_deadline": "3 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "10 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

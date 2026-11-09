@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_4f31932d66dafbf9",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-09-05T09:30:00+01:00",
+  "canton": "ZG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_7c2ee28695d7e4e0",
+  "subject": "Heating defect in rented flat at Kirchgasse 57, Zug",
+  "body": "hi, I'm writing about my flat at Kirchgasse 57 in Zug, the 3-room flat I rent from Peter Ammann (private landlord) / the heating has not been working properly since the start of September / some rooms stay cold and several radiators simply fail to heat up / in the mornings the flat cools down to about 16 degrees, which is not acceptable for a rented flat / I reported this to Mr Ammann by text message on 3 September and asked him to send someone to fix it / he has not fixed it yet and has not given me a date either / I don't want to just sit and wait / if the defect is not fixed, I intend to pay my rent into the official rent deposit (Hinterlegung) so that I am not in default while this gets sorted out / before I do that I want to understand the correct steps and what my legal expenses cover / can you help me with this? I can send you the text messages and photos of the radiators if that helps / thanks, Sam",
+  "sent_at": "2026-09-05T09:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

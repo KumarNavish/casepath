@@ -1,0 +1,60 @@
+{
+ "claim_id": "fcl_e731dc82c6481239",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_b73f5e8d16e30548",
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "mold"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": null,
+ "attachments": [
+  {
+   "artifact_id": "fatt_dad5b8eda8f7ffd8",
+   "document_type": "defect_notification",
+   "sufficient": false,
+   "omitted_field": "recipient",
+   "sha256": "267360ab34a9278840714b3424125261008120d28a2e03647d7ae7975fa9f07b"
+  }
+ ],
+ "values": {
+  "tenant": "Corinne Huber",
+  "landlord": "Regimo Liegenschaften AG",
+  "city": "Aarau",
+  "canton": "AG",
+  "address": "Feldstrasse 21, Aarau, 4.5-room flat",
+  "lease_start": "1 April 2012",
+  "rent": 2560,
+  "utilities": 220,
+  "received_at": "2026-11-06T18:30:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 7680,
+  "new_rent": 2740,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2019",
+  "prior_rent": 2480,
+  "prior_rate": "1.25",
+  "defect": "black mould spreading on the bedroom wall and around the bathroom window",
+  "notified_on": "27 August 2026",
+  "repair_deadline": "3 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "19 October 2026",
+  "health_detail": "breathing problems"
+ },
+ "replacement": 0
+}

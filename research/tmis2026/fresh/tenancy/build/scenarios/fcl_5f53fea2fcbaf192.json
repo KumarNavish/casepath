@@ -1,0 +1,51 @@
+{
+ "claim_id": "fcl_5f53fea2fcbaf192",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_abdf9da08a90822a",
+ "combo": [
+  "family_home",
+  "retaliation_screen"
+ ],
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "absent",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Taylor Brooks",
+  "landlord": "Hausverwaltung Aare AG",
+  "city": "Zug",
+  "canton": "ZG",
+  "address": "Feldstrasse 43, Zug, 3.5-room flat",
+  "lease_start": "1 June 2022",
+  "rent": 2200,
+  "utilities": 230,
+  "received_at": "2026-11-19T10:15:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 4400,
+  "new_rent": 2370,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2020",
+  "prior_rent": 2070,
+  "prior_rate": "1.25",
+  "defect": "",
+  "notified_on": "5 July 2026",
+  "repair_deadline": "23 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "3 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

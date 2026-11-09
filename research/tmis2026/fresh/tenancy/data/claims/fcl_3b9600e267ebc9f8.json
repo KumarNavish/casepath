@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_3b9600e267ebc9f8",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-11-21T12:00:00+01:00",
+  "canton": "GR"
+ },
+ "customer_message": {
+  "message_id": "fmsg_9d159aa2e2191dbf",
+  "subject": "Request for help contesting rent increase, Weiherweg 81, Chur",
+  "body": "Dear Claims Team, I am writing to ask for your help in contesting a rent increase for my 3.5-room flat at Weiherweg 81 in Chur. The flat is rented from Wohnbau Limmat GmbH, and my current net rent is CHF 2330 per month, as shown in the attached statement from the property manager. The landlord justifies the increase with two reasons. First, the mortgage reference interest rate has risen, and the landlord presents this as the basis for a higher rent. Second, the landlord points to renovation and value-enhancing investment work carried out on the building, which it says supports a higher rent for my flat. I do not accept either reason in its current form. I would like to understand whether the increase is justified and what steps I can take to challenge it. I would be grateful if you could review the position and let me know which documents you need from me and how the procedure works from here. Please contact me by e-mail at the address above, or by phone if that is easier for you. Kind regards, Drew Palmer",
+  "sent_at": "2026-11-21T12:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_34253320f90dbdcc"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_34253320f90dbdcc",
+   "file_name": "current_rent_statement.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVOVCBTVEFURU1FTlQuIFByb3BlcnR5OiBXZWloZXJ3ZWcgODEsIDcwMDAgQ2h1ci4gVW5pdDogMy41LXJvb20gZmxhdC4gVGVuYW50OiBEcmV3IFBhbG1lci4gTWFuYWdlZCBvbiBiZWhhbGYgb2Y6IFdvaG5iYXUgTGltbWF0IEdtYkguIFN0YXRlbWVudCBkYXRlOiAyMDI2LTExLTIxLiBDdXJyZW50IG5ldCByZW50OiBDSEYgMjMzMCBwZXIgbW9udGguIFN0YXRlbWVudCBwcmVwYXJlZCBieSB0aGUgcHJvcGVydHkgbWFuYWdlbWVudCBvZmZpY2UuIEZvciBxdWVzdGlvbnMgcmVnYXJkaW5nIHRoaXMgc3RhdGVtZW50LCBwbGVhc2UgY29udGFjdCB0aGUgcHJvcGVydHkgbWFuYWdlbWVudCBvZmZpY2Uu",
+   "sha256": "e78cb563b4d13053fc20ace472dc54ee5bc94ad0733d8d5f7f71c19926f39538",
+   "size_bytes": 342
+  }
+ ]
+}

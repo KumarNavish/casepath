@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_eeaae036d5c861db",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-01T12:45:00+01:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "fmsg_bf5dadd3c2335c0a",
+  "subject": "Anfrage zur Mietzinserhöhung Lindenstrasse 53, Olten",
+  "body": "Sehr geehrte Damen und Herren Ich benötige Unterstützung, um eine Mietzinserhöhung anzufechten, die mir meine Vermieterin, die Regimo Liegenschaften AG, für meine 4-Zimmer-Wohnung an der Lindenstrasse 53 in 4600 Olten mitgeteilt hat. Ich habe die schriftliche Mitteilung über die Erhöhung erhalten. Die Vermieterin begründet die Erhöhung zum einen mit einer Erhöhung des hypothekarischen Referenzzinssatzes. Zum anderen verweist sie auf wertvermehrende Investitionen beziehungsweise Renovationsarbeiten an der Liegenschaft. Mein aktueller Nettomietzins beträgt CHF 1890 pro Monat, zuzüglich eines monatlichen Akontobetrags für Heiz- und Nebenkosten von CHF 210. Die letzte Mietzinsanpassung erfolgte am 1. Oktober 2019. Die entsprechende Mitteilung und meine aktuelle Mietzinsbestätigung der Liegenschaftsverwaltung habe ich als Beilagen hochgeladen. Ich wäre Ihnen dankbar, wenn Sie mich beraten könnten, wie ich die Erhöhung prüfen und gegebenenfalls form- und fristgerecht anfechten kann. Ich stehe für Rückfragen gerne zur Verfügung und danke Ihnen im Voraus für Ihre Hilfe. Freundliche Grüsse Monika Wyss",
+  "sent_at": "2026-09-01T12:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_077efce05e85777c",
+   "fatt_c519117d46133fb9"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_077efce05e85777c",
+   "file_name": "Mitteilung_Mietzinsanpassung_2019.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWl0dGVpbHVuZyDDvGJlciBkaWUgQW5wYXNzdW5nIGRlcyBNaWV0emluc2VzLiBWZXJtaWV0ZXJpbjogUmVnaW1vIExpZWdlbnNjaGFmdGVuIEFHLiBNaWV0ZXJpbjogTW9uaWthIFd5c3MuIE9iamVrdDogTGluZGVuc3RyYXNzZSA1MywgNDYwMCBPbHRlbiwgNC1aaW1tZXItV29obnVuZy4gRGF0dW0gZGVyIEFucGFzc3VuZzogMS4gT2t0b2JlciAyMDE5LiBHcnVuZGxhZ2UgZGVyIEFucGFzc3VuZzogaHlwb3RoZWthcmlzY2hlciBSZWZlcmVuenppbnNzYXR6IHZvbiAxLjI1ICUgenVtIGRhbWFsaWdlbiBaZWl0cHVua3QuIERpZSBBbnBhc3N1bmcgd2lyZCBhdWYgZGVuIDEuIE9rdG9iZXIgMjAxOSB3aXJrc2FtLiBNaXQgZnJldW5kbGljaGVuIEdyw7xzc2VuLCBSZWdpbW8gTGllZ2Vuc2NoYWZ0ZW4gQUc=",
+   "sha256": "b48bd12c6e281b980d01d73ad2f2994a77782b3763cf40538fb4ac47517fc6ed",
+   "size_bytes": 401
+  },
+  {
+   "artifact_id": "fatt_c519117d46133fb9",
+   "file_name": "Mietzinsbestaetigung_aktuell.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWlldHppbnNiZXN0w6R0aWd1bmcuIExpZWdlbnNjaGFmdHN2ZXJ3YWx0dW5nOiBSZWdpbW8gTGllZ2Vuc2NoYWZ0ZW4gQUcuIE1pZXRlcmluOiBNb25pa2EgV3lzcy4gT2JqZWt0OiBMaW5kZW5zdHJhc3NlIDUzLCA0NjAwIE9sdGVuLCA0LVppbW1lci1Xb2hudW5nLiBBa3R1ZWxsZXIgTmV0dG9taWV0emluczogQ0hGIDE4OTAgcHJvIE1vbmF0LiBBa29udG96YWhsdW5nIGbDvHIgSGVpei0gdW5kIE5lYmVua29zdGVuOiBDSEYgMjEwIHBybyBNb25hdC4gVG90YWwgbW9uYXRsaWNoZSBaYWhsdW5nOiBDSEYgMjEwMC4gRGllc2VyIEJldHJhZyBpc3QgamV3ZWlscyBhdWYgZGVuIE1vbmF0c2Vyc3RlbiBmw6RsbGlnLiBBdXNnZXN0ZWxsdCBhbSAxLiBTZXB0ZW1iZXIgMjAyNi4=",
+   "sha256": "f36c512942eb2f6c755b38c1264723a4f15a5019393b9ea4b4e00102ed1547b0",
+   "size_bytes": 383
+  }
+ ]
+}

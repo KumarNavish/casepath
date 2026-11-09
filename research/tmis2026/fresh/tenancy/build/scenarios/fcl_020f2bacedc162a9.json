@@ -1,0 +1,51 @@
+{
+ "claim_id": "fcl_020f2bacedc162a9",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_cb831927bc7f8ee1",
+ "combo": [
+  "arrears",
+  "family_home"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "open",
+  "retaliation_screen": "absent",
+  "extension_relevant": "absent"
+ },
+ "open_flag": "arrears",
+ "open_value": true,
+ "routing_stated": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Beat Widmer",
+  "landlord": "Verwaltung Rhein & Partner",
+  "city": "Olten",
+  "canton": "SO",
+  "address": "Bahnhofstrasse 46, Olten, 3.5-room flat",
+  "lease_start": "1 October 2013",
+  "rent": 1560,
+  "utilities": 180,
+  "received_at": "2026-10-20T17:30:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 3120,
+  "new_rent": 1740,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2023",
+  "prior_rent": 1490,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "19 August 2026",
+  "repair_deadline": "17 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "9 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

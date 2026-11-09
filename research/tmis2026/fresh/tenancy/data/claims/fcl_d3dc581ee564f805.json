@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_d3dc581ee564f805",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-11-27T08:00:00+01:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_fa03212d289c2be3",
+  "subject": "Rent increase notice for Gartenweg 54 - need help contesting",
+  "body": "Hi, my name is Taylor Brooks and I rent the 3.5-room flat at Gartenweg 54 in Frauenfeld from Wohnbau Limmat GmbH. Thanks for picking this up, I really need some help. Last week I got a written notification from the landlord that my rent will go up. I have the letter and I scanned the tenancy agreement too. Right now I pay CHF 1760 net per month, the lease started on 1 April 2014. The landlord says the increase is because of renovation and value-enhancing investment work on the building. I have not seen any invoices or details of what was actually done, and I do not know if the work really increases the value of my flat. The letter also mentions a rise in the mortgage reference interest rate, but I am not sure whether the increase is based on the mortgage reference interest rate, on the renovation, or on both. I have not yet checked the calculation because I do not understand the form they sent. Could you tell me if I can contest this and what the deadline is? I do not want to miss the window to object. Also, should I pay the new rent until this is sorted out or wait? Thanks, Taylor",
+  "sent_at": "2026-11-27T08:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_4fd06837e1d2d826"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_4fd06837e1d2d826",
+   "file_name": "tenancy_agreement_Gartenweg54.txt",
+   "media_type": "text/plain",
+   "content_base64": "VEVOQU5DWSBBR1JFRU1FTlQgKExFQVNFIENPTlRSQUNUKS4gTGFuZGxvcmQ6IFdvaG5iYXUgTGltbWF0IEdtYkguIFRlbmFudDogVGF5bG9yIEJyb29rcy4gUmVudGVkIHByb3BlcnR5OiAzLjUtcm9vbSBmbGF0LCBHYXJ0ZW53ZWcgNTQsIEZyYXVlbmZlbGQsIFN3aXR6ZXJsYW5kLiBTdGFydCBkYXRlIG9mIHRlbmFuY3k6IDEgQXByaWwgMjAxNC4gQWdyZWVkIG5ldCByZW50OiBDSEYgMTc2MCBwZXIgbW9udGgsIHBsdXMgYW5jaWxsYXJ5IGNvc3RzIGFzIHNlcGFyYXRlbHkgc3RhdGVkLiBOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMsIHRvIHRoZSBlbmQgb2YgYSBtb250aC4gU2lnbmVkIGJ5IHRoZSBsYW5kbG9yZCBhbmQgdGhlIHRlbmFudCBhdCB0aGUgdGltZSBvZiBjb25jbHVzaW9uIG9mIHRoZSBjb250cmFjdC4=",
+   "sha256": "68980564df2633539390485b3282bd5b29e052aee7c62da257d9d1617788fefe",
+   "size_bytes": 410
+  }
+ ]
+}

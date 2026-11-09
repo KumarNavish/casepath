@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_2dffd4707bf2bbad",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-17T10:45:00+01:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "fmsg_c433a0474ab011e4",
+  "subject": "Kündigung meines Mietverhältnisses Lindenstrasse 76, Olten",
+  "body": "Sehr geehrte Damen und Herren. Anbei sende ich Ihnen die Kündigung meines Mietverhältnisses für die 4.5-Zimmer-Wohnung an der Lindenstrasse 76 in Olten. Die Vermieterfamilie Gasser hat mir das Mietverhältnis mit Schreiben vom 17. September 2026 auf den 30. September 2027 gekündigt. Als Grund wird eine geplante Gesamtsanierung des Gebäudes angegeben. Ich habe die Kündigung erhalten und bin überzeugt, dass sie eine Reaktion auf meine Forderungen ist. Vor einigen Wochen habe ich die Vermieter schriftlich auf Mängel in der Wohnung hingewiesen, insbesondere auf die undichte Balkontür und den Schimmel im Badezimmer. Zudem habe ich den Mietzins schriftlich angefochten. Kurz danach folgte die Kündigung. Ich möchte die Kündigung anfechten und bitte Sie um Unterstützung. Mir ist bewusst, dass ich dafür innerhalb der gesetzlichen Frist bei der Schlichtungsbehörde ein Gesuch einreichen muss. Bitte teilen Sie mir mit, ob Ihre Rechtsschutzversicherung die Kosten übernimmt und welche Unterlagen Sie von mir benötigen. Das Kündigungsschreiben liegt als Beilage bei. Ich bin unter der Nummer 062 555 01 23 telefonisch erreichbar. Freundliche Grüsse Martin Egli",
+  "sent_at": "2026-09-17T10:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_d9256473932f9f31"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_d9256473932f9f31",
+   "file_name": "Kuendigung_Lindenstrasse_76.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWl0dGVpbHVuZyBkZXIgS8O8bmRpZ3VuZyBkZXMgTWlldHZlcmjDpGx0bmlzc2VzLiBBbXRsaWNoIGdlbmVobWlndGVzIGthbnRvbmFsZXMgRm9ybXVsYXIuIFZlcm1pZXRlcjogRmFtaWxpZSBHYXNzZXIsIExpbmRlbnN0cmFzc2UgNzAsIDQ2MDAgT2x0ZW4uIE1pZXRlcjogTWFydGluIEVnbGksIExpbmRlbnN0cmFzc2UgNzYsIDQ2MDAgT2x0ZW4uIE1pZXRvYmpla3Q6IDQuNS1aaW1tZXItV29obnVuZywgTGluZGVuc3RyYXNzZSA3NiwgNDYwMCBPbHRlbi4gT3J0IHVuZCBEYXR1bTogT2x0ZW4sIDE3LiBTZXB0ZW1iZXIgMjAyNi4gRGllIEvDvG5kaWd1bmcgd2lyZCBoaWVybWl0IGF1ZiBkZW4gMzAuIFNlcHRlbWJlciAyMDI3IGF1c2dlc3Byb2NoZW4uIEvDvG5kaWd1bmdzZ3J1bmQ6IGdlcGxhbnRlIEdlc2FtdHNhbmllcnVuZyBkZXMgR2Viw6R1ZGVzLiBEaWVzZSBLw7xuZGlndW5nIHdpcmQgYXVmIGRlbSBhbXRsaWNoIGdlbmVobWlndGVuIGthbnRvbmFsZW4gRm9ybXVsYXIgYXVzZ2VzdGVsbHQuIEhpbndlaXMgenVyIEFuZmVjaHR1bmc6IERlciBNaWV0ZXIga2FubiBkaWUgS8O8bmRpZ3VuZyBpbm5lcmhhbGIgZGVyIGdlc2V0emxpY2hlbiBGcmlzdCBiZWkgZGVyIFNjaGxpY2h0dW5nc2JlaMO2cmRlIGFuZmVjaHRlbi4gRGllIFNjaGxpY2h0dW5nc2JlaMO2cmRlIGVydGVpbHQgQXVza3VuZnQgw7xiZXIgZGFzIFZvcmdlaGVuLiBVbnRlcnNjaHJpZnQgZGVzIFZlcm1pZXRlcnM6IEZhbWlsaWUgR2Fzc2VyLg==",
+   "sha256": "4f3b5fa9023aa2afcf3ad7c1b38c673ad6a675e493b656659c3d20b05e0fe8f8",
+   "size_bytes": 748
+  }
+ ]
+}

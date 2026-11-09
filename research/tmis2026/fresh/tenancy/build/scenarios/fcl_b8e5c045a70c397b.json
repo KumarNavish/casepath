@@ -1,0 +1,66 @@
+{
+ "claim_id": "fcl_b8e5c045a70c397b",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_5bbde07477eeff85",
+ "combo": [
+  "health_effects",
+  "mold"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "open",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "open_flag": "mold",
+ "open_value": true,
+ "routing_stated": null,
+ "attachments": [
+  {
+   "artifact_id": "fatt_dd8036c4a895dbec",
+   "document_type": "landlord_response_history",
+   "sufficient": false,
+   "omitted_field": "landlord_response",
+   "sha256": "01f98023d11bda046289ee8fda06b7ac47ac792f52edca6419c1107c96b6486d"
+  },
+  {
+   "artifact_id": "fatt_e481b333f9daf811",
+   "document_type": "defect_notification",
+   "sufficient": false,
+   "omitted_field": "reported_defect",
+   "sha256": "42966a8b29449cb568064582daaf371ec35239037508f460f66e99c8b6a2d3bb"
+  }
+ ],
+ "values": {
+  "tenant": "Monika Wyss",
+  "landlord": "Regimo Liegenschaften AG",
+  "city": "Aarau",
+  "canton": "AG",
+  "address": "Sonnenbergstrasse 47, Aarau, 2-room flat",
+  "lease_start": "1 April 2017",
+  "rent": 2630,
+  "utilities": 220,
+  "received_at": "2026-11-28T09:45:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 5260,
+  "new_rent": 2740,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2021",
+  "prior_rent": 2540,
+  "prior_rate": "1.5",
+  "defect": "the front door of the flat no longer locks properly",
+  "notified_on": "2 June 2026",
+  "repair_deadline": "13 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "28 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 2
+}

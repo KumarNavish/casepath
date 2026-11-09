@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_e514cbc96786ff0a",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-11-01T09:30:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_057041b93d2224f3",
+  "subject": "Termination of lease Gartenweg 61, Bern - request for objection and extension",
+  "body": "Dear Legal Expenses Team, I received a written notice of termination of my lease for the 3-room flat at Gartenweg 61, Bern, from my landlord, the Gasser family. The notice is dated 20 October 2026 and gives an end date of 31 March 2027. I would like your help to contest it and to request an extension of the tenancy. My wife lives in the flat with me, and it is our family home. We have two children who attend the local school. Moving out by the end date would cause us real hardship. We have started looking for a new place, but the Bern rental market is very tight and suitable three-room flats near the school are scarce. When the landlord told me about the termination by phone, he mentioned late payments. I am not sure whether the termination is actually based on rent arrears, because I have not yet seen any reminder or statement of account that confirms an outstanding amount, and I have not yet checked my bank records in full. Could you please advise on the deadline for objecting to the termination and on the steps to request an extension? I can send copies of the notice and the school confirmation. Kind regards, Chris Lawson",
+  "sent_at": "2026-11-01T09:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

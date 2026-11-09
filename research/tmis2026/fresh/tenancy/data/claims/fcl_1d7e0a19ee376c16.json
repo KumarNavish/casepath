@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_1d7e0a19ee376c16",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-10-17T18:00:00+01:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_d1d7ea900f67f417",
+  "subject": "Defekte Wohnungstür an der Feldstrasse 54 in Winterthur, Bitte um Unterstützung",
+  "body": "Sehr geehrte Damen und Herren. Ich wende mich an Sie, weil in meiner Wohnung an der Feldstrasse 54 in Winterthur ein Mangel besteht, den mein Vermieter, Herr Peter Ammann, bisher nicht behoben hat. Die Wohnungseingangstür schliesst nicht mehr richtig ab. Ich habe Herrn Ammann diesen Mangel schriftlich gemeldet, eine Reaktion habe ich bisher nicht erhalten. Seit diesem Mangel fühlt sich eine Person in meinem Haushalt in der Wohnung unsicher. Diese Person hat seither Schlafprobleme und häufig Kopfschmerzen. Ich führe dies auf die Situation mit der Tür zurück, kann das aber medizinisch nicht beurteilen. Zusätzlich sind an einer Wand dunkle Flecken sichtbar. Ob es sich dabei um Schimmel oder um Feuchtigkeit handelt, weiss ich nicht. Ich bin Mieterin seit dem 1. April 2021 und bezahle einen Nettomietzins von CHF 2450 pro Monat. Den Mietvertrag lege ich bei. Können Sie mir mitteilen, welche Schritte ich einleiten kann und wie ich Herrn Ammann zur Behebung des Mangels auffordern soll? Ich freue mich auf Ihre Rückmeldung. Freundliche Grüsse, Corinne Huber",
+  "sent_at": "2026-10-17T18:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_066129c4f863a8cb"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_066129c4f863a8cb",
+   "file_name": "Mietvertrag_Feldstrasse_54.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUkFVTS4gVmVybWlldGVyOiBQZXRlciBBbW1hbm4gKFByaXZhdHZlcm1pZXRlcikuIE1pZXRlcmluOiBDb3Jpbm5lIEh1YmVyLiBNaWV0b2JqZWt0OiAyLVppbW1lci1Xb2hudW5nLCBGZWxkc3RyYXNzZSA1NCwgODQwMCBXaW50ZXJ0aHVyLiBNaWV0YmVnaW5uOiAxLiBBcHJpbCAyMDIxLiBOZXR0b21pZXR6aW5zOiBDSEYgMjQ1MC4wMCBwcm8gTW9uYXQsIHp1esO8Z2xpY2ggTmViZW5rb3N0ZW4gZ2Vtw6RzcyBzZXBhcmF0ZXIgQWJyZWNobnVuZy4gS8O8bmRpZ3VuZ3NmcmlzdDogZHJlaSBNb25hdGUgYXVmIEVuZGUgZWluZXMgTW9uYXRzLiBEZXIgTWlldHZlcnRyYWcgdW50ZXJsaWVndCBkZW0gc2Nod2VpemVyaXNjaGVuIE9ibGlnYXRpb25lbnJlY2h0LiBPcnQgdW5kIERhdHVtOiBXaW50ZXJ0aHVyLCAyMDIxLiBVbnRlcnNjaHJpZnQgVmVybWlldGVyOiBQZXRlciBBbW1hbm4uIFVudGVyc2NocmlmdCBNaWV0ZXJpbjogQ29yaW5uZSBIdWJlci4=",
+   "sha256": "594a556480732f7d9ef07d21ee00877b7fad0cbda72cfe2917232ee60577e09e",
+   "size_bytes": 503
+  }
+ ]
+}

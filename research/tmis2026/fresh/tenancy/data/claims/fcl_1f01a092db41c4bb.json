@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_1f01a092db41c4bb",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-11-28T16:00:00+01:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "fmsg_f8b309e940798de1",
+  "subject": "Request for assistance: defective heating in my rented flat, Rosenstrasse 24, Olten",
+  "body": "Dear Claims Team, I am writing to request help with a defect in my rented flat at Rosenstrasse 24, Olten, a 4-room flat rented from Verwaltung Rhein & Partner. The heating does not work properly. Several rooms stay cold, radiators fail, and the flat cools down to about 16 degrees. I reported the problem to the landlord several times, but it has not been fixed. I have copies of my messages. A member of my household has had repeated colds and bronchitis, which I attribute to the cold flat. I am not sure what is causing the failure. A technical expert inspection by a building or heating specialist is needed to establish the cause. We have not yet arranged one, and I do not know whether the landlord will agree. Could you advise me on my options and whether your policy covers the costs of the expert and of legal advice? I would appreciate a reply within two weeks. Kind regards, Casey Hughes",
+  "sent_at": "2026-11-28T16:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

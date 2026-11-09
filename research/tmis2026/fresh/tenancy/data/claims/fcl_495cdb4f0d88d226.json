@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_495cdb4f0d88d226",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-11T09:15:00+01:00",
+  "canton": "BS"
+ },
+ "customer_message": {
+  "message_id": "fmsg_3f467bafde91a3a3",
+  "subject": "Anfechtung der Kündigung Rosenstrasse 10, Basel",
+  "body": "Sehr geehrte Damen und Herren\n\nIch habe von meinem Vermieter, Herrn Peter Ammann (private landlord), eine schriftliche Kündigung meines Mietverhältnisses für die 4-Zimmer-Wohnung an der Rosenstrasse 10 in Basel erhalten. Als Ende des Mietverhältnisses wird der 31. März 2027 genannt. Als Grund gibt der Vermieter Zahlungsrückstände beim Mietzins an. Laut Kündigung handelt es sich um einen Betrag von rund CHF 5670.\n\nDie Wohnung ist unsere gemeinsame Familienwohnung. Meine Ehefrau wohnt ebenfalls dort und ist im Mietverhältnis mitberechtigt.\n\nIch bin der Meinung, dass die Kündigung eine Vergeltungskündigung ist. Ich habe vor Kurzem meine Mietrechte geltend gemacht: Ich habe Mängel an der Wohnung gemeldet und den Mietzins angefochten. Kurz danach kam die Kündigung. Ich sehe einen klaren zeitlichen Zusammenhang und möchte mich dagegen wehren.\n\nIch möchte die Kündigung anfechten und benötige dafür Unterstützung durch Ihre Rechtsberatung. Insbesondere bitte ich um Prüfung der Form und der Fristen sowie um Hilfe beim Verfahren bei der Schlichtungsbehörde. Die Kündigung und den Mietvertrag habe ich als PDF-Dateien angehängt.\n\nBesten Dank für Ihre Rückmeldung.\n\nFreundliche Grüsse\n\nMartin Egli",
+  "sent_at": "2026-11-11T09:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_ca16a7b77176ba82",
+   "fatt_40cf3f880c4f73eb"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_ca16a7b77176ba82",
+   "file_name": "Kuendigung_Rosenstrasse10.txt",
+   "media_type": "text/plain",
+   "content_base64": "S8O8bmRpZ3VuZyBkZXMgTWlldHZlcmjDpGx0bmlzc2VzIChhbXRsaWNoIGdlbmVobWlndGVzIEZvcm11bGFyIGRlcyBLYW50b25zIEJhc2VsLVN0YWR0KS4gVmVybWlldGVyOiBQZXRlciBBbW1hbm4gKHByaXZhdGUgbGFuZGxvcmQpLiBNaWV0b2JqZWt0OiBSb3NlbnN0cmFzc2UgMTAsIEJhc2VsLCA0LVppbW1lci1Xb2hudW5nLiBFbmRlIGRlcyBNaWV0dmVyaMOkbHRuaXNzZXM6IDMxLiBNw6RyeiAyMDI3LiBLw7xuZGlndW5nc2dydW5kOiB1bnBhaWQgcmVudCAocmVudCBhcnJlYXJzKSwgWmFobHVuZ3Nyw7xja3N0YW5kIGJlaW0gTWlldHppbnMuIEhpbndlaXM6IERpZXNlIEvDvG5kaWd1bmcgd2lyZCBhdWYgZGVtIGFtdGxpY2ggZ2VuZWhtaWd0ZW4gRm9ybXVsYXIgZGVzIEthbnRvbnMgQmFzZWwtU3RhZHQgYXVzZ2VzcHJvY2hlbi4gRGllIE1pZXRlcnNjaGFmdCBrYW5uIGRpZSBLw7xuZGlndW5nIGlubmVydCBkZXIgZ2VzZXR6bGljaGVuIEZyaXN0IGJlaSBkZXIgU2NobGljaHR1bmdzYmVow7ZyZGUgaW4gTWlldHNhY2hlbiBhbmZlY2h0ZW4uIE9ydCB1bmQgRGF0dW06IEJhc2VsLCBkZW4gMjAyNi0xMS0xMS4gVW50ZXJzY2hyaWZ0IGRlcyBWZXJtaWV0ZXJzOiBQZXRlciBBbW1hbm4gKHByaXZhdGUgbGFuZGxvcmQp",
+   "sha256": "fca747406e04963b9c010dca05b74e4b85e2f801d5da04506411678c41808a09",
+   "size_bytes": 639
+  },
+  {
+   "artifact_id": "fatt_40cf3f880c4f73eb",
+   "file_name": "Mietvertrag_Rosenstrasse10.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWlldHZlcnRyYWcgZsO8ciBXb2hucmF1bS4gVmVybWlldGVyOiBQZXRlciBBbW1hbm4gKHByaXZhdGUgbGFuZGxvcmQpLiBNaWV0ZXI6IE1hcnRpbiBFZ2xpLiBNaWV0b2JqZWt0OiBSb3NlbnN0cmFzc2UgMTAsIEJhc2VsLCA0LVppbW1lci1Xb2hudW5nLiBEaWUgVmVydHJhZ3NwYXJ0ZWllbiB1bnRlcnplaWNobmVuIGRpZXNlbiBNaWV0dmVydHJhZyBmw7xyIGRhcyBvYmVuIGdlbmFubnRlIE1pZXRvYmpla3QuIE9ydCB1bmQgRGF0dW0gZGVyIFVudGVyemVpY2hudW5nOiBCYXNlbC4gVW50ZXJzY2hyaWZ0IFZlcm1pZXRlcjogUGV0ZXIgQW1tYW5uIChwcml2YXRlIGxhbmRsb3JkKS4gVW50ZXJzY2hyaWZ0IE1pZXRlcjogTWFydGluIEVnbGku",
+   "sha256": "412e7261bab44817f0bfbde17d8b2c78574b19eb2e5938dbd92a086d883638d8",
+   "size_bytes": 366
+  }
+ ]
+}

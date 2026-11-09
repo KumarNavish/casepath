@@ -1,0 +1,65 @@
+{
+ "claim_id": "fcl_5e22217a8f028d99",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_e91b2fc5fab33794",
+ "combo": [
+  "family_home"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "absent",
+  "retaliation_screen": "absent",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_5eb8540dae0ac4ea",
+   "document_type": "termination_notice",
+   "sufficient": false,
+   "omitted_field": "issuer",
+   "sha256": "2b8ad6e3b93dba0fa61204545ca8196004aeb6fbc3e57f5b04a0920f5f6549ce"
+  },
+  {
+   "artifact_id": "fatt_21b7eb7361345af4",
+   "document_type": "lease_contract",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "f1c4d758b9e88b7b30597eb121dfdeaa5e11ac2d54f3d7a96fbf885ce6078e5b"
+  }
+ ],
+ "values": {
+  "tenant": "Rowan Price",
+  "landlord": "Peter Ammann (private landlord)",
+  "city": "Luzern",
+  "canton": "LU",
+  "address": "Sonnenbergstrasse 87, Luzern, 4.5-room flat",
+  "lease_start": "1 June 2016",
+  "rent": 1710,
+  "utilities": 210,
+  "received_at": "2026-10-26T13:30:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 3420,
+  "new_rent": 1850,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2020",
+  "prior_rent": 1640,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "15 June 2026",
+  "repair_deadline": "2 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "10 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

@@ -1,0 +1,50 @@
+{
+ "claim_id": "fcl_938145a10416cfa4",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_32556e62ac304185",
+ "combo": [
+  "heating"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "absent",
+  "heating": "open",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "open_flag": "heating",
+ "open_value": true,
+ "routing_stated": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Drew Palmer",
+  "landlord": "Peter Ammann (private landlord)",
+  "city": "Frauenfeld",
+  "canton": "TG",
+  "address": "Gartenweg 41, Frauenfeld, 2-room flat",
+  "lease_start": "1 October 2012",
+  "rent": 1830,
+  "utilities": 220,
+  "received_at": "2026-10-21T17:30:00+01:00",
+  "end_date": "31 March 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 3660,
+  "new_rent": 1980,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2023",
+  "prior_rent": 1790,
+  "prior_rate": "1.25",
+  "defect": "the ventilation fan in the windowless bathroom is defective and rattles loudly day and night",
+  "notified_on": "24 July 2026",
+  "repair_deadline": "8 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "26 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 2
+}

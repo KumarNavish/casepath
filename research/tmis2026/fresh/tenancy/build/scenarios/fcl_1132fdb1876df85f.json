@@ -1,0 +1,58 @@
+{
+ "claim_id": "fcl_1132fdb1876df85f",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_b18eb3bf85906174",
+ "combo": [
+  "retaliation_screen"
+ ],
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "unmentioned",
+  "family_home": "absent",
+  "arrears": "absent",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": false,
+ "attachments": [
+  {
+   "artifact_id": "fatt_ff85b9c1a960a25e",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "tenancy_terms",
+   "sha256": "2688fdc7b0101dafaf97349a6a08cd9bda4d73772080134a252b63d611757b09"
+  }
+ ],
+ "values": {
+  "tenant": "Stefan Moser",
+  "landlord": "Peter Ammann (private landlord)",
+  "city": "Bern",
+  "canton": "BE",
+  "address": "Sonnenbergstrasse 7, Bern, 3.5-room flat",
+  "lease_start": "1 June 2022",
+  "rent": 2280,
+  "utilities": 310,
+  "received_at": "2026-09-27T10:45:00+01:00",
+  "end_date": "30 September 2027",
+  "grounds": "the landlord needs the flat for a close relative",
+  "arrears_amount": 4560,
+  "new_rent": 2360,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2019",
+  "prior_rent": 2230,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "2 July 2026",
+  "repair_deadline": "25 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "3 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

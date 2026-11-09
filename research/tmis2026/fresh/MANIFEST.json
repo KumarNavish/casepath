@@ -1,0 +1,477 @@
+{
+ "contract": "casepath.fresh-study2-data/1.0.0",
+ "sealed": "2026-11-09",
+ "note": "Built and sealed before any compared design ran on these data. No method output was consulted.",
+ "generator_model": "anthropic/claude-haiku-5.5",
+ "statistics": {
+  "tenancy": {
+   "claims": 72,
+   "families": 18,
+   "by_dispute_family": {
+    "lease_termination_dispute": 32,
+    "rent_increase_dispute": 4,
+    "defect_mold_heating": 36
+   },
+   "combinations": [
+    [
+     "defect_mold_heating",
+     [
+      "deposit_considered",
+      "health_effects",
+      "mold"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "deposit_considered",
+      "heating"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "deposit_considered",
+      "heating",
+      "mold"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "health_effects"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "health_effects",
+      "heating",
+      "specialist_needed"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "health_effects",
+      "mold"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "heating"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "heating",
+      "mold"
+     ]
+    ],
+    [
+     "defect_mold_heating",
+     [
+      "mold"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "arrears",
+      "extension_relevant"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "arrears",
+      "extension_relevant",
+      "family_home"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "arrears",
+      "family_home"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "arrears",
+      "family_home",
+      "retaliation_screen"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "extension_relevant",
+      "family_home",
+      "retaliation_screen"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "family_home"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "family_home",
+      "retaliation_screen"
+     ]
+    ],
+    [
+     "lease_termination_dispute",
+     [
+      "retaliation_screen"
+     ]
+    ],
+    [
+     "rent_increase_dispute",
+     [
+      "reference_rate",
+      "renovation"
+     ]
+    ]
+   ],
+   "max_active_branch_flags": 3,
+   "claims_with_2plus_active_flags": 52,
+   "language": {
+    "de-CH": 36,
+    "en": 36
+   },
+   "channel": {
+    "portal": 22,
+    "email": 34,
+    "phone_note": 5,
+    "chat": 11
+   },
+   "words_min_max": [
+    142,
+    219
+   ],
+   "claims_with_open_fact": 18,
+   "open_fact_true_value": {
+    "True": 9,
+    "False": 9
+   },
+   "routing_fact_claims": 36,
+   "routing_fact_unmentioned": 18,
+   "claims_with_attachments": 29,
+   "attachments": 38,
+   "attachments_sufficient": 18,
+   "attachments_by_type": {
+    "prior_rent_adjustment": 2,
+    "termination_notice": 5,
+    "lease_contract": 19,
+    "landlord_response_history": 4,
+    "current_rent_evidence": 2,
+    "payment_deadline_letter": 2,
+    "defect_notification": 4
+   },
+   "document_states": {
+    "required_now": 478,
+    "held": 22,
+    "not_needed": 246,
+    "supplied_insufficient": 20,
+    "supplied_sufficient": 18
+   },
+   "required_documents": 498,
+   "held_documents": 22,
+   "oracle": {
+    "claims": 72,
+    "references_reproduced": 72,
+    "mismatches": []
+   },
+   "generation": {
+    "model": "anthropic/claude-haiku-5.5",
+    "seed": 20261109,
+    "spend_usd": 0.4723837999999999,
+    "slots": 72,
+    "claims_written": 87,
+    "claims_replaced": 15,
+    "slots_unfilled": 0,
+    "accepted_claims_by_drafts": {
+     "1": 52,
+     "2": 11,
+     "3": 9
+    },
+    "drafts_checked": 146,
+    "blind_check_fact_agreement_all_drafts": 0.9044321329639889,
+    "blind_check_field_agreement_all_drafts": 0.955,
+    "blind_check_fact_agreement_first_drafts": 0.9133489461358314,
+    "blind_check_field_agreement_first_drafts": 0.9708029197080292,
+    "first_drafts_fully_agreeing": 0.5977011494252874,
+    "fact_agreement_by_expected_state_all_drafts": {
+     "stated_true": 0.9700996677740864,
+     "open": 1.0,
+     "not_mentioned": 0.8324022346368715
+    }
+   }
+  },
+  "theft": {
+   "stories": [
+    4,
+    5,
+    6,
+    7
+   ],
+   "pairs": {
+    "on": 36,
+    "unresolved": 24
+   },
+   "texts": 64,
+   "build_checks": {
+    "original_texts_identical": 72,
+    "original_v1_refs_identical_or_amended": 36,
+    "v1_reference_depends_on_condition_only": true
+   }
+  }
+ },
+ "files": {
+  "README.md": "a528352eee7b37d2b58a6421d24c2033f9f2d9ddc4d0051abc9ed417cd66b151",
+  "seal.py": "0966c3273b505f4bf8a7dbe687684058b9b304679225b83fec77d620bb0d789f",
+  "tenancy/build/generation_log.json": "4471a302571b79aef98586b34fab011fda4dce8e21bed5930bb1eb81ba1f96c1",
+  "tenancy/build/scenarios/fcl_020f2bacedc162a9.json": "894120f24fa5744742cb3203bbf703481f3413482a6e1a1bd38bde69dd58a5eb",
+  "tenancy/build/scenarios/fcl_09252315095aa169.json": "09ed390773bb29013d72d7256ed9b9e4f118be3fdd6f857d4e966d814ecc6b78",
+  "tenancy/build/scenarios/fcl_09bf4c849ef1ee44.json": "4b3b36ce6549fa989a00912557fbe03ea30f8dc644756e0edb18091da5279d30",
+  "tenancy/build/scenarios/fcl_0f9a9b0f4a043ab5.json": "eb6ca21ac41d15910bbcdcd240f1ce1912f9f3ed947aeb338444968d420cacdc",
+  "tenancy/build/scenarios/fcl_1132fdb1876df85f.json": "f30ad5b9549bdbd64bfe49c61740ef955a8b1a68852d93bca3282322927b4757",
+  "tenancy/build/scenarios/fcl_1d7e0a19ee376c16.json": "2d8de27ce259422bf3eec77e5950f80b080e3e652319b04832d723cbfc7cd353",
+  "tenancy/build/scenarios/fcl_1f01a092db41c4bb.json": "8ec3f3e2da15c40af4ca37feefdeb66112e6b916ff9fb7be280bc3e8a7f569a9",
+  "tenancy/build/scenarios/fcl_2021cff640ced3a7.json": "bbd5c911d7b4cdfe814826bd75e247ab8f07c360b99d2a9a60f1e79c676b366a",
+  "tenancy/build/scenarios/fcl_20eb1b189ff1c5d1.json": "00f7f50e11bb90ad3b0cba620bdbe285d72ac9227e7bcd13531ccb5b1bb5d26e",
+  "tenancy/build/scenarios/fcl_23c7f3a59472b82a.json": "69ab03efb0a3de82c9f25ecf158635f105f01d88bd727d6ab323d308b6147a21",
+  "tenancy/build/scenarios/fcl_2534a534b97da50f.json": "27f788ab8b82cbbcd6cc93b6970aa925809f23d1981999c6065a7eaf3acc7106",
+  "tenancy/build/scenarios/fcl_284cb44c9617cba6.json": "0f6988916b9ad09bee9bf142608eef2a7eca9fc7cc8e54f1637c64095e91e531",
+  "tenancy/build/scenarios/fcl_2cab6f06f58d2ebd.json": "3f53877f3eb6854e9dd8b5c792f407462b999e999ea9cbb7983ef32dc16dd51d",
+  "tenancy/build/scenarios/fcl_2dffd4707bf2bbad.json": "accf28a60d78dc2bd632ead4155e1ce16f660cc683cf11a076b12f5f9bd1a790",
+  "tenancy/build/scenarios/fcl_2e14148317fc5787.json": "4f6be4b84c82daa2b4af88af48f1879d871896ac02e7c63a6977077b3cbab3d8",
+  "tenancy/build/scenarios/fcl_2e51df9903135af2.json": "4b9f0c33063ea851fe61fe96703d61290763b5aa7976625fa470af7a1c307598",
+  "tenancy/build/scenarios/fcl_3004e9cd625e0c4b.json": "228f24848bc6926aee787a9cf450ec99dc1fcccad83f6e4f35b12b78cea8823f",
+  "tenancy/build/scenarios/fcl_3144174d4eaa6a32.json": "94dae06a3045ccccac6858c5f7826ae64e44647cdff3a755bab6146cd539ffd4",
+  "tenancy/build/scenarios/fcl_3660a91a8038bf36.json": "9396402f6551cf7509fe638172c62c4e4451ba52b2a3752bbcccfea1d697d9f9",
+  "tenancy/build/scenarios/fcl_3b8ec390e5f4fbc8.json": "e03a56dee4bb45c407fb4e833739fcd2c56dc037b3f1398c86841b3ab4fe37be",
+  "tenancy/build/scenarios/fcl_3b9600e267ebc9f8.json": "a45e63206051c029cc4c7890ff4bf05233dc1ab88cae2d559ff745003d3f7bcf",
+  "tenancy/build/scenarios/fcl_48ad1556596f887c.json": "400f556e913558b4745a2006b5fd07e6220c4c72b061628361c21971257c831e",
+  "tenancy/build/scenarios/fcl_495cdb4f0d88d226.json": "740c76861aa1d4a881e826e8cd94cf68cb4103b9eb671f25e6b3be6ea20022e2",
+  "tenancy/build/scenarios/fcl_4c8a58711c423e41.json": "f7ddb6d13778db176623a40e0ad72749940bf5d04766b16199a436e661756876",
+  "tenancy/build/scenarios/fcl_4f31932d66dafbf9.json": "a06f549523c5b18c5dc9b17b6d442afa0b720e1767ca933e6ad6d259ab4078a3",
+  "tenancy/build/scenarios/fcl_5a191bddbf50f630.json": "a4858ab03d27b6152be1b641baed2375a652313141735aa01f74d4f41eb2a9f3",
+  "tenancy/build/scenarios/fcl_5b4d3a3b723b8160.json": "8eadbe96e0c5b4ab87f7e752bb92c9a566a376af1d017485280ee8278df96e8c",
+  "tenancy/build/scenarios/fcl_5e22217a8f028d99.json": "25b3b27fd2325a545fb0bda595e368e90185d4cc8861cd3c86125ced99c9b604",
+  "tenancy/build/scenarios/fcl_5f53fea2fcbaf192.json": "39101bd35728fac417b874b5aaac2c6a3a5de8958555ec777f3b5396543b1b4f",
+  "tenancy/build/scenarios/fcl_62814fb6c5c0f470.json": "e854bb91ed8580b38376d5c3f68960381c7ae139bf2431a678138b22c71e70b5",
+  "tenancy/build/scenarios/fcl_63770af748d8f3f7.json": "a27fc409b0d6ec13ec7fad50150b0a4a4df53a7965f07f9ec1efd9df51ef6043",
+  "tenancy/build/scenarios/fcl_6497fc47bf76f74f.json": "1a4819d23aa78aeee52095ebcdfaa6eb98edd262ae4d06a151afd618893b0798",
+  "tenancy/build/scenarios/fcl_655804bbffa9242f.json": "8641a2ec39f517de0ed13a752d8f82d4596c52298a1f4347dff0606249d3211d",
+  "tenancy/build/scenarios/fcl_67f3fc97edbdf375.json": "4b588b5718bab2877fe433e413e47f8fdf61dca810f93d320301a0c4a75cc563",
+  "tenancy/build/scenarios/fcl_699677dc46b1150f.json": "4d6db1b78f2d06a97fefc2e683dc987b9eb77d092def2f2c510c89e3d80e9983",
+  "tenancy/build/scenarios/fcl_6cae1116c044a99a.json": "d4c991e4a775d7b7886ab51da04d587d839ace1795be44c454c662b4888586ee",
+  "tenancy/build/scenarios/fcl_7032365a2a7cb080.json": "48c0b9894b5b794f2b71e3e344824e077f72e124b5278be1c12c425d4abd1288",
+  "tenancy/build/scenarios/fcl_716f9606b9e15e8f.json": "cbd49c28678bbb817277969eeb2a47aecd56b75a6a09610480e5987c08a7356e",
+  "tenancy/build/scenarios/fcl_77b05646bbfc654b.json": "4550292a613cc9b9326baed7474657757c63f0f454f4d0822cba40b449a8b1a4",
+  "tenancy/build/scenarios/fcl_79cd16a5ca76b01b.json": "0a6bc95c017cc3e5a3bfe24fc00b15dbc6fa72e7fbe33b5cb58f9a220973dbfb",
+  "tenancy/build/scenarios/fcl_815414e86c968c16.json": "f39b3527c5a8cac2fba07b7befc3cca6bbea0e74ad451398d728622e95aa6b4d",
+  "tenancy/build/scenarios/fcl_820ed84f0e81363f.json": "ad73946fcc8ee83f67c9ff116988186341b708aadd6e6ac32450a7e72e1fbb5b",
+  "tenancy/build/scenarios/fcl_881c44fa0cda8200.json": "0a8ffe8eeba6b7e3a7c4a8456db1fd7ff0a3165e5c24c7fa761df185e3ae591b",
+  "tenancy/build/scenarios/fcl_893dbc47ca84663f.json": "6c2ce82c7e1618459634e909525fe03129721de15acc6ab6b0e3495a10ffa9c9",
+  "tenancy/build/scenarios/fcl_8cd148548c0c667a.json": "3e4e14534924eea7671a9aa417802c65516cfee3da7d47f80b6b3ac68b3b1b61",
+  "tenancy/build/scenarios/fcl_938145a10416cfa4.json": "c40fda4ca977235973ac621ad2dc5089e19cfd42743bdc74107ca6389b2333e6",
+  "tenancy/build/scenarios/fcl_99be3b386d6fe5d8.json": "8813eeecb32433061e43d5b6780b32bf85ae33b99823c80da443cdd341152349",
+  "tenancy/build/scenarios/fcl_99e24db5f37c7a3c.json": "bcda6b3b454638dc448228aa20a1a179b6607feee923e170f2cb84fa9e09ea82",
+  "tenancy/build/scenarios/fcl_9a62e6a839c5bbfa.json": "c7eb30ce176a6d6895d1b3b6d9c5992e4e1493dd81abd3437bb62534ebdb736c",
+  "tenancy/build/scenarios/fcl_a362784e299e172d.json": "0d3628f749e5e56eff2ed5ea9a9837532a1d50a5dbccabb8cdf430e8413bc1b1",
+  "tenancy/build/scenarios/fcl_a442849bcc00a706.json": "0ef9fddb5912d2d58e10328388cc673ab7c7dc98e695574ca4a156521e3de067",
+  "tenancy/build/scenarios/fcl_a53b7aae8525d0d4.json": "090cf43a154e0a5e884ef2b5ba75d7d63ca6a0a0948bd2f6e6c6d2b35fd8f5bd",
+  "tenancy/build/scenarios/fcl_b8e5c045a70c397b.json": "2333f0c48cdb42161eedbf0668128b74bfcb0c2c4da2a4326dd16a38b4e2a35f",
+  "tenancy/build/scenarios/fcl_c03f5f5c1caa60f2.json": "4747da67b6bedfbc2c284e69b71691b5b07b554030edb9d2884dce5bb5f0df34",
+  "tenancy/build/scenarios/fcl_c40e2e2d27b46049.json": "2f6185b1a97c75e640c1591d3fc426d49764c37e6c14004da911f4cb6b239242",
+  "tenancy/build/scenarios/fcl_cb0a6837d3f9d819.json": "ce7bcb8b9ea3f6224c23f85d9e6e1aaeb0ac8c1b214ed3ecd24521b254f0b825",
+  "tenancy/build/scenarios/fcl_d0adca9e774843e2.json": "beaad506e3fed1d07660e3b9a9ec59fbe4ea0d1324e1ef20573cfd6ffbdcf370",
+  "tenancy/build/scenarios/fcl_d3dc581ee564f805.json": "1cde6b7cd4cda6a77a83184f830ecf8217cbccb49d53ce729e8c942b0827dc1b",
+  "tenancy/build/scenarios/fcl_d4c3b6ed8d30f2f9.json": "02c3775435e5d58a994fd0a7f5aa1f7f6bd12357a03c1a5b6f295a87a01188dd",
+  "tenancy/build/scenarios/fcl_d51f04e4cc47ab0c.json": "b96752e8a5276a80fdfe4676452ebaed7200d7d17312c2e87be267e67deda8c6",
+  "tenancy/build/scenarios/fcl_d991bc5ba67d6aff.json": "a9174d43d7956b79d5750081db4d29b4421677cb873f2609497e4f62fc0e85e4",
+  "tenancy/build/scenarios/fcl_e1a3a168b9bcb5b1.json": "b6785f16ad0f9119fb4565349b8c741c8715f4153937a98f84ab8f7777a64918",
+  "tenancy/build/scenarios/fcl_e514cbc96786ff0a.json": "db3cab9c6bbff8a3b5194fa24d8565f033d4368595ae121ef2cf2061c7d2fe23",
+  "tenancy/build/scenarios/fcl_e731dc82c6481239.json": "65326222e0f6bd2f2b087a3c11dbcde4d8c4ebbcf39b1bf10b84047ce28a8add",
+  "tenancy/build/scenarios/fcl_e77ee7d1e1be2112.json": "19d58737f2009cb3b92b671cca092277c4552e942d594a479c4c47ead6f1c0bb",
+  "tenancy/build/scenarios/fcl_e7ec69ccf6911516.json": "d2f47d17d96713c3adb636f292218ae1174ce158e663815b81056a9e6a495bcb",
+  "tenancy/build/scenarios/fcl_ea2f16538f5abd60.json": "e1d3828d45a167c92638f6ec65d67444a5bb634b8442b6ee4a56f6600589126c",
+  "tenancy/build/scenarios/fcl_eeaae036d5c861db.json": "5f2dc8d73b102e37b0d4ab4957b4f7389686cea799f26f3d0748b8017007ed44",
+  "tenancy/build/scenarios/fcl_ef2f5c99ca9ab008.json": "76f0b838a1c42c4cba4c3fbc9343b7df202f64e5a86f940b0a8be6620a004cd5",
+  "tenancy/build/scenarios/fcl_ef44a7661ccf81b6.json": "a41bd043de9a4c45faf0ee755c890b2deaa3be7f60e0a90cc68f854be36072f0",
+  "tenancy/build/scenarios/fcl_f072f22a4d308814.json": "62a80207e879d3338b7c532eb6dfcb658cd2d84512da1e8b310f60e247a2485e",
+  "tenancy/build/scenarios/fcl_fb6908e2671dae22.json": "cedbf2e89fb329832b4cda7500b5e024b9fed66c760b4ed482a1655ffd73d6db",
+  "tenancy/cohort.json": "4f421ebc6150c7b863b76129c49cf0bf3f98a7235db0b0b8db9a105365513963",
+  "tenancy/data/claims/fcl_020f2bacedc162a9.json": "c9d058d1ee5d88ab1e672d2c4cea41871ff4cfc06d43ccdfd1cb4c96cb85b4e9",
+  "tenancy/data/claims/fcl_09252315095aa169.json": "ffb38aea9c01470e1a1a0636470596d873a27c87f0504da900153916f4dd1bb4",
+  "tenancy/data/claims/fcl_09bf4c849ef1ee44.json": "07d105fc23ff8341fc3cf5cd7a4510e6a2db8d75ee97f0c79f783a4b31bdac32",
+  "tenancy/data/claims/fcl_0f9a9b0f4a043ab5.json": "76b2e3e089839d3d6503467e8a30d8b09060f8ca41d95b469945570a2d591150",
+  "tenancy/data/claims/fcl_1132fdb1876df85f.json": "dc164cb8500b117d87f2e9a5830864e83605aaabdef6a61a5d8c2bdd3ea1922d",
+  "tenancy/data/claims/fcl_1d7e0a19ee376c16.json": "d0ae1a02a8ac57bf31b0be63ff048d7abe4984b7e8202e6b318958f877f0b445",
+  "tenancy/data/claims/fcl_1f01a092db41c4bb.json": "77da50c78d6c3f15d655a65dd6826ff08c5b3bebb5150913a49998f6ac569a8a",
+  "tenancy/data/claims/fcl_2021cff640ced3a7.json": "57fea1dbf6bcf3e574a3d130c79dc2513ef2395ffcda4f0e4b102daf8271c48a",
+  "tenancy/data/claims/fcl_20eb1b189ff1c5d1.json": "8f7441cd910897a3f8294d64b4e7b98e3b243b9c6402e8e2f7cc1929d665f56e",
+  "tenancy/data/claims/fcl_23c7f3a59472b82a.json": "dab2ff7a3ad51e14579dca701c3205feeaa69e7d8007a43512daf1f74852c08f",
+  "tenancy/data/claims/fcl_2534a534b97da50f.json": "3e83270317971929afdbded570b7c13fe715a0663592cb77a6bfdd1c73826b42",
+  "tenancy/data/claims/fcl_284cb44c9617cba6.json": "ea76ac83c7ddcda7fe7dbb7c1d2bdea7fb67f5e8cf0875cc729f1e120216a00f",
+  "tenancy/data/claims/fcl_2cab6f06f58d2ebd.json": "9be8de19fd5dc425753d04e688747766bfca3d04607edf30f9e59b0eb8eead81",
+  "tenancy/data/claims/fcl_2dffd4707bf2bbad.json": "0143da6c8b4f19cee3b5876cc14400c6e0c25a82916ae119ee53c42f0a1e8888",
+  "tenancy/data/claims/fcl_2e14148317fc5787.json": "6ce5d94608bc434aa46d4caaece8a1fd71e8951106b716fe19d295c7d37f6746",
+  "tenancy/data/claims/fcl_2e51df9903135af2.json": "35a715e48fc4290c41fd2ac388691571e7dd10e179886e66fc8ede23a639e611",
+  "tenancy/data/claims/fcl_3004e9cd625e0c4b.json": "e2e8de07983c6c8eca09e2f73e4fb1715996aa30dc12bb94323a491ed4000f00",
+  "tenancy/data/claims/fcl_3144174d4eaa6a32.json": "6a0e66c450c6bc53c972e0d56d9044a014c05003b0ff5cd6edd4075795f92500",
+  "tenancy/data/claims/fcl_3660a91a8038bf36.json": "76bc1c17b6afd11b01e49cf747f5442c98b34f9ae32a69c9f982b96edb88b9d4",
+  "tenancy/data/claims/fcl_3b8ec390e5f4fbc8.json": "f5b36e27d5a078d6f122a392919b42f0a484d9d89d6be07270cd29a5c29b4bc5",
+  "tenancy/data/claims/fcl_3b9600e267ebc9f8.json": "5ef46a23a676b019ccdd84efd43e4274264f15642f006f2f29f6581885547731",
+  "tenancy/data/claims/fcl_48ad1556596f887c.json": "54d2d033edf5d2431db9ab8d84bdf54266fb3a779103a420624e8fc6c2755201",
+  "tenancy/data/claims/fcl_495cdb4f0d88d226.json": "9503e762110e43539f02c49fb2156f57c4792cdbcac2151521d91045bd2a30f1",
+  "tenancy/data/claims/fcl_4c8a58711c423e41.json": "1582e0ec21bb5ec73acb084fa6cceb99406980a5e34bc0ec650e39c43b9c570f",
+  "tenancy/data/claims/fcl_4f31932d66dafbf9.json": "0097ff99f6d2aa714d08d1511c7cc6eb585de2d1f318de947a6a96c1e134e9b9",
+  "tenancy/data/claims/fcl_5a191bddbf50f630.json": "745b9dc1140aa4b03c0ff0a0a50f4053ec645d11d10d24c4096f9673aeb81d69",
+  "tenancy/data/claims/fcl_5b4d3a3b723b8160.json": "f7fe17b30bfabfc9331e7511e0ee32750d74f005011d0eded290d481fe03ed13",
+  "tenancy/data/claims/fcl_5e22217a8f028d99.json": "2bca159ed37c8531ebfade0c92a0e3ca8cbc956a50a2cdda3937dbb863206522",
+  "tenancy/data/claims/fcl_5f53fea2fcbaf192.json": "1272a61a5b0443657085883e94c5e5ede91ed08a7b0c157223917f0cc5434a56",
+  "tenancy/data/claims/fcl_62814fb6c5c0f470.json": "d14bf21b321be3a3ed1af902d7004eba5b7628c30a736942742d5be6b3d0fba2",
+  "tenancy/data/claims/fcl_63770af748d8f3f7.json": "92945129cc479f021dd0ae82fa8b6bcd0ec1710900d3d7d8285858925c3723fe",
+  "tenancy/data/claims/fcl_6497fc47bf76f74f.json": "ba35d5bfe727a9eb457339e92a5a5c4eea6ddcec09520cea3b5796eb6930b1c5",
+  "tenancy/data/claims/fcl_655804bbffa9242f.json": "29ae28c25de8d0348862b1b2392cfb3cd3d33f3f68f4036fff4d1c397f194ca2",
+  "tenancy/data/claims/fcl_67f3fc97edbdf375.json": "dc1e19edf05d8e333864fb4f7a048d4d8fb64189aeb3b4e53f5cfab5caea4510",
+  "tenancy/data/claims/fcl_699677dc46b1150f.json": "ff769ab3d0c2632402a629ddef10650932243d200486cbf6859bf8ef68e2ec7e",
+  "tenancy/data/claims/fcl_6cae1116c044a99a.json": "b7193d62336f6325024195aab848b3772e2924ea058ce43aee864124c224ee41",
+  "tenancy/data/claims/fcl_7032365a2a7cb080.json": "a5cc8c469ca2fd8e4cfa02b3d80c78f5cb12673558732bd29b592cf44e6559ea",
+  "tenancy/data/claims/fcl_716f9606b9e15e8f.json": "71a8f74f825579cccc894c98dc37fd62eb8352bfad1464a9c4fbc8544bc4808c",
+  "tenancy/data/claims/fcl_77b05646bbfc654b.json": "71b954c27f583d9bea6b32e70bd8a2963a9b41ed61a78569f7594db3825c3d13",
+  "tenancy/data/claims/fcl_79cd16a5ca76b01b.json": "2ac74b29d088cdfb4e025f89d3c7cb028f2b4685021fd79b043ccaf33df08124",
+  "tenancy/data/claims/fcl_815414e86c968c16.json": "0205d214f09a274fb679d9048ed688304bd2ee9d31dd1d6e645b503b893303ce",
+  "tenancy/data/claims/fcl_820ed84f0e81363f.json": "df68887c528d556e559b20e8be854ad6ee48ff6db9d00f14323b74a98429785c",
+  "tenancy/data/claims/fcl_881c44fa0cda8200.json": "7517c7f19d0c032c5f61c3efcd6c65dac88f222b48a4e93a005e31bc6bf1035a",
+  "tenancy/data/claims/fcl_893dbc47ca84663f.json": "ee526161b1872b6abd1f814bc45c61f2ff8bba83eaf10d30bad9360b8cbe5395",
+  "tenancy/data/claims/fcl_8cd148548c0c667a.json": "56596cf67e3e5daaed0d7e993c0ead3c43e697c2f610af84a264d5bd9ea88d09",
+  "tenancy/data/claims/fcl_938145a10416cfa4.json": "a9f920162e0537bc4a71cdf44cc157d4931025c6652341469d34dd3b15d90253",
+  "tenancy/data/claims/fcl_99be3b386d6fe5d8.json": "915e945286e20c36aea671e11fdf26b8f9b5329d7277f523bbd5234a947933a0",
+  "tenancy/data/claims/fcl_99e24db5f37c7a3c.json": "d2da464422167a9f2a7d7969e5d9d5f3078f7a48210f4928d91d3fca0eb880a0",
+  "tenancy/data/claims/fcl_9a62e6a839c5bbfa.json": "a1a81b20c83dc0835ae83deaeebd2bed4eecdd93ba0de67ec95a139a81e38609",
+  "tenancy/data/claims/fcl_a362784e299e172d.json": "e31fc2bee9882fd6398db7fb7917bb402017bd80c8c15baffc40f0d006691a59",
+  "tenancy/data/claims/fcl_a442849bcc00a706.json": "d2a09b852c58cfdca59cd3462005e2800ee169795bfaf1563aed2c91e8048072",
+  "tenancy/data/claims/fcl_a53b7aae8525d0d4.json": "9e6aaaad9d6944c2741a905c9f42aeb190813f4d9a667bdceee1af282e8462d4",
+  "tenancy/data/claims/fcl_b8e5c045a70c397b.json": "924eb7fe88b3d45893e5aac144874ff2eb17f89613164d5c976bcfb1140ddc23",
+  "tenancy/data/claims/fcl_c03f5f5c1caa60f2.json": "6a81c06028e485b77ed70e1cfb14be7bdc5717ace2173f3908295d5befaf1b5f",
+  "tenancy/data/claims/fcl_c40e2e2d27b46049.json": "20d455cbe9c0b463e5c9741ab0ec0999d6207a50b17d4444b7b014cf5988d8d5",
+  "tenancy/data/claims/fcl_cb0a6837d3f9d819.json": "243ca2d19db4fd32cdc8b8b661f91c6be28f53776b02be2051fe651f65ff566f",
+  "tenancy/data/claims/fcl_d0adca9e774843e2.json": "670031dc7fc5b44c069d1707f9948a4a0caa1f0f47e655275271ccc69142ad7c",
+  "tenancy/data/claims/fcl_d3dc581ee564f805.json": "e31699f886c18fd9b652b06cdc7785a5c2e1821f614c332c9c4242cb5e32a89e",
+  "tenancy/data/claims/fcl_d4c3b6ed8d30f2f9.json": "0b390494a1325db2269bcdec3ed60297ebfd8bc2050580caa214eff2554c933e",
+  "tenancy/data/claims/fcl_d51f04e4cc47ab0c.json": "c44cd2a561b4bf77bd05260077b9ea2e523de425a07d16c7fd229c78ebe5f4f8",
+  "tenancy/data/claims/fcl_d991bc5ba67d6aff.json": "b2348112e93366fe56d41e2087b74f4b7312e8994c4c43ff5921c2c328997ca6",
+  "tenancy/data/claims/fcl_e1a3a168b9bcb5b1.json": "97b30e36b9a3cce782af9923fb857f6740d6dd52f889ed04b7bce66aa1ed5443",
+  "tenancy/data/claims/fcl_e514cbc96786ff0a.json": "e887b81d11b0d08e4097956bfec1d63f7b769fa12532ced03132a34b5b92efe7",
+  "tenancy/data/claims/fcl_e731dc82c6481239.json": "519433879b0e46597f198d23f001d089227bd07cc964f5ece4b581697065dd71",
+  "tenancy/data/claims/fcl_e77ee7d1e1be2112.json": "9312e6ac63bded9e26d0c33d0507625629ba217098965af3a82fa37866095953",
+  "tenancy/data/claims/fcl_e7ec69ccf6911516.json": "7776c3bbacba31bb297056f60a8269fabc14d29c8869fb67df8ebef5d1cd0e34",
+  "tenancy/data/claims/fcl_ea2f16538f5abd60.json": "46faa9c4495b2d1e84060753f05c3616951f73243c9d986fdfa1c5a26607fdd0",
+  "tenancy/data/claims/fcl_eeaae036d5c861db.json": "d6b5c11271c610f1b22f7e798eabc48f6a5b288a6a7adb6aa68c07b187ff5a1c",
+  "tenancy/data/claims/fcl_ef2f5c99ca9ab008.json": "3aa0a44ad7cb883412076bee0e00423f6763805d78fddaa10835e6a27726799d",
+  "tenancy/data/claims/fcl_ef44a7661ccf81b6.json": "57391014fa8f30f85080d0159e8ea300d39b05cc7b75b6c53a9fcd4ff97acf03",
+  "tenancy/data/claims/fcl_f072f22a4d308814.json": "671da8c1b3bf0d4b1f5095fecf8e55cf53481982f2c60beaa36cf4f43f1da51c",
+  "tenancy/data/claims/fcl_fb6908e2671dae22.json": "8ed90dee6f6e0a9e4441dcdb3454495d0a7c365881b39d44bcbb49315b99e7e3",
+  "tenancy/data/references/fcl_020f2bacedc162a9.json": "b1c9424fd204117e19bd4e6a638f311a5ca4c1597d5acc034c7708f8724bd438",
+  "tenancy/data/references/fcl_09252315095aa169.json": "1c34ae71c58ffd70c2f06e437fc85b522264cdaf8596bc9ccc31a6ab80795bf4",
+  "tenancy/data/references/fcl_09bf4c849ef1ee44.json": "f46b5859d1c99d8b971bead0208ca39db115ae4b1a141d4838435617d0b216b7",
+  "tenancy/data/references/fcl_0f9a9b0f4a043ab5.json": "ce1a3a3d1e7203a1fb734dffe4b30d7c88208fad3d8bfedbd74c585a6e7b4ff3",
+  "tenancy/data/references/fcl_1132fdb1876df85f.json": "28fb7ab4dad7d275f123f1c0457cd0fc41fac30e75c923865ab825ff42405999",
+  "tenancy/data/references/fcl_1d7e0a19ee376c16.json": "edffc1216daef7c126ec14b88035c994a5d9e361438ffd5890b16b6c9151ddc1",
+  "tenancy/data/references/fcl_1f01a092db41c4bb.json": "f2ac103adcf67a49ecaa32bc14de1965d0712a5835bfa967974e42a11f5bac2e",
+  "tenancy/data/references/fcl_2021cff640ced3a7.json": "ba5c8a87d7ad71d4d693d74d99d113f6da08000f5df471f28c7a974a14613ca6",
+  "tenancy/data/references/fcl_20eb1b189ff1c5d1.json": "359c89deeb312442af0118db88fc77fbe440d3adc377a8a0c53d28439cf81bdd",
+  "tenancy/data/references/fcl_23c7f3a59472b82a.json": "7ffde87bdf3a5b50c772ec64e9b55024e6b24cc084c4b4b4c3534e25efb17130",
+  "tenancy/data/references/fcl_2534a534b97da50f.json": "dc8eadbe54c2944e40552def7d070bfc44ee1a4aa5a4f18025f88c6fbc1a477a",
+  "tenancy/data/references/fcl_284cb44c9617cba6.json": "edd9355a62f98b76444ef347fef29cb083c9cdae57345dfc22b13cb05b52b7ed",
+  "tenancy/data/references/fcl_2cab6f06f58d2ebd.json": "e8e9276d46a6bbd6edd849a5787190d3d842136b331cac72c16acf08fc008d8e",
+  "tenancy/data/references/fcl_2dffd4707bf2bbad.json": "9e5d94cf85815705207353e25eec0a692c11181bda7993af4ba28c19dbb7e4a4",
+  "tenancy/data/references/fcl_2e14148317fc5787.json": "21af4764b09ad5b6198985b49053e272e3b2402b825718f439cc0fffe70620ec",
+  "tenancy/data/references/fcl_2e51df9903135af2.json": "fa2d68094b4f0cb73822b50e2dd40aec90044b51e91faa742a8af2ed316faf28",
+  "tenancy/data/references/fcl_3004e9cd625e0c4b.json": "516a7b3a420a733559825edca8a22e35179e514679a5bc2673ea8d7b67f1bd37",
+  "tenancy/data/references/fcl_3144174d4eaa6a32.json": "e3d5d9ade0336296e99dfb00d3887909faa86616fc412bd53d1fc8877d678493",
+  "tenancy/data/references/fcl_3660a91a8038bf36.json": "f7e48dba97a5c0e2785984553be1044b9617b1f2154f34c9d9ad2d89f1fb584c",
+  "tenancy/data/references/fcl_3b8ec390e5f4fbc8.json": "8964507474cb87b3eba99c9da0750dabe40cd36b63243e8c06fb7b07de11abff",
+  "tenancy/data/references/fcl_3b9600e267ebc9f8.json": "aa96e89d4ae3ee092182d4f32d39926fcb0cce5a8d64bad28e48b3c226661b77",
+  "tenancy/data/references/fcl_48ad1556596f887c.json": "d8877333cd65f225ecc881593db98dfd241fa0ec966a52f7d2bc66d9adfc17d6",
+  "tenancy/data/references/fcl_495cdb4f0d88d226.json": "f6d11c65398d75c0b186bceb0f0499c919bb4acceb2000ecc75fd4164fa51fef",
+  "tenancy/data/references/fcl_4c8a58711c423e41.json": "c8cdab60b7c745b5b9310137688efd61a90c85b2c041367d6f21f67b417d79d0",
+  "tenancy/data/references/fcl_4f31932d66dafbf9.json": "b53004ead7997a44546353c3d8b143407811a307ddaa76279ce085470591f335",
+  "tenancy/data/references/fcl_5a191bddbf50f630.json": "4cf01fbae1b716b74ded3da01847e4f5876664014547bf5a20450c2a57355766",
+  "tenancy/data/references/fcl_5b4d3a3b723b8160.json": "449070d346f72cc95bc38130a20e539bf0ec7d94cb567a7b214601f90eda9545",
+  "tenancy/data/references/fcl_5e22217a8f028d99.json": "4a6c2de35df5de7dc8412392c4b07e8f1c1f0a21962a6b8283d51079d905feff",
+  "tenancy/data/references/fcl_5f53fea2fcbaf192.json": "6bfc0be97ad62784232928733079a372d515bdf12bbb1bf6bd5b007f90ecb15e",
+  "tenancy/data/references/fcl_62814fb6c5c0f470.json": "6d4270fe221b8e689f61c0ff4a24de9533c4f2c9f0098ca0048786871a62df40",
+  "tenancy/data/references/fcl_63770af748d8f3f7.json": "c65827773396c000371ab64f2ec04c870f1414e4c1239c8a30847f69f0a06053",
+  "tenancy/data/references/fcl_6497fc47bf76f74f.json": "083665533150e96817ce1981b9dc3f76d085c61541b569837b0c66dacdd2a0d1",
+  "tenancy/data/references/fcl_655804bbffa9242f.json": "f1e6145b0c9305f960a39b1d0238feb7ed2bf1bbf96d29111f5fe948d43b6298",
+  "tenancy/data/references/fcl_67f3fc97edbdf375.json": "63a5c4a4a551c29248e3df028e69e9805a9605a7061eb47e65407218b169148e",
+  "tenancy/data/references/fcl_699677dc46b1150f.json": "3984cf7ad61de01fa8f029143490ebb3caec2b5139fb75bdfdc2b75c96ee068a",
+  "tenancy/data/references/fcl_6cae1116c044a99a.json": "0576e4ff4a7a2ecc0b8539ad0d3a1a7876bf24e76a22aa03f91c81195fab3d0b",
+  "tenancy/data/references/fcl_7032365a2a7cb080.json": "f7e40d41c871b4452d7bb93ab495f8b8dcb82d81b7ebbcb8c0f3337f21e9b20e",
+  "tenancy/data/references/fcl_716f9606b9e15e8f.json": "789a08ef32e830ecaddb58abc693ebf5cdc780d7ccef6565840e030caf3e2c0c",
+  "tenancy/data/references/fcl_77b05646bbfc654b.json": "48495e394b0b8ea07c6abb91afcf8aedd571f1db6bb985fcb166a34c93d0387c",
+  "tenancy/data/references/fcl_79cd16a5ca76b01b.json": "99e13b801b1e356b512cb7c03825a65b084b42c5fb2e425f068442dd4fe0f42e",
+  "tenancy/data/references/fcl_815414e86c968c16.json": "60b5d6e93528258bd9cde6a14b8643ab8c90e51ee6af92d8b53672254adf809f",
+  "tenancy/data/references/fcl_820ed84f0e81363f.json": "12007a672272093458f3d16050a7d99f0f228e95105b17914c199cbc59fff26a",
+  "tenancy/data/references/fcl_881c44fa0cda8200.json": "c1aa31f1964945c38a8cebdc21ffc13197242575f3912f6f5063c21c35609bae",
+  "tenancy/data/references/fcl_893dbc47ca84663f.json": "a24acb6e6d54d23bce09c25276b5628f4a5d0230e314718b29bc542b4b14d2dd",
+  "tenancy/data/references/fcl_8cd148548c0c667a.json": "a014850985bd7c8f1b9df430b321912b2b4174c5db291362979de960fdf28ed0",
+  "tenancy/data/references/fcl_938145a10416cfa4.json": "053ff685ff737c5b3b04573f635e5de1a7755b10fdeceae8abc522e255ba3549",
+  "tenancy/data/references/fcl_99be3b386d6fe5d8.json": "2d531e96a7adde777dd683423d62c6ea2b374408b92e9e5cdc5a30dc770162ee",
+  "tenancy/data/references/fcl_99e24db5f37c7a3c.json": "c0a6e3b653d0bf00ee9f6c8ff85c51f8d4cee3625f04052834602d697ffdad3a",
+  "tenancy/data/references/fcl_9a62e6a839c5bbfa.json": "3ad733513063942da67c85d8770395d10505cb8ca36bca76729c3d54f125b697",
+  "tenancy/data/references/fcl_a362784e299e172d.json": "c8f16ba5e9a6c263b1c7dff23d5fd0e39413f18873fb77eec3ec72cd153ed360",
+  "tenancy/data/references/fcl_a442849bcc00a706.json": "1ee62f64a220d67987a1d8f2e21de328428aca55d408a8267c207448bae1da2c",
+  "tenancy/data/references/fcl_a53b7aae8525d0d4.json": "af99c99c1e9299dfc84942e42c7d9bc373da8215f5789d56058f5ceb3704e49f",
+  "tenancy/data/references/fcl_b8e5c045a70c397b.json": "be7df7959c2c60afdd4fb188b5bb062e393a467e9bd52cecda6b417a290c4289",
+  "tenancy/data/references/fcl_c03f5f5c1caa60f2.json": "89ad8f0bfbeb4e06dd3af4d494bfcbe28a2fb3bda96c4f4f33a81d867ad9c17f",
+  "tenancy/data/references/fcl_c40e2e2d27b46049.json": "f0ddb75f39fe12a1cccce0aa6b9da6f20662e7de879a945459aaf75b1974020c",
+  "tenancy/data/references/fcl_cb0a6837d3f9d819.json": "b61c9444187364a4d575cde23d71823135f7627afabbefe6905d1b8692e6e241",
+  "tenancy/data/references/fcl_d0adca9e774843e2.json": "f1fc54ffbcf8d7acdc3ec9766b3b1bceff54eea09deb5edd7dda4f2cb77296c2",
+  "tenancy/data/references/fcl_d3dc581ee564f805.json": "65004e6a37fc2ee8bf1b44f5e75c054aceab9260027283044842bf5ce44bba42",
+  "tenancy/data/references/fcl_d4c3b6ed8d30f2f9.json": "5603c0934df3ce3b067e4929bf79e5c52a389c935f61377268a55bf435f0c963",
+  "tenancy/data/references/fcl_d51f04e4cc47ab0c.json": "5ae0fd845c9917bb56946aead044955d7f4908b74c7071d175a647c4707783a7",
+  "tenancy/data/references/fcl_d991bc5ba67d6aff.json": "bc30723c283196e4dfcf6693756b9356fbee6dc36db298d8940a086d4381614b",
+  "tenancy/data/references/fcl_e1a3a168b9bcb5b1.json": "7f0b8d15306524062b9d0e560ff66511f7c3fb29b0d35ea7c06a0013673c6a83",
+  "tenancy/data/references/fcl_e514cbc96786ff0a.json": "5293c7054e52774230c4189ca3bc11302d1a018eade0d084d7edc71ffc2038b0",
+  "tenancy/data/references/fcl_e731dc82c6481239.json": "247709d12f547a0cf7b202e3c91f63ed00616197cc65762dc8135ffc614b9ec1",
+  "tenancy/data/references/fcl_e77ee7d1e1be2112.json": "f551a61f94d1bc9800f407400eeecc7e34d1f52f87a7cd2b6a09ad596e654cf7",
+  "tenancy/data/references/fcl_e7ec69ccf6911516.json": "5db9510529ebb91cfffcb8a25e2000e700d4272052564645e1a36080506ba8dd",
+  "tenancy/data/references/fcl_ea2f16538f5abd60.json": "9cefab72a285feeeace273fee36316be72b487b492ea110037c805e37f9e6d23",
+  "tenancy/data/references/fcl_eeaae036d5c861db.json": "9bc46b42c8750941d37a198fd060b0e6af7106eac08578ce8c04602f5fd3d3fe",
+  "tenancy/data/references/fcl_ef2f5c99ca9ab008.json": "9e85592514d1079bd66769f97cc8b05624a04c4f50c10ca4a4657ca5e4844cd9",
+  "tenancy/data/references/fcl_ef44a7661ccf81b6.json": "0acd61f0ad73b99e8a6ab22e03ab0e3d90ecfabb3f6dd4d06edfb177e185504d",
+  "tenancy/data/references/fcl_f072f22a4d308814.json": "fe9ebb3b083cb180d09b4881b3d456513641a0498e4358449fa37e21623bacf0",
+  "tenancy/data/references/fcl_fb6908e2671dae22.json": "1ae6711061ca6e89dd4a9942fbb3ae129abdc5e1ae03aee4d15c9d74494d38aa",
+  "tenancy/generate.py": "b3f2efdb859c238b12ac73cb2ab47a8a9734894ccc3f7d1bd844002421de814a",
+  "tenancy/oracle_check.py": "fef5fca18d95d6cbe350dd887c1ef3d5581c39c774c187936629bd75b049abe9",
+  "tenancy/rules/static-rule-templates-v3-silence.json": "daaa76eddc5ac2b6b32c30529405022b95dbab93ff380a7a81f64ad8b3fa8958",
+  "tenancy/spec.py": "2253b817035ab6ab7ade3fb3acb4fafbe32e2072359514683b5215965451e16e",
+  "tenancy_fresh.py": "1b98df6a8f702b56945649ab9e2689c86e5201ea78d6be20ae4f7804269885d0",
+  "theft/BENCHMARK_FRESH.json": "4eb5eaccd82d7585a9b972ee57a03fcd2cad2780257c5f96a42af2a0dce47b10",
+  "theft/build/artifacts/THEFT_BRANCH_DIAGNOSTIC.json": "6953645b55394c3d6f4a878783459e6ecc7f65bed240b515eb35e47e0a51b9e5",
+  "theft/build/build_log.json": "510b4262ba6f447f601ec77d082e4d26d110054eb38617ccfd534b2b6a0dbdb4",
+  "theft/build/reference_contracts/theft.json": "4684811171059a121f4153b21e87cc35ea64f0987a80ae712f4aeeda7b9ca5cc",
+  "theft/build/theft_branch_diagnostic.py": "c7aaf750eb9b9a25b3764070f1ab2d33d32594805eb355ad94711f2855767f2a",
+  "theft/build/theft_causal/BENCHMARK.json": "2f29a821bd612dc7349f45d4744367f06de493a1e9ff0cde21fdb86691a73a38",
+  "theft/build/theft_causal/FREEZE.json": "515e0dcafa53dc4bf061bffc29949520da4f559b74ee781add5e6ba2a74046e0",
+  "theft/build/theft_causal/SHORTCUT_PREFLIGHT.json": "64b2cc49dac6af9036a60ffad5506bd7a13c0638b0b2b8fa7bbd1290a97e4447",
+  "theft/build/theft_causal/SOURCE_SNAPSHOT.json": "580a1ae583d7b9e34013992bf58d424527cfa428d71e236c2c8986807e7abd6a",
+  "theft/build/theft_causal_benchmark.py": "0b9a7e64846dcec20ef2fd74b21459383ff69988b69b1bced82de208ea55c45e",
+  "theft/build_theft.py": "67684b5fc4b69db0c2b77313fa506cb76f72eb29374b07784a787c99f2b32e3a",
+  "theft_fresh.py": "e654ed06db2bb32e4b3c5c066e0603c8f3e5d362cc7f787c63eaa1124e123776"
+ }
+}

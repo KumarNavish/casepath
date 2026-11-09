@@ -1,0 +1,67 @@
+{
+ "claim_id": "fcl_0f9a9b0f4a043ab5",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_aefb7a00fc910352",
+ "combo": [
+  "extension_relevant",
+  "family_home",
+  "retaliation_screen"
+ ],
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "absent",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": true,
+ "attachments": [
+  {
+   "artifact_id": "fatt_58ea1d4f19a8d4ac",
+   "document_type": "termination_notice",
+   "sufficient": false,
+   "omitted_field": "form_contents",
+   "sha256": "2482ce6603c2ac8015cc89ccd3ee367c7d0cd5cffa50852de4749bca5171ca19"
+  },
+  {
+   "artifact_id": "fatt_271e71816e50d68f",
+   "document_type": "lease_contract",
+   "sufficient": true,
+   "omitted_field": null,
+   "sha256": "cabe68985457011a51531d55936f67a4ae0ffdf1b099fd96c320266c93781664"
+  }
+ ],
+ "values": {
+  "tenant": "Barbara Gerber",
+  "landlord": "Immobilien Seeblick AG",
+  "city": "St. Gallen",
+  "canton": "SG",
+  "address": "Kirchgasse 81, St. Gallen, 4-room flat",
+  "lease_start": "1 October 2016",
+  "rent": 2310,
+  "utilities": 260,
+  "received_at": "2026-09-13T15:15:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 6930,
+  "new_rent": 2560,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2022",
+  "prior_rent": 2220,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "27 June 2026",
+  "repair_deadline": "7 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "24 November 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

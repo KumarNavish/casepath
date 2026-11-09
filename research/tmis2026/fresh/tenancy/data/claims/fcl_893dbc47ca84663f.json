@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_893dbc47ca84663f",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-11-07T09:00:00+01:00",
+  "canton": "GR"
+ },
+ "customer_message": {
+  "message_id": "fmsg_acf2e4abcba13536",
+  "subject": "Phone note: defect in kitchen sockets and oven, Bahnhofstrasse 58, Chur",
+  "body": "Phone note, 7 November 2026. Caller: Alex Turner, tenant of the 4.5-room flat at Bahnhofstrasse 58, Chur, rented from Immobilien Seeblick AG. The caller reports a defect that the landlord has not yet repaired. The electrical sockets in the kitchen keep failing, and the oven no longer works. The caller reported the defect to the landlord and has received a written reply, which the caller has provided. The caller states that a member of the household has had sleep problems and headaches since the defect began, and attributes these health problems to the defect. The caller says the landlord proposed a repair by a contractor and asked whether workers could access the flat on 16 November 2026. The caller asks for help in getting the defect fixed and wants to know what support the legal-expenses insurance can provide. The caller was advised that the handler will review the tenancy agreement, the landlord's reply and the current state of the repair, and that the caller will be contacted once the file has been opened. The caller will send any further correspondence by e-mail. No further action was taken during the call.",
+  "sent_at": "2026-11-07T09:00:00+01:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_32d6eee90cc57e19",
+   "fatt_29957bb89445fc2b"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_32d6eee90cc57e19",
+   "file_name": "tenancy_agreement_Turner_Immobilien_Seeblick.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgVEVOQU5DWSBBR1JFRU1FTlQgKExFQVNFIENPTlRSQUNUKQoKTGFuZGxvcmQ6IEltbW9iaWxpZW4gU2VlYmxpY2sgQUcKVGVuYW50OiBBbGV4IFR1cm5lcgoKU3RhcnQgZGF0ZSBvZiB0ZW5hbmN5OiAxIE9jdG9iZXIgMjAxNApOZXQgcmVudDogQ0hGIDE4MzAgcGVyIG1vbnRoLCBwbHVzIGFuY2lsbGFyeSBjb3N0cyBhcyBzZXBhcmF0ZWx5IGFncmVlZApOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMsIGVmZmVjdGl2ZSBhdCB0aGUgZW5kIG9mIGEgbW9udGgsIGluIGFjY29yZGFuY2Ugd2l0aCB0aGUgc3RhdHV0b3J5IHByb3Zpc2lvbnMKClRoZSBwYXJ0aWVzIGFncmVlIHRvIHRoZSB0ZXJtcyBzZXQgb3V0IGluIHRoaXMgYWdyZWVtZW50IGFuZCBpbiB0aGUgYXBwbGljYWJsZSBnZW5lcmFsIHRlcm1zIG9mIHRoZSBsYW5kbG9yZC4KClNpZ25lZCBhdCBDaHVyIG9uIDEyIFNlcHRlbWJlciAyMDE0LgoKRm9yIHRoZSBsYW5kbG9yZDogX19fX19fX19fX19fX19fX19fX18KVGVuYW50OiBBbGV4IFR1cm5lciBfX19fX19fX19fX19fX19fX19fXw==",
+   "sha256": "911b963d08328b95f270ba7b06db2f13df2af68b2d46e37c3b0cbcd6c4a3aae0",
+   "size_bytes": 547
+  },
+  {
+   "artifact_id": "fatt_29957bb89445fc2b",
+   "file_name": "landlord_reply_defect_2026-11.txt",
+   "media_type": "text/plain",
+   "content_base64": "SW1tb2JpbGllbiBTZWVibGljayBBRwpQcm9wZXJ0eSBtYW5hZ2VtZW50CgpUbzogQWxleCBUdXJuZXIKU3ViamVjdDogWW91ciByZXBvcnQgb2YgYSBkZWZlY3QKRGF0ZTogNCBOb3ZlbWJlciAyMDI2CgpEZWFyIE1yIFR1cm5lcgoKVGhhbmsgeW91IGZvciB5b3VyIHJlcG9ydCBvZiB0aGUgZGVmZWN0IGluIHRoZSBraXRjaGVuLiBXZSBhY2tub3dsZWRnZSByZWNlaXB0IG9mIHlvdXIgbWVzc2FnZSBhbmQgY29uZmlybSB0aGF0IHRoZSBtYXR0ZXIgd2lsbCBiZSBsb29rZWQgYXQuCgpXZSBwcm9wb3NlIHRoYXQgYSBjb250cmFjdG9yIGNhcnJpZXMgb3V0IGEgcmVwYWlyIG9mIHRoZSBlbGVjdHJpY2FsIHNvY2tldHMgYW5kIHRoZSBvdmVuLiBXZSB3b3VsZCBhc2sgeW91IHRvIGdpdmUgdGhlIGNvbnRyYWN0b3IgYWNjZXNzIHRvIHRoZSBmbGF0IG9uIDE2IE5vdmVtYmVyIDIwMjYuIFBsZWFzZSBjb25maXJtIHdoZXRoZXIgdGhpcyBkYXRlIGlzIHBvc3NpYmxlIGZvciB5b3UuCgpXZSB3aWxsIGluZm9ybSB5b3Ugb2YgdGhlIG91dGNvbWUgb2YgdGhlIGluc3BlY3Rpb24gYW5kIG9mIHRoZSBuZXh0IHN0ZXBzLgoKS2luZCByZWdhcmRzCgpJbW1vYmlsaWVuIFNlZWJsaWNrIEFHClByb3BlcnR5IG1hbmFnZW1lbnQ=",
+   "sha256": "cd236b5aea7f5deabdf64b62c856d35094fa9741e9aa48595fecb0a90be5e411",
+   "size_bytes": 632
+  }
+ ]
+}

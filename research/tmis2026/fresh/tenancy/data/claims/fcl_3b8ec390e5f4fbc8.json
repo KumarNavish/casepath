@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_3b8ec390e5f4fbc8",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-22T18:15:00+01:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "fmsg_42d4a73325811d89",
+  "subject": "Mangel Heizung Seestrasse 14, Luzern - Unterstützung bei Durchsetzung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wohne mit meiner Familie an der Seestrasse 14 in Luzern, in einer 4-Zimmer-Wohnung, die ich von der Hausverwaltung Aare AG gemietet habe. Seit letztem Winter funktioniert die Heizung nicht richtig. Die Heizkörper im Wohnzimmer und in den Schlafzimmern bleiben kalt, und einzelne Heizkörper fallen ganz aus.\n\nIch habe die Hausverwaltung bereits über diesen Mangel informiert. Behoben wurde bisher nichts.\n\nEin Mitglied meines Haushalts leidet seit Beginn der Heizungsprobleme unter wiederkehrenden Erkältungen und einer Bronchitis. Ich führe diese gesundheitlichen Beschwerden auf die kalte Wohnung zurück. Ein ärztliches Zeugnis kann ich bei Bedarf nachreichen.\n\nOb die Ursache beim Heizungssystem, bei der Steuerung oder beim Gebäude liegt, weiss ich nicht. Die Hausverwaltung hat bisher keine Ursache genannt. Deshalb braucht es meiner Meinung nach eine unabhängige Begutachtung durch einen Fachmann für Gebäudetechnik oder Heizungsbau.\n\nIch möchte wissen, wie ich meine Rechte durchsetzen kann und ob Ihre Rechtsschutzversicherung die Kosten für ein Gutachten und die rechtliche Beratung übernimmt. Den Mietvertrag lege ich bei.\n\nFreundliche Grüsse\nUrs Meier",
+  "sent_at": "2026-11-22T18:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_59f9e9b601bf60f8"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_59f9e9b601bf60f8",
+   "file_name": "Mietvertrag_Seestrasse14.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRlVFUiBXT0hOUkFVTQoKVmVybWlldGVyc2NoYWZ0OiBIYXVzdmVyd2FsdHVuZyBBYXJlIEFHCk1pZXRlcnNjaGFmdDogVXJzIE1laWVyCgpNaWV0b2JqZWt0OiBXb2hudW5nIGFuIGRlciBTZWVzdHJhc3NlIDE0LCA2MDAzIEx1emVybiwgNC1aaW1tZXItV29obnVuZwoKTWlldGJlZ2lubjogMS4gSnVuaSAyMDIwCk5ldHRvbWlldHppbnM6IENIRiAxNzMwLi0gcHJvIE1vbmF0CkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlIGF1ZiBFbmRlIGVpbmVzIE1vbmF0cwoKRGllIE1pZXRlcnNjaGFmdCB2ZXJwZmxpY2h0ZXQgc2ljaCwgZGllIFdvaG51bmcgc29yZ2bDpGx0aWcgenUgYmVoYW5kZWxuIHVuZCBkZW4gdmVyZWluYmFydGVuIE1pZXR6aW5zIGpld2VpbHMgbW9uYXRsaWNoIGltIFZvcmF1cyB6dSBiZXphaGxlbi4KCkx1emVybiwgMS4gTWFpIDIwMjAKCkbDvHIgZGllIFZlcm1pZXRlcnNjaGFmdDogSGF1c3ZlcndhbHR1bmcgQWFyZSBBRwpGw7xyIGRpZSBNaWV0ZXJzY2hhZnQ6IFVycyBNZWllcg==",
+   "sha256": "b614b087919a1bb7d7cb75a7846a56387aa4d64ffbc7ce7b3eebbc27bf7d0833",
+   "size_bytes": 526
+  }
+ ]
+}

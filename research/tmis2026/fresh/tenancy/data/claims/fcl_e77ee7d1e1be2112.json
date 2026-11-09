@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_e77ee7d1e1be2112",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-20T12:00:00+01:00",
+  "canton": "BS"
+ },
+ "customer_message": {
+  "message_id": "fmsg_8b632f13584b56a8",
+  "subject": "Anfechtung der Kündigung Gartenweg 14, Basel",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie, weil die Immobilien Seeblick AG das Mietverhältnis für meine Wohnung an der Gartenweg 14 in Basel gekündigt hat und ich die Kündigung anfechten möchte. Die Wohnung ist unsere gemeinsame Familienwohnung. Mein Ehepartner wohnt seit Beginn des Mietverhältnisses ebenfalls dort.\n\nDie Vermieterin begründet die Kündigung mit ausstehenden Mietzinsen. Nach meinem Kenntnisstand betragen die Mietrückstände rund CHF 3200. Ich habe die Mietzinse in den vergangenen Monaten nicht vollständig bezahlt, bin aber bereit, die Angelegenheit mit der Vermieterin zu klären.\n\nDas Mietverhältnis begann am 1. Juni 2020. Der Nettomietzins beträgt CHF 1600 pro Monat, die Kündigungsfrist drei Monate. Den Mietvertrag habe ich als Beilage angehängt.\n\nIch bitte Sie, mich zu beraten, wie ich die Kündigung prüfen lassen kann und ob eine Anfechtung sinnvoll ist. Ich stelle Ihnen gerne alle weiteren Unterlagen zur Verfügung und bin telefonisch oder per E-Mail erreichbar.\n\nBesten Dank für Ihre Unterstützung.\n\nFreundliche Grüsse\n\nMartin Egli",
+  "sent_at": "2026-11-20T12:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_718c8ca6dbc29c4e"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_718c8ca6dbc29c4e",
+   "file_name": "Mietvertrag_Gartenweg14.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUsOEVU1FCgpWZXJtaWV0ZXJpbjogSW1tb2JpbGllbiBTZWVibGljayBBRwpNaWV0ZXI6IE1hcnRpbiBFZ2xpCgpNaWV0b2JqZWt0OiAyLVppbW1lci1Xb2hudW5nCkFkcmVzc2U6IEdhcnRlbndlZyAxNCwgNDA1MyBCYXNlbAoKTWlldGJlZ2lubjogMS4gSnVuaSAyMDIwCk5ldHRvbWlldHppbnM6IENIRiAxNjAwLjAwIHBybyBNb25hdCwgenV6w7xnbGljaCBOZWJlbmtvc3RlbiBnZW3DpHNzIHNlcGFyYXRlciBBYnJlY2hudW5nCkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlIGF1ZiBFbmRlIGVpbmVzIE1vbmF0cwoKT3J0IHVuZCBEYXR1bTogQmFzZWwsIE1haSAyMDIwCgpVbnRlcnNjaHJpZnQgVmVybWlldGVyaW46IF9fX19fX19fX19fX19fX19fX19fClVudGVyc2NocmlmdCBNaWV0ZXI6IF9fX19fX19fX19fX19fX19fX19f",
+   "sha256": "5bd2642c3f4f27b358933ea91a774974f7b455ea27e189c35bb3f070a003f0a7",
+   "size_bytes": 438
+  }
+ ]
+}

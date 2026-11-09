@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_99be3b386d6fe5d8",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-11-28T18:15:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_f5eaaaf074eab362",
+  "subject": "Phone note: defect in rented flat Feldstrasse 54, Thun (mould and damp, children's room)",
+  "body": "Phone call received on 28 November 2026 from Jordan Reid, tenant of the 2-room flat at Feldstrasse 54, Thun, rented from Privera Wohnen AG. The caller reports a defect in the flat that the landlord has not yet remedied. In the children's room there are mould stains and damp patches on the walls. They have been present for some time and return despite regular wiping. The caller states that one of the children has had breathing problems since the mould appeared, and attributes these health problems to the defect. The caller has reported the defect to the landlord; no repair has followed to date. The caller asks for help in getting the defect addressed and wants to know which steps the legal expenses insurance covers. The caller was advised that a file will be opened, that the tenancy agreement, the correspondence with the landlord and photos of the mould should be sent in, and that a medical certificate for the child may be useful. The caller will send copies by post. Next step: claims handler to review the file and contact the caller within five working days.",
+  "sent_at": "2026-11-28T18:15:00+01:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

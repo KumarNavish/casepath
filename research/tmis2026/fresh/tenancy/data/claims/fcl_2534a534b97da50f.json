@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_2534a534b97da50f",
+  "channel": "phone_note",
+  "language": "de-CH",
+  "received_at": "2026-11-13T10:15:00+01:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "fmsg_1fca7d1432a6e6f6",
+  "subject": "Telefonnotiz: Mängel an Mietwohnung Lindenstrasse 68, Luzern",
+  "body": "Telefonnotiz vom 13.11.2026. Anrufer: Beat Widmer, Mieter der 3.5-Zimmer-Wohnung an der Lindenstrasse 68, 6005 Luzern. Vermieterin: Privera Wohnen AG. Herr Widmer meldet einen Mangel in der Mietwohnung, den die Vermieterin bisher nicht behoben hat. Im Kinderzimmer sind Schimmelflecken und feuchte Stellen an der Wand sichtbar. Zudem bleiben die Heizkörper im Wohnzimmer und in den Schlafzimmern kalt; die Heizung funktioniert nach seinen Angaben nicht richtig. Herr Widmer hat die Vermieterin nach eigenen Angaben bereits mehrfach schriftlich und telefonisch informiert. Eine Reaktion oder Behebung ist bisher ausgeblieben. Er gibt an, dass er den Mietzins auf ein Mietzinshinterlegungskonto einzahlen (hinterlegen) will, falls der Mangel nicht innert angemessener Frist behoben wird. Er wünscht Unterstützung durch die Rechtsschutzabteilung und fragt nach dem weiteren Vorgehen. Ich habe Herrn Widmer erklärt, dass wir die Unterlagen prüfen und ihm das weitere Vorgehen schriftlich mitteilen. Er wird uns die Korrespondenz mit der Vermieterin per E-Mail zustellen. Ein Rückruf ist nicht erforderlich, Herr Widmer ist unter der im System hinterlegten Nummer erreichbar.",
+  "sent_at": "2026-11-13T10:15:00+01:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

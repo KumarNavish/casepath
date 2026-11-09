@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_e731dc82c6481239",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-11-06T18:30:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_b919c3130cdb2432",
+  "subject": "Schimmelbefall in der Wohnung Feldstrasse 21, Aarau - Mangel nicht behoben",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wohne seit mehreren Jahren in der Wohnung an der Feldstrasse 21 in Aarau, einer 4.5-Zimmer-Wohnung, die ich bei der Regimo Liegenschaften AG gemietet habe. Ich wende mich an Sie, weil in der Wohnung ein Mangel besteht, den die Vermieterschaft bisher nicht behoben hat.\n\nIm Schlafzimmer an der Aussenwand sowie rund um das Fenster im Badezimmer hat sich schwarzer Schimmel gebildet, der sich laufend ausbreitet. Ich habe die Vermieterschaft mit Brief vom 27. August 2026 über diesen Mangel informiert und um Behebung ersucht. Eine Reaktion oder eine Massnahme ist bis heute nicht erfolgt.\n\nMeine Partnerin leidet seit Wochen unter Atembeschwerden, die nach ihrer Einschätzung mit dem Schimmel zusammenhängen könnten. Wir haben deshalb einen Arzttermin vereinbart, dessen Ergebnis ich Ihnen gerne nachreiche.\n\nIch möchte den Mangel nun rasch beheben lassen. Falls die Vermieterschaft innert angemessener Frist nicht reagiert, beabsichtige ich, den Mietzins bei der zuständigen Behörde zur Hinterlegung einzuzahlen. Bitte prüfen Sie meinen Fall und teilen Sie mir mit, welche Schritte Sie empfehlen.\n\nFreundliche Grüsse\nCorinne Huber",
+  "sent_at": "2026-11-06T18:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_dad5b8eda8f7ffd8"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_dad5b8eda8f7ffd8",
+   "file_name": "Mangelmeldung_2026-08-27.txt",
+   "media_type": "text/plain",
+   "content_base64": "Q29yaW5uZSBIdWJlcgpGZWxkc3RyYXNzZSAyMQo1MDAwIEFhcmF1CgpBYXJhdSwgMjcuIEF1Z3VzdCAyMDI2CgpNZWxkdW5nIGVpbmVzIE1hbmdlbHMgaW4gZGVyIE1pZXR3b2hudW5nIEZlbGRzdHJhc3NlIDIxLCBBYXJhdSAoNC41IFppbW1lcikKClNlaHIgZ2VlaHJ0ZSBEYW1lbiB1bmQgSGVycmVuCgpIaWVybWl0IG1lbGRlIGljaCBlaW5lbiBNYW5nZWwgaW4gZGVyIG9iZW4gZ2VuYW5udGVuIE1pZXR3b2hudW5nIHVuZCBiaXR0ZSB1bSBkZXNzZW4gQmVoZWJ1bmcuCgpCZXNjaHJlaWJ1bmcgZGVzIE1hbmdlbHM6IEltIFNjaGxhZnppbW1lciBoYXQgc2ljaCBhbiBkZXIgV2FuZCBzY2h3YXJ6ZXIgU2NoaW1tZWwgZ2ViaWxkZXQsIGRlciBzaWNoIGF1c2JyZWl0ZXQuIEF1Y2ggcnVuZCB1bSBkYXMgRmVuc3RlciBpbSBCYWRlemltbWVyIGlzdCBzY2h3YXJ6ZXIgU2NoaW1tZWwgc2ljaHRiYXIgdW5kIG5pbW10IGxhdWZlbmQgenUuCgpCaXR0ZSB0ZWlsZW4gU2llIG1pciBpbm5lcnQgMTQgVGFnZW4gbWl0LCB3YW5uIGRpZSBCZWhlYnVuZyBlcmZvbGd0LgoKRnJldW5kbGljaGUgR3LDvHNzZQoKQ29yaW5uZSBIdWJlcg==",
+   "sha256": "267360ab34a9278840714b3424125261008120d28a2e03647d7ae7975fa9f07b",
+   "size_bytes": 580
+  }
+ ]
+}

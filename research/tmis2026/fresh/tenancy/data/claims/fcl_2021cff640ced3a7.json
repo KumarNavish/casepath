@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_2021cff640ced3a7",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-03T16:30:00+01:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_5ec0c07b5dbb3b2b",
+  "subject": "Kündigung meiner Wohnung an der Seestrasse 48 – Bitte um Unterstützung bei der Anfechtung",
+  "body": "Sehr geehrte Damen und Herren\n\nVon meinem Vermieter, Herrn Peter Ammann, habe ich eine schriftliche Kündigung meines Mietverhältnisses für die 4.5-Zimmer-Wohnung an der Seestrasse 48 in Zürich erhalten. Die Kündigung ist per 30. Juni 2027 ausgesprochen und begründet mit einer geplanten Gesamtsanierung des Gebäudes. Sie liegt auf dem amtlichen Formular des Kantons vor; eine Kopie habe ich beigelegt.\n\nDie Wohnung ist unser Familienzuhause: Meine Ehefrau und ich wohnen beide dort. Ich glaube, dass die Kündigung eine Vergeltung ist. Ich habe vor Kurzem Mängel an der Wohnung gerügt und den Mietzins beanstandet, und kurz darauf kam die Kündigung. Ich kann den Zusammenhang nicht beweisen, aber er ist auffällig.\n\nIch habe noch nicht entschieden, ob ich um eine Erstreckung des Mietverhältnisses bitten werde. Ein Auszug bis Ende Juni 2027 wäre für uns eine grosse Härte, vor allem wegen der schwierigen Wohnungssuche. Ich möchte zuerst abklären, welche Möglichkeiten bestehen.\n\nIch bitte Sie um Unterstützung bei der Anfechtung der Kündigung bei der Schlichtungsbehörde und um eine Einschätzung der Erfolgsaussichten. Bitte teilen Sie mir mit, welche Unterlagen Sie benötigen.\n\nFreundliche Grüsse\nDaniela Graf",
+  "sent_at": "2026-09-03T16:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_b5241b3dc99cce72"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_b5241b3dc99cce72",
+   "file_name": "Kuendigung_Seestrasse48.txt",
+   "media_type": "text/plain",
+   "content_base64": "S8O8bmRpZ3VuZyBkZXMgTWlldHZlcmjDpGx0bmlzc2VzCkFtdGxpY2hlcyBGb3JtdWxhciwgS2FudG9uIFrDvHJpY2ggKGdlbmVobWlndCkKClZlcm1pZXRlcjogUGV0ZXIgQW1tYW5uIChwcml2YXRlIGxhbmRsb3JkKQpNaWV0ZXJpbi9NaWV0ZXI6IERhbmllbGEgR3JhZgpPYmpla3Q6IFNlZXN0cmFzc2UgNDgsIDgwMDAgWsO8cmljaCwgNC41LVppbW1lci1Xb2hudW5nCgpIaWVybWl0IGvDvG5kaWdlbiB3aXIgZGFzIE1pZXR2ZXJow6RsdG5pcyBwZXIgMzAuIEp1bmkgMjAyNy4KR3J1bmQgZGVyIEvDvG5kaWd1bmc6IGdlcGxhbnRlIEdlc2FtdHNhbmllcnVuZyBkZXMgR2Viw6R1ZGVzLgoKSGlud2VpczogU2llIGvDtm5uZW4gZGllc2UgS8O8bmRpZ3VuZyBpbm5lcnQgZGVyIGdlc2V0emxpY2hlbiBGcmlzdCBiZWkgZGVyIFNjaGxpY2h0dW5nc2JlaMO2cmRlIGbDvHIgTWlldHNhY2hlbiBhbmZlY2h0ZW4uIERpZSBTY2hsaWNodHVuZ3NiZWjDtnJkZSBlcnRlaWx0IEF1c2t1bmZ0IMO8YmVyIGRhcyBWZXJmYWhyZW4uCgpPcnQsIERhdHVtOiBaw7xyaWNoLCAyOC4gQXVndXN0IDIwMjYKVW50ZXJzY2hyaWZ0IFZlcm1pZXRlcjogUGV0ZXIgQW1tYW5uIChwcml2YXRlIGxhbmRsb3JkKQ==",
+   "sha256": "eb526a79b4f834121518efe6ab9492024bccc258cf01823f2be09789d415293d",
+   "size_bytes": 616
+  }
+ ]
+}

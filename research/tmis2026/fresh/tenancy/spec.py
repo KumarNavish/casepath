@@ -87,7 +87,7 @@ FACTS = {
         "open": "say it has not yet been decided whether an expert needs to inspect the cause",
     },
     "deposit_considered": {
-        "fact": "The tenant is considering paying the rent into the official rent deposit (Hinterlegung) until the defect is fixed.",
+        "fact": "The tenant intends to pay the rent into the official rent deposit (Hinterlegung) if the defect is not fixed.",
         "open": "say you are not sure yet whether you will pay the rent into the official deposit account",
     },
 }

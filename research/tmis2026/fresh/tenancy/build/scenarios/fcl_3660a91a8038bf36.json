@@ -1,0 +1,52 @@
+{
+ "claim_id": "fcl_3660a91a8038bf36",
+ "family": "lease_termination_dispute",
+ "family_id": "ffam_395204ed0b53a6f1",
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "family_home"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "unmentioned",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Riley Bennett",
+  "landlord": "Wincasa Nord AG",
+  "city": "Olten",
+  "canton": "SO",
+  "address": "Bahnhofstrasse 64, Olten, 4-room flat",
+  "lease_start": "1 June 2018",
+  "rent": 2460,
+  "utilities": 230,
+  "received_at": "2026-11-20T09:30:00+01:00",
+  "end_date": "30 September 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 4920,
+  "new_rent": 2570,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2020",
+  "prior_rent": 2400,
+  "prior_rate": "1.5",
+  "defect": "",
+  "notified_on": "17 August 2026",
+  "repair_deadline": "4 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "3 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}

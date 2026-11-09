@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_d4c3b6ed8d30f2f9",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-02T15:45:00+01:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_193d7ed6e07655df",
+  "subject": "Termination of our tenancy at Rosenstrasse 83, Aarau - request for help and extension",
+  "body": "Dear Sir or Madam,\n\nI am writing to ask for your help in contesting the termination of my tenancy at Rosenstrasse 83 in Aarau, a 3.5-room flat rented from Immobilien Seeblick AG. The flat is our family home. My wife lives here with me, and she is fully part of this tenancy.\n\nI believe the termination is retaliation. Earlier this year I complained about defects in the flat and questioned the rent, and the landlord's decision came shortly afterwards.\n\nThe landlord mentioned late payments to me, but I do not know whether the termination is actually based on rent arrears. I have not yet seen any justification from them, and I am not sure what they are relying on.\n\nMoving out by the end date would cause us serious hardship. Our children are in local schools, my wife has a health condition that makes a housing search very stressful, and we have had little success finding comparable accommodation in the area. I would therefore like to request an extension of the tenancy.\n\nThe tenancy agreement is attached. Please let me know which documents you need from me and what the next steps are.\n\nKind regards,\nQuinn Marshall",
+  "sent_at": "2026-10-02T15:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_c4be815032113b4a"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_c4be815032113b4a",
+   "file_name": "tenancy_agreement_Rosenstrasse_83.txt",
+   "media_type": "text/plain",
+   "content_base64": "VEVOQU5DWSBBR1JFRU1FTlQgKExFQVNFIENPTlRSQUNUKQoKTGFuZGxvcmQ6IEltbW9iaWxpZW4gU2VlYmxpY2sgQUcKVGVuYW50OiBRdWlubiBNYXJzaGFsbAoKUmVudGVkIHByb3BlcnR5OiBSb3NlbnN0cmFzc2UgODMsIEFhcmF1LiAzLjUtcm9vbSBmbGF0LgoKU3RhcnQgZGF0ZSBvZiB0ZW5hbmN5OiAxIE9jdG9iZXIgMjAxNgpOZXQgcmVudDogQ0hGIDIyMTAgcGVyIG1vbnRoLCBleGNsdWRpbmcgYW5jaWxsYXJ5IGNvc3RzLgpOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMsIHRvIHRoZSBlbmQgb2YgYSBtb250aC4KClRoZSB0ZW5hbnQgdW5kZXJ0YWtlcyB0byB1c2UgdGhlIGZsYXQgYXMgYSByZXNpZGVuY2UgYW5kIHRvIHBheSB0aGUgcmVudCBvbiB0aW1lIGVhY2ggbW9udGguIFRoZSBsYW5kbG9yZCB1bmRlcnRha2VzIHRvIGtlZXAgdGhlIGZsYXQgaW4gYSBjb25kaXRpb24gc3VpdGFibGUgZm9yIGl0cyBhZ3JlZWQgdXNlLgoKUGxhY2UgYW5kIGRhdGUgb2Ygc2lnbmluZzogQWFyYXUsIDIwMTYKClNpZ25hdHVyZSBvZiBsYW5kbG9yZDogX19fX19fX19fX19fX19fX19fX19fXwpTaWduYXR1cmUgb2YgdGVuYW50OiBfX19fX19fX19fX19fX19fX19fX19f",
+   "sha256": "d695976df24b9b375a2ff57efcff48d165112c653e1d048365a766cc68cd01c4",
+   "size_bytes": 606
+  }
+ ]
+}

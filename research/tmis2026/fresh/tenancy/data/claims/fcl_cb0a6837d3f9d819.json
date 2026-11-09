@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_cb0a6837d3f9d819",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-09-14T10:00:00+01:00",
+  "canton": "SH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_f0c8e0d8c857ca6d",
+  "subject": "Black mould in my flat at Weiherweg 56, Schaffhausen - request for advice",
+  "body": "Dear Legal Expenses Team, I am writing to ask for help with a defect in my rented 4-room flat at Weiherweg 56, Schaffhausen. My landlord is Peter Ammann, a private landlord. There is black mould spreading on the bedroom wall and around the bathroom window. I first reported this to Mr. Ammann in writing on 19 June 2026, and a copy of my letter is attached. He has replied, and his response is also attached. He acknowledges my report, says the matter will be looked at, and proposes a repair by a contractor, with access to the flat on 16 November 2026. The mould has not been fixed so far, and it has continued to spread since my letter. I am not sure whether the proposed work will take place on the date given, and I have not yet received any further details about the contractor or the scope of the work. I would be grateful if you could advise me on my options and on what I should do next, including whether your insurance covers the cost of legal advice on this matter. Thank you for your help. Kind regards, Charlie Wade",
+  "sent_at": "2026-09-14T10:00:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_eea37e244bb2e800",
+   "fatt_97a8b974868f79dc"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_eea37e244bb2e800",
+   "file_name": "tenant_letter_2026-06-19.txt",
+   "media_type": "text/plain",
+   "content_base64": "Q2hhcmxpZSBXYWRlLCBXZWloZXJ3ZWcgNTYsIDgyMDAgU2NoYWZmaGF1c2VuLiBUbzogUGV0ZXIgQW1tYW5uIChwcml2YXRlIGxhbmRsb3JkKSwgU2NoYWZmaGF1c2VuLiBEYXRlOiAxOSBKdW5lIDIwMjYuIFN1YmplY3Q6IERlZmVjdCByZXBvcnQgLSBibGFjayBtb3VsZCBpbiB0aGUgZmxhdCBhdCBXZWloZXJ3ZWcgNTYuIERlYXIgTXIuIEFtbWFubiwgSSBhbSB3cml0aW5nIHRvIHJlcG9ydCBhIGRlZmVjdCBpbiB0aGUgNC1yb29tIGZsYXQgSSByZW50IGZyb20geW91IGF0IFdlaWhlcndlZyA1NiwgU2NoYWZmaGF1c2VuLiBUaGVyZSBpcyBibGFjayBtb3VsZCBncm93aW5nIG9uIHRoZSBiZWRyb29tIHdhbGwgYW5kIGFyb3VuZCB0aGUgYmF0aHJvb20gd2luZG93LiBUaGUgbW91bGQgaXMgc3ByZWFkaW5nIGFuZCBJIHdvdWxkIGJlIGdyYXRlZnVsIGlmIHlvdSBjb3VsZCBhcnJhbmdlIGZvciBpdCB0byBiZSBpbnNwZWN0ZWQgYW5kIGRlYWx0IHdpdGguIFBsZWFzZSBjb25maXJtIGluIHdyaXRpbmcgd2hlbiB5b3Ugd2lsbCB0YWtlIGFjdGlvbi4gWW91cnMgc2luY2VyZWx5LCBDaGFybGllIFdhZGU=",
+   "sha256": "5aafa05fb2c33eeb2edb8b3d37332e466a75d4efcce98dd6f7560b0c4eb519a2",
+   "size_bytes": 569
+  },
+  {
+   "artifact_id": "fatt_97a8b974868f79dc",
+   "file_name": "landlord_reply.txt",
+   "media_type": "text/plain",
+   "content_base64": "UGV0ZXIgQW1tYW5uIChwcml2YXRlIGxhbmRsb3JkKSwgU2NoYWZmaGF1c2VuLiBUbzogQ2hhcmxpZSBXYWRlLCBXZWloZXJ3ZWcgNTYsIDgyMDAgU2NoYWZmaGF1c2VuLiBTdWJqZWN0OiBZb3VyIGxldHRlciBvZiAxOSBKdW5lIDIwMjYgLSBtb3VsZCBpbiB0aGUgZmxhdC4gRGVhciBNci4gV2FkZSwgSSBhY2tub3dsZWRnZSByZWNlaXB0IG9mIHlvdXIgbGV0dGVyIG9mIDE5IEp1bmUgMjAyNiByZXBvcnRpbmcgYmxhY2sgbW91bGQgb24gdGhlIGJlZHJvb20gd2FsbCBhbmQgYXJvdW5kIHRoZSBiYXRocm9vbSB3aW5kb3cgb2YgdGhlIGZsYXQgYXQgV2VpaGVyd2VnIDU2LiBJIGNvbmZpcm0gdGhhdCB0aGUgbWF0dGVyIHdpbGwgYmUgbG9va2VkIGF0LiBJIHByb3Bvc2UgdGhhdCBhIGNvbnRyYWN0b3IgY2FycmllcyBvdXQgdGhlIHJlcGFpci4gSSBhc2sgdGhhdCB5b3UgZ2l2ZSB0aGUgY29udHJhY3RvciBhY2Nlc3MgdG8gdGhlIGZsYXQgb24gMTYgTm92ZW1iZXIgMjAyNi4gUGxlYXNlIGxldCBtZSBrbm93IGlmIHRoaXMgZGF0ZSBkb2VzIG5vdCBzdWl0IHlvdS4gWW91cnMgc2luY2VyZWx5LCBQZXRlciBBbW1hbm4=",
+   "sha256": "982b1db9f4a3fe3ba423590173b10894466ee1fbdfed56cbeacd4c27c3100c9a",
+   "size_bytes": 578
+  }
+ ]
+}

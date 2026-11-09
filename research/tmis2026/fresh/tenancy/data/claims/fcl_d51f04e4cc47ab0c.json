@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_d51f04e4cc47ab0c",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-12T13:45:00+01:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_fb3957222605337d",
+  "subject": "Anfechtung der Kündigung meiner Wohnung an der Gartenweg 86, Winterthur",
+  "body": "Guten Tag\n\nIch wohne mit meiner Ehefrau in der Wohnung an der Gartenweg 86 in Winterthur. Es handelt sich um unsere gemeinsame Familienwohnung, in der meine Ehefrau und ich zusammen leben. Die Wohnung ist unser Lebensmittelpunkt, wir haben hier unsere Möbel, unsere Post und unsere Kontakte im Quartier. Die Vermieterin, die Immobilien Seeblick AG, möchte das Mietverhältnis beenden. Ich möchte dagegen vorgehen und wissen, welche Möglichkeiten ich habe, diese Absicht anzufechten.\n\nIch bitte Sie um eine Einschätzung der Rechtslage und um Unterstützung durch Ihre Rechtsberatung. Der Mietvertrag liegt bei. Ich habe ihn als PDF hochgeladen und stelle gerne weitere Unterlagen zur Verfügung, falls Sie diese benötigen.\n\nBitte berücksichtigen Sie, dass meine Ehefrau und ich auf diese Wohnung als Familienwohnung angewiesen sind. Eine Rückmeldung innert nützlicher Frist wäre mir sehr wichtig, damit ich die nächsten Schritte planen kann.\n\nBesten Dank und freundliche Grüsse\n\nBeat Widmer",
+  "sent_at": "2026-09-12T13:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_46f2bfbead9bcce5"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_46f2bfbead9bcce5",
+   "file_name": "Mietvertrag_Gartenweg86.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUkFVTS4gVmVybWlldGVyaW46IEltbW9iaWxpZW4gU2VlYmxpY2sgQUcuIE1pZXRlcjogQmVhdCBXaWRtZXIuIE1pZXRvYmpla3Q6IDQuNS1aaW1tZXItV29obnVuZywgR2FydGVud2VnIDg2LCA4NDAwIFdpbnRlcnRodXIuIFZlcndlbmR1bmdzendlY2s6IFdvaG51bmcgenUgV29obnp3ZWNrZW4uIERpZSBhbGxnZW1laW5lbiBCZXN0aW1tdW5nZW4genVtIE1pZXR2ZXJow6RsdG5pcyBzaW5kIGltIEFuaGFuZyBhdWZnZWbDvGhydC4gT3J0IHVuZCBEYXR1bSBkZXIgVW50ZXJ6ZWljaG51bmcgc2luZCBhdWYgZGVyIGxldHp0ZW4gU2VpdGUgdmVybWVya3QuIFVudGVyc2NocmlmdCBWZXJtaWV0ZXJpbjogX19fX19fX19fX19fX18uIFVudGVyc2NocmlmdCBNaWV0ZXI6IF9fX19fX19fX19fX19fLg==",
+   "sha256": "79c20140862105c967c6e9cece76c79c7725236dec9ae9cd51b19fae3b8065e8",
+   "size_bytes": 415
+  }
+ ]
+}

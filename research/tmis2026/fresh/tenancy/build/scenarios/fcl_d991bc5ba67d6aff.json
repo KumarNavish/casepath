@@ -1,0 +1,52 @@
+{
+ "claim_id": "fcl_d991bc5ba67d6aff",
+ "family": "defect_mold_heating",
+ "family_id": "ffam_ba42a866b3f94c0b",
+ "combo": [
+  "health_effects",
+  "heating",
+  "specialist_needed"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "absent",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "open"
+ },
+ "open_flag": "deposit_considered",
+ "open_value": false,
+ "routing_stated": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Lee Harper",
+  "landlord": "Livit-Partner Verwaltungen AG",
+  "city": "Thun",
+  "canton": "BE",
+  "address": "Feldstrasse 8, Thun, 3-room flat",
+  "lease_start": "1 June 2018",
+  "rent": 1500,
+  "utilities": 250,
+  "received_at": "2026-11-22T12:45:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 4500,
+  "new_rent": 1590,
+  "effective_date": "1 July 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 April 2020",
+  "prior_rent": 1450,
+  "prior_rate": "1.25",
+  "defect": "the heating keeps failing so that the flat cools down to about 16 degrees",
+  "notified_on": "4 August 2026",
+  "repair_deadline": "1 October 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "an inspection by the caretaker followed by repairs",
+  "access_date": "25 November 2026",
+  "health_detail": "repeated colds and bronchitis"
+ },
+ "replacement": 0
+}

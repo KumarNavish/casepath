@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_09bf4c849ef1ee44",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-11-28T15:15:00+01:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "fmsg_46f0f285186a986e",
+  "subject": "Anfechtung der Mietzinserhöhung Kirchgasse 20, Frauenfeld",
+  "body": "Sehr geehrte Damen und Herren. Ich wende mich an Sie wegen einer geplanten Mietzinserhöhung für meine 2-Zimmer-Wohnung an der Kirchgasse 20 in Frauenfeld. Vermieterin ist die Immobilien Seeblick AG. Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes. Zum andern verweist sie auf Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude. Die letzte Anpassung des Mietzinses erfolgte am 1. Oktober 2021. Damals wurde der Mietzins auf CHF 1400 festgelegt. Die entsprechende Unterlage lege ich bei. Ich bin mit der Erhöhung nicht einverstanden und möchte sie prüfen lassen. Ich möchte wissen, wie ich vorgehen kann und ob ich die Begründungen der Vermieterin anfechten kann. Insbesondere möchte ich klären, ob die Renovationsarbeiten tatsächlich wertvermehrend waren oder ob es sich um Unterhalt handelt, der keine Erhöhung rechtfertigt. Ich wäre Ihnen dankbar, wenn Sie mich beraten und mir die nötigen Schritte aufzeigen könnten. Gerne stelle ich Ihnen weitere Unterlagen zur Verfügung. Freundliche Grüsse Corinne Huber",
+  "sent_at": "2026-11-28T15:15:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_f78fc98657910400"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_f78fc98657910400",
+   "file_name": "Mietzinsanpassung_Vorjahr.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWl0dGVpbHVuZyDDvGJlciBkaWUgTWlldHppbnNhbnBhc3N1bmcuIExpZWdlbnNjaGFmdDogS2lyY2hnYXNzZSAyMCwgODUwMCBGcmF1ZW5mZWxkLiBNaWV0b2JqZWt0OiAyLVppbW1lci1Xb2hudW5nLiBNaWV0ZXJpbjogQ29yaW5uZSBIdWJlci4gVmVybWlldGVyaW46IEltbW9iaWxpZW4gU2VlYmxpY2sgQUcuIERhdHVtIGRlciBBbnBhc3N1bmc6IDEuIE9rdG9iZXIgMjAyMS4gQmlzaGVyaWdlciBNaWV0emluczogQ0hGIDE0MDAgcHJvIE1vbmF0IG5ldHRvLCB6dXrDvGdsaWNoIE5lYmVua29zdGVuLUFrb250by4gRGVyIG5ldWUgTWlldHppbnMgZ2lsdCBhYiBkZW0gMS4gT2t0b2JlciAyMDIxLiBEaWVzZSBNaXR0ZWlsdW5nIGlzdCBlaW5lIEtvcGllIGbDvHIgZGllIEFrdGVuLiBJbW1vYmlsaWVuIFNlZWJsaWNrIEFHLCBWZXJ3YWx0dW5nLg==",
+   "sha256": "064336c1741e04875353dbb5ae58ac31e92c98ae634626f6563fc3abdd33445a",
+   "size_bytes": 424
+  }
+ ]
+}

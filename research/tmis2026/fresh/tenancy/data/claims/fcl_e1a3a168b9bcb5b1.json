@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_e1a3a168b9bcb5b1",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-12T12:45:00+01:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "fmsg_14f318868ba647a5",
+  "subject": "Kündigung Mietverhältnis Gartenweg 81, Zürich – Anfrage zur Anfechtung und Erstreckung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie wegen meines Mietverhältnisses für die 4.5-Zimmer-Wohnung an der Gartenweg 81 in 8000 Zürich. Mein Vermieter, Herr Peter Ammann, kündigt den Mietvertrag wegen Mietzinsrückstand. Die Wohnung ist unsere gemeinsame Familienwohnung. Ich wohne hier zusammen mit meiner Ehefrau, die ebenfalls im Mietverhältnis lebt.\n\nDer Mietzins von netto CHF 1460 pro Monat ist nach Angaben des Vermieters im Rückstand von insgesamt CHF 2920. Ich habe vorgängig eine Zahlungserinnerung erhalten, in der eine Frist von 30 Tagen zur Bezahlung gesetzt wurde. Die Zahlungserinnerung und den Mietvertrag lege ich Ihnen bei.\n\nEin Auszug auf den von Herrn Ammann genannten Termin würde für uns eine grosse Härte bedeuten. Die Wohnungssuche gestaltet sich schwierig, und unsere Kinder sind in der bisherigen Schule eingeschult. Ich möchte deshalb eine Erstreckung des Mietverhältnisses beantragen.\n\nKönnen Sie mich beraten, ob die Kündigung angefochten werden kann und wie ich die Erstreckung am besten geltend mache? Gerne bin ich für ein Telefonat oder einen Termin erreichbar.\n\nBesten Dank und freundliche Grüsse\n\nLukas Schmid",
+  "sent_at": "2026-09-12T12:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_094ef09adbbd077d",
+   "fatt_0f31d1189be81083"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_094ef09adbbd077d",
+   "file_name": "Zahlungserinnerung_Gartenweg81.txt",
+   "media_type": "text/plain",
+   "content_base64": "WmFobHVuZ3NlcmlubmVydW5nCgpNaWV0b2JqZWt0OiBHYXJ0ZW53ZWcgODEsIDgwMDAgWsO8cmljaCwgNC41LVppbW1lci1Xb2hudW5nCk1pZXRlcjogTHVrYXMgU2NobWlkCgpTZWhyIGdlZWhydGVyIEhlcnIgU2NobWlkCgpBdWYgSWhyZW0gTWlldGtvbnRvIGJlc3RlaHQgcGVyIGhldXRpZ2VtIERhdHVtIGVpbiBhdXNzdGVoZW5kZXIgTWlldHppbnMgaW4gZGVyIEjDtmhlIHZvbiBDSEYgMjkyMC4KCldpciBiaXR0ZW4gU2llLCBkZW4gYXVzc3RlaGVuZGVuIEJldHJhZyBpbm5lcnQgZWluZXIgRnJpc3Qgdm9uIDMwIFRhZ2VuIGFiIERhdHVtIGRpZXNlcyBTY2hyZWliZW5zIHZvbGxzdMOkbmRpZyB6dSBiZXphaGxlbi4KCldpcmQgZGVyIGF1c3N0ZWhlbmRlIEJldHJhZyBuaWNodCBmcmlzdGdlcmVjaHQgYmV6YWhsdCwgd2lyZCBkYXMgTWlldHZlcmjDpGx0bmlzIGdla8O8bmRpZ3QuCgpGcmV1bmRsaWNoZSBHcsO8c3NlCgpQZXRlciBBbW1hbm4=",
+   "sha256": "9d3593f367d479bfb8092b03f32aa9330b43419c67270df1c538ce8bf14ce2d8",
+   "size_bytes": 482
+  },
+  {
+   "artifact_id": "fatt_0f31d1189be81083",
+   "file_name": "Mietvertrag_Gartenweg81.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWlldHZlcnRyYWcgZsO8ciBXb2hucmF1bQoKTWlldG9iamVrdDogR2FydGVud2VnIDgxLCA4MDAwIFrDvHJpY2gsIDQuNS1aaW1tZXItV29obnVuZwoKQmVnaW5uIGRlcyBNaWV0dmVyaMOkbHRuaXNzZXM6IDEuIE9rdG9iZXIgMjAyMQoKTmV0dG9taWV0emluczogQ0hGIDE0NjAgcHJvIE1vbmF0LCB6dXrDvGdsaWNoIE5lYmVua29zdGVuIGdlbcOkc3Mgc2VwYXJhdGVyIEFicmVjaG51bmcKCkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlLCBqZXdlaWxzIGF1ZiBNb25hdHNlbmRlCgpEaWVzZXIgVmVydHJhZyB0cml0dCBtaXQgVW50ZXJ6ZWljaG51bmcgZHVyY2ggYmVpZGUgUGFydGVpZW4gaW4gS3JhZnQu",
+   "sha256": "870b88a02444617129a9a241fb7f462abe3a624b5aacf37a165c91c6d5e9dc10",
+   "size_bytes": 348
+  }
+ ]
+}

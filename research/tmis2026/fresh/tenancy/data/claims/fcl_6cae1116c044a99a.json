@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_6cae1116c044a99a",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-11-23T11:30:00+01:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "fmsg_44f48dd4ccdae262",
+  "subject": "Mangel Lüftung Badezimmer, Mattenweg 73, Luzern – Bitte um Unterstützung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie, weil in unserer Wohnung am Mattenweg 73 in Luzern ein Mangel besteht, den die Vermieterin bisher nicht behoben hat. Es handelt sich um eine 4-Zimmer-Wohnung, die wir seit mehreren Jahren mieten. Die Lüftung im fensterlosen Badezimmer ist defekt. Der Ventilator rattert Tag und Nacht laut.\n\nIch habe den Mangel am 14. Juli 2026 schriftlich bei Wohnbau Limmat GmbH gemeldet. Das Schreiben liegt bei. Bis heute ist jedoch weder eine Reparatur erfolgt, noch hat sich die Verwaltung bei mir gemeldet.\n\nMeine Partnerin leidet seit einiger Zeit unter Schlafproblemen und Kopfschmerzen. Wir führen dies auf den Dauerlärm zurück. Wir sind besorgt, weil es seit Wochen so anhält.\n\nIch möchte wissen, wie ich meine Rechte gegenüber der Vermieterin durchsetzen kann, und bitte Sie um Unterstützung durch Ihre Rechtsberatung. Für eine kurze Rückmeldung wäre ich dankbar.\n\nFreundliche Grüsse\n\nMartin Egli",
+  "sent_at": "2026-11-23T11:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_0e784e9b5076e9c4"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_0e784e9b5076e9c4",
+   "file_name": "Mangelmeldung_Lueftung_Badezimmer_2026-07-14.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWFydGluIEVnbGkKTWF0dGVud2VnIDczCjYwMDUgTHV6ZXJuCgpXb2huYmF1IExpbW1hdCBHbWJIClZlcndhbHR1bmcKei4gSGQuIFZlcndhbHR1bmcgTWF0dGVud2VnIDczCgpMdXplcm4sIDE0LiBKdWxpIDIwMjYKCk1hbmdlbG1lbGR1bmc6IEzDvGZ0dW5nIGltIEJhZGV6aW1tZXIKClNlaHIgZ2VlaHJ0ZSBEYW1lbiB1bmQgSGVycmVuCgpIaWVybWl0IG1lbGRlIGljaCBJaG5lbiBlaW5lbiBNYW5nZWwgaW4gdW5zZXJlciBNaWV0d29obnVuZyBNYXR0ZW53ZWcgNzMsIDQtWmltbWVyLVdvaG51bmcsIEx1emVybi4KCkRpZSBWZW50aWxhdG9yYW5sYWdlIGRlciBMw7xmdHVuZyBpbSBmZW5zdGVybG9zZW4gQmFkZXppbW1lciBpc3QgZGVmZWt0LiBEZXIgVmVudGlsYXRvciByYXR0ZXJ0IGxhdXQsIFRhZyB1bmQgTmFjaHQuCgpCaXR0ZSB2ZXJhbmxhc3NlbiBTaWUgZGllIFByw7xmdW5nIHVuZCBJbnN0YW5kc2V0enVuZyBkZXIgTMO8ZnR1bmcgaW5uZXJ0IGFuZ2VtZXNzZW5lciBGcmlzdCB1bmQgdGVpbGVuIFNpZSBtaXIgbWl0LCB3YW5uIGRpZSBBcmJlaXRlbiBlcmZvbGdlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKCk1hcnRpbiBFZ2xp",
+   "sha256": "071e5f7ac0d15b1b4a95bc991cadcd8ed4034c230e0a923093962564a72688c2",
+   "size_bytes": 591
+  }
+ ]
+}

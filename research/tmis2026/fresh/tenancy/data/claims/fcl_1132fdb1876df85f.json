@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_1132fdb1876df85f",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-27T10:45:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_672db0afb7901ec3",
+  "subject": "Anfechtung der Kündigung meiner Wohnung an der Sonnenbergstrasse 7, Bern",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich an Sie, weil mein Vermieter, Herr Peter Ammann, das Mietverhältnis für meine 3.5-Zimmer-Wohnung an der Sonnenbergstrasse 7 in Bern gekündigt hat. Ich bin überzeugt, dass diese Kündigung eine Vergeltung ist. Im Frühling 2026 habe ich Herrn Ammann auf verschiedene Mängel hingewiesen, namentlich auf Feuchtigkeit und Schimmelbildung im Badezimmer sowie auf einen defekten Sonnenstoren im Wohnzimmer. Zudem habe ich den Mietzins aufgrund dieser Mängel in Frage gestellt und eine Herabsetzung verlangt. Kurz danach kam die Kündigung.\n\nDie Mängel sind bis heute nicht vollständig behoben. Ich möchte die Kündigung anfechten und wissen, welche Schritte ich einleiten kann. Den Mietvertrag habe ich im Anhang beigelegt. Ich bitte Sie um eine Einschätzung der Erfolgsaussichten und um Unterstützung bei der Anfechtung vor der Schlichtungsbehörde.\n\nFür Rückfragen bin ich über die im Portal hinterlegte Kontaktadresse erreichbar.\n\nFreundliche Grüsse\nStefan Moser",
+  "sent_at": "2026-09-27T10:45:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_ff85b9c1a960a25e"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_ff85b9c1a960a25e",
+   "file_name": "Mietvertrag_Sonnenbergstrasse7.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgKFdvaG5yYXVtKQoKVmVybWlldGVyOiBQZXRlciBBbW1hbm4gKHByaXZhdGUgbGFuZGxvcmQpCk1pZXRlcjogU3RlZmFuIE1vc2VyCgpNaWV0b2JqZWt0OiAzLjUtWmltbWVyLVdvaG51bmcKQWRyZXNzZTogU29ubmVuYmVyZ3N0cmFzc2UgNywgMzAwNiBCZXJuCgpEZXIgVmVybWlldGVyIHZlcm1pZXRldCBkZW0gTWlldGVyIGRhcyBvYmVuIGJlemVpY2huZXRlIE1pZXRvYmpla3QgenVyIEJlbsO8dHp1bmcgYWxzIFdvaG51bmcuIERpZSB3ZWl0ZXJlbiBWZXJ0cmFnc2Jlc3RpbW11bmdlbiBzaW5kIGltIE9yaWdpbmFsLVZlcnRyYWdzZXhlbXBsYXIgZmVzdGdlaGFsdGVuLgoKT3J0IHVuZCBEYXR1bTogQmVybgoKVW50ZXJzY2hyaWZ0IFZlcm1pZXRlcjogX19fX19fX19fX19fX19fX19fX18KVW50ZXJzY2hyaWZ0IE1pZXRlcjogX19fX19fX19fX19fX19fX19fX18=",
+   "sha256": "2688fdc7b0101dafaf97349a6a08cd9bda4d73772080134a252b63d611757b09",
+   "size_bytes": 446
+  }
+ ]
+}

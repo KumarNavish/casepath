@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_3004e9cd625e0c4b",
+  "channel": "chat",
+  "language": "de-CH",
+  "received_at": "2026-11-26T17:30:00+01:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "fmsg_bbdefbe290f5ce8e",
+  "subject": "Hilfe bei Anfechtung der Beendigung meines Mietverhältnisses, Hofackerstrasse 34 Bern",
+  "body": "Hallo zusammen, ich brauche dringend Hilfe. Ich wohne mit meiner Ehefrau in der Hofackerstrasse 34 in Bern, 3-Zimmer-Wohnung. Das ist unsere Familienwohnung, meine Frau lebt also auch hier. Die Wohnbau Limmat GmbH will das Mietverhältnis beenden. Ich bin überzeugt, dass das Rache ist. Vor ein paar Wochen habe ich der Verwaltung schriftlich Mängel gemeldet, Feuchtigkeit im Bad und ein defektes Fenster im Schlafzimmer. Zusätzlich habe ich den Mietzins angefochten. Kurz danach kommt jetzt diese Sache mit der Beendigung. Für mich hängt das eindeutig zusammen. Die Vermieterin hat bisher nur allgemein geantwortet und nichts begründet. Ich weiss nicht, wie ich am besten vorgehe, und welche Fristen ich beachten muss. Könnt ihr prüfen, ob die Beendigung anfechtbar ist, und wie ich mich wehren kann? Den Mietvertrag habe ich angehängt. Ich bin ab morgen 9 Uhr erreichbar, Telefon 079 555 12 34. Vielen Dank für eure Unterstützung, das bedeutet mir viel!",
+  "sent_at": "2026-11-26T17:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_286fbf0a980a8656"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_286fbf0a980a8656",
+   "file_name": "Mietvertrag_Hofackerstrasse34.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgKFdvaG5yYXVtKQoKVmVybWlldGVyaW46IFdvaG5iYXUgTGltbWF0IEdtYkgKTWlldGVyOiBTdGVmYW4gTW9zZXIKCk1pZXRvYmpla3Q6IDMtWmltbWVyLVdvaG51bmcKQWRyZXNzZTogSG9mYWNrZXJzdHJhc3NlIDM0LCAzMDAwIEJlcm4KCkRpZSBWZXJtaWV0ZXJpbiDDvGJlcmzDpHNzdCBkZW0gTWlldGVyIGRhcyBvYmVuIGdlbmFubnRlIE1pZXRvYmpla3QgenVtIEdlYnJhdWNoIHp1IFdvaG56d2Vja2VuLiBEaWUgd2VpdGVyZW4gRWluemVsaGVpdGVuIHVuZCBCZXN0aW1tdW5nZW4gcmljaHRlbiBzaWNoIG5hY2ggZGVuIFZlcmVpbmJhcnVuZ2VuIGRlciBQYXJ0ZWllbiB1bmQgZGVuIGdlc2V0emxpY2hlbiBWb3JzY2hyaWZ0ZW4gZGVzIE9ibGlnYXRpb25lbnJlY2h0cy4KCk9ydDogQmVybgoKVW50ZXJzY2hyaWZ0ZW46ClZlcm1pZXRlcmluOiBfX19fX19fX19fX19fX19fX19fXwpNaWV0ZXI6IF9fX19fX19fX19fX19fX19fX19f",
+   "sha256": "0fa5bc44416138ab29795fd28048146ef145fa25c41c456608893c7a160bfb2b",
+   "size_bytes": 486
+  }
+ ]
+}

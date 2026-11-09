@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "fcl_99e24db5f37c7a3c",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-11-15T08:30:00+01:00",
+  "canton": "BS"
+ },
+ "customer_message": {
+  "message_id": "fmsg_e8e8855a42e77c7f",
+  "subject": "Request for help contesting termination of my lease at Gartenweg 83, Basel",
+  "body": "Dear Claims Team, I am writing to ask for your help in contesting the termination of my tenancy for the 3.5-room flat at Gartenweg 83, Basel. Last week I received a written notice of termination from my landlord, Verwaltung Rhein & Partner, and I would like to understand my options and whether your legal expenses cover can support me in challenging it. The landlord gives unpaid rent as the reason for ending the lease. The landlord states that the arrears amount to about CHF 6660. I would like to review this calculation with you before I respond. The flat is our family home. My registered partner lives here with me and has lived here throughout the tenancy. I have attached a copy of the tenancy agreement so you can see the agreed start date, the rent and the notice period. I can forward the termination letter and any payment records you need. Please tell me which documents you need and what the next steps are, including any deadline for objecting to the termination. Thank you for your help. Kind regards, Jordan Reid",
+  "sent_at": "2026-11-15T08:30:00+01:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "fatt_6202ebbe27e6f0f4"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "fatt_6202ebbe27e6f0f4",
+   "file_name": "tenancy_agreement_Gartenweg_83.txt",
+   "media_type": "text/plain",
+   "content_base64": "VEVOQU5DWSBBR1JFRU1FTlQgKFJFU0lERU5USUFMKS4gUHJlbWlzZXM6IEdhcnRlbndlZyA4MywgQmFzZWwuIFR5cGUgb2YgcHJlbWlzZXM6IDMuNS1yb29tIGZsYXQuIFRlbmFudDogSm9yZGFuIFJlaWQuIExhbmRsb3JkOiBhcyByZXByZXNlbnRlZCBpbiB0aGUgc2lnbmF0dXJlIGJsb2NrIGJlbG93LiBTdGFydCBkYXRlIG9mIHRlbmFuY3k6IDEgQXByaWwgMjAxMi4gTmV0IHJlbnQ6IENIRiAyMjIwIHBlciBtb250aCwgcGF5YWJsZSBpbiBhZHZhbmNlIGJ5IHRoZSBmaXJzdCBkYXkgb2YgZWFjaCBtb250aC4gQW5jaWxsYXJ5IGNvc3RzIChOZWJlbmtvc3Rlbik6IGFkdmFuY2UgcGF5bWVudCBhcyBzZXBhcmF0ZWx5IGFncmVlZCwgc2V0dGxlZCBhbm51YWxseS4gTm90aWNlIHBlcmlvZDogdGhyZWUgbW9udGhzLCBlZmZlY3RpdmUgYXQgdGhlIGVuZCBvZiBhIGNhbGVuZGFyIG1vbnRoLCBpbiBhY2NvcmRhbmNlIHdpdGggdGhlIHRlcm1zIG9mIHRoaXMgYWdyZWVtZW50LiBUaGUgdGVuYW50IGFncmVlcyB0byB1c2UgdGhlIHByZW1pc2VzIGZvciByZXNpZGVudGlhbCBwdXJwb3NlcyBvbmx5LiBTaWduZWQgaW4gQmFzZWwuIFNpZ25hdHVyZSBvZiBUZW5hbnQ6IF9fX19fX19fX19fX19fX19fX19fIFNpZ25hdHVyZSBvZiBMYW5kbG9yZDogX19fX19fX19fX19fX19fX19fX18=",
+   "sha256": "b06e0f87ba5f33d55a878d043a3ec45984614a6a8fe1341356ea82ed27a0d9f6",
+   "size_bytes": 668
+  }
+ ]
+}

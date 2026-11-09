@@ -1,0 +1,7568 @@
+{
+ "model": "anthropic/claude-haiku-5.5",
+ "seed": 20261109,
+ "slots": [
+  {
+   "slot": [
+    0,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_d3dc581ee564f805",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "claim_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "reference_rate": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "renovation": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 208,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    0,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_eeaae036d5c861db",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "claim_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "reference_rate": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "renovation": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "adjustment_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "adjusted_amount",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "calculation_basis",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "current_rent_evidence",
+         "field": "current_rent",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "current_rent_evidence",
+         "field": "rent_components",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 147,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    0,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_09bf4c849ef1ee44",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "claim_received": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "reference_rate": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "renovation": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "adjustment_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "adjusted_amount",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "prior_rent_adjustment",
+         "field": "calculation_basis",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 153,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    0,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_3b9600e267ebc9f8",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "claim_received": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "reference_rate": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "renovation": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "current_rent_evidence",
+         "field": "current_rent",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "current_rent_evidence",
+         "field": "rent_components",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 184,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    1,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_63770af748d8f3f7",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 177,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    1,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_d51f04e4cc47ab0c",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 136,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 144,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    1,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_c03f5f5c1caa60f2",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        }
+       },
+       "fields": [],
+       "words": 180,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 169,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 181,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    1,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_5e22217a8f028d99",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "termination_notice",
+         "field": "issuer",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "addressee",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "termination_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "stated_grounds",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "form_contents",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 197,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    2,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_1132fdb1876df85f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 142,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    2,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_2dffd4707bf2bbad",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "termination_notice",
+         "field": "issuer",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "addressee",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "termination_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "stated_grounds",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "form_contents",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 168,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    2,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_7032365a2a7cb080",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 199,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    2,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_9a62e6a839c5bbfa",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 178,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    3,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_8cd148548c0c667a",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 202,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 212,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 203,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    3,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_5b4d3a3b723b8160",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "cure_period",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "claimed_arrears",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "termination_warning",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 165,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    3,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_67f3fc97edbdf375",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 198,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    3,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_c40e2e2d27b46049",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 191,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    4,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_020f2bacedc162a9",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 162,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    4,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_ef44a7661ccf81b6",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 227,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 196,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    4,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_99e24db5f37c7a3c",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 182,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    4,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e77ee7d1e1be2112",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 159,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 137,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 156,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    5,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_a53b7aae8525d0d4",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 154,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    5,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_2021cff640ced3a7",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "termination_notice",
+         "field": "issuer",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "addressee",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "termination_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "stated_grounds",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "form_contents",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 178,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    5,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_5f53fea2fcbaf192",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 229,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 175,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    5,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_402436d0e9f9ed5e",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 138,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 129,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 155,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_3004e9cd625e0c4b",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 148,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    6,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_ea2f16538f5abd60",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 163,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    6,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_3660a91a8038bf36",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 193,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    6,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e1a3a168b9bcb5b1",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "cure_period",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "claimed_arrears",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "payment_deadline_letter",
+         "field": "termination_warning",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 170,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    6,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e514cbc96786ff0a",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 209,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    7,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_0f9a9b0f4a043ab5",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "termination_notice",
+         "field": "issuer",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "addressee",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "termination_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "stated_grounds",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "form_contents",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 152,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    7,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_ef2f5c99ca9ab008",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 191,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    7,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_d4c3b6ed8d30f2f9",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 203,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 197,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    7,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_881c44fa0cda8200",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "stated_false",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 224,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 195,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    8,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_5a191bddbf50f630",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 166,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 174,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    8,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_495cdb4f0d88d226",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "termination_notice",
+         "field": "issuer",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "addressee",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "termination_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "stated_grounds",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "termination_notice",
+         "field": "form_contents",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 171,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    8,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_09252315095aa169",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_false",
+         "accepted": false
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 198,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "termination_received": {
+         "expected": "not_mentioned",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 183,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    8,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_815414e86c968c16",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "termination_received": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "family_home": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "arrears": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "retaliation_screen": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "extension_relevant": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 179,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    9,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_284cb44c9617cba6",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 206,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    9,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_2cab6f06f58d2ebd",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 164,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 159,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    9,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_cb0a6837d3f9d819",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 193,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    9,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_716f9606b9e15e8f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 165,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    10,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_f072f22a4d308814",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 189,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    10,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_88791074fc226664",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 207,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 181,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 230,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_35d141069c4ad7a8",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 222,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 213,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 197,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_938145a10416cfa4",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 216,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 206,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 193,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    10,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_3144174d4eaa6a32",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 213,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    10,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_23c7f3a59472b82a",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 241,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 242,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 184,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    11,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_893dbc47ca84663f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 190,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    11,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_77b05646bbfc654b",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 196,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    11,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_6cae1116c044a99a",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 146,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    11,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_1d7e0a19ee376c16",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 166,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    12,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_99be3b386d6fe5d8",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 187,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    12,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_820ed84f0e81363f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 167,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    12,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_20eb1b189ff1c5d1",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 175,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 153,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    12,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_755f87180fe3a07e",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 159,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 188,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 169,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_f73d2413dc36e2a9",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 174,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 163,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": true,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 197,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_b8e5c045a70c397b",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": false,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 201,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": false
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": false,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 180,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": false
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "landlord_response_history",
+         "field": "landlord_response",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "proposed_work",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "landlord_response_history",
+         "field": "access_arrangements",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 182,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    13,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_a362784e299e172d",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 181,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    13,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_fb6908e2671dae22",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 193,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    13,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_a442849bcc00a706",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": false,
+         "got": false
+        }
+       ],
+       "words": 181,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    13,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_48ad1556596f887c",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 160,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    14,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_4f31932d66dafbf9",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 187,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    14,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_4c8a58711c423e41",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 172,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    14,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e7ec69ccf6911516",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 169,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    14,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_d0adca9e774843e2",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 219,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    15,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_2e51df9903135af2",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 186,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    15,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_d991bc5ba67d6aff",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 253,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 249,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 219,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    15,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_3b8ec390e5f4fbc8",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 171,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "lease_contract",
+         "field": "contracting_parties",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "property",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "lease_contract",
+         "field": "tenancy_terms",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 168,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    15,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_3e6ae32814a2f930",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 259,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 249,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 253,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_ba771eee6f3faacd",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 238,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 255,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 239,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_1f01a092db41c4bb",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 249,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 242,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 163,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    16,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_2534a534b97da50f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 162,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    16,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_79cd16a5ca76b01b",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 179,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    16,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_62814fb6c5c0f470",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 189,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    16,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e6d2ce2c974db213",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 261,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 233,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 245,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_c6336e3490dbbebc",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 252,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 240,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 247,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_c31d24a138ebbb00",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 245,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 220,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 209,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_551f86bfbe1b2aa1",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 288,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 258,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 277,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_84e0ce3f96d494da",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 228,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 248,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 277,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_2e14148317fc5787",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 211,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 202,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 210,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    17,
+    0
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_e731dc82c6481239",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "open",
+         "accepted": false
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 145,
+       "length_ok": true,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [
+        {
+         "document_type": "defect_notification",
+         "field": "reported_defect",
+         "expected": true,
+         "got": true
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "recipient",
+         "expected": false,
+         "got": false
+        },
+        {
+         "document_type": "defect_notification",
+         "field": "notification_date",
+         "expected": true,
+         "got": true
+        }
+       ],
+       "words": 171,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    17,
+    1
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_655804bbffa9242f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 169,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    17,
+    2
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_112799a0556d529d",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 305,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 287,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 262,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_27a6b32b5992f4eb",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 262,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 275,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        }
+       },
+       "fields": [],
+       "words": 233,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_4bfb8ba7682c0859",
+     "accepted": false,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 254,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 1,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 226,
+       "length_ok": false,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      },
+      {
+       "attempt": 2,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "open",
+         "accepted": false
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 234,
+       "length_ok": false,
+       "facts_agree": false,
+       "facts_agree_strict": false,
+       "fields_agree": true
+      }
+     ]
+    },
+    {
+     "claim_id": "fcl_6497fc47bf76f74f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "open",
+         "got": "open",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 213,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slot": [
+    17,
+    3
+   ],
+   "claims": [
+    {
+     "claim_id": "fcl_699677dc46b1150f",
+     "accepted": true,
+     "attempts": [
+      {
+       "attempt": 0,
+       "facts": {
+        "health_effects": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "mold": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        },
+        "heating": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "specialist_needed": {
+         "expected": "not_mentioned",
+         "got": "not_mentioned",
+         "accepted": true
+        },
+        "deposit_considered": {
+         "expected": "stated_true",
+         "got": "stated_true",
+         "accepted": true
+        }
+       },
+       "fields": [],
+       "words": 169,
+       "length_ok": true,
+       "facts_agree": true,
+       "facts_agree_strict": true,
+       "fields_agree": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "fresh_generation_spend_usd": 0.4723837999999999
+}

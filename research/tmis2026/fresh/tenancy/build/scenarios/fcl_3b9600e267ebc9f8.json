@@ -1,0 +1,57 @@
+{
+ "claim_id": "fcl_3b9600e267ebc9f8",
+ "family": "rent_increase_dispute",
+ "family_id": "ffam_8f8c20178ede48c7",
+ "combo": [
+  "reference_rate",
+  "renovation"
+ ],
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "claim_received": "unmentioned",
+  "reference_rate": "stated_true",
+  "renovation": "stated_true"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "routing_stated": false,
+ "attachments": [
+  {
+   "artifact_id": "fatt_34253320f90dbdcc",
+   "document_type": "current_rent_evidence",
+   "sufficient": false,
+   "omitted_field": "rent_components",
+   "sha256": "e78cb563b4d13053fc20ace472dc54ee5bc94ad0733d8d5f7f71c19926f39538"
+  }
+ ],
+ "values": {
+  "tenant": "Drew Palmer",
+  "landlord": "Wohnbau Limmat GmbH",
+  "city": "Chur",
+  "canton": "GR",
+  "address": "Weiherweg 81, Chur, 3.5-room flat",
+  "lease_start": "1 April 2018",
+  "rent": 2330,
+  "utilities": 240,
+  "received_at": "2026-11-21T12:00:00+01:00",
+  "end_date": "30 June 2027",
+  "grounds": "planned total renovation of the building",
+  "arrears_amount": 6990,
+  "new_rent": 2580,
+  "effective_date": "1 April 2027",
+  "increase_reasons": "the rise of the mortgage reference interest rate from 1.75 % to 2.0 % and the value-enhancing renovation of the kitchens and windows",
+  "calculation_inputs": "reference rate +0.25 points = +3.0 %; renovation costs of CHF 420,000, 50 % value-enhancing, allocated to 12 flats",
+  "prior_date": "1 October 2019",
+  "prior_rent": 2260,
+  "prior_rate": "1.25",
+  "defect": "",
+  "notified_on": "25 August 2026",
+  "repair_deadline": "25 November 2026",
+  "landlord_position": "the landlord acknowledges the report and says the matter will be looked at",
+  "proposed_work": "a repair by a contractor",
+  "access_date": "4 October 2026",
+  "health_detail": "sleep problems and headaches"
+ },
+ "replacement": 0
+}
