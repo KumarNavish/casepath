@@ -104,6 +104,41 @@
     "title": "HTTPValidationError",
     "type": "object"
    },
+   "ImportRequest": {
+    "properties": {
+     "path": {
+      "title": "Path",
+      "type": "string"
+     },
+     "title": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "workflow_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Workflow Id"
+     }
+    },
+    "required": [
+     "path"
+    ],
+    "title": "ImportRequest",
+    "type": "object"
+   },
    "NewCase": {
     "properties": {
      "intake": {
@@ -677,6 +712,58 @@
      }
     },
     "summary": "Health"
+   }
+  },
+  "/api/imports": {
+   "get": {
+    "description": "Case files placed in the volume's incoming folder (and one level of subfolders), and which are imported.",
+    "operationId": "list_imports_api_imports_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "List Imports"
+   },
+   "post": {
+    "description": "One case per file: a dossier placed in the volume becomes a case without passing through the browser.",
+    "operationId": "import_file_api_imports_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ImportRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Import File"
    }
   },
   "/api/knowledge": {

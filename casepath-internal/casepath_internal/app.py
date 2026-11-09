@@ -30,6 +30,15 @@ UI = Path(__file__).parent / "ui"
 CONTRACT = Path(__file__).parent.parent / "docs" / "contracts" / "case-api.openapi.json"
 
 
+class ImportRequest(BaseModel):
+    path: str
+    title: str | None = None
+    workflow_id: str | None = None
+
+
+IMPORTABLE = {".pdf", ".eml", ".msg", ".docx", ".txt", ".png", ".jpg", ".jpeg"}
+
+
 class NewCase(BaseModel):
     title: str
     intake: dict = {}
@@ -100,8 +109,23 @@ def volume_mirror(settings, env=None):
     return VolumeMirror(settings.data_dir, settings.volume, host, databricks_token_provider(host, env))
 
 
-def create_app(settings=None, *, model_factory=None, store=None, catalogue=None, mirror=None):
+def volume_files(settings, env=None):
+    """The volume's files, for importing case files placed in its ``incoming`` folder."""
+    import os
+
+    from .chat_model import databricks_token_provider
+    from .volume import VolumeClient
+
+    env = os.environ if env is None else env
+    host = env.get("DATABRICKS_HOST", "")
+    host = host if host.startswith("https://") else "https://" + host
+    return VolumeClient(host, databricks_token_provider(host, env))
+
+
+def create_app(settings=None, *, model_factory=None, store=None, catalogue=None, mirror=None, files=None):
     settings = settings or load_settings()
+    if files is None and settings.volume:
+        files = volume_files(settings)
     if mirror is None and settings.volume and store is None:
         mirror = volume_mirror(settings)
     if mirror is not None:
@@ -153,7 +177,50 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/health")
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
+                "imports": files is not None,
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
+
+    incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
+
+    @app.get("/api/imports")
+    def list_imports(who=Depends(user)):
+        """Case files placed in the volume's incoming folder (and one level of subfolders), and which are imported."""
+        if files is None:
+            raise HTTPException(404, "No volume is configured for imports.")
+        entries = []
+        for entry in files.list(incoming):
+            entries += [e for e in files.list(entry["path"]) if not e.get("is_directory")] if entry.get("is_directory") else [entry]
+        imported = {(c.get("intake") or {}).get("import_path"): c["id"] for c in store.list_cases()}
+        return {"folder": incoming, "files": [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": e.get("file_size"),
+                                               "case": imported.get(e["path"])}
+                                              for e in sorted(entries, key=lambda e: e["path"]) if Path(e["path"]).suffix.lower() in IMPORTABLE]}
+
+    @app.post("/api/imports", status_code=201)
+    async def import_file(body: ImportRequest, who=Depends(user)):
+        """One case per file: a dossier placed in the volume becomes a case without passing through the browser."""
+        import mimetypes
+
+        if files is None:
+            raise HTTPException(404, "No volume is configured for imports.")
+        if not body.path.startswith(incoming + "/") or "/../" in body.path or Path(body.path).suffix.lower() not in IMPORTABLE:
+            raise HTTPException(422, "Only case files in the volume's incoming folder can be imported.")
+        if any((c.get("intake") or {}).get("import_path") == body.path for c in store.list_cases()):
+            raise HTTPException(409, "This file is already imported.")
+        data = await run_in_threadpool(files.get, body.path)
+        if data is None:
+            raise HTTPException(404, "Not found.")
+        if len(data) > settings.max_upload_bytes:
+            raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
+        name = body.path.rsplit("/", 1)[-1]
+        result = await run_in_threadpool(extract, name, mimetypes.guess_type(name)[0] or "application/octet-stream", data)
+        case = store.create_case((body.title or Path(name).stem).strip()[:300], {"source": "volume", "import_path": body.path}, who)
+        if body.workflow_id:
+            workflow = catalogue.get(body.workflow_id)
+            if workflow is None:
+                raise HTTPException(404, "No such workflow.")
+            store.select_workflow(case["id"], workflow["id"], workflow["version"], who)
+        added = await run_in_threadpool(store.add_file, case["id"], name, result["media_type"], result["kind"], data, result, who)
+        return {"case": store.get_case(case["id"]), "file": added}
 
     @app.get("/api/me")
     def me(who=Depends(user)):

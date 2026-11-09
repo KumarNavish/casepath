@@ -99,7 +99,8 @@ function renderTop() {
 
 // ---------- cases ----------
 async function renderCases() {
-  const [cases, workflows] = await Promise.all([api("/api/cases"), api("/api/workflows")]);
+  const [cases, workflows, health] = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health")]);
+  const imports = health.imports ? await api("/api/imports").catch(() => null) : null;
   S.workflows = workflows.workflows;
   const titles = Object.fromEntries(S.workflows.map((w) => [w.id, w.title]));
   const rows = cases.cases.map((c) => `<tr><td><a href="#/case/${esc(c.id)}/process_builder">${esc(c.title)}</a>
@@ -115,9 +116,23 @@ async function renderCases() {
       <button class="cp-button primary">${icon("plus")}${T("Create case", "Fall anlegen")}</button></form>
     ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Updated", "Geändert")}</th></tr></thead><tbody>${rows}</tbody></table>`
            : `<p class="cp-empty">${T("No cases yet. Create one, then add its documents.", "Noch keine Fälle. Legen Sie einen an und fügen Sie dann seine Dokumente hinzu.")}</p>`}
+    ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
+      <p class="cp-muted">${T("Files placed in the shared folder", "Dateien im gemeinsamen Ordner")} <code>${esc(imports.folder)}</code>. ${T("Each file becomes one case.", "Jede Datei wird zu einem Fall.")}</p>
+      ${imports.files.length ? `<table class="cp-table"><thead><tr><th>${T("File", "Datei")}</th><th>${T("Size", "Grösse")}</th><th></th></tr></thead><tbody>${imports.files.map((f) =>
+        `<tr><td>${esc(f.name)}</td><td>${f.size ? `${(f.size / 1048576).toFixed(1)} MB` : "—"}</td><td>${f.case ? `<a class="cp-link" href="#/case/${esc(f.case)}/process_builder">${T("Open case", "Fall öffnen")}</a>`
+          : `<button class="cp-button" data-import="${esc(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
+        : `<p class="cp-empty">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}
     <h2 class="cp-section">${T("Processes", "Prozesse")}</h2>
     ${catalogue ? `<table class="cp-table"><thead><tr><th>${T("Process", "Prozess")}</th><th>Status</th><th>${T("Size", "Umfang")}</th><th>${T("Open questions", "Offene Fragen")}</th><th>${T("Sources", "Quellen")}</th></tr></thead><tbody>${catalogue}</tbody></table>`
                : `<p class="cp-empty">${T("No process is in the catalogue yet. Cases will show as unmapped until one is added.", "Noch kein Prozess im Katalog. Fälle bleiben ohne Prozess, bis einer erfasst ist.")}</p>`}</main>`;
+  for (const button of document.querySelectorAll("[data-import]")) button.addEventListener("click", async () => {
+    button.disabled = true;
+    button.textContent = T("Importing…", "Wird importiert …");
+    try {
+      const created = await api("/api/imports", { method: "POST", body: JSON.stringify({ path: button.dataset.import }) });
+      location.hash = `#/case/${created.case.id}/claim_reader`;
+    } catch (error) { button.disabled = false; button.textContent = error.message; }
+  });
   $("#new-case").addEventListener("submit", async (event) => {
     event.preventDefault();
     const title = new FormData(event.target).get("title");

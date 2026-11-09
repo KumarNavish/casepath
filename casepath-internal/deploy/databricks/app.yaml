@@ -23,7 +23,8 @@ env:
     value: "1"
   - name: CASEPATH_READING_WORKERS
     value: "2"
-  # Cases live on a Unity Catalog volume; the app's own disk is only a working copy.
+  # Cases live on a Unity Catalog volume; the app's own disk is only a working copy. Case files placed in the volume's
+  # incoming/ folder (Catalog Explorer takes large uploads) are listed on the Cases page for one-click import.
   - name: CASEPATH_DATA_DIR
     value: /tmp/casepath-data
   - name: CASEPATH_VOLUME

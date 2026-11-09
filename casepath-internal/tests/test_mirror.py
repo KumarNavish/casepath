@@ -51,5 +51,31 @@ class MirrorTests(unittest.TestCase):
             self.assertEqual(fresh.restore(), 0)  # a store that is already there is never overwritten
 
 
+class ImportTests(unittest.TestCase):
+    def test_a_dossier_placed_in_the_volume_becomes_a_case(self):
+        from fastapi.testclient import TestClient
+        from casepath_internal.app import create_app
+        from casepath_internal.config import load_settings
+        from casepath_internal.volume import VolumeClient
+        files, transport = fake_volume()
+        files[f"{VOLUME}/incoming/Fall 1.txt"] = b"Der Vermieter hat nicht geantwortet."
+        files[f"{VOLUME}/incoming/schimmel/Fall 2.pdf.part"] = b"x"   # not a case file
+        files[f"{VOLUME}/outside.txt"] = b"x"
+        with tempfile.TemporaryDirectory() as data:
+            settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_DEV_USER": "anna", "CASEPATH_VOLUME": VOLUME})
+            client = TestClient(create_app(settings, model_factory=lambda: None, store=CaseStore(data),  # a given store: no volume copy here
+                                           files=VolumeClient("https://adb.example.azuredatabricks.net", lambda: "t", transport=transport)))
+            listed = client.get("/api/imports").json()["files"]
+            self.assertEqual([(f["name"], f["case"]) for f in listed], [("Fall 1.txt", None)])
+            created = client.post("/api/imports", json={"path": listed[0]["path"]}).json()
+            self.assertEqual((created["case"]["title"], created["file"]["name"]), ("Fall 1", "Fall 1.txt"))
+            self.assertEqual(client.get("/api/imports").json()["files"][0]["case"], created["case"]["id"])
+            self.assertEqual(client.post("/api/imports", json={"path": listed[0]["path"]}).status_code, 409)
+            self.assertEqual(client.post("/api/imports", json={"path": f"{VOLUME}/outside.txt"}).status_code, 422)
+            self.assertTrue(client.get("/api/health").json()["imports"])
+            client.app.state.runs.shutdown()
+            client.app.state.store.close()
+
+
 if __name__ == "__main__":
     unittest.main()
