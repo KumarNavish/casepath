@@ -73,7 +73,10 @@ def _body(system, user, schema, schema_name, max_tokens=3500, effort="low", mode
 
 
 def _retrying_call(**kw):
-    for _ in range(4):
+    import time
+    for attempt in range(4):
+        if attempt:
+            time.sleep(15 * attempt)
         r = _call(**kw)
         if not (r.get("error") or "").startswith("no choices"):
             return r

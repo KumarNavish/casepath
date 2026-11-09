@@ -1,0 +1,222 @@
+{
+ "tenancy": {
+  "B1v2:plan": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 0.08333333333333333,
+   "missed": 0.75,
+   "nonrequired_holds": 0.08333333333333333,
+   "requested": 5.166666666666667,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.9166666666666667,
+   "unnecessary": 0.0
+  },
+  "B1v2p:plan": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 0.08333333333333333,
+   "missed": 0.75,
+   "nonrequired_holds": 0.0,
+   "requested": 5.166666666666667,
+   "required": 7.166666666666667,
+   "strict_unsafe": 2.0,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv1:plan": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.75,
+   "held": 4.666666666666667,
+   "missed": 0.0,
+   "nonrequired_holds": 2.5,
+   "requested": 0.75,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.8333333333333333,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv1:plan_exact": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.75,
+   "held": 3.3333333333333335,
+   "missed": 0.0,
+   "nonrequired_holds": 1.8333333333333333,
+   "requested": 2.0833333333333335,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.8333333333333333,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2:plan": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 2.0,
+   "missed": 0.4166666666666667,
+   "nonrequired_holds": 0.0,
+   "requested": 3.5833333333333335,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2:plan_no_presumption": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 3.25,
+   "missed": 0.25,
+   "nonrequired_holds": 2.0833333333333335,
+   "requested": 2.5,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.5,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2:plan_no_verifier": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 2.0,
+   "missed": 0.4166666666666667,
+   "nonrequired_holds": 0.0,
+   "requested": 3.5833333333333335,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2p:plan": {
+   "claim_runs": 12,
+   "failed": 0,
+   "handed_over": 1.1666666666666667,
+   "held": 0.3333333333333333,
+   "missed": 0.4166666666666667,
+   "nonrequired_holds": 0.0,
+   "requested": 5.25,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2p:plan_no_presumption": {
+   "claim_runs": 12,
+   "failed": 2,
+   "handed_over": 0.0,
+   "held": 3.25,
+   "missed": 1.4166666666666667,
+   "nonrequired_holds": 2.0833333333333335,
+   "requested": 2.5,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.5,
+   "unnecessary": 0.08333333333333333
+  },
+  "CPv2p:plan_no_verifier": {
+   "claim_runs": 12,
+   "failed": 2,
+   "handed_over": 0.0,
+   "held": 0.3333333333333333,
+   "missed": 1.5833333333333333,
+   "nonrequired_holds": 0.0,
+   "requested": 5.25,
+   "required": 7.166666666666667,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  }
+ },
+ "theft": {
+  "CPv1:plan": {
+   "correct": 9,
+   "f1": 0.818,
+   "missed": 2,
+   "missed_per_pair": 0.2222222222222222,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.6666666666666666,
+   "wrong": 2,
+   "wrong_per_pair": 0.2222222222222222
+  },
+  "CPv2:plan": {
+   "correct": 2,
+   "f1": 0.25,
+   "missed": 9,
+   "missed_per_pair": 1.0,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wrong": 3,
+   "wrong_per_pair": 0.3333333333333333
+  },
+  "CPv2:plan_no_verifier": {
+   "correct": 2,
+   "f1": 0.25,
+   "missed": 9,
+   "missed_per_pair": 1.0,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wrong": 3,
+   "wrong_per_pair": 0.3333333333333333
+  },
+  "CPv2p:plan": {
+   "correct": 8,
+   "f1": 0.727,
+   "missed": 3,
+   "missed_per_pair": 0.3333333333333333,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.8333333333333334,
+   "wrong": 3,
+   "wrong_per_pair": 0.3333333333333333
+  },
+  "CPv2p:plan_no_verifier": {
+   "correct": 8,
+   "f1": 0.727,
+   "missed": 3,
+   "missed_per_pair": 0.3333333333333333,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.8333333333333334,
+   "wrong": 3,
+   "wrong_per_pair": 0.3333333333333333
+  },
+  "R:plan": {
+   "correct": 8,
+   "f1": 0.727,
+   "missed": 3,
+   "missed_per_pair": 0.3333333333333333,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wrong": 3,
+   "wrong_per_pair": 0.3333333333333333
+  },
+  "Rv2:plan": {
+   "correct": 3,
+   "f1": 0.429,
+   "missed": 8,
+   "missed_per_pair": 0.8888888888888888,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wrong": 0,
+   "wrong_per_pair": 0.0
+  },
+  "Rv2p:plan": {
+   "correct": 8,
+   "f1": 0.696,
+   "missed": 3,
+   "missed_per_pair": 0.3333333333333333,
+   "open_pair_runs": 6,
+   "pair_runs_on": 9,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.6666666666666666,
+   "wrong": 4,
+   "wrong_per_pair": 0.4444444444444444
+  }
+ }
+}
