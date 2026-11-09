@@ -1,51 +1,52 @@
 \section{Evaluation design}
 \label{sec:evaluation}
 
-The evaluation tests whether executing rules over verified judgments yields better evidence requests than letting the model apply the rules, and why. We fixed hypotheses, measures and statistics in an analysis plan before the held-out runs \cite{casepath2026repo}.
+We fixed hypotheses, comparators, measures and statistics in an analysis plan committed before the first held-out model call \cite{casepath2026repo}. Appendix~\ref{app:deviations} lists every deviation from it.
 
-\subsection{Claims tested}
+\subsection{Hypotheses}
 \label{sec:hypotheses}
 
-Each experiment tests one claim derived from Section~\ref{sec:method}.
+The plan states five hypotheses, given here as registered.
 \begin{description}[leftmargin=1.2em,labelindent=0pt]
-\item[H1 Safety.] On complete request lists, \casepath makes no more unsafe errors (unnecessary requests plus silent misses) than a model that applies the rules itself.
-\item[H2 Deferral.] \casepath defers more required documents than a model that applies the rules itself, because it does not assume unstated facts; exact deferral reduces deferrals without adding unsafe errors (Proposition~\ref{prop:exact}).
-\item[H3 Changed facts.] When one fact of a case changes, \casepath changes fewer unrelated requests (locality, Section~\ref{sec:kleene}).
-\item[H4 Unresolved facts.] When a fact is left open, \casepath requests fewer documents prematurely (soundness, Proposition~\ref{prop:sound}).
-\item[H5 Stability.] Repeated runs on the same case produce more similar request lists with \casepath.
+\item[H1 Safety.] On the tenancy claims, \casepath with exact deferral makes no more unsafe errors than \design{Rules in context}.
+\item[H2 Deferral.] On the tenancy claims, \casepath defers more required documents than \design{Rules in context}; exact deferral defers fewer than the production engine without more unsafe errors.
+\item[H3 Changed facts.] When one fact of a theft case changes, \casepath makes fewer wrong changes than \design{Direct} and \design{Rules in context}.
+\item[H4 Unresolved facts.] When one fact of a theft case is left open, \casepath makes fewer premature requests and other changes than \design{Direct} and \design{Rules in context}.
+\item[H5 Stability.] \casepath's run-to-run agreement exceeds that of the model-written plans.
 \end{description}
-A decomposition attributes differences to three design choices: judging conditions explicitly, executing the rules in code, and verifying judgments independently.
+Each primary test contrasts \casepath with \design{Rules in context}, fixed in advance as the strongest comparator; contrasts with \design{Direct} and with majority voting are secondary. The \emph{primary analysis} uses \texttt{gpt-6.1-terra}, a frontier model. The \emph{secondary analysis}, registered as a model-sensitivity check, repeats \casepath and \design{Rules in context} with \texttt{gpt-6-luna}, the cost-efficient model that the deployed agent uses.
 
-\subsection{Data}
+\subsection{Data: two regimes}
 \label{sec:data}
 
-We use two datasets from the original \casepath study \cite{casepath2026repo}, both released with their references, and one new set of variants (Table~\ref{tab:data}).
+The two datasets come from the original \casepath study \cite{casepath2026repo}, with one new set of variants (Table~\ref{tab:data}).
 
-\paragraph{Tenancy claims}
-150 synthetic legal-expenses claims about tenancy defects, lease terminations and rent increases arrive as an inbox receives them: a message in English or Swiss Standard German, sent by e-mail, portal, chat or phone note, with attachments in 45 claims. The rules are the three process templates that the \casepath product admits. Each claim's reference lists the documents the claim requires at intake; a document is required if its process step is reached and its condition holds in the claim's scenario. We evaluate on the 90 claims in 17 held-out families and used six development claims for piloting. Two properties of the references matter for interpretation. First, they were generated from the same templates the methods receive: with the scenario's true conditions, the \casepath engine reproduces the reference request set for 147 of 150 claims; the remaining three differ only by a photograph that no text-only method can read, and we do not score that document in those claims. The experiment therefore measures how well a design \emph{applies} given rules to a claim, not whether the rules are legally right. Second, the generator treats two routing facts as always true---that a termination notice was received, and that a rent-increase claim was received---while some messages never state them.
+\paragraph{Clean rules, complete references (tenancy)}
+150 synthetic legal-expenses claims about tenancy defects, lease terminations and rent increases arrive as an inbox receives them: a message in English or Swiss Standard German, by e-mail, portal, chat or phone note, with attachments in 45 claims. The rules are the three admitted process templates. Each claim's reference lists the documents it requires at intake, generated from the claim's scenario and the same templates the designs receive: with the scenario's true conditions, the \casepath engine reproduces the reference for 147 of 150 claims, and the other three differ only by a photograph that no text-only design can read, which we do not score. This circularity is deliberate: the regime measures how a design applies correct rules to incomplete claims, not whether the rules are legally right. The generator gives every fact a value. Facts a message never mentions are false in the scenario, and the two routing facts are always true, although some messages never state them. We evaluate on the 90 claims of 17 held-out scenarios; six development claims served for piloting.
 
-\paragraph{Theft cases}
-36 pairs of household-theft cases differ in one sentence that switches one of nine conditions from false to true, for instance from ``No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more'' to ``A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000''. Each pair's reference lists the document changes the sources justify, with alternatives where either document suffices. The rules were extracted by a language model from 197 public source passages and are imperfect, which lets us study rule errors. One of four stories is development data; the other three give 27 held-out pairs.
+\paragraph{Extracted rules, changed facts (theft)}
+36 pairs of household-theft cases differ in one sentence that switches one of nine conditions from false to true, for instance from ``No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more'' to ``A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000''. Each pair's reference lists the checklist changes that the sources justify, with alternatives where either document suffices. The rules were extracted by a language model from 197 source passages and are imperfect, which is what this regime is for. One of four stories is development data; the other three give 27 held-out pairs.
 
-\paragraph{New unresolved-fact variants}
-For six conditions whose documents are downstream requirements (a scheduled valuable, a stolen bicycle, SIM-card misuse, a liable third party, a formal expert procedure and a repair needing the insurer's consent), we replaced the condition's sentence with one that leaves it open, for example ``A stolen watch may be separately scheduled in the policy, but the policyholder has not yet found the policy schedule to confirm this.'' The correct response is to change no request and to hold the condition's documents until the fact is clarified. This yields 18 held-out pairs. We excluded the remaining three conditions because their document is itself the evidence that settles the fact (for example, the insurer's written demand), so asking for it is legitimate.
+\paragraph{Unresolved-fact variants (new)}
+For six conditions whose documents are downstream requirements, we replaced the condition's sentence with one that leaves it open, for example ``A stolen watch may be separately scheduled in the policy, but the policyholder has not yet found the policy schedule to confirm this'' (Appendix~\ref{app:unresolved}). The correct response is to change no request and to hold the condition's documents until the fact is clarified. This yields 18 held-out pairs. We excluded the other three conditions because their document is itself the evidence that settles the fact.
 
-\paragraph{Reference checks}
-To test whether the theft references depend on how they were built, a separate model run that saw only the source passages and the catalogue re-derived the documents each condition change requires, three times per condition, without access to the references, the extracted rules or any method output. For seven of nine conditions it reproduced the reference exactly, including which documents are alternatives, in all three runs. For the formal expert procedure it additionally required the experts' findings; for the insurer's declination it required no document, whereas the reference requires the insurer's declination letter. We report results on all conditions and, as a sensitivity analysis, on the seven agreed ones.
+\paragraph{Reference check}
+To test whether the theft references depend on how they were built, a separate model run that saw only the source passages and the catalogue re-derived, three times per condition, the documents each condition change requires. For seven of nine conditions it reproduced the reference exactly in all three runs. For the formal expert procedure it also required the experts' findings; for the insurer's declination it required no document, where the reference requires the declination letter. We report results on all conditions and, as a sensitivity analysis, on the seven agreed ones.
 
 \begin{table}[t]
-\caption{Evaluation data. Counts refer to the held-out evaluation sets.}
+\caption{Evaluation data. Counts refer to the held-out sets.}
 \label{tab:data}
 \small
 \begin{tabularx}{\linewidth}{@{}lXX@{}}
 \toprule
 & Tenancy claims & Theft cases \\
 \midrule
-Units & 90 claims in 17 families & 27 changed-fact pairs, 18 unresolved-fact pairs (3 stories) \\
+Regime & clean rules, complete references & extracted rules, changed or unresolved facts \\
+Units & 90 claims from 17 scenarios & 27 changed-fact pairs, 18 unresolved-fact pairs (3 stories) \\
 Input & message and attachment text; 2 languages, 4 channels & 141--155-word English case with nine condition statements \\
 Rules & 3 admitted process templates, 9--11 document types each & 98 extracted rules over 87 conditions; 33 document types \\
 Reference & required documents at intake (generator state) & required change per condition (source contract) \\
-Tests & H1, H2, H5 & H3, H4, H5 \\
+Hypotheses & H1, H2, H5 & H3, H4 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -53,7 +54,9 @@ Tests & H1, H2, H5 & H3, H4, H5 \\
 \subsection{Compared designs}
 \label{sec:designs}
 
-All designs receive the same case text, rules, document catalogue and case-reading instructions, use low reasoning effort and schema-constrained JSON output, and are compared on the same model. They differ only in who applies the rules and whether judgments are verified (Table~\ref{tab:designs}). Each design maps to an approach in the literature (Section~\ref{sec:related}). All designs ran with the frontier model \texttt{gpt-6.1-terra}; \design{Rules in context} and \casepath also ran with \texttt{gpt-6-luna}, the cost-efficient model configured in \casepath's autonomous profile, to test whether conclusions depend on the model.
+All designs receive the same case text, rules, document catalogue and case-reading instructions, use low reasoning effort and schema-constrained output, and differ only in who applies the rules and whether judgments are verified (Table~\ref{tab:designs}). \design{Direct} sees the theft source passages and the catalogue and writes the checklist. \design{Rules in context} additionally sees the extracted rules (theft) or the admitted templates (tenancy) and writes the evidence plan, with the option to hold documents. \design{Self-consistency} takes, for every document, the majority decision of the three runs of a model-written design. \design{Model executes rules} judges every condition and then applies the stated three-valued process semantics itself, in the same output, with exactly the information \casepath's code uses. \design{Two-valued execution} re-executes \casepath's recorded judgments with unresolved facts read as false or as true, which isolates the semantics; it was added after the runs. For \casepath we report the production engine (strong Kleene evaluation) and exact deferral (supervaluation), the latter also without the verification call; these variants reuse the same model outputs.
+
+The grid is uneven for three reasons. \design{Direct} gives the model the legal sources instead of rules, and only the theft data include such sources. \design{Model executes rules} tests whether a model can carry out the process semantics, which matter only where requirements depend on process steps, as in tenancy. The secondary model ran, as planned, only \casepath and the strongest comparator.
 
 \begin{table}[t]
 \caption{Compared designs. ``Applies rules'' names who turns case facts into requests.}
@@ -61,26 +64,28 @@ All designs receive the same case text, rules, document catalogue and case-readi
 \small
 \begin{tabularx}{\linewidth}{@{}lXlll@{}}
 \toprule
-Design & Representative of & Applies rules & Verified & Data \\
+Design & Representative of & Applies rules & Verified & Data, models \\
 \midrule
-\design{Direct} & LLM with policy text in the prompt \cite{yao2025taubench} & model & no & theft \\
-\design{Rules in context} & process-aware prompting \cite{xiao2024flowbench} & model & no & both \\
-\design{Self-consistency} & majority vote of three runs \cite{wang2023selfconsistency} & model & no & both \\
-\design{Model executes rules} & stepwise rule application \cite{servantez2024chain} & model & no & tenancy \\
-\design{Two-valued execution} & fact extraction plus rule engine \cite{pan2023logic,omg2024dmn} & code & no & both \\
-\design{\casepath} & this paper & code & yes & both \\
+\design{Direct} & LLM with policy text in the prompt \cite{yao2025taubench} & model & no & theft; primary \\
+\design{Rules in context} & process-aware prompting \cite{xiao2024flowbench} & model & no & both; both \\
+\design{Self-consistency} & majority of three runs \cite{wang2023selfconsistency} & model & no & both; both \\
+\design{Model executes rules} & stepwise rule application \cite{servantez2024chain} & model & no & tenancy; primary \\
+\design{Two-valued execution} & extraction plus rule engine \cite{pan2023logic,omg2024dmn} & code & no & both; both (post hoc) \\
+\casepath & this article & code & yes & both; both \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\design{Direct} sees the 197 theft source passages and the catalogue and writes the checklist. \design{Rules in context} additionally sees the extracted rules (theft) or the admitted templates (tenancy) and writes the evidence plan, with the option to hold documents. \design{Self-consistency} takes, for every document, the majority decision of the three runs of a model-written design. \design{Model executes rules} first judges every condition and then applies stated three-valued process semantics itself, in the same output; it receives exactly the information \casepath's code uses. \design{Two-valued execution} executes the same rules on \casepath's judgments with unresolved facts read as false (the closed-world assumption) or as true; holding judgments fixed isolates the semantics. For \casepath we report the production engine (strong Kleene) and exact deferral (supervaluation), the latter also without the verification call; these variants reuse the same model outputs.
-
 \subsection{Measures}
 \label{sec:measures}
 
-For a complete request list, every required document is either requested, held (\emph{deferred}) or neither (\emph{silently missed}); every requested document that is not required is \emph{unnecessary}. Silent misses and unnecessary requests are unsafe errors: one leaves the claim without evidence it needs, the other burdens the claimant and the handler. Deferrals cost one clarification round. For a pair of theft cases, the signed difference between the two checklists is scored against the reference change with the frozen scorer of the original study: a change is correct, wrong (an addition or withdrawal the sources do not justify) or missed. For unresolved-fact pairs, a response is \emph{premature} if it requests a document of the open condition, and \emph{stable} if it changes no request. Test--retest agreement is the mean Jaccard similarity of the request lists of the three runs of the same input. Cost is the provider charge in US dollars, with tokens and latency.
+On the tenancy claims, every required document has one of four outcomes: \emph{requested}, \emph{held} behind a question, \emph{handed over} with the whole claim to a person, or \emph{missed}. Every requested document that is not required is an \emph{unnecessary request}. Unsafe errors are unnecessary requests plus missed documents, reported per claim; deferrals are held plus handed-over documents. The plan did not say how to score handed-over documents. We decided after the runs not to count them as errors, because a person then decides, and report a \emph{strict} variant that counts them as missed wherever H1 is discussed. No planned measure penalises holding a document that is not required; we report such holds descriptively.
+
+On a theft pair, the signed difference between the two checklists is scored against the reference change with the frozen scorer of the original study: a change is correct, wrong (an addition or withdrawal the sources do not justify) or missed, pooled into precision, recall and $F_1$. On an unresolved-fact pair, a response is \emph{premature} if it requests a document of the open condition, and \emph{stable} if it changes no request; H4 counts every change, premature or not. Run-to-run agreement is the mean pairwise Jaccard similarity of the request lists of the three runs of the same input. Cost is the provider charge.
 
 \subsection{Protocol and statistics}
 \label{sec:protocol}
 
-Every design ran three times on every held-out case with each of its models (k = 3), on 9 November 2026 through OpenRouter; responses, token counts and charges are logged. A failed output counts as an empty plan. Units are claims (tenancy) and pairs (theft), and uncertainty is dominated by clusters: families of related claims and the nine theft conditions. We report 95\% intervals from cluster bootstrap resampling (10,000 resamples) and exact two-sided sign-flip tests over clusters, Holm-corrected across the five pre-specified primary contrasts. To relate request errors to judgment errors independently of any one model, we also computed exactly, for all 150 tenancy claims and every partial assignment of their flags, which documents each semantics requests and holds, and derived the expected errors under a parametric model of judgment errors (Section~\ref{sec:results-mechanism}). These computations are deterministic; their scripts and cluster job definitions are released.
+Every design ran three times on every held-out case with each of its models, on 9 November 2026 through OpenRouter; responses, token counts and charges are logged. A failed output is scored as an empty plan: one \design{Direct} output failed, and the original scorer had dropped it, which we corrected. Units are claims and pairs, averaged over runs, and uncertainty is dominated by clusters: the 17 tenancy scenarios, the nine theft conditions for H3 and the six unresolved conditions for H4. We report 95\% intervals for every paired difference from cluster bootstrap resampling (10,000 resamples) and exact two-sided sign-flip tests over clusters. With $m$ clusters whose difference is not zero, the smallest attainable $p$ is $2^{1-m}$, and we mark tests that reach it. The plan's Holm correction covers the five primary tests; we also report Holm within the secondary analysis and across all ten tests.
+
+Two dependencies in the theft design were not addressed by the plan. All pairs of a story share that story's unchanged case in each run, so one error in its checklist recurs across conditions; we report wrong changes with each repeated error counted once. Each run of the unchanged case is scored against the same run of the variant; we also report the average over all nine pairings. Analyses not in the plan are marked post hoc: two-valued execution, the strict measure, handoff causes, the routing presumption, the family-admission repair and the break-even analysis.

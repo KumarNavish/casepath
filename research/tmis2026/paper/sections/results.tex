@@ -1,134 +1,175 @@
 \section{Results}
 \label{sec:results}
 
-We report the five pre-specified claims in turn for both models, then explain the differences through the agent's judgments, its verification and its semantics, and close with error origins and cost. Numbers pool the three runs of every held-out case; brackets give 95\% cluster-bootstrap intervals. Table~\ref{tab:tests} summarises the pre-specified tests.
+Numbers pool the three runs of every held-out case. Table~\ref{tab:tests} gives the pre-registered tests, Tables~\ref{tab:tenancy} and~\ref{tab:theft} the full outcomes.
 
 \begin{table}[t]
-\caption{Pre-specified primary contrasts between \casepath and the strongest alternative, rules in context (\casepath with exact deferral for H1 and H5, with the production engine for H2). Holm-adjusted two-sided $p$-values from exact sign-flip tests over clusters (17 families or 9 conditions); ``no sig.\ difference'' does not establish equivalence.}
+\caption{Pre-registered contrasts of \casepath with \design{Rules in context}: values of each design, paired difference with 95\% cluster-bootstrap interval, clusters (with a nonzero difference), exact two-sided sign-flip $p$, and Holm-adjusted $p$ within the analysis's family of five and across all ten tests. $^\dagger$: $p$ equals the smallest value attainable with that many informative clusters. Post-hoc sensitivity rows are not in any Holm family.}
 \label{tab:tests}
-\small
-\begin{tabularx}{\linewidth}{@{}Xll@{}}
+\footnotesize
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabularx}{\linewidth}{@{}Xrrlcrrr@{}}
 \toprule
-Claim & \texttt{gpt-6.1-terra} & \texttt{gpt-6-luna} \\
+Measure & \casepath & In context & Difference [95\% CI] & Clusters & $p$ & Holm & Holm, 10 \\
 \midrule
-H1 Unsafe errors on complete lists & no sig.\ difference ($p=\ptTerraHOne$) & fewer with \casepath ($p=\ptLunaHOne$) \\
-H2 Deferred required documents & more with \casepath ($p\ptTerraHTwo$) & more with \casepath ($p\ptLunaHTwo$) \\
-H3 Wrong changes when a fact changes & no sig.\ difference ($p=\ptTerraHThree$) & fewer with \casepath ($p=\ptLunaHThree$) \\
-H4 Changes when a fact is open & no sig.\ difference ($p=\ptTerraHFour$) & fewer with \casepath ($p=\ptLunaHFour$) \\
-H5 Agreement across runs (tenancy) & higher with rules in context ($p=\ptTerraHFive$) & higher with rules in context ($p=\ptLunaHFive$) \\
+\multicolumn{8}{@{}l}{\emph{Primary analysis, \texttt{gpt-6.1-terra}}} \\
+H1 unsafe errors per claim & \ctTerraHOneA & \ctTerraHOneB & \ctTerraHOneDiff{} [\ctTerraHOneLo, \ctTerraHOneHi] & \ctTerraHOneClusters{} (\ctTerraHOneNonzero) & \ptTerraHOneRaw$^\dagger$ & \ptTerraHOne & \ptTerraHOneHolmAll \\
+H2 share of required deferred & \ctTerraHTwoA & \ctTerraHTwoB & \ctTerraHTwoDiff{} [\ctTerraHTwoLo, \ctTerraHTwoHi] & \ctTerraHTwoClusters{} (\ctTerraHTwoNonzero) & \ptTerraHTwoRaw$^\dagger$ & \ptTerraHTwo & \ptTerraHTwoHolmAll \\
+H3 wrong changes per pair & \ctTerraHThreeRA & \ctTerraHThreeRB & \ctTerraHThreeRDiff{} [\ctTerraHThreeRLo, \ctTerraHThreeRHi] & \ctTerraHThreeRClusters{} (\ctTerraHThreeRNonzero) & \ptTerraHThreeRaw & \ptTerraHThree & \ptTerraHThreeHolmAll \\
+H4 share of open-fact pairs changed & \ctTerraHFourRA & \ctTerraHFourRB & \ctTerraHFourRDiff{} [\ctTerraHFourRLo, \ctTerraHFourRHi] & \ctTerraHFourRClusters{} (\ctTerraHFourRNonzero) & \ptTerraHFourRaw$^\dagger$ & \ptTerraHFour & \ptTerraHFourHolmAll \\
+H5 run-to-run agreement (tenancy) & \ctTerraHFiveA & \ctTerraHFiveB & \ctTerraHFiveDiff{} [\ctTerraHFiveLo, \ctTerraHFiveHi] & \ctTerraHFiveClusters{} (\ctTerraHFiveNonzero) & \ptTerraHFiveRaw & \ptTerraHFive & \ptTerraHFiveHolmAll \\
+\quad H1, strict (post hoc) & \ctTerraHOneStrictA & \ctTerraHOneStrictB & \ctTerraHOneStrictDiff{} [\ctTerraHOneStrictLo, \ctTerraHOneStrictHi] & \ctTerraHOneStrictClusters{} (\ctTerraHOneStrictNonzero) & \ctTerraHOneStrictP$^\dagger$ & -- & -- \\
+\quad H3, repeats once (post hoc) & \ctTerraHThreeDedupRA & \ctTerraHThreeDedupRB & \ctTerraHThreeDedupRDiff{} [\ctTerraHThreeDedupRLo, \ctTerraHThreeDedupRHi] & \ctTerraHThreeDedupRClusters{} (\ctTerraHThreeDedupRNonzero) & \ctTerraHThreeDedupRP & -- & -- \\
+\midrule
+\multicolumn{8}{@{}l}{\emph{Secondary analysis, \texttt{gpt-6-luna}}} \\
+H1 unsafe errors per claim & \ctLunaHOneA & \ctLunaHOneB & \ctLunaHOneDiff{} [\ctLunaHOneLo, \ctLunaHOneHi] & \ctLunaHOneClusters{} (\ctLunaHOneNonzero) & \ptLunaHOneRaw$^\dagger$ & \ptLunaHOne & \ptLunaHOneHolmAll \\
+H2 share of required deferred & \ctLunaHTwoA & \ctLunaHTwoB & \ctLunaHTwoDiff{} [\ctLunaHTwoLo, \ctLunaHTwoHi] & \ctLunaHTwoClusters{} (\ctLunaHTwoNonzero) & \ptLunaHTwoRaw$^\dagger$ & \ptLunaHTwo & \ptLunaHTwoHolmAll \\
+H3 wrong changes per pair & \ctLunaHThreeRA & \ctLunaHThreeRB & \ctLunaHThreeRDiff{} [\ctLunaHThreeRLo, \ctLunaHThreeRHi] & \ctLunaHThreeRClusters{} (\ctLunaHThreeRNonzero) & \ptLunaHThreeRaw$^\dagger$ & \ptLunaHThree & \ptLunaHThreeHolmAll \\
+H4 share of open-fact pairs changed & \ctLunaHFourRA & \ctLunaHFourRB & \ctLunaHFourRDiff{} [\ctLunaHFourRLo, \ctLunaHFourRHi] & \ctLunaHFourRClusters{} (\ctLunaHFourRNonzero) & \ptLunaHFourRaw$^\dagger$ & \ptLunaHFour & \ptLunaHFourHolmAll \\
+H5 run-to-run agreement (tenancy) & \ctLunaHFiveA & \ctLunaHFiveB & \ctLunaHFiveDiff{} [\ctLunaHFiveLo, \ctLunaHFiveHi] & \ctLunaHFiveClusters{} (\ctLunaHFiveNonzero) & \ptLunaHFiveRaw & \ptLunaHFive & \ptLunaHFiveHolmAll \\
+\quad H1, strict (post hoc) & \ctLunaHOneStrictA & \ctLunaHOneStrictB & \ctLunaHOneStrictDiff{} [\ctLunaHOneStrictLo, \ctLunaHOneStrictHi] & \ctLunaHOneStrictClusters{} (\ctLunaHOneStrictNonzero) & \ctLunaHOneStrictP & -- & -- \\
+\quad H3, repeats once (post hoc) & \ctLunaHThreeDedupRA & \ctLunaHThreeDedupRB & \ctLunaHThreeDedupRDiff{} [\ctLunaHThreeDedupRLo, \ctLunaHThreeDedupRHi] & \ctLunaHThreeDedupRClusters{} (\ctLunaHThreeDedupRNonzero) & \ctLunaHThreeDedupRP & -- & -- \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\subsection{Complete request lists: safer with the cost-efficient model, more deferrals with both (H1, H2)}
-\label{sec:results-tenancy}
+\subsection{Does execution make requests more accurate?}
+\label{sec:results-accuracy}
 
-On the tenancy claims, executing the rules was at least as safe as letting the model apply them, and safer with the cost-efficient model, but it requested fewer required documents at once (Table~\ref{tab:tenancy}, Figure~\ref{fig:tenancy}). With \texttt{gpt-6-luna}, \casepath with exact deferral made \tenLunaCPxUnsafe{} unsafe errors per claim against \tenLunaBoneUnsafe{} for \design{Rules in context}: no unnecessary request in any run (\design{Rules in context}: \pct{\tenLunaBoneUnnec} of requests) and \pct{\tenLunaCPxMiss} silent misses against \pct{\tenLunaBoneMiss}. With \texttt{gpt-6.1-terra}, both designs were almost error-free (\tenTerraCPxUnsafe{} and \tenTerraBoneUnsafe{} unsafe errors per claim). H1 is therefore supported for the cost-efficient model and shows no difference for the frontier model.
+No. In the primary analysis, executing the rules made no fewer errors than letting the frontier model apply them, on either dataset; with the cost-efficient model, its advantages depend on how handed-over documents and repeated errors are counted.
 
-With both models, \casepath held more required documents behind questions (H2). \design{Rules in context} requested \pct{\tenTerraBoneRecall} (\texttt{gpt-6.1-terra}) and \pct{\tenLunaBoneRecall} (\texttt{gpt-6-luna}) of required documents at once; \casepath with exact deferral requested \pct{\tenTerraCPxRecall} and \pct{\tenLunaCPxRecall} and deferred \pct{\tenTerraCPxDefer} and \pct{\tenLunaCPxDefer}. The production engine's strong Kleene semantics deferred far more (\pct{\tenTerraCPkDefer} and \pct{\tenLunaCPkDefer}); exact deferral reduced deferrals by \tenTerraExactCut\% and \tenLunaExactCut\% and added no unnecessary request, but, contrary to the second part of H2, it added \tenTerraExactAddedMiss{} and \tenLunaExactAddedMiss{} silent misses among \tenTerraExactNR{} required documents (three runs): supplied documents that \casepath had judged sufficient and the reference marks as insufficient or missing. The production engine had hidden these judgment errors by holding the documents; Proposition~\ref{prop:exact} guarantees exactness with respect to the judgments, not their correctness. \design{Model executes rules}, which received the same three-valued semantics as text, fell in between (\pct{\tenTerraBtwoRecall} requested, \pct{\tenTerraBtwoDefer} deferred): instructed to apply strong Kleene logic, the model reproduced part of its incompleteness.
+\paragraph{Tenancy}
+With \texttt{gpt-6.1-terra}, \casepath with exact deferral made \ctTerraHOneA{} unsafe errors per claim and \design{Rules in context} \ctTerraHOneB: \tenTerraCPxFP{} against \tenTerraBoneFP{} unnecessary requests and \tenTerraCPxMissN{} against \tenTerraBoneMissN{} missed documents over the three runs of 90 claims (Table~\ref{tab:tenancy}). The designs differed in only \ctTerraHOneNonzero{} of \ctTerraHOneClusters{} scenarios, so the test could not reach $p<\ptTerraHOneRaw$; the interval of the difference lies at or above zero. Counting handed-over documents as missed, \casepath was worse (\ctTerraHOneStrictA{} against \ctTerraHOneStrictB, $p=\ctTerraHOneStrictP$). With \texttt{gpt-6-luna}, the direction reversed: \ctLunaHOneA{} against \ctLunaHOneB{} unsafe errors per claim (\tenLunaCPxFP{} and \tenLunaCPxMissN{} against \tenLunaBoneFP{} and \tenLunaBoneMissN), $p=\ptLunaHOneRaw$ at its floor, \ptLunaHOne{} after Holm within the secondary analysis and \ptLunaHOneHolmAll{} across all ten tests. The strict measure reverses the direction again (\ctLunaHOneStrictA{} against \ctLunaHOneStrictB, $p=\ctLunaHOneStrictP$), because \casepath handed \tenLunaCPxHandedN{} required documents to a person, and majority voting over three runs of \design{Rules in context} narrowed the headline gap (\ctLunaHOneSCB{} unsafe errors per claim; $p=\ctLunaHOneSCP$ against \casepath).
+
+\paragraph{Changed facts}
+With \texttt{gpt-6.1-terra}, \design{Rules in context} made \thTerraRWrong{} wrong and \thTerraRMissed{} missed changes over the 81 pair runs ($F_1$ \thTerraRFone), \casepath \thTerraCPWrong{} and \thTerraCPMissed{} (\thTerraCPFone), and \design{Direct} \thTerraDWrong{} and \thTerraDMissed{} (\thTerraDFone), with its one failed output scored as an empty plan (Table~\ref{tab:theft}); H3 was not supported (difference \ctTerraHThreeRDiff{} wrong changes per pair, $p=\ptTerraHThreeRaw$). With \texttt{gpt-6-luna}, \casepath made \thLunaCPWrong{} wrong changes and \design{Rules in context} \thLunaRWrong{} ($p=\ptLunaHThreeRaw$ at its floor; Holm \ptLunaHThree{} within, \ptLunaHThreeHolmAll{} across ten). But \thLunaRWrongInShared{} of these \thLunaRWrong{} were errors in a story's unchanged case, repeated across that story's conditions. Counted once, \design{Rules in context} made \thLunaRDedupWrongPP{} wrong changes per pair against \casepath's \thLunaCPDedupWrongPP{} ($p=\ctLunaHThreeDedupRP$), and against majority voting the difference vanished (\ctLunaHThreeDedupRSCDiff, $p=\ctLunaHThreeDedupRSCP$).
+
+\paragraph{Unresolved facts}
+When the fact was left open, the designs almost never requested its documents: \design{Rules in context} with \texttt{gpt-6-luna} did so in \thLunaRPremature\% of pair runs, \casepath and every other model-written design never; only two-valued execution with open facts read as true did so often (Section~\ref{sec:results-uncertainty}). The designs differed in what else they changed. With \texttt{gpt-6.1-terra}, \design{Rules in context} left every request unchanged in \thTerraRStable\% of pair runs and \casepath in \thTerraCPStable\% (the difference favours \design{Rules in context}; $p=\ptTerraHFourRaw$ at its floor, Holm \ptTerraHFour); with \texttt{gpt-6-luna}, \casepath did so in \thLunaCPStable\% and \design{Rules in context} in \thLunaRStable\% ($p=\ptLunaHFourRaw$ at its floor; Holm \ptLunaHFour{} within, \ptLunaHFourHolmAll{} across ten). With six clusters, no H4 result can be stronger than these.
+
+\paragraph{Across models}
+Which design made fewer wrong changes depended on the model (Figure~\ref{fig:models}). Across the two current models and the original study's single run with \texttt{gpt-5.6-terra} (Appendix~\ref{app:original}), \casepath made between \rangeCPWrongPPLo{} and \rangeCPWrongPPHi{} wrong changes per pair and \design{Rules in context} between \rangeRWrongPPLo{} and \rangeRWrongPPHi; both upper ends come from that single run, and the \texttt{gpt-6-luna} value of \design{Rules in context} falls from \thLunaRWrongPP{} to \thLunaRDedupWrongPP{} when repeated errors count once. On the tenancy claims the pattern inverts: \design{Rules in context} requested \pct{\tenTerraBoneRecall} and \pct{\tenLunaBoneRecall} of required documents at once with the two models, \casepath \pct{\tenTerraCPxRecall} and \pct{\tenLunaCPxRecall}. Execution does not make request quality independent of the model; it confines the model's influence to the judgments. Scoring every pairing of runs or only the seven conditions with agreed references changes none of these conclusions (Appendix~\ref{app:robustness}).
+
+\begin{figure}[t]
+\centering
+\fig{fig_outcomes}{\linewidth}
+\caption{Where 100 required tenancy documents end up, per design and model. Execution trades requests for questions and handoffs, not for fewer errors.}
+\label{fig:outcomes}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\fig{fig_models}{0.8\linewidth}
+\caption{Wrong changes per theft pair for \casepath and \design{Rules in context} with three models; the original study is a single run, and the repeated-error sensitivity is shown alongside. Which design errs less depends on the model.}
+\label{fig:models}
+\end{figure}
 
 \begin{table}[t]
-\caption{Complete request lists on 90 held-out tenancy claims, three runs each. Requested, deferred and missed partition the required documents (\%); unnecessary requests are a share of all requests (\%). Two-valued rows execute the same rules on \casepath's recorded judgments with unresolved facts read as false or true. --: not run.}
+\caption{Tenancy outcomes over 90 held-out claims, three runs each. Requested, held, handed over and missed partition the required documents (\%); unnecessary requests are a share of all requests (\%); unsafe errors per claim, headline and strict. Two-valued rows re-execute \casepath's recorded judgments (post hoc). --: not run.}
 \label{tab:tenancy}
 \small
-\setlength{\tabcolsep}{3.2pt}
-\begin{tabularx}{\linewidth}{@{}Xrrrrcrrrr@{}}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Xrrrrrrr@{}}
 \toprule
-& \multicolumn{4}{c}{\texttt{gpt-6.1-terra}} && \multicolumn{4}{c}{\texttt{gpt-6-luna}} \\
-\cmidrule(lr){2-5}\cmidrule(lr){7-10}
-Design & Req. & Def. & Miss. & Unn. && Req. & Def. & Miss. & Unn. \\
+Design & Req. & Held & Handed & Missed & Unn. & Unsafe & Strict \\
 \midrule
-\design{Rules in context} & \tenTerraBoneRecall & \tenTerraBoneDefer & \tenTerraBoneMiss & \tenTerraBoneUnnec && \tenLunaBoneRecall & \tenLunaBoneDefer & \tenLunaBoneMiss & \tenLunaBoneUnnec \\
-\quad majority of 3 & \tenTerraBscRecall & \tenTerraBscDefer & \tenTerraBscMiss & \tenTerraBscUnnec && \tenLunaBscRecall & \tenLunaBscDefer & \tenLunaBscMiss & \tenLunaBscUnnec \\
-\design{Model executes rules} & \tenTerraBtwoRecall & \tenTerraBtwoDefer & \tenTerraBtwoMiss & \tenTerraBtwoUnnec && -- & -- & -- & -- \\
-\casepath, product engine & \tenTerraCPkRecall & \tenTerraCPkDefer & \tenTerraCPkMiss & \tenTerraCPkUnnec && \tenLunaCPkRecall & \tenLunaCPkDefer & \tenLunaCPkMiss & \tenLunaCPkUnnec \\
-\casepath, exact deferral & \tenTerraCPxRecall & \tenTerraCPxDefer & \tenTerraCPxMiss & \tenTerraCPxUnnec && \tenLunaCPxRecall & \tenLunaCPxDefer & \tenLunaCPxMiss & \tenLunaCPxUnnec \\
-\quad without verifier & \tenTerraCPxnRecall & \tenTerraCPxnDefer & \tenTerraCPxnMiss & \tenTerraCPxnUnnec && \tenLunaCPxnRecall & \tenLunaCPxnDefer & \tenLunaCPxnMiss & \tenLunaCPxnUnnec \\
-\design{Two-valued}, open as false & \tvTerraClosedRecall & 0.0 & \tvTerraClosedMiss & \tvTerraClosedUnnec && \tvLunaClosedRecall & 0.0 & \tvLunaClosedMiss & \tvLunaClosedUnnec \\
-\design{Two-valued}, open as true & \tvTerraEagerRecall & 0.0 & \tvTerraEagerMiss & \tvTerraEagerUnnec && \tvLunaEagerRecall & 0.0 & \tvLunaEagerMiss & \tvLunaEagerUnnec \\
+\multicolumn{8}{@{}l}{\emph{Primary analysis, \texttt{gpt-6.1-terra}}} \\
+\design{Rules in context} & \tenTerraBoneRecall & \tenTerraBoneHeld & \tenTerraBoneHanded & \tenTerraBoneMiss & \tenTerraBoneUnnec & \tenTerraBoneUnsafe & \tenTerraBoneUnsafeStrict \\
+\quad majority of 3 & \tenTerraBscRecall & \tenTerraBscHeld & \tenTerraBscHanded & \tenTerraBscMiss & \tenTerraBscUnnec & \tenTerraBscUnsafe & \tenTerraBscUnsafeStrict \\
+\design{Model executes rules} & \tenTerraBtwoRecall & \tenTerraBtwoHeld & \tenTerraBtwoHanded & \tenTerraBtwoMiss & \tenTerraBtwoUnnec & \tenTerraBtwoUnsafe & \tenTerraBtwoUnsafeStrict \\
+\casepath, production engine & \tenTerraCPkRecall & \tenTerraCPkHeld & \tenTerraCPkHanded & \tenTerraCPkMiss & \tenTerraCPkUnnec & \tenTerraCPkUnsafe & \tenTerraCPkUnsafeStrict \\
+\casepath, exact deferral & \tenTerraCPxRecall & \tenTerraCPxHeld & \tenTerraCPxHanded & \tenTerraCPxMiss & \tenTerraCPxUnnec & \tenTerraCPxUnsafe & \tenTerraCPxUnsafeStrict \\
+\quad without verifier & \tenTerraCPxnRecall & \tenTerraCPxnHeld & \tenTerraCPxnHanded & \tenTerraCPxnMiss & \tenTerraCPxnUnnec & \tenTerraCPxnUnsafe & \tenTerraCPxnUnsafeStrict \\
+\design{Two-valued}, open as false & \tvTerraClosedRecall & \tvTerraClosedHeld & \tvTerraClosedHanded & \tvTerraClosedMiss & \tvTerraClosedUnnec & \tvTerraClosedUnsafe & \tvTerraClosedUnsafeStrict \\
+\design{Two-valued}, open as true & \tvTerraEagerRecall & \tvTerraEagerHeld & \tvTerraEagerHanded & \tvTerraEagerMiss & \tvTerraEagerUnnec & \tvTerraEagerUnsafe & \tvTerraEagerUnsafeStrict \\
+\midrule
+\multicolumn{8}{@{}l}{\emph{Secondary analysis, \texttt{gpt-6-luna}}} \\
+\design{Rules in context} & \tenLunaBoneRecall & \tenLunaBoneHeld & \tenLunaBoneHanded & \tenLunaBoneMiss & \tenLunaBoneUnnec & \tenLunaBoneUnsafe & \tenLunaBoneUnsafeStrict \\
+\quad majority of 3 & \tenLunaBscRecall & \tenLunaBscHeld & \tenLunaBscHanded & \tenLunaBscMiss & \tenLunaBscUnnec & \tenLunaBscUnsafe & \tenLunaBscUnsafeStrict \\
+\casepath, production engine & \tenLunaCPkRecall & \tenLunaCPkHeld & \tenLunaCPkHanded & \tenLunaCPkMiss & \tenLunaCPkUnnec & \tenLunaCPkUnsafe & \tenLunaCPkUnsafeStrict \\
+\casepath, exact deferral & \tenLunaCPxRecall & \tenLunaCPxHeld & \tenLunaCPxHanded & \tenLunaCPxMiss & \tenLunaCPxUnnec & \tenLunaCPxUnsafe & \tenLunaCPxUnsafeStrict \\
+\quad without verifier & \tenLunaCPxnRecall & \tenLunaCPxnHeld & \tenLunaCPxnHanded & \tenLunaCPxnMiss & \tenLunaCPxnUnnec & \tenLunaCPxnUnsafe & \tenLunaCPxnUnsafeStrict \\
+\design{Two-valued}, open as false & \tvLunaClosedRecall & \tvLunaClosedHeld & \tvLunaClosedHanded & \tvLunaClosedMiss & \tvLunaClosedUnnec & \tvLunaClosedUnsafe & \tvLunaClosedUnsafeStrict \\
+\design{Two-valued}, open as true & \tvLunaEagerRecall & \tvLunaEagerHeld & \tvLunaEagerHanded & \tvLunaEagerMiss & \tvLunaEagerUnnec & \tvLunaEagerUnsafe & \tvLunaEagerUnsafeStrict \\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_tenancy.pdf}
-\caption{Where the required documents of the tenancy claims end up. Executing the rules (\casepath) avoids unsafe errors but holds more required documents behind questions; exact deferral removes \tenTerraExactCut--\tenLunaExactCut\% of those holds. The right-hand column gives unnecessary requests as a share of requests.}
-\label{fig:tenancy}
-\end{figure}
-
-\paragraph{Why \casepath defers}
-Most of \casepath's deferrals stem from one fact the messages do not state. With \texttt{gpt-6.1-terra}, \defRouting{} of the \defTotal{} required documents it held (\defRoutingPct\%) waited for the answer to whether a termination notice or rent-increase claim had been received, and with \texttt{gpt-6-luna} \defLunaRouting{} of \defLunaTotal{} (\defLunaRoutingPct\%); the reference generator presumes this routing fact, while \casepath's interpretation policy treats an unstated fact as open. With \texttt{gpt-6.1-terra}, another \defClaim{} were held because the verifier did not admit the dispute family, which hands the claim to a person, and only \defOther{} depended on other conditions. When the routing fact is presumed once the family is admitted---a policy change evaluated post hoc on the same judgments---\casepath requests \pct{\presRecall} and \pct{\presLunaRecall} of the required documents of admitted claims, with \pct{\presUnnec} and \pct{\presLunaUnnec} unnecessary requests, close to \design{Rules in context}.
-
-\subsection{Changed facts: execution helps with the cost-efficient model (H3)}
-\label{sec:results-changed}
-
-When one fact of a theft case changed, the result depended on the model (Table~\ref{tab:theft}, Figure~\ref{fig:theft}). With \texttt{gpt-6-luna}, \casepath made \thLunaCPWrong{} wrong and \thLunaCPMissed{} missed changes over the 81 pair runs ($F_1$ \thLunaCPFone{} [\thLunaCPFoneLo, \thLunaCPFoneHi]), while \design{Rules in context} made \thLunaRWrong{} wrong and \thLunaRMissed{} missed changes ($F_1$ \thLunaRFone{} [\thLunaRFoneLo, \thLunaRFoneHi]); majority voting over three runs did not close the gap ($F_1$ \thLunaRscFone). With \texttt{gpt-6.1-terra}, the order reversed: \design{Rules in context} made \thTerraRWrong{} wrong and \thTerraRMissed{} missed changes ($F_1$ \thTerraRFone{} [\thTerraRFoneLo, \thTerraRFoneHi]) against \casepath's \thTerraCPWrong{} and \thTerraCPMissed{} ($F_1$ \thTerraCPFone{} [\thTerraCPFoneLo, \thTerraCPFoneHi]); \design{Direct} made \thTerraDWrong{} and \thTerraDMissed{}. H3 is supported for the cost-efficient model only. Restricting the scoring to the seven conditions whose references the independent re-derivation reproduced does not change any ranking.
-
-The original study had found the same advantage as \texttt{gpt-6-luna}: with \texttt{gpt-5.6-terra}, the extracted rules in context produced 41 wrong changes against \casepath's 15 in one run of the same 27 pairs, mostly documents that disappeared from one of two independently generated checklists. \casepath's errors varied much less across the three models (0.21 to 0.56 wrong changes per pair) than those of \design{Rules in context} (0.27 to 1.52), because the model's role in \casepath is confined to judging conditions.
 
 \begin{table}[t]
-\caption{Theft cases: one changed fact (27 held-out pairs) and one unresolved fact (18 pairs), three runs each. Wrong and missed changes are counted over the 81 pair runs; stable is the share of unresolved-fact pairs with no changed request. The two-valued row reads \casepath's unresolved judgments as true; read as false, it equals \casepath. --: not run.}
+\caption{Theft outcomes: one changed fact (27 held-out pairs, 81 pair runs) and one unresolved fact (18 pairs, 54 pair runs). Wrong and missed changes are counts; ``once'' counts each error repeated from a story's unchanged case once; stable and premature are shares of unresolved-fact pair runs. The two-valued row reads \casepath's unresolved judgments as true (post hoc); read as false, it equals \casepath. --: not computed or not run.}
 \label{tab:theft}
 \small
-\setlength{\tabcolsep}{3.2pt}
-\begin{tabularx}{\linewidth}{@{}Xrrrrcrrrr@{}}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Xrrrrrr@{}}
 \toprule
-& \multicolumn{4}{c}{\texttt{gpt-6.1-terra}} && \multicolumn{4}{c}{\texttt{gpt-6-luna}} \\
-\cmidrule(lr){2-5}\cmidrule(lr){7-10}
-Design & Wrong & Missed & $F_1$ & Stable && Wrong & Missed & $F_1$ & Stable \\
+Design & Wrong & Once & Missed & $F_1$ & Stable & Premature \\
 \midrule
-\design{Direct} & \thTerraDWrong & \thTerraDMissed & \thTerraDFone & \thTerraDStable\% && -- & -- & -- & -- \\
-\design{Rules in context} & \thTerraRWrong & \thTerraRMissed & \thTerraRFone & \thTerraRStable\% && \thLunaRWrong & \thLunaRMissed & \thLunaRFone & \thLunaRStable\% \\
-\quad majority of 3 & \thTerraRscWrong & \thTerraRscMissed & \thTerraRscFone & \thTerraRscStable\% && \thLunaRscWrong & \thLunaRscMissed & \thLunaRscFone & \thLunaRscStable\% \\
-\casepath & \thTerraCPWrong & \thTerraCPMissed & \thTerraCPFone & \thTerraCPStable\% && \thLunaCPWrong & \thLunaCPMissed & \thLunaCPFone & \thLunaCPStable\% \\
-\quad without verifier & \thTerraCPnWrong & \thTerraCPnMissed & \thTerraCPnFone & \thTerraCPnStable\% && \thLunaCPnWrong & \thLunaCPnMissed & \thLunaCPnFone & \thLunaCPnStable\% \\
-\design{Two-valued}, open as true & \tvThTerraEagerWrong & \tvThTerraEagerMissed & \tvThTerraEagerFone & \tvThTerraEagerStable\% && \tvThLunaEagerWrong & \tvThLunaEagerMissed & \tvThLunaEagerFone & \tvThLunaEagerStable\% \\
+\multicolumn{7}{@{}l}{\emph{Primary analysis, \texttt{gpt-6.1-terra}}} \\
+\design{Direct} & \thTerraDWrong & \thTerraDDedupWrong & \thTerraDMissed & \thTerraDFone & \thTerraDStable\% & \thTerraDPremature\% \\
+\quad majority of 3 & \thTerraDscWrong & \thTerraDscDedupWrong & \thTerraDscMissed & \thTerraDscFone & \thTerraDscStable\% & \thTerraDscPremature\% \\
+\design{Rules in context} & \thTerraRWrong & \thTerraRDedupWrong & \thTerraRMissed & \thTerraRFone & \thTerraRStable\% & \thTerraRPremature\% \\
+\quad majority of 3 & \thTerraRscWrong & \thTerraRscDedupWrong & \thTerraRscMissed & \thTerraRscFone & \thTerraRscStable\% & \thTerraRscPremature\% \\
+\casepath & \thTerraCPWrong & \thTerraCPDedupWrong & \thTerraCPMissed & \thTerraCPFone & \thTerraCPStable\% & \thTerraCPPremature\% \\
+\quad without verifier & \thTerraCPnWrong & \thTerraCPnDedupWrong & \thTerraCPnMissed & \thTerraCPnFone & \thTerraCPnStable\% & \thTerraCPnPremature\% \\
+\design{Two-valued}, open as true & \tvThTerraEagerWrong & -- & \tvThTerraEagerMissed & \tvThTerraEagerFone & \tvThTerraEagerStable\% & \tvThTerraEagerPremature\% \\
+\midrule
+\multicolumn{7}{@{}l}{\emph{Secondary analysis, \texttt{gpt-6-luna}}} \\
+\design{Rules in context} & \thLunaRWrong & \thLunaRDedupWrong & \thLunaRMissed & \thLunaRFone & \thLunaRStable\% & \thLunaRPremature\% \\
+\quad majority of 3 & \thLunaRscWrong & \thLunaRscDedupWrong & \thLunaRscMissed & \thLunaRscFone & \thLunaRscStable\% & \thLunaRscPremature\% \\
+\casepath & \thLunaCPWrong & \thLunaCPDedupWrong & \thLunaCPMissed & \thLunaCPFone & \thLunaCPStable\% & \thLunaCPPremature\% \\
+\quad without verifier & \thLunaCPnWrong & \thLunaCPnDedupWrong & \thLunaCPnMissed & \thLunaCPnFone & \thLunaCPnStable\% & \thLunaCPnPremature\% \\
+\design{Two-valued}, open as true & \tvThLunaEagerWrong & -- & \tvThLunaEagerMissed & \tvThLunaEagerFone & \tvThLunaEagerStable\% & \tvThLunaEagerPremature\% \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_theft.pdf}
-\caption{Theft cases across three models. Rules applied by the model in context (middle row) range from the worst to the best design depending on the model; \casepath's errors vary much less. Open markers: original single run; filled markers: means over three runs.}
-\label{fig:theft}
-\end{figure}
+\subsection{Where does the uncertainty go?}
+\label{sec:results-uncertainty}
 
-\subsection{Unresolved facts: no premature requests, fewer side effects with execution (H4)}
-\label{sec:results-unresolved}
+Into questions and handoffs. Where the model applying the rules requested documents whose requirement the claim leaves open, execution held them behind a question or handed the claim to a person, and the references, which give every fact a value, score the guess as correct and the question as a deferral.
 
-When a condition was left open, almost no design requested its documents prematurely: \casepath never did, and the in-context designs did so in at most \thLunaRPremature\% of unresolved-fact pairs. The guarantee of Proposition~\ref{prop:sound} was thus largely matched by the models themselves. The designs differed in what else changed. With \texttt{gpt-6-luna}, \casepath left every other request unchanged in \thLunaCPStable\% of pairs and \design{Rules in context} in \thLunaRStable\%; with \texttt{gpt-6.1-terra}, \design{Rules in context} did so in \thTerraRStable\% and \casepath in \thTerraCPStable\%. H4 is supported for the cost-efficient model only; \casepath's remaining changes have a single cause, traced in Section~\ref{sec:results-origin}.
+\paragraph{Outcomes}
+With \texttt{gpt-6.1-terra}, \casepath requested \pct{\tenTerraCPxRecall} of required documents at once, held \pct{\tenTerraCPxHeld}, handed \pct{\tenTerraCPxHanded} over and missed \pct{\tenTerraCPxMiss}; \design{Rules in context} requested \pct{\tenTerraBoneRecall}, held \pct{\tenTerraBoneHeld} and missed \pct{\tenTerraBoneMiss} (Figure~\ref{fig:outcomes}). H2 was supported with both models. Strong Kleene evaluation in the production engine held far more (\pct{\tenTerraCPkHeld} and \pct{\tenLunaCPkHeld}); exact deferral removed \tenTerraExactCut\% and \tenLunaExactCut\% of its deferrals ($p=\ctTerraHTwoBDeferP$ and $p\ctLunaHTwoBDeferP$) without adding an unnecessary request. It added \tenTerraExactAddedMiss{} and \tenLunaExactAddedMiss{} missed documents among \tenTerraExactNR{} required ones: supplied files that \casepath had judged sufficient and the reference marks as insufficient, which the holds had hidden. \design{Model executes rules}, told to apply strong Kleene logic, held \pct{\tenTerraBtwoHeld} and so reproduced part of its incompleteness.
 
-\subsection{Consistency across runs (H5)}
-\label{sec:results-stability}
+\paragraph{Judgments}
+The models said when they did not know. Of \jaTotal{} condition judgments on claims whose family \texttt{gpt-6.1-terra} identified, \jaCorrect{} matched the reference, \jaFlipped{} contradicted it and \jaUnres{} were unresolved; \texttt{gpt-6-luna} made \jaLunaCorrect, \jaLunaFlipped{} and \jaLunaUnres. Of the frontier model's unresolved judgments, \jaUnresFalse{} concern facts that the message never mentions and the scenario sets to false, and \jaUnresTrue{} concern true facts the message does not state clearly, \jaUnresRouting{} of them a routing fact. That one kind of fact holds most deferred documents: \defRouting{} of \defTotal{} (\defRoutingPct\%) with \texttt{gpt-6.1-terra} and \defLunaRouting{} of \defLunaTotal{} (\defLunaRoutingPct\%) with \texttt{gpt-6-luna}; with the frontier model, another \defClaim{} were handed over and \defOther{} waited for other conditions.
 
-On the tenancy claims, \design{Rules in context} was more consistent across runs than \casepath for both models, so H5 is not supported (differences in mean test--retest agreement of \ptTerraHFiveDiff{} and \ptLunaHFiveDiff{} for \casepath). Execution is deterministic, but its inputs are not: \casepath's two model calls each vary between runs, and the verifier's decisions vary most. On the theft cases the picture depended on the model: with \texttt{gpt-6-luna}, \casepath's request lists agreed more across runs than those of \design{Rules in context} (\thLunaCPRetest{} versus \thLunaRRetest); with \texttt{gpt-6.1-terra}, less (\thTerraCPRetest{} versus \thTerraRRetest).
+\paragraph{The references' policy for silence}
+Because the generator gives every unstated fact a value, a design that guesses that value is scored correct and a design that asks is scored as deferring. Re-executing \casepath's recorded judgments with unresolved facts read as false, as the generator treats unmentioned facts, turned its holds into missed documents (\pct{\tvTerraClosedMiss} and \pct{\tvLunaClosedMiss} of required documents); reading them as true, as it treats routing facts, made \pct{\tvTerraEagerUnnec} and \pct{\tvLunaEagerUnnec} of requests unnecessary and, on the theft pairs, requested the open condition's documents prematurely in \tvThTerraEagerPremature\% and \tvThLunaEagerPremature\% of pair runs (post hoc). Holding a document that is not required goes unscored: \design{Rules in context} held \tenTerraBoneHoldsNonreq{} such documents per claim and \casepath \tenTerraCPxHoldsNonreq.
 
-\subsection{Why: judgments, verification and semantics}
-\label{sec:results-mechanism}
+\paragraph{The running example}
+On the theft variant in which the policyholder has not yet found the policy schedule, every design held the receipt for the watch in every run (\watchTerraDHeld, \watchTerraRHeld{} and \watchTerraCPHeld{} of \watchTerraRRuns{} runs for \design{Direct}, \design{Rules in context} and \casepath with \texttt{gpt-6.1-terra}; \watchLunaRHeld{} and \watchLunaCPHeld{} with \texttt{gpt-6-luna}) and none requested it. The designs differed elsewhere. With \texttt{gpt-6.1-terra}, \design{Rules in context} changed nothing else in \watchTerraRStable{} of \watchTerraRRuns{} runs, \casepath in \watchTerraCPStable{} and \design{Direct} in \watchTerraDStable; \design{Direct} added the policy schedule itself or dropped the claim form, and \casepath added or withdrew the written assignment of claims against third parties, because its two calls judged an unrelated condition differently. With \texttt{gpt-6-luna}, \design{Rules in context} added or dropped a double-insurance declaration or added purchase vouchers in \the\numexpr\watchLunaRRuns-\watchLunaRStable\relax{} runs, and \casepath added the third-party assignment in \the\numexpr\watchLunaCPRuns-\watchLunaCPStable\relax. On this pair the models applying the rules did not guess; their extra changes, unlike \casepath's, cannot be traced to a judgment.
 
-Three mechanisms explain these results. First, \casepath's interpreter almost never made a confident error. With \texttt{gpt-6.1-terra}, of \jaTotal{} condition judgments on claims whose family it identified, \jaCorrect{} matched the reference, \jaFlipped{} contradicted it and \jaUnres{} were unresolved. Of the unresolved ones, \jaUnresFalse{} concerned facts that are false in the scenario but never mentioned in the message: the reference reads silence as false, \casepath's policy reads it as open. The remaining \jaUnresTrue{} concerned true facts the message did not state clearly enough, chiefly the routing fact above.
+\subsection{What happens to rule errors?}
+\label{sec:results-rules}
 
-Second, the value of independent verification depended on the model. With \texttt{gpt-6.1-terra}, the verifier rejected \jaRejCorrect{} condition verdicts, all of them correct, and accepted all \jaFlipped{} wrong ones, so each rejection turned a correct verdict into an open question; without it, \casepath requested \pct{\tenTerraCPxnRecall} instead of \pct{\tenTerraCPxRecall} of required documents with the same unsafe-error rate, and it made fewer wrong changes on the theft cases (\thTerraCPnWrong{} versus \thTerraCPWrong). With \texttt{gpt-6-luna}, the verifier reduced wrong theft changes from \thLunaCPnWrong{} to \thLunaCPWrong{} but again increased tenancy deferrals.
+Execution reproduces them and gives each one an address. With \texttt{gpt-6.1-terra}, \ecWrongFaulty{} of \casepath's \thTerraCPWrong{} wrong changes and \ecMissedFaulty{} of its \thTerraCPMissed{} missed changes trace to five of the \rvRules{} extracted rules (Figure~\ref{fig:trace}): a route that demands a receipt and an expert valuation where the sources accept either, a route that adds a bank statement, an unconditional claim-form section, and two conditions broader than their sources. In the original study's single run, \origTraceWrongFive{} of \casepath's \origTraceWrong{} wrong changes and all \origTraceMissed{} traced misses came from the same five rules; the other \origTraceWrongRuleTwentyThree{} came from a sixth rule, on the formal expert procedure, the condition whose reference the re-derivation did not reproduce. A blind check of every extracted rule against its cited passages flagged all five and \the\numexpr\rvFlagged-\rvImplicatedFlagged\relax{} of the other \the\numexpr\rvRules-\rvImplicated\relax{} rules, but not the sixth: it can direct expert review, not replace it.
 
-Third, the semantics determine what an unresolved judgment becomes. Executing the same rules on \casepath's recorded judgments with unresolved facts read as false turned its deferrals into silent misses (\pct{\tvTerraClosedMiss} and \pct{\tvLunaClosedMiss} of required tenancy documents); reading them as true turned them into unnecessary requests (\pct{\tvTerraEagerUnnec} and \pct{\tvLunaEagerUnnec} of requests) and, on the theft cases, into premature requests in about half of the unresolved-fact pairs (\tvThTerraEagerPremature\% and \tvThLunaEagerPremature\%). Deferral is therefore not an avoidable inefficiency of three-valued execution: it is what remains when neither guess is safe. More generally, Figure~\ref{fig:propagation} shows the exact expected errors over all \propClaims{} tenancy claims when each condition is misjudged with probability 0.2, computed over every partial assignment of their flags with the production engine. If errors take the form ``unresolved'', exact deferral turns all of them into deferrals and none into unsafe errors; strong Kleene evaluation defers \propKleeneExtra\% more documents than necessary; reading open facts as false turns them into silent misses, and reading them as true into unnecessary requests. If errors are confident wrong verdicts, all four semantics fail alike. Three-valued execution is therefore safe exactly to the extent that the model expresses uncertainty instead of guessing, as \casepath's interpreter did in \jaUnres{} of its \the\numexpr\jaUnres+\jaFlipped\relax{} non-matching judgments.
+Given the same rules, \design{Rules in context} with the frontier model repeated \ecFaultyAlsoR{} of these \ecWrongFaulty{} errors in the same pair and run and avoided \ecFaultyAvoidedR; nothing in its output records how. Its quotations were all verbatim (\citBone), as were those of \casepath's interpreter (\citCPProp); with \texttt{gpt-6-luna}, \pct{\citLunaBoneExact} and \pct{\citLunaCPPropExact} were, and \casepath's admission turns judgments with inexact quotations into unresolved ones. A quotation in a model-written plan supports a stated reason whose consistency with the rules nobody checks; a quotation in \casepath supports a judgment from which each request follows by a rule. On the tenancy claims, whose rules are correct by construction, \casepath's \tenTerraCPxFP{} unnecessary requests follow from the \jaFlipped{} contradicting judgments, and its \tenTerraCPxMissN{} missed documents are supplied files it judged sufficient that the reference marks as insufficient (attributed by manual inspection).
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/fig_propagation.pdf}
-\caption{What judgment errors become under four semantics (all 150 tenancy claims, error probability 0.2 per condition, exact expectation over all partial assignments). Three-valued execution converts uncertain judgments into deferrals; two-valued execution converts them into silent misses or unnecessary requests; no semantics protects against confident wrong verdicts.}
-\label{fig:propagation}
+\fig{fig_trace}{\linewidth}
+\caption{Every wrong change of the primary theft run as one mark. \casepath's errors attach to the rule that produced them, five rules hold \ecWrongFaulty{} of \thTerraCPWrong{} and the rule check flagged all five, whereas the errors of \design{Rules in context} have no rule to attach to.}
+\label{fig:trace}
 \end{figure}
 
-\subsection{Where the remaining errors come from}
-\label{sec:results-origin}
-
-Every request \casepath makes carries a trace to the rule and the case quotation behind it, which locates its errors exactly. With \texttt{gpt-6.1-terra}, \ecWrongFaulty{} of its \thTerraCPWrong{} wrong theft changes and \ecMissedFaulty{} of its \thTerraCPMissed{} misses trace to five of the 98 automatically extracted rules: a route that demands a receipt and an expert valuation where the sources accept either, a route that adds a bank statement, an unconditional claim-form section, and two conditions broader than their sources. The same five rules produced the errors of the original study. The model applying the rules in context saw the same faulty rules but, reading them beside the sources, avoided most of their consequences when it was the frontier model. A blind verification of every extracted rule against its cited passages flagged all \rvImplicatedFlagged{} faulty rules, but also \the\numexpr\rvFlagged-\rvImplicatedFlagged\relax{} of the other \the\numexpr\rvRules-\rvImplicated\relax{}, so it can direct expert review but cannot replace it. On the tenancy claims, whose rules are correct by construction, \casepath's \tenTerraCPxFP{} unnecessary requests follow from the \jaFlipped{} wrong verdicts and its \tenTerraCPxMissN{} silent misses are supplied files it judged sufficient that the reference marks as insufficient.
-
-Citations barely distinguished the designs: every quotation that \design{Rules in context}, \design{Model executes rules} and \casepath's interpreter produced with \texttt{gpt-6.1-terra} occurred verbatim in its source (\citBone, \citBtwo{} and \citCPProp{} quotations); with \texttt{gpt-6-luna}, \pct{\citLunaBoneExact} of the quotations of \design{Rules in context} and \pct{\citLunaCPPropExact} of the interpreter's did, and \casepath's admission rejects the judgments whose quotations do not. The difference lies in what a citation supports: \casepath's quotations support a recorded judgment of a named condition, from which each request follows by a rule; a model-written plan's quotations support its stated reason, whose consistency with the rules is not checked.
-
-\subsection{Cost and runtime}
+\subsection{What does execution cost?}
 \label{sec:results-cost}
 
-\casepath costs more per case than letting the same model apply the rules, because it makes two model calls, but the model matters more than the design. With prompt caching, a tenancy claim cost $\$\costTerraTenCP\times10^{-3}$ with \casepath and $\$\costTerraTenBone\times10^{-3}$ with \design{Rules in context} on \texttt{gpt-6.1-terra}, and $\$\costLunaTenCP\times10^{-3}$ and $\$\costLunaTenBone\times10^{-3}$ on \texttt{gpt-6-luna}; a theft case cost $\$\costTerraThCP\times10^{-3}$ and $\$\costTerraThR\times10^{-3}$ on \texttt{gpt-6.1-terra} and $\$\costLunaThCP\times10^{-3}$ and $\$\costLunaThR\times10^{-3}$ on \texttt{gpt-6-luna}. \casepath with \texttt{gpt-6-luna} was thus at least as accurate on the theft cases as the frontier model applying the rules in context ($F_1$ \thLunaCPFone{} versus \thTerraRFone), at half its cost per case. The deterministic part is negligible: the production engine evaluates a 100-step synthetic process in \scaleHundredMs{}\,ms, exact deferral over ten open flags takes \scaleExactTen{}\,s, and real claims have at most five flags. All new experiments, including pilots and diagnostics, cost $\$\spendTerra$ with \texttt{gpt-6.1-terra} and $\$\spendLuna$ with \texttt{gpt-6-luna}.
+Deferrals, run-to-run agreement and a second model call. Part of the deferral comes from \casepath's own machinery, and whether the rest is worth paying depends on the price of an error.
+
+\paragraph{Agreement across runs}
+H5 failed in reverse. On the tenancy claims, \design{Rules in context} agreed more with itself across runs than \casepath (mean Jaccard \ctTerraHFiveB{} against \ctTerraHFiveA; \ctLunaHFiveB{} against \ctLunaHFiveA{} with \texttt{gpt-6-luna}). Execution is deterministic but its inputs are not, and the verifier varies most: without it, \casepath's agreement was \tenTerraCPxnRetest. On the theft pairs (secondary), \casepath agreed more with \texttt{gpt-6-luna} (\ctLunaHFiveThRA{} against \ctLunaHFiveThRB, $p=\ctLunaHFiveThRP$) and slightly less with \texttt{gpt-6.1-terra} (\ctTerraHFiveThRA{} against \ctTerraHFiveThRB, $p=\ctTerraHFiveThRP$).
+
+\paragraph{The verifier}
+With the frontier model, the verifier cost more than it caught. It rejected \verRejCondTrue{} of \verCheckedCondTrue{} true condition verdicts, all correct, and none of the \jaFlipped{} wrong ones, so each rejection turned a correct verdict into a question; it also rejected \verRejCategory{} of \verRuns{} category items, \verRejCondUnres{} of \verCheckedCondUnres{} unresolved verdicts and \verRejDocument{} of \verCheckedDocument{} document assessments. Without it, \casepath requested \pct{\tenTerraCPxnRecall} instead of \pct{\tenTerraCPxRecall} of required documents with the same unsafe errors per claim (\tenTerraCPxnUnsafe) and made \thTerraCPnWrong{} instead of \thTerraCPWrong{} wrong theft changes. With \texttt{gpt-6-luna}, the verifier reduced wrong theft changes from \thLunaCPnWrong{} to \thLunaCPWrong{} but raised tenancy deferrals from \pct{\tenLunaCPxnDefer} to \pct{\tenLunaCPxDefer}.
+
+\paragraph{Handoffs}
+The handoffs came from the same machinery, not from unreadable claims. All \hoTerraRuns{} handoffs with \texttt{gpt-6.1-terra}, covering \hoTerraDocs{} required documents in \hoTerraVerCatClaims{} claims, occurred because the verifier rejected the interpretation's category item while affirming that the cited sources support the family; the interpreter had chosen the right family in all \hoTerraFamilyRight. With \texttt{gpt-6-luna}, \hoLunaVerCatRuns{} of \hoLunaRuns{} handoffs had this cause and \hoLunaCiteRuns{} came from quotations that were not verbatim.
+
+\paragraph{Repairs and break-even (post hoc)}
+Two repairs, evaluated on the recorded judgments and not confirmed in new runs, remove most of this cost. Admitting the family whenever the verifier affirms it leaves \repTerraHandoffRuns{} and \repLunaHandoffRuns{} handoff runs and the unsafe errors unchanged (\repTerraUnsafe{} and \repLunaUnsafe{} per claim); under the strict measure \casepath then makes \repTerraUnsafeStrict{} against \repTerraCtUnsafeStrictB{} with \texttt{gpt-6.1-terra} ($p=\repTerraCtUnsafeStrictP$) and \repLunaUnsafeStrict{} against \repLunaCtUnsafeStrictB{} with \texttt{gpt-6-luna} ($p=\repLunaCtUnsafeStrictP$). Presuming the routing fact as well raises the share requested at once to \pct{\repPresTerraRecall} and \pct{\repPresLunaRecall}, with \pct{\repPresTerraHeld} and \pct{\repPresLunaHeld} held. Whether the remaining deferrals are worth paying depends on what an unsafe error costs relative to a deferred document. With \texttt{gpt-6.1-terra}, \casepath made no fewer unsafe errors, so no ratio favours it. With \texttt{gpt-6-luna}, it is preferable only if an unsafe error costs more than \beLunaCPxRatio{} deferred documents as run, \beLunaCPrRatio{} with the routing presumption, \repLunaRatio{} with the family repair and \repPresLunaRatio{} with both; under the strict measure, no ratio favours it without the repair, and the thresholds become \repLunaRatioStrict{} and \repPresLunaRatioStrict{} with it.
+
+\paragraph{Money and time}
+A tenancy claim cost \$$\costTerraTenCP\times10^{-3}$ with \casepath and \$$\costTerraTenBone\times10^{-3}$ with \design{Rules in context} on \texttt{gpt-6.1-terra}, and \$$\costLunaTenCP\times10^{-3}$ and \$$\costLunaTenBone\times10^{-3}$ on \texttt{gpt-6-luna}; a theft case cost \$$\costTerraThCP\times10^{-3}$ and \$$\costTerraThR\times10^{-3}$, and \$$\costLunaThCP\times10^{-3}$ and \$$\costLunaThR\times10^{-3}$. The model mattered more than the design. The engine evaluates a 100-step synthetic process in \scaleHundredMs{}\,ms, and exact deferral over ten open flags takes \scaleExactTen{}\,s; our claims have at most five. All new experiments, including pilots, cost \$\spendTerra{} with \texttt{gpt-6.1-terra} and \$\spendLuna{} with \texttt{gpt-6-luna}.

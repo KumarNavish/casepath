@@ -14,14 +14,18 @@
 \usepackage{xspace}
 \usepackage{enumitem}
 \usepackage{listings}
-\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!25},xleftmargin=2pt,xrightmargin=2pt,aboveskip=2pt,belowskip=4pt}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,breakatwhitespace=true,postbreak=\mbox{\hspace{1em}},columns=fullflexible,frame=single,rulecolor=\color{black!25},xleftmargin=2pt,xrightmargin=2pt,aboveskip=2pt,belowskip=4pt}
 
 \input{macros}
 \input{results/numbers}
 
+%% \fig{name}{width}: include figures/name.pdf if it exists, otherwise a framed placeholder.
+\newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{%
+  \fbox{\parbox[c][0.22\textheight][c]{\dimexpr#2-2\fboxsep-2\fboxrule\relax}{\centering\small Figure \texttt{#1} in preparation}}}}
+
 \begin{document}
 
-\title{CasePath: Executing Process Rules over LLM Judgments to Request Evidence}
+\title{Where the Uncertainty Goes: Executing Rules over LLM Judgments to Request Evidence}
 
 \author{Navish Kumar}
 \affiliation{\institution{University of Basel}\city{Basel}\country{Switzerland}}
@@ -49,7 +53,7 @@
 \ccsdesc[300]{Computing methodologies~Natural language processing}
 \ccsdesc[300]{Applied computing~Law}
 
-\keywords{LLM agents, evidence requests, claims handling, process execution, three-valued logic, neuro-symbolic systems, design science}
+\keywords{LLM agents, evidence requests, claims handling, rule execution, three-valued logic, supervaluation, neuro-symbolic systems, pre-registered evaluation, design science}
 
 \maketitle
 

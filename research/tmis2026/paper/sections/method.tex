@@ -1,37 +1,31 @@
-\section{CasePath}
+\section{Executing rules over judgments}
 \label{sec:method}
 
-This section defines the decision \casepath makes, the semantics that make that decision safe under uncertainty, and the agent that produces the inputs to it. Table~\ref{tab:glossary} collects the terms.
+\subsection{The decision and its three sources of error}
+\label{sec:problem}
 
-\subsection{Running example}
-\label{sec:example}
-
-A policyholder reports a burglary in which a watch was stolen. Under the policy, proof of the watch's value is required only if the watch was separately insured above a threshold. Proof can be a receipt \emph{or} an expert valuation; either suffices. Three situations arise. If the claimant states that the watch was separately insured, the insurer should request one proof of value. If the claimant states that it was not, no proof of value is needed. If the claimant does not know, requesting a receipt now would be premature: the right action is to ask whether the watch was separately insured and to hold the request until the answer arrives. The same document is therefore required, unnecessary or premature depending on one fact. \casepath makes this dependence explicit: a language model judges the fact from the claim, and code applies the rule.
+In the running example, a rule ties a proof-of-value requirement, met by a receipt or by an expert valuation, to the condition that the watch was separately insured. A model judges the condition from the claim, and code applies the rule. Table~\ref{tab:glossary} collects the terms.
 
 \begin{table}[t]
-\caption{Terms used in this paper.}
+\caption{Terms used in this article.}
 \label{tab:glossary}
 \small
 \begin{tabularx}{\linewidth}{@{}lX@{}}
 \toprule
 Term & Meaning \\
 \midrule
-Condition (flag) & A case fact that a rule depends on, such as ``the watch was separately insured''. \\
-Judgment & The model's verdict on a condition: true ($\T$), false ($\F$) or unresolved ($\U$), with a quotation from the case. \\
-Process graph & The admitted steps of the handling process, connected by transitions that carry conditions. \\
-Requirement & Evidence that a process step needs, possibly under its own condition: a document type, or an item met by any one of several routes. \\
-Route & A set of documents that together satisfy one requirement; alternative routes are interchangeable. \\
-Request / hold / skip & Ask for the document now; ask a clarification question first; do not ask for it. \\
-Deferral & A required document that is held behind a question instead of being requested. \\
-Unnecessary request & A requested document that the case does not require. \\
-Silent miss & A required document that is neither requested nor held. \\
+Condition & A case fact that a rule depends on, such as ``the watch was separately insured''. \\
+Judgment & The model's verdict on a condition: true ($\T$), false ($\F$) or \emph{unresolved} ($\U$), with a quotation from the claim. A fact the claim does not mention is \emph{unstated}. \\
+Requirement, route & Evidence that a process step needs, possibly under its own condition; it is met by any one of its alternative routes, each a set of documents. \\
+Dispute family & The kind of tenancy dispute (defect, lease termination, rent increase); it selects the process the claim follows. \\
+Routing fact & A condition that routes a claim into its family's process: that a termination notice, or a rent-increase claim, was received. The reference generator presumes it true. \\
 Admission & Deterministic checks that a judgment cites an exact source span and passed verification. \\
+Requested, held, handed over, missed & The outcome of a required document: asked for now; held behind a clarification question; part of a claim handed to a person as a whole; none of these. \emph{Deferred} means held or handed over. \\
+Unnecessary request & A requested document that the case does not require. \\
+Unsafe error & An unnecessary request or a missed document. The \emph{strict} variant also counts handed-over documents as missed. \\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\subsection{The decision}
-\label{sec:problem}
 
 \paragraph{Inputs}
 A \emph{rule pack} is compiled once from authoritative sources. It contains a set of condition flags $\mathcal{C}$; an acyclic process graph $G=(N,E)$ with an entry step; for every step $n\in N$ a condition $c_n$ and for every transition $(u,n)\in E$ a condition $c_{un}$; and a catalogue of document types $\mathcal{D}$. Each document type $d$ is required at a set of steps $L(d)\subseteq N$ under its own condition $c_d$; where the rules accept alternatives, an evidence requirement $e$ is met by any one of its routes $\mathcal{R}_e$, each a set of document types. Conditions are Boolean formulas over $\mathcal{C}$ built with \emph{and}, \emph{or} and \emph{not}. A \emph{case} consists of the claimant's message and the files already supplied.
@@ -42,7 +36,10 @@ For every document type $d$, a decision $\delta(d)\in\{\request,\hold,\skipd,\on
 \paragraph{What a good decision is}
 Let $\val^\ast$ be the true, complete state of the case facts. Ideally, $d$ is requested exactly when it is required under $\val^\ast$ and not already established by a supplied file. At intake, however, the claimant's message leaves some facts open. A decision is \emph{sound} if it never requests a document that some answer to an open question would make unnecessary, and never skips a document that some answer would make necessary. It is \emph{exact} if, in addition, it holds a document only when its requirement actually depends on an open question.
 
-\subsection{Three-valued execution}
+\paragraph{Three sources of error}
+A request can go wrong in three ways. A judgment can be \emph{wrong}: the model states a verdict that contradicts the fact. It can be \emph{unresolved}: the model does not know, typically because the fact is unstated. Or the \emph{rule} can be wrong: it requires a document the sources do not require, or omits one they do. A design that lets the model apply the rules mixes the three inside one answer; executing the rules keeps them apart, and Section~\ref{sec:fate} states what each becomes.
+
+\subsection{Three-valued execution and soundness}
 \label{sec:kleene}
 
 The model's judgments form a partial assignment $\val:\mathcal{C}\to\Vals$. A \emph{completion} of $\val$ is a two-valued assignment $\val':\mathcal{C}\to\{\T,\F\}$ with $\val'(f)=\val(f)$ whenever $\val(f)\neq\U$; we write $\val(\varphi)$ for the value of formula $\varphi$ and $\act_\val$, $\req_\val$ for Equations~\eqref{eq:activation}--\eqref{eq:requirement} under $\val$. Formulas are evaluated with strong Kleene logic \cite{kleene1952introduction}: with the order $\F<\U<\T$, conjunction takes the minimum, disjunction the maximum, and negation swaps $\T$ and $\F$. A step is applicable when it is the entry step or is reached from an applicable step through a transition whose condition holds, and its own condition holds:
@@ -65,9 +62,12 @@ If $\req_\val(d)\in\{\T,\F\}$, then $\req_{\val'}(d)=\req_\val(d)$ for every com
 Strong Kleene connectives are monotone in the information order in which $\U$ lies below both $\T$ and $\F$ \cite{kleene1952introduction}. Equations~\eqref{eq:activation} and~\eqref{eq:requirement} compose such connectives over the acyclic graph, so by induction in topological order every value in $\{\T,\F\}$ persists in every completion.
 \end{proof}
 
-Soundness means that a request issued while some facts are open is never premature, and a skip is never a silent miss caused by an open fact. Answering a clarification question can only turn holds into requests or skips. Two-valued execution lacks this guarantee: reading $\U$ as $\F$ (the closed-world assumption of rule engines and logic programs \cite{reiter1978closed}) silently skips documents whose requirement depends on an open fact, and reading $\U$ as $\T$ requests them prematurely.
+Given its admitted judgments, a request issued while some facts are open is therefore never premature, a skip is never a miss caused by an open fact, and answering a question can only turn holds into requests or skips. The guarantee is relative to the judgments, not to the truth. Two-valued execution lacks it: reading $\U$ as $\F$, the closed-world assumption \cite{reiter1978closed}, skips documents whose requirement depends on an open fact, and reading $\U$ as $\T$ requests them prematurely.
 
-In the running example the requirement of a proof of value has no reconverging branch, so strong Kleene evaluation is already exact there; the problem appears in processes such as the tenancy process below.
+\subsection{Exact deferral}
+\label{sec:exact}
+
+In the running example the proof-of-value requirement has no reconverging branch, and strong Kleene evaluation is exact. Processes with branches that rejoin are different.
 
 \begin{proposition}[Incompleteness]
 \label{prop:incomplete}
@@ -77,7 +77,7 @@ Strong Kleene execution can hold a document that is required under every complet
 In the defect process of our tenancy rules, the intake step branches to a safety step when health effects are alleged and directly to the scoping step otherwise; the safety step leads to the scoping step as well. With $\val(\mathit{health})=\U$, Equation~\eqref{eq:activation} gives $\act(\mathit{scope})=(\U\kand\T)\kor(\T\kand\U)=\U$, so every document of the scoping step and of the later steps it reaches is held, unless its own or its branch condition is $\F$. Yet under both completions $\act(\mathit{scope})=\T$.
 \end{proof}
 
-Proposition~\ref{prop:incomplete} is not a corner case: one open flag at a branch whose paths reconverge holds the entire remaining process (Section~\ref{sec:results-tenancy}). \casepath therefore evaluates requirements by \emph{supervaluation} \cite{vanfraassen1966singular}, the standard notion that also defines certain answers over completions in incomplete databases \cite{imielinski1984incomplete}, applied here without a new logic:
+One open flag at such a branch holds the rest of the process (Figure~\ref{fig:reconverge}). \casepath therefore evaluates requirements by \emph{supervaluation} \cite{vanfraassen1966singular}, the standard notion that also defines certain answers over the completions of an incomplete database \cite{imielinski1984incomplete}:
 \begin{equation}
 \exactreq(d) \;=\;
 \begin{cases}
@@ -96,7 +96,14 @@ Decisions based on $\exactreq$ are sound and exact, and $\exactreq$ never holds 
 Soundness and exactness hold by definition of Equation~\eqref{eq:exact}. If $\req(d)\neq\U$, Proposition~\ref{prop:sound} gives the same value under every completion, so $\exactreq(d)=\req(d)$.
 \end{proof}
 
-The implementation compares request status across completions: it requests a document that every completion requests and holds one that only some request, so a document on file or optional whose requirement is open is not held but keeps its state under the all-$\T$ completion. On tenancy claims, $f$ becomes a question only if flipping $f$ in some completion changes the request status of a held document; every held document thus has a question, though one answer alone need not change a request. On theft claims every open condition is a question. Above twelve open flags the implementation falls back to strong Kleene evaluation; our claims have at most five. Two further properties follow from the definitions. \emph{Locality}: if two cases differ in the judgment of one flag $f$, only documents whose requirement mentions $f$ can change decision. \emph{Traceability}: if $\req_\val(d)=\T$, $d$ is witnessed by an applicable step and a chain of transitions, each tied to a source passage of the rule and a quoted judgment; if only $\exactreq(d)=\T$, the witness is one such chain per answer to the open flags, which the implementation does not record.
+\begin{figure}[t]
+\centering
+\fig{fig_reconverge}{\linewidth}
+\caption{The tenancy defect process with health effects unresolved. Strong Kleene evaluation (left) holds everything downstream of the branch, whereas the two completions (right) reach the same steps, so only the medical confirmation, on which they disagree, needs to be held.}
+\label{fig:reconverge}
+\end{figure}
+
+The implementation compares request status across completions: it requests a document that every completion requests and holds one that only some request, so a document on file or optional whose requirement is open keeps its state under the all-$\T$ completion. On tenancy claims, a flag $f$ becomes a question only if flipping $f$ in some completion changes the request status of a held document, so every held document has a question, though one answer alone need not settle it; on theft claims every open condition is a question. Above twelve open flags the implementation falls back to strong Kleene evaluation; our claims have at most five. Two properties follow from the definitions. \emph{Locality}: if two cases differ in the judgment of one flag $f$, only documents whose requirement mentions $f$ can change decision. \emph{Traceability}: if $\req_\val(d)=\T$, $d$ is witnessed by an applicable step and a chain of transitions, each tied to a source passage and a quoted judgment; if only $\exactreq(d)=\T$, the witness is one such chain per answer to the open flags, which the implementation does not record.
 
 \paragraph{Evidence routes}
 When an evidence requirement $e$ has alternative routes, as with the receipt or expert valuation in the running example, \casepath chooses the route that needs the fewest documents beyond those on file $H$,
@@ -109,10 +116,24 @@ compared lexicographically with $\rho\setminus H$ as a sorted list; a document $
 \paragraph{Complexity}
 Equations~\eqref{eq:activation} and~\eqref{eq:requirement} are evaluated once in topological order, in time linear in the size of the graph and its formulas. Supervaluation is exponential only in the number $u$ of open flags: it evaluates the graph under $2^u$ completions. Deciding whether a formula is true under all completions is coNP-complete in general \cite{cook1971complexity}, but a claim in our rule packs has at most five flags; Section~\ref{sec:results-cost} reports measured runtimes.
 
-\subsection{The agent}
+\subsection{What each error becomes}
+\label{sec:fate}
+
+Because soundness is relative to the admitted judgments, the three sources of error take different paths (Figure~\ref{fig:fate}). An \emph{unresolved} judgment becomes a held document under three-valued execution, a missed document if it is read as false, and an unnecessary or premature request if it is read as true. A \emph{wrong} judgment looks like a correct one to the executing code and becomes an unsafe error under every semantics. A \emph{wrong rule} is executed faithfully: it produces the same error in every case it applies to, and the trace names the rule.
+
+To quantify the first two paths without depending on any model, we computed exactly, for all \propClaims{} tenancy claims and every partial assignment of their conditions, which documents each semantics requests and holds, and weighted the assignments by a model in which each condition is misjudged independently with probability \propEps, either as unresolved or as the opposite verdict. Of the \propRequired{} documents that the claims require, unresolved errors become \propExactDefer{} expected deferrals under exact deferral and no unsafe error; strong Kleene evaluation defers \propKleeneExtra\% more, reading them as false misses \propClosedMiss{} documents, and reading them as true adds \propEagerUnnec{} unnecessary requests. Wrong judgments cause \propFlipMiss{} missed documents and \propFlipUnnec{} unnecessary requests under every semantics. Three-valued execution is therefore safe exactly to the extent that the model says it does not know instead of guessing.
+
+\begin{figure}[t]
+\centering
+\fig{fig_fate}{\linewidth}
+\caption{What judgment errors become, computed exactly over all \propClaims{} tenancy claims. Three-valued execution turns unresolved judgments into deferrals and two-valued execution turns them into missed or unnecessary requests, while a wrong judgment becomes an error under every semantics.}
+\label{fig:fate}
+\end{figure}
+
+\subsection{The \casepath agent}
 \label{sec:agent}
 
-Execution is only as good as the judgments it receives. \casepath obtains them in four stages (Algorithm~\ref{alg:agent}). First, a typed interpretation: the model reads the message and supplied files against the rule pack and returns the dispute family, a verdict with an exact quotation for every condition flag of that family, and a sufficiency assessment for each supplied original. Its instructions state that silence, tentative language and contradictions mean unresolved, never false, and that a claimant's description of a document does not replace the document. Second, an independent verification: a second model call receives the same sources and the proposed items and accepts or rejects each one. Third, admission: code checks that every quotation occurs verbatim in the named source, and turns every unquoted, rejected or incompletely extracted item into $\U$ (or ``insufficient'' for a document). Fourth, execution as defined above. A tenancy claim is deferred to a person as a whole when admission fails at the claim level (Algorithm~\ref{alg:agent}, line~3); the theft pipeline judges conditions only and has no family stage.
+\casepath obtains its judgments in four stages (Algorithm~\ref{alg:agent}). First, a typed interpretation: the model reads the message and the supplied files against the rule pack and returns the dispute family, a verdict with an exact quotation for every condition of that family, and a sufficiency assessment for each supplied original. Its instructions state that silence, tentative language and contradictions mean unresolved, never false, and that a claimant's description of a document does not replace the document. Second, an independent verification: a second model call receives the same sources and the proposed items and accepts or rejects each one. Third, admission: code checks that every quotation occurs verbatim in the named source, and turns every unquoted, rejected or incompletely extracted item into $\U$ (or ``insufficient'' for a document). Fourth, execution as defined above. A tenancy claim is handed to a person as a whole when admission fails at the claim level (line~3); the theft pipeline judges conditions only and has no family stage.
 
 \begin{algorithm}[t]
 \caption{\casepath decides the evidence plan of one claim.}
@@ -123,7 +144,7 @@ Execution is only as good as the judgments it receives. \casepath obtains them i
 \Ensure decision $\delta(d)$ for every document type, questions $Q$, traces
 \State $J \gets M.\textsc{Interpret}(S,\mathcal{P})$ \Comment{family; $\val(f)\in\Vals$ with quotations; file assessments}
 \State $V \gets M.\textsc{Verify}(S,\mathcal{P},J)$ \Comment{independent accept/reject per item}
-\If{the family is unsupported, rejected or inexactly quoted, $V$ omits or adds items, or $J$ leaves the family}\ \Return defer the claim to a person \EndIf
+\If{the family is unsupported, rejected or inexactly quoted, $V$ omits or adds items, or $J$ leaves the family}\ \Return hand the claim to a person \EndIf
 \ForAll{items $i\in J$} \Comment{admission, in code}
   \If{a quotation of $i$ is not an exact source span, $V$ rejects $i$, or its source is incompletely extracted}
      \State set $i$ to $\U$ (conditions) or insufficient (documents)
@@ -139,8 +160,5 @@ Execution is only as good as the judgments it receives. \casepath obtains them i
 \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rule packs}
-For the tenancy disputes in our evaluation, the rule pack consists of three process templates admitted by the product, with nine to eleven document types each. For the household-theft claims, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{casepath2026repo}. Rule packs are versioned and admitted before use: the model that judges a case cannot add or change a rule.
-
-\paragraph{Implementation}
-The tenancy experiments call \casepath's production modules unchanged: the admission function, the process compiler and the causal process engine, whose flow fragment implements Equations~\eqref{eq:activation} and~\eqref{eq:requirement}. Supervaluation (Equation~\eqref{eq:exact}) runs on top of that engine by evaluating it under every completion of the open flags. Each theft requirement is a disjunction of conditions without negation, and on such formulas strong Kleene evaluation equals supervaluation, so the two semantics coincide there; their route choice follows Equation~\eqref{eq:route}. The product also journals every accepted change, previews the consequences of a handler's correction and reuses evidence-reading recipes from verified cases; these features are outside this evaluation.
+\paragraph{Rule packs and implementation}
+The tenancy rule pack consists of three process templates admitted by the product, one per dispute family, with nine to eleven document types each. For household theft, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{casepath2026repo}. Rule packs are versioned and admitted before use; the model that judges a case cannot add or change a rule. The tenancy experiments call \casepath's production modules unchanged: the admission function, the process compiler and the process engine, whose flow fragment implements Equations~\eqref{eq:activation} and~\eqref{eq:requirement}; supervaluation runs on top of that engine under every completion of the open flags. Each theft requirement is a disjunction of conditions without negation, on which strong Kleene evaluation equals supervaluation; route choice follows Equation~\eqref{eq:route}.

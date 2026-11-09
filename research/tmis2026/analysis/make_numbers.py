@@ -348,5 +348,63 @@ if rf:
             be_ = r[variant]["break_even"]
             m(pre + "Ratio", "never" if be_["ratio"] is None else f"{be_['ratio']:.1f}")
             m(pre + "RatioStrict", "never" if be_["ratio_strict"] is None else f"{be_['ratio_strict']:.1f}")
+# ---- running example (Section 5.2): every design on the unresolved "scheduled valuable" pairs, from the raw plans
+WATCH = "PR_scheduled_valuable_1000"
+for M, tag in models.items():
+    path = HERE.parent / "runs" / f"plans_theft_{tag}.json"
+    if not path.exists():
+        continue
+    PL = json.loads(path.read_text())
+    for design, short in (("D", "D"), ("R", "R"), ("CP", "CP")):
+        n = stable = held = premature = 0
+        for s in ("s1", "s2", "s3"):
+            for r in range(3):
+                var = PL.get(f"{design}|{s}-unres-{WATCH}|{r}")
+                if var is None:
+                    continue
+                off = (PL.get(f"{design}|{s}-off|{r}") or {}).get("plan") or {}
+                plan = var.get("plan") or {}
+                req_off, req_var = set(off.get("requests", [])), set(plan.get("requests", []))
+                n += 1
+                stable += req_off == req_var
+                held += any(h.startswith("Receipt for the scheduled valuable") for h in plan.get("holds", []))
+                premature += any(d.startswith(("Receipt for the scheduled valuable", "Expert's valuation of the scheduled valuable"))
+                                 for d in req_var)
+        if n:
+            m(f"watch{M}{short}Runs", n); m(f"watch{M}{short}Stable", stable)
+            m(f"watch{M}{short}Held", held); m(f"watch{M}{short}Premature", premature)
+# ---- how many of CasePath's faulty-rule wrong changes (terra) Rules in context also made, same pair and run
+try:
+    import sys as _sys
+    _sys.path.insert(0, str(HERE.parent / "harness"))
+    import theft_methods as _tm
+    from theft_data import pairs as _pairs, best_realization as _best
+    from theft_score import delta as _delta
+    _P = json.loads((HERE.parent / "runs" / "plans_theft_gpt-6.1-terra.json").read_text())
+    _FAULTY = {"overlay_rule_074", "overlay_rule_084", "overlay_rule_010", "overlay_rule_042", "overlay_rule_003"}
+    _cp = _both = 0
+    for _p in _pairs():
+        if _p["split"] != "heldout" or _p["kind"] != "on":
+            continue
+        for _r in range(3):
+            _a, _b = _P[f"CP|{_p['off']}|{_r}"], _P[f"CP|{_p['variant']}|{_r}"]
+            _n0, _n1 = _a["judgments"], _b["judgments"]
+            _ch = {g for g in _tm.GUARDS if _n0[g] != _n1[g]}
+            _pred = _delta(set(_tm.plan(_n0)["requests"]), set(_tm.plan(_n1)["requests"]))
+            _wrong = set(_pred) - set(_best(_pred, _p["reference"])[0])
+            _ro = set((_P[f"R|{_p['off']}|{_r}"].get("plan") or {}).get("requests", []))
+            _rv = set((_P[f"R|{_p['variant']}|{_r}"].get("plan") or {}).get("requests", []))
+            _rpred = _delta(_ro, _rv)
+            _rwrong = set(_rpred) - set(_best(_rpred, _p["reference"])[0])
+            _t0, _t1 = _tm.trace(_n0), _tm.trace(_n1)
+            for _atom in _wrong:
+                _prods = (_t1 if _atom[0] == "+" else _t0).get(_atom[1:], [])
+                if {o["rule"] for o in _prods if o["guard"] in _ch or o["guard"] is None} & _FAULTY:
+                    _cp += 1
+                    _both += _atom in _rwrong
+    m("ecFaultyAlsoR", _both); m("ecFaultyAvoidedR", _cp - _both)
+except Exception as _e:  # harness unavailable: leave the macros out
+    print("faulty-rule overlap skipped:", _e)
+m("propEps", "0.1")  # error probability per condition used for the prop* macros above
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")
