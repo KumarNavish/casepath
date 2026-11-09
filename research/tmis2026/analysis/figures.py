@@ -389,112 +389,105 @@ def models_data():
 
 
 # ---------------------------------------------------------------------- real-screen figures (Fig. 1, knowledge)
-# Crops of real CasePath screens (2x captures, gpt-6-luna, synthetic cases; see figures/ui_used/MANIFEST.md).
-# Crops are faithful: pixels are embedded unresampled; nothing is retouched. Each entry: source file,
-# crop box in capture pixels, and the smallest UI font kept in the crop (capture px, from measured cap heights).
-UI = HERE.parent / "paper" / "figures" / "ui_used"
+# Crops of real CasePath screens (round 2: English cases, 2x captures, gpt-6-luna; see
+# figures/ui_used/MANIFEST.md). Crops are faithful: pixels embedded unresampled, nothing retouched.
+# Each entry: source file, crop box (capture px), measured ascender-to-descender height of the crop's
+# smallest text line (capture px). Every crop is scaled so that this line prints at the same height.
+UI = HERE.parent / "paper" / "figures" / "ui_used" / "en2"
+UI_BAND = 6.0 / 72          # printed ascender-to-descender height of the smallest kept text, in
 UI_CROPS = {
-    "claim": ("live/run1-claim-reader-live-quotes-and-strip.png", (630, 1342, 1680, 1484), 33),
-    "fact": ("en/c-source-checker.png", (583, 440, 1550, 578), 24),
-    "step": ("live/run1-result-checker-live-checklist.png", (1470, 196, 2100, 478), 24),
-    "document": ("live/run1-result-checker-live-checklist.png", (2018, 1420, 2614, 1576), 24),
-    "correction": ("en/e2-document-finder-after-correction.png", (583, 1046, 1505, 1243), 29),
-    "candidate": ("en/g1-knowledge-after-correction.png", (1923, 463, 2483, 613), 24),
-    "used": ("en/l-case2-document-finder.png", (1843, 1042, 2803, 1305), 24),
-    "refinement": ("en/n-knowledge-refinement.png", (60, 1176, 960, 1326), 24),
+    "claim_yes": ("A-yes-1-claim-reader.png", (636, 1653, 1872, 1800), 30),
+    "claim_open": ("B-open-1-claim-reader.png", (636, 1653, 1872, 1800), 30),
+    "step_yes": ("A-yes-3-process-builder-crop1.png", (1168, 10, 1872, 230), 27),
+    "step_open": ("B-open-3-process-builder-crop1.png", (1168, 10, 1872, 230), 27),
+    "out_yes": ("A-yes-5-result-checker.png", (620, 572, 1400, 776), 27),
+    "out_open": ("B-open-5-result-checker.png", (620, 572, 1400, 776), 27),
+    "k_added": ("k1-after-correction-4-document-finder.png", (590, 1136, 1712, 1264), 27),
+    "k_active": ("k2-knowledge-active-card1.png", (28, 28, 488, 148), 28),
+    "k_used": ("case2-4-document-finder.png", (1922, 984, 2792, 1160), 27),
+    "k_refine": ("k3-knowledge-refinement-card2.png", (28, 28, 812, 182), 28),
 }
-UI_TEXT_PT = {}   # smallest kept UI font in print, pt (filled when a figure is drawn)
+UI_TEXT_PT = {}
 
 
-def screen(ax, key, x, top, w):
-    """Place one faithful crop with its left edge at x and top edge at `top`, `w` inches wide; thin neutral
-    frame. Returns (x0, y0, x1, y1, scale) with scale in inches per capture pixel."""
+def screen(ax, key, x, top):
+    """Place one faithful crop (left edge x, top edge `top`), scaled so its smallest text line prints
+    UI_BAND high; thin neutral frame. Returns (x0, y0, x1, y1, scale) with scale in inches per pixel."""
     import numpy as _np
     from PIL import Image as _Image
-    f, box, small = UI_CROPS[key]
+    f, box, band = UI_CROPS[key]
     img = _np.asarray(_Image.open(UI / f).convert("RGB").crop(box))
-    s = w / img.shape[1]
-    h = img.shape[0] * s
+    s = UI_BAND / band
+    w, h = img.shape[1] * s, img.shape[0] * s
     ax.imshow(img, extent=(x, x + w, top - h, top), interpolation="none", zorder=1, aspect="auto")
     ax.add_patch(th.Rectangle((x, top - h), w, h, fc="none", ec=th.NEUTRAL, lw=th.THIN, zorder=2))
-    UI_TEXT_PT[key] = round(small * s * 72, 1)
+    UI_TEXT_PT[key] = round(band * s * 72, 1)
     return x, top - h, x + w, top, s
 
 
-def trace(ax, pts):
-    """The one trace: an ochre polyline through white space, dots where it meets a crop."""
+def trace(ax, pts, dots=(0, -1)):
+    """The one trace per row: an ochre polyline through the gutters, dots where it meets a crop."""
     xs, ys = zip(*pts)
     ax.plot(xs, ys, color=th.HELD, lw=th.THICK, solid_joinstyle="round", solid_capstyle="round", zorder=3)
-    for x, y in (pts[0], pts[-1]):
+    for x, y in [pts[j] for j in dots]:
         ax.add_patch(th.Circle((x, y), 0.022, fc=th.HELD, ec="none", zorder=4))
 
 
-def _canvas_fixed(H):
-    fig, ax = th.canvas(H)
-    ax.set_xlim(0, th.WIDTH); ax.set_ylim(0, H)
-    return fig, ax
-
-
 def fig_hero():
-    """One sentence of the claim followed through the system, on real screens: the highlighted quotation,
-    the fact recorded for the health-effects question, the process step that fact activates (untaken
-    branches struck through), and the checklist row it produces."""
-    W, H = th.WIDTH, 2.66
-    fig, ax = _canvas_fixed(H)
-    lab = 0.11
-    A = screen(ax, "claim", 0.06, H - 0.18, 2.65)
-    B = screen(ax, "fact", W - 3.40, A[1] - 0.30, 3.40)
-    C = screen(ax, "step", 0.30, B[1] - 0.34, 2.20)
-    D = screen(ax, "document", W - 2.10, B[1] - 0.34, 2.10)
-    for P, s in ((A, "claim"), (B, "recorded fact"), (C, "process step it activates"), (D, "document requested")):
-        th.text(ax, P[0], P[3] + lab, s, "note")
-    for k in ("claim", "fact", "step", "document"):
-        pass
-    # anchors (capture pixels inside each crop -> inches)
-    def at(P, px, py):
-        return P[0] + px * P[4], P[3] - py * P[4]
-    a = (at(A, 330, 0)[0], A[1])                       # under "Arztbericht"
-    b = (B[0], at(B, 0, 110)[1])                       # "yes"
-    b_out = (at(B, 60, 0)[0], B[1])                    # below "yes"
-    c = (at(C, 463, 0)[0], C[3])                       # "Obtain a medical report" node
-    c_out = (C[2], at(C, 0, 171)[1])                   # beside its label
-    d = (D[0], at(D, 0, 44)[1])                        # "Medical report (Arztbericht)"
-    g1 = (A[1] + B[3]) / 2
-    g2 = (B[1] + max(C[3], D[3])) / 2
-    xm = (C[2] + D[0]) / 2
-    trace(ax, [a, (a[0], g1), (b[0] - 0.12, g1), (b[0] - 0.12, b[1]), b])
-    trace(ax, [b_out, (b_out[0], g2), (c[0], g2), c])
-    trace(ax, [c_out, (xm, c_out[1]), (xm, d[1]), d])
+    """Two aligned rows (the claim states the fact / leaves it open), same columns and the same printed
+    text height: claim quotation -> recorded judgment -> process -> outcome, one ochre trace per row."""
+    W, H = th.WIDTH, 3.62
+    fig, ax = th.canvas(H)
+    x0, gut = 0.04, 0.30
+    top = H - 0.12
+    rows = [("yes", "The claim states the fact", "true", "active"),
+            ("open", "The claim leaves the fact open", "unresolved", "unresolved")]
+    for i, (k, title, val, node) in enumerate(rows):
+        th.text(ax, x0, top, title, "label", bold=True)
+        A = screen(ax, f"claim_{k}", x0, top - 0.13)
+        C = screen(ax, f"step_{k}", x0, A[1] - 0.40)
+        D = screen(ax, f"out_{k}", C[2] + gut, C[3])
+        xj, yj = x0 + 0.42, (A[1] + C[3]) / 2
+        th.node(ax, xj, yj, node)
+        th.text(ax, xj + 0.10, yj, "health effects: " + val, "label")
+        if i == 0:
+            th.text(ax, A[2], A[3] + 0.05, "claim", "note", ha="right", va="bottom")
+            th.text(ax, xj + 0.10 + th.width(ax, "health effects: " + val) + 0.14, yj, "(recorded judgment)",
+                    "note")
+            th.text(ax, C[2], C[3] + 0.05, "process", "note", ha="right", va="bottom")
+            th.text(ax, D[2], D[3] + 0.05, "outcome", "note", ha="right", va="bottom")
+        trace(ax, [(xj, A[1]), (xj, yj + 0.05)], dots=(0,))
+        trace(ax, [(xj, yj - 0.05), (xj, C[3])], dots=(-1,))
+        ys = D[3] - 0.30 * (D[3] - D[1])
+        trace(ax, [(C[2], ys), (D[0], ys)])
+        top = C[1] - 0.24
     _save(fig, "fig_hero")
 
 
 def fig_knowledge():
-    """A handler's correction becomes a candidate item; once approved it is used in the next case, where
-    the supplied document is judged unusable; that case proposes a refinement v1 -> v2 for a person."""
-    W, H = th.WIDTH, 2.86
-    fig, ax = _canvas_fixed(H)
-    lab = 0.11
-    K1 = screen(ax, "correction", 0.06, H - 0.18, 2.65)
-    K2 = screen(ax, "candidate", W - 2.20, H - 0.18, 2.20)
-    K3 = screen(ax, "used", W - 3.35, min(K1[1], K2[1]) - 0.34, 3.35)
-    K4 = screen(ax, "refinement", 0.06, K3[1] - 0.30, 3.10)
-    for P, s in ((K1, "handler corrects"), (K2, "candidate"), (K3, "approved, used in the next case"),
+    """Two rows of two equal-height-text crops joined by one trace: the handler adds a document need ->
+    the item, approved, is active (v1) -> the next case requests it from Knowledge -> refinement proposed."""
+    W, H = th.WIDTH, 1.62
+    fig, ax = th.canvas(H)
+    x0, gut = 0.03, 0.25
+    top = H - 0.20
+    K1 = screen(ax, "k_added", x0, top)
+    w2 = (UI_CROPS["k_active"][1][2] - UI_CROPS["k_active"][1][0]) * UI_BAND / UI_CROPS["k_active"][2]
+    K2 = screen(ax, "k_active", W - 0.03 - w2, top)
+    r2 = min(K1[1], K2[1]) - 0.36
+    K3 = screen(ax, "k_used", x0, r2)
+    w4 = (UI_CROPS["k_refine"][1][2] - UI_CROPS["k_refine"][1][0]) * UI_BAND / UI_CROPS["k_refine"][2]
+    K4 = screen(ax, "k_refine", W - 0.03 - w4, r2)
+    for P, s in ((K1, "handler adds"), (K2, "approved, active"), (K3, "next case: from Knowledge"),
                  (K4, "refinement proposed")):
-        th.text(ax, P[0], P[3] + lab, s, "note")
-
-    def at(P, px, py):
-        return P[0] + px * P[4], P[3] - py * P[4]
-    a = (K1[2], at(K1, 0, 42)[1])                      # "Lüftungs- und Heizprotokoll"
-    b = (K2[0], at(K2, 0, 122)[1])                     # the candidate's title
-    xm = (K1[2] + K2[0]) / 2
-    trace(ax, [a, (xm, a[1]), (xm, b[1]), b])
-    b_out = (at(K2, 330, 0)[0], K2[1])
-    c = (at(K3, 870, 0)[0], K3[3])                     # above "From Knowledge"
-    gy = (K2[1] + K3[3]) / 2
-    trace(ax, [b_out, (b_out[0], gy), (c[0], gy), c])
-    c_out = (K3[0], at(K3, 0, 30)[1])
-    d = (at(K4, 520, 0)[0], K4[3])                     # above "refines v1 -> v2"
-    trace(ax, [c_out, (d[0], c_out[1]), d])
+        th.text(ax, P[2], P[3] + 0.05, s, "note", ha="right", va="bottom")
+    ya = (K1[3] + K1[1]) / 2 + 0.10
+    trace(ax, [(K1[2], ya), (K2[0], ya)])
+    xb = K2[0] + 0.35
+    yg = (K2[1] + K3[3]) / 2 + 0.02
+    trace(ax, [(xb, K2[1]), (xb, yg), (K3[0] + 1.6, yg), (K3[0] + 1.6, K3[3])])
+    yd = (K3[3] + K3[1]) / 2
+    trace(ax, [(K3[2], yd), (K4[0], yd)])
     _save(fig, "fig_knowledge")
 
 
