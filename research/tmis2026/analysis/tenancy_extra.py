@@ -18,7 +18,7 @@ from casepath_tenancy import casepath_plan_exact, proposal_items, validate_inter
 ROUTING = {"lease_termination_dispute": "termination_received", "rent_increase_dispute": "claim_received"}
 cids = claim_ids("test")
 out = {"deferral_causes": Counter(), "citations": {}, "verifier": Counter(), "routing_presumption": Counter(),
-       "by_type": defaultdict(Counter)}
+       "routing_presumption_all": Counter(), "verifier_by_kind": defaultdict(Counter), "by_type": defaultdict(Counter)}
 
 
 def cached(run_method, cid, r):
@@ -58,9 +58,14 @@ for cid in cids:
         prop = {**it, "steps": [], "knowledge_candidates": []}
         ver = o["verify"]["result"] if o["verify"] else None
         if ver:
+            out["verifier"]["runs"] += 1
+            kinds = {f"condition:{c['flag']}": f"condition_{c['verdict']}" for c in it["conditions"]}
             for chk in ver["checks"]:
                 out["verifier"]["checked"] += 1
                 out["verifier"]["rejected"] += not chk["accepted"]
+                kind = kinds.get(chk["item_id"], chk["item_id"].split(":")[0])  # category, condition_<verdict>, document
+                out["verifier_by_kind"][kind]["checked"] += 1
+                out["verifier_by_kind"][kind]["rejected"] += not chk["accepted"]
             verdicts = {f"condition:{c['flag']}": c["verdict"] for c in it["conditions"]}
             for chk in ver["checks"]:
                 if chk["item_id"] in verdicts and not chk["accepted"]:
@@ -68,9 +73,12 @@ for cid in cids:
             out["verifier"]["family_rejected"] += not ver["family_supported"]
         plan = casepath_plan_exact(cid, prop, ver, srcs)
         fam = ref["family"]
+        rp_all = out["routing_presumption_all"]  # every run (handoffs included), for the break-even analysis
+        rp_all["runs"] += 1; rp_all["nR"] += len(R)
         if plan.get("deferred"):
             out["deferral_causes"]["claim_deferred"] += len(R)
             out["by_type"][fam]["claim_deferred"] += len(R)
+            rp_all["handed"] += len(R)
         else:
             held = (set(plan["holds"]) - set(plan["requests"])) & R
             routing_open = ROUTING.get(fam) in set(plan.get("questions", []))
@@ -93,6 +101,8 @@ for cid in cids:
                 out["routing_presumption"]["tp"] += len(P2 & R); out["routing_presumption"]["fp"] += len(P2 - R)
                 out["routing_presumption"]["defer"] += len((H2 - P2) & R); out["routing_presumption"]["miss"] += len(R - P2 - H2)
                 out["routing_presumption"]["nR"] += len(R); out["routing_presumption"]["nP"] += len(P2)
+                rp_all["tp"] += len(P2 & R); rp_all["fp"] += len(P2 - R)
+                rp_all["held"] += len((H2 - P2) & R); rp_all["miss"] += len(R - P2 - H2)
             except ValueError:
                 pass
         out["deferral_causes"]["required_total"] += len(R)

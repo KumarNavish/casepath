@@ -14,24 +14,26 @@ import theft_methods as tm
 from theft_data import pairs
 from theft_score import score_pair
 
-import os
 out = json.loads((HERE / "two_valued.json").read_text()) if (HERE / "two_valued.json").exists() else {}
 for tag in [llm.MODEL.split("/")[-1]]:  # one model per process: llm.call binds its model at import
     res = {}
     for mode, fill in (("closed", "false"), ("eager", "true")):
-        tp = fp = miss = nR = nP = 0
+        # Same four-way partition as the CasePath rows: a family the verifier does not admit hands the
+        # claim to a person (handed over, not missed); a failed call is an empty plan (missed).
+        tp = fp = miss = held = handed = nR = nP = runs = handoffs = 0
         for cid in claim_ids("test"):
             R = set(reference(cid)["request_set"]) - unscored(cid)
             for r in range(3):
+                runs += 1; nR += len(R)
                 o = run_cp(cid, r)  # cached; no new calls
                 it, ver = o["interpret"]["result"], (o["verify"] or {}).get("result")
                 if not it or not ver:
-                    miss += len(R); nR += len(R); continue
+                    miss += len(R); continue  # failed output: empty plan
                 prop = {**it, "steps": [], "knowledge_candidates": []}
                 try:
                     v = validate_interpretation(templates(), sources(cid), prop, ver)
                 except ValueError:
-                    miss += len(R); nR += len(R); continue  # claim deferred: nothing requested
+                    handed += len(R); handoffs += 1; continue  # family not admitted: whole-claim handoff
                 from casepath_api.assessment_grammar_v1 import FAMILY_FLAGS
                 verdicts = {c["flag"]: c for c in v["conditions"]}
                 for f in FAMILY_FLAGS[v["category"]["family"]]:
@@ -41,9 +43,13 @@ for tag in [llm.MODEL.split("/")[-1]]:  # one model per process: llm.call binds 
                 v["conditions"] = list(verdicts.values())
                 pl = plan_from_verified(cid, v, sources(cid))
                 P = set(pl["requests"]) - unscored(cid)
-                tp += len(P & R); fp += len(P - R); miss += len(R - P); nR += len(R); nP += len(P)
+                H = set(pl["holds"]) - unscored(cid)
+                tp += len(P & R); fp += len(P - R); held += len((H - P) & R); miss += len(R - P - H); nP += len(P)
         res[f"tenancy_{mode}"] = {"recall": tp / nR, "unnecessary_rate": fp / nP if nP else 0, "silent_miss_rate": miss / nR,
-                                  "fp": fp, "miss": miss, "nR": nR}
+                                  "held_rate": held / nR, "handed_rate": handed / nR, "deferral_rate": (held + handed) / nR,
+                                  "unsafe_per_claim": (fp + miss) / runs, "unsafe_strict_per_claim": (fp + miss + handed) / runs,
+                                  "fp": fp, "miss": miss, "held": held, "handed": handed, "handoff_runs": handoffs,
+                                  "tp": tp, "nR": nR, "nP": nP, "runs": runs}
     P = json.loads((HERE.parent / "runs" / f"plans_theft_{tag}.json").read_text())
     for mode, fill in (("closed", "false"), ("eager", "true")):
         rows = []
@@ -52,10 +58,11 @@ for tag in [llm.MODEL.split("/")[-1]]:  # one model per process: llm.call binds 
                 continue
             for r in range(3):
                 a, b = P.get(f"CP|{p['off']}|{r}", {}), P.get(f"CP|{p['variant']}|{r}", {})
-                if not a.get("judgments") or not b.get("judgments"):
-                    continue
                 f2 = lambda nu: {g: (fill if v == "unresolved" else v) for g, v in nu.items()}
-                rows.append(score_pair(p, tm.plan(f2(a["judgments"])), tm.plan(f2(b["judgments"]))))
+                empty = {"requests": [], "holds": []}  # failed output: empty plan, as in analyze.py
+                pa = tm.plan(f2(a["judgments"])) if a.get("judgments") else empty
+                pb = tm.plan(f2(b["judgments"])) if b.get("judgments") else empty
+                rows.append(score_pair(p, pa, pb))
         on = [x for x in rows if x["kind"] == "on"]; un = [x for x in rows if x["kind"] == "unresolved"]
         c, w, m = (sum(x[k] for x in on) for k in ("correct", "wrong", "missed"))
         pr = c / (c + w) if c + w else 0; rc = c / (c + m) if c + m else 0

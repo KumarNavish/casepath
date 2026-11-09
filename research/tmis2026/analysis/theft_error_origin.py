@@ -50,7 +50,21 @@ for p in pairs():
             else:
                 why = "other"
             counts[(p["kind"], "missed", why)] += 1
+            if p["kind"] == "on" and why != "already_on_both_lists":
+                counts[("on", "missed_other_by_condition", p["condition"])] += 1
         counts[(p["kind"], "pairs")] += 1
         counts[(p["kind"], "changed_guards")] += len(changed)
 for k, v in sorted(counts.items(), key=str):
     print(k, v)
+
+# Write the theft part of error_causes.json (the tenancy entries were recorded by hand; kept as they are).
+if TAG == "gpt-6.1-terra":
+    path = HERE / "error_causes.json"
+    ec = json.loads(path.read_text())
+    ec["theft_cp_wrong_by_faulty_rules"] = sum(v for k, v in counts.items()
+                                               if isinstance(k, tuple) and k[:2] == ("on", "wrong") and k[-1] == "faulty_rule")
+    ec["theft_cp_missed_on_both_lists_by_faulty_rules"] = counts[("on", "missed", "already_on_both_lists")]
+    ec["theft_cp_missed_other"] = {k[2]: v for k, v in sorted(counts.items(), key=str)
+                                   if isinstance(k, tuple) and k[:2] == ("on", "missed_other_by_condition")}
+    ec["source"] = "analysis/theft_error_origin.py on plans_theft_gpt-6.1-terra.json (theft entries); tenancy entries recorded in WORKLOG"
+    path.write_text(json.dumps(ec, indent=1) + "\n")

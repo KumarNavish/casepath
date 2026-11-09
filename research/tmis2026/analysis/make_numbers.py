@@ -22,6 +22,30 @@ def load(name):
     return json.loads(p.read_text()) if p.exists() else None
 
 
+def fmtp(x):
+    return "<0.001" if x < 0.001 else f"{x:.3f}"
+
+
+TEN_NAMES = {"H1": "HOne", "H1_strict": "HOneStrict", "H2": "HTwo", "H2_held": "HTwoHeld", "H2b_deferred": "HTwoBDefer",
+             "H2b_unsafe": "HTwoBUnsafe", "fp": "FP", "H1_vs_SC3": "HOneSC", "H1_strict_vs_SC3": "HOneStrictSC", "H5": "HFive"}
+TH_NAMES = {}
+for comp, short in (("R", "R"), ("D", "D"), ("R-SC3", "RSC"), ("D-SC3", "DSC")):
+    TH_NAMES.update({f"H3_vs_{comp}": "HThree" + short, f"H3dedup_vs_{comp}": "HThreeDedup" + short,
+                     f"H4_vs_{comp}": "HFour" + short, f"H5_vs_{comp}": "HFiveTh" + short})
+
+
+def contrast_macros(p, c):
+    """A paired contrast: values, difference with paired cluster-bootstrap CI, exact sign-flip p,
+    cluster counts, attainable p and direction. Values and differences: 3 decimals (per claim,
+    share of required documents, per pair, or Jaccard, as the metric is)."""
+    diff = c.get("diff", c.get("diff_mean_over_conditions"))
+    m(p + "A", f"{c['a_value']:.3f}"); m(p + "B", f"{c['b_value']:.3f}")
+    m(p + "Diff", f"{diff:+.3f}"); m(p + "Lo", f"{c['diff_ci'][0]:+.3f}"); m(p + "Hi", f"{c['diff_ci'][1]:+.3f}")
+    m(p + "P", fmtp(c["p_signflip"])); m(p + "Clusters", c["clusters"]); m(p + "Nonzero", c["nonzero_clusters"])
+    m(p + "MinP", fmtp(c["min_p_design"])); m(p + "MinPNZ", fmtp(c["min_p_given_nonzero"]))
+    m(p + "Favours", {"a": "CasePath", "b": "comparator", "none": "neither"}[c["favours"]])
+
+
 models = {"Terra": "gpt-6.1-terra", "Luna": "gpt-6-luna"}
 for M, tag in models.items():
     r = load(f"results_{tag}.json")
@@ -44,6 +68,18 @@ for M, tag in models.items():
         m(p + "FP", v["fp"]); m(p + "MissN", v["miss"]); m(p + "DeferN", v["defer"]); m(p + "TP", v["tp"]); m(p + "NR", v["nR"])
         if v.get("test_retest_jaccard") is not None:
             m(p + "Retest", f"{v['test_retest_jaccard']:.3f}"); m(p + "Ident", pct(v["claims_identical_across_runs"], 0))
+        # four-way partition: Defer (above) = Held + Handed
+        m(p + "Held", pct(v["held_rate"])); m(p + "HeldLo", pct(v["held_rate_ci"][0])); m(p + "HeldHi", pct(v["held_rate_ci"][1]))
+        m(p + "Handed", pct(v["handed_rate"])); m(p + "HandedLo", pct(v["handed_rate_ci"][0])); m(p + "HandedHi", pct(v["handed_rate_ci"][1]))
+        m(p + "HeldN", v["held"]); m(p + "HandedN", v["handed"]); m(p + "HandoffRuns", v["handoff_runs"])
+        m(p + "HeldPC", f"{v['held_per_claim']:.2f}"); m(p + "HandedPC", f"{v['handed_per_claim']:.2f}")
+        m(p + "UnsafeLo", f"{v['unsafe_per_claim_ci'][0]:.2f}"); m(p + "UnsafeHi", f"{v['unsafe_per_claim_ci'][1]:.2f}")
+        m(p + "UnsafeStrict", f"{v['unsafe_strict_per_claim']:.2f}")
+        m(p + "UnsafeStrictLo", f"{v['unsafe_strict_per_claim_ci'][0]:.2f}"); m(p + "UnsafeStrictHi", f"{v['unsafe_strict_per_claim_ci'][1]:.2f}")
+        m(p + "HoldsNonreq", f"{v['holds_nonrequired_per_claim']:.2f}"); m(p + "HoldsNonreqN", v["holds_nonrequired"])
+        m(p + "FailedN", v["failed_outputs"])
+    for key, c in t.get("_named", {}).items():
+        contrast_macros(f"ct{M}" + TEN_NAMES[key], c)
     k, x = t.get("CP-kleene"), t.get("CP-exact")
     if k and x:  # what exact deferral changes relative to the production engine, on the same judgments
         m(f"ten{M}ExactCut", f"{100 * (1 - x['defer'] / k['defer']):.0f}")
@@ -69,6 +105,17 @@ for M, tag in models.items():
         m(p + "Premature", pct(u["premature_rate"], 0)); m(p + "Stable", pct(u["stable_rate"], 0)); m(p + "Held", pct(u["held_rate"], 0))
         if v.get("test_retest_jaccard") is not None:
             m(p + "Retest", f"{v['test_retest_jaccard']:.3f}"); m(p + "Ident", pct(v["texts_identical_across_runs"], 0))
+        m(p + "FailedN", v["failed_outputs"])
+        dd = v["sensitivity_offplan_dedup"]
+        m(p + "DedupWrong", f"{dd['wrong']:.1f}"); m(p + "DedupWrongPP", f"{dd['wrong_per_pair']:.2f}")
+        m(p + "SharedAtoms", dd["shared_atoms"]); m(p + "WrongInShared", dd["wrong_in_shared_atoms"])
+        ap = v.get("sensitivity_all_pairings")
+        if ap:
+            m(p + "AllPairWrongPP", f"{ap['wrong_per_pair']:.2f}"); m(p + "AllPairMissedPP", f"{ap['missed_per_pair']:.2f}")
+            m(p + "AllPairFone", f"{ap['f1']:.3f}"); m(p + "AllPairStable", pct(ap["stable_rate"], 0))
+            m(p + "AllPairPremature", pct(ap["premature_rate"], 0))
+    for key, c in th.get("_named", {}).items():
+        contrast_macros(f"ct{M}" + TH_NAMES[key], c)
     for i, c in enumerate(th.get("_contrasts", [])):
         m(f"th{M}C{'ABCD'[i]}Diff", f"{c['diff_mean_over_conditions']:+.2f}"); m(f"th{M}C{'ABCD'[i]}P", f"{c['p_signflip']:.3f}")
     cost = r.get("costs", {})
@@ -177,5 +224,110 @@ jl = load("judgment_accuracy_gpt-6-luna.json")
 if jl:
     m("jaLunaCorrect", jl["interp | correct"]); m("jaLunaFlipped", jl.get("interp | flipped", 0)); m("jaLunaUnres", jl["interp | unresolved"])
     m("jaLunaRejCorrect", jl.get("verifier_rejected | was_correct", 0))
+# ---- primary tests: raw p, Holm within the model (pt<M><H>, as before) and across all ten tests
+if pt:
+    for M, tag in models.items():
+        for row in pt.get(tag, []):
+            name = {"H1": "HOne", "H2": "HTwo", "H3": "HThree", "H4": "HFour", "H5": "HFive"}[row["key"]]
+            m(f"pt{M}{name}Raw", fmtp(row["p"])); m(f"pt{M}{name}HolmAll", fmtp(row["p_holm_all10"]))
+            m(f"pt{M}{name}Lo", f"{row['diff_ci'][0]:+.3f}"); m(f"pt{M}{name}Hi", f"{row['diff_ci'][1]:+.3f}")
+            m(f"pt{M}{name}Clusters", row["clusters"]); m(f"pt{M}{name}Nonzero", row["nonzero_clusters"])
+            m(f"pt{M}{name}MinP", fmtp(row["min_p_design"]))
+# ---- whole-claim handoffs by cause
+HO = {"verifier_category_rejected": "VerCat", "verifier_family_not_supported": "VerFam",
+      "verifier_family_and_category_rejected": "VerBoth", "interpreter_unsupported": "Unsup",
+      "citation_not_verbatim": "Cite", "duplicate_items": "Dup", "other_scope": "Other"}
+ho = load("handoff_causes.json")
+if ho:
+    for M, tag in models.items():
+        r = ho.get(tag, {})
+        for variant, vs in (("CP", ""), ("CP-noverifier", "Nv")):
+            got = r.get(variant, {})
+            for cause, short in HO.items():
+                g = got.get(cause, {"runs": 0, "required_documents": 0, "claims": 0})
+                m(f"ho{M}{vs}{short}Runs", g["runs"]); m(f"ho{M}{vs}{short}Docs", g["required_documents"])
+                m(f"ho{M}{vs}{short}Claims", g["claims"])
+            m(f"ho{M}{vs}Runs", sum(g["runs"] for g in got.values()))
+            m(f"ho{M}{vs}Docs", sum(g["required_documents"] for g in got.values()))
+            m(f"ho{M}{vs}FamilyRight", sum(g.get("interpreter_family_correct", 0) for g in got.values()))
+        b1 = r.get("B1", {}).get("model_chose_unsupported", {"runs": 0, "required_documents": 0})
+        m(f"ho{M}BoneRuns", b1["runs"]); m(f"ho{M}BoneDocs", b1["required_documents"])
+# ---- two-valued execution: four-way partition, consistent with the CasePath rows
+if tv:
+    for M, tag in models.items():
+        r = tv.get(tag)
+        if not r:
+            continue
+        for mode, short in (("closed", "Closed"), ("eager", "Eager")):
+            t = r[f"tenancy_{mode}"]
+            m(f"tv{M}{short}Held", pct(t["held_rate"])); m(f"tv{M}{short}Handed", pct(t["handed_rate"]))
+            m(f"tv{M}{short}Defer", pct(t["deferral_rate"])); m(f"tv{M}{short}MissN", t["miss"])
+            m(f"tv{M}{short}HandedN", t["handed"]); m(f"tv{M}{short}Unsafe", f"{t['unsafe_per_claim']:.2f}")
+            m(f"tv{M}{short}UnsafeStrict", f"{t['unsafe_strict_per_claim']:.2f}")
+# ---- verifier decisions by item kind (scope: every run with a verification result)
+for M, tag in models.items():
+    x = load(f"tenancy_extra_{tag}.json")
+    if not x:
+        continue
+    pre = "ver" if M == "Terra" else "verLuna"
+    ver, bk = x["verifier"], x.get("verifier_by_kind", {})
+    m(pre + "Runs", ver.get("runs", 0))
+    if M == "Luna":
+        m(pre + "Checked", ver["checked"]); m(pre + "Rejected", ver["rejected"])
+    for kind, short in (("category", "Category"), ("condition_true", "CondTrue"), ("condition_false", "CondFalse"),
+                        ("condition_unresolved", "CondUnres"), ("document", "Document")):
+        g = bk.get(kind, {"checked": 0, "rejected": 0})
+        m(pre + "Checked" + short, g["checked"]); m(pre + "Rej" + short, g["rejected"])
+    rp = x["routing_presumption_all"]
+    n = rp["runs"]
+    m(f"presAll{M}Unsafe", f"{(rp['fp'] + rp['miss']) / n:.2f}"); m(f"presAll{M}HeldPC", f"{rp['held'] / n:.2f}")
+    m(f"presAll{M}HandedPC", f"{rp['handed'] / n:.2f}"); m(f"presAll{M}Held", pct(rp["held"] / rp["nR"]))
+    m(f"presAll{M}Handed", pct(rp["handed"] / rp["nR"])); m(f"presAll{M}Recall", pct(rp["tp"] / rp["nR"]))
+for M, tag in models.items():
+    j = load(f"judgment_accuracy_{tag}.json")
+    if j:
+        pre = "ja" if M == "Terra" else "jaLuna"
+        m(pre + "UnresRouting", j.get("interp | unresolved | routing", 0))
+        m(pre + "UnresScenario", j.get("interp | unresolved | scenario", 0))
+        m(pre + "CorrectRouting", j.get("interp | correct | routing", 0))
+        if M == "Luna":
+            m(pre + "UnresTrue", j.get("interp | unresolved | truth_true", 0)); m(pre + "UnresFalse", j.get("interp | unresolved | truth_false", 0))
+# ---- break-even cost of deferral (post hoc)
+be = load("break_even.json")
+if be:
+    for M, tag in models.items():
+        r = be[tag]
+        for design, short in (("B1", "Bone"), ("CP-exact", "CPx"), ("CP-exact-routing", "CPr")):
+            d = r["designs"][design]
+            m(f"be{M}{short}Unsafe", f"{d['unsafe']:.3f}"); m(f"be{M}{short}Held", f"{d['held']:.2f}")
+            m(f"be{M}{short}Handed", f"{d['handed']:.2f}")
+        for design, short in (("CP-exact", "CPx"), ("CP-exact-routing", "CPr")):
+            for key, suf in (("ratio", "Ratio"), ("ratio_strict", "RatioStrict")):
+                val = r[design][key]
+                m(f"be{M}{short}{suf}", "never" if val is None else f"{val:.1f}")
+# ---- original study (gpt-5.6-terra, one run) and three-model ranges
+os_ = load("original_study.json")
+if os_:
+    for key, short in (("CP-allroutes", "CPall"), ("CP-oneroute", "CPone"), ("D", "D"), ("R", "R"), ("EvidenceFirst", "EF")):
+        v = os_["table"][key]
+        m(f"orig{short}Correct", v["correct"]); m(f"orig{short}Wrong", v["wrong"]); m(f"orig{short}Missed", v["missed"])
+        m(f"orig{short}Exact", v["exact"]); m(f"orig{short}Fone", f"{v['f1']:.3f}")
+        m(f"orig{short}WrongPP", f"{v['wrong_per_pair']:.2f}"); m(f"orig{short}MissedPP", f"{v['missed_per_pair']:.2f}")
+    m("origPairs", os_["table"]["CP-allroutes"]["pairs"]); m("origRequired", os_["table"]["CP-allroutes"]["required_changes"])
+    tr = os_["trace"]
+    m("origTraceWrong", tr["wrong"]); m("origTraceWrongFive", tr["wrong_by_five_rules"])
+    m("origTraceWrongRuleTwentyThree", tr["wrong_by_rule_023"]); m("origTraceMissed", tr["missed"])
+    m("origTraceMissedFive", tr["missed_by_five_rules"])
+    res = {tag: load(f"results_{tag}.json") for tag in models.values()}
+    for design, short, okey in (("CP", "CP", "CP-oneroute"), ("R", "R", "R")):
+        vals = [os_["table"][okey]["wrong_per_pair"]] + [res[t]["theft"][design]["on"]["wrong_per_pair"]
+                                                       for t in models.values() if res[t] and design in res[t].get("theft", {})]
+        m(f"range{short}WrongPPLo", f"{min(vals):.2f}"); m(f"range{short}WrongPPHi", f"{max(vals):.2f}")
+# ---- range over the two models of CasePath's (exact deferral) share of required documents not requested at once
+rr = [load(f"results_{t}.json")["tenancy"]["CP-exact"] for t in models.values() if load(f"results_{t}.json")]
+if rr:
+    for key, short in (("deferral_rate", "Defer"), ("held_rate", "Held"), ("handed_rate", "Handed")):
+        vals = [100 * v[key] for v in rr]
+        m(f"tenCPx{short}RangeLo", f"{min(vals):.0f}"); m(f"tenCPx{short}RangeHi", f"{max(vals):.0f}")
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")

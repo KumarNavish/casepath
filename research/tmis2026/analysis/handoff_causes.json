@@ -1,0 +1,52 @@
+{
+ "gpt-6-luna": {
+  "CP": {
+   "citation_not_verbatim": {
+    "runs": 3,
+    "required_documents": 19,
+    "claims": 3,
+    "interpreter_family_correct": 3
+   },
+   "verifier_category_rejected": {
+    "runs": 8,
+    "required_documents": 55,
+    "claims": 7,
+    "interpreter_family_correct": 8
+   }
+  },
+  "CP-noverifier": {
+   "citation_not_verbatim": {
+    "runs": 3,
+    "required_documents": 19,
+    "claims": 3,
+    "interpreter_family_correct": 3
+   }
+  },
+  "B1": {
+   "model_chose_unsupported": {
+    "runs": 1,
+    "required_documents": 5,
+    "claims": 1
+   }
+  }
+ },
+ "gpt-6.1-terra": {
+  "CP": {
+   "verifier_category_rejected": {
+    "runs": 13,
+    "required_documents": 87,
+    "claims": 12,
+    "interpreter_family_correct": 13
+   }
+  },
+  "CP-noverifier": {
+   "citation_not_verbatim": {
+    "runs": 1,
+    "required_documents": 7,
+    "claims": 1,
+    "interpreter_family_correct": 1
+   }
+  },
+  "B1": {}
+ }
+}

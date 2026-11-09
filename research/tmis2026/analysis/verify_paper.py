@@ -1,8 +1,9 @@
 """End-to-end check that the paper matches its evidence.
 
 1. Recompute every analysis from the saved plans and the cached model responses
-   (no model calls: the budget cap is set to the current spend) and regenerate
-   the number macros; they must equal paper/results/numbers.tex byte for byte.
+   (no model calls: TMIS_BUDGET_USD=0) and regenerate the evidence files and the
+   number macros; they must equal the saved files and paper/results/numbers.tex
+   byte for byte.
 2. Every citation key resolves to references.bib.
 3. The paper compiles from a clean copy without errors or undefined references.
 """
@@ -16,13 +17,26 @@ def step(name, cond, detail=""):
     ok &= bool(cond)
     print(("PASS " if cond else "FAIL ") + name + (f" — {detail}" if detail else ""))
 
-sys.path.insert(0, str(HERE.parent / "harness"))
-import llm
-env = {**os.environ, "TMIS_BUDGET_USD": f"{llm.spent():.4f}"}  # any uncached call would be refused
+# Every script that feeds numbers.tex, in dependency order. One process per model: the client binds
+# its model at import. TMIS_BUDGET_USD=0 makes any uncached model call fail instead of reaching the API.
+# Static inputs not regenerated here: rule_verification.json, reference_rederivation.json (cached model
+# runs of the harness), ../scicore/out_local/*.json (cluster jobs) and the tenancy entries of error_causes.json.
+TAGS = ("gpt-6.1-terra", "gpt-6-luna")
+PIPELINE = ([(["analyze.py", t], t) for t in TAGS] + [(["tenancy_extra.py", t], t) for t in TAGS]
+            + [(["judgment_accuracy.py", t], t) for t in TAGS] + [(["two_valued.py"], t) for t in TAGS]
+            + [(["handoff_causes.py", t], t) for t in TAGS] + [(["theft_error_origin.py", "gpt-6.1-terra"], "gpt-6.1-terra"),
+               (["original_study.py"], None), (["primary_tests.py"], None), (["break_even.py"], None), (["make_numbers.py"], None)])
+evidence = sorted(HERE.glob("*.json"))
+before_json = {f.name: f.read_bytes() for f in evidence}
 before = (PAPER / "results" / "numbers.tex").read_text()
-for cmd in (["analyze.py", "gpt-6.1-terra"], ["analyze.py", "gpt-6-luna"], ["primary_tests.py"], ["make_numbers.py"]):
+for cmd, tag in PIPELINE:
+    env = {**os.environ, "TMIS_BUDGET_USD": "0"}
+    if tag:
+        env["TMIS_MODEL"] = f"openai/{tag}"
     r = subprocess.run([sys.executable, *cmd], cwd=HERE, env=env, capture_output=True, text=True)
     step("ran " + " ".join(cmd), r.returncode == 0, r.stderr[-300:] if r.returncode else "")
+changed = [n for n, b in before_json.items() if (HERE / n).read_bytes() != b]
+step("evidence files reproduce byte for byte", not changed, ", ".join(changed))
 after = (PAPER / "results" / "numbers.tex").read_text()
 step("number macros reproduce byte for byte", before == after,
      "" if before == after else f"{sum(a != b for a, b in zip(before.splitlines(), after.splitlines()))} lines differ")

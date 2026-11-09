@@ -18,6 +18,7 @@
   }
  },
  "verifier": {
+  "runs": 270,
   "checked": 1653,
   "rejected": 92,
   "family_rejected": 0,
@@ -32,6 +33,37 @@
   "miss": 7,
   "nR": 1705,
   "nP": 1619
+ },
+ "routing_presumption_all": {
+  "runs": 270,
+  "nR": 1779,
+  "tp": 1619,
+  "fp": 0,
+  "held": 79,
+  "miss": 7,
+  "handed": 74
+ },
+ "verifier_by_kind": {
+  "category": {
+   "checked": 270,
+   "rejected": 8
+  },
+  "condition_true": {
+   "checked": 447,
+   "rejected": 38
+  },
+  "condition_unresolved": {
+   "checked": 714,
+   "rejected": 23
+  },
+  "document": {
+   "checked": 219,
+   "rejected": 20
+  },
+  "condition_false": {
+   "checked": 3,
+   "rejected": 3
+  }
  },
  "by_type": {
   "defect_mold_heating": {
