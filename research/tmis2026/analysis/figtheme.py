@@ -2,7 +2,7 @@
 
 Colour: four outcome hues with fixed roles (validated as a categorical set with the dataviz
 validator: lightness band, chroma floor, CVD and normal-vision separation pass for all pairs on
-white; the held ochre is below 3:1 contrast, so it never carries text and always appears with a
+white; the held ochre and handed-over green are below 3:1 contrast, so they never carry text and always appears with a
 label or a shape), one ink for text and structure, one light neutral for inactive elements and
 rules, and one pale accent tint for "the thing to look at". Unsafe errors share the vermilion and
 differ by shape: a cross is a missed document, a hollow square an unnecessary request.
@@ -22,9 +22,9 @@ from matplotlib.patches import Circle, FancyBboxPatch, Rectangle
 from matplotlib.backends.backend_agg import RendererAgg
 
 # ---------------------------------------------------------------- colour (roles, nothing else)
-REQUESTED = "#386fb3"   # a required document requested now
+REQUESTED = "#33679f"   # a required document requested now
 HELD = "#dba23a"        # held behind a question; also the colour of an unresolved value
-HANDED = "#2f9c84"      # handed over to a person (whole claim)
+HANDED = "#45b096"      # handed over to a person (whole claim)
 MISSED = "#c4503a"      # missed (cross); unnecessary request (hollow square) shares the hue
 INK = "#262626"         # all text and structure
 NEUTRAL = "#cfccc6"     # inactive elements, not-needed documents, rules
@@ -156,7 +156,7 @@ def legend(ax, x, y, kinds, extra=()):
         text(ax, x + MS + 0.05, y, NAMES[k])
         x += MS + 0.05 + width(ax, NAMES[k]) + 0.20
     for draw, lab in extra:
-        draw(ax, x + MS / 2, y)
-        text(ax, x + MS + 0.05, y, lab)
-        x += MS + 0.05 + width(ax, lab) + 0.20
+        draw(ax, x + 0.04, y)
+        text(ax, x + 0.11, y, lab)
+        x += 0.11 + width(ax, lab) + 0.20
     return x
