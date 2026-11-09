@@ -29,6 +29,7 @@ One line each. "Post hoc" means decided after the held-out runs. Every number na
 - **Routing presumption (post hoc).** Presuming the routing fact once the family is admitted is a policy counterfactual on the recorded judgments (disclosed in the appendix).
 - **Break-even cost of deferral (post hoc).** This analysis is new (break_even.json).
 - **Holds of non-required documents (post hoc).** This descriptive measure is new; such holds are not penalised by any planned outcome.
+- **Family-admission repair (post hoc).** This is new (repair_family.py). On the recorded judgments, the family is admitted whenever the verifier affirms `family_supported`, even if it rejected the category item. CasePath with exact deferral is evaluated with this repair alone (`rep*`) and with the routing presumption added (`repPres*`). The product code is unchanged; only the verifier output passed to `validate_interpretation` is adjusted.
 - **Handoff causes (post hoc).** This descriptive classification is new (handoff_causes.json).
 - **Tenancy self-consistency.** The document-wise majority ignores the runs' whole-claim handoff flag; only one luna B1 run was a handoff.
 - **Decomposition B1 → B2 → CP without verifier → CP.** The plan names this decomposition, but it is reported descriptively without tests.

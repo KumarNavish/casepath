@@ -1,0 +1,370 @@
+{
+ "gpt-6-luna": {
+  "post_hoc": true,
+  "baseline_reproduces_cp_exact": true,
+  "repair": {
+   "summary": {
+    "unnecessary_rate": 0.0,
+    "recall": 0.8206857785272625,
+    "deferral_rate": 0.17537942664418213,
+    "held_rate": 0.16469926925238898,
+    "handed_rate": 0.010680157391793142,
+    "silent_miss_rate": 0.0039347948285553686,
+    "unsafe_per_claim": 0.025925925925925925,
+    "unsafe_strict_per_claim": 0.0962962962962963,
+    "held_per_claim": 1.0851851851851853,
+    "handed_per_claim": 0.07037037037037037,
+    "deferred_per_claim": 1.1555555555555554,
+    "holds_per_claim": 3.8444444444444446,
+    "holds_nonrequired_per_claim": 2.688888888888889,
+    "requests_per_claim": 5.407407407407407,
+    "availability": 1.0,
+    "family_accuracy": 0.9888888888888889,
+    "claim_deferral": 0.011111111111111112,
+    "fp": 0,
+    "miss": 7,
+    "defer": 312,
+    "held": 293,
+    "handed": 19,
+    "holds_nonrequired": 726,
+    "handoff_runs": 3,
+    "failed_outputs": 0,
+    "tp": 1460,
+    "nR": 1779,
+    "nP": 1460,
+    "n": 270
+   },
+   "vs_B1": {
+    "unsafe": {
+     "a_value": 0.025925925925925925,
+     "b_value": 0.11481481481481481,
+     "diff": -0.08888888888888889,
+     "p_signflip": 0.015625,
+     "diff_ci": [
+      -0.1684981684981685,
+      -0.02564102564102564
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 7,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.015625,
+     "direction": "a<b",
+     "favours": "a",
+     "lower_is_better": true
+    },
+    "unsafe_strict": {
+     "a_value": 0.0962962962962963,
+     "b_value": 0.13333333333333333,
+     "diff": -0.037037037037037035,
+     "p_signflip": 0.57421875,
+     "diff_ci": [
+      -0.15325670498084287,
+      0.07954957180500653
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 10,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.001953125,
+     "direction": "a<b",
+     "favours": "a",
+     "lower_is_better": true
+    },
+    "deferred_pc": {
+     "a_value": 1.1555555555555554,
+     "b_value": 0.11851851851851852,
+     "diff": 1.037037037037037,
+     "p_signflip": 0.000244140625,
+     "diff_ci": [
+      0.4564975845410628,
+      1.8666666666666667
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 16,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 3.0517578125e-05,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    }
+   },
+   "break_even": {
+    "ratio": 11.666666666666668,
+    "ratio_strict": 26.600000000000005
+   }
+  },
+  "repair_presumption": {
+   "summary": {
+    "unnecessary_rate": 0.0,
+    "recall": 0.9387296233839235,
+    "deferral_rate": 0.05733558178752108,
+    "held_rate": 0.04665542439572794,
+    "handed_rate": 0.010680157391793142,
+    "silent_miss_rate": 0.0039347948285553686,
+    "unsafe_per_claim": 0.025925925925925925,
+    "unsafe_strict_per_claim": 0.0962962962962963,
+    "held_per_claim": 0.3074074074074074,
+    "handed_per_claim": 0.07037037037037037,
+    "deferred_per_claim": 0.37777777777777777,
+    "holds_per_claim": 3.066666666666667,
+    "holds_nonrequired_per_claim": 2.688888888888889,
+    "requests_per_claim": 6.185185185185185,
+    "availability": 1.0,
+    "family_accuracy": 0.9888888888888889,
+    "claim_deferral": 0.011111111111111112,
+    "fp": 0,
+    "miss": 7,
+    "defer": 102,
+    "held": 83,
+    "handed": 19,
+    "holds_nonrequired": 726,
+    "handoff_runs": 3,
+    "failed_outputs": 0,
+    "tp": 1670,
+    "nR": 1779,
+    "nP": 1670,
+    "n": 270
+   },
+   "vs_B1": {
+    "unsafe": {
+     "a_value": 0.025925925925925925,
+     "b_value": 0.11481481481481481,
+     "diff": -0.08888888888888889,
+     "p_signflip": 0.015625,
+     "diff_ci": [
+      -0.16666666666666669,
+      -0.025634057971014593
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 7,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.015625,
+     "direction": "a<b",
+     "favours": "a",
+     "lower_is_better": true
+    },
+    "unsafe_strict": {
+     "a_value": 0.0962962962962963,
+     "b_value": 0.13333333333333333,
+     "diff": -0.037037037037037035,
+     "p_signflip": 0.57421875,
+     "diff_ci": [
+      -0.15555555555555553,
+      0.07954957180500653
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 10,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.001953125,
+     "direction": "a<b",
+     "favours": "a",
+     "lower_is_better": true
+    },
+    "deferred_pc": {
+     "a_value": 0.37777777777777777,
+     "b_value": 0.11851851851851852,
+     "diff": 0.25925925925925924,
+     "p_signflip": 0.00439453125,
+     "diff_ci": [
+      0.10638297872340426,
+      0.42424242424242425
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 13,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.000244140625,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    }
+   },
+   "break_even": {
+    "ratio": 2.9166666666666665,
+    "ratio_strict": 5.6000000000000005
+   }
+  }
+ },
+ "gpt-6.1-terra": {
+  "post_hoc": true,
+  "baseline_reproduces_cp_exact": true,
+  "repair": {
+   "summary": {
+    "unnecessary_rate": 0.005409582689335394,
+    "recall": 0.7234401349072512,
+    "deferral_rate": 0.26812816188870153,
+    "held_rate": 0.2641933670601461,
+    "handed_rate": 0.0039347948285553686,
+    "silent_miss_rate": 0.008431703204047217,
+    "unsafe_per_claim": 0.08148148148148149,
+    "unsafe_strict_per_claim": 0.10740740740740741,
+    "held_per_claim": 1.7407407407407407,
+    "handed_per_claim": 0.025925925925925925,
+    "deferred_per_claim": 1.7666666666666666,
+    "holds_per_claim": 4.45925925925926,
+    "holds_nonrequired_per_claim": 2.6925925925925926,
+    "requests_per_claim": 4.792592592592593,
+    "availability": 1.0,
+    "family_accuracy": 0.9962962962962963,
+    "claim_deferral": 0.003703703703703704,
+    "fp": 7,
+    "miss": 15,
+    "defer": 477,
+    "held": 470,
+    "handed": 7,
+    "holds_nonrequired": 727,
+    "handoff_runs": 1,
+    "failed_outputs": 0,
+    "tp": 1287,
+    "nR": 1779,
+    "nP": 1294,
+    "n": 270
+   },
+   "vs_B1": {
+    "unsafe": {
+     "a_value": 0.08148148148148149,
+     "b_value": 0.06296296296296296,
+     "diff": 0.01851851851851853,
+     "p_signflip": 0.25,
+     "diff_ci": [
+      0.0,
+      0.04119850187265918
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 3,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.25,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    },
+    "unsafe_strict": {
+     "a_value": 0.10740740740740741,
+     "b_value": 0.06296296296296296,
+     "diff": 0.04444444444444445,
+     "p_signflip": 0.125,
+     "diff_ci": [
+      0.0068666187739464205,
+      0.10486891385767791
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 4,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.125,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    },
+    "deferred_pc": {
+     "a_value": 1.7666666666666666,
+     "b_value": 0.17037037037037037,
+     "diff": 1.5962962962962963,
+     "p_signflip": 0.0009765625,
+     "diff_ci": [
+      0.6060253699788583,
+      2.7629900124843942
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 11,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.0009765625,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    }
+   },
+   "break_even": {
+    "ratio": null,
+    "ratio_strict": null
+   }
+  },
+  "repair_presumption": {
+   "summary": {
+    "unnecessary_rate": 0.004120070629782225,
+    "recall": 0.9510961214165261,
+    "deferral_rate": 0.04047217537942664,
+    "held_rate": 0.03653738055087127,
+    "handed_rate": 0.0039347948285553686,
+    "silent_miss_rate": 0.008431703204047217,
+    "unsafe_per_claim": 0.08148148148148149,
+    "unsafe_strict_per_claim": 0.10740740740740741,
+    "held_per_claim": 0.24074074074074073,
+    "handed_per_claim": 0.025925925925925925,
+    "deferred_per_claim": 0.26666666666666666,
+    "holds_per_claim": 2.9592592592592593,
+    "holds_nonrequired_per_claim": 2.6925925925925926,
+    "requests_per_claim": 6.292592592592593,
+    "availability": 1.0,
+    "family_accuracy": 0.9962962962962963,
+    "claim_deferral": 0.003703703703703704,
+    "fp": 7,
+    "miss": 15,
+    "defer": 72,
+    "held": 65,
+    "handed": 7,
+    "holds_nonrequired": 727,
+    "handoff_runs": 1,
+    "failed_outputs": 0,
+    "tp": 1692,
+    "nR": 1779,
+    "nP": 1699,
+    "n": 270
+   },
+   "vs_B1": {
+    "unsafe": {
+     "a_value": 0.08148148148148149,
+     "b_value": 0.06296296296296296,
+     "diff": 0.01851851851851853,
+     "p_signflip": 0.25,
+     "diff_ci": [
+      0.0,
+      0.04166666666666666
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 3,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.25,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    },
+    "unsafe_strict": {
+     "a_value": 0.10740740740740741,
+     "b_value": 0.06296296296296296,
+     "diff": 0.04444444444444445,
+     "p_signflip": 0.125,
+     "diff_ci": [
+      0.007015716374269002,
+      0.1048689138576779
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 4,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.125,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    },
+    "deferred_pc": {
+     "a_value": 0.26666666666666666,
+     "b_value": 0.17037037037037037,
+     "diff": 0.0962962962962963,
+     "p_signflip": 0.015625,
+     "diff_ci": [
+      0.02898550724637683,
+      0.18181818181818182
+     ],
+     "clusters": 17,
+     "nonzero_clusters": 7,
+     "min_p_design": 1.52587890625e-05,
+     "min_p_given_nonzero": 0.015625,
+     "direction": "a>b",
+     "favours": "b",
+     "lower_is_better": true
+    }
+   },
+   "break_even": {
+    "ratio": null,
+    "ratio_strict": null
+   }
+  }
+ }
+}

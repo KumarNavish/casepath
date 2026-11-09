@@ -329,5 +329,24 @@ if rr:
     for key, short in (("deferral_rate", "Defer"), ("held_rate", "Held"), ("handed_rate", "Handed")):
         vals = [100 * v[key] for v in rr]
         m(f"tenCPx{short}RangeLo", f"{min(vals):.0f}"); m(f"tenCPx{short}RangeHi", f"{max(vals):.0f}")
+# ---- post hoc: admit the family whenever the verifier affirms it (rep), plus the routing presumption (repPres)
+rf = load("repair_family.json")
+if rf:
+    for M, tag in models.items():
+        r = rf.get(tag)
+        if not r:
+            continue
+        for variant, pre in (("repair", f"rep{M}"), ("repair_presumption", f"repPres{M}")):
+            v = r[variant]["summary"]
+            m(pre + "Recall", pct(v["recall"])); m(pre + "Held", pct(v["held_rate"])); m(pre + "Handed", pct(v["handed_rate"]))
+            m(pre + "Miss", pct(v["silent_miss_rate"])); m(pre + "Unnec", pct(v["unnecessary_rate"]))
+            m(pre + "Unsafe", f"{v['unsafe_per_claim']:.3f}"); m(pre + "UnsafeStrict", f"{v['unsafe_strict_per_claim']:.3f}")
+            m(pre + "HeldPC", f"{v['held_per_claim']:.2f}"); m(pre + "HandedPC", f"{v['handed_per_claim']:.2f}")
+            m(pre + "HandoffRuns", v["handoff_runs"]); m(pre + "HandedN", v["handed"])
+            for metric, short in (("unsafe", "Unsafe"), ("unsafe_strict", "UnsafeStrict"), ("deferred_pc", "Defer")):
+                contrast_macros(pre + "Ct" + short, r[variant]["vs_B1"][metric])
+            be_ = r[variant]["break_even"]
+            m(pre + "Ratio", "never" if be_["ratio"] is None else f"{be_['ratio']:.1f}")
+            m(pre + "RatioStrict", "never" if be_["ratio_strict"] is None else f"{be_['ratio_strict']:.1f}")
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")
