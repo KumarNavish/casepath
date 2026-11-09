@@ -32,6 +32,10 @@ a { color: inherit; }
 .cp-body { display: flex; min-height: calc(100vh - 75px); }
 .cp-rail { width: 262px; flex: none; border-right: 1px solid var(--line); padding: 22px 0 22px; display: flex; flex-direction: column; min-height: calc(100vh - 75px); position: sticky; top: 75px; align-self: flex-start; }
 body.with-notice .cp-rail { min-height: calc(100vh - 133px); }
+/* On a short window the rail scrolls on its own, so "Prepare the case" stays in view and the page stays at the top. */
+.cp-rail { max-height: calc(100vh - 75px); overflow-y: auto; }
+.cp-rail > * { flex-shrink: 0; }
+body.with-notice .cp-rail { max-height: calc(100vh - 133px); }
 body.with-notice { padding-bottom: 58px; }
 .cp-main { flex: 1; min-width: 0; padding: 26px 30px 90px; }
 .cp-caseline { padding: 0 27px 12px; font-weight: 600; font-size: 14.5px; }
