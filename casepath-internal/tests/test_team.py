@@ -128,6 +128,14 @@ class TeamTests(unittest.TestCase):
         self.assertEqual((row["status"], row["second_value"]), ("conflicting", False))
         self.assertNotIn("landlord_notified", work.accepted_facts())  # a person settles it
 
+    def test_two_readings_of_a_name_with_and_without_its_address_agree(self):
+        from casepath_internal.agents import same_reading
+        text, date = {"type": "text"}, {"type": "date"}
+        self.assertTrue(same_reading(text, "Garage Kälin Occasionen AG", "Garage Kälin Occasionen AG, Zürcherstrasse 140, 8645 Jona."))
+        self.assertTrue(same_reading(text, "2 % pro Jahr", "2 % pro Jahr; jeweils am 31. Dezember fällig"))
+        self.assertFalse(same_reading(text, "Garage Kälin Occasionen AG", "Auto Brunner GmbH"))
+        self.assertFalse(same_reading(date, "2025-03-31", "2025-04-30"))
+
     def test_process_builder_changes_need_a_basis(self):
         unsupported = ("propose_change", {"op": "add_document", "title": "Lease", "why": "Shows the tenancy.", "question": "", "step": None,
                                           "required_when": [], "legal_basis": "", "basis_knowledge": None, "citations": [], "reason": "Usually needed."})

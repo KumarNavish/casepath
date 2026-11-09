@@ -168,7 +168,7 @@ def segment(model, file_row, *, workers=1):
     def ask(group):
         numbers = [n for n, _ in group]
         page = {"type": "integer", "minimum": min(numbers), "maximum": max(numbers)}
-        document = obj(first_page=page, last_page=page, continues={"type": "boolean"}, kind=text(60, minLength=1), date=text(40),
+        document = obj(first_page=page, last_page=page, continues={"type": "boolean"}, kind=text(60, minLength=1), date=text(120),
                        sender=text(200), recipient=text(200), title=text(200, minLength=1), summary=text(900), quote=text(600, minLength=8))
         result = model.respond_json(name="casepath_segment", instructions=SEGMENT_INSTRUCTIONS, schema=obj(documents=arr(document, minItems=1, maxItems=120)),
                                     effort="low", input=[{"role": "user", "content": json.dumps(
@@ -267,9 +267,12 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
             on_event({"agent": "claim_reader", "kind": "reading.photo", "file": file_row["id"]})
         changed = True
     if "segments" not in extraction and (extraction.get("pages") or 0) >= 3:
-        extraction["segments"] = segment(model, {**file_row, "extraction": extraction}, workers=workers) or []
-        on_event({"agent": "claim_reader", "kind": "reading.segmented", "file": file_row["id"], "documents": len(extraction["segments"])})
-        changed = True
+        try:  # the split helps agents choose pages; a file that cannot be split is still read page by page
+            extraction["segments"] = segment(model, {**file_row, "extraction": extraction}, workers=workers) or []
+            on_event({"agent": "claim_reader", "kind": "reading.segmented", "file": file_row["id"], "documents": len(extraction["segments"])})
+            changed = True
+        except ModelError as error:
+            on_event({"agent": "claim_reader", "kind": "reading.unsplit", "file": file_row["id"], "reason": error.reason})
     if "instruction_like" not in extraction:
         extraction["instruction_like"] = instruction_like_pages(extraction)
         if extraction["instruction_like"]:

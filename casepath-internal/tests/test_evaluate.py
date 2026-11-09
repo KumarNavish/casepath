@@ -96,7 +96,7 @@ class EvaluateTests(unittest.TestCase):
         self.assertTrue(checks[("not_demanded", "Arztzeugnis")]["passed"])
         self.assertEqual(results["summary"]["consistency"], 1.0)
         written = (self.root / "out" / "report.md").read_text()
-        self.assertIn("| S02-second-of-sequence | 1 | requirements | outcome | outcome | advice | reported |", written)
+        self.assertIn("| S02-second-of-sequence | 1 | requirements | outcome | outcome | advice | reported |  |", written)
         # T01 ran on its own store: no Knowledge from the sequence reached it.
         t01 = next(r for r in results["runs"] if r["case"] == "T01-defect-notice")
         self.assertFalse(any(c["check"] == "applied" for c in t01["checks"]))

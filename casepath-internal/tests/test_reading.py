@@ -109,6 +109,18 @@ class ReadingTests(unittest.TestCase):
         self.assertEqual((extraction["pages_transcribed"], extraction["pages_without_text"]), ([3, 4, 5], []))
         self.assertEqual(extraction["segments"][-1]["last_page"], 5)
 
+    def test_a_dossier_that_cannot_be_split_is_still_read(self):
+        class Unsplittable(Reader):
+            def respond_json(self, **kwargs):
+                if kwargs["name"] == "casepath_segment":
+                    raise ModelError("schema_mismatch", "The model answer did not match its schema.")
+                return super().respond_json(**kwargs)
+        events = []
+        extraction = reading.prepare_file(Unsplittable(), self.store, self.store.get_file(self.file, True), on_event=events.append)
+        self.assertEqual(extraction["pages_without_text"], [])  # the scanned pages were read all the same
+        self.assertNotIn("segments", extraction)  # and the split is tried again next time
+        self.assertIn("reading.unsplit", [e["kind"] for e in events])
+
     def test_a_file_the_model_cannot_read_at_all_fails_with_the_reason(self):
         with self.assertRaises(ModelError):
             reading.prepare_file(Reader(unreadable={3, 4, 5}), self.store, self.store.get_file(self.file, True))

@@ -228,8 +228,11 @@ def score(case, workflow, run, detail, edits_done=None):
     """Every check for one run of one case: area, check, target, expected, actual, passed."""
     truth, checks = case["truth"], []
 
-    def check(area, kind, target, expected, actual, passed):
-        checks.append({"area": area, "check": kind, "target": target, "expected": expected, "actual": actual, "passed": bool(passed)})
+    def check(area, kind, target, expected, actual, passed, detail=None):
+        row = {"area": area, "check": kind, "target": target, "expected": expected, "actual": actual, "passed": bool(passed)}
+        if detail and not passed:
+            row["detail"] = str(detail)[:200]  # why CasePath gave it: the checker's reason or the finder's note
+        checks.append(row)
 
     check("reliability", "run", "status", "completed", run["status"] if run["status"] == "completed" else f"{run['status']}: {(run.get('error') or '')[:160]}",
           run["status"] == "completed")
@@ -250,7 +253,8 @@ def score(case, workflow, run, detail, edits_done=None):
         if expected is None:
             check("understanding", "not_invented", fact, None, shown if accepted else None, not accepted)
         else:
-            check("understanding", "fact", fact, expected, shown, accepted and same_value(kinds.get(fact, "text"), expected, row.get("value")))
+            check("understanding", "fact", fact, expected, shown, accepted and same_value(kinds.get(fact, "text"), expected, row.get("value")),
+                  row.get("verdict_reason") or (f"second reading: {row['second_value']!r}" if "second_value" in row else None))
             quote = (truth.get("evidence") or {}).get(fact)
             if quote and accepted:  # grounded in the document that settles the fact; any sentence of it may do
                 cited = [c.get("quote", "") for c in row.get("citations", [])]
@@ -270,9 +274,15 @@ def score(case, workflow, run, detail, edits_done=None):
         status = (recorded.get(need) or {}).get("status")
         return {"absent": "missing"}.get(status, status) or "not checked"
 
+    def why(need):
+        row = recorded.get(need)
+        if not row:
+            return "the document finder recorded nothing for this need"
+        return f"recorded {row.get('status')}, check {row.get('verdict')}: {row.get('note') or row.get('verdict_reason') or ''}"
+
     for need, expected in (truth.get("documents") or {}).items():
         actual = status_of(need)
-        check("requirements", "document", need, expected, actual, actual == expected)
+        check("requirements", "document", need, expected, actual, actual == expected, why(need))
     outcome = (evaluation.get("outcome") or {}).get("id")
     check("requirements", "outcome", "outcome", truth.get("outcome"), outcome, outcome == truth.get("outcome"))
     base = {d["id"] for d in workflow["documents"]}
@@ -285,7 +295,8 @@ def score(case, workflow, run, detail, edits_done=None):
         if found:
             actual = status_of(found[0]["id"])
             check("process" if item["status"] == "missing" else "requirements", "case_document", item["label"], item["status"], actual,
-                  actual == item["status"] or (item["status"] == "missing" and actual in {"missing", "unchecked", "not checked"}))
+                  actual == item["status"] or (item["status"] == "missing" and actual in {"missing", "unchecked", "not checked"}),
+                  f"as “{found[0]['title']}”; {why(found[0]['id'])}")
     for item in truth.get("not_required", []):
         demanded = [d["title"] for d in added if matches(item, d["title"])]
         check("process", "not_demanded", item["label"], None, demanded[0] if demanded else None, not demanded)
@@ -515,9 +526,10 @@ def report(results):
     if not failures:
         lines.append("None.")
     else:
-        lines += ["| Case | Repeat | Area | Check | Target | Expected | CasePath gave |", "|---|---|---|---|---|---|---|"]
+        lines += ["| Case | Repeat | Area | Check | Target | Expected | CasePath gave | Why |", "|---|---|---|---|---|---|---|---|"]
         for r, c in failures:
-            lines.append(f"| {r['case']} | {r['repeat']} | {c['area']} | {c['check']} | {_cell(c['target'])} | {_cell(c['expected'])} | {_cell(c['actual'])} |")
+            lines.append(f"| {r['case']} | {r['repeat']} | {c['area']} | {c['check']} | {_cell(c['target'])} | {_cell(c['expected'])} | "
+                         f"{_cell(c['actual'])} | {_cell(c.get('detail', ''))} |")
     return "\n".join(lines) + "\n"
 
 
