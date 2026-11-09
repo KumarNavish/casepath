@@ -45,7 +45,7 @@ Let $\val^\ast$ be the true, complete state of the case facts. Ideally, $d$ is r
 \subsection{Three-valued execution}
 \label{sec:kleene}
 
-The model's judgments form a partial assignment $\val:\mathcal{C}\to\Vals$. Formulas are evaluated with strong Kleene logic \cite{kleene1952}: with the order $\F<\U<\T$, conjunction takes the minimum, disjunction the maximum, and negation swaps $\T$ and $\F$. A step is applicable when it is the entry step or is reached from an applicable step through a transition whose condition holds, and its own condition holds:
+The model's judgments form a partial assignment $\val:\mathcal{C}\to\Vals$. Formulas are evaluated with strong Kleene logic \cite{kleene1952introduction}: with the order $\F<\U<\T$, conjunction takes the minimum, disjunction the maximum, and negation swaps $\T$ and $\F$. A step is applicable when it is the entry step or is reached from an applicable step through a transition whose condition holds, and its own condition holds:
 \begin{equation}
 \act(n) \;=\; \Bigl[\,\mathrm{entry}(n)\;\kor\;\bigvee_{(u,n)\in E}\bigl(\act(u)\kand\val(c_{un})\bigr)\Bigr]\;\kand\;\val(c_n).
 \label{eq:activation}
@@ -62,7 +62,7 @@ The decision follows directly: $\skipd$ if $\req(d)=\F$; $\hold$ if $\req(d)=\U$
 If $\req_\val(d)\in\{\T,\F\}$, then $\req_{\val'}(d)=\req_\val(d)$ for every completion $\val'$ of $\val$, that is, every assignment that agrees with $\val$ wherever $\val$ is not $\U$.
 \end{proposition}
 \begin{proof}
-Strong Kleene connectives are monotone in the information order in which $\U$ lies below both $\T$ and $\F$ \cite{kleene1952}. Equations~\eqref{eq:activation} and~\eqref{eq:requirement} compose such connectives over the acyclic graph, so by induction in topological order every determined value persists in every completion.
+Strong Kleene connectives are monotone in the information order in which $\U$ lies below both $\T$ and $\F$ \cite{kleene1952introduction}. Equations~\eqref{eq:activation} and~\eqref{eq:requirement} compose such connectives over the acyclic graph, so by induction in topological order every determined value persists in every completion.
 \end{proof}
 
 Soundness means that a request issued while some facts are open is never premature, and a skip is never a silent miss caused by an open fact. Answering a clarification question can only turn holds into requests or skips. Two-valued execution lacks this guarantee: reading $\U$ as $\F$ (the closed-world assumption of rule engines and logic programs \cite{reiter1978closed}) silently skips documents whose requirement depends on an open fact, and reading $\U$ as $\T$ requests them prematurely.
@@ -75,7 +75,7 @@ Strong Kleene execution can hold a document that is required under every complet
 In the defect process of our tenancy rules, the intake step branches to a safety step when health effects are alleged and directly to the scoping step otherwise; the safety step leads to the scoping step as well. With $\val(\mathit{health})=\U$, Equation~\eqref{eq:activation} gives $\act(\mathit{scope})=(\U\kand\T)\kor(\T\kand\U)=\U$, so every document of the scoping step and of all later steps is held. Yet under both completions $\act(\mathit{scope})=\T$.
 \end{proof}
 
-Proposition~\ref{prop:incomplete} is not a corner case: one open flag at a branch whose paths reconverge holds the entire remaining process (Section~\ref{sec:results-tenancy}). \casepath therefore evaluates requirements by \emph{supervaluation} \cite{vanfraassen1966}:
+Proposition~\ref{prop:incomplete} is not a corner case: one open flag at a branch whose paths reconverge holds the entire remaining process (Section~\ref{sec:results-tenancy}). \casepath therefore evaluates requirements by \emph{supervaluation} \cite{vanfraassen1966singular}:
 \begin{equation}
 \exactreq(d) \;=\;
 \begin{cases}
@@ -94,7 +94,7 @@ Decisions based on $\exactreq$ are sound and exact, and $\exactreq$ never holds 
 Soundness and exactness hold by definition of Equation~\eqref{eq:exact}. If $\req(d)\neq\U$, Proposition~\ref{prop:sound} gives the same value under every completion, so $\exactreq(d)=\req(d)$.
 \end{proof}
 
-A clarification question is asked about flag $f$ only if flipping $f$ alone, in some completion, changes whether a held document is required; this removes questions whose answer cannot change any request. Two further properties follow from the definitions and matter for the experiments. \emph{Locality}: if two cases differ in the judgment of one flag $f$, only documents whose requirement formula mentions $f$ can change decision; requests that do not depend on the changed fact are reproduced exactly. \emph{Traceability}: every $\T$ requirement is witnessed by an applicable step and a chain of transitions, each tied to the source passage of the rule and to the case quotation of the judgment that satisfied it.
+A question is asked about flag $f$ only if flipping $f$ alone, in some completion, changes whether a held document is required, so no question is asked whose answer cannot change a request. Two further properties follow from the definitions. \emph{Locality}: if two cases differ in the judgment of one flag $f$, only documents whose requirement mentions $f$ can change decision. \emph{Traceability}: every required document is witnessed by an applicable step and a chain of transitions, each tied to a source passage of the rule and a quotation of the judgment.
 
 \paragraph{Evidence routes}
 When a required document type has alternative routes, as with the receipt or expert valuation in the running example, \casepath requests the route that needs the fewest documents beyond those on file $H$,
@@ -138,7 +138,7 @@ Execution is only as good as the judgments it receives. \casepath obtains them i
 \end{algorithm}
 
 \paragraph{Rule packs}
-For the tenancy disputes in our evaluation, the rule pack consists of three process templates admitted by the product, with nine to eleven document types each. For the household-theft claims, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{kumar2026casepathiclr}. Rule packs are versioned and admitted before use: the model that judges a case cannot add or change a rule.
+For the tenancy disputes in our evaluation, the rule pack consists of three process templates admitted by the product, with nine to eleven document types each. For the household-theft claims, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{casepath2026repo}. Rule packs are versioned and admitted before use: the model that judges a case cannot add or change a rule.
 
 \paragraph{Implementation}
-The tenancy experiments call the production modules of \casepath unchanged: the admission function, the process compiler and the causal process engine implementing Equations~\eqref{eq:activation} and~\eqref{eq:requirement}. Supervaluation (Equation~\eqref{eq:exact}) is implemented on top of that engine, which accepts condition overrides, by evaluating every completion of the open flags. The theft rules contain no reconverging branches, so strong Kleene evaluation and supervaluation coincide there; their route choice follows Equation~\eqref{eq:route}. The product also records every accepted change in a hash-chained journal, previews the consequences of a handler's correction before it is applied, and qualifies reusable evidence-reading recipes from verified cases; those features are outside this paper's evaluation.
+The tenancy experiments call \casepath's production modules unchanged: the admission function, the process compiler and the causal process engine implementing Equations~\eqref{eq:activation} and~\eqref{eq:requirement}. Supervaluation (Equation~\eqref{eq:exact}) runs on top of that engine by evaluating it under every completion of the open flags. The theft rules contain no reconverging branches, so the two semantics coincide there; their route choice follows Equation~\eqref{eq:route}. The product also journals every accepted change, previews the consequences of a handler's correction and reuses evidence-reading recipes from verified cases; these features are outside this evaluation.

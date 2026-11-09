@@ -48,3 +48,26 @@ Newest entries at the bottom. Times are UTC.
 - Secondary run with gpt-6-luna (the product's configured model) in progress.
 - sciCORE: jobs prepared in scicore/ (array.sbatch); the Mac running
   Commander has been offline since ~16:55, so nothing has been dispatched yet.
+
+## 2026-11-09 17:30–18:30 — Secondary model, explanations, paper
+- gpt-6-luna (the product's configured model), k=3: theft (R, CP) and tenancy
+  (B1, CP). Spend USD 0.81. With luna, execution is clearly better:
+  theft CP F1 0.810 vs R 0.591 (wrong changes 17 vs 68, Holm p=0.012);
+  tenancy unsafe errors 0.03 vs 0.11 per claim (Holm p=0.031). With terra,
+  R/B1 match or beat CP. Conclusion: execution makes request quality robust to
+  the model; with a frontier model in-context application catches up.
+- Mechanisms (terra): interpreter errors are almost all "unresolved" (735) not
+  flips (7); 638 unresolved concern facts that are false but unmentioned (the
+  references read silence as false). Verifier rejected 35 verdicts, all
+  correct; caught none of the 7 flips (helped with luna on theft).
+- Exact decision tables for all 150 claims over every partial assignment
+  (S1) and engine scalability (S2) were computed locally in the cloud
+  container: the Mac running Commander stayed offline, so sciCORE was not
+  reached. Scripts and scicore/array.sbatch are ready; results are
+  deterministic and should reproduce byte for byte on sciCORE.
+- Pre-specified tests with Holm correction in analysis/primary_tests.json.
+- Paper (paper/): acmart acmsmall, TMIS; every number generated from evidence
+  by analysis/make_numbers.py; figures by analysis/figures.py; prompts
+  exported verbatim by analysis/export_prompts.py.
+- runs/responses_cache.tar.gz holds every cached model response (the raw
+  cache directory stays git-ignored).

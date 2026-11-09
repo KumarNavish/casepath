@@ -1,0 +1,64 @@
+\section{The original evaluation}
+\label{app:original}
+
+This article revises an earlier evaluation of \casepath \cite{casepath2026repo}. Its results are preserved here unchanged and related to the new experiments.
+
+\paragraph{Theft cases, original study}
+The original study ran each design once with \texttt{gpt-5.6-terra} on the 27 held-out pairs, after the method, data and success criteria had been frozen. Table~\ref{tab:original} reproduces its results; the harness used in this article recomputes them exactly from the released predictions, and its planner reproduces all 54 of \casepath's original checklists from the recorded condition judgments. Three of eight predeclared criteria---all on accuracy---were not met in that study. Applying this article's planner, which requests one route per requirement instead of every route, to the same recorded judgments raises \casepath's checklist-change $F_1$ from 0.667 to 0.720 (27 correct, 15 wrong, 6 missed changes), because it removes the three misses that requesting every route caused.
+
+\begin{table}[h]
+\caption{Original theft results (\texttt{gpt-5.6-terra}, one run, 27 held-out pairs, 33 required changes).}
+\label{tab:original}
+\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Design & Correct & Wrong & Missed & Exact pairs & $F_1$ \\
+\midrule
+\casepath (all routes, as frozen) & 24 & 15 & 9 & 12/27 & 0.667 \\
+\casepath (one route per requirement) & 27 & 15 & 6 & 12/27 & 0.720 \\
+\design{Direct} & 25 & 27 & 8 & 9/27 & 0.588 \\
+Graph context (= \design{Rules in context}) & 31 & 41 & 2 & 4/27 & 0.590 \\
+Evidence-first & 16 & 52 & 17 & 2/27 & 0.317 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Tenancy claims, original study}
+In the original tenancy comparison every design had to produce a complete process graph within two calls and 4,096 completion tokens. The model-applied designs produced a scoreable output for 28--47\% of claims and \casepath for 74\%; on the outputs they did produce, checklist quality was similar (90--95\% $F_1$). That comparison therefore measured mainly whether a design could emit a valid graph. Its fixed-judgment comparison with a variant that ignored the dispute type removed 98\% of unnecessary requests by construction, as reviewers noted. The new experiments replace both: every design now returns only its evidence plan, all outputs were valid, and deferrals are scored against the references instead of being left unscored.
+
+\section{Data details}
+\label{app:data}
+
+\paragraph{Tenancy claims}
+The 150 claims comprise 50 defect, 50 lease-termination and 50 rent-increase disputes in 28 families (11 development, 17 held-out), 75 in English and 75 in Swiss Standard German, received by e-mail (70), portal (46), chat (24) or phone note (10); 45 claims carry 57 attachments (47 PDF notices, demands and forms, 10 photographs). Messages have 138--209 words. Attachment text was extracted with \texttt{pypdf} 5.9.0 in plain mode, as in the original study; photographs carry no text. The references specify 1,397 document states: missing (961), conditional on a false flag (395) and provided but insufficient (41). We score a document as required if its state is missing or provided but insufficient.
+
+\paragraph{Theft cases}
+Each case is an English claim story of 141--155 words followed by nine condition statements. The 197 source passages come from the Swiss Insurance Contract Act, the household-insurance terms of four insurers, one insurer's claim form and the industry's model conditions; the catalogue lists 33 document types named in these sources. The extracted rule pack contains 98 rules with 117 facts, 126 evidence items and 87 conditions.
+
+\section{Robustness analyses}
+\label{app:robustness}
+
+\paragraph{Contested references}
+Excluding the two theft conditions whose references the blind re-derivation did not reproduce (formal expert procedure and insurer's declination) leaves the ranking of designs unchanged for both models: checklist-change $F_1$ with \texttt{gpt-6.1-terra} is \thTerraRAgreedFone{} for \design{Rules in context}, \thTerraCPAgreedFone{} for \casepath and \thTerraDAgreedFone{} for \design{Direct}; with \texttt{gpt-6-luna} it is \thLunaRAgreedFone{} and \thLunaCPAgreedFone.
+
+\paragraph{Routing presumption}
+Presuming the routing fact once the dispute family is admitted (Section~\ref{sec:results-tenancy}) is a post-hoc policy change evaluated on the recorded judgments of \texttt{gpt-6.1-terra}; it was not part of the analysis plan.
+
+\paragraph{Self-consistency}
+Document-wise majority voting over the three runs changed the in-context designs little with \texttt{gpt-6.1-terra} and did not close the gap to \casepath with \texttt{gpt-6-luna} (Tables~\ref{tab:tenancy} and~\ref{tab:theft}).
+
+\section{Reproducibility, data availability and use of generative AI}
+\label{app:repro}
+
+\paragraph{Release}
+The datasets, the \casepath implementation, the experiment harness, the analysis plan, every model response with its token counts and charges, and the scripts that compute every number and figure in this article from those records are available in the \casepath repository \cite{casepath2026repo} under \texttt{research/tmis2026}. Every number in the text is generated from the evidence files by a script; no result was typed by hand. The datasets are released under CC~BY~4.0 and the code under Apache~2.0; quoted policy terms and form templates remain with their issuers.
+
+\paragraph{Computation}
+Model calls ran through OpenRouter on 9 November 2026 with the identifiers \texttt{openai/gpt-6.1-terra} and \texttt{openai/gpt-6-luna}, low reasoning effort, strict JSON schemas and a 3,500-token output limit (6,000 and 4,000 for the theft interpretation and verification). Responses are cached by request, so rerunning the analysis makes no calls; rerunning the experiments makes new, non-deterministic calls. The exact decision tables behind Figure~\ref{fig:propagation} and the runtime measurements are deterministic computations over the production engine; their scripts are released with job definitions for a SLURM cluster.
+
+\paragraph{Use of generative AI}
+Generative AI is part of the method and of its evaluation, as described in Sections~\ref{sec:method} and~\ref{sec:evaluation}: language models interpret claims, verify judgments, and constitute the compared designs. In the original study, language models also extracted the theft rule pack from the source passages and built the source contract from which the theft references derive; the independent re-derivation reported in Section~\ref{sec:data} checks the latter. The synthetic claims of both datasets were created in the original study with the assistance of generative AI, including the translation of the German claims; their references come from the generator's state (tenancy) and the source contract (theft), not from any compared design. AI assistants supported the authors in implementing the software and the experiment harness, running and analysing the experiments, searching and verifying the literature, and drafting and editing the text; the authors designed the study, checked every reported number against the released records and take responsibility for the content.
+
+\section{Instructions and variants}
+\label{app:instructions}
+\input{sections/appendix_prompts}

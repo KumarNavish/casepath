@@ -12,7 +12,6 @@ from pathlib import Path
 tables = {}
 for p in sorted(Path(sys.argv[1]).glob("s1_tables_*.json")):
     tables.update(json.loads(p.read_text()))
-heldout = set(json.loads((Path(__file__).resolve().parents[3] / "data/casepath-tenancy-claims/benchmark/cohort.json").read_text()).get("hidden_test_case_ids", []))
 EPS = [0.0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4]
 RHO = [0.0, 0.25, 0.5, 0.75, 1.0]
 SEM = ["kleene", "exact", "closed", "eager"]

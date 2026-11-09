@@ -1,0 +1,53 @@
+\section{Discussion}
+\label{sec:discussion}
+
+We built \casepath, an agent that lets a language model judge the facts of a claim and lets code apply the organisation's evidence rules to those judgments, and compared it with the alternatives that place the rules in the model's hands. Executing the rules made the agent's requests safe under uncertainty by construction and much less dependent on which model read the claim: with a cost-efficient model and with the model of the original study, it made far fewer wrong changes than the model applying the rules itself. With a frontier model, the model applying the rules in context performed as well on correct rules and better on automatically extracted ones. The sections below explain what this means for the design of such agents, for practice and for research.
+
+\subsection{What executing rules buys, and what it costs}
+\label{sec:buys}
+
+\paragraph{Robustness to the model}
+The largest effect of execution was on how much request quality depended on the model. Across the three models, \casepath made between \thLunaCPWrongPP{} and 0.56 wrong changes per theft pair; the model applying the rules in context made between \thTerraRWrongPP{} and 1.52 (Figure~\ref{fig:theft}). Execution confines the model's role to judging conditions, a narrower task in which the models differed less, and makes everything downstream of those judgments deterministic. When an organisation changes models---for cost, for availability or because a provider retires a version---an executing agent's requests change only where the model's judgments change.
+
+\paragraph{Safety under uncertainty}
+Proposition~\ref{prop:sound} guarantees that an executing agent never requests a document that an unresolved fact could make unnecessary. In our experiments the frontier model also avoided premature requests on its own; the cost-efficient model did so less reliably. The guarantee therefore matters most where it cannot be checked case by case: for weaker or changing models, and for the audit question of whether a request was justified at the time it was made.
+
+\paragraph{Traceability and repair}
+Because every request follows from a recorded judgment and a rule, every error has an address. On the theft cases, \ecWrongFaulty{} of \casepath's \thTerraCPWrong{} wrong changes trace to five of 98 extracted rules, and a blind rule verification flags all five. A model applying the rules in context partly compensated for the same faulty rules, but its corrections, like its errors, are not recorded anywhere. Execution turns rule errors from occasional and invisible into systematic and repairable.
+
+\paragraph{Costs}
+Execution has three costs. It defers documents whose requirement depends on facts the claim does not state; in our data, almost all such deferrals concern one routing fact that the references presume. It reproduces the errors of its rules exactly, so its accuracy is bounded by rule quality. And \casepath's verification doubles the model calls; with the frontier model, the verifier rejected only correct verdicts and so added deferrals without catching errors, whereas with the cost-efficient model it reduced wrong changes. A further cost was self-inflicted and is now removed: strong Kleene evaluation in the production engine held entire processes behind one open fact; exact deferral halved these holds without adding errors.
+
+\subsection{Implications for practice}
+\label{sec:practice}
+
+Table~\ref{tab:guidance} summarises when each design is preferable. Three findings carry most of the guidance. First, if an organisation wants request quality that does not depend on its choice of model, or wants to run a cost-efficient model, it should execute its rules: on the theft cases, \casepath with \texttt{gpt-6-luna} was at least as accurate as the frontier model applying the rules in context, at half the cost per case, and on the tenancy claims it made fewer unsafe errors, although it deferred more documents. Second, rules must be verified before they are executed. Extraction errors were the dominant source of \casepath's errors, and automated rule verification can focus expert review on a third fewer rules without missing a known error, but it cannot replace that review. Third, an executing agent needs an explicit policy for silence: which unstated facts may be presumed once the claim's category is known, and which must be asked. A single presumption for the routing fact removed most of \casepath's deferrals on the tenancy claims without adding unsafe errors.
+
+\begin{table}[t]
+\caption{When to execute the rules and when to let the model apply them, from the evidence in this article.}
+\label{tab:guidance}
+\small
+\begin{tabularx}{\linewidth}{@{}XX@{}}
+\toprule
+Situation & Preferable design and why \\
+\midrule
+Cost-efficient or changing model & Execute: request quality depended far less on the model (Figure~\ref{fig:theft}). \\
+Requests must be justified to a regulator or claimant & Execute: every request follows from a recorded judgment and a rule. \\
+Rules extracted automatically and not yet reviewed & Verify the rules first; a frontier model applying unreviewed rules in context made fewer errors than executing them. \\
+Facts often left unstated at intake & Execute with explicit presumption rules; otherwise expect many clarification questions. \\
+Frontier model, reviewed rules, low audit needs & Either; applying the rules in context was as safe and more complete, but offers no guarantee. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The results also indicate where people should remain in the loop. Before deployment, experts should review and admit the rule packs, starting with the rules that automated verification flags, and decide the presumption policy for unstated facts. In operation, the held documents and their questions mark exactly the facts on which the claim's evidence depends; claims whose category the agent cannot verify go to a person as a whole; and the traces let a reviewer check any request against its rule and quotation. These are the points at which human judgment changes outcomes; the remaining decisions follow mechanically.
+
+\subsection{Implications for research}
+\label{sec:research}
+
+Two methodological lessons apply beyond this study. First, comparisons of agent designs are model-dependent: the original study's conclusion held for two of three models and reversed for the strongest, so single-model, single-run evaluations of agent architectures are statements about a model, not a design. Second, references encode a policy for silence. The tenancy references presume facts the claims do not state, which penalises a design that asks; benchmarks for information-seeking agents should state which facts their references presume and score deferrals separately from errors. Finally, a verification call is no default improvement: its value depended on the model, and its rejections should be audited before it is relied on.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+The evidence has clear limits. Both datasets are synthetic. The tenancy references were generated from the same templates the designs receive, so they test how a design applies given rules, not whether the rules are legally correct; the theft references derive from a model-built source contract, which an independent re-derivation reproduced for seven of nine conditions, and no legal expert reviewed either. The rules cover two Swiss domains and small processes with at most five conditions per claim. We used three runs per case and two current models from one provider, with the original study's model as a third; other models may behave differently. The held-out tenancy messages were visible during product development, and the theft cases have been public since the original study. Claims with adversarial instructions, scanned documents and photographs were not tested, and route selection among alternative documents was tested only on the theft rules. Finally, this article evaluates the request decision; whether the agent saves handlers time or improves claimants' experience is a question for field studies with professionals, which we pursue separately.

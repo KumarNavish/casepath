@@ -84,6 +84,8 @@ def tenancy():
     out = {}
     per_claim = {}
     for name, runs in systems.items():
+        if all(p is None for plans in runs.values() for p in plans):
+            continue  # design not run with this model
         rows = []
         for c in cids:
             R = set(reference(c)["request_set"]) - unscored(c)
@@ -115,7 +117,7 @@ def tenancy():
         for r in rows:
             clusters[fam_of[r["c"]]].append(r)
         for metric in ("unnecessary_rate", "recall", "deferral_rate", "silent_miss_rate", "unsafe_per_claim"):
-            res[metric + "_ci"] = bootstrap(clusters, lambda s, m=metric: summ([r for cl in s for r in cl])[m], B=4000)
+            res[metric + "_ci"] = bootstrap(clusters, lambda s, m=metric: summ([r for cl in s for r in cl])[m], B=10000)
         if name not in ("B1-SC3",):
             stab = []
             for c in cids:
@@ -140,8 +142,9 @@ def tenancy():
         allA = [r for f in ca for r in ca[f]]; allB = [r for f in cb for r in cb[f]]
         return {"a": a, "b": b, "metric": metric, "a_value": val(allA), "b_value": val(allB),
                 "diff": val(allA) - val(allB), "p_signflip": signflip_p(diffs), "clusters": len(diffs)}
-    out["_contrasts"] = [contrast("CP-exact", "B1", "unsafe"), contrast("CP-kleene", "B1", "deferred"),
-                         contrast("CP-exact", "CP-kleene", "deferred"), contrast("CP-exact", "B1", "fp")]
+    out["_contrasts"] = [contrast(a, b, mt) for a, b, mt in
+                         (("CP-exact", "B1", "unsafe"), ("CP-kleene", "B1", "deferred"),
+                          ("CP-exact", "CP-kleene", "deferred"), ("CP-exact", "B1", "fp")) if a in per_claim and b in per_claim]
     return out, per_claim
 
 
@@ -166,6 +169,8 @@ def theft():
                 rows.append(s)
         on = [s for s in rows if s["kind"] == "on" and s["available"]]
         un = [s for s in rows if s["kind"] == "unresolved" and s["available"]]
+        if not on:
+            continue  # design not run with this model
 
         def summ_on(rs):
             c, w, m = (sum(r[k] for r in rs) for k in ("correct", "wrong", "missed"))
@@ -181,7 +186,7 @@ def theft():
         for r in on:
             cl[r["condition"]].append(r)
         for metric in ("f1", "wrong_per_pair", "missed_per_pair"):
-            res["on"][metric + "_ci"] = bootstrap(cl, lambda s, m=metric: summ_on([r for c in s for r in c])[m], B=4000)
+            res["on"][metric + "_ci"] = bootstrap(cl, lambda s, m=metric: summ_on([r for c in s for r in c])[m], B=10000)
         agreed = [r for r in on if r["condition"] not in ("PR_declined", "PR_expert_procedure_requested")]
         res["on_agreed_references"] = summ_on(agreed)
         res["unresolved"] = {"pairs": len(un), "premature_rate": sum(r["premature"] for r in un) / len(un) if un else None,
@@ -215,9 +220,10 @@ def theft():
         diffs = [f(da[c]) - f(db[c]) for c in conds]
         return {"a": a, "b": b, "kind": kind, "metric": metric, "diff_mean_over_conditions": sum(diffs) / len(diffs),
                 "p_signflip": signflip_p(diffs), "clusters": len(conds)}
-    out["_contrasts"] = [contrast("CP", "D", "on", "wrong"), contrast("CP", "R", "on", "wrong"),
-                         contrast("CP", "D", "unresolved", "premature_or_change"),
-                         contrast("CP", "R", "unresolved", "premature_or_change")]
+    out["_contrasts"] = [contrast(a, b, k, mt) for a, b, k, mt in
+                         (("CP", "D", "on", "wrong"), ("CP", "R", "on", "wrong"),
+                          ("CP", "D", "unresolved", "premature_or_change"), ("CP", "R", "unresolved", "premature_or_change"))
+                         if a in out and b in out]
     return out
 
 

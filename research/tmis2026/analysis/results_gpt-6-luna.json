@@ -1,0 +1,604 @@
+{
+ "tenancy": {
+  "B1": {
+   "unnecessary_rate": 0.0011627906976744186,
+   "recall": 0.9657110736368747,
+   "deferral_rate": 0.017987633501967398,
+   "silent_miss_rate": 0.016301292861157952,
+   "unsafe_per_claim": 0.11481481481481481,
+   "holds_per_claim": 1.6407407407407408,
+   "requests_per_claim": 6.37037037037037,
+   "availability": 1.0,
+   "family_accuracy": 0.9962962962962963,
+   "claim_deferral": 0.003703703703703704,
+   "fp": 2,
+   "miss": 29,
+   "defer": 32,
+   "tp": 1718,
+   "nR": 1779,
+   "nP": 1720,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0035587188612099642
+   ],
+   "recall_ci": [
+    0.9402898550724638,
+    0.9878567091681846
+   ],
+   "deferral_rate_ci": [
+    0.004489337822671156,
+    0.03485103991006183
+   ],
+   "silent_miss_rate_ci": [
+    0.0027593818984547464,
+    0.036521739130434785
+   ],
+   "unsafe_per_claim_ci": [
+    0.02564102564102564,
+    0.24444444444444444
+   ],
+   "test_retest_jaccard": 0.9752116402116403,
+   "claims_identical_across_runs": 0.8333333333333334
+  },
+  "CP-kleene": {
+   "unnecessary_rate": 0.0,
+   "recall": 0.5306351883080382,
+   "deferral_rate": 0.46655424395727935,
+   "silent_miss_rate": 0.002810567734682406,
+   "unsafe_per_claim": 0.018518518518518517,
+   "holds_per_claim": 6.32962962962963,
+   "requests_per_claim": 3.4962962962962965,
+   "availability": 1.0,
+   "family_accuracy": 0.9592592592592593,
+   "claim_deferral": 0.040740740740740744,
+   "fp": 0,
+   "miss": 5,
+   "defer": 830,
+   "tp": 944,
+   "nR": 1779,
+   "nP": 944,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0
+   ],
+   "recall_ci": [
+    0.35409457900807384,
+    0.6938435940099834
+   ],
+   "deferral_rate_ci": [
+    0.30658105939004815,
+    0.6485875706214689
+   ],
+   "silent_miss_rate_ci": [
+    0.0,
+    0.008865248226950355
+   ],
+   "unsafe_per_claim_ci": [
+    0.0,
+    0.056818181818181816
+   ],
+   "test_retest_jaccard": 0.7977513227513228,
+   "claims_identical_across_runs": 0.5555555555555556
+  },
+  "CP-kleene-noverifier": {
+   "unnecessary_rate": 0.0,
+   "recall": 0.59584035975267,
+   "deferral_rate": 0.3991006183249016,
+   "silent_miss_rate": 0.00505902192242833,
+   "unsafe_per_claim": 0.03333333333333333,
+   "holds_per_claim": 5.9185185185185185,
+   "requests_per_claim": 3.925925925925926,
+   "availability": 1.0,
+   "family_accuracy": 0.9888888888888889,
+   "claim_deferral": 0.011111111111111112,
+   "fp": 0,
+   "miss": 9,
+   "defer": 710,
+   "tp": 1060,
+   "nR": 1779,
+   "nP": 1060,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0
+   ],
+   "recall_ci": [
+    0.3976510067114094,
+    0.7706528018486424
+   ],
+   "deferral_rate_ci": [
+    0.2187153931339978,
+    0.5943287037037037
+   ],
+   "silent_miss_rate_ci": [
+    0.0,
+    0.01592920353982301
+   ],
+   "unsafe_per_claim_ci": [
+    0.0,
+    0.10227272727272728
+   ],
+   "test_retest_jaccard": 0.9235449735449736,
+   "claims_identical_across_runs": 0.7777777777777778
+  },
+  "CP-exact": {
+   "unnecessary_rate": 0.0,
+   "recall": 0.7982012366498032,
+   "deferral_rate": 0.19786396852164137,
+   "silent_miss_rate": 0.0039347948285553686,
+   "unsafe_per_claim": 0.025925925925925925,
+   "holds_per_claim": 3.922222222222222,
+   "requests_per_claim": 5.2592592592592595,
+   "availability": 1.0,
+   "family_accuracy": 0.9592592592592593,
+   "claim_deferral": 0.040740740740740744,
+   "fp": 0,
+   "miss": 7,
+   "defer": 352,
+   "tp": 1420,
+   "nR": 1779,
+   "nP": 1420,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0
+   ],
+   "recall_ci": [
+    0.67003367003367,
+    0.889967637540453
+   ],
+   "deferral_rate_ci": [
+    0.10547095318668923,
+    0.3230769230769231
+   ],
+   "silent_miss_rate_ci": [
+    0.0,
+    0.012455516014234875
+   ],
+   "unsafe_per_claim_ci": [
+    0.0,
+    0.07954545454545454
+   ],
+   "test_retest_jaccard": 0.8123456790123457,
+   "claims_identical_across_runs": 0.5111111111111111
+  },
+  "CP-exact-noverifier": {
+   "unnecessary_rate": 0.0,
+   "recall": 0.8780213603147836,
+   "deferral_rate": 0.1163575042158516,
+   "silent_miss_rate": 0.005621135469364812,
+   "unsafe_per_claim": 0.037037037037037035,
+   "holds_per_claim": 3.4444444444444446,
+   "requests_per_claim": 5.785185185185185,
+   "availability": 1.0,
+   "family_accuracy": 0.9888888888888889,
+   "claim_deferral": 0.011111111111111112,
+   "fp": 0,
+   "miss": 10,
+   "defer": 207,
+   "tp": 1562,
+   "nR": 1779,
+   "nP": 1562,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0
+   ],
+   "recall_ci": [
+    0.7544483985765125,
+    0.9573573573573574
+   ],
+   "deferral_rate_ci": [
+    0.035541195476575124,
+    0.24436936936936937
+   ],
+   "silent_miss_rate_ci": [
+    0.0,
+    0.01773049645390071
+   ],
+   "unsafe_per_claim_ci": [
+    0.0,
+    0.11363636363636363
+   ],
+   "test_retest_jaccard": 0.9332451499118166,
+   "claims_identical_across_runs": 0.7333333333333333
+  },
+  "B1-SC3": {
+   "unnecessary_rate": 0.0,
+   "recall": 0.96964586846543,
+   "deferral_rate": 0.016863406408094434,
+   "silent_miss_rate": 0.013490725126475547,
+   "unsafe_per_claim": 0.08888888888888889,
+   "holds_per_claim": 1.6444444444444444,
+   "requests_per_claim": 6.388888888888889,
+   "availability": 1.0,
+   "family_accuracy": 1.0,
+   "claim_deferral": 0.0,
+   "fp": 0,
+   "miss": 8,
+   "defer": 10,
+   "tp": 575,
+   "nR": 593,
+   "nP": 575,
+   "unnecessary_rate_ci": [
+    0.0,
+    0.0
+   ],
+   "recall_ci": [
+    0.9426086956521739,
+    0.9918433931484503
+   ],
+   "deferral_rate_ci": [
+    0.0017331022530329288,
+    0.03636363636363636
+   ],
+   "silent_miss_rate_ci": [
+    0.0,
+    0.033391915641476276
+   ],
+   "unsafe_per_claim_ci": [
+    0.0,
+    0.21978021978021978
+   ]
+  },
+  "_contrasts": [
+   {
+    "a": "CP-exact",
+    "b": "B1",
+    "metric": "unsafe",
+    "a_value": 0.025925925925925925,
+    "b_value": 0.11481481481481481,
+    "diff": -0.08888888888888889,
+    "p_signflip": 0.015625,
+    "clusters": 17
+   },
+   {
+    "a": "CP-kleene",
+    "b": "B1",
+    "metric": "deferred",
+    "a_value": 0.46655424395727935,
+    "b_value": 0.017987633501967398,
+    "diff": 0.44856661045531193,
+    "p_signflip": 1.52587890625e-05,
+    "clusters": 17
+   },
+   {
+    "a": "CP-exact",
+    "b": "CP-kleene",
+    "metric": "deferred",
+    "a_value": 0.19786396852164137,
+    "b_value": 0.46655424395727935,
+    "diff": -0.26869027543563795,
+    "p_signflip": 6.103515625e-05,
+    "clusters": 17
+   },
+   {
+    "a": "CP-exact",
+    "b": "B1",
+    "metric": "fp",
+    "a_value": 0.0,
+    "b_value": 0.007407407407407408,
+    "diff": -0.007407407407407408,
+    "p_signflip": 1.0,
+    "clusters": 17
+   }
+  ]
+ },
+ "theft": {
+  "R": {
+   "on": {
+    "correct": 70,
+    "wrong": 68,
+    "wrong_add": 52,
+    "wrong_withdraw": 16,
+    "missed": 29,
+    "precision": 0.5072463768115942,
+    "recall": 0.7070707070707071,
+    "f1": 0.5907172995780591,
+    "exact_rate": 0.2222222222222222,
+    "wrong_per_pair": 0.8395061728395061,
+    "missed_per_pair": 0.35802469135802467,
+    "f1_ci": [
+     0.41414141414141414,
+     0.7186440677966102
+    ],
+    "wrong_per_pair_ci": [
+     0.7283950617283951,
+     0.9753086419753086
+    ],
+    "missed_per_pair_ci": [
+     0.14814814814814814,
+     0.5802469135802469
+    ]
+   },
+   "on_available": 1.0,
+   "on_agreed_references": {
+    "correct": 58,
+    "wrong": 55,
+    "wrong_add": 42,
+    "wrong_withdraw": 13,
+    "missed": 23,
+    "precision": 0.5132743362831859,
+    "recall": 0.7160493827160493,
+    "f1": 0.5979381443298969,
+    "exact_rate": 0.20634920634920634,
+    "wrong_per_pair": 0.873015873015873,
+    "missed_per_pair": 0.36507936507936506
+   },
+   "unresolved": {
+    "pairs": 54,
+    "premature_rate": 0.018518518518518517,
+    "stable_rate": 0.42592592592592593,
+    "held_rate": 0.9074074074074074,
+    "changes_per_pair": 0.7777777777777778
+   },
+   "test_retest_jaccard": 0.8883404982363315,
+   "texts_identical_across_runs": 0.16666666666666666
+  },
+  "CP": {
+   "on": {
+    "correct": 79,
+    "wrong": 17,
+    "wrong_add": 16,
+    "wrong_withdraw": 1,
+    "missed": 20,
+    "precision": 0.8229166666666666,
+    "recall": 0.797979797979798,
+    "f1": 0.8102564102564104,
+    "exact_rate": 0.5925925925925926,
+    "wrong_per_pair": 0.20987654320987653,
+    "missed_per_pair": 0.24691358024691357,
+    "f1_ci": [
+     0.663157894736842,
+     0.9354838709677419
+    ],
+    "wrong_per_pair_ci": [
+     0.037037037037037035,
+     0.4444444444444444
+    ],
+    "missed_per_pair_ci": [
+     0.04938271604938271,
+     0.5679012345679012
+    ]
+   },
+   "on_available": 1.0,
+   "on_agreed_references": {
+    "correct": 63,
+    "wrong": 15,
+    "wrong_add": 15,
+    "wrong_withdraw": 0,
+    "missed": 18,
+    "precision": 0.8076923076923077,
+    "recall": 0.7777777777777778,
+    "f1": 0.7924528301886792,
+    "exact_rate": 0.5396825396825397,
+    "wrong_per_pair": 0.23809523809523808,
+    "missed_per_pair": 0.2857142857142857
+   },
+   "unresolved": {
+    "pairs": 54,
+    "premature_rate": 0.0,
+    "stable_rate": 0.8888888888888888,
+    "held_rate": 0.8148148148148148,
+    "changes_per_pair": 0.1111111111111111
+   },
+   "test_retest_jaccard": 0.973435746352413,
+   "texts_identical_across_runs": 0.6666666666666666
+  },
+  "CP-noverifier": {
+   "on": {
+    "correct": 84,
+    "wrong": 29,
+    "wrong_add": 21,
+    "wrong_withdraw": 8,
+    "missed": 15,
+    "precision": 0.7433628318584071,
+    "recall": 0.8484848484848485,
+    "f1": 0.7924528301886794,
+    "exact_rate": 0.5432098765432098,
+    "wrong_per_pair": 0.35802469135802467,
+    "missed_per_pair": 0.18518518518518517,
+    "f1_ci": [
+     0.6637168141592921,
+     0.9166666666666665
+    ],
+    "wrong_per_pair_ci": [
+     0.12345679012345678,
+     0.654320987654321
+    ],
+    "missed_per_pair_ci": [
+     0.0,
+     0.5061728395061729
+    ]
+   },
+   "on_available": 1.0,
+   "on_agreed_references": {
+    "correct": 67,
+    "wrong": 26,
+    "wrong_add": 20,
+    "wrong_withdraw": 6,
+    "missed": 14,
+    "precision": 0.7204301075268817,
+    "recall": 0.8271604938271605,
+    "f1": 0.7701149425287357,
+    "exact_rate": 0.47619047619047616,
+    "wrong_per_pair": 0.4126984126984127,
+    "missed_per_pair": 0.2222222222222222
+   },
+   "unresolved": {
+    "pairs": 54,
+    "premature_rate": 0.0,
+    "stable_rate": 0.7962962962962963,
+    "held_rate": 0.8148148148148148,
+    "changes_per_pair": 0.2037037037037037
+   },
+   "test_retest_jaccard": 0.9813973063973064,
+   "texts_identical_across_runs": 0.7291666666666666
+  },
+  "CP-allroutes": {
+   "on": {
+    "correct": 72,
+    "wrong": 17,
+    "wrong_add": 16,
+    "wrong_withdraw": 1,
+    "missed": 27,
+    "precision": 0.8089887640449438,
+    "recall": 0.7272727272727273,
+    "f1": 0.7659574468085106,
+    "exact_rate": 0.5185185185185185,
+    "wrong_per_pair": 0.20987654320987653,
+    "missed_per_pair": 0.3333333333333333,
+    "f1_ci": [
+     0.5815602836879433,
+     0.9207920792079209
+    ],
+    "wrong_per_pair_ci": [
+     0.037037037037037035,
+     0.4444444444444444
+    ],
+    "missed_per_pair_ci": [
+     0.04938271604938271,
+     0.7037037037037037
+    ]
+   },
+   "on_available": 1.0,
+   "on_agreed_references": {
+    "correct": 63,
+    "wrong": 15,
+    "wrong_add": 15,
+    "wrong_withdraw": 0,
+    "missed": 18,
+    "precision": 0.8076923076923077,
+    "recall": 0.7777777777777778,
+    "f1": 0.7924528301886792,
+    "exact_rate": 0.5396825396825397,
+    "wrong_per_pair": 0.23809523809523808,
+    "missed_per_pair": 0.2857142857142857
+   },
+   "unresolved": {
+    "pairs": 54,
+    "premature_rate": 0.0,
+    "stable_rate": 0.8888888888888888,
+    "held_rate": 0.6666666666666666,
+    "changes_per_pair": 0.1111111111111111
+   },
+   "test_retest_jaccard": 0.9803520553520554,
+   "texts_identical_across_runs": 0.6875
+  },
+  "R-SC3": {
+   "on": {
+    "correct": 66,
+    "wrong": 48,
+    "wrong_add": 30,
+    "wrong_withdraw": 18,
+    "missed": 33,
+    "precision": 0.5789473684210527,
+    "recall": 0.6666666666666666,
+    "f1": 0.619718309859155,
+    "exact_rate": 0.25925925925925924,
+    "wrong_per_pair": 0.5925925925925926,
+    "missed_per_pair": 0.4074074074074074,
+    "f1_ci": [
+     0.36363636363636365,
+     0.7906976744186047
+    ],
+    "wrong_per_pair_ci": [
+     0.4074074074074074,
+     0.8148148148148148
+    ],
+    "missed_per_pair_ci": [
+     0.14814814814814814,
+     0.6666666666666666
+    ]
+   },
+   "on_available": 1.0,
+   "on_agreed_references": {
+    "correct": 54,
+    "wrong": 39,
+    "wrong_add": 24,
+    "wrong_withdraw": 15,
+    "missed": 27,
+    "precision": 0.5806451612903226,
+    "recall": 0.6666666666666666,
+    "f1": 0.6206896551724138,
+    "exact_rate": 0.2857142857142857,
+    "wrong_per_pair": 0.6190476190476191,
+    "missed_per_pair": 0.42857142857142855
+   },
+   "unresolved": {
+    "pairs": 54,
+    "premature_rate": 0.0,
+    "stable_rate": 0.5555555555555556,
+    "held_rate": 0.9444444444444444,
+    "changes_per_pair": 0.4444444444444444
+   }
+  },
+  "_contrasts": [
+   {
+    "a": "CP",
+    "b": "R",
+    "kind": "on",
+    "metric": "wrong",
+    "diff_mean_over_conditions": -0.6296296296296295,
+    "p_signflip": 0.00390625,
+    "clusters": 9
+   },
+   {
+    "a": "CP",
+    "b": "R",
+    "kind": "unresolved",
+    "metric": "premature_or_change",
+    "diff_mean_over_conditions": -0.46296296296296297,
+    "p_signflip": 0.03125,
+    "clusters": 6
+   }
+  ]
+ },
+ "costs": {
+  "theft|R": {
+   "calls": 144,
+   "cost": 0.10566906500000003,
+   "prompt": 2732505,
+   "cached": 2704324,
+   "completion": 150228,
+   "latency": 1442.6771359443665
+  },
+  "theft|CP-interpret": {
+   "calls": 144,
+   "cost": 0.17390627,
+   "prompt": 389769,
+   "cached": 377857,
+   "completion": 337299,
+   "latency": 2505.387938261032
+  },
+  "theft|CP-verify": {
+   "calls": 144,
+   "cost": 0.10030625000000001,
+   "prompt": 451171,
+   "cached": 298155,
+   "completion": 156417,
+   "latency": 1493.9744346141815
+  },
+  "tenancy|CP-interpret": {
+   "calls": 270,
+   "cost": 0.11660747999999999,
+   "prompt": 1787787,
+   "cached": 1711523,
+   "completion": 179959,
+   "latency": 1988.97150349617
+  },
+  "tenancy|B1": {
+   "calls": 270,
+   "cost": 0.18085733499999984,
+   "prompt": 1765377,
+   "cached": 1689196,
+   "completion": 308926,
+   "latency": 2791.135438680649
+  },
+  "tenancy|CP-verify": {
+   "calls": 270,
+   "cost": 0.12805056499999998,
+   "prompt": 1879168,
+   "cached": 1520119,
+   "completion": 135977,
+   "latency": 1773.0212943553925
+  }
+ }
+}

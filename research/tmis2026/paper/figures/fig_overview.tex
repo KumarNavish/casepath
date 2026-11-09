@@ -1,0 +1,37 @@
+%% Figure 1: the running example through CasePath's four stages (TikZ, editable).
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw=black!35, rounded corners=2pt, align=left, inner sep=4pt, fill=white},
+  model/.style={box, draw=blue!55!black},
+  code/.style={box, draw=black!70},
+  lab/.style={font=\scriptsize\sffamily, text=black!60},
+  arr/.style={-{Stealth[length=4pt]}, black!60, line width=0.6pt}]
+
+\node[box, text width=3.05cm] (claim) {\textbf{Claim}\\[1pt]
+``\ldots a laptop and a watch were stolen. The watch may be separately scheduled in the policy, but I have not found the policy schedule yet.''};
+
+\node[model, text width=3.55cm, right=0.55cm of claim.north east, anchor=north west] (interp) {\textbf{1\enspace Interpret}\hfill{\scriptsize model}\\[1pt]
+\emph{watch separately insured} $=\U$\\
+quote: ``may be separately scheduled''};
+
+\node[model, text width=3.55cm, below=0.25cm of interp] (verify) {\textbf{2\enspace Verify}\hfill{\scriptsize model}\\[1pt]
+second call accepts or rejects each judgment};
+
+\node[code, text width=3.55cm, below=0.25cm of verify] (admit) {\textbf{3\enspace Admit}\hfill{\scriptsize code}\\[1pt]
+keeps a verdict only if its quote occurs verbatim and it was accepted; otherwise $\U$};
+
+\node[box, text width=3.75cm, right=0.55cm of interp.north east, anchor=north west] (rule) {\textbf{Rule} \hfill{\scriptsize from policy terms}\\[1pt]
+if the watch is separately insured above CHF 1{,}000: establish its value by a receipt \emph{or} an expert valuation};
+
+\node[code, text width=3.75cm, below=0.25cm of rule] (exec) {\textbf{4\enspace Execute}\hfill{\scriptsize code}\\[1pt]
+$\T$: \textbf{request} the receipt (fewest documents)\\
+$\F$: \textbf{skip} both documents\\
+$\U$: \textbf{hold} both and ask:\\ \emph{``Was the watch separately insured?''}};
+
+\draw[arr] (claim.east |- interp.west) -- (interp.west);
+\draw[arr] (interp) -- (verify);
+\draw[arr] (verify) -- (admit);
+\draw[arr] (admit.east) -- ++(0.25,0) |- (exec.west);
+\draw[arr] (rule) -- (exec);
+\node[lab, below=0.05cm of exec.south, anchor=north] {every request keeps its trace: source passage $\to$ rule $\to$ quote};
+\end{tikzpicture}
