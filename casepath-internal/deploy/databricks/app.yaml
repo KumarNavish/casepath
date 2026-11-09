@@ -1,4 +1,4 @@
-# CasePath as a Databricks App. Fill in the two marked values in the deployed copy only, never in Git.
+# CasePath as a Databricks App. Fill in the three marked values in the deployed copy only, never in Git.
 command: ["python", "-m", "casepath_internal", "serve", "--host", "0.0.0.0"]
 env:
   # Who may use it: Databricks signs people in and passes their e-mail; CasePath admits only the pilot group.
@@ -10,7 +10,7 @@ env:
   - name: CASEPATH_MODEL_PROVIDER
     value: databricks
   - name: CASEPATH_MODEL
-    value: claude-opus-5-5
+    value: "FILL-IN: the gateway model's exact name, as its Use/Query panel shows it"
   - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
     value: "8000"
   - name: CASEPATH_RUN_WORKERS

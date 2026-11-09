@@ -11,10 +11,10 @@ HOST = "https://adb-1234567890.12.azuredatabricks.net"
 
 class DatabricksModelTests(unittest.TestCase):
     def test_settings_name_the_workspace_and_the_model(self):
-        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST[8:], "CASEPATH_MODEL": "claude-opus-5-5",
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST[8:], "CASEPATH_MODEL": "gateway-model-1",
                                   "CASEPATH_MODEL_MAX_OUTPUT_TOKENS": "4000"})
         self.assertEqual((settings.model.provider, settings.model.endpoint, settings.model.deployment, settings.model.reasoning),
-                         ("databricks", HOST, "claude-opus-5-5", False))
+                         ("databricks", HOST, "gateway-model-1", False))
         with self.assertRaises(SettingsError):  # an arbitrary host stays refused
             load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "CASEPATH_MODEL_ENDPOINT": "https://api.example.com", "CASEPATH_MODEL": "m"})
 
@@ -35,7 +35,7 @@ class DatabricksModelTests(unittest.TestCase):
                 "usage": {"prompt_tokens": 100, "completion_tokens": 20, "prompt_tokens_details": {"cached_tokens": 60}}})
 
         transport = httpx.MockTransport(handler)
-        env = {"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "claude-opus-5-5"}
+        env = {"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "gateway-model-1"}
         settings = load_settings(env).model
         token = databricks_token_provider(HOST, {"DATABRICKS_CLIENT_ID": "id", "DATABRICKS_CLIENT_SECRET": "secret"}, transport=transport)
         model = ChatCompletionsModel(settings, token, transport=transport)
@@ -47,7 +47,7 @@ class DatabricksModelTests(unittest.TestCase):
         self.assertEqual(turn.calls, [{"call_id": "call_1", "name": "record_fact", "arguments": {"fact": "frist"}}])
         self.assertEqual(turn.usage, {"input_tokens": 100, "output_tokens": 20, "cached_tokens": 60})
         _, auth, body = seen[1]
-        self.assertEqual((auth, body["model"], body["tool_choice"]), ("Bearer t-123", "claude-opus-5-5", {"type": "function", "function": {"name": "record_fact"}}))
+        self.assertEqual((auth, body["model"], body["tool_choice"]), ("Bearer t-123", "gateway-model-1", {"type": "function", "function": {"name": "record_fact"}}))
         self.assertEqual(body["messages"][1]["content"][1], {"type": "image_url", "image_url": {"url": "data:image/png;base64,AAAA"}})
         # the next turn carries the call and its result as chat messages
         follow = to_messages("x", [{"role": "user", "content": "go"}, *turn.output,
