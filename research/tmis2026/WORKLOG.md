@@ -71,3 +71,34 @@ Newest entries at the bottom. Times are UTC.
   exported verbatim by analysis/export_prompts.py.
 - runs/responses_cache.tar.gz holds every cached model response (the raw
   cache directory stays git-ignored).
+
+## 2026-11-09 18:00–18:40 — Final evidence audit, deliverables
+- Audited every claim in the abstract, introduction, results, discussion and
+  conclusion against the evidence files before packaging. Corrections:
+  - **Correction to the 17:00–17:30 entry above:** exact deferral does *not*
+    come "with no new errors". It removes 43% (terra) and 58% (luna) of the
+    product engine's deferrals and adds no unnecessary request, but it adds 4
+    and 2 silent misses (of 1,779 required documents over three runs). Each is
+    a supplied document CasePath judged sufficient that the reference marks
+    insufficient (5) or missing (1); the Kleene holds had hidden these
+    document-review errors. The paper now reports that the second part of H2
+    is not supported (new macros `ten*ExactCut`, `ten*ExactAddedMiss`).
+  - "Almost all" deferrals from the routing fact -> "most": 74% (terra,
+    397/538) and 59% (luna, 206/352).
+  - The frontier model's accuracy edge on extracted rules (F1 0.79 vs 0.67,
+    H3 Holm p = 0.42) is now called not significant wherever it is claimed.
+  - An introduction sentence gave F1 for a wrong-change count; now 17 vs 68.
+  - Limitations now state why no ReAct-style tool-using agent was compared.
+- Bug fix: `analysis/tenancy_extra.py` ignored its model argument (the client
+  binds the model at import), so it always read terra's cache. It now binds
+  the model before import and allows cached responses only (budget 0). Terra
+  output reproduced unchanged; luna output is new (deferral causes, routing
+  presumption 95.0% recall / 0.0% unnecessary, citations 98.8% verbatim for
+  rules in context and 99.4% for CasePath's interpreter). No model calls.
+- `analysis/verify_paper.py`: all checks pass (recompute, byte-identical
+  macros, citations resolve, clean compile, no undefined references).
+- Deliverables in `deliverables/`: Overleaf ZIP, compiled PDF, reviewer/Joe
+  checklist, evidence summary with remaining submission requirements.
+- Total model spend for this paper: USD 9.42 (terra 8.61, luna 0.81).
+- Not done: sciCORE (Mac offline; computations ran locally and are
+  deterministic), PR to `main` (needs the owner's decision).

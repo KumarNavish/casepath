@@ -1,0 +1,66 @@
+{
+ "gpt-6.1-terra": {
+  "tenancy_closed": {
+   "recall": 0.6891512085441259,
+   "unnecessary_rate": 0.0056772100567721,
+   "silent_miss_rate": 0.3108487914558741,
+   "fp": 7,
+   "miss": 553,
+   "nR": 1779
+  },
+  "tenancy_eager": {
+   "recall": 0.9426644182124789,
+   "unnecessary_rate": 0.2947855340622372,
+   "silent_miss_rate": 0.05733558178752108,
+   "fp": 701,
+   "miss": 102,
+   "nR": 1779
+  },
+  "theft_closed": {
+   "wrong": 38,
+   "missed": 30,
+   "f1": 0.6699029126213593,
+   "premature_rate": 0.0,
+   "stable_rate": 0.7222222222222222
+  },
+  "theft_eager": {
+   "wrong": 34,
+   "missed": 45,
+   "f1": 0.5775401069518716,
+   "premature_rate": 0.5,
+   "stable_rate": 0.46296296296296297
+  }
+ },
+ "gpt-6-luna": {
+  "tenancy_closed": {
+   "recall": 0.7982012366498032,
+   "unnecessary_rate": 0.0,
+   "silent_miss_rate": 0.20179876335019675,
+   "fp": 0,
+   "miss": 359,
+   "nR": 1779
+  },
+  "tenancy_eager": {
+   "recall": 0.954468802698145,
+   "unnecessary_rate": 0.293970893970894,
+   "silent_miss_rate": 0.045531197301854974,
+   "fp": 707,
+   "miss": 81,
+   "nR": 1779
+  },
+  "theft_closed": {
+   "wrong": 17,
+   "missed": 20,
+   "f1": 0.8102564102564104,
+   "premature_rate": 0.0,
+   "stable_rate": 0.8888888888888888
+  },
+  "theft_eager": {
+   "wrong": 97,
+   "missed": 44,
+   "f1": 0.43824701195219123,
+   "premature_rate": 0.5185185185185185,
+   "stable_rate": 0.2037037037037037
+  }
+ }
+}

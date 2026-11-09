@@ -44,6 +44,11 @@ for M, tag in models.items():
         m(p + "FP", v["fp"]); m(p + "MissN", v["miss"]); m(p + "DeferN", v["defer"]); m(p + "TP", v["tp"]); m(p + "NR", v["nR"])
         if v.get("test_retest_jaccard") is not None:
             m(p + "Retest", f"{v['test_retest_jaccard']:.3f}"); m(p + "Ident", pct(v["claims_identical_across_runs"], 0))
+    k, x = t.get("CP-kleene"), t.get("CP-exact")
+    if k and x:  # what exact deferral changes relative to the production engine, on the same judgments
+        m(f"ten{M}ExactCut", f"{100 * (1 - x['defer'] / k['defer']):.0f}")
+        m(f"ten{M}ExactAddedMiss", x["miss"] - k["miss"]); m(f"ten{M}ExactAddedFP", x["fp"] - k["fp"])
+        m(f"ten{M}ExactNR", f"{x['nR']:,}".replace(",", "{,}"))  # required documents over the three runs
     for i, c in enumerate(t.get("_contrasts", [])):
         m(f"ten{M}C{'ABCD'[i]}Diff", f"{c['diff']:+.3f}"); m(f"ten{M}C{'ABCD'[i]}P", f"{c['p_signflip']:.4f}".rstrip('0'))
     th = r.get("theft", {})
@@ -99,6 +104,19 @@ if x:
         m("cit" + {"B1": "Bone", "B2": "Btwo", "CP-proposal": "CPProp"}[k], v["citations"])
     ver = x["verifier"]
     m("verChecked", ver["checked"]); m("verRejected", ver["rejected"]); m("verRejTrue", ver.get("rejected_true", 0))
+    m("defRoutingPct", f"{100 * d.get('routing_fact', 0) / total_def:.0f}")
+# the same analyses for the cost-efficient model (B2 was not run with it)
+x = load("tenancy_extra_gpt-6-luna.json")
+if x:
+    d = x["deferral_causes"]
+    total_def = d.get("routing_fact", 0) + d.get("claim_deferred", 0) + d.get("other_condition", 0)
+    m("defLunaRouting", d.get("routing_fact", 0)); m("defLunaTotal", total_def)
+    m("defLunaRoutingPct", f"{100 * d.get('routing_fact', 0) / total_def:.0f}")
+    rp = x["routing_presumption"]
+    m("presLunaRecall", pct(rp["tp"] / rp["nR"])); m("presLunaUnnec", pct(rp["fp"] / rp["nP"]))
+    for k, v in x["citations"].items():
+        short = {"B1": "Bone", "B2": "Btwo", "CP-proposal": "CPProp"}[k]
+        m("citLuna" + short, v["citations"]); m("citLuna" + short + "Exact", pct(v["exact_rate"]))
 j = load("judgment_accuracy_gpt-6.1-terra.json")
 if j:
     m("jaCorrect", j["interp | correct"]); m("jaFlipped", j["interp | flipped"]); m("jaUnres", j["interp | unresolved"])
@@ -142,5 +160,22 @@ if pt:
             m(f"pt{M}{name}", ("<0.001" if ph < 0.001 else f"{ph:.3f}"))
             if "retest_diff" in row:
                 m(f"pt{M}{name}Diff", f"{row['retest_diff']:+.2f}")
+tv = load("two_valued.json")
+if tv:
+    for M, tag in models.items():
+        r = tv.get(tag)
+        if not r:
+            continue
+        for mode, short in (("closed", "Closed"), ("eager", "Eager")):
+            t = r[f"tenancy_{mode}"]
+            m(f"tv{M}{short}Recall", pct(t["recall"])); m(f"tv{M}{short}Unnec", pct(t["unnecessary_rate"]))
+            m(f"tv{M}{short}Miss", pct(t["silent_miss_rate"])); m(f"tv{M}{short}FP", t["fp"])
+            h = r[f"theft_{mode}"]
+            m(f"tvTh{M}{short}Wrong", h["wrong"]); m(f"tvTh{M}{short}Missed", h["missed"]); m(f"tvTh{M}{short}Fone", f"{h['f1']:.3f}")
+            m(f"tvTh{M}{short}Stable", pct(h["stable_rate"], 0)); m(f"tvTh{M}{short}Premature", pct(h["premature_rate"], 0))
+jl = load("judgment_accuracy_gpt-6-luna.json")
+if jl:
+    m("jaLunaCorrect", jl["interp | correct"]); m("jaLunaFlipped", jl.get("interp | flipped", 0)); m("jaLunaUnres", jl["interp | unresolved"])
+    m("jaLunaRejCorrect", jl.get("verifier_rejected | was_correct", 0))
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")

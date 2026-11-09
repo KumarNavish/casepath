@@ -19,5 +19,16 @@ The separate professional-usefulness study (Paper B, IJHCS) is out of scope.
 | `analysis/` | Analysis scripts and their outputs |
 | `scicore/` | sciCORE job scripts and results |
 | `paper/` | The LaTeX source of the paper |
+| `deliverables/` | Overleaf ZIP, compiled PDF, review-response checklist, evidence summary |
 
 Nothing here changes the product, the released datasets or the frozen ICLR evidence.
+
+## Reproduce
+
+Restore the cached model responses, then recompute every number and figure and
+compile the paper (no model calls are made):
+
+```bash
+tar -xzf runs/responses_cache.tar.gz -C runs
+cd analysis && python3 verify_paper.py
+```

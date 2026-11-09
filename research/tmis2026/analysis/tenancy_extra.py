@@ -1,5 +1,10 @@
 """Explanatory analyses for the tenancy runs (no model calls; cached results only)."""
-import json, sys
+import json, os, sys
+# Bind the model before the client is imported (its default model is read at import), and allow
+# cached responses only: an uncached call raises BudgetExceeded instead of reaching the API.
+TAG = sys.argv[1] if len(sys.argv) > 1 else "gpt-6.1-terra"
+os.environ["TMIS_MODEL"] = f"openai/{TAG}"
+os.environ["TMIS_BUDGET_USD"] = "0"
 from collections import Counter, defaultdict
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
@@ -10,11 +15,18 @@ from tenancy_methods import run_b1, run_b2, run_cp
 from tenancy_score import unscored
 from casepath_tenancy import casepath_plan_exact, proposal_items, validate_interpretation, templates, plan_from_verified_exact
 
-TAG = sys.argv[1] if len(sys.argv) > 1 else "gpt-6.1-terra"
 ROUTING = {"lease_termination_dispute": "termination_received", "rent_increase_dispute": "claim_received"}
 cids = claim_ids("test")
 out = {"deferral_causes": Counter(), "citations": {}, "verifier": Counter(), "routing_presumption": Counter(),
        "by_type": defaultdict(Counter)}
+
+
+def cached(run_method, cid, r):
+    """The method's cached result, or None if the design was not run with this model."""
+    try:
+        return run_method(cid, r)["raw"]["result"]
+    except llm.BudgetExceeded:
+        return None
 
 
 def exact_rate(rows, srcs):
@@ -33,8 +45,7 @@ for cid in cids:
     R = set(ref["request_set"]) - unscored(cid)
     srcs = sources(cid)
     for r in range(3):
-        b1 = run_b1(cid, r)["raw"]["result"]
-        b2 = run_b2(cid, r)["raw"]["result"]
+        b1, b2 = (cached(f, cid, r) for f in (run_b1, run_b2))
         if b1:
             n, ok = exact_rate(b1["documents"], srcs); cit["B1"][0] += n; cit["B1"][1] += ok
         if b2:
