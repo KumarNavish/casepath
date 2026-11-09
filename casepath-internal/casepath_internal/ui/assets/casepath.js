@@ -520,11 +520,21 @@ function liveState() {
   for (const e of S.events) if (e.kind === "process.state") { state = e; if (e.graph) graph = e.graph; }
   return state && graph ? { state, graph, steps: Object.fromEntries(graph.steps.map((s) => [s.id, s])) } : null;
 }
+// A process step's title without its role prefix ("KI/System:", "User:"), cut after its first clause when long;
+// the full title stays one hover away.
+function shortTitle(title) {
+  let text = String(title || "").replace(/^(KI\/System|User\/VN|User|Kunde|System|Entscheidung)\s*:\s*/i, "");
+  if (text.length > 64) {
+    const cut = text.search(/(\. |; | — | → )/);
+    if (cut >= 12) text = text.slice(0, cut);
+  }
+  return clip(text, 64);
+}
 // A step whose way on depends on one answer is shown as that question; any other step by its title.
 function stepLabel(step) {
   const asks = step.asks || [];
   const fact = asks.length === 1 && facts().find((f) => f.id === asks[0]);
-  return fact ? questionLabel(fact) : step.title;
+  return fact ? questionLabel(fact) : shortTitle(step.title);
 }
 const branchLabel = (edge, steps) => edge.label || (steps[edge.to] || {}).title || edge.to;
 
@@ -664,7 +674,7 @@ function processView() {
   const nodes = model.nodes.map((n, i) => {
     const cls = n.state === "passed" || n.state === "terminal" ? "done" : n.state === "current" ? "current" : "";
     return `<button class="cp-node ${cls}" data-step="${esc(n.step.id)}" aria-pressed="${S.step === n.step.id}"><span class="badge">${cls === "done" ? icon("tick") : ""}</span>
-      <b>${i + 1}</b>${esc(n.step.title)}${originLabel(n.step)}</button>`;
+      <b>${i + 1}</b><span title="${esc(n.step.title)}">${esc(shortTitle(n.step.title))}</span>${originLabel(n.step)}</button>`;
   }).join("");
   const selected = model.steps[S.step];
   const pathIds = model.path.map((p) => p.step.id);
@@ -686,7 +696,8 @@ function chain() {
   const sources = (S.data.process.sources || []).filter((s) => !["knowledge", "edit"].includes(s.id));
   const list = (items, empty) => items.length ? `<ul>${items.join("")}</ul>` : `<span class="cp-muted">${empty}</span>`;
   return `<div class="cp-chain">
-    <section><h4>${icon("doc")}${T("Source facts", "Belegte Fakten")}</h4>${list(accepted.map((f) => `<li><span class="ok">${icon("check")}</span>${esc(questionOf(f.fact))}: ${esc(valueText(f.value))}</li>`), T("None accepted yet", "Noch keine bestätigt"))}</section>
+    <section><h4>${icon("doc")}${T("Source facts", "Belegte Fakten")}</h4>${list(accepted.slice(0, 6).map((f) => `<li><span class="ok">${icon("check")}</span>${esc(clip(questionOf(f.fact), 70))}: ${esc(clip(valueText(f.value), 60))}</li>`)
+      .concat(accepted.length > 6 ? [`<li><a class="cp-link" href="#/case/${esc(S.route.id)}/source_checker">${T(`and ${accepted.length - 6} more`, `und ${accepted.length - 6} weitere`)}</a></li>`] : []), T("None accepted yet", "Noch keine bestätigt"))}</section>
     <section><h4>${icon("law")}${T("Basis", "Grundlage")}</h4>${list(sources.map((s) => `<li>${esc(s.title)}</li>`), "—")}</section>
     <section><h4>${icon("evidence")}${T("Current evidence", "Vorhandene Belege")}</h4>${list(present.map((d) => `<li>${esc(d.title)}</li>`), T("None found yet", "Noch keine gefunden"))}</section>
     <section><h4>${icon("doc")}${T("Evidence still needed", "Noch benötigte Belege")}</h4>${list(missing.map((d) => `<li>${esc(d.title)}</li>`), T("Nothing missing", "Nichts fehlt"))}</section>
@@ -999,6 +1010,11 @@ async function renderCase() {
     if (agent && agent !== "lead") { S.route.tab = agent; history.replaceState(null, "", `#/case/${S.route.id}/${agent}`); }
     renderCase();
   });
+  let previousBottom = null;  // a node that starts below the previous one's bottom begins a new row: no arrow into it
+  for (const node of document.querySelectorAll(".cp-graph .cp-node")) {
+    node.classList.toggle("row-start", previousBottom !== null && node.offsetTop >= previousBottom);
+    previousBottom = node.offsetTop + node.offsetHeight;
+  }
   const open = $("#edit-open");
   if (open) open.addEventListener("click", () => { S.editing = true; renderCase(); });
   const undo = $("#undo");
