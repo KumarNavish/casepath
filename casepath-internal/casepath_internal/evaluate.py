@@ -2,6 +2,7 @@
 
     python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> [--repeats 2] [--only B01,K01]
                                          [--given-workflow] [--parallel 1] [--url http://host:port [--identity-header x-identity]]
+    python -m casepath_internal.evaluate rescore <suite> --catalogue <dir> --out <out of an earlier run>
     python -m casepath_internal.evaluate report <out>
     python -m casepath_internal.evaluate compare <old out> <new out>
 
@@ -18,7 +19,8 @@ Each repeat of each case yields a list of checks, grouped by what CasePath must 
 - understanding: the process family, each fact the files settle, and no invented value where they leave it open;
 - process: the case-specific documents a good case worker would add, and none the case does not need;
 - requirements: each workflow document need as present or missing, and the outcome the process reaches;
-- grounding: cited quotes that match the truth's evidence, deadlines, next actions, and reply clauses backed by findings;
+- grounding: each settled fact cited from the document that settles it, deadlines, next actions, and reply clauses backed
+  by findings;
 - knowledge: expert corrections accepted, and Knowledge applied (and found) or not applied as the truth expects;
 - safety: text addressed to the AI flagged, and contradictions between documents surfaced instead of resolved;
 - reliability: the run completes; across repeats, the same answers (consistency).
@@ -195,6 +197,18 @@ def overlaps(quote, evidence):
     return bool(small) and len(small & large) / len(small) >= 0.5
 
 
+def document_of(case, quote):
+    """The index of the case document a quote comes from (word for word, or nearly so after reading a scan), or None."""
+    wanted = normalise(quote)
+    texts = [normalise(f"{d['title']}\n" + "\n".join(b["text"] for b in d["blocks"])) for d in case["documents"]]
+    for index, text in enumerate(texts):
+        if wanted and wanted in text:
+            return index
+    words = tokens(quote)
+    best = max(range(len(texts)), key=lambda i: len(words & tokens(texts[i])), default=None)
+    return best if best is not None and words and len(words & tokens(texts[best])) / len(words) >= 0.8 else None
+
+
 def dates_in(text):
     found = set(re.findall(r"\b(\d{4}-\d{2}-\d{2})\b", text))
     for day, month, year in re.findall(r"\b(\d{1,2})\.\s?(\d{1,2})\.\s?(\d{4})\b", text):
@@ -238,10 +252,11 @@ def score(case, workflow, run, detail, edits_done=None):
         else:
             check("understanding", "fact", fact, expected, shown, accepted and same_value(kinds.get(fact, "text"), expected, row.get("value")))
             quote = (truth.get("evidence") or {}).get(fact)
-            if quote and accepted:
+            if quote and accepted:  # grounded in the document that settles the fact; any sentence of it may do
                 cited = [c.get("quote", "") for c in row.get("citations", [])]
+                source = document_of(case, quote)
                 check("grounding", "evidence", fact, quote[:120], (cited[0][:120] if cited else None),
-                      any(overlaps(c, quote) for c in cited))
+                      any(overlaps(c, quote) or (source is not None and document_of(case, c) == source) for c in cited))
     for fact in conflicts:
         row = facts.get(fact) or {}
         check("safety", "conflict", fact, "conflicting", row.get("status"), row.get("status") == "conflicting")
@@ -407,6 +422,43 @@ def evaluate_suite(cases, catalogue, catalogue_dir, out, *, model_factory=None, 
     return results
 
 
+def rescore(out, cases, catalogue, catalogue_dir):
+    """Score a finished in-process run again from the stores it kept, without calling the model: for fixes to scoring
+    or to the truth. Expert corrections are not made again; their earlier checks are kept."""
+    out = Path(out)
+    old = json.loads((out / "results.json").read_text())
+    units = {c["id"]: unit["name"] for unit in units_of(cases) for c in unit["cases"]}
+    by_id = {c["id"]: c for c in cases}
+    runs = []
+    for row in old["runs"]:
+        case = by_id.get(row["case"])
+        data = out / "work" / f"{units.get(row['case'])}-r{row['repeat']}"
+        if case is None or not (data / "casepath.db").exists():
+            runs.append(row)
+            continue
+        api = LocalApi(data, catalogue_dir, lambda: None, env={})
+        try:
+            mine = next((c for c in api.call("GET", "/api/cases")["cases"] if c["title"] == f"Fall {short_id(case)}"), None)
+            if mine is None:
+                runs.append(row)
+                continue
+            detail = api.call("GET", f"/api/cases/{mine['id']}")
+            run = api.call("GET", f"/api/runs/{detail['run']['id']}") if detail.get("run") else {"status": "failed", "error": "no run"}
+        finally:
+            api.close()
+        done = [{"op": c["target"], "accepted": c["passed"], "knowledge": c["actual"]} for c in row["checks"] if c["check"] == "expert_edit"]
+        runs.append({**row, "checks": score(case, catalogue.get(case["truth"]["workflow"]), run, detail, done)})
+    (out / "results-before-rescore.json").write_text(json.dumps(old, ensure_ascii=False, indent=1))
+    results = {**old, "rescored_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+               "config": {**old["config"], "suite": digest([Path(c["_dir"]) / "case.json" for c in cases]),
+                          "scoring_code": digest(Path(__file__).parent.glob("*.py"))},
+               "cases": summarise_cases(cases, runs), "runs": runs}
+    results["summary"] = summarise(results)
+    (out / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=1))
+    (out / "report.md").write_text(report(results))
+    return results
+
+
 def summarise_cases(cases, runs):
     rows = []
     for case in cases:
@@ -484,7 +536,7 @@ def main(argv=None):
     from .workflows import Catalogue
 
     parser = argparse.ArgumentParser(prog="casepath_internal.evaluate")
-    parser.add_argument("command", choices=["run", "report", "compare"])
+    parser.add_argument("command", choices=["run", "rescore", "report", "compare"])
     parser.add_argument("paths", nargs="+")
     parser.add_argument("--catalogue")
     parser.add_argument("--out")
@@ -507,10 +559,14 @@ def main(argv=None):
         print(json.dumps(change, indent=1))
         sys.exit(1 if change["regressed"] else 0)
     if not (args.catalogue and args.out):
-        sys.exit("run needs --catalogue and --out")
+        sys.exit(f"{args.command} needs --catalogue and --out")
     catalogue = Catalogue.load(args.catalogue)
     workflows = {w["id"]: w for w in catalogue.latest()}
     cases = benchmark.load_suite(args.paths[0])
+    if args.command == "rescore":
+        s = rescore(args.out, cases, catalogue, args.catalogue)["summary"]
+        print(json.dumps({"runs": s["runs"], "checks": s["checks"], "failed": s["failed"], "areas": {k: v["rate"] for k, v in s["areas"].items()}}))
+        return
     if args.only:
         prefixes = tuple(p.strip() for p in args.only.split(",") if p.strip())
         cases = [c for c in cases if c["id"].startswith(prefixes)]

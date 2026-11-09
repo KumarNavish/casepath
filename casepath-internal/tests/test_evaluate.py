@@ -101,9 +101,23 @@ class EvaluateTests(unittest.TestCase):
         t01 = next(r for r in results["runs"] if r["case"] == "T01-defect-notice")
         self.assertFalse(any(c["check"] == "applied" for c in t01["checks"]))
 
+        # Scoring again from the kept stores gives the same checks, without a model.
+        from casepath_internal.evaluate import rescore
+        again = rescore(self.root / "out", cases, catalogue, FIXTURES)
+        self.assertEqual([c["passed"] for r in again["runs"] for c in r["checks"]], [c["passed"] for r in results["runs"] for c in r["checks"]])
+
         worse = json.loads(json.dumps(results))
         worse["runs"][0]["checks"][0]["passed"] = False
         self.assertEqual(len(compare(results, worse)["regressed"]), 1)
+
+    def test_evidence_may_be_any_sentence_of_the_document_that_settles_the_fact(self):
+        from casepath_internal.evaluate import document_of
+        c = case("T01-defect-notice")
+        c["documents"].append({**letter(), "title": "Antwort", "blocks": [{"type": "paragraph", "label": "", "text": "Wir prüfen den Fall."}]})
+        self.assertEqual(document_of(c, VENT), 0)
+        self.assertEqual(document_of(c, "Ich lüfte dreimal taglich, trotzdem kommt der Schimmel zurück"), 0)  # read from a scan
+        self.assertEqual(document_of(c, "Wir prüfen den Fall."), 1)
+        self.assertIsNone(document_of(c, "Ein Satz, der nirgends steht."))
 
     def test_values_and_dates_are_compared_as_a_case_worker_would(self):
         self.assertTrue(same_value("text", "Treuhand Sonnhalde AG", "Treuhand Sonnhalde AG, Rorschacher Strasse 140, 9000 St. Gallen"))

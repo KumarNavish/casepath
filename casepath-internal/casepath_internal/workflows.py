@@ -208,10 +208,16 @@ class Catalogue:
         ids = sorted({w["id"] for w in self.workflows})
         return [self.get(i) for i in ids]
 
+    def routable(self):
+        """The workflows routing chooses from: example workflows only when the catalogue has nothing else."""
+        latest = self.latest()
+        real = [w for w in latest if not w.get("example")]
+        return real or latest
+
     def routing_facts(self):
         """Facts that decide which workflow applies, merged across the catalogue."""
         merged = {}
-        for workflow in self.latest():
+        for workflow in self.routable():
             used = condition_facts(workflow.get("applies_when"))
             for fact in workflow["facts"]:
                 if fact["id"] in used:
@@ -229,7 +235,7 @@ def ref(workflow):
 def route(catalogue, facts):
     """Select a workflow from routing facts, or say why none was selected."""
     selected, unknown = [], []
-    for workflow in catalogue.latest():
+    for workflow in catalogue.routable():
         if workflow.get("fallback") or workflow.get("applies_when") is None:
             continue
         verdict = evaluate_condition(workflow["applies_when"], facts)
@@ -244,7 +250,7 @@ def route(catalogue, facts):
     if unknown:
         needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - {k for k, v in facts.items() if v is not None})
         return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown], "needs": needs}
-    fallback = [w for w in catalogue.latest() if w.get("fallback")]
+    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if len(fallback) == 1:
         return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": []}
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}

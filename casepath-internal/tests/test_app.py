@@ -218,6 +218,18 @@ class AppTests(unittest.TestCase):
         self.assertEqual(CaseStore(self.directory.name).get_run(run["id"])["status"], "interrupted")
 
 
+class RoutingTests(unittest.TestCase):
+    def test_an_example_workflow_never_competes_with_real_ones(self):
+        import copy
+        from casepath_internal.workflows import Catalogue, route
+
+        example = Catalogue.load(FIXTURES).get("example-defect")
+        real = {**copy.deepcopy(example), "id": "real-defect", "example": False}
+        self.assertEqual(route(Catalogue((example,)), {"legal_area": "tenancy_defect"})["workflow"]["id"], "example-defect")
+        decision = route(Catalogue((example, real)), {"legal_area": "tenancy_defect"})
+        self.assertEqual((decision["status"], decision["workflow"]["id"]), ("selected", "real-defect"))
+
+
 class ContractTests(unittest.TestCase):
     def test_the_saved_contract_matches_the_api(self):
         from casepath_internal.app import CONTRACT, case_api_contract

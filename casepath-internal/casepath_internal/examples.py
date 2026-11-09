@@ -52,7 +52,7 @@ def files(title="Beispiel"):
 def seed(store, catalogue_dir, user, title="Beispiel (synthetisch): Schimmel im Badezimmer, Kramgasse 5"):
     Path(catalogue_dir).mkdir(parents=True, exist_ok=True)
     target = Path(catalogue_dir) / WORKFLOW.name
-    if not target.exists():
+    if not target.exists() or target.read_bytes() != WORKFLOW.read_bytes():  # keep the example's routing flag current
         shutil.copyfile(WORKFLOW, target)
     workflow = json.loads(WORKFLOW.read_text())
     case = store.create_case(title, {"synthetic": True}, user)
