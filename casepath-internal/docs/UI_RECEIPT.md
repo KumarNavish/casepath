@@ -54,7 +54,27 @@ Fourteen frames of the preview, in order (the live run of case B, the completed 
 
 The reviewer did not use the words "the graph forms from the sources". They did describe a path built step by step, sentences highlighted as proof, documents ticked off against it, and Knowledge reused only after approval.
 
+## Real model pass
+
+Synthetic case B02 was run in the Databricks pilot on the workspace's Opus model: 23 calls, 4 min 40 s, 154k of 248k input
+tokens read from the prompt cache.
+- **Seen during the run:**
+  - the pointer and hexagon moved to the quote being read;
+  - quotes were highlighted;
+  - the Documents card grew under its steps;
+  - the plan and work log were in German, with no internal ids.
+- **Found and fixed afterwards:**
+  - the view followed the working agent even after the person chose a tab;
+  - a tool name ("add_question") appeared in the work log;
+  - the summary named missing documents the checklist did not;
+  - "Routing: selected." was in English;
+  - on a short window, the Prepare button was reachable only by scrolling the page.
+- **The internal OSM+ processes,** with their 27 to 30 steps and long titles, were also checked in a local preview with a scripted run of benchmark case B01:
+  - steps show a short title without the role prefix (the full title on hover);
+  - wrapped rows have no stray arrows;
+  - the evidence strip shows at most six facts.
+
 ## Pending
 
-- A real-model pass of the live view in the Databricks pilot (the preview's model is scripted).
+- The process spine during a real run, in frame. The B02 screenshots were scrolled below it.
 - Mobile layout. Desktop at 1440 is the target, as in the north star.
