@@ -109,6 +109,10 @@ that leaves points open fits "open points / no reaction". Passages are evidence,
 
 AGENT_EDIT_OPS = ["add_document", "add_question", "add_step"]
 
+# Events after which the live process state is recomputed and, when it changed, emitted as ``process.state``.
+STATE_CAUSES = {"fact.located", "fact.accepted", "fact.rejected", "fact.conflicting", "document.recorded", "document.accepted",
+                "document.rejected", "process.changed"}
+
 
 class TeamError(RuntimeError):
     def __init__(self, reason, message):
@@ -133,11 +137,80 @@ class CaseWork:
             raise TeamError("no_files", "The case has no files to read.")
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
         self.brief = self.process_report = self.result = None
+        self.documents_looked_for = False  # set once the document finder has reported
+        self._state_shape = self._last_state = None
         self.on_event = on_event or (lambda event: None)
         self.rebuild()
 
     def emit(self, agent, kind, **data):
         event = {"agent": agent, "kind": kind, **data}
+        self.events.append(event)
+        self.on_event(event)
+        if kind == "agent.end" and agent == "document_finder":
+            self.documents_looked_for = True
+        if kind in STATE_CAUSES or (kind == "agent.start" and agent == "lead") or (kind == "agent.end" and agent == "document_finder"):
+            self._emit_state(agent, event)
+
+    def process_state(self):
+        """Where the case stands while the agents work: the path through the process with the facts recorded so far,
+        which steps the source checker has confirmed, and each document need under the step that needs it. It names
+        ids and states only; the quotes stay in the fact and document events."""
+        provisional = {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] != "rejected"}
+        found = {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] != "rejected"}
+        live = workflows.evaluate(self.graph, provisional, found, checked=True)
+        confirmed = workflows.evaluate(self.graph, self.accepted_facts(), self.findings(), checked=True)
+        sure = {row["step"] for row in confirmed["path"] if row["state"] in {"passed", "terminal"}}
+        documents = []
+        for row in live["documents"]:
+            mine = self.documents.get(row["document"])
+            # A need nobody has recorded is open until the document finder has looked, then missing, as in the result.
+            documents.append({"document": row["document"], "title": row["title"], "step": row["step"], "required": row["required"],
+                              "status": (mine or {}).get("status", "missing" if self.documents_looked_for else "open"),
+                              "verdict": (mine or {}).get("verdict"),
+                              **self._origin(row["document"])})
+        return {"path": [{"step": r["step"], "state": r["state"], "confirmed": r["step"] in sure,
+                          **({"either": r["either"]} if r.get("either") else {})} for r in live["path"]],
+                "waiting_for": [w["fact"] for w in live["waiting_for"]], "outcome": (live["outcome"] or {}).get("id"),
+                "confirmed_outcome": (confirmed["outcome"] or {}).get("id"), "documents": documents}
+
+    def _origin(self, document_id):
+        definition = self.document_defs.get(document_id, {})
+        if definition.get("knowledge"):
+            used = next((a for a in self.provenance["knowledge"] if a["item"] == definition["knowledge"]), {})
+            return {"knowledge": definition["knowledge"], "version": used.get("version"), "suggested": bool(definition.get("suggested"))}
+        if definition.get("edit"):
+            return {"edit": definition["edit"], "by_agent": any(e["id"] == definition["edit"] for e in self.agent_edits),
+                    "suggested": bool(definition.get("suggested"))}
+        return {}
+
+    def graph_outline(self):
+        """The process's shape for the live view: steps with their branches, the questions and the document needs."""
+        return {"workflow": self.base["id"], "start": self.graph["start"],
+                "steps": [{"id": s["id"], "title": s["title"], "outcome": s.get("outcome"),
+                           "next": [{"to": e["to"], **({"label": e["label"]} if e.get("label") else {})} for e in s.get("next", [])],
+                           "asks": sorted(set().union(*[workflows.condition_facts(e.get("when", True)) for e in s.get("next", [])])),
+                           **({"edit": True} if any(r.startswith("edit#") for r in s.get("source_refs", [])) else {})}
+                          for s in self.graph["steps"]],
+                "facts": [{"id": f["id"], "question": f["question"]} for f in self.graph["facts"]],
+                "outcomes": [{"id": o["id"], "title": o["title"]} for o in self.graph.get("outcomes", [])],
+                "knowledge": [{"item": a["item"], "version": a.get("version"), "suggested": a.get("suggested", False),
+                               **{k: a[k] for k in ("document", "fact", "step") if a.get(k)}}
+                              for a in self.provenance["knowledge"] if a["applied"]]}
+
+    def _emit_state(self, agent, cause):
+        try:
+            state = self.process_state()
+        except (workflows.CatalogueError, KeyError, StopIteration):
+            return
+        shape = (self.base["id"], len(self.agent_edits))
+        changed_shape = shape != self._state_shape
+        if not changed_shape and state == self._last_state:
+            return
+        self._state_shape, self._last_state = shape, state
+        event = {"agent": agent, "kind": "process.state", **state,
+                 "cause": {k: cause[k] for k in ("kind", "fact", "document", "edit") if cause.get(k)}}
+        if changed_shape:
+            event["graph"] = self.graph_outline()
         self.events.append(event)
         self.on_event(event)
 
@@ -466,7 +539,8 @@ def run_source_checker(model, work, effort="medium"):
             work.emit("source_checker", f"{kind}.{row['verdict']}", **{kind: item_id})
     accepted = sum(1 for i in items if (work.facts if i["item"].startswith("fact") else work.documents)[i["item"].split(":", 1)[1]]["verdict"] == "accepted")
     report = {"checked": len(items), "accepted": accepted, "rejected": len(items) - accepted}
-    work.emit("source_checker", "agent.end", summary=f"{accepted} of {len(items)} supported by their quotes.")
+    work.emit("source_checker", "agent.end", summary=f"{accepted} of {len(items)} supported by their quotes.",
+              counts={"checked": len(items), "accepted": accepted})
     return report
 
 
@@ -540,7 +614,8 @@ def confirm_facts(model, work, effort="medium"):
         else:
             agreed += 1
     summary = {"checked": len(facts), "agreed": agreed, "differed": differed, "added": added}
-    work.emit("source_checker", "agent.end", summary=f"Second reading: {agreed} agree, {differed} differ, {added} found only now.")
+    work.emit("source_checker", "agent.end", summary=f"Second reading: {agreed} agree, {differed} differ, {added} found only now.",
+              counts={"agreed": agreed, "differed": differed, "added": added})
     return summary
 
 

@@ -89,7 +89,7 @@ mark.cp-hit.cited { background: var(--yellow); }
 .cp-plan ol { list-style: none; margin: 0; padding: 0; }
 .cp-plan li { display: flex; gap: 12px; align-items: center; padding: 0 20px; min-height: 58px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-2); position: relative; }
 .cp-plan li:first-child { border-top: 0; }
-.cp-plan li.active { color: var(--ink); }
+.cp-plan li.active { color: var(--ink); padding-bottom: 14px; padding-top: 6px; }
 .cp-plan li.active::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 8px; height: 2px; background: linear-gradient(90deg, var(--crimson) 70%, var(--crimson-track) 70%); }
 .cp-spinner { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--crimson-track); border-top-color: var(--crimson); animation: cp-spin 1s linear infinite; flex: none; }
 @keyframes cp-spin { to { transform: rotate(360deg); } }
@@ -99,7 +99,53 @@ mark.cp-hit.cited { background: var(--yellow); }
 .cp-facts { display: flex; gap: 14px; align-items: center; margin-top: 30px; flex-wrap: wrap; }
 .cp-fact { width: 210px; min-height: 71px; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; gap: 12px; font-size: 14px; color: var(--ink-2); align-items: center; }
 .cp-fact.accepted { border-color: var(--green); }
+/* The finding ties back to the passage above: a dotted crimson line to a junction ring, then up to the source. */
+.cp-tie { position: relative; width: 150px; align-self: center; border-top: 1.5px dotted var(--crimson); }
+.cp-tie::after { content: ""; position: absolute; right: -7px; top: -7px; width: 11px; height: 11px; border: 1.5px solid var(--crimson); border-radius: 50%; background: var(--bg); }
+.cp-tie::before { content: ""; position: absolute; right: -1.5px; top: -64px; height: 56px; border-left: 1.5px dotted var(--crimson); }
+.cp-tie i { position: absolute; right: -6.5px; top: -71px; border: 5px solid transparent; border-bottom: 7px solid var(--crimson); }
 .cp-fact.rejected { border-style: dashed; }
+
+/* The process forming while the agents work */
+.cp-spine.live { margin-bottom: 22px; }
+.cp-q-label { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding: 0 9px; }
+.cp-q.waiting .cp-ring { border-color: var(--border); }
+.cp-q.more { color: var(--ink-2); } .cp-q.more .cp-ring { border: 1.5px dotted var(--ghost-ring); font-size: 12px; color: var(--ink-2); }
+.cp-q.end .cp-ring { box-shadow: 0 0 0 3px var(--bg), 0 0 0 4.5px currentColor; }
+.cp-q-end { color: var(--crimson); font-size: 12px; font-weight: 600; }
+.cp-dropped { display: grid; gap: 2px; font-size: 12px; line-height: 1.3; color: var(--ghost); }
+.cp-dropped s { text-decoration-thickness: 1px; }
+.cp-q.fork { width: 176px; }
+.cp-q.fork::before { right: calc(50% + 90px) !important; width: 44px !important; }
+.cp-q.fork::after { right: calc(50% + 90px) !important; }
+.cp-fork { display: grid; gap: 6px; width: 100%; }
+.cp-fork span { border: 1px dashed var(--ghost-ring); border-radius: 4px; padding: 6px 8px; font-size: 12.5px; line-height: 1.25; color: var(--ink-2); background: var(--bg); }
+.enter { animation: cp-enter .7s ease-out both; }
+@keyframes cp-enter { from { opacity: 0; transform: translateY(8px); } }
+s.enter { animation: cp-fall 1.2s ease-out both; }
+@keyframes cp-fall { from { color: var(--ink-2); text-decoration-color: transparent; } }
+.cp-docs { margin-top: 18px; }
+.cp-docs h3 { display: flex; align-items: center; gap: 10px; margin: 0; padding: 14px 18px; font-size: 15px; font-weight: 600; border-bottom: 1px solid var(--line); }
+.cp-docs h3 > span { margin-left: auto; font-weight: 400; color: var(--ink-2); font-size: 13px; }
+.cp-docs ul { list-style: none; margin: 0; padding: 0; }
+.cp-docs li { display: flex; gap: 12px; padding: 11px 18px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.3; align-items: flex-start; }
+.cp-docs li:first-child { border-top: 0; }
+.cp-docs li b { display: block; font-weight: 600; }
+.cp-docs li small { display: block; margin-top: 2px; color: var(--ink-2); font-size: 12.5px; }
+.cp-docs li > span:first-child { flex: none; display: inline-flex; }
+.cp-docs li .cp-icon { width: 20px; height: 20px; }
+.cp-docs .ok { color: var(--green); } .cp-docs .found { color: var(--ghost); } .cp-docs .no { color: var(--crimson); }
+.cp-docs span.open { width: 20px; height: 20px; border: 1.5px solid var(--border); border-radius: 50%; }
+.cp-docs > p.cp-kv { margin: 0; padding: 10px 18px; border-top: 1px solid var(--line); }
+.cp-kv { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--green-ink); }
+.cp-kv .cp-icon { width: 14px !important; height: 14px !important; }
+.cp-kv.add { color: var(--crimson); }
+#cp-attention { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; transition: transform .5s cubic-bezier(.3, .7, .3, 1); }
+#cp-attention.still { transition: none; }
+#cp-attention .arrow { display: block; width: 26px; height: 26px; margin: -2px 0 0 -3px; fill: var(--crimson); }
+#cp-attention .cp-hex { position: absolute; left: 20px; top: 20px; }
+mark.cp-hit.live { transition: background-color .3s; }
+mark.cp-hit.live:not(.lit) { background: transparent; }
 
 /* Completed process (02) */
 .cp-graph { display: flex; flex-wrap: wrap; gap: 26px 56px; align-items: center; margin-bottom: 22px; }
@@ -127,7 +173,8 @@ mark.cp-hit.cited { background: var(--yellow); }
 .cp-chain > section:nth-child(5) { border-radius: 0 6px 6px 0; }
 .cp-chain h4 { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-size: 13.5px; font-weight: 600; }
 .cp-chain ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
-.cp-chain li { display: flex; gap: 6px; align-items: flex-start; }
+.cp-chain li { display: flex; flex-wrap: wrap; gap: 0 6px; align-items: flex-start; }
+.cp-chain li .cp-kv { margin-top: 0; }
 .cp-chain .ok { color: var(--green); }
 .cp-missing-box { text-decoration: none; color: var(--ink); margin-left: 22px; border: 1.5px solid var(--crimson); border-radius: 6px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg); font-size: 14.5px; text-align: left; }
 .cp-preview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 26px; border: 1px solid var(--line); border-radius: 8px; padding: 18px; }

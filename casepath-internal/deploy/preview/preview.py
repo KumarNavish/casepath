@@ -76,11 +76,15 @@ def script(email, letter, knowledge_id=None):
         [("evaluate", {}), report("result_checker", summary="The tenant told the management in writing; the defect can be assessed. Photos are attached but not read as text.",
                                   answer="The landlord was told in writing; assess the defect with its evidence.", open_points=["Whether the ventilation claim holds"],
                                   reply={"needed": True, "subject": "Ihre Meldung: Schimmel im Badezimmer", "clauses": [
-                                      {"text": "Sie haben die Verwaltung am 3. Februar schriftlich informiert.", "basis": ["fact:landlord_notified"]},
-                                      {"text": "Die Verwaltung hat den Eingang Ihrer Meldung bestätigt.", "basis": ["document:notice_letter"]}]},
-                                  learn=[] if knowledge_id else [learn(title="Ventilation record", why="Mould returns despite ventilation; a record shows how the flat was aired.",
-                                                                       step="assess", applies_when_text="Recurring mould where ventilation is disputed",
-                                                                       citations=[{"file": email, "quote": VENT}])])],
+                                      {"text": "Sie haben die Verwaltung am 3. Februar schriftlich informiert.", "kind": "statement", "basis": ["fact:landlord_notified"]},
+                                      {"text": "Die Verwaltung hat den Eingang Ihrer Meldung bestätigt.", "kind": "statement", "basis": ["document:notice_letter"]}]},
+                                  learn=[learn(action="refine", target=knowledge_id, title="Dated ventilation record",
+                                               why="Mould returned again; only a record with dates shows when the flat was aired.", step="assess",
+                                               applies_when_text="Recurring mould where ventilation is disputed", reason="A second case needed the dates.",
+                                               citations=[{"file": email, "quote": VENT}])] if knowledge_id else
+                                        [learn(title="Ventilation record", why="Mould returns despite ventilation; a record shows how the flat was aired.",
+                                               step="assess", applies_when_text="Recurring mould where ventilation is disputed",
+                                               citations=[{"file": email, "quote": VENT}])])],
         [("complete", {"summary": "Prepared."})],
     ]
 
@@ -113,7 +117,7 @@ def main():
     for item in store.list_knowledge(statuses={"candidate"}):
         store.save_knowledge(kb.set_status(item, "active", by="N. Kumar", reason="Seen in two defect cases"))
     item = store.list_knowledge(statuses={"active"})[0]
-    case_b, (email_b, letter_b, _) = seed("Schimmel in der Küche, Lorrainestrasse 12")
+    case_b, (email_b, letter_b, _) = seed("Schimmel im Badezimmer, Kramgasse 5 (zweiter Fall)")
     pause = float(sys.argv[2]) if len(sys.argv) > 2 else 1.5
     calls = {"n": 0}
 

@@ -70,6 +70,36 @@ class TeamTests(unittest.TestCase):
         agents = {e["agent"] for e in result["events"] if e["kind"] == "agent.start"}
         self.assertEqual(agents, {"lead", "claim_reader", "process_builder", "document_finder", "source_checker", "result_checker"})
 
+    def test_the_process_forms_live_from_the_findings(self):
+        script = standard_script(
+            finder_calls=[("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],
+                                               "citations": [{"file": "f1", "quote": "Subject: Schimmel im Bad"}], "note": ""})],
+            result_fields={})
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
+        states = [e for e in result["events"] if e["kind"] == "process.state"]
+        first, last = states[0], states[-1]
+        self.assertEqual(first["graph"]["start"], FIXTURE["start"])  # the shape comes once, with the first state
+        self.assertTrue(all("graph" not in s for s in states[1:]))
+        self.assertEqual(first["path"][-1]["state"], "current")  # before any finding the case waits at its first question
+        self.assertEqual([r["step"] for r in last["path"]], [r["step"] for r in result["evaluation"]["path"]])
+        self.assertTrue(all(r["confirmed"] for r in last["path"] if r["state"] != "current"))
+        self.assertEqual(last["outcome"], "reported")
+        # The recorded fact moves the path before the source checker confirms it; the confirmation follows.
+        located = next(i for i, s in enumerate(states) if s["cause"].get("kind") == "fact.located")
+        accepted = next(i for i, s in enumerate(states) if s["cause"].get("kind") == "fact.accepted")
+        self.assertLess(located, accepted)
+        self.assertEqual(states[located]["outcome"], "reported")
+        self.assertEqual([(r["step"], r["confirmed"]) for r in states[located]["path"][:2]], [("intake", True), ("notice", False)])
+        docs = {d["document"]: d for d in last["documents"]}
+        self.assertEqual((docs["customer_message"]["status"], docs["customer_message"]["verdict"]), ("present", "accepted"))
+        # Once the document finder has looked, a need it did not find is missing, as in the result's checklist.
+        final = {d["document"]: d["status"] for d in result["evaluation"]["documents"]}
+        self.assertEqual({k: v["status"] for k, v in docs.items()}, final)
+        before = next(s for s in states if s["cause"].get("kind") == "document.recorded")
+        self.assertIn("open", {d["status"] for d in before["documents"]})
+        self.assertTrue(all(d["step"] in {r["step"] for r in last["path"]} or d["step"] is None for d in last["documents"]))
+        self.assertNotIn("quote", json.dumps(states))  # ids and states only; the quotes stay in the finding events
+
     def test_rejected_finding_is_not_used(self):
         script = standard_script(finder_calls=[], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
             {"text": "You told your landlord.", "kind": "statement", "basis": ["fact:landlord_notified"]}]}})

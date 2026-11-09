@@ -280,6 +280,7 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
                         edits=job["edits"] + result.get("agent_edits", []), on_event=on_event)
         work.facts = {f["fact"]: f for f in result["facts"]}
         work.documents = {d["document"]: d for d in result["documents"] if d["document"] in work.document_defs}
+        work.documents_looked_for = True  # the prepared run looked for every need; only the changed ones are checked again
         targets = [d for d in documents if d in work.document_defs]
         effort = options.get("effort", "medium")
         if targets:

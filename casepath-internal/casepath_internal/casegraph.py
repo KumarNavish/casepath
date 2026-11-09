@@ -184,7 +184,7 @@ def build(base, *, knowledge=(), edits=(), facts_known=None, case_id=None):
         else:
             if result["applied"]:
                 graph = trial
-        applied.append(result)
+        applied.append({**result, "version": item["version"]})  # the version this case used
     edit_results = []
     for edit in edits:
         if edit.get("status", "active") != "active":
