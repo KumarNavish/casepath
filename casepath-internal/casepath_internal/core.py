@@ -109,8 +109,9 @@ class _Counted:
 
 
 class _Budget:
-    """The job's model, with every call counted against a token budget (input and output tokens). Once the budget is
-    spent, the next call stops the job with that reason, so a large dossier can never run up costs unnoticed."""
+    """The job's model, with every call counted against a token budget: input and output tokens, except input read
+    from the prompt cache (it costs a twentieth or less). Once the budget is spent, the next call stops the job with
+    that reason, so a large dossier can never run up costs unnoticed."""
 
     def __init__(self, model, limit, spent=None):
         self.model, self.limit, self.spent = model, int(limit or 0), spent if spent is not None else [0]
@@ -122,7 +123,7 @@ class _Budget:
 
     def _count(self, usage):
         usage = usage or {}
-        self.spent[0] += int(usage.get("input_tokens") or 0) + int(usage.get("output_tokens") or 0)
+        self.spent[0] += int(usage.get("input_tokens") or 0) - int(usage.get("cached_tokens") or 0) + int(usage.get("output_tokens") or 0)
 
     def respond_json(self, **kwargs):
         self._check()
