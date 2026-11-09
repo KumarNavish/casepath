@@ -118,6 +118,48 @@ def validate_case(case, catalogue=None):
     return warnings
 
 
+def short_id(case):
+    return case["id"].split("-", 1)[0]
+
+
+def uploads(case, rendered):
+    """What a case worker would upload: one dossier named by case number, or the separate files; scans named as scans."""
+    if case.get("bundle") or case["truth"].get("bundle"):
+        return [(f"{short_id(case)}_Dossier.pdf", (Path(rendered) / "dossier.pdf").read_bytes())]
+    manifest = json.loads((Path(rendered) / "case.json").read_text())
+    files = []
+    for index, row in enumerate(manifest["files"], 1):
+        name = f"Scan_{index:02d}.pdf" if row["scanned"] else row["file"][3:]
+        files.append((name, (Path(rendered) / "documents" / row["file"]).read_bytes()))
+    return files
+
+
+def seed(store, directory, user="synthetisch"):
+    """Load the suite's cases into a store as synthetic cases anyone can open and prepare; cases already there are kept.
+
+    The title names only the case number and its first document, never the truth, so the agents see a case as a case
+    worker would. Returns the number of cases added."""
+    import tempfile
+
+    from .extract import extract
+
+    existing = {c["title"] for c in store.list_cases()}
+    added = 0
+    with tempfile.TemporaryDirectory() as scratch:
+        for case in load_suite(directory):
+            title = f"Synthetischer Fall {short_id(case)}: {case['documents'][0]['title']}"[:300]
+            if title in existing:
+                continue
+            rendered = Path(scratch) / case["id"]
+            render(case, rendered)
+            created = store.create_case(title, {"synthetic": True, "source": "synthetic"}, user)
+            for name, data in uploads(case, rendered):
+                row = extract(name, "application/pdf", data)
+                store.add_file(created["id"], name, row["media_type"], row["kind"], data, row, user)
+            added += 1
+    return added
+
+
 def render(case, directory):
     """Write the case's documents as PDFs (scanned where the layout says so) and one combined dossier."""
     documents = [{"language": "de", "features": [], "meets_needs": [], "sender": "", "recipient": "", **d} for d in case["documents"]]

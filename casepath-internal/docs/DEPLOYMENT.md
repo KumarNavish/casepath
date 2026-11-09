@@ -43,6 +43,23 @@ The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app
 | Deletion | `DELETE /api/cases/{id}` removes the case and everything derived from it, and keeps a content-free deletion record | Same contract | None |
 | Logs | Run errors and events are stored with the run, not logged | Same; access logs carry ids only | None |
 
+## One container for a pilot
+
+For a first company-wide pilot, the whole application runs as one container (`Dockerfile`): the case API, the case
+worker's workspace and the agent core. One replica keeps its cases on a persistent volume at `/data`.
+
+- **Build:** `docker build -t casepath .`
+  - `BASE_IMAGE` and `PIP_INDEX_URL` can name internal mirrors.
+  - Behind a firewall that re-signs TLS, add `--secret id=ca,src=<CA bundle>`. The bundle is used for the build only.
+- **Run:** `docker run -p 8080:8080 -v casepath-data:/data --env-file <settings> casepath`. All settings come from the environment, and none are in the image.
+  - **Sign-in:** the gateway variables above. Without them the API refuses to serve.
+  - **Model:** endpoint, deployment and credential. For outbound TLS through a firewall, `CASEPATH_CA_BUNDLE` names a mounted CA file.
+  - **Synthetic cases:** `CASEPATH_SEED_SUITE=/app/benchmark` loads them at start, once, for everyone to open.
+  - **Concurrency:** `CASEPATH_RUN_WORKERS` sets how many cases are prepared at once.
+- **Checked here:** the image builds; it runs as a non-root user and serves the workspace. The synthetic cases load once and survive a restart. With gateway sign-in, a request is refused with 401 without an identity and 403 without the access role.
+
+Splitting the agent core from the case service, as described above, comes after the pilot. The container already holds both halves behind their contracts.
+
 ## Before an operated deployment
 
 1. Confirm the gateway's token claims and the access role's exact name, then set the identity variables.

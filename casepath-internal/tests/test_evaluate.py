@@ -119,6 +119,18 @@ class EvaluateTests(unittest.TestCase):
         self.assertEqual(document_of(c, "Wir prüfen den Fall."), 1)
         self.assertIsNone(document_of(c, "Ein Satz, der nirgends steht."))
 
+    def test_synthetic_cases_can_be_seeded_for_everyone_once(self):
+        from casepath_internal.store import CaseStore
+        self.suite([case("T01-defect-notice"), case("T02-second-case")])
+        store = CaseStore(self.root / "data")
+        self.addCleanup(store.close)
+        self.assertEqual(benchmark.seed(store, self.root / "suite"), 2)
+        self.assertEqual(benchmark.seed(store, self.root / "suite"), 0)  # already there
+        rows = store.list_cases()
+        self.assertEqual(sorted(r["title"] for r in rows), ["Synthetischer Fall T01: Schimmel im Bad", "Synthetischer Fall T02: Schimmel im Bad"])
+        self.assertTrue(all(r["intake"]["synthetic"] and r["file_count"] == 1 for r in rows))
+        self.assertIn(QUOTE[:20], store.list_files(rows[0]["id"], with_text=True)[0]["extraction"]["text"])
+
     def test_values_and_dates_are_compared_as_a_case_worker_would(self):
         self.assertTrue(same_value("text", "Treuhand Sonnhalde AG", "Treuhand Sonnhalde AG, Rorschacher Strasse 140, 9000 St. Gallen"))
         self.assertTrue(same_value("text", "CHF 15'000.–", "15000 CHF"))

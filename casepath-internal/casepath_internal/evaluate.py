@@ -43,6 +43,7 @@ import sys
 import time
 
 from . import benchmark
+from .benchmark import short_id, uploads
 from .evidence import normalise
 
 FORMAT = "casepath.evaluation/1"
@@ -126,22 +127,6 @@ class RemoteApi:
 
 
 # -- one case ---------------------------------------------------------------------------
-
-def short_id(case):
-    return case["id"].split("-", 1)[0]
-
-
-def uploads(case, rendered):
-    """What a case worker would upload: one dossier named by case number, or the separate files; scans named as scans."""
-    if case.get("bundle") or case["truth"].get("bundle"):
-        return [(f"{short_id(case)}_Dossier.pdf", (rendered / "dossier.pdf").read_bytes())]
-    manifest = json.loads((rendered / "case.json").read_text())
-    files = []
-    for index, row in enumerate(manifest["files"], 1):
-        name = f"Scan_{index:02d}.pdf" if row["scanned"] else row["file"][3:]
-        files.append((name, (rendered / "documents" / row["file"]).read_bytes()))
-    return files
-
 
 def run_case(api, case, rendered, *, given_workflow=False, poll=2.0, timeout=3600):
     created = api.call("POST", "/api/cases", {"title": f"Fall {short_id(case)}", "intake": {"source": "imported"}})

@@ -52,6 +52,7 @@ class Settings:
     max_upload_bytes: int
     max_text_chars: int
     reading_workers: int = 6
+    run_workers: int = 2
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
@@ -98,6 +99,7 @@ def load_settings(env=None):
         max_upload_bytes=int(env.get("CASEPATH_MAX_UPLOAD_BYTES", str(100 * 1024 * 1024))),
         max_text_chars=int(env.get("CASEPATH_MAX_TEXT_CHARS", "4000000")),
         reading_workers=int(env.get("CASEPATH_READING_WORKERS", "6")),
+        run_workers=int(env.get("CASEPATH_RUN_WORKERS", "2")),
         identity_format=identity_format,
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
