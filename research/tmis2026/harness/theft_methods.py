@@ -181,3 +181,29 @@ def plan(nu: dict, on_file: frozenset = frozenset(), all_routes: bool = False) -
     return {"requests": sorted(d for d, v in state.items() if v == "true" and d not in on_file),
             "holds": sorted(d for d, v in state.items() if v == "unresolved" and d not in on_file),
             "questions": sorted(g for g, v in nu.items() if v == "unresolved")}
+
+
+def trace(nu: dict, all_routes: bool = False) -> dict:
+    """For every document whose requirement is true, the (rule, condition) pairs that require it."""
+    out: dict[str, list] = {}
+
+    def add(routes, condition, origin):
+        if not routes or nu_value(condition) != "true":
+            return
+        chosen = routes if all_routes else [min(routes, key=lambda rt: _route_key(rt, frozenset()))]
+        for rt in chosen:
+            for d in rt["document_types"]:
+                out.setdefault(d, []).append(origin)
+
+    def nu_value(g):
+        return "true" if g is None else nu.get(g, "unresolved")
+
+    for rule in PREP["overlay"]["compiled"]:
+        for fact in rule["facts"]:
+            for cap in fact["capabilities"]:
+                add(REQ.get(cap["capability_id"], []), fact.get("guard_id"),
+                    {"rule": rule["node_id"], "guard": fact.get("guard_id"), "capability": cap["capability_id"]})
+    for res in PREP["resolvers"]:
+        add(REQ.get(res["capability_id"], []), res["guard_id"],
+            {"rule": res["rule_id"], "guard": res["guard_id"], "capability": res["capability_id"], "confirms": True})
+    return out

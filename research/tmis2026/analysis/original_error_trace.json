@@ -1,0 +1,374 @@
+[
+ {
+  "pair": "s1-on-PR_scheduled_valuable_1000",
+  "condition": "PR_scheduled_valuable_1000",
+  "error": "wrong",
+  "atom": "+Expert's valuation of the scheduled valuable (Wertgutachten",
+  "changed_guards": [
+   "overlay_guard_052",
+   "overlay_guard_074"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_074",
+    "guard": "overlay_guard_074",
+    "capability": "overlay_rule_074.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_scheduled_valuable_1000",
+  "condition": "PR_scheduled_valuable_1000",
+  "error": "wrong",
+  "atom": "+Expert's valuation of the scheduled valuable (Wertgutachten",
+  "changed_guards": [
+   "overlay_guard_052",
+   "overlay_guard_074"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_074",
+    "guard": "overlay_guard_074",
+    "capability": "overlay_rule_074.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_scheduled_valuable_1000",
+  "condition": "PR_scheduled_valuable_1000",
+  "error": "wrong",
+  "atom": "+Expert's valuation of the scheduled valuable (Wertgutachten",
+  "changed_guards": [
+   "overlay_guard_052",
+   "overlay_guard_074"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_074",
+    "guard": "overlay_guard_074",
+    "capability": "overlay_rule_074.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_sim_card_stolen",
+  "condition": "PR_sim_card_stolen",
+  "error": "wrong",
+  "atom": "+Bank statement showing the misuse, together with a police r",
+  "changed_guards": [
+   "overlay_guard_084",
+   "overlay_guard_088"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_084",
+    "guard": "overlay_guard_084",
+    "capability": "overlay_rule_084.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_sim_card_stolen",
+  "condition": "PR_sim_card_stolen",
+  "error": "wrong",
+  "atom": "+Bank statement showing the misuse, together with a police r",
+  "changed_guards": [
+   "overlay_guard_084",
+   "overlay_guard_088"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_084",
+    "guard": "overlay_guard_084",
+    "capability": "overlay_rule_084.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_sim_card_stolen",
+  "condition": "PR_sim_card_stolen",
+  "error": "wrong",
+  "atom": "+Bank statement showing the misuse, together with a police r",
+  "changed_guards": [
+   "overlay_guard_084",
+   "overlay_guard_088"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_084",
+    "guard": "overlay_guard_084",
+    "capability": "overlay_rule_084.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Completed claim-form section identifying the person who cau",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_010",
+    "guard": null,
+    "capability": "overlay_rule_010.f03.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Written assignment to the insurer of the claims against thi",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_042",
+    "guard": "overlay_guard_042",
+    "capability": "overlay_rule_042.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Completed claim-form section identifying the person who cau",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_010",
+    "guard": null,
+    "capability": "overlay_rule_010.f03.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Written assignment to the insurer of the claims against thi",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_042",
+    "guard": "overlay_guard_042",
+    "capability": "overlay_rule_042.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Completed claim-form section identifying the person who cau",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_010",
+    "guard": null,
+    "capability": "overlay_rule_010.f03.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_third_party_causer",
+  "condition": "PR_third_party_causer",
+  "error": "missed",
+  "atom": "+Written assignment to the insurer of the claims against thi",
+  "changed_guards": [],
+  "already_requested_by": [
+   {
+    "rule": "overlay_rule_042",
+    "guard": "overlay_guard_042",
+    "capability": "overlay_rule_042.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_expert_procedure_requested",
+  "condition": "PR_expert_procedure_requested",
+  "error": "wrong",
+  "atom": "+Insurer's written demand for the communications, under warn",
+  "changed_guards": [
+   "overlay_guard_021",
+   "overlay_guard_022",
+   "overlay_guard_023",
+   "overlay_guard_024"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_023",
+    "guard": "overlay_guard_023",
+    "capability": "resolver.overlay_rule_023",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_expert_procedure_requested",
+  "condition": "PR_expert_procedure_requested",
+  "error": "wrong",
+  "atom": "+Insurer's written demand for the communications, under warn",
+  "changed_guards": [
+   "overlay_guard_021",
+   "overlay_guard_022",
+   "overlay_guard_023",
+   "overlay_guard_024"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_023",
+    "guard": "overlay_guard_023",
+    "capability": "resolver.overlay_rule_023",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_expert_procedure_requested",
+  "condition": "PR_expert_procedure_requested",
+  "error": "wrong",
+  "atom": "+Insurer's written demand for the communications, under warn",
+  "changed_guards": [
+   "overlay_guard_021",
+   "overlay_guard_022",
+   "overlay_guard_023",
+   "overlay_guard_024"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_023",
+    "guard": "overlay_guard_023",
+    "capability": "resolver.overlay_rule_023",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Insurer's consent to alteration of the damaged items before",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f02.c01"
+   },
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "resolver.overlay_rule_003",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s1-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Police consent to the removal or alteration of the Tatspure",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Insurer's consent to alteration of the damaged items before",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f02.c01"
+   },
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "resolver.overlay_rule_003",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s2-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Police consent to the removal or alteration of the Tatspure",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f01.c01"
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Insurer's consent to alteration of the damaged items before",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f02.c01"
+   },
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "resolver.overlay_rule_003",
+    "confirms": true
+   }
+  ]
+ },
+ {
+  "pair": "s3-on-PR_repair_over_500",
+  "condition": "PR_repair_over_500",
+  "error": "wrong",
+  "atom": "+Police consent to the removal or alteration of the Tatspure",
+  "changed_guards": [
+   "overlay_guard_003",
+   "overlay_guard_067",
+   "overlay_guard_090"
+  ],
+  "producers": [
+   {
+    "rule": "overlay_rule_003",
+    "guard": "overlay_guard_003",
+    "capability": "overlay_rule_003.f01.c01"
+   }
+  ]
+ }
+]

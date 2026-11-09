@@ -1,0 +1,72 @@
+%% CasePath -- ACM Transactions on Management Information Systems (TMIS)
+%% Compile with pdflatex (Overleaf default) and BibTeX.
+\documentclass[acmsmall,screen,nonacm]{acmart}
+%% Before submission: remove "nonacm" and, if the venue requires anonymous
+%% review, add "anonymous,review" to the class options.
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,backgrounds}
+\usepackage{xspace}
+\usepackage{enumitem}
+
+\input{macros}
+\input{results/numbers}
+
+\begin{document}
+
+\title{CasePath: Deciding Which Evidence to Request by Executing Process Rules over Verified LLM Judgments}
+
+\author{Navish Kumar}
+\affiliation{\institution{University of Basel}\city{Basel}\country{Switzerland}}
+\email{navish.kumar@unibas.ch}
+\author{Tobias Hoesli}
+\affiliation{\institution{ETH Zurich}\city{Zurich}\country{Switzerland}}
+\author{Aydin Javadov}
+\affiliation{\institution{ETH Zurich}\city{Zurich}\country{Switzerland}}
+\author{Joseph Ollier}
+\affiliation{\institution{ETH Zurich}\city{Zurich}\country{Switzerland}}
+\renewcommand{\shortauthors}{Kumar et al.}
+
+\input{sections/abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept><concept_id>10010405.10010455.10010458</concept_id><concept_desc>Applied computing~Law</concept_desc><concept_significance>300</concept_significance></concept>
+<concept><concept_id>10010405.10010406.10010412</concept_id><concept_desc>Applied computing~Business process management</concept_desc><concept_significance>500</concept_significance></concept>
+<concept><concept_id>10010147.10010178.10010187</concept_id><concept_desc>Computing methodologies~Knowledge representation and reasoning</concept_desc><concept_significance>500</concept_significance></concept>
+<concept><concept_id>10010147.10010178.10010179</concept_id><concept_desc>Computing methodologies~Natural language processing</concept_desc><concept_significance>300</concept_significance></concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Applied computing~Business process management}
+\ccsdesc[500]{Computing methodologies~Knowledge representation and reasoning}
+\ccsdesc[300]{Computing methodologies~Natural language processing}
+\ccsdesc[300]{Applied computing~Law}
+
+\keywords{LLM agents, evidence requests, claims handling, process execution, three-valued logic, neuro-symbolic systems, design science}
+
+\maketitle
+
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/method}
+\input{sections/evaluation}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\begin{acks}
+\input{sections/acknowledgments}
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

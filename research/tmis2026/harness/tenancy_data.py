@@ -63,7 +63,7 @@ def reference(claim_id: str) -> dict:
         "implicit_flags": IMPLICIT_FLAGS.get(_family(contract, alias), {}),
         "document_states": states,
         "request_set": sorted(d for d, s in states.items() if s in REQUEST_STATES),
-        "family_id": contract.get("metadata", {}).get("family"),
+        "family_id": _family_ids().get(claim_id),
     }
 
 
@@ -103,3 +103,7 @@ def attachment_text(att: dict) -> tuple[str, bool]:
         text = "\n\n".join(pages).strip()
         return text, bool(text) and all(p.strip() for p in pages)
     return "", False
+
+
+def _family_ids() -> dict:
+    return {row["case_id"]: row["family_id"] for row in cohort()["cases"]}

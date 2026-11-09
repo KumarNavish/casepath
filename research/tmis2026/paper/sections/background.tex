@@ -1,0 +1,61 @@
+\section{Background and related work}
+\label{sec:related}
+
+This section first describes the decision \casepath supports and why it matters to claims organisations, then compares the approaches that could make it, and finally states what none of them provides.
+
+\subsection{Evidence requests in claims handling}
+\label{sec:context}
+
+Insurers, legal-expenses insurers and public agencies handle claims in knowledge-intensive processes: the path a case takes depends on facts that emerge from documents and correspondence, and handlers decide many steps case by case \cite{diciccio2015knowledge}. One recurring decision is which documents to request. It is governed by rules---statutes, policy terms, internal guidelines---whose conditions refer to case facts, and it has direct costs on both sides. An unnecessary request delays the claim, burdens the claimant and adds handling effort; a missed request lets a claim proceed without the evidence that a payment or refusal needs; a premature request asks for a document before the fact that makes it relevant is known. Digitalisation and artificial intelligence are expected to automate much of the insurance value chain, with claims handling among the most affected activities \cite{eling2018impact,eling2022impact}. Business process management research has accordingly called for process-aware systems that act autonomously within explicit constraints, explain their actions and keep humans in control \cite{dumas2023aiaugmented,vidgof2023large,kampik2025large}, and information systems research has called for evidence on how large language models (LLMs) can be designed into such systems responsibly \cite{chau2025research,hevner2023research}. A request decision is a good test case: it is frequent, rule-governed, consequential and easy to verify after the fact.
+
+\subsection{Approaches to rule-governed decisions with language models}
+\label{sec:approaches}
+
+Table~\ref{tab:approaches} compares the main approaches on the capabilities the decision needs: reading free-text claims, applying rules in code, keeping rules fixed across cases, treating unknown facts as open, using the process context of a requirement, handling alternative evidence and documents on file, verifying judgments before use, and tracing requests to sources.
+
+\begin{table}[t]
+\caption{What existing approaches provide for deciding evidence requests. \checkmark{} provides; $\circ$ partly; -- no. Columns: (1) reads free-text claims; (2) applies rules in code; (3) rules fixed across cases; (4) unknown facts held open rather than assumed; (5) process context of a requirement; (6) alternative evidence and documents on file; (7) judgments verified before use; (8) requests traced to sources.}
+\label{tab:approaches}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\linewidth}{@{}Xcccccccc@{}}
+\toprule
+Approach & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\midrule
+Rule engines and rules as code \cite{omg2024dmn,merigoux2021catala,sergot1986british,mohun2020cracking} & -- & \checkmark & \checkmark & -- & $\circ$ & -- & -- & \checkmark \\
+Case management and compliance checking \cite{omg2016cmmn,hull2011business,governatori2006compliance,hashmi2018compliance} & -- & \checkmark & \checkmark & $\circ$ & \checkmark & -- & -- & $\circ$ \\
+Policy or process in the prompt \cite{yao2025taubench,xiao2024flowbench,ye2025sopagent,li2026sopbench} & \checkmark & -- & \checkmark & -- & \checkmark & -- & -- & -- \\
+State- or graph-guided agents \cite{wu2024stateflow,lu2026proceduralgraphs,yu2026compile} & \checkmark & $\circ$ & \checkmark & -- & \checkmark & -- & -- & $\circ$ \\
+LLM rule application \cite{servantez2024chain,blairstanek2023statutory,holzenberger2020dataset} & \checkmark & -- & \checkmark & -- & -- & -- & -- & $\circ$ \\
+Neuro-symbolic translation \cite{pan2023logic,olausson2023linc,ye2023satlm,gao2023pal} & \checkmark & \checkmark & -- & -- & -- & -- & $\circ$ & $\circ$ \\
+Clarification and abstention \cite{li2024mediq,zhang2024askbeforeplan,kamath2020selective,wen2025abstention} & \checkmark & -- & -- & \checkmark & -- & -- & -- & -- \\
+Guardrails and verification \cite{chen2025shieldagent,xiang2025guardagent,dhuliawala2024chain} & \checkmark & $\circ$ & \checkmark & -- & -- & -- & \checkmark & $\circ$ \\
+Evidence obligation planning \cite{kim2026evidenceobligation,taranukhin2026infogatherer} & \checkmark & $\circ$ & -- & \checkmark & -- & -- & $\circ$ & \checkmark \\
+\midrule
+\casepath (this paper) & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Rule engines and rules as code}
+Executable rules have a long history in law and administration, from the British Nationality Act as a logic program \cite{sergot1986british} to Catala \cite{merigoux2021catala}, the Decision Model and Notation standard \cite{omg2024dmn} and the ``rules as code'' movement in government \cite{mohun2020cracking}. They apply rules deterministically and traceably, but they take typed facts as input rather than free text, and a fact that is not supplied is either an error or treated as false. Logic programs make the latter explicit as the closed-world assumption \cite{reiter1978closed}: what cannot be shown is false. For evidence requests that assumption is unsafe, because the facts that decide a requirement are often not yet known at intake.
+
+\paragraph{Case management and compliance checking}
+Case management notations and artifact-centric models describe processes whose activities become available as conditions are met \cite{omg2016cmmn,hull2011business}, and compliance checking verifies business processes against regulatory norms \cite{governatori2006compliance,hashmi2018compliance}. These models capture the process context that decides whether a requirement applies, and some represent pending or undecided states, but they assume that the conditions are supplied as structured events.
+
+\paragraph{Language-model agents with the process in the prompt}
+The prevailing way to make an LLM agent follow a business policy is to place the policy, workflow or standard operating procedure in its prompt and let the model choose actions. Benchmarks such as $\tau$-bench and FlowBench \cite{yao2025taubench,xiao2024flowbench} and procedure-following agents \cite{ye2025sopagent,li2026sopbench} evaluate this design, and agents still violate stated rules in a substantial share of cases. Other systems keep a state machine or procedural graph in code and let the model act within the current state \cite{wu2024stateflow,lu2026proceduralgraphs,yu2026compile}; the model still makes the decision inside each state. In all these designs the model both judges the case and applies the rule in one generation, so neither decision is recorded separately, unrelated outputs can change when a single fact changes, and repeated runs differ \cite{atil2025nondeterminism,blairstanek2025unstable}.
+
+\paragraph{Language models applying legal rules}
+Work on statutory reasoning asks models to apply rules to case facts, for instance by decomposing a rule into elements and recombining their evaluations as in Chain of Logic \cite{servantez2024chain,blairstanek2023statutory,holzenberger2020dataset,guha2023legalbench}. The decomposition is performed and executed by the model.
+
+\paragraph{Neuro-symbolic translation}
+Logic-LM, LINC, SatLM and program-aided reasoning translate a natural-language problem into a formal representation and let a solver or interpreter compute the answer \cite{pan2023logic,olausson2023linc,ye2023satlm,gao2023pal}. This separates interpretation from execution, as \casepath does, but the formalisation is produced anew for every problem, so the rules themselves can change between cases, and solvers assume that every fact is either given or false.
+
+\paragraph{Clarification, abstention and verification}
+Work on clarifying questions and selective prediction lets a model ask or abstain when it is uncertain \cite{rao2018learning,aliannejadi2019asking,kamath2020selective,wen2025abstention}; in interactive medical and planning tasks, agents ask for missing information before acting \cite{li2024mediq,zhang2024askbeforeplan}. These approaches decide whether to ask from the model's confidence about its answer, not from whether an unresolved fact can change a rule's outcome. Guardrail agents check proposed actions against policies \cite{chen2025shieldagent,xiang2025guardagent}, and verification prompts let a model check its own draft \cite{dhuliawala2024chain}; they filter an action after the fact and cannot add a request that was never proposed. The closest precedent for evidence planning keeps a ledger of evidence obligations that the model plans for each query and holds open until they are resolved \cite{kim2026evidenceobligation}; information-gathering agents choose retrievals and questions by expected evidential value \cite{taranukhin2026infogatherer}. Neither applies a shared process whose branches decide which obligations exist.
+
+\subsection{What is missing}
+\label{sec:gap}
+
+The approaches above provide each element of the decision separately, but none combines them. Rule engines apply fixed rules traceably but cannot read a claim or leave a fact open. LLM agents read the claim but apply the rules themselves. Neuro-symbolic pipelines execute what the model formalised but re-derive the formalisation per case and close the world. Clarification methods ask questions but not because a rule depends on the answer. The missing capability is an agent that reads a claim, records what is known and what is not, and then applies fixed, source-grounded process rules in a way that requests only what is certainly needed, asks about exactly the facts that matter, and justifies every request. \casepath provides this capability. Its individual ingredients---three-valued logic, rule execution, model-based extraction, verification---are established; the contribution is their combination for this decision, the semantics that make it sound under uncertainty, and evidence about when it improves on letting the model apply the rules.

@@ -1,0 +1,1137 @@
+{
+ "implicated": {
+  "overlay_rule_074": "route_joint",
+  "overlay_rule_084": "route_more",
+  "overlay_rule_010": "condition_missing",
+  "overlay_rule_042": "condition_broad",
+  "overlay_rule_003": "condition_broad"
+ },
+ "results": {
+  "overlay_rule_001": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The first route requires a completed, signed form submitted in full through specified channels. The cited passages do not impose those form, signature, or submission requirements."
+     },
+     {
+      "kind": "route_missing_alternative",
+      "explanation": "The routes omit notification by telephone, which one passage expressly permits, and notification to an authorized AXA service provider, which another permits."
+     },
+     {
+      "kind": "condition_unsupported",
+      "explanation": "The restriction on the written-notification route to cases where the insurer has not required its own form is not stated in the cited passages."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_002": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The Generali passage also requires prompt police notification and a request for an official investigation when Generali requests them; the rule omits that alternative condition."
+     },
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The passages expressly extend police reporting to attempted theft, but do not expressly require an investigation request for every attempted-theft loss."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The police-report route requires identification of the reporting person, police station and officer. The passages do not specify those required report contents."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages require an official investigation to be requested, but do not require evidence of its status."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_003": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_missing_alternative",
+      "explanation": "Police consent is not the only way to satisfy the first fact: traces may be preserved without alteration. The passages also permit certain changes to the loss location or damaged property for loss mitigation or in the public interest."
+     },
+     {
+      "kind": "route_missing_alternative",
+      "explanation": "Insurer consent is not the only way to satisfy the second fact: damaged items may be preserved unchanged, and the cited passages also allow certain changes for loss mitigation or in the public interest."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages do not identify imminent danger as a separate justification for changing damaged property."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_004": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The CSS passage requires preservation, rescue and loss-mitigation measures during as well as after the loss event; the rule covers only the period after the event."
+     },
+     {
+      "kind": "route_missing_alternative",
+      "explanation": "The rule recognizes imminent danger as an alternative to obtaining instructions, but its only evidence route requires an insurer instruction and evidence of compliance."
+     },
+     {
+      "kind": "condition_unsupported",
+      "explanation": "The statutory passage provides an imminent-danger exception, but the cited CSS and simpego passages require compliance with their instructions without stating that exception."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_005": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_006": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_007": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The first evidence route requires a completed and signed claim notification, including specified submission methods, in addition to the policy. The cited passages do not require that form or its submission to establish the theft location."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_008": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The route requires a completed and signed claim notification form in addition to the policy. The cited passages do not require that form to establish the insured location."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_009": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage defines which watches count as jewellery but does not require a signed inventory, purchase vouchers, or an expert valuation to establish watch type and value."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_010": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The first two routes require a signed form submitted in full to a specified address or online channel. The cited passages do not establish those requirements."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The third route requires liability-insurer and policy or claim-number details. The cited passage asks who caused the damage but does not require those additional details."
+     },
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The second fact implies that loss circumstances must be communicated to relevant authorities and experts. The source says the disclosure standards also apply to statements made to police, authorities, experts and doctors; it does not require statements to be made to them in every case."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_011": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages do not require a signed valued inventory, a before-and-after inventory, or production within a period set by the insurer."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages do not require original purchase vouchers or vouchers for costs claimed under insured cost heads."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages require proof of the loss amount, but do not specify proof of the amount attributable to each item or damage component."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_012": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages require requested information about known, relevant facts, but do not require either a completed and signed claim form or a written claim notification. They also do not specify submission channels or make written notification conditional on the insurer not requiring its own form."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_013": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The rule requires a signed inventory whenever an inventory is requested. The passages also describe requests for an inventory without requiring it to be signed; the signed-inventory passage concerns a request for a signed inventory."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_014": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The route additionally requires vouchers for effective costs claimed under insured cost heads. The cited passages do not require those vouchers for the purchase evidence of affected items."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_015": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "For the frame number and locked status, the routes require a completed, signed claim form submitted through specified channels. The cited passages ask for the frame number and whether the bicycle was locked, but do not specify those formality or submission requirements."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_016": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_joint_where_alternatives",
+      "explanation": "The source lists receipts, invoices, and valuations as examples; it does not require a receipt or invoice and an expert valuation together."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The source does not require proof of acquisition, payment, and value for each claimed valuable."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_017": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The rule requires release of the treating doctor for any loss involving bodily injury, whereas the source specifies accidents involving personal injury."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages require a medical certificate for personal injury but do not specify that it must establish the diagnosis and treatment-related facts."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_018": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages ask whether other insurance for the items and liability insurance exist. They do not require identifying the insurer or specifying the covered items, perils, and period for every existing policy. The separate notification duty concerns multiple insurance against the same perils for the同"
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages do not require identifying the insurer or specifying the covered items, perils, and period for every existing policy. The notification duty applies to multiple insurance of the same interest against the same perils for the same period."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_019": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The first passage requires prompt notice to the insurer, but does not require a completed double-insurance declaration listing other insurers and policy numbers."
+     },
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "For the single-entitlement rule, the second passage refers to insurance of the same things and risks; it does not expressly require the insurance periods to be the same."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_020": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_missing_alternative",
+      "explanation": "The passages also allow the parties themselves to determine the loss, but the rule provides no route for that alternative."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The cited passages do not require written appointments by each party, appointment of an umpire before determination begins, or an umpire's decision on disputed points."
+     },
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The passages do not establish that policyholder assistance applies in every loss-determination route. The CSS passage refers to assistance and/or a joint expert."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_021": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_022": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The evidence route additionally requires appointment of an umpire before determination begins. The cited passages do not require this to establish each party's written appointment of its expert."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_023": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_024": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_025": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The first evidence route requires an umpire’s decision on disputed points, but the cited passage does not require or mention such a decision."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_026": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The source excludes personal sentimental value without limiting that exclusion to claims concerning movable household contents."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_027": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_missing",
+      "explanation": "The proportional compensation rule applies when the insured sum is lower than the replacement value. The stated condition does not require underinsurance."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "Both evidence routes require a policy and a signed valued inventory jointly. The cited passages do not require either document, or their joint production, to establish these facts."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_028": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage describes first-risk coverage up to the agreed sum insured. It does not require a policy or a schedule listing insured perils, locations, deductibles and additional covers as evidence."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_029": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "For burglary, the limit does not apply when jewellery is locked in a safe cabinet weighing at least 100 kg. The rule's evidence item specifies more than 100 kg, which would incorrectly include a cabinet weighing exactly 100 kg within the limited-benefit condition."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_030": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The absence of a different agreement is a condition for the default CHF 200 deductible, not for the policy-agreed deductible and its deduction from calculated compensation. The cited passages also do not make that rule conditional on the absence of a qualifying no-deductible exception."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_031": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_032": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The fact requires an agreed legal consequence, but the cited passages also allow a legal disadvantage to apply without establishing that it was agreed."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_033": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_034": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_035": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "For misstatements or concealment, the source requires facts that would exclude or reduce the insurer's obligation, not merely facts relevant to coverage or benefit reduction."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The evidence requirement asks for a coverage or benefit effect in every case. The source does not expressly require such an effect for communications required under Article 39 that were deceptively delayed or omitted."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_036": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_037": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_038": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "One cited passage covers either an investigation by police or investigating authorities or an unconcluded criminal proceeding. The rule requires both an ongoing investigation and unconcluded proceedings."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_039": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_040": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_041": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages require repayment of the compensation, less any allowance for repairs or depreciation. They do not establish that repayment has occurred or specify an amount repaid."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_042": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The sources impose assignment when CSS has paid benefits for which the policyholder could claim against a third party, but require preservation of recourse when a third party's fault caused or increased the loss. The rule combines these distinct conditions with 'or' and applies the combined fact and"
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The route requires a written assignment and evidence needed to pursue the claims. The cited passages require assignment under the first condition and preservation of recourse under the second, but do not specify a written assignment or require that evidence to be supplied."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_043": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_044": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages refer to the date of the fact triggering the obligation to pay, but do not require the claim assertion date to be established. The rule's fact and must-show requirement add that date."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_045": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_046": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passages require the recipient’s name, address and account details, but do not specify a payment instruction, an IBAN or the financial institution’s name."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_047": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage supports the declaration but does not require a claim notification form or submission to a specified address or online channel."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_048": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The source states that contractual provisions imposing a shorter limitation period or time restriction are invalid, subject to the Article 39 paragraph 2 number 2 exception. The rule instead states that the claim is subject to the contractual restriction without making that conclusion conditional on"
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_049": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage permits CSS to request a police report, but does not establish that the report is available or that its provision status is established."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_050": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_051": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The cited passage states only that doubts exist about the claimant's entitlement to receive payment. It does not state that the entitlement must be established or that the doubts must be resolved."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_052": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_053": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "For damage caused by an employee, the source applies only if the employee's position enabled access to the insured premises. The rule's condition includes employees without that limitation."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_054": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage refers to damage caused by someone living in the policyholder’s household, but does not require that person’s identity to be established."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_055": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_056": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_unsupported",
+      "explanation": "The passage does not make evidence requirements depend on CSS considering termination or withdrawal. It identifies grounds on which CSS may terminate or withdraw."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage does not require all four categories of facts to be established together, nor does it prescribe evidence establishing CSS's election and its predicate. The listed grounds are alternatives for CSS's ability to terminate or withdraw."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_057": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage indicates that the policyholder has additional obligations in the event of theft, but it does not state their content or require that they be identified."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_058": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_059": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The passage does not limit the insurer’s authority to repair work required for a covered loss."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage says the insurer may determine which contractors perform the repairs. It does not require the necessary repair work or any contractor determination to be established."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_060": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_unsupported",
+      "explanation": "The passage names the financial institution but does not establish a condition tied to payment of the insurance benefit."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The route additionally requires a payment instruction with the payee’s name, address and IBAN; the passage mentions only the financial institution’s name."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_061": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_062": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage identifies a policy number or claim number but does not require a completed and signed claim notification form or submission through a specified channel."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_063": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The passage addresses an actual, inexcusable breach as a condition for reducing compensation, not merely an alleged breach."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage does not expressly require establishing the obligations, the alleged conduct, and whether a breach was inexcusable whenever a breach is alleged."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_064": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_065": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_066": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_067": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage requires Simpego's consent for repairs expected to cost more than CHF 500; it does not require repair costs to be established or a threshold determination to be made for all contemplated repairs."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_068": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_missing",
+      "explanation": "The source permits a partial-payment demand only four weeks after the loss; the rule says it always applies."
+     },
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage does not establish the current investigation status or a specific minimum compensation amount."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_069": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_070": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage permits the insurer to set reasonable time limits, but does not require establishing when or to whom a limit was communicated."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_071": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_072": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "Both routes require a particular insurance policy with specified schedule details, and the first additionally requires a completed and signed insurer claim form. The passage does not require those documents or details."
+     },
+     {
+      "kind": "condition_unsupported",
+      "explanation": "The passage does not make use of a written notification in another form conditional on the insurer not having required its own form."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_073": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_074": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_broader_than_source",
+      "explanation": "The passage applies in a claim where neither a receipt nor an expert valuation can be produced; the rule states only the object and value conditions."
+     },
+     {
+      "kind": "route_joint_where_alternatives",
+      "explanation": "The route requires both a receipt and an expert valuation, whereas the passage permits either to be presented."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_075": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_narrower_than_source",
+      "explanation": "The passage permits CSS to terminate no later than payment; it does not require compensation already to be payable or paid when termination occurs."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_076": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_077": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_078": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_079": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_missing",
+      "explanation": "The source makes the right to request a partial payment conditional on 30 days having passed since the loss. The rule omits this timing requirement."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_080": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage requires that CSS ordered the loss mitigation; it does not require original purchase vouchers or prescribe a joint set of documents to establish the order and costs."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_081": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The route requires evidence that the instruction was followed. The cited passage makes cost coverage conditional on CSS having ordered loss mitigation, but does not require evidence of compliance with the order."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_082": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage makes absence of a medical certificate or police proof a condition for possible refusal of compensation, but does not require separate facts or evidence establishing that absence."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_083": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_084": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage does not require a theft report within 24 hours, a bank statement, or a police report or equivalent document. It only specifies the relevant interval between theft and notification to CSS."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_085": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_086": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_087": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage makes the notice period run from when the policyholder learns of the compensation payment; it does not require establishing the payment date."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_088": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The source makes reporting within 24 hours relevant, but does not require the exact reporting date and time to be established."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_089": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage states that the provisions under Article 46c VVG apply, but it does not establish their claim-specific effect or any resulting requirements, consequences, or routes."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_090": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_091": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passage permits the insurer to set a reasonable deadline; it does not require the deadline, its communication date, or its reasonableness to be established."
+     },
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage requires the requested signed valued inventory, but does not require it as evidence establishing a deadline or its reasonableness."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_092": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_093": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_missing",
+      "explanation": "The source makes the right to demand an advance payment conditional on the insurer disputing its obligation to pay. The rule omits that condition."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_094": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage states that CSS insures theft, but does not require a policy schedule showing locations, sums insured, deductibles, and additional covers to establish that fact."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_095": {
+   "result": {
+    "issues": [
+     {
+      "kind": "route_asks_more_than_source",
+      "explanation": "The passage requires the insurance company's name but does not require an insurance policy or the specified schedule details as evidence."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_096": {
+   "result": {
+    "issues": [],
+    "verdict": "supported"
+   },
+   "error": null
+  },
+  "overlay_rule_097": {
+   "result": {
+    "issues": [
+     {
+      "kind": "condition_missing",
+      "explanation": "The source permits a partial payment to be demanded only four weeks after the loss occurred; the rule omits this timing condition."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  },
+  "overlay_rule_098": {
+   "result": {
+    "issues": [
+     {
+      "kind": "fact_unsupported",
+      "explanation": "The passages do not expressly require the request's receipt or receipt date to be established. The statutory passage refers to the day the insurer made the written request."
+     }
+    ],
+    "verdict": "flag"
+   },
+   "error": null
+  }
+ }
+}

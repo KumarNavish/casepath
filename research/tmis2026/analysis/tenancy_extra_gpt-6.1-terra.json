@@ -1,0 +1,58 @@
+{
+ "deferral_causes": {
+  "other_condition": 54,
+  "required_total": 1779,
+  "claim_deferred": 87,
+  "routing_fact": 397
+ },
+ "citations": {
+  "B1": {
+   "citations": 1598,
+   "exact": 1598,
+   "exact_rate": 1.0
+  },
+  "B2": {
+   "citations": 1031,
+   "exact": 1031,
+   "exact_rate": 1.0
+  },
+  "CP-proposal": {
+   "citations": 1163,
+   "exact": 1163,
+   "exact_rate": 1.0
+  }
+ },
+ "verifier": {
+  "checked": 1640,
+  "rejected": 56,
+  "rejected_true": 35,
+  "family_rejected": 0,
+  "rejected_unresolved": 4
+ },
+ "routing_presumption": {
+  "tp": 1617,
+  "fp": 7,
+  "defer": 60,
+  "miss": 15,
+  "nR": 1692,
+  "nP": 1624
+ },
+ "by_type": {
+  "defect_mold_heating": {
+   "other_condition": 38,
+   "required": 639,
+   "claim_deferred": 42
+  },
+  "lease_termination_dispute": {
+   "routing_fact": 168,
+   "required": 540,
+   "claim_deferred": 17
+  },
+  "rent_increase_dispute": {
+   "required": 600,
+   "routing_fact": 229,
+   "other_condition": 16,
+   "claim_deferred": 28
+  }
+ }
+}
