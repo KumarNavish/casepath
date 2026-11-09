@@ -34,11 +34,19 @@ def prepare_case(title, files, out_dir, *, intake=None, image_side=1400):
     from .extract import extract
     from .reading import Renderer
 
+    from .extract import attachments
+
     out = Path(out_dir)
     (out / "files").mkdir(parents=True, exist_ok=True)
+    expanded = []  # an e-mail's attachments follow it as files of their own
+    for name, data in files:
+        expanded.append((name, data, None))
+        expanded += [(inner, payload, name) for inner, payload in attachments(name, mimetypes.guess_type(name)[0], data)]
     rows = []
-    for index, (name, data) in enumerate(files, 1):
+    for index, (name, data, attached_to) in enumerate(expanded, 1):
         result = extract(name, mimetypes.guess_type(name)[0] or "application/octet-stream", data)
+        if attached_to:
+            result["attached_to"] = attached_to
         stored = f"files/{index:02d}-{_safe(name)}"
         (out / stored).write_bytes(data)
         row = {"name": name, "file": stored, "media_type": result["media_type"], "kind": result["kind"], "extraction": result, "page_images": {}}

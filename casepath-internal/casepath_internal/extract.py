@@ -12,11 +12,11 @@ import zipfile
 import xml.etree.ElementTree as ET
 
 KINDS = {
-    "application/pdf": "pdf", "message/rfc822": "email", "text/plain": "text", "text/markdown": "text",
+    "application/pdf": "pdf", "message/rfc822": "email", "application/vnd.ms-outlook": "email", "text/plain": "text", "text/markdown": "text",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "word",
     "image/jpeg": "image", "image/png": "image", "image/heic": "image", "image/webp": "image",
 }
-EXTENSIONS = {".pdf": "application/pdf", ".eml": "message/rfc822", ".txt": "text/plain", ".md": "text/markdown",
+EXTENSIONS = {".pdf": "application/pdf", ".eml": "message/rfc822", ".msg": "application/vnd.ms-outlook", ".txt": "text/plain", ".md": "text/markdown",
               ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
               ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".heic": "image/heic", ".webp": "image/webp"}
 
@@ -29,6 +29,8 @@ def media_type(name, declared, data):
     if data.startswith(b"\x89PNG\r\n\x1a\n"):
         return "image/png"
     suffix = "." + name.rsplit(".", 1)[-1].lower() if "." in name else ""
+    if data.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1") and suffix == ".msg":
+        return EXTENSIONS[".msg"]
     if data.startswith(b"PK\x03\x04") and suffix == ".docx":
         return EXTENSIONS[".docx"]
     if suffix in EXTENSIONS and EXTENSIONS[suffix] not in {"application/pdf", "image/jpeg", "image/png"}:
@@ -82,6 +84,55 @@ def _email(data):
     return header + "\n\n" + "\n".join(body).strip(), {"attachments": attachments}
 
 
+def _outlook(data):
+    from .msg import read
+    message = read(data)
+    header = "\n".join(f"{key}: {message[field]}" for key, field in (("From", "from"), ("To", "to"), ("Date", "date"), ("Subject", "subject"))
+                       if message[field])
+    return header + "\n\n" + message["body"], {"attachments": [a["name"] for a in message["attachments"]]}
+
+
+MAX_ATTACHMENTS = 40
+
+
+def attachments(name, declared, data, depth=0):
+    """The files attached to an e-mail (.eml or Outlook .msg) as [(file name, bytes)], those of attached e-mails
+    included, so each can be read as a file of the case. Other files have none."""
+    kind_type = media_type(name, declared, data)
+    found = []
+    if kind_type == "message/rfc822":
+        try:
+            message = BytesParser(policy=policy.default).parsebytes(data)
+            for part in message.walk():
+                if part.is_multipart() or not part.get_filename():
+                    continue
+                payload = part.get_payload(decode=True)
+                if payload:
+                    found.append((part.get_filename(), payload))
+        except Exception:
+            return []
+    elif kind_type == "application/vnd.ms-outlook":
+        from .msg import read
+        try:
+            message = read(data)
+        except Exception:  # a damaged message keeps its own reading; its attachments are just not split out
+            return []
+        def flatten(items, depth=0):  # an attached e-mail's own attachments follow it
+            for item in items:
+                found.append((item["name"], item["data"]))
+                if depth < 2:
+                    flatten(item.get("attachments") or [], depth + 1)
+        flatten(message["attachments"])
+        return [(n.replace("/", "_").replace("\\", "_").strip() or "Anhang", d) for n, d in found[:MAX_ATTACHMENTS]]
+    out = []
+    for attached_name, payload in found[:MAX_ATTACHMENTS]:
+        attached_name = attached_name.replace("/", "_").replace("\\", "_").strip() or "Anhang"
+        out.append((attached_name, payload))
+        if depth < 2:
+            out += attachments(attached_name, None, payload, depth + 1)
+    return out[:MAX_ATTACHMENTS]
+
+
 def _word(data):
     namespace = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
@@ -103,7 +154,7 @@ def extract(name, declared, data):
             if details["pages_without_text"]:
                 result["note"] = f"{len(details['pages_without_text'])} of {details['pages']} pages have no text layer and were not read."
         elif kind == "email":
-            text, details = _email(data)
+            text, details = _outlook(data) if kind_type == "application/vnd.ms-outlook" else _email(data)
             result.update(details)
         elif kind == "word":
             text, _ = _word(data)

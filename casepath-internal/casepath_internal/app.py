@@ -23,7 +23,7 @@ from . import casegraph, identity, knowledge as kb, workflows
 from .azure_model import AzureOpenAIModel, entra_token_provider
 from .config import load_settings
 from .evidence import Evidence
-from .extract import extract
+from .extract import attachments, extract
 from .runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
 
@@ -190,6 +190,27 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
+
+    def add_with_attachments(case_id, name, declared, data, who):
+        """Add the file to the case; an e-mail's attachments become files of the case too, each noting its e-mail."""
+        import mimetypes
+
+        def read(file_name, kind, payload):
+            result = extract(file_name, kind, payload)
+            if len(result["text"]) > settings.max_text_chars:
+                result["text"] = result["text"][:settings.max_text_chars]
+                result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
+            return result
+        result = read(name, declared, data)
+        row = store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who)
+        added = []
+        for attached_name, payload in (attachments(name, declared, data) if result["kind"] == "email" else []):
+            if not payload or len(payload) > settings.max_upload_bytes:
+                continue
+            inner = read(attached_name, mimetypes.guess_type(attached_name)[0] or "application/octet-stream", payload)
+            inner["attached_to"] = name
+            added.append(store.add_file(case_id, attached_name, inner["media_type"], inner["kind"], payload, inner, who)["id"])
+        return {**row, "attachments": added} if added else row
     uploads_from_bytes = True  # loose PDFs are read by pypdf where installed, else by CasePath's own reader (pdfread)
 
     @app.get("/api/imports")
@@ -249,14 +270,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if len(data) > settings.max_upload_bytes:
             raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
         name = body.path.rsplit("/", 1)[-1]
-        result = await run_in_threadpool(extract, name, mimetypes.guess_type(name)[0] or "application/octet-stream", data)
         case = store.create_case((body.title or Path(name).stem).strip()[:300], {"source": "volume", "import_path": body.path}, who)
         if body.workflow_id:
             workflow = catalogue.get(body.workflow_id)
             if workflow is None:
                 raise HTTPException(404, "No such workflow.")
             store.select_workflow(case["id"], workflow["id"], workflow["version"], who)
-        added = await run_in_threadpool(store.add_file, case["id"], name, result["media_type"], result["kind"], data, result, who)
+        added = await run_in_threadpool(add_with_attachments, case["id"], name, mimetypes.guess_type(name)[0] or "application/octet-stream", data, who)
         return {"case": store.get_case(case["id"]), "file": added}
 
     @app.get("/api/me")
@@ -322,11 +342,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not data:
             raise HTTPException(422, "The file is empty.")
         name = Path(file.filename or "file").name[:255]
-        result = await run_in_threadpool(extract, name, file.content_type, data)  # a large PDF must not block the server
-        if len(result["text"]) > settings.max_text_chars:
-            result["text"] = result["text"][:settings.max_text_chars]
-            result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
-        return await run_in_threadpool(store.add_file, case_id, name, result["media_type"], result["kind"], data, result, who)
+        return await run_in_threadpool(add_with_attachments, case_id, name, file.content_type, data, who)  # a large PDF must not block the server
 
     if uploads:  # a runtime without the form parser serves prepared cases only (imported from the volume)
         app.post("/api/cases/{case_id}/files", status_code=201)(upload)

@@ -71,8 +71,19 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
 - **Packages:** the app needs nothing beyond the platform's web packages.
   - **Prepared cases:** where the PDF libraries are, `python -m casepath_internal.prepare <files> --out <dir>` makes a prepared case: the original files, the extracted text and images of the scanned pages, made without a model.
   - **Importing them:** the app imports prepared cases from the volume's `incoming/` folder. The synthetic cases ship prepared.
-  - **Reading loose PDFs too:** set `WHEELS_INDEX` to the approved package feed when packaging. The PDF libraries are then shipped as wheels checked against PyPI's published SHA-256, and installed from the app folder.
-  - **Checked:** in a Python 3.11 runtime with no network and only fastapi, uvicorn and httpx, the app starts and loads the 17 prepared synthetic cases with their page images. It switches uploads off.
+  - **Loose files without extra packages:** uploaded or imported files are read by CasePath itself when the PDF
+    libraries are missing (`pdfread.py`, `ccitt.py`, `msg.py`, standard library only):
+    - a PDF's text layer, including subset and CID fonts with their Unicode maps and compressed object streams;
+    - each scanned page's own image: JPEG as it is, bitmaps and CCITT Group 3/4 fax scans as PNG. JPEG 2000 and JBIG2
+      pages are reported as not read;
+    - Outlook `.msg` e-mails like `.eml` ones;
+    - every e-mail attachment, which becomes a file of the case, marked with the e-mail it came from.
+    `/api/health` reports `pdf_text` (`pypdf` or `builtin`) and `scanned_pages` (`rendered` or `embedded images`).
+  - **Rendering every page:** set `WHEELS_INDEX` to the approved package feed when packaging. The PDF libraries are then
+    shipped as wheels checked against PyPI's published SHA-256, installed from the app folder and used first.
+  - **Checked:** in a Python 3.11 runtime with no network and only fastapi, uvicorn and httpx, the app starts and loads
+    the 17 prepared synthetic cases with their page images. The built-in reader matches pypdf word for word on the 17
+    benchmark dossiers, and decodes Group 3 and Group 4 fax pages bit for bit as libtiff encodes them.
 - **Gateway limits:** some gateways reject a temperature and forced tool choice. With `CASEPATH_MODEL_API=messages` and `CASEPATH_MODEL_FORCED_TOOLS=false`, each turn offers only the tool that must be called and says so. A structured answer is checked and asked for once more when it is missing or malformed.
 - **Prompt caching:** an agent's turns mark the system prompt, the tools and the end of the conversation, so the next turn reads them from the cache. A one-off structured answer marks only the system prompt and tools. Each call's usage in the run record gives `input_tokens` (all input, cached or not), `cached_tokens` (read from the cache) and `cache_write_tokens` (written to it). The marks are dropped only when the gateway refuses them and the same request without them succeeds.
 - **Imports:** case files placed in the volume's `incoming/` folder are listed on the Cases page. One click turns each into a case without the file passing through the browser, which suits large dossiers.
