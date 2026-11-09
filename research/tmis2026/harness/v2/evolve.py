@@ -85,7 +85,8 @@ class TheftArmCP:
         self.log = []
 
     def plans(self, pair, T, run):
-        tp = self.tv.TheftPack(self.pack)
+        self.T, self.run = T, run
+        tp = self.tv.TheftPack(self.pack, judge_all=True)
         off = tp.run_cpv2(pair["off"], T[pair["off"]]["text"], run)
         var = tp.run_cpv2(pair["variant"], T[pair["variant"]]["text"], run)
         return off, var
@@ -95,11 +96,25 @@ class TheftArmCP:
         tp = self.tv.TheftPack(pack)
         out = []
         for pair, nu_off, nu_var in episodes:
-            nu_off = {g: nu_off.get(g, "unresolved") for g in tp.guards}
-            nu_var = {g: nu_var.get(g, "unresolved") for g in tp.guards}
+            nu_off = {g: nu_off[g] if g in nu_off else self.judge_new(pair["off"], g, tp) for g in tp.guards}
+            nu_var = {g: nu_var[g] if g in nu_var else self.judge_new(pair["variant"], g, tp) for g in tp.guards}
             e = theft_errors(score_pair, pair, tp.plan_exact(nu_off), tp.plan_exact(nu_var), best_realization)
             out.append(len(e["wrong"]) + len(e["missed"]))
         return out
+
+    def judge_new(self, text_id, guard_id, tp):
+        """Judgment of a guard created by a repair, for a recorded case (one small call per text and guard,
+        cached): same task and exact-quote admission as the main interpretation, without the verifier."""
+        import theft_methods as tm
+        text = self.T[text_id]["text"]
+        schema = tm.obj({"conditions": tm.arr(tm.obj({"guard_id": {"type": "string", "enum": [guard_id]},
+                                                     "verdict": {"type": "string", "enum": ["true", "false", "unresolved"]},
+                                                     "quote": {"type": "string", "maxLength": 400}}), 2)})
+        r = llm.call(system=tm.POLICY + "\n\n" + tm.CP_TASK + json.dumps({guard_id: tp.guards[guard_id]}, ensure_ascii=False),
+                     user="CASE:\n" + text, schema=schema, schema_name="casepath_conditions", run=self.run,
+                     tag={"exp": "v2-evolve", "method": "judge-new-guard", "case": text_id}, max_tokens=1500)
+        rows = {row["guard_id"]: row for row in (r["result"] or {}).get("conditions", [])}
+        return tp.admit(rows, text, None).get(guard_id, "unresolved")
 
     def trace(self, errors, nu_off, nu_var):
         import induce

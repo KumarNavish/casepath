@@ -1,0 +1,38 @@
+{
+ "tenancy": {
+  "spec": {
+   "handed_over": 1.1666666666666667,
+   "held": 2.0,
+   "missed": 0.4166666666666667,
+   "n": 12,
+   "requested": 3.5833333333333335,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  },
+  "v2b": {
+   "handed_over": 1.1666666666666667,
+   "held": 0.3333333333333333,
+   "missed": 0.4166666666666667,
+   "n": 12,
+   "requested": 5.25,
+   "strict_unsafe": 1.6666666666666667,
+   "unnecessary": 0.08333333333333333
+  }
+ },
+ "theft": {
+  "v1_pack_no_quarantine": {
+   "f1": 0.818,
+   "missed": 2,
+   "pair_runs": 9,
+   "unchanged_when_open": 0.6666666666666666,
+   "wrong": 2
+  },
+  "v1_pack_quarantine": {
+   "f1": 0.429,
+   "missed": 8,
+   "pair_runs": 9,
+   "unchanged_when_open": 1.0,
+   "wrong": 0
+  }
+ }
+}

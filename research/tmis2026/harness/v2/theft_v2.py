@@ -28,13 +28,17 @@ CP_TASK_V3 = tm.VERIFY_TASK.replace("Conditions:\n", "") + "\n" + v3.RULE.replac
 class TheftPack:
     """A theft rule pack (V1 output, possibly with V5 repairs) and the CasePath v2 / Rules-in-context designs on it."""
 
-    def __init__(self, pack):
+    def __init__(self, pack, judge_all=False):
         self.pack = pack
+        self.judge_all = judge_all
         self.quarantined = set(pack["quarantined_rules"])
         self.admitted = [b for b in pack["overlay"]["compiled"] if not self.is_quarantined(b["node_id"])]
         self.req = {r["capability_id"]: r["routes"] for r in pack["requirements"]}
         self.resolvers = [r for r in pack["resolvers"] if not self.is_quarantined(r["rule_id"])]
         used = {f["guard_id"] for b in self.admitted for f in b["facts"] if f.get("guard_id")} | {r["guard_id"] for r in self.resolvers}
+        if judge_all:  # V5 arm: judge every guard of the pack so that a readmitted rule can be replayed
+            used |= {f["guard_id"] for b in pack["overlay"]["compiled"] for f in b["facts"] if f.get("guard_id")}
+            used |= {r["guard_id"] for r in pack["resolvers"]}
         self.guards = {g["guard_id"]: g["statement"] for g in pack["overlay"]["guards"] if g["guard_id"] in used}
         self.note_docs = sorted({d for b in pack["overlay"]["compiled"] if self.is_quarantined(b["node_id"]) for f in b["facts"]
                                  for c in f["capabilities"] for rt in self.req.get(c["capability_id"], []) for d in rt["document_types"]})
