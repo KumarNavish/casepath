@@ -390,6 +390,12 @@ function describe(e) {
   const what = {
     "agent.start": () => `${T("starts", "beginnt")}: ${TASK[e.agent] || e.instruction || ""}`,
     "agent.end": () => { const c = e.counts || {};
+      if (e.routing) {
+        const title = ((S.workflows || []).find((w) => w.id === e.workflow) || {}).title || e.workflow;
+        return { selected: T(`Process found: ${title}`, `Prozess bestimmt: ${title}`), fallback: T(`No specific process fits; general process: ${title}`, `Kein spezifischer Prozess passt; allgemeiner Prozess: ${title}`),
+                 ambiguous: T("Several processes fit; please choose one", "Mehrere Prozesse passen; bitte einen wählen"),
+                 needs_facts: T("The files do not yet show which process applies; please choose one", "Die Dokumente zeigen noch nicht, welcher Prozess gilt; bitte einen wählen"),
+                 unmapped: T("No process fits this case", "Kein Prozess passt zu diesem Fall") }[e.routing] || e.summary; }
       if ("agreed" in c) return T(`Second reading: ${c.agreed} agree, ${c.differed} differ, ${c.added} found only now`, `Zweite Lesung: ${c.agreed} übereinstimmend, ${c.differed} abweichend, ${c.added} erst jetzt gefunden`);
       if ("checked" in c) return T(`${c.accepted} of ${c.checked} supported by their quotes`, `${c.accepted} von ${c.checked} durch ihre Zitate belegt`);
       return e.summary || T("done", "fertig"); },
@@ -462,7 +468,8 @@ function livePanel(live) {
     || `<li class="active"><span class="cp-spinner"></span>${T("Starting", "Beginnt")}</li>`;
   return `<aside><section class="cp-card cp-plan"><h3>${T(`Building “${esc(title)}”`, `In Arbeit: «${esc(title)}»`)}</h3><ol>${rows}</ol></section>
     ${live ? liveDocuments(live) : ""}
-    <div class="cp-agent-chip"><span class="cp-hex">${icon(AGENT_ICON[agent])}</span>${esc(AGENT_TITLE[agent])}</div>
+    <div class="cp-agent-chip"><span class="cp-hex">${icon(AGENT_ICON[agent])}</span>${esc(AGENT_TITLE[agent])}
+      ${S.follow ? "" : `<button class="cp-link" id="follow" type="button">${icon("right")}${T("Follow the agents", "Den Agenten folgen")}</button>`}</div>
     <details style="margin-top:14px"><summary class="cp-link">${T("Work log", "Arbeitsprotokoll")}</summary>${workLog()}</details></aside>`;
 }
 
@@ -959,6 +966,13 @@ async function renderCase() {
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; renderCase(); } });
   for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; renderCase(); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
+  const follow = $("#follow");
+  if (follow) follow.addEventListener("click", () => {
+    S.follow = true;
+    const agent = activeAgent();
+    if (agent && agent !== "lead") { S.route.tab = agent; history.replaceState(null, "", `#/case/${S.route.id}/${agent}`); }
+    renderCase();
+  });
   const open = $("#edit-open");
   if (open) open.addEventListener("click", () => { S.editing = true; renderCase(); });
   const undo = $("#undo");
@@ -1017,6 +1031,7 @@ async function renderKnowledge() {
 async function route() {
   const next = parseRoute();
   if (next.view !== "case" || next.id !== S.route.id) Object.assign(S, { data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null, events: [], follow: true, message: "", shown: new Set(), litKey: null });
+  if (S.data && next.view === "case" && next.id === S.route.id && next.tab !== S.route.tab) S.follow = false;  // the person chose a tab
   S.route = next;
   renderTop();
   placeAttention(false);

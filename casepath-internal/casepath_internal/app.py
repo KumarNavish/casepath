@@ -185,10 +185,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
                 "imports": files is not None, "uploads": uploads,
+                "pdf_text": "pypdf" if importlib.util.find_spec("pypdf") else "builtin",
+                "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
-    uploads_from_bytes = importlib.util.find_spec("pypdf") is not None  # loose PDFs need the PDF reader; prepared cases do not
+    uploads_from_bytes = True  # loose PDFs are read by pypdf where installed, else by CasePath's own reader (pdfread)
 
     @app.get("/api/imports")
     def list_imports(who=Depends(user)):

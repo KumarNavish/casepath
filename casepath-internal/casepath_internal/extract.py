@@ -42,7 +42,21 @@ def normalise(text):
 
 
 def _pdf(data):
-    from pypdf import PdfReader
+    """The text layer page by page. pypdf where it is installed; otherwise, or when it cannot read the file, CasePath's
+    own reader (pdfread), so a runtime without the PDF libraries still reads uploaded PDFs."""
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        from .pdfread import extract_text
+        return extract_text(data)
+    try:
+        return _pypdf(PdfReader, data)
+    except Exception:
+        from .pdfread import extract_text
+        return extract_text(data)
+
+
+def _pypdf(PdfReader, data):
     reader = PdfReader(io.BytesIO(data))
     parts, empty = [], []
     for number, page in enumerate(reader.pages, 1):
@@ -100,7 +114,8 @@ def extract(name, declared, data):
             result["note"] = "Kept as an original; images and other files are not read as text."
     except Exception as error:  # A damaged file is reported, never guessed.
         text = ""
-        result["note"] = f"The file could not be read ({type(error).__name__})."
+        result["note"] = ("The PDF is password-protected; CasePath cannot read it. Please add an unprotected copy."
+                          if "encrypt" in str(error).lower() else f"The file could not be read ({type(error).__name__}).")
     result["text"] = text
     result["readable"] = bool(text.strip())
     return result

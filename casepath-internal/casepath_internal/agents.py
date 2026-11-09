@@ -76,6 +76,9 @@ a new document need or question with its condition and a quote, a refinement of 
 contradiction when an applied item did not hold here. Propose learning only when this case shows it.
 Write what CasePath should learn in general terms that fit later cases: no names, addresses, amounts, dates or other
 details of this case. If the process defines summary fields, fill each one for the case handler from the accepted findings (case_summary).
+The evaluated checklist is the authority on documents: in the summary, the answer and the open points, call a document
+missing only if the checklist lists it as missing, and say which ones it lists. A further document you think would help
+is an open point worded as a suggestion ("could also help: …"), never as missing.
 When the evaluated path reaches a step that produces a letter (see letters in the process), the reply draft is that
 letter, written as the step describes it (for example from the customer to the counterparty) and resting only on
 accepted findings.""",

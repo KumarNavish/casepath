@@ -190,7 +190,7 @@ def route(model, catalogue, case, files, on_event):
     known.update({k: v for k, v in ((case.get("intake") or {}).get("routing") or {}).items() if k in definitions})
     decision = workflows.route(catalogue, known)
     decision["facts"] = [{"fact": k, "value": v, "citations": cited.get(k, [])} for k, v in known.items()]
-    on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.",
+    on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.", "routing": decision["status"],
               "workflow": decision["workflow"] and decision["workflow"]["id"]})
     workflow = catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None
     return decision, workflow

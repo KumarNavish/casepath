@@ -78,6 +78,21 @@ def render_pages(data, numbers, dpi=150, max_side=1700):
     return Renderer(data, dpi, max_side).pages(numbers)
 
 
+def image_url(blob):
+    """A data URL with the image's own type: page images are PNG, or JPEG when taken from a scan as it is."""
+    media = "image/jpeg" if blob[:3] == b"\xff\xd8\xff" else "image/png"
+    return f"data:{media};base64," + base64.b64encode(blob).decode()
+
+
+def renderer_available():
+    try:
+        import pypdfium2  # noqa: F401
+        from PIL import Image  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
 def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700, images=None):
     """Read the given pages from their images. Returns ({page: text}, [pages that could not be read]).
 
@@ -87,7 +102,7 @@ def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda d
     def read(chunk):
         content = [{"type": "input_text", "text": f"Pages {', '.join(map(str, chunk))} of the file, in this order."}]
         for _, png in ([(n, images[n]) for n in chunk] if images else renderer.pages(chunk)):
-            content.append({"type": "input_image", "image_url": "data:image/png;base64," + base64.b64encode(png).decode(), "detail": "high"})
+            content.append({"type": "input_image", "image_url": image_url(png), "detail": "high"})
         schema = obj(pages=arr(obj(page={"type": "integer", "enum": chunk}, text=text(30000)), minItems=len(chunk), maxItems=len(chunk)))
         result = model.respond_json(name="casepath_transcribe", instructions=OCR_INSTRUCTIONS, schema=schema, effort="low",
                                     input=[{"role": "user", "content": content}])
@@ -257,7 +272,20 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
                 on_event({"agent": "claim_reader", "kind": "reading.progress", "file": file_row["id"], "done": done, "of": len(todo)})
         prepared = extraction.get("page_images") or {}
         images = {n: store.blob(prepared[str(n)]) for n in todo} if all(str(n) in prepared for n in todo) else None
-        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side, images=images)
+        without_image = []
+        if images is None and not renderer_available():
+            # No PDF renderer here: take each scanned page's own image from the file (pdfread).
+            from .pdfread import PdfError, page_images
+            try:
+                found, _ = page_images(data, todo, max_side=image_side)
+            except PdfError:
+                found = {}
+            images = {n: blob for n, (_, blob) in found.items()}
+            without_image = [n for n in todo if n not in images]
+            todo = [n for n in todo if n in images]
+        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side,
+                                         images=images) if todo else ({}, [])
+        unread = sorted(unread + without_image)
         extraction = merge_pages(extraction, transcribed)
         if transcribed:
             extraction.pop("segments", None)  # newly read pages change where documents begin and end

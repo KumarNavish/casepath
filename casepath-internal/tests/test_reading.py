@@ -41,7 +41,8 @@ class Reader:
         if name == "casepath_transcribe":
             pages = schema["properties"]["pages"]["items"]["properties"]["page"]["enum"]
             images = [c for c in input[0]["content"] if c["type"] == "input_image"]
-            assert len(images) == len(pages) and images[0]["image_url"].startswith("data:image/png;base64,")
+            assert len(images) == len(pages) and images[0]["image_url"].startswith(("data:image/png;base64,", "data:image/jpeg;base64,"))
+            self.media = getattr(self, "media", []) + [i["image_url"].split(";")[0] for i in images]
             if self.unreadable & set(pages):
                 raise ModelError("http_400", "The model endpoint answered 400.")
             value = {"pages": [{"page": p, "text": f"Antwort der Verwaltung\n{LETTER_LINE}\n[geschwärzt]"} for p in pages]}
@@ -91,6 +92,14 @@ class ReadingTests(unittest.TestCase):
         calls = list(model.calls)
         reading.prepare_file(model, self.store, self.store.get_file(self.file, True))
         self.assertEqual(model.calls, calls)  # stored: nothing is read twice
+
+    def test_without_a_pdf_renderer_scanned_pages_go_to_the_model_as_their_own_images(self):
+        model = Reader()
+        with mock.patch.object(reading, "renderer_available", lambda: False), \
+                mock.patch.object(reading, "Renderer", side_effect=AssertionError("no renderer in this runtime")):
+            extraction = reading.prepare_file(model, self.store, self.store.get_file(self.file, True), workers=2)
+        self.assertEqual(extraction["pages_transcribed"], [3, 4, 5])
+        self.assertEqual(set(model.media), {"data:image/jpeg"})  # the scans' own JPEGs, unchanged
 
     def test_a_document_across_windows_is_joined(self):
         self.store.update_extraction(self.file, reading.merge_pages(self.row, {3: LETTER_LINE, 4: LETTER_LINE, 5: LETTER_LINE}))
