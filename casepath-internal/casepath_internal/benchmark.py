@@ -18,6 +18,7 @@ The validator checks that a case is well formed, that its truth uses the workflo
 evidence sentence occurs in the documents, so the truth itself rests on the files.
 
     python -m casepath_internal.benchmark check <suite-dir> [--catalogue <dir>]
+    python -m casepath_internal.benchmark render <suite-dir>
 """
 import argparse
 import json
@@ -157,8 +158,10 @@ def seed(store, directory, user="synthetisch"):
             title = f"Synthetischer Fall {short_id(case)}: {case['documents'][0]['title']}"[:300]
             if title in existing:
                 continue
-            rendered = Path(scratch) / case["id"]
-            render(case, rendered)
+            rendered = Path(case["_dir"]) / "rendered"  # drawn when the app was packaged; drawn now only if missing
+            if not (rendered / "case.json").exists():
+                rendered = Path(scratch) / case["id"]
+                render(case, rendered)
             created = store.create_case(title, {"synthetic": True, "source": "synthetic"}, user)
             for name, data in uploads(case, rendered):
                 row = extract(name, "application/pdf", data)
@@ -177,10 +180,15 @@ def main(argv=None):
     from .workflows import Catalogue
 
     parser = argparse.ArgumentParser(prog="casepath_internal.benchmark")
-    parser.add_argument("command", choices=["check"])
+    parser.add_argument("command", choices=["check", "render"])
     parser.add_argument("suite")
     parser.add_argument("--catalogue")
     args = parser.parse_args(argv)
+    if args.command == "render":  # draw every case's PDFs into <case>/rendered, so a runtime without a PDF writer can load them
+        for case in load_suite(args.suite):
+            render(case, Path(case["_dir"]) / "rendered")
+        print(f"rendered {len(load_suite(args.suite))} case(s)")
+        return
     catalogue = {w["id"]: w for w in Catalogue.load(args.catalogue).latest()} if args.catalogue else None
     failed = 0
     for case in load_suite(args.suite):

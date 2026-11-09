@@ -3,8 +3,9 @@
 Some gateways refuse forced tool calls and structured output on their OpenAI-compatible routes but pass them on the
 model's native Messages API. This client translates the agents' dialect (Responses-style items: user messages with
 text and image parts, the model's function calls carried forward, ``function_call_output`` items) to messages with
-``tool_use`` and ``tool_result`` blocks and back. A structured answer is a forced tool call whose input is the
-answer. The system prompt, the tool list and the conversation so far are marked for prompt caching, so a long agent
+``tool_use`` and ``tool_result`` blocks and back. A structured answer is a tool call whose input is the answer.
+Where the gateway refuses forced tool choice, only the tool that must be called is offered and the instructions say
+so; a structured answer is then checked and asked for once more if it is missing or malformed. The system prompt, the tool list and the conversation so far are marked for prompt caching, so a long agent
 loop pays for its repeated prefix only once; a gateway that refuses the marks gets the same request without them.
 """
 import json
@@ -85,6 +86,7 @@ class AnthropicMessagesModel:
         self.settings, self._token, self._sleep, self.max_attempts = settings, token_provider, sleep, max_attempts
         self.url = settings.endpoint + (settings.chat_path or "/ai-gateway/anthropic/v1/messages")
         self.cache = True
+        self.forced = getattr(settings, "forced_tools", True)  # False where the gateway refuses tool_choice "tool"/"any"
         self._client = httpx.Client(timeout=settings.timeout_seconds, follow_redirects=False, trust_env=settings.trust_env,
                                     verify=settings.ca_bundle or True, transport=transport)
 
@@ -124,8 +126,17 @@ class AnthropicMessagesModel:
 
     def _body(self, instructions, input, tools, tool_choice):
         messages = to_messages(input)
-        body = {"model": self.settings.deployment, "max_tokens": self.settings.max_output_tokens, "temperature": 0,
-                "system": [{"type": "text", "text": instructions}], "messages": messages}
+        system = instructions
+        if tools and tool_choice and not self.forced:
+            # Without forced tool choice: offer only the tool that must be called, and say so; otherwise ask for tools.
+            if isinstance(tool_choice, dict):
+                tools = [t for t in tools if t["name"] == tool_choice["name"]] or tools
+                system += f"\n\nRespond only by calling the {tool_choice['name']} tool."
+            elif tool_choice == "required":
+                system += "\n\nAct only through your tools: every answer is a tool call, never plain text."
+            tool_choice = None
+        body = {"model": self.settings.deployment, "max_tokens": self.settings.max_output_tokens,
+                "system": [{"type": "text", "text": system}], "messages": messages}
         if tools:
             body["tools"] = [{"name": t["name"], "description": t["description"], "input_schema": wire_schema(t["parameters"])} for t in tools]
             if tool_choice:
@@ -166,13 +177,31 @@ class AnthropicMessagesModel:
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
         validate_schema(schema)
-        turn = self.respond(instructions=instructions, input=input, text_schema={"name": name, "schema": schema}, effort=effort)
-        call = next((c for c in turn.calls if c["name"] == name), None)
-        try:
-            if call is None or not isinstance(call["arguments"], dict):
-                raise ValueError("no answer")
-            validate_result(call["arguments"], schema)
-        except ValueError as error:
-            raise ModelError("schema_mismatch", f"The model answer did not match its schema: {error}", turn.attempts) from None
-        return ModelResult(value=call["arguments"], usage=turn.usage, deployment=self.settings.deployment, response_id=turn.response_id,
-                           attempts=turn.attempts, seconds=turn.seconds)
+        conversation, usage, problem = list(input), {}, "no answer"
+        for attempt in range(2):  # one more try, with the problem named, when the answer is missing or malformed
+            turn = self.respond(instructions=instructions, input=conversation, text_schema={"name": name, "schema": schema}, effort=effort)
+            usage = {k: usage.get(k, 0) + v for k, v in turn.usage.items()}
+            call = next((c for c in turn.calls if c["name"] == name), None)
+            value = call["arguments"] if call else _json_text(turn.text)
+            try:
+                if not isinstance(value, dict):
+                    raise ValueError("no answer")
+                validate_result(value, schema)
+                return ModelResult(value=value, usage=usage, deployment=self.settings.deployment, response_id=turn.response_id,
+                                   attempts=turn.attempts, seconds=turn.seconds)
+            except ValueError as error:
+                problem = str(error)
+            conversation = list(input) + [{"role": "user", "content": f"Answer again by calling the {name} tool; the last answer had a problem: {problem}"}]
+        raise ModelError("schema_mismatch", f"The model answer did not match its schema: {problem}", turn.attempts)
+
+
+def _json_text(text):
+    """A JSON object written as text instead of a tool call, if that is what came back."""
+    text = (text or "").strip()
+    if text.startswith("```"):
+        text = text.strip("`").split("\n", 1)[-1].rsplit("```", 1)[0]
+    start, end = text.find("{"), text.rfind("}")
+    try:
+        return json.loads(text[start:end + 1]) if start >= 0 < end else None
+    except ValueError:
+        return None

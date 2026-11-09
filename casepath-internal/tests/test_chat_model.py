@@ -150,5 +150,35 @@ class MessagesApiTests(unittest.TestCase):
         self.assertEqual(result.value, {"ok": True})
         self.assertEqual(bodies[-1]["tool_choice"], {"type": "tool", "name": "check"})
 
+
+class UnforcedToolTests(unittest.TestCase):
+    def test_without_forced_tool_choice_the_one_tool_needed_is_offered_and_answers_are_checked(self):
+        from casepath_internal.anthropic_model import AnthropicMessagesModel
+        bodies, replies = [], [
+            {"content": [{"type": "text", "text": "I think ok."}]},                                  # no tool call: asked again
+            {"content": [{"type": "tool_use", "id": "a", "name": "check", "input": {"ok": True}}]},  # then the answer
+            {"content": [{"type": "text", "text": '```json\n{"ok": false}\n```'}]},                # JSON as text is accepted
+        ]
+
+        def handler(request):
+            bodies.append(json.loads(request.content))
+            return httpx.Response(200, json={"id": "m", "stop_reason": "end_turn", "usage": {"input_tokens": 5, "output_tokens": 1}, **replies.pop(0)})
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m",
+                                  "CASEPATH_MODEL_API": "messages", "CASEPATH_MODEL_FORCED_TOOLS": "false"}).model
+        model = AnthropicMessagesModel(settings, lambda: "t", transport=httpx.MockTransport(handler))
+        schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False}
+        result = model.respond_json(name="check", instructions="Check.", input=[{"role": "user", "content": "{}"}], schema=schema)
+        self.assertEqual((result.value, result.usage["input_tokens"]), ({"ok": True}, 10))
+        self.assertTrue(all("tool_choice" not in b and "temperature" not in b for b in bodies))
+        self.assertIn("Respond only by calling the check tool.", bodies[0]["system"][0]["text"])
+        self.assertIn("had a problem", json.dumps(bodies[1]["messages"]))
+        self.assertEqual(model.respond_json(name="check", instructions="Check.", input=[{"role": "user", "content": "{}"}], schema=schema).value, {"ok": False})
+        # an agent's last turn offers only the report tool
+        replies.append({"content": [{"type": "tool_use", "id": "r", "name": "report", "input": {}}]})
+        tools = [{"name": n, "description": n, "parameters": {"type": "object", "properties": {}}} for n in ("record_fact", "report")]
+        model.respond(instructions="Agent.", input=[{"role": "user", "content": "go"}], tools=tools, tool_choice={"type": "function", "name": "report"})
+        self.assertEqual([t["name"] for t in bodies[-1]["tools"]], ["report"])
+
+
 if __name__ == "__main__":
     unittest.main()

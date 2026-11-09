@@ -62,19 +62,24 @@ def _post_messages(url, token, body):
 
 
 def check_messages(host, token, model, path="/ai-gateway/anthropic/v1/messages"):
-    """The same features through the Messages API, in the exact shape CasePath's messages connector sends."""
+    """The same features through the Messages API, in the exact shape CasePath's messages connector sends: no
+    temperature, no forced tool choice (the one tool needed is offered and the system prompt asks for it)."""
     url = f"{host.rstrip('/')}{path}"
     tool = {"name": "record", "description": "Record a colour.", "input_schema": TOOL["parameters"]}
     long_system = "You record facts from case files. " * 400  # long enough to be cached
     cases = [
         ("messages text", {"messages": [{"role": "user", "content": [{"type": "text", "text": "Say OK."}]}], "max_tokens": 16},
          lambda r: any(b.get("type") == "text" for b in r["content"])),
-        ("messages forced tool", {"messages": [{"role": "user", "content": [{"type": "text", "text": "The colour is red. Record it."}]}],
-                                  "max_tokens": 128, "tools": [tool], "tool_choice": {"type": "tool", "name": "record"}},
-         lambda r: r["content"][-1]["type"] == "tool_use"),
-        ("messages any tool", {"messages": [{"role": "user", "content": [{"type": "text", "text": "The colour is red. Record it."}]}],
-                               "max_tokens": 128, "tools": [tool], "tool_choice": {"type": "any"}},
+        ("messages one tool", {"system": [{"type": "text", "text": "Respond only by calling the record tool."}],
+                               "messages": [{"role": "user", "content": [{"type": "text", "text": "The colour is red."}]}],
+                               "max_tokens": 128, "tools": [tool]},
          lambda r: any(b.get("type") == "tool_use" for b in r["content"])),
+        ("messages tool reply", {"messages": [
+            {"role": "user", "content": [{"type": "text", "text": "The colour is red."}]},
+            {"role": "assistant", "content": [{"type": "tool_use", "id": "toolu_1", "name": "record", "input": {"colour": "red"}}]},
+            {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "toolu_1", "content": "{\"accepted\": true}"},
+                                         {"type": "text", "text": "Say done."}]}], "max_tokens": 16, "tools": [tool]},
+         lambda r: any(b.get("type") == "text" for b in r["content"])),
         ("messages image", {"messages": [{"role": "user", "content": [{"type": "text", "text": "Which colour is this square? One word."},
                                                                        {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": IMAGE.split(",", 1)[1]}}]}],
                             "max_tokens": 16},
@@ -88,7 +93,7 @@ def check_messages(host, token, model, path="/ai-gateway/anthropic/v1/messages")
     ]
     total = 0
     for name, body, ok in cases:
-        status, reply = _post_messages(url, token, {"model": model, "temperature": 0, **body})
+        status, reply = _post_messages(url, token, {"model": model, **body})
         usage = reply.get("usage") or {}
         tokens = sum(v for k, v in usage.items() if k.endswith("tokens") and isinstance(v, int))
         total += tokens

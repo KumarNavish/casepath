@@ -36,6 +36,7 @@ class ModelSettings:
     chat_path: str | None = None
     auth: str = "app"  # "user": call the model as the person who started the run, with the token the platform forwards
     api: str = "chat"  # for a workspace model: "chat" (OpenAI-compatible chat completions) or "messages" (the Messages API)
+    forced_tools: bool = True  # False where the endpoint refuses a forced tool choice
 
     def __post_init__(self):
         if self.provider not in PROVIDERS:
@@ -104,6 +105,7 @@ def load_settings(env=None):
             provider=provider, chat_path=env.get("CASEPATH_CHAT_PATH") or None,
             auth=(env.get("CASEPATH_MODEL_AUTH") or "app").strip().lower(),
             api=(env.get("CASEPATH_MODEL_API") or "chat").strip().lower(),
+            forced_tools=_flag(env, "CASEPATH_MODEL_FORCED_TOOLS", True),
             gateway_hosts=tuple(h.strip().lower() for h in env.get("CASEPATH_MODEL_GATEWAY_HOSTS", "").split(",") if h.strip()),
         )
     if env.get("CASEPATH_IDENTITY_HEADER") and env.get("CASEPATH_DEV_USER"):

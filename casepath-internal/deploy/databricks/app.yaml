@@ -19,6 +19,9 @@ env:
   # tool calls and prompt caching. chat: the OpenAI-compatible route (/ai-gateway/mlflow/v1/chat/completions).
   - name: CASEPATH_MODEL_API
     value: messages
+  # The gateway refuses tool_choice "tool" and "any": offer only the tool that must be called, and say so.
+  - name: CASEPATH_MODEL_FORCED_TOOLS
+    value: "false"
   - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
     value: "8000"
   # Scanned pages are read from images; 1400 px on the long side keeps typed text legible at fewer tokens per page.
