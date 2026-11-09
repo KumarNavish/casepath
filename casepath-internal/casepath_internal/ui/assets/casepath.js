@@ -211,6 +211,24 @@ function fileIcon(file) {
   return `<span class="cp-fileicon">${icon("doc", "big")}</span>`;
 }
 
+// A failed run's reason in plain words; the full reason stays in the run record.
+function runError(error) {
+  const reason = String(error || "").split(":")[0];
+  const known = {
+    token_budget: T("the run used its token budget; it can be raised for large cases", "Der Lauf hat sein Token-Budget aufgebraucht; für grosse Fälle kann es erhöht werden"),
+    model_not_configured: T("no model is configured", "Kein Modell eingerichtet"),
+    delegation_limit: T("the case needed more steps than allowed", "Der Fall brauchte mehr Schritte als erlaubt"),
+    turn_limit: T("an agent did not finish in time", "Ein Agent wurde nicht rechtzeitig fertig"),
+    no_files: T("the case has no files", "Der Fall hat keine Dokumente"),
+    transport: T("the model could not be reached; please try again", "Das Modell war nicht erreichbar; bitte erneut versuchen"),
+    schema_mismatch: T("the model gave an unusable answer; please try again", "Das Modell gab eine unbrauchbare Antwort; bitte erneut versuchen"),
+  };
+  if (known[reason]) return known[reason];
+  if (/^http_(429|5\d\d)$/.test(reason)) return T("the model service is busy; please try again shortly", "Der Modelldienst ist ausgelastet; bitte gleich erneut versuchen");
+  if (/^http_4\d\d$/.test(reason)) return T(`the model service refused the request (${reason.slice(5)})`, `Der Modelldienst hat die Anfrage abgelehnt (${reason.slice(5)})`);
+  return error;
+}
+
 // ---------- rail ----------
 function renderRail() {
   const d = S.data, files = d.files || [];
@@ -227,7 +245,7 @@ function renderRail() {
         ${S.workflows.map((w) => `<option value="${esc(w.id)}">${esc(w.title)}</option>`).join("")}</select></label>`
     : d.workflow ? `<span class="cp-status">${T("Process", "Prozess")}: ${esc(d.workflow.title)}</span>` : "";
   const run = d.run;
-  const status = run ? (running() ? T(`${AGENT_TITLE[activeAgent()] || "Agents"} working…`, `${AGENT_TITLE[activeAgent()] || "Agenten"} arbeitet…`) : run.status === "failed" ? `${T("Failed", "Fehlgeschlagen")}: ${run.error}`
+  const status = run ? (running() ? T(`${AGENT_TITLE[activeAgent()] || "Agents"} working…`, `${AGENT_TITLE[activeAgent()] || "Agenten"} arbeitet…`) : run.status === "failed" ? `${T("Failed", "Fehlgeschlagen")}: ${esc(runError(run.error))}`
     : run.status === "completed" ? `${T("Prepared", "Vorbereitet am")} ${dateText(run.finished_at)}` : word(run.status)) : T("Not prepared yet", "Noch nicht vorbereitet");
   return `<aside class="cp-rail" aria-label="${T("Sources", "Quellen")}">
     <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small></div>
@@ -277,6 +295,9 @@ async function uploadFiles(list) {
 }
 
 async function startRun() {
+  // Preparing again calls the model again; a prepared case asks first.
+  if (S.data && S.data.lastCompleted && !window.confirm(T("This case is already prepared. Prepare it again? The agents read the files once more, which uses the model again.",
+      "Dieser Fall ist bereits vorbereitet. Nochmals vorbereiten? Die Agenten lesen die Dokumente erneut; das ruft das Modell nochmals auf."))) return;
   try {
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" });
     S.follow = true;
