@@ -180,7 +180,15 @@ class ChatCompletionsModel:
                     status="completed", attempts=attempts, seconds=round(time.monotonic() - started, 3))
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
-        turn = self.respond(instructions=instructions, input=input, text_schema={"name": name, "schema": schema}, effort=effort)
+        if getattr(self, "_json_via_tool", False):
+            return self._json_via_tool_call(name, instructions, input, schema, effort)
+        try:
+            turn = self.respond(instructions=instructions, input=input, text_schema={"name": name, "schema": schema}, effort=effort)
+        except ModelError as error:
+            if error.reason != "http_400":
+                raise
+            self._json_via_tool = True  # this endpoint takes no response_format: ask for the answer as a forced tool call
+            return self._json_via_tool_call(name, instructions, input, schema, effort)
         text = turn.text.strip()
         if text.startswith("```"):  # some models fence their JSON
             text = text.strip("`").split("\n", 1)[-1].rsplit("```", 1)[0]
@@ -190,4 +198,18 @@ class ChatCompletionsModel:
         except ValueError as error:
             raise ModelError("schema_mismatch", f"The model answer did not match its schema: {error}", turn.attempts) from None
         return ModelResult(value=value, usage=turn.usage, deployment=self.settings.deployment, response_id=turn.response_id,
+                           attempts=turn.attempts, seconds=turn.seconds)
+
+    def _json_via_tool_call(self, name, instructions, input, schema, effort):
+        validate_schema(schema)
+        tool = {"name": name, "description": "Give your answer as this function's arguments.", "parameters": schema}
+        turn = self.respond(instructions=instructions, input=input, tools=[tool], tool_choice={"type": "function", "name": name}, effort=effort)
+        call = next((c for c in turn.calls if c["name"] == name), None)
+        try:
+            if call is None or call["arguments"] is None:
+                raise ValueError("no answer")
+            validate_result(call["arguments"], schema)
+        except ValueError as error:
+            raise ModelError("schema_mismatch", f"The model answer did not match its schema: {error}", turn.attempts) from None
+        return ModelResult(value=call["arguments"], usage=turn.usage, deployment=self.settings.deployment, response_id=turn.response_id,
                            attempts=turn.attempts, seconds=turn.seconds)

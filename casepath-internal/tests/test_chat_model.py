@@ -60,5 +60,29 @@ class DatabricksModelTests(unittest.TestCase):
         self.assertEqual(sum(1 for s in seen if s[0] == "token"), 1)  # one sign-in, reused
 
 
+class StructuredAnswerFallbackTests(unittest.TestCase):
+    def test_an_endpoint_without_response_format_answers_through_a_forced_tool(self):
+        bodies = []
+
+        def handler(request):
+            body = json.loads(request.content)
+            bodies.append(body)
+            if "response_format" in body:
+                return httpx.Response(400, json={"error": {"code": "invalid_parameter_value"}})
+            return httpx.Response(200, json={"id": "c", "choices": [{"finish_reason": "tool_calls", "message": {"content": None, "tool_calls": [
+                {"id": "t1", "type": "function", "function": {"name": "check", "arguments": '{"ok": true}'}}]}}], "usage": {}})
+        transport = httpx.MockTransport(handler)
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m",
+                                  "CASEPATH_CHAT_PATH": "/ai-gateway/mlflow/v1/chat/completions"}).model
+        model = ChatCompletionsModel(settings, lambda: "t", transport=transport)
+        self.assertEqual(model.url, HOST + "/ai-gateway/mlflow/v1/chat/completions")
+        schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False}
+        for _ in range(2):
+            self.assertEqual(model.respond_json(name="check", instructions="x", input=[{"role": "user", "content": "{}"}], schema=schema).value, {"ok": True})
+        self.assertEqual([("response_format" in b, b.get("tool_choice")) for b in bodies],
+                         [(True, None), (False, {"type": "function", "function": {"name": "check"}}),
+                          (False, {"type": "function", "function": {"name": "check"}})])  # tried once, then remembered
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -11,6 +11,8 @@ env:
     value: databricks
   - name: CASEPATH_MODEL
     value: "FILL-IN: the gateway model's exact name, as its Use/Query panel shows it"
+  - name: CASEPATH_CHAT_PATH
+    value: /ai-gateway/mlflow/v1/chat/completions
   - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
     value: "8000"
   - name: CASEPATH_RUN_WORKERS
