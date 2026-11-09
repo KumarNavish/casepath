@@ -827,3 +827,57 @@ def page_images(data, numbers, max_side=1700):
         else:
             reasons[number] = payload
     return images, reasons
+
+
+def compare(paths):
+    """Content-free comparison with pypdf and pypdfium2 where installed: one line of counts per file, no text."""
+    import collections
+    import io
+    import json
+    import os
+    import time
+    for index, path in enumerate(sorted(paths, key=os.path.basename), 1):  # numbered, not named: file names can be claim numbers
+        data = open(path, "rb").read()
+        row = {"file": f"D{index}", "mb": round(len(data) / 1e6, 1)}
+        started = time.monotonic()
+        try:
+            doc = Document(data)
+            text, details = extract_text(data)
+            row.update(pages=details["pages"], builtin_text_pages=details["pages"] - len(details["pages_without_text"]))
+            codings = collections.Counter()
+            for number in details["pages_without_text"]:
+                found = []
+                doc._images(doc.resolve(doc.pages[number - 1].get("Resources")) or {}, found, 0, set())
+                if not found:
+                    codings["no image"] += 1
+                    continue
+                largest = max(found, key=lambda s: _int(doc.resolve(s.get("Width"))) * _int(doc.resolve(s.get("Height"))))
+                filters = [str(doc.resolve(f)) for f in _list(doc.resolve(largest.get("Filter")))] or ["none"]
+                media, payload = doc.page_image(doc.pages[number - 1])
+                codings[f"{'+'.join(filters)}:{'ok' if media else 'not read'}"] += 1
+            row["scanned_pages"] = dict(codings)
+        except PdfError as error:
+            row["builtin_error"] = str(error)[:60]
+            text = ""
+        row["builtin_seconds"] = round(time.monotonic() - started, 1)
+        try:
+            from pypdf import PdfReader
+            reference = [(page.extract_text() or "").strip() for page in PdfReader(io.BytesIO(data)).pages]
+            mine = {int(m.group(1)): m.group(2) for m in re.finditer(r"\[page (\d+)\]\n(.*?)(?=\n\n\[page \d+\]\n|\Z)", text, re.S)}
+            recalls = []
+            for number, page_text in enumerate(reference, 1):
+                words = set(re.findall(r"\w+", page_text.lower()))
+                if words:
+                    recalls.append(len(words & set(re.findall(r"\w+", mine.get(number, "").lower()))) / len(words))
+            row.update(pypdf_text_pages=sum(1 for t in reference if t),
+                       word_recall_min=round(min(recalls), 2) if recalls else None, word_recall_mean=round(sum(recalls) / len(recalls), 3) if recalls else None)
+        except ImportError:
+            pass
+        print(json.dumps(row, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 3 or sys.argv[1] != "compare":
+        sys.exit("usage: python -m casepath_internal.pdfread compare <file.pdf> ...")
+    compare(sys.argv[2:])
