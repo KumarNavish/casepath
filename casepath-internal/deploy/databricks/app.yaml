@@ -1,0 +1,28 @@
+# CasePath as a Databricks App. Fill in the two marked values in the deployed copy only, never in Git.
+command: ["python", "-m", "casepath_internal", "serve", "--host", "0.0.0.0"]
+env:
+  # Who may use it: Databricks signs people in and passes their e-mail; CasePath admits only the pilot group.
+  - name: CASEPATH_IDENTITY_HEADER
+    value: X-Forwarded-Email
+  - name: CASEPATH_ALLOWED_USERS
+    value: "FILL-IN: comma-separated e-mail addresses of the pilot group"
+  # The model, from the workspace's Unity Gateway, signed in as the app's own service principal; sparing by design.
+  - name: CASEPATH_MODEL_PROVIDER
+    value: databricks
+  - name: CASEPATH_MODEL
+    value: claude-opus-5-5
+  - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
+    value: "8000"
+  - name: CASEPATH_RUN_WORKERS
+    value: "1"
+  - name: CASEPATH_READING_WORKERS
+    value: "2"
+  # Cases live on a Unity Catalog volume; the app's own disk is only a working copy.
+  - name: CASEPATH_DATA_DIR
+    value: /tmp/casepath-data
+  - name: CASEPATH_VOLUME
+    value: "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
+  - name: CASEPATH_WORKFLOW_CATALOGUE
+    value: catalogue
+  - name: CASEPATH_SEED_SUITE
+    value: benchmark

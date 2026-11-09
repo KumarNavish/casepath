@@ -60,6 +60,20 @@ worker's workspace and the agent core. One replica keeps its cases on a persiste
 
 Splitting the agent core from the case service, as described above, comes after the pilot. The container already holds both halves behind their contracts.
 
+## As a Databricks App
+
+The same application runs as a Databricks App. `deploy/databricks/package.sh <dir>` assembles the folder the app runs
+from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `requirements.txt`. In `app.yaml`:
+
+- **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list.
+- **Model:** `CASEPATH_MODEL_PROVIDER=databricks` calls a model in the workspace, such as one from its gateway, through its OpenAI-compatible chat API. The app signs in as its own service principal. `chat_model.py` translates the agents' messages, tool calls, structured answers and page images, so nothing else changes.
+- **Storage:** the app's own disk does not survive a restart. With `CASEPATH_VOLUME` naming a Unity Catalog volume, the case store is restored from the volume at start and copied there every 30 seconds and at shutdown (`mirror.py`). One app instance writes a volume.
+- **Checked here:**
+  - the packaged folder starts as Databricks starts it: 401 without sign-in, 403 outside the pilot group, the pilot user sees the synthetic cases;
+  - a volume round trip restores a store with its files;
+  - the model translation works against a simulated endpoint.
+- **Not yet checked:** the real workspace, its model and its volume.
+
 ## Before an operated deployment
 
 1. Confirm the gateway's token claims and the access role's exact name, then set the identity variables.

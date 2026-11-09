@@ -67,16 +67,37 @@ def default_model_factory(settings):
 
     def factory():
         if "model" not in shared:
-            token = entra_token_provider()
-            shared["model"] = AzureOpenAIModel(settings.model, token)
-            if settings.model.reading_deployment:  # page reading and dossier splitting on a smaller deployment
-                shared["model"].reading = AzureOpenAIModel(replace(settings.model, deployment=settings.model.reading_deployment), token)
+            if settings.model.provider == "databricks":
+                from .chat_model import ChatCompletionsModel, databricks_token_provider
+                token, kind = databricks_token_provider(settings.model.endpoint), ChatCompletionsModel
+            else:
+                token, kind = entra_token_provider(), AzureOpenAIModel
+            shared["model"] = kind(settings.model, token)
+            if settings.model.reading_deployment:  # page reading and dossier splitting on another deployment
+                shared["model"].reading = kind(replace(settings.model, deployment=settings.model.reading_deployment), token)
         return shared["model"]
     return factory
 
 
-def create_app(settings=None, *, model_factory=None, store=None, catalogue=None):
+def volume_mirror(settings, env=None):
+    """The volume copy of the case store, when CASEPATH_VOLUME names one (a Databricks App's disk does not survive a restart)."""
+    import os
+
+    from .chat_model import databricks_token_provider
+    from .mirror import VolumeMirror
+
+    env = os.environ if env is None else env
+    host = env.get("DATABRICKS_HOST", "")
+    host = host if host.startswith("https://") else "https://" + host
+    return VolumeMirror(settings.data_dir, settings.volume, host, databricks_token_provider(host, env))
+
+
+def create_app(settings=None, *, model_factory=None, store=None, catalogue=None, mirror=None):
     settings = settings or load_settings()
+    if mirror is None and settings.volume and store is None:
+        mirror = volume_mirror(settings)
+    if mirror is not None:
+        mirror.restore()  # before the store opens its database
     store = store or CaseStore(settings.data_dir)
     catalogue = catalogue or workflows.Catalogue.load(settings.catalogue_dir)
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
@@ -84,8 +105,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
 
     @asynccontextmanager
     async def lifespan(_):
+        if mirror is not None:
+            mirror.start()
         yield
         runs.shutdown()
+        if mirror is not None:
+            mirror.stop()
         store.close()
 
     app = FastAPI(title="CasePath (internal)", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)

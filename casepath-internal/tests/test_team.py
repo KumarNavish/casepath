@@ -46,8 +46,9 @@ class TeamTests(unittest.TestCase):
                                                "citations": [{"file": "f1", "quote": "Subject: Schimmel im Bad"}], "note": ""}),
                           ("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""})],
             result_fields={"reply": {"needed": True, "subject": "Re: Schimmel", "clauses": [
-                {"text": "You told your landlord in writing.", "basis": ["fact:landlord_notified"]},
-                {"text": "Please send the notice letter.", "basis": ["document:notice_letter"]}]},
+                {"text": "You told your landlord in writing.", "kind": "statement", "basis": ["fact:landlord_notified"]},
+                {"text": "Please send the notice letter.", "kind": "request", "basis": ["document:notice_letter"]},
+                {"text": "Kind regards", "kind": "formal", "basis": []}]},
                 "learn": [learn(title="Ventilation record", why="Shows the tenant ventilated.",
                                 citations=[{"file": "f1", "quote": VENT}])]})
         model = ScriptedModel(script)
@@ -62,7 +63,7 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(result["evaluation"]["outcome"]["id"], "reported")
         statuses = {d["document"]: d["status"] for d in result["evaluation"]["documents"]}
         self.assertEqual(statuses, {"customer_message": "present", "photo": "missing", "notice_letter": "missing"})
-        self.assertEqual([c["supported"] for c in result["reply"]["clauses"]], [True, True])
+        self.assertEqual([c["supported"] for c in result["reply"]["clauses"]], [True, True, True])
         self.assertEqual(result["reply"]["status"], "draft_not_sent")
         self.assertEqual(result["questions"], {"landlord_notified": "Was the landlord told?"})
         self.assertEqual(len(result["learning"]), 1)
@@ -71,9 +72,9 @@ class TeamTests(unittest.TestCase):
 
     def test_rejected_finding_is_not_used(self):
         script = standard_script(finder_calls=[], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
-            {"text": "You told your landlord.", "basis": ["fact:landlord_notified"]}]}})
+            {"text": "You told your landlord.", "kind": "statement", "basis": ["fact:landlord_notified"]}]}})
         script = standard_script(finder_calls=[], retry_turns=[[report("claim_reader")]], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
-            {"text": "You told your landlord.", "basis": ["fact:landlord_notified"]}]}})
+            {"text": "You told your landlord.", "kind": "statement", "basis": ["fact:landlord_notified"]}]}})
         result = CaseTeam(ScriptedModel(script, verdicts={"fact:landlord_notified": "uncertain"})).run(case=CASE, files=FILES, workflow=FIXTURE)
         retry = [e for e in result["events"] if e["kind"] == "delegate" and e["to"] == "claim_reader"][-1]
         self.assertIn("landlord_notified", retry["instruction"])  # one targeted retry before the result

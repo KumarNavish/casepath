@@ -12,6 +12,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 AZURE_HOST_SUFFIXES = (".openai.azure.com", ".cognitiveservices.azure.com", ".services.ai.azure.com")
+DATABRICKS_HOST_SUFFIXES = (".azuredatabricks.net",)
+PROVIDERS = {"azure_openai": AZURE_HOST_SUFFIXES, "databricks": DATABRICKS_HOST_SUFFIXES}
 
 
 class SettingsError(ValueError):
@@ -30,12 +32,17 @@ class ModelSettings:
     api_version: str | None = None
     reading_deployment: str | None = None
     gateway_hosts: tuple = ()
+    provider: str = "azure_openai"
+    chat_path: str | None = None
 
     def __post_init__(self):
+        if self.provider not in PROVIDERS:
+            raise SettingsError(f"the model provider is one of {', '.join(PROVIDERS)}")
         parsed = urlparse(self.endpoint)
         gateway = parsed.hostname in self.gateway_hosts  # an API gateway in front of the resource, named exactly
-        if parsed.scheme != "https" or not parsed.hostname or not (gateway or parsed.hostname.endswith(AZURE_HOST_SUFFIXES)):
-            raise SettingsError("the model endpoint must be an https Azure OpenAI resource or a configured gateway host")
+        if parsed.scheme != "https" or not parsed.hostname or not (gateway or parsed.hostname.endswith(PROVIDERS[self.provider])):
+            raise SettingsError("the model endpoint must be an https Azure OpenAI resource, a Databricks workspace "
+                                "(with CASEPATH_MODEL_PROVIDER=databricks) or a configured gateway host")
         if (parsed.path not in {"", "/"} and not gateway) or parsed.query:
             raise SettingsError("give the resource endpoint only; the client adds /openai/v1/")
         if not self.deployment or "/" in self.deployment:
@@ -58,6 +65,7 @@ class Settings:
     identity_roles_claim: str = "roles"
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
+    volume: str | None = None
 
 
 def _flag(env, name, default):
@@ -68,18 +76,25 @@ def _flag(env, name, default):
 def load_settings(env=None):
     env = os.environ if env is None else env
     model = None
-    if env.get("CASEPATH_AZURE_OPENAI_ENDPOINT") or env.get("CASEPATH_AZURE_OPENAI_DEPLOYMENT"):
-        deployment = env.get("CASEPATH_AZURE_OPENAI_DEPLOYMENT", "")
+    provider = env.get("CASEPATH_MODEL_PROVIDER", "azure_openai").strip().lower() or "azure_openai"
+    if provider == "databricks":  # a model in a Databricks workspace; the endpoint is the workspace
+        endpoint, deployment = env.get("CASEPATH_MODEL_ENDPOINT") or env.get("DATABRICKS_HOST", ""), env.get("CASEPATH_MODEL", "")
+        if endpoint and not endpoint.startswith("https://"):
+            endpoint = "https://" + endpoint
+    else:
+        endpoint, deployment = env.get("CASEPATH_AZURE_OPENAI_ENDPOINT", ""), env.get("CASEPATH_AZURE_OPENAI_DEPLOYMENT", "")
+    if endpoint or deployment:
         model = ModelSettings(
-            endpoint=env.get("CASEPATH_AZURE_OPENAI_ENDPOINT", "").rstrip("/"),
+            endpoint=endpoint.rstrip("/"),
             deployment=deployment,
-            reasoning=_flag(env, "CASEPATH_MODEL_REASONING", "gpt-5" in deployment or "-o" in deployment),
+            reasoning=provider == "azure_openai" and _flag(env, "CASEPATH_MODEL_REASONING", "gpt-5" in deployment or "-o" in deployment),
             timeout_seconds=float(env.get("CASEPATH_MODEL_TIMEOUT_SECONDS", "120")),
             max_output_tokens=int(env.get("CASEPATH_MODEL_MAX_OUTPUT_TOKENS", "16000")),
             ca_bundle=env.get("CASEPATH_CA_BUNDLE") or None,
             trust_env=_flag(env, "CASEPATH_MODEL_TRUST_ENV", True),
             api_version=env.get("CASEPATH_AZURE_OPENAI_API_VERSION") or None,
-            reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or None,
+            reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or env.get("CASEPATH_READING_MODEL") or None,
+            provider=provider, chat_path=env.get("CASEPATH_CHAT_PATH") or None,
             gateway_hosts=tuple(h.strip().lower() for h in env.get("CASEPATH_MODEL_GATEWAY_HOSTS", "").split(",") if h.strip()),
         )
     if env.get("CASEPATH_IDENTITY_HEADER") and env.get("CASEPATH_DEV_USER"):
@@ -105,5 +120,6 @@ def load_settings(env=None):
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
         required_role=required_role,
+        volume=env.get("CASEPATH_VOLUME") or None,
         allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
     )

@@ -68,8 +68,10 @@ needed), mark it unusable, name the file and quote what it does show. Check sugg
     "result_checker": {
         "title": "Result checker",
         "instructions": """You are the result checker. Evaluate the process with the accepted findings. Then give: a short factual
-summary; a one-line answer for the case handler; the open points; a reply draft whose every clause names the accepted
-facts or documents it rests on (the draft is not sent); and what CasePath should learn for later cases of this family:
+summary; a one-line answer for the case handler; the open points; a reply draft (not sent) whose every clause says its
+kind: a statement names the accepted facts or documents it rests on; a request asks the recipient for something still
+open and names the facts or document needs it asks about; formal is only for the salutation, closing and signature;
+and what CasePath should learn for later cases of this family:
 a new document need or question with its condition and a quote, a refinement of a Knowledge item that was applied, or a
 contradiction when an applied item did not hold here. Propose learning only when this case shows it.
 Write what CasePath should learn in general terms that fit later cases: no names, addresses, amounts, dates or other
@@ -372,7 +374,8 @@ def _report_schema(work, agent):
     return obj(summary=text(1500, minLength=1), answer=text(300, minLength=1), open_points=arr(text(400), maxItems=12),
                case_summary=case_summary,
                reply=obj(needed={"type": "boolean"}, subject=text(200),
-                         clauses=arr(obj(text=text(800, minLength=1), basis=arr(choice(basis) if basis else text(80), maxItems=8)), maxItems=12)),
+                         clauses=arr(obj(text=text(800, minLength=1), kind=choice(["statement", "request", "formal"]),
+                                         basis=arr(choice(basis) if basis else text(80), maxItems=8)), maxItems=12)),
                learn=arr(learn, maxItems=6))
 
 
@@ -626,7 +629,14 @@ def finalize(work):
     result = work.result
     accepted = {f"fact:{k}" for k in work.accepted_facts()} | {f"document:{k}" for k in work.findings()}
     accepted |= {f"document:{k}" for k, v in work.documents.items() if v["status"] == "missing"}
-    clauses = [{**c, "supported": bool(c["basis"]) and set(c["basis"]) <= accepted} for c in result["reply"]["clauses"]]
+    known = {f"fact:{k}" for k in work.fact_defs} | {f"document:{k}" for k in work.document_defs}
+
+    def supported(clause):  # a statement rests on accepted findings; a request names what it asks for; formal needs nothing
+        kind = clause.get("kind", "statement")
+        if kind == "formal":
+            return True
+        return bool(clause["basis"]) and set(clause["basis"]) <= (known if kind == "request" else accepted)
+    clauses = [{**c, "supported": supported(c)} for c in result["reply"]["clauses"]]
     applied = {a["item"] for a in work.provenance["knowledge"] if a["applied"]}
     names = {w for p in (work.brief or {}).get("parties", []) for w in re.findall(r"\w{4,}", p.get("name") or "")
              if w[0].isupper() and w not in ROLE_WORDS}

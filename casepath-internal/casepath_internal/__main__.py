@@ -74,10 +74,15 @@ def main(argv=None):
     import os
 
     import uvicorn
-    from .app import create_app
+    from .app import create_app, volume_mirror
+    from .config import load_settings
+    settings = load_settings()
+    mirror = volume_mirror(settings) if settings.volume else None
+    if mirror is not None:
+        mirror.restore()  # the volume's cases first, so seeding never starts a second, empty store
     if os.environ.get("CASEPATH_SEED_SUITE"):
         main(["seed", os.environ["CASEPATH_SEED_SUITE"]])
-    uvicorn.run(create_app(), host=args.host, port=args.port, log_level="info")
+    uvicorn.run(create_app(settings, mirror=mirror), host=args.host, port=args.port, log_level="info")
 
 
 if __name__ == "__main__":
