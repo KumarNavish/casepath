@@ -292,11 +292,12 @@ def score(case, workflow, run, detail, edits_done=None):
         found = [d for d in added if matches(item, d["title"])]
         if not item.get("optional"):  # optional: the case need not ask for it, but must not claim it is there
             check("process", "discovered", item["label"], "added", found[0]["title"] if found else None, found)
-        if found:
-            actual = status_of(found[0]["id"])
+        if found:  # several needs may match (an existing certificate and the follow-up ones); one with the expected status is enough
+            fits = {"missing", "unchecked", "not checked"} if item["status"] == "missing" else {item["status"]}
+            best = next((d for d in found if status_of(d["id"]) in fits), found[0])
+            actual = status_of(best["id"])
             check("process" if item["status"] == "missing" else "requirements", "case_document", item["label"], item["status"], actual,
-                  actual == item["status"] or (item["status"] == "missing" and actual in {"missing", "unchecked", "not checked"}),
-                  f"as “{found[0]['title']}”; {why(found[0]['id'])}")
+                  actual in fits, f"as “{best['title']}”; {why(best['id'])}")
     for item in truth.get("not_required", []):
         demanded = [d["title"] for d in added if matches(item, d["title"])]
         check("process", "not_demanded", item["label"], None, demanded[0] if demanded else None, not demanded)
