@@ -297,108 +297,96 @@ def arrow(ax, x0, y0, x1, y1, color=MUTED, lw=0.7, ls="-", head=True, z=2):
 
 
 
-# ------------------------------------------------------------------ Fig. 1: the watch in three worlds (schematic)
+# ------------------------------------------------------------------ Fig. 1: what each design records (schematic)
 def fig_hero():
-    """Schematic. Claim text, rule and question are the paper's running example (Sec. 1, Fig. overview).
-    Rows: the value of the one condition. The claim and the rule are drawn once and feed every row;
-    the two document tokens of the rule reappear in every row, coloured by what happens to them."""
-    W, H = TW, 3.0
+    """Schematic. Claim, rule and question are the paper's running example. The figure shows what each
+    design records, not what it outputs: on the real unresolved-watch pairs every design held the receipt.
+    Layout is modular: stages are columns (claim | judgment | rule | executed outcome), so later stages
+    (rule verification and repair against sources; repair from handler corrections) can be inserted as
+    further columns or as a box attached to the rule column without moving the rest."""
+    W, H = TW, 3.20
     fig, ax = canvas(W, H)
-    rows = [(2.25, "true", ["schedule lists the watch", "above CHF 1,000"]),
-            (1.48, "false", ["schedule does not", "list the watch"]),
-            (0.56, "unresolved", ["schedule not found:", "the claim as written"])]
-    rh = [0.70, 0.70, 0.98]
-    xj = 1.74                    # judgment column
-    xm, wm = 2.68, 1.28          # model applies the rules
-    xc = 4.08                    # code executes the rules
-    band_lo, band_hi = rows[2][0] - rh[2] / 2, rows[2][0] + rh[2] / 2
-    ax.add_patch(Rectangle((xj - 0.10, band_lo), W - xj + 0.10, band_hi - band_lo, fc="#fbf2d9", ec="none", zorder=0))
-    # column heads
-    yh = 2.86
-    T(ax, 0.0, yh, "One claim, one rule", 7.6, INK, weight="bold")
-    T(ax, xj, yh, "The condition is", 7.6, INK, weight="bold")
-    T(ax, xm, yh, "Model applies the rules", 7.6, MODEL, weight="bold")
-    T(ax, xc, yh, "Code executes the rules", 7.6, CODE, weight="bold")
-    T(ax, xm, yh - 0.15, "returns one checklist", 6.4, MUTED, style="italic")
-    T(ax, xc, yh - 0.15, "on the recorded judgment", 6.4, MUTED, style="italic")
-    # ---- claim (fixed)
-    x0, w0 = 0.0, 1.54
-    card(ax, x0, 1.68, w0, 1.02)
-    T(ax, x0 + 0.07, 2.58, "Claim", 6.6, MUTED, weight="bold")
+    # stage columns (x, width)
+    cC, cJ, cR, cE = (0.0, 1.34), (1.50, 1.04), (2.70, 1.30), (4.16, 1.24)
+    yh = 3.08
+    T(ax, cC[0], yh, "Claim", 7.6, INK, weight="bold")
+    status(ax, W, yh, "schematic", ha="right")
+    # ---- claim (fixed, shared by both designs)
     hl = {"bbox": dict(boxstyle="square,pad=0.08", fc="#f8e2a6", ec="none")}
-    T(ax, x0 + 0.07, 2.42, "\u201c\u2026a laptop and a watch were", 7.0)
-    runs(ax, x0 + 0.07, 2.28, [("stolen. The watch ", {}), ("may be", hl)], 7.0)
-    runs(ax, x0 + 0.07, 2.14, [("separately scheduled", hl), (" in the", {})], 7.0)
-    T(ax, x0 + 0.07, 2.00, "policy, but I have not found", 7.0)
-    T(ax, x0 + 0.07, 1.86, "the policy schedule yet.\u201d", 7.0)
-    # ---- rule (fixed)
-    card(ax, x0, 0.12, w0, 1.44)
-    T(ax, x0 + 0.07, 1.44, "Rule", 6.6, MUTED, weight="bold")
-    T(ax, x0 + 0.07, 1.28, "If the watch is", 7.0)
-    T(ax, x0 + 0.07, 1.14, "separately insured above", 7.0, weight="bold")
-    runs(ax, x0 + 0.07, 1.00, [("CHF 1,000", {"weight": "bold"}), (", its value must be", {})], 7.0)
-    T(ax, x0 + 0.07, 0.86, "established by", 7.0)
-    e = token(ax, x0 + 0.07, 0.62, "receipt", "rule")
-    T(ax, e + 0.06, 0.62, "or", 7.0)
-    token(ax, e + 0.22, 0.62, "expert valuation", "rule")
-    T(ax, x0 + 0.07, 0.40, "bold: the condition", 6.2, MUTED, style="italic")
-    T(ax, x0 + 0.07, 0.27, "either document suffices", 6.2, MUTED, style="italic")
-    # ---- fan-out: the same claim and rule feed every row
-    fx, fy = 1.64, 1.62
-    ax.plot([x0 + w0, fx], [fy, fy], color=MUTED, lw=0.7, solid_capstyle="butt")
-    for yc, _, _ in rows:
-        arrow(ax, fx, fy, xj - 0.06, yc + 0.11, color=MUTED, lw=0.7)
-    # ---- rows
-    for i, ((yc, val, world), hh) in enumerate(zip(rows, rh)):
+    card(ax, cC[0], 1.62, cC[1], 1.30)
+    T(ax, cC[0] + 0.07, 2.78, "\u201c\u2026a laptop and a watch", 7.0)
+    T(ax, cC[0] + 0.07, 2.64, "were stolen. The watch", 7.0)
+    runs(ax, cC[0] + 0.07, 2.50, [("may be separately", hl)], 7.0)
+    runs(ax, cC[0] + 0.07, 2.36, [("scheduled", hl), (" in the policy,", {})], 7.0)
+    T(ax, cC[0] + 0.07, 2.22, "but I have not found the", 7.0)
+    T(ax, cC[0] + 0.07, 2.08, "policy schedule yet.\u201d", 7.0)
+    T(ax, cC[0] + 0.07, 1.86, "the same claim for", 6.2, MUTED, style="italic")
+    T(ax, cC[0] + 0.07, 1.74, "both designs", 6.2, MUTED, style="italic")
+    # ---- model applies the rules: one generation (top band)
+    yb, hb = 2.42, 0.50
+    T(ax, cJ[0], yh, "Model applies the rules", 7.6, MODEL, weight="bold")
+    card(ax, cJ[0], yb, W - cJ[0], hb, ec=MODEL, lw=0.8, r=0.05)
+    T(ax, cJ[0] + 0.09, yb + hb - 0.13, "one generation", 7.2, MODEL, weight="bold")
+    T(ax, cJ[0] + 0.09, yb + hb - 0.28, "reads the claim and the rules in its prompt", 6.6, INK)
+    T(ax, cJ[0] + 0.09, yb + 0.09, "judgment and rule application are not recorded separately", 6.4, MODEL,
+      style="italic")
+    xo = cR[0] + 0.70
+    T(ax, xo, yb + hb - 0.13, "records", 6.4, MUTED, style="italic")
+    token(ax, xo, yb + hb - 0.29, "checklist", "rule", size=6.6)
+    token(ax, xo + 0.62, yb + hb - 0.29, "free-text reason", "rule", size=6.6)
+    arrow(ax, cC[0] + cC[1], 2.66, cJ[0] - 0.02, 2.66, color=MUTED)
+    # ---- code executes the rules: three aligned worlds (lower band)
+    yl = 2.18
+    T(ax, cJ[0], yl, "Code executes the rules", 7.6, CODE, weight="bold")
+    for (x, _), h in zip((cJ, cR, cE), ("judgment + quotation", "rule + source passage", "request that follows")):
+        T(ax, x, yl - 0.16, h, 6.4, MUTED, style="italic")
+    T(ax, W, yl, "records all three", 6.4, CODE, style="italic", ha="right")
+    rows = [(1.60, "true", "quote: schedule lists it"), (1.02, "false", "quote: schedule omits it"),
+            (0.36, "unresolved", "\u201cmay be separately\nscheduled\u201d")]
+    band_lo, band_hi = 0.04, 0.70
+    ax.add_patch(Rectangle((cJ[0] - 0.06, band_lo), W - cJ[0] + 0.06, band_hi - band_lo, fc="#fbf2d9", ec="none", zorder=0))
+    # rule: one object spanning the three worlds, with its source passage
+    rt, rb = 1.92, 0.10
+    card(ax, cR[0], rb, cR[1], rt - rb, ec=CODE, lw=0.8)
+    T(ax, cR[0] + 0.07, rt - 0.12, "If the watch is", 6.8)
+    T(ax, cR[0] + 0.07, rt - 0.25, "separately insured", 6.8, weight="bold")
+    runs(ax, cR[0] + 0.07, rt - 0.38, [("above CHF 1,000", {"weight": "bold"}), (", its", {})], 6.8)
+    T(ax, cR[0] + 0.07, rt - 0.51, "value is established by", 6.8)
+    e = token(ax, cR[0] + 0.07, rt - 0.70, "receipt", "rule", size=6.5)
+    T(ax, e + 0.05, rt - 0.70, "or", 6.6)
+    token(ax, cR[0] + 0.07, rt - 0.88, "expert valuation", "rule", size=6.5)
+    T(ax, cR[0] + 0.07, rb + 0.22, "source: policy terms,", 6.1, MUTED, style="italic")
+    T(ax, cR[0] + 0.07, rb + 0.10, "cited passage", 6.1, MUTED, style="italic")
+    # fan-out from the claim to the judgment of each world
+    fx, fy = cC[0] + cC[1] + 0.06, 1.10
+    ax.plot([cC[0] + cC[1] / 2, cC[0] + cC[1] / 2, fx], [1.62, fy, fy], color=MUTED, lw=0.7)
+    for i, (yc, val, quote) in enumerate(rows):
+        arrow(ax, fx, fy, cJ[0] - 0.03, yc + 0.09, color=MUTED, lw=0.7)
         col, tc = {"true": (REQ, "white"), "false": (SKIP, INK), "unresolved": (HELD, INK)}[val]
-        chip(ax, xj, yc + 0.11, val, col, 7.2, tc)
-        for k, ln in enumerate(world):
-            T(ax, xj, yc - 0.08 - 0.12 * k, ln, 6.3, MUTED)
-        # model: one checklist (schematic)
-        cx, cy = xm, yc - 0.19
-        card(ax, cx, cy, 0.28, 0.38, ec=MODEL, lw=0.7, r=0.02)
-        for k, yy in enumerate((cy + 0.29, cy + 0.19, cy + 0.09)):
-            ax.add_patch(Rectangle((cx + 0.04, yy - 0.022), 0.044, 0.044, fc="white", ec=MODEL, lw=0.5, zorder=2))
-            if k < 2:
-                ax.plot([cx + 0.11, cx + 0.24], [yy, yy], color=FAINT, lw=1.0)
-        wy = cy + 0.09
-        tx = cx + 0.36
+        chip(ax, cJ[0], yc + 0.09, val, col, 7.0, tc)
+        T(ax, cJ[0], yc - 0.10 - (0.05 if "\n" in quote else 0), quote, 6.2, MUTED, style="italic", linespacing=1.0)
+        # judgment -> rule -> request
+        ax.plot([cJ[0] + cJ[1] - 0.02, cR[0]], [yc, yc], color=CODE, lw=0.7)
+        arrow(ax, cR[0] + cR[1], yc, cE[0] - 0.04, yc, color=CODE, lw=0.7)
         if val == "true":
-            ax.plot([cx + 0.11, cx + 0.24], [wy, wy], color=REQ, lw=1.6, solid_capstyle="butt")
-            token(ax, tx, yc + 0.06, "receipt", "requested")
-            T(ax, tx, yc - 0.12, "if applied correctly", 6.2, MUTED, style="italic")
+            T(ax, cE[0], yc + 0.15, "request the receipt", 6.9, REQ, weight="bold")
+            e = token(ax, cE[0], yc - 0.03, "receipt", "requested", size=6.5)
+            token(ax, e + 0.05, yc - 0.03, "expert val.", "skip", size=6.5)
         elif val == "false":
-            T(ax, tx, yc + 0.06, "no watch document", 6.8)
-            T(ax, tx, yc - 0.12, "if applied correctly", 6.2, MUTED, style="italic")
+            T(ax, cE[0], yc + 0.15, "skip both", 6.9, "#77766f", weight="bold")
+            e = token(ax, cE[0], yc - 0.03, "receipt", "skip", size=6.5)
+            token(ax, e + 0.05, yc - 0.03, "expert val.", "skip", size=6.5)
         else:
-            T(ax, cx + 0.175, wy, "?", 7.4, MODEL, ha="center", weight="bold")
-            e = token(ax, tx, yc + 0.24, "receipt", "maybe")
-            T(ax, e + 0.05, yc + 0.24, "or nothing", 6.8, MODEL)
-            T(ax, tx, yc + 0.04, "a silent guess:", 6.6, MODEL, style="italic")
-            T(ax, tx, yc - 0.09, "the judgment behind", 6.6, MODEL, style="italic")
-            T(ax, tx, yc - 0.22, "it is not recorded", 6.6, MODEL, style="italic")
-        # code: the executed outcome on the rule's two document tokens
-        if val == "true":
-            T(ax, xc, yc + 0.19, "request the receipt", 7.0, REQ, weight="bold")
-            e = token(ax, xc, yc + 0.01, "receipt", "requested")
-            token(ax, e + 0.07, yc + 0.01, "expert valuation", "skip")
-            T(ax, xc, yc - 0.17, "one route suffices", 6.2, MUTED, style="italic")
-        elif val == "false":
-            T(ax, xc, yc + 0.19, "skip both", 7.0, "#77766f", weight="bold")
-            e = token(ax, xc, yc + 0.01, "receipt", "skip")
-            token(ax, e + 0.07, yc + 0.01, "expert valuation", "skip")
-            T(ax, xc, yc - 0.17, "neither is required", 6.2, MUTED, style="italic")
-        else:
-            T(ax, xc, yc + 0.35, "hold both and ask", 7.0, "#8a6400", weight="bold")
-            e = token(ax, xc, yc + 0.17, "receipt", "held")
-            token(ax, e + 0.07, yc + 0.17, "expert valuation", "held")
-            T(ax, xc, yc - 0.03, "“Was the watch separately", 7.0, style="italic")
-            T(ax, xc, yc - 0.16, "insured?”", 7.0, style="italic")
-            T(ax, xc, yc - 0.33, "recorded: unresolved + quote", 6.2, MUTED, style="italic")
+            T(ax, cE[0], yc + 0.24, "hold both and ask", 6.9, "#8a6400", weight="bold")
+            e = token(ax, cE[0], yc + 0.07, "receipt", "held", size=6.5)
+            token(ax, e + 0.05, yc + 0.07, "expert val.", "held", size=6.5)
+            T(ax, cE[0], yc - 0.11, "\u201cWas the watch separately", 6.5, style="italic")
+            T(ax, cE[0], yc - 0.23, "insured?\u201d", 6.5, style="italic")
         if i < 2:
-            ax.plot([xj - 0.10, W], [yc - hh / 2 - 0.03, yc - hh / 2 - 0.03], color=GRID, lw=0.5)
-    T(ax, xj, band_lo + 0.07, "the designs differ only in this row", 6.3, "#8a6400", style="italic")
-    status(ax, x0 + w0, yh, "schematic", ha="right")
+            ax.plot([cJ[0] - 0.06, cR[0] - 0.02], [yc - 0.30, yc - 0.30], color=GRID, lw=0.5)
+            ax.plot([cR[0] + cR[1] + 0.02, W], [yc - 0.30, yc - 0.30], color=GRID, lw=0.5)
+    T(ax, cC[0], 0.28, "on the claim as written,", 6.2, "#8a6400", style="italic")
+    T(ax, cC[0], 0.16, "the condition is unresolved", 6.2, "#8a6400", style="italic")
     save(fig, "fig_hero")
 
 
@@ -561,84 +549,44 @@ def fig_reconverge():
 
 
 # ------------------------------------------------------------------ Fig. 3: fate of each kind of judgment error (exact)
-FATE_EPS = 0.1   # the operating point of the prop... macros in numbers.tex
-SEMANTICS = [("kleene", "Strong Kleene", "production engine"), ("exact", "Exact deferral", "supervaluation"),
-             ("closed", "Open read as false", "two-valued execution"), ("eager", "Open read as true", "two-valued execution")]
+FATE_EPS = 0.1   # error probability per condition (macro propEps)
+SEMANTICS = [("kleene", "Strong Kleene"), ("exact", "Exact deferral"), ("closed", "Open read as false"),
+             ("eager", "Open read as true")]
 
 
 def fate_data(eps=FATE_EPS):
-    """Exact expected outcomes over all 150 claims (scicore/out_local/s1_tables_*.json, the tables behind
-    s1_propagation.json), for three kinds of judgment error, each hitting a judgment with probability eps:
-    unresolved (any true value becomes unresolved), true judged false, false judged true. Expectations
-    are exact sums over all judgment vectors, as in scicore/s1_propagation.py (same reference sets)."""
-    out_dir = HERE.parent / "scicore" / "out_local"
-    tables = {}
-    for p in sorted(out_dir.glob("s1_tables_*.json")):
-        tables.update(json.loads(p.read_text()))
-    skip_photo = {"clm_e262801f9368bc12", "clm_731b214dde882f89", "clm_7ac806bd30792cfb"}  # as in s1_propagation.py
-
-    def prob(key, truth, kind):
-        p = 1.0
-        for j, t in zip(key, truth):
-            hit = (kind == "unresolved") or (kind == "TtoF" and t == "T") or (kind == "FtoT" and t == "F")
-            wrong = "U" if kind == "unresolved" else ("F" if t == "T" else "T")
-            if not hit:
-                p *= 1.0 if j == t else 0.0
-            else:
-                p *= (1 - eps) if j == t else eps if j == wrong else 0.0
-        return p
-
-    res, n_req = {}, 0
-    for kind in ("none", "unresolved", "TtoF", "FtoT"):
-        agg = {s: {"unnecessary": 0.0, "missed": 0.0, "deferred": 0.0} for s, _, _ in SEMANTICS}
-        n_req = 0
-        for cid, t in tables.items():
-            R = set(t["reference_requests"]) - ({"dated_photos"} if cid in skip_photo else set())
-            n_req += len(R)
-            for key, row in t["table"].items():
-                p = prob(key, t["truth"], kind) if kind != "none" else float(key == "".join(t["truth"]))
-                if p == 0.0:
-                    continue
-                for s, _, _ in SEMANTICS:
-                    req, held = set(row[s][0]), set(row[s][1])
-                    agg[s]["unnecessary"] += p * len(req - R)
-                    agg[s]["missed"] += p * len(R - req - held)
-                    agg[s]["deferred"] += p * len(R & held)
-        res[kind] = agg
-    # consistency with the published grid (eps, rho = 1): unresolved errors only
-    s1 = {(r["eps"], r["rho"]): r for r in json.loads((out_dir / "s1_propagation.json").read_text())}
-    ref = s1[(eps, 1.0)]
-    for s, _, _ in SEMANTICS:
-        for k in ("unnecessary", "missed", "deferred"):
-            assert abs(res["unresolved"][s][k] - ref[f"{s}_{k}"]) < 1e-6, (s, k)
+    """The exact computation of scicore/s1_propagation.py (all 150 claims, every judgment vector): each
+    condition is judged wrongly with probability eps; rho = 1 makes every error 'unresolved', rho = 0 a
+    confident wrong verdict. Per 100 required documents; unnecessary requests in excess of eps = 0."""
+    s1 = {(r["eps"], r["rho"]): r for r in
+          json.loads((HERE.parent / "scicore" / "out_local" / "s1_propagation.json").read_text())}
+    base, n = s1[(0.0, 1.0)], s1[(0.0, 1.0)]["required_total"]
     per100 = {}
-    for kind in ("unresolved", "TtoF", "FtoT"):
-        per100[kind] = {s: {"deferred": 100 * res[kind][s]["deferred"] / n_req,
-                            "missed": 100 * res[kind][s]["missed"] / n_req,
-                            "unnecessary": 100 * (res[kind][s]["unnecessary"] - res["none"][s]["unnecessary"]) / n_req,
-                            "deferred_beyond_exact": 100 * (res[kind][s]["deferred"] - res[kind]["exact"]["deferred"]) / n_req}
-                        for s, _, _ in SEMANTICS}
-    return {"per100": per100, "required": n_req, "claims": len(tables), "eps": eps}
+    for kind, rho in (("unresolved", 1.0), ("wrong", 0.0)):
+        r = s1[(eps, rho)]
+        per100[kind] = {s: {"deferred": 100 * r[f"{s}_deferred"] / n, "missed": 100 * r[f"{s}_missed"] / n,
+                            "unnecessary": 100 * (r[f"{s}_unnecessary"] - base[f"{s}_unnecessary"]) / n,
+                            "deferred_beyond_exact": 100 * (r[f"{s}_deferred"] - r["exact_deferred"]) / n}
+                        for s, _ in SEMANTICS}
+    return {"per100": per100, "required": n, "claims": base["claims"], "eps": eps}
 
 
 def fig_fate():
     """Exact computation. Aligned small multiples: rows = kind of judgment error x semantics, columns =
-    outcome, one shared scale. The eye sees a staircase for unresolved judgments (the semantics decide the
-    outcome) and a vertical stripe for confident errors (every semantics gives the same outcome)."""
+    outcome, one shared scale. Unresolved judgments form a staircase (the semantics decide the outcome);
+    confident wrong verdicts form a stripe (every semantics gives the same errors)."""
     F = fate_data()
     P = F["per100"]
-    W, H = TW, 2.92
+    W, H = TW, 2.34
     fig, ax = canvas(W, H)
-    kinds = [("unresolved", "Unresolved", "the judgment is left open", "set by the semantics"),
-             ("TtoF", "Confidently wrong", "a true condition judged false", "missed in all four"),
-             ("FtoT", "Confidently wrong", "a false condition judged true", "unnecessary in all four")]
+    kinds = [("unresolved", "Unresolved", "the judgment is left open", "set by the semantics", "#8a6400"),
+             ("wrong", "Confidently wrong", "true judged false or the", "the same in all four", MISS)]
     outs = [("deferred", "Held", "behind a question"), ("missed", "Missed", "unsafe error"),
             ("unnecessary", "Unnecessary", "request; unsafe error")]
     xcol = [2.30, 3.46, 4.40]
-    scale = 0.85 / 15.0             # inches per document per 100 required documents, all columns
-    rh, gap = 0.142, 0.13
-    ytop = 2.28
-    yh = 2.62
+    scale = 0.85 / 15.0
+    rh, gap = 0.150, 0.16
+    yh = 2.06
     status(ax, W, H - 0.08, "exact computation", ha="right")
     for (k, name, sub), x in zip(outs, xcol):
         T(ax, x, yh, name, 7.2, INK, weight="bold")
@@ -651,9 +599,9 @@ def fig_fate():
         T(ax, x + 0.21, yh - 0.155, sub, 6.2, MUTED, style="italic")
     T(ax, 0, yh, "Kind of judgment error", 7.2, INK, weight="bold")
     T(ax, 1.22, yh, "Execution semantics", 7.2, INK, weight="bold")
-    y = ytop
-    for b, (kind, name, sub, fate) in enumerate(kinds):
-        for i, (s, sname, ssub) in enumerate(SEMANTICS):
+    y = yh - 0.38
+    for kind, name, sub, fate, fcol in kinds:
+        for i, (s, sname) in enumerate(SEMANTICS):
             yy = y - i * rh
             T(ax, 1.22, yy, sname, 6.6, INK)
             if i < 3:
@@ -679,15 +627,20 @@ def fig_fate():
                     ax.add_patch(Rectangle((x, y0), w, hh, fc="white", ec=UNNEC, lw=0.8, zorder=2))
                 T(ax, x + w + 0.04, yy, f"{v:.1f}", 6.4, INK)
         yc = y - 1.5 * rh
-        T(ax, 0, yc + 0.13, name, 7.2, INK, weight="bold")
-        T(ax, 0, yc - 0.005, sub, 6.3, MUTED, style="italic")
-        T(ax, 0, yc - 0.14, "\u2192 " + fate, 6.3, {"unresolved": "#8a6400", "TtoF": MISS, "FtoT": MISS}[kind])
+        T(ax, 0, yc + 0.14, name, 7.2, INK, weight="bold")
+        if kind == "wrong":
+            T(ax, 0, yc + 0.005, "true judged false, or", 6.3, MUTED, style="italic")
+            T(ax, 0, yc - 0.11, "false judged true", 6.3, MUTED, style="italic")
+            T(ax, 0, yc - 0.24, "\u2192 " + fate, 6.3, fcol)
+        else:
+            T(ax, 0, yc + 0.005, sub, 6.3, MUTED, style="italic")
+            T(ax, 0, yc - 0.13, "\u2192 " + fate, 6.3, fcol)
         ax.plot([1.15, 1.15], [y + rh * 0.45, y - 3 * rh - rh * 0.45], color=MUTED, lw=0.6)
         y -= 4 * rh + gap
     ex = P["unresolved"]["kleene"]["deferred_beyond_exact"]
-    T(ax, 0, 0.20, f"Per 100 required documents, each judgment having the error with probability {F['eps']:.1f}; "
-      f"all {F['claims']} claims, {F['required']:,} required documents.", 6.2, MUTED, style="italic")
-    T(ax, 0, 0.07, f"Hatched: {ex:.1f} documents strong Kleene evaluation holds although every completion "
+    T(ax, 0, 0.17, f"Per 100 required documents; each condition judged wrongly with probability {F['eps']:.1f}; all "
+      f"{F['claims']} claims, {F['required']:,} required documents.", 6.2, MUTED, style="italic")
+    T(ax, 0, 0.05, f"Hatched: {ex:.1f} documents strong Kleene evaluation holds although every completion "
       "requires them.", 6.2, MUTED, style="italic")
     save(fig, "fig_fate")
 
