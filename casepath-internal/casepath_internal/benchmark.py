@@ -5,7 +5,8 @@ synthetic renderer expects them, and its truth:
 
 - ``workflow``: the process family the case belongs to;
 - ``facts``: the value of each workflow fact the documents settle, or null where the files leave it open;
-- ``evidence``: for each settled fact, a sentence copied from the documents that settles it;
+- ``evidence``: for each settled fact, a sentence copied from the documents that settles it (or a list of such sentences
+  when several documents settle it);
 - ``outcome``: the process outcome the case reaches, or null when it stops at a question;
 - ``documents``: each workflow document need as present or missing;
 - ``case_documents``: documents this case needs beyond its workflow, which CasePath should find for itself, matched by
@@ -45,8 +46,13 @@ def load_suite(directory):
     return cases
 
 
+def block_text(block):
+    """A block as the page shows it: a field as «label: value»."""
+    return f"{block['label']}: {block['text']}" if block["type"] == "field" and block.get("label") else block["text"]
+
+
 def case_text(case):
-    return "\n".join(f"{d['sender']} {d['recipient']} {d['title']}\n" + "\n".join(b["text"] for b in d["blocks"]) for d in case["documents"])
+    return "\n".join(f"{d['sender']} {d['recipient']} {d['title']}\n" + "\n".join(block_text(b) for b in d["blocks"]) for d in case["documents"])
 
 
 def _matchers(items, where):
@@ -102,9 +108,10 @@ def validate_case(case, catalogue=None):
         for fact in (truth.get("flags") or {}).get("conflict_facts", []):
             if fact not in facts:
                 raise BenchmarkError(f"{case['id']}: conflict fact {fact!r} is not in {workflow['id']}")
-    for fact, quote in (truth.get("evidence") or {}).items():
-        if normalise(quote) not in text:
-            raise BenchmarkError(f"{case['id']}: the evidence for {fact!r} is not in the documents: {quote[:80]!r}")
+    for fact, quotes in (truth.get("evidence") or {}).items():
+        for quote in [quotes] if isinstance(quotes, str) else quotes:  # one quote, or several that each settle the fact
+            if normalise(quote) not in text:
+                raise BenchmarkError(f"{case['id']}: the evidence for {fact!r} is not in the documents: {quote[:80]!r}")
     for fact, value in (truth.get("facts") or {}).items():
         if value is not None and fact not in (truth.get("evidence") or {}) and fact not in {"rechtsgebiet", "login", "personalien"}:
             warnings.append(f"{case['id']}: fact {fact!r} has a value but no evidence sentence")

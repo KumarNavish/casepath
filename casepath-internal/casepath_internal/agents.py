@@ -238,6 +238,9 @@ def _tool_specs(work, names):
 
 def _record_fact(work, agent, args):
     definition = work.fact_defs[args["fact"]]
+    known = work.facts.get(args["fact"])
+    if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
+        return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}
     located, missed = work.located(args["citations"])
     value = None
     if args["status"] == "established":
@@ -489,7 +492,7 @@ def same_reading(definition, first, second):
     if definition.get("type", "text") != "text" or first is None or second is None:
         return False
     shorter, longer = sorted([_words(first), _words(second)], key=len)
-    return bool(shorter) and len(shorter & longer) / len(shorter) >= 0.8
+    return bool(shorter) and len(shorter & longer) / len(shorter) >= 0.75
 
 
 def confirm_facts(model, work, effort="medium"):
