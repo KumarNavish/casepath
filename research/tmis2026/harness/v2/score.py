@@ -41,7 +41,7 @@ def tenancy():
             rows = []
             for key, v in P.items():
                 d, c, r = key.split("|")
-                if d != design:
+                if d != design or not any(field in (x or {}) for kk, x in P.items() if kk.startswith(design + "|")):
                     continue
                 R = set(D.reference(c)["request_set"]) - unscored(c)
                 rows.append(tenancy_row(c, (v or {}).get(field), R))
@@ -65,7 +65,7 @@ def theft():
     for design, fields in VARIANTS.items():
         for field in fields:
             runs = sorted({int(k.split("|")[2]) for k in P if k.startswith(design + "|")})
-            if not runs:
+            if not runs or not any(field in (v or {}) for k, v in P.items() if k.startswith(design + "|")):
                 continue
             rows = []
             empty = {"requests": [], "holds": []}
