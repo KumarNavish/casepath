@@ -398,6 +398,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def feedback(run_id: str, body: Feedback, who=Depends(user)):
         return {"feedback": found(store.set_feedback, run_id, body.target, body.verdict, body.note, who)}
 
+    @app.get("/api/cases/{case_id}/report.docx")
+    def report_docx(case_id: str, lang: str = "de", who=Depends(user)):
+        """The case report for the case file: what the last prepared run found, each finding with its source."""
+        from .report import build
+
+        current = state(case_id)
+        data = build(current["case"], current, store.list_files(case_id), lang=lang if lang in ("de", "en") else "de",
+                     knowledge=store.list_knowledge())
+        name = "Fallbericht.docx" if lang != "en" else "Case-report.docx"
+        return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        headers={"Content-Disposition": f"attachment; filename={name}", "Cache-Control": "private, no-store"})
+
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):
         run = found(store.get_run, run_id)

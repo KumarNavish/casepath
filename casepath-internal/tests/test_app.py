@@ -73,6 +73,26 @@ class AppTests(unittest.TestCase):
         self.assertEqual(state["status"], "completed", state.get("error"))
         return state
 
+    def test_the_case_report_carries_each_finding_with_its_source(self):
+        import io
+        import re
+        import zipfile
+        client = self.client()
+        case, file = self.new_case(client, "Schimmel im Bad")
+        def document(**params):
+            response = client.get(f"/api/cases/{case['id']}/report.docx", params=params)
+            return response, re.sub(r"<[^>]+>", " ", zipfile.ZipFile(io.BytesIO(response.content)).read("word/document.xml").decode())
+        self.assertIn("noch nicht vorbereitet", document()[1])
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"], finder_calls=[finder(file["id"], "customer_message", QUOTE)])))
+        response, text = document()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Fallbericht.docx", response.headers["content-disposition"])
+        for expected in ("Fallbericht: Schimmel im Bad", "Stand im Prozess", "Dokumenten-Checkliste", "Belegte Fakten", "belegt",
+                         "nichts wurde versendet", "message.eml", "fehlt"):
+            self.assertIn(expected, text)
+        self.assertEqual(text.count(QUOTE), 2)  # the fact and the document each name their exact passage
+        self.assertIn("Case report", document(lang="en")[1])
+
     def test_sign_in_is_required(self):
         self.assertEqual(self.client(CASEPATH_DEV_USER="").get("/api/cases").status_code, 503)
         gateway = self.client(CASEPATH_DEV_USER="", CASEPATH_IDENTITY_HEADER="x-identity")
