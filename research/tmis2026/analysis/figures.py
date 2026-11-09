@@ -190,6 +190,7 @@ import figtheme as th
 
 PREVIEW = None     # directory for print-size PNG previews (set by --png)
 LEGEND_Y = 0.10    # legend row: distance below the top edge, same in every figure
+LEGEND_X = 0.06    # legend row: left margin, same in every figure
 
 
 def _save(fig, name):
@@ -368,10 +369,9 @@ def trace_data(tag="gpt-6.1-terra"):
 def models_data():
     o = load("original_study.json")["table"]
     out = []
-    # ordered by capability as described in the paper: cost-efficient, original study's model, frontier
-    for tag, label, sub in (("gpt-6-luna", "gpt-6-luna", "cost-efficient; 3 runs"),
-                            ("gpt-5.6-terra", "gpt-5.6-terra", "original study; 1 run"),
-                            ("gpt-6.1-terra", "gpt-6.1-terra", "frontier; 3 runs")):
+    # ordered by release; no capability order is implied
+    for tag, label, sub in (("gpt-5.6-terra", "gpt-5.6-terra", "original study, 1 run"),
+                            ("gpt-6-luna", "gpt-6-luna", ""), ("gpt-6.1-terra", "gpt-6.1-terra", "")):
         if tag == "gpt-5.6-terra":
             row = {"R": {"wpp": o["R"]["wrong_per_pair"], "wrong": o["R"]["wrong"], "ci": None, "dedup": None},
                    "CP": {"wpp": o["CP-oneroute"]["wrong_per_pair"], "wrong": o["CP-oneroute"]["wrong"], "ci": None,
@@ -388,55 +388,115 @@ def models_data():
 
 
 
-# ---------------------------------------------------------------------- Fig. 1 (schematic)
-def fig_hero():
-    """One claim and one rule; three values of the condition, aligned as rows; the executed outcome
-    on the rule's two documents; one line for the model-applied design. Columns are stages, so later
-    stages (rule verification and repair) can be inserted without moving the rest."""
-    H = 2.05
+# ---------------------------------------------------------------------- real-screen figures (Fig. 1, knowledge)
+# Crops of real CasePath screens (2x captures, gpt-6-luna, synthetic cases; see figures/ui_used/MANIFEST.md).
+# Crops are faithful: pixels are embedded unresampled; nothing is retouched. Each entry: source file,
+# crop box in capture pixels, and the smallest UI font kept in the crop (capture px, from measured cap heights).
+UI = HERE.parent / "paper" / "figures" / "ui_used"
+UI_CROPS = {
+    "claim": ("live/run1-claim-reader-live-quotes-and-strip.png", (630, 1342, 1680, 1484), 33),
+    "fact": ("en/c-source-checker.png", (583, 440, 1550, 578), 24),
+    "step": ("live/run1-result-checker-live-checklist.png", (1470, 196, 2100, 478), 24),
+    "document": ("live/run1-result-checker-live-checklist.png", (2018, 1420, 2614, 1576), 24),
+    "correction": ("en/e2-document-finder-after-correction.png", (583, 1046, 1505, 1243), 29),
+    "candidate": ("en/g1-knowledge-after-correction.png", (1923, 463, 2483, 613), 24),
+    "used": ("en/l-case2-document-finder.png", (1843, 1042, 2803, 1305), 24),
+    "refinement": ("en/n-knowledge-refinement.png", (60, 1176, 960, 1326), 24),
+}
+UI_TEXT_PT = {}   # smallest kept UI font in print, pt (filled when a figure is drawn)
+
+
+def screen(ax, key, x, top, w):
+    """Place one faithful crop with its left edge at x and top edge at `top`, `w` inches wide; thin neutral
+    frame. Returns (x0, y0, x1, y1, scale) with scale in inches per capture pixel."""
+    import numpy as _np
+    from PIL import Image as _Image
+    f, box, small = UI_CROPS[key]
+    img = _np.asarray(_Image.open(UI / f).convert("RGB").crop(box))
+    s = w / img.shape[1]
+    h = img.shape[0] * s
+    ax.imshow(img, extent=(x, x + w, top - h, top), interpolation="none", zorder=1, aspect="auto")
+    ax.add_patch(th.Rectangle((x, top - h), w, h, fc="none", ec=th.NEUTRAL, lw=th.THIN, zorder=2))
+    UI_TEXT_PT[key] = round(small * s * 72, 1)
+    return x, top - h, x + w, top, s
+
+
+def trace(ax, pts):
+    """The one trace: an ochre polyline through white space, dots where it meets a crop."""
+    xs, ys = zip(*pts)
+    ax.plot(xs, ys, color=th.HELD, lw=th.THICK, solid_joinstyle="round", solid_capstyle="round", zorder=3)
+    for x, y in (pts[0], pts[-1]):
+        ax.add_patch(th.Circle((x, y), 0.022, fc=th.HELD, ec="none", zorder=4))
+
+
+def _canvas_fixed(H):
     fig, ax = th.canvas(H)
-    W = th.WIDTH
-    top = H - LEGEND_Y
-    th.legend(ax, 0, top, ["requested", "held", "inactive"])
-    # claim and rule: the same object for every row
-    y0 = top - 0.36
-    th.text(ax, 0, y0, "Claim", "label", bold=True)
-    q = ["“…a laptop and a watch were stolen. The watch", "may be separately scheduled in the policy, but I",
-         "have not found the policy schedule yet.”"]
-    for i, s in enumerate(q):
-        th.text(ax, 0, y0 - 0.17 - 0.14 * i, s)
-    w = th.width(ax, "may be separately scheduled")
-    th.band(ax, -0.02, y0 - 0.31 - 0.07, w + 0.04, 0.14)
-    y1 = y0 - 0.72
-    th.text(ax, 0, y1, "Rule", "label", bold=True)
-    for i, s in enumerate(["If the watch is separately insured above CHF 1,000,",
-                           "its value must be established by a receipt",
-                           "or an expert valuation."]):
-        th.text(ax, 0, y1 - 0.17 - 0.14 * i, s)
-    # rows: the condition's value, the executed outcome
-    xv, xo = 2.62, 3.56
-    th.text(ax, xv, y0, "Separately insured?", "label", bold=True)
-    th.design(ax, xo + 0.04, y0, "code")
-    th.text(ax, xo + 0.12, y0, "Code executes the rule", "label", bold=True)
-    rows = [(y0 - 0.30, "true", "active", ("requested", "inactive")),
-            (y0 - 0.60, "false", "inactive", ("inactive", "inactive")),
-            (y0 - 0.95, "unresolved", "unresolved", ("held", "held"))]
-    th.band(ax, xv - 0.10, rows[2][0] - 0.30, W - xv + 0.10, 0.44)
-    fx = 2.40
-    for y, val, nk, (k1, k2) in rows:
-        th.line(ax, [fx, xv - 0.06], [y0 - 0.62, y], color=th.NEUTRAL)
-        th.node(ax, xv + 0.03, y, nk)
-        th.text(ax, xv + 0.12, y, val)
-        e = th.doc(ax, xo, y, "receipt", k1)
-        th.doc(ax, e + 0.16, y, "expert valuation", k2)
-    th.text(ax, xo, rows[2][0] - 0.18, "“Was the watch separately insured?”")
-    th.line(ax, [2.30, fx], [y0 - 0.62, y0 - 0.62], color=th.NEUTRAL)
-    # the model-applied design: one quiet line
-    yb = 0.12
-    th.design(ax, 0.04, yb, "model")
-    th.text(ax, 0.12, yb, "Model applies the rules: one generation, a checklist and a reason; "
-            "judgment and rule application are not recorded separately.", "note")
+    ax.set_xlim(0, th.WIDTH); ax.set_ylim(0, H)
+    return fig, ax
+
+
+def fig_hero():
+    """One sentence of the claim followed through the system, on real screens: the highlighted quotation,
+    the fact recorded for the health-effects question, the process step that fact activates (untaken
+    branches struck through), and the checklist row it produces."""
+    W, H = th.WIDTH, 2.66
+    fig, ax = _canvas_fixed(H)
+    lab = 0.11
+    A = screen(ax, "claim", 0.06, H - 0.18, 2.65)
+    B = screen(ax, "fact", W - 3.40, A[1] - 0.30, 3.40)
+    C = screen(ax, "step", 0.30, B[1] - 0.34, 2.20)
+    D = screen(ax, "document", W - 2.10, B[1] - 0.34, 2.10)
+    for P, s in ((A, "claim"), (B, "recorded fact"), (C, "process step it activates"), (D, "document requested")):
+        th.text(ax, P[0], P[3] + lab, s, "note")
+    for k in ("claim", "fact", "step", "document"):
+        pass
+    # anchors (capture pixels inside each crop -> inches)
+    def at(P, px, py):
+        return P[0] + px * P[4], P[3] - py * P[4]
+    a = (at(A, 330, 0)[0], A[1])                       # under "Arztbericht"
+    b = (B[0], at(B, 0, 110)[1])                       # "yes"
+    b_out = (at(B, 60, 0)[0], B[1])                    # below "yes"
+    c = (at(C, 463, 0)[0], C[3])                       # "Obtain a medical report" node
+    c_out = (C[2], at(C, 0, 171)[1])                   # beside its label
+    d = (D[0], at(D, 0, 44)[1])                        # "Medical report (Arztbericht)"
+    g1 = (A[1] + B[3]) / 2
+    g2 = (B[1] + max(C[3], D[3])) / 2
+    xm = (C[2] + D[0]) / 2
+    trace(ax, [a, (a[0], g1), (b[0] - 0.12, g1), (b[0] - 0.12, b[1]), b])
+    trace(ax, [b_out, (b_out[0], g2), (c[0], g2), c])
+    trace(ax, [c_out, (xm, c_out[1]), (xm, d[1]), d])
     _save(fig, "fig_hero")
+
+
+def fig_knowledge():
+    """A handler's correction becomes a candidate item; once approved it is used in the next case, where
+    the supplied document is judged unusable; that case proposes a refinement v1 -> v2 for a person."""
+    W, H = th.WIDTH, 2.86
+    fig, ax = _canvas_fixed(H)
+    lab = 0.11
+    K1 = screen(ax, "correction", 0.06, H - 0.18, 2.65)
+    K2 = screen(ax, "candidate", W - 2.20, H - 0.18, 2.20)
+    K3 = screen(ax, "used", W - 3.35, min(K1[1], K2[1]) - 0.34, 3.35)
+    K4 = screen(ax, "refinement", 0.06, K3[1] - 0.30, 3.10)
+    for P, s in ((K1, "handler corrects"), (K2, "candidate"), (K3, "approved, used in the next case"),
+                 (K4, "refinement proposed")):
+        th.text(ax, P[0], P[3] + lab, s, "note")
+
+    def at(P, px, py):
+        return P[0] + px * P[4], P[3] - py * P[4]
+    a = (K1[2], at(K1, 0, 42)[1])                      # "Lüftungs- und Heizprotokoll"
+    b = (K2[0], at(K2, 0, 122)[1])                     # the candidate's title
+    xm = (K1[2] + K2[0]) / 2
+    trace(ax, [a, (xm, a[1]), (xm, b[1]), b])
+    b_out = (at(K2, 330, 0)[0], K2[1])
+    c = (at(K3, 870, 0)[0], K3[3])                     # above "From Knowledge"
+    gy = (K2[1] + K3[3]) / 2
+    trace(ax, [b_out, (b_out[0], gy), (c[0], gy), c])
+    c_out = (K3[0], at(K3, 0, 30)[1])
+    d = (at(K4, 520, 0)[0], K4[3])                     # above "refines v1 -> v2"
+    trace(ax, [c_out, (d[0], c_out[1]), d])
+    _save(fig, "fig_knowledge")
+
 
 
 # ---------------------------------------------------------------------- Fig. 2 (engine output)
@@ -453,7 +513,7 @@ def fig_reconverge():
     fig, ax = th.canvas(H)
     W = th.WIDTH
     top = H - LEGEND_Y
-    th.legend(ax, 0, top, ["requested", "held", "inactive"])
+    th.legend(ax, LEGEND_X, top, ["requested", "held", "inactive"])
     yt = top - 0.62
     yof = {n: yt - i * dy for i, n in enumerate(order)}
     xm = W / 2
@@ -523,7 +583,7 @@ def fig_fate():
     fig, ax = th.canvas(H)
     W = th.WIDTH
     top = H - LEGEND_Y
-    th.legend(ax, 0, top, ["held", "missed", "unnecessary"])
+    th.legend(ax, LEGEND_X, top, ["held", "missed", "unnecessary"])
     xcol = [2.42, 3.47, 4.47]
     scale = 0.80 / 15.0
     rh, gap, bh = 0.165, 0.20, th.MS
@@ -569,7 +629,7 @@ def fig_outcomes():
     fig, ax = th.canvas(H)
     W = th.WIDTH
     top = H - LEGEND_Y
-    th.legend(ax, 0, top, ["requested", "held", "handed", "missed", "unnecessary"])
+    th.legend(ax, LEGEND_X, top, ["requested", "held", "handed", "missed", "unnecessary"])
     p, g5 = th.MS + 0.012, 0.032
     bw = 25 * p + 4 * g5
     x1 = 1.02
@@ -620,7 +680,7 @@ def fig_trace():
     fig, ax = th.canvas(H)
     W = th.WIDTH
     top = H - LEGEND_Y
-    th.legend(ax, 0, top, ["missed", "unnecessary"])
+    th.legend(ax, LEGEND_X, top, ["missed", "unnecessary"])
     xr, xv, xd, xc, xi = 0.0, 1.62, 2.26, 3.30, 4.30
     pitch = th.MS + 0.014
     yh = top - 0.32
@@ -675,7 +735,7 @@ def fig_models():
     def tick(a, x, y):
         a.plot([x, x], [y - 0.045, y + 0.045], color=th.INK, lw=th.THICK, solid_capstyle="butt")
 
-    th.legend(axc, 0, top, [], extra=[(lambda a, x, y: th.design(a, x, y, "code"), "CasePath"),
+    th.legend(axc, LEGEND_X, top, [], extra=[(lambda a, x, y: th.design(a, x, y, "code"), "CasePath"),
                                       (lambda a, x, y: th.design(a, x, y, "model"), "Rules in context"),
                                       (tick, "each repeated error counted once")])
     ax = fig.add_axes([1.30 / W, 0.36 / H, (W - 1.50) / W, (H - 0.36 - 0.42) / H])
@@ -699,7 +759,7 @@ def fig_models():
             ax.text(v["wpp"], yy + (0.17 if d == "CP" else -0.17), f"{v['wpp']:.2f}", fontsize=th.NOTE, ha="center",
                     va="bottom" if d == "CP" else "top", color=th.INK)
     ax.set_yticks(list(ys.values()))
-    ax.set_yticklabels([r["label"] + ("\n1 run" if r["single"] else "") for r in M], fontsize=th.LABEL,
+    ax.set_yticklabels([r["label"] + ("\noriginal study, 1 run" if r["single"] else "") for r in M], fontsize=th.LABEL,
                        linespacing=1.1)
     ax.set_xticks([0, 0.5, 1.0, 1.5])
     ax.set_xlabel("Wrong changes per pair, lower is better", fontsize=th.LABEL)
@@ -719,7 +779,7 @@ if __name__ == "__main__":
     if "--legacy" in args:
         fig_tenancy(); fig_theft(); fig_propagation()
     only = [a for a in args if a.startswith("fig_")]
-    for f in only or ["fig_hero", "fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models"]:
+    for f in only or ["fig_hero", "fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge"]:
         if f in globals():
             globals()[f]()
     print("figures written to", FIG)

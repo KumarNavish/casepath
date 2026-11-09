@@ -1,0 +1,52 @@
+{
+  "format": "casepath.workflow/1",
+  "id": "mould-defect",
+  "version": "2026-11-10",
+  "title": "Synthetic: mould in a rented flat (rendering fixture, not a Mobiliar process)",
+  "status": "draft",
+  "example": true,
+  "sources": [
+    {"id": "fixture", "kind": "process_guidance", "title": "Synthetic rendering fixture modelled on Swiss tenancy-defect handling (Art. 259a OR); not a Mobiliar process"}
+  ],
+  "applies_when": {"fact": "legal_area", "is": "tenancy_defect"},
+  "facts": [
+    {"id": "legal_area", "type": "enum", "values": ["tenancy_defect", "other"],
+     "question": "Which legal area does the request concern?", "source_refs": ["fixture#area"]},
+    {"id": "written_notice", "type": "boolean",
+     "question": "Has the tenant given the landlord written notice of the defect (Mängelrüge)?", "source_refs": ["fixture#notice"]},
+    {"id": "health_effects", "type": "boolean",
+     "question": "Does the tenant report effects of the mould on anyone's health?", "source_refs": ["fixture#health"]}
+  ],
+  "start": "intake",
+  "steps": [
+    {"id": "intake", "title": "Read the request and the lease", "role": "system", "source_refs": ["fixture#s1"],
+     "documents": ["customer_message", "lease"], "next": [{"to": "notice", "when": true}]},
+    {"id": "notice", "title": "Check whether the landlord was notified in writing", "role": "system", "source_refs": ["fixture#s2"],
+     "next": [
+       {"to": "health", "label": "notified in writing", "when": {"fact": "written_notice", "is": true}},
+       {"to": "advise_notice", "label": "not in writing", "when": {"fact": "written_notice", "is": false}}
+     ]},
+    {"id": "advise_notice", "title": "Advise a written notice to the landlord first (Art. 259a OR)", "source_refs": ["fixture#s3"],
+     "next": [{"to": "health", "when": true}]},
+    {"id": "health", "title": "Check for health effects", "role": "system", "source_refs": ["fixture#s4"],
+     "next": [
+       {"to": "medical", "label": "health affected", "when": {"fact": "health_effects", "is": true}},
+       {"to": "assess", "label": "no health effects", "when": {"fact": "health_effects", "is": false}}
+     ]},
+    {"id": "medical", "title": "Obtain a medical report on the health effects", "source_refs": ["fixture#s5"],
+     "documents": ["medical_report"], "next": [{"to": "assess", "when": true}]},
+    {"id": "assess", "title": "Assess the defect with its evidence", "source_refs": ["fixture#s6"],
+     "documents": ["photos", "notice_letter"], "outcome": "assessed"}
+  ],
+  "documents": [
+    {"id": "customer_message", "title": "The customer's report", "why": "It states the request.", "source_refs": ["fixture#d1"]},
+    {"id": "lease", "title": "Lease agreement", "why": "It names the parties and the notice duty.", "source_refs": ["fixture#d2"]},
+    {"id": "photos", "title": "Photos of the defect", "why": "They show the defect and its extent.", "source_refs": ["fixture#d3"]},
+    {"id": "notice_letter", "title": "Written notice to the landlord (Mängelrüge)", "why": "It proves the landlord was told in writing.",
+     "required_when": {"fact": "written_notice", "is": true}, "source_refs": ["fixture#d4"]},
+    {"id": "medical_report", "title": "Medical report (Arztbericht)", "why": "It documents the health effects claimed.",
+     "required_when": {"fact": "health_effects", "is": true}, "source_refs": ["fixture#d5"]}
+  ],
+  "outcomes": [{"id": "assessed", "title": "Defect assessed", "source_refs": ["fixture#o1"]}],
+  "open_questions": []
+}
