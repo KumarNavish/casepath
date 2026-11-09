@@ -1,0 +1,22 @@
+{
+  "freeze": {
+    "contract": "casepath.theft-causal-freeze/1.0.0",
+    "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+    "reference_contract_sha256": "4684811171059a121f4153b21e87cc35ea64f0987a80ae712f4aeeda7b9ca5cc",
+    "theft_branch_diagnostic_sha256": "6953645b55394c3d6f4a878783459e6ecc7f65bed240b515eb35e47e0a51b9e5",
+    "benchmark_sha256": "2f29a821bd612dc7349f45d4744367f06de493a1e9ff0cde21fdb86691a73a38",
+    "source_snapshot_sha256": "580a1ae583d7b9e34013992bf58d424527cfa428d71e236c2c8986807e7abd6a",
+    "shortcut_preflight_sha256": "64b2cc49dac6af9036a60ffad5506bd7a13c0638b0b2b8fa7bbd1290a97e4447",
+    "model_runs_consumed_for_this_benchmark": 0,
+    "held_out_scope": true,
+    "source_snapshot_note": "Exact quotations from the independently authored public-source reference contract; process labels are stripped and snippets are SHA-sorted."
+  },
+  "shortcut_admission": {
+    "input_free_control_pass": true,
+    "target_diversity_pass": true,
+    "minimal_edit_pass": true
+  },
+  "passages": 197,
+  "pairs": 72,
+  "units": 144
+}

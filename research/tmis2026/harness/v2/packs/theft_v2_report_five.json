@@ -1,0 +1,292 @@
+{
+ "five": {
+  "overlay_rule_074": {
+   "first_verdict": "flag",
+   "issues": [
+    "condition_broader_than_source",
+    "route_joint_where_alternatives"
+   ],
+   "applied": [
+    [
+     "split_route",
+     "overlay_rule_074.f01.c01",
+     ""
+    ],
+    [
+     "bind_condition",
+     "",
+     "theft-source-0159#p2"
+    ]
+   ],
+   "rejected": [],
+   "reverify": [
+    "flag"
+   ],
+   "status": "quarantined",
+   "change": "repaired",
+   "after": [
+    {
+     "facts": [
+      {
+       "condition": "The stated condition applies if, in the event of a loss, neither a receipt nor an expert valuation can be produced.",
+       "evidence": [
+        {
+         "must_show": "Whether a receipt can be produced and whether an expert valuation can be produced for the listed valuable or individual object.",
+         "routes": [
+          [
+           "Receipt for the scheduled valuable (Quittung / Rechnung)"
+          ],
+          [
+           "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+          ]
+         ]
+        }
+       ],
+       "fact": "The availability or inability to produce a receipt and an expert valuation for each listed valuable or individual object is established."
+      }
+     ],
+     "rule_id": "overlay_rule_074"
+    }
+   ]
+  },
+  "overlay_rule_084": {
+   "first_verdict": "flag",
+   "issues": [
+    "route_asks_more_than_source"
+   ],
+   "applied": [
+    [
+     "drop_document",
+     "overlay_rule_084.f01.c01",
+     "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    [
+     "bind_condition",
+     "",
+     "theft-source-0185#p1"
+    ]
+   ],
+   "rejected": [
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ]
+   ],
+   "reverify": [
+    "flag"
+   ],
+   "status": "quarantined",
+   "change": "repaired",
+   "after": [
+    {
+     "facts": [
+      {
+       "condition": "The specified condition concerns financial losses caused by misuse of SIM cards that do not occur during the period between the theft and reporting it to CSS.",
+       "evidence": [
+        {
+         "must_show": "When the theft occurred, when it was reported to CSS, when the SIM card was misused, and whether the resulting financial loss falls within that interval.",
+         "routes": [
+          [
+           "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft"
+          ]
+         ]
+        }
+       ],
+       "fact": "The theft time, CSS-reporting time, SIM-card misuse time, and the misuse-caused financial losses are established."
+      }
+     ],
+     "rule_id": "overlay_rule_084"
+    }
+   ]
+  },
+  "overlay_rule_010": {
+   "first_verdict": "flag",
+   "issues": [
+    "route_asks_more_than_source",
+    "route_asks_more_than_source",
+    "condition_broader_than_source"
+   ],
+   "applied": [],
+   "rejected": [
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ],
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ],
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ]
+   ],
+   "reverify": [
+    "flag"
+   ],
+   "status": "quarantined",
+   "change": "none",
+   "after": [
+    {
+     "facts": [
+      {
+       "condition": "none (always applies)",
+       "evidence": [
+        {
+         "must_show": "The date and location of the loss.",
+         "routes": [
+          [
+           "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+          ]
+         ]
+        }
+       ],
+       "fact": "The date and place of loss are established."
+      },
+      {
+       "condition": "none (always applies)",
+       "evidence": [
+        {
+         "must_show": "Complete, factually accurate, and timely information concerning the loss circumstances and consequences.",
+         "routes": [
+          [
+           "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+          ]
+         ]
+        }
+       ],
+       "fact": "All relevant loss circumstances were communicated fully, correctly, voluntarily, and in good time, including to relevant authorities and experts."
+      },
+      {
+       "condition": "none (always applies)",
+       "evidence": [
+        {
+         "must_show": "The identity of the person responsible for the damage, or the information available about that person.",
+         "routes": [
+          [
+           "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+          ]
+         ]
+        }
+       ],
+       "fact": "The person who caused the damage is identified where known."
+      }
+     ],
+     "rule_id": "overlay_rule_010"
+    }
+   ]
+  },
+  "overlay_rule_042": {
+   "first_verdict": "flag",
+   "issues": [
+    "condition_broader_than_source",
+    "route_asks_more_than_source"
+   ],
+   "applied": [
+    [
+     "bind_condition",
+     "",
+     "theft-source-0055#p1"
+    ]
+   ],
+   "rejected": [
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ]
+   ],
+   "reverify": [
+    "flag"
+   ],
+   "status": "quarantined",
+   "change": "repaired",
+   "after": [
+    {
+     "facts": [
+      {
+       "condition": "The rule applies if CSS has provided benefits under this contract for which the policyholder could assert claims against third parties.",
+       "evidence": [
+        {
+         "must_show": "The third party's responsibility, the corresponding claim, benefits paid, and assignment or preservation of recourse rights.",
+         "routes": [
+          [
+           "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+          ]
+         ]
+        }
+       ],
+       "fact": "The third party, relevant claim, paid benefit amount, assignment, and recourse preservation are established."
+      }
+     ],
+     "rule_id": "overlay_rule_042"
+    }
+   ]
+  },
+  "overlay_rule_003": {
+   "first_verdict": "flag",
+   "issues": [
+    "route_missing_alternative",
+    "route_missing_alternative",
+    "fact_unsupported"
+   ],
+   "applied": [],
+   "rejected": [
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ],
+    [
+     "drop_document",
+     "dropping the only document of the only route empties the requirement"
+    ]
+   ],
+   "reverify": [
+    "flag"
+   ],
+   "status": "quarantined",
+   "change": "none",
+   "after": [
+    {
+     "facts": [
+      {
+       "condition": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+       "evidence": [
+        {
+         "must_show": "The condition of crime-scene traces and, if changed, the authority's consent or the reason permitting the change.",
+         "routes": [
+          [
+           "Police consent to the removal or alteration of the Tatspuren"
+          ]
+         ]
+        }
+       ],
+       "fact": "Crime-scene traces were preserved, or authorized alteration was justified."
+      },
+      {
+       "condition": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+       "evidence": [
+        {
+         "must_show": "The pre-assessment condition of damaged property and any insurer consent, mitigation necessity, public-interest basis, or imminent danger justifying a change.",
+         "routes": [
+          [
+           "Insurer's consent to alteration of the damaged items before the loss is determined"
+          ]
+         ]
+        }
+       ],
+       "fact": "Damaged items were preserved pending assessment, or any change, disposal, or assistance use was authorized or justified."
+      }
+     ],
+     "rule_id": "overlay_rule_003"
+    }
+   ]
+  }
+ },
+ "others": {
+  "n": 93,
+  "changed_and_admitted": 9,
+  "quarantined": 48,
+  "changed_any": 27,
+  "quarantined_conditional": 39
+ }
+}

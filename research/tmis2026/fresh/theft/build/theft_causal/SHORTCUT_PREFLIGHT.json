@@ -1,0 +1,675 @@
+{
+  "admission": {
+    "input_free_control_pass": true,
+    "minimal_edit_pass": true,
+    "target_diversity_pass": true
+  },
+  "all_pairs_change_exactly_one_line": true,
+  "branch_document_universe_size": 11,
+  "contract": "casepath.theft-causal-shortcut-preflight/1.0.0",
+  "crossfit_no_input_folds": [
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_scheduled_valuable_1000",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_bicycle_claimed",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_sim_card_stolen",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_third_party_causer",
+      "selected_constant": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_expert_procedure_requested",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_repair_over_500",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_nachfrist_set",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_goods_recovered",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's declination of the claim for indemnity",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    },
+    {
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_declined",
+      "selected_constant": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "Report to the insurer that stolen items have been recovered or news of them received",
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.222222
+    }
+  ],
+  "distinct_gold_delta_sets": 9,
+  "edit_checks": [
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        2
+      ],
+      "pair_id": "theft-01-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        3
+      ],
+      "pair_id": "theft-02-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        4
+      ],
+      "pair_id": "theft-03-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        5
+      ],
+      "pair_id": "theft-04-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        6
+      ],
+      "pair_id": "theft-05-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        7
+      ],
+      "pair_id": "theft-06-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        8
+      ],
+      "pair_id": "theft-07-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        9
+      ],
+      "pair_id": "theft-08-08"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-01"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-02"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-03"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-04"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-05"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-06"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-07"
+    },
+    {
+      "changed_line_count": 1,
+      "changed_line_indices": [
+        10
+      ],
+      "pair_id": "theft-09-08"
+    }
+  ],
+  "gold_delta_entropy_bits": 3.169925,
+  "max_held_out_no_input_micro_f1": 0.0,
+  "pairs": 72,
+  "scenarios": 9,
+  "units": 144
+}
