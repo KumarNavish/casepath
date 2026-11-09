@@ -45,7 +45,7 @@ def gray_png_pixels(blob):
     return width, height, [raw[y * (stride + 1) + 1:(y + 1) * (stride + 1)] for y in range(height)]
 
 
-TEXT_PAGE = (b"BT /F1 12 Tf 72 720 Td (Mietvertrag f\\374r die Wohnung) Tj 0 -14 Td [(M\\344ngelr) 20 (\\374ge) -300 (vom 3. M\\344rz)] TJ "
+TEXT_PAGE = (b"BT /F1 12 Tf 14 TL 72 720 Td (Mietvertrag f\\374r die Wohnung) Tj 0 -14 Td [(M\\344ngelr) 20 (\\374ge) -300 (vom 3. M\\344rz)] TJ "
              b"T* (zweite Zeile) Tj ET")
 
 
@@ -110,6 +110,39 @@ class ReaderTests(unittest.TestCase):
         self.assertTrue(result["readable"])
         self.assertEqual((result["pages"], result["pages_without_text"], result["reader"]), (2, [2], "builtin"))
         self.assertIn("1 of 2 pages have no text layer", result["note"])
+
+
+class LayoutAndImageTests(unittest.TestCase):
+    def test_letters_placed_one_by_one_keep_their_words(self):
+        """A text layer that places every letter on its own, in a standard font without a width table."""
+        from casepath_internal.pdfread import _standard_widths
+        widths = _standard_widths("Helvetica")
+        ops, x = [], 72.0
+        for char in "Mängelrüge vom 31. März":
+            if char != " ":
+                ops.append(b"BT /F1 11 Tf 1 0 0 1 %.2f 700 Tm (%s) Tj ET" % (x, char.encode("cp1252")))
+            x += widths[char.encode("cp1252")[0]] / 1000 * 11
+        data = build_pdf({1: b"<< /Type /Catalog /Pages 2 0 R >>", 2: b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+                          3: b"<< /Type /Page /Parent 2 0 R /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+                          4: (b"<< >>", b"\n".join(ops)), 5: b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"})
+        self.assertEqual(pdfread.extract_text(data)[0], "[page 1]\nMängelrüge vom 31. März")
+
+    def test_an_inline_scan_and_a_cmyk_scan_are_taken(self):
+        gray = zlib.compress(bytes([0, 255] * 32))
+        inline = b"q 595 0 0 842 0 0 cm BI /W 8 /H 8 /BPC 8 /CS /G /F /Fl ID " + gray + b" EI Q"
+        cmyk = zlib.compress(bytes([0, 0, 0, 255, 0, 0, 0, 0] * 8))  # black, white, ... across 4 x 4 pixels
+        data = build_pdf({1: b"<< /Type /Catalog /Pages 2 0 R >>", 2: b"<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>",
+                          3: b"<< /Type /Page /Parent 2 0 R /Contents 4 0 R >>", 4: (b"<< >>", inline),
+                          5: b"<< /Type /Page /Parent 2 0 R /Contents 6 0 R /Resources << /XObject << /Im0 7 0 R >> >> >>",
+                          6: (b"<< >>", b"q 595 0 0 842 0 0 cm /Im0 Do Q"),
+                          7: (b"<< /Type /XObject /Subtype /Image /Width 4 /Height 4 /ColorSpace /DeviceCMYK /BitsPerComponent 8 "
+                              b"/Filter /FlateDecode >>", cmyk)})
+        images, reasons = pdfread.page_images(data, [1, 2])
+        self.assertEqual(reasons, {})
+        width, height, rows = gray_png_pixels(images[1][1])
+        self.assertEqual((width, height, rows[0]), (8, 8, bytes([0, 255] * 4)))
+        width, height, rows = gray_png_pixels(images[2][1])
+        self.assertEqual((width, height, rows[0][:6]), (4, 4, bytes([0, 0, 0, 255, 255, 255])))
 
 
 class FaxTests(unittest.TestCase):

@@ -432,7 +432,9 @@ class Document:
     def page_image(self, page, max_side=1700):
         """The page's largest image as (media type, bytes), or (None, reason)."""
         found = []
-        self._images(self.resolve(page.get("Resources")) or {}, found, 0, set())
+        resources = self.resolve(page.get("Resources")) or {}
+        self._images(resources, found, 0, set())
+        found += self._inline_images(page, resources)
         if not found:
             return None, "no image"
         stream = max(found, key=lambda s: _int(self.resolve(s.get("Width"))) * _int(self.resolve(s.get("Height"))))
@@ -454,6 +456,54 @@ class Document:
                 found.append(obj)
             elif obj.get("Subtype") == "Form":
                 self._images(self.resolve(obj.get("Resources")) or {}, found, depth + 1, seen)
+
+
+    def page_content(self, page):
+        parts = []
+        for content in _list(self.resolve(page.get("Contents"))):
+            content = self.resolve(content)
+            if isinstance(content, Stream):
+                try:
+                    data, coding = self.stream_bytes(content)
+                except (PdfError, zlib.error, ValueError):
+                    continue
+                if coding is None:
+                    parts.append(data)
+        return b"\n".join(parts)
+
+    def _inline_images(self, page, resources):
+        """Images drawn inline in the page's content (BI … ID … EI), as streams; some scanners store pages this way."""
+        found, content = [], self.page_content(page)
+        for match in re.finditer(rb"(?:^|\s)BI\s", content):
+            lex = Lexer(content, match.end())
+            fields = {}
+            while True:
+                lex.skip()
+                if content[lex.pos:lex.pos + 2] == b"ID" or lex.pos >= len(content):
+                    break
+                key, value = lex.parse(), lex.parse()
+                if isinstance(key, Name):
+                    fields[INLINE_KEYS.get(str(key), str(key))] = INLINE_VALUES.get(value, value) if isinstance(value, str) else \
+                        [INLINE_VALUES.get(v, v) if isinstance(v, str) else v for v in value] if isinstance(value, list) else value
+            start = lex.pos + 3  # "ID" and one white-space byte
+            length = fields.get("Length") or fields.get("L")
+            end = start + length if isinstance(length, int) else None
+            if end is None:
+                stop = re.compile(rb"\sEI(?=\s|$)").search(content, start)
+                end = stop.start() if stop else len(content)
+            space = fields.get("ColorSpace")
+            if isinstance(space, Name) and space not in ("DeviceGray", "DeviceRGB", "DeviceCMYK"):
+                named = self.resolve(resources.get("ColorSpace")) if isinstance(resources, dict) else None
+                fields["ColorSpace"] = (named or {}).get(space, space) if isinstance(named, dict) else space
+            found.append(Stream({**fields, "Subtype": Name("Image")}, content[start:end]))
+        return found
+
+
+INLINE_KEYS = {"W": "Width", "H": "Height", "BPC": "BitsPerComponent", "CS": "ColorSpace", "F": "Filter", "DP": "DecodeParms",
+               "IM": "ImageMask", "D": "Decode", "I": "Interpolate"}
+INLINE_VALUES = {"G": Name("DeviceGray"), "RGB": Name("DeviceRGB"), "CMYK": Name("DeviceCMYK"), "I": Name("Indexed"),
+                 "AHx": Name("ASCIIHexDecode"), "A85": Name("ASCII85Decode"), "LZW": Name("LZWDecode"), "Fl": Name("FlateDecode"),
+                 "RL": Name("RunLengthDecode"), "CCF": Name("CCITTFaxDecode"), "DCT": Name("DCTDecode")}
 
 
 def _int(value):
@@ -534,6 +584,25 @@ def _cmap(text):
 
 _MACROMAN = bytes(range(128, 256)).decode("mac-roman")
 
+# Glyph widths of the standard PDF fonts, which files often use without a width table: codes 32 to 255 in WinAnsi
+# order, one byte each in units of 4/1000 em (from the core font metrics Adobe publishes for these fonts).
+STANDARD_WIDTHS = {
+    "Helvetica": "RkZZi4vepzBTU2GSRlNGRouLi4uLi4uLi4tGRpKSkov+p6e0tKeZwrRGfaeL0LTCp8K0p5m0p+ynp5lGRkZ1i1OLi32Li0aLizg4fTjQi4uLi1N9Rot9tH19fVRBVJJYi1g4i1P6i4tT+qdT+liZWFg4OFNTWIv6U/p9U+xYfadGU4uLi4tBi1O4XIuSU7hTZJJTU1OLhkZTU1uL0NDQmaenp6enp/q0p6enp0ZGRka0tMLCwsLCksK0tLS0p6eZi4uLi4uL3n2Li4uLRkZGRouLi4uLi4uSmYuLi4t9i30=",
+    "Helvetica-Bold": "RlN2i4vetDxTU2GSRlNGRouLi4uLi4uLi4tTU5KSkpn0tLS0tKeZwrRGi7SZ0LTCp8K0p5m0p+ynp5lTRlOSi1OLmYuZi1OZmUZGi0bemZmZmWGLU5mLwouLfWFGYZJYi1hGi336i4tT+qdT+liZWFhGRn19WIv6U/qLU+xYfadGU4uLi4tGi1O4XIuSU7hTZJJTU1OZi0ZTU1uL0NDQmbS0tLS0tPq0p6enp0ZGRka0tMLCwsLCksK0tLS0p6eZi4uLi4uL3ouLi4uLRkZGRpmZmZmZmZmSmZmZmZmLmYs=",
+    "Times-Roman": "PlNmfX3Qwi1TU32NPlM+Rn19fX19fX19fX1GRo2NjW/mtKentJmLtLRTYbSZ3rS0i7Sni5m0tOy0tJlTRlN1fVNvfW99b1N9fUZGfUbCfX19fVNhRn19tH19b3gyeIdYfVhTfW/6fX1T+otT3liZWFhTU29vWH36U/VhU7RYb7Q+U319fX0yfVO+RX2NU75TZI1LS1N9cT5TS059vLy8b7S0tLS0tN6nmZmZmVNTU1O0tLS0tLS0jbS0tLS0tIt9b29vb29vp29vb29vRkZGRn19fX19fX2NfX19fX19fX0=",
+    "Times-Bold": "PlOLfX360EZTU32OPlM+Rn19fX19fX19fX1TU46Ojn3otKe0tKeZwsJhfcKn7LTCmcK0i6e0tPq0tKdTRlORfVN9i2+Lb1N9i0ZTi0bQi32Li29hU4t9tH19b2I3YoJYfVhTfX36fX1T+otT+linWFhTU319WH36U/phU7RYb7Q+U319fX03fVO7S32OU7tTZI5LS1OLhz5TS1J9vLy8fbS0tLS0tPq0p6enp2FhYWG0tMLCwsLCjsK0tLS0tJmLfX19fX19tG9vb29vRkZGRn2LfX19fX2OfYuLi4t9i30=",
+}
+
+
+def _standard_widths(base_font):
+    name = re.sub(r"^[A-Z]{6}\+", "", str(base_font or "")).replace(",", "-")
+    if "Courier" in name:
+        return {code: 600.0 for code in range(32, 256)}
+    family = "Times" if "Times" in name else "Helvetica"
+    bold = any(word in name for word in ("Bold", "Black", "Heavy"))
+    key = f"{family}-Bold" if bold else ("Times-Roman" if family == "Times" else "Helvetica")
+    return {32 + i: width * 4.0 for i, width in enumerate(base64.b64decode(STANDARD_WIDTHS[key]))}
+
 
 class Font:
     def __init__(self, doc, font):
@@ -562,33 +631,78 @@ class Font:
                 elif isinstance(item, Name):
                     self.differences[code] = _glyph(str(item))
                     code += 1
+        # Glyph widths in thousandths of the font size, to know where each string ends on the page.
+        self.widths, self.default_width = {}, 500.0
+        if self.composite:
+            descendants = doc.resolve(font.get("DescendantFonts")) or []
+            cid = doc.resolve(descendants[0]) if descendants else {}
+            cid = cid if isinstance(cid, dict) else {}
+            self.default_width = _num(doc.resolve(cid.get("DW"))) or 1000.0
+            entries, i = doc.resolve(cid.get("W")) or [], 0
+            while i + 1 < len(entries):
+                first, second = doc.resolve(entries[i]), doc.resolve(entries[i + 1])
+                if isinstance(second, list):
+                    for offset, width in enumerate(second):
+                        self.widths[int(_num(first)) + offset] = _num(doc.resolve(width))
+                    i += 2
+                elif i + 2 < len(entries):
+                    for code in range(int(_num(first)), min(int(_num(second)), int(_num(first)) + 65536) + 1):
+                        self.widths[code] = _num(doc.resolve(entries[i + 2]))
+                    i += 3
+                else:
+                    break
+        else:
+            first, widths = int(_num(doc.resolve(font.get("FirstChar")))), doc.resolve(font.get("Widths"))
+            for offset, width in enumerate(widths if isinstance(widths, list) else []):
+                self.widths[first + offset] = _num(doc.resolve(width))
+            descriptor = doc.resolve(font.get("FontDescriptor"))
+            missing = _num(doc.resolve(descriptor.get("MissingWidth"))) if isinstance(descriptor, dict) else 0
+            if missing:
+                self.default_width = missing
+            if not self.widths and font.get("Subtype") in ("Type1", "TrueType", "MMType1"):
+                self.widths = _standard_widths(doc.resolve(font.get("BaseFont")))  # a standard font without a width table
+
+    def codes(self, data):
+        if self.composite:
+            return [int.from_bytes(data[i:i + self.width], "big") for i in range(0, len(data) - self.width + 1, self.width)]
+        return list(data)
+
+    def char(self, code):
+        if code in self.map:
+            return self.map[code]
+        if self.composite:
+            return ""
+        if code in self.differences:
+            return self.differences[code]
+        if self.base == "MacRomanEncoding" and code >= 128:
+            return _MACROMAN[code - 128]
+        return bytes([code]).decode("cp1252", errors="replace").replace("\ufffd", "")
 
     def text(self, data):
-        if self.composite:
-            out = []
-            for i in range(0, len(data) - self.width + 1, self.width):
-                code = int.from_bytes(data[i:i + self.width], "big")
-                out.append(self.map.get(code, ""))
-            return "".join(out)
-        out = []
-        for byte in data:
-            if byte in self.map:
-                out.append(self.map[byte])
-            elif byte in self.differences:
-                out.append(self.differences[byte])
-            elif self.base == "MacRomanEncoding" and byte >= 128:
-                out.append(_MACROMAN[byte - 128])
-            else:
-                out.append(bytes([byte]).decode("cp1252", errors="replace").replace("�", ""))
-        return "".join(out)
+        return "".join(self.char(code) for code in self.codes(data))
+
+    def advance(self, code):
+        return self.widths.get(code, self.default_width) / 1000.0
+
+
+def _mult(m, n):
+    """The product of two PDF matrices [a b c d e f]."""
+    a, b, c, d, e, f = m
+    p, q, r, s, t, u = n
+    return (a * p + b * r, a * q + b * s, c * p + d * r, c * q + d * s, e * p + f * r + t, e * q + f * s + u)
+
+
+IDENTITY = (1.0, 0.0, 0.0, 1.0, 0.0, 0.0)
 
 
 class _TextRun:
-    """Walk a content stream and write its text in drawing order, a new line wherever the text moves down."""
+    """Walk a content stream and write its text in drawing order. Where each string starts and ends on the page comes
+    from the text and graphics matrices and the glyph widths: a new line where the text moves to another line, a
+    space where it jumps right by more than a fraction of the font size, nothing where letters are placed one by one."""
 
     def __init__(self, doc):
         self.doc, self.out, self.fonts = doc, [], {}
-        self.font, self.y, self.x_moved = None, None, False
+        self.last = None  # (x end, y, size) of the last string, in page space
 
     def _font(self, resources, name):
         fonts = self.doc.resolve(resources.get("Font")) if isinstance(resources, dict) else None
@@ -598,28 +712,38 @@ class _TextRun:
             self.fonts[key] = Font(self.doc, ref)
         return self.fonts[key]
 
-    def _newline(self):
-        if self.out and not self.out[-1].endswith("\n"):
-            self.out.append("\n")
+    def _show(self, t, data):
+        font = t["font"] or Font(self.doc, None)
+        t["font"] = font
+        trm = _mult(t["tm"], t["ctm"])
+        size = abs(t["size"]) * ((trm[2] ** 2 + trm[3] ** 2) ** 0.5 or 1.0)
+        x, y = trm[4], trm[5]
+        text = font.text(data)
+        if self.last and text.strip():
+            last_x, last_y, last_size = self.last
+            line = max(size, last_size, 1.0)
+            if abs(y - last_y) > 0.5 * line:
+                if self.out and not self.out[-1].endswith("\n"):
+                    self.out.append("\n")
+            elif x - last_x > 0.2 * line or x < last_x - 2 * line:
+                if self.out and not self.out[-1].endswith((" ", "\n")) and not text.startswith(" "):
+                    self.out.append(" ")
+        self.out.append(text)
+        width = 0.0
+        for code in font.codes(data):
+            width += (font.advance(code) * t["size"] + t["tc"] + (t["tw"] if not font.composite and code == 32 else 0)) * t["th"]
+        t["tm"] = _mult((1.0, 0.0, 0.0, 1.0, width, 0.0), t["tm"])
+        if text.strip():
+            end = _mult(t["tm"], t["ctm"])
+            self.last = (end[4], end[5], size)
 
-    def _space(self):
-        if self.out and not self.out[-1].endswith((" ", "\n")):
-            self.out.append(" ")
+    def run(self, content, resources, depth, ctm=IDENTITY):
+        lex, operands, stack = Lexer(content), [], []
+        t = {"ctm": ctm, "tm": IDENTITY, "tlm": IDENTITY, "font": None, "size": 1.0, "tc": 0.0, "tw": 0.0, "th": 1.0, "tl": 0.0}
 
-    def _move(self, y, sideways=False):
-        if self.y is not None and abs(y - self.y) > 0.5:
-            self._newline()
-        elif sideways:
-            self._space()
-        self.y = y
-
-    def _show(self, data):
-        if self.font is None:
-            self.font = Font(self.doc, None)
-        self.out.append(self.font.text(data))
-
-    def run(self, content, resources, depth):
-        lex, operands, line_y, leading = Lexer(content), [], 0.0, 0.0
+        def line_move(tx, ty):
+            t["tlm"] = _mult((1.0, 0.0, 0.0, 1.0, tx, ty), t["tlm"])
+            t["tm"] = t["tlm"]
         while True:
             token = lex.parse()
             if token is None:
@@ -627,52 +751,61 @@ class _TextRun:
             if not isinstance(token, Op):
                 operands.append(token)
                 continue
-            op = str(token)
-            if op == "BI":  # inline image: skip to EI
+            op, n = str(token), operands
+            if op == "BI":  # inline image: skip its data
                 end = re.compile(rb"\sEI(?=[\s]|$)").search(content, lex.pos)
                 lex.pos = end.end() if end else len(content)
+            elif op == "q":
+                stack.append(t["ctm"])
+            elif op == "Q":
+                t["ctm"] = stack.pop() if stack else ctm
+            elif op == "cm" and len(n) >= 6:
+                t["ctm"] = _mult(tuple(_num(v) for v in n[-6:]), t["ctm"])
             elif op == "BT":
-                line_y = 0.0
-            elif op == "Tf" and len(operands) >= 2:
-                self.font = self._font(resources, operands[-2])
-            elif op == "TL" and operands:
-                leading = _num(operands[-1])
-            elif op in ("Td", "TD") and len(operands) >= 2:
-                tx, ty = _num(operands[-2]), _num(operands[-1])
+                t["tm"] = t["tlm"] = IDENTITY
+            elif op == "Tf" and len(n) >= 2:
+                t["font"], t["size"] = self._font(resources, n[-2]), _num(n[-1])
+            elif op == "Tc" and n:
+                t["tc"] = _num(n[-1])
+            elif op == "Tw" and n:
+                t["tw"] = _num(n[-1])
+            elif op == "Tz" and n:
+                t["th"] = _num(n[-1]) / 100.0
+            elif op == "TL" and n:
+                t["tl"] = _num(n[-1])
+            elif op in ("Td", "TD") and len(n) >= 2:
                 if op == "TD":
-                    leading = -ty
-                line_y += ty
-                self._move(line_y, sideways=tx > 0)
-            elif op == "Tm" and len(operands) >= 6:
-                line_y = _num(operands[-1])
-                self._move(line_y, sideways=True)
+                    t["tl"] = -_num(n[-1])
+                line_move(_num(n[-2]), _num(n[-1]))
+            elif op == "Tm" and len(n) >= 6:
+                t["tm"] = t["tlm"] = tuple(_num(v) for v in n[-6:])
             elif op == "T*":
-                line_y -= leading or 1
-                self._move(line_y)
-            elif op == "Tj" and operands and isinstance(operands[-1], bytes):
-                self._show(operands[-1])
-            elif op in ("'", '"') and operands and isinstance(operands[-1], bytes):
-                line_y -= leading or 1
-                self._move(line_y)
-                self._show(operands[-1])
-            elif op == "TJ" and operands and isinstance(operands[-1], list):
-                for item in operands[-1]:
+                line_move(0.0, -t["tl"])
+            elif op == "Tj" and n and isinstance(n[-1], bytes):
+                self._show(t, n[-1])
+            elif op in ("'", '"') and n and isinstance(n[-1], bytes):
+                if op == '"' and len(n) >= 3:
+                    t["tw"], t["tc"] = _num(n[-3]), _num(n[-2])
+                line_move(0.0, -t["tl"])
+                self._show(t, n[-1])
+            elif op == "TJ" and n and isinstance(n[-1], list):
+                for item in n[-1]:
                     if isinstance(item, bytes):
-                        self._show(item)
-                    elif isinstance(item, (int, float)) and item < -180:
-                        self._space()
-            elif op == "Do" and operands and depth < MAX_DEPTH:
+                        self._show(t, item)
+                    elif isinstance(item, (int, float)):
+                        t["tm"] = _mult((1.0, 0.0, 0.0, 1.0, -item / 1000.0 * t["size"] * t["th"], 0.0), t["tm"])
+            elif op == "Do" and n and depth < MAX_DEPTH:
                 xobjects = self.doc.resolve(resources.get("XObject")) if isinstance(resources, dict) else None
-                form = self.doc.resolve(xobjects.get(operands[-1])) if isinstance(xobjects, dict) else None
+                form = self.doc.resolve(xobjects.get(n[-1])) if isinstance(xobjects, dict) else None
                 if isinstance(form, Stream) and form.get("Subtype") == "Form":
                     data, coding = self.doc.stream_bytes(form)
                     if coding is None:
-                        saved = (self.font, self.y)
-                        self.run(data, self.doc.resolve(form.get("Resources")) or resources, depth + 1)
-                        self.font, self.y = saved
-            elif op == "ET":
-                pass
+                        matrix = self.doc.resolve(form.get("Matrix"))
+                        inner = _mult(tuple(_num(v) for v in matrix), t["ctm"]) if isinstance(matrix, list) and len(matrix) == 6 else t["ctm"]
+                        self.run(data, self.doc.resolve(form.get("Resources")) or resources, depth + 1, inner)
             operands = []
+        if depth:
+            return ""
         text = "".join(self.out)
         return "\n".join(re.sub(r"[ \t]+", " ", line).strip() for line in text.splitlines()).strip()
 
@@ -701,13 +834,15 @@ def _colors(doc, space):
         return 0, 1, None
     if space in ("DeviceRGB", "RGB", "CalRGB"):
         return 2, 3, None
+    if space in ("DeviceCMYK", "CMYK"):
+        return 2, 4, None  # converted to RGB
     if isinstance(space, list) and space:
         kind = doc.resolve(space[0])
         if kind == "ICCBased" and len(space) > 1:
             profile = doc.resolve(space[1])
             n = _int(doc.resolve(profile.get("N"))) if isinstance(profile, Stream) else 3
-            if n in (1, 3):
-                return (0, 1, None) if n == 1 else (2, 3, None)
+            if n in (1, 3, 4):
+                return (0, 1, None) if n == 1 else (2, n, None)
         if kind in ("CalGray",):
             return 0, 1, None
         if kind in ("CalRGB",):
@@ -721,6 +856,15 @@ def _colors(doc, space):
                 table = b"".join(bytes([v, v, v]) for v in table[:count])
             return 3, 1, table[:count * 3]
     raise PdfError("colour space not supported")
+
+
+def _cmyk_rgb(row):
+    c, m, y, k = row[0::4], row[1::4], row[2::4], row[3::4]
+    out = bytearray(len(c) * 3)
+    out[0::3] = bytes(max(0, 255 - a - d) for a, d in zip(c, k))
+    out[1::3] = bytes(max(0, 255 - a - d) for a, d in zip(m, k))
+    out[2::3] = bytes(max(0, 255 - a - d) for a, d in zip(y, k))
+    return bytes(out)
 
 
 def _encode_image(doc, stream, max_side):
@@ -739,8 +883,12 @@ def _encode_image(doc, stream, max_side):
     mask = bool(doc.resolve(stream.get("ImageMask")))
     bpc = 1 if mask else _int(doc.resolve(stream.get("BitsPerComponent"))) or 8
     color_type, components, palette = (0, 1, None) if mask else _colors(doc, stream.get("ColorSpace"))
+    if bpc == 16:  # keep the high byte of each sample
+        stride16 = width * components * 2
+        data = b"".join(data[y * stride16:(y + 1) * stride16][0::2] for y in range(height))
+        bpc = 8
     if color_type == 2 and bpc != 8:
-        raise PdfError("RGB image depth not supported")
+        raise PdfError("colour image depth not supported")
     if bpc not in (1, 2, 4, 8):
         raise PdfError("image depth not supported")
     stride = (width * components * bpc + 7) // 8
@@ -761,13 +909,16 @@ def _encode_image(doc, stream, max_side):
         if components == 1:
             rows = [row[::step] for row in rows]
         else:
-            thinned = []
+            thinned, count = [], (width + step - 1) // step
             for row in rows:
-                out = bytearray(((width + step - 1) // step) * 3)
-                out[0::3], out[1::3], out[2::3] = row[0::3 * step], row[1::3 * step], row[2::3 * step]
+                out = bytearray(count * components)
+                for channel in range(components):
+                    out[channel::components] = row[channel::components * step][:count]
                 thinned.append(bytes(out))
             rows = thinned
         width, height = (width + step - 1) // step, len(rows)
+    if components == 4:  # CMYK to RGB, after thinning so it stays quick
+        rows = [_cmyk_rgb(row) for row in rows]
     if max(width, height) > 7900:
         raise PdfError("image too large")
     return "image/png", _png(width, height, color_type, bpc, rows, palette)
@@ -830,49 +981,96 @@ def page_images(data, numbers, max_side=1700):
 
 
 def compare(paths):
-    """Content-free comparison with pypdf and pypdfium2 where installed: one line of counts per file, no text."""
+    """Content-free comparison with pypdf where installed: one line of counts per file, numbered, no names, no text.
+
+    For text: pages with text, word recall against pypdf, and letter recall (5-letter sequences with all spacing
+    removed, so a spacing difference in either reader does not count); for the weakest pages, word counts, the share of
+    one-letter words in each reader's output and the font types. For scanned pages: how each is coded and whether its
+    image was taken, why not, and what a page without any image holds."""
     import collections
     import io
     import json
     import os
     import time
+
+    def grams(text):
+        letters = re.sub(r"\W", "", text.lower())
+        return {letters[i:i + 5] for i in range(max(0, len(letters) - 4))}
+
+    def one_letter_share(words):
+        return round(sum(1 for w in words if len(w) == 1) / len(words), 2) if words else None
+
     for index, path in enumerate(sorted(paths, key=os.path.basename), 1):  # numbered, not named: file names can be claim numbers
         data = open(path, "rb").read()
         row = {"file": f"D{index}", "mb": round(len(data) / 1e6, 1)}
         started = time.monotonic()
+        text, doc = "", None
         try:
             doc = Document(data)
             text, details = extract_text(data)
             row.update(pages=details["pages"], builtin_text_pages=details["pages"] - len(details["pages_without_text"]))
-            codings = collections.Counter()
+            codings, reasons, empty = collections.Counter(), collections.Counter(), collections.Counter()
             for number in details["pages_without_text"]:
+                page = doc.pages[number - 1]
                 found = []
-                doc._images(doc.resolve(doc.pages[number - 1].get("Resources")) or {}, found, 0, set())
-                if not found:
-                    codings["no image"] += 1
+                resources = doc.resolve(page.get("Resources")) or {}
+                doc._images(resources, found, 0, set())
+                inline = doc._inline_images(page, resources)
+                if not found and not inline:
+                    content = doc.page_content(page)
+                    paints = len(re.findall(rb"\s(?:f\*?|F|B\*?|b\*?|S|s|sh)\s", b" " + content + b" "))
+                    empty["blank" if paints == 0 else "drawn with vector paths"] += 1
                     continue
-                largest = max(found, key=lambda s: _int(doc.resolve(s.get("Width"))) * _int(doc.resolve(s.get("Height"))))
+                largest = max(found + inline, key=lambda st: _int(doc.resolve(st.get("Width"))) * _int(doc.resolve(st.get("Height"))))
                 filters = [str(doc.resolve(f)) for f in _list(doc.resolve(largest.get("Filter")))] or ["none"]
-                media, payload = doc.page_image(doc.pages[number - 1])
-                codings[f"{'+'.join(filters)}:{'ok' if media else 'not read'}"] += 1
+                media, payload = doc.page_image(page)
+                codings[f"{'inline ' if largest in inline else ''}{'+'.join(filters)}:{'ok' if media else 'not read'}"] += 1
+                if not media:
+                    reasons[payload] += 1
             row["scanned_pages"] = dict(codings)
+            if reasons:
+                row["not_read_because"] = dict(reasons)
+            if empty:
+                row["pages_without_any_image"] = dict(empty)
         except PdfError as error:
             row["builtin_error"] = str(error)[:60]
-            text = ""
         row["builtin_seconds"] = round(time.monotonic() - started, 1)
         try:
             from pypdf import PdfReader
-            reference = [(page.extract_text() or "").strip() for page in PdfReader(io.BytesIO(data)).pages]
-            mine = {int(m.group(1)): m.group(2) for m in re.finditer(r"\[page (\d+)\]\n(.*?)(?=\n\n\[page \d+\]\n|\Z)", text, re.S)}
-            recalls = []
-            for number, page_text in enumerate(reference, 1):
-                words = set(re.findall(r"\w+", page_text.lower()))
-                if words:
-                    recalls.append(len(words & set(re.findall(r"\w+", mine.get(number, "").lower()))) / len(words))
-            row.update(pypdf_text_pages=sum(1 for t in reference if t),
-                       word_recall_min=round(min(recalls), 2) if recalls else None, word_recall_mean=round(sum(recalls) / len(recalls), 3) if recalls else None)
         except ImportError:
-            pass
+            print(json.dumps(row, ensure_ascii=False))
+            continue
+        reference = [(page.extract_text() or "").strip() for page in PdfReader(io.BytesIO(data)).pages]
+        mine = {int(m.group(1)): m.group(2) for m in re.finditer(r"\[page (\d+)\]\n(.*?)(?=\n\n\[page \d+\]\n|\Z)", text, re.S)}
+        pages = []
+        for number, page_text in enumerate(reference, 1):
+            theirs, ours = re.findall(r"\w+", page_text.lower()), re.findall(r"\w+", mine.get(number, "").lower())
+            if not theirs:
+                continue
+            their_grams = grams(page_text)
+            letters = len(their_grams & grams(mine.get(number, ""))) / len(their_grams) if their_grams else 1.0
+            pages.append({"page": number, "word_recall": round(len(set(theirs) & set(ours)) / len(set(theirs)), 2),
+                          "letter_recall": round(letters, 2), "pypdf_words": len(theirs), "builtin_words": len(ours),
+                          "pypdf_one_letter_share": one_letter_share(theirs), "builtin_one_letter_share": one_letter_share(ours)})
+        row["pypdf_text_pages"] = sum(1 for t in reference if t)
+        if pages:
+            row["word_recall_mean"] = round(sum(p["word_recall"] for p in pages) / len(pages), 3)
+            row["letter_recall_mean"] = round(sum(p["letter_recall"] for p in pages) / len(pages), 3)
+            row["letter_recall_min"] = min(p["letter_recall"] for p in pages)
+            weakest = sorted(pages, key=lambda p: (p["letter_recall"], p["word_recall"]))[:3]
+            for weak in weakest:
+                if doc is not None:
+                    fonts = doc.resolve((doc.resolve(doc.pages[weak["page"] - 1].get("Resources")) or {}).get("Font")) or {}
+                    kinds = set()
+                    for value in (fonts.values() if isinstance(fonts, dict) else []):
+                        font = doc.resolve(value)
+                        if isinstance(font, dict):
+                            encoding = doc.resolve(font.get("Encoding"))
+                            kinds.add("/".join([str(font.get("Subtype")), str(encoding) if isinstance(encoding, str) else "custom" if encoding else "none",
+                                                "tounicode" if font.get("ToUnicode") is not None else "no-tounicode",
+                                                "widths" if font.get("Widths") is not None or font.get("DescendantFonts") is not None else "no-widths"]))
+                    weak["fonts"] = sorted(kinds)
+            row["weakest_pages"] = weakest
         print(json.dumps(row, ensure_ascii=False))
 
 
