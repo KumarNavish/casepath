@@ -16,11 +16,12 @@ from __future__ import annotations
 import json
 
 import common
+import match
 import llm
 import theft_methods as tm
 import verify as v3
 
-PACK = json.loads((common.PACKS / "theft_v2_pack.json").read_text())
+PACK = json.loads((common.PACKS / "theft_v2p_pack.json").read_text())  # V1' (no quarantine)
 CP_TASK_V3 = tm.VERIFY_TASK.replace("Conditions:\n", "") + "\n" + v3.RULE.replace(
     "in the contradicting quotation field", "in contradicting_quote") + "\nConditions:\n"
 
@@ -63,20 +64,20 @@ class TheftPack:
                 "\nRules (a rule applies when its condition holds; each evidence item can be met by ANY one route, a route is a set of documents):\n"
                 + json.dumps(rules, ensure_ascii=False) +
                 "\nRoutes that confirm a condition once it holds:\n" + json.dumps({k: v for k, v in confirm.items() if v}, ensure_ascii=False) +
-                "\nNot admitted (failed verification against their sources; do not request documents on their basis, a handler reviews them): "
-                + json.dumps(sorted(self.quarantined)))
+                ("\nNot admitted (failed verification against their sources; do not request documents on their basis, a handler reviews them): "
+                 + json.dumps(sorted(self.quarantined)) if self.quarantined else ""))
 
     def run_rv2(self, text_id, text, run, memory=""):
         system = (tm.POLICY + "\n\n" + tm.sources_block() + "\n\n" + tm.catalogue_block() + "\n\n" + self.rules_block()
                   + memory + "\n\n" + tm.PLAN_TASK)
         r = llm.call(system=system, user="CASE:\n" + text, schema=tm.PLAN_SCHEMA, schema_name="checklist", run=run,
-                     tag={"exp": "v2-theft", "method": "Rv2" + ("+mem" if memory else ""), "case": text_id})
+                     tag={"exp": "v2-theft", "method": "Rv2p" + ("+mem" if memory else ""), "case": text_id})
         return {"plan": tm._ids(r["result"]), "error": r["error"]}
 
     def run_cpv2(self, text_id, text, run):
         cond_text = json.dumps(self.guards, ensure_ascii=False)
         interp = llm.call(system=tm.POLICY + "\n\n" + tm.CP_TASK + cond_text, user="CASE:\n" + text, schema=self.cp_schema,
-                          schema_name="casepath_conditions", run=run, tag={"exp": "v2-theft", "method": "CPv2-interpret", "case": text_id},
+                          schema_name="casepath_conditions", run=run, tag={"exp": "v2-theft", "method": "CPv2p-interpret", "case": text_id},
                           max_tokens=6000)
         out = {"interpret_error": interp["error"], "verify_error": None}
         if not interp["result"]:
@@ -89,7 +90,7 @@ class TheftPack:
         ver = llm.call(system=tm.POLICY + "\n\n" + CP_TASK_V3 + cond_text,
                        user="CASE:\n" + text + "\n\nPROPOSAL:\n" + json.dumps(proposal, ensure_ascii=False),
                        schema=v3.THEFT_SCHEMA, schema_name="casepath_verify_v3", run=run,
-                       tag={"exp": "v2-theft", "method": "CPv2-verify", "case": text_id}, max_tokens=4000)
+                       tag={"exp": "v2-theft", "method": "CPv2p-verify", "case": text_id}, max_tokens=4000)
         out["verify_error"] = ver["error"]
         out["judgments_no_verifier"] = self.admit(rows, text, None)
         out["plan_no_verifier"] = self.plan_exact(out["judgments_no_verifier"])
@@ -106,7 +107,7 @@ class TheftPack:
             r = rows.get(g)
             v = r["verdict"] if r else "unresolved"
             if v in {"true", "false"}:
-                ok_quote = bool(r["quote"]) and r["quote"] in text
+                ok_quote = bool(r["quote"]) and match.contains(text, r["quote"])  # V6
                 ok_ver = True if accepted is None else accepted.get(f"condition:{g}", True)
                 if not (ok_quote and ok_ver):
                     v = "unresolved"
@@ -167,4 +168,4 @@ def run_cpv1(text_id, text, run):
     return res
 
 
-DESIGNS = {"CPv2": run_cpv2, "Rv2": run_rv2, "R": run_r, "CPv1": run_cpv1}
+DESIGNS = {"CPv2p": run_cpv2, "Rv2p": run_rv2, "R": run_r, "CPv1": run_cpv1}

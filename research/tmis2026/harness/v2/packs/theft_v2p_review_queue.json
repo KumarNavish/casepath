@@ -1,0 +1,2111 @@
+[
+ {
+  "objection": [
+   {
+    "explanation": "The sole evidence route requires a written notification, but a cited passage expressly permits notification by telephone.",
+    "kind": "route_missing_alternative"
+   },
+   {
+    "explanation": "The sources do not state that written notification is acceptable only where the insurer has not required its own form.",
+    "kind": "condition_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_missing_alternative"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A feared insured event has occurred and the entitled claimant is aware of the event and the insurance claim.",
+      "evidence": [
+       {
+        "must_show": "The date and time of the claimant's awareness of the event and insurance claim.",
+        "routes": []
+       },
+       {
+        "must_show": "That notice of the loss was given to the insurer and when it was received.",
+        "routes": [
+         [
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ]
+        ]
+       }
+      ],
+      "fact": "The insurer was notified promptly after awareness of the event and claim."
+     }
+    ],
+    "rule_id": "overlay_rule_001"
+   }
+  ],
+  "rule_id": "overlay_rule_001"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages allow the insurer to request a police report, but do not require it to identify the person who reported the event, the police station, or the officer.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The sources require requesting an official investigation, but do not require showing its status.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The loss is connected with theft, attempted theft, robbery, or a theft incident requiring investigation.",
+      "evidence": [
+       {
+        "must_show": "That the theft-related event was reported to police, including the reporting date and event details.",
+        "routes": [
+         [
+          "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+         ]
+        ]
+       }
+      ],
+      "fact": "The theft-related loss was reported to police promptly."
+     }
+    ],
+    "rule_id": "overlay_rule_002"
+   },
+   {
+    "facts": [
+     {
+      "condition": "The duty applies in the event of theft or robbery, or if Generali requests it.",
+      "evidence": [
+       {
+        "must_show": "That an official investigation was requested and its status.",
+        "routes": []
+       }
+      ],
+      "fact": "An official investigation was requested."
+     }
+    ],
+    "rule_id": "overlay_rule_002.xf02"
+   }
+  ],
+  "rule_id": "overlay_rule_002"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "Police consent is not the only way to satisfy the first fact: traces may be preserved without alteration. The passages also permit certain changes to the loss location or damaged property for loss mitigation or in the public interest.",
+    "kind": "route_missing_alternative"
+   },
+   {
+    "explanation": "Insurer consent is not the only way to satisfy the second fact: damaged items may be preserved unchanged, and the cited passages also allow certain changes for loss mitigation or in the public interest.",
+    "kind": "route_missing_alternative"
+   },
+   {
+    "explanation": "The passages do not identify imminent danger as a separate justification for changing damaged property.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document",
+   "route_missing_alternative"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+      "evidence": [
+       {
+        "must_show": "The condition of crime-scene traces and, if changed, the authority's consent or the reason permitting the change.",
+        "routes": [
+         [
+          "Police consent to the removal or alteration of the Tatspuren"
+         ]
+        ]
+       }
+      ],
+      "fact": "Crime-scene traces were preserved, or authorized alteration was justified."
+     },
+     {
+      "condition": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+      "evidence": [
+       {
+        "must_show": "The pre-assessment condition of damaged property and any insurer consent, mitigation necessity, public-interest basis, or imminent danger justifying a change.",
+        "routes": [
+         [
+          "Insurer's consent to alteration of the damaged items before the loss is determined"
+         ]
+        ]
+       }
+      ],
+      "fact": "Damaged items were preserved pending assessment, or any change, disposal, or assistance use was authorized or justified."
+     }
+    ],
+    "rule_id": "overlay_rule_003"
+   }
+  ],
+  "rule_id": "overlay_rule_003"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The CSS passage requires preservation, rescue and loss-mitigation measures during as well as after the loss event; the rule covers only the period after the event.",
+    "kind": "condition_narrower_than_source"
+   },
+   {
+    "explanation": "The rule recognizes imminent danger as an alternative to obtaining instructions, but its only evidence route requires an insurer instruction and evidence of compliance.",
+    "kind": "route_missing_alternative"
+   },
+   {
+    "explanation": "The statutory passage provides an imminent-danger exception, but the cited CSS and simpego passages require compliance with their instructions without stating that exception.",
+    "kind": "condition_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_missing_alternative"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "After the feared event occurs.",
+      "evidence": [
+       {
+        "must_show": "The mitigation, preservation, recovery, and perpetrator-identification measures taken and their timing.",
+        "routes": []
+       }
+      ],
+      "fact": "Reasonable measures were taken to mitigate loss, preserve and recover property, and identify the perpetrator."
+     },
+     {
+      "condition": "After the feared event occurs.",
+      "evidence": [
+       {
+        "must_show": "The insurer's instructions and compliance with them, or facts establishing imminent danger.",
+        "routes": [
+         [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+         ]
+        ]
+       }
+      ],
+      "fact": "Applicable insurer instructions were obtained and followed, or imminent danger justified acting without them."
+     }
+    ],
+    "rule_id": "overlay_rule_004"
+   }
+  ],
+  "rule_id": "overlay_rule_004"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The route requires a completed and signed claim notification form in addition to the policy. The cited passages do not require that form to establish the insured location.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns theft-related household-contents damage at home.",
+      "evidence": [
+       {
+        "must_show": "The loss location and its inclusion among the policy-designated locations.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ]
+        ]
+       }
+      ],
+      "fact": "The loss location is a policy-designated insured location within Switzerland."
+     }
+    ],
+    "rule_id": "overlay_rule_008"
+   }
+  ],
+  "rule_id": "overlay_rule_008"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage defines which watches count as jewellery but does not require a signed inventory, purchase vouchers, or an expert valuation to establish watch type and value.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+      "evidence": [
+       {
+        "must_show": "That the item is a wristwatch or pocket watch and its individual value exceeds CHF 5,000.",
+        "routes": [
+         [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ],
+         [
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The watch type and individual value are established."
+     }
+    ],
+    "rule_id": "overlay_rule_009"
+   }
+  ],
+  "rule_id": "overlay_rule_009"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The first two routes require a signed form submitted in full to a specified address or online channel. The cited passages do not establish those requirements.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The third route requires liability-insurer and policy or claim-number details. The cited passage asks who caused the damage but does not require those additional details.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The second fact implies that loss circumstances must be communicated to relevant authorities and experts. The source says the disclosure standards also apply to statements made to police, authorities, experts and doctors; it does not require statements to be made to them in every case.",
+    "kind": "condition_broader_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The date and location of the loss.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       }
+      ],
+      "fact": "The date and place of loss are established."
+     },
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "Complete, factually accurate, and timely information concerning the loss circumstances and consequences.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       }
+      ],
+      "fact": "All relevant loss circumstances were communicated fully, correctly, voluntarily, and in good time, including to relevant authorities and experts."
+     },
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The identity of the person responsible for the damage, or the information available about that person.",
+        "routes": [
+         [
+          "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The person who caused the damage is identified where known."
+     }
+    ],
+    "rule_id": "overlay_rule_010"
+   }
+  ],
+  "rule_id": "overlay_rule_010"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages do not require a signed valued inventory, a before-and-after inventory, or production within a period set by the insurer.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The passages do not require original purchase vouchers or vouchers for costs claimed under insured cost heads.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The passages require proof of the loss amount, but do not specify proof of the amount attributable to each item or damage component.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "That the insured event occurred.",
+        "routes": []
+       }
+      ],
+      "fact": "The insured event occurred."
+     },
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The existence, identity, and value of each affected item at the time of the event.",
+        "routes": [
+         [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ]
+        ]
+       }
+      ],
+      "fact": "Affected insured items existed at the event and their values are established independently of insured sums."
+     },
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The amount of loss attributable to each affected item or damage component.",
+        "routes": [
+         [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ]
+        ]
+       }
+      ],
+      "fact": "The claimed loss amount is established."
+     }
+    ],
+    "rule_id": "overlay_rule_011"
+   }
+  ],
+  "rule_id": "overlay_rule_011"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages require requested information about known, relevant facts, but do not require either a completed and signed claim form or a written claim notification. They also do not specify submission channels or make written notification conditional on the insurer not requiring its own form.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The insurer has requested information or support for loss handling.",
+      "evidence": [
+       {
+        "must_show": "All known facts useful for determining the event circumstances and consequences.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         [
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ]
+        ]
+       }
+      ],
+      "fact": "Requested information concerning known event circumstances and consequences was provided."
+     }
+    ],
+    "rule_id": "overlay_rule_012"
+   }
+  ],
+  "rule_id": "overlay_rule_012"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The route additionally requires vouchers for effective costs claimed under insured cost heads. The cited passages do not require those vouchers for the purchase evidence of affected items.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Original receipts or specified supporting evidence have been requested, or the claim concerns damaged or stolen items.",
+      "evidence": [
+       {
+        "must_show": "The purchase, identity, and acquisition value of each affected item.",
+        "routes": [
+         [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ]
+        ]
+       }
+      ],
+      "fact": "Original purchase evidence for affected items was supplied where required."
+     }
+    ],
+    "rule_id": "overlay_rule_014"
+   }
+  ],
+  "rule_id": "overlay_rule_014"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "For the frame number and locked status, the routes require a completed, signed claim form submitted through specified channels. The cited passages ask for the frame number and whether the bicycle was locked, but do not specify those formality or submission requirements.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns a bicycle.",
+      "evidence": [
+       {
+        "must_show": "The bicycle frame number.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       },
+       {
+        "must_show": "Whether the bicycle was locked.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       }
+      ],
+      "fact": "The bicycle's frame number and locked status are established."
+     },
+     {
+      "condition": "The claim concerns a bicycle.",
+      "evidence": [
+       {
+        "must_show": "The bicycle's purchase and purchase value.",
+        "routes": [
+         [
+          "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The bicycle's purchase is established."
+     },
+     {
+      "condition": "The claim concerns a bicycle.",
+      "evidence": [
+       {
+        "must_show": "A detailed estimate of repair or replacement costs.",
+        "routes": [
+         [
+          "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+         ]
+        ]
+       },
+       {
+        "must_show": "The visual condition of the damaged or stolen bicycle or part.",
+        "routes": [
+         [
+          "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The bicycle repair or loss amount and its visual condition are established."
+     }
+    ],
+    "rule_id": "overlay_rule_015"
+   }
+  ],
+  "rule_id": "overlay_rule_015"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source lists receipts, invoices, and valuations as examples; it does not require a receipt or invoice and an expert valuation together.",
+    "kind": "route_joint_where_alternatives"
+   },
+   {
+    "explanation": "The source does not require proof of acquisition, payment, and value for each claimed valuable.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_joint",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns valuables insurance.",
+      "evidence": [
+       {
+        "must_show": "The acquisition, payment, and value of each claimed valuable.",
+        "routes": [
+         [
+          "Receipt for the scheduled valuable (Quittung / Rechnung)",
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The claimed valuables and their value are established."
+     }
+    ],
+    "rule_id": "overlay_rule_016"
+   }
+  ],
+  "rule_id": "overlay_rule_016"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages require a medical certificate for personal injury but do not specify that it must show a diagnosis and treatment-related facts.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The rule applies in the event of accidents involving personal injury.",
+      "evidence": [
+       {
+        "must_show": "The bodily injury, diagnosis, and treatment-related facts.",
+        "routes": [
+         [
+          "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured"
+         ]
+        ]
+       },
+       {
+        "must_show": "That the treating doctor was released from confidentiality.",
+        "routes": [
+         [
+          "Release of the treating doctor from professional confidentiality"
+         ]
+        ]
+       }
+      ],
+      "fact": "The bodily injury and relevant medical facts are established."
+     }
+    ],
+    "rule_id": "overlay_rule_017"
+   }
+  ],
+  "rule_id": "overlay_rule_017"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages ask whether other insurance for the items and liability insurance exist. They do not require identifying the insurer or specifying the covered items, perils, and period for every existing policy. The separate notification duty concerns multiple insurance against the same perils for the同",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The passages do not require identifying the insurer or specifying the covered items, perils, and period for every existing policy. The notification duty applies to multiple insurance of the same interest against the same perils for the same period.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "Whether other insurance or liability insurance exists and, if so, the insurer, covered items, perils, and period.",
+        "routes": []
+       }
+      ],
+      "fact": "Other insurance and liability-insurance status are established."
+     }
+    ],
+    "rule_id": "overlay_rule_018"
+   }
+  ],
+  "rule_id": "overlay_rule_018"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages require prompt notification to the insurer but do not require a completed double-insurance declaration listing the other insurer and policy number.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Multiple insurance exists for the same interest, risks, and period.",
+      "evidence": [
+       {
+        "must_show": "That the multiple insurance was reported to the insurer and when.",
+        "routes": [
+         [
+          "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case"
+         ]
+        ]
+       }
+      ],
+      "fact": "The multiple insurance was reported promptly."
+     }
+    ],
+    "rule_id": "overlay_rule_019"
+   },
+   {
+    "facts": [
+     {
+      "condition": "The rule applies if there are also insurance policies with other companies for the same items and perils (multiple insurance).",
+      "evidence": [
+       {
+        "must_show": "The compensation sought or received under each insurance for the same loss.",
+        "routes": []
+       }
+      ],
+      "fact": "The aggregate recovery sought across insurers does not exceed one entitlement per loss."
+     }
+    ],
+    "rule_id": "overlay_rule_019.xf02"
+   }
+  ],
+  "rule_id": "overlay_rule_019"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages also allow the parties themselves to determine the loss, but the rule provides no route for that alternative.",
+    "kind": "route_missing_alternative"
+   },
+   {
+    "explanation": "The cited passages do not require written appointments by each party, appointment of an umpire before determination begins, or an umpire's decision on disputed points.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The passages do not establish that policyholder assistance applies in every loss-determination route. The CSS passage refers to assistance and/or a joint expert.",
+    "kind": "condition_broader_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_missing_alternative",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "Which loss-determination route was selected and the resulting loss determination.",
+        "routes": [
+         [
+          "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure"
+         ],
+         [
+          "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+          "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+         ]
+        ]
+       }
+      ],
+      "fact": "The selected loss-determination route is established."
+     },
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The policyholder's cooperation in determining the loss.",
+        "routes": []
+       }
+      ],
+      "fact": "The policyholder assisted in loss determination."
+     }
+    ],
+    "rule_id": "overlay_rule_020"
+   }
+  ],
+  "rule_id": "overlay_rule_020"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The evidence route additionally requires appointment of an umpire before determination begins. The cited passages do not require this to establish each party's written appointment of its expert.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The expert-procedure route has been selected.",
+      "evidence": [
+       {
+        "must_show": "Each party's written appointment of its expert.",
+        "routes": [
+         [
+          "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+         ]
+        ]
+       }
+      ],
+      "fact": "Each party appointed its expert in writing."
+     }
+    ],
+    "rule_id": "overlay_rule_022"
+   }
+  ],
+  "rule_id": "overlay_rule_022"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The first evidence route requires an umpire’s decision on disputed points, but the cited passage does not require or mention such a decision.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Experts made findings within their authority.",
+      "evidence": [
+       {
+        "must_show": "The experts' findings and their scope of authority.",
+        "routes": [
+         [
+          "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+         ]
+        ]
+       }
+      ],
+      "fact": "Expert findings fall within the experts' authority."
+     },
+     {
+      "condition": "Experts made findings within their authority.",
+      "evidence": [
+       {
+        "must_show": "The actual facts and the material deviation of the expert findings from those facts.",
+        "routes": []
+       }
+      ],
+      "fact": "If binding effect is challenged, material deviation from actual facts is established."
+     }
+    ],
+    "rule_id": "overlay_rule_025"
+   }
+  ],
+  "rule_id": "overlay_rule_025"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "Both evidence routes jointly require the policy and a signed valued inventory. The cited passages do not require either document to establish the insured sum, replacement value, or proportional compensation calculation.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Underinsurance exists when the insured sum is lower than the actual total replacement value of the insured items immediately before the loss event occurs.",
+      "evidence": [
+       {
+        "must_show": "The applicable insured sum and actual total replacement value immediately before the loss.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ]
+        ]
+       }
+      ],
+      "fact": "The insured sum and actual total replacement value immediately before loss are established."
+     },
+     {
+      "condition": "Underinsurance exists when the insured sum is lower than the actual total replacement value of the insured items immediately before the loss event occurs.",
+      "evidence": [
+       {
+        "must_show": "The ratio of insured sum to replacement value and the compensation calculated using that ratio.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ]
+        ]
+       }
+      ],
+      "fact": "The applicable proportional compensation calculation is established."
+     }
+    ],
+    "rule_id": "overlay_rule_027"
+   }
+  ],
+  "rule_id": "overlay_rule_027"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage describes first-risk coverage up to the agreed sum insured. It does not require a policy or a schedule listing insured perils, locations, deductibles and additional covers as evidence.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The insurance is on a first-risk basis.",
+      "evidence": [
+       {
+        "must_show": "That insurance is on a first-risk basis and the agreed sum insured.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ]
+        ]
+       }
+      ],
+      "fact": "The policy provides first-risk insurance and states its agreed sum insured."
+     }
+    ],
+    "rule_id": "overlay_rule_028"
+   }
+  ],
+  "rule_id": "overlay_rule_028"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "For burglary, the limit does not apply when jewellery is locked in a safe cabinet weighing at least 100 kg. The rule's evidence item specifies more than 100 kg, which would incorrectly include a cabinet weighing exactly 100 kg within the limited-benefit condition.",
+    "kind": "condition_broader_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns jewellery in simple theft at the insured location, or jewellery in burglary theft that was not stored in a specified locked security container.",
+      "evidence": [
+       {
+        "must_show": "Whether the jewellery was stored in a locked built-in wall safe or a safe cabinet weighing more than 100 kg.",
+        "routes": []
+       },
+       {
+        "must_show": "The applicable insured sum and the calculation of the 20% and CHF 30,000 limit.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ]
+        ]
+       }
+      ],
+      "fact": "The theft classification, jewellery status, storage arrangement, and applicable benefit limit are established."
+     }
+    ],
+    "rule_id": "overlay_rule_029"
+   }
+  ],
+  "rule_id": "overlay_rule_029"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The absence of a different agreement is a condition for the default CHF 200 deductible, not for the policy-agreed deductible and its deduction from calculated compensation. The cited passages also do not make that rule conditional on the absence of a qualifying no-deductible exception.",
+    "kind": "condition_narrower_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A deductible applies and no different agreement or qualifying no-deductible exception applies.",
+      "evidence": [
+       {
+        "must_show": "The applicable deductible term and the deduction from calculated compensation.",
+        "routes": []
+       }
+      ],
+      "fact": "The policy-agreed deductible and its deduction from calculated compensation are established."
+     }
+    ],
+    "rule_id": "overlay_rule_030"
+   }
+  ],
+  "rule_id": "overlay_rule_030"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The fact requires an agreed legal consequence, but the cited passages also allow a legal disadvantage to apply without establishing that it was agreed.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A statutory or contractual duty was breached and a legal disadvantage for breach was agreed or otherwise applies.",
+      "evidence": [
+       {
+        "must_show": "The applicable duty, the conduct alleged to breach it, culpability, and how the breach influenced the occurrence, extent, or determination of loss.",
+        "routes": []
+       }
+      ],
+      "fact": "The duty, alleged breach, culpability, agreed legal consequence, and impact on loss are established."
+     }
+    ],
+    "rule_id": "overlay_rule_032"
+   }
+  ],
+  "rule_id": "overlay_rule_032"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "For misstatements or concealment, the source requires facts that would exclude or reduce the insurer's obligation, not merely facts relevant to coverage or benefit reduction.",
+    "kind": "condition_broader_than_source"
+   },
+   {
+    "explanation": "The evidence requirement asks for a coverage or benefit effect in every case. The source does not expressly require such an effect for communications required under Article 39 that were deceptively delayed or omitted.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claimant or representative deceptively misstates, conceals, delays, or omits facts or required communications relevant to coverage or benefit reduction.",
+      "evidence": [
+       {
+        "must_show": "The communication or omission, its inaccuracy or concealment, the relevant coverage or benefit effect, and deceptive intent.",
+        "routes": []
+       }
+      ],
+      "fact": "The allegedly deceptive conduct, relevant facts, timing, and intent to deceive are established."
+     }
+    ],
+    "rule_id": "overlay_rule_035"
+   }
+  ],
+  "rule_id": "overlay_rule_035"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages require repayment of the compensation, less any allowance for repairs or depreciation. They do not establish that repayment has occurred or specify an amount repaid.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Items or animals for which compensation was already paid are recovered.",
+      "evidence": [
+       {
+        "must_show": "The compensation previously paid, the recovered item or animal, any repair costs or depreciation, and net amount repaid.",
+        "routes": []
+       }
+      ],
+      "fact": "Prior compensation, recovered property, repair costs, depreciation, and net repayment are established."
+     }
+    ],
+    "rule_id": "overlay_rule_041"
+   }
+  ],
+  "rule_id": "overlay_rule_041"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The sources impose assignment when CSS has paid benefits for which the policyholder could claim against a third party, but require preservation of recourse when a third party's fault caused or increased the loss. The rule combines these distinct conditions with 'or' and applies the combined fact and",
+    "kind": "condition_broader_than_source"
+   },
+   {
+    "explanation": "The route requires a written assignment and evidence needed to pursue the claims. The cited passages require assignment under the first condition and preservation of recourse under the second, but do not specify a written assignment or require that evidence to be supplied.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "CSS has paid benefits for which the policyholder has claims against third parties, or a third party caused or increased the loss.",
+      "evidence": [
+       {
+        "must_show": "The third party's responsibility, the corresponding claim, benefits paid, and assignment or preservation of recourse rights.",
+        "routes": [
+         [
+          "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+         ]
+        ]
+       }
+      ],
+      "fact": "The third party, relevant claim, paid benefit amount, assignment, and recourse preservation are established."
+     }
+    ],
+    "rule_id": "overlay_rule_042"
+   }
+  ],
+  "rule_id": "overlay_rule_042"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages refer to the date of the fact triggering the obligation to pay, but do not require the claim assertion date to be established. The rule's fact and must-show requirement add that date.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A claim arises from the insurance contract.",
+      "evidence": [
+       {
+        "must_show": "The date of the fact giving rise to benefits and the date the claim was asserted.",
+        "routes": []
+       }
+      ],
+      "fact": "The benefit-triggering fact date and claim assertion date are established."
+     }
+    ],
+    "rule_id": "overlay_rule_044"
+   }
+  ],
+  "rule_id": "overlay_rule_044"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages require the recipient’s name, address and account details, but do not specify a payment instruction, an IBAN or the financial institution’s name.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The recipient's name, address, and account details.",
+        "routes": [
+         [
+          "Payment instruction with payee name and address, IBAN and name of the financial institution"
+         ]
+        ]
+       }
+      ],
+      "fact": "The payment recipient's name, address, and account details are provided."
+     }
+    ],
+    "rule_id": "overlay_rule_046"
+   }
+  ],
+  "rule_id": "overlay_rule_046"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage supports the declaration but does not require a claim notification form or submission to a specified address or online channel.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The undersigned person's declaration covering truthful and complete answers on all pages.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       }
+      ],
+      "fact": "A signed declaration confirms that all questions on all pages were answered truthfully and completely."
+     }
+    ],
+    "rule_id": "overlay_rule_047"
+   }
+  ],
+  "rule_id": "overlay_rule_047"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source states that contractual provisions imposing a shorter limitation period or time restriction are invalid, subject to the Article 39 paragraph 2 number 2 exception. The rule instead states that the claim is subject to the contractual restriction without making that conclusion conditional on",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+      "evidence": [
+       {
+        "must_show": "The contractual time restriction and whether the cited statutory exception applies.",
+        "routes": []
+       }
+      ],
+      "fact": "The claim is subject to a contractual shorter limitation period or other shorter time restriction, and the applicability of the Article 39 paragraph 2 number 2 exception is determined."
+     }
+    ],
+    "rule_id": "overlay_rule_048"
+   }
+  ],
+  "rule_id": "overlay_rule_048"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage permits CSS to request a police report, but does not establish that the report is available or that its provision status is established.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "CSS requests a corresponding police report.",
+      "evidence": [
+       {
+        "must_show": "The CSS request for the police report and the corresponding report.",
+        "routes": []
+       }
+      ],
+      "fact": "CSS requested a corresponding police report, and the report is available or its provision status is established."
+     }
+    ],
+    "rule_id": "overlay_rule_049"
+   }
+  ],
+  "rule_id": "overlay_rule_049"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The cited passage states only that doubts exist about the claimant's entitlement to receive payment. It does not state that the entitlement must be established or that the doubts must be resolved.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "There are doubts about the beneficiary's entitlement to receive payment.",
+      "evidence": [
+       {
+        "must_show": "Facts resolving doubts about the beneficiary's entitlement to receive payment.",
+        "routes": []
+       }
+      ],
+      "fact": "The beneficiary's entitlement to receive payment is established where doubts exist."
+     }
+    ],
+    "rule_id": "overlay_rule_051"
+   }
+  ],
+  "rule_id": "overlay_rule_051"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage refers to damage caused by someone living in the policyholder’s household, but does not require that person’s identity to be established.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The applicability of the provision governing the claimed damage is being determined.",
+      "evidence": [
+       {
+        "must_show": "The identity of the damage-causing person and that person's household relationship to the policyholder.",
+        "routes": []
+       }
+      ],
+      "fact": "The identity of the person causing the damage and whether that person lived in the same household as the policyholder are established."
+     }
+    ],
+    "rule_id": "overlay_rule_054"
+   }
+  ],
+  "rule_id": "overlay_rule_054"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage does not make evidence requirements depend on CSS considering termination or withdrawal. It identifies grounds on which CSS may terminate or withdraw.",
+    "kind": "condition_unsupported"
+   },
+   {
+    "explanation": "The passage does not require all four categories of facts to be established together, nor does it prescribe evidence establishing CSS's election and its predicate. The listed grounds are alternatives for CSS's ability to terminate or withdraw.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "CSS is considering termination of or withdrawal from the insurance.",
+      "evidence": [
+       {
+        "must_show": "The claim assertion and facts bearing on fraud; any alteration conduct in the loss event; facts bearing on intentional causation; and whether multiple insurance exists.",
+        "routes": []
+       }
+      ],
+      "fact": "The facts relevant to fraudulent assertion, alteration of the loss event, intentional causation, and multiple insurance are established."
+     },
+     {
+      "condition": "CSS is considering termination of or withdrawal from the insurance.",
+      "evidence": [
+       {
+        "must_show": "Whether CSS exercised termination or withdrawal and the predicate on which it relied.",
+        "routes": []
+       }
+      ],
+      "fact": "CSS's election to terminate the insurance or withdraw from it is established."
+     }
+    ],
+    "rule_id": "overlay_rule_056"
+   }
+  ],
+  "rule_id": "overlay_rule_056"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage indicates that the policyholder has additional obligations in the event of theft, but it does not state their content or require that they be identified.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The event is theft.",
+      "evidence": [
+       {
+        "must_show": "That the event is theft and the content of the additional theft-specific requirements applicable to the policyholder.",
+        "routes": []
+       }
+      ],
+      "fact": "The event is theft and the applicable additional theft-specific requirements are identified."
+     }
+    ],
+    "rule_id": "overlay_rule_057"
+   }
+  ],
+  "rule_id": "overlay_rule_057"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage does not limit the insurer’s authority to repair work required for a covered loss.",
+    "kind": "condition_narrower_than_source"
+   },
+   {
+    "explanation": "The passage says the insurer may determine which contractors perform the repairs. It does not require the necessary repair work or any contractor determination to be established.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Repair work is required for a covered loss.",
+      "evidence": [
+       {
+        "must_show": "The repair work required and the insurer's determination, if made, of the contractor required to perform that work.",
+        "routes": []
+       }
+      ],
+      "fact": "The repair work required and any insurer determination of the contractor to perform it are established."
+     }
+    ],
+    "rule_id": "overlay_rule_059"
+   }
+  ],
+  "rule_id": "overlay_rule_059"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage names the financial institution but does not establish a condition tied to payment of the insurance benefit.",
+    "kind": "condition_unsupported"
+   },
+   {
+    "explanation": "The route additionally requires a payment instruction with the payee’s name, address and IBAN; the passage mentions only the financial institution’s name.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Payment information is required for payment of the insurance benefit.",
+      "evidence": [
+       {
+        "must_show": "The name of the financial institution for the payment information provided.",
+        "routes": [
+         [
+          "Payment instruction with payee name and address, IBAN and name of the financial institution"
+         ]
+        ]
+       }
+      ],
+      "fact": "The name of the financial institution is provided."
+     }
+    ],
+    "rule_id": "overlay_rule_060"
+   }
+  ],
+  "rule_id": "overlay_rule_060"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage identifies a policy number or claim number but does not require a completed and signed claim notification form or submission through a specified channel.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The policy number or claim number identifying the insurance relationship or loss file.",
+        "routes": [
+         [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ]
+        ]
+       }
+      ],
+      "fact": "The policy number or claim number associated with the claim is recorded."
+     }
+    ],
+    "rule_id": "overlay_rule_062"
+   }
+  ],
+  "rule_id": "overlay_rule_062"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage requires Simpego's consent for repairs expected to cost more than CHF 500; it does not require repair costs to be established or a threshold determination to be made for all contemplated repairs.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Repairs to insured property are contemplated.",
+      "evidence": [
+       {
+        "must_show": "The expected cost of the contemplated repairs and whether that cost exceeds CHF 500.",
+        "routes": []
+       }
+      ],
+      "fact": "The expected repair costs for the insured property are established and it is determined whether they exceed CHF 500."
+     }
+    ],
+    "rule_id": "overlay_rule_067"
+   }
+  ],
+  "rule_id": "overlay_rule_067"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source permits a partial-payment demand only four weeks after the loss; the rule says it always applies.",
+    "kind": "condition_missing"
+   },
+   {
+    "explanation": "The passage does not establish the current investigation status or a specific minimum compensation amount.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The current status of the loss investigation and the minimum compensation that must be paid on that status.",
+        "routes": []
+       }
+      ],
+      "fact": "The current loss-investigation status and the minimum compensation payable on that status are established."
+     }
+    ],
+    "rule_id": "overlay_rule_068"
+   }
+  ],
+  "rule_id": "overlay_rule_068"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage permits the insurer to set reasonable time limits, but does not require establishing when or to whom a limit was communicated.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The insurer has set a time limit for claim handling, cooperation, or provision of requested information.",
+      "evidence": [
+       {
+        "must_show": "The time limit set by the insurer, when and to whom it was communicated, and facts bearing on whether the limit was reasonable.",
+        "routes": []
+       }
+      ],
+      "fact": "The insurer-set time limit, its communication date, and facts bearing on its reasonableness are established."
+     }
+    ],
+    "rule_id": "overlay_rule_070"
+   }
+  ],
+  "rule_id": "overlay_rule_070"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "Both routes require a particular insurance policy with specified schedule details, and the first additionally requires a completed and signed insurer claim form. The passage does not require those documents or details.",
+    "kind": "route_asks_more_than_source"
+   },
+   {
+    "explanation": "The passage does not make use of a written notification in another form conditional on the insurer not having required its own form.",
+    "kind": "condition_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "condition",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The contract provides that notice of the loss must be submitted in writing.",
+      "evidence": [
+       {
+        "must_show": "The contractual term requiring written notice and the written loss notice provided to the insurer.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ]
+        ]
+       }
+      ],
+      "fact": "The contract's written-notice term and the written submission of the loss notice are established."
+     }
+    ],
+    "rule_id": "overlay_rule_072"
+   }
+  ],
+  "rule_id": "overlay_rule_072"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source makes the provision conditional on a receipt or expert valuation being unavailable in the event of a claim. The rule's condition omits that circumstance.",
+    "kind": "condition_missing"
+   }
+  ],
+  "remaining_aspects": [
+   "condition"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+      "evidence": [
+       {
+        "must_show": "Whether a receipt can be produced and whether an expert valuation can be produced for the listed valuable or individual object.",
+        "routes": [
+         [
+          "Receipt for the scheduled valuable (Quittung / Rechnung)"
+         ],
+         [
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The availability or inability to produce a receipt and an expert valuation for each listed valuable or individual object is established."
+     }
+    ],
+    "rule_id": "overlay_rule_074"
+   }
+  ],
+  "rule_id": "overlay_rule_074"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage permits CSS to terminate no later than payment; it does not require compensation already to be payable or paid when termination occurs.",
+    "kind": "condition_narrower_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "condition"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Compensation is payable or has been paid in connection with the claim.",
+      "evidence": [
+       {
+        "must_show": "Whether CSS terminated the contract and whether the termination occurred no later than compensation payment.",
+        "routes": []
+       }
+      ],
+      "fact": "CSS's termination action and its timing relative to compensation payment are established."
+     }
+    ],
+    "rule_id": "overlay_rule_075"
+   }
+  ],
+  "rule_id": "overlay_rule_075"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage requires that CSS ordered the loss mitigation; it does not require original purchase vouchers or prescribe a joint set of documents to establish the order and costs.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim seeks coverage of costs arising from loss mitigation ordered by CSS.",
+      "evidence": [
+       {
+        "must_show": "The CSS instruction ordering loss mitigation and the connection between that ordered mitigation and the claimed costs.",
+        "routes": [
+         [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ]
+        ]
+       }
+      ],
+      "fact": "CSS's loss-mitigation order and the claimed costs arising from the ordered mitigation are established."
+     }
+    ],
+    "rule_id": "overlay_rule_080"
+   }
+  ],
+  "rule_id": "overlay_rule_080"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The route requires evidence that the instruction was followed. The cited passage makes cost coverage conditional on CSS having ordered loss mitigation, but does not require evidence of compliance with the order.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "Loss mitigation is being considered after a loss.",
+      "evidence": [
+       {
+        "must_show": "Whether CSS ordered loss mitigation and the content and scope of that order.",
+        "routes": [
+         [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+         ]
+        ]
+       }
+      ],
+      "fact": "Whether CSS issued a loss-mitigation order, and the scope of any such order, is established."
+     }
+    ],
+    "rule_id": "overlay_rule_081"
+   }
+  ],
+  "rule_id": "overlay_rule_081"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage makes absence of a medical certificate or police proof a condition for possible refusal of compensation, but does not require separate facts or evidence establishing that absence.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A medical certificate or police proof is absent.",
+      "evidence": [
+       {
+        "must_show": "Whether a medical certificate or police proof is available, and if absent, the facts establishing its absence.",
+        "routes": []
+       }
+      ],
+      "fact": "The availability or absence of a medical certificate and police proof is established."
+     }
+    ],
+    "rule_id": "overlay_rule_082"
+   }
+  ],
+  "rule_id": "overlay_rule_082"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage does not require a theft report within 24 hours, a bank statement, or a police report or equivalent document. It only specifies the relevant interval between theft and notification to CSS.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns financial losses caused by misuse of SIM cards.",
+      "evidence": [
+       {
+        "must_show": "When the theft occurred, when it was reported to CSS, when the SIM card was misused, and whether the resulting financial loss falls within that interval.",
+        "routes": [
+         [
+          "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+          "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft"
+         ]
+        ]
+       }
+      ],
+      "fact": "The theft time, CSS-reporting time, SIM-card misuse time, and the misuse-caused financial losses are established."
+     }
+    ],
+    "rule_id": "overlay_rule_084"
+   }
+  ],
+  "rule_id": "overlay_rule_084"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage makes the notice period run from when the policyholder learns of the compensation payment; it does not require establishing the payment date.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The policyholder seeks to use the stated 14-day cancellation notice period after payment of compensation.",
+      "evidence": [
+       {
+        "must_show": "When compensation was paid and when the policyholder became aware of that payment.",
+        "routes": []
+       }
+      ],
+      "fact": "The compensation payment and the policyholder's awareness date are established."
+     }
+    ],
+    "rule_id": "overlay_rule_087"
+   }
+  ],
+  "rule_id": "overlay_rule_087"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source makes reporting within 24 hours relevant, but does not require the exact reporting date and time to be established.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The claim concerns financial losses caused by the misuse of SIM cards.",
+      "evidence": [
+       {
+        "must_show": "Whether, when, and to which permitted recipient—CSS or the provider—the theft was reported, and whether the report was made within 24 hours.",
+        "routes": [
+         [
+          "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+         ]
+        ]
+       }
+      ],
+      "fact": "The theft-reporting date and time, reporting recipient, and whether reporting occurred within 24 hours are established."
+     }
+    ],
+    "rule_id": "overlay_rule_088"
+   }
+  ],
+  "rule_id": "overlay_rule_088"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage states that the provisions under Article 46c VVG apply, but it does not establish their claim-specific effect or any resulting requirements, consequences, or routes.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "That the provisions pursuant to Article 46c VVG apply and the claim-specific requirements, consequences, or routes resulting from their application.",
+        "routes": []
+       }
+      ],
+      "fact": "The applicability and claim-specific effect of the provisions pursuant to Article 46c VVG are established."
+     }
+    ],
+    "rule_id": "overlay_rule_089"
+   }
+  ],
+  "rule_id": "overlay_rule_089"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage permits the insurer to set a reasonable deadline; it does not require the deadline, its communication date, or its reasonableness to be established.",
+    "kind": "fact_unsupported"
+   },
+   {
+    "explanation": "The passage requires the requested signed valued inventory, but does not require it as evidence establishing a deadline or its reasonableness.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "document",
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The insurer has requested preparation of a signed inventory.",
+      "evidence": [
+       {
+        "must_show": "The time limit set by the insurer for the signed inventory, when it was communicated, and facts relevant to its reasonableness.",
+        "routes": [
+         [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ]
+        ]
+       }
+      ],
+      "fact": "Any insurer-set time limit for the signed inventory and its reasonableness are established."
+     }
+    ],
+    "rule_id": "overlay_rule_091"
+   }
+  ],
+  "rule_id": "overlay_rule_091"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage states that CSS insures theft, but does not require a policy schedule showing locations, sums insured, deductibles, and additional covers to establish that fact.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A claim seeks CSS coverage for a theft loss.",
+      "evidence": [
+       {
+        "must_show": "That the applicable coverage is CSS coverage and that theft is included among its insured risks.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ]
+        ]
+       }
+      ],
+      "fact": "The applicable CSS coverage and its inclusion of theft among insured risks are established."
+     }
+    ],
+    "rule_id": "overlay_rule_094"
+   }
+  ],
+  "rule_id": "overlay_rule_094"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passage requires the insurance company's name but does not require an insurance policy or the specified schedule details as evidence.",
+    "kind": "route_asks_more_than_source"
+   }
+  ],
+  "remaining_aspects": [
+   "route_more"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "none (always applies)",
+      "evidence": [
+       {
+        "must_show": "The name of the insurance company.",
+        "routes": [
+         [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ]
+        ]
+       }
+      ],
+      "fact": "The insurance company's name is provided."
+     }
+    ],
+    "rule_id": "overlay_rule_095"
+   }
+  ],
+  "rule_id": "overlay_rule_095"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The source permits a partial payment to be demanded only four weeks after the loss occurred; the rule omits this timing condition.",
+    "kind": "condition_missing"
+   }
+  ],
+  "remaining_aspects": [
+   "condition"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "A loss has occurred and a partial payment is sought.",
+      "evidence": [
+       {
+        "must_show": "The loss-investigation status and the calculation of the minimum compensation that must be paid on that status.",
+        "routes": []
+       }
+      ],
+      "fact": "The current status of the loss investigation and the minimum compensation payable on that status are established."
+     }
+    ],
+    "rule_id": "overlay_rule_097"
+   }
+  ],
+  "rule_id": "overlay_rule_097"
+ },
+ {
+  "objection": [
+   {
+    "explanation": "The passages do not expressly require the request's receipt or receipt date to be established. The statutory passage refers to the day the insurer made the written request.",
+    "kind": "fact_unsupported"
+   }
+  ],
+  "remaining_aspects": [
+   "document"
+  ],
+  "rule_as_in_force": [
+   {
+    "facts": [
+     {
+      "condition": "The insurer has issued a written request under warning of the consequences of default and set the applicable period.",
+      "evidence": [
+       {
+        "must_show": "The written compliance request, warning of default consequences, its receipt date, and the deadline set.",
+        "routes": [
+         [
+          "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+         ]
+        ]
+       }
+      ],
+      "fact": "The written request, its warning of default consequences, receipt, and 10-day or reasonable deadline are established."
+     }
+    ],
+    "rule_id": "overlay_rule_098"
+   }
+  ],
+  "rule_id": "overlay_rule_098"
+ }
+]

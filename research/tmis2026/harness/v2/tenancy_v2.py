@@ -14,6 +14,7 @@ import copy
 import json
 
 import common
+import match
 import llm
 import presume
 import verify as v3
@@ -55,8 +56,8 @@ def case_block(D, claim_id: str) -> str:
 
 
 B1V2_TASK = s1.B1_TASK + """
-Apply the silence policy: a condition the claim does not mention at all takes its presumed value; a condition the claim
-raises but leaves open is unresolved (hold its documents and ask)."""
+Apply the rule packs' silence policy exactly as stated: it says which conditions take a presumed value and which
+stay unresolved (hold their documents and ask)."""
 CPV2_INTERPRET_TASK = s1.CP_INTERPRET_TASK + """
 Report a condition the claim does not mention at all as unresolved with no citations; the engine applies the silence
 policy to it. Cite whatever the claim says about a condition, even when it leaves the condition open."""
@@ -87,40 +88,75 @@ def plan_v2(D, claim_id, verified, raw_proposal, srcs, pack=None):
             "questions": sv["questions"], "presumptions": records, "deferred": False}
 
 
+def robust(result, srcs):
+    """V6 admission: drop duplicate items (first kept) and relocate every quotation in its named source with the
+    robust matcher; a quotation that cannot be located is dropped. Returns (clean proposal, statistics)."""
+    texts = {s["artifact_id"]: s["text"] for s in srcs}
+    clean = copy.deepcopy(result)
+    stats = {"duplicates_dropped": 0, "quotes_relocated": 0, "quotes_unlocatable": 0}
+
+    def fix(row):
+        kept = []
+        for c in row.get("citations", []):
+            span = match.locate(c["quote"], texts.get(c["artifact_id"], ""))
+            if span is None:
+                stats["quotes_unlocatable"] += 1
+                continue
+            stats["quotes_relocated"] += int(span != c["quote"])
+            kept.append({**c, "quote": span})
+        row["citations"] = kept
+
+    fix(clean["category"])
+    for field, key in (("conditions", lambda r: r["flag"]), ("documents", lambda r: (r["document_type"], r["artifact_id"]))):
+        seen, rows = set(), []
+        for row in clean[field]:
+            if key(row) in seen:
+                stats["duplicates_dropped"] += 1
+                continue
+            seen.add(key(row))
+            fix(row)
+            rows.append(row)
+        clean[field] = rows
+    return clean, stats
+
+
 def run_cpv2(D, claim_id, run, pack=None):
     PACK_ = pack or PACK
     srcs = D.sources(claim_id)
     interp = llm.call(system=system_v2(CPV2_INTERPRET_TASK, pack), user=case_block(D, claim_id), schema=s1.CP_INTERPRET_SCHEMA,
-                      schema_name="casepath_interpret", run=run, tag=_tag("CPv2", claim_id, "interpret"))
+                      schema_name="casepath_interpret", run=run, tag=_tag("CPv2p", claim_id, "interpret"))
     out = {"interpret_error": interp["error"], "verify_error": None, "plan": None}
     if not interp["result"]:
         return out
-    proposal = {**interp["result"], "steps": [], "knowledge_candidates": []}
-    try:
-        items = list(proposal_items(proposal))
-    except ValueError as error:
-        out["plan"] = handoff(str(error))
+    if interp["result"]["category"]["family"] == "unsupported":
+        out["plan"] = handoff("interpreter: family unsupported")
         return out
-    payload = json.dumps({"context": json.loads(case_block(D, claim_id).split("\n", 1)[1]), "proposal": interp["result"],
+    clean, out["admission_stats"] = robust(interp["result"], srcs)
+    if not clean["category"]["citations"]:
+        out["plan"] = handoff("category has no locatable citation")
+        return out
+    proposal = {**clean, "steps": [], "knowledge_candidates": []}
+    items = list(proposal_items(proposal))
+    payload = json.dumps({"context": json.loads(case_block(D, claim_id).split("\n", 1)[1]), "proposal": clean,
                           "item_ids": items}, ensure_ascii=False)
     ver = llm.call(system=system_v2(CPV2_VERIFY_TASK, pack), user="VERIFICATION INPUT:\n" + payload, schema=v3.TENANCY_SCHEMA,
-                   schema_name="casepath_verify_v3", run=run, tag=_tag("CPv2", claim_id, "verify"))
+                   schema_name="casepath_verify_v3", run=run, tag=_tag("CPv2p", claim_id, "verify"))
     out["verify_error"] = ver["error"]
     if not ver["result"]:
         return out
-    rows = {f"condition:{r['flag']}": r for r in interp["result"]["conditions"]}
+    rows = {f"condition:{r['flag']}": r for r in clean["conditions"]}
     checks, diag = v3.effective_tenancy(ver["result"], rows, srcs)
     out["verifier_diagnostics"] = diag
     out["judgments"] = {"family": interp["result"]["category"]["family"],
-                        "conditions": {x["flag"]: {"verdict": x["verdict"], "cited": bool(x["citations"])} for x in interp["result"]["conditions"]},
+                        "conditions": {x["flag"]: {"verdict": x["verdict"], "cited": bool(x["citations"])} for x in clean["conditions"]},
                         "verifier": {x["item_id"]: x["accepted"] for x in ver["result"]["checks"]},
-                        "family_supported": ver["result"]["family_supported"]}
+                        "family_supported": ver["result"]["family_supported"], "family_refuted": diag["family_refuted"]}
     try:
         verified = validate_interpretation(PACK_, srcs, proposal, checks)
         out["replay"] = {"proposal": proposal, "verified": verified}
         out["plan"] = plan_v2(D, claim_id, verified, proposal, srcs, PACK_)
     except ValueError as error:
-        out["plan"] = handoff(str(error))
+        out["plan"] = handoff("admission: " + str(error))
     # Ablations without extra calls: v2 without the verifier; v2 without presumptions.
     try:
         allok = {"family_supported": True, "issues": [], "checks": [{"item_id": i, "accepted": True, "reason": ""} for i in items]}
@@ -142,7 +178,7 @@ def run_cpv2(D, claim_id, run, pack=None):
 
 def run_b1v2(D, claim_id, run, pack=None, memory=""):
     r = llm.call(system=system_v2(B1V2_TASK, pack, memory), user=case_block(D, claim_id), schema=s1.B1_SCHEMA, schema_name="evidence_plan",
-                 run=run, tag=_tag("B1v2" + ("+mem" if memory else ""), claim_id))
+                 run=run, tag=_tag("B1v2p" + ("+mem" if memory else ""), claim_id))
     return {"plan": s1._plan_from_decisions(r["result"], "documents") if r["result"] else None, "error": r["error"]}
 
 
@@ -178,4 +214,4 @@ def run_cpv1(D, claim_id, run):
     return out
 
 
-DESIGNS = {"CPv2": run_cpv2, "B1v2": run_b1v2, "CPv1": run_cpv1, "B1": run_b1}
+DESIGNS = {"CPv2p": run_cpv2, "B1v2p": run_b1v2, "CPv1": run_cpv1, "B1": run_b1}

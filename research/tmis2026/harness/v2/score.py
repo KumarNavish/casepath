@@ -16,6 +16,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("tag")
 ap.add_argument("--data", default="original")
 ap.add_argument("--split", default="dev")
+ap.add_argument("--stories", default=None)
 args = ap.parse_args()
 sys.argv = [sys.argv[0], args.tag]
 sys.path.insert(0, str(common.TMIS / "analysis"))
@@ -24,7 +25,8 @@ from theft_score import score_pair, pooled  # noqa: E402
 
 K_MAX = 10
 VARIANTS = {"CPv2": ["plan", "plan_no_verifier", "plan_no_presumption"], "CPv1": ["plan", "plan_exact"],
-            "B1v2": ["plan"], "B1": ["plan"], "Rv2": ["plan"], "R": ["plan"]}
+            "B1v2": ["plan"], "B1": ["plan"], "Rv2": ["plan"], "R": ["plan"],
+            "CPv2p": ["plan", "plan_no_verifier", "plan_no_presumption"], "B1v2p": ["plan"], "Rv2p": ["plan"]}
 
 
 def load(exp):
@@ -61,6 +63,8 @@ def theft():
     T = D.texts()
     dev_story = min(v["story"] for v in T.values())
     pairs = [p for p in D.pairs() if (p["story"] == dev_story) == (args.split == "dev")]
+    if args.stories:
+        pairs = [p for p in D.pairs() if str(p["story"]) in args.stories.split(",")]
     out = {}
     for design, fields in VARIANTS.items():
         for field in fields:
@@ -88,4 +92,4 @@ def theft():
 if __name__ == "__main__":
     res = {"tenancy": tenancy(), "theft": theft()}
     print(json.dumps(res, indent=1))
-    common.dump(common.OUT / f"scores_{args.tag}_{args.data}_{args.split}.json", res)
+    common.dump(common.OUT / f"scores_{args.tag}_{args.data}_{args.split}{'_s' + args.stories.replace(',', '') if args.stories else ''}.json", res)

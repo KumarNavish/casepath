@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import copy
 
+import match
+
 ID = {"type": "string", "maxLength": 120}
 
 
@@ -38,33 +40,42 @@ wording of the proposer's quotation; quotation exactness is checked by code."""
 
 
 def effective_tenancy(verifier: dict, proposal_rows: dict, sources: list[dict]) -> tuple[dict, dict]:
-    """Return (checks for validate_interpretation, diagnostics)."""
+    """Return (verifier output for validate_interpretation, diagnostics). V3 + V6: quotations are located with the
+    robust matcher; the family is refuted only by family_supported=false WITH a locatable contradicting quotation."""
     texts = {s["artifact_id"]: s["text"] for s in sources}
     out = copy.deepcopy(verifier)
     diag = {"rejections": 0, "counted": 0, "ignored_no_quote": 0, "ignored_inexact": 0, "same_as_own_citation": 0,
-            "category_overridden": False}
+            "category_overridden": False, "family_refuted": False}
+
+    def located(quotes):
+        return [q for q in quotes if q.get("quote") and match.contains(texts.get(q["artifact_id"], ""), q["quote"])]
+
+    cat = next((c for c in out["checks"] if c["item_id"] == "category"), None)
+    refuted = (not verifier["family_supported"]) and bool(located((cat or {}).get("contradicting_citations") or []))
+    diag["family_refuted"] = refuted
+    if not refuted and (not verifier["family_supported"] or (cat and not cat["accepted"])):
+        diag["category_overridden"] = True
+    out["family_supported"] = not refuted
     for chk in out["checks"]:
         item = chk["item_id"]
         if item == "category":
-            if verifier["family_supported"] and not chk["accepted"]:
-                diag["category_overridden"] = True
-            chk["accepted"] = bool(verifier["family_supported"])
+            chk["accepted"] = not refuted
             continue
         if not item.startswith("condition:") or chk["accepted"]:
             continue
         diag["rejections"] += 1
         quotes = chk.get("contradicting_citations") or []
-        exact = [q for q in quotes if q["quote"] and q["quote"] in texts.get(q["artifact_id"], "")]
+        exact = located(quotes)
         if not quotes:
             diag["ignored_no_quote"] += 1
             chk["accepted"] = True
-        elif len(exact) != len(quotes):
+        elif not exact:
             diag["ignored_inexact"] += 1
             chk["accepted"] = True
         else:
             diag["counted"] += 1
-            own = {c["quote"] for c in proposal_rows.get(item, {}).get("citations", [])}
-            diag["same_as_own_citation"] += int(all(q["quote"] in own for q in exact))
+            own = {match.normalise(c["quote"]) for c in proposal_rows.get(item, {}).get("citations", [])}
+            diag["same_as_own_citation"] += int(all(match.normalise(q["quote"]) in own for q in exact))
     for chk in out["checks"]:
         chk.pop("contradicting_citations", None)
     return out, diag
@@ -77,7 +88,7 @@ def effective_theft(checks: list[dict], text: str) -> tuple[dict, dict]:
         if not ok:
             diag["rejections"] += 1
             q = chk.get("contradicting_quote") or ""
-            if q and q in text:
+            if q and match.contains(text, q):
                 diag["counted"] += 1
             else:
                 diag["ignored"] += 1

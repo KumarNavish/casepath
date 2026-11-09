@@ -19,12 +19,18 @@ import json
 import common
 from casepath_api.assessment_grammar_v1 import FAMILY_FLAGS
 
-CLAUSE_ID = "policy-silence-v2"
-CLAUSE = ("Silence policy (organisational intake rule). A branch fact that the claim does not mention is presumed "
-          "absent. The event that defines the dispute (receipt of the termination notice in a lease-termination "
-          "dispute; receipt of the rent-increase notice in a rent-increase dispute) is presumed to have occurred "
-          "once the dispute's family is admitted. Any statement in the claim about a fact overrides its "
-          "presumption; a fact the claim raises but leaves open stays open and is asked about.")
+CLAUSE_ID = "policy-silence-v2p"
+CLAUSE_V2_FIRST = ("Silence policy (organisational intake rule). A branch fact that the claim does not mention is presumed "
+                   "absent. The event that defines the dispute (receipt of the termination notice in a lease-termination "
+                   "dispute; receipt of the rent-increase notice in a rent-increase dispute) is presumed to have occurred "
+                   "once the dispute's family is admitted. Any statement in the claim about a fact overrides its "
+                   "presumption; a fact the claim raises but leaves open stays open and is asked about.")
+# V2' (revised on development data): the defining event is presumed unless the claim states it did not occur.
+CLAUSE = ("Silence policy (organisational intake rule). The event that defines the dispute (receipt of the termination "
+          "notice in a lease-termination dispute; receipt of the rent-increase notice in a rent-increase dispute) is "
+          "presumed to have occurred once the dispute's family is admitted, unless the claim states that it did not "
+          "occur. A branch fact that the claim does not mention is presumed absent; a branch fact that the claim raises "
+          "but leaves open stays open and is asked about.")
 DEFINING = {"lease_termination_dispute": "termination_received", "rent_increase_dispute": "claim_received"}
 
 
@@ -47,7 +53,9 @@ def build_pack(base: dict) -> dict:
 
 
 def apply(verified: dict, raw_proposal: dict, pack: dict) -> tuple[dict, list[dict]]:
-    """Return (verified with presumed verdicts, presumption records). Never touches a cited judgment."""
+    """V2'. Defining event: presumed true unless the interpreter's judgment is a cited 'false' (the claim states it did
+    not occur), whether or not anything was cited for it. Branch fact: presumed absent only if the interpreter cited
+    nothing for it and left it unresolved; a cited open branch fact stays a question."""
     family = verified["category"]["family"]
     template = next(t for t in pack["templates"] if t["domain"] == family)
     table = template["presumptions"]["verdicts"]
@@ -56,27 +64,32 @@ def apply(verified: dict, raw_proposal: dict, pack: dict) -> tuple[dict, list[di
     rows = {row["flag"]: row for row in out["conditions"]}
     records = []
     for flag, verdict in table.items():
-        row = rows.get(flag)
-        raw_cited = bool(raw.get(flag, {}).get("citations"))
-        if raw_cited or (row is not None and (row["verdict"] != "unresolved" or row.get("citations"))):
-            continue
-        presumed = {"flag": flag, "verdict": verdict, "summary": "Presumed under the silence policy: the claim does not mention this fact.",
+        row, r = rows.get(flag), raw.get(flag, {})
+        if DEFINING.get(family) == flag:
+            stated_not = r.get("verdict") == "false" and bool(r.get("citations"))
+            if stated_not or (row is not None and row["verdict"] == "true"):
+                continue
+        else:
+            if bool(r.get("citations")) or (row is not None and (row["verdict"] != "unresolved" or row.get("citations"))):
+                continue
+        presumed = {"flag": flag, "verdict": verdict, "summary": "Presumed under the silence policy.",
                     "citations": [], "presumption": template["presumptions"]["clause_id"]}
         if row is None:
             out["conditions"].append(presumed)
         else:
             row.update(presumed)
-        records.append({"flag": flag, "verdict": verdict, "clause_id": template["presumptions"]["clause_id"]})
+        records.append({"flag": flag, "verdict": verdict, "clause_id": template["presumptions"]["clause_id"],
+                         "over_cited_open_judgment": bool(r.get("citations"))})
     return out, records
 
 
 def write_pack():
     from tenancy_data import templates
     pack = build_pack(templates())
-    common.dump(common.PACKS / "tenancy_v2_pack.json", pack)
+    common.dump(common.PACKS / "tenancy_v2p_pack.json", pack)
     return pack
 
 
 def load_pack():
-    path = common.PACKS / "tenancy_v2_pack.json"
+    path = common.PACKS / "tenancy_v2p_pack.json"
     return json.loads(path.read_text()) if path.exists() else write_pack()

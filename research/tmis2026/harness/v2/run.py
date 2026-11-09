@@ -22,6 +22,7 @@ ap.add_argument("--k", type=int, default=3)
 ap.add_argument("--designs", default=None)
 ap.add_argument("--limit", type=int, default=None, help="first N cases (pilots)")
 ap.add_argument("--workers", type=int, default=8)
+ap.add_argument("--stories", default=None, help="theft: comma-separated story indices (overrides --split selection)")
 args = ap.parse_args()
 
 D = common.data(args.exp, args.data)
@@ -34,13 +35,22 @@ else:
     T = D.texts()
     dev_story = min(v["story"] for v in T.values())
     cases = sorted(k for k, v in T.items() if (v["story"] == dev_story) == (args.split == "dev"))
+    if args.stories:
+        cases = sorted(k for k, v in T.items() if str(v["story"]) in args.stories.split(","))
     call = lambda f, c, r: f(c, T[c]["text"], r)
 if args.limit:
     cases = cases[:args.limit]
 designs = {d: f for d, f in mod.DESIGNS.items() if not args.designs or d in args.designs.split(",")}
 out_path = common.OUT / f"plans_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"
 results = json.loads(out_path.read_text()) if out_path.exists() else {}
-jobs = [(d, c, r) for r in range(args.k) for c in cases for d in designs if f"{d}|{c}|{r}" not in results]
+def transient(entry):
+    """A recorded provider failure (502 inside a 200 body) is retried on the next run."""
+    text = json.dumps({k: entry.get(k) for k in ("error", "interpret_error", "verify_error")})
+    return "no choices" in text
+
+
+jobs = [(d, c, r) for r in range(args.k) for c in cases for d in designs
+        if f"{d}|{c}|{r}" not in results or transient(results[f"{d}|{c}|{r}"] or {})]
 print(f"{len(jobs)} jobs; v2 spend so far {common.spent():.4f} USD", flush=True)
 with ThreadPoolExecutor(args.workers) as ex:
     futs = {ex.submit(call, designs[d], c, r): (d, c, r) for d, c, r in jobs}

@@ -57,3 +57,33 @@ def data(kind: str, which: str = "original"):
 
 def dump(path: Path, obj) -> None:
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
+
+
+# A provider error returned inside an HTTP 200 body ("no choices: ... 502") is cached by llm.call as if it were a
+# final answer. For v2 calls such a transient failure is deleted from the cache and retried (at most 3 times).
+_call = llm.call
+
+
+def _body(system, user, schema, schema_name, max_tokens=3500, effort="low", model=None):
+    return {"model": model or llm.MODEL,
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+            "response_format": {"type": "json_schema", "json_schema": {"name": schema_name, "strict": True, "schema": schema}},
+            "max_tokens": max_tokens, "reasoning": {"effort": effort, "exclude": True}, "usage": {"include": True},
+            "provider": {"allow_fallbacks": False, "require_parameters": True, "data_collection": "deny"}}
+
+
+def _retrying_call(**kw):
+    for _ in range(4):
+        r = _call(**kw)
+        if not (r.get("error") or "").startswith("no choices"):
+            return r
+        body = _body(kw["system"], kw["user"], kw["schema"], kw["schema_name"], kw.get("max_tokens", 3500),
+                     kw.get("effort", "low"), kw.get("model"))
+        key = llm._key(body, kw["run"])
+        path = llm.CACHE / key[:2] / f"{key}.json"
+        if path.exists():
+            path.unlink()
+    return r
+
+
+llm.call = _retrying_call

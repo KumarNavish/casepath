@@ -251,6 +251,52 @@ def evolve_theft(args):
     return {"steps": steps, "final_pack": cp.pack}
 
 
+def dryrun_theft(args):
+    """Learn from the corrections of the training stories (in order), then evaluate both arms on the evaluation
+    stories with the final pack / the full correction memory. 'Before' = the same arms without learning."""
+    import theft_v2
+    from theft_data import best_realization
+    from theft_score import score_pair
+    D = common.data("theft", args.data)
+    T = D.texts()
+    train = [p for p in D.pairs() if p["kind"] == "on" and str(p["story"]) in args.train_stories.split(",")]
+    evaluate = [p for p in D.pairs() if p["kind"] == "on" and str(p["story"]) in args.eval_stories.split(",")]
+    cp = TheftArmCP(theft_v2.PACK)
+    corrections, log = [], []
+    for pair in train:  # learning phase: CasePath learns from its own trace; the memory arm only accumulates
+        off, var = cp.plans(pair, T, args.run)
+        empty = {"requests": [], "holds": []}
+        err = theft_errors(score_pair, pair, off.get("plan") or empty, var.get("plan") or empty, best_realization)
+        rec = cp.learn(pair, T, err, off.get("judgments") or {}, var.get("judgments") or {}, args.run, best_realization)
+        corrections.append({"changed_statement_before": pair["reference"]["changed_statement_false"],
+                            "changed_statement_after": pair["reference"]["changed_statement_true"],
+                            "correct_change_options": pair["reference"]["acceptable_signed_deltas"]})
+        log.append(rec)
+        print("train", pair["pair_id"], "errors", len(err["wrong"]) + len(err["missed"]), "applied", len(rec.get("applied", [])), flush=True)
+    mem = memory_block_theft(corrections)
+    arms = {"CP_before": (theft_v2.TheftPack(theft_v2.PACK), "cp"), "CP_after_V5": (theft_v2.TheftPack(cp.pack), "cp"),
+            "R_before": (theft_v2.TheftPack(theft_v2.PACK), ""), "R_after_memory": (theft_v2.TheftPack(theft_v2.PACK), mem)}
+    results = {}
+    for name, (tp, kind) in arms.items():
+        cache, rows = {}, []
+
+        def plan(t):
+            if t not in cache:
+                if kind == "cp":
+                    o = tp.run_cpv2(t, T[t]["text"], args.run)
+                    cache[t] = o.get("plan")
+                else:
+                    cache[t] = tp.run_rv2(t, T[t]["text"], args.run, memory=kind)["plan"]
+            return cache[t] or {"requests": [], "holds": []}
+        for pair in evaluate:
+            e = theft_errors(score_pair, pair, plan(pair["off"]), plan(pair["variant"]), best_realization)
+            rows.append({"pair_id": pair["pair_id"], "wrong": len(e["wrong"]), "missed": len(e["missed"])})
+        results[name] = {"pairs": len(rows), "wrong": sum(r["wrong"] for r in rows), "missed": sum(r["missed"] for r in rows),
+                         "errors_per_pair": sum(r["wrong"] + r["missed"] for r in rows) / len(rows), "rows": rows}
+        print(name, {k: v for k, v in results[name].items() if k != "rows"}, flush=True)
+    return {"train_log": log, "evaluation": results, "final_pack": cp.pack}
+
+
 # ====================================================================== tenancy
 TEN_REPAIR_SCHEMA = obj({
     "diagnosis": {"type": "string", "enum": ["presumption_error", "judgment_error", "document_review_error", "unclear"]},
@@ -391,8 +437,14 @@ if __name__ == "__main__":
     ap.add_argument("--order", default=None)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--run", type=int, default=0)
+    ap.add_argument("--train-stories", default=None)
+    ap.add_argument("--eval-stories", default=None)
     args = ap.parse_args()
-    out = evolve_theft(args) if args.exp == "theft" else evolve_tenancy(args)
-    path = common.OUT / f"evolve_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"
+    if args.train_stories:
+        out = dryrun_theft(args)
+        path = common.OUT / f"evolve_dryrun_theft_{common.TAG}_{args.data}_train{args.train_stories}_eval{args.eval_stories}.json"
+    else:
+        out = evolve_theft(args) if args.exp == "theft" else evolve_tenancy(args)
+        path = common.OUT / f"evolve_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"
     common.dump(path, out)
     print(f"written {path.name}; v2 spend {common.spent():.4f} USD")
