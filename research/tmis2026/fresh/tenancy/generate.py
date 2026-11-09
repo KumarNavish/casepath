@@ -409,8 +409,15 @@ def call(system, payload, schema, name, run, tag):
     with _lock:
         if fresh_spend() >= FRESH_BUDGET - 0.05:
             raise llm.BudgetExceeded("fresh generation budget reached")
-    return llm.call(system=system, user=json.dumps(payload, ensure_ascii=False), schema=schema, schema_name=name,
-                    run=run, tag={"exp": "fresh_generation", **tag}, model=MODEL, max_tokens=4000)
+    for attempt in range(4):  # the client retries HTTP errors but not a connection reset during the read
+        try:
+            return llm.call(system=system, user=json.dumps(payload, ensure_ascii=False), schema=schema, schema_name=name,
+                            run=run, tag={"exp": "fresh_generation", **tag}, model=MODEL, max_tokens=4000)
+        except (ConnectionError, OSError) as exc:
+            if attempt == 3:
+                return {"result": None, "error": f"{type(exc).__name__}: {exc}"}
+            import time
+            time.sleep(5 * (attempt + 1))
 
 
 def produce(slot: dict) -> dict:
