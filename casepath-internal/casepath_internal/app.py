@@ -65,7 +65,15 @@ def default_model_factory(settings):
         return lambda: None
     shared = {}
 
-    def factory():
+    def factory(user_token=None):
+        if settings.model.auth == "user":  # the person's own token: a fresh client per run, nothing shared
+            from .chat_model import ChatCompletionsModel
+            if not user_token:
+                return None
+            model = ChatCompletionsModel(settings.model, lambda: user_token)
+            if settings.model.reading_deployment:
+                model.reading = ChatCompletionsModel(replace(settings.model, deployment=settings.model.reading_deployment), lambda: user_token)
+            return model
         if "model" not in shared:
             if settings.model.provider == "databricks":
                 from .chat_model import ChatCompletionsModel, databricks_token_provider
@@ -240,10 +248,19 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "headers": _headers(row["extraction"].get("text", "")) if row["kind"] == "email" else None,
                 "pages": [{"page": page, "text": text} for page, text in pages]}
 
+    def model_token(request):
+        """The signed-in person's model token, when the model is called as that person."""
+        if settings.model is None or settings.model.auth != "user":
+            return None
+        token = request.headers.get("x-forwarded-access-token")
+        if not token:
+            raise HTTPException(401, "Sign in again: CasePath calls the model as you.")
+        return token
+
     @app.post("/api/cases/{case_id}/runs", status_code=202)
-    def start_run(case_id: str, who=Depends(user)):
+    def start_run(case_id: str, request: Request, who=Depends(user)):
         try:
-            return runs.start(case_id, who)
+            return runs.start(case_id, who, model_token(request))
         except NotFound:
             raise HTTPException(404, "Not found.") from None
         except Conflict as error:
@@ -269,7 +286,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     # Editing the case's process
     @app.post("/api/cases/{case_id}/edits", status_code=201)
-    def edit_process(case_id: str, body: EditRequest, who=Depends(user)):
+    def edit_process(case_id: str, body: EditRequest, request: Request, who=Depends(user)):
         before = state(case_id)
         if before["process"] is None:
             raise HTTPException(409, "Choose or route a workflow before editing the process.")
@@ -295,7 +312,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         added = [d["document"] for d in change["documents_added"]]
         if body.recheck and added and before["run"] is not None:
             try:
-                recheck = runs.recheck(case_id, added, who)
+                recheck = runs.recheck(case_id, added, who, model_token(request))
             except Conflict:
                 recheck = None
         return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"]}

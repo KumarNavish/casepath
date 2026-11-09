@@ -60,6 +60,30 @@ class DatabricksModelTests(unittest.TestCase):
         self.assertEqual(sum(1 for s in seen if s[0] == "token"), 1)  # one sign-in, reused
 
 
+class UserTokenTests(unittest.TestCase):
+    def test_the_model_can_be_called_as_the_person_who_starts_the_run(self):
+        import tempfile
+        from fastapi.testclient import TestClient
+        from casepath_internal.app import create_app, default_model_factory
+        with tempfile.TemporaryDirectory() as data:
+            env = {"CASEPATH_DATA_DIR": data, "CASEPATH_IDENTITY_HEADER": "X-Forwarded-Email", "CASEPATH_MODEL_PROVIDER": "databricks",
+                   "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m", "CASEPATH_MODEL_AUTH": "user"}
+            settings = load_settings(env)
+            factory = default_model_factory(settings)
+            self.assertIsNone(factory())  # no person, no model
+            model = factory("person-token")
+            self.assertEqual(model._token(), "person-token")
+            client = TestClient(create_app(settings, model_factory=lambda token=None: None))
+            who = {"X-Forwarded-Email": "anna@example.ch"}
+            case = client.post("/api/cases", json={"title": "x"}, headers=who).json()
+            self.assertEqual(client.post(f"/api/cases/{case['id']}/runs", headers=who).status_code, 401)
+            self.assertEqual(client.post(f"/api/cases/{case['id']}/runs", headers={**who, "X-Forwarded-Access-Token": "t"}).status_code, 202)
+            client.app.state.runs.shutdown()
+            client.app.state.store.close()
+        with self.assertRaises(SettingsError):
+            load_settings({"CASEPATH_AZURE_OPENAI_ENDPOINT": "https://r.openai.azure.com", "CASEPATH_AZURE_OPENAI_DEPLOYMENT": "d", "CASEPATH_MODEL_AUTH": "user"})
+
+
 class StructuredAnswerFallbackTests(unittest.TestCase):
     def test_an_endpoint_without_response_format_answers_through_a_forced_tool(self):
         bodies = []

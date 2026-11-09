@@ -43,14 +43,15 @@ class RunService:
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self.store.interrupt_unfinished()
 
-    def start(self, case_id, user):
+    def start(self, case_id, user, token=None):
+        """``token``: the person's own model token, when the model is called as the person who started the run."""
         run = self.store.create_run(case_id, user)
-        self._pool.submit(self._execute, run["id"], case_id)
+        self._pool.submit(self._execute, run["id"], case_id, token)
         return run
 
-    def recheck(self, case_id, document_ids, user):
+    def recheck(self, case_id, document_ids, user, token=None):
         run = self.store.create_run(case_id, user)
-        self._pool.submit(self._recheck, run["id"], case_id, list(document_ids))
+        self._pool.submit(self._recheck, run["id"], case_id, list(document_ids), token)
         return run
 
     def shutdown(self):
@@ -66,16 +67,17 @@ class RunService:
     def _event(self, run_id, data):
         self.store.append_event(run_id, data)
 
-    def _model(self, run_id):
-        model = self.model_factory()  # None when no deployment is configured; the core then fails the run with that reason
+    def _model(self, run_id, token=None):
+        # None when no deployment is configured; the core then fails the run with that reason
+        model = self.model_factory(token) if token is not None else self.model_factory()
         if model is not None:
             self.store.update_run(run_id, deployment=model.settings.deployment)
         return model
 
-    def _execute(self, run_id, case_id):
+    def _execute(self, run_id, case_id, token=None):
         try:
             self.store.update_run(run_id, status="running")
-            outcome = core.prepare(self.job(case_id), self._model(run_id), core.StoreBlobs(self.store),
+            outcome = core.prepare(self.job(case_id), self._model(run_id, token), core.StoreBlobs(self.store),
                                    on_event=lambda e: self._event(run_id, e),
                                    on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction))
             self.save(run_id, case_id, outcome)
@@ -120,7 +122,7 @@ class RunService:
             proposals.append({"item": item["id"], "action": row["action"], "refines": row.get("refines")})
         return {"outcomes": outcomes, "proposals": proposals}
 
-    def _recheck(self, run_id, case_id, document_ids):
+    def _recheck(self, run_id, case_id, document_ids, token=None):
         try:
             self.store.update_run(run_id, status="running")
             previous = self.store.latest_run(case_id, "completed")
@@ -128,7 +130,7 @@ class RunService:
                 self.store.update_run(run_id, status="failed", error="no_assessment: The case needs a completed run before a re-check.",
                                       finished_at=now())
                 return
-            outcome = core.recheck(self.job(case_id), previous, document_ids, self._model(run_id), on_event=lambda e: self._event(run_id, e))
+            outcome = core.recheck(self.job(case_id), previous, document_ids, self._model(run_id, token), on_event=lambda e: self._event(run_id, e))
             self.save(run_id, case_id, outcome)
         except ModelError as error:
             self.store.update_run(run_id, status="failed", error=f"{error.reason}: {error}", finished_at=now())

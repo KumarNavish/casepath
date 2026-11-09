@@ -11,6 +11,10 @@ env:
     value: databricks
   - name: CASEPATH_MODEL
     value: "FILL-IN: the gateway model's exact name, as its Use/Query panel shows it"
+  # app: the app's own service principal calls the model. user: each person's own token does (enable user
+  # authorization for the app so Databricks forwards it); use it when the service principal may not query the model.
+  - name: CASEPATH_MODEL_AUTH
+    value: app
   - name: CASEPATH_CHAT_PATH
     value: /ai-gateway/mlflow/v1/chat/completions
   - name: CASEPATH_MODEL_MAX_OUTPUT_TOKENS
