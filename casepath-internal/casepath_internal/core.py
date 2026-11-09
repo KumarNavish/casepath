@@ -17,7 +17,7 @@ A job (``casepath.agent-job/1``)::
      "case": {"id", "title", "intake", "workflow_id", "workflow_version", "workflow_selected_by"},
      "files": [{"id", "name", "kind", "media_type", "sha256", "extraction"}],
      "workflows": [every catalogue workflow version], "knowledge": [active Knowledge items, any family],
-     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers", "page_image_side"}}
+     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers", "page_image_side", "token_budget"}}
 
 An outcome (``casepath.agent-outcome/1``)::
 
@@ -103,6 +103,43 @@ class _Counted:
         turn = self.model.respond(**kwargs)
         self.rows.append({"agent": self.agent, **(turn.usage or {})})
         return turn
+
+    def __getattr__(self, name):
+        return getattr(self.model, name)
+
+
+class _Budget:
+    """The job's model, with every call counted against a token budget (input and output tokens). Once the budget is
+    spent, the next call stops the job with that reason, so a large dossier can never run up costs unnoticed."""
+
+    def __init__(self, model, limit, spent=None):
+        self.model, self.limit, self.spent = model, int(limit or 0), spent if spent is not None else [0]
+
+    def _check(self):
+        if self.limit and self.spent[0] >= self.limit:
+            raise ModelError("token_budget", f"The run used its budget of {self.limit:,} tokens and stopped; raise "
+                                             f"CASEPATH_RUN_TOKEN_BUDGET to prepare larger cases.")
+
+    def _count(self, usage):
+        usage = usage or {}
+        self.spent[0] += int(usage.get("input_tokens") or 0) + int(usage.get("output_tokens") or 0)
+
+    def respond_json(self, **kwargs):
+        self._check()
+        result = self.model.respond_json(**kwargs)
+        self._count(result.usage)
+        return result
+
+    def respond(self, **kwargs):
+        self._check()
+        turn = self.model.respond(**kwargs)
+        self._count(turn.usage)
+        return turn
+
+    @property
+    def reading(self):
+        reading = getattr(self.model, "reading", None)
+        return _Budget(reading, self.limit, self.spent) if reading is not None else None
 
     def __getattr__(self, name):
         return getattr(self.model, name)
@@ -244,6 +281,7 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         if model is None:
             raise ModelError("model_not_configured", "No model deployment is configured for this workspace.")
         usage = []  # reading and routing; the team records its own
+        model = _Budget(model, options.get("token_budget"))
         if options.get("read_scans", True):
             reader = _Counted(getattr(model, "reading", None) or model, "reader", usage)
             for row in job["files"]:

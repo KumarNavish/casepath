@@ -85,6 +85,7 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
     the 17 prepared synthetic cases with their page images. The built-in reader matches pypdf word for word on the 17
     benchmark dossiers, and decodes Group 3 and Group 4 fax pages bit for bit as libtiff encodes them.
 - **Gateway limits:** some gateways reject a temperature and forced tool choice. With `CASEPATH_MODEL_API=messages` and `CASEPATH_MODEL_FORCED_TOOLS=false`, each turn offers only the tool that must be called and says so. A structured answer is checked and asked for once more when it is missing or malformed.
+- **Cost guard:** `CASEPATH_RUN_TOKEN_BUDGET` caps the tokens (input and output) one run may use, over reading, routing and the agents; the run stops with that reason when it is spent. The pilot sets 3,000,000.
 - **Prompt caching:** an agent's turns mark the system prompt, the tools and the end of the conversation, so the next turn reads them from the cache. A one-off structured answer marks only the system prompt and tools. Each call's usage in the run record gives `input_tokens` (all input, cached or not), `cached_tokens` (read from the cache) and `cache_write_tokens` (written to it). The marks are dropped only when the gateway refuses them and the same request without them succeeds.
 - **Imports:** case files placed in the volume's `incoming/` folder are listed on the Cases page. One click turns each into a case without the file passing through the browser, which suits large dossiers.
 - **Checked here:**

@@ -27,6 +27,9 @@ env:
   # Scanned pages are read from images; 1400 px on the long side keeps typed text legible at fewer tokens per page.
   - name: CASEPATH_PAGE_IMAGE_SIDE
     value: "1400"
+  # A run stops with a stated reason once it has used this many tokens (input and output); 0 means no limit.
+  - name: CASEPATH_RUN_TOKEN_BUDGET
+    value: "3000000"
   - name: CASEPATH_RUN_WORKERS
     value: "1"
   - name: CASEPATH_READING_WORKERS

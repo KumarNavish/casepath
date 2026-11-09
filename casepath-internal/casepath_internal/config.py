@@ -68,6 +68,7 @@ class Settings:
     reading_workers: int = 6
     run_workers: int = 2
     page_image_side: int = 1700
+    run_token_budget: int = 4_000_000
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
@@ -128,6 +129,7 @@ def load_settings(env=None):
         reading_workers=int(env.get("CASEPATH_READING_WORKERS", "6")),
         run_workers=int(env.get("CASEPATH_RUN_WORKERS", "2")),
         page_image_side=int(env.get("CASEPATH_PAGE_IMAGE_SIDE", "1700")),
+        run_token_budget=int(env.get("CASEPATH_RUN_TOKEN_BUDGET", "4000000")),
         identity_format=identity_format,
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),

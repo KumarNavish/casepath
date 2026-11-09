@@ -61,6 +61,16 @@ class CoreContractTests(unittest.TestCase):
         evaluated = core.evaluate(Catalogue.load(FIXTURES).get("example-defect"), [active], [], outcome["result"], "case_1")
         self.assertEqual(evaluated["evaluation"]["outcome"]["id"], outcome["result"]["evaluation"]["outcome"]["id"])
 
+    def test_a_run_stops_when_its_token_budget_is_spent(self):
+        with tempfile.TemporaryDirectory() as blobs:
+            capped = {**job([]), "options": {**job([]).get("options", {}), "token_budget": 40}}
+            stopped = core.prepare(json.loads(json.dumps(capped)), script(), core.DirectoryBlobs(blobs))
+            unlimited = core.prepare(json.loads(json.dumps({**capped, "options": {**capped["options"], "token_budget": 0}})), script(),
+                                     core.DirectoryBlobs(blobs))
+        self.assertEqual(stopped["status"], "failed")
+        self.assertTrue(stopped["error"].startswith("token_budget: The run used its budget of 40 tokens"))
+        self.assertEqual(unlimited["status"], "completed")
+
     def test_failures_come_back_as_outcomes_with_a_reason(self):
         with tempfile.TemporaryDirectory() as blobs:
             failed = core.prepare(job(), None, core.DirectoryBlobs(blobs))
