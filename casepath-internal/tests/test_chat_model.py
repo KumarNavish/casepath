@@ -138,6 +138,7 @@ class MessagesApiTests(unittest.TestCase):
         self.assertEqual(first["system"][0]["cache_control"], {"type": "ephemeral"})
         self.assertEqual(second["messages"][0]["content"][1], {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": "AAAA"}})
         self.assertNotIn("maxLength", json.dumps(second["tools"]))  # bounds are checked locally, not sent
+
         # a carried turn becomes tool_use, its results one user message with tool_result and the nudge
         follow = to_blocks([{"role": "user", "content": "go"}, *turn.output,
                             {"type": "function_call_output", "call_id": "tu_1", "output": '{"accepted": true}'},
@@ -151,6 +152,44 @@ class MessagesApiTests(unittest.TestCase):
         self.assertEqual(bodies[-1]["tool_choice"], {"type": "tool", "name": "check"})
 
 
+
+    def test_cache_writes_are_counted_and_one_off_answers_do_not_write_the_conversation(self):
+        from casepath_internal.anthropic_model import AnthropicMessagesModel
+        bodies = []
+
+        def handler(request):
+            body = json.loads(request.content)
+            bodies.append(body)
+            name = body["tools"][0]["name"]
+            return httpx.Response(200, json={"id": "m", "stop_reason": "tool_use", "content": [
+                {"type": "tool_use", "id": "tu", "name": name, "input": {"ok": True}}],
+                "usage": {"input_tokens": 10, "cache_creation_input_tokens": 700, "cache_read_input_tokens": 300, "output_tokens": 5}})
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m",
+                                  "CASEPATH_MODEL_API": "messages", "CASEPATH_MODEL_FORCED_TOOLS": "false"}).model
+        model = AnthropicMessagesModel(settings, lambda: "t", transport=httpx.MockTransport(handler))
+        schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False}
+        result = model.respond_json(name="check", instructions="x", input=[{"role": "user", "content": "{}"}], schema=schema)
+        self.assertEqual(result.usage, {"input_tokens": 1010, "output_tokens": 5, "cached_tokens": 300, "cache_write_tokens": 700})
+        self.assertNotIn("cache_control", json.dumps(bodies[0]["messages"]))  # a one-off answer: only system and tools are marked
+        self.assertEqual(bodies[0]["system"][0]["cache_control"], {"type": "ephemeral"})
+
+    def test_a_400_that_is_not_about_cache_marks_leaves_caching_on(self):
+        from casepath_internal.anthropic_model import AnthropicMessagesModel
+        from casepath_internal.azure_model import ModelError
+        calls = {"n": 0}
+
+        def handler(request):
+            calls["n"] += 1
+            if calls["n"] <= 2:
+                return httpx.Response(400, json={"error": {"message": "bad image"}})  # fails with and without the marks
+            return httpx.Response(200, json={"id": "m", "stop_reason": "end_turn", "content": [{"type": "text", "text": "ok"}],
+                                             "usage": {"input_tokens": 1, "output_tokens": 1}})
+        settings = load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m",
+                                  "CASEPATH_MODEL_API": "messages"}).model
+        model = AnthropicMessagesModel(settings, lambda: "t", transport=httpx.MockTransport(handler))
+        with self.assertRaises(ModelError):
+            model.respond(instructions="x", input=[{"role": "user", "content": "a"}])
+        self.assertTrue(model.cache)  # the marks were not the problem, so the next call still caches
 class UnforcedToolTests(unittest.TestCase):
     def test_without_forced_tool_choice_the_one_tool_needed_is_offered_and_answers_are_checked(self):
         from casepath_internal.anthropic_model import AnthropicMessagesModel

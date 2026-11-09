@@ -22,6 +22,16 @@ const word = (value) => (LANG === "de" && WORDS[value]) || String(value ?? "").r
 const TOOL_DE = { list_files: "listet die Dateien", open_process: "öffnet den Prozess", view_knowledge: "sieht das Wissen durch", evaluate: "wertet den Prozess aus",
                   get_findings: "holt die Feststellungen", record_fact: "hält eine Feststellung fest", record_document: "hält ein Dokument fest", propose_change: "schlägt eine Prozessänderung vor" };
 
+// What each agent is doing, in the interface language; the lead's own instructions to the agents stay in the run record.
+const TASK = {
+  lead: T("Prepare the case", "Den Fall vorbereiten"),
+  claim_reader: T("Read the files and record the facts", "Dokumente lesen und Fakten festhalten"),
+  process_builder: T("Build this case’s process", "Den Prozess dieses Falls aufbauen"),
+  document_finder: T("Find each needed document in the files", "Jedes verlangte Dokument in den Dateien finden"),
+  source_checker: T("Check each finding against its quote", "Jede Feststellung an ihrem Zitat prüfen"),
+  result_checker: T("Evaluate, draft the reply and propose what to learn", "Auswerten, Antwort entwerfen, Lernvorschläge machen"),
+};
+
 const ICONS = {
   doc: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h6M9.5 15.5h6M9.5 9h3"/>',
   mail: '<rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6.5L20.5 7"/>',
@@ -161,7 +171,10 @@ function activeAgent() {
   const inner = open.filter((a) => a !== "lead");
   return inner.length ? inner[inner.length - 1] : open.length ? "lead" : null;
 }
-function facts() { return (S.data.process && S.data.process.facts) || ((liveState() || {}).graph || {}).facts || []; }
+function facts() {
+  const live = (liveState() || {}).graph;
+  return (live && live.facts) || (S.data.process && S.data.process.facts) || [];
+}
 function questionLabel(fact) {
   const r = result();
   return (r && r.questions && r.questions[fact.id]) || fact.question;
@@ -375,12 +388,12 @@ function spine() {
 
 function describe(e) {
   const what = {
-    "agent.start": () => `${T("started", "beginnt")}: ${e.instruction || ""}`,
+    "agent.start": () => `${T("starts", "beginnt")}: ${TASK[e.agent] || e.instruction || ""}`,
     "agent.end": () => { const c = e.counts || {};
       if ("agreed" in c) return T(`Second reading: ${c.agreed} agree, ${c.differed} differ, ${c.added} found only now`, `Zweite Lesung: ${c.agreed} übereinstimmend, ${c.differed} abweichend, ${c.added} erst jetzt gefunden`);
       if ("checked" in c) return T(`${c.accepted} of ${c.checked} supported by their quotes`, `${c.accepted} von ${c.checked} durch ihre Zitate belegt`);
       return e.summary || T("done", "fertig"); },
-    "delegate": () => `${T("asks", "beauftragt")} ${AGENT_TITLE[e.to] || e.to}: ${e.instruction || ""}`,
+    "delegate": () => `${T("asks", "beauftragt")} ${AGENT_TITLE[e.to] || e.to}: ${TASK[e.to] || e.instruction || ""}`,
     "fact.located": () => T(`found ${e.quotes} exact quote(s) for “${questionOf(e.fact)}”`, `${e.quotes} wörtliche Stelle(n) gefunden zu «${questionOf(e.fact)}»`),
     "fact.accepted": () => T(`supports “${questionOf(e.fact)}”`, `bestätigt «${questionOf(e.fact)}»`),
     "fact.rejected": () => `${T(`does not accept “${questionOf(e.fact)}”`, `bestätigt «${questionOf(e.fact)}» nicht`)}${e.reason ? `: ${e.reason}` : ""}`,
@@ -397,6 +410,8 @@ function describe(e) {
     "reading.photo": () => T(`describes the photo ${fileName(e.file)}`, `beschreibt das Foto ${fileName(e.file)}`),
     "reading.unread": () => T(`${e.pages} page(s) of ${fileName(e.file)} could not be read`, `${e.pages} Seite(n) von ${fileName(e.file)} nicht lesbar`),
     "tool": () => e.tool === "read_file" ? `${T("reads", "liest")} ${fileName(e.file)}` : e.tool === "search" ? `${T("searches", "sucht")} «${e.query}»`
+      : e.tool === "record_fact" && e.target ? T(`records “${questionOf(e.target)}”`, `hält fest: «${questionOf(e.target)}»`)
+      : e.tool === "record_document" && e.target ? T(`records ${needOf(e.target)}`, `hält fest: ${needOf(e.target)}`)
       : (LANG === "de" && TOOL_DE[e.tool]) || e.tool.replace(/_/g, " "),
   }[e.kind];
   return what ? what() : e.kind;
@@ -427,10 +442,10 @@ function feedbackLine() {
   return `<p class="cp-muted cp-feedback-line">${icon("check")}${T("Mark each item as correct or not. Your feedback stays with the case; only the counts are evaluated.",
     "Markieren Sie, was stimmt und was nicht. Ihre Rückmeldungen bleiben beim Fall; ausgewertet werden nur Anzahlen.")}${mine.length ? ` <b>${T(`${right} correct · ${wrong} not correct`, `${right} stimmt · ${wrong} stimmt nicht`)}</b>` : ""}</p>`;
 }
-const questionOf = (id) => { const f = facts().find((x) => x.id === id); return f ? questionLabel(f) : id; };
+const questionOf = (id) => { const f = facts().find((x) => x.id === id); return f ? questionLabel(f) : T("a question added for this case", "eine für diesen Fall ergänzte Frage"); };
 const needOf = (id) => {
   const d = ((S.data.process || {}).documents || []).find((x) => x.id === id) || (((liveState() || {}).state || {}).documents || []).find((x) => x.document === id);
-  return d ? d.title : id;
+  return d ? d.title : T("a document added for this case", "ein für diesen Fall ergänztes Dokument");
 };
 const clip = (text, n) => (String(text).length > n ? `${String(text).slice(0, n - 1)}…` : String(text));
 const reducedMotion = () => Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -441,9 +456,8 @@ function livePanel(live) {
   const agent = activeAgent() || "lead";
   const mine = S.events.filter((e) => e.agent === agent && !["agent.start", "process.state"].includes(e.kind)).slice(-4);
   const target = S.events.slice().reverse().find((e) => e.agent === agent && (e.target || e.fact || e.document));
-  const asked = S.events.slice().reverse().find((e) => e.kind === "delegate" && e.to === agent);
   const title = target ? (target.fact || (target.target && facts().some((f) => f.id === target.target)) ? questionOf(target.fact || target.target) : needOf(target.document || target.target))
-    : asked ? asked.instruction.replace(/\.$/, "") : AGENT_TITLE[agent];
+    : TASK[agent] || AGENT_TITLE[agent];
   const rows = mine.map((e, i) => `<li class="${i === mine.length - 1 ? "active" : ""}">${i === mine.length - 1 ? '<span class="cp-spinner"></span>' : icon("check")}${esc(describe(e))}</li>`).join("")
     || `<li class="active"><span class="cp-spinner"></span>${T("Starting", "Beginnt")}</li>`;
   return `<aside><section class="cp-card cp-plan"><h3>${T(`Building “${esc(title)}”`, `In Arbeit: «${esc(title)}»`)}</h3><ol>${rows}</ol></section>
@@ -545,7 +559,10 @@ function attentionTarget(live) {
       const node = step && document.querySelector(`[data-step-node="${CSS.escape(step.step)}"] .cp-ring`);
       if (node) return { el: node, key: `fact:${e.seq}` };
     }
-    if (e.kind === "tool" && (e.file || e.query)) { const name = $(".cp-doc-toolbar .name"); if (name) return { el: name, key: `tool:${e.seq}` }; }
+    if (e.kind === "tool" && e.file) {  // the file being read: its name above the source when shown, else its row in the sources
+      const el = e.file === S.file ? $(".cp-doc-toolbar .name") : document.querySelector(`.cp-source[data-file="${CSS.escape(e.file)}"] .cp-source-label`);
+      if (el) return { el, key: `tool:${e.seq}` };
+    }
     break;
   }
   const row = $(".cp-plan li.active");

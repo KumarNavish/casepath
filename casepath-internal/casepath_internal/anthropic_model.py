@@ -77,7 +77,9 @@ def _usage(payload):
     cached, created = int(raw.get("cache_read_input_tokens") or 0), int(raw.get("cache_creation_input_tokens") or 0)
     usage = {"input_tokens": int(raw.get("input_tokens") or 0) + cached + created, "output_tokens": int(raw.get("output_tokens") or 0)}
     if cached:
-        usage["cached_tokens"] = cached
+        usage["cached_tokens"] = cached  # read from the cache; included in input_tokens
+    if created:
+        usage["cache_write_tokens"] = created  # written to the cache; included in input_tokens
     return usage
 
 
@@ -124,7 +126,7 @@ class AnthropicMessagesModel:
             except ValueError:
                 raise ModelError("invalid_envelope", "The model response was not JSON.", attempt) from None
 
-    def _body(self, instructions, input, tools, tool_choice):
+    def _body(self, instructions, input, tools, tool_choice, mark_last=True):
         messages = to_messages(input)
         system = instructions
         if tools and tool_choice and not self.forced:
@@ -146,7 +148,9 @@ class AnthropicMessagesModel:
             body["system"][-1]["cache_control"] = CACHE
             if tools:
                 body["tools"][-1]["cache_control"] = CACHE
-            if messages and messages[-1]["content"]:
+            # An agent's next turn repeats this whole conversation, so its end is worth caching; a one-off structured
+            # answer is not repeated, and a cache write nobody reads costs more than no cache.
+            if mark_last and messages and messages[-1]["content"]:
                 messages[-1]["content"][-1] = {**messages[-1]["content"][-1], "cache_control": CACHE}
         return body
 
@@ -154,14 +158,19 @@ class AnthropicMessagesModel:
         if text_schema is not None:  # a structured answer is a forced tool call
             tools, tool_choice = [{"name": text_schema["name"], "description": "Give your answer as this tool's input.",
                                    "parameters": text_schema["schema"]}], {"type": "function", "name": text_schema["name"]}
-        started = time.monotonic()
+        started, mark_last = time.monotonic(), text_schema is None
         try:
-            payload, attempts = self._post(self._body(instructions, input, tools, tool_choice))
+            payload, attempts = self._post(self._body(instructions, input, tools, tool_choice, mark_last))
         except ModelError as error:
             if error.reason != "http_400" or not self.cache:
                 raise
-            self.cache = False  # this gateway refuses cache marks: the same request without them
-            payload, attempts = self._post(self._body(instructions, input, tools, tool_choice))
+            # Try once without cache marks; only if that succeeds were the marks the problem, and they stay off.
+            self.cache = False
+            try:
+                payload, attempts = self._post(self._body(instructions, input, tools, tool_choice, mark_last))
+            except ModelError:
+                self.cache = True
+                raise
         if payload.get("stop_reason") == "max_tokens":
             raise ModelError("max_output_tokens", "The model stopped before finishing its turn.", attempts)
         output, calls, texts = [], [], []
