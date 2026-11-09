@@ -7,6 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
+import importlib.util
 from dataclasses import replace
 from pathlib import Path
 from typing import Literal
@@ -183,23 +184,32 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/health")
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
-                "imports": files is not None,
+                "imports": files is not None, "uploads": uploads,
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
+    uploads_from_bytes = importlib.util.find_spec("pypdf") is not None  # loose PDFs need the PDF reader; prepared cases do not
 
     @app.get("/api/imports")
     def list_imports(who=Depends(user)):
         """Case files placed in the volume's incoming folder (and one level of subfolders), and which are imported."""
         if files is None:
             raise HTTPException(404, "No volume is configured for imports.")
-        entries = []
+        entries, prepared = [], []
         for entry in files.list(incoming):
-            entries += [e for e in files.list(entry["path"]) if not e.get("is_directory")] if entry.get("is_directory") else [entry]
+            if not entry.get("is_directory"):
+                entries.append(entry)
+                continue
+            inner = files.list(entry["path"])
+            if any(e["path"].endswith("/case.json") for e in inner):
+                prepared.append(entry)  # a prepared case: one folder, one case
+            else:
+                entries += [e for e in inner if not e.get("is_directory")]
         imported = {(c.get("intake") or {}).get("import_path"): c["id"] for c in store.list_cases()}
-        return {"folder": incoming, "files": [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": e.get("file_size"),
-                                               "case": imported.get(e["path"])}
-                                              for e in sorted(entries, key=lambda e: e["path"]) if Path(e["path"]).suffix.lower() in IMPORTABLE]}
+        rows = [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": e.get("file_size"), "prepared": False}
+                for e in entries if Path(e["path"]).suffix.lower() in IMPORTABLE and uploads_from_bytes]
+        rows += [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": None, "prepared": True} for e in prepared]
+        return {"folder": incoming, "files": [{**r, "case": imported.get(r["path"])} for r in sorted(rows, key=lambda r: r["path"])]}
 
     @app.post("/api/imports", status_code=201)
     async def import_file(body: ImportRequest, who=Depends(user)):
@@ -208,10 +218,29 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
         if files is None:
             raise HTTPException(404, "No volume is configured for imports.")
-        if not body.path.startswith(incoming + "/") or "/../" in body.path or Path(body.path).suffix.lower() not in IMPORTABLE:
+        if not body.path.startswith(incoming + "/") or "/../" in body.path:
             raise HTTPException(422, "Only case files in the volume's incoming folder can be imported.")
         if any((c.get("intake") or {}).get("import_path") == body.path for c in store.list_cases()):
             raise HTTPException(409, "This file is already imported.")
+        if Path(body.path).suffix.lower() not in IMPORTABLE:  # a prepared case folder: no PDF library needed here
+            from .prepare import PreparedError, load_prepared
+
+            def read(relative):
+                data = files.get(f"{body.path}/{relative}")
+                if data is None:
+                    raise HTTPException(404, f"The prepared case has no {relative}.")
+                return data
+            try:
+                case = await run_in_threadpool(load_prepared, store, read, who, title=body.title, intake={"import_path": body.path})
+            except PreparedError as error:
+                raise HTTPException(422, str(error)) from None
+            if body.workflow_id:
+                workflow = catalogue.get(body.workflow_id)
+                if workflow:
+                    store.select_workflow(case["id"], workflow["id"], workflow["version"], who)
+            return {"case": store.get_case(case["id"]), "file": None}
+        if not uploads_from_bytes:
+            raise HTTPException(422, "This runtime reads prepared cases only; prepare the file first.")
         data = await run_in_threadpool(files.get, body.path)
         if data is None:
             raise HTTPException(404, "Not found.")
@@ -281,7 +310,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(404, "No such workflow.")
         return found(store.select_workflow, case_id, workflow["id"], workflow["version"], who)
 
-    @app.post("/api/cases/{case_id}/files", status_code=201)
+    uploads = bool(importlib.util.find_spec("python_multipart") or importlib.util.find_spec("multipart"))
+
     async def upload(case_id: str, file: UploadFile = File(...), who=Depends(user)):
         found(store.get_case, case_id)
         data = await file.read(settings.max_upload_bytes + 1)
@@ -295,6 +325,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             result["text"] = result["text"][:settings.max_text_chars]
             result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
         return await run_in_threadpool(store.add_file, case_id, name, result["media_type"], result["kind"], data, result, who)
+
+    if uploads:  # a runtime without the form parser serves prepared cases only (imported from the volume)
+        app.post("/api/cases/{case_id}/files", status_code=201)(upload)
 
     @app.get("/api/files/{file_id}/original")
     def original(file_id: str, who=Depends(user)):

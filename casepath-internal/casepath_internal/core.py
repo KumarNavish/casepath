@@ -71,6 +71,9 @@ class StoreBlobs:
     def read(self, file):
         return self.store.file_bytes(file["id"])[0]
 
+    def blob(self, digest):
+        return self.store.blob(digest)
+
 
 class DirectoryBlobs:
     """File bytes from a directory of files named by their SHA-256, as a queue worker might receive them."""
@@ -80,6 +83,9 @@ class DirectoryBlobs:
 
     def read(self, file):
         return (self.directory / file["sha256"]).read_bytes()
+
+    def blob(self, digest):
+        return (self.directory / digest).read_bytes()
 
 
 class _Counted:
@@ -110,6 +116,9 @@ class _Files:
 
     def file_bytes(self, file_id):
         return self.blobs.read(self.rows[file_id]), self.rows[file_id]
+
+    def blob(self, digest):
+        return self.blobs.blob(digest)
 
     def update_extraction(self, file_id, extraction):
         self.rows[file_id] = {**self.rows[file_id], "extraction": extraction}

@@ -19,6 +19,7 @@ evidence sentence occurs in the documents, so the truth itself rests on the file
 
     python -m casepath_internal.benchmark check <suite-dir> [--catalogue <dir>]
     python -m casepath_internal.benchmark render <suite-dir>
+    python -m casepath_internal.benchmark prepare <suite-dir>
 """
 import argparse
 import json
@@ -142,6 +143,24 @@ def uploads(case, rendered):
     return files
 
 
+def seed_title(case):
+    return f"Synthetischer Fall {short_id(case)}: {case['documents'][0]['title']}"[:300]
+
+
+def prepare_suite(directory, image_side=1400):
+    """Write each case's prepared folder (<case>/prepared), so a runtime without PDF libraries can load the suite."""
+    from .prepare import prepare_case
+
+    cases = load_suite(directory)
+    with __import__("tempfile").TemporaryDirectory() as scratch:
+        for case in cases:
+            rendered = Path(scratch) / case["id"]
+            render(case, rendered)
+            prepare_case(seed_title(case), uploads(case, rendered), Path(case["_dir"]) / "prepared",
+                         intake={"synthetic": True, "source": "synthetic"}, image_side=image_side)
+    return len(cases)
+
+
 def seed(store, directory, user="synthetisch"):
     """Load the suite's cases into a store as synthetic cases anyone can open and prepare; cases already there are kept.
 
@@ -151,12 +170,19 @@ def seed(store, directory, user="synthetisch"):
 
     from .extract import extract
 
+    from .prepare import load_prepared
+
     existing = {c["title"] for c in store.list_cases()}
     added = 0
     with tempfile.TemporaryDirectory() as scratch:
         for case in load_suite(directory):
-            title = f"Synthetischer Fall {short_id(case)}: {case['documents'][0]['title']}"[:300]
+            title = seed_title(case)
             if title in existing:
+                continue
+            prepared = Path(case["_dir"]) / "prepared"
+            if (prepared / "case.json").exists():  # prepared where the PDF libraries are: nothing to read or draw here
+                load_prepared(store, lambda relative: (prepared / relative).read_bytes(), user, title=title)
+                added += 1
                 continue
             rendered = Path(case["_dir"]) / "rendered"  # drawn when the app was packaged; drawn now only if missing
             if not (rendered / "case.json").exists():
@@ -180,10 +206,13 @@ def main(argv=None):
     from .workflows import Catalogue
 
     parser = argparse.ArgumentParser(prog="casepath_internal.benchmark")
-    parser.add_argument("command", choices=["check", "render"])
+    parser.add_argument("command", choices=["check", "render", "prepare"])
     parser.add_argument("suite")
     parser.add_argument("--catalogue")
     args = parser.parse_args(argv)
+    if args.command == "prepare":  # prepared folders for a runtime without PDF libraries
+        print(f"prepared {prepare_suite(args.suite)} case(s)")
+        return
     if args.command == "render":  # draw every case's PDFs into <case>/rendered, so a runtime without a PDF writer can load them
         for case in load_suite(args.suite):
             render(case, Path(case["_dir"]) / "rendered")

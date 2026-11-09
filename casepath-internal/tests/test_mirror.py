@@ -73,6 +73,17 @@ class ImportTests(unittest.TestCase):
             self.assertEqual(client.post("/api/imports", json={"path": listed[0]["path"]}).status_code, 409)
             self.assertEqual(client.post("/api/imports", json={"path": f"{VOLUME}/outside.txt"}).status_code, 422)
             self.assertTrue(client.get("/api/health").json()["imports"])
+            # a prepared case folder imports as one case, with its extraction as prepared
+            files[f"{VOLUME}/incoming/Dossier 3/case.json"] = json.dumps({"format": "casepath.prepared-case/1", "title": "Dossier 3", "intake": {},
+                "files": [{"name": "Brief.txt", "file": "files/01-Brief.txt", "media_type": "text/plain", "kind": "text",
+                           "extraction": {"text": "Die Verwaltung hat nicht reagiert.", "pages": None}, "page_images": {}}]}).encode()
+            files[f"{VOLUME}/incoming/Dossier 3/files/01-Brief.txt"] = b"Die Verwaltung hat nicht reagiert."
+            listed = {f["name"]: f for f in client.get("/api/imports").json()["files"]}
+            self.assertTrue(listed["Dossier 3"]["prepared"])
+            prepared = client.post("/api/imports", json={"path": listed["Dossier 3"]["path"]}).json()["case"]
+            self.assertEqual(prepared["title"], "Dossier 3")
+            self.assertEqual(client.get(f"/api/files/{client.get('/api/cases/' + prepared['id']).json()['files'][0]['id']}/text").json()["text"],
+                             "Die Verwaltung hat nicht reagiert.")
             client.app.state.runs.shutdown()
             client.app.state.store.close()
 

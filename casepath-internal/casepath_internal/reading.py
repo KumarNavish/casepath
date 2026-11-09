@@ -78,13 +78,15 @@ def render_pages(data, numbers, dpi=150, max_side=1700):
     return Renderer(data, dpi, max_side).pages(numbers)
 
 
-def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700):
-    """Read the given pages from their images. Returns ({page: text}, [pages that could not be read])."""
-    renderer = Renderer(data, max_side=image_side)  # a smaller image costs fewer tokens; typed pages stay legible at ~1400
+def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700, images=None):
+    """Read the given pages from their images. Returns ({page: text}, [pages that could not be read]).
+
+    ``images``: {page: PNG bytes} prepared elsewhere, so no PDF renderer is needed here."""
+    renderer = None if images else Renderer(data, max_side=image_side)  # smaller images cost fewer tokens; ~1400 px stays legible
 
     def read(chunk):
         content = [{"type": "input_text", "text": f"Pages {', '.join(map(str, chunk))} of the file, in this order."}]
-        for _, png in renderer.pages(chunk):
+        for _, png in ([(n, images[n]) for n in chunk] if images else renderer.pages(chunk)):
             content.append({"type": "input_image", "image_url": "data:image/png;base64," + base64.b64encode(png).decode(), "detail": "high"})
         schema = obj(pages=arr(obj(page={"type": "integer", "enum": chunk}, text=text(30000)), minItems=len(chunk), maxItems=len(chunk)))
         result = model.respond_json(name="casepath_transcribe", instructions=OCR_INSTRUCTIONS, schema=schema, effort="low",
@@ -220,13 +222,18 @@ def instruction_like_pages(extraction):
 
 def describe_photo(model, data, max_side=1600):
     """A short factual description of a photo, read by the model from the image."""
-    from PIL import Image
-    image = Image.open(io.BytesIO(data))
-    image.thumbnail((max_side, max_side))
-    out = io.BytesIO()
-    image.convert("RGB").save(out, format="JPEG", quality=85)
-    content = [{"type": "input_text", "text": "Photo from the case file."},
-               {"type": "input_image", "image_url": "data:image/jpeg;base64," + base64.b64encode(out.getvalue()).decode(), "detail": "high"}]
+    try:
+        from PIL import Image
+    except ImportError:  # a runtime without an image library sends the photo as it is (prepared photos are already small)
+        kind = "image/png" if data[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
+        url = f"data:{kind};base64," + base64.b64encode(data).decode()
+    else:
+        image = Image.open(io.BytesIO(data))
+        image.thumbnail((max_side, max_side))
+        out = io.BytesIO()
+        image.convert("RGB").save(out, format="JPEG", quality=85)
+        url = "data:image/jpeg;base64," + base64.b64encode(out.getvalue()).decode()
+    content = [{"type": "input_text", "text": "Photo from the case file."}, {"type": "input_image", "image_url": url, "detail": "high"}]
     result = model.respond_json(name="casepath_photo", instructions=PHOTO_INSTRUCTIONS, schema=obj(description=text(3000, minLength=8)),
                                 effort="low", input=[{"role": "user", "content": content}])
     return result.value["description"].strip()
@@ -248,7 +255,9 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
             if done - reported[0] >= step or done == len(todo):
                 reported[0] = done
                 on_event({"agent": "claim_reader", "kind": "reading.progress", "file": file_row["id"], "done": done, "of": len(todo)})
-        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side)
+        prepared = extraction.get("page_images") or {}
+        images = {n: store.blob(prepared[str(n)]) for n in todo} if all(str(n) in prepared for n in todo) else None
+        transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side, images=images)
         extraction = merge_pages(extraction, transcribed)
         if transcribed:
             extraction.pop("segments", None)  # newly read pages change where documents begin and end
@@ -256,7 +265,7 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
             on_event({"agent": "claim_reader", "kind": "reading.unread", "file": file_row["id"], "pages": len(unread)})
         changed = True
     if ocr and file_row["kind"] == "image" and not extraction.get("text") and not extraction.get("photo_unreadable"):
-        data, _ = store.file_bytes(file_row["id"])
+        data = store.blob(extraction["photo_image"]) if extraction.get("photo_image") else store.file_bytes(file_row["id"])[0]
         try:
             description = describe_photo(model, data)
         except (ModelError, OSError, ValueError):  # An image that cannot be opened or read stays an original only.

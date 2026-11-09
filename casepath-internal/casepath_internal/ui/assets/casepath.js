@@ -217,7 +217,7 @@ function renderRail() {
     : run.status === "completed" ? `${T("Prepared", "Vorbereitet am")} ${dateText(run.finished_at)}` : word(run.status)) : T("Not prepared yet", "Noch nicht vorbereitet");
   return `<aside class="cp-rail" aria-label="${T("Sources", "Quellen")}">
     <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small></div>
-    <div class="cp-rail-head">${T("Sources", "Quellen")}<span>${files.length}</span><label class="cp-link">${icon("plus")}${T("Add source", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label></div>
+    <div class="cp-rail-head">${T("Sources", "Quellen")}<span>${files.length}</span>${S.canUpload === false ? "" : `<label class="cp-link">${icon("plus")}${T("Add source", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case documents here", "Falldokumente hierher ziehen")}</div>`}
     ${S.message ? `<p class="cp-error" style="padding:0 27px">${esc(S.message)}</p>` : ""}
     <div class="cp-rail-foot">${chooser}
@@ -241,7 +241,7 @@ function bindRail() {
   const drop = $("#drop") || $(".cp-rail");
   drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
   drop.addEventListener("dragleave", () => drop.classList.remove("over"));
-  drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); uploadFiles(e.dataTransfer.files); });
+  drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (S.canUpload !== false) uploadFiles(e.dataTransfer.files); });
   const run = $("#run");
   if (run) run.addEventListener("click", startRun);
   const workflow = $("#workflow");
@@ -863,6 +863,7 @@ async function route() {
 
 (async () => {
   try { S.me = (await api("/api/me")).user; } catch (error) { S.me = ""; }
+  try { S.canUpload = (await api("/api/health")).uploads !== false; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();
 })();

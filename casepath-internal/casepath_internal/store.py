@@ -118,8 +118,8 @@ class CaseStore:
         return self.get_case(case_id)
 
     # Files
-    def add_file(self, case_id, name, media_type, kind, data, extraction, user):
-        self.get_case(case_id)
+    def put_blob(self, data):
+        """Keep bytes by their SHA-256 (originals and prepared page images); returns the digest."""
         digest = sha256(data).hexdigest()
         path = self.root / "files" / digest[:2] / digest
         if not path.exists():
@@ -127,6 +127,14 @@ class CaseStore:
             temporary = path.with_suffix(".part")
             temporary.write_bytes(data)
             temporary.replace(path)
+        return digest
+
+    def blob(self, digest):
+        return (self.root / "files" / digest[:2] / digest).read_bytes()
+
+    def add_file(self, case_id, name, media_type, kind, data, extraction, user):
+        self.get_case(case_id)
+        digest = self.put_blob(data)
         file_id, at = new_id("file"), now()
         with self._lock:
             self._db.execute("insert into files values(?,?,?,?,?,?,?,?,?,?)",
@@ -251,7 +259,9 @@ class CaseStore:
             if self._one("select 1 as busy from runs where case_id=? and status in ('queued','running')", case_id):
                 raise Conflict("A run is in progress for this case.")
             runs = [r["id"] for r in self._all("select id from runs where case_id=?", case_id)]
-            digests = [r["sha256"] for r in self._all("select sha256 from files where case_id=?", case_id)]
+            rows = self._all("select sha256, extraction from files where case_id=?", case_id)
+            digests = [r["sha256"] for r in rows]
+            images = {d for r in rows for d in (json.loads(r["extraction"]).get("page_images") or {}).values()}
             removed = {"runs": len(runs), "files": len(digests), "knowledge": 0, "knowledge_quotes": 0}
             for run_id in runs:
                 self._db.execute("delete from feedback where run_id=?", (run_id,))
@@ -272,6 +282,9 @@ class CaseStore:
             self._db.execute("insert or replace into deletions values(?,?,?,?,?)", (case_id, now(), user or "", reason, json.dumps(removed)))
             for digest in set(digests):
                 if not self._one("select 1 as used from files where sha256=?", digest):
+                    (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
+            for digest in images:  # page images of the case's files, unless another file still points to them
+                if not self._one("select 1 as used from files where extraction like ?", f"%{digest}%"):
                     (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
         return removed
 
