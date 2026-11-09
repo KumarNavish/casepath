@@ -23,7 +23,10 @@ def main(argv=None):
     commands = parser.add_subparsers(dest="command", required=True)
     serve = commands.add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
-    serve.add_argument("--port", type=int, default=8765)
+    # The port a platform assigns (CASEPATH_PORT, PORT or DATABRICKS_APP_PORT), else 8765.
+    import os
+    serve.add_argument("--port", type=int, default=int(os.environ.get("CASEPATH_PORT") or os.environ.get("PORT")
+                                                       or os.environ.get("DATABRICKS_APP_PORT") or 8765))
     check = commands.add_parser("check-catalogue")
     check.add_argument("directory")
     contract = commands.add_parser("contract")

@@ -97,6 +97,12 @@ class AppTests(unittest.TestCase):
         with self.assertRaises(SettingsError):  # a role cannot be checked on a plain user id
             load_settings({**self.env, "CASEPATH_DEV_USER": "", "CASEPATH_IDENTITY_HEADER": "x-identity", "CASEPATH_REQUIRED_ROLE": "r"})
 
+    def test_a_pilot_is_open_to_its_named_group_only(self):
+        pilot = self.client(CASEPATH_DEV_USER="", CASEPATH_IDENTITY_HEADER="X-Forwarded-Email",
+                            CASEPATH_ALLOWED_USERS="anna.muster@example.ch, Beat.Beispiel@example.ch")
+        self.assertEqual(pilot.get("/api/me", headers={"X-Forwarded-Email": "beat.beispiel@example.ch"}).json(), {"user": "beat.beispiel@example.ch"})
+        self.assertEqual(pilot.get("/api/cases", headers={"X-Forwarded-Email": "someone.else@example.ch"}).status_code, 403)
+
     def test_learning_reuse_and_edits_across_cases(self):
         client = self.client()
         # Case A: the team runs, and the result checker proposes a document need.

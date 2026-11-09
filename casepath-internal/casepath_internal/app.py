@@ -100,6 +100,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None)
                 raise HTTPException(401, "Sign-in required.") from None
             if settings.required_role and settings.required_role not in who.roles:
                 raise HTTPException(403, "This workspace needs an access role you do not have.")
+            if settings.allowed_users and who.user.lower() not in settings.allowed_users:
+                raise HTTPException(403, "This CasePath pilot is open to its named pilot group only.")
             return who.user
         if settings.dev_user:
             return settings.dev_user

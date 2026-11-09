@@ -57,6 +57,7 @@ class Settings:
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
     required_role: str | None = None
+    allowed_users: frozenset = frozenset()
 
 
 def _flag(env, name, default):
@@ -104,4 +105,5 @@ def load_settings(env=None):
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
         required_role=required_role,
+        allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
     )
