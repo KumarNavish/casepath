@@ -283,7 +283,7 @@ class CaseWork:
         presumed because this case's workflow was the only one that could apply is listed too, while the files leave it
         open."""
         out = {fact: {"fact": fact, "value": value, "applies": "routed", "source_ref": None, "by": "routing",
-                      "text": "Only this workflow can apply to the case, so routing presumes its condition."}
+                      "text": "Only this workflow can apply to the case, so routing presumes its condition.", "code": "routing_only_workflow"}
                for fact, value in self.routing_presumed.items()
                if (self.facts.get(fact) is None or self.facts[fact]["status"] == "unknown")
                and not workflows.reading_gave_value(self.facts.get(fact))}
@@ -410,7 +410,7 @@ def _record_fact(work, agent, args):
 def _routing_conflict(work, known, value, located):
     """Routing established a value and a later reading gives another: neither replaces the other; a person decides."""
     known.update(status="conflicting", verdict="not_checked", citations=known["citations"] + located, second_value=value,
-                 verdict_reason="Routing and a reading of the files give different values; a person decides.")
+                 verdict_reason="Routing and a reading of the files give different values; a person decides.", reason_code="routing_conflict")
     work.emit("source_checker", "fact.conflicting", fact=known["fact"])
 
 
@@ -424,9 +424,10 @@ def _record_document(work, agent, args):
             work.emit("source_checker", "document.rejected", document=args["document"], reason="no located quote")
             return {"accepted": False, "reason": "name the file that is this document and quote it word for word"}
     status = "missing" if args["status"] in {"absent", "mentioned_only"} else args["status"]
-    note, shown = args["note"], []
+    note, shown, codes = args["note"], [], []  # codes: the product's own notes, shown in the reader's language
     if args["status"] == "mentioned_only":
         names = sorted({work.evidence.files[hit["file"]].get("name") or hit["file"] for hit in located})
+        codes.append({"code": "mentioned_only", "items": names})
         note = ((note + " ") if note else "") + (f"Only mentioned in {', '.join(names)}; " if names else "") + \
             "the document itself is not in the files."
     required_items = work.document_defs.get(args["document"], {}).get("must_show", [])
@@ -438,9 +439,10 @@ def _record_document(work, agent, args):
         shown = [{"item": item, "citations": by_item[item]} for item in required_items if by_item.get(item)]
         if lacking:
             status = "unusable"
+            codes.append({"code": "does_not_show", "items": lacking})
             note = (note + " " if note else "") + "Does not show: " + "; ".join(lacking) + "."
     work.documents[args["document"]] = {"document": args["document"], "status": status, "files": args["files"],
-                                        "citations": located, "note": note, "by": agent, "shows": shown,
+                                        "citations": located, "note": note, "by": agent, "shows": shown, "note_codes": codes,
                                         "verdict": None if status != "missing" else "not_checked"}
     work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"],
               cite=located[0] if located else None)
@@ -682,6 +684,7 @@ def run_source_checker(model, work, effort="medium"):
                     row["status"] = "unusable"
                     row["note"] = ((row.get("note") or "") + " " if row.get("note") else "") + \
                         "The check did not find it showing: " + "; ".join(lacking) + "."
+                    row.setdefault("note_codes", []).append({"code": "check_does_not_show", "items": lacking})
                     row["shows"] = [shown for shown in row["shows"] if shown["item"] not in lacking]
             work.emit("source_checker", f"{kind}.{row['verdict']}", **{kind: item_id})
     checked = [i for i in items if not i["item"].startswith("show:")]
@@ -873,6 +876,7 @@ def confirm_documents(model, work):
             continue
         row["status"] = "unusable"
         row["note"] = ((row.get("note") or "") + " ").lstrip() + "A second, independent judgment did not confirm it as present and sufficient."
+        row.setdefault("note_codes", []).append({"code": "second_judgment_not_confirmed", "items": []})
         work.emit("source_checker", "document.recorded", document=d, status="unusable", files=row["files"], cite=None)
     work.emit("source_checker", "agent.end", summary=f"Second judgment of documents: {kept} of {len(ids)} confirmed present.",
               counts={"confirmed": kept, "checked": len(ids)})
@@ -901,7 +905,8 @@ def confirm_facts(model, work, effort="medium"):
                 agreed += 1
             else:
                 first.update(status="conflicting", verdict="not_checked", citations=first["citations"] + located,
-                             second_value=value, verdict_reason="Two independent readings of the files differ; a person decides.")
+                             second_value=value, verdict_reason="Two independent readings of the files differ; a person decides.",
+                             reason_code="readings_differ")
                 work.emit("source_checker", "fact.conflicting", fact=fact["id"])
                 differed += 1
         elif first_value is not None or status == "established":
@@ -910,7 +915,8 @@ def confirm_facts(model, work, effort="medium"):
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": quotes,
                                       "verdict": "not_checked", "by": (first or {}).get("by", "second_reading"),
                                       "readings": [first_value, value],
-                                      "verdict_reason": "Only one of two independent readings found a value; a person decides."}
+                                      "verdict_reason": "Only one of two independent readings found a value; a person decides.",
+                                      "reason_code": "one_reading_only"}
             work.emit("source_checker", "fact.located", fact=fact["id"], status="unknown", quotes=len(quotes), missed=0,
                       cite=quotes[0] if quotes else None)
             single += 1
@@ -1022,7 +1028,7 @@ def finalize(work):
     evaluation = work.evaluate()
     result = work.result or {  # the result checker stopped at its limit: the checklist still stands on the accepted findings
         "summary": "The result checker did not finish; the checklist is evaluated from the accepted findings.",
-        "answer": "Not finished: see the checklist and the open points.",
+        "answer": "Not finished: see the checklist and the open points.", "code": "result_checker_stopped",
         "open_points": [a["text"] for a in evaluation["next_actions"]][:12], "case_summary": [],
         "reply": {"needed": False, "subject": "", "clauses": []}, "learn": []}
     # A statement rests on what the files establish: established, accepted facts only, never a presumption.
@@ -1064,6 +1070,7 @@ def finalize(work):
                 for k, p in presumed.items()],
             "documents": list(work.documents.values()), "evaluation": evaluation,
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
+            **({"answer_code": result["code"]} if result.get("code") else {}),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
             "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"], "date": f["value"]}

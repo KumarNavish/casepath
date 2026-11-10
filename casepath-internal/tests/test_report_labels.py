@@ -35,3 +35,22 @@ class ReportLabelTests(unittest.TestCase):
         self.assertIn("the check doubts it: Zitat zu knapp", en)
         self.assertIn("Hinweise zur Vorbereitung", de)
         self.assertIn("marked as not checked", en)
+
+
+class ProductTextTests(unittest.TestCase):
+    def test_notes_the_product_writes_carry_a_code_and_the_stopped_result_is_in_both_languages(self):
+        import json
+        from pathlib import Path
+        from casepath.agents.team import CaseWork, _record_document, finalize
+        fixture = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
+        files = [{"id": "f1", "name": "message.eml", "kind": "email", "text": "Ich habe den Vermieter am 2. März schriftlich informiert."}]
+        work = CaseWork(case={"title": "x", "intake": {}}, files=files, base_workflow=fixture)
+        _record_document(work, "document_finder", {"document": "notice_letter", "status": "mentioned_only", "files": ["f1"],
+                                                    "citations": [{"file": "f1", "quote": "Ich habe den Vermieter am 2. März"}], "note": ""})
+        self.assertEqual(work.documents["notice_letter"]["note_codes"], [{"code": "mentioned_only", "items": ["message.eml"]}])
+        work.result = None
+        result = finalize(work)
+        self.assertEqual(result["answer_code"], "result_checker_stopped")
+        state = {"run": {"result": result}, "process": work.graph}
+        self.assertIn("Nicht abgeschlossen", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="de")))
+        self.assertIn("Not finished", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="en")))

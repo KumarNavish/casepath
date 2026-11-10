@@ -25,6 +25,7 @@ LABELS = {
            "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet.",
            "suggested_case": "für diesen Fall vorgeschlagen", "basis": "Grundlage:", "applies_if": "gilt, falls:", "doubt": "die Prüfung zweifelt:",
            "warnings": "Hinweise zur Vorbereitung",
+           "result_checker_stopped": "Nicht abgeschlossen: Die Checkliste beruht auf den belegten Feststellungen; siehe Checkliste und offene Punkte.",
            "turn_limit": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
            "no_report": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
            "reading_failed": "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen.",
@@ -43,6 +44,7 @@ LABELS = {
            "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet.",
            "suggested_case": "suggested for this case", "basis": "basis:", "applies_if": "applies if:", "doubt": "the check doubts it:",
            "warnings": "Notes on the preparation",
+           "result_checker_stopped": "Not finished: the checklist rests on the accepted findings; see the checklist and the open points.",
            "turn_limit": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
            "no_report": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
            "reading_failed": "One reading of the facts failed; the facts it should have confirmed stay open.",
@@ -186,9 +188,11 @@ def build(case, state, files, lang="de", knowledge=()):
         body += [_para(_run(f"• {point}"), space_after=40) for point in result["open_points"]]
     if result.get("answer") or result.get("summary"):
         body.append(_heading(L["assessment"]))
-        if result.get("answer"):
+        if result.get("answer_code") in L:  # written by the product, not by an agent: in the reader's language
+            body.append(_para(_run(L[result["answer_code"]], bold=True)))
+        elif result.get("answer"):
             body.append(_para(_run(result["answer"], bold=True)))
-        if result.get("summary"):
+        if result.get("summary") and not result.get("answer_code"):
             body.append(_para(_run(result["summary"])))
 
     applied = [k for k in ((state.get("provenance") or {}).get("knowledge") or []) if k.get("applied")]
