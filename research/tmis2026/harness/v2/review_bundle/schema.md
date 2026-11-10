@@ -48,9 +48,8 @@ false or unresolved, quoting the claim; code then applies the rules. Every condi
 - The `documents` of one route are **joint**: all of them are needed together.
 - To accept either of two documents, use two routes with one document each. To require both, put them in one route.
 - Document names must be copied exactly from `catalogue.json` (`name`). Documents cannot be invented.
-- An evidence item needs at least one route; a route needs at least one document. To say that a fact needs no
-  document from the catalogue, remove that evidence item; a fact needs at least one evidence item, so remove the
-  fact instead if none is left.
+- A route needs at least one document. An evidence item may have no route (`"routes": []`): then no catalogue
+  document can show it and nothing is requested for it. A fact needs at least one evidence item.
 - Keep existing `fact_id`, `capability_id` and `route_id`. New ones: `<rule_id>.fNN` for a fact,
   `<fact_id>.cNN` for an evidence item, `rN` for a route (unique within its evidence item).
 - `why` and `must_show` are explanations; edit them freely.

@@ -41,8 +41,6 @@ def check_evidence(where, ev, prefix):
     if not isinstance(ev, dict) or set(ev) != {"capability_id", "must_show", "cited", "routes"}:
         return err(where, "evidence item needs exactly capability_id, must_show, cited, routes")
     check_cited(where, ev["cited"])
-    if not ev["routes"]:
-        err(where, "evidence item has no route")
     rids = set()
     for rt in ev["routes"]:
         if not isinstance(rt, dict) or not {"route_id", "documents"} <= set(rt) or set(rt) - {"route_id", "documents", "why"}:
