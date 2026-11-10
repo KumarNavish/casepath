@@ -337,7 +337,7 @@ person. Per-expert values are shown unlabelled.
 ## 13. Versioning and freeze
 
 1. This is version 1.0-rc. It becomes 1.0 at the freeze, when the decision points and hashes are recorded; nothing else may change.
-2. **Timetable.** Day 0 is 2026-11-10, the date of the owner's decisions. Freeze on day 10. Adjudication on days 11–13, on the frozen runs. The first session takes place after adjudication is complete and hashed, and within two weeks of that. Rule: **no session before the gold hash exists.**
+2. **Timetable.** Day 0 is 2026-11-10, the date of the owner's decisions. Freeze on day 10. Adjudication on days 11–13, on the frozen runs. The first session takes place after adjudication is complete and hashed, planned for day 14 (2026-11-24) or soon after. Rule: **no session before the gold hash exists.**
 3. **Freeze**, on day 10, as version 1.0. The freeze commit contains exactly:
    - the commit hash of this document's repository at freeze;
    - the product commit and the parity manifest's source-tree hash;
@@ -374,7 +374,7 @@ runs approved.
 
 - **Development exposure.** The study cases were among the dossiers the product was developed on (section 3.2).
 - **Process reference.** The process CasePath executes was built from the process reference that gold uses. Its structure is not scored. Q1 measures placement on a given process and reading of the file; it is not evidence that the process itself is right, and not evidence about process discovery.
-- **One human adjudicator.** The process owner wrote the process reference, so gold for the path reflects one expert's reading of their own process.
+- **One human adjudicator.** The process owner wrote the process reference, so gold for the path reflects one expert's reading of their own process. The same person lists the alternatives counted as equally correct for the documents to request and the next action, so those too rest on one reader; they are fixed and hashed before the first session and cannot be widened afterwards.
 - **Automated second rater.** It is run by the builder of the product and is not independent evidence of correctness. Its agreement with the adjudicator shows how reproducible the labels are, not that they are right.
 - **Second view.** The experts' consensus on the same items is reported beside gold; it carries the anchoring caveat, because the experts saw CasePath's answer.
 - **Learning.** Only added documents, steps and questions become Knowledge, and replay changes the process and the checklist only (section 9.5).
