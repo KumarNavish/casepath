@@ -78,6 +78,20 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual(outcome["status"], "completed")  # two topics no longer fail the run
         self.assertEqual(outcome["routing"]["other_topic"]["topic"], "Rent arrears")
 
+    def test_a_routing_quotation_not_found_is_asked_for_once_more(self):
+        model = script()
+        model.routing = [{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": "Ich habe ... informiert."}]}]
+        model.retries["casepath_route"] = {"facts": [{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                                           "other_topic": []}
+        catalogue = Catalogue.load(FIXTURES)
+        other = {**catalogue.get("example-defect"), "id": "example-loan", "applies_when": {"fact": "legal_area", "is": "loan"}}
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare({**job([], workflow_id=None), "workflows": [catalogue.get("example-defect"), other]}, model,
+                                   core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["routing"]["status"], outcome["workflow"]["id"]), ("selected", "example-defect"))
+        cited = next(f for f in outcome["routing"]["facts"] if f["fact"] == "legal_area")
+        self.assertEqual(cited["citations"][0]["quote"], QUOTE)
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
