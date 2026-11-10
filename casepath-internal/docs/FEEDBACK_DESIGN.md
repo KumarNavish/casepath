@@ -63,7 +63,7 @@ The Hackathon cases have gold labels made independently of any handler session. 
 | CasePath right | appropriate | under-reliance |
 | CasePath wrong | **over-reliance** | appropriate |
 
-Experts can be wrong too, so corrections are scored against gold as well, and a second expert independently reviews a fifth of all corrections (agreement reported).
+Experts can be wrong too, so corrections are scored against gold as well, and since all five experts judge the same items, their agreement is reported for every item.
 
 ## The study we can actually run: 5 experts × 3 Hackathon cases
 
