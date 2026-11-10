@@ -1,0 +1,1703 @@
+{
+ "PRODUCT|fcl_1f01a092db41c4bb|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Dated room-temperature log",
+     "step": "dh_evidence",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 8 ZGB (burden of proof).",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The workflow already requests heating service findings, but the claim specifically describes low room temperatures; a dated log is distinct from a service report and can support proof of the condition."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope",
+    "dh_specialist"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The file does not establish whether the policy covers the expert or legal-advice costs. Obtain the missing documents listed in the evaluated checklist and the applicable policy terms before assessing coverage; the cause of the heating problem also remains open.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "keys": [
+   "35ea23dc354152be40b6e0a5c6996efc9e605f32a1639e6202ed5a3686553b94",
+   "a122e8a84ac771b3c715687c5300fd6f60ff795e1c8de52075eaad3ff2db0377",
+   "51edb2e2a8c29d44f76772be162250f65e1a8c5b0d3290772dd2bc6d16cefd21",
+   "310e21e6a8b4f32ff94b6fd46cbcdbd9b32c3f5b14fcdc4b37942102b9078adf",
+   "57fd7388bfb224eba8d2d253049099b1beead52061bd235d121c08ec0c169a17",
+   "b5774660be1c3dd970a62682c4523128be4a286ddcc4dac4deadf73747b894ce",
+   "e2e3e562dad69c6d2701c6dddc59f27c186776ff0ecb81aff915b0446b343bf9",
+   "8e1adedbf1475c2f913ee285d43c7f9ab05cc21fdd8b76a3ac5e4d418c931008",
+   "369a87182d8dba542aa84153762fcbfdb3c60456b8d99441090a84291ab0d51c",
+   "95cc525a26be92b167c6bf968293dfe42ef1639bfc985918554e5a1bf2d7db54",
+   "89df67f5886bc7e7776c4527e87894c4582c266e5da4e5e6a7cc8c92ef0a6d82",
+   "153c92a9216e5a60e8b00cb4e20384b53acaa323c837034935ac5d0327e4670c",
+   "7379445122818ddce9ad16049f4b7d50085a3e3708c19644b7d9151a88095f92",
+   "cf15c96669d7a31d397bd83af9314a5fc680ea32e88942c004859e1c01dd2ef4",
+   "69d751ff7c3282497ae51554f9f7d6acf902ca231b99d4119f74fac81aa43bc1",
+   "faa53921c2f048995508af1897013f7bbc7919c77adf7afea3b5df1ef52c200a",
+   "add13450d1bfe659bbcbdd3ee82dbb8f48356d970f930fa91b0db47a4a12c449",
+   "1b320cf66a234536e63d028103ec04fefe0c69814d58608943c24ee48b389efc",
+   "acc20a092c0177d553b64d4c185fb132f72f6755a646d70dfe6112f4f4e6edaa",
+   "450e841a62ef9e9e2e3ea6c24a6863acbfe0c9e08406140ec3cb1117e3284844",
+   "c6f7d90c5ec28af6964430577effe8cbb973c267e4893e8864b4c6e5b23dc44f",
+   "b64881d7c29db423b262ec896a7d3ad79a2d71846435caad037a3564bec70896",
+   "f6b48e03d75925f276d3f412423394944f5124f70ff12122511517554c3e8c14",
+   "961b7d8db8e7a1b31d1183f39acf4e274434bc007d3b82ffe27915bb09caf910",
+   "77fe927f159dc2b818eb56d13c8607d8eab8ced25ecc40beace01e678d2d256b",
+   "8d0d245d38fccec02d97a650670be6591e2578ca4809eaff4ec8def361b5a562",
+   "737df5bf3f6e755385fbb99dc635e869fe561d0e05724c3b4478767f83c8c4e0",
+   "def0715e6c9a49bf1714b7cfe74e16f40d5076f09f1f3041ea004e0727a89093",
+   "5faf8478d9bbe96107c4fc43f56402a617cf92e7f93c816d86b5c171e4f80309",
+   "6eb39816437ff6d7fc3d6e90b64340ad961359529de7b4ccf97622d1171026cf",
+   "ee4a935fa52131232e3c0c8f1fc41c70e0e7586e81e59d50921c3291d7bd98be"
+  ],
+  "seconds": 4.4,
+  "tokens": {
+   "input": 138523,
+   "cached": 101096,
+   "output": 15340
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_09bf4c849ef1ee44|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Detaillierte Arbeitsbeschriebe und Rechnungen zu den Renovationsarbeiten",
+     "step": "ri_renovation",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 269a lit. b OR; Art. 14 VMWG",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Detaillierte Belege über die Arbeiten und Kosten können die Abgrenzung zwischen Unterhalt und wertvermehrenden Investitionen belegen, auf der die behauptete Mietzinserhöhung für Renovationen beruht."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Mietzinserhöhung fristgerecht bei der Schlichtungsbehörde anfechten"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_increase_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rent_adjustment": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Ob die geplante Erhöhung anfechtbar ist und welche Frist läuft, lässt sich anhand der vorliegenden Unterlagen noch nicht beurteilen. Zuerst sind insbesondere die Erhöhungsmitteilung und das Empfangsdatum zu klären; anschliessend sind die Berechnungsgrundlagen und Renovationsbelege zu prüfen.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "keys": [
+   "fe353db3bb315037b9dbc0df1377c7f9774653a4f163123a429b0144d5d09a51",
+   "771bc5854ee57a6cafaa3be7c8b4ad75f7345b290cb51b5027f8d4e9e76dd159",
+   "d053140d20b665d2e398b020c91e96cde15110ce01116cfb7d40da22d4a966e2",
+   "262204ae4f46666579f0361ec840a69646a49294abe08348885899c0e0a2758b",
+   "172f446c8aad527347528837176e2b6c1f5f2817bf5746a3c009d1fb0c22aacc",
+   "e3d9311f221841b988bde7f799aa73c048f579d93601bb0f0015586ad5aab54c",
+   "2d28efd6d9ef5cbaade3fc2feef881ff15321bb254059aae92bd0db4fade5cf9",
+   "dfeea397404ae806db46151c2b7ed83b2152c5ad6b9a5a177d4cdcf07740019d",
+   "4841fbb24db0b613bdfa68fbeb98780bc32db8a59576239e02e37c3c94e5f140",
+   "285f678f1127f3ab15c8442278631db6b587b77bf7cfa903d4a216efe3a49b51",
+   "d8fd4a1e5238ca40d478644045e5c73aa447dd785f8c480231e9fb110a8a0970",
+   "83b3dbc76d2e6b2fc3dad64ef7abb94191513920634750ef888de67a9098ccf3",
+   "badd5675c3d5f91bc05defd6c3d4c04c5923b7ca17d064eeb7aedf5ce60005f5",
+   "022190cc9f964b88969d8fb308a2773a4585c4775812bf1fcf753f555d105e68",
+   "36f03dd13c676cfc1f768385f61d180fea286d524f50c12469d47fe6005c5329",
+   "513002981cd936aa09a63d0cac2445f05fb0e458653f73cc08194a474971aba7",
+   "d7045b65f918b659d4bb72f541738b8ed26c902b38cab202db12a07045c63122",
+   "cafd8c7e257e19b81f579bc661998f342c9b91caf7cd8f914b1cf1014dd95891",
+   "9051715cefe7e4d053d58db359bb305583a0645ef35be34885fe0b723a2bccd8",
+   "cdd9d02f7893ac83b9e593e9701c9e01a94f80aa03d150f4e6535b98621f81ee",
+   "53591b8e011e2e0d6a7f1dd86a7735cdce3c96d5007144e0da98b15bf45c894e",
+   "51888ae48278bc7651724f2c30b665c29251f51fe9111f3050b07be8f7c081e4",
+   "abe5948a0465bbf3db081dba4673e1b4c6f3e70fb0831c10ff7720efec2404bf",
+   "75e0696e8d0ec7848763c8f75464c2fea274338d721b4dba39e3689d6ac1db76",
+   "bf770d8e17d651535912b6a13ce14332b5d063598f19411e80f81796522e23e3",
+   "0d6729c807dcfeabcd0f10e8b22e702463963a0e14908f23ce6027b9e3d2b733",
+   "3d324ddd98d36dd5ba0e816de800d39885fb88259722ed1f4596759eb216fd9e",
+   "dc69db6a4d496fd4c2c8e3a4bd790373edf428df7857c53f2d06d16ab292ca68",
+   "89f98992e85aacbf04c545eb78762538080dcc229a254feca6b28a825eac0452",
+   "1e7147995d23c1cc36963995044a8526e8f7d0d609ec937642eb3794ae902d81",
+   "1e7147995d23c1cc36963995044a8526e8f7d0d609ec937642eb3794ae902d81",
+   "94e2da779713e6ee2a4a86149497ba94775fd24876b4060cc7cf358acca08b19",
+   "94e2da779713e6ee2a4a86149497ba94775fd24876b4060cc7cf358acca08b19"
+  ],
+  "seconds": 30.8,
+  "tokens": {
+   "input": 127277,
+   "cached": 83494,
+   "output": 16427
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_1d7e0a19ee376c16|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "mold"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "mold"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ]
+  },
+  "status": "completed",
+  "calls": 24,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_6c880b2bcf13981f",
+         "page": null,
+         "start": 26,
+         "end": 93,
+         "quote": "Vermieter: Peter Ammann (Privatvermieter). Mieterin: Corinne Huber."
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_6c880b2bcf13981f",
+         "page": null,
+         "start": 94,
+         "end": 156,
+         "quote": "Mietobjekt: 2-Zimmer-Wohnung, Feldstrasse 54, 8400 Winterthur."
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_6c880b2bcf13981f",
+         "page": null,
+         "start": 157,
+         "end": 390,
+         "quote": "Mietbeginn: 1. April 2021. Nettomietzins: CHF 2450.00 pro Monat, zuzüglich Nebenkosten gemäss separater Abrechnung. Kündigungsfrist: drei Monate auf Ende eines Monats. Der Mietvertrag unterliegt dem schweizerischen Obligationenrecht."
+        }
+       ]
+      }
+     ]
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "mold"
+   ],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [
+    "lease_contract"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "mold"
+    ],
+    "completions": 2
+   },
+   "answer": "Die Akte belegt den behaupteten Türmangel und enthält den Mietvertrag; vor einer belastbaren Empfehlung sind die im Prüfblatt als fehlend aufgeführten Unterlagen und die Klärung zu den Wandflecken erforderlich.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "keys": [
+   "9cc92f8193930df208b6c2064638ad31860870514f6a84afa87f9d324d0321c2",
+   "f129501a52dfbb55b68710e4bffea585a5ff8c4c0956c4d1982520380564fbe4",
+   "161b52b13f51a25881d2e162bfb56ca5585c17d4eb34b06ac0df50ba64ddbdca",
+   "4abedbd61eeaa447a1092370698497ad2d7ace27e775982c7003f9e4f3d8078f",
+   "80839953b46da532ab740ea2d22ee018c1584f33bebaa6d24cc2a83a2e265c29",
+   "2c3abf29a4f75667442f0ab15f7f99fa5cdf7399f01c6ec641754f991bf08d33",
+   "f3a8a5feebf939ea66db7a64306e8d5c7f40834f66f917254b8647688abbee63",
+   "49029970026b6779eb13739ac2eabb9e0b4efbab46ce80ce698378296be560c3",
+   "d469da373a0c16eae571be6ee8c01cbed8e5a95c4c7343b5ad31578a4fdea74b",
+   "b2aeb45024042e2bdb50d0b623edc80717f6bd734ed3b5041884dc3cceadfa93",
+   "13c04268b3a5d36ddc6927f49a690ea7a55fa4fd5aab3d84c49fba3f5f4a8134",
+   "11f6ef58ddfbf1c979d559ea020145544b1f6e8ba5ae4c9e80de05412467bb74",
+   "c790f8f5a6db2dc39052535d6116827bfd9031deef72caa267f2c34fa59af6b8",
+   "1ec33075125203f2c85c9cec6f19f76e31e0330e4865b816808b716d45a5cd87",
+   "643364983ce16cf48f2eac8ce2371b473d87cb5005cb9e995328a5860fbaacff",
+   "b555e1714d62c56e0c6b9629eebebfd1799adb6e539a55d0929b06f86874ba4b",
+   "6b38c4b30ed31cd3363b9e4fe3be1604da6d223a8b80b2778565b3347341d8ab",
+   "5561fecdd9f0f9b8df30bb8c24dc21fbfe552d76ed0aaec66dc3a449062a66b7",
+   "e7fc0e3ec981757751894f294f1a4753412b57ac6003d94001443c1f3b12ef38",
+   "38755f93283cabaa9f898dc26e26b44d1fd596fbe25bf6d1951b4e16fd92a1e5",
+   "86df5f5c801b5580de4994811bc405a08a0f18ace836968997722444ab6b4c66",
+   "41fa4ebdf8b5fbc9b41efb63a57b3c1c818b2cb3bb798a2e6734997570f20e4d",
+   "41fa4ebdf8b5fbc9b41efb63a57b3c1c818b2cb3bb798a2e6734997570f20e4d",
+   "918bbfaa416f835ab2f9a2b60c562158b4ef211d426ae4f5377a2dc1a4457f8c",
+   "918bbfaa416f835ab2f9a2b60c562158b4ef211d426ae4f5377a2dc1a4457f8c",
+   "e529d1bc6f3c8b338fe0b025d6cacb413d257d7ae5c2076c03c48054e3a268aa",
+   "e529d1bc6f3c8b338fe0b025d6cacb413d257d7ae5c2076c03c48054e3a268aa"
+  ],
+  "seconds": 36.5,
+  "tokens": {
+   "input": 100323,
+   "cached": 61653,
+   "output": 12860
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_2021cff640ced3a7|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "extension_relevant"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "extension_relevant"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "housing_search_log"
+   ]
+  },
+  "status": "completed",
+  "calls": 33,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "Kündigungsanfechtung fristgerecht bei der Schlichtungsbehörde einreichen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "issuer",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 78,
+         "end": 101,
+         "quote": "Vermieter: Peter Ammann"
+        }
+       ]
+      },
+      {
+       "item": "addressee",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 121,
+         "end": 150,
+         "quote": "Mieterin/Mieter: Daniela Graf"
+        }
+       ]
+      },
+      {
+       "item": "termination date",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 206,
+         "end": 264,
+         "quote": "Hiermit kündigen wir das Mietverhältnis per 30. Juni 2027."
+        }
+       ]
+      },
+      {
+       "item": "stated grounds",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 265,
+         "end": 324,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes."
+        }
+       ]
+      },
+      {
+       "item": "form contents",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 32,
+         "end": 77,
+         "quote": "Amtliches Formular, Kanton Zürich (genehmigt)"
+        }
+       ]
+      }
+     ]
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "stated ground",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 265,
+         "end": 324,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes."
+        }
+       ]
+      },
+      {
+       "item": "factual basis",
+       "citations": [
+        {
+         "file": "file_1d8e4e30f613413b",
+         "page": null,
+         "start": 265,
+         "end": 324,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes."
+        }
+       ]
+      }
+     ]
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "extension_relevant"
+   ],
+   "current_step": "lt_abuse",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "termination_notice",
+    "stated_reason"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "extension_relevant"
+    ],
+    "completions": 2
+   },
+   "answer": "Die Kündigung kann anhand der Akten noch nicht abschliessend beurteilt werden. Zuerst ist die Fristposition anhand des Zustellnachweises zu klären; die Checkliste führt die fünf genannten Unterlagen als fehlend. Eine Erstreckung ist noch offen.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "keys": [
+   "e9ce51c98b6988cb8ea7c04a9a7458afb732fd9fc9c91d6403bd21ee720f98ea",
+   "cb1a578fb56e75bbe2af427def38274e92710f37db2cc0c068309ece4b1f4cc7",
+   "f38c0ca128c7f12d5bce30919202f4daaf16fcb5fdfb58749d333cc46bbe9fc8",
+   "e2877c3a3d5704fff605d7e54dc0f33ca6dc6b353a9a7ef4b03ee46e01f9432c",
+   "850e7c13902f8aeab67e3210a24ab4a64c17850b100190d57eed5d934ce90b3c",
+   "1da878bfa899b078aa5746a65e3aea69aa643bfafc461a9df4cf57859da8b454",
+   "01f8fdd9141099973ccf94c2688f43f4b1864a5317159538320ba9917d56203c",
+   "54971dc303fca8a9ea5961051da7fc6e91af29d34279a32edd3ae2ef2fbb8b4c",
+   "37fe4ed98e7d853dc5a9b4514e98cbe1e05c83cf22d6130a8ea31bfa67ed9241",
+   "e3430ca0a27129e80c5f6bc518c1617fe6ec9d0d04a992e4df8aa2a4b4c802ef",
+   "4818d9e8ef341694719aa817c2b8c6a104fc4c17e8f49127d879f4ff4829354a",
+   "a3be994dce7a1b0618c1788c2cc11ce35d3bc6c3e0d15b243b7a9b536d8af398",
+   "2309992338491ab723542042e3ca07f2ade3c6f7c54e5a26586622ff60b72719",
+   "b17b28d55f75503e34e3b19d32994fc728556fef18c010f61dc65ad640414aa4",
+   "0d3bb450b2ff8f119e6fff8b624f7334fa96b6978c4ee2e5c4949289314b28c3",
+   "ebd729f139f76748cfd1a11d71ded6737cc5cb8be12e51e23f19a8c289ec1bd3",
+   "7cd68a5684a3aee44ed538e09c62781ec38c0bdf02aa140e32f324f033b26fd6",
+   "d4d458d9c192ac82b9b98f704f1371cd775d7cd17b8c0bbcb5fc37b61685fd2d",
+   "cd65a73312e32c6d4d31badd799ea2cdd235b32de60493fca61d2b4342a3e704",
+   "4cdb417435fdd9c665089265e7873b8c05ad8c60a9401b430697ffca4f4dbd63",
+   "97317a4393e971caf62901d74dfa7aae7319d50e84d6bcf88099c69f3a75d21f",
+   "ccdadc582ce43eeeb0634f2ad25db26b0475fd75dc47ca3518cd82a1fe346131",
+   "e1c05cfa7a0f3b9fd97493cee505457412abfc53d85b4e93140a031c3a2eb429",
+   "e1c05cfa7a0f3b9fd97493cee505457412abfc53d85b4e93140a031c3a2eb429",
+   "477e8ebb1299e68f44f46d51e151c57ac342963e260b2e6ac54e4770444aa2d6",
+   "df41c60c0b5f00a59299506b1300058c0e1e93c4ea3015197e2ed950bf4ef4a2",
+   "d0d2e275e156800703c3c5c416d058c9b938321d3da6f2b8c54802be79edf556",
+   "3ce02b841b2eb8350a61876ffe8dd03a8b3041cd9578975e8143c71a888bcb2c",
+   "ccdadc582ce43eeeb0634f2ad25db26b0475fd75dc47ca3518cd82a1fe346131",
+   "78e06745a20e4d48782887b73296a737f3d246a044bce5e372d8ff141c107afc",
+   "361734934b00149763641a793f47a26feb92ed666d2c5f4258262a6512df62eb",
+   "e35d7646891bd0b3775ba9916ef010cc49a1d84fd07897e90ea4fcbe99d2137f",
+   "efe301137747cd1bccb58df1a1ca8dfe3b8249d6919ceba7d6c81e31ce67cde7",
+   "efe301137747cd1bccb58df1a1ca8dfe3b8249d6919ceba7d6c81e31ce67cde7",
+   "110414c4224aab81acb9f44733d7f5ffbe1b20c6767e3ef3f918ec31c4d40db1",
+   "110414c4224aab81acb9f44733d7f5ffbe1b20c6767e3ef3f918ec31c4d40db1"
+  ],
+  "seconds": 48.4,
+  "tokens": {
+   "input": 148654,
+   "cached": 83898,
+   "output": 18620
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_09252315095aa169|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 25,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Kopie der Anfechtungseingabe an die Schlichtungsbehörde und Nachweis des Einreichungsdatums",
+     "step": "lt_deadline",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 273 Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die bestehende Fristprüfung verlangt Empfangs- und Kündigungsunterlagen, nennt aber keinen Nachweis der fristwahrenden Anfechtung bei der Schlichtungsbehörde; diese konkrete Unterlage ergänzt die Prüfung der gesetzlich erforderlichen Anfechtung."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Urgently obtain the termination notice and confirm whether and when it was received and the termination date; the checklist-listed evidence is missing as set out above, and panel-lawyer availability remains to be checked. No merits or deadline conclusion can be reached from the available file.",
+   "reply_clauses": 11,
+   "warnings": []
+  },
+  "keys": [
+   "8daeeca47d27db228b98f997c623973f2a7874abe26e817d6f33db8318f761d2",
+   "fa090d5ea9910691f46245f3719ed72929d57edea3f4a0248482ab8becaccb3b",
+   "8412a4c91111f71f264eb60fef387f367f7f49f10319c5fc2230f5680b18ea57",
+   "daefa7632812ebf998bee38a3f0543c05146e7e94c621d1431593cb30e80268a",
+   "3ff2c3a3a07d702e70af95357e1f625bcda56fb9f7a44f16d116470db97e5632",
+   "47b0fe5f2f6291c1b5a8196749452251bf6e2775a7e6686dc6c949ce7d6dface",
+   "0ee742aeca0f3dec3934c7c189b738f0f26e9b5bc098b2b2d78890a646b05f63",
+   "39cb20131e240ae7af3162fb307796ecbf699ed0f61fab62e4e99af1473912be",
+   "d17b5e834d9330421fefd70fc796a1347cad06e6607e3c575cacbb1248d5bfa6",
+   "de46348adce1bb1bb51402a7a653ad58b86bcf138f1322ba488b9067f817e1e4",
+   "3e1277e179a1acc503c0c1124a71253de5855eb78cbfa74843cac4196014b823",
+   "75396bae1df2ec45863f18277ec625095e63a955a2efd6ce36468e9983e8dcb2",
+   "13ce4f75348669bd0c427111167edf59e9c40c6764a7ad0cc1f5e0c7318a35ca",
+   "4d00438a14b88fc93ac3d1467ac9e3d340a20e2092a50eddc6251a778b395610",
+   "d9a89fa3bf3358d34e09b872ef5189ff1fb23781bcde6bc29267f7ec0cd2a977",
+   "87f130e5b52b50f3695a4e5a671dcda3015477c2148e59ccac476bfd040f19b3",
+   "ba12152fa8863dce268bda3d385bb29f4596eaf7f2f0fe271e925e183d909570",
+   "1d9ea57ba223ec4c068865b5455c0620f59feb833ace141bb715bab864863fa6",
+   "b8daff2b8cb14ebddc16dc986cda991fba772cca614d3f19f40311d522040e0f",
+   "e5a1dd8ed2100790d76709fc43f81dc771dc34ec481a238c98bb53e341d292d9",
+   "c799d9615df858f6eaeee33dd2c343f44cc10b74e954c805f4994253de00c761",
+   "c799d9615df858f6eaeee33dd2c343f44cc10b74e954c805f4994253de00c761",
+   "c33fabe7a119409cb561ccacaf6e9a736c103280166fdc8a7f940be00fb138e3",
+   "165de66ab59799bc4520d28d828578bf2662b178ec81ba1e924b9112c247a582",
+   "be97845ac73514284d5c2cf1fce3a056dce75ac123c1d9ab4b718bb6aa163bf0",
+   "4cbeafc1d7047ac1d7248d7df96e76a9ef1fdf7c4540985ef1afcf41470f6c91",
+   "4cbeafc1d7047ac1d7248d7df96e76a9ef1fdf7c4540985ef1afcf41470f6c91"
+  ],
+  "seconds": 48.7,
+  "tokens": {
+   "input": 104359,
+   "cached": 63648,
+   "output": 15403
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_020f2bacedc162a9|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 25,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb3",
+     "title": "Schriftliches Begehren um Begründung und Antwort der Verwaltung",
+     "step": "lt_abuse",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 271 Abs. 2 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Workflow-Unterlage erfasst den angegebenen Kündigungsgrund, aber nicht ein nach Art. 271 Abs. 2 OR verlangtes schriftliches Begründungsbegehren und die Antwort darauf. Diese konkreten Unterlagen sind aufgrund der im Fall genannten unvollständigen Begründung relevant."
+    }
+   ],
+   "agent_questions": [
+    "Steht in der Kündigung, dass sie wegen Mietzinsrückständen erfolgt? Falls ja: Welche Beträge werden für welche Monate als offen bezeichnet, und welche Zahlungen haben Sie geleistet?"
+   ],
+   "agent_steps": [
+    "Kündigung fristwahrend bei der Schlichtungsbehörde anfechten"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "Die Frist und die Gültigkeit lassen sich aus den vorliegenden Angaben noch nicht beurteilen; zuerst ist zu klären, ob die Kündigung auf Mietzinsrückständen beruht, und die in der Checkliste als erforderlich fehlenden Unterlagen sind einzuholen.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "keys": [
+   "d1792684caaf30dc4fe727745f0ca1d4e5782008c480d9d34beab4666be597cf",
+   "4b0d12af13b921f189b7b5e5e3603e3b7ab61a8fee932485c0d6cb840978075e",
+   "832e7318ad0b0b790fef0421fdb888a1c0fcb385d909e5082ef744d481a02c35",
+   "774a62082999a24bdeb101c03cfb79751350ce07822e362964479d7883097dd5",
+   "964253a70772ed95ecd1a1ad832f1fbe3a529c451e787c41e6ad7fb43dff6079",
+   "989e19e19ce17828706a9a7c2641385cadc7d8bc023d0ed20eb4e5b2bf7209df",
+   "4d0d601de3ed51856328a2c86fc84a012764febfb0581b60a80da360a43c2e04",
+   "eedb42031ee9d22425a80be24ab2ac0a874837d64d22a68688782e28d7521e15",
+   "79882dc67d4866c30920c6ae27226f6d8ef235cd3330e23ddf449242bb528534",
+   "cbfd239a599a4aca21dc3f71ea6c402aa37f876a93386dc6c43e5a3d032906db",
+   "c786724f28ae62e482adc03c470304321eb66ec5eb35b1d364125cf85bc00333",
+   "5eb28899c939e65f8ea3a99b1d5619d41ada5125ba55345de8c4d09dcf52c03b",
+   "c03c0e39787aaec4852dc86bc40ec358ddb9ec0f36c15524ded15102346288a4",
+   "c03c0e39787aaec4852dc86bc40ec358ddb9ec0f36c15524ded15102346288a4",
+   "aff75dc244674ba65698885583b38eaa2a8ef56343b899562dc3c8ba4b5611fc",
+   "aff75dc244674ba65698885583b38eaa2a8ef56343b899562dc3c8ba4b5611fc",
+   "62c8e2e859ce760ddadf9663c958e3dabfa72f7077ecca479f2d1469ed127ab2",
+   "62c8e2e859ce760ddadf9663c958e3dabfa72f7077ecca479f2d1469ed127ab2",
+   "61dbe4c13681a9043248950ce758aa7def42d5368445e9b33c1562d620438005",
+   "61dbe4c13681a9043248950ce758aa7def42d5368445e9b33c1562d620438005",
+   "b23cca08d65c2a522672237ade7285be36d833d0bdd41b1526e37af1d0a5cc97",
+   "73a55cb364357b6559ae500cd00b8a631b39938b99fa80a4e18d2fe4261d0ae7",
+   "d6dc0d966f0bad76d2eeae417447daca6b1e938934e1c4c8b01c4a3057b150c8",
+   "f23846f79de135ff992db8ba29fddd62d0b0e512a298f1b6048197a3f0050703",
+   "59efca8003e78e0edbfea5a05275923c39938768e308b50f0cc3e3157d52b974",
+   "36cfc5ba99fe455ce9279b964d09784d1b20956b472626980ae6a6910ba0a17a",
+   "36cfc5ba99fe455ce9279b964d09784d1b20956b472626980ae6a6910ba0a17a",
+   "65f9dd99ee12249b8e47beb2ab2cb3423a73f8a3f615e13b55e6c3d76312d8e8",
+   "f194737d85a313ac5c96e6b07a42152097d7bc6f25a0607f4e03d479a1d7244a",
+   "f194737d85a313ac5c96e6b07a42152097d7bc6f25a0607f4e03d479a1d7244a",
+   "a4d4b7382338668186894ba02d844d06ccd59e3cbe635cea44cad6805198a51c",
+   "a4d4b7382338668186894ba02d844d06ccd59e3cbe635cea44cad6805198a51c"
+  ],
+  "seconds": 74.8,
+  "tokens": {
+   "input": 98399,
+   "cached": 59374,
+   "output": 13953
+  },
+  "agents": [
+   "router",
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ }
+}

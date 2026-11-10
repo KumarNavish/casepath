@@ -1,5 +1,205 @@
 [
  {
+  "key": "PRODUCT|pcl_5a5dc10821680996|0",
+  "slug": "r1",
+  "kind": "denied",
+  "mode": "plain",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "die Miete werde ab dem 1. April um rund 120 Franken steigen."
+   ],
+   [
+    "source_checker",
+    "true",
+    null,
+    "Vor zehn Tagen hat mich der Hauswart im Treppenhaus angesprochen und gesagt, die Miete werde ab dem 1. April um rund 120 Franken steigen."
+   ]
+  ],
+  "fact_row": {
+   "status": "established",
+   "value": true,
+   "verdict": "accepted",
+   "by": "claim_reader",
+   "agreed": true,
+   "verdict_reason": "The tenant says the caretaker orally announced the increase. The passage clarifies that no written notice was received, but an oral announcement was."
+  },
+  "fact_quotes": [
+   "die Miete werde ab dem 1. April um rund 120 Franken steigen."
+  ],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_5a5dc10821680996|1",
+  "slug": "r1",
+  "kind": "denied",
+  "mode": "plain",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "Vor zehn Tagen hat mich der Hauswart im Treppenhaus angesprochen und gesagt, die Miete werde ab dem 1. April um rund 120 Franken steigen."
+   ],
+   [
+    "source_checker",
+    "true",
+    null,
+    "Vor zehn Tagen hat mich der Hauswart im Treppenhaus angesprochen und gesagt, die Miete werde ab dem 1. April um rund 120 Franken steigen."
+   ]
+  ],
+  "fact_row": {
+   "status": "established",
+   "value": true,
+   "verdict": "accepted",
+   "by": "claim_reader",
+   "agreed": true,
+   "verdict_reason": "The tenant reports receiving an oral announcement from the caretaker that the rent would increase. The passage clarifies that no written notice was received."
+  },
+  "fact_quotes": [
+   "Vor zehn Tagen hat mich der Hauswart im Treppenhaus angesprochen und gesagt, die Miete werde ab dem 1. April um rund 120 Franken steigen."
+  ],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
   "key": "PRODUCT|pcl_3d6f28bfed11c4ab|0",
   "slug": "r2",
   "kind": "denied",
@@ -100,6 +300,238 @@
    "lease_contract",
    "prior_rent_adjustment",
    "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_3d6f28bfed11c4ab|1",
+  "slug": "r2",
+  "kind": "denied",
+  "mode": "passing",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "At the tenants' meeting in October the manager announced that our rents would go up by about 9 percent"
+   ],
+   [
+    "source_checker",
+    "false",
+    null,
+    "nothing in writing has reached me"
+   ]
+  ],
+  "fact_row": {
+   "status": "conflicting",
+   "value": true,
+   "second_value": false,
+   "verdict": "not_checked",
+   "by": "claim_reader",
+   "reason_code": "readings_differ",
+   "verdict_reason": "Two independent readings of the files differ; a person decides."
+  },
+  "fact_quotes": [
+   "At the tenants' meeting in October the manager announced that our rents would go up by about 9 percent",
+   "nothing in writing has reached me"
+  ],
+  "waiting_for": [
+   "claim_received"
+  ],
+  "documents": [
+   [
+    "lease_contract",
+    "depends",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "depends",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "depends",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "depends",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "depends",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "depends",
+    "missing"
+   ],
+   [
+    "renovation_cost_breakdown",
+    "depends",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "depends",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [],
+  "plan_holds": [
+   "current_rent_evidence",
+   "landlord_correspondence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_fa8300535a4c20dc|0",
+  "slug": "r3",
+  "kind": "denied",
+  "mode": "implied",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "hat ... angekündigt, dass die Mietzinse in unserer Siedlung am Seerosenweg in Arbon steigen werden."
+   ],
+   [
+    "claim_reader",
+    "true",
+    null,
+    "hat an der Mieterversammlung angekündigt, dass die Mietzinse in unserer Siedlung am Seerosenweg in Arbon steigen werden."
+   ],
+   [
+    "source_checker",
+    "false",
+    null,
+    "Wir warten noch auf das Schreiben mit den genauen Zahlen."
+   ]
+  ],
+  "fact_row": {
+   "status": "conflicting",
+   "value": true,
+   "second_value": false,
+   "verdict": "not_checked",
+   "by": "claim_reader",
+   "reason_code": "readings_differ",
+   "verdict_reason": "Two independent readings of the files differ; a person decides."
+  },
+  "fact_quotes": [
+   "hat an der Mieterversammlung angekündigt, dass die Mietzinse in unserer Siedlung am Seerosenweg in Arbon steigen werden.",
+   "Wir warten noch auf das Schreiben mit den genauen Zahlen."
+  ],
+  "waiting_for": [
+   "claim_received"
+  ],
+  "documents": [
+   [
+    "lease_contract",
+    "depends",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "depends",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "depends",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "depends",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "depends",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "depends",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "depends",
+    "missing"
+   ],
+   [
+    "renovation_cost_breakdown",
+    "depends",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "depends",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [],
+  "plan_holds": [
+   "current_rent_evidence",
+   "landlord_correspondence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
    "renovation_cost_breakdown",
    "rent_increase_notice",
    "stated_calculation"
@@ -219,18 +651,18 @@
   "error": null
  },
  {
-  "key": "PRODUCT|pcl_e0c0e69ff6e2a6e4|0",
-  "slug": "t1",
-  "kind": "denied",
-  "mode": "plain",
-  "ok": true,
+  "key": "PRODUCT|pcl_a3491c1dff5ee4e1|1",
+  "slug": "r4",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
   "routing": {
    "status": "selected",
-   "workflow": "lease_termination_dispute",
+   "workflow": "rent_increase_dispute",
    "facts": [
     [
      "dispute_family",
-     "lease_termination_dispute",
+     "rent_increase_dispute",
      null
     ]
    ]
@@ -238,50 +670,331 @@
   "readings": [
    [
     "claim_reader",
-    "false",
+    "unresolved",
     null,
-    "I have not received any written termination notice."
+    "I honestly do not know whether a formal notification has been sent to me."
    ],
    [
     "source_checker",
-    "false",
+    "unresolved",
     null,
-    "I have not received any written termination notice."
+    "I honestly do not know whether a formal notification has been sent to me."
    ]
   ],
   "fact_row": {
-   "status": "established",
-   "value": false,
-   "verdict": "accepted",
-   "by": "claim_reader",
-   "agreed": true,
-   "verdict_reason": "The writer explicitly says no written termination notice has been received."
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
   },
-  "fact_quotes": [
-   "I have not received any written termination notice."
-  ],
+  "fact_quotes": [],
   "waiting_for": [],
-  "documents": [],
-  "plan_requests": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "renovation_cost_breakdown",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb1",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
   "plan_holds": [],
   "ref_requests": [],
-  "ref_held": [],
+  "ref_held": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
   "status": "completed",
   "error": null
  },
  {
-  "key": "PRODUCT|pcl_29a12f48f41287b2|0",
-  "slug": "t7",
-  "kind": "control",
-  "mode": "implied",
-  "ok": true,
+  "key": "PRODUCT|pcl_cdfe2344f51f6fdf|0",
+  "slug": "r5",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
   "routing": {
    "status": "selected",
-   "workflow": "lease_termination_dispute",
+   "workflow": "rent_increase_dispute",
    "facts": [
     [
      "dispute_family",
-     "lease_termination_dispute",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "Ob mir eine formelle Mitteilung der Erhöhung zugestellt wurde, kann ich deshalb nicht sagen."
+   ],
+   [
+    "source_checker",
+    "unresolved",
+    null,
+    "Ob mir eine formelle Mitteilung der Erhöhung zugestellt wurde, kann ich deshalb nicht sagen."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_cdfe2344f51f6fdf|1",
+  "slug": "r5",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "Ob mir eine formelle Mitteilung der Erhöhung zugestellt wurde, kann ich deshalb nicht sagen."
+   ],
+   [
+    "source_checker",
+    "unresolved",
+    null,
+    "Ob mir eine formelle Mitteilung der Erhöhung zugestellt wurde, kann ich deshalb nicht sagen."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_aede8e94e7a06939|0",
+  "slug": "r6",
+  "kind": "control",
+  "mode": "stated",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "rent_increase_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "rent_increase_dispute",
      null
     ]
    ]
@@ -291,13 +1004,13 @@
     "claim_reader",
     "true",
     null,
-    "The termination says the lease ends on 31 January"
+    "On 28 October I received a letter from Aare Habitat AG, the manager of my flat at Ringstrasse 19 in Solothurn, notifying me of a rent increase on the official form."
    ],
    [
     "source_checker",
     "true",
     null,
-    "I want to contest the termination of my lease"
+    "On 28 October I received a letter from Aare Habitat AG"
    ]
   ],
   "fact_row": {
@@ -306,11 +1019,644 @@
    "verdict": "accepted",
    "by": "claim_reader",
    "agreed": true,
-   "verdict_reason": "The writer refers to the termination notice and its stated end date and reason, establishing that they received it."
+   "verdict_reason": "The tenant explicitly says they received a rent-increase letter on 28 October."
   },
   "fact_quotes": [
-   "The termination says the lease ends on 31 January"
+   "On 28 October I received a letter from Aare Habitat AG, the manager of my flat at Ringstrasse 19 in Solothurn, notifying me of a rent increase on the official form."
   ],
+  "waiting_for": [
+   "renovation"
+  ],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_increase_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "current_rent_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rent_adjustment",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_calculation",
+    "yes",
+    "missing"
+   ],
+   [
+    "reference_rate_basis",
+    "yes",
+    "missing"
+   ],
+   [
+    "renovation_cost_breakdown",
+    "depends",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb1",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "plan_holds": [
+   "renovation_cost_breakdown"
+  ],
+  "ref_requests": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_f29b8a52c7246fd9|1",
+  "slug": "t2",
+  "kind": "denied",
+  "mode": "passing",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "Die Verwaltung hat mir deshalb am Telefon gesagt, dass sie mir wegen dieser Mietrückstände kündigt"
+   ],
+   [
+    "source_checker",
+    "false",
+    null,
+    "schriftlich ist bis heute nichts gekommen"
+   ]
+  ],
+  "fact_row": {
+   "status": "conflicting",
+   "value": true,
+   "second_value": false,
+   "verdict": "not_checked",
+   "by": "claim_reader",
+   "reason_code": "readings_differ",
+   "verdict_reason": "Two independent readings of the files differ; a person decides."
+  },
+  "fact_quotes": [
+   "Die Verwaltung hat mir deshalb am Telefon gesagt, dass sie mir wegen dieser Mietrückstände kündigt",
+   "schriftlich ist bis heute nichts gekommen"
+  ],
+  "waiting_for": [
+   "family_home",
+   "termination_received"
+  ],
+  "documents": [
+   [
+    "lease_contract",
+    "depends",
+    "missing"
+   ],
+   [
+    "termination_notice",
+    "depends",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "depends",
+    "missing"
+   ],
+   [
+    "notice_period_evidence",
+    "depends",
+    "missing"
+   ],
+   [
+    "stated_reason",
+    "depends",
+    "missing"
+   ],
+   [
+    "spouse_notice_copy",
+    "depends",
+    "missing"
+   ],
+   [
+    "payment_deadline_letter",
+    "depends",
+    "missing"
+   ],
+   [
+    "rent_ledger_payment_evidence",
+    "depends",
+    "missing"
+   ],
+   [
+    "housing_search_log",
+    "depends",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "depends",
+    "missing"
+   ],
+   [
+    "e-pb1",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [],
+  "plan_holds": [
+   "housing_search_log",
+   "landlord_correspondence",
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_048e0f1cc96e77a7|0",
+  "slug": "t3",
+  "kind": "denied",
+  "mode": "implied",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "defect_mold_heating",
+   "facts": [
+    [
+     "dispute_family",
+     "defect_mold_heating",
+     null
+    ]
+   ]
+  },
+  "readings": [],
+  "fact_row": null,
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "defect_notification",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_notification",
+    "yes",
+    "missing"
+   ],
+   [
+    "dated_photos",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_response_history",
+    "yes",
+    "missing"
+   ],
+   [
+    "humidity_temperature_log",
+    "yes",
+    "missing"
+   ],
+   [
+    "caretaker_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ],
+   [
+    "e-pb3",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "dated_photos",
+   "defect_notification",
+   "humidity_temperature_log",
+   "landlord_response_history",
+   "lease_contract",
+   "proof_of_notification"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_048e0f1cc96e77a7|1",
+  "slug": "t3",
+  "kind": "denied",
+  "mode": "implied",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "defect_mold_heating",
+   "facts": [
+    [
+     "dispute_family",
+     "defect_mold_heating",
+     null
+    ]
+   ]
+  },
+  "readings": [],
+  "fact_row": null,
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "defect_notification",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_notification",
+    "yes",
+    "missing"
+   ],
+   [
+    "dated_photos",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_response_history",
+    "yes",
+    "missing"
+   ],
+   [
+    "humidity_temperature_log",
+    "yes",
+    "missing"
+   ],
+   [
+    "caretaker_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ],
+   [
+    "e-pb3",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "dated_photos",
+   "defect_notification",
+   "humidity_temperature_log",
+   "landlord_response_history",
+   "lease_contract",
+   "proof_of_notification"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_a9db07b09902ba29|0",
+  "slug": "t4",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "Bei uns ist nichts angekommen. Während eines Umbaus 2024 hatten wir der Verwaltung die Adresse meiner Mutter in Zofingen als Postadresse angegeben, und vielleicht ging der Brief dorthin. Meine Mutter ist verreist. Ob es überhaupt ein schriftliches Kündigungsschreiben gibt, weiss ich im Moment schlicht nicht."
+   ],
+   [
+    "source_checker",
+    "unresolved",
+    null,
+    "Bei uns ist nichts angekommen. ... Ob es überhaupt ein schriftliches Kündigungsschreiben gibt, weiss ich im Moment schlicht nicht."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "termination_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "notice_period_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_reason",
+    "yes",
+    "missing"
+   ],
+   [
+    "spouse_notice_copy",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rights_correspondence",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_a9db07b09902ba29|1",
+  "slug": "t4",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "Bei uns ist nichts angekommen. Während eines Umbaus 2024 hatten wir der Verwaltung die Adresse meiner Mutter in Zofingen als Postadresse angegeben, und vielleicht ging der Brief dorthin. Meine Mutter ist verreist. Ob es überhaupt ein schriftliches Kündigungsschreiben gibt, weiss ich im Moment schlicht nicht."
+   ],
+   [
+    "source_checker",
+    "unresolved",
+    null,
+    "Ob es überhaupt ein schriftliches Kündigungsschreiben gibt, weiss ich im Moment schlicht nicht."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "termination_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "notice_period_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_reason",
+    "yes",
+    "missing"
+   ],
+   [
+    "spouse_notice_copy",
+    "yes",
+    "missing"
+   ],
+   [
+    "prior_rights_correspondence",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_bb531e0f49256cd3|0",
+  "slug": "t5",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "I do not know whether he has actually sent me a written termination."
+   ],
+   [
+    "source_checker",
+    "unresolved",
+    null,
+    "So there may be a letter, or there may not. I simply cannot say."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
   "waiting_for": [],
   "documents": [
    [
@@ -352,10 +1698,114 @@
     "landlord_correspondence",
     "optional",
     "missing"
+   ]
+  ],
+  "plan_requests": [
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "plan_holds": [],
+  "ref_requests": [],
+  "ref_held": [
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_bb531e0f49256cd3|1",
+  "slug": "t5",
+  "kind": "open",
+  "mode": "unknown",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "unresolved",
+    null,
+    "I do not know whether he has actually sent me a written termination."
    ],
    [
-    "e-pb3",
-    "suggested",
+    "source_checker",
+    "unresolved",
+    null,
+    "So there may be a letter, or there may not. I simply cannot say."
+   ]
+  ],
+  "fact_row": {
+   "status": "presumed",
+   "value": true,
+   "verdict": "presumed",
+   "by": "presumption",
+   "presumption": {
+    "applies": "routed",
+    "code": null,
+    "by": null
+   }
+  },
+  "fact_quotes": [],
+  "waiting_for": [],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "termination_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "notice_period_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_reason",
+    "yes",
+    "missing"
+   ],
+   [
+    "payment_deadline_letter",
+    "yes",
+    "missing"
+   ],
+   [
+    "rent_ledger_payment_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
     "missing"
    ]
   ],
@@ -369,12 +1819,134 @@
    "termination_notice"
   ],
   "plan_holds": [],
-  "ref_requests": [
+  "ref_requests": [],
+  "ref_held": [
    "lease_contract",
    "notice_period_evidence",
    "payment_deadline_letter",
    "proof_of_receipt",
    "rent_ledger_payment_evidence",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "status": "completed",
+  "error": null
+ },
+ {
+  "key": "PRODUCT|pcl_b149e3b4d6534055|0",
+  "slug": "t8",
+  "kind": "control",
+  "mode": "implied",
+  "ok": false,
+  "routing": {
+   "status": "selected",
+   "workflow": "lease_termination_dispute",
+   "facts": [
+    [
+     "dispute_family",
+     "lease_termination_dispute",
+     null
+    ]
+   ]
+  },
+  "readings": [
+   [
+    "claim_reader",
+    "true",
+    null,
+    "Kurz danach wurde mir gekündigt."
+   ],
+   [
+    "source_checker",
+    "true",
+    null,
+    "Die Kündigung meiner Wohnung an der Schützenmattstrasse 4 in Langenthal per Ende April kommt für mich völlig überraschend."
+   ]
+  ],
+  "fact_row": {
+   "status": "established",
+   "value": true,
+   "verdict": "accepted",
+   "by": "claim_reader",
+   "agreed": true,
+   "verdict_reason": "The tenant reports, “Kurz danach wurde mir gekündigt” (shortly afterward, I was given notice of termination)."
+  },
+  "fact_quotes": [
+   "Kurz danach wurde mir gekündigt."
+  ],
+  "waiting_for": [
+   "family_home"
+  ],
+  "documents": [
+   [
+    "lease_contract",
+    "yes",
+    "missing"
+   ],
+   [
+    "termination_notice",
+    "yes",
+    "missing"
+   ],
+   [
+    "proof_of_receipt",
+    "yes",
+    "missing"
+   ],
+   [
+    "notice_period_evidence",
+    "yes",
+    "missing"
+   ],
+   [
+    "stated_reason",
+    "yes",
+    "missing"
+   ],
+   [
+    "spouse_notice_copy",
+    "depends",
+    "missing"
+   ],
+   [
+    "prior_rights_correspondence",
+    "yes",
+    "missing"
+   ],
+   [
+    "housing_search_log",
+    "yes",
+    "missing"
+   ],
+   [
+    "landlord_correspondence",
+    "optional",
+    "missing"
+   ],
+   [
+    "e-pb2",
+    "suggested",
+    "missing"
+   ]
+  ],
+  "plan_requests": [
+   "housing_search_log",
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "plan_holds": [
+   "spouse_notice_copy"
+  ],
+  "ref_requests": [
+   "housing_search_log",
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
    "stated_reason",
    "termination_notice"
   ],
