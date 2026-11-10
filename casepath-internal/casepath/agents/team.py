@@ -402,13 +402,15 @@ def _tool_specs(work, names):
                                 obj(fact=choice(facts), status=choice(["established", "unknown", "conflicting"]),
                                     value={"type": ["string", "null"], "maxLength": 300}, citations=_citations(files),
                                     part={"type": ["string", "null"], "maxLength": 200}))  # the part of an "A / B" value a quote supports
+    shown_items = list(dict.fromkeys(i for d in work.graph["documents"] for i in d.get("must_show", [])))
     if documents:
         specs["record_document"] = ("Record whether a file meets one document need, with the sentence that shows it.",
                                     obj(document=choice(documents), status=choice(["present", "unusable", "mentioned_only", "absent"]),
                                         files=arr(choice(files), maxItems=6), citations=_citations(files), note=text(400),
                                         # what a present file shows, item by item, where a need lists what it must show
-                                        **({"shows": arr(obj(item=text(200), citations=_citations(files, 2)), maxItems=12)}
-                                           if any(d.get("must_show") for d in work.graph["documents"]) else {})))
+                                        # each item named exactly as the need lists it, so it can be matched
+                                        **({"shows": arr(obj(item=choice(shown_items), citations=_citations(files, 2)), maxItems=12)}
+                                           if shown_items else {})))
     condition = arr(obj(fact=choice(facts), value=text(200)), maxItems=4) if facts else arr(obj(fact=text(80), value=text(200)), maxItems=0)
     specs["propose_change"] = ("Adapt this case's process: add a document need (attached to `step`), a question, or a step "
                                "(inserted before `step`), with its basis: quotes from the files or an applied Knowledge item, "
