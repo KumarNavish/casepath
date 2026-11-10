@@ -85,7 +85,8 @@ def _feedback(rows):
     counts = {}
     for row in rows:
         kind = row["target"].split(":", 1)[0]
-        counts.setdefault(kind, {"correct": 0, "wrong": 0})[row["verdict"]] += 1
+        bucket = counts.setdefault(kind, {"correct": 0, "wrong": 0} if kind != "point" else {"done": 0})
+        bucket[row["verdict"]] = bucket.get(row["verdict"], 0) + 1
     return counts
 
 

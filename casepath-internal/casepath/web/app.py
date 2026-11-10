@@ -68,8 +68,8 @@ class StatusChange(BaseModel):
 
 class Feedback(BaseModel):
     """A case worker's verdict on one result item; target names the item, never its content."""
-    target: str = Field(pattern=r"^(answer|(fact|document|summary|timeline|deadline|open_point|reply):[A-Za-z0-9_.-]{1,80})$")
-    verdict: Literal["correct", "wrong"] | None
+    target: str = Field(pattern=r"^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point):[A-Za-z0-9_.-]{1,80})$")
+    verdict: Literal["correct", "wrong", "done"] | None  # "done": a point under Braucht Ihr Urteil a case worker settled
     note: str = Field("", max_length=500)
 
 

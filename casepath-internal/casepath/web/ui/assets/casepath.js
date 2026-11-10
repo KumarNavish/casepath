@@ -473,7 +473,7 @@ async function sendRating(button) {
   renderCase();
 }
 function feedbackLine() {
-  const mine = (S.data.feedback || []).filter((f) => f.by === S.me);
+  const mine = (S.data.feedback || []).filter((f) => f.by === S.me && f.verdict !== "done");
   const right = mine.filter((f) => f.verdict === "correct").length, wrong = mine.length - right;
   return `<p class="cp-muted cp-feedback-line">${icon("check")}${T("Mark each item as correct or not. Your feedback stays with the case; only the counts are evaluated.",
     "Markieren Sie, was stimmt und was nicht. Ihre Rückmeldungen bleiben beim Fall; ausgewertet werden nur Anzahlen.")}${mine.length ? ` <b>${T(`${right} correct · ${wrong} not correct`, `${right} stimmt · ${wrong} stimmt nicht`)}</b>` : ""}</p>`;
@@ -1027,37 +1027,38 @@ function judgementPoints(ev, r) {
   const pts = [];
   const routing = (S.data.run || {}).routing || ((S.data.lastCompleted || {}).routing) || {};
   const other = routing.other_topic;
-  if (other) pts.push({ urgency: 2, text: T(`The case has a further topic: ${other.topic}`, `Der Fall hat ein weiteres Thema: ${other.topic}`), cite: (other.citations || [])[0], choose: true });
-  if (ev && !ev.documents.length) pts.push({ urgency: 1, text: T("No documented process gives this case document needs yet. Choose the process that fits.",
+  if (other) pts.push({ key: "other-topic", urgency: 2, text: T(`The case has a further topic: ${other.topic}`, `Der Fall hat ein weiteres Thema: ${other.topic}`), cite: (other.citations || [])[0], choose: true });
+  if (ev && !ev.documents.length) pts.push({ key: "no-process", urgency: 1, text: T("No documented process gives this case document needs yet. Choose the process that fits.",
       "Für diesen Fall ist noch kein passender Prozess mit Dokumenten hinterlegt. Wählen Sie den Prozess, der passt."), choose: true });
   for (const f of Object.values(recorded("fact"))) {
-    if (f.status === "conflicting") pts.push({ urgency: 2, text: T(`The files disagree: ${questionOf(f.fact)}`, `Die Akten widersprechen sich: ${questionOf(f.fact)}`), cite: (f.citations || [])[0], tab: "source_checker" });
+    if (f.status === "conflicting") pts.push({ key: `conflict.${f.fact}`, urgency: 2, text: T(`The files disagree: ${questionOf(f.fact)}`, `Die Akten widersprechen sich: ${questionOf(f.fact)}`), cite: (f.citations || [])[0], tab: "source_checker" });
   }
   for (const w of (ev ? ev.waiting_for : [])) {
-    if (!chatFacts(ev).includes(w.fact)) pts.push({ urgency: 3, text: T(`Decides the path, no source yet: ${w.question}`, `Entscheidet den Weg, noch ohne Beleg: ${w.question}`), tab: "source_checker" });
+    if (!chatFacts(ev).includes(w.fact)) pts.push({ key: `path.${w.fact}`, urgency: 3, text: T(`Decides the path, no source yet: ${w.question}`, `Entscheidet den Weg, noch ohne Beleg: ${w.question}`), tab: "source_checker" });
   }
   const { now } = ev ? askNow(ev) : { now: [] };
   const toAsk = now.filter((d) => ["missing", "unusable"].includes(d.status));
-  if (toAsk.length) pts.push({ urgency: 1, text: T(`Request ${toAsk.length} document(s) from the customer: ${toAsk.map((d) => clip(d.title, 48)).join(" · ")}`,
+  if (toAsk.length) pts.push({ key: `request.${toAsk.length}`, urgency: 1, text: T(`Request ${toAsk.length} document(s) from the customer: ${toAsk.map((d) => clip(d.title, 48)).join(" · ")}`,
       `${toAsk.length} Unterlage(n) beim Kunden anfordern: ${toAsk.map((d) => clip(d.title, 48)).join(" · ")}`), request: true, docs: toAsk.map((d) => d.document) });
   const today = new Date();
   for (const d of DEADLINES_RELIABLE ? (r && r.deadlines) || [] : []) {
     const n = Math.round((new Date(d.date) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
-    if (!Number.isNaN(n) && n <= 14) pts.push({ urgency: 0, text: T(`Deadline ${dateText(d.date)}: ${d.question}`, `Frist ${dateText(d.date)}: ${d.question}`) });
+    if (!Number.isNaN(n) && n <= 14) pts.push({ key: `deadline.${d.date}`, urgency: 0, text: T(`Deadline ${dateText(d.date)}: ${d.question}`, `Frist ${dateText(d.date)}: ${d.question}`) });
   }
   for (const f of S.data.files || []) {
-    if (((f.extraction || {}).instruction_like || []).length) pts.push({ urgency: 0, text: T(`${f.name} contains text addressed to an AI`, `${f.name} enthält Text an die KI`) });
+    if (((f.extraction || {}).instruction_like || []).length) pts.push({ key: `ai.${f.id}`, urgency: 0, text: T(`${f.name} contains text addressed to an AI`, `${f.name} enthält Text an die KI`) });
     const unread = Object.entries((f.extraction || {}).unread_reasons || {});
-    if (unread.length) pts.push({ urgency: 3, text: T(`${unread.length} page(s) of ${f.name} could not be read (${unread.map(([p, why]) => `p. ${p}: ${why}`).join(", ")})`, `${unread.length} Seite(n) von ${f.name} nicht gelesen (${unread.map(([p, why]) => `S. ${p}: ${why}`).join(", ")})`) });
+    if (unread.length) pts.push({ key: `unread.${f.id}`, urgency: 3, text: T(`${unread.length} page(s) of ${f.name} could not be read (${unread.map(([p, why]) => `p. ${p}: ${why}`).join(", ")})`, `${unread.length} Seite(n) von ${f.name} nicht gelesen (${unread.map(([p, why]) => `S. ${p}: ${why}`).join(", ")})`) });
   }
   for (const d of ev ? ev.documents.filter((x) => x.required === "suggested") : []) {
     const pd = (S.data.process.documents || []).find((x) => x.id === d.document) || {};
-    if (pd.knowledge) pts.push({ urgency: 4, text: T(`Knowledge suggests: ${d.title}`, `Das Wissen schlägt vor: ${d.title}`), knowledge: pd.knowledge });
+    if (pd.knowledge) pts.push({ key: `knowledge.${pd.knowledge}`, urgency: 4, text: T(`Knowledge suggests: ${d.title}`, `Das Wissen schlägt vor: ${d.title}`), knowledge: pd.knowledge });
   }
   const chat = ev ? chatFacts(ev) : [];
-  if (chat.length) pts.push({ urgency: 5, text: T(`${chat.length} details the customer settles in the chat: ${chat.map(questionOf).join(" · ")}`, `${chat.length} Angaben klärt der Kunde im Chat: ${chat.map(questionOf).join(" · ")}`), info: true });
-  return pts.filter((p) => !(S.dismissed || new Set()).has(p.text)).sort((a, b) => a.urgency - b.urgency);
+  if (chat.length) pts.push({ key: `chat.${chat.length}`, urgency: 5, text: T(`${chat.length} details the customer settles in the chat: ${chat.map(questionOf).join(" · ")}`, `${chat.length} Angaben klärt der Kunde im Chat: ${chat.map(questionOf).join(" · ")}`), info: true });
+  return pts.sort((a, b) => a.urgency - b.urgency);
 }
+const doneRows = () => (S.data.feedback || []).filter((f) => f.target.startsWith("point:") && f.verdict === "done");
 function overviewView() {
   const r = result(), ev = S.data.evaluation;
   if (!r) return `<p class="cp-empty">${T("The overview appears once the case is prepared.", "Die Übersicht erscheint, sobald der Fall vorbereitet ist.")}</p>`;
@@ -1074,18 +1075,20 @@ function overviewView() {
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional", "depends"].includes(d.required)) : [];
   const present = docs.filter((d) => d.status === "present").length, open = docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
   const draft = ev ? requestDraft(ev) : "";
-  const pts = judgementPoints(ev, r);
+  const done = doneRows(), doneKeys = new Set(done.map((f) => f.target.slice(6)));
+  const all = judgementPoints(ev, r), pts = all.filter((p) => !doneKeys.has(p.key));
+  const settled = all.filter((p) => doneKeys.has(p.key));
   const shown = S.allPoints ? pts : pts.slice(0, 7);
   const button = (p, i) => [p.request ? `<button class="cp-button" data-point-request>${T("Request", "Anfordern")}</button>` : "",
     p.docs ? `<a class="cp-button" href="#/case/${esc(S.route.id)}/document_finder">${T("Check list", "Liste prüfen")}</a>` : "",
     p.knowledge ? `<button class="cp-button primary" data-point-adopt="${esc(p.knowledge)}">${T("Adopt", "Übernehmen")}</button><button class="cp-button" data-point-retire="${esc(p.knowledge)}">${T("Not needed", "Nicht nötig")}</button>` : "",
     p.choose && S.workflows ? `<select class="cp-button" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${T("Choose process…", "Prozess wählen…")}</option>${S.workflows.map((w) => `<option value="${esc(w.id)}">${esc(w.title)}</option>`).join("")}</select>` : "",
     p.tab ? `<a class="cp-button" href="#/case/${esc(S.route.id)}/${p.tab}">${T("Check", "Prüfen")}</a>` : "",
-    `<button class="cp-link" data-point-dismiss="${i}">${T("Done", "Erledigt")}</button>`].join("");
+    ratedRun() ? `<button class="cp-link" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
   const checked = `${Object.keys(recorded("fact")).length} ${T("facts", "Fakten")}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
   return `<div class="cp-overview">
     <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
-      <dl class="cp-doc-head cp-facts">
+      <dl class="cp-doc-head cp-casefacts">
         <dt>${T("Request", "Anliegen")}</dt><dd>${esc(anliegen)}</dd>
         <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
@@ -1099,6 +1102,8 @@ function overviewView() {
       ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li><span>${esc(p.text)}${cite(p.cite)}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
         ${pts.length > 7 && !S.allPoints ? `<button class="cp-link" id="all-points">+${pts.length - 7} ${T("more", "weitere")}</button>` : ""}`
         : `<p>${T("Nothing open.", "Nichts offen.")} <span class="cp-muted">${T("Checked", "Geprüft")}: ${checked}.</span></p>`}
+      ${settled.length ? `<details class="cp-muted"><summary class="cp-link">${T(`${settled.length} settled`, `${settled.length} erledigt`)}</summary><ul>${settled.map((p) => { const f = done.find((x) => x.target === `point:${p.key}`);
+        return `<li>${esc(p.text)} <span>· ${esc(f.by)} · ${dateText(f.at)}</span> ${f.by === S.me ? `<button class="cp-link" data-point-undone="${esc(p.key)}">${T("undo", "rückgängig")}</button>` : ""}</li>`; }).join("")}</ul></details>` : ""}
       ${S.lastEdit ? `<p class="cp-muted">${T("Changed.", "Geändert.")} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : ""}</section></div>`;
 }
 function bindOverview() {
@@ -1109,8 +1114,12 @@ function bindOverview() {
   const all = $("#all-points");
   if (all) all.addEventListener("click", () => { S.allPoints = true; renderCase(); });
   for (const b of document.querySelectorAll("[data-point-request]")) b.addEventListener("click", () => { S.showDraft = true; renderCase(); });
-  const pts = () => judgementPoints(S.data.evaluation, result());
-  for (const b of document.querySelectorAll("[data-point-dismiss]")) b.addEventListener("click", () => { S.dismissed = S.dismissed || new Set(); S.dismissed.add(pts()[Number(b.dataset.pointDismiss)].text); renderCase(); });
+  const mark = async (key, verdict) => {
+    const response = await api(`/api/runs/${ratedRun()}/feedback`, { method: "PUT", body: JSON.stringify({ target: `point:${key}`, verdict }) });
+    S.data.feedback = response.feedback; renderCase();
+  };
+  for (const b of document.querySelectorAll("[data-point-done]")) b.addEventListener("click", () => mark(b.dataset.pointDone, "done"));
+  for (const b of document.querySelectorAll("[data-point-undone]")) b.addEventListener("click", () => mark(b.dataset.pointUndone, null));
   for (const b of document.querySelectorAll("[data-point-notneeded]")) b.addEventListener("click", async () => {
     S.lastEdit = await api(`/api/cases/${S.route.id}/edits`, { method: "POST", body: JSON.stringify({ op: "remove_document", args: { document: b.dataset.pointNotneeded },
       reason: T("not needed in this case (case worker)", "in diesem Fall nicht nötig (Fallbearbeitung)"), use_for_similar: false }) });
