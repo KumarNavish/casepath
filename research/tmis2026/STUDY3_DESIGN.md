@@ -15,8 +15,10 @@ frontier model given the same rules?
 ## 2. What is tested
 
 **The product, not a research version.** The system under test is the
-package `casepath` at commit `PRODUCT_COMMIT` (source-tree hash
-`PRODUCT_HASH` from `python -m casepath parity`). It is run through its HTTP
+package `casepath` at commit `5ed0ea7cf951b799abfb393c5e0cfe066a3629bb`
+(source-tree hash
+`c39341b869c02f06a1e3f5b449e7dede1df0c908c71ae24dd613f7865f642847` from
+`python -m casepath parity`). It is run through its HTTP
 API as a case worker's browser runs it. The only inputs that differ from an
 inside deployment are the workflows and the case files.
 
@@ -30,7 +32,9 @@ driver checks them against the reference engines (`compare.py`: every truth
 assignment; `compare_theft.py`: 3,000 random assignments) and refuses to run
 if a decision differs.
 
-**Settings.** Defaults of the frozen commit: full run scope, three readings.
+**Settings.** Defaults of the frozen commit: full run scope, three readings
+that must all agree on a value, and no presumption for a fact that any
+reading finds raised and left open.
 Model gpt-6-luna. Reasoning effort is passed to the model
 (`CASEPATH_MODEL_REASONING=true`). Three runs per case. All settings are
 recorded in `runs/study3/confirm/MANIFEST.json`.
@@ -55,8 +59,8 @@ No design, baseline or scorer has run on these data.
 open or true defining event. The probe was written because `fresh/` has no
 denied or open defining event and `fresh2/` does; its claims are new texts by
 a writer that had not seen `fresh2/`. Theft stories 4–5 of `fresh/` were used
-to develop the product; stories 6–7 were used once, for validation, after the
-last change. Development results are in `WORKLOG.md` and are not evidence.
+to develop the product; stories 6–7 were used once, for validation, before
+the last review fixes, and re-run from cached readings after them. Development results are in `WORKLOG.md` and are not evidence.
 
 Limits fixed here: tenancy references come from the engine and silence policy
 that the product implements, and every design receives the policy clause;
@@ -84,6 +88,7 @@ per case.
 | Two-valued | the product's own readings with unresolved taken as false, and separately as true; no model calls | 0 |
 | Core | two readings and exact deferral outside the product (`harness/v2/cp4.py`), theft only | 2 |
 | Rules in context, original rules | theft only, both models: the Study 1 baseline | 1 |
+| CasePath on the frontier model, checklist only | the same commit with gpt-6.1-terra as its model; one run per case | about 4–8 |
 
 Self-consistency with five samples costs at least as much as CasePath,
 checklist only, on both regimes. No baseline is matched to the cost of the
@@ -171,6 +176,10 @@ and labelled as outside the procedure.
 - CasePath against CasePath, checklist only, and against Core: differences
   with intervals. Needs added by an agent that entered the scored checklist.
   Cost per agent.
+- Model for model: CasePath on the frontier model, checklist only (one run),
+  against Rules in context, frontier, on both regimes, with intervals. On
+  development data this design did not beat the frontier single prompt on
+  theft (one run), so we state no hypothesis for it.
 - Cost per case for every design; cost ratio to the frontier baseline.
 - Run-to-run agreement; repeated errors counted once per story and run.
 - English and German tenancy claims separately.
