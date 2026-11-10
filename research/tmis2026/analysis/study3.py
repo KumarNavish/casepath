@@ -189,8 +189,34 @@ def majority(plans):
             "deferred": sum(bool(p.get("deferred")) for p in ok) > n / 2}
 
 
+_EXTRACTED = {}
+
+
+def package_dir(package):
+    """A product package given as a path, or as {"commit": sha, "subdir": "casepath-internal"[, "repo": path]}:
+    the commit's tree is extracted read-only (git archive) into a temporary folder, once per process."""
+    if isinstance(package, dict):
+        repo = package.get("repo") or str(TMIS.parents[1])
+        k = (repo, package["commit"], package.get("subdir", "casepath-internal"))
+        if k not in _EXTRACTED:
+            import atexit
+            import shutil
+            import subprocess
+            import tempfile
+            out = tempfile.mkdtemp(prefix="study3-product-")
+            atexit.register(shutil.rmtree, out, True)
+            arch = subprocess.run(["git", "-C", repo, "archive", "--format=tar", package["commit"], k[2]], capture_output=True)
+            if arch.returncode:
+                raise RuntimeError(f"git archive {package['commit']} failed: {arch.stderr.decode(errors='replace').strip()[:200]}")
+            subprocess.run(["tar", "-x", "-C", out], input=arch.stdout, check=True)
+            _EXTRACTED[k] = str(Path(out) / k[2])
+        return _EXTRACTED[k]
+    return package
+
+
 def load_evaluator(package):
-    """The product's evaluator (casepath.process.workflows) from a worktree; a clean import per package."""
+    """The product's evaluator (casepath.process.workflows) from a package folder or commit; a clean import each time."""
+    package = package_dir(package)
     if not package or not Path(package).is_dir():
         raise RuntimeError(f"product package not found: {package}")
     for m in [m for m in sys.modules if m == "casepath" or m.startswith("casepath.")]:
@@ -348,7 +374,7 @@ class Study:
         raise ValueError(f"unknown derivation {kind}")
 
     def evaluator(self, regime, ev):
-        k = (ev.get("package"), ev.get("catalogue"))
+        k = (json.dumps(ev.get("package"), sort_keys=True), ev.get("catalogue"))
         if k not in self._evaluators:
             W = self.evaluator_loader(ev.get("package"))
             self._evaluators[k] = (W, W.Catalogue.load(self.inputs.path(ev["catalogue"])))

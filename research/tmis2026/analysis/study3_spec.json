@@ -35,8 +35,9 @@
  "deciding_agents": ["router", "claim_reader", "source_checker", "document_finder"],
  "deciding_agents_note": "Calls that can decide the checklist: routing, the two readings and the document judgments. These are the agents a checklist-only run calls. All other agents (process_builder, result_checker, any other) are 'the rest'.",
  "product_evaluator": {
-  "tenancy": {"package": "/home/user/work/casepath-study3-frozen/casepath-internal", "catalogue": "harness/product/workflows/fresh2-serial-sync"},
-  "theft": {"package": "/home/user/work/casepath-study3-frozen/casepath-internal", "catalogue": "harness/product/workflows/theft-reviewed"}
+  "note": "package = the product package at a commit of this repository, extracted read-only with git archive; or a folder path",
+  "tenancy": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh2-serial-sync"},
+  "theft": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/theft-reviewed"}
  },
  "designs": [
   {"key": "casepath", "label": "CasePath", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
@@ -154,8 +155,8 @@
    "note": "Product round 3 on development data (WORKLOG 2026-11-10). Tenancy full product at e6c287d (r3b-full), checklist only at 250fca1 (r3c-check, two runs); theft full product at 9ca1207 (r3-full), checklist only at 250fca1 (r3c-check). Theft: stories 4-5 only.",
    "theft_stories": [4, 5],
    "product_evaluator": {
-    "tenancy": {"package": "/home/user/work/casepath-sync-c-r3b/casepath-internal", "catalogue": "harness/product/workflows/fresh-serial-sync"},
-    "theft": {"package": "/home/user/work/casepath-sync-c-r3/casepath-internal", "catalogue": "harness/product/workflows/theft-reviewed"}
+    "tenancy": {"package": {"commit": "e6c287d89b2ec2de88ca3ac9eeb75b71949b9db9", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh-serial-sync"},
+    "theft": {"package": {"commit": "9ca1207413b78155a4cbcdeb35c0dd6d68e6c6c1", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/theft-reviewed"}
    },
    "designs": {
     "casepath": {
