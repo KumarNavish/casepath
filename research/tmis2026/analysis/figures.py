@@ -887,7 +887,9 @@ if __name__ == "__main__":
     if "--legacy" in args:
         fig_tenancy(); fig_theft(); fig_propagation()
     only = [a for a in args if a.startswith("fig_")]
-    for f in only or ["fig_hero", "fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge", "fig_study2"]:
+    # fig_hero now comes from fig_s4.py (screens at the frozen commit 6a72159c); the old one here is kept for the record
+    # and is drawn only when asked for by name.
+    for f in only or ["fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge", "fig_study2"]:
         if f in globals():
             globals()[f]()
     print("figures written to", FIG)

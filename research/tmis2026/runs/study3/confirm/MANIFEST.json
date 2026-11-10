@@ -1,0 +1,809 @@
+{
+ "analysis_plan": {
+  "committed_unmodified": true,
+  "path": "ANALYSIS_PLAN_STUDY3.md",
+  "sha256": "d76b46a0ada813d4741153873dcc326b74c2f3afe9797f11fcbcc4a92a7fb10e"
+ },
+ "fixed": {
+  "catalogues": {
+   "tenancy": {
+    "files": {
+     "defect_mold_heating.json": "c49e05a014a736b50b8ef47983113758fd694be76056ae5464f939e8dbd0d839",
+     "lease_termination_dispute.json": "17840a9d7fe25acfec9881ecbe52050da2ad3310bbd861281c424b0390bd532c",
+     "rent_increase_dispute.json": "7370ed1658502d5d9e6e2ec120bc8347638ea5fa5303481c8e216ca59a585f19"
+    },
+    "path": "harness/product/workflows/fresh-serial-sync"
+   },
+   "theft": {
+    "files": {
+     "household_theft.json": "a0c53a812920f4c7be60029c620a8c112857bfc9c9656bc92a745170357a2ded"
+    },
+    "path": "harness/product/workflows/theft-reviewed"
+   }
+  },
+  "data": "fresh2",
+  "data_manifest": {
+   "path": "fresh2/MANIFEST.json",
+   "sha256": "8f8217aca1b6e25e38305667a33d415cdc061b2d16925f8cd87523c02aa1e0d2"
+  },
+  "k": 3,
+  "limit": null,
+  "models": {
+   "casepath": "gpt-6-luna",
+   "casepath_checklist": "gpt-6-luna",
+   "casepath_frontier_checklist": "gpt-6.1-terra",
+   "core": "gpt-6-luna",
+   "model_executes_rules": "gpt-6-luna",
+   "react": "gpt-6-luna",
+   "ric": "gpt-6-luna",
+   "ric_frontier": "gpt-6.1-terra",
+   "ric_original": "gpt-6-luna",
+   "ric_original_frontier": "gpt-6.1-terra",
+   "self_consistency": "gpt-6-luna",
+   "two_valued_false": "none (product readings)",
+   "two_valued_true": "none (product readings)"
+  },
+  "product": {
+   "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+   "parity_settings_by_run": {
+    "casepath/tenancy": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "full"
+    },
+    "casepath/theft": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "full"
+    },
+    "casepath_checklist/tenancy": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "checklist"
+    },
+    "casepath_checklist/theft": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "checklist"
+    },
+    "casepath_frontier_checklist/tenancy": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "checklist"
+    },
+    "casepath_frontier_checklist/theft": {
+     "model_reasoning": true,
+     "open_rule": "any",
+     "readings": 3,
+     "run_scope": "checklist"
+    }
+   },
+   "resolved_settings_by_run": {
+    "casepath/tenancy": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6-luna",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "full",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    },
+    "casepath/theft": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6-luna",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "full",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    },
+    "casepath_checklist/tenancy": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6-luna",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "checklist",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    },
+    "casepath_checklist/theft": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6-luna",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "checklist",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    },
+    "casepath_frontier_checklist/tenancy": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6.1-terra",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "checklist",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    },
+    "casepath_frontier_checklist/theft": {
+     "allowed_users": "0 named users",
+     "catalogue_dir": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "data_dir": "/home/user/work/casepath-sync-e/casepath-internal/<temporary>",
+     "dev_user": "Case handler (research)",
+     "identity_format": "plain",
+     "identity_header": null,
+     "identity_roles_claim": "roles",
+     "identity_user_claim": "sub",
+     "max_text_chars": 4000000,
+     "max_upload_bytes": 104857600,
+     "model": {
+      "api": "chat",
+      "api_version": null,
+      "auth": "app",
+      "ca_bundle": "/root/.ccr/ca-bundle.crt",
+      "chat_path": "/api/v1/chat/completions",
+      "deployment": "gpt-6.1-terra",
+      "endpoint": "https://openrouter.ai",
+      "forced_tools": true,
+      "gateway_hosts": [
+       "openrouter.ai"
+      ],
+      "max_output_tokens": 16000,
+      "provider": "databricks",
+      "reading_deployment": null,
+      "reasoning": true,
+      "timeout_seconds": 120.0,
+      "trust_env": true
+     },
+     "organisation": "the legal-expenses insurer's",
+     "page_image_side": 1700,
+     "reading_workers": 6,
+     "readings": 3,
+     "required_role": null,
+     "run_scope": "checklist",
+     "run_token_budget": 4000000,
+     "run_workers": 2,
+     "volume": null,
+     "writing_language": "in the language of the case files"
+    }
+   },
+   "settings_env_by_run": {
+    "casepath/tenancy": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6-luna",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    },
+    "casepath/theft": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6-luna",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    },
+    "casepath_checklist/tenancy": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6-luna",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_RUN_SCOPE": "checklist",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    },
+    "casepath_checklist/theft": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6-luna",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_RUN_SCOPE": "checklist",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    },
+    "casepath_frontier_checklist/tenancy": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6.1-terra",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_RUN_SCOPE": "checklist",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    },
+    "casepath_frontier_checklist/theft": {
+     "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+     "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+     "CASEPATH_DATA_DIR": "<temporary>",
+     "CASEPATH_DEV_USER": "Case handler (research)",
+     "CASEPATH_MODEL": "gpt-6.1-terra",
+     "CASEPATH_MODEL_API": "chat",
+     "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+     "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+     "CASEPATH_MODEL_PROVIDER": "databricks",
+     "CASEPATH_MODEL_REASONING": "true",
+     "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+     "CASEPATH_RUN_SCOPE": "checklist",
+     "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed",
+     "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+    }
+   },
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "worktree": "/home/user/work/casepath-sync-e"
+  },
+  "runs_by_design": {
+   "casepath": 3,
+   "casepath_checklist": 3,
+   "casepath_frontier_checklist": 1,
+   "core": 3,
+   "model_executes_rules": 3,
+   "react": 3,
+   "ric": 3,
+   "ric_frontier": 3,
+   "ric_original": 3,
+   "ric_original_frontier": 3,
+   "self_consistency": 3,
+   "two_valued_false": 3,
+   "two_valued_true": 3
+  },
+  "self_consistency_samples_per_run": {
+   "tenancy": 5,
+   "theft": 5
+  },
+  "spec": {
+   "path": "analysis/study3_spec.json",
+   "sha256": "149749a616f911d7d1b9134ec4d1c2de33715adcaf24a3bfa20aab1f3c1143af"
+  }
+ },
+ "format": "study3-run/1",
+ "harness_files_sha256": {
+  "harness/study3/checks.py": "eb0369280031d234f0d545aff267b6bfdadca51ace77e5b3e6f656391a00b1a1",
+  "harness/study3/lib.py": "58a55d5a9008f41effb72f397f46f1279237803e7c35488b2895d0e467794154",
+  "harness/study3/product_case.py": "e114bcdc4b2f61ffcb85433a81d22c6fc667b96529ff5ccca406314d63209503",
+  "harness/study3/run_all.py": "142b04721e8143c786c64c23c87f88a1a61c47f7a4bc2d80bd09e77570f702ce",
+  "harness/study3/worker.py": "ff285630d32162809601c62f37b50c97e352e7d5f6f7118104fe30c3d99e9ce9"
+ },
+ "invocations": [
+  {
+   "argv": [
+    "--data",
+    "fresh2",
+    "--label",
+    "confirm",
+    "--k",
+    "3",
+    "--cap-usd",
+    "32",
+    "--cap-frontier-product-usd",
+    "8"
+   ],
+   "cap_usd": 32.0,
+   "checks": [
+    "check (a) plan: ANALYSIS_PLAN_STUDY3.md committed unmodified: yes",
+    "check (c) templates: fresh2 daaa76eddc5ac2b6 vs fresh daaa76eddc5ac2b6: identical, workflows/fresh-serial-sync apply unchanged",
+    "check (b) product: /home/user/work/casepath-sync-e at 6a72159cdb35, clean, source tree 030480203f7d10b3, settings {\"model_reasoning\": true, \"open_rule\": \"any\", \"readings\": 3, \"run_scope\": \"full\"}: matches the spec",
+    "check (d) compare: tenancy 5076 of 5076 decisions agree with exact deferral (pass); theft 3000 assignments, 81000/81000 document decisions agree / 27 documents the rules can demand; 0 without a need in the workflow (pass)",
+    "check (b) settings of every product run (casepath/tenancy, casepath/theft, casepath_checklist/tenancy, casepath_checklist/theft, casepath_frontier_checklist/tenancy, casepath_frontier_checklist/theft): readings, open rule, run scope and reasoning as the spec requires"
+   ],
+   "designs": [
+    "ric/tenancy",
+    "ric/theft",
+    "ric_original/theft",
+    "model_executes_rules/tenancy",
+    "model_executes_rules/theft",
+    "react/tenancy",
+    "react/theft",
+    "core/theft",
+    "casepath_checklist/tenancy",
+    "casepath_checklist/theft",
+    "self_consistency/tenancy",
+    "self_consistency/theft",
+    "ric_original_frontier/theft",
+    "ric_frontier/tenancy",
+    "ric_frontier/theft",
+    "casepath/tenancy",
+    "casepath/theft",
+    "casepath_frontier_checklist/tenancy",
+    "casepath_frontier_checklist/theft"
+   ],
+   "start": "2026-11-10T22:30:15Z",
+   "workers": 6
+  }
+ ],
+ "label": "confirm",
+ "product_parity": {
+  "casepath/tenancy": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6-luna",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "full"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "defect_mold_heating.json": "c49e05a014a736b50b8ef47983113758fd694be76056ae5464f939e8dbd0d839",
+    "lease_termination_dispute.json": "17840a9d7fe25acfec9881ecbe52050da2ad3310bbd861281c424b0390bd532c",
+    "rent_increase_dispute.json": "7370ed1658502d5d9e6e2ec120bc8347638ea5fa5303481c8e216ca59a585f19"
+   }
+  },
+  "casepath/theft": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6-luna",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "full"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "household_theft.json": "a0c53a812920f4c7be60029c620a8c112857bfc9c9656bc92a745170357a2ded"
+   }
+  },
+  "casepath_checklist/tenancy": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6-luna",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "checklist"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "run_scope": "checklist",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "defect_mold_heating.json": "c49e05a014a736b50b8ef47983113758fd694be76056ae5464f939e8dbd0d839",
+    "lease_termination_dispute.json": "17840a9d7fe25acfec9881ecbe52050da2ad3310bbd861281c424b0390bd532c",
+    "rent_increase_dispute.json": "7370ed1658502d5d9e6e2ec120bc8347638ea5fa5303481c8e216ca59a585f19"
+   }
+  },
+  "casepath_checklist/theft": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6-luna",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "checklist"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "run_scope": "checklist",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "household_theft.json": "a0c53a812920f4c7be60029c620a8c112857bfc9c9656bc92a745170357a2ded"
+   }
+  },
+  "casepath_frontier_checklist/tenancy": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6.1-terra",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "checklist"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "run_scope": "checklist",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "defect_mold_heating.json": "c49e05a014a736b50b8ef47983113758fd694be76056ae5464f939e8dbd0d839",
+    "lease_termination_dispute.json": "17840a9d7fe25acfec9881ecbe52050da2ad3310bbd861281c424b0390bd532c",
+    "rent_increase_dispute.json": "7370ed1658502d5d9e6e2ec120bc8347638ea5fa5303481c8e216ca59a585f19"
+   }
+  },
+  "casepath_frontier_checklist/theft": {
+   "format": "casepath.parity/1",
+   "git": {
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "package_modified": false
+   },
+   "interface_language_default": "de",
+   "knowledge": {},
+   "model": {
+    "api": "chat",
+    "endpoint_host": "openrouter.ai",
+    "name": "gpt-6.1-terra",
+    "provider": "databricks",
+    "reading": null
+   },
+   "package": "casepath",
+   "settings": {
+    "model_reasoning": true,
+    "open_rule": "any",
+    "readings": 3,
+    "run_scope": "checklist"
+   },
+   "settings_not_default": {
+    "dev_user": "Case handler (research)",
+    "model.api": "chat",
+    "model.api_version": null,
+    "model.auth": "app",
+    "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+    "model.chat_path": "/api/v1/chat/completions",
+    "model.forced_tools": true,
+    "model.gateway_hosts": [
+     "openrouter.ai"
+    ],
+    "model.max_output_tokens": 16000,
+    "model.reasoning": true,
+    "model.timeout_seconds": 120.0,
+    "model.trust_env": true,
+    "organisation": "the legal-expenses insurer's",
+    "run_scope": "checklist",
+    "writing_language": "in the language of the case files"
+   },
+   "source_files": 48,
+   "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+   "workflows": {
+    "household_theft.json": "a0c53a812920f4c7be60029c620a8c112857bfc9c9656bc92a745170357a2ded"
+   }
+  }
+ },
+ "repository_head": "fd35e4382a5ffcce46f8ba1b88e17b698844a5cb",
+ "run_environment": {
+  "model_client": "harness/llm.py through harness/v2/common.py (ledger per design as the spec names it); TMIS_MODEL=openai/<model> per design",
+  "product_entry_point": "harness/product/run_api.run_case (create_app + HTTP API), one subprocess per case-run, store ids deterministic per case-run",
+  "product_transport": "harness/product/run_product.CachingTransport (cache runs/product/cache, ledger runs/product/ledger_dev_<model>.jsonl)",
+  "python": "3.13.18",
+  "secrets": "none recorded; the container's proxy adds the provider credential (environment values are never written)"
+ }
+}
