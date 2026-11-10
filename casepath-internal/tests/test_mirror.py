@@ -80,6 +80,7 @@ class ImportTests(unittest.TestCase):
             files[f"{VOLUME}/incoming/Dossier 3/files/01-Brief.txt"] = b"Die Verwaltung hat nicht reagiert."
             listed = {f["name"]: f for f in client.get("/api/imports").json()["files"]}
             self.assertTrue(listed["Dossier 3"]["prepared"])
+            self.assertEqual((listed["Dossier 3"]["title"], listed["Dossier 3"]["files"]), ("Dossier 3", 1))  # each dossier is recognisable
             prepared = client.post("/api/imports", json={"path": listed["Dossier 3"]["path"]}).json()["case"]
             self.assertEqual(prepared["title"], "Dossier 3")
             self.assertEqual(client.get(f"/api/files/{client.get('/api/cases/' + prepared['id']).json()['files'][0]['id']}/text").json()["text"],

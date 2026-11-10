@@ -93,10 +93,12 @@ def renderer_available():
     return True
 
 
-def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700, images=None):
+def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda done: None, image_side=1700, images=None, reasons=None):
     """Read the given pages from their images. Returns ({page: text}, [pages that could not be read]).
 
-    ``images``: {page: PNG bytes} prepared elsewhere, so no PDF renderer is needed here."""
+    ``images``: {page: PNG bytes} prepared elsewhere, so no PDF renderer is needed here. ``reasons``, when given, receives
+    {page: reason code} for each page that could not be read (e.g. "http_400", "schema_mismatch"), without any content."""
+    reasons = {} if reasons is None else reasons
     renderer = None if images else Renderer(data, max_side=image_side)  # smaller images cost fewer tokens; ~1400 px stays legible
 
     def read(chunk):
@@ -119,8 +121,9 @@ def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda d
         for number in chunk:
             try:
                 done.update(read([number]))
-            except ModelError:
+            except ModelError as error:
                 failed.append(number)
+                reasons[number] = error.reason
         return done, failed
 
     pages, unread, errors = {}, [], []
@@ -135,6 +138,7 @@ def transcribe(model, data, numbers, *, batch=3, workers=1, on_progress=lambda d
             except ModelError as error:
                 unread.extend(futures[future])
                 errors.append(error)
+                reasons.update({n: error.reason for n in futures[future]})
             on_progress(len(pages))
     if unread and not pages:
         raise errors[0] if errors else ModelError("unreadable", "No page of the file could be read from its image.")
@@ -283,14 +287,17 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
             images = {n: blob for n, (_, blob) in found.items()}
             without_image = [n for n in todo if n not in images]
             todo = [n for n in todo if n in images]
+        reasons = {n: "no image in the file" for n in without_image}
         transcribed, unread = transcribe(model, data, todo, workers=workers, on_progress=progress, image_side=image_side,
-                                         images=images) if todo else ({}, [])
+                                         images=images, reasons=reasons) if todo else ({}, [])
         unread = sorted(unread + without_image)
         extraction = merge_pages(extraction, transcribed)
+        extraction["unread_reasons"] = {str(n): reasons.get(n, "unknown") for n in unread}  # codes only, for the case worker
         if transcribed:
             extraction.pop("segments", None)  # newly read pages change where documents begin and end
         if unread:
-            on_event({"agent": "claim_reader", "kind": "reading.unread", "file": file_row["id"], "pages": len(unread)})
+            on_event({"agent": "claim_reader", "kind": "reading.unread", "file": file_row["id"], "pages": len(unread),
+                      "reasons": sorted(set(extraction["unread_reasons"].values()))})
         changed = True
     if ocr and file_row["kind"] == "image" and not extraction.get("text") and not extraction.get("photo_unreadable"):
         data = store.blob(extraction["photo_image"]) if extraction.get("photo_image") else store.file_bytes(file_row["id"])[0]

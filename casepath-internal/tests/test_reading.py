@@ -112,10 +112,12 @@ class ReadingTests(unittest.TestCase):
         events = []
         extraction = reading.prepare_file(Reader(unreadable={5}), self.store, self.store.get_file(self.file, True), on_event=events.append)
         self.assertEqual((extraction["pages_transcribed"], extraction["pages_without_text"]), ([3, 4], [5]))
-        self.assertIn({"agent": "claim_reader", "kind": "reading.unread", "file": self.file, "pages": 1}, events)
+        self.assertIn({"agent": "claim_reader", "kind": "reading.unread", "file": self.file, "pages": 1, "reasons": ["http_400"]}, events)
+        self.assertEqual(extraction["unread_reasons"], {"5": "http_400"})  # why, as a code, never content
         self.assertEqual(extraction["segments"][-1]["last_page"], 4)
         extraction = reading.prepare_file(Reader(), self.store, self.store.get_file(self.file, True))
         self.assertEqual((extraction["pages_transcribed"], extraction["pages_without_text"]), ([3, 4, 5], []))
+        self.assertEqual(extraction["unread_reasons"], {})
         self.assertEqual(extraction["segments"][-1]["last_page"], 5)
 
     def test_a_dossier_that_cannot_be_split_is_still_read(self):

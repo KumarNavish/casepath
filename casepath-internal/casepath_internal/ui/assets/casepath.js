@@ -104,7 +104,6 @@ function renderTop() {
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
     <div class="cp-top-right">${route.view === "case" ? `<a class="cp-link" href="#/knowledge">${icon("memory")}${T("Knowledge", "Wissen")}</a>` : ""}<span>${esc(S.me || "")}</span>
       <a class="cp-link" href="?lang=${other}${esc(location.hash)}" lang="${other}">${other.toUpperCase()}</a></div>`;
-  for (const link of document.querySelectorAll("[data-tab]")) link.addEventListener("click", () => { S.follow = false; });
 }
 
 // ---------- cases ----------
@@ -128,8 +127,10 @@ async function renderCases() {
            : `<p class="cp-empty">${T("No cases yet. Create one, then add its documents.", "Noch keine Fälle. Legen Sie einen an und fügen Sie dann seine Dokumente hinzu.")}</p>`}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       <p class="cp-muted">${T("Files placed in the shared folder", "Dateien im gemeinsamen Ordner")} <code>${esc(imports.folder)}</code>. ${T("Each file becomes one case.", "Jede Datei wird zu einem Fall.")}</p>
-      ${imports.files.length ? `<table class="cp-table"><thead><tr><th>${T("File", "Datei")}</th><th>${T("Size", "Grösse")}</th><th></th></tr></thead><tbody>${imports.files.map((f) =>
-        `<tr><td>${esc(f.name)}</td><td>${f.size ? `${(f.size / 1048576).toFixed(1)} MB` : "—"}</td><td>${f.case ? `<a class="cp-link" href="#/case/${esc(f.case)}/process_builder">${T("Open case", "Fall öffnen")}</a>`
+      ${imports.files.length ? `<table class="cp-table"><thead><tr><th>${T("File", "Datei")}</th><th>${T("Contents", "Inhalt")}</th><th></th></tr></thead><tbody>${imports.files.map((f) =>
+        `<tr><td><b>${esc(f.title || f.name)}</b>${f.title && f.title !== f.name ? `<br><small class="cp-muted">${esc(f.name)}</small>` : ""}</td>
+        <td>${f.prepared ? T(`prepared · ${f.files ?? "?"} file(s)${f.pages ? ` · ${f.pages} pages` : ""}`, `vorbereitet · ${f.files ?? "?"} Datei(en)${f.pages ? ` · ${f.pages} Seiten` : ""}`)
+          : f.size ? `${(f.size / 1048576).toFixed(1)} MB` : "—"}</td><td>${f.case ? `<a class="cp-link" href="#/case/${esc(f.case)}/process_builder">${T("Open case", "Fall öffnen")}</a>`
           : `<button class="cp-button" data-import="${esc(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
         : `<p class="cp-empty">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}
     <h2 class="cp-section">${T("Processes", "Prozesse")}</h2>
@@ -222,6 +223,8 @@ function runError(error) {
     no_files: T("the case has no files", "Der Fall hat keine Dokumente"),
     transport: T("the model could not be reached; please try again", "Das Modell war nicht erreichbar; bitte erneut versuchen"),
     schema_mismatch: T("the model gave an unusable answer; please try again", "Das Modell gab eine unbrauchbare Antwort; bitte erneut versuchen"),
+    max_output_tokens: T("the page was too long for one answer", "die Seite war zu lang für eine Antwort"),
+    "no image in the file": T("the file holds no image of this page", "die Datei enthält kein Bild dieser Seite"),
   };
   if (known[reason]) return known[reason];
   if (/^http_(429|5\d\d)$/.test(reason)) return T("the model service is busy; please try again shortly", "Der Modelldienst ist ausgelastet; bitte gleich erneut versuchen");
@@ -267,7 +270,7 @@ function segmentRows(file) {
 }
 
 function bindRail() {
-  for (const button of document.querySelectorAll("[data-file]")) button.addEventListener("click", () => { S.file = button.dataset.file; S.page = Number(button.dataset.page) || null; renderCase(); });
+  for (const button of document.querySelectorAll("[data-file]")) button.addEventListener("click", () => { S.file = button.dataset.file; S.page = Number(button.dataset.page) || null; S.follow = !running(); renderCase(); });
   const upload = $("#upload");
   if (upload) upload.addEventListener("change", () => uploadFiles(upload.files));
   const drop = $("#drop") || $(".cp-rail");
@@ -388,8 +391,9 @@ async function sourceCard(fileId) {
 
 function readingNote(doc) {
   const read = (doc.pages_transcribed || []).length, unread = (doc.pages_without_text || []).length;
+  const why = [...new Set(Object.values(doc.unread_reasons || {}))].map((reason) => runError(reason)).join("; ");
   const parts = [read ? T(`${read} scanned page${read > 1 ? "s" : ""} read from the page image by the model.`, `${read} gescannte Seite${read > 1 ? "n" : ""} vom Modell aus dem Seitenbild gelesen.`) : "",
-                 unread ? T(`${unread} page${unread > 1 ? "s" : ""} not read.`, `${unread} Seite${unread > 1 ? "n" : ""} nicht gelesen.`) : ""].filter(Boolean);
+                 unread ? T(`${unread} page${unread > 1 ? "s" : ""} not read${why ? ` (${why})` : ""}.`, `${unread} Seite${unread > 1 ? "n" : ""} nicht gelesen${why ? ` (${why})` : ""}.`) : ""].filter(Boolean);
   const note = parts.length ? parts.join(" ") : doc.note;
   return note ? `<div class="cp-doc-note">${esc(note)}</div>` : "";
 }
@@ -493,7 +497,7 @@ function livePanel(live) {
   return `<aside><section class="cp-card cp-plan"><h3>${T(`Building “${esc(title)}”`, `In Arbeit: «${esc(title)}»`)}</h3><ol>${rows}</ol></section>
     ${live ? liveDocuments(live) : ""}
     <div class="cp-agent-chip"><span class="cp-hex">${icon(AGENT_ICON[agent])}</span>${esc(AGENT_TITLE[agent])}
-      ${S.follow ? "" : `<button class="cp-link" id="follow" type="button">${icon("right")}${T("Follow the agents", "Den Agenten folgen")}</button>`}</div>
+      ${S.follow ? "" : `<button class="cp-link" id="follow" type="button">${icon("right")}${T("Show what the agents read", "Zeigen, was die Agenten lesen")}</button>`}</div>
     <details style="margin-top:14px"><summary class="cp-link">${T("Work log", "Arbeitsprotokoll")}</summary>${workLog()}</details></aside>`;
 }
 
@@ -974,12 +978,6 @@ function schedulePoll() {
     S.events = S.events.concat(run.events);
     S.data.run.status = run.status;
     if (!["queued", "running"].includes(run.status)) { S.events = []; S.pages = {}; await loadCase(); return; }
-    const agent = activeAgent();
-    if (S.follow && agent && agent !== "lead" && S.route.tab !== agent) {
-      // Follow the working agent without a navigation, so this poll keeps running.
-      S.route.tab = agent;
-      history.replaceState(null, "", `#/case/${S.route.id}/${agent}`);
-    }
     const cite = liveCite();
     if (cite && S.follow) S.file = cite.file;
     await renderCase();
@@ -991,7 +989,7 @@ async function renderCase() {
   renderTop();
   const tab = S.route.tab;
   let main;
-  const liveView = running() && (tab === activeAgent() || tab === "process_builder");
+  const liveView = running();  // during a run every tab shows the work live; the working agent's tab pulses
   const live = liveView ? liveState() : null;
   if (liveView) {
     main = `${live ? liveSpine(live) : spine()}<div class="cp-live"><div>${await sourceCard(S.file)}${factCards()}</div>${livePanel(live)}</div>`;
@@ -1003,14 +1001,14 @@ async function renderCase() {
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
-  for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; renderCase(); } });
+  for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
   for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; renderCase(); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const follow = $("#follow");
   if (follow) follow.addEventListener("click", () => {
     S.follow = true;
-    const agent = activeAgent();
-    if (agent && agent !== "lead") { S.route.tab = agent; history.replaceState(null, "", `#/case/${S.route.id}/${agent}`); }
+    const cite = liveCite();
+    if (cite) S.file = cite.file;
     renderCase();
   });
   let previousBottom = null;  // a node that starts below the previous one's bottom begins a new row: no arrow into it
@@ -1076,7 +1074,6 @@ async function renderKnowledge() {
 async function route() {
   const next = parseRoute();
   if (next.view !== "case" || next.id !== S.route.id) Object.assign(S, { data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null, events: [], follow: true, message: "", shown: new Set(), litKey: null });
-  if (S.data && next.view === "case" && next.id === S.route.id && next.tab !== S.route.tab) S.follow = false;  // the person chose a tab
   S.route = next;
   renderTop();
   placeAttention(false);

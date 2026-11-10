@@ -7,6 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
+import json
 import importlib.util
 from dataclasses import replace
 from pathlib import Path
@@ -214,6 +215,20 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {**row, "attachments": added} if added else row
     uploads_from_bytes = True  # loose PDFs are read by pypdf where installed, else by CasePath's own reader (pdfread)
 
+    summaries = {}
+
+    def prepared_summary(path):
+        """Title, files and pages of a prepared case, from its case.json (read once per folder)."""
+        if path not in summaries:
+            try:
+                manifest = json.loads(files.get(f"{path}/case.json") or b"{}")
+            except ValueError:
+                manifest = {}
+            rows = manifest.get("files") or []
+            summaries[path] = {"title": manifest.get("title"), "files": len(rows) or None,
+                               "pages": sum(int((r.get("extraction") or {}).get("pages") or 0) for r in rows) or None}
+        return summaries[path]
+
     @app.get("/api/imports")
     def list_imports(who=Depends(user)):
         """Case files placed in the volume's incoming folder (and one level of subfolders), and which are imported."""
@@ -229,10 +244,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 prepared.append(entry)  # a prepared case: one folder, one case
             else:
                 entries += [e for e in inner if not e.get("is_directory")]
-        imported = {(c.get("intake") or {}).get("import_path"): c["id"] for c in store.list_cases()}
+        imported = {((c.get("intake") or {}).get("import_path") or "").rstrip("/"): c["id"] for c in store.list_cases()}
         rows = [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": e.get("file_size"), "prepared": False}
                 for e in entries if Path(e["path"]).suffix.lower() in IMPORTABLE and uploads_from_bytes]
-        rows += [{"path": e["path"], "name": e["path"].rsplit("/", 1)[-1], "size": None, "prepared": True} for e in prepared]
+        rows += [{"path": e["path"].rstrip("/"), "name": e["path"].rstrip("/").rsplit("/", 1)[-1], "size": None, "prepared": True,
+                  **prepared_summary(e["path"].rstrip("/"))} for e in prepared]
         return {"folder": incoming, "files": [{**r, "case": imported.get(r["path"])} for r in sorted(rows, key=lambda r: r["path"])]}
 
     @app.post("/api/imports", status_code=201)
@@ -244,7 +260,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(404, "No volume is configured for imports.")
         if not body.path.startswith(incoming + "/") or "/../" in body.path:
             raise HTTPException(422, "Only case files in the volume's incoming folder can be imported.")
-        if any((c.get("intake") or {}).get("import_path") == body.path for c in store.list_cases()):
+        if any(((c.get("intake") or {}).get("import_path") or "").rstrip("/") == body.path.rstrip("/") for c in store.list_cases()):
             raise HTTPException(409, "This file is already imported.")
         if Path(body.path).suffix.lower() not in IMPORTABLE:  # a prepared case folder: no PDF library needed here
             from .prepare import PreparedError, load_prepared
@@ -370,6 +386,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"id": row["id"], "name": row["name"], "kind": row["kind"], "media_type": row["media_type"],
                 "note": row["extraction"].get("note"), "pages_transcribed": row["extraction"].get("pages_transcribed") or [],
                 "pages_without_text": row["extraction"].get("pages_without_text") or [],
+                "unread_reasons": row["extraction"].get("unread_reasons") or {},
                 "headers": _headers(row["extraction"].get("text", "")) if row["kind"] == "email" else None,
                 "pages": [{"page": page, "text": text} for page, text in pages]}
 
