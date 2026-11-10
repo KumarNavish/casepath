@@ -192,3 +192,10 @@ class TypographicQuotationTests(unittest.TestCase):
         self.assertIsNotNone(evidence.locate("f1", "Die Office-Räume sind betroffen."))
         self.assertIsNone(evidence.locate("f1", "die vermieterin schreibt"))  # letter case is the file's words
         self.assertIsNone(evidence.locate("f1", "Wir kündigen das Mietverhältnis per 31. Juli."))
+
+    def test_only_typography_is_folded_never_superscripts_or_other_compatibility_forms(self):
+        from casepath.read.evidence import Evidence
+        evidence = Evidence([{"id": "f1", "name": "x.txt", "kind": "text", "text": "Schaden CHF 1500¹ gemäss Fussnote. Fläche 40 m² netto."}])
+        self.assertIsNone(evidence.locate("f1", "Schaden CHF 15001 gemäss"))
+        self.assertIsNone(evidence.locate("f1", "Fläche 40 m2 netto."))
+        self.assertIsNotNone(evidence.locate("f1", "Fläche 40 m² netto."))

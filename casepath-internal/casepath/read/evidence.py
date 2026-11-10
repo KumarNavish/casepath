@@ -6,7 +6,6 @@ match is otherwise exact and case-sensitive, so a citation either points to
 the words in the document or is rejected.
 """
 import re
-import unicodedata
 
 PAGE = re.compile(r"\[page (\d+)\]\n")
 WORD = re.compile(r"\w+", re.UNICODE)
@@ -18,18 +17,24 @@ def normalise(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
-TYPOGRAPHY = {**{c: '"' for c in "“”„‟«»″〝〞"}, **{c: "'" for c in "‘’‚‛‹›′`´"}, **{c: "-" for c in "‐‑‒–—―−"}}
+TYPOGRAPHY = {**{c: '"' for c in "“”„‟«»″〝〞"}, **{c: "'" for c in "‘’‚‛‹›′`´"}, **{c: "-" for c in "‐‑‒–—―−"},
+              # Latin ligatures U+FB00-FB06
+              "ﬀ": "ff", "ﬁ": "fi", "ﬂ": "fl", "ﬃ": "ffi", "ﬄ": "ffl", "ﬅ": "st", "ﬆ": "st",
+              # space variants
+              **{c: " " for c in "\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"},
+              "\u00ad": ""}  # soft hyphen
 
 
 def _typographic(text):
-    """Text with typography folded (NFKC, then quotation marks, apostrophes and dashes unified), and for each folded
-    character the index of the character it came from."""
+    """Text with typography folded by an explicit list (quotation marks, apostrophes, dashes, Latin ligatures, soft
+    hyphens and space variants), and for each folded character the index of the character it came from. Nothing else
+    is folded: no compatibility normalisation, so a superscript or a fraction never matches a digit."""
     out, index = [], []
     for i, ch in enumerate(text):
-        for c in unicodedata.normalize("NFKC", ch):
-            out.append(TYPOGRAPHY.get(c, c))
+        for c in TYPOGRAPHY.get(ch, ch):
+            out.append(c)
             index.append(i)
-    return re.sub(r"\s", " ", "".join(out)), index
+    return "".join(out), index
 
 
 def _fold(text):
@@ -80,8 +85,8 @@ class Evidence:
 
     def locate(self, file_id, quote):
         """The quotation's place in the file: an exact match after normalisation, or else a match that ignores only
-        typography (quotation marks, apostrophes, dashes, ligatures and other compatibility forms). Letter case is
-        not folded: a quotation is the file's words. The located quote is the file's own text."""
+        typography (quotation marks, apostrophes, dashes, Latin ligatures, soft hyphens, space variants). Letter case
+        is not folded: a quotation is the file's words. The located quote is the file's own text."""
         source = self.files.get(file_id)
         needle = normalise(quote or "")
         if source is None or len(needle) < 8:
