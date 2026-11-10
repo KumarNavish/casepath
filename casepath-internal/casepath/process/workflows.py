@@ -717,8 +717,8 @@ def reading_gave_value(row, presumed=None):
 
 # Which readings must answer "open" (the files say the matter is unknown, undecided, disputed or still to be determined,
 # with those words found in the files) for a fact to count as raised and left open, so that no presumption fills it:
-# "any" reading (the default), or "all" readings that answered. A reading that failed or did not answer counts for
-# neither. As readings that differ on a value leave a fact open, readings that differ
+# "any" reading (the default), or "all" readings that answered. A reading that failed, did not answer, or answered open
+# with words not found in the files counts for neither. As readings that differ on a value leave a fact open, readings that differ
 # on whether the files state a doubt hold it: one reading's "not stated" does not let a presumption override a doubt
 # the others quoted.
 OPEN_RULE = "any"
