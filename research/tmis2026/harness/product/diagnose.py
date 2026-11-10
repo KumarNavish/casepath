@@ -177,6 +177,7 @@ def theft(stories=(4, 5)):
         if not eo or not ev_:
             continue
         off, var = eo.get("plan") or {"requests": [], "holds": []}, ev_.get("plan") or {"requests": [], "holds": []}
+        handed = off.get("deferred") or var.get("deferred")
         pred = delta(set(off["requests"]), set(var["requests"]))
         sel, _ = best_realization(pred, p["reference"])
         wrong, missed = set(pred) - set(sel), set(sel) - set(pred)
@@ -184,6 +185,9 @@ def theft(stories=(4, 5)):
             kind = "wrong" if atom in wrong else "missed"
             doc = atom[1:]
             did = ids.get(doc, doc).lower()
+            if handed:
+                causes[f"{kind}: routing handed one text of the pair over (claim_type not established)"] += 1
+                continue
             if did.startswith("e-") or doc not in ids:
                 causes[f"{kind}: process-builder addition differs between the two texts"] += 1
                 continue
@@ -210,7 +214,7 @@ def theft(stories=(4, 5)):
                 elif kind == "missed":
                     states = vv if atom[0] == "+" else vo
                     causes[f"{kind}: the changed condition not established: "
-                           + "; ".join(sorted({s[1] for s in states.values()}) or ["unconditional need"])] += 1
+                           + "; ".join(sorted({s[1] for s in states.values()}) or ["need unconditional after conversion (cheapest route / OR of conditions)"])] += 1
                 else:
                     causes[f"{kind}: other (" + ", ".join(f"{f}={vo[f][0]}/{vv[f][0]}" for f in vo) + ")"] += 1
     return dict(causes.most_common())

@@ -28679,5 +28679,2061 @@
     "Does the landlord rely on the reference-rate increase, renovation work, or both as grounds for this rent increase?"
    ]
   }
+ },
+ "COL|fcl_d51f04e4cc47ab0c|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Did you receive a formal termination notice, and if so, when and how was it delivered? Please provide the complete original notice.",
+    "Is the tenancy in arrears, or has the landlord raised any unpaid rent?",
+    "Have you previously asserted tenancy rights to the landlord, and did the landlord respond in a way that raises a retaliation concern?",
+    "Are you seeking an extension of the tenancy, and have you begun searching for alternative housing?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "unresolved",
+     "citations": [
+      {
+       "artifact_id": "fmsg_fb3957222605337d",
+       "quote": "Die Vermieterin, die Immobilien Seeblick AG, möchte das Mietverhältnis beenden."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_fb3957222605337d",
+       "quote": "Es handelt sich um unsere gemeinsame Familienwohnung, in der meine Ehefrau und ich zusammen leben."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "false",
+     "citations": []
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "lease_contract",
+     "artifact_id": "fatt_46f2bfbead9bcce5",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_46f2bfbead9bcce5",
+       "quote": "Die allgemeinen Bestimmungen zum Mietverhältnis sind im Anhang aufgeführt."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "The supplied contract extract does not provide the tenancy terms or the referenced general provisions needed for review."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "hold",
+     "because": "The customer says the landlord wants to end the tenancy, but does not confirm receipt of a termination notice; this defining event remains unresolved. Request the original notice if receipt is confirmed."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "hold",
+     "because": "The receipt position and date are unresolved; request evidence of recipient and delivery date if a notice was received."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "hold",
+     "because": "The termination notice and relevant dates are unresolved; request the agreed notice period and relevant dates once the notice is available."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "hold",
+     "because": "The landlord's stated ground is not provided; request the reason and its factual basis if a notice was received."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The customer identifies this as a shared family home, so the conditional family-home branch applies; no separate notice copy is supplied."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "not_needed",
+     "because": "Arrears are not mentioned, so the silence policy presumes this branch absent."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "not_needed",
+     "because": "Arrears are not mentioned, so the silence policy presumes this branch absent."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "Retaliation concerns are not mentioned, so the silence policy presumes this branch absent."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "not_needed",
+     "because": "Extension relevance is not mentioned, so the silence policy presumes this branch absent."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional under the process rules."
+    }
+   ],
+   "questions": [
+    "Did you receive a formal termination notice, and if so, when and how was it delivered? Please provide the complete original notice.",
+    "Is the tenancy in arrears, or has the landlord raised any unpaid rent?",
+    "Have you previously asserted tenancy rights to the landlord, and did the landlord respond in a way that raises a retaliation concern?",
+    "Are you seeking an extension of the tenancy, and have you begun searching for alternative housing?"
+   ]
+  }
+ },
+ "COL|fcl_d4c3b6ed8d30f2f9|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Please provide the termination notice and any evidence showing who received it and when.",
+    "Please provide the landlord's stated justification and clarify whether the termination is based on rent arrears; if it is, provide any cure-period letter and rent ledger/payment evidence.",
+    "Please provide any separate notice addressed to your wife, and any correspondence about your earlier complaints or rent questions.",
+    "Please provide dated records of your housing search and responses, together with any further information about the hardship relevant to the requested extension."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "I am writing to ask for your help in contesting the termination of my tenancy"
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "The flat is our family home."
+      },
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "My wife lives here with me, and she is fully part of this tenancy."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "unresolved",
+     "citations": [
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "The landlord mentioned late payments to me, but I do not know whether the termination is actually based on rent arrears."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "I believe the termination is retaliation."
+      },
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "Earlier this year I complained about defects in the flat and questioned the rent, and the landlord's decision came shortly afterwards."
+      }
+     ]
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "Moving out by the end date would cause us serious hardship."
+      },
+      {
+       "artifact_id": "fmsg_193d7ed6e07655df",
+       "quote": "I would therefore like to request an extension of the tenancy."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "lease_contract",
+     "artifact_id": "fatt_c4be815032113b4a",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_c4be815032113b4a",
+       "quote": "Landlord: Immobilien Seeblick AG"
+      },
+      {
+       "artifact_id": "fatt_c4be815032113b4a",
+       "quote": "Tenant: Quinn Marshall"
+      },
+      {
+       "artifact_id": "fatt_c4be815032113b4a",
+       "quote": "Rented property: Rosenstrasse 83, Aarau. 3.5-room flat."
+      },
+      {
+       "artifact_id": "fatt_c4be815032113b4a",
+       "quote": "Notice period: three months, to the end of a month."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "on_file",
+     "because": "The supplied agreement identifies the landlord, tenant, property, and tenancy terms."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "The original notice is needed to check its issuer, addressee, termination date, grounds, and form contents; the customer message is not the notice."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Evidence of the recipient and delivery date is needed for the deadline review."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "The lease states the agreed notice period, but the termination dates needed to assess its application are not supplied."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "The customer says the justification has not been seen, so the landlord's stated ground and factual basis are missing."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The customer identifies this as a family home and says the wife is part of the tenancy; obtain the separate spouse notice and service evidence."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "hold",
+     "because": "Applicability depends on whether this is an arrears termination, which the customer raises but leaves unresolved."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "hold",
+     "because": "Applicability depends on whether this is an arrears termination, which the customer raises but leaves unresolved."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "request",
+     "because": "The customer alleges retaliation after raising defects and questioning rent; obtain the correspondence documenting those asserted rights and chronology."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "request",
+     "because": "The customer requests an extension and reports hardship and unsuccessful searches; obtain dated search efforts, responses, and hardship evidence."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional in the process; request the mandatory notice and stated-reason evidence first."
+    }
+   ],
+   "questions": [
+    "Please provide the termination notice and any evidence showing who received it and when.",
+    "Please provide the landlord's stated justification and clarify whether the termination is based on rent arrears; if it is, provide any cure-period letter and rent ledger/payment evidence.",
+    "Please provide any separate notice addressed to your wife, and any correspondence about your earlier complaints or rent questions.",
+    "Please provide dated records of your housing search and responses, together with any further information about the hardship relevant to the requested extension."
+   ]
+  }
+ },
+ "COL|fcl_d991bc5ba67d6aff|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Have you decided to pursue official rent deposit (Hinterlegung), or should that possibility remain under consideration?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "defect_mold_heating",
+   "conditions": [
+    {
+     "flag": "health_effects",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_22cd25b0a457d68b",
+       "quote": "Since the cold started, a member of my household has suffered from repeated colds and bronchitis."
+      }
+     ]
+    },
+    {
+     "flag": "mold",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "heating",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_22cd25b0a457d68b",
+       "quote": "The heating in the flat keeps failing."
+      }
+     ]
+    },
+    {
+     "flag": "specialist_needed",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_22cd25b0a457d68b",
+       "quote": "I believe that a technical expert inspection by a building or heating specialist is needed to establish what is wrong and who is responsible for repairing it."
+      }
+     ]
+    },
+    {
+     "flag": "deposit_considered",
+     "verdict": "unresolved",
+     "citations": [
+      {
+       "artifact_id": "fmsg_22cd25b0a457d68b",
+       "quote": "I am not sure yet whether I will pay the rent into the official rent deposit account (Hinterlegung) if the defect is not remedied."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory at the reached scope node; no supplied original establishes the contract terms."
+    },
+    {
+     "document_type": "defect_notification",
+     "decision": "request",
+     "because": "Mandatory at the reached notice node; the customer reports repeated notifications but provides no original defect notice."
+    },
+    {
+     "document_type": "proof_of_notification",
+     "decision": "request",
+     "because": "Mandatory at the reached notice node; no proof showing whether or when the landlord received a defect report is supplied."
+    },
+    {
+     "document_type": "dated_photos",
+     "decision": "request",
+     "because": "Mandatory at the reached objective-evidence node; no dated photos are supplied."
+    },
+    {
+     "document_type": "landlord_response_history",
+     "decision": "request",
+     "because": "Mandatory at the reached response node; no evidence of the landlord's responses, proposed work or access arrangements is supplied."
+    },
+    {
+     "document_type": "humidity_temperature_log",
+     "decision": "not_needed",
+     "because": "The mold condition is presumed false under the silence policy, so this conditional document type does not apply."
+    },
+    {
+     "document_type": "heating_service_report",
+     "decision": "request",
+     "because": "The heating condition is true and the evidence node is reached; no service report is supplied."
+    },
+    {
+     "document_type": "medical_confirmation",
+     "decision": "request",
+     "because": "Health effects are reported and the safety node is reached; the customer says they cannot prove a medical cause, and no medical confirmation is supplied."
+    },
+    {
+     "document_type": "technical_inspection",
+     "decision": "request",
+     "because": "The customer says a specialist inspection is needed; the specialist node is reached and no technical inspection is supplied."
+    },
+    {
+     "document_type": "written_repair_deadline",
+     "decision": "hold",
+     "because": "The deposit condition is unresolved, so the conditional deposit document type applies in some but not all completions."
+    },
+    {
+     "document_type": "caretaker_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional, even though the cause-review node is reached."
+    }
+   ],
+   "questions": [
+    "Have you decided to pursue official rent deposit (Hinterlegung), or should that possibility remain under consideration?"
+   ]
+  }
+ },
+ "COL|fcl_e1a3a168b9bcb5b1|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "proof_of_receipt"
+   ],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "Have you received a termination notice? If so, when and by what means was it delivered? Please provide the notice and any delivery evidence.",
+    "What termination date and stated grounds appear in the notice, and was a separate notice addressed to your spouse received?",
+    "Please provide any rent ledger or payment records relevant to the claimed CHF 2,920 arrears, including payments made and their dates.",
+    "Please provide dated housing-search efforts, responses and any details of the hardship relevant to your extension request."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "unresolved",
+     "citations": [
+      {
+       "artifact_id": "fmsg_14f318868ba647a5",
+       "quote": "Mein Vermieter, Herr Peter Ammann, kündigt den Mietvertrag wegen Mietzinsrückstand."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_14f318868ba647a5",
+       "quote": "Die Wohnung ist unsere gemeinsame Familienwohnung."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_14f318868ba647a5",
+       "quote": "Der Mietzins von netto CHF 1460 pro Monat ist nach Angaben des Vermieters im Rückstand von insgesamt CHF 2920."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_14f318868ba647a5",
+       "quote": "Ein Auszug auf den von Herrn Ammann genannten Termin würde für uns eine grosse Härte bedeuten."
+      },
+      {
+       "artifact_id": "fmsg_14f318868ba647a5",
+       "quote": "Ich möchte deshalb eine Erstreckung des Mietverhältnisses beantragen."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "payment_deadline_letter",
+     "artifact_id": "fatt_094ef09adbbd077d",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_094ef09adbbd077d",
+       "quote": "Auf Ihrem Mietkonto besteht per heutigem Datum ein ausstehender Mietzins in der Höhe von CHF 2920."
+      },
+      {
+       "artifact_id": "fatt_094ef09adbbd077d",
+       "quote": "Wir bitten Sie, den ausstehenden Betrag innert einer Frist von 30 Tagen ab Datum dieses Schreibens vollständig zu bezahlen."
+      },
+      {
+       "artifact_id": "fatt_094ef09adbbd077d",
+       "quote": "Wird der ausstehende Betrag nicht fristgerecht bezahlt, wird das Mietverhältnis gekündigt."
+      }
+     ]
+    },
+    {
+     "document_type": "lease_contract",
+     "artifact_id": "fatt_0f31d1189be81083",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_0f31d1189be81083",
+       "quote": "Mietobjekt: Gartenweg 81, 8000 Zürich, 4.5-Zimmer-Wohnung"
+      },
+      {
+       "artifact_id": "fatt_0f31d1189be81083",
+       "quote": "Dieser Vertrag tritt mit Unterzeichnung durch beide Parteien in Kraft."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "The supplied contract does not identify the contracting parties, so it is insufficient for the required tenancy terms."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "The notice itself is needed to verify its issuer, addressee, termination date, stated grounds and form contents."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "hold",
+     "because": "Receipt of a termination notice remains unresolved; obtain proof if receipt is confirmed."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "The lease extract states a notice period, but the termination dates needed to assess its application are not established."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "The claim reports arrears as the stated ground, but the original notice or other document evidencing the stated reason is not supplied."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The claim identifies a family home and a spouse living in the tenancy; the separate spouse notice and service evidence are needed."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "on_file",
+     "because": "The supplied letter states the claimed arrears, a 30-day payment period and a termination warning."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "request",
+     "because": "The arrears branch is active, and a ledger with payment evidence is needed to establish amounts due, payment dates and the balance."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "The retaliation-screen branch is presumed absent because the claim does not mention prior rights or a related landlord response."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "request",
+     "because": "The claim seeks an extension and reports hardship; dated search efforts, responses and reported hardship are relevant."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional in the process."
+    }
+   ],
+   "questions": [
+    "Have you received a termination notice? If so, when and by what means was it delivered? Please provide the notice and any delivery evidence.",
+    "What termination date and stated grounds appear in the notice, and was a separate notice addressed to your spouse received?",
+    "Please provide any rent ledger or payment records relevant to the claimed CHF 2,920 arrears, including payments made and their dates.",
+    "Please provide dated housing-search efforts, responses and any details of the hardship relevant to your extension request."
+   ]
+  }
+ },
+ "COL|fcl_e77ee7d1e1be2112|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_8b632f13584b56a8",
+       "quote": "gekündigt hat und ich die Kündigung anfechten möchte."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_8b632f13584b56a8",
+       "quote": "Die Wohnung ist unsere gemeinsame Familienwohnung."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_8b632f13584b56a8",
+       "quote": "Nach meinem Kenntnisstand betragen die Mietrückstände rund CHF 3200."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "false",
+     "citations": []
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "lease_contract",
+     "artifact_id": "fatt_718c8ca6dbc29c4e",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_718c8ca6dbc29c4e",
+       "quote": "Mietbeginn: 1. Juni 2020"
+      },
+      {
+       "artifact_id": "fatt_718c8ca6dbc29c4e",
+       "quote": "Nettomietzins: CHF 1600.00 pro Monat, zuzüglich Nebenkosten gemäss separater Abrechnung"
+      },
+      {
+       "artifact_id": "fatt_718c8ca6dbc29c4e",
+       "quote": "Kündigungsfrist: drei Monate auf Ende eines Monats"
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "on_file",
+     "because": "Der vorgelegte Vertrag enthält Mietparteien, Mietobjekt und relevante Vertragsbedingungen."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "Die Kündigung wird im Kundenbericht erwähnt, aber das Original mit Aussteller, Adressat, Beendigungsdatum, Begründung und Forminhalt fehlt."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Es fehlt ein Nachweis zu Empfänger und belegtem Zustellungsdatum."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "Der Vertrag belegt die vereinbarte Frist, aber das Kündigungsdatum und damit die relevanten Beendigungsdaten sind nicht belegt."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "Der Bericht nennt Mietzinsrückstände als Begründung, aber das Original beziehungsweise die konkrete Tatsachengrundlage der Kündigungsbegründung fehlt."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "Die Familienwohnung ist angegeben; eine separate an den Ehepartner gerichtete Kündigung und deren Zustellnachweis sind nicht vorhanden."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "request",
+     "because": "Der Bericht nennt Mietzinsrückstände, aber das Schreiben mit Nachfrist und Kündigungsandrohung fehlt."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "request",
+     "because": "Der Bericht nennt ungefähre Rückstände, enthält aber keinen Mietzinsauszug oder Zahlungsnachweise."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "Retaliation_screen ist im Bericht nicht erwähnt und wird nach der Silence Policy als abwesend behandelt."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "not_needed",
+     "because": "Extension_relevant ist im Bericht nicht erwähnt und wird nach der Silence Policy als abwesend behandelt."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "Dieser Dokumenttyp ist im Prozesskatalog optional."
+    }
+   ],
+   "questions": []
+  }
+ },
+ "COL|fcl_e514cbc96786ff0a|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on rent arrears, and do your complete bank records show any outstanding rent? Please provide the reminder or account statement and relevant payment records if available.",
+    "When did you receive the termination notice, and was a separate notice addressed or delivered to your wife?",
+    "Please provide the termination notice, lease contract, evidence of receipt, and any documents showing the applicable notice period.",
+    "Please provide a dated record of your housing searches, inquiries, and responses to support the requested extension."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "I received a written notice of termination of my lease"
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "My wife lives in the flat with me, and it is our family home."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "unresolved",
+     "citations": [
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "When the landlord told me about the termination by phone, he mentioned late payments."
+      },
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "I am not sure whether the termination is actually based on rent arrears, because I have not yet seen any reminder or statement of account that confirms an outstanding amount, and I have not yet checked my bank records in full."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "I would like your help to contest it and to request an extension of the tenancy."
+      },
+      {
+       "artifact_id": "fmsg_057041b93d2224f3",
+       "quote": "Moving out by the end date would cause us real hardship."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "The lease contract is mandatory at the applicable form-review node and no original was supplied."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "The termination notice is mandatory for form review. The customer's report that a notice exists does not supply the notice itself."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Receipt is reported, but evidence of the recipient and delivery date is needed for the deadline review; no original was supplied."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "This is mandatory for the deadline review and no evidence of the agreed notice period was supplied."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "The stated termination reason is required for review; the landlord's reported phone comment does not establish the reason in the notice."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The family-home branch applies, so evidence of any separate notice to the spouse is needed; none was supplied."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "hold",
+     "because": "The arrears branch is unresolved. This conditional document applies if arrears are confirmed and is held pending clarification."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "hold",
+     "because": "The arrears branch is unresolved. This conditional document applies if arrears are confirmed and is held pending clarification."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "The retaliation-screen branch is presumed absent under the silence policy, so this conditional document does not apply."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "request",
+     "because": "An extension is requested and hardship is reported, so the extension branch applies; the customer describes a search but has not supplied a dated search log."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional in the process."
+    }
+   ],
+   "questions": [
+    "Is the termination actually based on rent arrears, and do your complete bank records show any outstanding rent? Please provide the reminder or account statement and relevant payment records if available.",
+    "When did you receive the termination notice, and was a separate notice addressed or delivered to your wife?",
+    "Please provide the termination notice, lease contract, evidence of receipt, and any documents showing the applicable notice period.",
+    "Please provide a dated record of your housing searches, inquiries, and responses to support the requested extension."
+   ]
+  }
+ },
+ "COL|fcl_e7ec69ccf6911516|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What year was the last defect notification sent on 20 October, and can you provide the notification and evidence of its delivery?",
+    "Was a specific written deadline for repair communicated to the landlord? If so, please provide it and any proof of receipt.",
+    "Have you obtained any heating inspection or service report, and has the landlord proposed work or requested access?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "defect_mold_heating",
+   "conditions": [
+    {
+     "flag": "health_effects",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "mold",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "heating",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_23cc1a31938c8ff6",
+       "quote": "Die Heizung funktioniert nicht richtig."
+      }
+     ]
+    },
+    {
+     "flag": "specialist_needed",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "deposit_considered",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_23cc1a31938c8ff6",
+       "quote": "Sollte der Mangel nicht innert angemessener Frist beseitigt werden, beabsichtige ich, den Mietzins im Rahmen einer Hinterlegung bei der zuständigen Behörde einzuzahlen."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory for establishing the tenancy scope; no lease contract was supplied."
+    },
+    {
+     "document_type": "defect_notification",
+     "decision": "request",
+     "because": "Mandatory to establish what defect was reported and when; the customer describes prior notifications but supplies no original notice."
+    },
+    {
+     "document_type": "proof_of_notification",
+     "decision": "request",
+     "because": "Mandatory to establish whether and when the landlord received the defect report; no proof was supplied."
+    },
+    {
+     "document_type": "dated_photos",
+     "decision": "request",
+     "because": "Mandatory objective evidence of the defect, affected location and observation date; none was supplied."
+    },
+    {
+     "document_type": "landlord_response_history",
+     "decision": "request",
+     "because": "Mandatory to establish the landlord's response, proposed work and access arrangements; none was supplied."
+    },
+    {
+     "document_type": "humidity_temperature_log",
+     "decision": "not_needed",
+     "because": "The mould branch is presumed absent under the silence policy, so this conditional document does not apply."
+    },
+    {
+     "document_type": "heating_service_report",
+     "decision": "request",
+     "because": "The heating condition is reported, making this conditional document applicable; no service report was supplied."
+    },
+    {
+     "document_type": "medical_confirmation",
+     "decision": "not_needed",
+     "because": "Health effects are unmentioned and presumed absent under the silence policy."
+    },
+    {
+     "document_type": "technical_inspection",
+     "decision": "not_needed",
+     "because": "A need for specialist inspection is unmentioned and presumed absent under the silence policy."
+    },
+    {
+     "document_type": "written_repair_deadline",
+     "decision": "request",
+     "because": "The customer is considering rent deposit, so this conditional safeguard document applies; no communicated written repair deadline was supplied."
+    },
+    {
+     "document_type": "caretaker_correspondence",
+     "decision": "not_needed",
+     "because": "This document is optional and is not needed to satisfy a required step on the current record."
+    }
+   ],
+   "questions": [
+    "What year was the last defect notification sent on 20 October, and can you provide the notification and evidence of its delivery?",
+    "Was a specific written deadline for repair communicated to the landlord? If so, please provide it and any proof of receipt.",
+    "Have you obtained any heating inspection or service report, and has the landlord proposed work or requested access?"
+   ]
+  }
+ },
+ "COL|fcl_e731dc82c6481239|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [
+    "Can you provide evidence that the landlord received the defect notification, including the date of receipt?",
+    "Please provide dated photos and any humidity or temperature observations for the affected areas.",
+    "What was the outcome of the medical appointment, and is there a medical confirmation of the symptoms?",
+    "Has the landlord responded or arranged access or repair work since the notification?",
+    "Before pursuing a rent deposit, has a separate written repair deadline been communicated to the landlord? If so, please provide it."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "defect_mold_heating",
+   "conditions": [
+    {
+     "flag": "health_effects",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_b919c3130cdb2432",
+       "quote": "Meine Partnerin leidet seit Wochen unter Atembeschwerden, die nach ihrer Einschätzung mit dem Schimmel zusammenhängen könnten."
+      }
+     ]
+    },
+    {
+     "flag": "mold",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_b919c3130cdb2432",
+       "quote": "Im Schlafzimmer an der Aussenwand sowie rund um das Fenster im Badezimmer hat sich schwarzer Schimmel gebildet, der sich laufend ausbreitet."
+      }
+     ]
+    },
+    {
+     "flag": "heating",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "specialist_needed",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "deposit_considered",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_b919c3130cdb2432",
+       "quote": "Falls die Vermieterschaft innert angemessener Frist nicht reagiert, beabsichtige ich, den Mietzins bei der zuständigen Behörde zur Hinterlegung einzuzahlen."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "defect_notification",
+     "artifact_id": "fatt_dad5b8eda8f7ffd8",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_dad5b8eda8f7ffd8",
+       "quote": "Aarau, 27. August 2026"
+      },
+      {
+       "artifact_id": "fatt_dad5b8eda8f7ffd8",
+       "quote": "Beschreibung des Mangels: Im Schlafzimmer hat sich an der Wand schwarzer Schimmel gebildet, der sich ausbreitet. Auch rund um das Fenster im Badezimmer ist schwarzer Schimmel sichtbar und nimmt laufend zu."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "The contract is mandatory for the scope and tenancy terms; no supplied original establishes it."
+    },
+    {
+     "document_type": "defect_notification",
+     "decision": "on_file",
+     "because": "The supplied dated notice identifies the reported defect and requests repair."
+    },
+    {
+     "document_type": "proof_of_notification",
+     "decision": "request",
+     "because": "The claim reports sending a letter, but no evidence establishes landlord receipt."
+    },
+    {
+     "document_type": "dated_photos",
+     "decision": "request",
+     "because": "Objective evidence of the visible defect, affected locations and observation dates is required."
+    },
+    {
+     "document_type": "landlord_response_history",
+     "decision": "request",
+     "because": "This is required to document the landlord's response and any proposed work or access arrangements."
+    },
+    {
+     "document_type": "humidity_temperature_log",
+     "decision": "request",
+     "because": "The mold flag is active, so this conditional evidence applies."
+    },
+    {
+     "document_type": "heating_service_report",
+     "decision": "not_needed",
+     "because": "The heating flag is false under the silence policy, so this conditional document does not apply."
+    },
+    {
+     "document_type": "medical_confirmation",
+     "decision": "request",
+     "because": "Health effects are reported, so this conditional document applies; the reported appointment result is not yet supplied."
+    },
+    {
+     "document_type": "technical_inspection",
+     "decision": "not_needed",
+     "because": "The specialist-needed flag is unmentioned and presumed false under the silence policy."
+    },
+    {
+     "document_type": "written_repair_deadline",
+     "decision": "request",
+     "because": "The deposit-considered flag is active, so the conditional document for assessing safeguards applies."
+    },
+    {
+     "document_type": "caretaker_correspondence",
+     "decision": "not_needed",
+     "because": "This document is optional and no supplied evidence makes it necessary for an active decision."
+    }
+   ],
+   "questions": [
+    "Can you provide evidence that the landlord received the defect notification, including the date of receipt?",
+    "Please provide dated photos and any humidity or temperature observations for the affected areas.",
+    "What was the outcome of the medical appointment, and is there a medical confirmation of the symptoms?",
+    "Has the landlord responded or arranged access or repair work since the notification?",
+    "Before pursuing a rent deposit, has a separate written repair deadline been communicated to the landlord? If so, please provide it."
+   ]
+  }
+ },
+ "COL|fcl_ea2f16538f5abd60|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_a16f81c7b655af41",
+       "quote": "Herr Widmer hat von der Vermieterin eine schriftliche Kündigung des Mietverhältnisses erhalten."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_a16f81c7b655af41",
+       "quote": "Die Wohnung dient der Familie als Familienwohnung, seine Ehefrau lebt ebenfalls dort."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_a16f81c7b655af41",
+       "quote": "Als Grund wird der Mietzinsrückstand genannt; es geht um ausstehende Mietzinse von rund CHF 4800."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_a16f81c7b655af41",
+       "quote": "Herr Widmer möchte die Kündigung anfechten und wünscht eine Erstreckung des Mietverhältnisses."
+      },
+      {
+       "artifact_id": "fmsg_a16f81c7b655af41",
+       "quote": "Ein Auszug auf den Kündigungstermin wäre für die Familie eine Härte, da die Wohnungssuche schwierig ist und die Kinder die Schule am bisherigen Standort besuchen."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory at the reached form-review node; no original lease contract was supplied."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "Mandatory at the reached form-review node; the report of receiving a notice does not provide the original notice or establish its contents."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Mandatory at the reached deadline node; no evidence of recipient and delivery date was supplied."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "Mandatory at the reached deadline node; no evidence of the agreed notice period or relevant termination dates was supplied."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "Mandatory at the reached reason-review node; the report names arrears as the stated ground, but no original document establishing its factual basis was supplied."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The family-home branch applies; no separate spouse notice or service evidence was supplied."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "request",
+     "because": "The arrears branch applies; no cure-period letter or termination warning was supplied."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "request",
+     "because": "The arrears branch applies; no rent ledger or payment evidence was supplied."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "The retaliation-screen branch is not active: retaliation concerns are not mentioned, so the silence policy presumes this flag false."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "request",
+     "because": "The extension branch applies; the reported difficulty finding housing makes a dated search log relevant, and none was supplied."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional in the process."
+    }
+   ],
+   "questions": []
+  }
+ },
+ "COL|fcl_ef44a7661ccf81b6|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the lease contract, the complete termination notice, and evidence showing who received it and when.",
+    "What termination date is stated, and what notice period applies under the tenancy?",
+    "Please provide the separate notice addressed to your wife, if one was issued, and any evidence of its service.",
+    "Please provide the arrears cure/deadline letter and termination warning, together with the rent ledger and payment records needed to review the claimed CHF 7,590."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_26a8e4d0fe07cb0b",
+       "quote": "I am writing to ask for your help in contesting the termination of my tenancy"
+      },
+      {
+       "artifact_id": "fmsg_26a8e4d0fe07cb0b",
+       "quote": "The landlord is ending the lease because of unpaid rent."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_26a8e4d0fe07cb0b",
+       "quote": "My wife lives in the flat with me, and it is our family home."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_26a8e4d0fe07cb0b",
+       "quote": "The landlord is ending the lease because of unpaid rent."
+      },
+      {
+       "artifact_id": "fmsg_26a8e4d0fe07cb0b",
+       "quote": "The landlord states that the rent arrears amount to about CHF 7590."
+      }
+     ]
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "false",
+     "citations": []
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory for the applicable form review; the customer says they can provide it, but no lease contract original is supplied."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "Mandatory for the applicable form review; the customer's report of a termination is not the original notice."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Mandatory to establish receipt evidence and dates for deadline review; none is supplied."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "Mandatory to assess the agreed notice period and relevant termination dates; none is supplied."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "Mandatory to assess the stated termination ground; the customer reports unpaid rent, but no original evidence of the landlord's stated ground and factual basis is supplied."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The family_home condition is true, so the separate spouse notice is conditionally applicable; no copy is supplied."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "request",
+     "because": "The arrears condition is true, so the cure notice and termination warning are conditionally applicable; none is supplied."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "request",
+     "because": "The arrears condition is true, so rent ledger and payment evidence are conditionally applicable. The customer offers to provide payment records, but no original is supplied."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "not_needed",
+     "because": "The retaliation_screen condition is false under the silence policy, so this conditional document does not apply."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "not_needed",
+     "because": "The extension_relevant condition is false under the silence policy, so this conditional document does not apply."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional under the process rules."
+    }
+   ],
+   "questions": [
+    "Please provide the lease contract, the complete termination notice, and evidence showing who received it and when.",
+    "What termination date is stated, and what notice period applies under the tenancy?",
+    "Please provide the separate notice addressed to your wife, if one was issued, and any evidence of its service.",
+    "Please provide the arrears cure/deadline letter and termination warning, together with the rent ledger and payment records needed to review the claimed CHF 7,590."
+   ]
+  }
+ },
+ "COL|fcl_eeaae036d5c861db|2": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [
+    "Please provide the complete current rent-increase notification, including all pages and any enclosure.",
+    "When and how was the current notification received, and what effective date and challenge deadline does it state? Please provide delivery evidence if available.",
+    "Please provide the lease contract and any evidence of the amount of the 2019 rent adjustment.",
+    "Please provide the landlord's supporting reference-rate calculation and renovation cost breakdown, if available."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "rent_increase_dispute",
+   "conditions": [
+    {
+     "flag": "claim_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf5dadd3c2335c0a",
+       "quote": "Ich habe die schriftliche Mitteilung über die Erhöhung erhalten."
+      }
+     ]
+    },
+    {
+     "flag": "reference_rate",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf5dadd3c2335c0a",
+       "quote": "Die Vermieterin begründet die Erhöhung zum einen mit einer Erhöhung des hypothekarischen Referenzzinssatzes."
+      }
+     ]
+    },
+    {
+     "flag": "renovation",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf5dadd3c2335c0a",
+       "quote": "Zum anderen verweist sie auf wertvermehrende Investitionen beziehungsweise Renovationsarbeiten an der Liegenschaft."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "prior_rent_adjustment",
+     "artifact_id": "fatt_077efce05e85777c",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_077efce05e85777c",
+       "quote": "Datum der Anpassung: 1. Oktober 2019."
+      },
+      {
+       "artifact_id": "fatt_077efce05e85777c",
+       "quote": "Grundlage der Anpassung: hypothekarischer Referenzzinssatz von 1.25 % zum damaligen Zeitpunkt."
+      }
+     ]
+    },
+    {
+     "document_type": "current_rent_evidence",
+     "artifact_id": "fatt_c519117d46133fb9",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_c519117d46133fb9",
+       "quote": "Aktueller Nettomietzins: CHF 1890 pro Monat."
+      },
+      {
+       "artifact_id": "fatt_c519117d46133fb9",
+       "quote": "Akontozahlung für Heiz- und Nebenkosten: CHF 210 pro Monat."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory at the notice-form review stage; no supplied original establishes the contracting parties, property and agreed tenancy terms."
+    },
+    {
+     "document_type": "rent_increase_notice",
+     "decision": "request",
+     "because": "The customer reports receiving a written increase notification, but the notification itself was not supplied; the report does not establish its contents."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Mandatory for assessing the deadline; no evidence of recipient and delivery date is supplied."
+    },
+    {
+     "document_type": "current_rent_evidence",
+     "decision": "on_file",
+     "because": "The supplied rent confirmation states the current net rent and the heating and ancillary-cost advance."
+    },
+    {
+     "document_type": "prior_rent_adjustment",
+     "decision": "request",
+     "because": "The supplied 2019 adjustment notice states its date and reference-rate basis but not the previous adjustment amount."
+    },
+    {
+     "document_type": "stated_calculation",
+     "decision": "request",
+     "because": "The reported grounds are reference-rate change and renovation works, but the current notice and its stated calculation inputs are missing."
+    },
+    {
+     "document_type": "reference_rate_basis",
+     "decision": "request",
+     "because": "The reference-rate branch is active; the old and proposed reference-rate bases and relevant dates are not established by the supplied documents."
+    },
+    {
+     "document_type": "renovation_cost_breakdown",
+     "decision": "request",
+     "because": "The renovation branch is active; no breakdown of works, costs or allocation to rent is supplied."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional in the process catalog."
+    }
+   ],
+   "questions": [
+    "Please provide the complete current rent-increase notification, including all pages and any enclosure.",
+    "When and how was the current notification received, and what effective date and challenge deadline does it state? Please provide delivery evidence if available.",
+    "Please provide the lease contract and any evidence of the amount of the 2019 rent adjustment.",
+    "Please provide the landlord's supporting reference-rate calculation and renovation cost breakdown, if available."
+   ]
+  }
+ },
+ "COL|fcl_f072f22a4d308814|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you send the written defect notification, and do you have a copy and evidence of the landlord's receipt?",
+    "Has a heating technician or other service provider inspected the heating? If so, please provide the report."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "defect_mold_heating",
+   "conditions": [
+    {
+     "flag": "health_effects",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "mold",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "heating",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_f9f52f8aef91b473",
+       "quote": "Die Heizung funktioniert nicht richtig."
+      }
+     ]
+    },
+    {
+     "flag": "specialist_needed",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "deposit_considered",
+     "verdict": "false",
+     "citations": []
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory for the scope node; the customer reports having a lease but did not supply the contract."
+    },
+    {
+     "document_type": "defect_notification",
+     "decision": "request",
+     "because": "Mandatory to establish what defect was reported and when; the customer describes a written report but did not supply it."
+    },
+    {
+     "document_type": "proof_of_notification",
+     "decision": "request",
+     "because": "Mandatory to establish whether and when the landlord received the defect report; no proof was supplied."
+    },
+    {
+     "document_type": "dated_photos",
+     "decision": "request",
+     "because": "Mandatory objective evidence of the defect, affected location and observation date; none was supplied."
+    },
+    {
+     "document_type": "landlord_response_history",
+     "decision": "request",
+     "because": "Mandatory to establish the landlord's response, proposed work and access arrangements; none was supplied."
+    },
+    {
+     "document_type": "humidity_temperature_log",
+     "decision": "not_needed",
+     "because": "Conditional on the mold flag, which is presumed absent because the claim does not mention mold."
+    },
+    {
+     "document_type": "heating_service_report",
+     "decision": "request",
+     "because": "Conditional on heating, which is reported; no service report was supplied."
+    },
+    {
+     "document_type": "medical_confirmation",
+     "decision": "not_needed",
+     "because": "Conditional on health effects, which the claim does not mention and are presumed absent."
+    },
+    {
+     "document_type": "technical_inspection",
+     "decision": "not_needed",
+     "because": "Conditional on a specialist being needed, which the claim does not mention and is presumed absent."
+    },
+    {
+     "document_type": "written_repair_deadline",
+     "decision": "not_needed",
+     "because": "Conditional on a deposit being considered, which the claim does not mention and is presumed absent."
+    },
+    {
+     "document_type": "caretaker_correspondence",
+     "decision": "not_needed",
+     "because": "Optional evidence; the claim does not mention caretaker observations or actions."
+    }
+   ],
+   "questions": [
+    "When did you send the written defect notification, and do you have a copy and evidence of the landlord's receipt?",
+    "Has a heating technician or other service provider inspected the heating? If so, please provide the report."
+   ]
+  }
+ },
+ "COL|fcl_ef2f5c99ca9ab008|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?",
+    "Please provide the original termination notice, lease contract, and any evidence showing when and to whom the notice was delivered.",
+    "Was a separate termination notice addressed or delivered to your husband? If so, please provide a copy and any service evidence.",
+    "Please provide the correspondence about the defect report and rent objection, including dates and any response from the landlord.",
+    "Please provide dated records of your housing search and any evidence relevant to the hardship you describe."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "lease_termination_dispute",
+   "conditions": [
+    {
+     "flag": "termination_received",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Ich habe von der Immobilien Seeblick AG eine schriftliche Kündigung meines Mietverhältnisses für meine 4-Zimmer-Wohnung an der Hofackerstrasse 36 in Chur erhalten."
+      }
+     ]
+    },
+    {
+     "flag": "family_home",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Die Wohnung ist unser gemeinsames Familienzuhause: Auch mein Ehemann wohnt dort mit mir und unseren Kindern."
+      }
+     ]
+    },
+    {
+     "flag": "arrears",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "retaliation_screen",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Ich bin der Meinung, dass die Kündigung eine Vergeltungskündigung ist."
+      },
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Ich habe der Vermieterin vor Kurzem Mängel an der Wohnung gemeldet und den Mietzins beanstandet. Kurz danach kam die Kündigung."
+      }
+     ]
+    },
+    {
+     "flag": "extension_relevant",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Zudem beantrage ich eine Erstreckung des Mietverhältnisses."
+      },
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Ein Auszug auf das Kündigungsdatum wäre für unsere Familie eine grosse Härte."
+      }
+     ]
+    }
+   ],
+   "supplied_documents": [
+    {
+     "document_type": "termination_notice",
+     "artifact_id": "fmsg_bf6330ae61a98c64",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "fmsg_bf6330ae61a98c64",
+       "quote": "Die Kündigung liegt mir im Original vor; die genauen Fristen kenne ich noch nicht sicher und möchte nichts versäumen."
+      }
+     ]
+    }
+   ],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Mandatory for the form review; no contract original is supplied."
+    },
+    {
+     "document_type": "termination_notice",
+     "decision": "request",
+     "because": "Mandatory for checking the notice and its contents. The customer reports having the original, but the message is not the notice itself."
+    },
+    {
+     "document_type": "proof_of_receipt",
+     "decision": "request",
+     "because": "Mandatory to establish the receipt date and assess the deadline; no proof is supplied."
+    },
+    {
+     "document_type": "notice_period_evidence",
+     "decision": "request",
+     "because": "Mandatory to assess the relevant termination dates; no supporting evidence is supplied."
+    },
+    {
+     "document_type": "stated_reason",
+     "decision": "request",
+     "because": "Mandatory for the stated-ground and retaliation review; the notice itself and supporting details are not supplied."
+    },
+    {
+     "document_type": "spouse_notice_copy",
+     "decision": "request",
+     "because": "The family-home branch is active, so this conditional document applies; no separate spouse notice is supplied."
+    },
+    {
+     "document_type": "payment_deadline_letter",
+     "decision": "not_needed",
+     "because": "The arrears branch is presumed absent under the silence policy."
+    },
+    {
+     "document_type": "rent_ledger_payment_evidence",
+     "decision": "not_needed",
+     "because": "The arrears branch is presumed absent under the silence policy."
+    },
+    {
+     "document_type": "prior_rights_correspondence",
+     "decision": "request",
+     "because": "The customer raises a possible retaliatory termination after reporting defects and contesting rent, so this conditional evidence applies; no correspondence is supplied."
+    },
+    {
+     "document_type": "housing_search_log",
+     "decision": "request",
+     "because": "The customer requests an extension and reports difficult housing searches and family hardship; this conditional evidence applies and no log is supplied."
+    },
+    {
+     "document_type": "landlord_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional under the process rules."
+    }
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?",
+    "Please provide the original termination notice, lease contract, and any evidence showing when and to whom the notice was delivered.",
+    "Was a separate termination notice addressed or delivered to your husband? If so, please provide a copy and any service evidence.",
+    "Please provide the correspondence about the defect report and rent objection, including dates and any response from the landlord.",
+    "Please provide dated records of your housing search and any evidence relevant to the hardship you describe."
+   ]
+  }
+ },
+ "COL|fcl_fb6908e2671dae22|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you first notify the landlord about each defect, and do you have copies of the notifications and evidence of receipt?",
+    "Have you received any response, proposed repair dates, or access requests from the landlord?",
+    "Can you provide dated photographs and a dated humidity/temperature log for the affected room, and any heating service report you have?",
+    "Are there any immediate health or safety concerns that you have not yet mentioned?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 1,
+  "raw": {
+   "family": "defect_mold_heating",
+   "conditions": [
+    {
+     "flag": "health_effects",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "mold",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_2faf88139888d8b7",
+       "quote": "There is mould growth and persistent damp patches on the walls of the children's room."
+      }
+     ]
+    },
+    {
+     "flag": "heating",
+     "verdict": "true",
+     "citations": [
+      {
+       "artifact_id": "fmsg_2faf88139888d8b7",
+       "quote": "In addition, the heating does not work properly: several radiators stay cold or fail completely, and the flat cools down to about 16 degrees at times."
+      }
+     ]
+    },
+    {
+     "flag": "specialist_needed",
+     "verdict": "false",
+     "citations": []
+    },
+    {
+     "flag": "deposit_considered",
+     "verdict": "false",
+     "citations": []
+    }
+   ],
+   "supplied_documents": [],
+   "plan": [
+    {
+     "document_type": "lease_contract",
+     "decision": "request",
+     "because": "Required to establish the tenancy scope; no lease contract was supplied."
+    },
+    {
+     "document_type": "defect_notification",
+     "decision": "request",
+     "because": "The customer reports notifying the landlord, but the original notification showing what was reported and when was not supplied."
+    },
+    {
+     "document_type": "proof_of_notification",
+     "decision": "request",
+     "because": "The customer reports written notification, but no evidence showing whether and when the landlord received it was supplied."
+    },
+    {
+     "document_type": "dated_photos",
+     "decision": "request",
+     "because": "The customer offers to send photos, but none were supplied to document the defects, affected locations, and dates."
+    },
+    {
+     "document_type": "landlord_response_history",
+     "decision": "request",
+     "because": "The customer reports no repairs so far, but the correspondence and any proposed work or access arrangements were not supplied."
+    },
+    {
+     "document_type": "humidity_temperature_log",
+     "decision": "request",
+     "because": "Mould and damp are reported, so this conditional evidence applies; no dated moisture or temperature log was supplied."
+    },
+    {
+     "document_type": "heating_service_report",
+     "decision": "request",
+     "because": "Heating faults are reported, so this conditional evidence applies; no service report was supplied."
+    },
+    {
+     "document_type": "medical_confirmation",
+     "decision": "not_needed",
+     "because": "The claim does not mention health effects; under the silence policy this branch is presumed absent."
+    },
+    {
+     "document_type": "technical_inspection",
+     "decision": "not_needed",
+     "because": "The claim does not mention that a specialist inspection is needed; under the silence policy this branch is presumed absent."
+    },
+    {
+     "document_type": "written_repair_deadline",
+     "decision": "not_needed",
+     "because": "The claim does not mention considering an official rent-deposit route; under the silence policy this branch is presumed absent."
+    },
+    {
+     "document_type": "caretaker_correspondence",
+     "decision": "not_needed",
+     "because": "This document type is optional, and no caretaker evidence is identified as needed to resolve an active decision."
+    }
+   ],
+   "questions": [
+    "When did you first notify the landlord about each defect, and do you have copies of the notifications and evidence of receipt?",
+    "Have you received any response, proposed repair dates, or access requests from the landlord?",
+    "Can you provide dated photographs and a dated humidity/temperature log for the affected room, and any heating service report you have?",
+    "Are there any immediate health or safety concerns that you have not yet mentioned?"
+   ]
+  }
  }
 }
