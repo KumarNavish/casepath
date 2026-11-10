@@ -264,7 +264,9 @@ def _satisfying(condition):
         return out
     if isinstance(condition, dict) and "is" in condition and "fact" in condition:
         return {condition["fact"]: condition["is"]}
-    return {}
+    if isinstance(condition, dict) and "in" in condition and "fact" in condition and len(condition["in"]) == 1:
+        return {condition["fact"]: condition["in"][0]}
+    return {}  # any, not, known, or several allowed values: no single value to presume
 
 
 def route(catalogue, facts):
@@ -293,8 +295,9 @@ def route(catalogue, facts):
         only = unknown[0]
         open_facts = sorted(condition_facts(only["applies_when"]) - known)
         values = _satisfying(only["applies_when"])
+        # Only a value the condition names uniquely is presumed; any other routing fact stays open, never a presumed null.
         return {"status": "selected", "workflow": ref(only), "candidates": [], "needs": [],
-                "presumed": [{"fact": f, "value": values.get(f)} for f in open_facts]}
+                "presumed": [{"fact": f, "value": values[f]} for f in open_facts if values.get(f) is not None]}
     if unknown:
         needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - known)
         return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown + fallback], "needs": needs}

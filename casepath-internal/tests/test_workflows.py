@@ -109,6 +109,23 @@ class RoutingTests(unittest.TestCase):
         result = route(self.catalogue(fallback), {"legal_area": "other"})
         self.assertEqual((result["status"], result["workflow"]["id"]), ("fallback", "example-fallback"))
 
+    def test_a_routing_fact_is_presumed_only_with_a_value_its_condition_names_uniquely(self):
+        def only(condition):
+            data = copy.deepcopy(FIXTURE)
+            data["applies_when"] = condition
+            return route(self.catalogue_of(data), {})
+        self.assertEqual(only({"fact": "legal_area", "in": ["tenancy_defect"]})["presumed"], [{"fact": "legal_area", "value": "tenancy_defect"}])
+        for condition in ({"fact": "legal_area", "in": ["tenancy_defect", "other"]},
+                          {"any": [{"fact": "legal_area", "is": "tenancy_defect"}, {"fact": "legal_area", "is": "loan"}]},
+                          {"not": {"fact": "legal_area", "is": "loan"}}):
+            decision = only(condition)
+            self.assertEqual((decision["status"], decision["presumed"]), ("selected", []), condition)  # never a presumed null
+
+    def catalogue_of(self, data):
+        with tempfile.TemporaryDirectory() as directory:
+            Path(directory, "w.json").write_text(json.dumps(data))
+            return Catalogue.load(directory)
+
     def test_routing_facts_merge_values(self):
         self.assertEqual([f["id"] for f in self.catalogue().routing_facts()], ["legal_area"])
 
