@@ -1,0 +1,43 @@
+\section{Background and related work}
+\label{sec:related}
+
+\casepath combines three established ideas: rules executed by code, models that read text, and an explicit value for what is not known. No prior system we know combines all three for requesting evidence. Table~\ref{tab:related} compares the closest ones on the properties this article relies on.
+
+\paragraph{Rules over text}
+Executable rules have a long history in law and administration, from the British Nationality Act as a logic program \cite{sergot1986british} to Catala \cite{merigoux2021catala}, the Decision Model and Notation standard \cite{omg2024dmn} and rules as code in government \cite{mohun2020cracking}. They take typed facts, not text. A fact that is not supplied is false, as under the closed-world assumption \cite{reiter1978closed}, or, in DMN, sends the decision to its default branch. Neuro-symbolic systems let a model translate each problem into logic or a program that a solver or interpreter executes \cite{pan2023logic,olausson2023linc,ye2023satlm,gao2023pal}. The logic is written anew for each problem, and the solver takes every fact as given or false. Legal systems translate a statute once and compute an answer, such as a tax liability, from a complete representation of the case \cite{holzenberger2023connecting,jurayj2026tax,kant2024equitable}. Chain of Logic instead has the model evaluate a rule's elements and recombine them itself \cite{servantez2024chain}.
+
+The closest system is LDPC \pendingref{Erwin et al., arXiv 2501.11335}. It splits a policy into yes/no questions, answers each with a natural-language-inference classifier as true, false or maybe, and has a model write a Boolean formula over the answers. Code evaluates the formula in strong Kleene logic, and a ``maybe'' yields a follow-up question. LDPC was evaluated on ShARC \pendingref{Saeidi et al., EMNLP 2018}, where a system reads a short rule text and a user scenario and answers yes, no or irrelevant, or asks a follow-up question. In LDPC the model writes the logic for each item, and answers carry no quotation. \casepath executes the organisation's workflow as written, and Proposition~\ref{prop:incomplete} shows what strong Kleene evaluation costs on workflows whose branches meet again.
+
+\paragraph{Agents that apply the rules}
+The prevailing way to make an agent follow a policy is to place the policy in its prompt, as $\tau$-bench, FlowBench and procedure-following benchmarks evaluate \cite{yao2025taubench,xiao2024flowbench,li2026sopbench}. ReAct interleaves reasoning with tool calls \cite{yao2022react}, and self-consistency takes the majority answer of several runs \cite{wang2023selfconsistency}. In these designs the model applies the rules, and repeated runs give different answers \cite{atil2025nondeterminism,blairstanek2025unstable}. They are the single-agent strategies against which Section~\ref{sec:test} tests \casepath.
+
+\paragraph{Abstention and three values}
+Selective prediction lets a model abstain when its confidence is low \cite{chow1970optimum,geifman2017selective,kamath2020selective,wen2025abstention}, and interactive agents ask for missing information before they act \cite{li2024mediq,zhang2024askbeforeplan}. These methods decide from the model's confidence, not from whether an open fact can change a rule's outcome. Strong Kleene logic gives an unknown value its own place \cite{kleene1952introduction}. Supervaluation \cite{vanfraassen1966singular} and certain answers over incomplete databases \cite{imielinski1984incomplete} keep only what holds under every completion. Exact deferral applies this idea to a workflow. The nearest agent design keeps a ledger of evidence obligations in code, planned by the model for each query, held open until resolved and tied to their sources \cite{kim2026evidenceobligation}.
+
+\paragraph{Claims handling}
+Claims handling is a knowledge-intensive process: the path a case takes depends on facts that emerge from documents and correspondence \cite{diciccio2015knowledge}. It is expected to be among the most automated parts of insurance \cite{eling2018impact,eling2022impact}. Process mining increasingly draws on unstructured data \cite{konig2025unstructured}, and language models now analyse the text of insurance claims \cite{li2025textual}. Process research asks how such models can act within explicit constraints and keep people in control \cite{dumas2023aiaugmented,vidgof2023large,kampik2025large}. Deciding which documents to request is a recurring step of this process. Its rules come from statutes, policy terms and internal guidelines, and an error either delays the claim or lets it proceed without the evidence a decision needs.
+
+\paragraph{Reliance on advice}
+Experts follow wrong advice. Physicians given incorrect advice by a diagnostic system made more inaccurate diagnoses than without advice \cite{jussupow2021augmenting}. Advice from a model made people's answers converge and reduced what they knew that the model did not \cite{fugener2021humans}. Appropriate reliance has been defined as the pair of relative self-reliance and relative reliance on the advice \cite{schemmer2023appropriate}. Section~\ref{sec:experts} measures reliance on document requests in claims experts' own work.
+
+\begin{table}[t]
+\caption{Prior systems and \casepath. Yes, partly or no as stated in the cited work; n.s.: not stated there. Columns: (1) rules executed by code; (2) explicit unresolved value; (3) quotation required; (4) deferral exact; (5) learns from corrections; (6) tested with experts. $^a$The model writes the logic for each item.}
+\label{tab:related}
+\small
+\begin{tabularx}{\linewidth}{@{}Xcccccc@{}}
+\toprule
+System & 1 & 2 & 3 & 4 & 5 & 6 \\
+\midrule
+Rules as code, DMN, Catala \cite{sergot1986british,merigoux2021catala,omg2024dmn,mohun2020cracking} & yes & no & no & no & n.s. & n.s. \\
+Policy in the prompt \cite{yao2025taubench,xiao2024flowbench,li2026sopbench} & no & n.s. & n.s. & n.s. & n.s. & n.s. \\
+Chain of Logic \cite{servantez2024chain} & no & n.s. & n.s. & n.s. & n.s. & n.s. \\
+Logic-LM, LINC, SatLM, PAL \cite{pan2023logic,olausson2023linc,ye2023satlm,gao2023pal} & yes$^a$ & no & n.s. & no & n.s. & n.s. \\
+Statutes as programs, extracted facts \cite{holzenberger2023connecting,jurayj2026tax,kant2024equitable} & yes & no & no & no & n.s. & n.s. \\
+LDPC \pendingref{Erwin et al.} & yes$^a$ & yes & no & no & n.s. & n.s. \\
+Asking and abstaining \cite{li2024mediq,zhang2024askbeforeplan,kamath2020selective} & no & partly & n.s. & no & n.s. & n.s. \\
+Evidence-obligation ledger \cite{kim2026evidenceobligation} & partly & yes & partly & n.s. & n.s. & n.s. \\
+\midrule
+\casepath (this article) & yes & yes & yes & yes & yes (\S\ref{sec:casepath}) & planned (\S\ref{sec:experts}) \\
+\bottomrule
+\end{tabularx}
+\end{table}

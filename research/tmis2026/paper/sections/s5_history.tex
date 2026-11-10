@@ -1,0 +1,35 @@
+\section{How the design was found}
+\label{sec:history}
+
+The decision rule of Section~\ref{sec:rule} is the third configuration we built. Two pre-registered studies tested the first two, found neither better than Rules in context, and traced each shortfall to a cause. Appendices~\ref{app:study1} and~\ref{app:study2} report both studies in full, and Appendix~\ref{app:deviations} lists their deviations.
+
+\paragraph{Study 1}
+The Study~1 configuration made one reading, had a second model call accept or reject each value, kept only values whose quotations were in the file, and evaluated the workflow. It was tested on 90 tenancy claims and on 27 pairs of theft cases that differ in one fact, three runs each. The theft workflow had been extracted by a model from insurance law and policy terms. With the frontier model, the configuration was no better than Rules in context. It made \thTerraCPWrong{} wrong theft changes against \thTerraRWrong{} ($p=\ptTerraHThreeRaw$) and, counting documents handed to a person as missed, \ctTerraHOneStrictA{} unsafe errors per tenancy claim against \ctTerraHOneStrictB{} ($p=\ctTerraHOneStrictP$). With the cost-efficient model it made fewer wrong theft changes, \thLunaCPWrong{} against \thLunaRWrong, but most of the comparator's were one error repeated across a story. Counted once, the difference was \ctLunaHThreeDedupRA{} against \ctLunaHThreeDedupRB{} per pair ($p=\ctLunaHThreeDedupRP$). Because code applied the rules, every error could be traced to a reading or a rule (Table~\ref{tab:history}).
+
+\begin{table}[t]
+\caption{Root causes found in Study~1, the change each led to, and the evidence for the change. Counts are from Study~1 with the frontier model unless stated; Study~2 values are with the cost-efficient model.}
+\label{tab:history}
+\small
+\begin{tabularx}{\linewidth}{@{}XXX@{}}
+\toprule
+Root cause in Study 1 & Change & Evidence \\
+\midrule
+Faulty rules: \ecWrongFaulty{} of \thTerraCPWrong{} wrong theft changes came from \rvImplicated{} of the \rvRules{} extracted rules. & Expert review of the workflow, after repair without labels failed. & Study~2: with the original workflow, \stAblThOriginalPackErrors{} errors per theft pair; with the automatically repaired one, \stThCPvTwoLunaErrors{} ($p=\stAblThOriginalPackVsP$). Reviewed workflow: development data only. \\
+Silence read as doubt: \jaUnresFalse{} of \jaUnres{} unresolved values concerned facts the claim never mentions. & Presumptions with a source clause. & Study~2, recomputed from recorded readings: \stTenCPvTwoLunaHeldReq{} held needed documents per claim with presumptions, \stAblTenNoPresumptionHeldReq{} without. \\
+The checking call rejected \verRejCondTrue{} of \verCheckedCondTrue{} true values, all correct, and none of the \jaFlipped{} wrong ones. & A second, independent reading that must agree; no checking call. & Study~2, recomputed from recorded readings: errors per theft pair fell from \stAblThTwoReadingsVsB{} to \stAblThTwoReadingsVsA{} ($p=\stAblThTwoReadingsVsP$, the smallest attainable). \\
+Strong Kleene evaluation held \tenTerraCPkHeld\% of needed tenancy documents. & Exact deferral. & Study~1: \tenTerraExactCut\% (frontier) and \tenLunaExactCut\% (cost-efficient) fewer holds, no unnecessary request added. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Study 2}
+Study~2 tested the second configuration on sealed new data: 72 tenancy claims and 36 theft pairs. It made one reading without a checking call, used presumptions and exact deferral, and executed a theft workflow repaired without labels. None of the four primary contrasts was confirmed after Holm correction. Against Rules in context with the same model and workflow, theft errors per pair were \stAA{} against \stAB{} (raw $p=\stAP$, Holm $p=\stAHolm$), and tenancy showed no difference (\stBA{} against \stBB{} unsafe errors per claim). With the cost-efficient model it was worse on theft than the frontier model applying the original workflow in context, \stCA{} against \stCB{} errors per pair ($p=\stCP$), and its non-inferiority to the frontier model on tenancy was not shown ($p=\stDPNI$).
+
+\paragraph{What failed}
+A first redesign withheld every rule that the automatic check could not repair; it was dropped on development data before Study~2. Repair without labels also failed in Study~2. A model checked each extracted rule against its cited passages and repaired flagged rules with typed operations. The repaired workflow did not lower the configuration's errors (Table~\ref{tab:history}), and it raised those of Rules in context with the frontier model from \stThRTerraErrors{} to \stThRVTwoTerraErrors{} per pair. Learning from corrections did not separate the designs: after the same handler corrections, the configuration made \stEvoAfterA{} errors per theft pair and Rules in context with the corrections as memory \stEvoAfterB{} ($p=\stEvoAfterP$).
+
+\paragraph{What changed the result}
+Four changes from Study~1 remain: expert review of the workflow, a second reading that must agree, presumptions and exact deferral. Together they form the decision rule of Section~\ref{sec:rule}. Their joint effect has been measured only on development data; Section~\ref{sec:test} reports the confirmatory test.
+
+\paragraph{A public benchmark}
+On ShARC \pendingref{Saeidi et al., EMNLP 2018}, where each item carries one short rule, the two-reading core with exact deferral was no better than prompting. On \sharcN{} training utterances with the cost-efficient model, its accuracy was \sharcCoreMicro{} against \sharcSCMicro{} for self-consistency (difference \sharcCoreVsSCDiff, 95\% interval \sharcCoreVsSCLo{} to \sharcCoreVsSCHi), and execution has little to add when each item has one small rule.

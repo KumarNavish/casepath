@@ -463,5 +463,35 @@ if s2:
               f"{v['errors_per_pair']:.2f}")
         if ev.get("after_contrast"):
             stcontrast("stEvoAfter", ev["after_contrast"])
+    # Added 2026-11-10 for the paper's Section 5 and Appendix C: theft stability on unresolved-fact pairs,
+    # open-fact tenancy claims and the offline ablation of Study 2 (all read from study2_results.json).
+    for key, v in s2.get("theft", {}).items():
+        d, mod = key.split("|")
+        if v.get("unresolved"):
+            m(f"stTh{DES.get(d, d)}{MOD[mod]}Stable", pct(v["unresolved"]["stable_rate"], 0))
+    for key, v in s2.get("tenancy", {}).items():
+        d, mod = key.split("|")
+        o = v.get("open_fact_claims")
+        if o:
+            p = f"stOpen{DES.get(d, d)}{MOD[mod]}"
+            m(p + "Claims", o["claim_runs"] // 3); m(p + "RefHeld", o["ref_held"]); m(p + "CorrectHold", o["correct_hold"])
+            m(p + "Premature", o["premature"]); m(p + "Skip", o["silent_skip"]); m(p + "Unsafe", f"{o['strict_unsafe_per_claim']:.2f}")
+    ABL = {"two_readings": "TwoReadings", "kleene": "Kleene", "no_presumption": "NoPresumption",
+           "original_pack": "OriginalPack", "original_pack_full": "OriginalPackFull"}
+    for key, v in s2.get("secondary", {}).get("ablation", {}).items():
+        exp, var = key.split("|")
+        if var not in ABL:
+            continue
+        p = f"stAbl{'Ten' if exp == 'tenancy' else 'Th'}{ABL[var]}"
+        if exp == "tenancy":
+            m(p + "Unsafe", f"{v['strict_unsafe_per_claim']:.2f}"); m(p + "ReqShare", pct(v["requested_share"]))
+            m(p + "HeldReq", f"{v['held_required_now_per_claim']:.2f}"); m(p + "Spurious", f"{v['spurious_holds_per_claim']:.2f}")
+            m(p + "CorrectHold", pct(v["correct_hold_share"]))
+        else:
+            m(p + "Errors", f"{v['errors_per_pair']:.2f}"); m(p + "Fone", f"{v['f1']:.3f}")
+            if v.get("unresolved"):
+                m(p + "Stable", pct(v["unresolved"]["stable_rate"], 0))
+        if v.get("vs_CPv2p"):
+            stcontrast(p + "Vs", v["vs_CPv2p"])
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")

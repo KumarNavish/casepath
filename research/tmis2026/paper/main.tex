@@ -18,6 +18,10 @@
 
 \input{macros}
 \input{results/numbers}
+\input{results/numbers_sharc}
+
+%% \pendingref{text}: a work discussed in the text whose bibliography entry is not yet verified.
+\newcommand{\pendingref}[1]{[#1; reference pending]}
 
 %% \fig{name}{width}: include figures/name.pdf if it exists, otherwise a framed placeholder.
 \newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{%
@@ -25,7 +29,8 @@
 
 \begin{document}
 
-\title{CasePath: Executing Process Rules over LLM Judgments to Request Evidence}
+\title{CasePath: Agents That Read, Rules That Decide}
+\subtitle{Requesting Evidence for Insurance Claims with Executable Workflows}
 
 \author{Navish Kumar}
 \affiliation{\institution{University of Basel}\city{Basel}\country{Switzerland}}
@@ -38,7 +43,7 @@
 \affiliation{\institution{ETH Zurich}\city{Zurich}\country{Switzerland}}
 \renewcommand{\shortauthors}{Kumar et al.}
 
-\input{sections/abstract}
+\input{sections/s0_abstract}
 
 \begin{CCSXML}
 <ccs2012>
@@ -57,13 +62,15 @@
 
 \maketitle
 
-\input{sections/introduction}
-\input{sections/background}
-\input{sections/method}
-\input{sections/evaluation}
-\input{sections/results}
-\input{sections/discussion}
-\input{sections/conclusion}
+\input{sections/s1_introduction}
+\input{sections/s2_related}
+\input{sections/s3_rule}
+\input{sections/s4_casepath}
+\input{sections/s5_history}
+\input{sections/s6_test}
+\input{sections/s7_experts}
+\input{sections/s8_discussion}
+\input{sections/s9_conclusion}
 
 \begin{acks}
 \input{sections/acknowledgments}
@@ -73,6 +80,14 @@
 \bibliography{references}
 
 \appendix
-\input{sections/appendix}
+\input{sections/app_a_proofs}
+\input{sections/app_b_study1}
+\input{sections/app_c_study2}
+\input{sections/app_d_deviations}
+\input{sections/app_e_data}
+\input{sections/app_f_robustness}
+\input{sections/app_g_repro}
+\input{sections/app_h_prompts}
+\input{sections/app_i_protocol}
 
 \end{document}

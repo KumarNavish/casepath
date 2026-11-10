@@ -1,0 +1,713 @@
+{
+ "B1v2p|pcl_3d6f28bfed11c4ab|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_29a12f48f41287b2|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and who received it?",
+    "Do you have the original termination notice, lease contract, any cure-period letter or warning, and records showing the rent due and when the August and September payments were made?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_02881d44ed3d778b|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What year does 3 November refer to, and what is the exact termination date stated in the notice?",
+    "Was a separate termination notice addressed or delivered to Raphael?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_aede8e94e7a06939|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What year was the letter received on 28 October, and can you provide the notice and evidence of its receipt?",
+    "Can you provide the lease contract and records showing the current agreed rent and its components?",
+    "When was the previous rent adjustment, what amount or basis did it use, and can you provide the adjustment notice or related records?",
+    "Can you provide the landlord's stated calculation and the reference-rate bases and dates used?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_5a5dc10821680996|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has any written rent-increase notice or official form arrived since the reported conversation? If so, when and how was it delivered?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_048e0f1cc96e77a7|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has a written termination notice since arrived? If so, when and how was it received, and who was it addressed to?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_a3491c1dff5ee4e1|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "renovation_cost_breakdown",
+    "stated_calculation"
+   ],
+   "holds": [
+    "proof_of_receipt",
+    "rent_increase_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a formal rent-increase notification? If so, when and at which address or mailbox did it arrive? If you have not received one, can you check whether a letter is waiting at your former address in Schwyz?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_a9db07b09902ba29|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Has either spouse received a written termination notice, including at the Zofingen address? If so, who received it, when, and can you provide the notice and any delivery evidence?",
+    "If a notice exists, what termination date and stated grounds does it give?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_b149e3b4d6534055|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the original termination notice and any envelope or delivery record showing who received it and when.",
+    "Please provide the lease or other evidence of the agreed notice period and the relevant termination dates.",
+    "Please provide the written complaints, correspondence with the landlord and conciliation authority, and any responses, to document the alleged retaliation timeline.",
+    "Have you begun searching for alternative housing? If so, please provide dated applications, responses and any other records of your search."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_cdfe2344f51f6fdf|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "reference_rate_basis",
+    "stated_calculation"
+   ],
+   "holds": [
+    "proof_of_receipt",
+    "rent_increase_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Was eine formelle Mietzinserhöhungsmitteilung tatsächlich zugestellt? Falls ja: wann, an wen und über welchen Zustellweg? Bitte teilen Sie auch mit, ob Sie noch einen Brief oder Abholschein finden."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_bb531e0f49256cd3|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you actually received a written termination notice, or only heard the landlord’s verbal statement? If a notice or collection slip arrived, when, and who received or collected it?",
+    "Is this your family home with a spouse or registered partner who may need separate notice?",
+    "Do you want to seek an extension of the termination date, or is a housing search already relevant?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_e35e791327998dd2|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the rent-increase notification? Please provide the receipt date or available proof of receipt.",
+    "Please provide the original rent-increase notice, including all pages and any accompanying calculation or reasons.",
+    "What year is the stated effective date of 1 March?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_d5630662a78c69f6|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the rent-increase notification?",
+    "Does the notice state any additional reasons or calculation details beyond the reference-rate increase and the stairwell and lift renovation?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_e0c0e69ff6e2a6e4|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has any written or formal tenancy-termination notice arrived since you sent this message? If so, please provide it and any envelope or delivery record showing when and to whom it was delivered.",
+    "Was the manager's call only a verbal announcement, or did the manager say that a termination notice had already been issued or delivered?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_fa8300535a4c20dc|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Have you received any written rent-increase notice since sending this message? If so, when did you receive it?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_f29b8a52c7246fd9|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie tatsächlich ein schriftliches oder anderes formales Kündigungsschreiben erhalten? Falls ja, wann und wie wurde es zugestellt, und können Sie das vollständige Schreiben samt Umschlag oder Zustellnachweis vorlegen?",
+    "Wohnt Ihre Tochter in der gemieteten Wohnung?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_29a12f48f41287b2|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and how was it delivered? Please provide any delivery or receipt evidence.",
+    "Please provide the original termination notice, lease contract, any arrears cure/deadline letter, and records showing rent amounts due and payments made."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_048e0f1cc96e77a7|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has a written termination notice actually been received, or has there only been the caretaker’s oral statement so far? If received, when and by whom?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_02881d44ed3d778b|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_5a5dc10821680996|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please confirm whether you have received any written rent-increase notice since sending this message. If so, when and how was it received, and can you provide the notice and evidence of receipt?",
+    "If no written notice has been received, is there any other document or message from the landlord (rather than the caretaker’s oral statement) setting out the proposed increase or its calculation?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_a3491c1dff5ee4e1|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "renovation_cost_breakdown"
+   ],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "established": [],
+   "questions": [
+    "Has a formal rent-increase notification been sent to you or received by you? If so, when and at which address?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_3d6f28bfed11c4ab|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has a written rent-increase notice or other written notification arrived since the tenants' meeting? If so, when was it received, and can you provide it and any proof of receipt?",
+    "Was any calculation or written explanation of the proposed increase provided, and does the landlord identify any reason besides the renovation work?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_aede8e94e7a06939|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_a9db07b09902ba29|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Has any written termination notice since arrived, or has anyone collected or seen it?",
+    "Can your mother check whether a termination notice was delivered to her address in Zofingen, and, if so, provide the original and the delivery date?",
+    "Did the property manager say who the notice was addressed to, its termination date, or the stated ground?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_b149e3b4d6534055|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and by what method?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_d5630662a78c69f6|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the rent-increase notification, and how was it delivered?",
+    "Please provide the original rent-increase notice, lease contract, current-rent evidence, prior adjustment, and any calculation or supporting material from the landlord."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_e35e791327998dd2|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the rent-increase notice?",
+    "Which year does the stated 1 March effective date refer to?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_cdfe2344f51f6fdf|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "reference_rate_basis",
+    "stated_calculation"
+   ],
+   "holds": [
+    "proof_of_receipt",
+    "rent_increase_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Did you ultimately receive a formal rent-increase notice? If so, when, and can you provide the notice and any delivery or collection evidence?",
+    "Can you provide the lease contract, current rent evidence, and the most recent prior rent adjustment?",
+    "Can you obtain the landlord’s written calculation, including the old and proposed reference-rate bases and relevant dates?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_bb531e0f49256cd3|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you actually received a written termination notice? If so, please provide the notice and say when and how it came to your attention, including any registered-mail collection or delivery details.",
+    "If a written notice was received, what termination date does it state, and was a separate notice addressed to any spouse or other household member?",
+    "Please provide any rent ledger, cure-period or termination-warning letter, and proof of payments for the April and May arrears, including the partial payment."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_e0c0e69ff6e2a6e4|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "proof_of_receipt"
+   ],
+   "established": [],
+   "questions": [
+    "Has any formal termination notice been delivered or served, including separately to your wife, or has there only been the telephone call? If one was served, please provide the notice and any delivery evidence.",
+    "What termination date and notice period are stated in the lease, and did the landlord give any reason for ending the tenancy?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_fa8300535a4c20dc|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has the formal rent-increase notice since arrived? If so, when was it received, and can you provide the notice and evidence of receipt?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "B1v2p|pcl_f29b8a52c7246fd9|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "spouse_notice_copy"
+   ],
+   "established": [],
+   "questions": [
+    "Has any written termination notice actually been delivered to you, or was the only communication the telephone statement? If delivered, when, by what means, and do you have the notice and delivery evidence?",
+    "Is the rented apartment your family home with a spouse or registered partner, and if so, was any separate notice addressed to that person?",
+    "Please provide any arrears cure or payment-deadline letter, your rent ledger and payment evidence, and any documents showing the landlord's stated termination ground."
+   ],
+   "deferred": false
+  },
+  "error": null
+ }
+}

@@ -1,0 +1,27 @@
+\section{Proofs}
+\label{app:proofs}
+
+\paragraph{Proposition~\ref{prop:sound}}
+Strong Kleene connectives are monotone in the information order in which $\U$ lies below both $\T$ and $\F$ \cite{kleene1952introduction}. Equations~\eqref{eq:activation} and~\eqref{eq:requirement} compose such connectives over the acyclic graph, so by induction in topological order every value in $\{\T,\F\}$ persists in every completion.
+
+These equations are the semantics of the \emph{flow fragment} of the process engine: transitions that enable or branch to a step, without blocking, suppressing or completion-gated relations. Every workflow in this article compiles to it. Outside it, Proposition~\ref{prop:sound} can fail, for instance when a suppressing transition under an open fact enters a step that is also blocked.
+
+\paragraph{Proposition~\ref{prop:incomplete}}
+In the tenancy defect workflow, the intake step branches to a safety step when health effects are alleged and directly to the timeline step otherwise; the safety step leads to the timeline step as well. With $\val(\mathit{health})=\U$, Equation~\eqref{eq:activation} gives $\act(\mathit{timeline})=(\U\kand\T)\kor(\T\kand\U)=\U$, so every document of the timeline step and of the later steps it reaches is held, unless its own or its branch condition is $\F$. Yet under both completions $\act(\mathit{timeline})=\T$.
+
+\paragraph{Proposition~\ref{prop:exact}}
+By Equation~\eqref{eq:exact}, $\exactreq(d)=\U$ exactly when two completions disagree on $\req(d)$. Soundness holds by definition: a value in $\{\T,\F\}$ is the value under every completion. If $\req(d)\neq\U$, Proposition~\ref{prop:sound} gives the same value under every completion, so $\exactreq(d)=\req(d)$.
+
+\paragraph{Proposition~\ref{prop:errors}}
+(a) Under the assumption, $\val^\ast$ is a completion of $\val$. If $\exactreq_\val(d)=\T$, every completion needs $d$, so $\req_{\val^\ast}(d)=\T$ and the request is needed; if $\exactreq_\val(d)=\F$, then $\req_{\val^\ast}(d)=\F$ and marking $d$ \skipd is right. The remaining documents are held, which is not an unsafe error. (b) The checklist is computed from $\val$ alone, so a wrong value enters the evaluation exactly as a correct one would. A document with $\exactreq_\val(d)=\T$ and $\req_{\val^\ast}(d)=\F$ is an unnecessary request; one with $\exactreq_\val(d)=\F$ and $\req_{\val^\ast}(d)=\T$ is missed.
+
+\paragraph{Exact computation of reading errors}
+To quantify both kinds without depending on any model, we computed exactly, for all \propClaims{} tenancy claims of Study~1 and every partial assignment of their facts, which documents each semantics requests and holds. Assignments were weighted by a model in which each fact is misread independently with probability \propEps, either as unresolved or as the opposite value. Of the \propRequired{} documents that the claims need, unresolved values become \propExactDefer{} expected holds under exact deferral and no unsafe error. Strong Kleene evaluation holds \propKleeneExtra\% more; reading unresolved values as false misses \propClosedMiss{} documents, and reading them as true adds \propEagerUnnec{} unnecessary requests. Wrong values cause \propFlipMiss{} missed documents and \propFlipUnnec{} unnecessary requests under every semantics (Figure~\ref{fig:fate}).
+
+\begin{figure}[h]
+\centering
+\fig{fig_fate}{\linewidth}
+\Description{Flow from kinds of reading error to outcomes under four semantics.}
+\caption{What reading errors become, computed exactly over all \propClaims{} tenancy claims of Study~1. Three-valued evaluation turns unresolved values into holds, two-valued evaluation turns them into missed or unnecessary requests, and a wrong value becomes an error under every semantics.}
+\label{fig:fate}
+\end{figure}

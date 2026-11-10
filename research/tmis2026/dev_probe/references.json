@@ -1,0 +1,1143 @@
+{
+ "pcl_e0c0e69ff6e2a6e4": {
+  "claim_id": "pcl_e0c0e69ff6e2a6e4",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_denied",
+  "scenario": {
+   "family_home": true,
+   "arrears": false,
+   "retaliation_screen": false,
+   "extension_relevant": false
+  },
+  "implicit_flags": {
+   "termination_received": false
+  },
+  "fact_states": {
+   "termination_received": "stated_false",
+   "family_home": "stated_true",
+   "arrears": "absent",
+   "retaliation_screen": "absent",
+   "extension_relevant": "absent"
+  },
+  "policy_verdicts": {
+   "termination_received": "false",
+   "family_home": "true",
+   "arrears": "false",
+   "retaliation_screen": "false",
+   "extension_relevant": "false"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "plain",
+   "slug": "t1",
+   "language": "en",
+   "channel": "email",
+   "words": 152
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_f29b8a52c7246fd9": {
+  "claim_id": "pcl_f29b8a52c7246fd9",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_denied",
+  "scenario": {
+   "family_home": false,
+   "arrears": true,
+   "retaliation_screen": false,
+   "extension_relevant": true
+  },
+  "implicit_flags": {
+   "termination_received": false
+  },
+  "fact_states": {
+   "termination_received": "stated_false",
+   "family_home": "absent",
+   "arrears": "stated_true",
+   "retaliation_screen": "absent",
+   "extension_relevant": "stated_true"
+  },
+  "policy_verdicts": {
+   "termination_received": "false",
+   "family_home": "false",
+   "arrears": "true",
+   "retaliation_screen": "false",
+   "extension_relevant": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "passing",
+   "slug": "t2",
+   "language": "de-CH",
+   "channel": "portal",
+   "words": 133
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_048e0f1cc96e77a7": {
+  "claim_id": "pcl_048e0f1cc96e77a7",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_denied",
+  "scenario": {
+   "family_home": false,
+   "arrears": false,
+   "retaliation_screen": true,
+   "extension_relevant": false
+  },
+  "implicit_flags": {
+   "termination_received": false
+  },
+  "fact_states": {
+   "termination_received": "stated_false",
+   "family_home": "absent",
+   "arrears": "absent",
+   "retaliation_screen": "stated_true",
+   "extension_relevant": "absent"
+  },
+  "policy_verdicts": {
+   "termination_received": "false",
+   "family_home": "false",
+   "arrears": "false",
+   "retaliation_screen": "true",
+   "extension_relevant": "false"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "termination_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "notice_period_evidence": "not_needed",
+   "stated_reason": "not_needed",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "implied",
+   "slug": "t3",
+   "language": "en",
+   "channel": "portal",
+   "words": 155
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_a9db07b09902ba29": {
+  "claim_id": "pcl_a9db07b09902ba29",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_open",
+  "scenario": {
+   "family_home": true,
+   "arrears": false,
+   "retaliation_screen": true,
+   "extension_relevant": false
+  },
+  "implicit_flags": {
+   "termination_received": null
+  },
+  "fact_states": {
+   "termination_received": "open",
+   "family_home": "stated_true",
+   "arrears": "absent",
+   "retaliation_screen": "stated_true",
+   "extension_relevant": "absent"
+  },
+  "policy_verdicts": {
+   "termination_received": "unresolved",
+   "family_home": "true",
+   "arrears": "false",
+   "retaliation_screen": "true",
+   "extension_relevant": "false"
+  },
+  "open_fact": {
+   "flag": "termination_received",
+   "true_value": null
+  },
+  "document_states": {
+   "lease_contract": "held",
+   "termination_notice": "held",
+   "proof_of_receipt": "held",
+   "notice_period_evidence": "held",
+   "stated_reason": "held",
+   "spouse_notice_copy": "held",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "held",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "held_behind_question",
+   "termination_notice": "held_behind_question",
+   "proof_of_receipt": "held_behind_question",
+   "notice_period_evidence": "held_behind_question",
+   "stated_reason": "held_behind_question",
+   "spouse_notice_copy": "held_behind_question",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "held_behind_question",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [
+   "termination_received"
+  ],
+  "request_set": [],
+  "held_set": [
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "open",
+   "mode": "unknown",
+   "slug": "t4",
+   "language": "de-CH",
+   "channel": "email",
+   "words": 143
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_bb531e0f49256cd3": {
+  "claim_id": "pcl_bb531e0f49256cd3",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_open",
+  "scenario": {
+   "family_home": false,
+   "arrears": true,
+   "retaliation_screen": false,
+   "extension_relevant": false
+  },
+  "implicit_flags": {
+   "termination_received": null
+  },
+  "fact_states": {
+   "termination_received": "open",
+   "family_home": "absent",
+   "arrears": "stated_true",
+   "retaliation_screen": "absent",
+   "extension_relevant": "absent"
+  },
+  "policy_verdicts": {
+   "termination_received": "unresolved",
+   "family_home": "false",
+   "arrears": "true",
+   "retaliation_screen": "false",
+   "extension_relevant": "false"
+  },
+  "open_fact": {
+   "flag": "termination_received",
+   "true_value": null
+  },
+  "document_states": {
+   "lease_contract": "held",
+   "termination_notice": "held",
+   "proof_of_receipt": "held",
+   "notice_period_evidence": "held",
+   "stated_reason": "held",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "held",
+   "rent_ledger_payment_evidence": "held",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "held_behind_question",
+   "termination_notice": "held_behind_question",
+   "proof_of_receipt": "held_behind_question",
+   "notice_period_evidence": "held_behind_question",
+   "stated_reason": "held_behind_question",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "held_behind_question",
+   "rent_ledger_payment_evidence": "held_behind_question",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [
+   "termination_received"
+  ],
+  "request_set": [],
+  "held_set": [
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "open",
+   "mode": "unknown",
+   "slug": "t5",
+   "language": "en",
+   "channel": "email",
+   "words": 155
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_02881d44ed3d778b": {
+  "claim_id": "pcl_02881d44ed3d778b",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_control",
+  "scenario": {
+   "family_home": true,
+   "arrears": false,
+   "retaliation_screen": false,
+   "extension_relevant": true
+  },
+  "implicit_flags": {
+   "termination_received": true
+  },
+  "fact_states": {
+   "termination_received": "stated_true",
+   "family_home": "stated_true",
+   "arrears": "absent",
+   "retaliation_screen": "absent",
+   "extension_relevant": "stated_true"
+  },
+  "policy_verdicts": {
+   "termination_received": "true",
+   "family_home": "true",
+   "arrears": "false",
+   "retaliation_screen": "false",
+   "extension_relevant": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "termination_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "notice_period_evidence": "required_now",
+   "stated_reason": "required_now",
+   "spouse_notice_copy": "required_now",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "termination_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "notice_period_evidence": "needed_later",
+   "stated_reason": "needed_later",
+   "spouse_notice_copy": "needed_later",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "needed_later",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "housing_search_log",
+   "lease_contract",
+   "notice_period_evidence",
+   "proof_of_receipt",
+   "spouse_notice_copy",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "stated",
+   "slug": "t6",
+   "language": "de-CH",
+   "channel": "portal",
+   "words": 121
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_29a12f48f41287b2": {
+  "claim_id": "pcl_29a12f48f41287b2",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_control",
+  "scenario": {
+   "family_home": false,
+   "arrears": true,
+   "retaliation_screen": false,
+   "extension_relevant": false
+  },
+  "implicit_flags": {
+   "termination_received": true
+  },
+  "fact_states": {
+   "termination_received": "unmentioned",
+   "family_home": "absent",
+   "arrears": "stated_true",
+   "retaliation_screen": "absent",
+   "extension_relevant": "absent"
+  },
+  "policy_verdicts": {
+   "termination_received": "true",
+   "family_home": "false",
+   "arrears": "true",
+   "retaliation_screen": "false",
+   "extension_relevant": "false"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "termination_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "notice_period_evidence": "required_now",
+   "stated_reason": "required_now",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "required_now",
+   "rent_ledger_payment_evidence": "required_now",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "termination_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "notice_period_evidence": "needed_later",
+   "stated_reason": "needed_later",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "needed_later",
+   "rent_ledger_payment_evidence": "needed_later",
+   "prior_rights_correspondence": "not_needed",
+   "housing_search_log": "not_needed",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "implied",
+   "slug": "t7",
+   "language": "en",
+   "channel": "email",
+   "words": 145
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_b149e3b4d6534055": {
+  "claim_id": "pcl_b149e3b4d6534055",
+  "family": "lease_termination_dispute",
+  "family_id": "pfam_le_control",
+  "scenario": {
+   "family_home": false,
+   "arrears": false,
+   "retaliation_screen": true,
+   "extension_relevant": true
+  },
+  "implicit_flags": {
+   "termination_received": true
+  },
+  "fact_states": {
+   "termination_received": "unmentioned",
+   "family_home": "absent",
+   "arrears": "absent",
+   "retaliation_screen": "stated_true",
+   "extension_relevant": "stated_true"
+  },
+  "policy_verdicts": {
+   "termination_received": "true",
+   "family_home": "false",
+   "arrears": "false",
+   "retaliation_screen": "true",
+   "extension_relevant": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "termination_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "notice_period_evidence": "required_now",
+   "stated_reason": "required_now",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "required_now",
+   "housing_search_log": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "termination_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "notice_period_evidence": "needed_later",
+   "stated_reason": "needed_later",
+   "spouse_notice_copy": "not_needed",
+   "payment_deadline_letter": "not_needed",
+   "rent_ledger_payment_evidence": "not_needed",
+   "prior_rights_correspondence": "needed_later",
+   "housing_search_log": "needed_later",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "housing_search_log",
+   "lease_contract",
+   "notice_period_evidence",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "stated_reason",
+   "termination_notice"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "implied",
+   "slug": "t8",
+   "language": "de-CH",
+   "channel": "email",
+   "words": 132
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_5a5dc10821680996": {
+  "claim_id": "pcl_5a5dc10821680996",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_denied",
+  "scenario": {
+   "reference_rate": true,
+   "renovation": false
+  },
+  "implicit_flags": {
+   "claim_received": false
+  },
+  "fact_states": {
+   "claim_received": "stated_false",
+   "reference_rate": "stated_true",
+   "renovation": "absent"
+  },
+  "policy_verdicts": {
+   "claim_received": "false",
+   "reference_rate": "true",
+   "renovation": "false"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "plain",
+   "slug": "r1",
+   "language": "de-CH",
+   "channel": "email",
+   "words": 126
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_3d6f28bfed11c4ab": {
+  "claim_id": "pcl_3d6f28bfed11c4ab",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_denied",
+  "scenario": {
+   "reference_rate": false,
+   "renovation": true
+  },
+  "implicit_flags": {
+   "claim_received": false
+  },
+  "fact_states": {
+   "claim_received": "stated_false",
+   "reference_rate": "absent",
+   "renovation": "stated_true"
+  },
+  "policy_verdicts": {
+   "claim_received": "false",
+   "reference_rate": "false",
+   "renovation": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "passing",
+   "slug": "r2",
+   "language": "en",
+   "channel": "portal",
+   "words": 140
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_fa8300535a4c20dc": {
+  "claim_id": "pcl_fa8300535a4c20dc",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_denied",
+  "scenario": {
+   "reference_rate": true,
+   "renovation": true
+  },
+  "implicit_flags": {
+   "claim_received": false
+  },
+  "fact_states": {
+   "claim_received": "stated_false",
+   "reference_rate": "stated_true",
+   "renovation": "stated_true"
+  },
+  "policy_verdicts": {
+   "claim_received": "false",
+   "reference_rate": "true",
+   "renovation": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "questions": [],
+  "request_set": [],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "denied",
+   "mode": "implied",
+   "slug": "r3",
+   "language": "de-CH",
+   "channel": "portal",
+   "words": 114
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_a3491c1dff5ee4e1": {
+  "claim_id": "pcl_a3491c1dff5ee4e1",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_open",
+  "scenario": {
+   "reference_rate": false,
+   "renovation": true
+  },
+  "implicit_flags": {
+   "claim_received": null
+  },
+  "fact_states": {
+   "claim_received": "open",
+   "reference_rate": "absent",
+   "renovation": "stated_true"
+  },
+  "policy_verdicts": {
+   "claim_received": "unresolved",
+   "reference_rate": "false",
+   "renovation": "true"
+  },
+  "open_fact": {
+   "flag": "claim_received",
+   "true_value": null
+  },
+  "document_states": {
+   "lease_contract": "held",
+   "rent_increase_notice": "held",
+   "proof_of_receipt": "held",
+   "current_rent_evidence": "held",
+   "prior_rent_adjustment": "held",
+   "stated_calculation": "held",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "held",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "held_behind_question",
+   "rent_increase_notice": "held_behind_question",
+   "proof_of_receipt": "held_behind_question",
+   "current_rent_evidence": "held_behind_question",
+   "prior_rent_adjustment": "held_behind_question",
+   "stated_calculation": "held_behind_question",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "held_behind_question",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [
+   "claim_received"
+  ],
+  "request_set": [],
+  "held_set": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "open",
+   "mode": "unknown",
+   "slug": "r4",
+   "language": "en",
+   "channel": "email",
+   "words": 146
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_cdfe2344f51f6fdf": {
+  "claim_id": "pcl_cdfe2344f51f6fdf",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_open",
+  "scenario": {
+   "reference_rate": true,
+   "renovation": false
+  },
+  "implicit_flags": {
+   "claim_received": null
+  },
+  "fact_states": {
+   "claim_received": "open",
+   "reference_rate": "stated_true",
+   "renovation": "absent"
+  },
+  "policy_verdicts": {
+   "claim_received": "unresolved",
+   "reference_rate": "true",
+   "renovation": "false"
+  },
+  "open_fact": {
+   "flag": "claim_received",
+   "true_value": null
+  },
+  "document_states": {
+   "lease_contract": "held",
+   "rent_increase_notice": "held",
+   "proof_of_receipt": "held",
+   "current_rent_evidence": "held",
+   "prior_rent_adjustment": "held",
+   "stated_calculation": "held",
+   "reference_rate_basis": "held",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "held_behind_question",
+   "rent_increase_notice": "held_behind_question",
+   "proof_of_receipt": "held_behind_question",
+   "current_rent_evidence": "held_behind_question",
+   "prior_rent_adjustment": "held_behind_question",
+   "stated_calculation": "held_behind_question",
+   "reference_rate_basis": "held_behind_question",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [
+   "claim_received"
+  ],
+  "request_set": [],
+  "held_set": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "open",
+   "mode": "unknown",
+   "slug": "r5",
+   "language": "de-CH",
+   "channel": "email",
+   "words": 125
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_aede8e94e7a06939": {
+  "claim_id": "pcl_aede8e94e7a06939",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_control",
+  "scenario": {
+   "reference_rate": true,
+   "renovation": false
+  },
+  "implicit_flags": {
+   "claim_received": true
+  },
+  "fact_states": {
+   "claim_received": "stated_true",
+   "reference_rate": "stated_true",
+   "renovation": "absent"
+  },
+  "policy_verdicts": {
+   "claim_received": "true",
+   "reference_rate": "true",
+   "renovation": "false"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "rent_increase_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "current_rent_evidence": "required_now",
+   "prior_rent_adjustment": "required_now",
+   "stated_calculation": "required_now",
+   "reference_rate_basis": "required_now",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "rent_increase_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "current_rent_evidence": "needed_later",
+   "prior_rent_adjustment": "needed_later",
+   "stated_calculation": "needed_later",
+   "reference_rate_basis": "needed_later",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "stated",
+   "slug": "r6",
+   "language": "en",
+   "channel": "email",
+   "words": 138
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_e35e791327998dd2": {
+  "claim_id": "pcl_e35e791327998dd2",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_control",
+  "scenario": {
+   "reference_rate": false,
+   "renovation": true
+  },
+  "implicit_flags": {
+   "claim_received": true
+  },
+  "fact_states": {
+   "claim_received": "unmentioned",
+   "reference_rate": "absent",
+   "renovation": "stated_true"
+  },
+  "policy_verdicts": {
+   "claim_received": "true",
+   "reference_rate": "false",
+   "renovation": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "rent_increase_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "current_rent_evidence": "required_now",
+   "prior_rent_adjustment": "required_now",
+   "stated_calculation": "required_now",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "rent_increase_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "current_rent_evidence": "needed_later",
+   "prior_rent_adjustment": "needed_later",
+   "stated_calculation": "needed_later",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "needed_later",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "implied",
+   "slug": "r7",
+   "language": "de-CH",
+   "channel": "portal",
+   "words": 109
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ },
+ "pcl_d5630662a78c69f6": {
+  "claim_id": "pcl_d5630662a78c69f6",
+  "family": "rent_increase_dispute",
+  "family_id": "pfam_re_control",
+  "scenario": {
+   "reference_rate": true,
+   "renovation": true
+  },
+  "implicit_flags": {
+   "claim_received": true
+  },
+  "fact_states": {
+   "claim_received": "unmentioned",
+   "reference_rate": "stated_true",
+   "renovation": "stated_true"
+  },
+  "policy_verdicts": {
+   "claim_received": "true",
+   "reference_rate": "true",
+   "renovation": "true"
+  },
+  "open_fact": null,
+  "document_states": {
+   "lease_contract": "required_now",
+   "rent_increase_notice": "required_now",
+   "proof_of_receipt": "required_now",
+   "current_rent_evidence": "required_now",
+   "prior_rent_adjustment": "required_now",
+   "stated_calculation": "required_now",
+   "reference_rate_basis": "required_now",
+   "renovation_cost_breakdown": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "engine_routes": {
+   "lease_contract": "needed_later",
+   "rent_increase_notice": "needed_later",
+   "proof_of_receipt": "needed_later",
+   "current_rent_evidence": "needed_later",
+   "prior_rent_adjustment": "needed_later",
+   "stated_calculation": "needed_later",
+   "reference_rate_basis": "needed_later",
+   "renovation_cost_breakdown": "needed_later",
+   "landlord_correspondence": "optional"
+  },
+  "questions": [],
+  "request_set": [
+   "current_rent_evidence",
+   "lease_contract",
+   "prior_rent_adjustment",
+   "proof_of_receipt",
+   "reference_rate_basis",
+   "renovation_cost_breakdown",
+   "rent_increase_notice",
+   "stated_calculation"
+  ],
+  "held_set": [],
+  "answered": null,
+  "attachments": [],
+  "probe": {
+   "kind": "control",
+   "mode": "implied",
+   "slug": "r8",
+   "language": "en",
+   "channel": "portal",
+   "words": 124
+  },
+  "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+  "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+ }
+}

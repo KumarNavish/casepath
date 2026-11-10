@@ -1,0 +1,98 @@
+\section{The decision rule}
+\label{sec:rule}
+\label{sec:method}
+
+The decision rule divides the work between a model and code. The model reads the file and gives each fact a value; code applies the workflow to those values and returns a checklist. This section defines the rule and states four results. Appendix~\ref{app:proofs} gives the proofs.
+
+We use one example throughout. A tenant reports mould in the bathroom and in the child's room and has told the caretaker by phone. The workflow requires a medical confirmation if the mould has affected someone's health. In one version of the file the tenant writes: ``Our daughter has been coughing for weeks; the paediatrician suspects a link with the mould. I do not have a medical report yet.'' In the other: ``\ldots we do not know whether it has anything to do with the mould and have not seen a doctor.'' The first file needs the medical confirmation. The second leaves the need open, so the confirmation should be held and one question asked.
+
+\subsection{Workflows and facts}
+\label{sec:workflow}
+
+A workflow states an organisation's rules for one kind of claim. It names a finite set $\mathcal{C}$ of facts, the conditions its rules depend on. In the example, $\mathit{health}$ is the fact that the mould has affected someone's health. A fact is true ($\T$), false ($\F$) or unresolved ($\U$).
+
+The workflow arranges steps in an acyclic graph $G=(N,E)$ with one entry step. Each step $n$ has a condition $c_n$, and each transition $(u,n)\in E$ has a condition $c_{un}$. Each document type $d$ is needed at a set of steps $L(d)\subseteq N$ under its own condition $c_d$. Conditions are formulas over facts built with \emph{and}, \emph{or} and \emph{not}.
+
+The output is a checklist. It marks each document type \request, \hold, \skipd or \onfile, and lists as questions the facts on which held documents wait.
+
+\subsection{Readings, admission and presumptions}
+\label{sec:admission}
+
+A reading is one model pass over the file. It gives every fact a value and, for a true or false value, a quotation from the file. \casepath makes two readings independently. A value is \emph{admitted} when both readings give it and each quotation is found in the file after a fixed normalisation. Every other fact is unresolved: a reading left it open, the readings disagree, or a quotation is not in the file. Code, not the model, performs these checks.
+
+In the first version of the example, both readings give $\mathit{health}=\T$ and quote ``the paediatrician suspects a link with the mould''. The quotation is in the file, so $\T$ is admitted. In the second version the readings give $\U$, quoting the sentence that raises the question.
+
+Files are often silent on a fact, and silence is not doubt. A \emph{presumption} states, with a clause from the organisation's sources, what an unstated fact is taken to be. It applies only when neither reading quotes anything for the fact. A fact that the file raises and leaves open stays unresolved. The checklist records a presumed value as a presumption, and a statement in the file overrides it. The tenancy workflow presumes that the mould has affected no one's health when the file never mentions health. The second version mentions it, so $\mathit{health}$ stays $\U$.
+
+Admitted values and presumptions together form an assignment $\val:\mathcal{C}\to\Vals$. A \emph{completion} of $\val$ is an assignment $\val':\mathcal{C}\to\{\T,\F\}$ that agrees with $\val$ wherever $\val(f)\neq\U$.
+
+\subsection{Evaluation}
+\label{sec:kleene}
+
+Code evaluates conditions in strong Kleene logic \cite{kleene1952introduction}. With the order $\F<\U<\T$, \emph{and} takes the minimum, \emph{or} the maximum, and \emph{not} swaps $\T$ and $\F$. A step is active when it is the entry step or is reached from an active step through a transition whose condition holds, and its own condition holds:
+\begin{equation}
+\act(n) \;=\; \Bigl[\,\mathrm{entry}(n)\;\kor\;\bigvee_{(u,n)\in E}\bigl(\act(u)\kand\val(c_{un})\bigr)\Bigr]\;\kand\;\val(c_n).
+\label{eq:activation}
+\end{equation}
+A document is needed when a step that needs it is active and its own condition holds:
+\begin{equation}
+\req(d) \;=\; \Bigl[\,\bigvee_{n\in L(d)}\act(n)\Bigr]\;\kand\;\val(c_d).
+\label{eq:requirement}
+\end{equation}
+A document with $\req(d)=\F$ is \skipd; one with $\req(d)=\U$ is held; one with $\req(d)=\T$ is \onfile if the file contains it and requested otherwise. We write $\req_\val$ when the assignment matters.
+
+\begin{proposition}[Soundness relative to admitted facts]
+\label{prop:sound}
+If $\req_\val(d)\in\{\T,\F\}$, then $\req_{\val'}(d)=\req_\val(d)$ for every completion $\val'$ of $\val$.
+\end{proposition}
+
+Whatever the open facts turn out to be, a requested document stays needed and a document marked \skipd stays unneeded. Answering a question can only turn holds into requests or into \skipd. Two-valued evaluation lacks this property. Reading $\U$ as $\F$, the closed-world assumption \cite{reiter1978closed}, drops documents that an open fact may require; reading $\U$ as $\T$ requests them too early.
+
+\begin{proposition}[Strong Kleene evaluation over-holds]
+\label{prop:incomplete}
+Strong Kleene evaluation can hold a document that every completion of $\val$ needs.
+\end{proposition}
+
+Strong Kleene evaluation forgets that two branches of a fork meet again. The tenancy defect workflow branches on $\mathit{health}$: to ``Escalate health risk'' if it is true, directly to ``Dated defect timeline'' otherwise, and the first leads to the second. With $\mathit{health}=\U$, Equation~\eqref{eq:activation} makes the timeline step $\U$, and every document from there on is held. Under both completions the step is active (Figure~\ref{fig:reconverge}).
+
+\begin{figure}[t]
+\centering
+\fig{fig_reconverge}{\linewidth}
+\Description{Process graph of the tenancy defect workflow evaluated under strong Kleene logic and under exact deferral.}
+\caption{The tenancy defect workflow with $\mathit{health}$ unresolved. Strong Kleene evaluation (left) holds every document after the branch. Exact deferral (right) holds only the medical confirmation, on which the two completions disagree.}
+\label{fig:reconverge}
+\end{figure}
+
+\subsection{Exact deferral}
+\label{sec:exact}
+
+Exact deferral evaluates each document under every completion \cite{vanfraassen1966singular}, as certain answers do for an incomplete database \cite{imielinski1984incomplete}:
+\begin{equation}
+\exactreq(d) \;=\;
+\begin{cases}
+\T & \text{if } \req_{\val'}(d)=\T \text{ for every completion } \val' \text{ of } \val,\\
+\F & \text{if } \req_{\val'}(d)=\F \text{ for every completion } \val' \text{ of } \val,\\
+\U & \text{otherwise.}
+\end{cases}
+\label{eq:exact}
+\end{equation}
+The checklist is formed from $\exactreq$ as from $\req$. An open fact becomes a question when changing its value changes a held document.
+
+\begin{proposition}[Exact deferral]
+\label{prop:exact}
+Exact deferral holds a document if and only if its need depends on an open fact, that is, two completions of $\val$ disagree on it. It is sound, and it never holds a document that strong Kleene evaluation requests or marks \skipd.
+\end{proposition}
+
+Exact deferral holds what the open facts can change and nothing else. In Figure~\ref{fig:reconverge} it requests the lease, the defect notice and the later documents, holds the medical confirmation and asks whether the mould has affected anyone's health. The cost is $2^u$ evaluations for $u$ open facts; the Study~1 claims had at most five.
+
+\subsection{Reading errors}
+\label{sec:fate}
+
+A reading can err in two ways. It can leave a settled fact unresolved, or it can give a fact the wrong value. Let $\val^\ast$ be the true, complete assignment. An \emph{unsafe error} is a request for a document that $\val^\ast$ does not need, or a document marked \skipd that $\val^\ast$ needs.
+
+\begin{proposition}[Reading errors]
+\label{prop:errors}
+(a) If $\val(f)=\val^\ast(f)$ for every fact with $\val(f)\neq\U$, exact deferral makes no unsafe error. (b) If $\val(f)\neq\val^\ast(f)$ for some fact with $\val(f)\neq\U$, the checklist is the one $\val$ determines, and every document whose $\exactreq_\val$ is $\T$ or $\F$ but differs from $\req_{\val^\ast}$ is an unsafe error.
+\end{proposition}
+
+Doubt costs a question; a confident mistake costs an error, and code cannot tell it from a correct value. A presumption that the file's facts contradict is such a mistake. Admission and agreement exist to turn mistakes of kind (b) into kind (a): a wrong value survives only if both readings give it and quote text that is in the file. Appendix~\ref{app:proofs} computes both kinds exactly over all \propClaims{} tenancy claims of Study~1 with each fact misread with probability \propEps: unresolved values became \propExactDefer{} expected holds and no unsafe error, while wrong values caused \propFlipMiss{} missed documents and \propFlipUnnec{} unnecessary requests.
