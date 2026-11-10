@@ -93,6 +93,7 @@ The changes below, made after those, also alter behaviour for existing workflows
 - **Deciding facts.** A fact a condition uses, which both readings give with an exact quote, is no longer removed when the source checker doubts it (the doubt is a flag), and no single agent can record a deciding fact after the two readings.
 - **Suggestions under an open question.** A suggested need keeps its label while the question that decides it is open, instead of becoming a hold.
 - **Reasoning effort on chat endpoints** (configuration, off by default): with `CASEPATH_MODEL_REASONING` on, a chat-completions endpoint receives each call's effort as the model's reasoning effort and no temperature. Where an Azure deployment already sends reasoning effort, the readings now go at low effort instead of the team's effort.
+- **Process-builder additions** (the last commit, which can be dropped on its own; the owner's decision is pending): a need, question or step the process builder adds stays a suggestion, shown with its stated basis (statute article, quote or Knowledge item), until the workflow, Knowledge or a case handler confirms it. It is no longer required because it names a statute article, and it does not count as a missing document.
 - **Turn limits.** An agent that reaches its turn limit ends with what it recorded; the run completes, evaluates the checklist and names the limit in its warnings, instead of failing.
 
 These changes change nothing unless a workflow or the configuration uses them:
