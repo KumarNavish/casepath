@@ -602,7 +602,8 @@ function liveDocuments(live) {
       : ["missing", "unusable"].includes(d.status) ? `<span class="no" title="${esc(word(d.status))}">${icon("xcircle")}</span>` : `<span class="open" title="${T("not looked for yet", "noch nicht gesucht")}"></span>`;
     const step = d.step && steps[d.step];
     const origin = d.knowledge ? `<span class="cp-kv">${icon("memory")}${T("Knowledge", "Wissen")} v${esc(d.version)} ${d.suggested ? T("suggested", "vorgeschlagen") : T("used", "genutzt")}</span>`
-      : d.edit && d.by_agent ? `<span class="cp-kv add">${icon(d.legal_basis ? "law" : "plus")}${d.legal_basis ? T(`required by law (${esc(d.legal_basis)})`, `nach Gesetz verlangt (${esc(d.legal_basis)})`)
+      : d.edit && d.by_agent ? `<span class="cp-kv add">${icon(d.legal_basis ? "law" : "plus")}${d.legal_basis && !d.suggested ? T(`required by law (${esc(d.legal_basis)})`, `nach Gesetz verlangt (${esc(d.legal_basis)})`)
+        : d.legal_basis ? T(`suggested for this case, basis ${esc(d.legal_basis)}`, `für diesen Fall vorgeschlagen, Grundlage ${esc(d.legal_basis)}`)
         : T("suggested for this case", "für diesen Fall vorgeschlagen")}</span>` : "";
     return `<li class="st-${esc(d.status)}${enter(`doc:${d.document}`)}" data-doc="${esc(d.document)}">${mark}<span><b>${esc(d.title)}</b>
       <small>${step ? `${T("for", "für")} «${esc(clip(stepLabel(step), 64))}»` : T("for the whole case", "für den ganzen Fall")}${d.required === "depends" ? (d.questions && d.questions.length ? T(` · if the answer requires it: ${esc(d.questions.join(" / "))}`, ` · falls die Antwort es verlangt: ${esc(d.questions.join(" / "))}`) : T(" · if an open answer requires it", " · falls eine offene Antwort es verlangt")) : ""}</small>${origin}</span></li>`;
@@ -914,7 +915,7 @@ function checkerView() {
   if (!rows.length) return `<p class="cp-empty">${T("The source checker’s verdicts appear here: every finding with the exact sentence it rests on.", "Hier erscheinen die Prüfergebnisse des Quellenprüfers: jede Feststellung mit dem genauen Satz, auf dem sie beruht.")}</p>`;
   return `${ratedRun() ? feedbackLine() : ""}<table class="cp-table"><thead><tr><th>${T("Finding", "Feststellung")}</th><th>${T("Verdict", "Prüfung")}</th><th>${T("Exact sentence", "Wörtliche Stelle")}</th></tr></thead><tbody>${rows.map(([label, row]) => `<tr>
     <td>${esc(label)}${row.value !== undefined && row.value !== null ? `: <b>${esc(valueText(row.value))}</b>` : row.status ? ` <span class="cp-muted">(${esc(word(row.status))})</span>` : ""}</td>
-    <td>${row.verdict === "accepted" ? `<span class="cp-chip good">${T("supported", "belegt")}</span>` : row.verdict === "rejected" ? `<span class="cp-chip bad">${T("not supported", "nicht belegt")}</span><br><small class="cp-muted">${esc(row.verdict_reason || "")}</small>` : `<span class="cp-chip wait">${T("not checked", "nicht geprüft")}</span>`}${rate(row.fact ? `fact:${row.fact}` : `document:${row.document}`)}</td>
+    <td>${row.verdict === "accepted" ? `<span class="cp-chip good">${T("supported", "belegt")}</span>` : row.verdict === "rejected" ? `<span class="cp-chip bad">${T("not supported", "nicht belegt")}</span><br><small class="cp-muted">${esc(row.verdict_reason || "")}</small>` : `<span class="cp-chip wait">${T("not checked", "nicht geprüft")}</span>`}${row.flag ? `<br><small class="cp-muted">${T(`the check doubts it: ${esc(row.flag.reason || "")}`, `die Prüfung zweifelt: ${esc(row.flag.reason || "")}`)}</small>` : ""}${rate(row.fact ? `fact:${row.fact}` : `document:${row.document}`)}</td>
     <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button><br><small class="cp-muted">${esc(fileName(c.file))}${c.page ? `, ${T("page", "Seite")} ${c.page}` : ""}</small>`).join("<br>") || '<span class="cp-muted">—</span>'}</td></tr>`).join("")}</tbody></table>`;
 }
 
@@ -924,7 +925,8 @@ function documentsView() {
   const rows = recorded("document");
   const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {};
     const k = d.knowledge && (S.knowledge || []).find((x) => x.id === d.knowledge);
-    return d.knowledge ? (seededNote(k) ? `${T("From Knowledge", "Aus dem Wissen")} · ${seededNote(k)}` : T("From Knowledge", "Aus dem Wissen")) : d.legal_basis ? T(`Required by law (${d.legal_basis})`, `Nach Gesetz verlangt (${d.legal_basis})`)
+    return d.knowledge ? (seededNote(k) ? `${T("From Knowledge", "Aus dem Wissen")} · ${seededNote(k)}` : T("From Knowledge", "Aus dem Wissen")) : d.legal_basis && d.suggested ? T(`Suggested for this case, basis ${d.legal_basis}`, `Für diesen Fall vorgeschlagen, Grundlage ${d.legal_basis}`)
+      : d.legal_basis ? T(`Required by law (${d.legal_basis})`, `Nach Gesetz verlangt (${d.legal_basis})`)
       : d.edit ? T("Added for this case", "Für diesen Fall ergänzt") : T("From the process", "Aus dem Prozess"); };
   const missing = ev.documents.filter((d) => ["missing", "unusable"].includes(d.status) && !["suggested", "optional", "depends"].includes(d.required)).length;
   if (!ev.documents.length) return `<h1 class="cp-title">${T("Documents", "Dokumente")}</h1><p class="cp-empty">${T("No document needs: no documented process with documents applies to this case yet. Choose the fitting process in the overview, then prepare the case again.", "Keine Dokumente verlangt: Für diesen Fall gilt noch kein hinterlegter Prozess mit Dokumenten. Wählen Sie in der Übersicht den passenden Prozess und bereiten Sie den Fall erneut vor.")}</p>`;
@@ -932,7 +934,8 @@ function documentsView() {
     <table class="cp-table"><thead><tr><th>${T("Document", "Dokument")}</th><th>${T("Why", "Wozu")}</th><th>Status</th><th>${T("Proof", "Beleg")}</th><th>${T("Origin", "Herkunft")}</th></tr></thead><tbody>${ev.documents.map((d) => {
       const row = rows[d.document] || {};
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
-      const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
+      const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: (((S.data.process.documents.find((x) => x.id === d.document) || {}).knowledge ? T("suggested by Knowledge", "vom Wissen vorgeschlagen") : T("suggested", "vorgeschlagen"))
+                  + (d.questions && d.questions.length ? T(` · applies if: ${esc(d.questions.map((q) => q.question).join(" / "))}`, ` · gilt, falls: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : "")), optional: T("optional", "freiwillig") }[d.required];
       return `<tr><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
         <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;
@@ -1243,7 +1246,12 @@ async function renderCase() {
   const flagged = (S.data.files || []).some((f) => ((f.extraction || {}).instruction_like || []).length);
   const messages = [flagged ? T("A document contains text addressed to an AI. CasePath treated it as evidence and did not follow it; check the document.",
                                 "Ein Dokument enthält Text, der sich an die KI richtet. CasePath hat ihn als Inhalt behandelt und nicht befolgt; bitte das Dokument prüfen.") : "",
-                    used ? T("This case used Knowledge from earlier cases. Qualified review is still required.", "Dieser Fall nutzt Wissen aus früheren Fällen. Eine fachliche Prüfung bleibt nötig.") : ""].filter(Boolean);
+                    used ? T("This case used Knowledge from earlier cases. Qualified review is still required.", "Dieser Fall nutzt Wissen aus früheren Fällen. Eine fachliche Prüfung bleibt nötig.") : "",
+                    ...((result() || {}).warnings || []).filter((w) => w.kind !== "instruction_like_text").map((w) => ({
+                      turn_limit: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
+                      no_report: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
+                      reading_failed: T("One reading of the facts failed; the facts it should have confirmed stay open.", "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen."),
+                    }[w.kind] || ""))].filter((m, i, all) => m && all.indexOf(m) === i);
   notice.hidden = !messages.length;
   document.body.classList.toggle("with-notice", Boolean(messages.length));
   notice.innerHTML = messages.length ? `${icon("shield")}${messages.join(" ")}` : "";
