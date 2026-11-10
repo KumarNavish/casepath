@@ -1010,10 +1010,12 @@ function requestDraft(ev) {
   const { now, later } = askNow(ev);
   const ask = now.filter((d) => d.status !== "present");
   if (!ask.length) return "";
+  const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
   const lines = ask.map((d) => `– ${d.title}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
-  return [T("Dear …", "Sehr geehrte/r …"), "",
-    T("Thank you for registering your matter. It is provisionally registered under the reference above; please quote it in every message.",
-      "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der obengenannten Referenznummer provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an."), "",
+  return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
+    ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
+            `Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz ${ref[0]} provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an.`)
+        : T("Thank you for registering your matter. It is provisionally registered with us.", "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert."), "",
     T("To check the insurance cover and assess the facts and the law, we need in particular:", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:"),
     ...lines, T("– any further relevant documents and information.", "– allfällige weitere relevante Unterlagen und Informationen."), "",
     T("Please send copies or scans, not originals. We will then inform you about the next steps and the legal position.",
@@ -1063,11 +1065,19 @@ function overviewView() {
   const r = result(), ev = S.data.evaluation;
   if (!r) return `<p class="cp-empty">${T("The overview appears once the case is prepared.", "Die Übersicht erscheint, sobald der Fall vorbereitet ist.")}</p>`;
   const brief = r.brief || {};
-  const cite = (c) => (c ? ` <button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${T("source", "Quelle")}</button>` : "");
+  const cite = (c) => (c ? ` <button class="cp-source-chip" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(clip(fileName(c.file), 22))}${c.page ? `, ${T("p.", "S.")} ${c.page}` : ""}</button>`
+    : ` <span class="cp-source-chip none">${T("no source", "ohne Beleg")}</span>`);
+  const factCite = (id) => { const f = recorded("fact")[id]; return f && f.status === "established" ? (f.citations || [])[0] : null; };
+  const claimCite = ((brief.timeline || [])[0] || {}).citations ? brief.timeline[0].citations[0] : factCite("rechtsgebiet");
   const anliegen = clip(brief.request || r.answer || "", 320);
   const parties = (brief.parties || []).map((p) => `${redacted(p.name) ? `<i>${T("name redacted", "Name geschwärzt")}</i>` : esc(p.name)} <span class="cp-muted">· ${esc(p.role)}</span>`).join("; ");
   const next = ev && ev.beyond ? ev.beyond.find((b) => b.state === "reached") || ev.beyond[0] : null;
-  const stand = ev ? (ev.outcome ? `${T("End", "Ende")}: <b>${esc(ev.outcome.title)}</b>` : ev.current ? `<b>${esc(stepLabel(ev.current))}</b>${next ? ` → ${esc(stepLabel(next))}` : ""}${ev.waiting_for.length ? ` <span class="cp-muted">· ${T("waits for", "wartet auf")}: ${ev.waiting_for.slice(0, 2).map((w) => esc(w.question)).join("; ")}${ev.waiting_for.length > 2 ? ` +${ev.waiting_for.length - 2}` : ""}</span>` : ""}` : "—") : T("no process yet", "noch kein Prozess");
+  const obtain = ev ? ev.next_actions.filter((a) => a.kind === "obtain").length : 0;
+  const why = ev && ev.waiting_for.length ? T(`because it is still open: ${ev.waiting_for[0].question}`, `weil noch offen ist: ${ev.waiting_for[0].question}`)
+    : obtain ? T(`because ${obtain} document(s) are still missing`, `weil noch ${obtain} Unterlage(n) fehlen`) : "";
+  const stand = !ev ? T("no process yet", "noch kein Prozess")
+    : ev.outcome ? `${T("The process has reached its end", "Der Prozess ist abgeschlossen mit")}: <b>${esc(stepLabel(ev.outcome))}</b>.${obtain ? ` ${T(`Still open: ${obtain} document(s).`, `Offen bleibt: ${obtain} Unterlage(n).`)}` : ""}`
+    : ev.current ? `${T("Now", "Stand")}: <b>${esc(stepLabel(ev.current))}</b>.${next ? ` ${T("Next", "Als Nächstes")}: <b>${esc(stepLabel(next))}</b>${why ? `, ${esc(why)}` : ""}.` : why ? ` ${esc(why[0].toUpperCase() + why.slice(1))}.` : ""}` : "—";
   const today = new Date();
   const fristen = !DEADLINES_RELIABLE ? `<span class="cp-muted">${T("not yet read reliably — check the files", "werden noch nicht zuverlässig gelesen – bitte in den Akten prüfen")}</span>` : (r.deadlines || []).length ? r.deadlines.map((d) => { const n = Math.round((new Date(d.date) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
     return `${dateText(d.date)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : n < 0 ? T(`expired ${-n} d ago`, `abgelaufen seit ${-n} T.`) : T(`${n} d`, `${n} T.`)}</span> ${esc(d.question)}${cite((d.citations || [])[0])}`; }).join("<br>")
@@ -1079,27 +1089,27 @@ function overviewView() {
   const all = judgementPoints(ev, r), pts = all.filter((p) => !doneKeys.has(p.key));
   const settled = all.filter((p) => doneKeys.has(p.key));
   const shown = S.allPoints ? pts : pts.slice(0, 7);
-  const button = (p, i) => [p.request ? `<button class="cp-button" data-point-request>${T("Request", "Anfordern")}</button>` : "",
-    p.docs ? `<a class="cp-button" href="#/case/${esc(S.route.id)}/document_finder">${T("Check list", "Liste prüfen")}</a>` : "",
+  const button = (p, i) => [p.request ? `<button class="cp-button primary" data-point-request>${T("Open draft", "Entwurf öffnen")}</button>` : "",
+    p.docs ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T("check list", "Liste prüfen")}</a>` : "",
     p.knowledge ? `<button class="cp-button primary" data-point-adopt="${esc(p.knowledge)}">${T("Adopt", "Übernehmen")}</button><button class="cp-button" data-point-retire="${esc(p.knowledge)}">${T("Not needed", "Nicht nötig")}</button>` : "",
     p.choose && S.workflows ? `<select class="cp-button" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${T("Choose process…", "Prozess wählen…")}</option>${S.workflows.map((w) => `<option value="${esc(w.id)}">${esc(w.title)}</option>`).join("")}</select>` : "",
     p.tab ? `<a class="cp-button" href="#/case/${esc(S.route.id)}/${p.tab}">${T("Check", "Prüfen")}</a>` : "",
-    ratedRun() ? `<button class="cp-link" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
+    ratedRun() ? `<button class="cp-button" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
   const checked = `${Object.keys(recorded("fact")).length} ${T("facts", "Fakten")}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
-  return `<div class="cp-overview">
+  return `<div class="cp-overview"><div>
     <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">
-        <dt>${T("Request", "Anliegen")}</dt><dd>${esc(anliegen)}</dd>
-        <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}</dd>
+        <dt>${T("Request", "Anliegen")}</dt><dd>${esc(anliegen)}${cite(claimCite)}</dd>
+        <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
         <dt>${T("Documents", "Dokumente")}</dt><dd><a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a></dd>
         <dt>${T("Next action", "Nächster Schritt")}</dt><dd>${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.next_actions.length ? esc(ev.next_actions[0].text) : "—"}</dd>
       </dl>
       ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre class="cp-reply" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(draft)}</pre>
-        <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section>
-    <section class="cp-card" style="padding:18px 22px;margin-top:18px"><h2 class="cp-section" style="margin-top:0">${T("Needs your judgement", "Braucht Ihr Urteil")} <span class="cp-muted">· ${pts.length}</span></h2>
-      ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li><span>${esc(p.text)}${cite(p.cite)}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
+        <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section></div>
+    <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Needs your judgement", "Braucht Ihr Urteil")} <span class="cp-muted">· ${pts.length}</span></h2>
+      ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
         ${pts.length > 7 && !S.allPoints ? `<button class="cp-link" id="all-points">+${pts.length - 7} ${T("more", "weitere")}</button>` : ""}`
         : `<p>${T("Nothing open.", "Nichts offen.")} <span class="cp-muted">${T("Checked", "Geprüft")}: ${checked}.</span></p>`}
       ${settled.length ? `<details class="cp-muted"><summary class="cp-link">${T(`${settled.length} settled`, `${settled.length} erledigt`)}</summary><ul>${settled.map((p) => { const f = done.find((x) => x.target === `point:${p.key}`);
