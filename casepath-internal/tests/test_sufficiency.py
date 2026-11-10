@@ -102,6 +102,9 @@ class SufficiencyTests(unittest.TestCase):
         with_items = CaseWork(case=CASE, files=FILES, base_workflow=workflow())
         schema = next(t for t in _tool_specs(with_items, ["record_document"]) if t["name"] == "record_document")
         self.assertIn("shows", schema["parameters"]["properties"])
+        # An item is named exactly as the need lists it: a translated or reworded name could never be matched.
+        item = schema["parameters"]["properties"]["shows"]["items"]["properties"]["item"]
+        self.assertEqual(item["enum"], ["the date of the notice", "the defect it reports"])
 
 
 if __name__ == "__main__":
