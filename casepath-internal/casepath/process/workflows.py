@@ -397,7 +397,10 @@ def _walk(workflow, facts, findings=None, *, checked=False):
             "reached": sorted(reached)}
 
 
-MAX_OPEN_FACTS = 10
+# At most 2**8 = 256 completions: a 150-step workflow then evaluates in under 50 ms, and the live view evaluates on
+# every state change. The largest workflows in use decide on at most 7 facts; above the cap the walk stops at the first
+# open branch and says so.
+MAX_OPEN_FACTS = 8
 
 
 def _used_facts(workflow):
@@ -477,72 +480,198 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         return base
     fact_defs = {f["id"]: f for f in workflow["facts"]}
     domains = [_domain(workflow, fact_defs[f]) for f in open_facts]
+    asked_known = _known_facts(workflow)
+    domains = [d + [UNSET] if f in asked_known else d for f, d in zip(open_facts, domains)]  # it may also stay unknown
     if _count(domains) > 2 ** MAX_OPEN_FACTS:
         base["deferral"] = {"mode": "first_open_branch", "open_facts": open_facts,
                             "reason": "too many answers to compare; the walk stops at the first open branch"}
         return base
-    completions = []
+    fast = _Reach(workflow)
+    combos = list(itertools.product(*domains))
+    completions = []  # (answer values, ordered path, items needed as a bit set, document needs)
+    bit = {}  # ("step", id) or ("document", id) -> its bit
+
+    def bits(items):
+        mask = 0
+        for item in items:
+            if item not in bit:
+                bit[item] = 1 << len(bit)
+            mask |= bit[item]
+        return mask
     for values in itertools.product(*domains):
-        answer = dict(zip(open_facts, values))
-        run = _walk(workflow, {**facts, **answer}, findings, checked=checked)
-        completions.append((answer, {r["step"] for r in run["path"]}, {d["document"]: d for d in run["documents"]},
-                            (run["outcome"] or {}).get("id"), run))
+        answer = {f: v for f, v in zip(open_facts, values) if v is not UNSET}
+        path, needs = fast.reach({**facts, **answer})
+        completions.append((values, path, bits([("step", x) for x in path] + [("document", d) for d in needs]), needs))
     total = len(completions)
+    common = every = completions[0][2]
+    for c in completions[1:]:
+        common &= c[2]
+        every |= c[2]
+    # What each open fact changes, in one pass per fact: within each group of completions that differ only in that
+    # fact's answer, an item needed in some but not all members is changed by it.
+    changed_by = {}
+    for i, fact in enumerate(open_facts):
+        groups = {}
+        for values, _p, items, _n in completions:
+            key = values[:i] + values[i + 1:]
+            seen = groups.get(key)
+            groups[key] = (items, items) if seen is None else (seen[0] | items, seen[1] & items)
+        mask = 0
+        for union, inter in groups.values():
+            mask |= union & ~inter
+        changed_by[fact] = mask
 
     def changes(kind, key):
-        """The open facts whose answer alone changes whether this step or document is needed."""
-        found = set()
-        for i, fact in enumerate(open_facts):
-            groups = {}
-            for answer, steps, docs, _o, _r in completions:
-                rest = tuple(repr(answer[f]) for f in open_facts if f != fact)
-                groups.setdefault(rest, set()).add(key in (steps if kind == "step" else docs))
-            if any(len(seen) > 1 for seen in groups.values()):
-                found.add(fact)
-        return sorted(found)
+        b = bit.get((kind, key), 0)
+        return sorted(f for f in open_facts if changed_by[f] & b)
+
+    def has(mask, kind, key):
+        return bool(mask & bit.get((kind, key), 0))
 
     def questions(names):
         return [{"fact": f, "question": fact_defs[f]["question"], "source_refs": fact_defs[f]["source_refs"]} for f in names]
 
+    # The plain walk's path holds only steps every completion reaches. A rejoin over branches that do not cover every
+    # answer can pass a step some completion never reaches; the path then stops before it, at the open question.
+    path = []
+    for row in base["path"]:
+        if not has(common, "step", row["step"]):
+            break
+        path.append(row)
+    current = base["current"]
+    if len(path) < len(base["path"]):
+        last = dict(path[-1])
+        last.pop("either", None)
+        last["state"] = "current"
+        path[-1] = last
+        current = last
+    on_path = {r["step"] for r in path}
+    titles = {s["id"]: s for s in workflow["steps"]}
     deciding = set()
-    on_base = {r["step"] for r in base["path"]}
     beyond, order = [], []
-    for _a, _s, _d, _o, run in completions:
-        for row in run["path"]:
-            if row["step"] not in on_base and row["step"] not in order:
-                order.append(row["step"])
+    for _v, steps_in_order, _i, _n in completions:
+        for step_id in steps_in_order:
+            if step_id not in on_path and step_id not in order:
+                order.append(step_id)
     for step_id in order:
-        count = sum(step_id in s for _a, s, _d, _o, _r in completions)
-        row = next(r for _a, _s, _d, _o, run in completions for r in run["path"] if r["step"] == step_id)
-        entry = {"step": step_id, "title": row["title"], "role": row.get("role"), "state": "reached" if count == total else "pending"}
-        if count < total:
+        step = titles[step_id]
+        entry = {"step": step_id, "title": step["title"], "role": step.get("role"),
+                 "state": "reached" if has(common, "step", step_id) else "pending"}
+        if entry["state"] == "pending":
             entry["depends_on"] = changes("step", step_id)
             deciding |= set(entry["depends_on"])
         beyond.append(entry)
+    full = {}
+
+    def full_walk(index):
+        if index not in full:
+            values = completions[index][0]
+            answer = {f: v for f, v in zip(open_facts, values) if v is not UNSET}
+            full[index] = {d["document"]: d for d in _walk(workflow, {**facts, **answer}, findings, checked=checked)["documents"]}
+        return full[index]
+
     checklist = []
     for document in workflow["documents"]:
-        rows = [d[document["id"]] for _a, _s, d, _o, _r in completions if document["id"] in d]
-        if not rows:
+        if not has(every, "document", document["id"]):
             continue
-        row = dict(rows[0])
-        if len(rows) < total:
+        b = bit[("document", document["id"])]
+        first = next(i for i, c in enumerate(completions) if c[2] & b)
+        row = dict(full_walk(first)[document["id"]])
+        if not has(common, "document", document["id"]):
             facts_here = changes("document", document["id"])
             deciding |= set(facts_here)
             row.update(required="depends", condition_facts=facts_here, questions=questions(facts_here))
         else:
-            needs = {r["required"] for r in rows}
-            row["required"] = "yes" if "yes" in needs else rows[0]["required"]
+            needs = {c[3][document["id"]] for c in completions}
+            row["required"] = "yes" if "yes" in needs else row["required"]
         checklist.append(row)
     # The outcome stays the plain walk's: a case is not at its end while a question that changes its process is open.
-    outcome = base["outcome"]
+    outcome = base["outcome"] if len(path) == len(base["path"]) else None
     waiting = questions(sorted(deciding))
     next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
     next_actions += [a for a in base["next_actions"] if a["kind"] in {"answer", "resolve"} and a["fact"] not in deciding]
     next_actions += [{"kind": "obtain", "document": c["document"], "text": c["title"], "why": c["why"]}
                      for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] not in {"suggested", "optional", "depends"}]
-    reached = sorted(set(base["reached"]) | {b["step"] for b in beyond if b["state"] == "reached"})
-    return {**base, "outcome": outcome, "waiting_for": waiting, "documents": checklist, "next_actions": next_actions,
-            "beyond": beyond, "reached": reached, "deferral": {"mode": "exact", "open_facts": open_facts}}
+    reached = sorted(on_path | {b["step"] for b in beyond if b["state"] == "reached"})
+    return {**base, "path": path, "current": current, "outcome": outcome, "waiting_for": waiting, "documents": checklist,
+            "next_actions": next_actions, "beyond": beyond, "reached": reached,
+            "deferral": {"mode": "exact", "open_facts": open_facts, "completions": total}}
+
+
+UNSET = object()  # an answer that leaves a fact unknown, for facts a condition asks to be known or not
+
+
+def _known_facts(workflow):
+    found = set()
+
+    def visit(condition):
+        if not isinstance(condition, dict):
+            return
+        for key in ("all", "any"):
+            for child in condition.get(key, ()):
+                visit(child)
+        if "not" in condition:
+            visit(condition["not"])
+        if "known" in condition:
+            found.add(condition.get("fact"))
+    for step in workflow["steps"]:
+        for edge in step.get("next", []):
+            visit(edge.get("when"))
+    for document in workflow["documents"]:
+        visit(document.get("required_when"))
+    return found
+
+
+class _Reach:
+    """The plain walk's path and the documents it lists, without building rows: the same rules as ``_walk``."""
+
+    def __init__(self, workflow):
+        self.steps = {s["id"]: s for s in workflow["steps"]}
+        self.start = workflow["start"]
+        self.documents = workflow["documents"]
+        self.attached = {d for s in workflow["steps"] for d in s.get("documents", [])}
+
+    def reach(self, facts):
+        steps, current, seen, path = self.steps, self.start, set(), []
+        while True:
+            step = steps[current]
+            if current in seen:
+                path.append(current)
+                break
+            seen.add(current)
+            path.append(current)
+            if step.get("outcome") or not step.get("next"):
+                break
+            chosen, blocked = None, False
+            for edge in step["next"]:
+                verdict = evaluate_condition(edge.get("when", True), facts)
+                if verdict is True:
+                    chosen = edge
+                    break
+                if verdict is None:
+                    blocked = bool(condition_facts(edge["when"]) - {k for k, v in facts.items() if v is not None})
+                    break
+            if chosen is None and blocked:
+                join = _join(steps, step["next"])
+                if join is not None:
+                    current = join
+                    continue
+            if chosen is None:
+                break
+            current = chosen["to"]
+        on_path = set()
+        for x in set(path):
+            on_path.update(steps[x].get("documents", ()))
+        needs = {}
+        for document in self.documents:
+            if document["id"] in self.attached and document["id"] not in on_path:
+                continue
+            required = evaluate_condition(document.get("required_when", True), facts)
+            if required is False:
+                continue
+            needs[document["id"]] = ("suggested" if document.get("suggested") else "optional" if document.get("optional")
+                                     else "yes" if required else "depends")
+        return path, needs
 
 
 def presumed(workflow, recorded):
