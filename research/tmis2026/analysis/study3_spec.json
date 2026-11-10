@@ -68,8 +68,8 @@
  "deciding_agents_note": "Calls that can decide the checklist: routing, the two readings and the document judgments. These are the agents a checklist-only run calls. All other agents (process_builder, result_checker, any other) are 'the rest'.",
  "product": {
   "note": "The product under test, read by harness/study3/run_all.py. env: product settings added to harness/product/run_api.settings_env for every product run; design_env: per design. The fresh2 tenancy rule templates have the SHA-256 of fresh/'s (both MANIFEST.json files), so the fresh-serial-sync workflows apply unchanged; run_all.py checks this again before a fresh2 run. settings_required: the `settings` block of the product's parity output must show these values for every product design (none of them overrides readings or the open rule).",
-  "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
-  "source_tree_sha256": "c39341b869c02f06a1e3f5b449e7dede1df0c908c71ae24dd613f7865f642847",
+  "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+  "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
   "subdir": "casepath-internal",
   "env": {
    "CASEPATH_MODEL_REASONING": "true"
@@ -96,14 +96,14 @@
   "note": "package = the product package at a commit of this repository, extracted read-only with git archive; or a folder path",
   "tenancy": {
    "package": {
-    "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
     "subdir": "casepath-internal"
    },
    "catalogue": "harness/product/workflows/fresh-serial-sync"
   },
   "theft": {
    "package": {
-    "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
+    "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
     "subdir": "casepath-internal"
    },
    "catalogue": "harness/product/workflows/theft-reviewed"

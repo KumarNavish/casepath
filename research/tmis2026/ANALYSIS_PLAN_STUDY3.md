@@ -192,8 +192,10 @@ and labelled as outside the procedure.
 All results are reported whatever their direction, together with Studies 1
 and 2. Anything not specified here is labelled post hoc. Scoring and tests
 are implemented in `analysis/study3.py` with `analysis/study3_spec.json`
-(41 tests; it reproduces the stored development results). The study is run
-by `harness/study3/run_all.py --data fresh2 --label confirm --k 3`. An
+(43 tests; it reproduces the stored development results). The study is run
+by `harness/study3/run_all.py --data fresh2 --label confirm --k 3`, with a
+spend cap of USD 32 and a separate cap of USD 8 for the frontier-model
+product design, which runs last. An
 interrupted run resumes from the response cache with settings unchanged;
 every invocation is logged in `runs/study3/confirm/RUNLOG.jsonl` and reported.
 The product commit is not changed after this file is committed; if a defect
