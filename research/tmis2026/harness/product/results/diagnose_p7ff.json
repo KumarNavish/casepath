@@ -1,35 +1,68 @@
 {
  "tenancy": {
   "unnecessary": {
-   "process-builder addition marked required": 8,
-   "document finder (with must_show): judged missing": 2,
-   "document finder (with must_show): judged unusable": 1
-  },
-  "missed": {
-   "failed run (turn_limit: The document finder did not finish within its tu)": 7,
-   "document finder (with must_show): judged present": 4
-  },
-  "spurious_hold": {
-   "fact specialist_needed: left unknown by the claim reader (quoted)": 7,
-   "fact deposit_considered: left unknown by the claim reader (quoted)": 1,
-   "fact deposit_considered: source-checker rejection": 1,
-   "fact specialist_needed: source-checker rejection": 1,
-   "fact termination_received: left unknown by the claim reader (quoted)": 1
-  },
-  "premature": {
-   "fact extension_relevant: claim reader judged the wrong value": 1
-  },
-  "held_required_now": {
-   "fact termination_received: left unknown by the claim reader (quoted)": 6,
-   "document finder (with must_show): judged present": 1
+   "process-builder addition marked required": 107,
+   "document finder (with must_show): judged unusable": 8,
+   "document finder (with must_show): judged missing": 5,
+   "fact health_effects: claim reader judged the wrong value": 2
   },
   "silent_skip": {
-   "failed run": 0
+   "fact arrears: presumption (no quotation found; silence presumption applied)": 2,
+   "failed run": 1
+  },
+  "spurious_hold": {
+   "fact specialist_needed: left unknown by the claim reader (quoted)": 39,
+   "process-builder addition held": 10,
+   "fact extension_relevant: left unknown by the claim reader (quoted)": 9,
+   "fact arrears: left unknown by the claim reader (quoted)": 8,
+   "fact family_home: left unknown by the claim reader (quoted)": 8,
+   "fact retaliation_screen: left unknown by the claim reader (quoted)": 6,
+   "fact deposit_considered: left unknown by the claim reader (quoted)": 5,
+   "fact extension_relevant: second-reading conflict": 4,
+   "fact deposit_considered: source-checker rejection": 3,
+   "fact termination_received: left unknown by the claim reader (quoted)": 3,
+   "fact health_effects: left unknown by the claim reader (quoted)": 3,
+   "fact mold: left unknown by the claim reader (quoted)": 2,
+   "fact specialist_needed: source-checker rejection": 1,
+   "fact heating: left unknown by the claim reader (quoted)": 1,
+   "fact health_effects: source-checker rejection": 1,
+   "fact heating: source-checker rejection": 1
+  },
+  "missed": {
+   "document finder (with must_show): judged present": 32,
+   "failed run (turn_limit: The result checker did not finish within its tur)": 11,
+   "failed run (turn_limit: The document finder did not finish within its tu)": 7
+  },
+  "premature": {
+   "fact extension_relevant: claim reader judged the wrong value": 5,
+   "fact retaliation_screen: claim reader judged the wrong value": 4,
+   "fact deposit_considered: claim reader judged the wrong value": 3,
+   "fact heating: claim reader judged the wrong value": 2
+  },
+  "held_required_now": {
+   "fact termination_received: left unknown by the claim reader (quoted)": 20,
+   "fact specialist_needed: left unknown by the claim reader (quoted)": 1,
+   "document finder (with must_show): judged present": 1
+  },
+  "handed": {
+   "routing: whole claim handed over": 44
   }
  },
  "tenancy_waiting_for_causes": {
-  "left unknown by the claim reader (quoted)": 12,
-  "source-checker rejection": 2
+  "left unknown by the claim reader (quoted)": 116,
+  "second-reading conflict": 7,
+  "source-checker rejection": 6
  },
- "theft": {}
+ "theft": {
+  "wrong: routing handed one text of the pair over (claim_type not established)": 9,
+  "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 6,
+  "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader": 5,
+  "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 4,
+  "wrong: process-builder addition differs between the two texts": 3,
+  "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 2,
+  "missed: the changed condition not established: claim reader judged the wrong value": 1,
+  "missed: the changed condition not established: left unknown by the claim reader": 1,
+  "missed: routing handed one text of the pair over (claim_type not established)": 1,
+  "missed: document finder judged present (variant text)": 1
+ }
 }

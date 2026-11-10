@@ -39788,5 +39788,6447 @@
    "cached": 104718,
    "output": 16788
   }
+ },
+ "PRODUCT|fcl_820ed84f0e81363f|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ]
+  },
+  "status": "completed",
+  "calls": 38,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "deposit_considered"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "deposit_considered"
+    ],
+    "completions": 2
+   },
+   "answer": "Mould-related tenancy defect and alleged health effects are accepted; cause and medical link remain unconfirmed. Clarify whether rent deposit is being considered. Lawyer cover cannot be determined without assessing the policy terms.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "seconds": 312.8,
+  "tokens": {
+   "input": 152989,
+   "cached": 102968,
+   "output": 17768
+  }
+ },
+ "PRODUCT|fcl_77b05646bbfc654b|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "e-pb1",
+    "e-pb2",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "added_requests": [],
+   "added_holds": [
+    "e-pb1",
+    "e-pb2"
+   ]
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "technical_inspection",
+    "written_repair_deadline"
+   ]
+  },
+  "status": "completed",
+  "calls": 41,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Written notice to landlord before depositing rent",
+     "step": "dh_deposit",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 259g Abs. 1 OR: written notice to the landlord that rent will be deposited.",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Conditional statutory requirement for the rent-deposit route; not covered by the existing written repair deadline."
+    },
+    {
+     "id": "e-pb2",
+     "title": "Notice to the conciliation authority of deposited rent",
+     "step": "dh_deposit",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 259h Abs. 1 OR: notice to the authority within 30 days of the first deposit.",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Conditional statutory safeguard for the rent-deposit route; deposit has not been established in the file."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "deposit_considered",
+    "specialist_needed"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "deposit_considered",
+     "specialist_needed"
+    ],
+    "completions": 4
+   },
+   "answer": "The file supports further review of the reported defects, but does not establish causation or the appropriate next procedure. Obtain the listed missing documents and clarify the two pending questions.",
+   "reply_clauses": 6,
+   "warnings": []
+  },
+  "seconds": 349.3,
+  "tokens": {
+   "input": 185363,
+   "cached": 129644,
+   "output": 23076
+  }
+ },
+ "PRODUCT|fcl_8cd148548c0c667a|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 33,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File challenge or extension request in time"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "stated ground",
+       "citations": [
+        {
+         "file": "file_c594457e293e4af6",
+         "page": null,
+         "start": 238,
+         "end": 314,
+         "quote": "My landlords, Familie Gasser, are ending the tenancy because of unpaid rent."
+        }
+       ]
+      },
+      {
+       "item": "factual basis",
+       "citations": [
+        {
+         "file": "file_c594457e293e4af6",
+         "page": null,
+         "start": 315,
+         "end": 441,
+         "quote": "I do not deny that rent is outstanding, but the amount they claim is about CHF 3920 and I need to check how it was calculated."
+        }
+       ]
+      }
+     ]
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "stated_reason"
+   ],
+   "deferral": null,
+   "answer": "Obtain the termination notice and receipt/date evidence first to assess deadlines. The arrears amount and procedure are unverified without the missing cure letter and payment records. Extension evidence is incomplete without the housing search log; validity and amount due remain undetermined.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 300.7,
+  "tokens": {
+   "input": 132275,
+   "cached": 82410,
+   "output": 17496
+  }
+ },
+ "PRODUCT|fcl_99be3b386d6fe5d8|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 33,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Der Prozess ist geschlossen. Die Akte enthält nur eine Telefonnotiz; die in der Checkliste als erforderlich aufgeführten Unterlagen fehlen. Die Deckung und die nächsten versicherten Schritte sind ohne Prüfung der Versicherungsbedingungen nicht feststellbar.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 284.6,
+  "tokens": {
+   "input": 125676,
+   "cached": 77762,
+   "output": 17142
+  }
+ },
+ "PRODUCT|fcl_716f9606b9e15e8f|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 44,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Seit wann besteht der Schimmel ungefähr, wann haben Sie ihn erstmals bemerkt und an welchem Datum haben Sie die Vermieterin mündlich informiert? Gibt es dazu Zeugen oder sonstige Belege?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Die Aktenlage reicht nicht aus, um die Ansprüche abschliessend zu beurteilen oder eine Kostenübernahme für eine erste Beratung zu bestätigen. Zunächst sind die in der Checkliste als fehlend ausgewiesenen Unterlagen und die zeitlichen Angaben zur Mängelanzeige einzuholen.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "seconds": 460.4,
+  "tokens": {
+   "input": 221670,
+   "cached": 163945,
+   "output": 27571
+  }
+ },
+ "PRODUCT|fcl_9a62e6a839c5bbfa|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "e-pb2",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb2"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Copy of conciliation application and proof of timely filing",
+     "step": "s-pb1",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 273 paras. 1–2 OR; Art. 202 ZPO",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The workflow has proof of receipt for the landlord's termination notice but no evidence item for the tenant's timely filing of the challenge or extension request."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "File termination challenge or extension request in time"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "second_reading",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The deadline, validity and possible retaliatory basis cannot yet be assessed; obtain the checklist’s missing required documents, especially the notice and receipt evidence, and clarify the earlier matter.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 278.3,
+  "tokens": {
+   "input": 139530,
+   "cached": 97217,
+   "output": 14969
+  }
+ },
+ "PRODUCT|fcl_c03f5f5c1caa60f2|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 30,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File any termination challenge or tenancy-extension request in time with the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Impossible de confirmer la couverture ou de recommander une voie procédurale sur le dossier actuel. Il faut d’abord préserver l’échéance; l’avis de résiliation et les pièces nécessaires pour établir sa réception et le délai de congé sont listés comme manquants dans la checklist.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 215.6,
+  "tokens": {
+   "input": 103806,
+   "cached": 63786,
+   "output": 11795
+  }
+ },
+ "PRODUCT|fcl_99e24db5f37c7a3c|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File any termination challenge or extension request with the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_b8523d60b0954ad0",
+         "page": null,
+         "start": 97,
+         "end": 172,
+         "quote": "Tenant: Jordan Reid. Landlord: as represented in the signature block below."
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_b8523d60b0954ad0",
+         "page": null,
+         "start": 33,
+         "end": 63,
+         "quote": "Premises: Gartenweg 83, Basel."
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_b8523d60b0954ad0",
+         "page": null,
+         "start": 210,
+         "end": 496,
+         "quote": "Net rent: CHF 2220 per month, payable in advance by the first day of each month. Ancillary costs (Nebenkosten): advance payment as separately agreed, settled annually. Notice period: three months, effective at the end of a calendar month, in accordance with the terms of this agreement."
+        }
+       ]
+      }
+     ]
+    },
+    "notice_period_evidence": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "lease_contract"
+   ],
+   "deferral": null,
+   "answer": "The agreement is available, but the termination and deadline cannot yet be assessed; obtain the notice and delivery/receipt details immediately, plus the checklist-listed arrears and family-home documents. No objection deadline or coverage conclusion can be confirmed from the current file.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 326.6,
+  "tokens": {
+   "input": 164447,
+   "cached": 108785,
+   "output": 22291
+  }
+ },
+ "PRODUCT|fcl_893dbc47ca84663f|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "technical_inspection"
+   ]
+  },
+  "status": "completed",
+  "calls": 40,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Contractor inspection or repair outcome and current status of the kitchen sockets and oven",
+     "step": "dh_resolution",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The resolution step currently has no document need, while the file itself records a proposed future repair and leaves its outcome open. A specific inspection/repair outcome and updated status are needed to record the outcome or decide what remains to be done; this is a file-based suggestion, not a statutory requirement."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "landlord response",
+       "citations": [
+        {
+         "file": "file_99c5c06f2c4740d7",
+         "page": null,
+         "start": 185,
+         "end": 270,
+         "quote": "We acknowledge receipt of your message and confirm that the matter will be looked at."
+        }
+       ]
+      },
+      {
+       "item": "proposed work",
+       "citations": [
+        {
+         "file": "file_99c5c06f2c4740d7",
+         "page": null,
+         "start": 271,
+         "end": 360,
+         "quote": "We propose that a contractor carries out a repair of the electrical sockets and the oven."
+        }
+       ]
+      },
+      {
+       "item": "access arrangements",
+       "citations": [
+        {
+         "file": "file_99c5c06f2c4740d7",
+         "page": null,
+         "start": 361,
+         "end": 494,
+         "quote": "We would ask you to give the contractor access to the flat on 16 November 2026. Please confirm whether this date is possible for you."
+        }
+       ]
+      }
+     ]
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "specialist_needed"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [
+    "landlord_response_history"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "specialist_needed"
+    ],
+    "completions": 2
+   },
+   "answer": "The file is not ready for an outcome on the requested support: the checklist lists five required documents as missing, and the handler must first clarify whether a specialist technical inspection is needed.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "seconds": 365.9,
+  "tokens": {
+   "input": 192554,
+   "cached": 132360,
+   "output": 24286
+  }
+ },
+ "PRODUCT|fcl_a362784e299e172d|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Wissen Sie, wodurch der Schimmel und der Ausfall der Heizkörper entstanden sind, und gibt es Hinweise darauf, dass Sie oder Ihre Familie dafür verantwortlich sein könnten?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Die Meldung betrifft einen Mietmangel mit Schimmel und Heizungsproblemen. Eine abschliessende Beurteilung oder Aussage zur Unterstützung ist anhand der vorliegenden Unterlagen noch nicht möglich; zunächst sind die in der Checkliste fehlenden und unbrauchbaren Belege zu vervollständigen.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 298.4,
+  "tokens": {
+   "input": 145945,
+   "cached": 101333,
+   "output": 17947
+  }
+ },
+ "PRODUCT|fcl_a53b7aae8525d0d4|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File any termination challenge or extension request on time"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The case handler should preserve the challenge deadline first and request the seven checklist-missing required documents; the notice and receipt information are not available to assess deadline, validity, grounds, or coverage.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 276.5,
+  "tokens": {
+   "input": 126749,
+   "cached": 83647,
+   "output": 15485
+  }
+ },
+ "PRODUCT|fcl_a442849bcc00a706|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "health_effects",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation",
+    "technical_inspection"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "health_effects",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation",
+    "technical_inspection"
+   ]
+  },
+  "status": "completed",
+  "calls": 40,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Please give the year and, if possible, the date when you first noticed mould and cold radiators, when each defect worsened, the dates and contents of each notice to the landlord, how each was sent, and any reply, repair proposal or access arrangement."
+   ],
+   "agent_steps": [
+    "File claims after rent deposit within the statutory period"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "rejected",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_89f71280ab274c02",
+         "page": null,
+         "start": 35,
+         "end": 81,
+         "quote": "Landlord: Wincasa Nord AG Tenant: Chris Lawson"
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_89f71280ab274c02",
+         "page": null,
+         "start": 82,
+         "end": 137,
+         "quote": "Rented property: Seestrasse 8, Thun Type: 4.5-room flat"
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_89f71280ab274c02",
+         "page": null,
+         "start": 138,
+         "end": 318,
+         "quote": "The landlord leases the above-mentioned residential property to the tenant on the terms set out in this agreement and in the applicable provisions of the Swiss Code of Obligations."
+        }
+       ]
+      }
+     ]
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "health_effects",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope",
+    "s-pb3"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "health_effects",
+     "specialist_needed"
+    ],
+    "completions": 4
+   },
+   "answer": "Ask Lawson to clarify the health and specialist-inspection questions and provide the documents the evaluated checklist lists as missing; do not determine causation or a remedy yet.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 330.2,
+  "tokens": {
+   "input": 181712,
+   "cached": 128269,
+   "output": 21121
+  }
+ },
+ "PRODUCT|fcl_cb0a6837d3f9d819|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "heating"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report",
+    "medical_confirmation",
+    "written_repair_deadline"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "heating"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report",
+    "medical_confirmation",
+    "written_repair_deadline"
+   ]
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Has the contractor visit proposed for 16 November 2026 been confirmed, and has the landlord since provided the contractor or work-scope details or carried out any inspection or repair?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "reported defect",
+       "citations": [
+        {
+         "file": "file_a7bba1530db44c6e",
+         "page": null,
+         "start": 299,
+         "end": 379,
+         "quote": "There is black mould growing on the bedroom wall and around the bathroom window."
+        }
+       ]
+      },
+      {
+       "item": "recipient",
+       "citations": [
+        {
+         "file": "file_a7bba1530db44c6e",
+         "page": null,
+         "start": 47,
+         "end": 97,
+         "quote": "To: Peter Ammann (private landlord), Schaffhausen."
+        }
+       ]
+      },
+      {
+       "item": "notification date",
+       "citations": [
+        {
+         "file": "file_a7bba1530db44c6e",
+         "page": null,
+         "start": 98,
+         "end": 117,
+         "quote": "Date: 19 June 2026."
+        }
+       ]
+      }
+     ]
+    },
+    "proof_of_notification": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "landlord response",
+       "citations": [
+        {
+         "file": "file_08697b91d3cd4bab",
+         "page": null,
+         "start": 326,
+         "end": 370,
+         "quote": "I confirm that the matter will be looked at."
+        }
+       ]
+      },
+      {
+       "item": "proposed work",
+       "citations": [
+        {
+         "file": "file_08697b91d3cd4bab",
+         "page": null,
+         "start": 371,
+         "end": 422,
+         "quote": "I propose that a contractor carries out the repair."
+        }
+       ]
+      },
+      {
+       "item": "access arrangements",
+       "citations": [
+        {
+         "file": "file_08697b91d3cd4bab",
+         "page": null,
+         "start": 423,
+         "end": 497,
+         "quote": "I ask that you give the contractor access to the flat on 16 November 2026."
+        }
+       ]
+      }
+     ]
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": false,
+     "verdict": "rejected",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "rejected",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": false,
+     "verdict": "rejected",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [
+    "health_effects",
+    "heating",
+    "deposit_considered"
+   ],
+   "waiting_for": [
+    "deposit_considered",
+    "health_effects",
+    "heating"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [
+    "defect_notification",
+    "landlord_response_history"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "deposit_considered",
+     "health_effects",
+     "heating"
+    ],
+    "completions": 8
+   },
+   "answer": "The file supports a mould-defect claim and a reported landlord notice, but does not establish insurance coverage for legal advice or a remedy. Continue intake, resolve the outstanding questions, and obtain the documents listed as missing in the evaluated checklist.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 319.0,
+  "tokens": {
+   "input": 165347,
+   "cached": 105831,
+   "output": 21108
+  }
+ },
+ "PRODUCT|fcl_b8e5c045a70c397b|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "technical_inspection"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "technical_inspection"
+   ]
+  },
+  "status": "completed",
+  "calls": 43,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "mold",
+    "specialist_needed"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "mold",
+     "specialist_needed"
+    ],
+    "completions": 4
+   },
+   "answer": "Der Fall steht bei der Prüfung der Vermieterreaktion und des Zutritts. Klären Sie die offenen Fragen und holen Sie die laut Checkliste fehlenden Unterlagen ein.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 366.8,
+  "tokens": {
+   "input": 220598,
+   "cached": 160190,
+   "output": 24073
+  }
+ },
+ "PRODUCT|fcl_e731dc82c6481239|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "e-pb1",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "added_requests": [
+    "e-pb1"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ]
+  },
+  "status": "completed",
+  "calls": 29,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Schriftliche Androhung der Mietzinshinterlegung mit Zustellnachweis",
+     "step": "dh_deposit",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 259g OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Hinterlegung ist im Schreiben als mögliche nächste Massnahme genannt. Der eingereichte Brief ist eine Mängelanzeige mit Bitte um Behebung und Antwortfrist, aber keine schriftliche Hinterlegungsandrohung."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Nach Mietzinshinterlegung die Schlichtungsbehörde fristgerecht anrufen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "specialist_needed"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_deposit",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope",
+    "s-pb2"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "specialist_needed"
+    ],
+    "completions": 2
+   },
+   "answer": "Schimmel- und Gesundheitsrisiko vorrangig abklären und die unten aufgeführten, laut Checkliste fehlenden Unterlagen einholen; die Hinterlegung ist noch nicht abgesichert. Vor dem weiteren Vorgehen ist zu klären, ob eine technische Fachinspektion nötig ist.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 257.4,
+  "tokens": {
+   "input": 144868,
+   "cached": 100904,
+   "output": 16565
+  }
+ },
+ "PRODUCT|fcl_d4c3b6ed8d30f2f9|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "e-pb2",
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [
+    "e-pb2"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Medical certificate and children’s school-attendance evidence",
+     "step": "lt_extension",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 272 para. 2 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The extension step already requests a housing-search log, but not documents substantiating these separately identified personal hardship factors. The proposed evidence is conditional and supplemental, not a replacement for the existing workflow item."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "File challenge and extension request with the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_512ebf9206fb4175",
+         "page": null,
+         "start": 35,
+         "end": 90,
+         "quote": "Landlord: Immobilien Seeblick AG Tenant: Quinn Marshall"
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_512ebf9206fb4175",
+         "page": null,
+         "start": 91,
+         "end": 146,
+         "quote": "Rented property: Rosenstrasse 83, Aarau. 3.5-room flat."
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_512ebf9206fb4175",
+         "page": null,
+         "start": 147,
+         "end": 293,
+         "quote": "Start date of tenancy: 1 October 2016 Net rent: CHF 2210 per month, excluding ancillary costs. Notice period: three months, to the end of a month."
+        }
+       ]
+      }
+     ]
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "lease_contract"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "The case remains at the arrears branch: clarify whether the termination is for payment arrears, while obtaining the checklist’s missing evidence and preserving the challenge or extension deadline.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "seconds": 307.6,
+  "tokens": {
+   "input": 186927,
+   "cached": 133756,
+   "output": 18553
+  }
+ },
+ "PRODUCT|fcl_d0adca9e774843e2|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "medical_confirmation",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "medical_confirmation",
+    "technical_inspection",
+    "written_repair_deadline"
+   ]
+  },
+  "status": "completed",
+  "calls": 43,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "deposit_considered",
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "deposit_considered",
+     "health_effects",
+     "mold",
+     "specialist_needed"
+    ],
+    "completions": 16
+   },
+   "answer": "Le dossier reste à l’étape de collecte initiale : préciser les questions en suspens et réunir les documents obligatoires que la checklist indique comme manquants avant toute évaluation ultérieure.",
+   "reply_clauses": 6,
+   "warnings": []
+  },
+  "seconds": 332.2,
+  "tokens": {
+   "input": 185005,
+   "cached": 134935,
+   "output": 19493
+  }
+ },
+ "PRODUCT|fcl_d991bc5ba67d6aff|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "e-pb1",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb1"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Written warning that rent will be deposited if the defect is not remedied, with proof of delivery",
+     "step": "dh_deposit",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 259g para. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The statutory precondition is more specific than simply setting a repair deadline. Separating the warning and delivery proof makes the deposit safeguards assessable while preserving the customer's choice."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "If rent is deposited, bring the dispute to the conciliation authority within 30 days"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "second_reading",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_deposit",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope",
+    "dh_specialist",
+    "s-pb2"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "No outcome recorded. Obtain missing checklist documents and pursue inspection. Rent deposit is undecided; if chosen, give a reasonable written repair period and explicit warning with delivery proof first. After depositing, refer to conciliation within 30 days.",
+   "reply_clauses": 5,
+   "warnings": []
+  },
+  "seconds": 299.5,
+  "tokens": {
+   "input": 144718,
+   "cached": 97280,
+   "output": 19336
+  }
+ },
+ "PRODUCT|fcl_d3dc581ee564f805|2": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "reference_rate"
+   ],
+   "deferred": false,
+   "requests": [
+    "e-pb2",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ],
+   "added_requests": [
+    "e-pb2"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "reference_rate"
+   ],
+   "deferred": false,
+   "requests": [
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ]
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Copy of the filed challenge and proof of filing with the conciliation authority",
+     "step": "s-pb1",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 270b OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The claim expressly raises risk of missing the objection deadline; preserving evidence of submission date is needed to establish compliance with the statutory period."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "File a rent-increase challenge with the conciliation authority within the statutory period",
+    "Clarify rent payable while the challenge is pending"
+   ],
+   "document_judgments": {
+    "rent_increase_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "current rent",
+       "citations": [
+        {
+         "file": "file_452b6d71818c4476",
+         "page": null,
+         "start": 378,
+         "end": 452,
+         "quote": "Right now I pay CHF 1760 net per month, the lease started on 1 April 2014."
+        }
+       ]
+      },
+      {
+       "item": "rent components",
+       "citations": [
+        {
+         "file": "file_9b41969bf3a64fed",
+         "page": null,
+         "start": 198,
+         "end": 277,
+         "quote": "Agreed net rent: CHF 1760 per month, plus ancillary costs as separately stated."
+        }
+       ]
+      }
+     ]
+    },
+    "prior_rent_adjustment": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_9b41969bf3a64fed",
+         "page": null,
+         "start": 36,
+         "end": 89,
+         "quote": "Landlord: Wohnbau Limmat GmbH. Tenant: Taylor Brooks."
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_9b41969bf3a64fed",
+         "page": null,
+         "start": 90,
+         "end": 160,
+         "quote": "Rented property: 3.5-room flat, Gartenweg 54, Frauenfeld, Switzerland."
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_9b41969bf3a64fed",
+         "page": null,
+         "start": 161,
+         "end": 329,
+         "quote": "Start date of tenancy: 1 April 2014. Agreed net rent: CHF 1760 per month, plus ancillary costs as separately stated. Notice period: three months, to the end of a month."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "reference_rate"
+   ],
+   "current_step": "ri_reason__gate_reference_rate",
+   "outcome": null,
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_renovation",
+    "ri_resolution",
+    "s-pb1",
+    "s-pb3"
+   ],
+   "on_file": [
+    "lease_contract",
+    "current_rent_evidence"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "reference_rate"
+    ],
+    "completions": 2
+   },
+   "answer": "The increase may be challenged, but the deadline and merits cannot be assessed from these files. The notice and receipt proof are missing. Whether to pay the increased rent while a challenge is pending remains unresolved.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "seconds": 334.3,
+  "tokens": {
+   "input": 153550,
+   "cached": 104457,
+   "output": 21707
+  }
+ },
+ "PRODUCT|fcl_e514cbc96786ff0a|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "e-pb3",
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [
+    "e-pb3"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb3",
+     "title": "School attendance confirmation for the children",
+     "step": "lt_extension",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 272 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "A concrete document is offered by the customer and supports the claimed hardship in the extension assessment."
+    }
+   ],
+   "agent_questions": [
+    "On what date did you receive the written termination notice?"
+   ],
+   "agent_steps": [
+    "Submit the objection and extension request to the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "The objection deadline cannot yet be determined without the receipt date and notice-period evidence. Clarify the termination ground and obtain checklist documents; the process provides for an objection and extension request to the conciliation authority.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "seconds": 328.6,
+  "tokens": {
+   "input": 166815,
+   "cached": 118145,
+   "output": 20589
+  }
+ },
+ "PRODUCT|fcl_ea2f16538f5abd60|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "e-pb2",
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb2"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Eingabe an die Schlichtungsbehörde und Nachweis des Eingangsdatums",
+     "step": "s-pb1",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 273 Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Akten beschreiben das geplante Anfechtungs- und Erstreckungsbegehren, enthalten aber noch keine Behördenschrift oder Einreichungsbestätigung; diese belegen den gesetzlich relevanten fristgerechten Schritt."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Anfechtung oder Erstreckung rechtzeitig bei der Schlichtungsbehörde einreichen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "stated ground",
+       "citations": [
+        {
+         "file": "file_d175b2260011414b",
+         "page": null,
+         "start": 424,
+         "end": 521,
+         "quote": "Als Grund wird der Mietzinsrückstand genannt; es geht um ausstehende Mietzinse von rund CHF 4800."
+        }
+       ]
+      },
+      {
+       "item": "factual basis",
+       "citations": [
+        {
+         "file": "file_d175b2260011414b",
+         "page": null,
+         "start": 424,
+         "end": 521,
+         "quote": "Als Grund wird der Mietzinsrückstand genannt; es geht um ausstehende Mietzinse von rund CHF 4800."
+        }
+       ]
+      }
+     ]
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "stated_reason"
+   ],
+   "deferral": null,
+   "answer": "Die Akte ist noch unvollständig; Deckung und die Begehren können anhand dieser Telefonnotiz allein nicht abschliessend geprüft werden. Fristlage ist vorrangig zu klären. Die Checkliste nennt die fehlenden Unterlagen im Kurzüberblick.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "seconds": 283.0,
+  "tokens": {
+   "input": 146424,
+   "cached": 98462,
+   "output": 18012
+  }
+ },
+ "PRODUCT|fcl_e77ee7d1e1be2112|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "Anfechtungsfrist sichern und Schlichtungsbegehren prüfen/einreichen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_cc5a80e096c5453c",
+         "page": null,
+         "start": 26,
+         "end": 81,
+         "quote": "Vermieterin: Immobilien Seeblick AG Mieter: Martin Egli"
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_cc5a80e096c5453c",
+         "page": null,
+         "start": 82,
+         "end": 144,
+         "quote": "Mietobjekt: 2-Zimmer-Wohnung Adresse: Gartenweg 14, 4053 Basel"
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_cc5a80e096c5453c",
+         "page": null,
+         "start": 145,
+         "end": 308,
+         "quote": "Mietbeginn: 1. Juni 2020 Nettomietzins: CHF 1600.00 pro Monat, zuzüglich Nebenkosten gemäss separater Abrechnung Kündigungsfrist: drei Monate auf Ende eines Monats"
+        }
+       ]
+      }
+     ]
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "stated ground",
+       "citations": [
+        {
+         "file": "file_a0374211c6dd4679",
+         "page": null,
+         "start": 382,
+         "end": 450,
+         "quote": "Die Vermieterin begründet die Kündigung mit ausstehenden Mietzinsen."
+        }
+       ]
+      },
+      {
+       "item": "factual basis",
+       "citations": [
+        {
+         "file": "file_a0374211c6dd4679",
+         "page": null,
+         "start": 451,
+         "end": 595,
+         "quote": "Nach meinem Kenntnisstand betragen die Mietrückstände rund CHF 3200. Ich habe die Mietzinse in den vergangenen Monaten nicht vollständig bezahlt"
+        }
+       ]
+      }
+     ]
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [
+    "lease_contract",
+    "stated_reason"
+   ],
+   "deferral": null,
+   "answer": "Ob eine Anfechtung sinnvoll ist, bleibt offen. Frist zuerst sichern; die Checkliste führt Kündigungsschreiben, Zustellnachweis, Kündigungsfristnachweis, separate Ehegattenmitteilung, Zahlungsfrist-/Androhungsschreiben und Mietkonto/Zahlungsbelege als fehlend.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 317.6,
+  "tokens": {
+   "input": 169184,
+   "cached": 116622,
+   "output": 21143
+  }
+ },
+ "PRODUCT|fcl_eeaae036d5c861db|2": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 32,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "An welchem Datum haben Sie die aktuelle Mietzinserhöhung erhalten? Bitte nennen Sie, wenn möglich, auch den Zustellweg und legen Sie einen Zustellnachweis bei."
+   ],
+   "agent_steps": [
+    "Fristwahrende Anfechtung bei der Schlichtungsbehörde prüfen und nötigenfalls einreichen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_increase_notice": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "current rent",
+       "citations": [
+        {
+         "file": "file_3f424f9f524f4f5d",
+         "page": null,
+         "start": 151,
+         "end": 195,
+         "quote": "Aktueller Nettomietzins: CHF 1890 pro Monat."
+        }
+       ]
+      },
+      {
+       "item": "rent components",
+       "citations": [
+        {
+         "file": "file_3f424f9f524f4f5d",
+         "page": null,
+         "start": 196,
+         "end": 255,
+         "quote": "Akontozahlung für Heiz- und Nebenkosten: CHF 210 pro Monat."
+        }
+       ]
+      }
+     ]
+    },
+    "prior_rent_adjustment": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution",
+    "s-pb1"
+   ],
+   "on_file": [
+    "current_rent_evidence"
+   ],
+   "deferral": null,
+   "answer": "Eine Fristbeurteilung und sachliche Prüfung der aktuellen Erhöhung sind noch nicht möglich: Das Empfangsdatum ist unbekannt und die aktuelle Erhöhungsmitteilung samt Berechnung fehlt laut Checkliste.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 286.7,
+  "tokens": {
+   "input": 145678,
+   "cached": 95961,
+   "output": 18939
+  }
+ },
+ "PRODUCT|fcl_ef44a7661ccf81b6|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File the termination challenge with the conciliation authority within the statutory period"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Coverage cannot be confirmed on the present record. Obtain the eight documents listed as missing in the evaluated checklist and establish notice receipt and deadline information before assessing the termination and arrears; do not infer a coverage outcome.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 286.5,
+  "tokens": {
+   "input": 133470,
+   "cached": 87570,
+   "output": 16912
+  }
+ },
+ "PRODUCT|fcl_d51f04e4cc47ab0c|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "e-pb1",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb1"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 43,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Eingabe an die Schlichtungsbehörde samt Eingangsbestätigung",
+     "step": "lt_deadline",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 273 Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Der bestehende Prozess verlangt, die Anfechtungs- oder Erstreckungsfrist zu wahren, nennt aber keinen Nachweis einer bereits erfolgten fristwahrenden Eingabe. Die konkrete Eingabe und ihr Eingangsbeleg ermöglichen die Prüfung, ob die gesetzliche Frist eingehalten wurde."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Eine Beurteilung der Kündigung und Fristen ist noch nicht möglich. Zuerst sind Empfang und Empfangsdatum zu klären und die als fehlend gelisteten Unterlagen einzuholen.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "seconds": 410.3,
+  "tokens": {
+   "input": 211375,
+   "cached": 152525,
+   "output": 26158
+  }
+ },
+ "PRODUCT|fcl_f072f22a4d308814|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 38,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Welche konkrete Abhilfe oder Forderung möchten Sie wegen des Heizungsmangels verfolgen (zum Beispiel nur die Reparatur oder zusätzlich eine Mietzinsherabsetzung), und ab wann?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "mold": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Eine abschliessende Einschätzung der Mieterrechte oder des weiteren Vorgehens ist anhand der derzeitigen Akte nicht möglich; zunächst sind die im Checklistenstand fehlenden Unterlagen einzuholen und die gewünschte Abhilfe sowie deren zeitlicher Beginn zu klären.",
+   "reply_clauses": 5,
+   "warnings": []
+  },
+  "seconds": 308.7,
+  "tokens": {
+   "input": 155851,
+   "cached": 105839,
+   "output": 19151
+  }
+ },
+ "PRODUCT|fcl_e7ec69ccf6911516|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "e-pb2",
+    "e-pb3",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb2",
+    "e-pb3"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 38,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Hinterlegungsbeleg und Schlichtungsgesuch mit Datumsnachweis",
+     "step": "dh_deposit",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 259h Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Akte sagt nicht, ob eine Hinterlegung tatsächlich erfolgt ist. Falls ja, braucht es konkrete Belege, um die gesetzliche 30-Tage-Frist prüfen zu können."
+    },
+    {
+     "id": "e-pb3",
+     "title": "Hinterlegungsandrohung mit Zustellnachweis",
+     "step": "dh_deposit",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 259g Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Der vorhandene Bedarf nach schriftlicher Reparaturfrist benennt die zusätzliche gesetzliche Hinterlegungsandrohung nicht ausdrücklich."
+    }
+   ],
+   "agent_questions": [
+    "Haben Sie bereits Mietzins bei der zuständigen Behörde hinterlegt? Falls ja: wann wurde der erste Mietzins fällig und wann haben Sie Ihre Ansprüche bei der Schlichtungsbehörde geltend gemacht?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_deposit",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Eine rechtliche Einschätzung zur Hinterlegung ist mit den vorliegenden Angaben noch nicht möglich. Zunächst sind die Mängelanzeige und ihr Zugang, eine schriftliche Behebungsfrist sowie eine schriftliche Hinterlegungsandrohung zu prüfen; die Nachricht belegt keine bereits erfolgte Hinterlegung.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 364.6,
+  "tokens": {
+   "input": 173236,
+   "cached": 123288,
+   "output": 23937
+  }
+ },
+ "PRODUCT|fcl_ef2f5c99ca9ab008|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Kopie des Anfechtungs-/Erstreckungsbegehrens an die Schlichtungsbehörde und Eingangsbestätigung",
+     "step": "lt_deadline",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 273 Abs. 1 und 2 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Einhaltung der gesetzlichen Anrufungsfrist muss anhand des bei der Schlichtungsbehörde eingereichten Begehrens und des Eingangsdatums überprüfbar sein."
+    },
+    {
+     "id": "e-pb3",
+     "title": "Belege zur familiären Härte und schulischen Einbindung der Kinder",
+     "step": "lt_extension",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Akte nennt die Härte und schulische Einbindung nur als Behauptungen; konkrete Nachweise könnten die im bestehenden Erweiterungszweig erhobene Härtebeurteilung stützen."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Fristwahrende Anrufung der Schlichtungsbehörde sicherstellen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Anfechtbarkeit und Erstreckung sind derzeit nicht abschliessend beurteilbar; wegen der unbekannten Frist ist eine umgehende Fristwahrung und Prüfung anhand der Kündigung samt Empfangs- und Vertragsunterlagen vordringlich.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 333.3,
+  "tokens": {
+   "input": 155130,
+   "cached": 100633,
+   "output": 20587
+  }
+ },
+ "PRODUCT|fcl_e1a3a168b9bcb5b1|2": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "e-pb1",
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [
+    "e-pb1"
+   ],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 43,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Zustellnachweis der Zahlungsaufforderung mit Kündigungsandrohung",
+     "step": "lt_arrears",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 257d Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Die Zustellung und der Fristbeginn sind für die Prüfung der gesetzlichen Mahnung und der Reihenfolge der Kündigung entscheidend. Derzeit liegt nur ein undatiertes Schreiben ohne Zustellbeleg vor."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Prüfen, ob eine Erstreckung gesetzlich ausgeschlossen ist",
+    "Fristgerechte Anrufung der Schlichtungsbehörde sicherstellen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb2",
+    "s-pb3"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Kündigung und Fristen sind anhand der Akten noch nicht beurteilbar. Zuerst Kündigungsschreiben und Zustelldaten sichern; zudem die laut Checkliste fehlenden Unterlagen einholen.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 447.1,
+  "tokens": {
+   "input": 295313,
+   "cached": 227178,
+   "output": 33976
+  }
+ },
+ "PRODUCT|fcl_fb6908e2671dae22|2": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Insurance policy schedule and applicable legal-expenses insurance conditions",
+     "step": "dh_intake",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Specific request grounded in the customer's coverage question; this is a case-handling suggestion and not a statutory evidence requirement."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Assess conciliation before court proceedings"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Request the checklist’s missing required documents and the suggested policy schedule/conditions; coverage cannot be confirmed until the policy is reviewed.",
+   "reply_clauses": 6,
+   "warnings": []
+  },
+  "seconds": 328.1,
+  "tokens": {
+   "input": 142981,
+   "cached": 100143,
+   "output": 17143
+  }
  }
 }
