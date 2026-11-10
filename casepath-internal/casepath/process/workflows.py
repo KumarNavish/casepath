@@ -702,10 +702,19 @@ def presumed(workflow, recorded):
     """The workflow's presumptions that apply: each names a fact for which the files gave no quotation at all.
 
     ``recorded`` maps fact ids to what the case work holds for them (``status`` and ``citations``). A fact that was
-    established, found conflicting, or recorded as unknown with a quotation keeps its own state."""
+    established, found conflicting, or recorded as unknown with a quotation keeps its own state.
+
+    A ``routed`` presumption is the defining event of the case type the case was routed to: it holds unless the files
+    state otherwise (an established value the source checker did not reject, which then stands on its own) or two
+    readings conflict. A quotation that leaves it unknown does not block it."""
     out = {}
     for item in workflow.get("presumptions", []):
         row = recorded.get(item["fact"])
-        if row is None or (row.get("status") == "unknown" and not row.get("citations")):
+        if item.get("applies") == "routed":
+            row = row or {}
+            stated = row.get("status") == "established" and row.get("verdict") != "rejected"
+            if row.get("status") != "conflicting" and not stated:
+                out[item["fact"]] = item
+        elif row is None or (row.get("status") == "unknown" and not row.get("citations")):
             out[item["fact"]] = item
     return out
