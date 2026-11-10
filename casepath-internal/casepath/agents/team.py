@@ -179,6 +179,7 @@ class CaseWork:
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
         self.routing_presumed = {}  # routing facts presumed because only this case's workflow can apply
         self.limits = []  # agents that stopped at their turn limit, with what they had recorded kept
+        self.facts_confirmed = False  # set once the second reading has run
         self.brief = self.process_report = self.result = None
         self.documents_looked_for = False  # set once the document finder has reported
         self._state_shape = self._last_state = None
@@ -376,6 +377,9 @@ def _tool_specs(work, names):
 
 def _record_fact(work, agent, args):
     definition = work.fact_defs[args["fact"]]
+    if work.facts_confirmed and args["fact"] in {f["id"] for f in gating_facts(work)}:
+        # Once both readings are in, a deciding fact is what they agreed on; one agent alone cannot change it.
+        return {"accepted": False, "reason": "this fact decides the checklist and was settled by two independent readings"}
     known = work.facts.get(args["fact"])
     if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
         return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}
@@ -640,6 +644,10 @@ def run_source_checker(model, work, effort="medium"):
             verdict = verdicts.get(item["item"])
             row["verdict"] = "accepted" if verdict and verdict["verdict"] == "supported" else "rejected"
             row["verdict_reason"] = verdict["reason"] if verdict else "Not answered by the independent check."
+            if kind == "fact" and row.get("agreed") and row["verdict"] == "rejected":
+                # A deciding fact two readings agree on, with exact quotes, stands: the checker's doubt is a flag for the
+                # case handler, not a change to what the checklist requires.
+                row["verdict"], row["flag"] = "accepted", {"kind": "source_checker_doubt", "reason": row["verdict_reason"]}
             if kind == "document" and row["verdict"] == "accepted" and row["status"] == "present":
                 lacking = [shown["item"] for index, shown in enumerate(row.get("shows", []))
                            if (verdicts.get(f"show:{item_id}#{index}") or {}).get("verdict") != "supported"]
@@ -768,6 +776,7 @@ def confirm_facts(model, work, effort="medium"):
         first_value = first["value"] if first is not None and first["status"] == "established" else None
         if first_value is not None and status == "established":
             if same_reading(definition, first_value, value):
+                first["agreed"] = True  # two independent readings give it: it decides the checklist
                 agreed += 1
             else:
                 first.update(status="conflicting", verdict="not_checked", citations=first["citations"] + located,
@@ -788,6 +797,7 @@ def confirm_facts(model, work, effort="medium"):
             quotes = (first["citations"] if first is not None else []) + located
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": quotes,
                                       "verdict": "not_checked", "by": (first or {}).get("by", "second_reading")}
+    work.facts_confirmed = True
     summary = {"checked": len(facts), "agreed": agreed, "differed": differed, "single": single}
     work.emit("source_checker", "agent.end", summary=f"Second reading: {agreed} agree, {differed} differ, {single} found by one reading only.",
               counts={"agreed": agreed, "differed": differed, "single": single})
