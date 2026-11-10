@@ -144,8 +144,33 @@ def node(ax, x, y, kind, r=0.034):
 
 
 def design(ax, x, y, which, r=0.036, color=INK):
-    """Design marker: filled circle = code executes the rules; hollow circle = model applies them."""
-    ax.add_patch(Circle((x, y), r, fc=color if which == "code" else "white", ec=color, lw=THICK * 0.85, zorder=4))
+    """Design marker, the one marker family for designs in every figure:
+    code   = filled circle  (code executes the rules: CasePath; v2 in Study 2)
+    code_v1 = small filled circle (CasePath v1, Study 2 only)
+    model  = hollow circle  (model applies the rules: Rules in context)
+    model_orig = hollow diamond (Rules in context with the original rule pack, Study 2 only)"""
+    from matplotlib.patches import RegularPolygon
+    lw = THICK * 0.85
+    if which == "code":
+        ax.add_patch(Circle((x, y), r, fc=color, ec=color, lw=lw, zorder=4))
+    elif which == "code_v1":
+        ax.add_patch(Circle((x, y), r * 0.62, fc=color, ec=color, lw=lw, zorder=4))
+    elif which == "model":
+        ax.add_patch(Circle((x, y), r, fc="white", ec=color, lw=lw, zorder=4))
+    elif which == "model_orig":
+        ax.add_patch(RegularPolygon((x, y), 4, radius=r * 1.25, fc="white", ec=color, lw=lw, zorder=4))
+
+
+# matplotlib scatter equivalents of `design` (for data axes), same meaning and size
+DESIGN_SCATTER = {"code": dict(marker="o", s=34, filled=True), "code_v1": dict(marker="o", s=13, filled=True),
+                  "model": dict(marker="o", s=34, filled=False), "model_orig": dict(marker="D", s=26, filled=False)}
+
+
+def design_scatter(ax, x, y, which, color=INK, zorder=4):
+    """Shape = design (as `design`); colour = the outcome the value counts (e.g. HELD, MISSED), else ink."""
+    d = DESIGN_SCATTER[which]
+    ax.scatter([x], [y], marker=d["marker"], s=d["s"], facecolors=color if d["filled"] else "white", edgecolors=color,
+               linewidths=THICK * 0.85, zorder=zorder)
 
 
 def legend(ax, x, y, kinds, extra=()):

@@ -764,6 +764,112 @@ def fig_models():
     _save(fig, "fig_models")
 
 
+# ---------------------------------------------------------------------- Study 2 (measured)
+S2_TEN = [("gpt-6-luna", [("CPv1", "code_v1"), ("CPv2p", "code"), ("B1v2p", "model")]),
+          ("gpt-6.1-terra", [("CPv2p", "code"), ("B1v2p", "model")])]
+S2_THEFT = [("gpt-6-luna", [("CPv2p", "code"), ("Rv2p", "model"), ("R", "model_orig")]),
+            ("gpt-6.1-terra", [("CPv2p", "code"), ("Rv2p", "model"), ("R", "model_orig")])]
+
+
+def study2_data():
+    """Point values from analysis/study2_results.json. Theft intervals: 95% cluster bootstrap over the 9 changed
+    facts (10,000 resamples, seeded as in study2.py) of each design's errors per pair, recomputed with study2.py's
+    own scoring from the recorded plans (runs/v2); the point estimate is asserted equal to the results file."""
+    import random as _r
+    r = load("study2_results.json")
+    import study2 as s2
+    import theft_fresh
+    on_pairs = [p for p in theft_fresh.pairs() if p["kind"] == "on"]
+    T = theft_fresh.texts()
+    theft = {}
+    for model, designs in S2_THEFT:
+        plans = s2.load_plans("theft", model)
+        for d, _ in designs:
+            key = f"{d}|{model}"
+            rows = s2.theft_rows(T, on_pairs, plans[d])
+            cl = s2.by_cluster(rows, "condition", lambda rs: sum(x["errors"] for x in rs) / len(rs))
+            keys = sorted(cl)
+            point = sum(cl.values()) / len(cl)
+            assert abs(point - r["theft"][key]["errors_per_pair"]) < 1e-9, key
+            g = _r.Random(f"{s2.SEED}|fig_study2|{key}")
+            boot = sorted(sum(cl[g.choice(keys)] for _ in keys) / len(keys) for _ in range(s2.B))
+            theft[key] = {"errors": point, "ci": [s2.quantile(boot, 0.025), s2.quantile(boot, 0.975)],
+                          "dedup": r["theft"][key]["errors_dedup_per_pair"]}
+    ten = {f"{d}|{m}": {"held": r["tenancy"][f"{d}|{m}"]["held_required_now_per_claim"],
+                        "unsafe": r["tenancy"][f"{d}|{m}"]["strict_unsafe_per_claim"]}
+           for m, ds in S2_TEN for d, _ in ds}
+    return {"tenancy": ten, "theft": theft}
+
+
+def fig_study2():
+    """Measured. Left: tenancy (held required documents per claim; strict unsafe errors per claim). Right: theft
+    (wrong + missed changes per pair, 95% interval, counted-once tick). Shape = design, colour = outcome counted."""
+    D = study2_data()
+    W, H = th.WIDTH, 2.10
+    fig, base = th.canvas(H)
+    top = H - LEGEND_Y
+    th.legend(base, LEGEND_X, top, [], extra=[
+        (lambda a, x, y: th.design(a, x, y, "code_v1"), "CasePath v1"),
+        (lambda a, x, y: th.design(a, x, y, "code"), "CasePath v2"),
+        (lambda a, x, y: th.design(a, x, y, "model"), "Rules in context"),
+        (lambda a, x, y: th.design(a, x, y, "model_orig"), "same, original pack"),
+        (lambda a, x, y: a.plot([x, x], [y - 0.045, y + 0.045], color=th.INK, lw=th.THICK, solid_capstyle="butt"),
+         "repeated error counted once")])
+    yb, hh = 0.42, H - 0.42 - 0.50
+
+    def axis(x0, w, xlim, ticks, xlabel, nrows):
+        ax = fig.add_axes([x0 / W, yb / H, w / W, hh / H])
+        ax.set_xlim(*xlim); ax.set_ylim(nrows - 0.4, -0.6)
+        ax.set_xticks(ticks); ax.set_yticks([])
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(False)
+        ax.spines["bottom"].set_linewidth(th.THIN)
+        ax.tick_params(axis="x", length=3, width=th.THIN, labelsize=th.NOTE, colors=th.INK)
+        ax.set_xlabel(xlabel, fontsize=th.NOTE, labelpad=3)
+        return ax
+
+    def rows(groups):
+        out, y = [], 0
+        for m, ds in groups:
+            for j, (d, mk) in enumerate(ds):
+                out.append((y, m, d, mk, j == 0))
+                y += 1
+            y += 0.5
+        return out, y - 0.5
+
+    # ---- tenancy
+    R1, n1 = rows(S2_TEN)
+    a1 = axis(0.80, 1.05, (-0.1, 3.6), [0, 1, 2, 3], "held per claim, lower is better", n1)
+    a2 = axis(2.02, 0.95, (0, 0.30), [0, 0.1, 0.2, 0.3], "strict unsafe per claim, lower is better", n1)
+    for y, m, d, mk, first in R1:
+        v = D["tenancy"][f"{d}|{m}"]
+        th.design_scatter(a1, v["held"], y, mk, th.HELD)
+        th.design_scatter(a2, v["unsafe"], y, mk, th.MISSED)
+        a1.text(v["held"] + 0.16, y, f"{v['held']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
+        a2.text(v["unsafe"] + 0.013, y, f"{v['unsafe']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
+    for m, ds in S2_TEN:
+        ys = [y for y, mm, *_ in R1 if mm == m]
+        a1.text(-0.12, sum(ys) / len(ys), m, transform=a1.get_yaxis_transform(), fontsize=th.LABEL, ha="right",
+                va="center", color=th.INK)
+    th.text(base, 0.80, top - 0.30, "Tenancy, 72 claims", "label", bold=True)
+    # ---- theft
+    R2, n2 = rows(S2_THEFT)
+    a3 = axis(3.95, 1.40, (0, 2.4), [0, 1, 2], "wrong + missed per pair, lower is better", n2)
+    for y, m, d, mk, first in R2:
+        v = D["theft"][f"{d}|{m}"]
+        a3.plot(v["ci"], [y, y], color=th.MISSED, lw=th.THIN, zorder=2)
+        if abs(v["dedup"] - v["errors"]) > 1e-9:
+            a3.plot([v["dedup"]] * 2, [y - 0.32, y + 0.32], color=th.INK, lw=th.THICK, solid_capstyle="butt", zorder=3)
+        th.design_scatter(a3, v["errors"], y, mk, th.MISSED)
+        a3.text(v["ci"][1] + 0.06, y, f"{v['errors']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
+    for m, ds in S2_THEFT:
+        ys = [y for y, mm, *_ in R2 if mm == m]
+        a3.text(-0.06, sum(ys) / len(ys), m, transform=a3.get_yaxis_transform(), fontsize=th.LABEL, ha="right",
+                va="center", color=th.INK)
+    th.text(base, 3.95, top - 0.30, "Theft, 36 changed-fact pairs", "label", bold=True)
+    _save(fig, "fig_study2")
+
+
 if __name__ == "__main__":
     args = _sys.argv[1:]
     if "--png" in args:
@@ -772,7 +878,7 @@ if __name__ == "__main__":
     if "--legacy" in args:
         fig_tenancy(); fig_theft(); fig_propagation()
     only = [a for a in args if a.startswith("fig_")]
-    for f in only or ["fig_hero", "fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge"]:
+    for f in only or ["fig_hero", "fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge", "fig_study2"]:
         if f in globals():
             globals()[f]()
     print("figures written to", FIG)
