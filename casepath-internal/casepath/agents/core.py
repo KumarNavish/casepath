@@ -348,7 +348,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)
-        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), scope=options.get("scope", "full"))
+        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), scope=options.get("scope", "full"),
+                        readings=options.get("readings"))
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
         result["usage"] = usage + result["usage"]

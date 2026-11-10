@@ -146,8 +146,10 @@ it, otherwise unresolved; give a date as YYYY-MM-DD, or YYYY-MM or YYYY when the
 READ_FACTS = READING_RULES
 
 # How many independent readings of the facts a run makes (the first included); a deciding fact's value counts only when
-# all of them give it.
-DEFAULT_READINGS = 2
+# all of them give it. Three by default: in development, requiring three readings to agree instead of two lowered the
+# errors from unstable readings and left more closely related cases unchanged, while holding few more documents behind
+# open questions (configuration: CASEPATH_READINGS).
+DEFAULT_READINGS = 3
 
 # A reading judges conditions one by one from what the files say; like routing, it asks for little reasoning, so the
 # model reads the conditions as written rather than reasoning its way to a value the files do not state.
