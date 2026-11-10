@@ -51,7 +51,7 @@ casepath/              python -m casepath <command>   (no command: the list)
 catalogue/             Protekta's processes as workflows (JSON)          internal copy
 benchmark/             synthetic cases with known answers                internal copy
 deploy/                databricks/ · workspace/ (DSW) · preview/ · cloudshell/ · Dockerfile at the root
-docs/                  DEPLOYMENT.md · contracts/ (case API) · history/
+docs/                  HANDLER_BAR.md (what done means) · DEPLOYMENT.md · contracts/ (case API) · history/
 tests/
 .gitlab-ci.yml         the DSW's pipeline (+ mobi.yaml, renovate.json)   internal copy
 ```
