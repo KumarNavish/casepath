@@ -70,12 +70,15 @@ def validate_result(value, schema, path="$"):
             validate_result(child, schema["properties"][key], f"{path}.{key}")
     elif isinstance(value, list):
         if not schema.get("minItems", 0) <= len(value) <= schema.get("maxItems", 10_000):
-            raise ValueError(f"{path}: array length outside bounds")
+            raise ValueError(f"{path}: array length outside bounds ({len(value)} items; allowed "
+                             f"{schema.get('minItems', 0)} to {schema.get('maxItems', 10_000)})")
         for index, child in enumerate(value):
             validate_result(child, schema["items"], f"{path}[{index}]")
     elif isinstance(value, str):
         if not schema.get("minLength", 0) <= len(value) <= schema.get("maxLength", 1_000_000):
-            raise ValueError(f"{path}: text length outside bounds")
+            # The bound and the actual length are named, so an agent can shorten its text once instead of guessing.
+            raise ValueError(f"{path}: text length outside bounds ({len(value)} characters; allowed "
+                             f"{schema.get('minLength', 0)} to {schema.get('maxLength', 1_000_000)})")
         if "pattern" in schema and re.search(schema["pattern"], value) is None:
             raise ValueError(f"{path}: text does not match pattern")
     elif type(value) in (int, float):

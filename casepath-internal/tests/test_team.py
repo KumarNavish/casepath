@@ -123,6 +123,14 @@ class TeamTests(unittest.TestCase):
         self.assertEqual([(x["agent"], x["reason"]) for x in work.limits], [("document_finder", "turn_limit")])
         self.assertTrue(work.documents_looked_for)
 
+    def test_a_report_that_is_too_long_is_told_its_limit(self):
+        from casepath.agents.team import CaseWork, run_agent
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        model = ScriptedModel([[report("document_finder", summary="x" * 900)], [report("document_finder")]])
+        run_agent(model, work, "document_finder", "Find.")
+        told = json.loads(next(m for m in model.inputs[1] if m.get("type") == "function_call_output")["output"])
+        self.assertIn("900 characters; allowed 1 to 800", told["error"])
+
     def test_a_turn_limit_still_gives_the_checklist_from_what_was_admitted(self):
         script = standard_script(
             finder_calls=[("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],
