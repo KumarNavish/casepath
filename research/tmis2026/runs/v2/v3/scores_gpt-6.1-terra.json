@@ -1,0 +1,157 @@
+{
+ "tenancy": null,
+ "theft": {
+  "CPv2p": {
+   "missed": 18,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.417,
+   "wm_per_pair": 1.481,
+   "wm_per_pair_counted_once": 0.741,
+   "wrong": 62
+  },
+  "CPv3": {
+   "missed": 15,
+   "pair_runs": 54,
+   "premature_when_open": 0.028,
+   "unchanged_when_open": 0.472,
+   "wm_per_pair": 0.704,
+   "wm_per_pair_counted_once": 0.407,
+   "wrong": 23
+  },
+  "CPv3-draft": {
+   "missed": 20,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.667,
+   "wm_per_pair": 1.148,
+   "wm_per_pair_counted_once": 0.815,
+   "wrong": 42
+  },
+  "R": {
+   "missed": 13,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wm_per_pair": 0.537,
+   "wm_per_pair_counted_once": 0.537,
+   "wrong": 16
+  },
+  "Rv2p": {
+   "missed": 13,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.167,
+   "wm_per_pair": 2.222,
+   "wm_per_pair_counted_once": 0.704,
+   "wrong": 107
+  },
+  "_correction_outcomes": {
+   "ALL|drop": {
+    "neutral": 52,
+    "right": 113,
+    "wrong": 6
+   },
+   "ALL|hold": {
+    "neutral": 121,
+    "right": 197,
+    "wrong": 10
+   },
+   "ALL|release": {
+    "neutral": 19,
+    "right": 33,
+    "wrong": 9
+   },
+   "ALL|replace_with_alternative": {
+    "right": 4
+   },
+   "overlay_rule_003|hold": {
+    "neutral": 2,
+    "right": 18
+   },
+   "overlay_rule_004|hold": {
+    "neutral": 36,
+    "right": 60
+   },
+   "overlay_rule_008|hold": {
+    "wrong": 1
+   },
+   "overlay_rule_010|drop": {
+    "neutral": 30,
+    "right": 53
+   },
+   "overlay_rule_010|hold": {
+    "neutral": 5,
+    "right": 1
+   },
+   "overlay_rule_013|hold": {
+    "neutral": 36,
+    "right": 60
+   },
+   "overlay_rule_018|release": {
+    "neutral": 19,
+    "right": 23,
+    "wrong": 9
+   },
+   "overlay_rule_019|release": {
+    "right": 2
+   },
+   "overlay_rule_020|drop": {
+    "right": 6
+   },
+   "overlay_rule_020|hold": {
+    "neutral": 36,
+    "right": 54
+   },
+   "overlay_rule_022|release": {
+    "right": 6
+   },
+   "overlay_rule_042|drop": {
+    "neutral": 22,
+    "right": 48
+   },
+   "overlay_rule_042|hold": {
+    "neutral": 6,
+    "right": 4,
+    "wrong": 6
+   },
+   "overlay_rule_043|drop": {
+    "wrong": 6
+   },
+   "overlay_rule_074|release": {
+    "right": 2
+   },
+   "overlay_rule_074|replace_with_alternative": {
+    "right": 4
+   },
+   "overlay_rule_084|drop": {
+    "right": 6
+   },
+   "overlay_rule_090|hold": {
+    "wrong": 3
+   }
+  },
+  "_corrections": {
+   "fresh": {
+    "applied": 564,
+    "ignored_reasons": {},
+    "proposed": 564
+   },
+   "original": {
+    "applied": 0,
+    "ignored_reasons": {},
+    "proposed": 0
+   }
+  }
+ },
+ "usd_per_call": {
+  "theft|CP-interpret": 0.01074,
+  "theft|R": 0.00395,
+  "v2-tenancy|B1v2p": 0.00555,
+  "v2-tenancy|CPv2p-interpret": 0.00345,
+  "v2-theft|CPv2p-interpret": 0.01009,
+  "v2-theft|Rv2p": 0.00374,
+  "v3-theft|CPv3-check": 0.00935,
+  "v3-theft|CPv3-read": 0.01023
+ }
+}

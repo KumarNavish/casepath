@@ -9,6 +9,9 @@ import sys
 from collections import Counter, defaultdict
 
 import common
+import re
+import consolidate
+import v3 as v3mod
 
 ap = argparse.ArgumentParser()
 ap.add_argument("model")
@@ -20,6 +23,7 @@ from theft_data import best_realization  # noqa: E402
 from theft_score import delta  # noqa: E402
 
 K = 3
+PACK0 = v3mod.theft_pack("original")
 OUT = common.OUT / "v3"
 
 
@@ -91,7 +95,10 @@ def theft():
                     b = sum(map(len, theft_errors(p, off_w, var_w)))
                     d_err += a - b
                 verdict = "right" if d_err < 0 else "wrong" if d_err > 0 else "neutral"
-                corr[(c.get("rule") or "?", c["type"])][verdict] += 1
+                rid = c.get("rule") or ""
+                if not re.fullmatch(r"overlay_rule_\d{3}(\.\S+)?", rid):
+                    rid = consolidate._resolve_rule(PACK0, {"rule": rid, "document": c["document_name"]}) or "?"
+                corr[(rid, c["type"])][verdict] += 1
                 corr[("ALL", c["type"])][verdict] += 1
         props = sum(len(e.get("proposed") or []) for e in v3.values() if e)
         apps = sum(len(e.get("applied") or []) for e in v3.values() if e)
