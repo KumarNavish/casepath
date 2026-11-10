@@ -27,8 +27,10 @@ LABELS = {
            "warnings": "Hinweise zur Vorbereitung",
            "checklist_only": "Nur Checkliste: Zusammenfassung, Einschätzung und Antwortentwurf wurden nicht erstellt.",
            "result_checker_stopped": "Nicht abgeschlossen: Die Checkliste beruht auf den belegten Feststellungen; siehe Checkliste und offene Punkte.",
-           "turn_limit": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
-           "no_report": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
+           "stop_document_finder": "Die Dokumentensuche brach vorzeitig ab; nicht erreichte Dokumente bleiben angefordert und sind als nicht geprüft markiert.",
+           "stop_claim_reader": "Das Lesen der Fakten brach vorzeitig ab; nicht erfasste Fakten bleiben offen.",
+           "stop_process_builder": "Die Ergänzung des Prozesses brach vorzeitig ab; die Anforderungen des Prozesses selbst sind vollständig.",
+           "stop_result_checker": "Die Zusammenfassung brach vorzeitig ab; es wurde kein Antwortentwurf erstellt.",
            "reading_failed": "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen.",
            "document_check_failed": "Die zweite Prüfung der vorhandenen Dokumente schlug fehl; sie bleiben angefordert.",
            "instruction_like_text": "Ein Dokument enthält Text, der sich an die KI richtet; er wurde als Inhalt behandelt und nicht befolgt."},
@@ -48,8 +50,10 @@ LABELS = {
            "warnings": "Notes on the preparation",
            "checklist_only": "Checklist only: no summary, assessment or reply draft was prepared.",
            "result_checker_stopped": "Not finished: the checklist rests on the accepted findings; see the checklist and the open points.",
-           "turn_limit": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
-           "no_report": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
+           "stop_document_finder": "The document search stopped early; documents it did not reach stay requested and are marked not checked.",
+           "stop_claim_reader": "The reading of the facts stopped early; facts it did not record stay open.",
+           "stop_process_builder": "Adding to the process stopped early; the process's own requirements are complete.",
+           "stop_result_checker": "The summary stopped early; no reply draft was prepared.",
            "reading_failed": "One reading of the facts failed; the facts it should have confirmed stay open.",
            "document_check_failed": "The second check of the documents found present failed; they stay requested.",
            "instruction_like_text": "A document contains text addressed to an AI; it was treated as evidence and not followed."},
@@ -133,7 +137,9 @@ def build(case, state, files, lang="de", knowledge=()):
     questions = {f["id"]: f["question"] for f in (state.get("process") or {}).get("facts", [])}
     questions.update(result.get("questions") or {})
 
-    warnings = list(dict.fromkeys(L[w["kind"]] for w in result.get("warnings") or [] if w.get("kind") in L))
+    def warning_key(w):  # a stop is described by the part that stopped, so the note is true for it
+        return f"stop_{w.get('agent')}" if w.get("kind") in {"turn_limit", "no_report"} else w.get("kind")
+    warnings = list(dict.fromkeys(L[warning_key(w)] for w in result.get("warnings") or [] if warning_key(w) in L))
     if warnings:
         body.append(_heading(L["warnings"]))
         for text_ in warnings:

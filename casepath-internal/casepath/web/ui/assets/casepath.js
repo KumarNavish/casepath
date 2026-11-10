@@ -1268,11 +1268,13 @@ async function renderCase() {
                                 "Ein Dokument enthält Text, der sich an die KI richtet. CasePath hat ihn als Inhalt behandelt und nicht befolgt; bitte das Dokument prüfen.") : "",
                     used ? T("This case used Knowledge from earlier cases. Qualified review is still required.", "Dieser Fall nutzt Wissen aus früheren Fällen. Eine fachliche Prüfung bleibt nötig.") : "",
                     ...((result() || {}).warnings || []).filter((w) => w.kind !== "instruction_like_text").map((w) => ({
-                      turn_limit: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
-                      no_report: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
+                      stop_document_finder: T("The document search stopped early; documents it did not reach stay requested and are marked not checked.", "Die Dokumentensuche brach vorzeitig ab; nicht erreichte Dokumente bleiben angefordert und sind als nicht geprüft markiert."),
+                      stop_claim_reader: T("The reading of the facts stopped early; facts it did not record stay open.", "Das Lesen der Fakten brach vorzeitig ab; nicht erfasste Fakten bleiben offen."),
+                      stop_process_builder: T("Adding to the process stopped early; the process's own requirements are complete.", "Die Ergänzung des Prozesses brach vorzeitig ab; die Anforderungen des Prozesses selbst sind vollständig."),
+                      stop_result_checker: T("The summary stopped early; no reply draft was prepared.", "Die Zusammenfassung brach vorzeitig ab; es wurde kein Antwortentwurf erstellt."),
                       reading_failed: T("One reading of the facts failed; the facts it should have confirmed stay open.", "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen."),
                       document_check_failed: T("The second check of the documents found present failed; they stay requested.", "Die zweite Prüfung der vorhandenen Dokumente schlug fehl; sie bleiben angefordert."),
-                    }[w.kind] || ""))].filter((m, i, all) => m && all.indexOf(m) === i);
+                    }[["turn_limit", "no_report"].includes(w.kind) ? `stop_${w.agent}` : w.kind] || ""))].filter((m, i, all) => m && all.indexOf(m) === i);
   notice.hidden = !messages.length;
   document.body.classList.toggle("with-notice", Boolean(messages.length));
   notice.innerHTML = messages.length ? `${icon("shield")}${messages.join(" ")}` : "";
