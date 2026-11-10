@@ -56,7 +56,7 @@ def validate_result(value, schema, path="$"):
                "string": isinstance(value, str), "boolean": type(value) is bool, "integer": type(value) is int,
                "number": type(value) in (int, float)}
     if not any(matches[t] for t in types):
-        raise ValueError(f"{path}: type differs from schema")
+        raise ValueError(f"{path}: type differs from schema (expected {' or '.join(types)})")
     if "enum" in schema and value not in schema["enum"]:
         raise ValueError(f"{path}: value outside enum")
     if "const" in schema and value != schema["const"]:
@@ -65,7 +65,9 @@ def validate_result(value, schema, path="$"):
         return
     if isinstance(value, dict):
         if set(value) != set(schema["properties"]):
-            raise ValueError(f"{path}: properties differ from closed schema")
+            missing, extra = sorted(set(schema["properties"]) - set(value)), sorted(set(value) - set(schema["properties"]))
+            raise ValueError(f"{path}: properties differ from closed schema"
+                             + (f" (missing: {', '.join(missing)})" if missing else "") + (f" (unexpected: {', '.join(extra)})" if extra else ""))
         for key, child in value.items():
             validate_result(child, schema["properties"][key], f"{path}.{key}")
     elif isinstance(value, list):

@@ -131,6 +131,16 @@ class TeamTests(unittest.TestCase):
         told = json.loads(next(m for m in model.inputs[1] if m.get("type") == "function_call_output")["output"])
         self.assertIn("900 characters; allowed 1 to 800", told["error"])
 
+    def test_a_call_with_missing_or_unexpected_fields_is_told_which(self):
+        from casepath.agents.schema import arr, obj, text, validate_result
+        schema = obj(shows=arr(obj(item=text(20), citations=arr(text(20)))))
+        with self.assertRaises(ValueError) as caught:
+            validate_result({"shows": [{"item": "a", "note": "b"}]}, schema)
+        self.assertIn("(missing: citations) (unexpected: note)", str(caught.exception))
+        with self.assertRaises(ValueError) as caught:
+            validate_result({"shows": ["a"]}, schema)
+        self.assertIn("$.shows[0]: type differs from schema (expected object)", str(caught.exception))
+
     def test_a_turn_limit_still_gives_the_checklist_from_what_was_admitted(self):
         script = standard_script(
             finder_calls=[("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],

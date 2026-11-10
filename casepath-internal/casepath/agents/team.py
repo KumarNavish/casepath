@@ -79,7 +79,8 @@ example the customer writing that a letter arrived, or what it said), mark it me
 document itself is still missing. Mark a need absent when nothing in the case is or mentions it; when a file that is the
 document is there but cannot serve (illegible, incomplete, wrong period, not showing what is needed), mark it unusable,
 name the file and quote what it does show. When a need lists what it must show, mark it present only with a quote from
-that file for each item (shows); a file that does not show every item is unusable. Check suggested needs too.""",
+that file for each item (shows; leave shows empty for any other status); a file that does not show every item is
+unusable. Check suggested needs too.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
