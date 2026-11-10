@@ -252,6 +252,8 @@ def route(model, catalogue, case, files, on_event):
     if unquoted:  # one retry for the quotations not found word for word, before any decision rests on their absence
         again = requote(model, request, answer.value, unquoted)
         rows = [r for r in rows if r["fact"] not in unquoted] + [r for r in again.value["facts"] if r["fact"] in unquoted]
+    unproven = [r["fact"] for r in rows if r["value"] is not None
+                and not any(evidence.locate(c["file"], c["quote"]) for c in r["citations"])]
     known, cited = {}, {}
     for row in rows:
         located = [hit for c in row["citations"] if (hit := evidence.locate(c["file"], c["quote"]))]
@@ -260,6 +262,7 @@ def route(model, catalogue, case, files, on_event):
             known[row["fact"]], cited[row["fact"]] = row["value"], located
     known.update({k: v for k, v in ((case.get("intake") or {}).get("routing") or {}).items() if k in definitions})
     decision = workflows.route(catalogue, known)
+    presumptive = "presumed" in decision  # selected as the one workflow left, not by a quoted routing fact
     decision["facts"] = [{"fact": k, "value": v, "citations": cited.get(k, [])} for k, v in known.items()]
     # The one workflow that can apply was selected with routing facts the files leave open: they are presumed from
     # routing, never established, and shown as such.
@@ -269,6 +272,13 @@ def route(model, catalogue, case, files, on_event):
         if hit := evidence.locate(row["file"], row["quote"]):
             decision["other_topic"] = {"topic": row["topic"], "citations": [hit]}
             break
+    if presumptive and (decision.get("other_topic") or unproven):
+        # Selected only because it was the one workflow left, while the files name another matter or a routing answer
+        # could not be quoted: a person chooses.
+        only = decision["workflow"]
+        decision = {**decision, "status": "needs_facts", "workflow": None, "candidates": [only],
+                    "needs": sorted(definitions), "facts": [f for f in decision["facts"] if not f.get("presumed")],
+                    "reason": "Another matter is named in the files, or a routing answer could not be quoted; a person chooses."}
     on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.", "routing": decision["status"],
               "workflow": decision["workflow"] and decision["workflow"]["id"]})
     workflow = catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None

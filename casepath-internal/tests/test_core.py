@@ -92,6 +92,18 @@ class CoreContractTests(unittest.TestCase):
         cited = next(f for f in outcome["routing"]["facts"] if f["fact"] == "legal_area")
         self.assertEqual(cited["citations"][0]["quote"], QUOTE)
 
+    def test_the_one_workflow_left_is_not_taken_when_the_files_name_another_matter_or_a_routing_answer_cannot_be_quoted(self):
+        other = script()
+        other.other_topic = [{"topic": "A loan", "file": "f1", "quote": VENT}]
+        unquoted = script()
+        unquoted.routing = [{"fact": "legal_area", "value": "loan", "citations": [{"file": "f1", "quote": "Never written in the file"}]}]
+        unquoted.retries["casepath_route"] = {"facts": unquoted.routing, "other_topic": []}
+        for model in (other, unquoted):
+            with tempfile.TemporaryDirectory() as blobs:
+                outcome = core.prepare(job([], workflow_id=None), model, core.DirectoryBlobs(blobs))
+            self.assertEqual((outcome["routing"]["status"], outcome["workflow"]), ("needs_facts", None))
+            self.assertFalse(any(f.get("presumed") for f in outcome["routing"]["facts"]))
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
