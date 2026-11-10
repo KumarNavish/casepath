@@ -250,8 +250,11 @@ def route(model, catalogue, case, files, on_event):
                 and not any(evidence.locate(c["file"], c["quote"]) for c in row["citations"])]
     rows = answer.value["facts"]
     if unquoted:  # one retry for the quotations not found word for word, before any decision rests on their absence
-        again = requote(model, request, answer.value, unquoted)
-        rows = [r for r in rows if r["fact"] not in unquoted] + [r for r in again.value["facts"] if r["fact"] in unquoted]
+        try:
+            again = requote(model, request, answer.value, unquoted)
+            rows = [r for r in rows if r["fact"] not in unquoted] + [r for r in again.value["facts"] if r["fact"] in unquoted]
+        except ModelError:
+            pass  # the first answers stand; an unquoted value does not count
     unproven = [r["fact"] for r in rows if r["value"] is not None
                 and not any(evidence.locate(c["file"], c["quote"]) for c in r["citations"])]
     known, cited = {}, {}

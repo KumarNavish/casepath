@@ -129,6 +129,22 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual(row["status"], "unusable")  # the second judgment did not confirm it
         self.assertIn("turn_limit", [w["kind"] for w in again["result"]["warnings"]])
 
+    def test_a_failed_routing_retry_keeps_the_first_answer(self):
+        from casepath.agents.azure_model import ModelError
+        model = script()
+        model.routing = [{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": "not in the file at all"}]}]
+        original = model.respond_json
+
+        def failing_retry(**kw):
+            if kw["name"] == "casepath_route" and len(kw["input"]) > 1:
+                raise ModelError("timeout", "no answer")
+            return original(**kw)
+        model.respond_json = failing_retry
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(job([], workflow_id=None), model, core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["status"], outcome["error"]), ("completed", None))  # the run goes on with the first answer
+        self.assertEqual(outcome["routing"]["status"], "needs_facts")  # whose unquoted value does not count
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
