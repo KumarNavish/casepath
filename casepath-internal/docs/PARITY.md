@@ -85,16 +85,45 @@ These changes on the paper-sync branch of 10.11.2026 alter behaviour even for wo
 
 The changes below, made after those, also alter behaviour for existing workflows:
 
-- **Routing.** When the routing facts leave exactly one workflow open and no other workflow or fallback can apply, that workflow is prepared and its routing facts are recorded as presumed from routing. Before, such a case was handed over. A catalogue without routing facts now prepares its fallback workflow.
-- **Routed presumption.** The defining event of the routed case type (`applies: "routed"`) is presumed also when the files mention it but leave it open; it yields to an established value or to two conflicting readings. Presumptions for unstated facts are unchanged.
-- **Documents.** A message or another document that only mentions a needed document no longer meets the need (`mentioned_only`; the need stays missing). Quotes for a present document count only from the files named for it. The source checker is asked whether the file is the document itself, and checks each `must_show` item on its own; an item it does not find shown makes the document unusable. The finder names `must_show` items exactly as listed.
-- **Facts.** In a case of up to 40,000 characters the claim reader answers every fact of the process in one structured reading (established, unknown with a quote, or unknown without). The second reading of every deciding fact answers in the same form. A value counts only where both readings give it; a value found by one reading only leaves the fact unknown. A longer dossier is still read by the agent, with the same agreement rule.
-- **Fact readings, second form.** Both readings judge every condition true, false or unresolved, with one exact quotation found in any file; the conditions come with the task and the case files are the message; readings ask for low effort. Unchanged: a value counts only where both readings give it.
-- **Deciding facts.** A fact a condition uses, which both readings give with an exact quote, is no longer removed when the source checker doubts it (the doubt is a flag), and no single agent can record a deciding fact after the two readings.
+- **Routing.**
+  - When the routing facts leave exactly one workflow open and no other workflow or fallback can apply, that workflow is prepared. A routing fact is then recorded as presumed from routing only with a value its condition names uniquely (`is`, or `in` with one value); any other stays open. Before, such a case was handed over.
+  - That workflow is not taken when routing names another matter in the files (`other_topic`) or gives a routing value whose quotation is not found: the case is handed over.
+  - A catalogue without routing facts now prepares its fallback workflow.
+  - `needs_facts` lists fallback workflows among its candidates.
+  - Routing accepts up to four `other_topic` values and keeps the first quoted one (one was allowed, and two failed the run).
+  - A routing quotation not found in the files is asked for once more before routing decides without it.
+- **Presumptions.**
+  - The defining event of the routed case type (`applies: "routed"`) is presumed also when the files mention it but leave it open; it yields to an established value or to two conflicting readings.
+  - No presumption (routed, unstated or from routing) applies to a fact one of the two readings gave a value with an admitted quotation: the fact stays open for a person.
+  - A deciding fact counts as raised by the files (so that an unstated presumption does not apply) only when both readings quote a passage that raises it.
+- **Documents.**
+  - A message or another document that only mentions a needed document no longer meets the need (`mentioned_only`; the need stays missing).
+  - Quotes for a present document count only from the files named for it. The source checker is asked whether the file is the document itself, and checks each `must_show` item on its own; an item it does not find shown makes the document unusable. The finder names `must_show` items exactly as listed.
+  - A document counts as present only when a second, independent judgment agrees, naming the same file and quoting each `must_show` item; otherwise it stays requested as unusable. This adds one model call per case with a document found present.
+  - When the finder stops before it finishes, needs it never recorded are unchecked, not missing.
+  - A later record of a need replaces the earlier one, as an event (`document.changed`) with the status it replaced.
+- **Facts.** (The earlier "one structured reading" form is replaced by this one.)
+  - In a case of up to 40,000 characters both readings judge every condition true, false or unresolved, with one exact quotation found in any file; the conditions come with the task and the case files are the message. A value counts only where both readings give it.
+  - Readings ask for low effort on every deployment, whatever the configured effort. A verdict whose quotation is not found is asked for once more.
+  - A condition a reading answers twice with different judgments is unresolved. A failed reading call leaves its conditions unresolved and is a warning (`reading_failed`), not a failed run.
+  - A value established at routing and a different value from a reading conflict; a person decides.
+  - Over 40,000 characters, the claim reader agent records the facts and the second reading sees keyword passages only, so deciding facts will more often stay open.
+- **Deciding facts.**
+  - A fact a condition uses, which both readings give with an exact quote, is no longer removed when the source checker doubts it (the doubt is a `flag`). Rejected deciding facts are not retried, and no single agent can record a deciding fact after the two readings.
+  - A case worker cannot set a fact's value today: no such path exists in the product. A case worker can still change what a fact requires through process edits (for example `set_required_when`, `remove_document`), also for a locked fact.
 - **Suggestions under an open question.** A suggested need keeps its label while the question that decides it is open, instead of becoming a hold.
-- **Reasoning effort on chat endpoints** (configuration, off by default): with `CASEPATH_MODEL_REASONING` on, a chat-completions endpoint receives each call's effort as the model's reasoning effort and no temperature. Where an Azure deployment already sends reasoning effort, the readings now go at low effort instead of the team's effort.
-- **Process-builder additions** (the last commit, which can be dropped on its own; the owner's decision is pending): a need, question or step the process builder adds stays a suggestion, shown with its stated basis (statute article, quote or Knowledge item), until the workflow, Knowledge or a case handler confirms it. It is no longer required because it names a statute article, and it does not count as a missing document.
-- **Turn limits.** An agent that reaches its turn limit ends with what it recorded; the run completes, evaluates the checklist and names the limit in its warnings, instead of failing.
+- **Reasoning effort on chat endpoints.** With `CASEPATH_MODEL_REASONING` on, a chat-completions endpoint receives each call's effort as `reasoning_effort` and no temperature. It is off only by the code's default: `deploy/workspace/env.example` and `deploy/cloudshell/start.sh` set it to true. Both configure an Azure OpenAI resource, for which the flag already sent reasoning effort; an environment that keeps the flag and switches to a chat-completions endpoint now sends it too. The request keeps `max_tokens`; the outside endpoint used for research accepts that with reasoning effort. Before turning it on inside, check that the gateway accepts `reasoning_effort` with `max_tokens` (OpenAI's own reasoning endpoints expect `max_completion_tokens`, as the Azure connector sends). Where an Azure deployment already sends reasoning effort, the readings now go at low effort instead of the team's effort.
+- **Process-builder additions** (the owner's decision is pending; the commit can be dropped on its own): a need, question or step the process builder adds stays a suggestion, shown with its stated basis (statute article, quote or Knowledge item), until the workflow, Knowledge or a case handler confirms it. It is no longer required because it names a statute article, and it does not count as a missing document.
+- **Turn limits and stops.** An agent that reaches its turn limit, or stops twice without reporting, ends with what it recorded; the run completes, evaluates the checklist and names the stop in its warnings (`turn_limit`, `no_report`), instead of failing.
+- **Result format.** New or changed fields:
+  - presumed rows, with `by` and `left_open`;
+  - `readings`, `reason_code` and `flag` on facts;
+  - `note_codes`, `replaces` and `second` on documents;
+  - `legal_basis` and, on suggestions, `questions` on checklist rows;
+  - `answer_code`, `warnings` kinds (`turn_limit`, `no_report`, `reading_failed`);
+  - routing `presumed`, `other_topic` and `reason`.
+
+  Tool error texts now name the bound or the missing and unexpected fields.
 
 These changes change nothing unless a workflow or the configuration uses them:
 - presumptions (`presumptions` in a workflow);
