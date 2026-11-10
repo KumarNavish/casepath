@@ -39,6 +39,15 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class PrivacyTests(unittest.TestCase):
+    def test_the_manifest_lists_no_user_identities(self):
+        settings = load_settings({"CASEPATH_ALLOWED_USERS": "anna.example@example.ch, ben@example.ch"})
+        out = json.dumps(parity.manifest(settings), default=str)
+        self.assertNotIn("anna.example", out)
+        self.assertNotIn("ben@example.ch", out)
+        self.assertEqual(parity.manifest(settings)["settings_not_default"]["allowed_users"], "2 named users")
+
+
 class InstalledCopyTests(unittest.TestCase):
     def test_an_installed_copy_hashes_like_the_checkout(self):
         import importlib.util

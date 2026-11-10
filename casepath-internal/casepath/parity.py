@@ -51,7 +51,8 @@ def non_default_settings(settings):
             continue
         mine, theirs = getattr(settings, f.name), getattr(default, f.name)
         if mine != theirs:
-            out[f.name] = sorted(mine) if isinstance(mine, frozenset) else mine
+            # who may sign in is personal data: only how many people are named
+            out[f.name] = f"{len(mine)} named users" if f.name == "allowed_users" else sorted(mine) if isinstance(mine, frozenset) else mine
     if settings.model is not None:
         for key, value in asdict(settings.model).items():
             if key in {"endpoint", "deployment", "provider", "reading_deployment"}:
