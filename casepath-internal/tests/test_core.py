@@ -186,6 +186,18 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual(outcome["result"]["routing"]["conflict"]["admitted"][0]["value"], "other")
         self.assertTrue(any(e.get("routing") == "needs_facts" and e.get("conflict") for e in events))
 
+    def test_the_readings_option_reaches_the_team(self):
+        for readings, expected in ((4, ["casepath_confirm_facts", "casepath_confirm_facts_2", "casepath_confirm_facts_3"]),
+                                   (None, ["casepath_confirm_facts", "casepath_confirm_facts_2"])):
+            model = script()
+            names, original = [], model.respond_json
+            model.respond_json = lambda **kw: names.append(kw["name"]) or original(**kw)
+            options = {"read_scans": True, "scope": "checklist", **({"readings": readings} if readings else {})}
+            with tempfile.TemporaryDirectory() as blobs:
+                outcome = core.prepare({**job([]), "options": options}, model, core.DirectoryBlobs(blobs))
+            self.assertEqual(outcome["status"], "completed")
+            self.assertEqual([n for n in names if n.startswith("casepath_confirm_facts")], expected, readings)
+
     def test_a_contradiction_does_not_take_a_fallback_workflow(self):
         defect = Catalogue.load(FIXTURES).get("example-defect")
         fallback = {**json.loads(json.dumps(defect)), "id": "general", "fallback": True, "applies_when": None}

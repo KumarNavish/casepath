@@ -53,6 +53,21 @@ class AppTests(unittest.TestCase):
     def client(self, **env):
         return TestClient(create_app(load_settings({**self.env, **env}), model_factory=lambda: None))
 
+    def test_the_readings_setting_reaches_the_run_service_and_the_job(self):
+        client = self.client(CASEPATH_READINGS="4")
+        runs = client.app.state.runs
+        self.assertEqual(runs.readings, 4)
+        class Store:
+            def get_case(self, case_id): return {"id": case_id}
+            def list_files(self, case_id, with_text=False): return []
+            def list_knowledge(self, family, statuses): return []
+            def list_edits(self, case_id): return []
+        store, runs.store = runs.store, Store()
+        try:
+            self.assertEqual(runs.job("case_1")["options"]["readings"], 4)
+        finally:
+            runs.store = store
+
     def wait(self, client, run_id):
         for _ in range(200):
             state = client.get(f"/api/runs/{run_id}").json()
