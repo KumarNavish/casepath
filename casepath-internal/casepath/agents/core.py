@@ -342,7 +342,10 @@ def evaluate(workflow, knowledge, edits, result, case_id):
     result = result or {}
     edits = list(edits) + [e for e in result.get("agent_edits", []) if e.get("status", "active") == "active"]
     graph, provenance = casegraph.build(workflow, knowledge=knowledge, edits=edits, case_id=case_id)
-    facts = {f["fact"]: f["value"] for f in result.get("facts", []) if f["status"] == "established" and f.get("verdict") == "accepted"}
+    # Presumed facts first, then established and accepted ones, which override them: the same facts the run evaluated.
+    rows = result.get("facts", [])
+    facts = {f["fact"]: f["value"] for f in rows if f["status"] == "presumed"}
+    facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "established" and f.get("verdict") == "accepted"})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
     evaluation = workflows.evaluate(graph, facts, findings, checked=bool(result.get("documents")))
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings}

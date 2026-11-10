@@ -73,5 +73,27 @@ class PresumptionUseTests(unittest.TestCase):
         self.assertEqual(workflows.presumed(work.graph, {})["landlord_notified"]["applies"], "routed")
 
 
+class CaseViewTests(unittest.TestCase):
+    def test_the_case_view_keeps_presumed_facts_like_the_run(self):
+        from casepath.agents import core
+        workflow = with_presumption()
+        work = CaseWork(case=CASE, files=FILES, base_workflow=workflow)
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": [], "verdict": "not_checked"}
+        run_view = work.evaluate()
+        facts = list(work.facts.values()) + [{"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed"}
+                                             for k, p in work.presumptions().items()]
+        state = core.evaluate(workflow, [], [], {"facts": facts, "documents": []}, "c1")
+        self.assertEqual((state["evaluation"]["outcome"] or {}).get("id"), (run_view["outcome"] or {}).get("id"))
+        self.assertEqual(state["evaluation"]["outcome"]["id"], "advice")
+        self.assertEqual(state["facts"], {"landlord_notified": False})
+
+    def test_a_stated_accepted_value_overrides_a_presumed_row_in_the_case_view(self):
+        from casepath.agents import core
+        facts = [{"fact": "landlord_notified", "status": "presumed", "value": False, "citations": [], "verdict": "presumed"},
+                 {"fact": "landlord_notified", "status": "established", "value": True, "citations": [], "verdict": "accepted"}]
+        state = core.evaluate(with_presumption(), [], [], {"facts": facts, "documents": []}, "c1")
+        self.assertEqual(state["facts"], {"landlord_notified": True})
+
+
 if __name__ == "__main__":
     unittest.main()
