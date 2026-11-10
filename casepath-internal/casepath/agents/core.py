@@ -286,6 +286,25 @@ def route(model, catalogue, case, files, on_event):
     return decision, workflow
 
 
+def case_chosen(case):
+    return bool(case.get("workflow_id"))
+
+
+def contradicted(workflow, result):
+    """Routing facts the readings admitted (established and accepted) whose value makes the workflow's condition false."""
+    condition = workflow.get("applies_when")
+    if not condition:
+        return []
+    used = workflows.condition_facts(condition)
+    rows = [f for f in result.get("facts", []) if f["fact"] in used and f["status"] == "established" and f.get("verdict") == "accepted"]
+    # a routing fact every reading gives another value for than routing did (a conflict) counts with the readings' value
+    rows += [{**f, "value": f["readings_agree_on"], "citations": f.get("citations", [])} for f in result.get("facts", [])
+             if f["fact"] in used and f["status"] == "conflicting" and "readings_agree_on" in f]
+    if rows and workflows.evaluate_condition(condition, {f["fact"]: f["value"] for f in rows}) is False:
+        return rows
+    return []
+
+
 def lessons(workflow, case_id, result):
     """What the run teaches: how each applied Knowledge item fared, and the result checker's proposals as candidates."""
     documents = {d["document"]: d for d in result["documents"]}
@@ -350,6 +369,30 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
                         readings=options.get("readings"))
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
+        against = contradicted(workflow, result)
+        if against and not case_chosen(job["case"]):
+            # The readings admitted a routing fact that contradicts the condition the workflow was chosen under: route once
+            # more on the admitted value and run that workflow; hand over when that is contradicted too or nothing fits.
+            catalogue = catalogue_of(job)
+            again = workflows.route(catalogue, {f["fact"]: f["value"] for f in against})
+            second = catalogue.get(again["workflow"]["id"], again["workflow"]["version"]) if again["workflow"] else None
+            conflict = {"routed_to": workflows.ref(workflow), "admitted": [{k: f[k] for k in ("fact", "value", "citations")} for f in against]}
+            if second is None or second["id"] == workflow["id"] or "presumed" in again:
+                decision = {**decision, "status": "needs_facts", "workflow": None, "conflict": conflict,
+                            "reason": "The readings of the files contradict the routing; a person chooses."}
+                return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage + result["usage"]},
+                                extractions=storage.extractions)
+            usage += result["usage"]
+            result = team.run(case=job["case"], files=files, workflow=second, knowledge=family_knowledge(job, second),
+                              edits=job["edits"], on_event=on_event, routed=[{**f, "citations": f["citations"]} for f in against])
+            if contradicted(second, result):
+                decision = {**decision, "status": "needs_facts", "workflow": None,
+                            "conflict": {**conflict, "rerouted_to": workflows.ref(second), "admitted_again": contradicted(second, result)},
+                            "reason": "The readings of the files contradict the routing twice; a person chooses."}
+                return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage + result["usage"]},
+                                extractions=storage.extractions)
+            decision = {**again, "facts": [{k: f[k] for k in ("fact", "value", "citations")} for f in against], "rerouted": conflict}
+            workflow = second
         result["usage"] = usage + result["usage"]
         outcomes, proposals = lessons(workflow, job["case"]["id"], result)
         return _outcome(routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions,
