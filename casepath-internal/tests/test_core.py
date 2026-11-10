@@ -145,6 +145,27 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual((outcome["status"], outcome["error"]), ("completed", None))  # the run goes on with the first answer
         self.assertEqual(outcome["routing"]["status"], "needs_facts")  # whose unquoted value does not count
 
+    def reroute_job(self):
+        defect = Catalogue.load(FIXTURES).get("example-defect")
+        loan = {**json.loads(json.dumps(defect)), "id": "example-loan", "title": "Loan", "applies_when": {"fact": "legal_area", "is": "loan"}}
+        return {**job([], workflow_id=None), "workflows": [defect, loan], "options": {"read_scans": True, "scope": "checklist"}}
+
+    def test_a_routing_fact_the_readings_contradict_routes_once_more(self):
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(self.reroute_job(), model, core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["status"], outcome["workflow"]["id"]), ("completed", "example-loan"))
+        self.assertEqual(outcome["routing"]["rerouted"]["routed_to"]["id"], "example-defect")
+
+    def test_when_nothing_fits_the_admitted_value_the_case_is_handed_over_with_the_conflict(self):
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "other", "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(self.reroute_job(), model, core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["status"], outcome["workflow"], outcome["routing"]["status"]), ("completed", None, "needs_facts"))
+        self.assertEqual(outcome["routing"]["conflict"]["admitted"][0]["value"], "other")
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:

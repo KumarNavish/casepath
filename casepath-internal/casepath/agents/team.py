@@ -964,7 +964,8 @@ def confirm_facts(model, work, effort="medium"):
     same order (each reading is its own request). A deciding fact's value counts only when every reading gives it: where
     readings give different values the fact is conflicting and a person settles it; where only some find a value the
     fact stays unknown, with their quotes. ``work.readings`` is the number of readings in all (the first included)."""
-    facts = gating_facts(work)
+    routing = workflows.condition_facts(work.base.get("applies_when"))
+    facts = gating_facts(work) + [f for f in work.graph["facts"] if f["id"] in routing and f not in gating_facts(work)]
     if not facts:
         return {"checked": 0}
     more = max(1, getattr(work, "readings", DEFAULT_READINGS) - 1)
@@ -994,6 +995,8 @@ def confirm_facts(model, work, effort="medium"):
         definition, first = fact, work.facts.get(fact["id"])
         status, value, located = second.get(fact["id"], ("unknown", None, []))
         if first is not None and first["status"] == "conflicting":
+            if first.get("reason_code") == "routing_conflict" and status == "established" and same_reading(definition, first["second_value"], value):
+                first["readings_agree_on"] = value  # every reading gives one value against the routing: routing reconsiders it
             continue
         if status == "conflict":  # the further readings themselves differ: a person decides
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "conflicting", "value": first["value"] if first else None,
