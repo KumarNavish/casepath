@@ -873,10 +873,14 @@ def confirm_facts(model, work, effort="medium"):
             work.emit("source_checker", "fact.located", fact=fact["id"], status="unknown", quotes=len(quotes), missed=0,
                       cite=quotes[0] if quotes else None)
             single += 1
-        elif located:  # both readings leave it open; the second one quotes the passage that raises it
-            quotes = (first["citations"] if first is not None else []) + located
-            work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": quotes,
-                                      "verdict": "not_checked", "by": (first or {}).get("by", "second_reading")}
+        elif located and first is not None and first.get("citations"):
+            # Both readings leave it open and both quote a passage that raises it: the fact is raised and left open.
+            work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": first["citations"] + located,
+                                      "verdict": "not_checked", "by": first.get("by", "second_reading")}
+        elif first is not None and first["status"] == "unknown" and first.get("citations"):
+            # Both leave it open, but only one finds a passage that raises it. That the files raise the matter counts, like a
+            # value, only when both readings give it; otherwise the fact counts as not mentioned.
+            first.update(citations=[], raised_by_one_reading=True)
     work.facts_confirmed = True
     summary = {"checked": len(facts), "agreed": agreed, "differed": differed, "single": single}
     work.emit("source_checker", "agent.end", summary=f"Second reading: {agreed} agree, {differed} differ, {single} found by one reading only.",

@@ -93,6 +93,24 @@ class PresumptionUseTests(unittest.TestCase):
                                            "citations": [{"file": "f1", "quote": QUOTE}], "verdict": "not_checked"}
         self.assertEqual(work.accepted_facts(), {})
 
+    def test_a_fact_counts_as_raised_only_when_both_readings_quote_a_passage_that_raises_it(self):
+        from casepath.agents.team import confirm_facts
+        from tests.scripted import ScriptedModel
+        cite = [{"file": "f1", "quote": QUOTE}]
+        open_quoted = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": cite}
+        open_silent = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}
+        for second, presumed in ((open_silent, True), (open_quoted, False)):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+            work.facts["landlord_notified"] = {**open_quoted, "citations": work.located(cite)[0], "verdict": "not_checked", "by": "claim_reader"}
+            confirm_facts(ScriptedModel([], second_reading=[second]), work)
+            self.assertEqual("landlord_notified" in work.presumptions(), presumed, second)
+        # A value found by one reading still holds the fact open: the presumption does not replace it.
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True,
+                                           "citations": work.located(cite)[0], "verdict": None, "by": "claim_reader"}
+        confirm_facts(ScriptedModel([], second_reading=[open_silent]), work)
+        self.assertEqual(work.accepted_facts(), {})
+
 
 class ReplyTests(unittest.TestCase):
     def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
