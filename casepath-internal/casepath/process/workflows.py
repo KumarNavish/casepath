@@ -255,25 +255,49 @@ def ref(workflow):
     return {"id": workflow["id"], "version": workflow["version"], "title": workflow["title"], "status": workflow["status"]}
 
 
+def _satisfying(condition):
+    """The fact values a plain condition (``is``, or ``all`` of them) states, so a presumed routing fact can carry its value."""
+    if isinstance(condition, dict) and "all" in condition:
+        out = {}
+        for child in condition["all"]:
+            out.update(_satisfying(child))
+        return out
+    if isinstance(condition, dict) and "is" in condition and "fact" in condition:
+        return {condition["fact"]: condition["is"]}
+    return {}
+
+
 def route(catalogue, facts):
-    """Select a workflow from routing facts, or say why none was selected."""
+    """Select a workflow from routing facts, or say why none was selected.
+
+    A workflow whose condition the facts leave open can still apply. When exactly one workflow can apply (no other
+    workflow's condition holds or is open, and no fallback stands beside it), it is selected and the routing facts its
+    condition needs are recorded as presumed from routing (``presumed``). The case is handed over only when no workflow
+    can apply or several remain."""
     selected, unknown = [], []
+    known = {k for k, v in facts.items() if v is not None}
     for workflow in catalogue.routable():
         if workflow.get("fallback") or workflow.get("applies_when") is None:
-            continue
+            continue  # a workflow without a routing condition is chosen by a person, never by routing
         verdict = evaluate_condition(workflow["applies_when"], facts)
         if verdict is True:
             selected.append(workflow)
         elif verdict is None:
             unknown.append(workflow)
+    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if len(selected) == 1:
         return {"status": "selected", "workflow": ref(selected[0]), "candidates": [], "needs": []}
     if len(selected) > 1:
         return {"status": "ambiguous", "workflow": None, "candidates": [ref(w) for w in selected], "needs": []}
+    if len(unknown) == 1 and not fallback:
+        only = unknown[0]
+        open_facts = sorted(condition_facts(only["applies_when"]) - known)
+        values = _satisfying(only["applies_when"])
+        return {"status": "selected", "workflow": ref(only), "candidates": [], "needs": [],
+                "presumed": [{"fact": f, "value": values.get(f)} for f in open_facts]}
     if unknown:
-        needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - {k for k, v in facts.items() if v is not None})
-        return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown], "needs": needs}
-    fallback = [w for w in catalogue.routable() if w.get("fallback")]
+        needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - known)
+        return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown + fallback], "needs": needs}
     if len(fallback) == 1:
         return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": []}
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}

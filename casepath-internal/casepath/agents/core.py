@@ -222,8 +222,9 @@ def route(model, catalogue, case, files, on_event):
         return {"status": "selected", "workflow": workflows.ref(workflow), "candidates": [], "needs": [],
                 "selected_by": case.get("workflow_selected_by")}, workflow
     facts = catalogue.routing_facts()
-    if not facts:
-        return workflows.route(catalogue, {}), None
+    if not facts:  # nothing to read: a fallback, or the one workflow that can apply, is prepared without a model call
+        decision = workflows.route(catalogue, {})
+        return decision, catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None
     evidence = Evidence(files)
     file_ids = list(evidence.files)
     schema = obj(facts=arr(obj(fact=choice([f["id"] for f in facts]), value={"type": ["string", "null"]},
@@ -250,6 +251,10 @@ def route(model, catalogue, case, files, on_event):
     known.update({k: v for k, v in ((case.get("intake") or {}).get("routing") or {}).items() if k in definitions})
     decision = workflows.route(catalogue, known)
     decision["facts"] = [{"fact": k, "value": v, "citations": cited.get(k, [])} for k, v in known.items()]
+    # The one workflow that can apply was selected with routing facts the files leave open: they are presumed from
+    # routing, never established, and shown as such.
+    decision["facts"] += [{"fact": p["fact"], "value": p["value"], "citations": [], "presumed": True}
+                          for p in decision.pop("presumed", []) if p["fact"] not in known]
     for row in answer.value.get("other_topic") or []:
         if hit := evidence.locate(row["file"], row["quote"]):
             decision["other_topic"] = {"topic": row["topic"], "citations": [hit]}

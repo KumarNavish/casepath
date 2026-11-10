@@ -11,9 +11,10 @@ from casepath.agents.azure_model import ModelResult, Turn
 
 
 class ScriptedModel:
-    def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=()):
+    def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=(), routing=()):
         self.turns = [t for t in turns if not t or not all(name in {"delegate", "complete"} for name, _ in t)]
         self.verdicts, self.default, self.second_reading = verdicts or {}, default_verdict, list(second_reading)
+        self.routing = list(routing)
         self.tool_choices = []
         self.instructions, self.tools, self.inputs = [], [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
@@ -35,6 +36,9 @@ class ScriptedModel:
         if name == "casepath_photo":
             return ModelResult(value={"description": "[Foto] Wand mit dunklen Flecken neben dem Fenster."}, usage={"input_tokens": 5},
                                deployment="d", response_id="p", attempts=1, seconds=0)
+        if name == "casepath_route":
+            return ModelResult(value={"facts": self.routing}, usage={"input_tokens": 5}, deployment="d", response_id="r",
+                               attempts=1, seconds=0)
         if name == "casepath_confirm_facts":
             return ModelResult(value={"facts": self.second_reading}, usage={"input_tokens": 5}, deployment="d", response_id="s",
                                attempts=1, seconds=0)

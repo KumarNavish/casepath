@@ -84,10 +84,24 @@ class RoutingTests(unittest.TestCase):
     def test_route_selects_asks_or_says_unmapped(self):
         catalogue = self.catalogue()
         self.assertEqual(route(catalogue, {"legal_area": "tenancy_defect"})["status"], "selected")
-        asked = route(catalogue, {})
-        self.assertEqual((asked["status"], asked["needs"]), ("needs_facts", ["legal_area"]))
         self.assertEqual(route(catalogue, {"legal_area": "other"})["status"], "unmapped")
         self.assertEqual(route(Catalogue.load(None), {"legal_area": "loan"})["status"], "unmapped")
+        loan = copy.deepcopy(FIXTURE)
+        loan.update(id="example-loan", applies_when={"fact": "legal_area", "is": "loan"})
+        asked = route(self.catalogue(loan), {})
+        self.assertEqual((asked["status"], asked["needs"]), ("needs_facts", ["legal_area"]))  # two can apply: a person decides
+
+    def test_the_only_workflow_that_can_apply_is_selected_with_its_routing_fact_presumed(self):
+        only = route(self.catalogue(), {})
+        self.assertEqual((only["status"], only["workflow"]["id"]), ("selected", "example-defect"))
+        self.assertEqual(only["presumed"], [{"fact": "legal_area", "value": "tenancy_defect"}])
+        loan = copy.deepcopy(FIXTURE)
+        loan.update(id="example-loan", applies_when={"fact": "legal_area", "is": "loan"})
+        self.assertEqual(route(self.catalogue(loan), {"legal_area": "other"})["status"], "unmapped")
+        # A fallback beside one open workflow: two can apply, so the case is handed over.
+        fallback = copy.deepcopy(FIXTURE)
+        fallback.update(id="example-fallback", fallback=True, applies_when=None)
+        self.assertEqual(route(self.catalogue(fallback), {})["status"], "needs_facts")
 
     def test_source_supported_fallback(self):
         fallback = copy.deepcopy(FIXTURE)

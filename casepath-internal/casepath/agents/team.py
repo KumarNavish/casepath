@@ -158,6 +158,7 @@ class CaseWork:
         if not self.file_ids:
             raise TeamError("no_files", "The case has no files to read.")
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
+        self.routing_presumed = {}  # routing facts presumed because only this case's workflow can apply
         self.brief = self.process_report = self.result = None
         self.documents_looked_for = False  # set once the document finder has reported
         self._state_shape = self._last_state = None
@@ -255,8 +256,15 @@ class CaseWork:
         return found, missed
 
     def presumptions(self):
-        """The workflow's presumptions that apply now: facts with no quotation at all in the files."""
-        return workflows.presumed(self.graph, self.facts)
+        """The workflow's presumptions that apply now: facts with no quotation at all in the files. A routing fact
+        presumed because this case's workflow was the only one that could apply is listed too, while the files leave it
+        open."""
+        out = {fact: {"fact": fact, "value": value, "applies": "routed", "source_ref": None, "by": "routing",
+                      "text": "Only this workflow can apply to the case, so routing presumes its condition."}
+               for fact, value in self.routing_presumed.items()
+               if self.facts.get(fact) is None or self.facts[fact]["status"] == "unknown"}
+        out.update(workflows.presumed(self.graph, self.facts))
+        return out
 
     def accepted_facts(self):
         accepted = {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
@@ -694,7 +702,9 @@ class CaseTeam:
         """``routed``: facts routing established with located quotes; they start as recorded facts and are checked like any other."""
         work = CaseWork(case=case, files=files, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
         for row in routed:
-            if row["fact"] in work.fact_defs and row.get("citations") and row.get("value") is not None:
+            if row.get("presumed") and row["fact"] in work.fact_defs and row.get("value") is not None:
+                work.routing_presumed[row["fact"]] = row["value"]
+            elif row["fact"] in work.fact_defs and row.get("citations") and row.get("value") is not None:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0}
@@ -779,12 +789,15 @@ def finalize(work):
         condition = casegraph.conjunction([{"fact": c["fact"], "value": _coerce(work, c["fact"], c["value"])} for c in row["applies_when"]])
         learning.append({**row, "applies_when": condition, "citations": located})
     questions = {q["fact"]: q["plain"] for q in (work.process_report or {}).get("questions", [])}
+    presumed = work.presumptions()
+    # A presumed fact is listed once: as presumed, with any passage that left it open in the files.
     return {"workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
             "agent_edits": work.agent_edits, "brief": work.brief, "questions": questions,
-            "facts": list(work.facts.values()) + [
-                {"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed", "by": "presumption",
-                 "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]}}
-                for k, p in work.presumptions().items()],
+            "facts": [f for f in work.facts.values() if f["fact"] not in presumed] + [
+                {"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed", "by": p.get("by", "presumption"),
+                 "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]},
+                 **({"left_open": work.facts[k]["citations"]} if work.facts.get(k, {}).get("citations") else {})}
+                for k, p in presumed.items()],
             "documents": list(work.documents.values()), "evaluation": evaluation,
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
