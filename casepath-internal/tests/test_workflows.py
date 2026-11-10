@@ -226,7 +226,8 @@ class ExactDeferralTests(unittest.TestCase):
                     if hits == 0:
                         self.assertNotIn(document["id"], listed)
                     elif hits < len(runs):
-                        self.assertEqual(listed[document["id"]], "depends", (path.name, facts, document["id"]))
+                        expected = "optional" if document.get("optional") else "depends"  # an optional need never becomes a hold
+                        self.assertEqual(listed[document["id"]], expected, (path.name, facts, document["id"]))
                     else:
                         self.assertNotEqual(listed[document["id"]], "depends", (path.name, facts, document["id"]))
                 deciding = {w["fact"] for w in result["waiting_for"]}
@@ -269,3 +270,13 @@ class SuggestionUnderOpenQuestionTests(unittest.TestCase):
         self.assertEqual([q["fact"] for q in row["questions"]], ["landlord_notified"])
         notice = next(d for d in result["documents"] if d["document"] == "notice_letter")
         self.assertEqual(notice["required"], "depends")
+
+
+class OptionalUnderOpenQuestionTests(unittest.TestCase):
+    def test_an_optional_need_stays_optional_while_a_question_is_open(self):
+        data = copy.deepcopy(FIXTURE)
+        next(d for d in data["documents"] if d["id"] == "photo")["optional"] = True
+        result = evaluate(data, {"legal_area": "tenancy_defect"})
+        row = next(d for d in result["documents"] if d["document"] == "photo")
+        self.assertEqual(row["required"], "optional")
+        self.assertNotIn("photo", [a.get("document") for a in result["next_actions"]])

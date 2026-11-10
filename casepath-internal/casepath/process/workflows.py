@@ -608,9 +608,9 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         row = dict(full_walk(first)[document["id"]])
         if not has(common, "document", document["id"]):
             facts_here = changes("document", document["id"])
-            if row["required"] == "suggested":
-                # A suggestion stays a suggestion while a question is open: never a hold, never a reason to wait.
-                # It names the questions that decide whether it applies.
+            if row["required"] in {"suggested", "optional"}:
+                # A suggestion or an optional need stays what it is while a question is open (an optional need can never
+                # become required): never a hold, never a reason to wait. It names the questions that decide whether it applies.
                 row.update(condition_facts=facts_here, questions=questions(facts_here))
             else:
                 deciding |= set(facts_here)
