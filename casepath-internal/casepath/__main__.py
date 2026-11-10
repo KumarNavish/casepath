@@ -24,6 +24,7 @@ DELEGATED = {
     "drawio": ("process.drawio", "main", "turn a draw.io process diagram into a draft workflow"),
     "mining": ("process.mining", "main", "reconstruct each real case's course and the pattern across cases"),
     "job": ("agents.core", "main", "run one agent job from JSON, as a queue worker would"),
+    "parity": ("parity", "main", "what this deployment runs, as hashes, for comparison with another deployment"),
 }
 
 
