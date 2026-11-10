@@ -47,12 +47,14 @@ class ScriptedModel:
         if name == "casepath_read_facts":
             rows = self.first_reading if self.first_reading is not None else self._scripted_reading()
             self.last_first_reading = rows
-            return ModelResult(value={"facts": rows}, usage={"input_tokens": 5}, deployment="d", response_id="f", attempts=1, seconds=0)
+            return ModelResult(value={"conditions": [_condition(r) for r in rows]}, usage={"input_tokens": 5}, deployment="d",
+                               response_id="f", attempts=1, seconds=0)
         if name == "casepath_confirm_facts":
-            asked = {f["id"] for f in json.loads(input[0]["content"])["facts"]}
+            parts = instructions.split("Conditions:\n", 1)
+            asked = set(json.loads(parts[1])) if len(parts) == 2 else {r["fact"] for r in self.last_first_reading}
             rows = self.second_reading if self.second_reading is not None else [r for r in self.last_first_reading if r["fact"] in asked]
-            return ModelResult(value={"facts": rows}, usage={"input_tokens": 5}, deployment="d", response_id="s",
-                               attempts=1, seconds=0)
+            return ModelResult(value={"conditions": [_condition(r) for r in rows]}, usage={"input_tokens": 5}, deployment="d",
+                               response_id="s", attempts=1, seconds=0)
         items = json.loads(input[0]["content"])["items"]
         value = {"items": [{"item": i["item"], "verdict": self.verdicts.get(i["item"], self.default), "reason": "checked"} for i in items]}
         return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="v", attempts=1, seconds=0)
@@ -71,6 +73,19 @@ class ScriptedModel:
             if any(name == "report" for name, _ in turn):
                 break
         return rows
+
+
+def _condition(row):
+    """A scripted fact row ({fact, status, value, citations}) as the reading's answer for one condition."""
+    quote = (row.get("citations") or [{}])[0].get("quote", "")
+    if row["status"] != "established":
+        return {"id": row["fact"], "verdict": "unresolved", "value": None, "quote": quote}
+    folded = str(row["value"]).strip().lower()
+    if folded in {"true", "yes", "ja"}:
+        return {"id": row["fact"], "verdict": "true", "value": None, "quote": quote}
+    if folded in {"false", "no", "nein"}:
+        return {"id": row["fact"], "verdict": "false", "value": None, "quote": quote}
+    return {"id": row["fact"], "verdict": "true", "value": row["value"], "quote": quote}
 
 
 def delegate(agent, instruction="Do your part."):

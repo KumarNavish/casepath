@@ -208,22 +208,38 @@ class TeamTests(unittest.TestCase):
         self.assertEqual((row["status"], row["second_value"]), ("conflicting", False))
         self.assertNotIn("landlord_notified", work.accepted_facts())
 
-    def test_both_readings_answer_every_fact_in_the_same_structured_form(self):
-        from casepath.agents.team import CONFIRM, READ_FACTS, READING_RULES, CaseWork, read_facts
-        self.assertIn(READING_RULES, READ_FACTS)
-        self.assertIn(READING_RULES, CONFIRM)
-        self.assertIn("we do not know whether", READING_RULES)  # a stated doubt is unknown
+    def test_both_readings_judge_every_condition_in_the_same_form(self):
+        from casepath.agents.team import CONFIRM, READ_FACTS, CaseWork, confirm_facts, read_facts
+        self.assertEqual(READ_FACTS, CONFIRM)  # the same question, put the same way, twice
+        self.assertIn("never false", READ_FACTS)
+        self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is unresolved
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
-        doubt = [{"file": "f1", "quote": VENT}]
-        model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": doubt}])
+        model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None,
+                                                  "citations": [{"file": "f1", "quote": VENT}]}])
         calls = []
         original = model.respond_json
         model.respond_json = lambda **kw: calls.append(kw) or original(**kw)
         read_facts(model, work)
-        asked = [f["id"] for f in json.loads(calls[0]["input"][0]["content"])["facts"]]
-        self.assertEqual(asked, ["legal_area", "landlord_notified"])  # every fact of the process is asked, not only those explored
-        self.assertEqual(work.facts["legal_area"]["status"], "unknown")
-        self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 1))
+        confirm_facts(model, work)
+        first, second = (json.loads(c["instructions"].split("Conditions:\n", 1)[1]) for c in calls)
+        self.assertEqual(list(first), ["legal_area", "landlord_notified"])  # every condition, not only those explored
+        self.assertEqual(list(second), ["landlord_notified"])  # the deciding ones, an independent request
+        self.assertIn(f"The case is a {FIXTURE['title']}.", calls[0]["instructions"])
+        self.assertTrue(calls[0]["input"][0]["content"].startswith("CASE:\n[file message.eml]"))  # the files are the message
+        self.assertEqual({c["effort"] for c in calls}, {"low"})
+        row = calls[0]["schema"]["properties"]["conditions"]["items"]["properties"]
+        self.assertEqual(row["verdict"]["enum"], ["true", "false", "unresolved"])
+        # Both readings leave it open and quote the passage that raises it.
+        self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 2))
+
+    def test_a_false_verdict_counts_when_both_readings_give_it_with_a_quote(self):
+        from casepath.agents.team import CaseWork, confirm_facts, read_facts
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        no = [{"fact": "landlord_notified", "status": "established", "value": "no", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        model = ScriptedModel([], first_reading=no, second_reading=no)
+        read_facts(model, work)
+        confirm_facts(model, work)
+        self.assertEqual((work.facts["landlord_notified"]["status"], work.facts["landlord_notified"]["value"]), ("established", False))
 
     def test_every_fact_a_condition_uses_is_read_twice(self):
         """Facts that only decide whether a document is needed are read a second time too, with the same agreement rule."""
