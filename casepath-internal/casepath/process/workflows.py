@@ -27,6 +27,11 @@ STATUSES = {"draft", "reviewed"}
 SOURCE_KINDS = {"process_diagram", "process_guidance", "case_example", "expert_review", "knowledge", "case_edit"}
 
 
+# A presumption fills a fact the case files leave unstated, from a named source: "unstated" for a silence rule,
+# "routed" for the event a case type presupposes once a case is routed to it. A stated value always wins.
+PRESUMPTION_APPLIES = {"unstated", "routed"}
+
+
 class CatalogueError(ValueError):
     pass
 
@@ -169,6 +174,16 @@ def validate_workflow(data):
         if not ID.match(str(field.get("id"))) or not field.get("label"):
             raise CatalogueError("each summary field needs an id and a label")
         _refs(field, sources, f"summary field {field.get('id')}")
+    for item in data.get("presumptions", []):
+        fact = facts.get(item.get("fact"))
+        if fact is None:
+            raise CatalogueError(f"presumption: unknown fact {item.get('fact')!r}")
+        if item.get("applies") not in PRESUMPTION_APPLIES or not item.get("text"):
+            raise CatalogueError(f"presumption for {fact['id']!r}: applies must be one of {sorted(PRESUMPTION_APPLIES)} and text is required")
+        _check_condition({"fact": fact["id"], "is": item.get("value")}, facts, f"presumption for {fact['id']}")
+        _refs({"source_refs": [item.get("source_ref")]}, sources, f"presumption for {fact['id']}")
+    if len({p["fact"] for p in data.get("presumptions", [])}) != len(data.get("presumptions", [])):
+        raise CatalogueError("at most one presumption per fact")
     for kind in ("open_questions", "notes"):
         for item in data.get(kind, []):
             if not item.get("text"):
@@ -525,3 +540,16 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
     reached = sorted(set(base["reached"]) | {b["step"] for b in beyond if b["state"] == "reached"})
     return {**base, "outcome": outcome, "waiting_for": waiting, "documents": checklist, "next_actions": next_actions,
             "beyond": beyond, "reached": reached, "deferral": {"mode": "exact", "open_facts": open_facts}}
+
+
+def presumed(workflow, recorded):
+    """The workflow's presumptions that apply: each names a fact for which the files gave no quotation at all.
+
+    ``recorded`` maps fact ids to what the case work holds for them (``status`` and ``citations``). A fact that was
+    established, found conflicting, or recorded as unknown with a quotation keeps its own state."""
+    out = {}
+    for item in workflow.get("presumptions", []):
+        row = recorded.get(item["fact"])
+        if row is None or (row.get("status") == "unknown" and not row.get("citations")):
+            out[item["fact"]] = item
+    return out

@@ -166,7 +166,8 @@ class CaseWork:
         """Where the case stands while the agents work: the path through the process with the facts recorded so far,
         which steps the source checker has confirmed, and each document need under the step that needs it. It names
         ids and states only; the quotes stay in the fact and document events."""
-        provisional = {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] != "rejected"}
+        provisional = {k: p["value"] for k, p in self.presumptions().items()}
+        provisional.update({k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] != "rejected"})
         found = {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] != "rejected"}
         live = workflows.evaluate(self.graph, provisional, found, checked=True)
         confirmed = workflows.evaluate(self.graph, self.accepted_facts(), self.findings(), checked=True)
@@ -242,8 +243,13 @@ class CaseWork:
                 missed += 1
         return found, missed
 
+    def presumptions(self):
+        """The workflow's presumptions that apply now: facts with no quotation at all in the files."""
+        return workflows.presumed(self.graph, self.facts)
+
     def accepted_facts(self):
-        return {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
+        accepted = {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
+        return {**{k: p["value"] for k, p in self.presumptions().items()}, **accepted}
 
     def findings(self):
         return {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] == "accepted"}
@@ -745,7 +751,11 @@ def finalize(work):
     questions = {q["fact"]: q["plain"] for q in (work.process_report or {}).get("questions", [])}
     return {"workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
             "agent_edits": work.agent_edits, "brief": work.brief, "questions": questions,
-            "facts": list(work.facts.values()), "documents": list(work.documents.values()), "evaluation": evaluation,
+            "facts": list(work.facts.values()) + [
+                {"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed", "by": "presumption",
+                 "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]}}
+                for k, p in work.presumptions().items()],
+            "documents": list(work.documents.values()), "evaluation": evaluation,
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],

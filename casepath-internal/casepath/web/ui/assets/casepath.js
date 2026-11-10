@@ -15,7 +15,7 @@ document.documentElement.lang = LANG;
 const WORDS = {
   completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen",
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
-  not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
+  not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", presumed: "vermutet", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
   reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", step: "Schritt", note: "Hinweis",
 };
 const word = (value) => (LANG === "de" && WORDS[value]) || String(value ?? "").replace(/_/g, " ");
