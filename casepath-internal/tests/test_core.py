@@ -219,6 +219,43 @@ class CoreContractTests(unittest.TestCase):
         warning = next(w for w in outcome["result"]["warnings"] if w["kind"] == "routing_contradicted")
         self.assertEqual(warning["facts"][0]["value"], "loan")
 
+    def test_a_second_contradiction_is_a_hand_over(self):
+        class Twice(ScriptedModel):  # the readings of the rerouted run contradict the second workflow too
+            reads = 0
+            def respond_json(self, **kw):
+                if kw["name"] == "casepath_read_facts":
+                    self.reads += 1
+                    if self.reads == 2:
+                        self.first_reading = [{"fact": "legal_area", "status": "established", "value": "tenancy_defect",
+                                               "citations": [{"file": "f1", "quote": QUOTE}]}]
+                return super().respond_json(**kw)
+        model = Twice([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                      first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(self.reroute_job(), model, core.DirectoryBlobs(blobs))
+        self.assertEqual(model.reads, 2)
+        self.assertEqual((outcome["workflow"], outcome["routing"]["status"]), (None, "needs_facts"))
+        self.assertEqual(outcome["routing"]["conflict"]["rerouted_to"]["id"], "example-loan")
+        self.assertEqual(outcome["routing"]["conflict"]["admitted_again"][0]["value"], "tenancy_defect")
+
+    def test_a_workflow_routing_would_choose_only_by_presumption_is_a_hand_over(self):
+        job_ = self.reroute_job()
+        loan = {**job_["workflows"][1], "applies_when": {"all": [{"fact": "legal_area", "is": "loan"}, {"fact": "landlord_notified", "is": True}]}}
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}])
+        from casepath.process.workflows import route
+        self.assertIn("presumed", route(core.catalogue_of({**job_, "workflows": [job_["workflows"][0], loan]}), {"legal_area": "loan"}))
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare({**job_, "workflows": [job_["workflows"][0], loan]}, model, core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["workflow"], outcome["routing"]["status"]), (None, "needs_facts"))
+
+    def test_an_established_and_accepted_routing_fact_contradicts_the_condition(self):
+        defect = Catalogue.load(FIXTURES).get("example-defect")
+        row = {"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}
+        self.assertEqual(core.contradicted(defect, {"facts": [{**row, "verdict": "accepted"}]})[0]["value"], "loan")
+        self.assertEqual(core.contradicted(defect, {"facts": [{**row, "verdict": "rejected"}]}), [])
+        self.assertEqual(core.contradicted(defect, {"facts": [{**row, "value": "tenancy_defect", "verdict": "accepted"}]}), [])
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:

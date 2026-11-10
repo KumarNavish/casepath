@@ -149,6 +149,15 @@ class PresumptionUseTests(unittest.TestCase):
         self.assertEqual(work.facts["landlord_notified"]["open_readings"], [True, None, False])
         self.assertNotIn("landlord_notified", work.presumptions())  # one found open answer holds it under the default
 
+    def test_a_routed_presumption_replaces_a_value_the_check_rejected(self):
+        from casepath.process.workflows import presumed
+        wf = with_presumption(applies="routed", value=True)
+        rejected = {"landlord_notified": {"fact": "landlord_notified", "status": "established", "value": False, "verdict": "rejected", "citations": [1]}}
+        self.assertIn("landlord_notified", presumed(wf, rejected))
+        self.assertNotIn("landlord_notified", presumed(with_presumption(applies="unstated", value=True), rejected))
+        accepted = {"landlord_notified": {**rejected["landlord_notified"], "verdict": "accepted"}}
+        self.assertNotIn("landlord_notified", presumed(wf, accepted))
+
     def test_the_two_open_rules_on_recorded_answers(self):
         from casepath.process.workflows import open_without_raise, raised_open
         row = lambda *opens: {"status": "unknown", "citations": [1], "open_readings": list(opens)}
