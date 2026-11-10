@@ -1,15 +1,9 @@
 {
  "format": "study3-spec/1",
- "status": "DRAFT. Items listed under open_items are fixed before ANALYSIS_PLAN_STUDY3.md is committed. analysis/study3.py reads everything below; nothing here is repeated in code.",
+ "status": "FINAL except the product commit (product.commit, product.source_tree_sha256, product_evaluator.*.package.commit). Matches ANALYSIS_PLAN_STUDY3.md. analysis/study3.py reads everything below; nothing here is repeated in code.",
  "open_items": [
-  "hypotheses: final order and comparators after round 4 (STUDY3_DESIGN.md section 6)",
-  "designs.*.store.fresh2: file names the runners will write (defaults below follow one folder per run label)",
-  "designs.self_consistency: number of samples per run (draft: 5) and whether the Rules in context runs count as samples",
-  "designs.core.cost.multiplier: readings paid per text-run (development: 2, two readings per run)",
-  "product_evaluator: worktree of the frozen product commit and the converted fresh2 catalogues",
   "product.commit and product.source_tree_sha256: the frozen commit (40 hex digits; also product_evaluator.*.package.commit) and its `python -m casepath parity` source_tree_sha256; harness/study3/run_all.py refuses fresh2 until both match the worktree",
-  "product.env: CASEPATH_MODEL_REASONING=true; add the number of readings here if round 4 makes it a setting",
-  "tenancy_subsets.defining_event_false: the definition (draft: empty request set and no held document)"
+  "product_evaluator.tenancy.package.commit and product_evaluator.theft.package.commit: the same frozen commit"
  ],
  "statistics": {
   "alpha": 0.05,
@@ -20,186 +14,1152 @@
   "noninferiority": "paired cluster bootstrap; p = share of resamples whose difference (A - B) reaches the margin"
  },
  "regimes": {
-  "tenancy": {"cluster": "family_id", "cluster_label": "families", "unit": "claim"},
-  "theft": {"cluster": "condition", "cluster_label": "changed facts", "unit": "changed-fact pair"}
+  "tenancy": {
+   "cluster": "family_id",
+   "cluster_label": "families",
+   "unit": "claim"
+  },
+  "theft": {
+   "cluster": "condition",
+   "cluster_label": "changed facts",
+   "unit": "changed-fact pair"
+  }
  },
  "data": {
-  "fresh": {"label": "Study 2 data, development data since Study 2", "theft_stories": null},
-  "fresh2": {"label": "Study 3 sealed data", "theft_stories": null}
+  "fresh": {
+   "label": "Study 2 data, development data since Study 2",
+   "theft_stories": null
+  },
+  "fresh2": {
+   "label": "Study 3 sealed data",
+   "theft_stories": null
+  }
  },
  "measures": {
-  "strict_unsafe": {"regime": "tenancy", "label": "strict unsafe errors per claim", "higher_is_better": false},
-  "all_deviations": {"regime": "tenancy", "label": "all deviations per claim", "higher_is_better": false},
-  "requested_share": {"regime": "tenancy", "label": "requested share of required-now documents", "higher_is_better": true},
-  "errors": {"regime": "theft", "label": "wrong + missed changes per pair", "higher_is_better": false},
-  "errors_dedup": {"regime": "theft", "label": "wrong + missed per pair, repeated errors once per story and run", "higher_is_better": false}
+  "strict_unsafe": {
+   "regime": "tenancy",
+   "label": "strict unsafe errors per claim",
+   "higher_is_better": false
+  },
+  "all_deviations": {
+   "regime": "tenancy",
+   "label": "all deviations per claim",
+   "higher_is_better": false
+  },
+  "requested_share": {
+   "regime": "tenancy",
+   "label": "requested share of required-now documents",
+   "higher_is_better": true
+  },
+  "errors": {
+   "regime": "theft",
+   "label": "wrong + missed changes per pair",
+   "higher_is_better": false
+  },
+  "errors_dedup": {
+   "regime": "theft",
+   "label": "wrong + missed per pair, repeated errors once per story and run",
+   "higher_is_better": false
+  }
  },
- "deciding_agents": ["router", "claim_reader", "source_checker", "document_finder"],
+ "deciding_agents": [
+  "router",
+  "claim_reader",
+  "source_checker",
+  "document_finder"
+ ],
  "deciding_agents_note": "Calls that can decide the checklist: routing, the two readings and the document judgments. These are the agents a checklist-only run calls. All other agents (process_builder, result_checker, any other) are 'the rest'.",
  "product": {
   "note": "The product under test, read by harness/study3/run_all.py. env: product settings added to harness/product/run_api.settings_env for every product run; design_env: per design. The fresh2 tenancy rule templates have the SHA-256 of fresh/'s (both MANIFEST.json files), so the fresh-serial-sync workflows apply unchanged; run_all.py checks this again before a fresh2 run.",
   "commit": "FROZEN-COMMIT-OPEN",
   "source_tree_sha256": "FROZEN-TREE-OPEN",
   "subdir": "casepath-internal",
-  "env": {"CASEPATH_MODEL_REASONING": "true"},
-  "design_env": {"casepath": {}, "casepath_checklist": {"CASEPATH_RUN_SCOPE": "checklist"}},
-  "catalogues": {"tenancy": "harness/product/workflows/fresh-serial-sync", "theft": "harness/product/workflows/theft-reviewed"}
+  "env": {
+   "CASEPATH_MODEL_REASONING": "true"
+  },
+  "design_env": {
+   "casepath": {},
+   "casepath_checklist": {
+    "CASEPATH_RUN_SCOPE": "checklist"
+   }
+  },
+  "catalogues": {
+   "tenancy": "harness/product/workflows/fresh-serial-sync",
+   "theft": "harness/product/workflows/theft-reviewed"
+  }
  },
  "product_evaluator": {
   "note": "package = the product package at a commit of this repository, extracted read-only with git archive; or a folder path",
-  "tenancy": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh-serial-sync"},
-  "theft": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/theft-reviewed"}
+  "tenancy": {
+   "package": {
+    "commit": "FROZEN-COMMIT-OPEN",
+    "subdir": "casepath-internal"
+   },
+   "catalogue": "harness/product/workflows/fresh-serial-sync"
+  },
+  "theft": {
+   "package": {
+    "commit": "FROZEN-COMMIT-OPEN",
+    "subdir": "casepath-internal"
+   },
+   "catalogue": "harness/product/workflows/theft-reviewed"
+  }
  },
  "designs": [
-  {"key": "casepath", "label": "CasePath", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
+  {
+   "key": "casepath",
+   "label": "CasePath",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
    "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_casepath.json", "key": "PRODUCT|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_casepath.json", "key": "PRODUCT|{case}|{run}", "field": "plan"}},
-   "cost": {"method": "plan_keys", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl"}},
-  {"key": "casepath_checklist", "label": "CasePath, checklist only", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
-   "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_casepath_checklist.json", "key": "PRODUCT|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_casepath_checklist.json", "key": "PRODUCT|{case}|{run}", "field": "plan"}},
-   "cost": {"method": "plan_keys", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl"}},
-  {"key": "ric", "label": "Rules in context", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
-   "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_ric_luna.json", "key": "B1v2p|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_ric_luna.json", "key": "Rpack|{case}|{run}", "field": "plan"}},
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_casepath.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_casepath.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    }
+   },
    "cost": {
-    "tenancy": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6-luna.jsonl", "match": {"tag.exp": "v2-tenancy", "tag.method": "B1v2p"}, "case_field": "tag.case", "cost_field": "cost"},
-    "theft": {"method": "ledger", "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl", "match": {"tag.method": "Rv2p"}, "case_field": "tag.case", "cost_field": "cost"}}},
-  {"key": "ric_frontier", "label": "Rules in context, frontier", "model": "gpt-6.1-terra", "regimes": ["tenancy", "theft"], "runs": 3,
+    "method": "plan_keys",
+    "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl"
+   }
+  },
+  {
+   "key": "casepath_checklist",
+   "label": "CasePath, checklist only",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
    "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_ric_terra.json", "key": "B1v2p|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_ric_terra.json", "key": "Rpack|{case}|{run}", "field": "plan"}},
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_casepath_checklist.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_casepath_checklist.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    }
+   },
    "cost": {
-    "tenancy": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl", "match": {"tag.exp": "v2-tenancy", "tag.method": "B1v2p"}, "case_field": "tag.case", "cost_field": "cost"},
-    "theft": {"method": "ledger", "ledger": "runs/v2/cp4/ledger_dev_gpt-6.1-terra.jsonl", "match": {"tag.method": "Rv2p"}, "case_field": "tag.case", "cost_field": "cost"}}},
-  {"key": "self_consistency", "label": "Self-consistency", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
+    "method": "plan_keys",
+    "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl"
+   }
+  },
+  {
+   "key": "ric",
+   "label": "Rules in context",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
    "store": {
-    "tenancy": {"derive": "majority", "samples_per_run": 5, "samples": {"path": "runs/study3/{label}/samples_tenancy_ric_luna.json", "key": "{case}|{sample}", "field": "plan"}},
-    "theft": {"derive": "majority", "samples_per_run": 5, "samples": {"path": "runs/study3/{label}/samples_theft_ric_luna.json", "key": "{case}|{sample}", "field": "plan"}}},
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_ric_luna.json",
+     "key": "B1v2p|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_ric_luna.json",
+     "key": "Rpack|{case}|{run}",
+     "field": "plan"
+    }
+   },
    "cost": {
-    "tenancy": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "B1V2P_SAMPLE"}, "case_field": "case", "cost_field": "usd"},
-    "theft": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "RPACK"}, "case_field": "case", "cost_field": "usd"}}},
-  {"key": "model_executes_rules", "label": "Model executes rules", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
+    "tenancy": {
+     "method": "ledger",
+     "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+     "match": {
+      "tag.exp": "v2-tenancy",
+      "tag.method": "B1v2p"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    },
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "tag.method": "Rv2p"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    }
+   }
+  },
+  {
+   "key": "ric_frontier",
+   "label": "Rules in context, frontier",
+   "model": "gpt-6.1-terra",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
    "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_model_executes_rules.json", "key": "COL|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_model_executes_rules.json", "key": "COL|{case}|{run}", "field": "plan"}},
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_ric_terra.json",
+     "key": "B1v2p|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_ric_terra.json",
+     "key": "Rpack|{case}|{run}",
+     "field": "plan"
+    }
+   },
    "cost": {
-    "tenancy": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "COL"}, "case_field": "case", "cost_field": "usd"},
-    "theft": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "COL_THEFT"}, "case_field": "case", "cost_field": "usd"}}},
-  {"key": "react", "label": "ReAct", "model": "gpt-6-luna", "regimes": ["tenancy", "theft"], "runs": 3,
+    "tenancy": {
+     "method": "ledger",
+     "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl",
+     "match": {
+      "tag.exp": "v2-tenancy",
+      "tag.method": "B1v2p"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    },
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/v2/cp4/ledger_dev_gpt-6.1-terra.jsonl",
+     "match": {
+      "tag.method": "Rv2p"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    }
+   }
+  },
+  {
+   "key": "self_consistency",
+   "label": "Self-consistency",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
    "store": {
-    "tenancy": {"path": "runs/study3/{label}/plans_tenancy_react.json", "key": "REACT|{case}|{run}", "field": "plan"},
-    "theft": {"path": "runs/study3/{label}/plans_theft_react.json", "key": "REACT|{case}|{run}", "field": "plan"}},
+    "tenancy": {
+     "derive": "majority",
+     "samples_per_run": 5,
+     "samples": {
+      "path": "runs/study3/{label}/samples_tenancy_ric_luna.json",
+      "key": "{case}|{sample}",
+      "field": "plan"
+     }
+    },
+    "theft": {
+     "derive": "majority",
+     "samples_per_run": 5,
+     "samples": {
+      "path": "runs/study3/{label}/samples_theft_ric_luna.json",
+      "key": "{case}|{sample}",
+      "field": "plan"
+     }
+    }
+   },
    "cost": {
-    "tenancy": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "REACT"}, "case_field": "case", "cost_field": "usd"},
-    "theft": {"method": "ledger", "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl", "match": {"arm": "REACT_THEFT"}, "case_field": "case", "cost_field": "usd"}}},
-  {"key": "two_valued_false", "label": "Two-valued, unresolved = false", "model": "none (product readings)", "regimes": ["tenancy", "theft"], "runs": 3,
-   "store": {"tenancy": {"derive": "two_valued", "from_design": "casepath", "unresolved": false},
-             "theft": {"derive": "two_valued", "from_design": "casepath", "unresolved": false}},
-   "cost": {"method": "none"}},
-  {"key": "two_valued_true", "label": "Two-valued, unresolved = true", "model": "none (product readings)", "regimes": ["tenancy", "theft"], "runs": 3,
-   "store": {"tenancy": {"derive": "two_valued", "from_design": "casepath", "unresolved": true},
-             "theft": {"derive": "two_valued", "from_design": "casepath", "unresolved": true}},
-   "cost": {"method": "none"}},
-  {"key": "core", "label": "Core (two readings, outside the product)", "model": "gpt-6-luna", "regimes": ["theft"], "runs": 3,
-   "store": {"theft": {"path": "runs/study3/{label}/plans_theft_core_luna.json", "key": "CP4|{case}|{run}", "field": "plan"}},
-   "cost": {"theft": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6-luna.jsonl", "match": {"tag.exp": "v3-theft", "tag.method": "CPv3-read"}, "case_field": "tag.case", "cost_field": "cost", "multiplier": 2,
-                      "note": "each run uses two readings, its own and the next run's; the ledger holds one reading per text-run"}}},
-  {"key": "ric_original", "label": "Rules in context, original rules", "model": "gpt-6-luna", "regimes": ["theft"], "runs": 3,
-   "store": {"theft": {"path": "runs/study3/{label}/plans_theft_ric_original_luna.json", "key": "R|{case}|{run}", "field": "plan"}},
-   "cost": {"theft": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6-luna.jsonl", "match": {"tag.exp": "theft", "tag.method": "R"}, "case_field": "tag.case", "cost_field": "cost"}}},
-  {"key": "ric_original_frontier", "label": "Rules in context, original rules, frontier", "model": "gpt-6.1-terra", "regimes": ["theft"], "runs": 3,
-   "store": {"theft": {"path": "runs/study3/{label}/plans_theft_ric_original_terra.json", "key": "R|{case}|{run}", "field": "plan"}},
-   "cost": {"theft": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl", "match": {"tag.exp": "theft", "tag.method": "R"}, "case_field": "tag.case", "cost_field": "cost"}}}
+    "tenancy": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "B1V2P_SAMPLE"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    },
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "RPACK"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    }
+   },
+   "note": "Five samples per run from 15 stored samples per case (run r uses samples 5r to 5r+4), as harness/study3 writes them."
+  },
+  {
+   "key": "model_executes_rules",
+   "label": "Model executes rules",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_model_executes_rules.json",
+     "key": "COL|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_model_executes_rules.json",
+     "key": "COL|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "tenancy": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "COL"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    },
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "COL_THEFT"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    }
+   }
+  },
+  {
+   "key": "react",
+   "label": "ReAct",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_react.json",
+     "key": "REACT|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_react.json",
+     "key": "REACT|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "tenancy": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "REACT"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    },
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+     "match": {
+      "arm": "REACT_THEFT"
+     },
+     "case_field": "case",
+     "cost_field": "usd"
+    }
+   }
+  },
+  {
+   "key": "two_valued_false",
+   "label": "Two-valued, unresolved = false",
+   "model": "none (product readings)",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "tenancy": {
+     "derive": "two_valued",
+     "from_design": "casepath",
+     "unresolved": false
+    },
+    "theft": {
+     "derive": "two_valued",
+     "from_design": "casepath",
+     "unresolved": false
+    }
+   },
+   "cost": {
+    "method": "none"
+   }
+  },
+  {
+   "key": "two_valued_true",
+   "label": "Two-valued, unresolved = true",
+   "model": "none (product readings)",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "tenancy": {
+     "derive": "two_valued",
+     "from_design": "casepath",
+     "unresolved": true
+    },
+    "theft": {
+     "derive": "two_valued",
+     "from_design": "casepath",
+     "unresolved": true
+    }
+   },
+   "cost": {
+    "method": "none"
+   }
+  },
+  {
+   "key": "core",
+   "label": "Core (two readings, outside the product)",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_core_luna.json",
+     "key": "CP4|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+     "match": {
+      "tag.exp": "v3-theft",
+      "tag.method": "CPv3-read"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost",
+     "multiplier": 2,
+     "note": "The driver pairs run r with run (r + 1) mod 3, so each text-run pays one reading and uses two (its own and the next run's). Cost per text-run = 2 x (ledger cost of the paid readings) / (texts x runs): the cost of the two readings one run uses."
+    }
+   }
+  },
+  {
+   "key": "ric_original",
+   "label": "Rules in context, original rules",
+   "model": "gpt-6-luna",
+   "regimes": [
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_ric_original_luna.json",
+     "key": "R|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+     "match": {
+      "tag.exp": "theft",
+      "tag.method": "R"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    }
+   }
+  },
+  {
+   "key": "ric_original_frontier",
+   "label": "Rules in context, original rules, frontier",
+   "model": "gpt-6.1-terra",
+   "regimes": [
+    "theft"
+   ],
+   "runs": 3,
+   "store": {
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_ric_original_terra.json",
+     "key": "R|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "theft": {
+     "method": "ledger",
+     "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl",
+     "match": {
+      "tag.exp": "theft",
+      "tag.method": "R"
+     },
+     "case_field": "tag.case",
+     "cost_field": "cost"
+    }
+   }
+  }
  ],
  "hypotheses": [
-  {"id": "H1", "text": "Theft, same model, same rules: CasePath makes fewer wrong + missed changes per pair than Rules in context.",
-   "regime": "theft", "measure": "errors", "a": "casepath", "b": "ric", "test": "signflip"},
-  {"id": "H2", "text": "Theft, every prior-work strategy: CasePath makes fewer wrong + missed changes per pair than each of Self-consistency, Model executes rules and ReAct (all three must hold).",
-   "regime": "theft", "measure": "errors", "a": "casepath", "b": ["self_consistency", "model_executes_rules", "react"], "test": "signflip"},
-  {"id": "H3", "text": "Tenancy, against the frontier model: CasePath's strict unsafe errors per claim are not higher than those of Rules in context, frontier, by 0.10 or more.",
-   "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "ric_frontier", "test": "noninferiority", "margin": 0.10},
-  {"id": "H4", "text": "Theft, against the frontier model: CasePath's wrong + missed changes per pair are not higher than those of Rules in context, frontier (same reviewed rules), by 0.25 or more.",
-   "regime": "theft", "measure": "errors", "a": "casepath", "b": "ric_frontier", "test": "noninferiority", "margin": 0.25}
+  {
+   "id": "H1",
+   "text": "Theft, same model, same rules: CasePath makes fewer wrong + missed changes per pair than Rules in context.",
+   "regime": "theft",
+   "measure": "errors",
+   "a": "casepath",
+   "b": "ric",
+   "test": "signflip"
+  },
+  {
+   "id": "H2",
+   "text": "Tenancy, same model: CasePath makes fewer strict unsafe errors per claim than Rules in context.",
+   "regime": "tenancy",
+   "measure": "strict_unsafe",
+   "a": "casepath",
+   "b": "ric",
+   "test": "signflip",
+   "beside": [
+    {
+     "subset": "ordinary"
+    },
+    {
+     "subset": [
+      "denied_event",
+      "open_event"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "H3",
+   "text": "Theft, every prior-work strategy: CasePath makes fewer wrong + missed changes per pair than each of Self-consistency, Model executes rules and ReAct (all three must hold).",
+   "regime": "theft",
+   "measure": "errors",
+   "a": "casepath",
+   "b": [
+    "self_consistency",
+    "model_executes_rules",
+    "react"
+   ],
+   "test": "signflip"
+  },
+  {
+   "id": "H4",
+   "text": "Theft, against the frontier model: CasePath's wrong + missed changes per pair are not higher than those of Rules in context, frontier (same reviewed rules), by 0.25 or more.",
+   "regime": "theft",
+   "measure": "errors",
+   "a": "casepath",
+   "b": "ric_frontier",
+   "test": "noninferiority",
+   "margin": 0.25
+  },
+  {
+   "id": "H5",
+   "text": "Tenancy, against the frontier model: CasePath makes fewer strict unsafe errors per claim than Rules in context, frontier.",
+   "regime": "tenancy",
+   "measure": "strict_unsafe",
+   "a": "casepath",
+   "b": "ric_frontier",
+   "test": "signflip",
+   "beside": [
+    {
+     "subset": "ordinary"
+    },
+    {
+     "subset": [
+      "denied_event",
+      "open_event"
+     ]
+    }
+   ]
+  }
  ],
  "tenancy_subsets": {
-  "defining_event_false": {"label": "defining event false (empty request set, no held document)", "request_set_empty": true, "held_set_empty": true},
-  "without_defining_event_false": {"label": "without those claims", "not": "defining_event_false"},
-  "request_set_empty": {"label": "empty request set (held documents allowed)", "request_set_empty": true},
-  "open_fact": {"label": "claims with one fact left open", "open_fact": true}
+  "denied_event": {
+   "label": "denied event (empty request set, no held document)",
+   "request_set_empty": true,
+   "held_set_empty": true
+  },
+  "open_event": {
+   "label": "open event (empty request set, at least one held document)",
+   "request_set_empty": true,
+   "held_set_empty": false
+  },
+  "ordinary": {
+   "label": "ordinary (request set not empty)",
+   "request_set_empty": false
+  },
+  "open_fact": {
+   "label": "one fact left open",
+   "open_fact": true
+  },
+  "open_branch_fact": {
+   "label": "open branch fact (open fact, request set not empty)",
+   "open_fact": true,
+   "request_set_empty": false
+  },
+  "open_defining_event": {
+   "label": "open defining event (open fact, request set empty)",
+   "open_fact": true,
+   "request_set_empty": true
+  }
  },
- "languages": {"English": ["en"], "German": ["de"]},
+ "languages": {
+  "English": [
+   "en"
+  ],
+  "German": [
+   "de"
+  ]
+ },
  "secondary": {
   "contrasts": [
-   {"id": "S1a", "section": "tenancy, same model", "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "ric", "test": "signflip"},
-   {"id": "S1b", "section": "tenancy, same model", "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "self_consistency", "test": "signflip"},
-   {"id": "S1c", "section": "tenancy, same model", "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "model_executes_rules", "test": "signflip"},
-   {"id": "S1d", "section": "tenancy, same model", "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "react", "test": "signflip"},
-   {"id": "S1e", "section": "tenancy, same model", "regime": "tenancy", "measure": "all_deviations", "a": "casepath", "b": "ric", "test": "signflip"},
-   {"id": "S1f", "section": "tenancy, same model", "regime": "tenancy", "measure": "all_deviations", "a": "casepath", "b": "self_consistency", "test": "signflip"},
-   {"id": "S1g", "section": "tenancy, same model", "regime": "tenancy", "measure": "all_deviations", "a": "casepath", "b": "model_executes_rules", "test": "signflip"},
-   {"id": "S1h", "section": "tenancy, same model", "regime": "tenancy", "measure": "all_deviations", "a": "casepath", "b": "react", "test": "signflip"},
-   {"id": "S1i", "section": "tenancy, same model", "regime": "tenancy", "measure": "requested_share", "a": "casepath", "b": "ric", "test": "noninferiority", "margin": 0.05},
-   {"id": "S1j", "section": "tenancy, same model", "regime": "tenancy", "measure": "requested_share", "a": "casepath", "b": "self_consistency", "test": "noninferiority", "margin": 0.05},
-   {"id": "S1k", "section": "tenancy, same model", "regime": "tenancy", "measure": "requested_share", "a": "casepath", "b": "model_executes_rules", "test": "noninferiority", "margin": 0.05},
-   {"id": "S1l", "section": "tenancy, same model", "regime": "tenancy", "measure": "requested_share", "a": "casepath", "b": "react", "test": "noninferiority", "margin": 0.05},
-   {"id": "S4a", "section": "original rules as comparator", "regime": "theft", "measure": "errors", "a": "casepath", "b": "ric_original_frontier", "test": "noninferiority", "margin": 0.25},
-   {"id": "S4b", "section": "original rules as comparator", "regime": "theft", "measure": "errors", "a": "casepath", "b": "ric_original", "test": "signflip"},
-   {"id": "S5a", "section": "CasePath against its parts", "regime": "tenancy", "measure": "strict_unsafe", "a": "casepath", "b": "casepath_checklist", "test": "signflip"},
-   {"id": "S5b", "section": "CasePath against its parts", "regime": "tenancy", "measure": "all_deviations", "a": "casepath", "b": "casepath_checklist", "test": "signflip"},
-   {"id": "S5c", "section": "CasePath against its parts", "regime": "theft", "measure": "errors", "a": "casepath", "b": "casepath_checklist", "test": "signflip"},
-   {"id": "S5d", "section": "CasePath against its parts", "regime": "theft", "measure": "errors", "a": "casepath", "b": "core", "test": "signflip"},
-   {"id": "S6a", "section": "repeated errors once per story and run", "regime": "theft", "measure": "errors_dedup", "a": "casepath", "b": "ric", "test": "signflip"},
-   {"id": "S6b", "section": "repeated errors once per story and run", "regime": "theft", "measure": "errors_dedup", "a": "casepath", "b": "self_consistency", "test": "signflip"},
-   {"id": "S6c", "section": "repeated errors once per story and run", "regime": "theft", "measure": "errors_dedup", "a": "casepath", "b": "model_executes_rules", "test": "signflip"},
-   {"id": "S6d", "section": "repeated errors once per story and run", "regime": "theft", "measure": "errors_dedup", "a": "casepath", "b": "react", "test": "signflip"},
-   {"id": "S6e", "section": "repeated errors once per story and run", "regime": "theft", "measure": "errors_dedup", "a": "casepath", "b": "ric_frontier", "test": "noninferiority", "margin": 0.25}
+   {
+    "id": "S1a",
+    "section": "ordinary claims, against the frontier model",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath",
+    "b": "ric_frontier",
+    "test": "noninferiority",
+    "margin": 0.1,
+    "subset": "ordinary"
+   },
+   {
+    "id": "S1b",
+    "section": "ordinary claims, against the frontier model",
+    "regime": "tenancy",
+    "measure": "requested_share",
+    "a": "casepath",
+    "b": "ric_frontier",
+    "test": "noninferiority",
+    "margin": 0.05,
+    "subset": "ordinary"
+   },
+   {
+    "id": "S2a",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath",
+    "b": "self_consistency",
+    "test": "signflip"
+   },
+   {
+    "id": "S2b",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath",
+    "b": "model_executes_rules",
+    "test": "signflip"
+   },
+   {
+    "id": "S2c",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath",
+    "b": "react",
+    "test": "signflip"
+   },
+   {
+    "id": "S2d",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "self_consistency",
+    "test": "signflip"
+   },
+   {
+    "id": "S2e",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "model_executes_rules",
+    "test": "signflip"
+   },
+   {
+    "id": "S2f",
+    "section": "tenancy, same model",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "react",
+    "test": "signflip"
+   },
+   {
+    "id": "S3a",
+    "section": "all deviations per claim",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "ric",
+    "test": "signflip"
+   },
+   {
+    "id": "S3b",
+    "section": "all deviations per claim",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "ric_frontier",
+    "test": "signflip"
+   },
+   {
+    "id": "S4a",
+    "section": "theft, frontier and original rules",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath",
+    "b": "ric_frontier",
+    "test": "signflip"
+   },
+   {
+    "id": "S4b",
+    "section": "theft, frontier and original rules",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath",
+    "b": "ric_original_frontier",
+    "test": "noninferiority",
+    "margin": 0.25
+   },
+   {
+    "id": "S4c",
+    "section": "theft, frontier and original rules",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath",
+    "b": "ric_original",
+    "test": "signflip"
+   },
+   {
+    "id": "S5a",
+    "section": "CasePath against its parts",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "test": "signflip"
+   },
+   {
+    "id": "S5b",
+    "section": "CasePath against its parts",
+    "regime": "tenancy",
+    "measure": "all_deviations",
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "test": "signflip"
+   },
+   {
+    "id": "S5c",
+    "section": "CasePath against its parts",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "test": "signflip"
+   },
+   {
+    "id": "S5d",
+    "section": "CasePath against its parts",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath",
+    "b": "core",
+    "test": "signflip"
+   }
   ],
-  "cost_baseline": {"tenancy": "ric_frontier", "theft": "ric_frontier"},
-  "product_designs": ["casepath", "casepath_checklist"]
+  "cost_baseline": {
+   "tenancy": "ric_frontier",
+   "theft": "ric_frontier"
+  },
+  "product_designs": [
+   "casepath",
+   "casepath_checklist"
+  ],
+  "subset_tables": [
+   "denied_event",
+   "open_event",
+   "ordinary",
+   "open_fact",
+   "open_branch_fact",
+   "open_defining_event"
+  ]
  },
  "development_runs": {
   "fresh/r3": {
    "note": "Product round 3 on development data (WORKLOG 2026-11-10). Tenancy full product at e6c287d (r3b-full), checklist only at 250fca1 (r3c-check, two runs); theft full product at 9ca1207 (r3-full), checklist only at 250fca1 (r3c-check). Theft: stories 4-5 only.",
-   "theft_stories": [4, 5],
+   "theft_stories": [
+    4,
+    5
+   ],
    "product_evaluator": {
-    "tenancy": {"package": {"commit": "e6c287d89b2ec2de88ca3ac9eeb75b71949b9db9", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh-serial-sync"},
-    "theft": {"package": {"commit": "9ca1207413b78155a4cbcdeb35c0dd6d68e6c6c1", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/theft-reviewed"}
+    "tenancy": {
+     "package": {
+      "commit": "e6c287d89b2ec2de88ca3ac9eeb75b71949b9db9",
+      "subdir": "casepath-internal"
+     },
+     "catalogue": "harness/product/workflows/fresh-serial-sync"
+    },
+    "theft": {
+     "package": {
+      "commit": "9ca1207413b78155a4cbcdeb35c0dd6d68e6c6c1",
+      "subdir": "casepath-internal"
+     },
+     "catalogue": "harness/product/workflows/theft-reviewed"
+    }
    },
    "designs": {
     "casepath": {
-     "tenancy": {"path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r3b-full.json", "key": "PRODUCT|{case}|{run}", "field": "plan", "runs": 3},
-     "theft": {"path": "runs/product/plans_theft_gpt-6-luna_fresh_r3-full.json", "key": "PRODUCT|{case}|{run}", "field": "plan", "runs": 3}},
+     "tenancy": {
+      "path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r3b-full.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/plans_theft_gpt-6-luna_fresh_r3-full.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "casepath_checklist": {
-     "tenancy": {"path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r3c-check.json", "key": "PRODUCT|{case}|{run}", "field": "plan", "runs": 2},
-     "theft": {"path": "runs/product/plans_theft_gpt-6-luna_fresh_r3c-check.json", "key": "PRODUCT|{case}|{run}", "field": "plan", "runs": 3}},
+     "tenancy": {
+      "path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r3c-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 2
+     },
+     "theft": {
+      "path": "runs/product/plans_theft_gpt-6-luna_fresh_r3c-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "ric": {
-     "tenancy": {"path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json", "key": "B1v2p|{case}|{run}", "field": "plan", "runs": 3},
-     "theft": {"path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json", "key": "Rpack|{case}|{run}", "field": "plan", "runs": 3}},
+     "tenancy": {
+      "path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json",
+      "key": "B1v2p|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+      "key": "Rpack|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "ric_frontier": {
-     "tenancy": {"path": "runs/v2/plans_tenancy_gpt-6.1-terra_fresh_heldout.json", "key": "B1v2p|{case}|{run}", "field": "plan", "runs": 3},
-     "theft": {"path": "runs/v2/cp4/plans_theft_gpt-6.1-terra_fresh_reviewed.json", "key": "Rpack|{case}|{run}", "field": "plan", "runs": 3}},
+     "tenancy": {
+      "path": "runs/v2/plans_tenancy_gpt-6.1-terra_fresh_heldout.json",
+      "key": "B1v2p|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6.1-terra_fresh_reviewed.json",
+      "key": "Rpack|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "self_consistency": {
-     "tenancy": {"derive": "majority", "samples_per_run": 3, "runs": 1, "samples": {"path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json", "key": "B1v2p|{case}|{sample}", "field": "plan"},
-                 "cost": {"method": "ledger", "ledger": "runs/v2/ledger_gpt-6-luna.jsonl", "match": {"tag.exp": "v2-tenancy", "tag.method": "B1v2p"}, "case_field": "tag.case", "cost_field": "cost"}},
-     "theft": {"derive": "majority", "samples_per_run": 3, "runs": 1, "samples": {"path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json", "key": "Rpack|{case}|{sample}", "field": "plan"},
-               "cost": {"method": "ledger", "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl", "match": {"tag.method": "Rv2p"}, "case_field": "tag.case", "cost_field": "cost"}}},
+     "tenancy": {
+      "derive": "majority",
+      "samples_per_run": 3,
+      "runs": 1,
+      "samples": {
+       "path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json",
+       "key": "B1v2p|{case}|{sample}",
+       "field": "plan"
+      },
+      "cost": {
+       "method": "ledger",
+       "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+       "match": {
+        "tag.exp": "v2-tenancy",
+        "tag.method": "B1v2p"
+       },
+       "case_field": "tag.case",
+       "cost_field": "cost"
+      }
+     },
+     "theft": {
+      "derive": "majority",
+      "samples_per_run": 3,
+      "runs": 1,
+      "samples": {
+       "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+       "key": "Rpack|{case}|{sample}",
+       "field": "plan"
+      },
+      "cost": {
+       "method": "ledger",
+       "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl",
+       "match": {
+        "tag.method": "Rv2p"
+       },
+       "case_field": "tag.case",
+       "cost_field": "cost"
+      }
+     }
+    },
     "model_executes_rules": {
-     "tenancy": {"path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_COL.json", "key": "COL|{case}|{run}", "field": "plan", "runs": 3},
-     "theft": {"path": "runs/product/baselines_theft_gpt-6-luna_fresh.json", "key": "COL|{case}|{run}", "field": "plan", "runs": 1}},
+     "tenancy": {
+      "path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_COL.json",
+      "key": "COL|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/baselines_theft_gpt-6-luna_fresh.json",
+      "key": "COL|{case}|{run}",
+      "field": "plan",
+      "runs": 1
+     }
+    },
     "react": {
-     "tenancy": {"path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_REACT.json", "key": "REACT|{case}|{run}", "field": "plan", "runs": 3},
-     "theft": {"path": "runs/product/baselines_theft_gpt-6-luna_fresh.json", "key": "REACT|{case}|{run}", "field": "plan", "runs": 1}},
+     "tenancy": {
+      "path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_REACT.json",
+      "key": "REACT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/baselines_theft_gpt-6-luna_fresh.json",
+      "key": "REACT|{case}|{run}",
+      "field": "plan",
+      "runs": 1
+     }
+    },
     "core": {
-     "theft": {"path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json", "key": "CP4|{case}|{run}", "field": "plan", "runs": 3}},
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+      "key": "CP4|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "ric_original": {
-     "theft": {"path": "runs/v2/plans_theft_gpt-6-luna_fresh_heldout.json", "key": "R|{case}|{run}", "field": "plan", "runs": 3}},
+     "theft": {
+      "path": "runs/v2/plans_theft_gpt-6-luna_fresh_heldout.json",
+      "key": "R|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
     "ric_original_frontier": {
-     "theft": {"path": "runs/v2/plans_theft_gpt-6.1-terra_fresh_heldout.json", "key": "R|{case}|{run}", "field": "plan", "runs": 3}}
+     "theft": {
+      "path": "runs/v2/plans_theft_gpt-6.1-terra_fresh_heldout.json",
+      "key": "R|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    }
+   }
+  },
+  "fresh/r4b2": {
+   "note": "Product round 4b on development data, for information only. The full product has fewer than three runs at r4b2 (tenancy one run, theft none), so CasePath, checklist only at 1ee2c8b (r4b2-check, three runs) stands in for CasePath in both regimes, and is also the checklist-only design. Two-valued designs are derived from those checklist-only readings. All baselines as in fresh/r3. Theft: stories 4-5.",
+   "theft_stories": [
+    4,
+    5
+   ],
+   "product_evaluator": {
+    "tenancy": {
+     "package": {
+      "commit": "1ee2c8b34dcadffb8babd4ea70cc2512fbb63094",
+      "subdir": "casepath-internal"
+     },
+     "catalogue": "harness/product/workflows/fresh-serial-sync"
+    },
+    "theft": {
+     "package": {
+      "commit": "1ee2c8b34dcadffb8babd4ea70cc2512fbb63094",
+      "subdir": "casepath-internal"
+     },
+     "catalogue": "harness/product/workflows/theft-reviewed"
+    }
+   },
+   "designs": {
+    "casepath": {
+     "tenancy": {
+      "path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r4b2-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/plans_theft_gpt-6-luna_fresh_r4b2-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "casepath_checklist": {
+     "tenancy": {
+      "path": "runs/product/plans_tenancy_gpt-6-luna_fresh_r4b2-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/plans_theft_gpt-6-luna_fresh_r4b2-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "ric": {
+     "tenancy": {
+      "path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json",
+      "key": "B1v2p|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+      "key": "Rpack|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "ric_frontier": {
+     "tenancy": {
+      "path": "runs/v2/plans_tenancy_gpt-6.1-terra_fresh_heldout.json",
+      "key": "B1v2p|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6.1-terra_fresh_reviewed.json",
+      "key": "Rpack|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "self_consistency": {
+     "tenancy": {
+      "derive": "majority",
+      "samples_per_run": 3,
+      "runs": 1,
+      "samples": {
+       "path": "runs/v2/plans_tenancy_gpt-6-luna_fresh_heldout.json",
+       "key": "B1v2p|{case}|{sample}",
+       "field": "plan"
+      },
+      "cost": {
+       "method": "ledger",
+       "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+       "match": {
+        "tag.exp": "v2-tenancy",
+        "tag.method": "B1v2p"
+       },
+       "case_field": "tag.case",
+       "cost_field": "cost"
+      }
+     },
+     "theft": {
+      "derive": "majority",
+      "samples_per_run": 3,
+      "runs": 1,
+      "samples": {
+       "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+       "key": "Rpack|{case}|{sample}",
+       "field": "plan"
+      },
+      "cost": {
+       "method": "ledger",
+       "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl",
+       "match": {
+        "tag.method": "Rv2p"
+       },
+       "case_field": "tag.case",
+       "cost_field": "cost"
+      }
+     }
+    },
+    "model_executes_rules": {
+     "tenancy": {
+      "path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_COL.json",
+      "key": "COL|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/baselines_theft_gpt-6-luna_fresh.json",
+      "key": "COL|{case}|{run}",
+      "field": "plan",
+      "runs": 1
+     }
+    },
+    "react": {
+     "tenancy": {
+      "path": "runs/product/baselines_tenancy_gpt-6-luna_fresh_REACT.json",
+      "key": "REACT|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     },
+     "theft": {
+      "path": "runs/product/baselines_theft_gpt-6-luna_fresh.json",
+      "key": "REACT|{case}|{run}",
+      "field": "plan",
+      "runs": 1
+     }
+    },
+    "core": {
+     "theft": {
+      "path": "runs/v2/cp4/plans_theft_gpt-6-luna_fresh_reviewed.json",
+      "key": "CP4|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "ric_original": {
+     "theft": {
+      "path": "runs/v2/plans_theft_gpt-6-luna_fresh_heldout.json",
+      "key": "R|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    },
+    "ric_original_frontier": {
+     "theft": {
+      "path": "runs/v2/plans_theft_gpt-6.1-terra_fresh_heldout.json",
+      "key": "R|{case}|{run}",
+      "field": "plan",
+      "runs": 3
+     }
+    }
    }
   }
- }
+ },
+ "beside_note": "Rows beside a hypothesis repeat its contrast on a subset of claims (clusters with at least one claim in the subset). They are descriptive: shown with interval and p, but no test inside the procedure.",
+ "tenancy_partition": [
+  "denied_event",
+  "open_event",
+  "ordinary"
+ ]
 }

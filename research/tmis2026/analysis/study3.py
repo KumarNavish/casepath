@@ -421,6 +421,9 @@ class Study:
         return self._meta[cid]
 
     def in_subset(self, cid, name):
+        """A subset of the spec, defined from the reference only; a list of names is their union."""
+        if isinstance(name, list):
+            return any(self.in_subset(cid, n) for n in name)
         rule = self.spec["tenancy_subsets"][name]
         meta = self.claim_meta(cid)
         if "not" in rule:
@@ -569,10 +572,21 @@ class Study:
                 "needs_added_by_agents_by_required": dict(sorted(added.items()))}
 
     # ------------------------------------------------------------- the analysis
+    def partition(self):
+        """Counts of the partition subsets; refuses if a claim falls in none or in more than one."""
+        names = self.spec.get("tenancy_partition") or []
+        if not names or "tenancy" not in self.cases:
+            return None
+        bad = [c for c in self.cases["tenancy"] if sum(self.in_subset(c, n) for n in names) != 1]
+        if bad:
+            raise ValueError(f"tenancy subsets {names} do not partition the claims: {len(bad)} claims in none or several, e.g. {bad[:3]}")
+        return {"subsets": names, "claims": {n: sum(self.in_subset(c, n) for c in self.cases["tenancy"]) for n in names},
+                "total": len(self.cases["tenancy"]), "is_partition": True}
+
     def contrast_of(self, regime, measure, a, b, test, margin, name, subset=None):
         fa, fb = self.clusters(a, regime, measure, subset), self.clusters(b, regime, measure, subset)
-        if fa is None or fb is None:
-            return None
+        if fa is None or fb is None or not set(fa) & set(fb):
+            return None  # a design did not run, or no claim of the subset
         hib = self.spec["measures"][measure]["higher_is_better"]
         c = run_contrast(fa, fb, name, hib, test, margin)
         c.update(regime=regime, measure=measure, a=a, b=b, subset=subset)
@@ -590,6 +604,7 @@ class Study:
     def analyse(self):
         spec, alpha = self.spec, self.spec["statistics"]["alpha"]
         res = {"data": self.data, "label": self.label, "designs": {}, "hypotheses": [], "secondary": {}}
+        res["tenancy_partition"] = self.partition()
         for d in spec["designs"]:
             for regime in spec["regimes"]:
                 if regime in d["regimes"] and regime in self.cases:
@@ -608,9 +623,19 @@ class Study:
                      for b in bs]
             seq.append((h["id"], tests))
             missing = self.not_run(*[(x, h["regime"]) for x in [h["a"]] + bs])
+            beside = []
+            for x in h.get("beside", []):
+                sub = x["subset"]
+                sname = "+".join(sub) if isinstance(sub, list) else sub
+                for b in bs:
+                    r = self.contrast_of(h["regime"], h["measure"], h["a"], b, h["test"], h.get("margin"),
+                                         f"beside|{h['id']}|{b}|{sname}", sub)
+                    n = sum(self.in_subset(c, sub) for c in self.cases.get("tenancy", []))
+                    note = "" if r is not None else ("no claim in this subset" if n == 0 else "not run")
+                    beside.append({"subset": sname, "b": b, "descriptive": True, "claims": n, "result": r, "note": note})
             res["hypotheses"].append({"id": h["id"], "text": h["text"], "regime": h["regime"], "measure": h["measure"],
                                       "test": h["test"], "margin": h.get("margin"), "a": h["a"], "b": bs,
-                                      "all_must_hold": len(bs) > 1, "not_run": missing,
+                                      "all_must_hold": len(bs) > 1, "not_run": missing, "beside": beside,
                                       "tests": [t if t is None else dict(t, significant=significant(t, alpha)) for t in tests]})
         status = fixed_sequence(seq, alpha)
         for h in res["hypotheses"]:
@@ -636,7 +661,7 @@ class Study:
                 if rows is None:
                     continue
                 sub = {"all claims": self.subset_summary(rows)}
-                for n in spec["tenancy_subsets"]:
+                for n in spec["secondary"].get("subset_tables", spec["tenancy_subsets"]):
                     sub[n] = self.subset_summary([r for r in rows if self.in_subset(r["case"], n)])
                 sec["tenancy_subsets"]["by_design"][d["key"]] = sub
                 sec["tenancy_languages"]["by_design"][d["key"]] = {g: self.subset_summary([r for r in rows if r["language"] == g])
@@ -680,7 +705,7 @@ class Study:
         s = self.tenancy_summary(rows)
         keep = ("claims", "claim_runs", "strict_unsafe_per_claim", "all_deviations_per_claim", "requested_share",
                 "correct_hold_share", "premature_per_claim", "silent_skip_per_claim", "held_required_now_per_claim",
-                "spurious_holds_per_claim", "unnecessary_per_claim", "missed_per_claim", "handoffs")
+                "spurious_holds_per_claim", "unnecessary_per_claim", "missed_per_claim", "handed_per_claim", "handoffs")
         return {k: s[k] for k in keep}
 
 
@@ -698,7 +723,9 @@ def num(x, nd=3):
 def pval(x):
     if x is None:
         return "–"
-    return "< 0.0001" if x == 0 else f"{x:.4f}"
+    if x == 0:
+        return "< 0.0001"
+    return f"{x:.1e}" if x < 0.0001 else f"{x:.4f}"
 
 
 def table(head, rows):
@@ -775,31 +802,46 @@ def markdown(res, spec):
         for i, t in enumerate(h["tests"]):
             r = contrast_row(h["id"] + (f".{i + 1}" if len(h["tests"]) > 1 else ""), t, L)
             rows.append(r + [h["status"] + tag if i == 0 else ("" if not h["all_must_hold"] else "(all must hold)")])
+        for x in h.get("beside", []):
+            name = f"{h['id']} on {x['subset']}" + (f" (vs {L(x['b'])})" if len(h["b"]) > 1 else "")
+            row = contrast_row(name, x["result"], L)
+            if x["result"] is None:
+                row[-1] = x["note"]
+            rows.append(row + [f"descriptive, outside the procedure ({x['claims']} claims)"])
     md += [table(CHEAD + ["status"], rows), ""]
     for h in res["hypotheses"]:
         md.append(f"- **{h['id']}** {h['text']} Status: {h['status']}." + (f" Not run: {'; '.join(h['not_run'])}." if h["not_run"] else ""))
-    md += ["", "Hypotheses marked 'outside the procedure' were not tested; their raw results are shown for completeness only.", ""]
+    md += ["", "Hypotheses marked 'outside the procedure' were not tested; their raw results are shown for completeness only. "
+           "Rows named 'on <subset>' repeat a hypothesis's contrast on a subset of claims (families with at least one claim in it); "
+           "they are descriptive and are not tested inside the procedure.", ""]
 
     sec = res["secondary"]
     md += ["## Secondary contrasts (outside the sequence)", ""]
-    rows = [contrast_row(c["id"], c["result"], L) + [c["section"]] for c in sec["contrasts"]]
-    md += [table(CHEAD + ["section"], rows), ""]
+    rows = [contrast_row(c["id"], c["result"], L) + [spec["measures"][c["measure"]]["label"]
+                                                       + (f", {c['subset']} claims" if c.get("subset") else ""), c["section"]]
+            for c in sec["contrasts"]]
+    md += [table(CHEAD + ["measure", "section"], rows), ""]
 
     if "tenancy_subsets" in sec:
         ts = sec["tenancy_subsets"]
         md += ["## Tenancy subsets", ""]
+        part = res.get("tenancy_partition")
+        if part:
+            md += [f"Partition of the {part['total']} claims (checked: every claim in exactly one): "
+                   + "; ".join(f"{n} {k}" for n, k in part["claims"].items()) + ".", ""]
         md += ["Claims selected: " + "; ".join(f"{spec['tenancy_subsets'][n]['label']}: {k}" for n, k in ts["claims"].items()), ""]
         head = ["Design", "Subset", "Claims", "Strict unsafe", "All deviations", "Correct-hold share", "Premature", "Silent skips",
-                "Requested share"]
+                "Requested share", "Unnecessary", "Missed", "Handed over", "Held req.-now", "Spurious holds"]
         rows = []
         for k, sub in ts["by_design"].items():
             for n, s in sub.items():
                 if not s.get("claim_runs"):
-                    rows.append([L(k), n, 0] + ["–"] * 6)
+                    rows.append([L(k), n, 0] + ["–"] * 11)
                     continue
                 rows.append([L(k), n, s["claims"], num(s["strict_unsafe_per_claim"]), num(s["all_deviations_per_claim"]),
                              num(s["correct_hold_share"]), num(s["premature_per_claim"]), num(s["silent_skip_per_claim"]),
-                             num(s["requested_share"])])
+                             num(s["requested_share"]), num(s["unnecessary_per_claim"]), num(s["missed_per_claim"]),
+                             num(s["handed_per_claim"]), num(s["held_required_now_per_claim"]), num(s["spurious_holds_per_claim"])])
         md += [table(head, rows), ""]
         tl = sec["tenancy_languages"]
         md += ["## Tenancy by language", "", "Claims: " + "; ".join(f"{g}: {n}" for g, n in tl["claims"].items()), ""]
@@ -824,6 +866,11 @@ def markdown(res, spec):
         rows = [[L(k), num(v["cost_per_case_run"], 5), num(v["calls_per_case_run"], 1), num(v[f"ratio_to_{base}"], 2)]
                 for k, v in c["by_design"].items()]
         md += [f"{regime.capitalize()} (ratio to {L(base)}):", "", table(["Design", "USD", "Calls", "Ratio"], rows), ""]
+        for k in c["by_design"]:
+            cs = (res["designs"][k]["regimes"][regime].get("cost") or {})
+            if cs.get("multiplier", 1) != 1:
+                md += [f"{L(k)}: ledger cost of the paid calls × {num(cs['multiplier'], 0)} / (cases × runs). "
+                       + (spec_note(spec, k, regime) or ""), ""]
     for k, d in res["designs"].items():
         for reg, st in d["regimes"].items():
             c = (st or {}).get("cost") or {}
@@ -849,6 +896,11 @@ def markdown(res, spec):
     return "\n".join(md)
 
 
+def spec_note(spec, design, regime):
+    c = next(d for d in spec["designs"] if d["key"] == design).get("cost") or {}
+    return (c.get(regime, c) if "method" not in c else c).get("note")
+
+
 def print_summary(res, spec):
     lab = {d["key"]: d["label"] for d in spec["designs"]}
     print(f"Study 3 analysis, data {res['data']}, label {res['label']}")
@@ -860,6 +912,9 @@ def print_summary(res, spec):
             m = st["measures"]
             v = m["strict_unsafe_per_claim"] if reg == "tenancy" else m["errors_per_pair"]
             print(f"  {lab[k]:45s} {reg:8s} runs {st['runs']}  {'strict unsafe per claim' if reg == 'tenancy' else 'wrong + missed per pair'} {v:.3f}")
+    if res.get("tenancy_partition"):
+        p = res["tenancy_partition"]
+        print(f"  tenancy partition of {p['total']} claims (checked): " + ", ".join(f"{n} {k}" for n, k in p["claims"].items()))
     if "tenancy_subsets" in res["secondary"]:
         print("  tenancy subsets, claims selected:", json.dumps(res["secondary"]["tenancy_subsets"]["claims"], sort_keys=True))
     print("Primary hypotheses:")
@@ -873,6 +928,14 @@ def print_summary(res, spec):
                 print(f"     vs {lab.get(b, b)}: A {t['a_value']:.3f}  B {t['b_value']:.3f}  diff {t['diff']:+.3f} "
                       f"[{t['diff_ci'][0]:+.3f}, {t['diff_ci'][1]:+.3f}]  clusters {t['clusters']} (non-zero {t['nonzero_clusters']})  "
                       f"p {pval(t['p'])}  smallest p {pval(t['min_p'])}")
+        for x in h.get("beside", []):
+            t = x["result"]
+            if t is None:
+                print(f"     on {x['subset']} vs {lab.get(x['b'], x['b'])}: {x['note']}")
+                continue
+            print(f"     on {x['subset']} vs {lab.get(x['b'], x['b'])} (descriptive): A {t['a_value']:.3f}  B {t['b_value']:.3f}  "
+                  f"diff {t['diff']:+.3f} [{t['diff_ci'][0]:+.3f}, {t['diff_ci'][1]:+.3f}]  clusters {t['clusters']} "
+                  f"(non-zero {t['nonzero_clusters']})  p {pval(t['p'])}")
 
 
 # ======================================================================= main

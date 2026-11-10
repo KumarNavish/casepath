@@ -365,8 +365,8 @@ class EndToEnd(unittest.TestCase):
 
 # ----------------------------------------------------------------- tenancy subsets on a constructed reference
 class FakeTenancy:
-    """Three claims in one family: an empty reference (the defining event denied), an empty request set with held
-    documents (the defining event left open), and an ordinary claim."""
+    """Two families. f1: a denied event (empty reference), an open event (empty request set, held documents) and an
+    ordinary claim. f2: an ordinary claim with an open branch fact and a plain ordinary claim."""
     REFS = {
         "c_denied": {"family_id": "f1", "open_fact": None, "request_set": [], "held_set": [],
                      "document_states": {"a": "not_needed", "b": "not_needed"}},
@@ -374,8 +374,12 @@ class FakeTenancy:
                    "held_set": ["a", "b"], "document_states": {"a": "held", "b": "held"}},
         "c_plain": {"family_id": "f1", "open_fact": None, "request_set": ["a"], "held_set": [],
                     "document_states": {"a": "required_now", "b": "not_needed"}},
+        "d_branch": {"family_id": "f2", "open_fact": {"flag": "mould", "true_value": True}, "request_set": ["a"], "held_set": ["b"],
+                     "document_states": {"a": "required_now", "b": "held"}},
+        "d_plain": {"family_id": "f2", "open_fact": None, "request_set": ["a"], "held_set": [],
+                    "document_states": {"a": "required_now", "b": "not_needed"}},
     }
-    LANG = {"c_denied": "en", "c_open": "de-CH", "c_plain": "en"}
+    LANG = {"c_denied": "en", "c_open": "de-CH", "c_plain": "en", "d_branch": "de", "d_plain": "en"}
 
     def claim_ids(self, split):
         return sorted(self.REFS)
@@ -387,25 +391,89 @@ class FakeTenancy:
         return {"submission": {"language": self.LANG[cid]}}
 
 
+H2 = next(h for h in SPEC["hypotheses"] if h["id"] == "H2")
+
+
 class Subsets(unittest.TestCase):
-    def test_degenerate_selector(self):
+    @classmethod
+    def setUpClass(cls):
         F = FakeTenancy()
-        with tempfile.TemporaryDirectory() as tmp:
-            plans = {c: {"requests": ["a"], "holds": [], "deferred": False} for c in F.REFS}
-            write_plans(tmp, "d", "tenancy", plans)
-            st = study(tmp, base_spec([design("d", ("tenancy",))]), {"tenancy": F})
-            res = st.analyse()
-        sub = res["secondary"]["tenancy_subsets"]
-        self.assertEqual(sub["claims"], {"defining_event_false": 1, "without_defining_event_false": 2,
-                                         "request_set_empty": 2, "open_fact": 1})
-        by = sub["by_design"]["d"]
-        # requesting "a" is unnecessary in c_denied, premature in c_open (and b silently skipped), right in c_plain
-        self.assertEqual(by["defining_event_false"]["strict_unsafe_per_claim"], 1.0)
-        self.assertEqual(by["without_defining_event_false"]["strict_unsafe_per_claim"], 1.0)
-        self.assertEqual(by["open_fact"]["premature_per_claim"], 1.0)
-        self.assertEqual(by["open_fact"]["silent_skip_per_claim"], 1.0)
-        self.assertEqual(by["all claims"]["claims"], 3)
-        self.assertEqual(res["secondary"]["tenancy_languages"]["claims"], {"English": 2, "German": 1})
+        cls.tmp = tempfile.TemporaryDirectory()
+        # "always_a" requests document a everywhere; "oracle" is right everywhere
+        write_plans(cls.tmp.name, "always_a", "tenancy", {c: {"requests": ["a"], "holds": [], "deferred": False} for c in F.REFS})
+        write_plans(cls.tmp.name, "oracle", "tenancy", {c: oracle_ten(r) for c, r in F.REFS.items()})
+        spec = base_spec([design("always_a", ("tenancy",)), design("oracle", ("tenancy",))],
+                         [dict(H2, a="always_a", b="oracle")])
+        spec["tenancy_partition"] = SPEC["tenancy_partition"]
+        spec["secondary"]["subset_tables"] = SPEC["secondary"]["subset_tables"]
+        cls.spec = spec
+        cls.res = study(cls.tmp.name, spec, {"tenancy": F}).analyse()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_partition_counts(self):
+        p = self.res["tenancy_partition"]
+        self.assertEqual(p["claims"], {"denied_event": 1, "open_event": 1, "ordinary": 3})
+        self.assertTrue(p["is_partition"])
+        self.assertEqual(p["total"], 5)
+        c = self.res["secondary"]["tenancy_subsets"]["claims"]
+        self.assertEqual((c["open_fact"], c["open_branch_fact"], c["open_defining_event"]), (2, 1, 1))
+
+    def test_subset_measures(self):
+        by = self.res["secondary"]["tenancy_subsets"]["by_design"]["always_a"]
+        # requesting "a": unnecessary in c_denied; premature (and b silently skipped) in c_open; right in the ordinary
+        # claims except d_branch, where the held b is silently skipped
+        self.assertEqual(by["denied_event"]["strict_unsafe_per_claim"], 1.0)
+        self.assertEqual(by["open_event"]["strict_unsafe_per_claim"], 2.0)
+        self.assertAlmostEqual(by["ordinary"]["strict_unsafe_per_claim"], 1 / 3)
+        self.assertEqual(by["open_defining_event"]["premature_per_claim"], 1.0)
+        self.assertEqual(by["open_branch_fact"]["silent_skip_per_claim"], 1.0)
+        self.assertEqual(self.res["secondary"]["tenancy_languages"]["claims"], {"English": 3, "German": 2})
+
+    def test_rows_beside_the_hypothesis(self):
+        h = self.res["hypotheses"][0]
+        self.assertEqual([x["subset"] for x in h["beside"]], ["ordinary", "denied_event+open_event"])
+        self.assertTrue(all(x["descriptive"] for x in h["beside"]))
+        ordinary, event = (x["result"] for x in h["beside"])
+        # ordinary: f1 holds c_plain (0 errors), f2 holds d_branch (1) and d_plain (0)
+        self.assertEqual((ordinary["clusters"], ordinary["a_value"], ordinary["b_value"]), (2, 0.25, 0.0))
+        # denied + open: only f1, claims c_denied (1) and c_open (2)
+        self.assertEqual((event["clusters"], event["a_value"], event["diff"]), (1, 1.5, 1.5))
+        self.assertEqual(h["tests"][0]["clusters"], 2)  # the hypothesis itself uses all claims
+        md = s3.markdown(self.res, self.spec)
+        self.assertIn("H2 on ordinary", md)
+        self.assertIn("descriptive, outside the procedure", md)
+
+    def test_partition_failure_is_refused(self):
+        spec = copy.deepcopy(self.spec)
+        spec["tenancy_partition"] = ["denied_event", "ordinary"]  # leaves out the open-event claim
+        with self.assertRaises(ValueError):
+            study(self.tmp.name, spec, {"tenancy": FakeTenancy()}).analyse()
+
+
+class Plan(unittest.TestCase):
+    def test_hypothesis_order_and_tests(self):
+        got = [(h["id"], h["regime"], h["measure"], h["a"], h["b"], h["test"], h.get("margin")) for h in SPEC["hypotheses"]]
+        self.assertEqual(got, [
+            ("H1", "theft", "errors", "casepath", "ric", "signflip", None),
+            ("H2", "tenancy", "strict_unsafe", "casepath", "ric", "signflip", None),
+            ("H3", "theft", "errors", "casepath", ["self_consistency", "model_executes_rules", "react"], "signflip", None),
+            ("H4", "theft", "errors", "casepath", "ric_frontier", "noninferiority", 0.25),
+            ("H5", "tenancy", "strict_unsafe", "casepath", "ric_frontier", "signflip", None)])
+        for h in SPEC["hypotheses"]:
+            want = [{"subset": "ordinary"}, {"subset": ["denied_event", "open_event"]}] if h["regime"] == "tenancy" else []
+            self.assertEqual(h.get("beside", []), want, h["id"])
+        self.assertEqual(SPEC["statistics"]["alpha"], 0.05)
+
+    def test_subset_definitions(self):
+        t = SPEC["tenancy_subsets"]
+        self.assertEqual(SPEC["tenancy_partition"], ["denied_event", "open_event", "ordinary"])
+        self.assertEqual({k: v for k, v in t["denied_event"].items() if k != "label"}, {"request_set_empty": True, "held_set_empty": True})
+        self.assertEqual({k: v for k, v in t["open_event"].items() if k != "label"}, {"request_set_empty": True, "held_set_empty": False})
+        self.assertEqual({k: v for k, v in t["ordinary"].items() if k != "label"}, {"request_set_empty": False})
+        self.assertFalse({"defining_event_false", "without_defining_event_false", "request_set_empty"} & set(t))
 
 
 # ----------------------------------------------------------------- derived designs
