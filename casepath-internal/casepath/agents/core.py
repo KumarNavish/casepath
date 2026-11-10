@@ -232,7 +232,8 @@ def route(model, catalogue, case, files, on_event):
     schema = obj(facts=arr(obj(fact=choice([f["id"] for f in facts]), value={"type": ["string", "null"]},
                                citations=arr(obj(file=choice(file_ids), quote=text(1200, minLength=8)), maxItems=4)),
                            maxItems=len(facts)),
-                 other_topic=arr(obj(topic=text(200), file=choice(file_ids), quote=text(1200, minLength=8)), maxItems=1))
+                 # a model may name more than one other topic; the first that is quoted word for word is kept
+                 other_topic=arr(obj(topic=text(200), file=choice(file_ids), quote=text(1200, minLength=8)), maxItems=4))
     documents = [_both_ends(evidence, fid, 12000) for fid in file_ids[:12]]
     on_event({"agent": "claim_reader", "kind": "agent.start", "instruction": "Find what kind of case this is."})
     answer = model.respond_json(name="casepath_route", instructions=ROUTE_INSTRUCTIONS, schema=schema, effort="low",
@@ -260,6 +261,7 @@ def route(model, catalogue, case, files, on_event):
     for row in answer.value.get("other_topic") or []:
         if hit := evidence.locate(row["file"], row["quote"]):
             decision["other_topic"] = {"topic": row["topic"], "citations": [hit]}
+            break
     on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.", "routing": decision["status"],
               "workflow": decision["workflow"] and decision["workflow"]["id"]})
     workflow = catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None

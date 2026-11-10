@@ -20,6 +20,7 @@ class ScriptedModel:
         self.second_reading = None if second_reading is None else list(second_reading)
         self.last_first_reading = []
         self.routing = list(routing)
+        self.other_topic = []
         self.tool_choices = []
         self.instructions, self.tools, self.inputs = [], [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
@@ -42,7 +43,10 @@ class ScriptedModel:
             return ModelResult(value={"description": "[Foto] Wand mit dunklen Flecken neben dem Fenster."}, usage={"input_tokens": 5},
                                deployment="d", response_id="p", attempts=1, seconds=0)
         if name == "casepath_route":
-            return ModelResult(value={"facts": self.routing}, usage={"input_tokens": 5}, deployment="d", response_id="r",
+            from casepath.agents.schema import validate_result
+            value = {"facts": self.routing, "other_topic": self.other_topic}
+            validate_result(value, schema)  # a routing answer is checked against its schema, as the connectors do
+            return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="r",
                                attempts=1, seconds=0)
         if name == "casepath_read_facts":
             rows = self.first_reading if self.first_reading is not None else self._scripted_reading()
