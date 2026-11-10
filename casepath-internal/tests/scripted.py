@@ -66,7 +66,7 @@ class ScriptedModel:
             self.last_first_reading = rows
             return ModelResult(value={"conditions": [_condition(r) for r in rows]}, usage={"input_tokens": 5}, deployment="d",
                                response_id="f", attempts=1, seconds=0)
-        if name == "casepath_confirm_facts":
+        if name.startswith("casepath_confirm_facts"):
             parts = instructions.split("Conditions:\n", 1)
             asked = set(json.loads(parts[1])) if len(parts) == 2 else {r["fact"] for r in self.last_first_reading}
             rows = self.second_reading if self.second_reading is not None else [r for r in self.last_first_reading if r["fact"] in asked]
