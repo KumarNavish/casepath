@@ -994,7 +994,8 @@ def confirm_facts(model, work, effort="medium"):
             # Both readings leave it open and both quote a passage that raises it: the fact is raised and left open.
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": first["citations"] + located,
                                       "verdict": "not_checked", "by": first.get("by", "second_reading")}
-        elif first is not None and first["status"] == "unknown" and first.get("citations"):
+        elif first is not None and first["status"] == "unknown" and first.get("citations") and fact["id"] in second:
+            # (only when the second reading ran and answered this condition: a failed reading proves no silence)
             # Both leave it open, but only one finds a passage that raises it. That the files raise the matter counts, like a
             # value, only when both readings give it; otherwise the fact counts as not mentioned.
             first.update(citations=[], raised_by_one_reading=True)
