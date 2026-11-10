@@ -12180,5 +12180,2603 @@
    "result_checker",
    "result_checker"
   ]
+ },
+ "PRODUCT|fcl_8cd148548c0c667a|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 25,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Documents showing household and financial circumstances for extension",
+     "step": "lt_extension",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 272 Abs. 2 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Collect concrete evidence to assess statutory hardship factors for an extension; this is not already specified in the workflow."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "File challenge or extension request with the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The immediate next step is to confirm receipt and dates and obtain the documents listed as missing in the evaluated checklist; the current record is insufficient to assess the termination, arrears calculation, or extension request.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "keys": [
+   "736b3f0fab110324db681ae3c1e6146566f0e28ef549697e79205529618206e7",
+   "736b3f0fab110324db681ae3c1e6146566f0e28ef549697e79205529618206e7",
+   "9c4b91a4ef58d7360c3984db547fe56616898fd6b4db98b0e94e94b827dde459",
+   "9c4b91a4ef58d7360c3984db547fe56616898fd6b4db98b0e94e94b827dde459",
+   "538f8aaaf727a092d27b01a237a104ec25cf61f09dcca06cd95acf41606ca883",
+   "538f8aaaf727a092d27b01a237a104ec25cf61f09dcca06cd95acf41606ca883",
+   "953dd3a762759f310e42d3a5318e99f72321d03992b3360ac0a1362c64e94dca",
+   "953dd3a762759f310e42d3a5318e99f72321d03992b3360ac0a1362c64e94dca",
+   "f5572120812e6acb84e28be226c7f1d7c19f61759a264a59d6f2ac4d468f7209",
+   "f5572120812e6acb84e28be226c7f1d7c19f61759a264a59d6f2ac4d468f7209",
+   "d6d897a8c1914fdc7a6493594a03d50ae72c2c39badc8e0faba1a843b8424aa1",
+   "d6d897a8c1914fdc7a6493594a03d50ae72c2c39badc8e0faba1a843b8424aa1",
+   "4ff7c79d54debac8c786bab640f45317271ab07422d3f25b0edb62faccf19c10",
+   "4ff7c79d54debac8c786bab640f45317271ab07422d3f25b0edb62faccf19c10",
+   "931fc307975123b80ace68febd316e0fa4e0f1bfdf7be9e94410e6c734a1637d",
+   "931fc307975123b80ace68febd316e0fa4e0f1bfdf7be9e94410e6c734a1637d",
+   "f39ed289d59eba54964bd04888578e839336713759dc945a7f731ab1b84e07fa",
+   "f39ed289d59eba54964bd04888578e839336713759dc945a7f731ab1b84e07fa",
+   "65b6459d2e08e1d8ffde5ca7c43e15e50f12e0aa0e635dd55cfa8e7ec2bb0af1",
+   "65b6459d2e08e1d8ffde5ca7c43e15e50f12e0aa0e635dd55cfa8e7ec2bb0af1",
+   "f995c8331dd0120212bca21a152d925464eb965a0090d7ea3b837599c97323b6",
+   "f995c8331dd0120212bca21a152d925464eb965a0090d7ea3b837599c97323b6",
+   "350340a52ad6f92f82590496dfdc65e700c1e8aca9242c1dc262a1bd70e7a46e",
+   "350340a52ad6f92f82590496dfdc65e700c1e8aca9242c1dc262a1bd70e7a46e",
+   "adac0a341b8802d76f58f6323e1cf75b6f59d372fc168bed34e8a1d911ea383a",
+   "adac0a341b8802d76f58f6323e1cf75b6f59d372fc168bed34e8a1d911ea383a",
+   "2e62689eaeb5f7e5deed38fd291316e3030bc1af4bd8608197348ee1e2072102",
+   "2e62689eaeb5f7e5deed38fd291316e3030bc1af4bd8608197348ee1e2072102",
+   "bc8802a9351793775291d4b1a66a0f71001fac9eb1f2a872c7107b5670f44adc",
+   "bc8802a9351793775291d4b1a66a0f71001fac9eb1f2a872c7107b5670f44adc",
+   "ab69783d87180942d5473bcddf37072199490235dd0dde509ced3aa7f7250749",
+   "ab69783d87180942d5473bcddf37072199490235dd0dde509ced3aa7f7250749",
+   "a546cb996e5f189a58cec9dbad47ff6b24cd2debe1112c904675ffbcbbb63512",
+   "a546cb996e5f189a58cec9dbad47ff6b24cd2debe1112c904675ffbcbbb63512",
+   "6e8cbd236534bd00b0de7746de4de8f3cb06f138df802d865ee23e4a54a9d88b",
+   "6e8cbd236534bd00b0de7746de4de8f3cb06f138df802d865ee23e4a54a9d88b",
+   "3ad88c887326b9595ec72811a78bb3ddd3e4835bd5aa97afe1b5439bba89b4bc",
+   "3ad88c887326b9595ec72811a78bb3ddd3e4835bd5aa97afe1b5439bba89b4bc",
+   "bcae2bd1e7351458c5629e2c70c1f99e3fe90e86ee3f068a92b1562fc44454c7",
+   "bcae2bd1e7351458c5629e2c70c1f99e3fe90e86ee3f068a92b1562fc44454c7",
+   "dba87816d8ceea6a1283879a1373e58edb3878a45c1bb477614a01b45842edc8",
+   "dba87816d8ceea6a1283879a1373e58edb3878a45c1bb477614a01b45842edc8",
+   "5bc7e7b885fb24fb828f71168e7a2b02f4a96331af72b9ec808d7560fd3b5fe8",
+   "5bc7e7b885fb24fb828f71168e7a2b02f4a96331af72b9ec808d7560fd3b5fe8",
+   "0e11220580c3a669995562c26a56a2745fe7bc56c133ebcc2b79737ce6c98dc3",
+   "0e11220580c3a669995562c26a56a2745fe7bc56c133ebcc2b79737ce6c98dc3",
+   "ec28f56b8a2092a39e849fb4af160a25db9218fd9968d1c4590ce8f9a205d86e",
+   "ec28f56b8a2092a39e849fb4af160a25db9218fd9968d1c4590ce8f9a205d86e",
+   "142363db611791b8e35d02029ff593de71378ac74d6d44e9700054a04fadf4ed",
+   "142363db611791b8e35d02029ff593de71378ac74d6d44e9700054a04fadf4ed"
+  ],
+  "seconds": 231.5,
+  "tokens": {
+   "input": 105731,
+   "cached": 72985,
+   "output": 12447
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_938145a10416cfa4|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "heating"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "heating"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ]
+  },
+  "status": "completed",
+  "calls": 26,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Did your written notice of 2 October 2026, or any later notice, give Mr. Ammann a specific reasonable period to repair the fan? If so, please provide the notice and any proof of delivery."
+   ],
+   "agent_steps": [
+    "If the dispute remains unresolved, consider conciliation proceedings"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "heating"
+   ],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope",
+    "s-pb2"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "heating"
+    ],
+    "completions": 2
+   },
+   "answer": "This is a defect claim, but coverage cannot be confirmed from the available findings; the policy terms need to be checked by the handler. Obtain the checklist documents listed as missing and clarify whether the heating is actually involved. The specific repair-notice period also remains unclear.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "keys": [
+   "0613142f7032fb142c3306dbacf098eb97770688da29ea1a9440b392094ac702",
+   "0613142f7032fb142c3306dbacf098eb97770688da29ea1a9440b392094ac702",
+   "5bb0ca7d3043b345b8421734224475a8e80c289c70327ad7b521c0341cd24c22",
+   "5bb0ca7d3043b345b8421734224475a8e80c289c70327ad7b521c0341cd24c22",
+   "25e73a54823554f5810bcdcfe99479ca2a68f102a5bbcd7cad26063a3cb2ed95",
+   "25e73a54823554f5810bcdcfe99479ca2a68f102a5bbcd7cad26063a3cb2ed95",
+   "ce07c047a58edaed01a37d691f51aac6492ac7a9e4dbaecfb0fc10f77fd66dd6",
+   "ce07c047a58edaed01a37d691f51aac6492ac7a9e4dbaecfb0fc10f77fd66dd6",
+   "7c733f1c1d900a405694a7751278938ed07332a1e03fc7d9f11163ab99ee1ad5",
+   "7c733f1c1d900a405694a7751278938ed07332a1e03fc7d9f11163ab99ee1ad5",
+   "b57678a60916b4b35e82c05fc0bde446cbeb88a820801ae0836d300fecbbfe29",
+   "b57678a60916b4b35e82c05fc0bde446cbeb88a820801ae0836d300fecbbfe29",
+   "0ca27cd0e3119f82c6ff87b6878a4e2a8e716dab8874b2e7c197c45f8f9156c4",
+   "0ca27cd0e3119f82c6ff87b6878a4e2a8e716dab8874b2e7c197c45f8f9156c4",
+   "893969290034384d2dd332f7ad843b03a7e17d7f56f3217c9b1ae9b30cbb2782",
+   "893969290034384d2dd332f7ad843b03a7e17d7f56f3217c9b1ae9b30cbb2782",
+   "63f10476e6fb0769495ff8ef54264166c45f9d2ec89c478780c6df3f2c6bfa0c",
+   "63f10476e6fb0769495ff8ef54264166c45f9d2ec89c478780c6df3f2c6bfa0c",
+   "546a04300091588c85d247ca6b8dd00f33aefb1c1be5da2806aef94cefb13905",
+   "546a04300091588c85d247ca6b8dd00f33aefb1c1be5da2806aef94cefb13905",
+   "8c59a2b17737388dad7bfecbf6039e258abec9242f25688b21b2bd12f425d6b1",
+   "8c59a2b17737388dad7bfecbf6039e258abec9242f25688b21b2bd12f425d6b1",
+   "67154b99ab2e9bc524ae83327b0218007b6c9afcfbb17273bf24a5c68d7a7b53",
+   "67154b99ab2e9bc524ae83327b0218007b6c9afcfbb17273bf24a5c68d7a7b53",
+   "1800f55207a44b5d956cdb6f9feb2cfb90da9c27f60af6e280db9ed885eeebb2",
+   "1800f55207a44b5d956cdb6f9feb2cfb90da9c27f60af6e280db9ed885eeebb2",
+   "76d990ce57dee486b274bc96397870901c404732af0917e0df6ccaca2e6b0527",
+   "76d990ce57dee486b274bc96397870901c404732af0917e0df6ccaca2e6b0527",
+   "31657c0fd5af49204ea51fa04992acd0027fef124482171deb8091cf8194e82e",
+   "31657c0fd5af49204ea51fa04992acd0027fef124482171deb8091cf8194e82e",
+   "faa9563a8ce57cdb7fb7b8318ad947b553773e4bfaa9c1c5dc3577ef0fa9e33e",
+   "faa9563a8ce57cdb7fb7b8318ad947b553773e4bfaa9c1c5dc3577ef0fa9e33e",
+   "3ef3ccb83e99d8f79ed4e6af92cb861c574e09384d7edecbf17f1cf2c2562771",
+   "3ef3ccb83e99d8f79ed4e6af92cb861c574e09384d7edecbf17f1cf2c2562771",
+   "c996511f01881a2d6854256eabe28ad85a1a50f4320a22e94cf6dbdcb40eeb38",
+   "c996511f01881a2d6854256eabe28ad85a1a50f4320a22e94cf6dbdcb40eeb38",
+   "32f9df73fc640eac4c9b66b550a2a5ca72e0315bf2dc712fe7edc109d278f98f",
+   "32f9df73fc640eac4c9b66b550a2a5ca72e0315bf2dc712fe7edc109d278f98f",
+   "b93cd3c0dc4b2dc23f8dca497580c723d2fcda9ebb6cde09a3f044bf5e4f6390",
+   "b93cd3c0dc4b2dc23f8dca497580c723d2fcda9ebb6cde09a3f044bf5e4f6390",
+   "c7245cf4064d4b18d5e738ac8dad04251ff11707c44d87152b05bc770087c814",
+   "c7245cf4064d4b18d5e738ac8dad04251ff11707c44d87152b05bc770087c814",
+   "9624a6d058b87eb04ca9632067569cd07bdd9a59fdef294ad5324852d7fb68a9",
+   "9624a6d058b87eb04ca9632067569cd07bdd9a59fdef294ad5324852d7fb68a9",
+   "93a34ba0af72d42ab41bc43c08f87cd17646e195bf9310beaba111f1012ec4eb",
+   "93a34ba0af72d42ab41bc43c08f87cd17646e195bf9310beaba111f1012ec4eb",
+   "3600875596f3741660219cf9b349858fb58e8247b17ab90c36b9f061797bfb8d",
+   "3600875596f3741660219cf9b349858fb58e8247b17ab90c36b9f061797bfb8d",
+   "c3598bb41ab7619e2a0e981bb54ced5206c4c34827a5d811338a99d0c6109fd8",
+   "c3598bb41ab7619e2a0e981bb54ced5206c4c34827a5d811338a99d0c6109fd8",
+   "223686fe788fc7bef8f9faf4eb95eb1a48d4e49e2d1d5ecc87375b6d60f5cfa5",
+   "223686fe788fc7bef8f9faf4eb95eb1a48d4e49e2d1d5ecc87375b6d60f5cfa5"
+  ],
+  "seconds": 223.5,
+  "tokens": {
+   "input": 106407,
+   "cached": 75326,
+   "output": 11393
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_893dbc47ca84663f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "specialist_needed"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "technical_inspection"
+   ]
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Did you agree to access on 16 November 2026, did the contractor attend, and are the sockets and oven now repaired or still defective?",
+    "Who in the household has the headaches and sleep problems, are they still occurring, and is there any immediate health or safety concern?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "heating": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "specialist_needed"
+   ],
+   "current_step": "dh_response",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_safety",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "specialist_needed"
+    ],
+    "completions": 2
+   },
+   "answer": "Zu klären ist zunächst, ob eine technische Fachinspektion nötig ist. Laut Checkliste fehlen Mietvertrag, Mängelanzeige, Zustellnachweis, datierte Fotos, Vermieter-Reaktionshistorie und medizinische Bestätigung. Die technische Inspektion hängt von der offenen Antwort ab.",
+   "reply_clauses": 12,
+   "warnings": []
+  },
+  "keys": [
+   "8232896b667552436a36e0aff329b8a1d26416129ee35b8c2c81bcf24b131335",
+   "8232896b667552436a36e0aff329b8a1d26416129ee35b8c2c81bcf24b131335",
+   "9ed5f202243a487bbea0055dd75f9e6026c84e22b9b445bd2e6732f4536f6909",
+   "9ed5f202243a487bbea0055dd75f9e6026c84e22b9b445bd2e6732f4536f6909",
+   "7eb14761a4606ed83246c6a818f8d45232a19fcd14d417b8174d9dead8727288",
+   "7eb14761a4606ed83246c6a818f8d45232a19fcd14d417b8174d9dead8727288",
+   "a71ec9f7bec45616566d14388e0486cf7c5c084a068792f8bf0ef3717ff6332a",
+   "a71ec9f7bec45616566d14388e0486cf7c5c084a068792f8bf0ef3717ff6332a",
+   "2b89250c9ad44a126f32529208ca701bd676d6a3663f4b543360fb3bd8bc8660",
+   "2b89250c9ad44a126f32529208ca701bd676d6a3663f4b543360fb3bd8bc8660",
+   "5f91ff0cccf392e612ccd089cb3a704a1232dad487ae5803029b63c4c8b1698b",
+   "5f91ff0cccf392e612ccd089cb3a704a1232dad487ae5803029b63c4c8b1698b",
+   "1c2cfc92ca563514c53e037e91fe4ae068a3a2ffb74abfc5758f6f661493222f",
+   "1c2cfc92ca563514c53e037e91fe4ae068a3a2ffb74abfc5758f6f661493222f",
+   "387e809e10f09bb5e4602677bea32563e31118bcaccae53e8c3ccf89b5c16f6a",
+   "387e809e10f09bb5e4602677bea32563e31118bcaccae53e8c3ccf89b5c16f6a",
+   "0671c69a75c6e6979db6d8234bcd71c8f4809232abbba5a523f50b27c560f929",
+   "0671c69a75c6e6979db6d8234bcd71c8f4809232abbba5a523f50b27c560f929",
+   "e637d2f22b4c42f4777721305a230877c53dbdc084ddd2fd6a536cf038e6ad6a",
+   "e637d2f22b4c42f4777721305a230877c53dbdc084ddd2fd6a536cf038e6ad6a",
+   "22f466b8ee5e39f23554fb0c842d0e3521541147e84b05d72f457de6ec3b0e30",
+   "22f466b8ee5e39f23554fb0c842d0e3521541147e84b05d72f457de6ec3b0e30",
+   "099d147fbc5cbfec1c5694ed7fb18626fa85a5589cfd9c39cd34a83b78182159",
+   "099d147fbc5cbfec1c5694ed7fb18626fa85a5589cfd9c39cd34a83b78182159",
+   "f2def2b24771ecff8e38e720ab682b36698fb80d0abafd1478e5bfe8bf751053",
+   "f2def2b24771ecff8e38e720ab682b36698fb80d0abafd1478e5bfe8bf751053",
+   "4fd8eb46a964a8773ffc93356a368785c98aa407054a202467b98dcb58f1442f",
+   "4fd8eb46a964a8773ffc93356a368785c98aa407054a202467b98dcb58f1442f",
+   "7a4dd1492d099344c0bb9a65b19625dc0bc38b5df467158ffd9edf210ae5f6fe",
+   "7a4dd1492d099344c0bb9a65b19625dc0bc38b5df467158ffd9edf210ae5f6fe",
+   "a23a78cfb8464ed26abe96fd606bd1fed4e87032b6d5ddf403df7f7bd46a95fd",
+   "a23a78cfb8464ed26abe96fd606bd1fed4e87032b6d5ddf403df7f7bd46a95fd",
+   "df9957c1f0c840610d0eefbf09042bf813deadd50b9f8d6f541ee334f0763453",
+   "df9957c1f0c840610d0eefbf09042bf813deadd50b9f8d6f541ee334f0763453",
+   "194e3c53a9b2d4907abcc0be6456129de8c121b555a99ff199cb95f96e43c0fd",
+   "194e3c53a9b2d4907abcc0be6456129de8c121b555a99ff199cb95f96e43c0fd",
+   "aaf8256125a339fb3b4d6be1d44b0caa61e5d557f6573f40bebd6d83da262f27",
+   "aaf8256125a339fb3b4d6be1d44b0caa61e5d557f6573f40bebd6d83da262f27",
+   "00d0d3b087b9f330e1cef2d2cf1eb0cd6da8c95e9eac2bba793d7617691bed78",
+   "00d0d3b087b9f330e1cef2d2cf1eb0cd6da8c95e9eac2bba793d7617691bed78",
+   "7b0443c4e4b66dcd494cfcea7aebfbbd37c3abde40f4106a2c2d42d271c4c573",
+   "7b0443c4e4b66dcd494cfcea7aebfbbd37c3abde40f4106a2c2d42d271c4c573",
+   "5c3cad971f64557691b756a4db5a9ce27cdce90dfcb6926c56b71fd1804a2062",
+   "5c3cad971f64557691b756a4db5a9ce27cdce90dfcb6926c56b71fd1804a2062",
+   "775c93b084d3c581910e211575658a8082be43b52180ce3aa58dccca1ad638af",
+   "775c93b084d3c581910e211575658a8082be43b52180ce3aa58dccca1ad638af",
+   "82ba0e872c5bd1a4081b73c9078fcc798c5afb46eff9b781a34afd666a30f6d2",
+   "82ba0e872c5bd1a4081b73c9078fcc798c5afb46eff9b781a34afd666a30f6d2",
+   "70946c0559708e4516115ad6ecec5ff94b325fcc31e85dab2a3f92beb9ca19ea",
+   "70946c0559708e4516115ad6ecec5ff94b325fcc31e85dab2a3f92beb9ca19ea",
+   "9ecb630549545f6c3684ccac3877e24a3e86d1e03373ce06cfaa13982cf7bf34",
+   "9ecb630549545f6c3684ccac3877e24a3e86d1e03373ce06cfaa13982cf7bf34",
+   "288b89a978484dda769c11e0e47d381e72b6e508cbce13dcd0438ee52cb68d29",
+   "288b89a978484dda769c11e0e47d381e72b6e508cbce13dcd0438ee52cb68d29",
+   "43187aacebc3bdc894affebfe82eb53ffba6ef921cdb029388ddca62a21ef8d9",
+   "43187aacebc3bdc894affebfe82eb53ffba6ef921cdb029388ddca62a21ef8d9",
+   "969e62b7bafb91f1b5ba4fce2d25ad273b14e733d8b9ec760c3e4356cf27b031",
+   "969e62b7bafb91f1b5ba4fce2d25ad273b14e733d8b9ec760c3e4356cf27b031",
+   "3e1ee02606f8ccab0170313a23d00a7550a78d3c81e8c15764ae43c5f363e53e",
+   "3e1ee02606f8ccab0170313a23d00a7550a78d3c81e8c15764ae43c5f363e53e",
+   "2351584d2501e782e580a64772646221560558d90c25f973cc7be69433f4e0d3",
+   "2351584d2501e782e580a64772646221560558d90c25f973cc7be69433f4e0d3"
+  ],
+  "seconds": 310.0,
+  "tokens": {
+   "input": 162542,
+   "cached": 115808,
+   "output": 19723
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_9a62e6a839c5bbfa|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "retaliation_screen"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "retaliation_screen"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ]
+  },
+  "status": "completed",
+  "calls": 26,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "If the tenant decides to challenge, submit the challenge to the conciliation authority within 30 days of receiving the termination"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "retaliation_screen"
+   ],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "retaliation_screen"
+    ],
+    "completions": 2
+   },
+   "answer": "Obtain the notice and receipt/date evidence, lease and notice-period information; then assess deadlines. Clarify the possible retaliation concern and obtain related correspondence if applicable. The consultation request remains unanswered.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "keys": [
+   "bf930b59d361fc3a17baef987fd1725d2e7aed92294c918894214c78f340dd9a",
+   "bf930b59d361fc3a17baef987fd1725d2e7aed92294c918894214c78f340dd9a",
+   "ce6936bf6c5ceab28b223866206f0013292df694ce7450263acf7ad58c8031b4",
+   "ce6936bf6c5ceab28b223866206f0013292df694ce7450263acf7ad58c8031b4",
+   "4f83129eb9be32a8b0c81505ddec490d80558665442f86f0f0e5e1242b1dfa3f",
+   "4f83129eb9be32a8b0c81505ddec490d80558665442f86f0f0e5e1242b1dfa3f",
+   "68b34142c6645b6a222ffe533bddecd562cfde4c366fed4599272af96d304822",
+   "68b34142c6645b6a222ffe533bddecd562cfde4c366fed4599272af96d304822",
+   "8fb7b7a11cb5f72917701387954d32545e320ca3f86d30f418b5f2c90b74acae",
+   "8fb7b7a11cb5f72917701387954d32545e320ca3f86d30f418b5f2c90b74acae",
+   "008d6c6af86fe453f8d40311fc249b7d3ec52294c17407ad898585956baac008",
+   "008d6c6af86fe453f8d40311fc249b7d3ec52294c17407ad898585956baac008",
+   "cf8ef8aa885dc9ed465857a7283f4242dda5d655cb3a8fe4c1a5ba88e57dd84d",
+   "cf8ef8aa885dc9ed465857a7283f4242dda5d655cb3a8fe4c1a5ba88e57dd84d",
+   "1f20778385dc223f5dee85ab8668493265dde2581435b221179b7a8b62cccb91",
+   "1f20778385dc223f5dee85ab8668493265dde2581435b221179b7a8b62cccb91",
+   "7b7bafc62c04cc87cfd47c1c7742aa961670eb0310832e7d52687e21522dbe10",
+   "7b7bafc62c04cc87cfd47c1c7742aa961670eb0310832e7d52687e21522dbe10",
+   "9c8be426c7613256e4e4e2d9a06b58bd138bc29a94a370dd73a196433919e15a",
+   "9c8be426c7613256e4e4e2d9a06b58bd138bc29a94a370dd73a196433919e15a",
+   "1aa8723b90292af6e04305f00ab1c08b84b4bf9533d5a13de4f0cff042f8cfb5",
+   "1aa8723b90292af6e04305f00ab1c08b84b4bf9533d5a13de4f0cff042f8cfb5",
+   "0255ec1f65db2a79e1c2c3a4d08e665f7d8c2bba2c2c83773b85c1fc3c8f8605",
+   "0255ec1f65db2a79e1c2c3a4d08e665f7d8c2bba2c2c83773b85c1fc3c8f8605",
+   "3448e08e172d187ce0234375fa751b9094e37fad3af22b910a816602e0c63c5d",
+   "3448e08e172d187ce0234375fa751b9094e37fad3af22b910a816602e0c63c5d",
+   "ab7fef543c01442ae2fb55d894b5edf41fa78b25e5694019af62891dafc2270b",
+   "ab7fef543c01442ae2fb55d894b5edf41fa78b25e5694019af62891dafc2270b",
+   "77ce23bd27f4c807cde3198257fa5afafc9a29056032ac6736dfe2962a4e1026",
+   "77ce23bd27f4c807cde3198257fa5afafc9a29056032ac6736dfe2962a4e1026",
+   "1b89b476d9e64f78afe904c33b4432c9614c8614ac0df73272520512073746dc",
+   "1b89b476d9e64f78afe904c33b4432c9614c8614ac0df73272520512073746dc",
+   "fc831de18806bbae816e21650256d5a5b33765c0eca61bb2f8749e93de8d1d9b",
+   "fc831de18806bbae816e21650256d5a5b33765c0eca61bb2f8749e93de8d1d9b",
+   "25fd5a1d2e2b764ea938bff181fed5f95bc3e9db6df1ae0b38e9359e7bb4c2f2",
+   "25fd5a1d2e2b764ea938bff181fed5f95bc3e9db6df1ae0b38e9359e7bb4c2f2",
+   "9fdb7a0c8b8da956e2d629fc037f2fc1d73dabd14c324b2361679c528d458a07",
+   "9fdb7a0c8b8da956e2d629fc037f2fc1d73dabd14c324b2361679c528d458a07",
+   "e096e6c34dddbe266e3f801fae9668412307c6695d1cf542260bf20218ad425b",
+   "e096e6c34dddbe266e3f801fae9668412307c6695d1cf542260bf20218ad425b",
+   "162462ac4891230705f6685ab72c68bfc8f6e50831aef8e7e0e88925a9074f4f",
+   "162462ac4891230705f6685ab72c68bfc8f6e50831aef8e7e0e88925a9074f4f",
+   "fc5803b568b4e6a71dce3cc2ddf1b147ba455940eff4d7d9f37b224bbae9da8d",
+   "fc5803b568b4e6a71dce3cc2ddf1b147ba455940eff4d7d9f37b224bbae9da8d",
+   "146ae8d0c8353097e5cfd783fdd16bab0759ce25d958f349ad758b9cef04956f",
+   "146ae8d0c8353097e5cfd783fdd16bab0759ce25d958f349ad758b9cef04956f",
+   "2ee949fafe0c1af595f012fdf98c6ce56798364bb62b93a8d82a85eacee61324",
+   "2ee949fafe0c1af595f012fdf98c6ce56798364bb62b93a8d82a85eacee61324",
+   "20229eaf238ba0f6fa541c88449210fc2490fbadb1928835f71061bae835daa9",
+   "20229eaf238ba0f6fa541c88449210fc2490fbadb1928835f71061bae835daa9",
+   "25a67ee6840c97bd13bb1deb459bfba444f02a36f25eefe126fb7701e9414a30",
+   "25a67ee6840c97bd13bb1deb459bfba444f02a36f25eefe126fb7701e9414a30"
+  ],
+  "seconds": 221.4,
+  "tokens": {
+   "input": 105880,
+   "cached": 75365,
+   "output": 10567
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_99e24db5f37c7a3c|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "retaliation_screen"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "retaliation_screen"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ]
+  },
+  "status": "completed",
+  "calls": 28,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "unusable",
+     "verdict": "accepted",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "retaliation_screen"
+   ],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "retaliation_screen"
+    ],
+    "completions": 2
+   },
+   "answer": "The termination and arrears cannot yet be assessed, and the objection deadline cannot be determined. Obtain the checklist’s missing documents and usable lease/notice-period evidence urgently, and clarify whether there is a retaliation concern.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "keys": [
+   "2c419fc92c22451f41bf5f4f87ef29b1f2014493c08003d5ab8a2f6a58eba723",
+   "2c419fc92c22451f41bf5f4f87ef29b1f2014493c08003d5ab8a2f6a58eba723",
+   "a5edf0e71cd4aa28fdd46fa6b62c737fa4fecaa048523c8a143ebccf38bc65ef",
+   "a5edf0e71cd4aa28fdd46fa6b62c737fa4fecaa048523c8a143ebccf38bc65ef",
+   "cf593e809dfdc29289c8cd94a98cf2abcb1450221a977496e94209f6122c6ac5",
+   "cf593e809dfdc29289c8cd94a98cf2abcb1450221a977496e94209f6122c6ac5",
+   "c07b095787b460ca4e9ca974cdbf455b2e324fe2b19ce513a8e60ac515a599bf",
+   "c07b095787b460ca4e9ca974cdbf455b2e324fe2b19ce513a8e60ac515a599bf",
+   "25b875c6364343203a3c40e367be29537c4671110e7de7373b7889675458f494",
+   "25b875c6364343203a3c40e367be29537c4671110e7de7373b7889675458f494",
+   "849c9628f4ff96e4c7fbf31205ff74940239454fb613e82e571c06d08652295e",
+   "849c9628f4ff96e4c7fbf31205ff74940239454fb613e82e571c06d08652295e",
+   "fc1a5d0b3262918f1e0d5daba638ae32065ab4eff9b4cca7d3072d14def4585a",
+   "fc1a5d0b3262918f1e0d5daba638ae32065ab4eff9b4cca7d3072d14def4585a",
+   "1c7df08ec52c5b2731b0dd45fd91b88ddd6ba6c56f563974aa1ada46a3da7952",
+   "1c7df08ec52c5b2731b0dd45fd91b88ddd6ba6c56f563974aa1ada46a3da7952",
+   "3a7dc74908afea631ffa371cc073cbe4d735dec1ab8e88a34d17ff01c59440cb",
+   "3a7dc74908afea631ffa371cc073cbe4d735dec1ab8e88a34d17ff01c59440cb",
+   "71cea04a2a46d94d45a7ce7a55466ffa70e5ff473098e4f2c71d0fe26d285bad",
+   "71cea04a2a46d94d45a7ce7a55466ffa70e5ff473098e4f2c71d0fe26d285bad",
+   "f6eeb74c18c5894893ec285c21f7235b82befaa2729513d885d5e7c0013f9ac3",
+   "f6eeb74c18c5894893ec285c21f7235b82befaa2729513d885d5e7c0013f9ac3",
+   "4f48ab5f9a34c38bcf631982cd239288d1fe9ea4f5dc9e16d6d330f699c55725",
+   "4f48ab5f9a34c38bcf631982cd239288d1fe9ea4f5dc9e16d6d330f699c55725",
+   "e7d3a76f479409b6e5ceaa9337e21393b2125395dc4630aea990609b4cfaf649",
+   "e7d3a76f479409b6e5ceaa9337e21393b2125395dc4630aea990609b4cfaf649",
+   "73746ade18dd81bd60e7222988e942848ecb8aba009d0e8f24832367e4cf0c54",
+   "73746ade18dd81bd60e7222988e942848ecb8aba009d0e8f24832367e4cf0c54",
+   "6b33a9d5d265eacb8b63aa2d699012a1acff9e1ea89e6982cf11048c5d7f6736",
+   "6b33a9d5d265eacb8b63aa2d699012a1acff9e1ea89e6982cf11048c5d7f6736",
+   "ad3bb146d38b625fb22750169798d50921ab9c3085ded4ffe6c7a219b8e884d9",
+   "ad3bb146d38b625fb22750169798d50921ab9c3085ded4ffe6c7a219b8e884d9",
+   "8fe51bb4e5abd7552589a2cf5a8c22a1bec0a2c25112537c7c979952834e1a44",
+   "8fe51bb4e5abd7552589a2cf5a8c22a1bec0a2c25112537c7c979952834e1a44",
+   "50bc85303c16cef0b30fcdeaea088b113a7f43b6214fb078f4a7405d9852a237",
+   "50bc85303c16cef0b30fcdeaea088b113a7f43b6214fb078f4a7405d9852a237",
+   "1c012fb3489e4b4978ece06f2fd616a03227e2e7cc4f90bb7cdb48a44753e01a",
+   "1c012fb3489e4b4978ece06f2fd616a03227e2e7cc4f90bb7cdb48a44753e01a",
+   "e642726896e07cf46af9712acc8eecae0642f9d86f83a8cde81189a6c568f49d",
+   "e642726896e07cf46af9712acc8eecae0642f9d86f83a8cde81189a6c568f49d",
+   "2051e1bfcd442e0ebf005dea84544c015c8d943c8287aa91b32699d1cd3563b6",
+   "2051e1bfcd442e0ebf005dea84544c015c8d943c8287aa91b32699d1cd3563b6",
+   "62e7f1bef03174782b4a83be0b4716c2c97acceb2eba48c8d45049e2420345a4",
+   "62e7f1bef03174782b4a83be0b4716c2c97acceb2eba48c8d45049e2420345a4",
+   "c29414e21dcaf3fca546c473b6a3d6ea304230dd5b569b4eb5484060b2f6cfed",
+   "c29414e21dcaf3fca546c473b6a3d6ea304230dd5b569b4eb5484060b2f6cfed",
+   "657a8007adc1cd6d489498f59f96ac3aeebfb6fe264aa64ee13040674449d339",
+   "657a8007adc1cd6d489498f59f96ac3aeebfb6fe264aa64ee13040674449d339",
+   "261943ce2287d8a1e57a4f232de818b1e32220da43c477618624af0841e67d81",
+   "261943ce2287d8a1e57a4f232de818b1e32220da43c477618624af0841e67d81",
+   "ea6044c55142224a6b98db4e25c5d36e2b7da804249010ed1e0051724da9a954",
+   "ea6044c55142224a6b98db4e25c5d36e2b7da804249010ed1e0051724da9a954",
+   "fe74692cd27d09a24ebb6ed998eb40db7e9f90522d451607a88cbb37c0375f89",
+   "fe74692cd27d09a24ebb6ed998eb40db7e9f90522d451607a88cbb37c0375f89",
+   "ee226a41d48755a4f8765279268054ceaf071351e94d0056a708f56e453e59f7",
+   "ee226a41d48755a4f8765279268054ceaf071351e94d0056a708f56e453e59f7"
+  ],
+  "seconds": 245.8,
+  "tokens": {
+   "input": 128654,
+   "cached": 85872,
+   "output": 15046
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_a362784e299e172d|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 28,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Haben Sie Familie Gasser in Ihrer Meldung vom 3. November 2026 oder später eine angemessene Frist zur Behebung gesetzt? Falls ja: bis wann, und mit welchem Wortlaut?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Der Fall betrifft einen Mietmangel; ob und in welchem Umfang Unterstützung gewährt werden kann, ist anhand der vorliegenden Nachricht allein nicht abschliessend beurteilbar und bleibt zu prüfen.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "keys": [
+   "da743ef97f009f634f208af21989ad6e8f826c79181b96edeb1b263754990f3c",
+   "da743ef97f009f634f208af21989ad6e8f826c79181b96edeb1b263754990f3c",
+   "bb5a5e8cb2e75133f4997d20f8242e9032e8ab9f682081f232629fcecf2c4c89",
+   "bb5a5e8cb2e75133f4997d20f8242e9032e8ab9f682081f232629fcecf2c4c89",
+   "76716a0d82ec38e1f57bb96c41456c72eb87e68f1ba2b8b88fff4e66c8d55d7e",
+   "76716a0d82ec38e1f57bb96c41456c72eb87e68f1ba2b8b88fff4e66c8d55d7e",
+   "796a26e39079d162bc35f2d92ccd7d692f6d55cfd032e84845664f1e5a48ad9a",
+   "796a26e39079d162bc35f2d92ccd7d692f6d55cfd032e84845664f1e5a48ad9a",
+   "f0eb167f02d1b506cded3000e7d6e091d350ea48625e60a3fd2ef68a6f43cf4c",
+   "f0eb167f02d1b506cded3000e7d6e091d350ea48625e60a3fd2ef68a6f43cf4c",
+   "c5f166ac8b33013305a34480121205cec5909d32ef672370bf240cb5c7764c38",
+   "c5f166ac8b33013305a34480121205cec5909d32ef672370bf240cb5c7764c38",
+   "7bd7f28b1da5947f17a06a67017e590682ff1456705c0296491311eef2932ce7",
+   "7bd7f28b1da5947f17a06a67017e590682ff1456705c0296491311eef2932ce7",
+   "4578cfa08ee7ae4feafd7455b4204ad84d7b8c2c3876937396d719ab435d2de4",
+   "4578cfa08ee7ae4feafd7455b4204ad84d7b8c2c3876937396d719ab435d2de4",
+   "140f497db58f0679532b01915f54745269e30d3123191745c2670311830ebe98",
+   "140f497db58f0679532b01915f54745269e30d3123191745c2670311830ebe98",
+   "26b1c04e0deda6bd9aa58082ef355956974de9589002e41c5860c212c9045406",
+   "26b1c04e0deda6bd9aa58082ef355956974de9589002e41c5860c212c9045406",
+   "188011639b49cb11fea024cf3253c537359b6254a7fe2c573d628e9cd9398366",
+   "188011639b49cb11fea024cf3253c537359b6254a7fe2c573d628e9cd9398366",
+   "56144055ed309879b673fa07b8e7064613982bd813a4170994f5cc22e6483d9f",
+   "56144055ed309879b673fa07b8e7064613982bd813a4170994f5cc22e6483d9f",
+   "b7cd695746ebd269bf33e7819c9df38996ca878d292783c81e8e39e61ea31258",
+   "b7cd695746ebd269bf33e7819c9df38996ca878d292783c81e8e39e61ea31258",
+   "0267feb50e464f3a416347b107e01e03a3ae402cd03b48208ecc0df62b5992a3",
+   "0267feb50e464f3a416347b107e01e03a3ae402cd03b48208ecc0df62b5992a3",
+   "8b9175b0ce4de752c5cdc04932f1c535bfcba7ab15df88dd309d60e4f3751ca9",
+   "8b9175b0ce4de752c5cdc04932f1c535bfcba7ab15df88dd309d60e4f3751ca9",
+   "ee2887542ae1a1ff32460e6004506e6539c4d6067fd691b9f064364356b36214",
+   "ee2887542ae1a1ff32460e6004506e6539c4d6067fd691b9f064364356b36214",
+   "fb966c791fa2ca8f8164b4e753c6d8a4b6efabc50965c30d2b4ea0a43fde6dad",
+   "fb966c791fa2ca8f8164b4e753c6d8a4b6efabc50965c30d2b4ea0a43fde6dad",
+   "f5299387db885ac7a763c05fd06ff445f97e8856b380b526034cdf65f69386cc",
+   "f5299387db885ac7a763c05fd06ff445f97e8856b380b526034cdf65f69386cc",
+   "0455997e41c85f391204fae9b02559b5115d6ea34b42f0a40626583ae1997a74",
+   "0455997e41c85f391204fae9b02559b5115d6ea34b42f0a40626583ae1997a74",
+   "310974d679151586b9ef61dfed17a8a28dc7577ae11fa0cec30b367f2cfe8675",
+   "310974d679151586b9ef61dfed17a8a28dc7577ae11fa0cec30b367f2cfe8675",
+   "dd8074f2f89cd82dc1cc2c67c879c41defc240aa3121c0e8908ecfcb9b288645",
+   "dd8074f2f89cd82dc1cc2c67c879c41defc240aa3121c0e8908ecfcb9b288645",
+   "4987ee1a5b020f361c0160b5558e4e11a08ab7806aa6f9662deb54a440b9499b",
+   "4987ee1a5b020f361c0160b5558e4e11a08ab7806aa6f9662deb54a440b9499b",
+   "ec1e51310a387ceddebce850b05327833a5391e337df010fb735c56b1cbdc330",
+   "ec1e51310a387ceddebce850b05327833a5391e337df010fb735c56b1cbdc330",
+   "2e023c01fb906755fb1486e6a1f17a0ad47ec2b83754824880b26f5bdd375071",
+   "2e023c01fb906755fb1486e6a1f17a0ad47ec2b83754824880b26f5bdd375071",
+   "4ebfba6a747dd0037abd1af300f7bbde8358a0b8d584b431ebf51d16f5d040bf",
+   "4ebfba6a747dd0037abd1af300f7bbde8358a0b8d584b431ebf51d16f5d040bf",
+   "7612da50dda4772847925a681650fa823035dca7ed7e8f8f8aa8090cb309a076",
+   "7612da50dda4772847925a681650fa823035dca7ed7e8f8f8aa8090cb309a076",
+   "23bb2e3ab3cb87b268346103844b7f54b6dda9f67a2bbe3cfb244d3cf5002fc8",
+   "23bb2e3ab3cb87b268346103844b7f54b6dda9f67a2bbe3cfb244d3cf5002fc8",
+   "30ad521db87b217f06b11aff6da345ba6df227d27e85c3c06006bdec9a583956",
+   "30ad521db87b217f06b11aff6da345ba6df227d27e85c3c06006bdec9a583956"
+  ],
+  "seconds": 253.5,
+  "tokens": {
+   "input": 117169,
+   "cached": 84955,
+   "output": 13439
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_a442849bcc00a706|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "health_effects"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "defect_mold_heating",
+   "questions": [
+    "health_effects"
+   ],
+   "deferred": false,
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ]
+  },
+  "status": "completed",
+  "calls": 32,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Complete signed tenancy agreement, including signature/date and tenancy terms",
+     "step": "dh_scope",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 253 OR (tenancy agreement: landlord grants use of the property and tenant pays rent).",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Suggest requesting a complete executed version and any relevant terms because the copy in the file does not show execution/date or the tenancy terms."
+    }
+   ],
+   "agent_questions": [
+    "What outcome are you seeking from the landlord—repair of the mould and heating, a rent reduction, compensation, or something else? Are you considering depositing rent with the authority?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "contracting parties",
+       "citations": [
+        {
+         "file": "file_3185e28792137f0f",
+         "page": null,
+         "start": 35,
+         "end": 81,
+         "quote": "Landlord: Wincasa Nord AG Tenant: Chris Lawson"
+        }
+       ]
+      },
+      {
+       "item": "property",
+       "citations": [
+        {
+         "file": "file_3185e28792137f0f",
+         "page": null,
+         "start": 82,
+         "end": 137,
+         "quote": "Rented property: Seestrasse 8, Thun Type: 4.5-room flat"
+        }
+       ]
+      },
+      {
+       "item": "tenancy terms",
+       "citations": [
+        {
+         "file": "file_3185e28792137f0f",
+         "page": null,
+         "start": 138,
+         "end": 318,
+         "quote": "The landlord leases the above-mentioned residential property to the tenant on the terms set out in this agreement and in the applicable provisions of the Swiss Code of Obligations."
+        }
+       ]
+      }
+     ]
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "specialist_needed": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "deposit_considered": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "health_effects"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [
+    "lease_contract"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "health_effects"
+    ],
+    "completions": 2
+   },
+   "answer": "The claim concerns mould and heating defects; intake is not complete because the health-effects question remains open. Ask for that clarification and the documents listed as missing on the evaluated checklist.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "keys": [
+   "e6f4114ef09647fc902dd3fe551b83e5ce3018243fec6331a728e986c27108df",
+   "e6f4114ef09647fc902dd3fe551b83e5ce3018243fec6331a728e986c27108df",
+   "58f3984b2cef5eb6f49e931e7531990bde0830ef5298a03f07e53e0d2fd8afc1",
+   "58f3984b2cef5eb6f49e931e7531990bde0830ef5298a03f07e53e0d2fd8afc1",
+   "8ddf812cd1779bb4477254c80f475e3c1840653cfb2e1fc7e3cb6b33ab6ee99d",
+   "8ddf812cd1779bb4477254c80f475e3c1840653cfb2e1fc7e3cb6b33ab6ee99d",
+   "d3d73a59e3d58d3b82024280637edb5a4fa8a31dfc2f9f942b01d4c0c6632e0c",
+   "d3d73a59e3d58d3b82024280637edb5a4fa8a31dfc2f9f942b01d4c0c6632e0c",
+   "6ddfa641859df95bf348a0029eec1436f80c2c57ac09337cbe7323b258d6cdb3",
+   "6ddfa641859df95bf348a0029eec1436f80c2c57ac09337cbe7323b258d6cdb3",
+   "2916283f05f344bc9f31005035078a385786bcb2a9494db7cc925a761ceb9ab0",
+   "2916283f05f344bc9f31005035078a385786bcb2a9494db7cc925a761ceb9ab0",
+   "f2146fcde2b02c0c04ca9a01eb46a06982fc015b88aaf0f47c3b736fda2a53db",
+   "f2146fcde2b02c0c04ca9a01eb46a06982fc015b88aaf0f47c3b736fda2a53db",
+   "271bf57e7026123c54e63bc474a22dc667a66717c6e3702a47026eed17aea3f5",
+   "271bf57e7026123c54e63bc474a22dc667a66717c6e3702a47026eed17aea3f5",
+   "17d116056645917143b201877cdfe029d39cb98c4302a2d0a3eeb4ab1c48c36a",
+   "17d116056645917143b201877cdfe029d39cb98c4302a2d0a3eeb4ab1c48c36a",
+   "44e64cc676c4f6bf42626f8a7ab1322039ea8bae3f35c4a20871427c413cf0b6",
+   "44e64cc676c4f6bf42626f8a7ab1322039ea8bae3f35c4a20871427c413cf0b6",
+   "0c856e2e4da3bab9b3802adceef1a0b823625682c199b67ee25693c9051541ad",
+   "0c856e2e4da3bab9b3802adceef1a0b823625682c199b67ee25693c9051541ad",
+   "6cb85cd2e096bb514799592dde2121e7c50fe7f92f3dd8863b9cf67840b71b74",
+   "6cb85cd2e096bb514799592dde2121e7c50fe7f92f3dd8863b9cf67840b71b74",
+   "62f50f0c0772b101d06eb8c6d6777b00b79d3100eeaaf661e84edbdcd9e36b10",
+   "62f50f0c0772b101d06eb8c6d6777b00b79d3100eeaaf661e84edbdcd9e36b10",
+   "cce4a24c2377fa5714ff6cb4ebc67275a466a73ab61618f63b2338438a9f7b87",
+   "cce4a24c2377fa5714ff6cb4ebc67275a466a73ab61618f63b2338438a9f7b87",
+   "6d49f1ab9ead7f23679645568f8a6aa308f238a27c8c8a011e1ff94b82928bfb",
+   "6d49f1ab9ead7f23679645568f8a6aa308f238a27c8c8a011e1ff94b82928bfb",
+   "63589645653c000c5ae2cc5ef3d263a8bbf300f73fc1dbf8bf7e91f6d703246c",
+   "63589645653c000c5ae2cc5ef3d263a8bbf300f73fc1dbf8bf7e91f6d703246c",
+   "099fcf9adeb511fb029db362115e81cec49c2ec6b5fca0cb09d4fbead8a68dea",
+   "099fcf9adeb511fb029db362115e81cec49c2ec6b5fca0cb09d4fbead8a68dea",
+   "619b264f0de18373460adefe59d9c63ea2b4ace14b6743a6e9fbcef6f944b585",
+   "619b264f0de18373460adefe59d9c63ea2b4ace14b6743a6e9fbcef6f944b585",
+   "f8d4188984bafae92f6b4008f1cf8caedda1ade36bd0cec87a60e6ca8f8f7afe",
+   "f8d4188984bafae92f6b4008f1cf8caedda1ade36bd0cec87a60e6ca8f8f7afe",
+   "8ecc472f31ec59269d5ff20da4fa2ba2b3cfc992f49c5324858a68c0cc9f2f58",
+   "8ecc472f31ec59269d5ff20da4fa2ba2b3cfc992f49c5324858a68c0cc9f2f58",
+   "78b7b0c10d666dea06a9f6989842832051a8986d8d104702331558916dd68066",
+   "78b7b0c10d666dea06a9f6989842832051a8986d8d104702331558916dd68066",
+   "a3380e87ef281e052da470b3e68407d073970c4f7127be74cb26ad7a3012724d",
+   "a3380e87ef281e052da470b3e68407d073970c4f7127be74cb26ad7a3012724d",
+   "8381ad2ee008b1791cf7d96e26a00ff93b75b2486bda51f088ca9c952a5d52d2",
+   "8381ad2ee008b1791cf7d96e26a00ff93b75b2486bda51f088ca9c952a5d52d2",
+   "a5a1ddb28183c7d4c225ae4531b57bd02c17b86083f13a9b4c42b7752c0d0b92",
+   "a5a1ddb28183c7d4c225ae4531b57bd02c17b86083f13a9b4c42b7752c0d0b92",
+   "74db0a174e6413854ff2029d17bd8ec7a343a069f8672625118c6627b6207610",
+   "74db0a174e6413854ff2029d17bd8ec7a343a069f8672625118c6627b6207610",
+   "de4a62e50f0e118b2c61086583baa1476f559fcf0e86debdae322abf7068646a",
+   "de4a62e50f0e118b2c61086583baa1476f559fcf0e86debdae322abf7068646a",
+   "349ee2d4edf312c45065091fbdedcde9e3f5ff5a8c10f84eb7604e0653541d76",
+   "349ee2d4edf312c45065091fbdedcde9e3f5ff5a8c10f84eb7604e0653541d76",
+   "be290e1bdda40f7f28203180004159ba3b3ea0250ee534121106efa5290dbe99",
+   "be290e1bdda40f7f28203180004159ba3b3ea0250ee534121106efa5290dbe99",
+   "85b918f8bd8d965af36c0db3c2ce0d037648a6ee81e4f2d7e798572d88639e51",
+   "85b918f8bd8d965af36c0db3c2ce0d037648a6ee81e4f2d7e798572d88639e51",
+   "7cabbbe9ac8d05eb5638e6d3de47a9c618a6f7fc323fccbb5cb30d22a917f4ac",
+   "7cabbbe9ac8d05eb5638e6d3de47a9c618a6f7fc323fccbb5cb30d22a917f4ac",
+   "00fe543b32fbacb2eb26cbc28bcc6d00b867c1ec6d85218850d483e84f7ce148",
+   "00fe543b32fbacb2eb26cbc28bcc6d00b867c1ec6d85218850d483e84f7ce148",
+   "7071bf4f224e6f5b99ef6f2e61258336fbc78dd02070b3690b7918e2382042ae",
+   "7071bf4f224e6f5b99ef6f2e61258336fbc78dd02070b3690b7918e2382042ae"
+  ],
+  "seconds": 265.9,
+  "tokens": {
+   "input": 151832,
+   "cached": 109142,
+   "output": 15692
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_a53b7aae8525d0d4|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 24,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File termination challenge (and any extension request) within the statutory period"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The claim concerns contesting a lease termination, but coverage and the challenge deadline cannot yet be assessed; promptly obtain the termination notice and proof/date of receipt, together with the other documents listed as missing in the evaluated checklist.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "keys": [
+   "7b5d9e2b5b169f01727c8f6e8af7a7ca007150e77f0388bd6d84de6e868cfc66",
+   "7b5d9e2b5b169f01727c8f6e8af7a7ca007150e77f0388bd6d84de6e868cfc66",
+   "cbc4669580bd3f13e30c736755dfc795afaa6f3830249ecb0a7bcf064e66083b",
+   "cbc4669580bd3f13e30c736755dfc795afaa6f3830249ecb0a7bcf064e66083b",
+   "dbaec78e8494b68cc48d92ef5b122ffa1889fc2d18a5ba3627bd48a52fc26a46",
+   "dbaec78e8494b68cc48d92ef5b122ffa1889fc2d18a5ba3627bd48a52fc26a46",
+   "595e13041c761f063e08bbe2777a439573c611c4c214fc04886ccfdb17506527",
+   "595e13041c761f063e08bbe2777a439573c611c4c214fc04886ccfdb17506527",
+   "7dbfe4b3bdeee78b7ab3575999cd532b03213dc83045d14e558cb37555721be7",
+   "7dbfe4b3bdeee78b7ab3575999cd532b03213dc83045d14e558cb37555721be7",
+   "ec7783743d7cab9b31e2e02c9612c988411aa79d6703ed5626575d6c169b38b3",
+   "ec7783743d7cab9b31e2e02c9612c988411aa79d6703ed5626575d6c169b38b3",
+   "14078cbb7e6e71a8187d3160fd1a30cf38a2fb6968cdcfdb1aef785afc109731",
+   "14078cbb7e6e71a8187d3160fd1a30cf38a2fb6968cdcfdb1aef785afc109731",
+   "c068036f77c6e9e9f0bb2738d80b8a4c60fb9a26673d6a7eee36a4b0e3d950bb",
+   "c068036f77c6e9e9f0bb2738d80b8a4c60fb9a26673d6a7eee36a4b0e3d950bb",
+   "32d2fa0f23dbf11134d29955b0f2d1dda69d97c24a591e9c1ae957018f51b52a",
+   "32d2fa0f23dbf11134d29955b0f2d1dda69d97c24a591e9c1ae957018f51b52a",
+   "08d64d27e3d20e5091544ba7c91e12979936d5ef3c5fef05fe7b165ae103204b",
+   "08d64d27e3d20e5091544ba7c91e12979936d5ef3c5fef05fe7b165ae103204b",
+   "a988ad64f65556871d983287f7e289c073c80c0a8bf67ec2776a68379c6d230c",
+   "a988ad64f65556871d983287f7e289c073c80c0a8bf67ec2776a68379c6d230c",
+   "a22a7db986b3d027cf6f6a00a25a54a860e4678f8c96c352093c45e5a90149aa",
+   "a22a7db986b3d027cf6f6a00a25a54a860e4678f8c96c352093c45e5a90149aa",
+   "8361c7d3b2838c297b33fcb9b5df85a5f32369ebe566e47b2d843674b069e9fb",
+   "8361c7d3b2838c297b33fcb9b5df85a5f32369ebe566e47b2d843674b069e9fb",
+   "159e25f7c4d162f9ddf1ebc90bf3357916027b7465eeef2c52e3e3faeda2a86d",
+   "159e25f7c4d162f9ddf1ebc90bf3357916027b7465eeef2c52e3e3faeda2a86d",
+   "4581e04f5d3b24685ffdfead901d45a520fe92d6ba9dde0dea5ee76f4fb96e73",
+   "4581e04f5d3b24685ffdfead901d45a520fe92d6ba9dde0dea5ee76f4fb96e73",
+   "66c73adaa73c2cee4a64cc1856b098253a890b24684f75d099eb89040ce40a0c",
+   "66c73adaa73c2cee4a64cc1856b098253a890b24684f75d099eb89040ce40a0c",
+   "d5e660a1266fc8850b5795ebcc479911e265a49ca1b287df37d3a9bab0af0a9c",
+   "d5e660a1266fc8850b5795ebcc479911e265a49ca1b287df37d3a9bab0af0a9c",
+   "792974fc26bb0aad5e471b6bbad8a69a12786097f7c4b6896a41e49e8a08c807",
+   "792974fc26bb0aad5e471b6bbad8a69a12786097f7c4b6896a41e49e8a08c807",
+   "1ee3e626cc8b9eaa0af04a5618b0ebc0b706921d9469474d804374a17ab0f391",
+   "1ee3e626cc8b9eaa0af04a5618b0ebc0b706921d9469474d804374a17ab0f391",
+   "2b8e68cf954bba41c1f3902d0fc65f20aa654a46064000239f0b71a532aff71d",
+   "2b8e68cf954bba41c1f3902d0fc65f20aa654a46064000239f0b71a532aff71d",
+   "69b6154e688b8f8b9f0103684229fe63d9113af32b5fb2623232efa8ed77a1a9",
+   "69b6154e688b8f8b9f0103684229fe63d9113af32b5fb2623232efa8ed77a1a9",
+   "e6c1896f5583e97d0c8932bbe65098742f5fc029dd8f9659d5b5df1ee7132cde",
+   "e6c1896f5583e97d0c8932bbe65098742f5fc029dd8f9659d5b5df1ee7132cde",
+   "9a47b979418b04e2bf22808de7387cdda97fe9a9c9ed5edd026f0578f4b4bf78",
+   "9a47b979418b04e2bf22808de7387cdda97fe9a9c9ed5edd026f0578f4b4bf78",
+   "c5788f9133f58b9dec5ef4704573076371db8943280b8ace7014d99b41809ab2",
+   "c5788f9133f58b9dec5ef4704573076371db8943280b8ace7014d99b41809ab2"
+  ],
+  "seconds": 183.4,
+  "tokens": {
+   "input": 97727,
+   "cached": 66316,
+   "output": 11753
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|fcl_c03f5f5c1caa60f2|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 23,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "File challenge with the conciliation authority within the statutory period"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "Cover cannot yet be confirmed. Clarify arrears, obtain the checklist-listed missing documents, and establish receipt and termination dates to preserve any challenge deadline. Advice on conciliation versus a lawyer must await review.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "keys": [
+   "936dc7514ee5c2285461b6667a1b574f1f878daee04de09c75b735318176a903",
+   "936dc7514ee5c2285461b6667a1b574f1f878daee04de09c75b735318176a903",
+   "8388bb700364e30c68dc11b95b48755adebb137db4a1c5355c205f3bb529f69d",
+   "8388bb700364e30c68dc11b95b48755adebb137db4a1c5355c205f3bb529f69d",
+   "269d9402df5741df7f4be01afe3ed5a6cd8d7373a4b21094f64dc17944195f3f",
+   "269d9402df5741df7f4be01afe3ed5a6cd8d7373a4b21094f64dc17944195f3f",
+   "f79468431d9689c99f454f2da74b07c4817bb7e72f898542829a7861317c2aa5",
+   "f79468431d9689c99f454f2da74b07c4817bb7e72f898542829a7861317c2aa5",
+   "c862fe36aef6fee8298bfa15b56759d0102756c6e58c38d9da9f441ef496c0cc",
+   "c862fe36aef6fee8298bfa15b56759d0102756c6e58c38d9da9f441ef496c0cc",
+   "2e28f182e7eecd12e569327c4524dabf5fb125fe244765ab4e1b0ee9b296a64e",
+   "2e28f182e7eecd12e569327c4524dabf5fb125fe244765ab4e1b0ee9b296a64e",
+   "4676b267869371902c3c9d25c284505475681d00b607dae6f165d42af14ef045",
+   "4676b267869371902c3c9d25c284505475681d00b607dae6f165d42af14ef045",
+   "568ea001a09d55f03d93175ceafd1ec7914f6d3da40d1a673d2d27ef0d291c12",
+   "568ea001a09d55f03d93175ceafd1ec7914f6d3da40d1a673d2d27ef0d291c12",
+   "ec1595a0f51358b0d270555f5aa85a30ff66a8f11b66d871f529c9b7e18e83f9",
+   "ec1595a0f51358b0d270555f5aa85a30ff66a8f11b66d871f529c9b7e18e83f9",
+   "4b537c5934656510698858995733270b4a39859346432c5ee9e56a0083d3d21e",
+   "4b537c5934656510698858995733270b4a39859346432c5ee9e56a0083d3d21e",
+   "9560bcfbd6cc3503ef96868bd8c4db736f3c66d8ee419c09c246dcdcb38e8655",
+   "9560bcfbd6cc3503ef96868bd8c4db736f3c66d8ee419c09c246dcdcb38e8655",
+   "1759d27e713af4556b0ae8877ffe3051dc53b39d4860644e0a5d2894e4da4029",
+   "1759d27e713af4556b0ae8877ffe3051dc53b39d4860644e0a5d2894e4da4029",
+   "23a62fe4571cfd4874d83fe020cea151047d2b15f49889e08cf5caf828448b56",
+   "23a62fe4571cfd4874d83fe020cea151047d2b15f49889e08cf5caf828448b56",
+   "8962974fe22cd1dcfba06f0a8ca7630fcda4e2dcc1da4cfbcbd9e4fa5137cba6",
+   "8962974fe22cd1dcfba06f0a8ca7630fcda4e2dcc1da4cfbcbd9e4fa5137cba6",
+   "65dee3e2dd6e6e292b1094e4c5f480be94de8c39cb36623d60b82582554617ca",
+   "65dee3e2dd6e6e292b1094e4c5f480be94de8c39cb36623d60b82582554617ca",
+   "e71ae79785ed436e8550b170db6290b9a4d2911762d1d38e3bde8a626764b985",
+   "e71ae79785ed436e8550b170db6290b9a4d2911762d1d38e3bde8a626764b985",
+   "fbe9b324bc41ce5a313b56cff11c1996f40d480a25e85f594449df2044a41994",
+   "fbe9b324bc41ce5a313b56cff11c1996f40d480a25e85f594449df2044a41994",
+   "a195945512561fdbb9a90d1e1d60db52f2d15db9f6387344af1223aaf7a9ec43",
+   "a195945512561fdbb9a90d1e1d60db52f2d15db9f6387344af1223aaf7a9ec43",
+   "409b12dc40fa8dfdf85eb01a1c468203815b77e2bcd8578c2149423ad785f455",
+   "409b12dc40fa8dfdf85eb01a1c468203815b77e2bcd8578c2149423ad785f455",
+   "06d3d3eb4b35f7d16182bb48528aef99680ae6b9edc038c66d75ccedf983387e",
+   "06d3d3eb4b35f7d16182bb48528aef99680ae6b9edc038c66d75ccedf983387e",
+   "94ec7a750bddd8ea36232d5db9b9c0b33eac73b537edd74b1c610ff96c1e92ea",
+   "94ec7a750bddd8ea36232d5db9b9c0b33eac73b537edd74b1c610ff96c1e92ea",
+   "bdab7c1e4258f98d635a1ded5f2f54b3f9abac6a66703d11f42168c1a2b428f2",
+   "bdab7c1e4258f98d635a1ded5f2f54b3f9abac6a66703d11f42168c1a2b428f2",
+   "4bb9988854057dfb40584ae4d35e848feaec715e4e20ad9324a914cf33a53973",
+   "4bb9988854057dfb40584ae4d35e848feaec715e4e20ad9324a914cf33a53973"
+  ],
+  "seconds": 199.4,
+  "tokens": {
+   "input": 90660,
+   "cached": 60468,
+   "output": 9671
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
  }
 }
