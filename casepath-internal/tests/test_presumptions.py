@@ -144,6 +144,22 @@ class PresumptionUseTests(unittest.TestCase):
         confirm_facts(model, work)
         self.assertEqual(work.accepted_facts(), {"landlord_notified": True})  # the defining event, as presumed
 
+    def test_a_failed_or_silent_second_reading_does_not_clear_a_passage_that_raises_the_fact(self):
+        from casepath.agents.azure_model import ModelError
+        from casepath.agents.team import confirm_facts
+        from tests.scripted import ScriptedModel
+
+        class Failing:
+            def respond_json(self, **kw):
+                raise ModelError("timeout", "no answer")
+        cite = [{"file": "f1", "quote": QUOTE}]
+        for model in (Failing(), ScriptedModel([], second_reading=[])):  # failed, or ran without answering this condition
+            work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+            work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "unknown", "value": None,
+                                               "citations": work.located(cite)[0], "verdict": "not_checked", "by": "claim_reader"}
+            confirm_facts(model, work)
+            self.assertNotIn("landlord_notified", work.presumptions())  # the doubt the files raise stays open
+
 
 class ReplyTests(unittest.TestCase):
     def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
