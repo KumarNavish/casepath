@@ -118,7 +118,7 @@ tested at the 5% level only if every hypothesis before it was confirmed
 (fixed-sequence procedure). A hypothesis of fewer errors is confirmed when
 the two-sided exact sign-flip test gives p < 0.05 and the difference favours
 CasePath. The order was fixed from development results before the data were
-opened: first the contrasts with the largest development differences. We use
+opened: the contrasts that development supported most strongly come first. We use
 a fixed sequence, not Holm's correction, because with nine clusters the
 smallest attainable p of the exact test is 0.0039 and a five-way Holm
 correction would leave little power.
@@ -127,20 +127,20 @@ correction would leave little power.
   changes per pair than Rules in context.
 - **H2. Tenancy, same model.** CasePath makes fewer strict unsafe errors per
   claim than Rules in context.
-- **H3. Theft, every prior-work strategy.** CasePath makes fewer wrong +
+- **H3. Tenancy, against the frontier model.** CasePath makes fewer strict
+  unsafe errors per claim than Rules in context, frontier.
+- **H4. Theft, every prior-work strategy.** CasePath makes fewer wrong +
   missed changes per pair than each of Self-consistency, Model executes
   rules and ReAct. Confirmed only if all three tests are significant (no
   correction is needed when all must hold).
-- **H4. Theft, against the frontier model.** CasePath's wrong + missed
+- **H5. Theft, against the frontier model.** CasePath's wrong + missed
   changes per pair are not higher than those of Rules in context, frontier,
   with the same reviewed rules, by 0.25 or more. Non-inferiority by paired
   cluster bootstrap (10,000 resamples): p = share of resamples in which the
   difference reaches the margin; confirmed when p < 0.05.
-- **H5. Tenancy, against the frontier model.** CasePath makes fewer strict
-  unsafe errors per claim than Rules in context, frontier.
 
 **Where we expect the tenancy differences.** The probe predicts that H2 and
-H5 are carried by the denied-event and open-event claims: there the rules
+H3 are carried by the denied-event and open-event claims: there the rules
 stop or hold the whole checklist, and a single prompt tends to request the
 standard documents all the same. On the 63 ordinary claims we expect no
 difference between CasePath and either baseline. Both subsets are reported
@@ -149,7 +149,7 @@ happened.
 
 Every contrast is reported with both values, the paired difference, its 95%
 cluster-bootstrap interval, the number of clusters and of non-zero clusters,
-and the smallest attainable p. The margin of H4 is that of Study 2. Results
+and the smallest attainable p. The margin of H5 is that of Study 2. Results
 of hypotheses that are not tested because an earlier one failed are printed
 and labelled as outside the procedure.
 
@@ -166,7 +166,7 @@ and labelled as outside the procedure.
   correct holds, premature requests and silent skips for every design,
   including Two-valued.
 - Theft unresolved-fact pairs: premature requests; share left unchanged.
-- Theft: CasePath against the frontier model, superiority test; H4 with the
+- Theft: CasePath against the frontier model, superiority test; H5 with the
   original rules as comparator; H1 with the original rules as comparator.
 - CasePath against CasePath, checklist only, and against Core: differences
   with intervals. Needs added by an agent that entered the scored checklist.
@@ -180,7 +180,7 @@ and labelled as outside the procedure.
 All results are reported whatever their direction, together with Studies 1
 and 2. Anything not specified here is labelled post hoc. Scoring and tests
 are implemented in `analysis/study3.py` with `analysis/study3_spec.json`
-(36 tests; it reproduces the stored development results). The study is run
+(41 tests; it reproduces the stored development results). The study is run
 by `harness/study3/run_all.py --data fresh2 --label confirm --k 3`. An
 interrupted run resumes from the response cache with settings unchanged;
 every invocation is logged in `runs/study3/confirm/RUNLOG.jsonl` and reported.

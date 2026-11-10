@@ -548,29 +548,6 @@
   },
   {
    "id": "H3",
-   "text": "Theft, every prior-work strategy: CasePath makes fewer wrong + missed changes per pair than each of Self-consistency, Model executes rules and ReAct (all three must hold).",
-   "regime": "theft",
-   "measure": "errors",
-   "a": "casepath",
-   "b": [
-    "self_consistency",
-    "model_executes_rules",
-    "react"
-   ],
-   "test": "signflip"
-  },
-  {
-   "id": "H4",
-   "text": "Theft, against the frontier model: CasePath's wrong + missed changes per pair are not higher than those of Rules in context, frontier (same reviewed rules), by 0.25 or more.",
-   "regime": "theft",
-   "measure": "errors",
-   "a": "casepath",
-   "b": "ric_frontier",
-   "test": "noninferiority",
-   "margin": 0.25
-  },
-  {
-   "id": "H5",
    "text": "Tenancy, against the frontier model: CasePath makes fewer strict unsafe errors per claim than Rules in context, frontier.",
    "regime": "tenancy",
    "measure": "strict_unsafe",
@@ -588,6 +565,29 @@
      ]
     }
    ]
+  },
+  {
+   "id": "H4",
+   "text": "Theft, every prior-work strategy: CasePath makes fewer wrong + missed changes per pair than each of Self-consistency, Model executes rules and ReAct (all three must hold).",
+   "regime": "theft",
+   "measure": "errors",
+   "a": "casepath",
+   "b": [
+    "self_consistency",
+    "model_executes_rules",
+    "react"
+   ],
+   "test": "signflip"
+  },
+  {
+   "id": "H5",
+   "text": "Theft, against the frontier model: CasePath's wrong + missed changes per pair are not higher than those of Rules in context, frontier (same reviewed rules), by 0.25 or more.",
+   "regime": "theft",
+   "measure": "errors",
+   "a": "casepath",
+   "b": "ric_frontier",
+   "test": "noninferiority",
+   "margin": 0.25
   }
  ],
  "tenancy_subsets": {

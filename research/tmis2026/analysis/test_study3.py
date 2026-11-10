@@ -459,9 +459,9 @@ class Plan(unittest.TestCase):
         self.assertEqual(got, [
             ("H1", "theft", "errors", "casepath", "ric", "signflip", None),
             ("H2", "tenancy", "strict_unsafe", "casepath", "ric", "signflip", None),
-            ("H3", "theft", "errors", "casepath", ["self_consistency", "model_executes_rules", "react"], "signflip", None),
-            ("H4", "theft", "errors", "casepath", "ric_frontier", "noninferiority", 0.25),
-            ("H5", "tenancy", "strict_unsafe", "casepath", "ric_frontier", "signflip", None)])
+            ("H3", "tenancy", "strict_unsafe", "casepath", "ric_frontier", "signflip", None),
+            ("H4", "theft", "errors", "casepath", ["self_consistency", "model_executes_rules", "react"], "signflip", None),
+            ("H5", "theft", "errors", "casepath", "ric_frontier", "noninferiority", 0.25)])
         for h in SPEC["hypotheses"]:
             want = [{"subset": "ordinary"}, {"subset": ["denied_event", "open_event"]}] if h["regime"] == "tenancy" else []
             self.assertEqual(h.get("beside", []), want, h["id"])
