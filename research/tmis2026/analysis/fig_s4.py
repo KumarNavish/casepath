@@ -152,38 +152,35 @@ def place(ax, img, x, top, s, frame=True):
     return x, top - h, x + w, top
 
 
-HERO_S = 1 / 422      # inches per capture pixel (2x capture: 32 px body text prints at about 5.5 pt); the full table row fits the text width
-MED_BOX = (0, 0, 2236, 220)   # one geometry for both document-finder rows: the whole table row (document, why, status, proof, origin)
+LABEL_GREY = "#707070"   # the small panel labels of fig_hero
 
 
 def fig_hero():
-    s = HERO_S
-    rows = [("stated", "The claim states the health effect"), ("open", "The claim leaves the health effect open")]
-    crops = {}
-    for v, _ in rows:
-        c = crop(f"{v}-claim")
-        m = crop(f"{v}-medical")
-        crops[v] = {"claim": c[16:c.shape[0] - 14],                                  # drop the previous line's edge and the panel border
-                    "medical": m[MED_BOX[1]:MED_BOX[3], MED_BOX[0]:MED_BOX[2]],
-                    "steps": crop(f"{v}-stands", (30, 255, 1130, 600) if v == "stated" else (30, 300, 1130, 645))}
-    W = th.WIDTH
-    row_h = (0.31 + crops["open"]["claim"].shape[0] * s + 0.18 + crops["open"]["medical"].shape[0] * s + 0.18
-             + crops["open"]["steps"].shape[0] * s + 0.12)
-    H = 2 * row_h + 0.10
+    """Two columns (the claim states / leaves open the health effect), two panels each: the claim paragraph in the
+    claim reader's source view and the result checker's "Next steps". Captured at narrower viewports (claim reader
+    1068 px, result checker 722 px wide, deviceScaleFactor 2) so that the interface wraps its own text to 400 CSS px;
+    every crop is the same 798 x n px rectangle shape (1 px of card border dropped on the left), and both columns are
+    printed at one scale so that the 15 px list text prints at about 7 pt."""
+    cols = [("stated", "The claim states the health effect"), ("open", "The claim leaves the health effect open")]
+    crops = {v: {"claim": crop(f"{v}-claim400")[12:, 2:800],          # drop the edge of the line above the paragraph
+                 "steps": crop(f"{v}-steps400")[:, 2:800]} for v, _ in cols}
+    W, gap, m = th.WIDTH, 0.12, 0.02
+    cw = (W - 2 * m - gap) / 2
+    s = cw / 798
+    hc = max(crops[v]["claim"].shape[0] for v, _ in cols) * s
+    hs = max(crops[v]["steps"].shape[0] for v, _ in cols) * s
+    H = 0.20 + 0.17 + hc + 0.22 + hs + 0.03
     fig, ax = th.canvas(H, W)
-    top = H - 0.06
-    x0 = 0.04
-    for i, (v, title) in enumerate(rows):
-        th.text(ax, x0, top - 0.07, title, "label", bold=True)
-        th.text(ax, x0, top - 0.24, "claim reader: the claim file, with the quotations the readings found highlighted", "note")
-        A = place(ax, crops[v]["claim"], x0, top - 0.31, s)
-        th.text(ax, x0, A[1] - 0.10, "document finder: the row for the medical confirmation", "note")
-        B = place(ax, crops[v]["medical"], x0, A[1] - 0.18, s)
-        th.text(ax, x0, B[1] - 0.10, "result checker: where the case stands in its process (next steps)", "note")
-        C = place(ax, crops[v]["steps"], x0, B[1] - 0.18, s)
-        top = C[1] - 0.12
-        if i == 0:
-            th.line(ax, [0.04, W - 0.04], [top + 0.05, top + 0.05], color=th.NEUTRAL)
+    for j, (v, title) in enumerate(cols):
+        x = m + j * (cw + gap)
+        top = H - 0.04
+        th.text(ax, x, top - 0.07, title, "label", bold=True)
+        th.text(ax, x, top - 0.25, "claim reader \u00b7 source view", "note", color=LABEL_GREY)
+        place(ax, crops[v]["claim"], x, top - 0.32, s)
+        y2 = top - 0.32 - hc - 0.10
+        th.text(ax, x, y2, "result checker \u00b7 where the case stands", "note", color=LABEL_GREY)
+        place(ax, crops[v]["steps"], x, y2 - 0.07, s)
+    print("fig_hero: list text 15 css px prints at %.2f pt, claim text 16 css px at %.2f pt" % (30 * s * 72, 32 * s * 72))
     _save(fig, "fig_hero")
 
 

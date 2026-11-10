@@ -1,0 +1,197 @@
+{
+ "variant": "stated",
+ "case": "case_3e1acf26d2eb46c3",
+ "run": "run_ff1b48b2e8d44a6a",
+ "status": "completed",
+ "error": null,
+ "seconds": 310,
+ "routing": {
+  "status": "selected",
+  "workflow": {
+   "id": "defect_mold_heating",
+   "version": "2026-11-10",
+   "title": "Generic defect, moisture, mould, and heating workflow",
+   "status": "reviewed"
+  },
+  "candidates": [],
+  "needs": [],
+  "facts": [
+   {
+    "fact": "dispute_family",
+    "value": "defect_mold_heating",
+    "citations": [
+     {
+      "file": "file_ad425e163cf8480f",
+      "page": 1,
+      "start": 218,
+      "end": 326,
+      "quote": "Since early October, black mould has been growing on the outer wall of the bathroom and of the child's room."
+     }
+    ]
+   }
+  ]
+ },
+ "facts": [
+  {
+   "fact": "dispute_family",
+   "status": "established",
+   "value": "defect_mold_heating",
+   "verdict": "accepted",
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": null,
+   "quotes": [
+    "black mould has been growing"
+   ]
+  },
+  {
+   "fact": "health_effects",
+   "status": "established",
+   "value": true,
+   "verdict": "accepted",
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": null,
+   "quotes": [
+    "Our daughter has been coughing for weeks; the paediatrician suspects a link with the mould."
+   ]
+  },
+  {
+   "fact": "mold",
+   "status": "established",
+   "value": true,
+   "verdict": "accepted",
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": null,
+   "quotes": [
+    "black mould has been growing"
+   ]
+  },
+  {
+   "fact": "q-pb2",
+   "status": "unknown",
+   "value": null,
+   "verdict": "not_checked",
+   "reason_code": null,
+   "open_readings": null,
+   "readings": null,
+   "quotes": []
+  },
+  {
+   "fact": "q-pb3",
+   "status": "unknown",
+   "value": null,
+   "verdict": "not_checked",
+   "reason_code": null,
+   "open_readings": [
+    false
+   ],
+   "readings": null,
+   "quotes": []
+  },
+  {
+   "fact": "heating",
+   "status": "presumed",
+   "value": false,
+   "verdict": "presumed",
+   "reason_code": null,
+   "open_readings": null,
+   "readings": null,
+   "quotes": []
+  },
+  {
+   "fact": "specialist_needed",
+   "status": "presumed",
+   "value": false,
+   "verdict": "presumed",
+   "reason_code": null,
+   "open_readings": null,
+   "readings": null,
+   "quotes": []
+  },
+  {
+   "fact": "deposit_considered",
+   "status": "presumed",
+   "value": false,
+   "verdict": "presumed",
+   "reason_code": null,
+   "open_readings": null,
+   "readings": null,
+   "quotes": []
+  }
+ ],
+ "checklist": [
+  {
+   "document": "lease_contract",
+   "title": "Lease contract",
+   "required": "yes",
+   "status": "present",
+   "step": "dh_scope"
+  },
+  {
+   "document": "defect_notification",
+   "title": "Defect notice",
+   "required": "yes",
+   "status": "missing",
+   "step": "dh_notice"
+  },
+  {
+   "document": "proof_of_notification",
+   "title": "Proof of notification",
+   "required": "yes",
+   "status": "missing",
+   "step": "dh_notice"
+  },
+  {
+   "document": "dated_photos",
+   "title": "Dated photographs",
+   "required": "yes",
+   "status": "unusable",
+   "step": "dh_evidence"
+  },
+  {
+   "document": "landlord_response_history",
+   "title": "Landlord response history",
+   "required": "yes",
+   "status": "missing",
+   "step": "dh_response"
+  },
+  {
+   "document": "humidity_temperature_log",
+   "title": "Humidity and temperature log",
+   "required": "yes",
+   "status": "missing",
+   "step": "dh_evidence"
+  },
+  {
+   "document": "medical_confirmation",
+   "title": "Medical confirmation",
+   "required": "yes",
+   "status": "missing",
+   "step": "dh_safety"
+  },
+  {
+   "document": "caretaker_correspondence",
+   "title": "Caretaker correspondence",
+   "required": "optional",
+   "status": "missing",
+   "step": "dh_cause"
+  }
+ ],
+ "waiting_for": [],
+ "warnings": [],
+ "usage_calls": 32
+}
