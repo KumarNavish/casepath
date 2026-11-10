@@ -83,3 +83,25 @@ train s4-on-PR_declined errors 0 applied 0
 CP_before {'pairs': 81, 'wrong': 88, 'missed': 16, 'errors_per_pair': 1.2839506172839505}
 CP_after_V5 {'pairs': 81, 'wrong': 79, 'missed': 16, 'errors_per_pair': 1.1728395061728396}
 R_before {'pairs': 81, 'wrong': 135, 'missed': 32, 'errors_per_pair': 2.0617283950617282}
+R_after_memory {'pairs': 81, 'wrong': 114, 'missed': 2, 'errors_per_pair': 1.4320987654320987}
+written evolve_theft_gpt-6-luna_fresh_train4_eval567.json; v2 spend 2.8039 USD
+<< rc=0 708s
+>> python3 judge_extra.py --data fresh
+64 texts; failed 0; guards ['overlay_guard_013', 'overlay_guard_017', 'overlay_guard_027', 'overlay_guard_038', 'overlay_guard_053', 'overlay_guard_063', 'overlay_guard_079', 'overlay_guard_093']; spend 2.8168
+<< rc=0 207s
+>> python3 ablate.py --data fresh --model gpt-6-luna --split heldout
+tenancy 648 ablation plans {}
+theft 576 ablation plans {"original_pack_guards": 87, "v2_pack_guards_judged": 90, "original_guards_not_judged": ["overlay_guard_013", "overlay_guard_017", "overlay_guard_027", "overlay_guard_038", "overlay_guard_053", "overlay_guard_063", "overlay_guard_079", "overlay_guard_093"], "extra_judgments_needed": 1536, "recorded_text_runs": 192}
+<< rc=0 12s
+>> python3 ablate_origpack.py --data fresh --model gpt-6-luna --split heldout
+192 plans; 192 with extra judgments
+<< rc=0 1s
+>> python3 run.py tenancy --data fresh --split heldout --k 3 --designs CPv2p,B1v2p --workers 6
+432 jobs; v2 spend so far 1.5575 USD
+finished; v2 spend 3.6045 USD -> plans_tenancy_gpt-6.1-terra_fresh_heldout.json
+<< rc=0 762s
+>> python3 run.py theft --data fresh --split heldout --k 3 --designs CPv2p,Rv2p,R --workers 6
+576 jobs; v2 spend so far 3.6045 USD
+finished; v2 spend 7.0992 USD -> plans_theft_gpt-6.1-terra_fresh_heldout.json
+<< rc=0 1346s
+ALL DONE 2026-11-10T01:46:02Z total 3038s
