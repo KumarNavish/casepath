@@ -53,6 +53,7 @@ benchmark/             synthetic cases with known answers                interna
 deploy/                databricks/ · workspace/ (DSW) · preview/ · cloudshell/ · Dockerfile at the root
 docs/                  DEPLOYMENT.md · contracts/ (case API) · history/
 tests/
+.gitlab-ci.yml · mobi.yaml · renovate.json    the DSW's pipeline, from the platform template     internal copy
 ```
 
 ## Rules
