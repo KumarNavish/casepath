@@ -283,7 +283,8 @@ class CaseWork:
         out = {fact: {"fact": fact, "value": value, "applies": "routed", "source_ref": None, "by": "routing",
                       "text": "Only this workflow can apply to the case, so routing presumes its condition."}
                for fact, value in self.routing_presumed.items()
-               if self.facts.get(fact) is None or self.facts[fact]["status"] == "unknown"}
+               if (self.facts.get(fact) is None or self.facts[fact]["status"] == "unknown")
+               and not workflows.reading_gave_value(self.facts.get(fact))}
         out.update(workflows.presumed(self.graph, self.facts))
         return out
 
