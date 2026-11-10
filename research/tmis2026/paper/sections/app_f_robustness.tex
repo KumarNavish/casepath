@@ -1,0 +1,32 @@
+\section{Robustness}
+\label{app:robustness}
+
+\subsection{Study 1}
+\label{app:rob-study1}
+
+\paragraph{Contested references}
+Excluding the two theft conditions whose references the re-derivation did not reproduce left the order of the three main designs unchanged: $F_1$ with \texttt{gpt-6.1-terra} was \thTerraRAgreedFone{} for \design{Rules in context}, \thTerraCPAgreedFone{} for the Study~1 configuration and \thTerraDAgreedFone{} for \design{Direct}; with \texttt{gpt-6-luna} it was \thLunaRAgreedFone{} and \thLunaCPAgreedFone. Among the variants, the Study~1 configuration without verifier and majority voting over \design{Direct} swapped places with \texttt{gpt-6.1-terra} (\thTerraCPnAgreedFone{} and \thTerraDscAgreedFone), as do the Study~1 configuration without verifier and the Study~1 configuration with all routes with \texttt{gpt-6-luna} (\thLunaCPnAgreedFone{} and \thLunaCPallAgreedFone).
+
+\paragraph{Run pairing}
+Averaged over all nine pairings of runs, wrong changes per pair were \thTerraCPAllPairWrongPP{} for the Study~1 configuration, \thTerraRAllPairWrongPP{} for \design{Rules in context} and \thTerraDAllPairWrongPP{} for \design{Direct} with \texttt{gpt-6.1-terra}, and \thLunaCPAllPairWrongPP{} and \thLunaRAllPairWrongPP{} with \texttt{gpt-6-luna}; the shares of unchanged unresolved-fact pairs were \thTerraCPAllPairStable\% and \thTerraRAllPairStable\% (\texttt{gpt-6.1-terra}) and \thLunaCPAllPairStable\% and \thLunaRAllPairStable\% (\texttt{gpt-6-luna}).
+
+\paragraph{Repeated errors}
+Counting each error repeated from a story's unchanged case once changed the order with \texttt{gpt-6.1-terra}: \thTerraDWrongInShared{} of \design{Direct}'s \thTerraDWrong{} wrong changes were repeats, and the per-pair values became \thTerraDDedupWrongPP{} for \design{Direct}, \thTerraRDedupWrongPP{} for \design{Rules in context} and \thTerraCPDedupWrongPP{} for the Study~1 configuration (Table~\ref{tab:theft}).
+
+\paragraph{Secondary contrasts}
+Against \design{Direct} (\texttt{gpt-6.1-terra}), the Study~1 configuration's difference in wrong changes per pair was \ctTerraHThreeDDiff{} ($p=\ctTerraHThreeDP$), \ctTerraHThreeDedupDDiff{} with repeats counted once ($p=\ctTerraHThreeDedupDP$), and in the share of changed unresolved-fact pairs \ctTerraHFourDDiff{} ($p=\ctTerraHFourDP$). Against majority voting over \design{Rules in context}, the differences were \ctTerraHOneSCDiff{} unsafe errors per claim ($p=\ctTerraHOneSCP$) and \ctTerraHThreeRSCDiff{} wrong changes per pair ($p=\ctTerraHThreeRSCP$) with \texttt{gpt-6.1-terra}, and \ctLunaHOneSCDiff{} ($p=\ctLunaHOneSCP$) and \ctLunaHThreeRSCDiff{} ($p=\ctLunaHThreeRSCP$; \ctLunaHThreeDedupRSCDiff{} with repeats counted once, $p=\ctLunaHThreeDedupRSCP$) with \texttt{gpt-6-luna}. Exact deferral deferred \ctTerraHTwoBDeferDiff{} and \ctLunaHTwoBDeferDiff{} fewer shares of required documents than the production engine ($p=\ctTerraHTwoBDeferP$ and $p\ctLunaHTwoBDeferP$), with unsafe-error differences of \ctTerraHTwoBUnsafeDiff{} and \ctLunaHTwoBUnsafeDiff{} per claim ($p=\ctTerraHTwoBUnsafeP$ and \ctLunaHTwoBUnsafeP). Counting held documents only, H2's difference was \ctTerraHTwoHeldDiff{} and \ctLunaHTwoHeldDiff{} ($p\ctTerraHTwoHeldP$ and $p\ctLunaHTwoHeldP$).
+
+\paragraph{Decomposition}
+With \texttt{gpt-6.1-terra}, the planned sequence from \design{Rules in context} to \design{Model executes rules}, the Study~1 configuration without verifier and the Study~1 configuration requested \pct{\tenTerraBoneRecall}, \pct{\tenTerraBtwoRecall}, \pct{\tenTerraCPxnRecall} and \pct{\tenTerraCPxRecall} of required documents at once, with \tenTerraBoneUnsafe, \tenTerraBtwoUnsafe, \tenTerraCPxnUnsafe{} and \tenTerraCPxUnsafe{} unsafe errors per claim.
+
+\paragraph{Holds of documents that are not required}
+Per claim, \design{Rules in context} held \tenTerraBoneHoldsNonreq{} and \tenLunaBoneHoldsNonreq{} documents that the reference does not require, \design{Model executes rules} \tenTerraBtwoHoldsNonreq, and the Study~1 configuration with exact deferral \tenTerraCPxHoldsNonreq{} and \tenLunaCPxHoldsNonreq{} (\texttt{gpt-6.1-terra} and \texttt{gpt-6-luna}). No planned measure penalised these holds.
+
+\subsection{Study 2}
+\label{app:rob-study2}
+
+\paragraph{Repeated errors}
+Counting each error repeated from a story's unchanged case once per story and run lowered the Study~2 configuration's theft errors with the cost-efficient model from \stThCPvTwoLunaErrors{} to \stThCPvTwoLunaErrorsDedup{} per pair, while Rules in context with the original workflow on the frontier model stayed at \stThRTerraErrorsDedup. Contrast~C then became \stSecCDedupDiff{} [\stSecCDedupLo, \stSecCDedupHi] ($p=\stSecCDedupP$), and contrast~A \stSecADedupDiff{} [\stSecADedupLo, \stSecADedupHi] ($p=\stSecADedupP$).
+
+\paragraph{Run pairing}
+Averaged over all nine pairings of runs, errors per theft pair were \stThCPvTwoLunaErrorsAllPair{} for the Study~2 configuration and \stThRVTwoLunaErrorsAllPair{} for Rules in context with the same workflow (cost-efficient model), and \stThRTerraErrorsAllPair{} for Rules in context with the original workflow on the frontier model.

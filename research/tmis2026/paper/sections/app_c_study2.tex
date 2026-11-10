@@ -1,0 +1,145 @@
+\section{Study 2 in full}
+\label{app:study2}
+
+\emph{Names used at the time.} The study files call the system under test CasePath v2 (\texttt{CPv2p}); here it is the Study~2 configuration. CasePath v1 (\texttt{CPv1}) is the Study~1 configuration. Other names map to this paper's terms as follows: rule pack (workflow), verified pack (the workflow repaired without labels), original pack (the workflow of Study~1), silence policy or presumption clause (presumptions), condition (fact), plan (checklist), \texttt{B1v2p} and \texttt{Rv2p} (Rules in context with the same workflow, tenancy and theft), \texttt{R} (Rules in context with the original workflow), \texttt{gpt-6.1-terra} (the frontier model) and \texttt{gpt-6-luna} (the cost-efficient model). Figure~\ref{fig:study2} keeps the names v1 and v2. The body uses this paper's terms. The analysis plan, the design notes and the generated results are released with the code \cite{casepath2026repo}.
+
+\subsection{Design}
+\label{app:s2-design}
+
+\paragraph{Question}
+Study~2 asked whether the configuration built after Study~1 requests evidence better than a model that applies the same rules itself, on cases no model had been run on. The analysis plan and the scoring code were committed before the first model call on the new data.
+
+\paragraph{The Study 2 configuration}
+It answered the root causes of Study~1 with four changes. Every extracted theft rule was checked against its cited passages by a blind model, and flagged rules were repaired with typed operations (split a joint route into alternatives, drop an unsupported document, bind a condition to a cited proposition); rules that still failed stayed in force and were listed for review. The tenancy workflow stated presumptions: the dispute's defining event was presumed unless the claim denied it, and a branch fact was presumed absent only when nothing was quoted for it. One reading recorded a value with a quotation for every fact; code admitted a true or false value only if its quotation was found in the file after a fixed normalisation. There was no checking call, because on development data the evidence-bearing version of it changed no checklist. Code evaluated the workflow with exact deferral.
+
+\paragraph{Data}
+The new data were sealed before any design ran on them. Theft: four new stories, each with the nine changed-fact pairs and the six unresolved-fact pairs of Study~1, 36 changed-fact pairs in all; references from the frozen source contract. Tenancy: 72 new claims in 18 families with fact combinations unused in Study~1, 18 claims with one fact raised and left open, and 38 attachments, 18 of them sufficient. The plan fixed three limits in advance. Tenancy references came from the same engine and presumptions that the configuration implements, so the regime tested rule application given the presumptions, and every design received the presumption clause. Messages that a blind reader misread were rewritten or replaced, so claims were explicit. The theft stories reused the nine facts and the \rvRules{} extracted rules of Study~1, and the repair was developed knowing which rules were faulty.
+
+\paragraph{Designs}
+All designs received the same case text, catalogue and reading instructions, low reasoning effort and schema-constrained output. Rules in context with the same workflow received the repaired workflow and the presumption clause. Rules in context with the original workflow was the Study~1 comparator. The Study~1 configuration ran with the cost-efficient model only, for the ablation. Every other design ran with both models, three runs per case.
+
+\paragraph{Measures}
+On tenancy, each document the reference marks needed now was requested, held, handed over with the whole claim, or missed. A document the reference holds, because it depends on the open fact, was held correctly, requested prematurely, or silently skipped. Any other requested document was an unnecessary request. The primary measure, strict unsafe errors per claim, summed unnecessary requests, missed and handed-over needed documents, premature requests and silent skips. On theft, the primary measure was wrong plus missed changes per pair, scored with the frozen scorer of Study~1. A failed output counted as an empty checklist.
+
+\paragraph{Primary contrasts}
+Four contrasts were Holm-corrected together. Clusters were the nine changed facts (theft) and the 18 families (tenancy). A and B compared the configuration with Rules in context with the same workflow, both on the cost-efficient model, by exact two-sided sign-flip tests. C compared it, on the cost-efficient model, with Rules in context with the original workflow on the frontier model (theft), and D with Rules in context with the same workflow on the frontier model (tenancy). C and D tested non-inferiority with margins of 0.25 errors per pair and 0.10 per claim, about half the corresponding development differences; $p$ was the share of 10,000 paired cluster-bootstrap resamples in which the difference reached the margin.
+
+\paragraph{Secondary analyses}
+The plan named the same-model contrasts with the frontier model, the requested share with a five-point non-inferiority margin, open facts on both datasets, cost, an ablation and an evolution experiment. The ablation compared the configuration with the Study~1 configuration and, recomputed from the recorded readings without model calls, with variants without presumptions, with strong Kleene evaluation, with the original workflow, and with admission only when two of the three runs' readings agreed. In the evolution experiment both arms received, in order, the reference answers for the pairs of the first new story as handler corrections. The configuration traced each wrong or missed request to a rule and applied a source-checked typed repair or suspended the rule; Rules in context received the same corrections in its prompt as a memory. Both were then evaluated on the other three stories.
+
+\subsection{Results}
+\label{app:s2-results}
+
+\paragraph{Primary contrasts}
+None of the four was confirmed after Holm correction (Table~\ref{tab:s2-primary}). On theft with the same model, the configuration made fewer errors than Rules in context with the same workflow, but the raw $p=\stAP$ became \stAHolm{} after correction. On tenancy the point estimate favoured Rules in context. Against the frontier model with the original workflow, non-inferiority failed and the configuration was significantly worse ($p=\stCP$, two-sided). On tenancy against the frontier model, non-inferiority was not shown.
+
+\begin{table}[t]
+\caption{Primary contrasts of Study~2: the Study~2 configuration on the cost-efficient model ($a$) against each comparator ($b$). Theft: wrong plus missed changes per pair; tenancy: strict unsafe errors per claim; lower is better. Difference $a-b$ with 95\% cluster-bootstrap interval; clusters (non-zero); $p$: exact sign-flip (A, B) or non-inferiority (C, D); Holm over A--D.}
+\label{tab:s2-primary}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\linewidth}{@{}lXrrlcrr@{}}
+\toprule
+& Comparator ($b$) & $a$ & $b$ & Difference [95\% CI] & Clusters & $p$ & Holm \\
+\midrule
+A & theft, Rules in context, same workflow, cost-efficient & \stAA & \stAB & \stADiff{} [\stALo, \stAHi] & \stAClusters{} (\stANonzero) & \stAP & \stAHolm \\
+B & tenancy, Rules in context, same workflow, cost-efficient & \stBA & \stBB & \stBDiff{} [\stBLo, \stBHi] & \stBClusters{} (\stBNonzero) & \stBP & \stBHolm \\
+C & theft, Rules in context, original workflow, frontier & \stCA & \stCB & \stCDiff{} [\stCLo, \stCHi] & \stCClusters{} (\stCNonzero) & \stCPNI & \stCHolm \\
+D & tenancy, Rules in context, same workflow, frontier & \stDA & \stDB & \stDDiff{} [\stDLo, \stDHi] & \stDClusters{} (\stDNonzero) & \stDPNI & \stDHolm \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\fig{fig_study2}{\linewidth}
+\Description{Dot plots of Study 2 results by design and model: tenancy held needed documents and strict unsafe errors per claim; theft wrong plus missed changes per pair with intervals.}
+\caption{Study~2 by design and model. Left: held needed documents and strict unsafe errors per tenancy claim. Right: wrong plus missed changes per theft pair with 95\% cluster-bootstrap intervals; a bar marks the value with repeated errors counted once. v1 and v2 are the Study~1 and Study~2 configurations.}
+\label{fig:study2}
+\end{figure}
+
+\paragraph{Same-model contrasts with the frontier model}
+With the frontier model on both sides, the configuration made \stSecATerraA{} theft errors per pair against \stSecATerraB{} for Rules in context with the same workflow ($p=\stSecATerraP$) and \stSecBTerraA{} strict unsafe errors per tenancy claim against \stSecBTerraB{} ($p=\stSecBTerraP$). Against Rules in context with the original workflow it was worse, \stSecTheftCPvCpTerraVsRTerraA{} against \stSecTheftCPvCpTerraVsRTerraB{} ($p=\stSecTheftCPvCpTerraVsRTerraP$). With the cost-efficient model and the original workflow as comparator, the theft difference was \stSecAOriginalPackLunaDiff{} ($p=\stSecAOriginalPackLunaP$).
+
+\paragraph{Tenancy}
+Every design requested almost all needed documents at once (Table~\ref{tab:s2-tenancy}); requested share was non-inferior with both models ($p\stSecRequestedShareLunaPNI$). The configuration held \stTenCPvTwoLunaHeldReq{} needed documents per claim against \stTenCPvOneLunaHeldReq{} for the Study~1 configuration. Its errors were mostly missed documents. On the \stOpenCPvTwoLunaClaims{} open-fact claims, the configuration held \stOpenCPvTwoLunaCorrectHold{} of the \stOpenCPvTwoLunaRefHeld{} documents the reference holds over three runs and requested \stOpenCPvTwoLunaPremature{} prematurely with the cost-efficient model; Rules in context held all \stOpenBOneVTwoLunaCorrectHold.
+
+\begin{table}[t]
+\caption{Study~2 tenancy outcomes per claim over 72 claims, three runs each. Strict: strict unsafe errors; Unn.: unnecessary requests; Missed and Handed: needed documents; Prem.: premature requests; Req.: requested share of needed documents (\%); Held: held needed documents; Spur.: holds of documents neither needed now nor held by the reference.}
+\label{tab:s2-tenancy}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\linewidth}{@{}Xrrrrrrrr@{}}
+\toprule
+Design & Strict & Unn. & Missed & Handed & Prem. & Req. & Held & Spur. \\
+\midrule
+\multicolumn{9}{@{}l}{\emph{Cost-efficient model}} \\
+Study~2 configuration & \stTenCPvTwoLunaUnsafe & \stTenCPvTwoLunaUnnec & \stTenCPvTwoLunaMissed & \stTenCPvTwoLunaHanded & \stTenCPvTwoLunaPremature & \stTenCPvTwoLunaReqShare & \stTenCPvTwoLunaHeldReq & \stTenCPvTwoLunaSpurious \\
+Rules in context & \stTenBOneVTwoLunaUnsafe & \stTenBOneVTwoLunaUnnec & \stTenBOneVTwoLunaMissed & \stTenBOneVTwoLunaHanded & \stTenBOneVTwoLunaPremature & \stTenBOneVTwoLunaReqShare & \stTenBOneVTwoLunaHeldReq & \stTenBOneVTwoLunaSpurious \\
+Study~1 configuration & \stTenCPvOneLunaUnsafe & \stTenCPvOneLunaUnnec & \stTenCPvOneLunaMissed & \stTenCPvOneLunaHanded & \stTenCPvOneLunaPremature & \stTenCPvOneLunaReqShare & \stTenCPvOneLunaHeldReq & \stTenCPvOneLunaSpurious \\
+\multicolumn{9}{@{}l}{\emph{Frontier model}} \\
+Study~2 configuration & \stTenCPvTwoTerraUnsafe & \stTenCPvTwoTerraUnnec & \stTenCPvTwoTerraMissed & \stTenCPvTwoTerraHanded & \stTenCPvTwoTerraPremature & \stTenCPvTwoTerraReqShare & \stTenCPvTwoTerraHeldReq & \stTenCPvTwoTerraSpurious \\
+Rules in context & \stTenBOneVTwoTerraUnsafe & \stTenBOneVTwoTerraUnnec & \stTenBOneVTwoTerraMissed & \stTenBOneVTwoTerraHanded & \stTenBOneVTwoTerraPremature & \stTenBOneVTwoTerraReqShare & \stTenBOneVTwoTerraHeldReq & \stTenBOneVTwoTerraSpurious \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Theft}
+Table~\ref{tab:s2-theft} gives the theft outcomes. No design requested an open fact's documents prematurely. With the cost-efficient model, the configuration left every request unchanged in \stThCPvTwoLunaStable\% of unresolved-fact pair runs; Rules in context with the original workflow on the frontier model did so in \stThRTerraStable\%. The repaired workflow raised the errors of Rules in context with both models.
+
+\begin{table}[t]
+\caption{Study~2 theft outcomes over 36 changed-fact pairs and 24 unresolved-fact pairs, three runs each. Errors: wrong plus missed changes per pair; Once: the same with each error repeated from a story's unchanged case counted once; Wrong and Missed: counts; Stable: unresolved-fact pair runs with no change (\%).}
+\label{tab:s2-theft}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Xrrrrrr@{}}
+\toprule
+Design & Errors & Once & Wrong & Missed & $F_1$ & Stable \\
+\midrule
+\multicolumn{7}{@{}l}{\emph{Cost-efficient model}} \\
+Study~2 configuration & \stThCPvTwoLunaErrors & \stThCPvTwoLunaErrorsDedup & \stThCPvTwoLunaWrong & \stThCPvTwoLunaMissed & \stThCPvTwoLunaFone & \stThCPvTwoLunaStable \\
+Study~1 configuration & \stThCPvOneLunaErrors & \stThCPvOneLunaErrorsDedup & \stThCPvOneLunaWrong & \stThCPvOneLunaMissed & \stThCPvOneLunaFone & \stThCPvOneLunaStable \\
+Rules in context, same workflow & \stThRVTwoLunaErrors & \stThRVTwoLunaErrorsDedup & \stThRVTwoLunaWrong & \stThRVTwoLunaMissed & \stThRVTwoLunaFone & \stThRVTwoLunaStable \\
+Rules in context, original workflow & \stThRLunaErrors & \stThRLunaErrorsDedup & \stThRLunaWrong & \stThRLunaMissed & \stThRLunaFone & \stThRLunaStable \\
+\multicolumn{7}{@{}l}{\emph{Frontier model}} \\
+Study~2 configuration & \stThCPvTwoTerraErrors & \stThCPvTwoTerraErrorsDedup & \stThCPvTwoTerraWrong & \stThCPvTwoTerraMissed & \stThCPvTwoTerraFone & \stThCPvTwoTerraStable \\
+Rules in context, same workflow & \stThRVTwoTerraErrors & \stThRVTwoTerraErrorsDedup & \stThRVTwoTerraWrong & \stThRVTwoTerraMissed & \stThRVTwoTerraFone & \stThRVTwoTerraStable \\
+Rules in context, original workflow & \stThRTerraErrors & \stThRTerraErrorsDedup & \stThRTerraWrong & \stThRTerraMissed & \stThRTerraFone & \stThRTerraStable \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Ablation}
+With the cost-efficient model, the Study~1 configuration was numerically better than the Study~2 configuration on both datasets, and neither difference was significant: \stSecAblationTenancyCPvBVsCPvCpLunaA{} against \stSecAblationTenancyCPvBVsCPvCpLunaB{} strict unsafe errors per tenancy claim ($p=\stSecAblationTenancyCPvBVsCPvCpLunaP$) and \stSecAblationTheftCPvBVsCPvCpLunaA{} against \stSecAblationTheftCPvBVsCPvCpLunaB{} theft errors per pair ($p=\stSecAblationTheftCPvBVsCPvCpLunaP$). Table~\ref{tab:s2-ablation} gives the variants recomputed from recorded readings. Requiring two runs' readings to agree cut theft errors at the smallest attainable $p$; because it used the other runs' readings, it cost three runs per case. The original workflow did as well as the repaired one. Under the primary tenancy measure, which does not count held needed documents, removing presumptions looked harmless; it lowered the requested share and multiplied holds.
+
+\begin{table}[t]
+\caption{Study~2 ablation, cost-efficient model, recomputed from recorded readings without model calls. Difference from the Study~2 configuration with 95\% cluster-bootstrap interval and exact sign-flip $p$.}
+\label{tab:s2-ablation}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Xrlrl@{}}
+\toprule
+Variant & Value & Difference [95\% CI] & $p$ & Other \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Theft, errors per pair (Study~2 configuration \stAblThKleeneVsB)}} \\
+Two readings must agree & \stAblThTwoReadingsErrors & \stAblThTwoReadingsVsDiff{} [\stAblThTwoReadingsVsLo, \stAblThTwoReadingsVsHi] & \stAblThTwoReadingsVsP & stable \stAblThTwoReadingsStable\% \\
+Original workflow & \stAblThOriginalPackErrors & \stAblThOriginalPackVsDiff{} [\stAblThOriginalPackVsLo, \stAblThOriginalPackVsHi] & \stAblThOriginalPackVsP & stable \stAblThOriginalPackStable\% \\
+Strong Kleene & \stAblThKleeneErrors & \stAblThKleeneVsDiff & \stAblThKleeneVsP & equal \\
+\multicolumn{5}{@{}l}{\emph{Tenancy, strict unsafe errors per claim (Study~2 configuration \stAblTenKleeneVsB)}} \\
+Two readings must agree & \stAblTenTwoReadingsUnsafe & \stAblTenTwoReadingsVsDiff{} [\stAblTenTwoReadingsVsLo, \stAblTenTwoReadingsVsHi] & \stAblTenTwoReadingsVsP & req.\ \stAblTenTwoReadingsReqShare\%, held \stAblTenTwoReadingsHeldReq \\
+Strong Kleene & \stAblTenKleeneUnsafe & \stAblTenKleeneVsDiff{} [\stAblTenKleeneVsLo, \stAblTenKleeneVsHi] & \stAblTenKleeneVsP & req.\ \stAblTenKleeneReqShare\%, held \stAblTenKleeneHeldReq \\
+No presumptions & \stAblTenNoPresumptionUnsafe & \stAblTenNoPresumptionVsDiff{} [\stAblTenNoPresumptionVsLo, \stAblTenNoPresumptionVsHi] & \stAblTenNoPresumptionVsP & req.\ \stAblTenNoPresumptionReqShare\%, held \stAblTenNoPresumptionHeldReq \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Evolution}
+Before corrections, the configuration made \stEvoCpBefore{} errors per pair on the evaluation stories and Rules in context \stEvoRBefore. After the same corrections, the values were \stEvoCpAfterVF{} and \stEvoRAfterMemory: Rules in context with memory improved more. The difference after correction was \stEvoAfterDiff{} [\stEvoAfterLo, \stEvoAfterHi] ($p=\stEvoAfterP$).
+
+\paragraph{Cost}
+Per case and run, in $10^{-3}$ US dollars, the configuration cost \stCostTenCPvTwoLuna{} per tenancy claim and \stCostThCPvTwoLuna{} per theft text on the cost-efficient model, against \stCostTenBOneVTwoTerra{} and \stCostThRTerra{} for the frontier comparators of D and C. The cost ratios were \stCostRatioD{} (D) and \stCostRatioC{} (C).
+
+\subsection{Interpretation at the time}
+\label{app:s2-interpretation}
+
+Study~2 did not show that the Study~2 configuration requests evidence better than Rules in context. It fixed what it targeted on tenancy: needed documents were no longer held behind facts the claim never raised. Three features of the data limit what it could show. Tenancy was near ceiling for every design, because references were computed by the engine and messages were selected for explicitness. The strict measure did not count held needed documents, so the benefit of presumptions appeared only in the requested share and in spurious holds. Most theft errors were errors in a story's unchanged case repeated across its pairs; counted once, contrast~C shrank to \stSecCDedupDiff{} (Appendix~\ref{app:rob-study2}). The repaired workflow helped neither design, and agreement of two readings was the largest single gain.

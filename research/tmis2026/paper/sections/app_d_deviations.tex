@@ -1,0 +1,37 @@
+\section{Deviations and irregularities}
+\label{app:deviations}
+
+\subsection{Study 1}
+\label{app:dev-study1}
+
+The analysis plan of Study~1 is released with the code \cite{casepath2026repo}. ``Post hoc'' means decided after the held-out runs. The study's names are those of Appendix~\ref{app:study1}; \casepath there means the Study~1 configuration.
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item \emph{Primary model.} \texttt{gpt-6.1-terra} is the registered primary analysis; \texttt{gpt-6-luna} is the registered model-sensitivity analysis. Holm is reported within each (the planned family of five) and across all ten tests.
+\item \emph{H1 test.} H1 is stated as non-inferiority, but no margin was fixed. It is tested two-sided for a difference, and the paired interval is reported instead of a non-inferiority decision.
+\item \emph{Paired intervals.} The plan promises intervals for paired differences; they are now computed by resampling clusters jointly. The bootstrap quantile was changed to symmetric linear interpolation, which changed no rounded number.
+\item \emph{Handoffs (post hoc).} Tenancy outcomes are partitioned into requested, held, handed over and missed. Headline unsafe errors exclude handed-over documents; the strict variant counts them as missed. Earlier code counted them as deferred without saying so.
+\item \emph{H2.} ``Deferred'' in the H2 test is held plus handed over; held only is reported as a secondary contrast. The plan's second part of H2 (exact deferral against the production engine) was not in the Holm family and is reported as secondary contrasts.
+\item \emph{Comparators.} H3 and H4 name \design{Direct} and \design{Rules in context}; only \design{Rules in context} enters Holm, and contrasts with \design{Direct} (primary model only) and with majority voting are secondary. Majority voting was sometimes the stronger comparator (unsafe errors \tenLunaBscUnsafe{} against \tenLunaBoneUnsafe{} with \texttt{gpt-6-luna}; wrong changes per pair \thTerraRscWrongPP{} against \thTerraRWrongPP{} with \texttt{gpt-6.1-terra}).
+\item \emph{H5.} The plan compares \casepath with all model-written plans; the Holm test covers tenancy only (exact deferral against \design{Rules in context}). Theft agreement contrasts are secondary, with 10 clusters (nine conditions and the unchanged cases). Agreement averages over pairs of valid runs; earlier code divided by three regardless, which changed only \design{Direct} (\texttt{gpt-6.1-terra}) to \thTerraDRetest.
+\item \emph{Failed output.} The theft scorer had dropped the one failed output (\design{Direct}, \texttt{gpt-6.1-terra}); it is now scored as an empty plan, as planned, giving \thTerraDWrong{} wrong and \thTerraDMissed{} missed changes ($F_1$ \thTerraDFone).
+\item \emph{H4 clusters.} Unresolved-fact variants exist for six conditions, so H4 has six clusters and a smallest attainable $p$ of \ptTerraHFourMinP; both models' H4 tests reach it. H4's ``premature or changed'' equals ``any change''.
+\item \emph{Dependence between theft clusters (post hoc).} All pairs of a story share that story's unchanged case in each run. We report wrong changes with each repeated error counted once.
+\item \emph{Run pairing (post hoc).} The plan does not say how runs are paired; run $r$ of the unchanged case is scored against run $r$ of the variant, and we report the average over all nine pairings.
+\item \emph{Post-hoc analyses.} Two-valued execution (where non-admitted families now count as handoffs, as in the \casepath rows), the routing presumption, the family-admission repair, the break-even analysis, handoff causes and holds of documents that are not required were not in the plan.
+\item \emph{Tenancy majority voting} ignores the runs' whole-claim handoff flag; only one run was a handoff.
+\item \emph{Decomposition.} The plan names the sequence \design{Rules in context}, \design{Model executes rules}, \casepath without verifier, \casepath; it is reported descriptively, without tests.
+\item \emph{Error attribution.} The tenancy attributions (unnecessary requests from contradicting judgments, misses from documents judged sufficient) were recorded by manual inspection; the theft attributions are computed by a script.
+\end{itemize}
+
+\subsection{Study 2}
+\label{app:dev-study2}
+
+The analysis plan of Study~2 was committed before any model call on its data, and the runner refused to start unless the plan was committed unmodified. Names are those of Appendix~\ref{app:study2}.
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item \emph{Interrupted run.} The run was interrupted twice and resumed from the response cache with the spending caps unchanged. Transport retries were added to the runner after the freeze.
+\item \emph{Reader fixes before scoring.} Four changes to how result files were read, none to a measure: ledger keys of the reused Study~1 designs were mapped to their Study~2 names; the evolution file, written under a different name, was found by its actual name; the ablation files' variant names were mapped to the analysis names; and the macro generator skipped cost entries that are not designs (the memory arm of the evolution experiment and the helper calls). The test script of the analysis was rerun after these fixes, and all its checks passed.
+\item \emph{Extra calls for one ablation.} The original theft workflow has eight facts that the repaired workflow lacks. Their values were obtained with one additional call of the cost-efficient model per theft text, used only for the original-workflow ablation. Both original-workflow variants gave identical results.
+\item \emph{Files.} No output failed, the ledger had no errors and no duplicate rows for the new cases, and every design had three runs per case. All four theft stories were in the held-out files; there was no development file of the new data. Tenancy had one handoff run of the Study~2 configuration per model and four of the Study~1 configuration.
+\item \emph{Variants equal to the main design.} On theft, the strong Kleene variant equals the Study~2 configuration, as expected for rules without reconverging branches.
+\item \emph{Data after the study.} The new data have been development data since Study~2 was scored.
+\end{itemize}

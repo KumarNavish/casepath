@@ -1834,5 +1834,772 @@
    "result_checker",
    "result_checker"
   ]
+ },
+ "PRODUCT|pcl_aede8e94e7a06939|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "renovation"
+   ],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "renovation_cost_breakdown"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "renovation"
+   ],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "renovation_cost_breakdown"
+   ]
+  },
+  "status": "completed",
+  "calls": 23,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Requête à l’autorité de conciliation et preuve de son dépôt dans le délai",
+     "step": "ri_deadline",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 270 al. 1 CO",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Le workflow exige de préserver le délai de contestation en premier, mais ne nomme pas la requête auprès de l’autorité de conciliation ni la preuve de son dépôt. L’art. 270 al. 1 CO prévoit la saisine dans les 30 jours suivant la réception de la notification."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_increase_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rent_adjustment": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "renovation"
+   ],
+   "current_step": "ri_reason__gate_renovation",
+   "outcome": null,
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "renovation"
+    ],
+    "completions": 2
+   },
+   "answer": "The process states a 30-day deadline to apply to the conciliation authority from receipt of the notice. The exact final date cannot be determined from the file: the year is unstated and proof of receipt is missing. Preserve the deadline promptly.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "keys": [
+   "137b9f7fe1a1caef069b759442b1df9d5b859d4228a0d995da2331838e0c85cd",
+   "137b9f7fe1a1caef069b759442b1df9d5b859d4228a0d995da2331838e0c85cd",
+   "788063d8a52bdbbfdd0953f888cc83aef95fc8861623e251becd1106492e0b01",
+   "788063d8a52bdbbfdd0953f888cc83aef95fc8861623e251becd1106492e0b01",
+   "a3b379d9267ff270550227661f7ea3358db9a689cd75d52e6a674405b134cea0",
+   "a3b379d9267ff270550227661f7ea3358db9a689cd75d52e6a674405b134cea0",
+   "84d74ec216645e3e01173df21c8c0fe2a01f8c1dcad92216812c79d9d0ae27c3",
+   "84d74ec216645e3e01173df21c8c0fe2a01f8c1dcad92216812c79d9d0ae27c3",
+   "bdf2062f4b19ce235d1a736cbb0c0159803eaa2e30b863576440258dc5672ae9",
+   "bdf2062f4b19ce235d1a736cbb0c0159803eaa2e30b863576440258dc5672ae9",
+   "2a33d919505155e33dc0adbeb04c1aa3722bf447a3d5a3bb2a487fc8d3e05670",
+   "2a33d919505155e33dc0adbeb04c1aa3722bf447a3d5a3bb2a487fc8d3e05670",
+   "36637b47f0ebb2abf0e8adbf77ef051388d02ff95fdd545fb43a26a3b694baff",
+   "36637b47f0ebb2abf0e8adbf77ef051388d02ff95fdd545fb43a26a3b694baff",
+   "ee367b93730a8d2d63c65f39decf8cfba0f1daff94d98bc9b15cce4941ad7e57",
+   "ee367b93730a8d2d63c65f39decf8cfba0f1daff94d98bc9b15cce4941ad7e57",
+   "ee367b93730a8d2d63c65f39decf8cfba0f1daff94d98bc9b15cce4941ad7e57",
+   "942e8227331e7e6d1b28575d3fafb51b59549c214bbedf7820c79f2551b51dcd",
+   "942e8227331e7e6d1b28575d3fafb51b59549c214bbedf7820c79f2551b51dcd",
+   "f2b8892b85b30019ff6da7db77d7143dfca2dc66291e135227454d5d2f5bcf60",
+   "f2b8892b85b30019ff6da7db77d7143dfca2dc66291e135227454d5d2f5bcf60",
+   "74387d04343c90f2b49065f34d10ab629b4dc552fa96b2b232a85267c93125e2",
+   "74387d04343c90f2b49065f34d10ab629b4dc552fa96b2b232a85267c93125e2",
+   "c952f8973ae593cb4c63b4ade478135e347a43d4311130757c4473adbb9e023b",
+   "c952f8973ae593cb4c63b4ade478135e347a43d4311130757c4473adbb9e023b",
+   "cef2675220df5682ef78a5b5c9647690bcd3477843134a981a723086f36600dd",
+   "cef2675220df5682ef78a5b5c9647690bcd3477843134a981a723086f36600dd",
+   "8ee3225f988f90046ae17d0109970fae38fbb84b8847e15d004f9fa42e724e78",
+   "8ee3225f988f90046ae17d0109970fae38fbb84b8847e15d004f9fa42e724e78",
+   "98ffa3753a409d837da9a4b3a831a1287e29d8758b672843a094dad20867bee8",
+   "98ffa3753a409d837da9a4b3a831a1287e29d8758b672843a094dad20867bee8",
+   "e43e94467c7d3606d0195d51b5f8a3253794795de8389389d309b0eee2048b96",
+   "e43e94467c7d3606d0195d51b5f8a3253794795de8389389d309b0eee2048b96",
+   "4a09683914cf0dca5bcd70684dfd08f28362134717b0abb87619619936a01655",
+   "4a09683914cf0dca5bcd70684dfd08f28362134717b0abb87619619936a01655",
+   "152d201f9f7b870d415d26ce5c6975b20a633d5492d852179f636a520bde25f0",
+   "152d201f9f7b870d415d26ce5c6975b20a633d5492d852179f636a520bde25f0",
+   "c684539b1825412bf6418217d93f691c0ba8f7ed6633899c5d78076bf0fafc6b",
+   "c684539b1825412bf6418217d93f691c0ba8f7ed6633899c5d78076bf0fafc6b",
+   "b55784d223a90e1f851ee185da78f6e5fdca29ef144fd37c86c0d3702c1ba3f7",
+   "b55784d223a90e1f851ee185da78f6e5fdca29ef144fd37c86c0d3702c1ba3f7",
+   "67c2488811e1245366f3bdd5138651d99bc0970c5593ab9b1f16aeeb9fe46085",
+   "67c2488811e1245366f3bdd5138651d99bc0970c5593ab9b1f16aeeb9fe46085",
+   "e10146685b1b5ca2a38709d0385e5f89d3ef9f84329de249ede02a655b7631f2",
+   "e10146685b1b5ca2a38709d0385e5f89d3ef9f84329de249ede02a655b7631f2",
+   "5d77da69d6d3144e4046bce081b1331aa62b041e682fe98c681670148e3d998f",
+   "5d77da69d6d3144e4046bce081b1331aa62b041e682fe98c681670148e3d998f",
+   "5d77da69d6d3144e4046bce081b1331aa62b041e682fe98c681670148e3d998f"
+  ],
+  "seconds": 203.4,
+  "tokens": {
+   "input": 86517,
+   "cached": 59150,
+   "output": 9563
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|pcl_d5630662a78c69f6|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 20,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Copy of the challenge filed with the conciliation authority and proof of filing",
+     "step": "ri_deadline",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 270b para. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The workflow already asks for notice receipt proof, but not the separate challenge filing or its date."
+    },
+    {
+     "id": "e-pb3",
+     "title": "Renovation invoices and work specifications separating repairs from value-adding work",
+     "step": "ri_renovation",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 269a lit. b OR; Art. 14 VMWG",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The particular dispute over value added and double counting requires more detail than the general cost total."
+    }
+   ],
+   "agent_questions": [
+    "Has Ana already lodged a challenge with the conciliation authority? If so, on what date, and can she provide proof of filing?"
+   ],
+   "agent_steps": [
+    "Secure timely challenge before the conciliation authority"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_increase_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rent_adjustment": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb4": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "The objection deadline and merits cannot be assessed from the supplied message alone; first obtain proof of receipt and the notice, and establish whether a challenge has already been filed.",
+   "reply_clauses": 11,
+   "warnings": []
+  },
+  "keys": [
+   "ad80234c5e1f0a2001dd5c5e3d9b1f22710a483bd74af457b754bea2074744f0",
+   "ad80234c5e1f0a2001dd5c5e3d9b1f22710a483bd74af457b754bea2074744f0",
+   "e07a9cd59de27783ecad17dc3bb8de2a8886a0ae26a5421231c494e7b5d870b9",
+   "e07a9cd59de27783ecad17dc3bb8de2a8886a0ae26a5421231c494e7b5d870b9",
+   "fe8317a4073258269a6824b96b41bd7a3738e31cd0a3b85fbdb4847e56530ba8",
+   "fe8317a4073258269a6824b96b41bd7a3738e31cd0a3b85fbdb4847e56530ba8",
+   "e494c42665b27bc22aaf214e480ea51f1d4401dc5905e8d929b344801de7190a",
+   "e494c42665b27bc22aaf214e480ea51f1d4401dc5905e8d929b344801de7190a",
+   "bb0d0c0b104e579155e80d536af38a67d7b48726c95e4403d8554a8bf8be24fb",
+   "bb0d0c0b104e579155e80d536af38a67d7b48726c95e4403d8554a8bf8be24fb",
+   "87aa537096cff991d04561e25863b6d59e3e7fbc90444814b1edb8952f87645d",
+   "87aa537096cff991d04561e25863b6d59e3e7fbc90444814b1edb8952f87645d",
+   "9cbb488cfb0b8f51f91272e0fd2d3367cf4cbef58c2007da1aa422092138abc7",
+   "9cbb488cfb0b8f51f91272e0fd2d3367cf4cbef58c2007da1aa422092138abc7",
+   "1178807439a23d852ec6a36efe3edf7173d8d54756ead47fc9ce1a6f853b3458",
+   "1178807439a23d852ec6a36efe3edf7173d8d54756ead47fc9ce1a6f853b3458",
+   "5a20d415464e70eecc3abfabb9f1ce3a1b8ab09c67ec53b549889d97bac2265f",
+   "5a20d415464e70eecc3abfabb9f1ce3a1b8ab09c67ec53b549889d97bac2265f",
+   "09bca6464bf384898ad7fb23caed96657303944e3bc83e31593704be5c03b04b",
+   "09bca6464bf384898ad7fb23caed96657303944e3bc83e31593704be5c03b04b",
+   "417e7abcaad1621193b8c4eb2441d023d87adff336b800134efc85487e7451aa",
+   "417e7abcaad1621193b8c4eb2441d023d87adff336b800134efc85487e7451aa",
+   "c409e4bcafa69d637ee19a12943580489af97477356dd3758ac777d3d66da6ad",
+   "c409e4bcafa69d637ee19a12943580489af97477356dd3758ac777d3d66da6ad",
+   "53f19f2f40bbc83cb0c1474ee964047864ad71348c13a70d4cd79720ffec816d",
+   "53f19f2f40bbc83cb0c1474ee964047864ad71348c13a70d4cd79720ffec816d",
+   "dc055c874a48dcafd3a4a4c0a45aa91c512fa6f5bdbc6088c73d8d30c9005011",
+   "dc055c874a48dcafd3a4a4c0a45aa91c512fa6f5bdbc6088c73d8d30c9005011",
+   "5a817dbe5516da406881aadbb36175682e206478c29af508d2b3f80c196d9c7d",
+   "5a817dbe5516da406881aadbb36175682e206478c29af508d2b3f80c196d9c7d",
+   "81598e79010cafd61a3e7820ae0575f5635b8c07357d7920e958260046427723",
+   "81598e79010cafd61a3e7820ae0575f5635b8c07357d7920e958260046427723",
+   "777f440444eadfb4aea958226c51fff9c77cb0a0356ea7720cd557c13bcfa17f",
+   "777f440444eadfb4aea958226c51fff9c77cb0a0356ea7720cd557c13bcfa17f",
+   "de6450b4822acccabd1bbf73216b9028c6bcde3e2acb7684659e1b23ac487d73",
+   "de6450b4822acccabd1bbf73216b9028c6bcde3e2acb7684659e1b23ac487d73",
+   "402edcb254dbd5173ccec335126058b69ec866825a53c3a59bd9d95871ff4853",
+   "402edcb254dbd5173ccec335126058b69ec866825a53c3a59bd9d95871ff4853",
+   "c5543e3cfd6ce1cbe04dbdc58f369f7e739ea6afda0052848a0e4c742e61d639",
+   "c5543e3cfd6ce1cbe04dbdc58f369f7e739ea6afda0052848a0e4c742e61d639"
+  ],
+  "seconds": 183.6,
+  "tokens": {
+   "input": 70001,
+   "cached": 41169,
+   "output": 10374
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "PRODUCT|pcl_cdfe2344f51f6fdf|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 21,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Haben Sie die formelle Mietzinserhöhungsanzeige erhalten? Falls ja: An welchem Datum, und können Sie noch vorhandene Umschläge, Abholscheine oder Post-/Sendungsverfolgungsangaben dazu vorlegen?"
+   ],
+   "agent_steps": [
+    "Gegebenenfalls fristgerecht die Schlichtungsbehörde anrufen"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_increase_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "current_rent_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rent_adjustment": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_calculation": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution",
+    "s-pb1"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Zuerst unverzüglich klären und belegen, ob und wann die formelle Erhöhungsanzeige zugestellt wurde; ohne diese Angaben lässt sich die Frist nicht bestimmen. Die sieben erforderlichen Unterlagen der Checkliste sind zu beschaffen, damit die Erhöhung geprüft werden kann.",
+   "reply_clauses": 5,
+   "warnings": []
+  },
+  "keys": [
+   "ce05e435817dd1611d54e98f568cf833b008d07e475a93348895f6e7297a1839",
+   "ce05e435817dd1611d54e98f568cf833b008d07e475a93348895f6e7297a1839",
+   "9aca7d795c6fa3c5745f141d8d08cad5a6beb4fa8faa336f409b0ca16b650f34",
+   "9aca7d795c6fa3c5745f141d8d08cad5a6beb4fa8faa336f409b0ca16b650f34",
+   "0fbbe4684d390617b8e7433c2ae7eea63adeecc35e46624ccbaaff16b5c0ea1a",
+   "0fbbe4684d390617b8e7433c2ae7eea63adeecc35e46624ccbaaff16b5c0ea1a",
+   "29a50439bd2caba2ea1ce8b5af2b1c58dc745833c9c28e6e4c21c2ad18cce269",
+   "29a50439bd2caba2ea1ce8b5af2b1c58dc745833c9c28e6e4c21c2ad18cce269",
+   "9c54dca534253cc4431b267108589a77881d0a6ab513f7419b5c709a735d198f",
+   "9c54dca534253cc4431b267108589a77881d0a6ab513f7419b5c709a735d198f",
+   "cde4db4b9e5876c5aaa2982c1e7f7ac5fed1ee5ffb500dfbf85561244c78cbc2",
+   "cde4db4b9e5876c5aaa2982c1e7f7ac5fed1ee5ffb500dfbf85561244c78cbc2",
+   "accc72dad8f47c2d1f64a5d25ad603ef2dc955929c06080caec6da5bf1cb391d",
+   "accc72dad8f47c2d1f64a5d25ad603ef2dc955929c06080caec6da5bf1cb391d",
+   "29f1b4917525d3b04b73170b28d858902af1c73e8c76d7f3745d739091818234",
+   "29f1b4917525d3b04b73170b28d858902af1c73e8c76d7f3745d739091818234",
+   "3d8a9e3f50cc1237f7dae97bdf7f214c46a65524648d09c189cd454301099fa6",
+   "3d8a9e3f50cc1237f7dae97bdf7f214c46a65524648d09c189cd454301099fa6",
+   "a58a540610c23dbc9691466cf709a9206041d5200786b912523b520876dba838",
+   "a58a540610c23dbc9691466cf709a9206041d5200786b912523b520876dba838",
+   "3e07b7faa638f44f8d0fc330e8e6c9dc884698d45841bd6ec52d24fcf84c8d2a",
+   "3e07b7faa638f44f8d0fc330e8e6c9dc884698d45841bd6ec52d24fcf84c8d2a",
+   "c88d5af213513e84d992b9611654150d1de61c4b9930496531d6b3f3a0149d38",
+   "c88d5af213513e84d992b9611654150d1de61c4b9930496531d6b3f3a0149d38",
+   "6f634165a5c6b3030107c20506ef99976a2213b14c2ca16de8a4fa0a6f71ce99",
+   "6f634165a5c6b3030107c20506ef99976a2213b14c2ca16de8a4fa0a6f71ce99",
+   "2af3a817cd860de7ae6ca056815acc9da5655d795ff5b9163de4c8ab23001370",
+   "2af3a817cd860de7ae6ca056815acc9da5655d795ff5b9163de4c8ab23001370",
+   "f67fa4dbc5a4dbfbe3338621760cbe11939d3bf7fd850b9ed38f64075b8b1ca1",
+   "f67fa4dbc5a4dbfbe3338621760cbe11939d3bf7fd850b9ed38f64075b8b1ca1",
+   "953e3b67da48254e6fed49b38dca7e0cef82816222e4119863ebe0188496ccaf",
+   "953e3b67da48254e6fed49b38dca7e0cef82816222e4119863ebe0188496ccaf",
+   "3b3c9b099a30a79cc90c40e5cd989684f163735ff3881a8f5ffd7aedc2031bb5",
+   "3b3c9b099a30a79cc90c40e5cd989684f163735ff3881a8f5ffd7aedc2031bb5",
+   "9cea11a0e65a362abf9f167a45be73a2608a0a36da756df6792602622b948903",
+   "9cea11a0e65a362abf9f167a45be73a2608a0a36da756df6792602622b948903",
+   "62a9ea8f1b865a1990f9436713c3ed3d54a7e6dbc2532550d18304e8fe2bc191",
+   "62a9ea8f1b865a1990f9436713c3ed3d54a7e6dbc2532550d18304e8fe2bc191",
+   "238eb72f5bcf2bb0978f2337f452e45818c93e74985212921a85c7fc7d3d970a",
+   "238eb72f5bcf2bb0978f2337f452e45818c93e74985212921a85c7fc7d3d970a",
+   "6db45389f843760a39a81aed64612c3138549090e5f52908e377b231b10c99df",
+   "6db45389f843760a39a81aed64612c3138549090e5f52908e377b231b10c99df"
+  ],
+  "seconds": 197.3,
+  "tokens": {
+   "input": 70867,
+   "cached": 43744,
+   "output": 10704
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
  }
 }
