@@ -704,11 +704,19 @@ class _Reach:
         return path, needs
 
 
+def reading_gave_value(row):
+    """Whether one of the two readings gave this fact a value with an admitted quotation. Such a fact stays open for a
+    person: no presumption replaces what a reading found."""
+    return any(v is not None for v in (row or {}).get("readings") or [])
+
+
 def presumed(workflow, recorded):
     """The workflow's presumptions that apply: each names a fact for which the files gave no quotation at all.
 
     ``recorded`` maps fact ids to what the case work holds for them (``status`` and ``citations``). A fact that was
     established, found conflicting, or recorded as unknown with a quotation keeps its own state.
+
+    No presumption applies to a fact one of the two readings gave a value with an admitted quotation.
 
     A ``routed`` presumption is the defining event of the case type the case was routed to: it holds unless the files
     state otherwise (an established value the source checker did not reject, which then stands on its own) or two
@@ -719,8 +727,8 @@ def presumed(workflow, recorded):
         if item.get("applies") == "routed":
             row = row or {}
             stated = row.get("status") == "established" and row.get("verdict") != "rejected"
-            if row.get("status") != "conflicting" and not stated:
+            if row.get("status") != "conflicting" and not stated and not reading_gave_value(row):
                 out[item["fact"]] = item
-        elif row is None or (row.get("status") == "unknown" and not row.get("citations")):
+        elif row is None or (row.get("status") == "unknown" and not row.get("citations") and not reading_gave_value(row)):
             out[item["fact"]] = item
     return out

@@ -111,6 +111,28 @@ class PresumptionUseTests(unittest.TestCase):
         confirm_facts(ScriptedModel([], second_reading=[open_silent]), work)
         self.assertEqual(work.accepted_facts(), {})
 
+    def test_a_value_from_one_reading_blocks_every_presumption_and_stays_in_the_result(self):
+        from casepath.agents.team import confirm_facts, finalize, read_facts
+        from tests.scripted import ScriptedModel
+        deny = [{"fact": "landlord_notified", "status": "established", "value": "no", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        silent = [{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}]
+        for applies, value in (("routed", True), ("unstated", False), ("unstated", True)):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies=applies, value=value))
+            model = ScriptedModel([], first_reading=deny, second_reading=silent)
+            read_facts(model, work)
+            confirm_facts(model, work)
+            self.assertEqual(work.presumptions(), {}, applies)
+            self.assertEqual(work.accepted_facts(), {}, applies)  # open, for a person
+            work.result = None
+            row = next(f for f in finalize(work)["facts"] if f["fact"] == "landlord_notified")
+            self.assertEqual((row["status"], row["readings"]), ("unknown", [False, None]))
+            self.assertIn("a person decides", row["verdict_reason"])
+        # The routing presumption yields in the same way.
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        work.routing_presumed = {"legal_area": "tenancy_defect"}
+        work.facts["legal_area"] = {"fact": "legal_area", "status": "unknown", "value": None, "citations": [], "readings": ["loan", None]}
+        self.assertNotIn("legal_area", work.presumptions())
+
 
 class ReplyTests(unittest.TestCase):
     def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
