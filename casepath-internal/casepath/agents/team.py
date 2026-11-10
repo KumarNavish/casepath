@@ -18,6 +18,7 @@ from datetime import date, timedelta
 
 from ..process import casegraph, workflows
 from ..read.evidence import Evidence
+from .azure_model import ModelError
 from .schema import arr, choice, obj, text, validate_result
 
 COMMON = """You are one agent in CasePath, which prepares legal-protection cases for {organisation} case handlers.
@@ -788,7 +789,7 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
                   {"question": f["question"], "answer": f.get("values") or f.get("type")} for f in order}
     schema = obj(conditions=arr(obj(id=choice([f["id"] for f in facts]), verdict=choice(["true", "false", "unresolved"]),
                                     value={"type": ["string", "null"], "maxLength": 300}, quote=text(600)),
-                                maxItems=len(facts)))
+                                maxItems=2 * len(facts)))  # room for a repeated condition, which is then judged below
     # The conditions come with the task; the case files are the message.
     if "files_text" in view:
         case_text = "\n\n".join(f"[file {work.evidence.files[fid].get('name') or fid}]\n{t}" for fid, t in view["files_text"].items())
@@ -798,8 +799,13 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
                    instructions=instructions + f"\n\nThe case is a {work.graph['title']}. Conditions:\n"
                    + json.dumps(conditions, ensure_ascii=False),
                    input=[{"role": "user", "content": "CASE:\n" + case_text}])
-    answer = model.respond_json(**request)
     agent = "claim_reader" if name == "casepath_read_facts" else "source_checker"
+    try:
+        answer = model.respond_json(**request)
+    except ModelError as error:  # a failed reading leaves its conditions unresolved and is named in the warnings
+        work.limits.append({"agent": agent, "reason": "reading_failed", "message": f"A reading of the facts failed ({error.reason})."})
+        work.emit(agent, "agent.limit", reason="reading_failed", message=str(error))
+        return {}
     work.usage.append({"agent": agent, **answer.usage})
     answers = answer.value["conditions"]
 
@@ -807,10 +813,17 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
         return bool(row["quote"]) and any(work.evidence.locate(fid, row["quote"]) for fid in work.file_ids)
     unquoted = list(dict.fromkeys(r["id"] for r in answers if r["verdict"] in {"true", "false"} and not found(r)))
     if unquoted:  # one retry for verdicts whose quotation was not found word for word
-        again = requote(model, request, answer.value, unquoted)
-        work.usage.append({"agent": agent, **again.usage})
-        answers = [r for r in answers if r["id"] not in unquoted] + [r for r in again.value["conditions"] if r["id"] in unquoted]
-    rows = {}
+        try:
+            again = requote(model, request, answer.value, unquoted)
+            work.usage.append({"agent": agent, **again.usage})
+            answers = [r for r in answers if r["id"] not in unquoted] + [r for r in again.value["conditions"] if r["id"] in unquoted]
+        except ModelError:
+            pass  # the first answers stand; their unquoted verdicts count as unresolved
+    # A condition answered more than once with different judgments contradicts itself: unresolved, without a quote.
+    judged = {}
+    for row in answers:
+        judged.setdefault(row["id"], set()).add((row["verdict"], row["value"]))
+    rows = {f: ("unknown", None, []) for f, seen in judged.items() if len(seen) > 1}
     for row in answers:
         if row["id"] in rows:
             continue  # the first answer per condition counts

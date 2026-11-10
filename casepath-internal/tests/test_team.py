@@ -272,6 +272,56 @@ class TeamTests(unittest.TestCase):
         read_facts(model, work)
         self.assertEqual((work.facts["landlord_notified"]["status"], work.facts["landlord_notified"]["value"]), ("established", True))
 
+    def test_whole_runs_where_the_two_readings_differ(self):
+        """The agreement rule in full team runs: the second reading does not echo the first."""
+        def run(first, second):
+            script = standard_script(finder_calls=[], result_fields={})
+            script = [t for t in script if not (t and t[0][0] == "record_fact")]  # the readings are given below
+            model = ScriptedModel(script, first_reading=first, second_reading=second)
+            result = CaseTeam(model).run(case=CASE, files=FILES, workflow=FIXTURE)
+            return next((f for f in result["facts"] if f["fact"] == "landlord_notified"), None), result
+        yes = {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": "f1", "quote": QUOTE}]}
+        no = {**yes, "value": "no"}
+        open_ = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}
+        fact, result = run([yes], [no])  # true against false: a person decides
+        self.assertEqual(fact["status"], "conflicting")
+        self.assertEqual(result["evaluation"]["current"]["step"], "notice")
+        fact, result = run([yes], [open_])  # true against unresolved: open, both readings kept
+        self.assertEqual((fact["status"], fact["readings"]), ("unknown", [True, None]))
+        fact, result = run([yes], [])  # the second reading omits it: open
+        self.assertEqual(fact["status"], "unknown")
+        fact, result = run([yes], [yes])  # both give it
+        self.assertEqual((fact["status"], fact["verdict"]), ("established", "accepted"))
+        self.assertEqual(result["evaluation"]["outcome"]["id"], "reported")
+
+    def test_a_condition_a_reading_answers_twice_differently_is_unresolved_and_a_failed_reading_is_a_warning(self):
+        from casepath.agents.azure_model import ModelError, ModelResult
+        from casepath.agents.team import CaseWork, _reading, confirm_facts, finalize
+
+        class Twice:
+            def respond_json(self, **kw):
+                rows = [{"id": "landlord_notified", "verdict": "true", "value": None, "quote": QUOTE},
+                        {"id": "landlord_notified", "verdict": "false", "value": None, "quote": QUOTE}]
+                return ModelResult(value={"conditions": rows}, usage={}, deployment="d", response_id="x", attempts=1, seconds=0)
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        facts = [f for f in work.graph["facts"] if f["id"] == "landlord_notified"]
+        schema_items = []
+        original = Twice.respond_json
+        Twice.respond_json = lambda self, **kw: schema_items.append(kw["schema"]["properties"]["conditions"]["maxItems"]) or original(self, **kw)
+        self.assertEqual(_reading(Twice(), work, name="casepath_confirm_facts", instructions="x", facts=facts, effort="low"),
+                         {"landlord_notified": ("unknown", None, [])})
+        self.assertEqual(schema_items, [2])  # a repeated condition does not break the schema
+
+        class Failing:
+            def respond_json(self, **kw):
+                raise ModelError("timeout", "The model did not answer in time.")
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True,
+                                           "citations": work.located([{"file": "f1", "quote": QUOTE}])[0], "verdict": None, "by": "claim_reader"}
+        confirm_facts(Failing(), work)
+        self.assertEqual(work.facts["landlord_notified"]["status"], "unknown")  # one reading only: the value does not count
+        work.result = None
+        self.assertIn("reading_failed", [w["kind"] for w in finalize(work)["warnings"]])
+
     def test_a_false_verdict_counts_when_both_readings_give_it_with_a_quote(self):
         from casepath.agents.team import CaseWork, confirm_facts, read_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
