@@ -70,6 +70,14 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual((presumed["status"], presumed["value"], presumed["by"]), ("presumed", "tenancy_defect", "routing"))
         self.assertEqual(presumed["citations"], [])  # presumed, never shown as established from the files
 
+    def test_routing_accepts_more_than_one_other_topic_and_keeps_the_first_quoted(self):
+        model = script()
+        model.other_topic = [{"topic": "Rent arrears", "file": "f1", "quote": VENT}, {"topic": "Deposit", "file": "f1", "quote": QUOTE}]
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(job([], workflow_id=None), model, core.DirectoryBlobs(blobs))
+        self.assertEqual(outcome["status"], "completed")  # two topics no longer fail the run
+        self.assertEqual(outcome["routing"]["other_topic"]["topic"], "Rent arrears")
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
