@@ -805,17 +805,17 @@ def fig_study2():
     """Measured. Left: tenancy (held required documents per claim; strict unsafe errors per claim). Right: theft
     (wrong + missed changes per pair, 95% interval, counted-once tick). Shape = design, colour = outcome counted."""
     D = study2_data()
-    W, H = th.WIDTH, 2.10
+    W, H = th.WIDTH, 2.25
     fig, base = th.canvas(H)
     top = H - LEGEND_Y
     th.legend(base, LEGEND_X, top, [], extra=[
         (lambda a, x, y: th.design(a, x, y, "code_v1"), "CasePath v1"),
         (lambda a, x, y: th.design(a, x, y, "code"), "CasePath v2"),
         (lambda a, x, y: th.design(a, x, y, "model"), "Rules in context"),
-        (lambda a, x, y: th.design(a, x, y, "model_orig"), "same, original pack"),
+        (lambda a, x, y: th.design(a, x, y, "model_orig"), "Rules in context, original pack"),
         (lambda a, x, y: a.plot([x, x], [y - 0.045, y + 0.045], color=th.INK, lw=th.THICK, solid_capstyle="butt"),
-         "repeated error counted once")])
-    yb, hh = 0.42, H - 0.42 - 0.50
+         "counted once")])
+    yb, hh = 0.50, H - 0.50 - 0.52
 
     def axis(x0, w, xlim, ticks, xlabel, nrows):
         ax = fig.add_axes([x0 / W, yb / H, w / W, hh / H])
@@ -825,7 +825,7 @@ def fig_study2():
             ax.spines[sp].set_visible(False)
         ax.spines["bottom"].set_linewidth(th.THIN)
         ax.tick_params(axis="x", length=3, width=th.THIN, labelsize=th.NOTE, colors=th.INK)
-        ax.set_xlabel(xlabel, fontsize=th.NOTE, labelpad=3)
+        ax.set_xlabel(xlabel, fontsize=th.NOTE, labelpad=3, linespacing=1.1)
         return ax
 
     def rows(groups):
@@ -839,8 +839,8 @@ def fig_study2():
 
     # ---- tenancy
     R1, n1 = rows(S2_TEN)
-    a1 = axis(0.80, 1.05, (-0.1, 3.6), [0, 1, 2, 3], "held per claim, lower is better", n1)
-    a2 = axis(2.02, 0.95, (0, 0.30), [0, 0.1, 0.2, 0.3], "strict unsafe per claim, lower is better", n1)
+    a1 = axis(0.80, 1.05, (-0.1, 3.6), [0, 1, 2, 3], "held per claim\nlower is better", n1)
+    a2 = axis(2.02, 0.95, (0, 0.30), [0, 0.1, 0.2, 0.3], "strict unsafe per claim\nlower is better", n1)
     for y, m, d, mk, first in R1:
         v = D["tenancy"][f"{d}|{m}"]
         th.design_scatter(a1, v["held"], y, mk, th.HELD)
@@ -854,7 +854,7 @@ def fig_study2():
     th.text(base, 0.80, top - 0.30, "Tenancy, 72 claims", "label", bold=True)
     # ---- theft
     R2, n2 = rows(S2_THEFT)
-    a3 = axis(3.95, 1.40, (0, 2.4), [0, 1, 2], "wrong + missed per pair, lower is better", n2)
+    a3 = axis(3.90, 1.30, (0, 2.6), [0, 1, 2], "wrong + missed per pair\nlower is better", n2)
     for y, m, d, mk, first in R2:
         v = D["theft"][f"{d}|{m}"]
         a3.plot(v["ci"], [y, y], color=th.MISSED, lw=th.THIN, zorder=2)
@@ -866,7 +866,7 @@ def fig_study2():
         ys = [y for y, mm, *_ in R2 if mm == m]
         a3.text(-0.06, sum(ys) / len(ys), m, transform=a3.get_yaxis_transform(), fontsize=th.LABEL, ha="right",
                 va="center", color=th.INK)
-    th.text(base, 3.95, top - 0.30, "Theft, 36 changed-fact pairs", "label", bold=True)
+    th.text(base, 3.90, top - 0.30, "Theft, 36 changed-fact pairs", "label", bold=True)
     _save(fig, "fig_study2")
 
 
