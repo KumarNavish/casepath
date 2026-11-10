@@ -14,7 +14,7 @@
 | Cases "sealed from development" | Cases seen in development until the seal; development-exposure record; seed Knowledge without D2, D4, D7, D5 |
 
 **2. Needed, and not yet stated in the product's design**
-- P and P-later: transcribed, mapped to catalogue entries and hashed before any run on a cut copy; verbatim passages kept inside; the process owner's check recorded.
+- P and P-later: transcribed, mapped to catalogue entries and hashed before any run on a cut copy; verbatim passages kept inside; the study lead's check recorded (Navish's role in the files is "the study lead"; the process owner only handles D8).
 - The comparator's output in catalogue entries (step ids, document ids, action kinds).
 - Exposure events (`item.exposed`) kept, with the other events of `EVENT_FIELDS.md`, including `note.added` and `case.attested`.
 - The prior-handling flag from the file's metadata, per expert and case; never asked.

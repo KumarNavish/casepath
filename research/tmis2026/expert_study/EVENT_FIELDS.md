@@ -43,7 +43,7 @@ export carries the field (section 7).
 | `rule_applied` | `first_outgoing_request`, `first_outgoing_action` (no request in the case) or `second_outgoing_action`; plus, content export only, which action and why it is the first | code | code and text | new |
 | `cut_sha256` | SHA-256 of the cut copy | yes | yes | new |
 | `included_documents` | number of included documents (pseudonymous); list of documents or page ranges with dates (content) | count | list | new |
-| `leak_check` | checked by the process owner, done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
+| `leak_check` | checked by the study lead, done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
 | `routes_to_common_workflow` | inclusion criterion, from routing alone | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
@@ -137,7 +137,7 @@ Sources are kept apart; no record merges them into one label. C is derived from 
 | **O** | derived from `own_answer.saved` (last before `own_answer.frozen`) | yes | yes | new |
 | **A** (per item of every frozen run, and of the comparator) | `item_id`, `label`, `made_at`, `label_set_sha256` (recorded before the first session) | yes | yes | new |
 | Prior handling | `expert` (pseudonym inside, label outside), `source_case`, `prior_handling` (bool), `basis` (`file_metadata`), set by the automated labeller | flag | flag and basis | new |
-| Status-source hash | `sha256` over P, P-later, the owner's check and A; `recorded_at` (by day 13) | yes | yes | new |
+| Status-source hash | `sha256` over P, P-later, the study lead's check and A; `recorded_at` (by day 13) | yes | yes | new |
 | Benchmark truth for synthetic cases | `truth.facts`, `truth.documents`, `next_actions` | | | exists for synthetic suites only (`quality/evaluate.py:220`, `score`) |
 
 ## 6. Formative-session record (`casepath.study.formative/1`)

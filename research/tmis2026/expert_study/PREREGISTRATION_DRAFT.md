@@ -113,7 +113,7 @@ There is no gold. Each source below is kept apart in the data; sources are never
 
 | Source | What it is | Made by, and when | Independent of CasePath's result? |
 |---|---|---|---|
-| **P**, practice | What the insurer did after the decision point, from the later pages of the file: the documents and information requested in its first outgoing request, and its next action | Transcribed and mapped to catalogue entries by the product builder's automated labeller before any run on the cut copy exists; the verbatim passage is kept in the inside export; hashed. The process owner (who drew the process reference; not an expert) checks the three transcriptions against the file; the check is recorded | yes |
+| **P**, practice | What the insurer did after the decision point, from the later pages of the file: the documents and information requested in its first outgoing request, and its next action | Transcribed and mapped to catalogue entries by the product builder's automated labeller before any run on the cut copy exists; the verbatim passage is kept in the inside export; hashed. The study lead (the paper's corresponding author; not an expert of the insurer, so no expert time) checks the three transcriptions against the file; the check is recorded | yes |
 | **P-later** | Documents the insurer requested at any later point of the file | As P, same time, same check | yes |
 | **O**, own answers | The experts' pick-list answers on their first study case (two, two and one expert per case), given before CasePath is shown | In the sessions | yes |
 | **C**, consensus of the others | For each expert and item, what the other four experts did with it (kept, changed, to what); never the expert's own vote | Derived from the sessions | no: formed under exposure to CasePath's result |
@@ -131,7 +131,7 @@ per expert and case in the inside data). It is not asked.
 ### 4.4 Cut verification
 
 For each cut copy: the list of included documents or page ranges with their dates, made with the cut copy and checked
-by the process owner against the full file for leaks (later-dated pages inside merged PDFs, later notes, stamps,
+by the study lead against the full file for leaks (later-dated pages inside merged PDFs, later notes, stamps,
 summaries written after the point, file names that reveal later events), together with the check of P; and the SHA-256
 of the cut copy. Both are recorded before the frozen run. A leak found after a session does not change the record: the
 affected items are flagged, kept in the primary analyses and removed in a sensitivity analysis.
@@ -140,7 +140,7 @@ affected items are flagged, kept in the primary analyses and removed in a sensit
 
 On day 7 the process owner handles one development dossier, D8, at its decision point, with the same procedure as an
 expert (practice case, own answer first, then CasePath's result, the three gestures). This is the pilot of the
-protocol. The process owner labels nothing. Changes made to the product on days 7–9 because of it are listed in the
+protocol. The process owner labels nothing. The process owner takes part only in the formative step: no check, no label and no decision about the study cases is theirs. Changes made to the product on days 7–9 because of it are listed in the
 study record (what changed, and what deliberately did not) and precede the freeze. D8 stays a development dossier. The
 pilot's events are not part of any analysis.
 
@@ -337,7 +337,7 @@ is reported per named person. Per-expert values are shown unlabelled.
    - the commit hash of this document's repository at freeze;
    - the product commit and the parity manifest's source-tree hash;
    - per case: the decision-point date and the rule's application (section 3.1), the cut verification list and the SHA-256 of the cut copy (section 4.4), and the routing check of the inclusion criterion;
-   - the P and P-later records per case with their SHA-256, and the process owner's check (section 4.3);
+   - the P and P-later records per case with their SHA-256, and the study lead's check (section 4.3);
    - the content hash of the seed Knowledge rebuilt without D2, D4, D7 and D5 (section 3.2);
    - the development-exposure record (section 3.2);
    - the formative-step change list (section 4.5);
@@ -346,7 +346,7 @@ is reported per named person. Per-expert values are shown unlabelled.
    - the allocation table after the lot, with the lot seed, and its SHA-256;
    - the SHA-256 of the comparator prompt;
    - the bootstrap seed.
-4. **By day 13**, one status-source hash over P, P-later, the process owner's check and A is computed and added as a dated entry (not a deviation).
+4. **By day 13**, one status-source hash over P, P-later, the study lead's check and A is computed and added as a dated entry (not a deviation).
 5. The frozen version is deposited with a timestamp (an internal registry and, if the paper's venue requires, a public registry with the content-free parts).
 6. Any other change after the freeze is a dated **deviation**, listed in the paper with its reason.
 
@@ -369,6 +369,8 @@ is reported per named person. Per-expert values are shown unlabelled.
 - **Consensus is formed under exposure** to CasePath's result, so it is not independent of it.
 - **The automated labeller** is one non-expert labeller run by the product's builder; its labels are a separate line, never evidence of correctness.
 - **No perception data.** What experts think of CasePath is known only from what they do and what they note.
+- **Checks by the study lead.** The transcriptions of the insurer's requests and the cut copies are checked by the study lead, who is an author of this work and not a claims expert. The verbatim passages stay in the inside export, so a later check by anyone inside the insurer is possible.
+- **The gate uses development labels.** On the development dossiers the gate relies on reference scores made by a single labeller who also builds the product.
 - **The formative session shaped the product.** The process owner's session on D8 led to changes before the freeze (section 4.5).
 - **Development exposure.** The study cases were among the dossiers the product was developed on (section 3.2).
 - **Process reference.** The process CasePath executes was built from the process reference; its structure is not scored, and Q1 is not evidence that the process itself is right.
