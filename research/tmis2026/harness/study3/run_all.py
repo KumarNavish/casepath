@@ -74,6 +74,9 @@ def main(argv=None):
     ap.add_argument("--limit", type=int, default=None, help="smoke tests: first N tenancy claims, texts of the first theft story")
     ap.add_argument("--cap-usd", type=float, default=None, help="spend cap of this invocation (stops cleanly between cases)")
     ap.add_argument("--workers", type=int, default=6, help="cases in parallel inside a design, as the existing runners do")
+    ap.add_argument("--cap-frontier-product-usd", type=float, default=8.0,
+                    help="spend cap of the frontier-model product design, which runs last (default 8)")
+    ap.add_argument("--check-only", action="store_true", help="run the four checks, print one line each, write nothing")
     ap.add_argument("--spec", default=str(lib.SPEC))
     a = ap.parse_args(argv)
     started = lib.now()
@@ -82,10 +85,11 @@ def main(argv=None):
     lines = []
 
     # ---------------------------------------------------------------- (a) the analysis plan, first, before anything else
-    if sealed:
-        ok, line, det = checks.plan()
+    ok_a = True
+    if sealed or a.check_only:
+        ok_a, line, det = checks.plan()
         say(lines, line)
-        if not ok:
+        if not ok_a and sealed:
             refuse(det["message"])
     else:
         say(lines, "check (a) plan: not required on development data (fresh)")
@@ -94,6 +98,10 @@ def main(argv=None):
     if sealed and a.cap_usd is None:
         refuse("--cap-usd is required on fresh2")
 
+    if a.check_only:
+        ok = run(a, spec, sealed, lines, started, argv, check_only=True)
+        print("all four checks pass" if ok and ok_a else "checks: NOT all pass")
+        return 0 if ok and ok_a else 2
     try:
         return run(a, spec, sealed, lines, started, argv)
     except (SystemExit, KeyboardInterrupt) as e:  # refused or interrupted before the runs: still one RUNLOG line
@@ -109,7 +117,7 @@ def main(argv=None):
         raise
 
 
-def run(a, spec, sealed, lines, started, argv):
+def run(a, spec, sealed, lines, started, argv, check_only=False):
     D = lib.designs(spec)
     wanted = None if a.designs == "all" else a.designs.split(",")
     for w in wanted or []:
@@ -119,7 +127,8 @@ def run(a, spec, sealed, lines, started, argv):
     left = [k for k in (wanted or D) if not any(u[0] == k for u in unit_list)]
     if left:
         print(f"no model calls, left to analysis/study3.py: {', '.join(left)}")
-    needs_product = sealed or any(d in lib.PRODUCT_DESIGNS for d, _ in unit_list)
+    needs_product = sealed or check_only or any(d in lib.PRODUCT_DESIGNS for d, _ in unit_list)
+    enforce = sealed or check_only  # on development data a failed check is reported, not enforced (except with --check-only)
 
     # ---------------------------------------------------------------- (b)-(d)
     wt = os.environ.get("CASEPATH_PRODUCT")
@@ -148,15 +157,16 @@ def run(a, spec, sealed, lines, started, argv):
         if not wt:
             refuse("refusing: set CASEPATH_PRODUCT to the product worktree")
         ok_b, line, bdet = checks.product(spec, wt, tenancy_cat, settings_env(tenancy_cat, "gpt-6-luna", base_env))
-        if not sealed and not ok_b:
+        if not enforce and not ok_b:
             line += " (not enforced on development data)"
         say(lines, line)
         if sealed and not ok_b:
             refuse("refusing: product worktree")
         if not bdet.get("clean", False):
             refuse("refusing: the product worktree is modified")
-        ok_d, line, ddet = checks.compare(wt, lib.RUNS / a.label / "checks")
-        if not sealed and not ok_d:
+        import tempfile
+        ok_d, line, ddet = checks.compare(wt, Path(tempfile.mkdtemp(prefix="study3-checks-")) if check_only else lib.RUNS / a.label / "checks")
+        if not enforce and not ok_d:
             line += " (not enforced on development data)"
         say(lines, line)
         if sealed and not ok_d:
@@ -169,6 +179,18 @@ def run(a, spec, sealed, lines, started, argv):
         trees = {v["parity"]["source_tree_sha256"] for v in parities.values()}
         if len(trees) != 1:
             refuse(f"refusing: parity source trees differ between runs: {trees}")
+        bad = {k: checks.settings_problems(v["parity"], pspec.get("settings_required"), v["run_settings_env"]) for k, v in parities.items()}
+        bad = {k: v for k, v in bad.items() if v}
+        line = ("check (b) settings of every product run (" + ", ".join(sorted(parities)) + "): "
+                + ("readings, open rule, run scope and reasoning as the spec requires" if not bad else
+                   "; ".join(f"{k}: {', '.join(v)}" for k, v in sorted(bad.items()))))
+        say(lines, line + (" (not enforced on development data)" if bad and not enforce else ""))
+        if sealed and bad:
+            refuse("refusing: product settings")
+        if check_only:
+            return ok_b and ok_d and ok_c and not bad
+    if check_only:
+        return ok_c
 
     # ---------------------------------------------------------------- MANIFEST.json (settings), unchanged on resume
     out = lib.RUNS / a.label
@@ -176,6 +198,7 @@ def run(a, spec, sealed, lines, started, argv):
     data_manifest = lib.TMIS / a.data / "MANIFEST.json"
     fixed = {
         "data": a.data, "k": a.k, "limit": a.limit,
+        "runs_by_design": {k: min(a.k, int(D[k]["runs"])) for k in D},
         "spec": {"path": str(Path(a.spec).resolve().relative_to(lib.TMIS)) if Path(a.spec).resolve().is_relative_to(lib.TMIS) else a.spec,
                  "sha256": lib.sha256_file(a.spec)},
         "data_manifest": {"path": f"{a.data}/MANIFEST.json", "sha256": lib.sha256_file(data_manifest)},
@@ -187,6 +210,7 @@ def run(a, spec, sealed, lines, started, argv):
         "product": None if not parities else {
             "worktree": wt, "commit": bdet["head"], "source_tree_sha256": next(iter(parities.values()))["parity"]["source_tree_sha256"],
             "settings_env_by_run": {k: v["run_settings_env"] for k, v in parities.items()},
+            "parity_settings_by_run": {k: v["parity"].get("settings") for k, v in parities.items()},
             "resolved_settings_by_run": {k: v["resolved_settings"] for k, v in parities.items()}},
     }
     mpath = out / "MANIFEST.json"
@@ -222,16 +246,20 @@ def run(a, spec, sealed, lines, started, argv):
     runlog = out / "RUNLOG.jsonl"
     prior = sum(json.loads(x).get("spent_usd", 0) for x in runlog.read_text().splitlines() if x.strip()) if runlog.exists() else 0.0
     before = count_entries(spec, unit_list, a.label)
-    cap = a.cap_usd if a.cap_usd is not None else float("inf")
-    spent, stopped, results = 0.0, "complete", []
+    caps = {"main": a.cap_usd if a.cap_usd is not None else float("inf"), "frontier_product": a.cap_frontier_product_usd}
+    spent_by = {"main": 0.0, "frontier_product": 0.0}
+    stopped, results = "complete", []
     try:
         for d, regime in unit_list:
-            if spent >= cap:
-                stopped = "spend cap"
+            # the frontier-model product design is last in the order; reaching it means every other unit is complete
+            pot = "frontier_product" if d == lib.LAST else "main"
+            cap = caps[pot]
+            if spent_by[pot] >= cap:
+                stopped = "spend cap" if pot == "main" else "spend cap of the frontier-model product design"
                 break
             cmd = [sys.executable, str(HERE / "worker.py"), "--design", d, "--regime", regime, "--data", a.data, "--label", a.label,
-                   "--k", str(a.k), "--cap", repr(cap - spent if cap != float("inf") else 1e9), "--workers", str(a.workers),
-                   "--spec", a.spec]
+                   "--k", str(min(a.k, int(D[d]["runs"]))), "--cap", repr(cap - spent_by[pot] if cap != float("inf") else 1e9),
+                   "--workers", str(a.workers), "--spec", a.spec]
             if a.limit:
                 cmd += ["--limit", str(a.limit)]
             if d in lib.PRODUCT_DESIGNS:
@@ -258,7 +286,7 @@ def run(a, spec, sealed, lines, started, argv):
             finally:
                 if done:
                     results.append(done)
-                    spent += float(done.get("spent_usd") or 0)
+                    spent_by[pot] += float(done.get("spent_usd") or 0)
             if done is None:
                 stopped = f"worker failed for {d}/{regime} (exit {proc.returncode})"
                 break
@@ -268,11 +296,13 @@ def run(a, spec, sealed, lines, started, argv):
                 break
     except KeyboardInterrupt:
         stopped = "interrupted"
+    spent = sum(spent_by.values())
     after = count_entries(spec, unit_list, a.label)
     failed = failed_entries(spec, unit_list, a.label)
     row = {"start": started, "end": lib.now(), "argv": sys.argv[1:] if argv is None else argv, "data": a.data, "label": a.label,
            "designs": [f"{d}/{r}" for d, r in unit_list], "k": a.k, "limit": a.limit, "cap_usd": a.cap_usd,
-           "entries_before": before, "entries_after": after, "spent_usd": round(spent, 6), "spent_usd_label_total": round(prior + spent, 6),
+           "entries_before": before, "entries_after": after, "spent_usd": round(spent, 6), "spent_usd_by_cap": {k: round(v, 6) for k, v in spent_by.items()},
+           "cap_frontier_product_usd": a.cap_frontier_product_usd, "spent_usd_label_total": round(prior + spent, 6),
            "stopped": stopped, "units": results, "failed_outputs": len(failed)}
     with runlog.open("a") as f:
         f.write(json.dumps(row) + "\n")

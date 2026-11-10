@@ -70,6 +70,21 @@ def resolved_settings(product, env):
     return json.loads(cli.stdout)
 
 
+def settings_problems(man, required, env=None):
+    """The `settings` block of a parity output against the spec's product.settings_required and, for a given run
+    environment, its run scope and reasoning."""
+    got = man.get("settings") or {}
+    out = [f"settings.{k} is {got.get(k)!r}, not {v!r}" for k, v in (required or {}).items() if got.get(k) != v]
+    if env is not None:
+        scope = (env.get("CASEPATH_RUN_SCOPE") or "full").lower()
+        if got.get("run_scope") != scope:
+            out.append(f"settings.run_scope is {got.get('run_scope')!r}, not {scope!r}")
+        want_r = (env.get("CASEPATH_MODEL_REASONING") or "").lower() in {"1", "true", "yes"}
+        if bool(got.get("model_reasoning")) != want_r:
+            out.append(f"settings.model_reasoning is {got.get('model_reasoning')!r}")
+    return out
+
+
 def product(spec, wt, catalogue, env):
     want = spec.get("product") or {}
     if not wt or not (Path(wt) / "casepath-internal" / "casepath").is_dir():
@@ -87,10 +102,12 @@ def product(spec, wt, catalogue, env):
         problems.append(f"HEAD {head[:12]} is not the spec's commit {want.get('commit')}")
     if tree != want.get("source_tree_sha256"):
         problems.append(f"source tree {str(tree)[:12]} is not the spec's {str(want.get('source_tree_sha256'))[:16]}")
+    problems += settings_problems(man, want.get("settings_required"))
     if any(c != want.get("commit") for c in evaluators.values()):
         problems.append(f"product_evaluator commits {sorted(set(map(str, evaluators.values())))} are not product.commit")
     line = (f"check (b) product: {wt} at {head[:12]}, {'clean' if not (dirty or modified) else 'MODIFIED'}, source tree "
-            f"{str(tree)[:16]}: " + ("matches the spec" if not problems else "; ".join(problems)))
+            f"{str(tree)[:16]}, settings {json.dumps(man.get('settings'), sort_keys=True)}: "
+            + ("matches the spec" if not problems else "; ".join(problems)))
     return not problems, line, {"head": head, "clean": not (dirty or modified), "parity": man}
 
 

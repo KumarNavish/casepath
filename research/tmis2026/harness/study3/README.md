@@ -6,7 +6,8 @@ exactly the files `analysis/study3.py` reads. Nothing here changes the runners i
 
 ```
 CASEPATH_PRODUCT=<product worktree> <venv>/bin/python harness/study3/run_all.py \
-    --data fresh|fresh2 --label L [--designs a,b,…|all] [--k 3] [--limit N] [--cap-usd X] [--workers 6]
+    --data fresh|fresh2 --label L [--designs a,b,…|all] [--k 3] [--limit N] [--cap-usd X]
+    [--cap-frontier-product-usd 8] [--workers 6] [--check-only]
 python3 analysis/study3.py --data <data> --label L
 ```
 
@@ -52,7 +53,10 @@ one line.
 - (a) `ANALYSIS_PLAN_STUDY3.md` is committed unmodified (`fresh2/guard.py`'s own function). This runs first;
   until it passes, the only file under `fresh2/` that is opened is `guard.py`.
 - (b) The worktree in `CASEPATH_PRODUCT` is clean, at `product.commit` of the spec, and its parity source-tree hash
-  is `product.source_tree_sha256`; `product_evaluator.*.package.commit` must be the same commit.
+  is `product.source_tree_sha256`; `product_evaluator.*.package.commit` must be the same commit. The `settings` block
+  of the parity output must show `product.settings_required` (`readings` 3, `open_rule` "any"); a second line checks
+  the parity output of every product run (design × regime) for those values and for its run scope and reasoning.
+  All `settings` blocks are recorded in `MANIFEST.json` (`fixed.product.parity_settings_by_run`).
 - (c) The tenancy rule templates of `fresh2` have the SHA-256 of those of `fresh` (both `MANIFEST.json`). Then
   `harness/product/workflows/fresh-serial-sync` applies unchanged (the case at the time of writing). Otherwise the
   driver converts the templates as `convert.py --sync` does into `harness/study3/workflows/fresh2-serial-sync`,
@@ -60,12 +64,19 @@ one line.
 - (d) `compare.py` (every assignment of each tenancy family; all document decisions must agree with exact
   deferral) and `compare_theft.py` (3,000 random assignments) pass against the product worktree.
 
+`--check-only` runs the four checks, prints one line each and writes nothing (the compare output goes to a temporary
+folder). It evaluates (a) on `fresh` too and exits 0 only if all four pass.
+
 ## Order of work, spend and interruption
 
 Cheap designs first, the full product last, tenancy before theft within each design, so that an early stop leaves
 complete designs: Rules in context, original rules, Model executes rules, ReAct, Core, CasePath checklist only,
 Self-consistency, original rules frontier, Rules in context frontier, CasePath. (Measured cost per case-run on the
-development ledgers, from `analysis/study3.py --data fresh --label r3`.) Inside a design, cases run in parallel
+development ledgers, from `analysis/study3.py --data fresh --label r3`.) The secondary design "CasePath on the
+frontier model, checklist only" (`casepath_frontier_checklist`: the frozen commit with `CASEPATH_RUN_SCOPE=checklist`
+and gpt-6.1-terra, one run per case) runs after all of them, and only when every other selected design is complete.
+It has its own spend cap, `--cap-frontier-product-usd` (default 8), separate from `--cap-usd`. Every design runs
+`min(--k, its runs in the spec)` runs per case, so this design runs once also with `--k 3`. Inside a design, cases run in parallel
 (`--workers`) as the existing runners do; the product runs each case-run in its own process.
 
 `--cap-usd` caps the spend of one invocation. No new case starts once the cap is reached; cases already running

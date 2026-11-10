@@ -1,10 +1,7 @@
 {
  "format": "study3-spec/1",
- "status": "FINAL except the product commit (product.commit, product.source_tree_sha256, product_evaluator.*.package.commit). Matches ANALYSIS_PLAN_STUDY3.md. analysis/study3.py reads everything below; nothing here is repeated in code.",
- "open_items": [
-  "product.commit and product.source_tree_sha256: the frozen commit (40 hex digits; also product_evaluator.*.package.commit) and its `python -m casepath parity` source_tree_sha256; harness/study3/run_all.py refuses fresh2 until both match the worktree",
-  "product_evaluator.tenancy.package.commit and product_evaluator.theft.package.commit: the same frozen commit"
- ],
+ "status": "FINAL. Matches ANALYSIS_PLAN_STUDY3.md. analysis/study3.py reads everything below; nothing here is repeated in code.",
+ "open_items": [],
  "statistics": {
   "alpha": 0.05,
   "significant_if": "p below alpha",
@@ -70,9 +67,9 @@
  ],
  "deciding_agents_note": "Calls that can decide the checklist: routing, the two readings and the document judgments. These are the agents a checklist-only run calls. All other agents (process_builder, result_checker, any other) are 'the rest'.",
  "product": {
-  "note": "The product under test, read by harness/study3/run_all.py. env: product settings added to harness/product/run_api.settings_env for every product run; design_env: per design. The fresh2 tenancy rule templates have the SHA-256 of fresh/'s (both MANIFEST.json files), so the fresh-serial-sync workflows apply unchanged; run_all.py checks this again before a fresh2 run.",
-  "commit": "FROZEN-COMMIT-OPEN",
-  "source_tree_sha256": "FROZEN-TREE-OPEN",
+  "note": "The product under test, read by harness/study3/run_all.py. env: product settings added to harness/product/run_api.settings_env for every product run; design_env: per design. The fresh2 tenancy rule templates have the SHA-256 of fresh/'s (both MANIFEST.json files), so the fresh-serial-sync workflows apply unchanged; run_all.py checks this again before a fresh2 run. settings_required: the `settings` block of the product's parity output must show these values for every product design (none of them overrides readings or the open rule).",
+  "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
+  "source_tree_sha256": "c39341b869c02f06a1e3f5b449e7dede1df0c908c71ae24dd613f7865f642847",
   "subdir": "casepath-internal",
   "env": {
    "CASEPATH_MODEL_REASONING": "true"
@@ -81,25 +78,32 @@
    "casepath": {},
    "casepath_checklist": {
     "CASEPATH_RUN_SCOPE": "checklist"
+   },
+   "casepath_frontier_checklist": {
+    "CASEPATH_RUN_SCOPE": "checklist"
    }
   },
   "catalogues": {
    "tenancy": "harness/product/workflows/fresh-serial-sync",
    "theft": "harness/product/workflows/theft-reviewed"
+  },
+  "settings_required": {
+   "readings": 3,
+   "open_rule": "any"
   }
  },
  "product_evaluator": {
   "note": "package = the product package at a commit of this repository, extracted read-only with git archive; or a folder path",
   "tenancy": {
    "package": {
-    "commit": "FROZEN-COMMIT-OPEN",
+    "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
     "subdir": "casepath-internal"
    },
    "catalogue": "harness/product/workflows/fresh-serial-sync"
   },
   "theft": {
    "package": {
-    "commit": "FROZEN-COMMIT-OPEN",
+    "commit": "5ed0ea7cf951b799abfb393c5e0cfe066a3629bb",
     "subdir": "casepath-internal"
    },
    "catalogue": "harness/product/workflows/theft-reviewed"
@@ -514,6 +518,34 @@
      "cost_field": "cost"
     }
    }
+  },
+  {
+   "key": "casepath_frontier_checklist",
+   "label": "CasePath on the frontier model, checklist only (one run)",
+   "model": "gpt-6.1-terra",
+   "regimes": [
+    "tenancy",
+    "theft"
+   ],
+   "runs": 1,
+   "secondary": true,
+   "note": "Secondary (section 7), outside the fixed sequence: the frozen product commit with CASEPATH_RUN_SCOPE=checklist and gpt-6.1-terra as the product's model, reasoning on, one run per case. Run last, with its own spend cap.",
+   "store": {
+    "tenancy": {
+     "path": "runs/study3/{label}/plans_tenancy_casepath_checklist_frontier.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    },
+    "theft": {
+     "path": "runs/study3/{label}/plans_theft_casepath_checklist_frontier.json",
+     "key": "PRODUCT|{case}|{run}",
+     "field": "plan"
+    }
+   },
+   "cost": {
+    "method": "plan_keys",
+    "ledger": "runs/product/ledger_dev_gpt-6.1-terra.jsonl"
+   }
   }
  ],
  "hypotheses": [
@@ -787,6 +819,46 @@
     "a": "casepath",
     "b": "core",
     "test": "signflip"
+   },
+   {
+    "id": "S7a",
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath_frontier_checklist",
+    "b": "ric_frontier",
+    "test": "signflip",
+    "descriptive": true
+   },
+   {
+    "id": "S7b",
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath_frontier_checklist",
+    "b": "ric_frontier",
+    "test": "signflip",
+    "descriptive": true
+   },
+   {
+    "id": "S7c",
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "regime": "theft",
+    "measure": "errors",
+    "a": "casepath_frontier_checklist",
+    "b": "casepath",
+    "test": "signflip",
+    "descriptive": true
+   },
+   {
+    "id": "S7d",
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "regime": "tenancy",
+    "measure": "strict_unsafe",
+    "a": "casepath_frontier_checklist",
+    "b": "casepath",
+    "test": "signflip",
+    "descriptive": true
    }
   ],
   "cost_baseline": {
@@ -795,7 +867,8 @@
   },
   "product_designs": [
    "casepath",
-   "casepath_checklist"
+   "casepath_checklist",
+   "casepath_frontier_checklist"
   ],
   "subset_tables": [
    "denied_event",
@@ -982,7 +1055,7 @@
    }
   },
   "fresh/r4b2": {
-   "note": "Product round 4b on development data, for information only. The full product has fewer than three runs at r4b2 (tenancy one run, theft none), so CasePath, checklist only at 1ee2c8b (r4b2-check, three runs) stands in for CasePath in both regimes, and is also the checklist-only design. Two-valued designs are derived from those checklist-only readings. All baselines as in fresh/r3. Theft: stories 4-5.",
+   "note": "Product round 4b on development data, for information only. The full product has fewer than three runs at r4b2 (tenancy one run, theft none), so CasePath, checklist only at 1ee2c8b (r4b2-check, three runs) stands in for CasePath in both regimes, and is also the checklist-only design. Two-valued designs are derived from those checklist-only readings. All baselines as in fresh/r3. Theft: stories 4-5. CasePath on the frontier model, checklist only: t1-check at 1ee2c8b (one run; tenancy 65 of 72 claims stored).",
    "theft_stories": [
     4,
     5
@@ -1151,6 +1224,20 @@
       "key": "R|{case}|{run}",
       "field": "plan",
       "runs": 3
+     }
+    },
+    "casepath_frontier_checklist": {
+     "tenancy": {
+      "path": "runs/product/plans_tenancy_gpt-6.1-terra_fresh_t1-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 1
+     },
+     "theft": {
+      "path": "runs/product/plans_theft_gpt-6.1-terra_fresh_t1-check.json",
+      "key": "PRODUCT|{case}|{run}",
+      "field": "plan",
+      "runs": 1
      }
     }
    }

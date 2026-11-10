@@ -363,6 +363,62 @@ class EndToEnd(unittest.TestCase):
         self.assertNotIn("Design | regime", md)
 
 
+# ----------------------------------------------------------------- a design with one run beside designs with three
+class OneRunDesign(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        root = cls.tmp.name
+        write_plans(root, "good", "tenancy", TEN_ORACLE)
+        write_plans(root, "good", "theft", THEFT_ORACLE)
+        bad_t = {c: dict(p, requests=p["requests"] + ["not_a_family_document"]) for c, p in TEN_ORACLE.items()}
+        bad_th = {t: (dict(p, requests=p["requests"] + ["Extra document"]) if "-on-" in t else p) for t, p in THEFT_ORACLE.items()}
+        write_plans(root, "one", "tenancy", bad_t, runs=1)
+        write_plans(root, "one", "theft", bad_th, runs=1)
+        contrasts = [{"id": "S7a", "section": "s", "regime": "theft", "measure": "errors", "a": "one", "b": "good", "test": "signflip",
+                      "descriptive": True},
+                     {"id": "S7b", "section": "s", "regime": "tenancy", "measure": "strict_unsafe", "a": "one", "b": "good",
+                      "test": "signflip", "descriptive": True}]
+        cls.spec = base_spec([design("good"), design("one", runs=1)], (), contrasts)
+        cls.res = study(root, cls.spec).analyse()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_one_run_is_scored_against_three(self):
+        d = self.res["designs"]["one"]["regimes"]
+        self.assertEqual((d["tenancy"]["runs"], d["theft"]["runs"]), (1, 1))
+        self.assertEqual((d["tenancy"]["missing_entries"], d["theft"]["missing_entries"]), (0, 0))
+        self.assertIsNone(d["theft"]["run_to_run_jaccard"])
+        self.assertEqual(d["theft"]["measures"]["pair_runs"] * 3, self.res["designs"]["good"]["regimes"]["theft"]["measures"]["pair_runs"])
+        sec = {c["id"]: c for c in self.res["secondary"]["contrasts"]}
+        t = sec["S7a"]["result"]
+        self.assertEqual((t["a_value"], t["b_value"], t["diff"], t["clusters"]), (1.0, 0.0, 1.0, 9))
+        self.assertEqual(sec["S7a"]["runs"], {"a": 1, "b": 3})
+        self.assertTrue(sec["S7a"]["descriptive"])
+        self.assertAlmostEqual(sec["S7b"]["result"]["diff"], 1.0)
+        md = s3.markdown(self.res, self.spec)
+        self.assertIn("signflip; descriptive; runs per case 1 vs 3", md)
+
+    def test_spec_frontier_product_design(self):
+        d = {x["key"]: x for x in SPEC["designs"]}["casepath_frontier_checklist"]
+        self.assertEqual((d["model"], d["runs"], d["regimes"]), ("gpt-6.1-terra", 1, ["tenancy", "theft"]))
+        self.assertEqual(SPEC["product"]["design_env"]["casepath_frontier_checklist"], {"CASEPATH_RUN_SCOPE": "checklist"})
+        self.assertTrue(all(r["path"].endswith(f"plans_{k}_casepath_checklist_frontier.json") for k, r in d["store"].items()))
+        s7 = [c for c in SPEC["secondary"]["contrasts"] if c["a"] == "casepath_frontier_checklist"]
+        self.assertEqual(sorted((c["regime"], c["measure"], c["b"]) for c in s7),
+                         [("tenancy", "strict_unsafe", "casepath"), ("tenancy", "strict_unsafe", "ric_frontier"),
+                          ("theft", "errors", "casepath"), ("theft", "errors", "ric_frontier")])
+        self.assertTrue(all(c["descriptive"] for c in s7))
+        used = {x for h in SPEC["hypotheses"] for x in [h["a"]] + (h["b"] if isinstance(h["b"], list) else [h["b"]])}
+        self.assertNotIn("casepath_frontier_checklist", used)
+        self.assertEqual(SPEC["open_items"], [])
+        c = SPEC["product"]["commit"]
+        self.assertEqual(len(c), 40)
+        self.assertEqual({SPEC["product_evaluator"][r]["package"]["commit"] for r in ("tenancy", "theft")}, {c})
+
+
 # ----------------------------------------------------------------- tenancy subsets on a constructed reference
 class FakeTenancy:
     """Two families. f1: a denied event (empty reference), an open event (empty request set, held documents) and an

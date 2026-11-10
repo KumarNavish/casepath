@@ -647,7 +647,9 @@ class Study:
         sec["contrasts"] = []
         for c in spec["secondary"]["contrasts"]:
             r = self.contrast_of(c["regime"], c["measure"], c["a"], c["b"], c["test"], c.get("margin"), f"secondary|{c['id']}", c.get("subset"))
-            sec["contrasts"].append({**c, "result": r, "not_run": self.not_run((c["a"], c["regime"]), (c["b"], c["regime"]))})
+            runs = {x: self.runs(c[x], c["regime"]) for x in ("a", "b") if self.status.get((c[x], c["regime"]), {}).get("status") == "ran"}
+            sec["contrasts"].append({**c, "result": r, "not_run": self.not_run((c["a"], c["regime"]), (c["b"], c["regime"])),
+                                     "runs": runs, "descriptive": bool(c.get("descriptive"))})
 
         # ---- tenancy subsets and languages, every design
         if "tenancy" in self.cases:
@@ -742,6 +744,18 @@ def contrast_row(name, c, design_label):
             pval(c["min_p"]), pval(c["p"]), c["test"] + (f" (margin {c['margin']})" if c.get("margin") is not None else "")]
 
 
+def secondary_row(c, design_label):
+    """A secondary contrast row; the test column says 'descriptive' and names unequal runs per case."""
+    row = contrast_row(c["id"], c["result"], design_label)
+    if c["result"] is not None:
+        runs = c.get("runs") or {}
+        notes = (["descriptive"] if c.get("descriptive") else []) + (
+            [f"runs per case {runs['a']} vs {runs['b']}"] if runs.get("a") is not None and runs.get("a") != runs.get("b") else [])
+        if notes:
+            row[-1] += "; " + "; ".join(notes)
+    return row
+
+
 CHEAD = ["", "A", "B", "A value", "B value", "A − B", "95% interval", "clusters / non-zero", "smallest p", "p", "test"]
 
 
@@ -817,10 +831,13 @@ def markdown(res, spec):
 
     sec = res["secondary"]
     md += ["## Secondary contrasts (outside the sequence)", ""]
-    rows = [contrast_row(c["id"], c["result"], L) + [spec["measures"][c["measure"]]["label"]
-                                                       + (f", {c['subset']} claims" if c.get("subset") else ""), c["section"]]
+    rows = [secondary_row(c, L) + [spec["measures"][c["measure"]]["label"]
+                                   + (f", {c['subset']} claims" if c.get("subset") else ""), c["section"]]
             for c in sec["contrasts"]]
     md += [table(CHEAD + ["measure", "section"], rows), ""]
+    if any(c.get("descriptive") for c in sec["contrasts"]):
+        md += ["Rows marked 'descriptive' are reported with their test but are not hypotheses; a design with fewer runs per "
+               "case than its comparator says so in the test column (its cluster value is the mean over its own runs).", ""]
 
     if "tenancy_subsets" in sec:
         ts = sec["tenancy_subsets"]

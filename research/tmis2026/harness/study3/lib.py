@@ -22,10 +22,13 @@ RUNS = TMIS / "runs" / "study3"
 
 # Order of work: cheapest designs first (measured cost per case-run on the development ledgers, see README.md),
 # the full product last; inside a design, tenancy before theft. An early stop leaves complete designs behind.
+# The secondary design "CasePath on the frontier model, checklist only" runs after all of them, only once every other
+# selected design is complete, and has its own spend cap (run_all.py --cap-frontier-product-usd).
 ORDER = ["ric", "ric_original", "model_executes_rules", "react", "core", "casepath_checklist", "self_consistency",
-         "ric_original_frontier", "ric_frontier", "casepath"]
+         "ric_original_frontier", "ric_frontier", "casepath", "casepath_frontier_checklist"]
+LAST = "casepath_frontier_checklist"
 REGIMES = ["tenancy", "theft"]
-PRODUCT_DESIGNS = {"casepath", "casepath_checklist"}
+PRODUCT_DESIGNS = {"casepath", "casepath_checklist", "casepath_frontier_checklist"}
 
 
 def now() -> str:
