@@ -1,0 +1,64 @@
+{
+ "format": "casepath.parity/1",
+ "package": "casepath_internal",
+ "source_tree_sha256": "0fb4c9672f194e5aa6c44f9ffe666812329b334c29b52dc9215fde85463ba700",
+ "source_files": 41,
+ "git": {
+  "commit": "c560a424f11aeb7303a487b4bbe2e26f15b9a448",
+  "package_modified": false
+ },
+ "workflows": {
+  "defect_mold_heating.json": "511e393dd1231ea1adc50921d9a645054a5455b74bab3550d38656ca2a05aeec",
+  "lease_termination_dispute.json": "279491db74a0d95cdcccff9e31a9e31ca7ab14f56aa0335fc373e57c82c6748c",
+  "rent_increase_dispute.json": "42db6bbde67aa26684fb85ac7d572c06d2bf82874acb4927d80bee2b8621fe44"
+ },
+ "knowledge": {},
+ "model": {
+  "provider": "databricks",
+  "name": "gpt-6-luna",
+  "api": "chat",
+  "reading": null,
+  "endpoint_host": "openrouter.ai"
+ },
+ "interface_language_default": "de",
+ "settings_not_default": {
+  "dev_user": "Case handler (research)",
+  "organisation": "the legal-expenses insurer's",
+  "writing_language": "in the language of the case files",
+  "model.reasoning": false,
+  "model.timeout_seconds": 120.0,
+  "model.max_output_tokens": 16000,
+  "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+  "model.trust_env": true,
+  "model.api_version": null,
+  "model.gateway_hosts": [
+   "openrouter.ai"
+  ],
+  "model.chat_path": "/api/v1/chat/completions",
+  "model.auth": "app",
+  "model.api": "chat",
+  "model.forced_tools": true
+ },
+ "model_identifier": "openrouter:openai/gpt-6-luna",
+ "interface_language": "en (not used by the agents)",
+ "run_settings_env": {
+  "CASEPATH_DATA_DIR": "<temporary>",
+  "CASEPATH_WORKFLOW_CATALOGUE": "workflows/original-serial-sync",
+  "CASEPATH_DEV_USER": "Case handler (research)",
+  "CASEPATH_MODEL_PROVIDER": "databricks",
+  "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+  "CASEPATH_MODEL": "gpt-6-luna",
+  "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+  "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+  "CASEPATH_MODEL_API": "chat",
+  "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+  "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+  "CASEPATH_WRITING_LANGUAGE": "in the language of the case files"
+ },
+ "model_transport": "chat_model.ChatCompletionsModel with the app's settings; httpx transport = response cache + cost ledger",
+ "entry_point": "create_app + HTTP API (POST cases, files, runs; GET runs, case)",
+ "claims": "dev12",
+ "claim_ids": [
+  "clm_0e11979130681bd0"
+ ]
+}

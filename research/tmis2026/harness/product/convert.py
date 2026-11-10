@@ -2,7 +2,12 @@
 
 Deterministic: the same templates always give byte-identical workflow files.
 
-    python3 convert.py [--pack original|fresh] [--layout serial|direct] [--out DIR]
+    python3 convert.py [--pack original|fresh] [--layout serial|direct] [--sync] [--out DIR]
+
+--sync uses the fields added on the paper-sync product branch: each document need lists what it `must_show` (the
+paper engine's required fields per document type, casepath_api.autonomous_policy_v1.REQUIRED_FIELDS), and the fresh
+pack's silence-policy clause becomes `presumptions` (absent branch facts presumed false, "unstated"; the dispute's
+defining event -- termination_received, claim_received -- presumed true, "routed"), each citing the clause.
 
 Source of truth for the flag-level graph: the paper engine's own compiler
 (`casepath_api.autonomous_policy_v1.compile_process`), which turns each template transition into a condition over the
@@ -50,6 +55,9 @@ sys.path.insert(0, str(REPO / "casepath-api"))
 
 from casepath_api.autonomous_policy_v1 import compile_process  # noqa: E402
 from casepath_api.assessment_grammar_v1 import FAMILY_FLAGS  # noqa: E402
+from casepath_api.autonomous_policy_v1 import REQUIRED_FIELDS  # noqa: E402
+
+DEFINING_EVENTS = {"termination_received", "claim_received"}
 
 FAMILIES = ["defect_mold_heating", "lease_termination_dispute", "rent_increase_dispute"]
 VERSION = "2026-11-10"
@@ -133,7 +141,7 @@ def _parallel_splits(graph: dict) -> dict:
     return out
 
 
-def convert(templates: dict, family: str, layout: str = "serial") -> dict:
+def convert(templates: dict, family: str, layout: str = "serial", sync: bool = False) -> dict:
     template = next(t for t in templates["templates"] if t["domain"] == family)
     tid = template["template_id"]
     graph = compiled(templates, family)
@@ -195,6 +203,8 @@ def convert(templates: dict, family: str, layout: str = "serial") -> dict:
             row["required_when"] = {"fact": flag, "is": True}
         if d["requirement_class"] == "optional":
             row["optional"] = True
+        if sync and REQUIRED_FIELDS.get(d["document_type"]):
+            row["must_show"] = [f.replace("_", " ") for f in REQUIRED_FIELDS[d["document_type"]]]
         documents.append(row)
     workflow = {
         "format": "casepath.workflow/1", "id": family, "version": VERSION, "title": template["title"],
@@ -207,19 +217,25 @@ def convert(templates: dict, family: str, layout: str = "serial") -> dict:
         "outcomes": [{"id": "closed", "title": "Process closed", "source_refs": [f"{tid}#close"]}],
         "notes": [{"text": c["content"], "source_refs": [f"{tid}#{c['clause_id']}"]} for c in template["clauses"]],
         "open_questions": [],
-        "conversion": {"layout": layout, "parallel_splits_serialised": sorted(splits)},
+        "conversion": {"layout": layout, "parallel_splits_serialised": sorted(splits), **({"sync_fields": True} if sync else {})},
     }
+    silence = [c for c in template["clauses"] if c["content"].startswith("Silence policy")]
+    if sync and silence:
+        clause = silence[0]
+        workflow["presumptions"] = [
+            {"fact": f, "value": f in DEFINING_EVENTS, "applies": "routed" if f in DEFINING_EVENTS else "unstated",
+             "source_ref": f"{tid}#{clause['clause_id']}", "text": clause["content"]} for f in flags]
     return workflow
 
 
-def write(pack: str, layout: str, out: Path) -> list[Path]:
-    sys.path.insert(0, "/home/user/work/casepath-ui3/casepath-internal")
+def write(pack: str, layout: str, out: Path, sync: bool = False) -> list[Path]:
+    sys.path.insert(0, "/home/user/work/casepath-sync/casepath-internal" if sync else "/home/user/work/casepath-ui3/casepath-internal")
     from casepath_internal.workflows import validate_workflow
     templates = load_templates(pack)
     out.mkdir(parents=True, exist_ok=True)
     paths = []
     for family in FAMILIES:
-        wf = convert(templates, family, layout)
+        wf = convert(templates, family, layout, sync)
         validate_workflow(wf)
         path = out / f"{family}.json"
         path.write_text(json.dumps(wf, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
@@ -231,8 +247,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--pack", default="original", choices=["original", "fresh"])
     ap.add_argument("--layout", default="serial", choices=["serial", "direct"])
+    ap.add_argument("--sync", action="store_true")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
-    out = Path(a.out) if a.out else HERE / "workflows" / f"{a.pack}-{a.layout}"
-    for p in write(a.pack, a.layout, out):
+    out = Path(a.out) if a.out else HERE / "workflows" / f"{a.pack}-{a.layout}{'-sync' if a.sync else ''}"
+    for p in write(a.pack, a.layout, out, a.sync):
         print(p, hashlib.sha256(p.read_bytes()).hexdigest()[:16])

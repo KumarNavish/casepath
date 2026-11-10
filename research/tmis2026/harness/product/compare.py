@@ -12,7 +12,8 @@ one state per semantics:
   paper strong Kleene (casepath-api causal_process_v1.evaluate):  R needed_now/needed_later, H held_behind_question, S other
   paper exact deferral (harness casepath_tenancy.supervaluate):    same mapping
 
-    python3 compare.py [--layout serial|direct]   -> prints counts, writes results/semantic_<layout>.json
+    python3 compare.py [--layout serial|direct] [--product <worktree>] [--label x]
+        -> prints counts, writes results/semantic_<layout>[_<label>].json (default product: the as-built worktree)
 """
 from __future__ import annotations
 
@@ -27,7 +28,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import convert  # noqa: E402  (sets the import paths for casepath-api and the harness)
 
-sys.path.insert(0, "/home/user/work/casepath-ui3/casepath-internal")
+_PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-ui3")
+sys.path.insert(0, f"{_PRODUCT}/casepath-internal")
 from casepath_internal import workflows as product  # noqa: E402
 from casepath_api.assessment_grammar_v1 import FAMILY_FLAGS  # noqa: E402
 from casepath_api.causal_process_v1 import evaluate as paper_evaluate  # noqa: E402
@@ -67,7 +69,7 @@ def product_states(wf, family, assignment):
     return out, [w["fact"] for w in ev["waiting_for"]]
 
 
-def main(layout):
+def main(layout, label=None):
     templates = convert.load_templates("original")
     summary, rows = {}, []
     for family in convert.FAMILIES:
@@ -123,11 +125,15 @@ def main(layout):
     summary["total"] = tot
     out = HERE / "results"
     out.mkdir(exist_ok=True)
-    (out / f"semantic_{layout}.json").write_text(json.dumps({"layout": layout, "summary": summary, "rows": rows}, indent=1))
+    name = f"semantic_{layout}{'_' + label if label else ''}.json"
+    (out / name).write_text(json.dumps({"layout": layout, "product": _PRODUCT, "summary": summary, "rows": rows}, indent=1))
     print(json.dumps(summary, indent=1))
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--layout", default="serial", choices=["serial", "direct"])
-    main(ap.parse_args().layout)
+    ap.add_argument("--product", default=None)
+    ap.add_argument("--label", default=None)
+    a = ap.parse_args()
+    main(a.layout, a.label)
