@@ -322,6 +322,20 @@ class TeamTests(unittest.TestCase):
         work.result = None
         self.assertIn("reading_failed", [w["kind"] for w in finalize(work)["warnings"]])
 
+    def test_a_value_established_at_routing_and_a_different_reading_conflict(self):
+        from casepath.agents.team import CaseWork, _record_fact, read_facts
+        cite = [{"file": "f1", "quote": QUOTE}]
+        for path in ("reading", "agent"):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+            work.facts["legal_area"] = {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
+                                        "citations": work.located(cite)[0], "verdict": None, "by": "routing"}
+            if path == "reading":
+                read_facts(ScriptedModel([], first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": cite}]), work)
+            else:  # a long dossier is read by the agent
+                _record_fact(work, "claim_reader", {"fact": "legal_area", "status": "established", "value": "loan", "citations": cite})
+            row = work.facts["legal_area"]
+            self.assertEqual((row["status"], row["value"], row["second_value"]), ("conflicting", "tenancy_defect", "loan"), path)
+
     def test_a_false_verdict_counts_when_both_readings_give_it_with_a_quote(self):
         from casepath.agents.team import CaseWork, confirm_facts, read_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)

@@ -446,12 +446,22 @@ def _record_fact(work, agent, args):
             reason = problem or "no quote was found word for word in its file"
             work.emit("source_checker", "fact.rejected", fact=args["fact"], reason=reason)
             return {"accepted": False, "reason": reason}
+        if known and known.get("by") == "routing" and known["status"] == "established" and not same_reading(definition, known["value"], value):
+            _routing_conflict(work, known, value, located)
+            return {"accepted": True, "status": "conflicting", "reason": "routing read another value: a person decides"}
     work.facts[args["fact"]] = {"fact": args["fact"], "status": args["status"], "value": value, "citations": located,
                                 "verdict": None if args["status"] == "established" else "not_checked", "by": agent,
                                 **({"part": args["part"].strip()} if args.get("part") and " / " in str(value or "") else {})}
     work.emit("source_checker", "fact.located", fact=args["fact"], status=args["status"], quotes=len(located), missed=missed,
               cite=located[0] if located else None)
     return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed}
+
+
+def _routing_conflict(work, known, value, located):
+    """Routing established a value and a later reading gives another: neither replaces the other; a person decides."""
+    known.update(status="conflicting", verdict="not_checked", citations=known["citations"] + located, second_value=value,
+                 verdict_reason="Routing and a reading of the files give different values; a person decides.")
+    work.emit("source_checker", "fact.conflicting", fact=known["fact"])
 
 
 def _record_document(work, agent, args):
@@ -850,8 +860,10 @@ def read_facts(model, work, effort="medium"):
     for fact in facts:
         status, value, located = rows.get(fact["id"], ("unknown", None, []))
         known = work.facts.get(fact["id"])
-        if known and known.get("by") == "routing" and known["status"] == "established" and status != "established":
-            continue  # routing established it with quotes; an empty reading does not undo that
+        if known and known.get("by") == "routing" and known["status"] == "established":
+            if status == "established" and not same_reading(fact, known["value"], value):
+                _routing_conflict(work, known, value, located)
+            continue  # routing established it with quotes; an empty or equal reading does not change that
         work.facts[fact["id"]] = {"fact": fact["id"], "status": status, "value": value, "citations": located,
                                   "verdict": None if status == "established" else "not_checked", "by": "claim_reader"}
         work.emit("source_checker", "fact.located", fact=fact["id"], status=status, quotes=len(located), missed=0,
