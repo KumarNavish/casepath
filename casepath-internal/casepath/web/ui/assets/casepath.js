@@ -1085,7 +1085,7 @@ function overviewView() {
   const checked = `${Object.keys(recorded("fact")).length} ${T("facts", "Fakten")}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
   return `<div class="cp-overview">
     <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
-      <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:150px 1fr">
+      <dl class="cp-doc-head cp-facts">
         <dt>${T("Request", "Anliegen")}</dt><dd>${esc(anliegen)}</dd>
         <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
