@@ -72,6 +72,27 @@ class PresumptionUseTests(unittest.TestCase):
         self.assertEqual(work.accepted_facts(), {"landlord_notified": True})
         self.assertEqual(workflows.presumed(work.graph, {})["landlord_notified"]["applies"], "routed")
 
+    def test_a_quote_that_leaves_the_defining_event_open_does_not_block_its_presumption(self):
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies="routed", value=True))
+        cite = [{"file": "f1", "quote": QUOTE}]
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": cite,
+                                           "verdict": "not_checked"}
+        self.assertEqual(work.accepted_facts(), {"landlord_notified": True})
+        # The files state that it did not occur: the stated value stands, not the presumption.
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": False, "citations": cite,
+                                           "verdict": "accepted"}
+        self.assertEqual(work.accepted_facts(), {"landlord_notified": False})
+        # Two readings that disagree go to a person.
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "conflicting", "value": False, "citations": cite,
+                                           "verdict": "not_checked"}
+        self.assertEqual(work.accepted_facts(), {})
+
+    def test_an_unstated_presumption_still_yields_to_a_quote_that_leaves_the_fact_open(self):
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies="unstated", value=True))
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "unknown", "value": None,
+                                           "citations": [{"file": "f1", "quote": QUOTE}], "verdict": "not_checked"}
+        self.assertEqual(work.accepted_facts(), {})
+
 
 class ReplyTests(unittest.TestCase):
     def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
