@@ -286,7 +286,7 @@ class CaseWork:
                       "text": "Only this workflow can apply to the case, so routing presumes its condition.", "code": "routing_only_workflow"}
                for fact, value in self.routing_presumed.items()
                if (self.facts.get(fact) is None or self.facts[fact]["status"] == "unknown")
-               and not workflows.reading_gave_value(self.facts.get(fact))}
+               and not workflows.reading_gave_value(self.facts.get(fact), value)}
         out.update(workflows.presumed(self.graph, self.facts))
         return out
 

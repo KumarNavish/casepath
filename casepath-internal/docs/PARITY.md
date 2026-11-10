@@ -94,7 +94,7 @@ The changes below, made after those, also alter behaviour for existing workflows
   - A routing quotation not found in the files is asked for once more before routing decides without it.
 - **Presumptions.**
   - The defining event of the routed case type (`applies: "routed"`) is presumed also when the files mention it but leave it open; it yields to an established value or to two conflicting readings.
-  - No presumption (routed, unstated or from routing) applies to a fact one of the two readings gave a value with an admitted quotation: the fact stays open for a person.
+  - No presumption (routed, unstated or from routing) applies to a fact one of the two readings gave another value with an admitted quotation: the fact stays open for a person. A reading that found the presumed value does not block it.
   - A deciding fact counts as raised by the files (so that an unstated presumption does not apply) only when both readings quote a passage that raises it.
 - **Documents.**
   - A message or another document that only mentions a needed document no longer meets the need (`mentioned_only`; the need stays missing).
