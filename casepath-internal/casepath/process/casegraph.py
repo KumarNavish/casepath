@@ -8,6 +8,7 @@ add documents, questions or whole steps the case needs, so a case's process is
 discovered from the case rather than only followed.
 Every addition names its origin, and the result is validated like any workflow.
 """
+import re
 from copy import deepcopy
 
 from .workflows import CatalogueError, evaluate, evaluate_condition, validate_workflow
@@ -211,8 +212,41 @@ def build(base, *, knowledge=(), edits=(), facts_known=None, case_id=None):
             continue
         graph = trial
         edit_results.append({"edit": edit["id"], "applied": True})
+    merged = merge_restated(graph)
     validate_workflow(graph)
-    return graph, {"knowledge": applied, "edits": edit_results}
+    return graph, {"knowledge": applied, "edits": edit_results, "merged": merged}
+
+
+QUANTIFIERS = {"sämtliche", "bisherige", "allfällige", "alle", "weitere", "kopie", "kopien", "ihr", "ihre", "ihren", "die", "der", "das"}
+
+
+def head(title):
+    """The document a title names: its first noun, skipping quantifiers ("Sämtliche Korrespondenz …" → "korrespondenz")."""
+    for word in re.findall(r"[A-Za-zÄÖÜäöüß]+", title or ""):
+        if word[0].isupper() and word.lower() not in QUANTIFIERS:
+            return word.lower()
+    return None
+
+
+def merge_restated(graph):
+    """A need an edit adds that restates a need of the process or of Knowledge becomes one row with both origins.
+
+    ponytail: matches by the title's head noun; a model-side "same as" link would catch paraphrases this misses.
+    """
+    kept = {head(d["title"]): d for d in graph["documents"] if not d.get("edit") and head(d["title"])}
+    merged = []
+    for document in [d for d in graph["documents"] if d.get("edit")]:
+        same = kept.get(head(document["title"]))
+        if same is None or document.get("suggested"):
+            continue
+        same["source_refs"] = same["source_refs"] + [r for r in document["source_refs"] if r not in same["source_refs"]]
+        if document.get("legal_basis") and not same.get("legal_basis"):
+            same["legal_basis"] = document["legal_basis"]
+        graph["documents"] = [d for d in graph["documents"] if d is not document]
+        for step in graph["steps"]:
+            step["documents"] = [d for d in step.get("documents", []) if d != document["id"]]
+        merged.append({"document": document["id"], "into": same["id"]})
+    return merged
 
 
 def check_edit(base_graph, edit):
