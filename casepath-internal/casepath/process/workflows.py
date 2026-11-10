@@ -603,8 +603,13 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         row = dict(full_walk(first)[document["id"]])
         if not has(common, "document", document["id"]):
             facts_here = changes("document", document["id"])
-            deciding |= set(facts_here)
-            row.update(required="depends", condition_facts=facts_here, questions=questions(facts_here))
+            if row["required"] == "suggested":
+                # A suggestion stays a suggestion while a question is open: never a hold, never a reason to wait.
+                # It names the questions that decide whether it applies.
+                row.update(condition_facts=facts_here, questions=questions(facts_here))
+            else:
+                deciding |= set(facts_here)
+                row.update(required="depends", condition_facts=facts_here, questions=questions(facts_here))
         else:
             needs = {c[3][document["id"]] for c in completions}
             row["required"] = "yes" if "yes" in needs else row["required"]

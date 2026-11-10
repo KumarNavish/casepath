@@ -239,3 +239,16 @@ class ExactDeferralTests(unittest.TestCase):
             wf.MAX_OPEN_FACTS = limit
         self.assertEqual(result["deferral"]["mode"], "first_open_branch")
         self.assertEqual(result["current"]["step"], "dh_intake")
+
+
+class SuggestionUnderOpenQuestionTests(unittest.TestCase):
+    def test_a_suggested_need_stays_a_suggestion_while_its_question_is_open(self):
+        data = copy.deepcopy(FIXTURE)
+        photo = next(d for d in data["documents"] if d["id"] == "photo")
+        photo["suggested"] = True
+        result = evaluate(data, {"legal_area": "tenancy_defect"})
+        row = next(d for d in result["documents"] if d["document"] == "photo")
+        self.assertEqual(row["required"], "suggested")  # not "depends": a suggestion is never a hold
+        self.assertEqual([q["fact"] for q in row["questions"]], ["landlord_notified"])
+        notice = next(d for d in result["documents"] if d["document"] == "notice_letter")
+        self.assertEqual(notice["required"], "depends")
