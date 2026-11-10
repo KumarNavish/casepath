@@ -33,7 +33,11 @@ LABELS = {
            "stop_result_checker": "Die Zusammenfassung brach vorzeitig ab; es wurde kein Antwortentwurf erstellt.",
            "reading_failed": "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen.",
            "document_check_failed": "Die zweite Prüfung der vorhandenen Dokumente schlug fehl; sie bleiben angefordert.",
-           "instruction_like_text": "Ein Dokument enthält Text, der sich an die KI richtet; er wurde als Inhalt behandelt und nicht befolgt."},
+           "instruction_like_text": "Ein Dokument enthält Text, der sich an die KI richtet; er wurde als Inhalt behandelt und nicht befolgt.",
+           "routing_contradicted": "Die Lesungen der Dokumente widersprechen der Bedingung des gewählten Prozesses; der Prozess bleibt, eine Person prüft.",
+           "rerouted": "Die Lesungen der Dokumente widersprachen der ersten Zuordnung ({first}); der Fall wurde neu zugeordnet.",
+           "handed_over": "Die Lesungen der Dokumente widersprechen der Zuordnung ({first}); eine Person wählt den Prozess.",
+           "admitted": "von den Lesungen belegt"},
     "en": {"title": "Case report", "notice": "Prepared with CasePath's AI assistance. Every finding names the passage it rests on. "
            "Qualified review is still required; nothing was sent.", "case": "Case", "prepared": "Prepared on", "process": "Process",
            "position": "Where the case stands", "end": "End of the process", "current": "Current step", "waiting": "Waiting for", "next": "Next steps",
@@ -56,7 +60,11 @@ LABELS = {
            "stop_result_checker": "The summary stopped early; no reply draft was prepared.",
            "reading_failed": "One reading of the facts failed; the facts it should have confirmed stay open.",
            "document_check_failed": "The second check of the documents found present failed; they stay requested.",
-           "instruction_like_text": "A document contains text addressed to an AI; it was treated as evidence and not followed."},
+           "instruction_like_text": "A document contains text addressed to an AI; it was treated as evidence and not followed.",
+           "routing_contradicted": "The readings of the files contradict the chosen process's condition; the process stays and a person checks it.",
+           "rerouted": "The readings of the files contradicted the first routing ({first}); the case was routed again.",
+           "handed_over": "The readings of the files contradict the routing ({first}); a person chooses the process.",
+           "admitted": "admitted by the readings"},
 }
 
 
@@ -140,6 +148,13 @@ def build(case, state, files, lang="de", knowledge=()):
     def warning_key(w):  # a stop is described by the part that stopped, so the note is true for it
         return f"stop_{w.get('agent')}" if w.get("kind") in {"turn_limit", "no_report"} else w.get("kind")
     warnings = list(dict.fromkeys(L[warning_key(w)] for w in result.get("warnings") or [] if warning_key(w) in L))
+    routing = result.get("routing") or {}
+    for key, entry in (("rerouted", routing.get("rerouted")), ("handed_over", routing.get("conflict"))):
+        if entry:  # a reroute or a hand-over after the readings, with the values they admitted and the passages
+            first = (entry.get("routed_to") or {}).get("id", "")
+            admitted = "; ".join(f"{a['fact']} = {a['value']} ({L['admitted']}: " + ", ".join(where(c) for c in a.get("citations") or []) + ")"
+                                 for a in entry.get("admitted") or [])
+            warnings.append(L[key].format(first=first) + (f" {admitted}" if admitted else ""))
     if warnings:
         body.append(_heading(L["warnings"]))
         for text_ in warnings:

@@ -286,6 +286,15 @@ def route(model, catalogue, case, files, on_event):
     return decision, workflow
 
 
+def _routing_event(on_event, decision):
+    """The routing after the readings, in the journal: a reroute or a hand-over, with the conflict that caused it."""
+    on_event({"agent": "claim_reader", "kind": "agent.end", "routing": decision["status"],
+              "summary": f"Routing after the readings: {'rerouted' if decision.get('rerouted') else decision['status']}.",
+              "workflow": decision["workflow"] and decision["workflow"]["id"],
+              **({"rerouted": decision["rerouted"]} if decision.get("rerouted") else {}),
+              **({"conflict": decision["conflict"]} if decision.get("conflict") else {})})
+
+
 def case_chosen(case):
     return bool(case.get("workflow_id"))
 
@@ -298,7 +307,8 @@ def contradicted(workflow, result):
     used = workflows.condition_facts(condition)
     rows = [f for f in result.get("facts", []) if f["fact"] in used and f["status"] == "established" and f.get("verdict") == "accepted"]
     # a routing fact every reading gives another value for than routing did (a conflict) counts with the readings' value
-    rows += [{**f, "value": f["readings_agree_on"], "citations": f.get("citations", [])} for f in result.get("facts", [])
+    # and with the readings' own quotations for that value, never routing's quotation for the other one
+    rows += [{**f, "value": f["readings_agree_on"], "citations": f.get("readings_citations", [])} for f in result.get("facts", [])
              if f["fact"] in used and f["status"] == "conflicting" and "readings_agree_on" in f]
     if rows and workflows.evaluate_condition(condition, {f["fact"]: f["value"] for f in rows}) is False:
         return rows
@@ -370,16 +380,23 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
         against = contradicted(workflow, result)
-        if against and not case_chosen(job["case"]):
+        if against and case_chosen(job["case"]):
+            # A person chose the workflow: it stays, and the result says that the readings contradict its condition.
+            result["warnings"] = (result.get("warnings") or []) + [
+                {"kind": "routing_contradicted", "agent": "source_checker",
+                 "facts": [{k: f[k] for k in ("fact", "value", "citations")} for f in against]}]
+        elif against:
             # The readings admitted a routing fact that contradicts the condition the workflow was chosen under: route once
-            # more on the admitted value and run that workflow; hand over when that is contradicted too or nothing fits.
+            # more on the admitted value and run the workflow selected for it; anything else (no workflow, several, a
+            # fallback, a presumption, the same workflow) is a hand-over: a contradiction does not choose a workflow alone.
             catalogue = catalogue_of(job)
             again = workflows.route(catalogue, {f["fact"]: f["value"] for f in against})
             second = catalogue.get(again["workflow"]["id"], again["workflow"]["version"]) if again["workflow"] else None
             conflict = {"routed_to": workflows.ref(workflow), "admitted": [{k: f[k] for k in ("fact", "value", "citations")} for f in against]}
-            if second is None or second["id"] == workflow["id"] or "presumed" in again:
+            if again["status"] != "selected" or "presumed" in again or second is None or second["id"] == workflow["id"]:
                 decision = {**decision, "status": "needs_facts", "workflow": None, "conflict": conflict,
                             "reason": "The readings of the files contradict the routing; a person chooses."}
+                _routing_event(on_event, decision)
                 return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage + result["usage"]},
                                 extractions=storage.extractions)
             usage += result["usage"]
@@ -389,10 +406,13 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
                 decision = {**decision, "status": "needs_facts", "workflow": None,
                             "conflict": {**conflict, "rerouted_to": workflows.ref(second), "admitted_again": contradicted(second, result)},
                             "reason": "The readings of the files contradict the routing twice; a person chooses."}
+                _routing_event(on_event, decision)
                 return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage + result["usage"]},
                                 extractions=storage.extractions)
             decision = {**again, "facts": [{k: f[k] for k in ("fact", "value", "citations")} for f in against], "rerouted": conflict}
             workflow = second
+            result["routing"] = {"status": decision["status"], "workflow": decision["workflow"], "rerouted": conflict}
+            _routing_event(on_event, decision)
         result["usage"] = usage + result["usage"]
         outcomes, proposals = lessons(workflow, job["case"]["id"], result)
         return _outcome(routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions,
