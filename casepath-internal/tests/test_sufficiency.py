@@ -115,6 +115,20 @@ class SufficiencyTests(unittest.TestCase):
             confirm_documents(model, work)
             self.assertEqual(work.documents["notice_letter"]["status"], expected, second)
 
+    def test_a_failed_second_judgment_keeps_the_document_requested_and_says_so(self):
+        from casepath.agents.azure_model import ModelError
+        from casepath.agents.team import confirm_documents
+
+        class Failing:
+            def respond_json(self, **kw):
+                raise ModelError("schema_mismatch", "A quotation was longer than allowed.")
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        _record_document(work, "document_finder", {"document": "notice_letter", "status": "present", "files": ["f1"],
+                                                   "citations": [{"file": "f1", "quote": LETTER}], "note": ""})
+        confirm_documents(Failing(), work)
+        self.assertEqual(work.documents["notice_letter"]["status"], "unusable")
+        self.assertEqual(work.limits[0]["reason"], "document_check_failed")
+
     def test_a_later_record_replaces_an_earlier_one_but_not_silently(self):
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         args = {"document": "notice_letter", "status": "present", "files": ["f1"], "citations": [{"file": "f1", "quote": LETTER}], "note": ""}

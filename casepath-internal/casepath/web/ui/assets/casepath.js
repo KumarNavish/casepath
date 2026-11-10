@@ -1251,6 +1251,7 @@ async function renderCase() {
                       turn_limit: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
                       no_report: T("Preparation stopped early in one part: what it did not reach is marked as not checked.", "Die Vorbereitung brach in einem Teil vorzeitig ab: Was nicht erreicht wurde, ist als nicht geprüft markiert."),
                       reading_failed: T("One reading of the facts failed; the facts it should have confirmed stay open.", "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen."),
+                      document_check_failed: T("The second check of the documents found present failed; they stay requested.", "Die zweite Prüfung der vorhandenen Dokumente schlug fehl; sie bleiben angefordert."),
                     }[w.kind] || ""))].filter((m, i, all) => m && all.indexOf(m) === i);
   notice.hidden = !messages.length;
   document.body.classList.toggle("with-notice", Boolean(messages.length));

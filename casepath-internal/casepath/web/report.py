@@ -29,6 +29,7 @@ LABELS = {
            "turn_limit": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
            "no_report": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
            "reading_failed": "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen.",
+           "document_check_failed": "Die zweite Prüfung der vorhandenen Dokumente schlug fehl; sie bleiben angefordert.",
            "instruction_like_text": "Ein Dokument enthält Text, der sich an die KI richtet; er wurde als Inhalt behandelt und nicht befolgt."},
     "en": {"title": "Case report", "notice": "Prepared with CasePath's AI assistance. Every finding names the passage it rests on. "
            "Qualified review is still required; nothing was sent.", "case": "Case", "prepared": "Prepared on", "process": "Process",
@@ -48,6 +49,7 @@ LABELS = {
            "turn_limit": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
            "no_report": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
            "reading_failed": "One reading of the facts failed; the facts it should have confirmed stay open.",
+           "document_check_failed": "The second check of the documents found present failed; they stay requested.",
            "instruction_like_text": "A document contains text addressed to an AI; it was treated as evidence and not followed."},
 }
 
