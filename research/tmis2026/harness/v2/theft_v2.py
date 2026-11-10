@@ -74,7 +74,9 @@ class TheftPack:
                      tag={"exp": "v2-theft", "method": "Rv2p" + ("+mem" if memory else ""), "case": text_id})
         return {"plan": tm._ids(r["result"]), "error": r["error"]}
 
-    def run_cpv2(self, text_id, text, run):
+    def run_cpv2(self, text_id, text, run, verifier=False):
+        """CPv2p (frozen plan): one interpretation call -> V6 admission -> exact execution. verifier=True is the
+        development variant with the V3 verifier."""
         cond_text = json.dumps(self.guards, ensure_ascii=False)
         interp = llm.call(system=tm.POLICY + "\n\n" + tm.CP_TASK + cond_text, user="CASE:\n" + text, schema=self.cp_schema,
                           schema_name="casepath_conditions", run=run, tag={"exp": "v2-theft", "method": "CPv2p-interpret", "case": text_id},
@@ -85,6 +87,12 @@ class TheftPack:
         rows = {}
         for row in interp["result"]["conditions"]:
             rows.setdefault(row["guard_id"], row)
+        out["raw_judgments"] = {g: {"verdict": r["verdict"], "quote": r["quote"]} for g, r in rows.items()}
+        out["judgments_no_verifier"] = self.admit(rows, text, None)
+        out["plan_no_verifier"] = self.plan_exact(out["judgments_no_verifier"])
+        if not verifier:
+            out["judgments"], out["plan"] = out["judgments_no_verifier"], out["plan_no_verifier"]
+            return out
         established = {g: r for g, r in rows.items() if r["verdict"] in {"true", "false"}}
         proposal = [{"item_id": f"condition:{g}", "verdict": r["verdict"], "quote": r["quote"]} for g, r in sorted(established.items())]
         ver = llm.call(system=tm.POLICY + "\n\n" + CP_TASK_V3 + cond_text,
@@ -92,14 +100,16 @@ class TheftPack:
                        schema=v3.THEFT_SCHEMA, schema_name="casepath_verify_v3", run=run,
                        tag={"exp": "v2-theft", "method": "CPv2p-verify", "case": text_id}, max_tokens=4000)
         out["verify_error"] = ver["error"]
-        out["judgments_no_verifier"] = self.admit(rows, text, None)
-        out["plan_no_verifier"] = self.plan_exact(out["judgments_no_verifier"])
         if ver["result"]:
             accepted, diag = v3.effective_theft(ver["result"]["checks"], text)
             out["verifier_diagnostics"] = diag
             out["judgments"] = self.admit(rows, text, accepted)
             out["plan"] = self.plan_exact(out["judgments"])
         return out
+
+    def plan_kleene(self, nu, on_file=frozenset()):
+        """Strong Kleene ablation; identical to plan_exact for these flat rules (monotone OR of literals)."""
+        return self.plan_exact(nu, on_file)
 
     def admit(self, rows, text, accepted):
         nu = {}

@@ -1,0 +1,36 @@
+{
+ "B1": {
+  "calls": 216,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 6130,
+  "system_chars": 4930848,
+  "user_chars": 365079,
+  "with_silence_clause": 0
+ },
+ "B1v2p": {
+  "calls": 216,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 7031,
+  "system_chars": 5709960,
+  "user_chars": 365079,
+  "with_silence_clause": 216
+ },
+ "CPv1-interpret": {
+  "calls": 216,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 6277,
+  "system_chars": 5058288,
+  "user_chars": 365079,
+  "with_silence_clause": 0
+ },
+ "CPv2p-interpret": {
+  "calls": 216,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 7193,
+  "system_chars": 5849928,
+  "user_chars": 365079,
+  "with_silence_clause": 216
+ },
+ "_cases": 72,
+ "_distinct_user_messages_per_case_max": 1
+}

@@ -25,6 +25,19 @@ from casepath_api.autonomous_policy_v1 import (OPERATIONAL_CONDITION_QUESTIONS, 
                                                proposal_items, validate_interpretation)
 
 PACK = presume.load_pack()
+_PACKS = {}
+
+
+def pack_for(D):
+    """The pack every v2 design receives for this data: the data's own templates if they state a silence policy
+    (fresh data), else the development pack (original templates + the v2' clause)."""
+    templates = D.templates()
+    if any(c["content"].startswith("Silence policy") for t in templates["templates"] for c in t["clauses"]):
+        key = id(D)
+        if key not in _PACKS:
+            _PACKS[key] = presume.build_pack(templates)
+        return _PACKS[key]
+    return PACK
 
 POLICY_V2 = s1.POLICY + """
 Judge each fact from the sources as stated above. The admitted silence policy (in the rule packs) then says how a fact
@@ -37,7 +50,7 @@ def rules_block_v2(pack=None) -> str:
     packs = [{"family": t["domain"], "template_id": t["template_id"], "title": t["title"], "content": t["content"],
               "process_catalog": {k: [{kk: vv for kk, vv in row.items() if kk != "assertion"} for row in rows]
                                   for k, rows in t["process_catalog"].items()}} for t in pack["templates"]]
-    silence = {t["domain"]: {"clause_id": t["presumptions"]["clause_id"], "clause": presume.CLAUSE,
+    silence = {t["domain"]: {"clause_id": t["presumptions"]["clause_id"], "clause": t["presumptions"].get("clause_text", presume.CLAUSE),
                              "presumed_when_unmentioned": t["presumptions"]["verdicts"]} for t in pack["templates"]}
     material = {"rule_packs": packs, "condition_catalog": FAMILY_FLAGS,
                 "operational_condition_questions": OPERATIONAL_CONDITION_QUESTIONS,
@@ -74,12 +87,21 @@ def handoff(reason):
             "deferred": True, "deferral_reason": reason}
 
 
-def plan_v2(D, claim_id, verified, raw_proposal, srcs, pack=None):
+def plan_v2(D, claim_id, verified, raw_proposal, srcs, pack=None, semantics="exact", presumptions=True):
+    """semantics='kleene' and presumptions=False are the offline ablations of the frozen plan."""
     pack = pack or PACK
-    verified, records = presume.apply(verified, raw_proposal, pack)
+    records = []
+    if presumptions:
+        verified, records = presume.apply(verified, raw_proposal, pack)
     graph, _f, _o = compile_process(pack, claim_id, verified)
     graph = _apply_document_reviews(graph, verified, srcs)
-    sv = supervaluate(graph)
+    if semantics == "kleene":
+        from casepath_api.causal_process_v1 import evaluate
+        view = evaluate(graph)
+        sv = {"mode": "kleene", "states": {d["document_type"]: d["route_state"] for d in view["documents"]},
+              "questions": sorted(f for f, v in graph["conditions"].items() if v.get("verdict") == "unresolved")}
+    else:
+        sv = supervaluate(graph)
     docs = sv["states"]
     return {"family": verified["category"]["family"], "document_states": docs, "mode": sv["mode"],
             "requests": sorted(k for k, v in docs.items() if v in REQUEST_STATES),
@@ -120,8 +142,11 @@ def robust(result, srcs):
     return clean, stats
 
 
-def run_cpv2(D, claim_id, run, pack=None):
-    PACK_ = pack or PACK
+def run_cpv2(D, claim_id, run, pack=None, verifier=False):
+    """CPv2p (primary, frozen plan): interpretation -> V6 admission -> presumptions -> exact deferral; no verifier
+    call. verifier=True reproduces the development variant with the V3 verifier."""
+    pack = pack or pack_for(D)
+    PACK_ = pack
     srcs = D.sources(claim_id)
     interp = llm.call(system=system_v2(CPV2_INTERPRET_TASK, pack), user=case_block(D, claim_id), schema=s1.CP_INTERPRET_SCHEMA,
                       schema_name="casepath_interpret", run=run, tag=_tag("CPv2p", claim_id, "interpret"))
@@ -137,46 +162,31 @@ def run_cpv2(D, claim_id, run, pack=None):
         return out
     proposal = {**clean, "steps": [], "knowledge_candidates": []}
     items = list(proposal_items(proposal))
-    payload = json.dumps({"context": json.loads(case_block(D, claim_id).split("\n", 1)[1]), "proposal": clean,
-                          "item_ids": items}, ensure_ascii=False)
-    ver = llm.call(system=system_v2(CPV2_VERIFY_TASK, pack), user="VERIFICATION INPUT:\n" + payload, schema=v3.TENANCY_SCHEMA,
-                   schema_name="casepath_verify_v3", run=run, tag=_tag("CPv2p", claim_id, "verify"))
-    out["verify_error"] = ver["error"]
-    if not ver["result"]:
-        return out
-    rows = {f"condition:{r['flag']}": r for r in clean["conditions"]}
-    checks, diag = v3.effective_tenancy(ver["result"], rows, srcs)
-    out["verifier_diagnostics"] = diag
-    out["judgments"] = {"family": interp["result"]["category"]["family"],
-                        "conditions": {x["flag"]: {"verdict": x["verdict"], "cited": bool(x["citations"])} for x in clean["conditions"]},
-                        "verifier": {x["item_id"]: x["accepted"] for x in ver["result"]["checks"]},
-                        "family_supported": ver["result"]["family_supported"], "family_refuted": diag["family_refuted"]}
+    allok = {"family_supported": True, "issues": [], "checks": [{"item_id": i, "accepted": True, "reason": ""} for i in items]}
+    checks = allok
+    if verifier:  # development variant (b): V3 evidence-bearing verifier
+        payload = json.dumps({"context": json.loads(case_block(D, claim_id).split("\n", 1)[1]), "proposal": clean,
+                              "item_ids": items}, ensure_ascii=False)
+        ver = llm.call(system=system_v2(CPV2_VERIFY_TASK, pack), user="VERIFICATION INPUT:\n" + payload, schema=v3.TENANCY_SCHEMA,
+                       schema_name="casepath_verify_v3", run=run, tag=_tag("CPv2p", claim_id, "verify"))
+        out["verify_error"] = ver["error"]
+        if not ver["result"]:
+            return out
+        rows = {f"condition:{r['flag']}": r for r in clean["conditions"]}
+        checks, out["verifier_diagnostics"] = v3.effective_tenancy(ver["result"], rows, srcs)
+    out["judgments"] = {"family": clean["category"]["family"],
+                        "conditions": {x["flag"]: {"verdict": x["verdict"], "cited": bool(x["citations"])} for x in clean["conditions"]}}
     try:
         verified = validate_interpretation(PACK_, srcs, proposal, checks)
         out["replay"] = {"proposal": proposal, "verified": verified}
         out["plan"] = plan_v2(D, claim_id, verified, proposal, srcs, PACK_)
     except ValueError as error:
         out["plan"] = handoff("admission: " + str(error))
-    # Ablations without extra calls: v2 without the verifier; v2 without presumptions.
-    try:
-        allok = {"family_supported": True, "issues": [], "checks": [{"item_id": i, "accepted": True, "reason": ""} for i in items]}
-        out["plan_no_verifier"] = plan_v2(D, claim_id, validate_interpretation(PACK_, srcs, proposal, allok), proposal, srcs, PACK_)
-    except ValueError as error:
-        out["plan_no_verifier"] = handoff(str(error))
-    try:
-        verified = validate_interpretation(PACK_, srcs, proposal, checks)
-        graph, _f, _o = compile_process(PACK_, claim_id, verified)
-        graph = _apply_document_reviews(graph, verified, srcs)
-        sv = supervaluate(graph)
-        out["plan_no_presumption"] = {"family": verified["category"]["family"], "deferred": False,
-                                      "requests": sorted(k for k, v in sv["states"].items() if v in REQUEST_STATES),
-                                      "holds": sorted(k for k, v in sv["states"].items() if v == "held_behind_question")}
-    except ValueError as error:
-        out["plan_no_presumption"] = handoff(str(error))
     return out
 
 
 def run_b1v2(D, claim_id, run, pack=None, memory=""):
+    pack = pack or pack_for(D)
     r = llm.call(system=system_v2(B1V2_TASK, pack, memory), user=case_block(D, claim_id), schema=s1.B1_SCHEMA, schema_name="evidence_plan",
                  run=run, tag=_tag("B1v2p" + ("+mem" if memory else ""), claim_id))
     return {"plan": s1._plan_from_decisions(r["result"], "documents") if r["result"] else None, "error": r["error"]}

@@ -25,7 +25,11 @@ TAGS = ("gpt-6.1-terra", "gpt-6-luna")
 PIPELINE = ([(["analyze.py", t], t) for t in TAGS] + [(["tenancy_extra.py", t], t) for t in TAGS]
             + [(["judgment_accuracy.py", t], t) for t in TAGS] + [(["two_valued.py"], t) for t in TAGS]
             + [(["handoff_causes.py", t], t) for t in TAGS] + [(["repair_family.py", t], t) for t in TAGS] + [(["theft_error_origin.py", "gpt-6.1-terra"], "gpt-6.1-terra"),
-               (["original_study.py"], None), (["primary_tests.py"], None), (["break_even.py"], None), (["make_numbers.py"], None)])
+               (["original_study.py"], None), (["primary_tests.py"], None), (["break_even.py"], None)])
+# Study 2 enters the pipeline only once the runner has written plans on the fresh data.
+if any((HERE.parent / "runs" / "v2").glob("plans_*_fresh_*.json")):
+    PIPELINE.append((["study2.py"], None))
+PIPELINE.append((["make_numbers.py"], None))
 evidence = sorted(HERE.glob("*.json"))
 before_json = {f.name: f.read_bytes() for f in evidence}
 before = (PAPER / "results" / "numbers.tex").read_text()

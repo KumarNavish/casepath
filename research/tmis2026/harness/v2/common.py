@@ -51,7 +51,7 @@ def data(kind: str, which: str = "original"):
     if which == "original":
         return __import__(f"{kind}_data")
     if which == "fresh":
-        return _load(f"fresh_{kind}_data", TMIS / "fresh" / f"{kind}_data.py")
+        return _load(f"fresh_{kind}_data", TMIS / "fresh" / f"{kind}_fresh.py")
     raise ValueError(which)
 
 

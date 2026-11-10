@@ -44,11 +44,18 @@ def build_pack(base: dict) -> dict:
     pack["contract"] = "casepath.v2.tenancy-rule-pack/1.0.0"
     pack["base_pack_sha256"] = hashlib.sha256(json.dumps(base, sort_keys=True).encode()).hexdigest()
     for template in pack["templates"]:
-        template["clauses"].append({"clause_id": f"{template['template_id']}.{CLAUSE_ID}", "content": CLAUSE,
-                                    "content_sha256": hashlib.sha256(CLAUSE.encode()).hexdigest()})
-        template["presumptions"] = {"clause_id": f"{template['template_id']}.{CLAUSE_ID}",
-                                    "applies_to": "unresolved condition judgments without any citation",
+        own = [c for c in template["clauses"] if c["content"].startswith("Silence policy")]
+        if own:  # the data's pack already states the policy (fresh data): use its clause, add nothing
+            clause_id, text = own[0]["clause_id"], own[0]["content"]
+        else:
+            clause_id, text = f"{template['template_id']}.{CLAUSE_ID}", CLAUSE
+            template["clauses"].append({"clause_id": clause_id, "content": CLAUSE,
+                                        "content_sha256": hashlib.sha256(CLAUSE.encode()).hexdigest()})
+        template["presumptions"] = {"clause_id": clause_id,
+                                    "applies_to": "defining event unless denied; branch facts only without any citation",
                                     "verdicts": presumptions(template["domain"])}
+        if own:
+            template["presumptions"]["clause_text"] = text
     return pack
 
 

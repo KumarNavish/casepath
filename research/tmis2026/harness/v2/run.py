@@ -23,10 +23,22 @@ ap.add_argument("--designs", default=None)
 ap.add_argument("--limit", type=int, default=None, help="first N cases (pilots)")
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--stories", default=None, help="theft: comma-separated story indices (overrides --split selection)")
+ap.add_argument("--dry-run", action="store_true", help="build every request, send nothing, report counts and sizes")
 args = ap.parse_args()
 
-if args.data == "fresh":
+if args.data == "fresh" and not args.dry_run:
     common.require_frozen_plan()
+DRY = []
+if args.dry_run:
+    import hashlib
+
+    def _record(**kw):
+        DRY.append({"tag": kw["tag"], "run": kw["run"], "system_chars": len(kw["system"]), "user_chars": len(kw["user"]),
+                    "system_sha": hashlib.sha256(kw["system"].encode()).hexdigest()[:12],
+                    "user_sha": hashlib.sha256(kw["user"].encode()).hexdigest()[:12],
+                    "has_silence_clause": "Silence policy" in kw["system"]})
+        return {"result": None, "error": "dry-run", "cached": False}
+    llm.call = _record
 D = common.data(args.exp, args.data)
 if args.exp == "tenancy":
     import tenancy_v2 as mod
@@ -37,6 +49,8 @@ else:
     T = D.texts()
     dev_story = min(v["story"] for v in T.values())
     cases = sorted(k for k, v in T.items() if (v["story"] == dev_story) == (args.split == "dev"))
+    if args.data == "fresh":  # every fresh story is held out
+        cases = sorted(T)
     if args.stories:
         cases = sorted(k for k, v in T.items() if str(v["story"]) in args.stories.split(","))
     call = lambda f, c, r: f(c, T[c]["text"], r)
@@ -44,6 +58,30 @@ if args.limit:
     cases = cases[:args.limit]
 designs = {d: f for d, f in mod.DESIGNS.items() if not args.designs or d in args.designs.split(",")}
 out_path = common.OUT / f"plans_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"
+if args.dry_run:
+    for d, f in designs.items():
+        for r in range(args.k):
+            for c in cases:
+                call(f, c, r)
+    summary = {}
+    for row in DRY:
+        k = row["tag"]["method"]
+        s = summary.setdefault(k, {"calls": 0, "system_chars": 0, "user_chars": 0, "distinct_system_prompts": set(),
+                                   "with_silence_clause": 0})
+        s["calls"] += 1; s["system_chars"] += row["system_chars"]; s["user_chars"] += row["user_chars"]
+        s["distinct_system_prompts"].add(row["system_sha"]); s["with_silence_clause"] += row["has_silence_clause"]
+    for s in summary.values():
+        s["distinct_system_prompts"] = len(s["distinct_system_prompts"])
+        s["mean_prompt_tokens_est"] = round((s["system_chars"] + s["user_chars"]) / s["calls"] / 4)
+    # identical case material across designs (same claim/text, same run): user message hashes per case
+    by_case = {}
+    for row in DRY:
+        by_case.setdefault(row["tag"]["case"], set()).add(row["user_sha"])
+    summary["_cases"] = len(cases)
+    summary["_distinct_user_messages_per_case_max"] = max(len(v) for v in by_case.values()) if by_case else 0
+    print(json.dumps(summary, indent=1))
+    common.dump(common.OUT / f"dryrun_{args.exp}_{common.TAG}_{args.data}.json", summary)
+    raise SystemExit(0)
 results = json.loads(out_path.read_text()) if out_path.exists() else {}
 def transient(entry):
     """A recorded provider failure (502 inside a 200 body) is retried on the next run."""

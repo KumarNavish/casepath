@@ -1,0 +1,36 @@
+{
+ "CP-interpret": {
+  "calls": 192,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 2742,
+  "system_chars": 1926336,
+  "user_chars": 179328,
+  "with_silence_clause": 0
+ },
+ "CPv2p-interpret": {
+  "calls": 192,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 2879,
+  "system_chars": 2031744,
+  "user_chars": 179328,
+  "with_silence_clause": 0
+ },
+ "R": {
+  "calls": 192,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 20592,
+  "system_chars": 15634944,
+  "user_chars": 179328,
+  "with_silence_clause": 0
+ },
+ "Rv2p": {
+  "calls": 192,
+  "distinct_system_prompts": 1,
+  "mean_prompt_tokens_est": 20752,
+  "system_chars": 15757824,
+  "user_chars": 179328,
+  "with_silence_clause": 0
+ },
+ "_cases": 64,
+ "_distinct_user_messages_per_case_max": 1
+}

@@ -287,25 +287,28 @@ def dryrun_theft(args):
     mem = memory_block_theft(corrections)
     arms = {"CP_before": (theft_v2.TheftPack(theft_v2.PACK), "cp"), "CP_after_V5": (theft_v2.TheftPack(cp.pack), "cp"),
             "R_before": (theft_v2.TheftPack(theft_v2.PACK), ""), "R_after_memory": (theft_v2.TheftPack(theft_v2.PACK), mem)}
-    results = {}
+    results, plans = {}, {}
+    eval_runs = [int(x) for x in args.eval_runs.split(",")]
     for name, (tp, kind) in arms.items():
         cache, rows = {}, []
 
-        def plan(t):
-            if t not in cache:
+        def plan(t, r):
+            if (t, r) not in cache:
                 if kind == "cp":
-                    o = tp.run_cpv2(t, T[t]["text"], args.run)
-                    cache[t] = o.get("plan")
+                    cache[(t, r)] = tp.run_cpv2(t, T[t]["text"], r).get("plan")
                 else:
-                    cache[t] = tp.run_rv2(t, T[t]["text"], args.run, memory=kind)["plan"]
-            return cache[t] or {"requests": [], "holds": []}
-        for pair in evaluate:
-            e = theft_errors(score_pair, pair, plan(pair["off"]), plan(pair["variant"]), best_realization)
-            rows.append({"pair_id": pair["pair_id"], "wrong": len(e["wrong"]), "missed": len(e["missed"])})
+                    cache[(t, r)] = tp.run_rv2(t, T[t]["text"], r, memory=kind)["plan"]
+                plans[f"{name}|{t}|{r}"] = {"plan": cache[(t, r)]}
+            return cache[(t, r)] or {"requests": [], "holds": []}
+        for r in eval_runs:
+            for pair in evaluate:
+                e = theft_errors(score_pair, pair, plan(pair["off"], r), plan(pair["variant"], r), best_realization)
+                rows.append({"pair_id": pair["pair_id"], "condition": pair["condition"], "run": r,
+                             "wrong": len(e["wrong"]), "missed": len(e["missed"])})
         results[name] = {"pairs": len(rows), "wrong": sum(r["wrong"] for r in rows), "missed": sum(r["missed"] for r in rows),
                          "errors_per_pair": sum(r["wrong"] + r["missed"] for r in rows) / len(rows), "rows": rows}
         print(name, {k: v for k, v in results[name].items() if k != "rows"}, flush=True)
-    return {"train_log": log, "evaluation": results, "final_pack": cp.pack}
+    return {"train_log": log, "evaluation": results, "plans": plans, "final_pack": cp.pack}
 
 
 # ====================================================================== tenancy
@@ -450,12 +453,13 @@ if __name__ == "__main__":
     ap.add_argument("--run", type=int, default=0)
     ap.add_argument("--train-stories", default=None)
     ap.add_argument("--eval-stories", default=None)
+    ap.add_argument("--eval-runs", default="0", help="runs evaluated after learning (the plan: 0,1,2)")
     args = ap.parse_args()
     if args.data == "fresh":
         common.require_frozen_plan()
     if args.train_stories:
         out = dryrun_theft(args)
-        path = common.OUT / f"evolve_dryrun_theft_{common.TAG}_{args.data}_train{args.train_stories}_eval{args.eval_stories}.json"
+        path = common.OUT / f"evolve_theft_{common.TAG}_{args.data}_train{args.train_stories}_eval{args.eval_stories.replace(',', '')}.json"
     else:
         out = evolve_theft(args) if args.exp == "theft" else evolve_tenancy(args)
         path = common.OUT / f"evolve_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"

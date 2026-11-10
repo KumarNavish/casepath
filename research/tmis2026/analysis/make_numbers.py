@@ -406,5 +406,60 @@ try:
 except Exception as _e:  # harness unavailable: leave the macros out
     print("faulty-rule overlap skipped:", _e)
 m("propEps", "0.1")  # error probability per condition used for the prop* macros above
+# ---- Study 2 (ANALYSIS_PLAN_STUDY2.md), only once fresh plans have been analysed by study2.py
+s2 = load("study2_results.json")
+if s2:
+    MOD = {"gpt-6-luna": "Luna", "gpt-6.1-terra": "Terra"}
+    DES = {"CPv2p": "CPvTwo", "B1v2p": "BOneVTwo", "Rv2p": "RVTwo", "R": "R", "CPv1": "CPvOne"}
+    def stcontrast(p, c):
+        m(p + "A", f"{c['a_value']:.3f}"); m(p + "B", f"{c['b_value']:.3f}"); m(p + "Diff", f"{c['diff']:+.3f}")
+        m(p + "Lo", f"{c['diff_ci'][0]:+.3f}"); m(p + "Hi", f"{c['diff_ci'][1]:+.3f}"); m(p + "P", fmtp(c["p_signflip"]))
+        m(p + "Clusters", c["clusters"]); m(p + "Nonzero", c["nonzero_clusters"]); m(p + "MinP", fmtp(c["min_p_signflip"]))
+        if "p_noninferiority" in c:
+            m(p + "PNI", fmtp(c["p_noninferiority"]) if c["p_noninferiority"] > 0 else "<0.0001")
+        if "p_holm" in c:
+            m(p + "Holm", fmtp(c["p_holm"]))
+    for name, c in s2.get("contrasts", {}).items():
+        stcontrast(f"st{name}", c)
+    for name, c in s2.get("secondary", {}).get("contrasts", {}).items():
+        name = name.replace("gpt-6.1-terra", "Terra").replace("gpt-6-luna", "Luna")
+        stcontrast("stSec" + "".join(w[0].upper() + w[1:] for w in name.replace(".", "").replace("-", "_").split("_")
+                                     if w).translate(str.maketrans("0123456789", "ABCDEFGHIJ")), c)
+    for key, v in s2.get("tenancy", {}).items():
+        d, mod = key.split("|")
+        p = f"stTen{DES.get(d, d)}{MOD[mod]}"
+        m(p + "Unsafe", f"{v['strict_unsafe_per_claim']:.2f}"); m(p + "Unnec", f"{v['unnecessary_per_claim']:.2f}")
+        m(p + "Missed", f"{v['missed_per_claim']:.2f}"); m(p + "Handed", f"{v['handed_per_claim']:.2f}")
+        m(p + "Premature", f"{v['premature_per_claim']:.2f}"); m(p + "Skip", f"{v['silent_skip_per_claim']:.2f}")
+        m(p + "ReqShare", pct(v["requested_share"])); m(p + "HeldReq", f"{v['held_required_now_per_claim']:.2f}")
+        m(p + "Spurious", f"{v['spurious_holds_per_claim']:.2f}")
+        if v.get("correct_hold_share") is not None:
+            m(p + "CorrectHold", pct(v["correct_hold_share"]))
+        if v.get("test_retest_jaccard") is not None:
+            m(p + "Retest", f"{v['test_retest_jaccard']:.3f}")
+    for key, v in s2.get("theft", {}).items():
+        d, mod = key.split("|")
+        p = f"stTh{DES.get(d, d)}{MOD[mod]}"
+        m(p + "Errors", f"{v['errors_per_pair']:.2f}"); m(p + "Wrong", v["wrong"]); m(p + "Missed", v["missed"])
+        m(p + "Fone", f"{v['f1']:.3f}"); m(p + "ErrorsDedup", f"{v['errors_dedup_per_pair']:.2f}")
+        m(p + "ErrorsAllPair", f"{v['errors_per_pair_all_pairings']:.2f}")
+        if v.get("unresolved"):
+            m(p + "Premature", pct(v["unresolved"]["premature_rate"], 0)); m(p + "OtherChanges", f"{v['unresolved']['other_changes_per_pair']:.2f}")
+        if v.get("test_retest_jaccard") is not None:
+            m(p + "Retest", f"{v['test_retest_jaccard']:.3f}")
+    cst = s2.get("secondary", {}).get("cost", {})
+    for key, v in cst.get("by_design", {}).items():
+        exp, d, mod = key.split("|")
+        m(f"stCost{'Ten' if exp == 'tenancy' else 'Th'}{DES.get(d, d)}{MOD.get(mod, mod)}", f"{1000 * v['cost_per_case_run']:.2f}")
+    for k in ("ratio_C", "ratio_D"):
+        if cst.get(k) is not None:
+            m("stCostRatio" + k[-1], f"{cst[k]:.2f}")
+    ev = s2.get("secondary", {}).get("evolution")
+    if ev:
+        for arm, v in ev["arms"].items():
+            m("stEvo" + "".join(w.capitalize() for w in arm.split("_")).translate(str.maketrans("0123456789", "ABCDEFGHIJ")),
+              f"{v['errors_per_pair']:.2f}")
+        if ev.get("after_contrast"):
+            stcontrast("stEvoAfter", ev["after_contrast"])
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")
