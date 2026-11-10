@@ -93,6 +93,28 @@ class SufficiencyTests(unittest.TestCase):
         self.assertIn("not a message or another document that only mentions", claims["document:notice_letter"])
         self.assertEqual(claims["show:notice_letter#1"], "“Notice letter” shows: the defect it reports.".replace("Notice letter", work.document_defs["notice_letter"]["title"]))
 
+    def test_present_needs_a_second_judgment_that_agrees(self):
+        from casepath.agents.team import confirm_documents
+        from tests.scripted import ScriptedModel
+        shows = [{"item": "the date of the notice", "citations": [{"file": "f1", "quote": "vom 2. März 2025"}]},
+                 {"item": "the defect it reports", "citations": [{"file": "f1", "quote": "betreffend Schimmel im Bad"}]}]
+        cases = [  # (second judgment, status that results)
+            ({"status": "present", "file": "f1", "shows": [{"item": "the date of the notice", "quote": "vom 2. März 2025"},
+                                                         {"item": "the defect it reports", "quote": "betreffend Schimmel im Bad"}]}, "present"),
+            ({"status": "present", "file": "f1", "shows": [{"item": "the date of the notice", "quote": "vom 2. März 2025"},
+                                                         {"item": "the defect it reports", "quote": "Wasserschaden in der Küche"}]}, "unusable"),
+            ({"status": "unusable", "file": "f1", "shows": []}, "unusable"),
+            ({"status": "present", "file": "f2", "shows": [{"item": "the date of the notice", "quote": "Der Schimmel im Bad"},
+                                                         {"item": "the defect it reports", "quote": "Der Schimmel im Bad"}]}, "unusable"),
+        ]
+        for second, expected in cases:
+            work = CaseWork(case=CASE, files=FILES, base_workflow=workflow())
+            self.assertEqual(record(work, shows=shows)["status"], "present")
+            model = ScriptedModel([])
+            model.confirm_documents = [{"document": "notice_letter", **second}]
+            confirm_documents(model, work)
+            self.assertEqual(work.documents["notice_letter"]["status"], expected, second)
+
     def test_needs_without_must_show_behave_as_before(self):
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         args = {"document": "notice_letter", "status": "present", "files": ["f1"], "citations": [{"file": "f1", "quote": LETTER}], "note": ""}
