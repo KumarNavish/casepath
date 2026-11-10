@@ -131,7 +131,27 @@ class TeamTests(unittest.TestCase):
         # At its turn limit the agent ends with what it has recorded, and the work names the limit.
         self.assertIsNone(run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2))
         self.assertEqual([(x["agent"], x["reason"]) for x in work.limits], [("document_finder", "turn_limit")])
-        self.assertTrue(work.documents_looked_for)
+        # A need the finder never recorded is unchecked: neither missing (a request) nor present.
+        rows = {d["document"]: d["status"] for d in work.evaluate()["documents"]}
+        self.assertEqual(set(rows.values()), {"unchecked"})
+        self.assertFalse([a for a in work.evaluate()["next_actions"] if a["kind"] == "obtain"])
+
+    def test_a_finder_that_stops_without_reporting_leaves_unrecorded_needs_unchecked(self):
+        from casepath.agents.team import CaseWork, run_agent
+        from casepath.agents import core
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        absent = ("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""})
+        model = ScriptedModel([[absent], [], []])  # records one need, then stops twice without calling a tool
+        self.assertIsNone(run_agent(model, work, "document_finder", "Find."))
+        self.assertEqual(work.limits[0]["reason"], "no_report")
+        rows = {d["document"]: d["status"] for d in work.evaluate()["documents"]}
+        self.assertEqual(rows["notice_letter"], "missing")  # recorded as absent
+        self.assertEqual(rows["customer_message"], "unchecked")  # never looked at
+        # The case view evaluates the stored result the same way.
+        result = {"facts": [], "documents": list(work.documents.values()),
+                  "warnings": [{"kind": "no_report", "agent": "document_finder", "text": "x"}]}
+        view = core.evaluate(FIXTURE, [], [], result, "c1")["evaluation"]
+        self.assertEqual({d["document"]: d["status"] for d in view["documents"]}, rows)
 
     def test_a_report_that_is_too_long_is_told_its_limit(self):
         from casepath.agents.team import CaseWork, run_agent
