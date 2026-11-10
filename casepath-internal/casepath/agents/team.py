@@ -910,13 +910,19 @@ def confirm_documents(model, work):
                                    file={"type": ["string", "null"], "enum": work.file_ids + [None]},
                                    shows=arr(obj(item=choice(shown), quote=text(600)), maxItems=12)), maxItems=len(ids)))
     work.emit("source_checker", "agent.start", instruction=f"Judge the {len(ids)} document(s) found present a second time, independently.")
-    answer = model.respond_json(name="casepath_confirm_documents", instructions=CONFIRM_DOCUMENTS, schema=schema, effort=READING_EFFORT,
-                                input=[{"role": "user", "content": json.dumps(
-                                    {"needs": [{"document": n["id"], "title": n["title"], "why": n["why"],
-                                                "must_show": n.get("must_show", [])} for n in needs], **view}, ensure_ascii=False)}])
-    work.usage.append({"agent": "source_checker", **answer.usage})
+    try:
+        answer = model.respond_json(name="casepath_confirm_documents", instructions=CONFIRM_DOCUMENTS, schema=schema, effort=READING_EFFORT,
+                                    input=[{"role": "user", "content": json.dumps(
+                                        {"needs": [{"document": n["id"], "title": n["title"], "why": n["why"],
+                                                    "must_show": n.get("must_show", [])} for n in needs], **view}, ensure_ascii=False)}])
+    except ModelError as error:  # no second judgment: the documents stay requested, and the warnings say why
+        work.limits.append({"agent": "source_checker", "reason": "document_check_failed",
+                            "message": f"The second judgment of documents failed ({error.reason}); they stay requested."})
+        answer = None
+    else:
+        work.usage.append({"agent": "source_checker", **answer.usage})
     second = {}
-    for row in answer.value["documents"]:
+    for row in (answer.value["documents"] if answer else []):
         second.setdefault(row["document"], row)
     kept = 0
     for d in ids:
