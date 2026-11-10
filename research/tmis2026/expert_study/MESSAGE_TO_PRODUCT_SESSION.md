@@ -1,6 +1,4 @@
-# To the product session: the pre-registration after the interface-only decision
-
-The pre-registration (`PREREGISTRATION_DRAFT.md`, 1.0-rc) is rewritten to the interface-only design.
+# To the product session: `PREREGISTRATION_DRAFT.md` (1.0-rc) rewritten to the interface-only design
 
 **1. Claims that no longer stand, and what replaces each**
 
