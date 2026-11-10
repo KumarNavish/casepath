@@ -100,17 +100,27 @@ class TeamTests(unittest.TestCase):
         self.assertTrue(all(d["step"] in {r["step"] for r in last["path"]} or d["step"] is None for d in last["documents"]))
         self.assertNotIn("quote", json.dumps(states))  # ids and states only; the quotes stay in the finding events
 
-    def test_rejected_finding_is_not_used(self):
+    def test_a_deciding_fact_both_readings_agree_on_stands_and_the_checkers_doubt_is_a_flag(self):
         script = standard_script(finder_calls=[], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
             {"text": "You told your landlord.", "kind": "statement", "basis": ["fact:landlord_notified"]}]}})
-        script = standard_script(finder_calls=[], retry_turns=[[report("claim_reader")]], result_fields={"reply": {"needed": True, "subject": "", "clauses": [
-            {"text": "You told your landlord.", "kind": "statement", "basis": ["fact:landlord_notified"]}]}})
         result = CaseTeam(ScriptedModel(script, verdicts={"fact:landlord_notified": "uncertain"})).run(case=CASE, files=FILES, workflow=FIXTURE)
-        retry = [e for e in result["events"] if e["kind"] == "delegate" and e["to"] == "claim_reader"][-1]
-        self.assertIn("landlord_notified", retry["instruction"])  # one targeted retry before the result
-        self.assertEqual(next(f for f in result["facts"] if f["fact"] == "landlord_notified")["verdict"], "rejected")
-        self.assertEqual(result["evaluation"]["current"]["step"], "notice")
-        self.assertFalse(result["reply"]["clauses"][0]["supported"])
+        fact = next(f for f in result["facts"] if f["fact"] == "landlord_notified")
+        self.assertEqual((fact["verdict"], fact["flag"]["kind"]), ("accepted", "source_checker_doubt"))
+        self.assertEqual(result["evaluation"]["outcome"]["id"], "reported")  # the checklist follows the agreed facts
+        self.assertFalse(any(e["kind"] == "delegate" and e["to"] == "claim_reader" and "did not accept" in e["instruction"]
+                             for e in result["events"]))  # nothing to retry
+
+    def test_after_the_two_readings_one_agent_cannot_change_a_deciding_fact(self):
+        from casepath.agents.team import CaseWork, _record_fact, confirm_facts
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        confirm_facts(ScriptedModel([], second_reading=[]), work)
+        result = _record_fact(work, "claim_reader", {"fact": "landlord_notified", "status": "established", "value": "yes",
+                                                     "citations": [{"file": "f1", "quote": QUOTE}]})
+        self.assertFalse(result["accepted"])
+        self.assertNotIn("landlord_notified", work.accepted_facts())
+        # A fact no condition uses can still be recorded.
+        self.assertTrue(_record_fact(work, "claim_reader", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
+                                                            "citations": [{"file": "f1", "quote": QUOTE}]})["accepted"])
 
     def test_an_agent_must_report_on_its_last_turn(self):
         from casepath.agents.team import CaseWork, run_agent
