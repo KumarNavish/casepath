@@ -518,3 +518,42 @@ class HandlerDeliverableTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=files, workflow=workflow)
         self.assertEqual(result["case_summary"], [{"field": "gegenpartei", "label": "Gegenpartei", "text": "Immo Aare AG, Bern"}])
         self.assertEqual(result["deadlines"], [{"fact": "frist", "question": "Welche Frist gilt?", "date": "2025-03-15"}])
+
+
+class ChecklistScopeTests(unittest.TestCase):
+    def test_a_checklist_only_run_gives_the_full_runs_checklist_from_the_same_findings(self):
+        fact = [{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        finder = [("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],
+                                       "citations": [{"file": "f1", "quote": "Subject: Schimmel im Bad"}], "note": ""}),
+                  ("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""})]
+        full_script = [t for t in standard_script(finder_calls=finder, result_fields={}) if not (t and t[0][0] == "record_fact")]
+        full = CaseTeam(ScriptedModel(full_script, first_reading=fact, second_reading=fact)).run(case=CASE, files=FILES, workflow=FIXTURE)
+        model = ScriptedModel([[*finder, report("document_finder")]], first_reading=fact, second_reading=fact)
+        only = CaseTeam(model, scope="checklist").run(case=CASE, files=FILES, workflow=FIXTURE)
+        rows = lambda r: [(d["document"], d["required"], d["status"]) for d in r["evaluation"]["documents"]]
+        self.assertEqual(rows(only), rows(full))
+        self.assertEqual(only["evaluation"]["outcome"], full["evaluation"]["outcome"])
+        self.assertEqual({s["agent"] for s in only["skipped"]}, {"claim_reader", "process_builder", "result_checker", "source_checker"})
+        self.assertNotIn("skipped", full)
+        self.assertEqual(only["answer_code"], "checklist_only")
+        self.assertFalse(any("propose_change" in tools or "evaluate" in tools for tools in model.tools))  # no builder, no result checker
+
+    def test_a_one_file_case_skips_the_document_finder_and_says_why(self):
+        fact = [{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        model = ScriptedModel([], first_reading=fact, second_reading=fact)
+        result = CaseTeam(model, scope="checklist").run(case=CASE, files=FILES[:1], workflow=FIXTURE)
+        reasons = {s["agent"]: s["reason"] for s in result["skipped"]}
+        self.assertIn("one file", reasons["document_finder"])
+        self.assertEqual(model.tools, [])  # no agent turn at all: routing aside, only the two readings ran
+        self.assertEqual(next(f for f in result["facts"] if f["fact"] == "landlord_notified")["verdict"], "accepted")
+        self.assertIn("source_checker", reasons)  # the fact check is skipped: agreement decides
+        self.assertEqual({d["status"] for d in result["evaluation"]["documents"]}, {"missing"})
+
+    def test_the_setting_is_off_by_default_and_named_in_the_parity_manifest(self):
+        from casepath.config import load_settings, SettingsError
+        from casepath.parity import non_default_settings
+        self.assertEqual(load_settings({}).run_scope, "full")
+        self.assertNotIn("run_scope", json.dumps(non_default_settings(load_settings({}))))
+        self.assertIn("run_scope", json.dumps(non_default_settings(load_settings({"CASEPATH_RUN_SCOPE": "checklist"}))))
+        with self.assertRaises(SettingsError):
+            load_settings({"CASEPATH_RUN_SCOPE": "fast"})

@@ -39,8 +39,8 @@ def case_state(store, catalogue, case_id):
 
 class RunService:
     def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1, page_image_side=1700,
-                 token_budget=0, voice=None):
-        self.store, self.catalogue, self.model_factory, self.effort = store, catalogue, model_factory, effort
+                 token_budget=0, voice=None, scope="full"):
+        self.store, self.catalogue, self.model_factory, self.effort, self.scope = store, catalogue, model_factory, effort, scope
         self.read_scans, self.reading_workers, self.page_image_side = read_scans, reading_workers, page_image_side
         self.token_budget, self.voice = token_budget, voice or {}
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
@@ -66,7 +66,8 @@ class RunService:
                 "workflows": list(self.catalogue.workflows), "knowledge": self.store.list_knowledge(None, {"active"}),
                 "edits": self.store.list_edits(case_id),
                 "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers,
-                            "page_image_side": self.page_image_side, "token_budget": self.token_budget, "voice": self.voice}}
+                            "page_image_side": self.page_image_side, "token_budget": self.token_budget, "voice": self.voice,
+                            **({"scope": self.scope} if self.scope != "full" else {})}}
 
     def _event(self, run_id, data):
         self.store.append_event(run_id, data)

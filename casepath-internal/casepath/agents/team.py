@@ -693,9 +693,11 @@ def _stopped(work, agent, reason, message):
     return None
 
 
-def run_source_checker(model, work, effort="medium"):
+def run_source_checker(model, work, effort="medium", kinds=("fact", "document")):
     items = []
     for kind, item_id in work.unverified():
+        if kind not in kinds:
+            continue
         row = (work.facts if kind == "fact" else work.documents)[item_id]
         if kind == "fact":
             definition = work.fact_defs[item_id]
@@ -999,8 +1001,9 @@ def confirm_facts(model, work, effort="medium"):
 
 
 class CaseTeam:
-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None):
+    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, scope="full"):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
+        self.scope = scope  # "checklist": only the steps that can decide the checklist
 
     def _delegate(self, work, state, agent, instruction):
         if state["delegations"] >= self.max_delegations:
@@ -1008,7 +1011,8 @@ class CaseTeam:
         state["delegations"] += 1
         work.emit("lead", "delegate", to=agent, instruction=instruction[:300])
         if agent == "source_checker":
-            return run_source_checker(self.model, work, self.effort)
+            # a checklist-only run checks documents only: a deciding fact both readings agree on is not changed by the check
+            return run_source_checker(self.model, work, self.effort, kinds=("document",) if self.scope == "checklist" else ("fact", "document"))
         if agent == "result_checker" and work.unverified():
             run_source_checker(self.model, work, self.effort)
         report = run_agent(self.model, work, agent, instruction, effort=self.effort)
@@ -1035,21 +1039,50 @@ class CaseTeam:
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0}
         work.emit("lead", "agent.start", instruction="Prepare the case.")
+        skipped = self._skipped(work)
         for agent, instruction in PLAN:
             if agent == "document_finder":
                 confirm_facts(self.model, work, self.effort)
+                if self.scope == "checklist":  # agreement decides; the fact check could only add a flag
+                    for row in work.facts.values():
+                        if row.get("agreed") and row["verdict"] is None:
+                            row["verdict"] = "accepted"
             if agent == "result_checker":
                 self._retry_rejected(work, state)
             if instruction == FACTS_STEP and work.total_chars <= SMALL_CASE_CHARS:
                 read_facts(self.model, work, self.effort)  # a structured first reading; a long dossier is read by the agent
                 continue
+            if any(s["agent"] == agent and s["step"] == instruction for s in skipped):
+                if agent == "document_finder":
+                    work.documents_looked_for = True  # the one file is the claim itself: no document is in the case
+                continue
             self._delegate(work, state, agent, instruction)
+        work.skipped = [{"agent": s["agent"], "reason": s["reason"]} for s in skipped]
         work.emit("lead", "agent.end", summary="Prepared.")
         return finalize(work)
 
+    def _skipped(self, work):
+        """The steps a checklist-only run leaves out, each with its reason. None in a full run."""
+        if self.scope != "checklist":
+            return []
+        out = []
+        for agent, instruction in PLAN:
+            if agent == "claim_reader" and instruction != FACTS_STEP:
+                out.append({"agent": agent, "step": instruction, "reason": "brief: does not decide the checklist"})
+            elif agent == "process_builder":
+                out.append({"agent": agent, "step": instruction, "reason": "its additions are suggestions: they do not decide the checklist"})
+            elif agent == "result_checker":
+                out.append({"agent": agent, "step": instruction, "reason": "summary, answer and reply: they do not decide the checklist"})
+            elif agent == "document_finder" and len(work.file_ids) < 2:
+                out.append({"agent": agent, "step": instruction,
+                            "reason": "the case has one file, taken as the claim itself: no attachment can meet a document need"})
+        out.append({"agent": "source_checker", "step": "facts",
+                    "reason": "facts: a deciding fact both readings agree on stands; the check could only add a flag"})
+        return out
+
     def _retry_rejected(self, work, state):
         """One more pass on items the source checker rejected, since the files may still settle them."""
-        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected"]
+        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected"] if self.scope != "checklist" else []
         documents = [k for k, v in work.documents.items() if v["verdict"] == "rejected"]
         if not facts and not documents:
             return
@@ -1089,6 +1122,12 @@ def personal_details(row, names):
 
 def finalize(work):
     evaluation = work.evaluate()
+    skipped = getattr(work, "skipped", [])
+    if work.result is None and any(s["agent"] == "result_checker" for s in skipped):
+        work.result = {"summary": "Checklist-only run: no summary, answer or reply was prepared.", "code": "checklist_only",
+                       "answer": "Checklist only: see the checklist and the open points.",
+                       "open_points": [a["text"] for a in evaluation["next_actions"]][:12], "case_summary": [],
+                       "reply": {"needed": False, "subject": "", "clauses": []}, "learn": []}
     result = work.result or {  # the result checker stopped at its limit: the checklist still stands on the accepted findings
         "summary": "The result checker did not finish; the checklist is evaluated from the accepted findings.",
         "answer": "Not finished: see the checklist and the open points.", "code": "result_checker_stopped",
@@ -1134,6 +1173,7 @@ def finalize(work):
             "documents": list(work.documents.values()), "evaluation": evaluation,
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
             **({"answer_code": result["code"]} if result.get("code") else {}),
+            **({"scope": "checklist", "skipped": skipped} if skipped else {}),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
             "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],
