@@ -18,6 +18,22 @@ class DatabricksModelTests(unittest.TestCase):
         with self.assertRaises(SettingsError):  # an arbitrary host stays refused
             load_settings({"CASEPATH_MODEL_PROVIDER": "databricks", "CASEPATH_MODEL_ENDPOINT": "https://api.example.com", "CASEPATH_MODEL": "m"})
 
+    def test_the_call_effort_is_the_reasoning_effort_only_when_configured(self):
+        bodies = []
+
+        def handler(request):
+            bodies.append(json.loads(request.content))
+            return httpx.Response(200, json={"id": "c", "choices": [{"finish_reason": "stop", "message": {"content": '{"ok": true}'}}],
+                                             "usage": {"prompt_tokens": 5, "completion_tokens": 1}})
+        schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False}
+        env = {"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "gateway-model-1"}
+        for extra in ({}, {"CASEPATH_MODEL_REASONING": "true"}):
+            model = ChatCompletionsModel(load_settings({**env, **extra}).model, lambda: "t", transport=httpx.MockTransport(handler))
+            model.respond_json(name="check", instructions="Check.", input=[{"role": "user", "content": "{}"}], schema=schema, effort="low")
+        default, reasoning = bodies
+        self.assertEqual((default.get("temperature"), "reasoning_effort" in default), (0, False))  # unchanged by default
+        self.assertEqual((reasoning.get("reasoning_effort"), "temperature" in reasoning), ("low", False))
+
     def test_the_agent_dialect_is_translated_both_ways(self):
         seen = []
 

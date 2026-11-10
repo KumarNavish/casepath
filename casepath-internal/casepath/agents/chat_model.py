@@ -141,7 +141,11 @@ class ChatCompletionsModel:
 
     def respond(self, *, instructions, input, tools=(), text_schema=None, effort="medium", tool_choice=None):
         body = {"model": self.settings.deployment, "messages": to_messages(instructions, input),
-                "max_tokens": self.settings.max_output_tokens, "temperature": 0}
+                "max_tokens": self.settings.max_output_tokens}
+        if self.settings.reasoning:  # the call's effort is the model's reasoning effort (configured)
+            body["reasoning_effort"] = effort
+        else:
+            body["temperature"] = 0
         if tools:
             body["tools"] = [{"type": "function", "function": {"name": t["name"], "description": t["description"],
                                                                 "parameters": wire_schema(t["parameters"])}} for t in tools]
