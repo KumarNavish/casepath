@@ -166,6 +166,47 @@ class CoreContractTests(unittest.TestCase):
         self.assertEqual((outcome["status"], outcome["workflow"], outcome["routing"]["status"]), ("completed", None, "needs_facts"))
         self.assertEqual(outcome["routing"]["conflict"]["admitted"][0]["value"], "other")
 
+    def test_a_rerouted_fact_carries_the_readings_quotes_and_the_reroute_is_in_the_journal_and_the_result(self):
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}])
+        events = []
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(self.reroute_job(), model, core.DirectoryBlobs(blobs), on_event=events.append)
+        admitted = outcome["routing"]["rerouted"]["admitted"][0]
+        self.assertEqual((admitted["value"], {c["quote"] for c in admitted["citations"]}), ("loan", {VENT}))
+        self.assertEqual({c["quote"] for c in outcome["routing"]["facts"][0]["citations"]}, {VENT})
+        self.assertEqual(outcome["result"]["routing"]["rerouted"]["routed_to"]["id"], "example-defect")
+        self.assertTrue(any(e.get("routing") == "selected" and e.get("rerouted") for e in events))
+        # the hand-over after a contradiction is in the journal too
+        events = []
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "other", "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(self.reroute_job(), model, core.DirectoryBlobs(blobs), on_event=events.append)
+        self.assertEqual(outcome["result"]["routing"]["conflict"]["admitted"][0]["value"], "other")
+        self.assertTrue(any(e.get("routing") == "needs_facts" and e.get("conflict") for e in events))
+
+    def test_a_contradiction_does_not_take_a_fallback_workflow(self):
+        defect = Catalogue.load(FIXTURES).get("example-defect")
+        fallback = {**json.loads(json.dumps(defect)), "id": "general", "fallback": True, "applies_when": None}
+        model = ScriptedModel([], routing=[{"fact": "legal_area", "value": "tenancy_defect", "citations": [{"file": "f1", "quote": QUOTE}]}],
+                              first_reading=[{"fact": "legal_area", "status": "established", "value": "loan", "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare({**self.reroute_job(), "workflows": [defect, fallback]}, model, core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["workflow"], outcome["routing"]["status"]), (None, "needs_facts"))
+        self.assertEqual(outcome["routing"]["conflict"]["admitted"][0]["value"], "loan")
+
+    def test_a_chosen_workflow_stays_and_the_contradiction_is_a_warning(self):
+        model = ScriptedModel([], first_reading=[{"fact": "legal_area", "status": "established", "value": "loan",
+                                                  "citations": [{"file": "f1", "quote": VENT}]}])
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare({**self.reroute_job(), "case": {**self.reroute_job()["case"], "workflow_id": "example-defect"}},
+                                   model, core.DirectoryBlobs(blobs))
+        self.assertEqual(outcome["workflow"]["id"], "example-defect")
+        self.assertNotIn("rerouted", outcome["routing"])
+        warning = next(w for w in outcome["result"]["warnings"] if w["kind"] == "routing_contradicted")
+        self.assertEqual(warning["facts"][0]["value"], "loan")
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:

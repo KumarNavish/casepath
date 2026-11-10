@@ -71,3 +71,20 @@ class StopNoteTests(unittest.TestCase):
         text = text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="en"))
         self.assertIn("The summary stopped early; no reply draft was prepared.", text)
         self.assertNotIn("not checked", text.split("Notes on the preparation")[1].split("Where the case stands")[0])
+
+
+class RoutingNoteTests(unittest.TestCase):
+    def test_a_reroute_and_a_hand_over_are_in_the_report(self):
+        cite = [{"file": "f1", "quote": "Es geht um ein Darlehen."}]
+        conflict = {"routed_to": {"id": "tenancy", "version": 1}, "admitted": [{"fact": "legal_area", "value": "loan", "citations": cite}]}
+        for key, text_en in (("rerouted", "contradicted the first routing (tenancy); the case was routed again"),
+                             ("conflict", "contradict the routing (tenancy); a person chooses the process")):
+            state = {"run": {"result": {"facts": [], "documents": [], "warnings": [], "evaluation": {"documents": []},
+                                        "routing": {key: conflict}}}, "process": {"documents": []}}
+            en = text_of(report.build({"id": "case_00000001", "title": "x"}, state, [{"id": "f1", "name": "brief.pdf"}], lang="en"))
+            self.assertIn(text_en, en)
+            self.assertIn("legal_area = loan (admitted by the readings: «Es geht um ein Darlehen.» — brief.pdf)", en)
+            self.assertIn("Lesungen", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="de")))
+        state = {"run": {"result": {"facts": [], "documents": [], "evaluation": {"documents": []},
+                                    "warnings": [{"kind": "routing_contradicted", "agent": "source_checker", "facts": []}]}}, "process": {"documents": []}}
+        self.assertIn("contradict the chosen process", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="en")))

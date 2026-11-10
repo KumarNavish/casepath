@@ -473,6 +473,7 @@ def _record_fact(work, agent, args):
 def _routing_conflict(work, known, value, located):
     """Routing established a value and a later reading gives another: neither replaces the other; a person decides."""
     known.update(status="conflicting", verdict="not_checked", citations=known["citations"] + located, second_value=value,
+                 second_citations=located,
                  verdict_reason="Routing and a reading of the files give different values; a person decides.", reason_code="routing_conflict")
     work.emit("source_checker", "fact.conflicting", fact=known["fact"])
 
@@ -1033,6 +1034,7 @@ def confirm_facts(model, work, effort="medium"):
         if first is not None and first["status"] == "conflicting":
             if first.get("reason_code") == "routing_conflict" and status == "established" and same_reading(definition, first["second_value"], value):
                 first["readings_agree_on"] = value  # every reading gives one value against the routing: routing reconsiders it
+                first["readings_citations"] = (first.get("second_citations") or []) + located  # the readings' own quotes
             continue
         if status == "conflict":  # the further readings themselves differ: a person decides
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "conflicting", "value": first["value"] if first else None,
