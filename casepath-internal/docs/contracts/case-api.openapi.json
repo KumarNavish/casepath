@@ -4,7 +4,7 @@
    "Body_upload_api_cases__case_id__files_post": {
     "properties": {
      "file": {
-      "format": "binary",
+      "contentMediaType": "application/octet-stream",
       "title": "File",
       "type": "string"
      }
@@ -13,6 +13,33 @@
      "file"
     ],
     "title": "Body_upload_api_cases__case_id__files_post",
+    "type": "object"
+   },
+   "CutRequest": {
+    "properties": {
+     "file": {
+      "anyOf": [
+       {
+        "maxLength": 80,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "File"
+     },
+     "pages": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Pages",
+      "type": "string"
+     }
+    },
+    "required": [
+     "pages"
+    ],
+    "title": "CutRequest",
     "type": "object"
    },
    "EditRequest": {
@@ -64,7 +91,7 @@
       "type": "string"
      },
      "target": {
-      "pattern": "^(answer|(fact|document|summary|timeline|deadline|open_point|reply):[A-Za-z0-9_.-]{1,80})$",
+      "pattern": "^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point):[A-Za-z0-9_.-]{1,80})$",
       "title": "Target",
       "type": "string"
      },
@@ -73,7 +100,8 @@
        {
         "enum": [
          "correct",
-         "wrong"
+         "wrong",
+         "done"
         ],
         "type": "string"
        },
@@ -171,6 +199,13 @@
    },
    "ValidationError": {
     "properties": {
+     "ctx": {
+      "title": "Context",
+      "type": "object"
+     },
+     "input": {
+      "title": "Input"
+     },
      "loc": {
       "items": {
        "anyOf": [
@@ -370,6 +405,54 @@
      }
     },
     "summary": "Get Case"
+   }
+  },
+  "/api/cases/{case_id}/cut": {
+   "post": {
+    "description": "'Stand am': a new case holding only the chosen pages of the case's PDF, read text carried over, nothing read again.",
+    "operationId": "cut_case_api_cases__case_id__cut_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CutRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Cut Case"
    }
   },
   "/api/cases/{case_id}/edits": {
