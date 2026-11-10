@@ -110,6 +110,18 @@ class TeamTests(unittest.TestCase):
         self.assertFalse(any(e["kind"] == "delegate" and e["to"] == "claim_reader" and "did not accept" in e["instruction"]
                              for e in result["events"]))  # nothing to retry
 
+    def test_a_case_worker_edit_still_changes_what_a_locked_deciding_fact_requires(self):
+        from casepath.agents.team import CaseWork, confirm_facts
+        cite = [{"file": "f1", "quote": QUOTE}]
+        edit = {"id": "e1", "op": "set_required_when", "status": "active",
+                "args": {"document": "notice_letter", "required_when": {"fact": "landlord_notified", "is": False}}}
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE, edits=[edit])
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True,
+                                           "citations": work.located(cite)[0], "verdict": "accepted", "by": "claim_reader"}
+        confirm_facts(ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}]), work)
+        self.assertTrue(work.facts["landlord_notified"].get("agreed"))
+        self.assertNotIn("notice_letter", [d["document"] for d in work.evaluate()["documents"]])
+
     def test_after_the_two_readings_one_agent_cannot_change_a_deciding_fact(self):
         from casepath.agents.team import CaseWork, _record_fact, confirm_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)

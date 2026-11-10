@@ -491,8 +491,15 @@ def _record_document(work, agent, args):
             status = "unusable"
             codes.append({"code": "does_not_show", "items": lacking})
             note = (note + " " if note else "") + "Does not show: " + "; ".join(lacking) + "."
+    earlier = work.documents.get(args["document"])
+    if earlier is not None and earlier["status"] != status:
+        # A later record replaces an earlier one (the finder may correct itself, or record again after a rejection), but
+        # never silently: the change is an event and the row keeps what it replaced.
+        work.emit(agent, "document.changed", document=args["document"], before=earlier["status"], after=status)
     work.documents[args["document"]] = {"document": args["document"], "status": status, "files": args["files"],
                                         "citations": located, "note": note, "by": agent, "shows": shown, "note_codes": codes,
+                                        **({"replaces": {"status": earlier["status"], "by": earlier.get("by")}}
+                                           if earlier is not None and earlier["status"] != status else {}),
                                         "verdict": None if status != "missing" else "not_checked"}
     work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"],
               cite=located[0] if located else None)

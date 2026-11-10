@@ -115,6 +115,17 @@ class SufficiencyTests(unittest.TestCase):
             confirm_documents(model, work)
             self.assertEqual(work.documents["notice_letter"]["status"], expected, second)
 
+    def test_a_later_record_replaces_an_earlier_one_but_not_silently(self):
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        args = {"document": "notice_letter", "status": "present", "files": ["f1"], "citations": [{"file": "f1", "quote": LETTER}], "note": ""}
+        _record_document(work, "document_finder", args)
+        _record_document(work, "document_finder", {**args, "status": "mentioned_only", "files": ["f2"],
+                                                   "citations": [{"file": "f2", "quote": "Der Schimmel im Bad ist seit Januar da."}]})
+        row = work.documents["notice_letter"]
+        self.assertEqual((row["status"], row["replaces"]["status"]), ("missing", "present"))  # the later record holds, as a request
+        changed = [e for e in work.events if e["kind"] == "document.changed"]
+        self.assertEqual([(e["before"], e["after"]) for e in changed], [("present", "missing")])
+
     def test_needs_without_must_show_behave_as_before(self):
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         args = {"document": "notice_letter", "status": "present", "files": ["f1"], "citations": [{"file": "f1", "quote": LETTER}], "note": ""}
