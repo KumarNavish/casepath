@@ -368,10 +368,12 @@ def analyse(plans: dict, D_ten, D_theft, ledgers: dict, evolve: list, ablation: 
         agg = defaultdict(lambda: {"cost": 0.0, "calls": 0, "units": set()})
         for r in rows:
             tag = r.get("tag") or {}
-            if tag.get("case") not in fresh_cases or tag.get("exp") not in ("v2-tenancy", "v2-theft"):
+            if tag.get("case") not in fresh_cases or tag.get("exp") not in ("v2-tenancy", "v2-theft", "theft"):
                 continue
             design = str(tag.get("method", "")).split("-")[0]
-            a = agg[(tag["exp"][3:], design)]
+            if tag["exp"] == "theft":  # Study 1 methods reused unchanged: R, and CP (= CPv1) interpret/verify
+                design = {"CP": "CPv1"}.get(design, design)
+            a = agg[(tag["exp"].replace("v2-", ""), design)]
             a["cost"] += float(r.get("cost") or 0); a["calls"] += 1; a["units"].add((tag["case"], r.get("run")))
         for (exp, design), a in agg.items():
             cost[f"{exp}|{design}|{model}"] = {"cost_usd": a["cost"], "calls": a["calls"], "case_runs": len(a["units"]),
@@ -407,9 +409,24 @@ def main():
     import tenancy_fresh, theft_fresh
     ledgers = {m: [json.loads(l) for l in (RUNS / f"ledger_{m}.jsonl").read_text().splitlines()]
                for m in MODELS if (RUNS / f"ledger_{m}.jsonl").exists()}
-    evolve = [json.loads(Path(p).read_text()) for p in sorted(glob.glob(str(RUNS / "evolve_dryrun_theft_gpt-6-luna_fresh_train4_eval5,6,7*.json")))]
+    evolve = [json.loads(Path(p).read_text()) for p in sorted(
+        glob.glob(str(RUNS / "evolve_dryrun_theft_gpt-6-luna_fresh_train4_eval5,6,7*.json"))
+        + glob.glob(str(RUNS / "evolve_theft_gpt-6-luna_fresh_train4_eval567*.json")))]  # name the runner actually used
     abl_path = RUNS / "ablation_gpt-6-luna_fresh.json"
     ablation = json.loads(abl_path.read_text()) if abl_path.exists() else {}
+    # the ablation runner wrote one file per experiment in the plans format "<variant>|<case>|<run>": {"plan": ...}
+    VARIANT = {"CPv2p-nopres": "no_presumption", "CPv2p-kleene": "kleene", "CPv2p-2read": "two_readings",
+               "CPv2p-origpack": "original_pack", "CPv2p-origpack-full": "original_pack_full"}
+    for exp, fname in (("tenancy", "ablations_tenancy_gpt-6-luna_fresh_heldout.json"),
+                       ("theft", "ablations_theft_gpt-6-luna_fresh_heldout.json"),
+                       ("theft", "ablations_theft_origpack_gpt-6-luna_fresh_heldout.json")):
+        if (RUNS / fname).exists():
+            abl_path = RUNS / fname
+            for key, entry in json.loads((RUNS / fname).read_text()).items():
+                if key.startswith("_"):
+                    continue
+                variant, case_run = key.split("|", 1)
+                ablation.setdefault(exp, {}).setdefault(VARIANT.get(variant, variant), {})[case_run] = (entry or {}).get("plan")
     cp = present.get(("tenancy", "gpt-6-luna"), {}).get("CPv2p")
     if cp is not None and "no_presumption" not in ablation.get("tenancy", {}):
         raw = {}

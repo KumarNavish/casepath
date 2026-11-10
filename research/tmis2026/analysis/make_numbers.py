@@ -450,6 +450,8 @@ if s2:
     cst = s2.get("secondary", {}).get("cost", {})
     for key, v in cst.get("by_design", {}).items():
         exp, d, mod = key.split("|")
+        if d not in DES:  # evolution memory arm and helper calls are not designs of section 3
+            continue
         m(f"stCost{'Ten' if exp == 'tenancy' else 'Th'}{DES.get(d, d)}{MOD.get(mod, mod)}", f"{1000 * v['cost_per_case_run']:.2f}")
     for k in ("ratio_C", "ratio_D"):
         if cst.get(k) is not None:

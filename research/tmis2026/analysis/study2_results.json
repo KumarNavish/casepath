@@ -1,0 +1,1490 @@
+{
+ "tenancy": {
+  "CPv2p|gpt-6-luna": {
+   "claim_runs": 216,
+   "req_now": 1494,
+   "requested": 1449,
+   "held_req": 3,
+   "handed": 5,
+   "missed": 37,
+   "ref_held": 66,
+   "correct_hold": 64,
+   "premature": 2,
+   "silent_skip": 0,
+   "handed_held": 0,
+   "unnecessary": 6,
+   "spurious_hold": 11,
+   "handoffs": 1,
+   "strict_unsafe_per_claim": 0.23148148148148148,
+   "unnecessary_per_claim": 0.027777777777777776,
+   "missed_per_claim": 0.1712962962962963,
+   "handed_per_claim": 0.023148148148148147,
+   "premature_per_claim": 0.009259259259259259,
+   "silent_skip_per_claim": 0.0,
+   "requested_share": 0.9698795180722891,
+   "held_required_now_per_claim": 0.013888888888888888,
+   "spurious_holds_per_claim": 0.05092592592592592,
+   "correct_hold_share": 0.9696969696969697,
+   "open_fact_claims": {
+    "claim_runs": 54,
+    "req_now": 348,
+    "requested": 337,
+    "held_req": 1,
+    "handed": 0,
+    "missed": 10,
+    "ref_held": 66,
+    "correct_hold": 64,
+    "premature": 2,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 2,
+    "spurious_hold": 6,
+    "handoffs": 0,
+    "strict_unsafe_per_claim": 0.25925925925925924,
+    "unnecessary_per_claim": 0.037037037037037035,
+    "missed_per_claim": 0.18518518518518517,
+    "handed_per_claim": 0.0,
+    "premature_per_claim": 0.037037037037037035,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9683908045977011,
+    "held_required_now_per_claim": 0.018518518518518517,
+    "spurious_holds_per_claim": 0.1111111111111111,
+    "correct_hold_share": 0.9696969696969697
+   },
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.960108024691358
+  },
+  "B1v2p|gpt-6-luna": {
+   "claim_runs": 216,
+   "req_now": 1494,
+   "requested": 1426,
+   "held_req": 25,
+   "handed": 0,
+   "missed": 43,
+   "ref_held": 66,
+   "correct_hold": 66,
+   "premature": 0,
+   "silent_skip": 0,
+   "handed_held": 0,
+   "unnecessary": 0,
+   "spurious_hold": 3,
+   "handoffs": 0,
+   "strict_unsafe_per_claim": 0.19907407407407407,
+   "unnecessary_per_claim": 0.0,
+   "missed_per_claim": 0.19907407407407407,
+   "handed_per_claim": 0.0,
+   "premature_per_claim": 0.0,
+   "silent_skip_per_claim": 0.0,
+   "requested_share": 0.9544846050870147,
+   "held_required_now_per_claim": 0.11574074074074074,
+   "spurious_holds_per_claim": 0.013888888888888888,
+   "correct_hold_share": 1.0,
+   "open_fact_claims": {
+    "claim_runs": 54,
+    "req_now": 348,
+    "requested": 337,
+    "held_req": 1,
+    "handed": 0,
+    "missed": 10,
+    "ref_held": 66,
+    "correct_hold": 66,
+    "premature": 0,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 0,
+    "spurious_hold": 1,
+    "handoffs": 0,
+    "strict_unsafe_per_claim": 0.18518518518518517,
+    "unnecessary_per_claim": 0.0,
+    "missed_per_claim": 0.18518518518518517,
+    "handed_per_claim": 0.0,
+    "premature_per_claim": 0.0,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9683908045977011,
+    "held_required_now_per_claim": 0.018518518518518517,
+    "spurious_holds_per_claim": 0.018518518518518517,
+    "correct_hold_share": 1.0
+   },
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9481646825396824
+  },
+  "CPv1|gpt-6-luna": {
+   "claim_runs": 216,
+   "req_now": 1494,
+   "requested": 751,
+   "held_req": 716,
+   "handed": 23,
+   "missed": 4,
+   "ref_held": 66,
+   "correct_hold": 56,
+   "premature": 9,
+   "silent_skip": 0,
+   "handed_held": 1,
+   "unnecessary": 12,
+   "spurious_hold": 653,
+   "handoffs": 4,
+   "strict_unsafe_per_claim": 0.2222222222222222,
+   "unnecessary_per_claim": 0.05555555555555555,
+   "missed_per_claim": 0.018518518518518517,
+   "handed_per_claim": 0.10648148148148148,
+   "premature_per_claim": 0.041666666666666664,
+   "silent_skip_per_claim": 0.0,
+   "requested_share": 0.5026773761713521,
+   "held_required_now_per_claim": 3.314814814814815,
+   "spurious_holds_per_claim": 3.0231481481481484,
+   "correct_hold_share": 0.8484848484848485,
+   "open_fact_claims": {
+    "claim_runs": 54,
+    "req_now": 348,
+    "requested": 250,
+    "held_req": 91,
+    "handed": 6,
+    "missed": 1,
+    "ref_held": 66,
+    "correct_hold": 56,
+    "premature": 9,
+    "silent_skip": 0,
+    "handed_held": 1,
+    "unnecessary": 7,
+    "spurious_hold": 130,
+    "handoffs": 1,
+    "strict_unsafe_per_claim": 0.42592592592592593,
+    "unnecessary_per_claim": 0.12962962962962962,
+    "missed_per_claim": 0.018518518518518517,
+    "handed_per_claim": 0.1111111111111111,
+    "premature_per_claim": 0.16666666666666666,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.7183908045977011,
+    "held_required_now_per_claim": 1.6851851851851851,
+    "spurious_holds_per_claim": 2.4074074074074074,
+    "correct_hold_share": 0.8484848484848485
+   },
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9169422398589064
+  },
+  "CPv2p|gpt-6.1-terra": {
+   "claim_runs": 216,
+   "req_now": 1494,
+   "requested": 1464,
+   "held_req": 3,
+   "handed": 6,
+   "missed": 21,
+   "ref_held": 66,
+   "correct_hold": 62,
+   "premature": 3,
+   "silent_skip": 0,
+   "handed_held": 1,
+   "unnecessary": 9,
+   "spurious_hold": 15,
+   "handoffs": 1,
+   "strict_unsafe_per_claim": 0.18055555555555555,
+   "unnecessary_per_claim": 0.041666666666666664,
+   "missed_per_claim": 0.09722222222222222,
+   "handed_per_claim": 0.027777777777777776,
+   "premature_per_claim": 0.013888888888888888,
+   "silent_skip_per_claim": 0.0,
+   "requested_share": 0.9799196787148594,
+   "held_required_now_per_claim": 0.013888888888888888,
+   "spurious_holds_per_claim": 0.06944444444444445,
+   "correct_hold_share": 0.9393939393939394,
+   "open_fact_claims": {
+    "claim_runs": 54,
+    "req_now": 348,
+    "requested": 334,
+    "held_req": 3,
+    "handed": 6,
+    "missed": 5,
+    "ref_held": 66,
+    "correct_hold": 62,
+    "premature": 3,
+    "silent_skip": 0,
+    "handed_held": 1,
+    "unnecessary": 3,
+    "spurious_hold": 5,
+    "handoffs": 1,
+    "strict_unsafe_per_claim": 0.3148148148148148,
+    "unnecessary_per_claim": 0.05555555555555555,
+    "missed_per_claim": 0.09259259259259259,
+    "handed_per_claim": 0.1111111111111111,
+    "premature_per_claim": 0.05555555555555555,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9597701149425287,
+    "held_required_now_per_claim": 0.05555555555555555,
+    "spurious_holds_per_claim": 0.09259259259259259,
+    "correct_hold_share": 0.9393939393939394
+   },
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9818930041152263
+  },
+  "B1v2p|gpt-6.1-terra": {
+   "claim_runs": 216,
+   "req_now": 1494,
+   "requested": 1465,
+   "held_req": 0,
+   "handed": 0,
+   "missed": 29,
+   "ref_held": 66,
+   "correct_hold": 65,
+   "premature": 1,
+   "silent_skip": 0,
+   "handed_held": 0,
+   "unnecessary": 4,
+   "spurious_hold": 5,
+   "handoffs": 0,
+   "strict_unsafe_per_claim": 0.1574074074074074,
+   "unnecessary_per_claim": 0.018518518518518517,
+   "missed_per_claim": 0.13425925925925927,
+   "handed_per_claim": 0.0,
+   "premature_per_claim": 0.004629629629629629,
+   "silent_skip_per_claim": 0.0,
+   "requested_share": 0.9805890227576974,
+   "held_required_now_per_claim": 0.0,
+   "spurious_holds_per_claim": 0.023148148148148147,
+   "correct_hold_share": 0.9848484848484849,
+   "open_fact_claims": {
+    "claim_runs": 54,
+    "req_now": 348,
+    "requested": 341,
+    "held_req": 0,
+    "handed": 0,
+    "missed": 7,
+    "ref_held": 66,
+    "correct_hold": 65,
+    "premature": 1,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 3,
+    "spurious_hold": 1,
+    "handoffs": 0,
+    "strict_unsafe_per_claim": 0.2037037037037037,
+    "unnecessary_per_claim": 0.05555555555555555,
+    "missed_per_claim": 0.12962962962962962,
+    "handed_per_claim": 0.0,
+    "premature_per_claim": 0.018518518518518517,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9798850574712644,
+    "held_required_now_per_claim": 0.0,
+    "spurious_holds_per_claim": 0.018518518518518517,
+    "correct_hold_share": 0.9848484848484849
+   },
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.991115520282187
+  }
+ },
+ "theft": {
+  "Rv2p|gpt-6-luna": {
+   "pair_runs": 108,
+   "correct": 89,
+   "wrong": 176,
+   "missed": 43,
+   "errors_per_pair": 2.0277777777777777,
+   "wrong_per_pair": 1.6296296296296295,
+   "missed_per_pair": 0.39814814814814814,
+   "f1": 0.4483627204030226,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 1.4722222222222223,
+    "stable_rate": 0.1111111111111111
+   },
+   "errors_dedup_per_pair": 1.0092592592592593,
+   "errors_per_pair_all_pairings": 2.126543209876543,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.7704964451058202
+  },
+  "R|gpt-6-luna": {
+   "pair_runs": 108,
+   "correct": 93,
+   "wrong": 142,
+   "missed": 39,
+   "errors_per_pair": 1.6759259259259258,
+   "wrong_per_pair": 1.3148148148148149,
+   "missed_per_pair": 0.3611111111111111,
+   "f1": 0.5068119891008175,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 1.0555555555555556,
+    "stable_rate": 0.16666666666666666
+   },
+   "errors_dedup_per_pair": 0.8148148148148148,
+   "errors_per_pair_all_pairings": 1.6635802469135803,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.867209859006734
+  },
+  "CPv2p|gpt-6-luna": {
+   "pair_runs": 108,
+   "correct": 112,
+   "wrong": 116,
+   "missed": 20,
+   "errors_per_pair": 1.2592592592592593,
+   "wrong_per_pair": 1.0740740740740742,
+   "missed_per_pair": 0.18518518518518517,
+   "f1": 0.6222222222222222,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 0.7777777777777778,
+    "stable_rate": 0.5277777777777778
+   },
+   "errors_dedup_per_pair": 0.5833333333333334,
+   "errors_per_pair_all_pairings": 1.117283950617284,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9305699508824509
+  },
+  "CPv1|gpt-6-luna": {
+   "pair_runs": 108,
+   "correct": 105,
+   "wrong": 90,
+   "missed": 27,
+   "errors_per_pair": 1.0833333333333333,
+   "wrong_per_pair": 0.8333333333333334,
+   "missed_per_pair": 0.25,
+   "f1": 0.6422018348623854,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 0.6666666666666666,
+    "stable_rate": 0.5555555555555556
+   },
+   "errors_dedup_per_pair": 0.6203703703703703,
+   "errors_per_pair_all_pairings": 1.0401234567901234,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9423091665279165
+  },
+  "R|gpt-6.1-terra": {
+   "pair_runs": 108,
+   "correct": 104,
+   "wrong": 30,
+   "missed": 28,
+   "errors_per_pair": 0.5370370370370371,
+   "wrong_per_pair": 0.2777777777777778,
+   "missed_per_pair": 0.25925925925925924,
+   "f1": 0.7819548872180451,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 0.013888888888888888,
+    "stable_rate": 0.9861111111111112
+   },
+   "errors_dedup_per_pair": 0.5370370370370371,
+   "errors_per_pair_all_pairings": 0.5370370370370371,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9887152777777778
+  },
+  "Rv2p|gpt-6.1-terra": {
+   "pair_runs": 108,
+   "correct": 101,
+   "wrong": 147,
+   "missed": 31,
+   "errors_per_pair": 1.6481481481481481,
+   "wrong_per_pair": 1.3611111111111112,
+   "missed_per_pair": 0.28703703703703703,
+   "f1": 0.5315789473684212,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 1.2222222222222223,
+    "stable_rate": 0.2916666666666667
+   },
+   "errors_dedup_per_pair": 0.6851851851851852,
+   "errors_per_pair_all_pairings": 1.623456790123457,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9185570650414401
+  },
+  "CPv2p|gpt-6.1-terra": {
+   "pair_runs": 108,
+   "correct": 97,
+   "wrong": 91,
+   "missed": 35,
+   "errors_per_pair": 1.1666666666666667,
+   "wrong_per_pair": 0.8425925925925926,
+   "missed_per_pair": 0.32407407407407407,
+   "f1": 0.6062500000000001,
+   "unresolved": {
+    "pair_runs": 72,
+    "premature_rate": 0.0,
+    "other_changes_per_pair": 0.7083333333333334,
+    "stable_rate": 0.5277777777777778
+   },
+   "errors_dedup_per_pair": 0.7222222222222222,
+   "errors_per_pair_all_pairings": 1.1604938271604939,
+   "failed_outputs": 0,
+   "test_retest_jaccard": 0.9541875659063159
+  }
+ },
+ "contrasts": {
+  "A": {
+   "a_value": 1.2592592592592593,
+   "b_value": 2.0277777777777777,
+   "diff": -0.7685185185185186,
+   "diff_ci": [
+    -1.1296296296296295,
+    -0.35185185185185186
+   ],
+   "clusters": 9,
+   "nonzero_clusters": 9,
+   "p_signflip": 0.01953125,
+   "min_p_signflip": 0.00390625,
+   "min_p_signflip_given_nonzero": 0.00390625,
+   "higher_is_better": false,
+   "favours": "a",
+   "kind": "theft",
+   "a": [
+    "CPv2p",
+    "gpt-6-luna"
+   ],
+   "b": [
+    "Rv2p",
+    "gpt-6-luna"
+   ],
+   "metric": "wrong+missed per pair",
+   "p_primary": 0.01953125,
+   "test": "two-sided exact sign-flip",
+   "p_holm": 0.078125
+  },
+  "B": {
+   "a_value": 0.2314814814814815,
+   "b_value": 0.19907407407407407,
+   "diff": 0.032407407407407406,
+   "diff_ci": [
+    -0.08333333333333334,
+    0.1435185185185185
+   ],
+   "clusters": 18,
+   "nonzero_clusters": 12,
+   "p_signflip": 0.64794921875,
+   "min_p_signflip": 7.62939453125e-06,
+   "min_p_signflip_given_nonzero": 0.00048828125,
+   "higher_is_better": false,
+   "favours": "b",
+   "kind": "tenancy",
+   "a": [
+    "CPv2p",
+    "gpt-6-luna"
+   ],
+   "b": [
+    "B1v2p",
+    "gpt-6-luna"
+   ],
+   "metric": "strict unsafe per claim",
+   "p_primary": 0.64794921875,
+   "test": "two-sided exact sign-flip",
+   "p_holm": 1.0
+  },
+  "C": {
+   "a_value": 1.2592592592592593,
+   "b_value": 0.537037037037037,
+   "diff": 0.7222222222222222,
+   "diff_ci": [
+    0.45370370370370366,
+    0.9814814814814815
+   ],
+   "clusters": 9,
+   "nonzero_clusters": 9,
+   "p_signflip": 0.0078125,
+   "min_p_signflip": 0.00390625,
+   "min_p_signflip_given_nonzero": 0.00390625,
+   "higher_is_better": false,
+   "favours": "b",
+   "margin": 0.25,
+   "p_noninferiority": 0.9998,
+   "min_p_noninferiority": 0.0001,
+   "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+   "kind": "theft",
+   "a": [
+    "CPv2p",
+    "gpt-6-luna"
+   ],
+   "b": [
+    "R",
+    "gpt-6.1-terra"
+   ],
+   "metric": "wrong+missed per pair",
+   "p_primary": 0.9998,
+   "test": "non-inferiority (paired cluster bootstrap)",
+   "p_holm": 1.0
+  },
+  "D": {
+   "a_value": 0.2314814814814815,
+   "b_value": 0.15740740740740738,
+   "diff": 0.07407407407407407,
+   "diff_ci": [
+    -0.06944444444444445,
+    0.20833333333333334
+   ],
+   "clusters": 18,
+   "nonzero_clusters": 13,
+   "p_signflip": 0.348876953125,
+   "min_p_signflip": 7.62939453125e-06,
+   "min_p_signflip_given_nonzero": 0.000244140625,
+   "higher_is_better": false,
+   "favours": "b",
+   "margin": 0.1,
+   "p_noninferiority": 0.3612,
+   "min_p_noninferiority": 0.0001,
+   "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+   "kind": "tenancy",
+   "a": [
+    "CPv2p",
+    "gpt-6-luna"
+   ],
+   "b": [
+    "B1v2p",
+    "gpt-6.1-terra"
+   ],
+   "metric": "strict unsafe per claim",
+   "p_primary": 0.3612,
+   "test": "non-inferiority (paired cluster bootstrap)",
+   "p_holm": 1.0
+  }
+ },
+ "secondary": {
+  "contrasts": {
+   "A_terra": {
+    "a_value": 1.1666666666666667,
+    "b_value": 1.6481481481481481,
+    "diff": -0.48148148148148145,
+    "diff_ci": [
+     -0.8425925925925927,
+     -0.06481481481481483
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.07421875,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "a",
+    "kind": "theft",
+    "a": [
+     "CPv2p",
+     "gpt-6.1-terra"
+    ],
+    "b": [
+     "Rv2p",
+     "gpt-6.1-terra"
+    ],
+    "metric": "errors"
+   },
+   "B_terra": {
+    "a_value": 0.18055555555555555,
+    "b_value": 0.15740740740740738,
+    "diff": 0.023148148148148154,
+    "diff_ci": [
+     -0.027777777777777766,
+     0.0787037037037037
+    ],
+    "clusters": 18,
+    "nonzero_clusters": 7,
+    "p_signflip": 0.515625,
+    "min_p_signflip": 7.62939453125e-06,
+    "min_p_signflip_given_nonzero": 0.015625,
+    "higher_is_better": false,
+    "favours": "b",
+    "kind": "tenancy",
+    "a": [
+     "CPv2p",
+     "gpt-6.1-terra"
+    ],
+    "b": [
+     "B1v2p",
+     "gpt-6.1-terra"
+    ],
+    "metric": "strict_unsafe"
+   },
+   "theft_CPv2p_terra_vs_R_terra": {
+    "a_value": 1.1666666666666667,
+    "b_value": 0.537037037037037,
+    "diff": 0.6296296296296297,
+    "diff_ci": [
+     0.25,
+     1.0092592592592593
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.015625,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "b",
+    "kind": "theft",
+    "a": [
+     "CPv2p",
+     "gpt-6.1-terra"
+    ],
+    "b": [
+     "R",
+     "gpt-6.1-terra"
+    ],
+    "metric": "errors"
+   },
+   "A_original_pack_luna": {
+    "a_value": 1.2592592592592593,
+    "b_value": 1.6759259259259258,
+    "diff": -0.4166666666666667,
+    "diff_ci": [
+     -0.8888888888888888,
+     0.06481481481481492
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.171875,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "a",
+    "kind": "theft",
+    "a": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "R",
+     "gpt-6-luna"
+    ],
+    "metric": "errors"
+   },
+   "requested_share_gpt-6-luna": {
+    "a_value": 0.9666806344169052,
+    "b_value": 0.9512739579284433,
+    "diff": 0.015406676488461982,
+    "diff_ci": [
+     -0.011870566736666675,
+     0.04620416262928339
+    ],
+    "clusters": 18,
+    "nonzero_clusters": 12,
+    "p_signflip": 0.345703125,
+    "min_p_signflip": 7.62939453125e-06,
+    "min_p_signflip_given_nonzero": 0.00048828125,
+    "higher_is_better": true,
+    "favours": "a",
+    "margin": 0.05,
+    "p_noninferiority": 0.0,
+    "min_p_noninferiority": 0.0001,
+    "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+    "kind": "tenancy",
+    "a": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "B1v2p",
+     "gpt-6-luna"
+    ],
+    "metric": "requested_share"
+   },
+   "requested_share_gpt-6.1-terra": {
+    "a_value": 0.9788925486918504,
+    "b_value": 0.9792077497039252,
+    "diff": -0.0003152010120747913,
+    "diff_ci": [
+     -0.009264327271990102,
+     0.0075646039414155415
+    ],
+    "clusters": 18,
+    "nonzero_clusters": 5,
+    "p_signflip": 0.875,
+    "min_p_signflip": 7.62939453125e-06,
+    "min_p_signflip_given_nonzero": 0.0625,
+    "higher_is_better": true,
+    "favours": "b",
+    "margin": 0.05,
+    "p_noninferiority": 0.0,
+    "min_p_noninferiority": 0.0001,
+    "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+    "kind": "tenancy",
+    "a": [
+     "CPv2p",
+     "gpt-6.1-terra"
+    ],
+    "b": [
+     "B1v2p",
+     "gpt-6.1-terra"
+    ],
+    "metric": "requested_share"
+   },
+   "ablation_tenancy_CPv1_vs_CPv2p_luna": {
+    "a_value": 0.2222222222222222,
+    "b_value": 0.2314814814814815,
+    "diff": -0.009259259259259248,
+    "diff_ci": [
+     -0.11574074074074073,
+     0.09722222222222224
+    ],
+    "clusters": 18,
+    "nonzero_clusters": 14,
+    "p_signflip": 0.9351806640625,
+    "min_p_signflip": 7.62939453125e-06,
+    "min_p_signflip_given_nonzero": 0.0001220703125,
+    "higher_is_better": false,
+    "favours": "a",
+    "kind": "tenancy",
+    "a": [
+     "CPv1",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "metric": "strict_unsafe"
+   },
+   "ablation_theft_CPv1_vs_CPv2p_luna": {
+    "a_value": 1.0833333333333333,
+    "b_value": 1.2592592592592593,
+    "diff": -0.17592592592592593,
+    "diff_ci": [
+     -0.4629629629629629,
+     0.1574074074074074
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.328125,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "a",
+    "kind": "theft",
+    "a": [
+     "CPv1",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "metric": "errors"
+   },
+   "A_dedup": {
+    "a_value": 0.5833333333333334,
+    "b_value": 1.009259259259259,
+    "diff": -0.4259259259259258,
+    "diff_ci": [
+     -0.7993058311287478,
+     -0.005768298059965232
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.078125,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "a",
+    "kind": "theft",
+    "a": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "Rv2p",
+     "gpt-6-luna"
+    ],
+    "metric": "errors_dedup"
+   },
+   "C_dedup": {
+    "a_value": 0.5833333333333334,
+    "b_value": 0.537037037037037,
+    "diff": 0.046296296296296315,
+    "diff_ci": [
+     -0.24592151675485013,
+     0.31687389770723096
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.76171875,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "b",
+    "kind": "theft",
+    "a": [
+     "CPv2p",
+     "gpt-6-luna"
+    ],
+    "b": [
+     "R",
+     "gpt-6.1-terra"
+    ],
+    "metric": "errors_dedup"
+   }
+  },
+  "ablation": {
+   "tenancy|two_readings": {
+    "claim_runs": 216,
+    "req_now": 1494,
+    "requested": 1444,
+    "held_req": 8,
+    "handed": 5,
+    "missed": 37,
+    "ref_held": 66,
+    "correct_hold": 65,
+    "premature": 1,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 4,
+    "spurious_hold": 14,
+    "handoffs": 1,
+    "strict_unsafe_per_claim": 0.2175925925925926,
+    "unnecessary_per_claim": 0.018518518518518517,
+    "missed_per_claim": 0.1712962962962963,
+    "handed_per_claim": 0.023148148148148147,
+    "premature_per_claim": 0.004629629629629629,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9665327978580991,
+    "held_required_now_per_claim": 0.037037037037037035,
+    "spurious_holds_per_claim": 0.06481481481481481,
+    "correct_hold_share": 0.9848484848484849,
+    "vs_CPv2p": {
+     "a_value": 0.2175925925925926,
+     "b_value": 0.2314814814814815,
+     "diff": -0.013888888888888888,
+     "diff_ci": [
+      -0.027777777777777776,
+      0.0
+     ],
+     "clusters": 18,
+     "nonzero_clusters": 3,
+     "p_signflip": 0.25,
+     "min_p_signflip": 7.62939453125e-06,
+     "min_p_signflip_given_nonzero": 0.25,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   },
+   "tenancy|kleene": {
+    "claim_runs": 216,
+    "req_now": 1494,
+    "requested": 1416,
+    "held_req": 40,
+    "handed": 5,
+    "missed": 33,
+    "ref_held": 66,
+    "correct_hold": 64,
+    "premature": 2,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 6,
+    "spurious_hold": 22,
+    "handoffs": 1,
+    "strict_unsafe_per_claim": 0.21296296296296297,
+    "unnecessary_per_claim": 0.027777777777777776,
+    "missed_per_claim": 0.1527777777777778,
+    "handed_per_claim": 0.023148148148148147,
+    "premature_per_claim": 0.009259259259259259,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.9477911646586346,
+    "held_required_now_per_claim": 0.18518518518518517,
+    "spurious_holds_per_claim": 0.10185185185185185,
+    "correct_hold_share": 0.9696969696969697,
+    "vs_CPv2p": {
+     "a_value": 0.21296296296296297,
+     "b_value": 0.2314814814814815,
+     "diff": -0.018518518518518517,
+     "diff_ci": [
+      -0.04166666666666666,
+      0.0
+     ],
+     "clusters": 18,
+     "nonzero_clusters": 3,
+     "p_signflip": 0.25,
+     "min_p_signflip": 7.62939453125e-06,
+     "min_p_signflip_given_nonzero": 0.25,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   },
+   "tenancy|no_presumption": {
+    "claim_runs": 216,
+    "req_now": 1494,
+    "requested": 1271,
+    "held_req": 182,
+    "handed": 5,
+    "missed": 36,
+    "ref_held": 66,
+    "correct_hold": 64,
+    "premature": 2,
+    "silent_skip": 0,
+    "handed_held": 0,
+    "unnecessary": 4,
+    "spurious_hold": 515,
+    "handoffs": 1,
+    "strict_unsafe_per_claim": 0.2175925925925926,
+    "unnecessary_per_claim": 0.018518518518518517,
+    "missed_per_claim": 0.16666666666666666,
+    "handed_per_claim": 0.023148148148148147,
+    "premature_per_claim": 0.009259259259259259,
+    "silent_skip_per_claim": 0.0,
+    "requested_share": 0.8507362784471219,
+    "held_required_now_per_claim": 0.8425925925925926,
+    "spurious_holds_per_claim": 2.384259259259259,
+    "correct_hold_share": 0.9696969696969697,
+    "vs_CPv2p": {
+     "a_value": 0.2175925925925926,
+     "b_value": 0.2314814814814815,
+     "diff": -0.013888888888888888,
+     "diff_ci": [
+      -0.03703703703703704,
+      0.0
+     ],
+     "clusters": 18,
+     "nonzero_clusters": 2,
+     "p_signflip": 0.5,
+     "min_p_signflip": 7.62939453125e-06,
+     "min_p_signflip_given_nonzero": 0.5,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   },
+   "theft|two_readings": {
+    "pair_runs": 108,
+    "correct": 110,
+    "wrong": 56,
+    "missed": 22,
+    "errors_per_pair": 0.7222222222222222,
+    "wrong_per_pair": 0.5185185185185185,
+    "missed_per_pair": 0.2037037037037037,
+    "f1": 0.7382550335570471,
+    "unresolved": {
+     "pair_runs": 72,
+     "premature_rate": 0.0,
+     "other_changes_per_pair": 0.2638888888888889,
+     "stable_rate": 0.8055555555555556
+    },
+    "vs_CPv2p": {
+     "a_value": 0.7222222222222222,
+     "b_value": 1.2592592592592593,
+     "diff": -0.537037037037037,
+     "diff_ci": [
+      -0.7222222222222221,
+      -0.3703703703703704
+     ],
+     "clusters": 9,
+     "nonzero_clusters": 9,
+     "p_signflip": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   },
+   "theft|kleene": {
+    "pair_runs": 108,
+    "correct": 112,
+    "wrong": 116,
+    "missed": 20,
+    "errors_per_pair": 1.2592592592592593,
+    "wrong_per_pair": 1.0740740740740742,
+    "missed_per_pair": 0.18518518518518517,
+    "f1": 0.6222222222222222,
+    "unresolved": {
+     "pair_runs": 72,
+     "premature_rate": 0.0,
+     "other_changes_per_pair": 0.7777777777777778,
+     "stable_rate": 0.5277777777777778
+    },
+    "vs_CPv2p": {
+     "a_value": 1.2592592592592593,
+     "b_value": 1.2592592592592593,
+     "diff": 0.0,
+     "diff_ci": [
+      0.0,
+      0.0
+     ],
+     "clusters": 9,
+     "nonzero_clusters": 0,
+     "p_signflip": 1.0,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 1.0,
+     "higher_is_better": false,
+     "favours": "none"
+    }
+   },
+   "theft|original_pack": {
+    "pair_runs": 108,
+    "correct": 112,
+    "wrong": 106,
+    "missed": 20,
+    "errors_per_pair": 1.1666666666666667,
+    "wrong_per_pair": 0.9814814814814815,
+    "missed_per_pair": 0.18518518518518517,
+    "f1": 0.64,
+    "unresolved": {
+     "pair_runs": 72,
+     "premature_rate": 0.0,
+     "other_changes_per_pair": 0.625,
+     "stable_rate": 0.6666666666666666
+    },
+    "vs_CPv2p": {
+     "a_value": 1.1666666666666667,
+     "b_value": 1.2592592592592593,
+     "diff": -0.09259259259259257,
+     "diff_ci": [
+      -0.2592592592592593,
+      0.15740740740740738
+     ],
+     "clusters": 9,
+     "nonzero_clusters": 8,
+     "p_signflip": 0.5625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.0078125,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   },
+   "theft|original_pack_full": {
+    "pair_runs": 108,
+    "correct": 112,
+    "wrong": 106,
+    "missed": 20,
+    "errors_per_pair": 1.1666666666666667,
+    "wrong_per_pair": 0.9814814814814815,
+    "missed_per_pair": 0.18518518518518517,
+    "f1": 0.64,
+    "unresolved": {
+     "pair_runs": 72,
+     "premature_rate": 0.0,
+     "other_changes_per_pair": 0.625,
+     "stable_rate": 0.6666666666666666
+    },
+    "vs_CPv2p": {
+     "a_value": 1.1666666666666667,
+     "b_value": 1.2592592592592593,
+     "diff": -0.09259259259259257,
+     "diff_ci": [
+      -0.25925925925925924,
+      0.16666666666666666
+     ],
+     "clusters": 9,
+     "nonzero_clusters": 8,
+     "p_signflip": 0.5625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.0078125,
+     "higher_is_better": false,
+     "favours": "a"
+    }
+   }
+  },
+  "cost": {
+   "by_design": {
+    "tenancy|CPv2p|gpt-6-luna": {
+     "cost_usd": 0.10087250999999993,
+     "calls": 216,
+     "case_runs": 216,
+     "cost_per_case_run": 0.0004670023611111108
+    },
+    "tenancy|CPv1|gpt-6-luna": {
+     "cost_usd": 0.18902468500000005,
+     "calls": 432,
+     "case_runs": 216,
+     "cost_per_case_run": 0.0008751142824074077
+    },
+    "tenancy|B1v2p|gpt-6-luna": {
+     "cost_usd": 0.14266038499999992,
+     "calls": 216,
+     "case_runs": 216,
+     "cost_per_case_run": 0.00066046474537037
+    },
+    "theft|Rv2p|gpt-6-luna": {
+     "cost_usd": 0.122666165,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.0006388862760416666
+    },
+    "theft|R|gpt-6-luna": {
+     "cost_usd": 0.14276888999999995,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.0007435879687499998
+    },
+    "theft|CPv1|gpt-6-luna": {
+     "cost_usd": 0.37478308500000024,
+     "calls": 384,
+     "case_runs": 192,
+     "cost_per_case_run": 0.0019519952343750012
+    },
+    "theft|CPv2p|gpt-6-luna": {
+     "cost_usd": 0.2384697500000001,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.0012420299479166672
+    },
+    "theft|Rv2p+mem|gpt-6-luna": {
+     "cost_usd": 0.057493215000000014,
+     "calls": 90,
+     "case_runs": 90,
+     "cost_per_case_run": 0.0006388135000000002
+    },
+    "theft|origpack|gpt-6-luna": {
+     "cost_usd": 0.0128815,
+     "calls": 64,
+     "case_runs": 64,
+     "cost_per_case_run": 0.0002012734375
+    },
+    "tenancy|CPv2p|gpt-6.1-terra": {
+     "cost_usd": 0.7623692000000004,
+     "calls": 216,
+     "case_runs": 216,
+     "cost_per_case_run": 0.003529487037037039
+    },
+    "tenancy|B1v2p|gpt-6.1-terra": {
+     "cost_usd": 1.2846968999999995,
+     "calls": 216,
+     "case_runs": 216,
+     "cost_per_case_run": 0.005947670833333331
+    },
+    "theft|R|gpt-6.1-terra": {
+     "cost_usd": 0.7379878000000005,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.003843686458333336
+    },
+    "theft|Rv2p|gpt-6.1-terra": {
+     "cost_usd": 0.7427628,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.00386855625
+    },
+    "theft|CPv2p|gpt-6.1-terra": {
+     "cost_usd": 2.0139564,
+     "calls": 192,
+     "case_runs": 192,
+     "cost_per_case_run": 0.01048935625
+    }
+   },
+   "ratio_C": 0.32313508434692273,
+   "ratio_D": 0.07851852837817229
+  },
+  "evolution": {
+   "runs": 1,
+   "arms": {
+    "CP_after_V5": {
+     "pair_runs": 81,
+     "errors_per_pair": 1.1728395061728396
+    },
+    "CP_before": {
+     "pair_runs": 81,
+     "errors_per_pair": 1.2839506172839505
+    },
+    "R_after_memory": {
+     "pair_runs": 81,
+     "errors_per_pair": 1.4320987654320987
+    },
+    "R_before": {
+     "pair_runs": 81,
+     "errors_per_pair": 2.0617283950617282
+    }
+   },
+   "after_contrast": {
+    "a_value": 1.1728395061728394,
+    "b_value": 1.432098765432099,
+    "diff": -0.25925925925925924,
+    "diff_ci": [
+     -0.6296296296296297,
+     0.18518518518518523
+    ],
+    "clusters": 9,
+    "nonzero_clusters": 9,
+    "p_signflip": 0.296875,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "higher_is_better": false,
+    "favours": "a"
+   },
+   "repairs": [
+    [
+     {
+      "errors": {
+       "missed": [],
+       "wrong": []
+      },
+      "pair_id": "s4-on-PR_scheduled_valuable_1000"
+     },
+     {
+      "errors": {
+       "missed": [],
+       "wrong": []
+      },
+      "pair_id": "s4-on-PR_bicycle_claimed"
+     },
+     {
+      "applied": [
+       {
+        "capability_id": "overlay_rule_084.f01.c01",
+        "document_type": "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+        "evidence_quote": "Verm\u00f6genssch\u00e4den aufgrund von missbr\u00e4uchlicher Nutzung von SIM-Karten, sofern sie nicht in der Zeit zwischen dem Diebstahl und der Meldung bei der CSS erfolgen.",
+        "explanation": "The cited passage states a condition for SIM-card misuse losses, but does not require a bank statement, police report, or equivalent document. The second route item is therefore unsupported by this source.",
+        "fact_id": "",
+        "op": "drop_document",
+        "proposition_id": "",
+        "regression_before_after": [
+         0,
+         0
+        ],
+        "route_index": 0,
+        "rule_id": "overlay_rule_084"
+       }
+      ],
+      "errors": {
+       "missed": [],
+       "wrong": [
+        "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft"
+       ]
+      },
+      "pair_id": "s4-on-PR_sim_card_stolen",
+      "proposal": {
+       "diagnosis": "rule_error",
+       "operations": [
+        {
+         "capability_id": "overlay_rule_084.f01.c01",
+         "document_type": "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+         "evidence_quote": "Verm\u00f6genssch\u00e4den aufgrund von missbr\u00e4uchlicher Nutzung von SIM-Karten, sofern sie nicht in der Zeit zwischen dem Diebstahl und der Meldung bei der CSS erfolgen.",
+         "explanation": "The cited passage states a condition for SIM-card misuse losses, but does not require a bank statement, police report, or equivalent document. The second route item is therefore unsupported by this source.",
+         "fact_id": "",
+         "op": "drop_document",
+         "proposition_id": "",
+         "route_index": 0,
+         "rule_id": "overlay_rule_084"
+        }
+       ]
+      },
+      "proposal_error": null,
+      "rejected": [],
+      "trace": [
+       {
+        "atom": "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+        "error": "wrong change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_084.f01.c01",
+          "guard": "overlay_guard_084",
+          "rule": "overlay_rule_084",
+          "verdict_off": "false",
+          "verdict_variant": "true"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       }
+      ]
+     },
+     {
+      "applied": [],
+      "errors": {
+       "missed": [
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+       ],
+       "wrong": []
+      },
+      "pair_id": "s4-on-PR_third_party_causer",
+      "proposal": {
+       "diagnosis": "judgment_error",
+       "operations": []
+      },
+      "proposal_error": null,
+      "rejected": [],
+      "trace": [
+       {
+        "atom": "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "error": "missed change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_010.f03.c01",
+          "guard": null,
+          "rule": "overlay_rule_010",
+          "verdict_off": "true",
+          "verdict_variant": "true"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       },
+       {
+        "atom": "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+        "error": "missed change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_042.f01.c01",
+          "guard": "overlay_guard_042",
+          "rule": "overlay_rule_042",
+          "verdict_off": "unresolved",
+          "verdict_variant": "unresolved"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       }
+      ]
+     },
+     {
+      "applied": [],
+      "errors": {
+       "missed": [],
+       "wrong": [
+        "-Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+       ]
+      },
+      "pair_id": "s4-on-PR_expert_procedure_requested",
+      "proposal": {
+       "diagnosis": "rule_error",
+       "operations": [
+        {
+         "capability_id": "overlay_rule_001.f01.c02",
+         "document_type": "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+         "evidence_quote": "den Versicherer sofort zu benachrichtigen;",
+         "explanation": "The cited passage requires notifying the insurer promptly but does not require written notice or a particular form of proof.",
+         "fact_id": "",
+         "op": "drop_document",
+         "proposition_id": "",
+         "route_index": 0,
+         "rule_id": "overlay_rule_001"
+        }
+       ]
+      },
+      "proposal_error": null,
+      "rejected": [
+       {
+        "capability_id": "overlay_rule_001.f01.c02",
+        "document_type": "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+        "evidence_quote": "den Versicherer sofort zu benachrichtigen;",
+        "explanation": "The cited passage requires notifying the insurer promptly but does not require written notice or a particular form of proof.",
+        "fact_id": "",
+        "op": "drop_document",
+        "proposition_id": "",
+        "reason": "dropping the only document of the only route empties the requirement",
+        "route_index": 0,
+        "rule_id": "overlay_rule_001"
+       }
+      ],
+      "trace": [
+       {
+        "atom": "-Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+        "error": "wrong change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_001.f01.c02",
+          "guard": "overlay_guard_001",
+          "rule": "overlay_rule_001",
+          "verdict_off": "true",
+          "verdict_variant": "unresolved"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       }
+      ]
+     },
+     {
+      "applied": [],
+      "errors": {
+       "missed": [],
+       "wrong": [
+        "+Insurer's consent to alteration of the damaged items before the loss is determined",
+        "+Police consent to the removal or alteration of the Tatspuren"
+       ]
+      },
+      "pair_id": "s4-on-PR_repair_over_500",
+      "proposal": {
+       "diagnosis": "judgment_error",
+       "operations": []
+      },
+      "proposal_error": null,
+      "rejected": [],
+      "trace": [
+       {
+        "atom": "+Insurer's consent to alteration of the damaged items before the loss is determined",
+        "error": "wrong change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_003.f02.c01",
+          "guard": "overlay_guard_003",
+          "rule": "overlay_rule_003",
+          "verdict_off": "unresolved",
+          "verdict_variant": "true"
+         },
+         {
+          "capability": "resolver.overlay_rule_003",
+          "confirms": true,
+          "guard": "overlay_guard_003",
+          "rule": "overlay_rule_003",
+          "verdict_off": "unresolved",
+          "verdict_variant": "true"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       },
+       {
+        "atom": "+Police consent to the removal or alteration of the Tatspuren",
+        "error": "wrong change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_003.f01.c01",
+          "guard": "overlay_guard_003",
+          "rule": "overlay_rule_003",
+          "verdict_off": "unresolved",
+          "verdict_variant": "true"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       }
+      ]
+     },
+     {
+      "applied": [],
+      "errors": {
+       "missed": [],
+       "wrong": [
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+       ]
+      },
+      "pair_id": "s4-on-PR_nachfrist_set",
+      "proposal": {
+       "diagnosis": "judgment_error",
+       "operations": []
+      },
+      "proposal_error": null,
+      "rejected": [],
+      "trace": [
+       {
+        "atom": "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+        "error": "wrong change",
+        "produced_by": [
+         {
+          "capability": "overlay_rule_042.f01.c01",
+          "guard": "overlay_guard_042",
+          "rule": "overlay_rule_042",
+          "verdict_off": "unresolved",
+          "verdict_variant": "true"
+         }
+        ],
+        "quarantined_rules_naming_it": []
+       }
+      ]
+     },
+     {
+      "errors": {
+       "missed": [],
+       "wrong": []
+      },
+      "pair_id": "s4-on-PR_goods_recovered"
+     },
+     {
+      "errors": {
+       "missed": [],
+       "wrong": []
+      },
+      "pair_id": "s4-on-PR_declined"
+     }
+    ]
+   ]
+  }
+ },
+ "inputs": {
+  "plans": [
+   "tenancy|gpt-6-luna",
+   "tenancy|gpt-6.1-terra",
+   "theft|gpt-6-luna",
+   "theft|gpt-6.1-terra"
+  ],
+  "evolution_runs": 1,
+  "ablation_file": true
+ }
+}
