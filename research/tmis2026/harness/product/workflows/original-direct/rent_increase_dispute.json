@@ -1,0 +1,381 @@
+{
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "rent_increase_dispute"
+ },
+ "conversion": {
+  "layout": "direct",
+  "parallel_splits_serialised": []
+ },
+ "documents": [
+  {
+   "id": "lease_contract",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#lease_contract"
+   ],
+   "title": "Lease contract",
+   "why": "'Lease contract' is a mandatory evidence item for process step(s) ri_form."
+  },
+  {
+   "id": "rent_increase_notice",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#rent_increase_notice"
+   ],
+   "title": "Rent increase notice",
+   "why": "'Rent increase notice' is a mandatory evidence item for process step(s) ri_form."
+  },
+  {
+   "id": "proof_of_receipt",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#proof_of_receipt"
+   ],
+   "title": "Proof of receipt",
+   "why": "'Proof of receipt' is a mandatory evidence item for process step(s) ri_deadline."
+  },
+  {
+   "id": "current_rent_evidence",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#current_rent_evidence"
+   ],
+   "title": "Current rent evidence",
+   "why": "'Current rent evidence' is a mandatory evidence item for process step(s) ri_evidence."
+  },
+  {
+   "id": "prior_rent_adjustment",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#prior_rent_adjustment"
+   ],
+   "title": "Prior rent adjustment",
+   "why": "'Prior rent adjustment' is a mandatory evidence item for process step(s) ri_evidence."
+  },
+  {
+   "id": "stated_calculation",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#stated_calculation"
+   ],
+   "title": "Stated reasons and calculation",
+   "why": "'Stated reasons and calculation' is a mandatory evidence item for process step(s) ri_reason."
+  },
+  {
+   "id": "reference_rate_basis",
+   "required_when": {
+    "fact": "reference_rate",
+    "is": true
+   },
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#reference_rate_basis"
+   ],
+   "title": "Reference-rate basis",
+   "why": "'Reference-rate basis' is a conditional evidence item when scenario flag 'reference_rate' is active for process step(s) ri_reference."
+  },
+  {
+   "id": "renovation_cost_breakdown",
+   "required_when": {
+    "fact": "renovation",
+    "is": true
+   },
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#renovation_cost_breakdown"
+   ],
+   "title": "Renovation cost breakdown",
+   "why": "'Renovation cost breakdown' is a conditional evidence item when scenario flag 'renovation' is active for process step(s) ri_renovation."
+  },
+  {
+   "id": "landlord_correspondence",
+   "optional": true,
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#landlord_correspondence"
+   ],
+   "title": "Landlord correspondence",
+   "why": "'Landlord correspondence' is a optional evidence item for process step(s) ri_assessment."
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "dispute_family",
+   "question": "Which tenancy dispute does the claim concern: a defect (mould, moisture, heating), a lease termination, or a rent increase?",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#domain"
+   ],
+   "type": "enum",
+   "values": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+   ]
+  },
+  {
+   "id": "claim_received",
+   "question": "Was a rent-increase notice or claim received?",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#flag:claim_received"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "reference_rate",
+   "question": "Is the increase based on the reference interest rate?",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#flag:reference_rate"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "renovation",
+   "question": "Is the increase based on renovation costs?",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#flag:renovation"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "rent_increase_dispute",
+ "notes": [
+  {
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#policy-rent_increase_dispute-v1.clause-01"
+   ],
+   "text": "Preserve the challenge deadline first."
+  },
+  {
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#policy-rent_increase_dispute-v1.clause-02"
+   ],
+   "text": "Then verify receipt, official form, timing, current rent, stated reason, and calculation basis."
+  },
+  {
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#policy-rent_increase_dispute-v1.clause-03"
+   ],
+   "text": "Reconstruct reference-rate calculations or renovation costs only when that branch is active."
+  },
+  {
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#policy-rent_increase_dispute-v1.clause-04"
+   ],
+   "text": "Separate supported figures from unresolved inputs and request only missing evidence that can change validity, calculation, or resolution."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#close"
+   ],
+   "title": "Process closed"
+  }
+ ],
+ "sources": [
+  {
+   "id": "policy-rent_increase_dispute-v1",
+   "kind": "process_guidance",
+   "title": "Generic rent-increase dispute workflow (paper rule template policy-rent_increase_dispute-v1, sha256 227143f92e579ec4)"
+  }
+ ],
+ "start": "ri_intake",
+ "status": "reviewed",
+ "steps": [
+  {
+   "id": "ri_intake",
+   "next": [
+    {
+     "label": "claim received",
+     "to": "ri_deadline",
+     "when": {
+      "fact": "claim_received",
+      "is": true
+     }
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_intake"
+   ],
+   "title": "Capture increase and receipt facts"
+  },
+  {
+   "documents": [
+    "proof_of_receipt"
+   ],
+   "id": "ri_deadline",
+   "next": [
+    {
+     "label": "deadline position recorded",
+     "to": "ri_form",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_deadline"
+   ],
+   "title": "Preserve the challenge deadline"
+  },
+  {
+   "documents": [
+    "lease_contract",
+    "rent_increase_notice"
+   ],
+   "id": "ri_form",
+   "next": [
+    {
+     "label": "formal review complete",
+     "to": "ri_reason",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_form"
+   ],
+   "title": "Check notice form and timing"
+  },
+  {
+   "documents": [
+    "stated_calculation"
+   ],
+   "id": "ri_reason",
+   "next": [
+    {
+     "label": "reference-rate reason selected",
+     "to": "ri_reference",
+     "when": {
+      "fact": "reference_rate",
+      "is": true
+     }
+    },
+    {
+     "label": "renovation reason selected",
+     "to": "ri_renovation",
+     "when": {
+      "fact": "renovation",
+      "is": true
+     }
+    },
+    {
+     "label": "no specialist calculation branch",
+     "to": "ri_evidence",
+     "when": {
+      "all": [
+       {
+        "fact": "reference_rate",
+        "is": false
+       },
+       {
+        "fact": "renovation",
+        "is": false
+       }
+      ]
+     }
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_reason"
+   ],
+   "title": "Classify the stated reason"
+  },
+  {
+   "documents": [
+    "reference_rate_basis"
+   ],
+   "id": "ri_reference",
+   "next": [
+    {
+     "label": "baseline reconstructed",
+     "to": "ri_evidence",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_reference"
+   ],
+   "title": "Reconstruct reference-rate calculation"
+  },
+  {
+   "documents": [
+    "renovation_cost_breakdown"
+   ],
+   "id": "ri_renovation",
+   "next": [
+    {
+     "label": "cost evidence screened",
+     "to": "ri_evidence",
+     "when": true
+    }
+   ],
+   "role": "external_specialist",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_renovation"
+   ],
+   "title": "Assess renovation-cost evidence"
+  },
+  {
+   "documents": [
+    "current_rent_evidence",
+    "prior_rent_adjustment"
+   ],
+   "id": "ri_evidence",
+   "next": [
+    {
+     "label": "evidence collection closed",
+     "to": "ri_assessment",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_evidence"
+   ],
+   "title": "Collect missing calculation evidence"
+  },
+  {
+   "documents": [
+    "landlord_correspondence"
+   ],
+   "id": "ri_assessment",
+   "next": [
+    {
+     "label": "assessment recorded",
+     "to": "ri_resolution",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_assessment"
+   ],
+   "title": "Separate supported facts from open issues"
+  },
+  {
+   "id": "ri_resolution",
+   "next": [
+    {
+     "label": "resolution recorded",
+     "to": "ri_close",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_resolution"
+   ],
+   "title": "Prepare challenge or negotiated resolution"
+  },
+  {
+   "id": "ri_close",
+   "outcome": "closed",
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-rent_increase_dispute-v1#ri_close"
+   ],
+   "title": "Record outcome"
+  }
+ ],
+ "title": "Generic rent-increase dispute workflow",
+ "version": "2026-11-10"
+}

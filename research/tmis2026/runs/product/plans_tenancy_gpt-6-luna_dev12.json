@@ -1,0 +1,48 @@
+{
+ "PRODUCT|clm_0c373e693a363f9e|0": {
+  "plan": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  },
+  "status": "completed",
+  "calls": 1,
+  "product_extra": {
+   "routing": {
+    "status": "needs_facts",
+    "needs": [
+     "dispute_family"
+    ],
+    "candidates": [
+     {
+      "id": "defect_mold_heating",
+      "version": "2026-11-10",
+      "title": "Generic defect, moisture, mould, and heating workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "lease_termination_dispute",
+      "version": "2026-11-10",
+      "title": "Generic lease-termination dispute workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "rent_increase_dispute",
+      "version": "2026-11-10",
+      "title": "Generic rent-increase dispute workflow",
+      "status": "reviewed"
+     }
+    ]
+   }
+  },
+  "seconds": 4.2,
+  "tokens": {
+   "input": 774,
+   "cached": 0,
+   "output": 52
+  }
+ }
+}

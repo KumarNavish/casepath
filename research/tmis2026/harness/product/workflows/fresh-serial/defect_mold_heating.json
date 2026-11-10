@@ -1,0 +1,474 @@
+{
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "defect_mold_heating"
+ },
+ "conversion": {
+  "layout": "serial",
+  "parallel_splits_serialised": []
+ },
+ "documents": [
+  {
+   "id": "lease_contract",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#lease_contract"
+   ],
+   "title": "Lease contract",
+   "why": "'Lease contract' is a mandatory evidence item for process step(s) dh_scope."
+  },
+  {
+   "id": "defect_notification",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#defect_notification"
+   ],
+   "title": "Defect notice",
+   "why": "'Defect notice' is a mandatory evidence item for process step(s) dh_notice."
+  },
+  {
+   "id": "proof_of_notification",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#proof_of_notification"
+   ],
+   "title": "Proof of notification",
+   "why": "'Proof of notification' is a mandatory evidence item for process step(s) dh_notice."
+  },
+  {
+   "id": "dated_photos",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dated_photos"
+   ],
+   "title": "Dated photographs",
+   "why": "'Dated photographs' is a mandatory evidence item for process step(s) dh_evidence."
+  },
+  {
+   "id": "landlord_response_history",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#landlord_response_history"
+   ],
+   "title": "Landlord response history",
+   "why": "'Landlord response history' is a mandatory evidence item for process step(s) dh_response."
+  },
+  {
+   "id": "humidity_temperature_log",
+   "required_when": {
+    "fact": "mold",
+    "is": true
+   },
+   "source_refs": [
+    "policy-defect_mold_heating-v1#humidity_temperature_log"
+   ],
+   "title": "Humidity and temperature log",
+   "why": "'Humidity and temperature log' is a conditional evidence item when scenario flag 'mold' is active for process step(s) dh_evidence."
+  },
+  {
+   "id": "heating_service_report",
+   "required_when": {
+    "fact": "heating",
+    "is": true
+   },
+   "source_refs": [
+    "policy-defect_mold_heating-v1#heating_service_report"
+   ],
+   "title": "Heating service report",
+   "why": "'Heating service report' is a conditional evidence item when scenario flag 'heating' is active for process step(s) dh_evidence."
+  },
+  {
+   "id": "medical_confirmation",
+   "required_when": {
+    "fact": "health_effects",
+    "is": true
+   },
+   "source_refs": [
+    "policy-defect_mold_heating-v1#medical_confirmation"
+   ],
+   "title": "Medical confirmation",
+   "why": "'Medical confirmation' is a conditional evidence item when scenario flag 'health_effects' is active for process step(s) dh_safety."
+  },
+  {
+   "id": "technical_inspection",
+   "required_when": {
+    "fact": "specialist_needed",
+    "is": true
+   },
+   "source_refs": [
+    "policy-defect_mold_heating-v1#technical_inspection"
+   ],
+   "title": "Technical inspection",
+   "why": "'Technical inspection' is a conditional evidence item when scenario flag 'specialist_needed' is active for process step(s) dh_specialist."
+  },
+  {
+   "id": "written_repair_deadline",
+   "required_when": {
+    "fact": "deposit_considered",
+    "is": true
+   },
+   "source_refs": [
+    "policy-defect_mold_heating-v1#written_repair_deadline"
+   ],
+   "title": "Written repair deadline",
+   "why": "'Written repair deadline' is a conditional evidence item when scenario flag 'deposit_considered' is active for process step(s) dh_deposit."
+  },
+  {
+   "id": "caretaker_correspondence",
+   "optional": true,
+   "source_refs": [
+    "policy-defect_mold_heating-v1#caretaker_correspondence"
+   ],
+   "title": "Caretaker correspondence",
+   "why": "'Caretaker correspondence' is a optional evidence item for process step(s) dh_cause."
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "dispute_family",
+   "question": "Which tenancy dispute does the claim concern: a defect (mould, moisture, heating), a lease termination, or a rent increase?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#domain"
+   ],
+   "type": "enum",
+   "values": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+   ]
+  },
+  {
+   "id": "health_effects",
+   "question": "Does the claim allege effects of the defect on anyone's health?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#flag:health_effects"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "mold",
+   "question": "Does the defect involve mould or moisture?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#flag:mold"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "heating",
+   "question": "Does the defect involve the heating?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#flag:heating"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "specialist_needed",
+   "question": "Is a technical inspection by a specialist needed?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#flag:specialist_needed"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "deposit_considered",
+   "question": "Is depositing the rent with the authority being considered?",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#flag:deposit_considered"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "defect_mold_heating",
+ "notes": [
+  {
+   "source_refs": [
+    "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-01"
+   ],
+   "text": "Preserve urgent safety needs first."
+  },
+  {
+   "source_refs": [
+    "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-02"
+   ],
+   "text": "Then establish scope and dates, notice to the landlord, the still-open technical cause, objective condition evidence, and the response or access history."
+  },
+  {
+   "source_refs": [
+    "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-03"
+   ],
+   "text": "Request only missing material that can resolve an active decision."
+  },
+  {
+   "source_refs": [
+    "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-04"
+   ],
+   "text": "Treat medical, inspection, heating, moisture-log, and deposit evidence as conditional; do not assume a cause or remedy before its branch is supported."
+  },
+  {
+   "source_refs": [
+    "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-silence"
+   ],
+   "text": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#close"
+   ],
+   "title": "Process closed"
+  }
+ ],
+ "sources": [
+  {
+   "id": "policy-defect_mold_heating-v1",
+   "kind": "process_guidance",
+   "title": "Generic defect, moisture, mould, and heating workflow (paper rule template policy-defect_mold_heating-v1, sha256 944557cc5ff05c4c)"
+  }
+ ],
+ "start": "dh_intake",
+ "status": "reviewed",
+ "steps": [
+  {
+   "id": "dh_intake",
+   "next": [
+    {
+     "label": "health effects alleged",
+     "to": "dh_safety",
+     "when": {
+      "fact": "health_effects",
+      "is": true
+     }
+    },
+    {
+     "label": "no immediate health escalation",
+     "to": "dh_scope",
+     "when": {
+      "fact": "health_effects",
+      "is": false
+     }
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_intake"
+   ],
+   "title": "Capture defect and affected rooms"
+  },
+  {
+   "documents": [
+    "medical_confirmation"
+   ],
+   "id": "dh_safety",
+   "next": [
+    {
+     "label": "safety advice recorded",
+     "to": "dh_scope",
+     "when": true
+    }
+   ],
+   "role": "external_specialist",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_safety"
+   ],
+   "title": "Escalate immediate health or safety risk"
+  },
+  {
+   "documents": [
+    "lease_contract"
+   ],
+   "id": "dh_scope",
+   "next": [
+    {
+     "label": "timeline drafted",
+     "to": "dh_notice",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_scope"
+   ],
+   "title": "Build the dated defect timeline"
+  },
+  {
+   "documents": [
+    "defect_notification",
+    "proof_of_notification"
+   ],
+   "id": "dh_notice",
+   "next": [
+    {
+     "label": "notice position recorded",
+     "to": "dh_cause",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_notice"
+   ],
+   "title": "Establish landlord notice"
+  },
+  {
+   "documents": [
+    "caretaker_correspondence"
+   ],
+   "id": "dh_cause",
+   "next": [
+    {
+     "label": "causation status recorded",
+     "to": "dh_evidence",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_cause"
+   ],
+   "title": "Keep causation open until supported"
+  },
+  {
+   "documents": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "heating_service_report"
+   ],
+   "id": "dh_evidence",
+   "next": [
+    {
+     "label": "evidence gaps identified",
+     "to": "dh_response",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_evidence"
+   ],
+   "title": "Collect objective defect evidence"
+  },
+  {
+   "documents": [
+    "landlord_response_history"
+   ],
+   "id": "dh_response",
+   "next": [
+    {
+     "label": "technical inspection needed",
+     "to": "dh_specialist",
+     "when": {
+      "fact": "specialist_needed",
+      "is": true
+     }
+    },
+    {
+     "label": "deposit route considered without specialist",
+     "to": "dh_deposit",
+     "when": {
+      "all": [
+       {
+        "fact": "deposit_considered",
+        "is": true
+       },
+       {
+        "fact": "specialist_needed",
+        "is": false
+       }
+      ]
+     }
+    },
+    {
+     "label": "no further specialist or deposit branch",
+     "to": "dh_resolution",
+     "when": {
+      "all": [
+       {
+        "fact": "specialist_needed",
+        "is": false
+       },
+       {
+        "fact": "deposit_considered",
+        "is": false
+       }
+      ]
+     }
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_response"
+   ],
+   "title": "Review landlord response and access"
+  },
+  {
+   "documents": [
+    "technical_inspection"
+   ],
+   "id": "dh_specialist",
+   "next": [
+    {
+     "label": "deposit route remains relevant",
+     "to": "dh_deposit",
+     "when": {
+      "fact": "deposit_considered",
+      "is": true
+     }
+    },
+    {
+     "label": "inspection result available",
+     "to": "dh_resolution",
+     "when": true
+    }
+   ],
+   "role": "external_specialist",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_specialist"
+   ],
+   "title": "Obtain technical inspection"
+  },
+  {
+   "documents": [
+    "written_repair_deadline"
+   ],
+   "id": "dh_deposit",
+   "next": [
+    {
+     "label": "deposit safeguards assessed",
+     "to": "dh_resolution",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_deposit"
+   ],
+   "title": "Check safeguards for official rent deposit"
+  },
+  {
+   "id": "dh_resolution",
+   "next": [
+    {
+     "label": "outcome recorded",
+     "to": "dh_close",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_resolution"
+   ],
+   "title": "Record repair or referral outcome"
+  },
+  {
+   "id": "dh_close",
+   "outcome": "closed",
+   "role": "claim_handler",
+   "source_refs": [
+    "policy-defect_mold_heating-v1#dh_close"
+   ],
+   "title": "Close or hand off the file"
+  }
+ ],
+ "title": "Generic defect, moisture, mould, and heating workflow",
+ "version": "2026-11-10"
+}
