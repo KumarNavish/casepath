@@ -182,3 +182,25 @@ Short record; details are in the files named.
   ShARC will not be a headline result. Closest prior work found on the way,
   to cite: few-shot policy decomposition with a logic formula evaluated in
   code (arXiv 2501.11335; numbers to be checked against the paper).
+
+## 2026-11-10 — Expert study design reviewed; first inside/outside parity match
+- The product session's feedback and study design (5 experts × 3 cases) was
+  reviewed against the product code at 6f3de061. Review, pre-registration
+  draft, event fields, scales and recall guide, contribution statement and the
+  plan for the outside check are in `expert_study/`. The product session
+  adopted the changes as binding (its commit 5d0717f4) and builds them.
+- Owner's decision: the expert study is planned for this TMIS paper; the
+  record is specified so that it also serves a separate paper.
+- The product session added a decision point ("Stand am" cut): each study case
+  is shown as the file stood before the insurer's first outgoing request. It
+  is being written into the pre-registration, which then stands at 1.0-rc
+  until the owner names the three cases.
+- **Parity:** the inside build reported source-tree hash
+  523211edf8c11f12b85687fc2c270117e926a0e399664f9d311a444d1479699a (47 files)
+  at product commit c9560c1. `python -m casepath parity` on the same commit
+  outside gives the same hash and file count. The code inside and outside is
+  byte-identical at that commit.
+- Style and history, decided: plain English with short sentences and one term
+  per concept (no formal controlled-language conformance); no history rewrite
+  and no force-push, assistant author lines are dropped by a squash at merge.
+- New sealed cases for the confirmatory test are being built in `fresh2/`.
