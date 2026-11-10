@@ -1,10 +1,12 @@
-# Pre-registration: expert review of an agentic case-preparation system (draft)
+# Pre-registration: expert review of an agentic case-preparation system
+
+Becomes 1.0 when the owner has named the three cases and the decision points are recorded; nothing else may change.
 
 | | |
 |---|---|
 | Document | Pre-registration of the CasePath expert study |
-| Version | 0.1 (draft, not frozen) |
-| Status | Open choices are listed in section 14. Frozen as version 1.0 by the procedure in section 13. |
+| Version | 1.0-rc |
+| Status | All design choices are settled (section 14). Frozen as version 1.0 by the procedure in section 13. |
 | Use | Cited from the TMIS paper on CasePath, in which the study is planned to appear, or from a separate later paper. The text is the same for both. |
 
 This document is self-contained. It defines the system, the cases, the procedure, the records, every measure and every
@@ -40,47 +42,87 @@ parity manifest. They differ in two declared ways only: the model (the insurer's
 ## 3. Participants and cases
 
 - **Experts.** Five claims experts of the insurer's legal-protection unit. No more will be recruited. Each agrees individually, may withdraw at any time and may have their records removed. The insurer's consent is in place.
-- **Cases.** Three closed cases from an internal hackathon, chosen because the insurer's explicit process reference exists for them. They are **sealed**: no fix, rule or Knowledge item is derived from them, and they are scored only at the freeze. Eight further hackathon cases were used in development; they are the **development dossiers**.
+- **Cases.** Three closed cases from the eleven dossiers of an internal hackathon, chosen because the insurer's explicit process reference exists for them. All eleven are tenancy-defect (mould) cases, and ten of the eleven route to the same workflow. The other eight are the **development dossiers**.
+- **Inclusion criterion.** The three study cases route to that common workflow. This is checked from routing alone, before the freeze, and recorded. Q4 (section 9.5) stays conditional until the owner has named the three cases.
+- **Development dossiers.** They carry **development labels**, made by a single labeller who also builds the product. Their results are reported separately under that name, never pooled with the study cases, and no test (section 10) uses them.
 - **Practice case.** One synthetic case, used for ten minutes before the study cases.
 - **Inference** is conditional on these three cases, this insurer and these five experts. No population claim is made.
+
+### 3.1 Decision point
+
+The dossiers are whole closed files. On the full file, document status is confounded (documents count as present
+because they arrived later) and "next action" is undefined. Each study case is therefore cut at one **decision point**.
+
+1. **Rule.** The decision point is the state of the file immediately before the insurer's first outgoing request for documents or information in that case (to the client or to the other party). If a case has no such request, it is the state before the case's first outgoing action of any kind. The point is fixed by this rule, not by choice. Its date and the rule's application (which outgoing action, and why it is the first) are recorded per case before any run on the cut copy.
+2. **Cut copy.** A case copy holding only the documents (or page ranges) dated up to the decision point. The frozen run, the four variation runs, the single-prompt comparator, the unaided view, the experts' work, gold and the replay for Q4 all use the cut copy. Nobody in a session sees anything dated after the decision point.
+3. **Second decision point (optional, secondary).** A second, later point per case may be added for the system only, with no expert time, labelled by the same adjudicators only if their time allows. If it is done, it is done for all three cases, its rule is the state before the insurer's second outgoing action, and it is reported as exploratory.
+
+### 3.2 Development exposure
+
+The three study cases are among the eleven dossiers the product was developed on until the seal. This is a limit of
+the study. It is reduced as follows:
+
+1. **Seed Knowledge** is rebuilt without the three cases; its content hash is in the freeze record.
+2. **New cut copies.** No run on a cut copy exists before the frozen run, and none may be made before the freeze except the frozen and variation runs themselves.
+3. **Development-exposure record**, made before the freeze from the product's commit history: the commits before the seal whose change was derived from one of the three cases, listed by hash with one line each.
+4. **Consequences for claims.** Q1 on the study cases is accuracy on cases seen in development and is labelled so; accuracy on unseen cases comes from the outside experiments on sealed synthetic claims. Q2, Q3 and Q5 do not need the cases to be unseen, only the item labels to be right. Q4's held-out case is held out from the corrections, not from development, and this is said wherever Q4 is reported.
 
 ## 4. Materials produced before the first session
 
 ### 4.1 Frozen runs
 
-1. The product commit, workflow catalogue and Knowledge store are fixed. Their parity manifest is recorded.
-2. Each of the three cases is run once. The stored run is the **frozen run**. Its record holds: the run, the hash of its result (SHA-256 of canonical JSON), the item list (section 5) and its hash, and the parity manifest.
-3. Each case is run four more times under the same manifest. These **variation runs** are never shown to an expert. They give run-to-run variation (section 9.6).
+1. The product commit, workflow catalogue and Knowledge store are fixed. The Knowledge store is the seed Knowledge rebuilt without the three study cases (section 3.2). Their parity manifest and the seed Knowledge content hash are recorded.
+2. Each of the three cut copies (section 3.1) is run once. The stored run is the **frozen run**. Its record holds: the run, the hash of its result (SHA-256 of canonical JSON), the item list (section 5) and its hash, and the parity manifest.
+3. Each cut copy is run four more times under the same manifest. These **variation runs** are never shown to an expert. They give run-to-run variation (section 9.7). No other run is made on a cut copy before the freeze.
 4. During the study period the Knowledge store is read-only, no run is started on a study case, and no model call is made in a session.
-5. Each expert works on their own copy of each case. Every copy points to the frozen run. A session starts only if the copy's item-list hash equals the frozen run's.
+5. Each expert works on their own copy of each cut copy, with a `source_case` field naming the study case. Every copy points to the frozen run. A session starts only if the copy's item-list hash equals the frozen run's and its cut hash equals the recorded one.
 
 ### 4.2 Comparator
 
-On each case, one run of the same model with a single prompt, given the same case files (the same text extraction),
-the same workflow catalogue and the same active Knowledge in context, asked for: the process step, the facts the step
-depends on, the documents to request and the next action. The prompt is fixed in advance and attached to the frozen
-version of this document. Three runs per case if the token budget allows; the first is primary.
+On each cut copy, one run of the same model with a single prompt, given the same case files (the same text
+extraction), the same workflow catalogue and the same active Knowledge in context, asked for: the process step, the
+facts the step depends on, the documents to request and the next action. The prompt is fixed in advance and attached to
+the frozen version of this document. One run per case is primary. Two more runs per case are made only if the internal
+token budget allows (about 6M non-cached tokens in total for the study); if made, they are secondary.
 
 ### 4.3 Gold
 
-Two adjudicators of the insurer, not among the five experts, label before the first session and without access to
-any session record:
+**Who labels, in order of preference.** (1) Two qualified people of the insurer, outside the five experts. (2) If only
+one is available: that person plus a second human rater who is blind to all sessions and labels before the first
+session; the product builder's automatic labels are kept as a third set, reported separately and never used to resolve
+disagreements; disagreements are resolved by the qualified adjudicator. Whichever case applies is reported with the
+raters' agreement.
 
-- every chain item (section 5) of the frozen run and of the comparator's primary run: **correct**, **incorrect** or **cannot be decided from the file**, against the process reference and the file;
+**Labelled for the decision point.** The adjudicators label before the first session and without access to any session
+record. Each item is judged against the file as it stood at the decision point and the process reference:
+
+- every chain item (section 5) of the frozen run and of the comparator's primary run: **correct**, **incorrect** or **cannot be decided from the file**;
 - every **reference item** (step, required document, next action in the process reference) that a run lacks: an **omission**.
 
+The reference for "documents to request" and "next action" is what the insurer did next, recorded by the adjudicators
+from the later file, together with any alternative they judge equally correct. The insurer's own action is a reference,
+not automatically the only right answer. Alternatives are listed before the first session and never after.
+
 Both systems' items are shown in one neutral format, without citations or system labels, in random order. Each
-adjudicator labels alone. Agreement is recorded (section 9.5). Disagreements are settled by discussion against the
-process reference; any still open become "cannot be decided".
+adjudicator labels alone. Agreement is recorded (section 9.7). Disagreements are settled by discussion against the
+process reference (or, in case (2) above, by the qualified adjudicator); any still open become "cannot be decided".
 
 After all sessions, the same adjudicators label every expert correction's new value and every expert addition
 (correct / incorrect / cannot be decided), blind to who made it.
 
+### 4.4 Cut verification
+
+For each cut copy: the list of included documents or page ranges with their dates, checked by one adjudicator against
+the full file for leaks (later-dated pages inside merged PDFs, later notes, stamps, summaries written after the point,
+file names that reveal later events); and the SHA-256 of the cut copy. Both are recorded before the frozen run. A leak
+found after a session does not change the record: the affected items are flagged, kept in the primary analyses and
+removed in a sensitivity analysis.
+
 ## 5. Units
 
-- **Item**: one statement of the frozen run, with a stable id. Kinds: process step, fact, deadline, document need (whether required, and its status: present, missing, unusable), next action, letter clause, open point, summary field, party, timeline entry.
+- **Item**: one statement of the frozen run on the cut copy, with a stable id; it is a statement about the case at the decision point. Kinds: process step, fact, deadline, document need (whether required, and its status: present, missing, unusable), next action, letter clause, open point, summary field, party, timeline entry.
 - **Chain items** (the primary universe): process step, facts that gate a step or a document, deadlines, document needs, next action. All other kinds are recorded and analysed as exploratory.
-- **Decision units** for the unaided comparison: the current process step (one unit); each document of the case's workflow, requested or not (one unit each, over the union of the reference's, CasePath's and the expert's documents); the next action (one unit, judged by the adjudicators).
+- **Decision units** for the unaided comparison: the current process step (one unit); each document of the case's workflow, requested or not (one unit each, over the union of the reference's, CasePath's and the expert's documents); the next action (one unit, judged by the adjudicators against the insurer's next action and the alternatives listed before the first session).
 - Denominators are always the items of the frozen run. Items that appear only through propagation of a correction are not in any denominator; they are counted and reported.
 
 ## 6. Design and allocation
@@ -91,15 +133,15 @@ After all sessions, the same adjudicators label every expert correction's new va
 |---|---|---|
 | Opening | 5 min | Consent, purpose, "use is measured to improve CasePath, not you" |
 | Practice | 10 min | Synthetic case in the full tool |
-| Trust, baseline | 1 min | Trust scale (section 8) |
+| Trust, baseline | 1 min | TiA Propensity to Trust and Trust in Automation (section 8) |
 | Case 1 (unaided first) | ≤ 15 + ≤ 15 min | Unaided: original files only, structured answer form. Reveal: the answer is frozen; CasePath's result is shown; the expert reviews and may revise. Workload scale. |
 | Case 2, case 3 (aided) | ≤ 25 min each | Review of CasePath's result. Workload scale after each. |
-| Trust, after | 1 min | Trust scale |
+| Trust, after | 1 min | TiA Trust in Automation (section 8) |
 | Recall | 20 min | Stimulated recall (section 8) |
 
 ### 6.2 Unaided answer
 
-The unaided view shows the original files only: page images or native text, no text read by the model, no quotes, no
+The unaided view shows the original files of the cut copy only: page images or native text, no text read by the model, no quotes, no
 highlights, no run output. The answer form has three fields: the process step (chosen from the workflow's steps, or
 "not in the list" with text), the documents to request (chosen from the workflow's document catalogue, plus free
 text), and the next action (chosen from the action kinds, plus free text). At the reveal the answer is frozen and
@@ -107,13 +149,14 @@ stored with its time. Every later change is a separate event.
 
 ### 6.3 Time caps
 
-When a cap is reached the screen says so; the current state is kept. A capped unaided answer is frozen as it stands;
+The caps are 15 minutes for the unaided answer, 15 minutes after the reveal, and 25 minutes for an aided case.
+Reaching a cap is an event. When a cap is reached the screen says so; the current state is kept. A capped unaided answer is frozen as it stands;
 an empty field counts as "not answered", which is neither right nor wrong. A capped aided case is closed as it stands.
 Capped cases stay in the primary analysis and are flagged; a sensitivity analysis drops them.
 
 ### 6.4 Allocation
 
-Case labels A, B, C are assigned to the three sealed cases by lot. The case that is unaided for one expert only
+Case labels A, B, C are assigned to the three study cases by lot. The case that is unaided for one expert only
 (C) is chosen by the same lot. Expert labels E1–E5 are assigned to the five experts by lot. The lot is drawn by a
 person outside the research team, with a recorded seed, before the first session.
 
@@ -151,9 +194,10 @@ Akten; (3) Hier nicht relevant; (4) Gilt generell so; (5) Weiss ich von ausserha
 
 ## 8. Scales and recall
 
-- **Workload**: raw NASA-TLX without the physical-demand item (five items), after each case.
-- **Trust**: the Facets of System Trustworthiness scale (five items, German version), after the practice case and after case 3.
-- **Recall**: twenty minutes. The expert sees, in event order, each of their own corrections, dismissals and additions, and up to three kept items selected by a fixed rule (all kept items that gold labels incorrect, ranked by on-screen time, longest first, then kept correct items with the longest on-screen time to fill three, shown mixed and unlabelled). The expert explains each in their own words. Whether a kept item was wrong is not said during the conversation; it is said at the end only if the expert asks. The researcher codes a reason from the explanation without seeing the tapped reason.
+- **Workload**: raw NASA-TLX, German version of Unema et al. (1988) as reproduced in Seifert (2002, Anhang 5), without the physical-demand item (five items, 0–100 in steps of 5, unweighted mean), after each case.
+- **Trust**: the Trust in Automation questionnaire (Körber 2019), two whole subscales in the author's German version: Trust in Automation (items 9, 14) after the practice case and after case 3; Propensity to Trust (items 5, 12, 18; item 5 reversed) once, after the practice case. Five-point agreement scale with "Keine Angabe"; subscale means, no total.
+- Wordings, response formats, sources and deviations: the scales guide, section 1, attached to the frozen version.
+- **Recall**: twenty minutes. The expert sees, in event order, each of their own corrections, dismissals and additions, and up to three kept items selected by a fixed rule (all kept items that gold labels incorrect, ranked by on-screen time, longest first, then kept correct items with the longest on-screen time to fill three, shown mixed and unlabelled). The expert explains each in their own words. Whether a kept item was wrong is not said during the session. After the last of the five sessions, all five experts are shown together which kept items the reference judged incorrect, without naming who kept what. The researcher codes a reason from the explanation without seeing the tapped reason.
 
 ## 9. Measures and analyses
 
@@ -171,14 +215,15 @@ in order:
 
 A correction followed by its undo leaves the item kept, with the flag "reconsidered". *Changed* = corrected or
 dismissed. *Kept* = fates 4–6. Items with fate 3 are excluded from reliance measures and counted. The dwell threshold
-*d* is 2 seconds for the primary sensitivity analysis and is varied over 1, 2, 4 and 8 seconds.
+*d* is 2 seconds (primary); 1 and 4 seconds are sensitivity analyses.
 
 ### 9.2 Q1: accuracy
 
 | | Definition |
 |---|---|
-| Primary | Item accuracy of CasePath = correct chain items / (correct + incorrect chain items) of the frozen run, per case and pooled |
-| Secondary | The same for the comparator; reference coverage = reference items present / reference items, for both; accuracy by item kind; share "cannot be decided"; the same on the eight development dossiers, reported beside the sealed cases |
+| Primary | Item accuracy of CasePath = correct chain items / (correct + incorrect chain items) of the frozen run, per case and pooled. Labelled "accuracy on cases seen in development" (section 3.2) |
+| Secondary | The same for the comparator; reference coverage = reference items present / reference items, for both; accuracy by item kind; share "cannot be decided" |
+| Reported separately, not pooled, not tested | The same measures on the eight development dossiers, under the name "development labels" |
 | Counts against the claim that CasePath adds value over a single prompt | The comparator's accuracy or coverage is equal or higher on two of three cases |
 
 ### 9.3 Q2: reliance
@@ -188,7 +233,7 @@ dismissed. *Kept* = fates 4–6. Items with fate 3 are excluded from reliance me
 | Hypothesis H2 | Experts change wrong items more often than right ones |
 | Primary | For each chain item with gold correct or incorrect: the share of the five experts who changed it. Statistic: mean share over incorrect items minus mean share over correct items |
 | Secondary | Over-reliance = kept incorrect / incorrect items; under-reliance = changed correct / correct items; both per expert, per case and pooled, under two definitions of kept (kept = fates 4–6; verified = fate 4 only); the share of corrections whose new value is correct; agreement among the five experts per item (Fleiss' kappa on changed / kept) |
-| Sensitivity | Seen / unseen at each threshold *d*; without capped cases; without items of cases an expert knew before |
+| Sensitivity | Seen / unseen at *d* = 1 and 4 seconds; without capped cases; without items of cases an expert knew before; without items flagged by a leak (section 4.4) |
 | Counts against H2 | The primary statistic is zero or negative, or fewer than four of five experts show a positive difference |
 
 ### 9.4 Q3: effort and the reveal (descriptive)
@@ -196,7 +241,7 @@ dismissed. *Kept* = fates 4–6. Items with fate 3 are excluded from reliance me
 | | Definition |
 |---|---|
 | Primary | On the unaided case: accuracy over decision units of (a) the unaided answer, (b) the same expert's answer after the reveal, (c) CasePath alone, each against gold |
-| Secondary | Active time per case (idle excluded) for unaided and aided work; corrections per case; letter change ratio; the share of post-reveal changes that move to CasePath's answer, split by whether CasePath was right; relative AI reliance (units where the unaided answer was wrong and CasePath right: share whose final answer is CasePath's) and relative self-reliance (units where the unaided answer was right and CasePath wrong: share whose final answer stays right), both as counts with denominators |
+| Secondary | Active time per case (idle excluded) for unaided and aided work; corrections per case; letter change ratio; the share of post-reveal changes that move to CasePath's answer, split by whether CasePath was right; relative AI reliance and relative self-reliance as defined by Schemmer et al. (2023, equations 1 and 2): RAIR = units where the unaided answer was wrong, CasePath right and the post-reveal answer right / units where the unaided answer was wrong and CasePath right; RSR = units where the unaided answer was right, CasePath wrong and the post-reveal answer right / units where the unaided answer was right and CasePath wrong. "Right" means correct against gold, including the alternatives listed before the sessions; units where both were right or both wrong enter neither. Both as counts with denominators |
 | Anchoring estimate | Agreement with CasePath of the unaided answers versus the post-reveal answers |
 | Not claimed | That the change after the reveal is caused by the advice alone: the expert also looks at the case a second time |
 | Counts against the claim that review with CasePath reaches the accuracy of CasePath and the expert together | (b) is below both (a) and (c) on most expert-case pairs |
@@ -210,7 +255,7 @@ process family and the node the addition named. Free-text additions without a ca
 (a). Corrections of facts, dismissals and changed conditions do not become proposals (the product cannot turn them
 into Knowledge).
 
-**Gate (nested).** A proposal is replayed on the stored runs of the training cases and the eight development dossiers.
+**Gate (nested).** A proposal is replayed on the stored runs of the training cases and the eight development dossiers. The gate is a mechanical filter, not a test of a claim; the development dossiers enter it with their development labels.
 It passes if no training-case accuracy and neither development reference score (share of reference documents
 requested; share of requests in the reference) falls. Knowledge is never applied to its own origin case, so the gate
 in effect tests the other training case and the development dossiers. The gate never sees the held-out case's gold.
@@ -219,7 +264,7 @@ in effect tests the other training case and the development dossiers. The gate n
 
 | | Definition |
 |---|---|
-| Folds | Three: each sealed case held out once; Knowledge from the other two |
+| Folds | Three: each study case held out once; Knowledge from the other two. The held-out case is held out from the corrections, not from development (section 3.2). Replay runs on the cut copies |
 | Primary | Held-out item accuracy and the two reference scores, before and after the activated Knowledge, per fold |
 | New items | An item that appears only after replay and is not in the reference counts as an unnecessary request; a sensitivity analysis uses the adjudicators' blind label |
 | Secondary | Number of proposals made, passed and stopped; robustness to who supplied the corrections (leave one expert's events out of the training set); transfer of Knowledge from all three cases to the development dossiers and to the synthetic claims, as regression checks |
@@ -237,7 +282,7 @@ in effect tests the other training case and the development dossiers. The gate n
 ### 9.7 Other measures
 
 Run-to-run variation: for each item key, the share of the five runs (frozen and variation) with the same value.
-Adjudicator agreement: Cohen's kappa on correct / incorrect / cannot be decided. Calibration: case accuracy for
+Adjudicator agreement: Cohen's kappa on correct / incorrect / cannot be decided, between the two human raters; if automatic labels exist (section 4.3), their agreement with each human rater, reported separately. Calibration: case accuracy for
 "erledigt" versus "erledigt, mit Vorbehalt" (15 observations, descriptive). Trust and workload: values per case and
 per expert, unlabelled.
 
@@ -259,6 +304,8 @@ per expert, unlabelled.
 | Technical failure | Recorded as an event; the affected case is kept up to the failure and flagged; sensitivity analysis without it |
 | Time-capped case | Kept and flagged; sensitivity analysis without it |
 | Item adjudicated "cannot be decided" | Excluded from accuracy and reliance; counted and reported |
+| Leak found in a cut copy after a session | Affected items flagged and kept; sensitivity analysis without them |
+| Only one qualified adjudicator available | Fallback of section 4.3; reported with the raters' agreement |
 | Expert knew a case before | Kept; sensitivity analysis without those expert-case pairs |
 | Expert took part in the reference or the gold | Kept; reported; sensitivity analysis without that expert |
 | Withdrawal | All records of the expert are removed; the analyses run on the rest; the number is reported |
@@ -273,23 +320,30 @@ person. Per-expert values are shown unlabelled.
 
 ## 13. Versioning and freeze
 
-1. Changes to this draft are made by new versions (0.2, 0.3 …), each committed.
-2. **Freeze**, before the first session, as version 1.0, which records:
+1. This is version 1.0-rc. It becomes 1.0 when the owner has named the three cases and the decision points are recorded; nothing else may change.
+2. **Freeze**, before the first session, as version 1.0. The freeze commit contains exactly:
    - the commit hash of this document's repository at freeze;
    - the product commit and the parity manifest's source-tree hash;
+   - per case: the decision-point date and the rule's application (section 3.1), the cut verification list and the SHA-256 of the cut copy (section 4.4), and the routing check of the inclusion criterion;
+   - the content hash of the seed Knowledge rebuilt without the three cases (section 3.2);
+   - the development-exposure record (section 3.2);
    - the SHA-256 of each frozen run's result and item list, and of the variation runs;
-   - the SHA-256 of the allocation table after the lot (with the lot seed), of the comparator prompt and of the adjudicators' gold file;
+   - the allocation table after the lot, with the lot seed, and its SHA-256;
+   - the SHA-256 of the comparator prompt and of the adjudicators' gold file (with the alternatives listed for next actions and documents to request);
    - the permutation seed for T1 and the bootstrap seed.
 3. The frozen version is deposited with a timestamp (an internal registry and, if the paper's venue requires, a public registry with the content-free parts).
 4. Any change after the freeze is a dated **deviation**, listed in the paper with its reason.
 
-## 14. Open choices (to settle before the freeze)
+## 14. Choices settled on 2026-11-10
 
-1. Whether the three cases share a process family with each other and with the development dossiers. If not, Q4's cross-case claim is dropped before the freeze.
-2. The number of variation runs (four proposed) and of comparator runs (one or three), given the internal token budget.
-3. The time caps (15 + 15 and 25 minutes proposed).
-4. The dwell threshold for the primary sensitivity analysis (2 seconds proposed).
-5. The position of the unaided case: always first (proposed) or rotated (positions 1, 2, 3, 3, 2 for E1–E5, which balances position but exposes three experts to CasePath on a study case before their unaided answer).
-6. Whether the expert learns at the end which kept items were wrong (proposed: only if asked).
-7. Whether the eight development dossiers have gold of the same kind; if not, Q1 on them uses the reference scores only.
-8. Exact item wordings of the two scales, copied from their sources.
+1. Process family: all eleven dossiers are tenancy-defect (mould) cases; ten of eleven route to the same workflow. Inclusion criterion added (section 3); Q4 conditional until the owner names the cases.
+2. Four variation runs per case; one comparator run per case primary, three only if the token budget allows (section 4.2).
+3. Time caps 15 + 15 minutes unaided and after the reveal, 25 minutes aided; reaching a cap is an event (section 6.3).
+4. Dwell threshold 2 seconds primary; 1 and 4 seconds sensitivity (section 9.1).
+5. The unaided case is always the expert's first study case (section 6.4).
+6. Experts learn which kept items were wrong only after the last session, all five together (section 8).
+7. Development dossiers: development labels by a single labeller who builds the product; reported separately, never pooled, no test (section 3).
+8. Scales: German NASA-TLX (Unema et al. 1988, via Seifert 2002) and two TiA subscales (Körber 2019), wordings copied from the sources (section 8).
+
+Added on the same date: the decision point and cut copies (sections 3.1, 4.4), development exposure (section 3.2), the
+adjudicator preference order (section 4.3).

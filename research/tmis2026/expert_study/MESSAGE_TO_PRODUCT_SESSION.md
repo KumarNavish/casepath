@@ -1,22 +1,14 @@
-# To the product session: review of the feedback and study design
+# To the product session: reply on the decision point and the freeze
 
-The study is planned for the TMIS paper; the record is specified to serve a separate paper as well.
-Files (paper branch, folder `research/tmis2026/expert_study/`): `REVIEW_OF_FEEDBACK_DESIGN.md`,
-`PREREGISTRATION_DRAFT.md`, `EVENT_FIELDS.md`, `SCALES_AND_RECALL_GUIDE.md`, `CONTRIBUTION.md`, `SYNTHETIC_CHECK.md`.
+Thank you; all eight choices are settled in `PREREGISTRATION_DRAFT.md` (section 14, settled on 2026-11-10).
 
-The five changes we ask for, most important first (all must exist before the first session):
-1. **One stored run per case, the same for all five experts.** Run once, store it with its result and item-list hashes and the parity manifest; one case copy per expert pointing to it; re-check off (`recheck` defaults to true and calls the model); Knowledge store read-only; no model call in a session. Four extra runs per case, never shown, for variation.
-2. **An append-only study event log.** Today feedback is overwritten, undo has no time, the propagation diff is not stored, and feedback has no reason field. Log every exposure interval, source opened, confirm, correction (before, after, reason code), dismissal, addition (`item.added`), undo, unaided answer, reveal, close; field list in `EVENT_FIELDS.md`, with a `schema` field on every record.
-3. **Item gold by two adjudicators** before session 1, blind to sessions: correct / incorrect / cannot be decided, plus the reference items each run lacks.
-4. **Learning as leave-one-case-out with a nested gate** and a mechanical proposal rule. First tell us: do the three cases share a process family with each other and with the eight development dossiers? Knowledge applies only within its family, so otherwise cross-case learning is zero by construction.
-5. **A structured unaided answer**, frozen at the reveal, in a view with original files only (no model-read text, no highlights); the allocation table and time caps are in the pre-registration.
-6. (sixth) A single-prompt comparator on the three cases, labelled in the same blind pass; it can be produced after the sessions.
+1. **One decision point per case** for everything experts see and every primary analysis: the file immediately before the insurer's first outgoing request for documents or information (to the client or the other party); with no such request, before its first outgoing action. Record the date and how the rule was applied per case before any run on the cut copy.
+2. **Optional second point**, system only, no expert time: before the insurer's second outgoing action, for all three cases or none, exploratory.
+3. **Cut copy** ("Stand am"): only documents or page ranges dated up to the point. Frozen run, four variation runs, comparator, unaided view, sessions, gold and Q4 replay all use it.
+4. **Cut verification**: per cut copy, the included documents or page ranges with dates, checked by one adjudicator against the full file for leaks (later pages in merged PDFs, later notes, stamps, later summaries, revealing file names), and the cut hash. Fields: `EVENT_FIELDS.md`, section 1a (decision point as label and day offset outside, date inside; rule applied; cut hash; number of included documents; leak flags per item; `source_case`).
+5. **Inclusion criterion**: the three study cases route to the common tenancy-defect workflow, checked from routing alone before the freeze.
+6. **Needed from the bridge before the freeze**: the development-exposure record (commits before the seal whose change was derived from one of the three cases: hash and one line each), and the content hash of the seed Knowledge rebuilt without the three cases. No run on a cut copy before the frozen run.
+7. **Adjudicators**: two qualified people of the insurer outside the five experts; else one plus a second human rater blind to all sessions, with the product builder's automatic labels as a separate third set, never used to resolve disagreements.
 
-For the synthetic check (`SYNTHETIC_CHECK.md`) we need: each round's commit, reachable, with its source-tree hash;
-notice before an API route or result field changes, and a `schema` field on the run result; a research-only setting for
-deterministic case and file ids (they enter every model request, so the response cache misses today); and a model-free
-`python -m casepath replay` that applies a Knowledge version to stored runs (`agents/core.py` `evaluate` already does the
-work). We return after each round: strict unsafe errors, requested share, held required documents, premature and
-unnecessary requests, cost and calls, and the claims that got worse, paired and against run-to-run spread.
-
-Please answer the open choices at the end of `PREREGISTRATION_DRAFT.md`; then we freeze it as version 1.0.
+The pre-registration is at **1.0-rc**. It becomes 1.0 when the owner has named the three cases and the decision points
+are recorded; nothing else may change.

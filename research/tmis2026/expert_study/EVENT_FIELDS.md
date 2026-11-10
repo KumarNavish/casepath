@@ -14,7 +14,8 @@ session's start (or, for runs, since the study's first frozen run).
 |---|---|---|
 | `schema` | record shape | new |
 | `frozen_run_id` | id of the stored run shown to all experts | exists as `runs.id` (`web/store.py`, table `runs`) |
-| `source_case` | the sealed case (A, B, C after the lot; internal id inside) | new |
+| `source_case` | the study case (A, B, C after the lot; internal id inside) | new |
+| `cut_sha256` | hash of the cut copy the run used (section 1a) | new |
 | `role` | `frozen`, `variation`, `comparator` | new |
 | `repeat` | 1 for the frozen run, 2–5 for variation runs, 1–3 for comparator runs | partial: `repeat` in benchmark results (`quality/evaluate.py:409`) |
 | `files_sha256` | hash of the case's files | exists (`web/store.py`, `runs.files_sha256`) |
@@ -25,6 +26,24 @@ session's start (or, for runs, since the study's first frozen run).
 | `knowledge_content_sha256` | per Knowledge item, hash of `id, family, kind, content, applies_when, status, version` only | new (today's hash includes `stats` and `updated_at`, `parity.py:_digest`) |
 | `usage` | model turns and tokens | exists (`result.usage`, `agents/team.py` `finalize`) |
 | `deployment` | model deployment name | exists (`runs.deployment`) |
+
+## 1a. Cut copy record (`casepath.study.cut/1`)
+
+One row per study case (and per second decision point, if one is made). Columns "Pseudonymous" and "Content" say which
+export carries the field (section 7).
+
+| Field | Meaning | Pseudonymous | Content | Status |
+|---|---|---|---|---|
+| `schema` | record shape | yes | yes | new |
+| `source_case` | A, B, C in the pseudonymous export; internal case id in the content export | label | id | new |
+| `cut_id` | id of the cut copy; `h_` + 12 hex in the pseudonymous export | hashed | yes | new |
+| `point` | `first` or `second` (the optional system-only point) | yes | yes | new |
+| `decision_point` | in the pseudonymous export a label (`DP1`, `DP2`) and an offset in whole days from the case's first document; in the content export the calendar date | label and offset | date | new |
+| `rule_applied` | `first_outgoing_request`, `first_outgoing_action` (no request in the case) or `second_outgoing_action`; plus, content export only, which action and why it is the first | code | code and text | new |
+| `cut_sha256` | SHA-256 of the cut copy | yes | yes | new |
+| `included_documents` | number of included documents (pseudonymous); list of documents or page ranges with dates (content) | count | list | new |
+| `leak_check` | adjudicator (G1/G2), done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
+| `routes_to_common_workflow` | inclusion criterion, from routing alone | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
 
@@ -44,6 +63,8 @@ One row per statement of a frozen run (and of a comparator run).
 | `node` | process node the item is there for ("wegen") | partial: `evaluation.documents[].step`; new for facts and actions |
 | `origin` | `workflow`, `knowledge#<id>@v<n>`, `agent_edit#<id>` | exists (`source_refs`, `documents[].knowledge`, `agent_edits`) |
 | `system` | `casepath` or `comparator` | new |
+| `source_case`, `cut_sha256` | the study case and the cut copy the item belongs to | new |
+| `leak_flag` | set if a leak found after a session affects the item: `leak_id` and date found (content); boolean (pseudonymous) | new |
 
 ## 3. Event record (`casepath.study.event/1`)
 
@@ -56,7 +77,7 @@ One row per statement of a frozen run (and of a comparator run).
 | `seq` | order within the session | partial: `run_events.seq` for agent events only (`web/store.py`) |
 | `session_id` | session | new |
 | `expert` | pseudonym inside; randomised label E1–E5 in exports | partial: `by` / `who` (identity, `web/app.py` `user`) |
-| `case_copy` | the expert's copy of the case | exists as `cases.id` |
+| `case_copy` | the expert's copy of the cut copy | exists as `cases.id` |
 | `source_case` | A, B, C | new |
 | `frozen_run_id` | | new on events |
 | `at` / `t` | absolute time inside; relative seconds in exports | partial: `at` on feedback and edits |
@@ -87,7 +108,7 @@ One row per statement of a frozen run (and of a comparator run).
 | `letter.copied` | `change_ratio` (edit distance / draft length) | new |
 | `case.closed` | `form` (`erledigt`, `erledigt_mit_vorbehalt`), `capped` (bool) | new |
 | `cap.reached` | | new |
-| `scale.answered` | `scale` (`tlx`, `fost`), `occasion`, `answers` (item number → value) | new |
+| `scale.answered` | `scale` (`tlx`, `tia_trust`, `tia_propensity`), `occasion`, `answers` (item number → value; TiA `keine_angabe` as missing) | new |
 | `technical.failure` | `what` (code) | new |
 | `session.ended` | `complete` (bool) | new |
 
@@ -97,6 +118,7 @@ One row per statement of a frozen run (and of a comparator run).
 |---|---|
 | `schema`, `session_id`, `expert` (label), `session_order` (1–5) | new |
 | `allocation_row` (E1–E5), `cases` (A/B/C by position), `unaided_case` | new |
+| `cut_sha256` per case copy, checked at session start like the item list | new |
 | `knew_case_before` (per case), `made_reference_or_gold` (bool) | new |
 | `parity` (manifest at session start), `frozen_run_ids`, `item_list_check` per case | partial: manifest exists (`parity.py`) |
 | `active_seconds` per case (idle excluded), `capped` per case | new |
@@ -106,7 +128,9 @@ One row per statement of a frozen run (and of a comparator run).
 
 | Field | Status |
 |---|---|
-| `schema`, `item_id`, `adjudicator` (G1, G2), `label` (`correct`, `incorrect`, `undecidable`), `basis` (`reference`, `file`) | new |
+| `schema`, `item_id`, `adjudicator` (G1, G2, or A for automatic labels), `rater_kind` (`qualified`, `blind_rater`, `automatic`), `label` (`correct`, `incorrect`, `undecidable`), `basis` (`reference`, `file`) | new |
+| `as_of` (`DP1`, `DP2`): the decision point the label is for | new |
+| `reference_action`: the insurer's next action and documents requested, from the later file (catalogue ids pseudonymous; text content only); `alternatives`: those judged equally correct, with the time they were listed (before the first session) | new |
 | `reconciled_label`, `reconciled_by` (`agreement`, `discussion`, `undecidable`) | new |
 | `omission`: `reference_item`, `kind`, `source_case`, `system`, `adjudicator` | new |
 | `correction_label`: `event_id`, `adjudicator`, `label` (after the sessions, blind to the expert) | new |
@@ -121,8 +145,8 @@ One row per statement of a frozen run (and of a comparator run).
 
 | Export | Holds | Leaves the insurer |
 |---|---|---|
-| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, labels, counts, ratios, scale answers, hashes. No item value, quote, note, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
-| **Content** (`casepath.study.content/1`) | the pseudonymous export plus item values and texts, before/after values, notes, free-text additions and answers, recall transcripts, absolute times | no |
+| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, decision points as labels and day offsets, cut hashes, leak flags as booleans, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, labels, counts, ratios, scale answers, hashes. No item value, quote, note, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
+| **Content** (`casepath.study.content/1`) | the pseudonymous export plus decision-point dates and the rule's application in words, included-document lists, leak descriptions, item values and texts, before/after values, notes, free-text additions and answers, recall transcripts, absolute times | no |
 
 ## 8. Fields kept beyond what the pre-registered analyses need
 
@@ -160,4 +184,5 @@ Kept so that a later, separate paper loses nothing.
 | Adjudicator agreement | gold `label` per `adjudicator` |
 | Calibration | `case.closed.form`; Q1 accuracy per case copy |
 | Trust, workload | `scale.answered` |
+| Decision point, cut, leaks (sections 3.1, 4.4) | cut record; item `leak_flag`; gold `as_of`, `reference_action`, `alternatives` |
 | Exclusions | `case.closed.capped`, `technical.failure`, session `knew_case_before`, `made_reference_or_gold`, `withdrawn`; gold `undecidable` |
