@@ -445,9 +445,9 @@ def _tool_specs(work, names):
 
 def _record_fact(work, agent, args):
     definition = work.fact_defs[args["fact"]]
-    if work.facts_confirmed and args["fact"] in {f["id"] for f in gating_facts(work)}:
-        # Once both readings are in, a deciding fact is what they agreed on; one agent alone cannot change it.
-        return {"accepted": False, "reason": "this fact decides the checklist and was settled by two independent readings"}
+    if work.facts_confirmed and args["fact"] in {f["id"] for f in read_again(work)}:
+        # Once the readings are in, a deciding or routing fact is what they gave; one agent alone cannot change it.
+        return {"accepted": False, "reason": "this fact decides the checklist or the routing and was settled by independent readings"}
     known = work.facts.get(args["fact"])
     if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
         return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}
@@ -770,6 +770,14 @@ def run_source_checker(model, work, effort="medium", kinds=("fact", "document"))
 
 # -- the lead -----------------------------------------------------------------
 
+def read_again(work):
+    """The facts the further readings read and that no single agent may change afterwards: the deciding facts and the
+    facts of the workflow's selection condition."""
+    routing = workflows.condition_facts(work.base.get("applies_when"))
+    gating = gating_facts(work)
+    return gating + [f for f in work.graph["facts"] if f["id"] in routing and f not in gating]
+
+
 def gating_facts(work):
     """The facts that decide the path: those named in transitions and in when documents are required."""
     used = set()
@@ -998,8 +1006,7 @@ def confirm_facts(model, work, effort="medium"):
     same order (each reading is its own request). A deciding fact's value counts only when every reading gives it: where
     readings give different values the fact is conflicting and a person settles it; where only some find a value the
     fact stays unknown, with their quotes. ``work.readings`` is the number of readings in all (the first included)."""
-    routing = workflows.condition_facts(work.base.get("applies_when"))
-    facts = gating_facts(work) + [f for f in work.graph["facts"] if f["id"] in routing and f not in gating_facts(work)]
+    facts = read_again(work)
     if not facts:
         return {"checked": 0}
     more = max(1, getattr(work, "readings", DEFAULT_READINGS) - 1)
