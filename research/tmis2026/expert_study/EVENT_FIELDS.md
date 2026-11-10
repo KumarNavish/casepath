@@ -43,7 +43,7 @@ export carries the field (section 7).
 | `rule_applied` | `first_outgoing_request`, `first_outgoing_action` (no request in the case) or `second_outgoing_action`; plus, content export only, which action and why it is the first | code | code and text | new |
 | `cut_sha256` | SHA-256 of the cut copy | yes | yes | new |
 | `included_documents` | number of included documents (pseudonymous); list of documents or page ranges with dates (content) | count | list | new |
-| `leak_check` | checked by the adjudicator (`P`), done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
+| `leak_check` | checked by the process owner, done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
 | `routes_to_common_workflow` | inclusion criterion, from routing alone | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
@@ -91,25 +91,25 @@ One row per statement of a frozen run (and of a comparator run).
 | Kind | Further fields | Status |
 |---|---|---|
 | `session.started` | `item_list_check` (true/false) | new |
-| `case.opened` | `position` (1–3), `condition` (`unaided`, `aided`) | new |
+| `case.opened` | `position` (1–3), `own_answer_first` (bool, true for position 1) | new |
 | `item.exposed` | `from_t`, `to_t` (one on-screen interval; raw, no threshold), `view` | new |
 | `source.opened` | `item_id`, `file_id`, `page` | new (the page endpoint exists, `/api/files/{id}/pages`, but is not logged) |
 | `item.confirmed` | `item_id` | partial: feedback verdict `correct` (`web/store.py`, `set_feedback`), overwritable |
-| `item.corrected` | `item_id`, `before`, `after`, `reason` (1–6 or `none`), `note_present` (bool), `edit_id` when it is a process edit | partial: feedback verdict `wrong` with note; process edits (`case_edits`: `op`, `args`, `reason` free text) |
+| `item.corrected` | `item_id`, `before`, `after`, `reason` (1–6 or `none`), `edit_id` when it is a process edit | partial: feedback verdict `wrong` with note; process edits (`case_edits`: `op`, `args`, `reason` free text) |
 | `item.dismissed` | `item_id`, `reason`, `edit_id` | partial: `remove_document` edit (`process/casegraph.py:17`) |
 | `item.added` | `what` (`document`, `step`, `question`, `fact`, `action`), `catalogue_id` or `free_text_present`, `node`, `reason`, `edit_id` | partial: `add_document`, `add_step`, `add_question` edits |
 | `correction.undone` | `undoes` (event id), `edit_id` | partial: `/api/edits/{id}/undo` sets status `undone` without time (`web/store.py`, `set_edit_status`) |
 | `item.propagated` | `caused_by` (event id), `item_id`, `change` (`changed`, `vanished`, `appeared`), `before`, `after` | partial: `casegraph.diff` computes it (`process/casegraph.py:226`) but it is not stored; recomputed model-free from the log |
 | `point.settled` | `item_id` | exists: verdict `done` on `point:<key>` (`web/app.py:72`) |
-| `unaided.saved` | `step`, `documents` (catalogue ids), `documents_free_text_present`, `action_kind`, `action_free_text_present` | new |
-| `unaided.frozen` | `answer_sha256` | new |
+| `own_answer.saved` | the three pick-lists: `step` (step id or `not_in_list`), `documents` (catalogue ids), `action_kind` | new |
+| `own_answer.frozen` | `answer_sha256` | new |
 | `reveal` | | new |
-| `post_reveal.revised` | the same fields as `unaided.saved` | new |
+| `note.added` | `where` (screen, or `closing`), `item_id` (optional), `length` (characters) in the pseudonymous export; `text` in the content export only | partial: feedback `note` on an item; no screen-level note today |
 | `idle.started`, `idle.ended` | | new |
 | `letter.copied` | `change_ratio` (edit distance / draft length) | new |
-| `case.closed` | `form` (`erledigt`, `erledigt_mit_vorbehalt`), `capped` (bool) | new |
+| `case.closed` | `form` (`erledigt`, `erledigt_mit_vorbehalt`), `capped` (bool), `closing_note_present` (bool) | new |
+| `case.attested` | `kept_item_ids` (the items left unchanged at closing, which closing attests), `item_list_sha256` | new |
 | `cap.reached` | | new |
-| `scale.answered` | `scale` (`tlx`, `tia_trust`, `tia_propensity`), `occasion`, `answers` (item number → value; TiA `keine_angabe` as missing) | new |
 | `technical.failure` | `what` (code) | new |
 | `session.ended` | `complete` (bool) | new |
 
@@ -118,37 +118,41 @@ One row per statement of a frozen run (and of a comparator run).
 | Field | Status |
 |---|---|
 | `schema`, `session_id`, `expert` (label), `session_order` (1–5) | new |
-| `allocation_row` (E1–E5), `cases` (A/B/C by position), `unaided_case` | new |
+| `allocation_row` (E1–E5), `cases` (A/B/C by position), `first_case` | new |
 | `cut_sha256` per case copy, checked at session start like the item list | new |
-| `knew_case_before` (per case), `made_reference_or_gold` (bool) | new |
+| `prior_handling` per case: copied from the status-source record (section 5), not asked | new |
 | `parity` (manifest at session start), `frozen_run_ids`, `item_list_check` per case | partial: manifest exists (`parity.py`) |
 | `active_seconds` per case (idle excluded), `capped` per case | new |
 | `withdrawn` (bool, date inside only) | new |
 
-## 5. Gold record (`casepath.study.gold/1`)
+## 5. Status-source records (`casepath.study.status/1`)
 
-| Field | Status |
-|---|---|
-| `schema`, `item_id`, `rater` (`P` = the process owner as adjudicator, `A` = the automated labeller), `label` (`correct`, `incorrect`, `undecidable`), `basis` (`reference`, `file`) | new |
-| per label set: `label_set_sha256`, `recorded_at` (date inside, day offset in exports); the automated set's hash recorded before the adjudicator starts | new |
-| `as_of` (`DP1`, `DP2`): the decision point the label is for | new |
-| `reference_action`: the insurer's next action and documents requested, from the later file (catalogue ids pseudonymous; text content only); `alternatives`: those judged equally correct, with the time they were listed (before the first session) | new |
-| `gold_label`: the adjudicator's label, which stands in every case; the automated label never changes it | new |
-| `omission`: `reference_item`, `kind`, `source_case`, `system`, `rater` | new |
-| `correction_label`: `event_id`, `rater`, `label` (after the sessions, blind to the expert) | new |
-| benchmark truth for synthetic cases (`truth.facts`, `truth.documents`, `next_actions`) | exists for synthetic suites only (`quality/evaluate.py:220`, `score`) |
+Sources are kept apart; no record merges them into one label. C is derived from the event log and has no record.
 
-## 6. Recall coding record (`casepath.study.recall/1`)
+| Record | Fields | Pseudonymous | Content | Status |
+|---|---|---|---|---|
+| **P** (per study case) | `source_case`, `as_of` (`DP1`; `DP2` if a second point is made), `requested` (catalogue ids of the documents and information in the insurer's first outgoing request), `next_action` (action kind), `step` (step id, where the mapping names one), `passage` (verbatim text with page) | ids, kinds | plus `passage` | new |
+| **P-later** (per study case) | `source_case`, `requested_later` (catalogue ids, each with a day offset from the decision point), `passage` | ids, offsets | plus `passage` and dates | new |
+| P and P-later, provenance | `made_by` (`automated_labeller`), `made_at` (before any run on the cut copy), `sha256`; `owner_check`: checked (bool), result (`agrees`, `corrected`), `checked_at` | yes | plus what was corrected | new |
+| **O** | derived from `own_answer.saved` (last before `own_answer.frozen`) | yes | yes | new |
+| **A** (per item of every frozen run, and of the comparator) | `item_id`, `label`, `made_at`, `label_set_sha256` (recorded before the first session) | yes | yes | new |
+| Prior handling | `expert` (pseudonym inside, label outside), `source_case`, `prior_handling` (bool), `basis` (`file_metadata`), set by the automated labeller | flag | flag and basis | new |
+| Status-source hash | `sha256` over P, P-later, the owner's check and A; `recorded_at` (by day 13) | yes | yes | new |
+| Benchmark truth for synthetic cases | `truth.facts`, `truth.documents`, `next_actions` | | | exists for synthetic suites only (`quality/evaluate.py:220`, `score`) |
 
-`schema`, `event_id` (the correction discussed), `coded_reason` (1–6, `none`), `coder`, `tapped_reason_hidden` (true),
-`segment_start_t`, `segment_end_t`. Transcript: content export only. All **new**.
+## 6. Formative-session record (`casepath.study.formative/1`)
+
+`schema`, `case` (`D8`), `date` (day 7), the event log of the session (same kinds as section 3.2; not analysed),
+`changes` (one row per change made on days 7–9: what changed, commit hash, the gesture or note that caused it) and
+`not_changed` (what was deliberately not changed, with one line why). Pseudonymous: counts, kinds and commit hashes;
+content: texts. All **new**.
 
 ## 7. Exports
 
 | Export | Holds | Leaves the insurer |
 |---|---|---|
-| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, decision points as labels and day offsets, cut hashes, leak flags as booleans, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, labels, counts, ratios, scale answers, hashes. No item value, quote, note, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
-| **Content** (`casepath.study.content/1`) | the pseudonymous export plus decision-point dates and the rule's application in words, included-document lists, leak descriptions, item values and texts, before/after values, notes, free-text additions and answers, recall transcripts, absolute times | no |
+| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, decision points as labels and day offsets, cut hashes, leak flags as booleans, status-source ids and hashes, note lengths, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, counts, ratios, hashes. No item value, quote, note text, passage, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
+| **Content** (`casepath.study.content/1`) | the pseudonymous export plus decision-point dates and the rule's application in words, included-document lists, leak descriptions, the verbatim passages behind P and P-later, item values and texts, before/after values, note texts, free-text additions, absolute times | no |
 
 ## 8. Fields kept beyond what the pre-registered analyses need
 
@@ -160,10 +164,9 @@ Kept so that a later, separate paper loses nothing.
 | Raw exposure intervals per item and view | pseudonymous |
 | Every version of an item (frozen value, each correction, each undo, each propagated change) | ids and statuses: pseudonymous; values: content |
 | Every letter-draft change ratio at each copy, not only the last | pseudonymous |
-| The unaided answer and every revision after the reveal | catalogue ids and kinds: pseudonymous; free text: content |
-| Scale answers per item, per occasion and per case | pseudonymous |
-| Blind-coded reasons and the tapped reasons | pseudonymous; transcripts: content |
-| Both label sets (adjudicator and automated labeller) with their hashes | pseudonymous |
+| The own answer, saved states before the freeze at the reveal | catalogue ids and kinds: pseudonymous |
+| Every note with its place and length | place and length: pseudonymous; text: content |
+| Every status source separately (P, P-later, O, A), never merged | pseudonymous; passages: content |
 | The parity manifest per session and per run | pseudonymous |
 | Variation and comparator runs, with their item lists | ids, statuses, hashes: pseudonymous; values: content |
 | Agent run events (`run_events`) of the frozen runs | kinds and counts: pseudonymous; full: content |
@@ -172,20 +175,17 @@ Kept so that a later, separate paper loses nothing.
 
 | Measure (pre-registration section) | Fields |
 |---|---|
-| Final fate (9.1) | `item.corrected`, `item.dismissed`, `correction.undone`, `item.propagated.change = vanished`, `source.opened`, `item.confirmed`, `item.exposed.from_t/to_t`; item `item_id` |
-| Q1 item accuracy, coverage (9.2) | item `item_id`, `chain`, `system`; gold `gold_label`; `omission` |
-| Q2 change shares, over- and under-reliance (9.3) | final fate; gold `gold_label`; item `kind`, `source_case`; event `expert` |
-| Q2 correction correctness | `item.corrected.after` (content), gold `correction_label` |
-| Q2 expert agreement | final fate per `expert` and `item_id` |
-| Q3 accuracy unaided / after reveal / CasePath (9.4) | `unaided.saved` (last before `unaided.frozen`), `post_reveal.revised` (last before `case.closed`), item list; gold `gold_label`, `omission` |
-| Q3 time, corrections, letter | `case.opened`, `case.closed`, `idle.*`, `active_seconds`; counts of `item.corrected` / `dismissed` / `added`; `letter.copied.change_ratio` |
-| Q3 relative AI reliance and self-reliance | decision units from `unaided.saved`, `post_reveal.revised`, item list, gold |
-| Q4 proposals, gate, held-out accuracy (9.5) | `item.added` (`what`, `catalogue_id`, `reason`, `node`), `source_case`, `expert`; frozen runs' `result`; Knowledge item fields (`process/knowledge.py`, `new_item`); replay output; gold |
-| Q5 reasons (9.6) | `reason` on corrections, dismissals, additions; recall `coded_reason`; gold `correction_label` for reason 5 |
-| Run-to-run variation (9.7) | item lists of `role = frozen` and `variation` runs, by `kind:key` |
-| Rater agreement, by item kind | gold `label` per `rater`; item `kind` |
-| Expert consensus beside gold | final fate per `expert` and `item_id`; `gold_label` |
-| Calibration | `case.closed.form`; Q1 accuracy per case copy |
-| Trust, workload | `scale.answered` |
-| Decision point, cut, leaks (sections 3.1, 4.4) | cut record; item `leak_flag`; gold `as_of`, `reference_action`, `alternatives` |
-| Exclusions | `case.closed.capped`, `technical.failure`, session `knew_case_before`, `made_reference_or_gold`, `withdrawn`; gold `undecidable` |
+| Final fate (9.1) | `item.corrected`, `item.dismissed`, `correction.undone`, `item.propagated.change = vanished`, `source.opened`, `item.confirmed`, `item.exposed.from_t/to_t`, `case.attested`; item `item_id` |
+| Settled / unsettled (4.3) | item `kind`; P, P-later, O |
+| Q1 agreement with practice (9.2) | item list (`kind = document`, `next_action`, `step`), `system`, `role`; P, P-later, O |
+| Q2 expert agreement, consensus-changed (9.3) | final fate per `expert` and `item_id`; item `kind` |
+| Q2 reliance on document requests, sign test (9.3) | final fate of document items; `item.added` (`what = document`, `catalogue_id`); P, P-later |
+| Q2 first case: change after the reveal, RAIR and RSR (9.3) | `own_answer.saved` (last before `own_answer.frozen`), final state at `case.closed`, item list; P |
+| Q2 checking behaviour (9.3) | final fate; settled status; item `kind` |
+| Unsettled items beside C and A (9.3) | final fate of the other four experts; A |
+| Q3 work (9.4) | `case.opened`, `case.closed` (`form`), `idle.*`, `active_seconds`; counts of `item.corrected` / `dismissed` / `added`, `note.added`; `letter.copied.change_ratio`; own-answer time from `case.opened` to `own_answer.frozen` |
+| Q4 proposals, gate, held-out agreement (9.5) | `item.added` (`what`, `catalogue_id`, `reason`, `node`), `source_case`, `expert`; frozen runs' `result`; Knowledge item fields (`process/knowledge.py`, `new_item`); replay output; P; development reference scores |
+| Q5 reasons, reason agreement, notes (9.6) | `reason` on corrections, dismissals, additions, by item kind; `note.added` (`where`, `item_id`) |
+| Run-to-run variation (9.6) | item lists of `role = frozen` and `variation` runs, by `kind:key` |
+| Decision point, cut, leaks (3.1, 4.4) | cut record; item `leak_flag` |
+| Exclusions (11) | `case.closed.capped`, `cap.reached`, `technical.failure`, `prior_handling`, `withdrawn` |

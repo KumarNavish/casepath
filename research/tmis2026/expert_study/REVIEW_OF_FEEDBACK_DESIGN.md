@@ -44,3 +44,12 @@ the weakness stays.
 **What the design does well.** One unit (the item) for product and research; reasons chosen by remedy; the fifth reason, which separates CasePath's errors from what it could not know; model-free evaluation; the parity manifest; content-free exports with a guard (`quality/scorecard.py`). These should stay.
 
 **What the product already has.** Stable keys for fact, document, deadline, open point, letter clause and timeline items (`web/app.py:71`); the edit operations that an addition needs (`process/casegraph.py:17`); model-free evaluation of a stored result under any Knowledge and edits (`agents/core.py:366`, `evaluate`); model-free rescoring of stored benchmark runs (`quality/evaluate.py:432`); the parity manifest; the scorecard guard. A replay command that applies a Knowledge version to stored runs does not exist yet.
+
+## After the interface-only decision (2026-11-10)
+
+The owner decided: no expert time beyond the sessions, and all expert input through the interface. The pre-registration
+was rewritten to that design.
+
+- **Moot:** 3 (gold by two adjudicators; status now comes from practice, own answers and consensus, kept apart, and omissions are counted against practice); 7 and 7b (no unaided-versus-aided effort comparison and no accuracy claim for the post-reveal answer; the first case's change is reported as counts against practice); 8 in its "blind labelling" part (the comparator is scored mechanically against practice); 12 in its blind-coding part (reason agreement is now among experts who change the same item); 13 (no scales); 14a (one test, a sign test over experts; no bootstrap over experts).
+- **Still apply:** 1, 1a and 2 (one stored run, the study mode, the append-only log); 4 (structural limits of learning; the three cases share a process family); 5 and 6 (nested gate; leave-one-expert-out as agreement); 7a (the own-answer view shows original files only); 8 (a single-prompt comparator); 9 (consensus is formed under exposure and is never an independent status); 10 (exposure is not reading); 11 (chain items as the primary universe); 12 (one list of six reasons); 14 (privacy); 15 and 15a (scope; content-only Knowledge hash); 16 (one primary measure per question).
+- **New limit this design adds:** without an independent human status, CasePath's errors on facts, deadlines and document status cannot be judged; only document requests, the step and the next action can be settled.
