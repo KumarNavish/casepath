@@ -97,6 +97,20 @@ Five Protekta experts, three Hackathon cases for which Protekta's explicit proce
 - Five experts and three cases of one insurer support estimates with intervals and item-level tests that respect the clustering (permutation by expert and by case), not population claims. The experts' learning effect on new live cases is not observed; it is estimated by replay.
 - Accuracy on the sealed cases is reported next to accuracy on the cases used for development, so any gap is visible.
 
+## Adopted from the paper session's review (binding before the first session)
+
+The paper session reviewed this design against the code (its branch, `research/tmis2026/expert_study/`). These points are adopted; where they differ from the text above, they win.
+
+1. **One stored run per case, the same for all five experts.** Each expert works on their own copy of the case, and every copy points to the frozen run. In a session: no re-check, no model call, Knowledge read-only. A session starts only if the copy's item-list hash equals the frozen run's. Four further runs per case, never shown, give run-to-run variation.
+2. **An append-only study event log**, with the fields of `EVENT_FIELDS.md` and a schema field on every record. It includes the time of every undo, the stored difference each correction propagates, the reason, and an "item added" event, so that what CasePath failed to state is counted.
+3. **Item gold before the first session**, by two adjudicators who are not among the five experts and see no session record: correct, incorrect, or cannot be decided from the file; plus the reference items each run lacks.
+4. **Learning is leave-one-case-out**, with a gate that sees only the training cases' gold and a mechanical rule from correction to proposal. Leave-one-expert-out is reported as agreement, not as learning. It applies only if the three cases share a process family; otherwise the cross-case claim is dropped.
+5. **The unaided answer is structured and frozen at the reveal**, given in a view with the original files only (text read from scans is model output and is not shown there). The unaided case is always the expert's first study case.
+6. **A single-prompt comparator** on the three cases, labelled in the same blind pass; it may run after the sessions.
+7. **The parity manifest hashes Knowledge by content fields only**, so use statistics do not change it.
+8. **For the outside check on synthetic claims:** each round's commit with its source-tree hash, notice before an API route or result field changes, a research-only setting for deterministic case and file ids, and a model-free `python -m casepath replay` that applies a Knowledge version to stored runs.
+9. **Feedback to experts** on which kept items were wrong is given to all five together after the last session, not at the end of a session.
+
 ## Guard rails
 
 - Consent from Mobiliar is in place. Each expert still agrees individually, can withdraw, and can have their records removed.
