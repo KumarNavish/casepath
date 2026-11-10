@@ -611,7 +611,7 @@ function liveDocuments(live) {
   const more = used.map((k) => `<p class="cp-kv">${icon("memory")}${T("Knowledge", "Wissen")} v${esc(k.version)} ${T("used", "genutzt")}: ${esc(clip(knowledgeTitle(k), 48))}</p>`).join("");
   if (!rows && !more) return "";
   return `<section class="cp-card cp-docs" aria-label="${T("Documents this process needs", "Dokumente, die dieser Prozess verlangt")}">
-    <h3>${icon("folder")}${T("Documents", "Dokumente")}<span>${T(`${found} found · ${missing} missing`, `${found} gefunden · ${missing} fehlen`)}</span></h3><ul>${rows}</ul>${more}</section>`;
+    <h3>${icon("folder")}${T("Documents", "Dokumente")}<span>${T(`${found} found · ${missing} missing or unusable`, `${found} gefunden · ${missing} fehlen oder unbrauchbar`)}</span></h3><ul>${rows}</ul>${more}</section>`;
 }
 
 // One point of attention: where the working agent's latest operation is, in the source, the process or the checklist.
@@ -718,7 +718,7 @@ function chain() {
   const ev = S.data.evaluation, r = result() || {};
   const accepted = (r.facts || []).filter((f) => f.verdict === "accepted");
   const present = ev.documents.filter((d) => d.status === "present");
-  const missing = ev.documents.filter((d) => d.status === "missing" && !["suggested", "optional"].includes(d.required));
+  const missing = ev.documents.filter((d) => ["missing", "unusable"].includes(d.status) && !["suggested", "optional"].includes(d.required));
   const knowledge = ((S.data.provenance || {}).knowledge || []).filter((k) => k.applied);
   const sources = (S.data.process.sources || []).filter((s) => !["knowledge", "edit"].includes(s.id));
   const list = (items, empty) => items.length ? `<ul>${items.join("")}</ul>` : `<span class="cp-muted">${empty}</span>`;
@@ -729,7 +729,7 @@ function chain() {
     <section><h4>${icon("evidence")}${T("Current evidence", "Vorhandene Belege")}</h4>${list(present.map((d) => `<li>${esc(d.title)}</li>`), T("None found yet", "Noch keine gefunden"))}</section>
     <section><h4>${icon("doc")}${T("Evidence still needed", "Noch benötigte Belege")}</h4>${list(missing.map((d) => `<li>${esc(d.title)}</li>`), T("Nothing missing", "Nichts fehlt"))}</section>
     <section><h4>${icon("memory")}${T("From earlier cases", "Aus früheren Fällen")}</h4>${list(knowledge.map((k) => `<li>${esc(knowledgeTitle(k))}${k.version ? ` <span class="cp-kv">v${esc(k.version)} ${T("used", "genutzt")}</span>` : ""}</li>`), T("No Knowledge applied", "Kein Wissen angewendet"))}</section>
-    <a class="cp-missing-box" href="#/case/${esc(S.route.id)}/document_finder">${icon("folder", "big")}<span>${T("Documents", "Dokumente")}<br><b>${T(`${missing.length} missing`, `${missing.length} fehlen`)}</b></span>${icon("right")}</a></div>`;
+    <a class="cp-missing-box" href="#/case/${esc(S.route.id)}/document_finder">${icon("folder", "big")}<span>${T("Documents", "Dokumente")}<br><b>${T(`${missing.length} missing or unusable`, `${missing.length} fehlen oder unbrauchbar`)}</b></span>${icon("right")}</a></div>`;
 }
 
 // What an applied Knowledge item is called: its document need, question or note, from the Knowledge base when loaded.
@@ -925,8 +925,8 @@ function documentsView() {
   const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {};
     return d.knowledge ? T("From Knowledge", "Aus dem Wissen") : d.legal_basis ? T(`Required by law (${d.legal_basis})`, `Nach Gesetz verlangt (${d.legal_basis})`)
       : d.edit ? T("Added for this case", "Für diesen Fall ergänzt") : T("From the process", "Aus dem Prozess"); };
-  const missing = ev.documents.filter((d) => d.status === "missing" && !["suggested", "optional"].includes(d.required)).length;
-  return `<h1 class="cp-title">${T("Documents", "Dokumente")} <span class="cp-muted">· ${T(`${missing} missing`, `${missing} fehlen`)}</span></h1>
+  const missing = ev.documents.filter((d) => ["missing", "unusable"].includes(d.status) && !["suggested", "optional"].includes(d.required)).length;
+  return `<h1 class="cp-title">${T("Documents", "Dokumente")} <span class="cp-muted">· ${T(`${missing} missing or unusable`, `${missing} fehlen oder unbrauchbar`)}</span></h1>
     <table class="cp-table"><thead><tr><th>${T("Document", "Dokument")}</th><th>${T("Why", "Wozu")}</th><th>Status</th><th>${T("Proof", "Beleg")}</th><th>${T("Origin", "Herkunft")}</th></tr></thead><tbody>${ev.documents.map((d) => {
       const row = rows[d.document] || {};
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
