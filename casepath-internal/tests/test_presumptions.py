@@ -133,6 +133,17 @@ class PresumptionUseTests(unittest.TestCase):
         work.facts["legal_area"] = {"fact": "legal_area", "status": "unknown", "value": None, "citations": [], "readings": ["loan", None]}
         self.assertNotIn("legal_area", work.presumptions())
 
+    def test_one_reading_that_finds_the_presumed_value_does_not_block_the_presumption(self):
+        from casepath.agents.team import confirm_facts, read_facts
+        from tests.scripted import ScriptedModel
+        happened = [{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        silent = [{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}]
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies="routed", value=True))
+        model = ScriptedModel([], first_reading=happened, second_reading=silent)
+        read_facts(model, work)
+        confirm_facts(model, work)
+        self.assertEqual(work.accepted_facts(), {"landlord_notified": True})  # the defining event, as presumed
+
 
 class ReplyTests(unittest.TestCase):
     def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
