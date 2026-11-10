@@ -239,7 +239,7 @@ function renderRail() {
     const proof = proofFor(f.id);
     return `<button class="cp-source" data-file="${esc(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
       <span class="cp-source-label">${esc(f.name)}<small>${f.extraction && f.extraction.attached_to ? `${T("Attached to", "Anhang von")} ${esc(f.extraction.attached_to)}`
-        : `${T("Received", "Eingegangen")} ${dateText(f.created_at)}`}${f.extraction && f.extraction.pages ? ` · ${f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
+        : `${T("Received", "Eingegangen")} ${dateText(f.created_at)}`}${f.extraction && f.extraction.pages ? ` · ${(f.extraction.kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
       ${proof ? `<span class="cp-proof">${icon("tick")}${esc(proof)}</span>` : ""}
       ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`;
   }).join("");

@@ -188,8 +188,9 @@ def build(case, state, files, lang="de", knowledge=()):
     for f in files:
         extraction = f.get("extraction") or {}
         details = []
-        if extraction.get("pages"):
-            details.append(f"{extraction['pages']} {L['pages'] if extraction['pages'] != 1 else L['page_one']}")
+        shown = len(extraction["kept_pages"]) if extraction.get("kept_pages") else extraction.get("pages")  # a cut file: its kept pages
+        if shown:
+            details.append(f"{shown} {L['pages'] if shown != 1 else L['page_one']}")
         if extraction.get("pages_transcribed"):
             details.append(f"{len(extraction['pages_transcribed'])} {L['scanned']}")
         if extraction.get("attached_to"):

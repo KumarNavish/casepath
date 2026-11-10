@@ -25,7 +25,9 @@ from ..process import casegraph, knowledge as kb, workflows
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
+from ..read import cut
 from ..read.evidence import Evidence
+from ..read.pdfread import PdfError
 from ..read.extract import attachments, extract
 from ..agents.runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
@@ -46,6 +48,11 @@ IMPORTABLE = {".pdf", ".eml", ".msg", ".docx", ".txt", ".png", ".jpg", ".jpeg"}
 class NewCase(BaseModel):
     title: str
     intake: dict = {}
+
+
+class CutRequest(BaseModel):
+    pages: str = Field(min_length=1, max_length=200)  # original page numbers to keep, e.g. "5-10"
+    file: str | None = Field(None, max_length=80)
 
 
 class WorkflowChoice(BaseModel):
@@ -345,6 +352,25 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(404, "Not found.") from None
         except Conflict as error:
             raise HTTPException(409, str(error)) from None
+
+    @app.post("/api/cases/{case_id}/cut", status_code=201)
+    def cut_case(case_id: str, body: CutRequest, who=Depends(user)):
+        """'Stand am': a new case holding only the chosen pages of the case's PDF, read text carried over, nothing read again."""
+        source = found(store.get_case, case_id)
+        pdfs = [f for f in store.list_files(case_id, with_text=True) if f["kind"] == "pdf" and body.file in (None, f["id"])]
+        if len(pdfs) != 1:
+            raise HTTPException(422, "Name the one PDF to cut.")
+        row = pdfs[0]
+        data, _ = store.file_bytes(row["id"])
+        try:
+            keep = cut.parse_pages(body.pages, int(row["extraction"].get("pages") or 0))
+            data = cut.cut_pdf(data, keep)
+        except (ValueError, PdfError) as error:
+            raise HTTPException(422, str(error)) from None
+        case = store.create_case(f"{source['title']} · Auszug S. {body.pages.replace(' ', '')}"[:300], source["intake"], who)
+        store.add_file(case["id"], row["name"], row["media_type"], row["kind"], data,
+                       {**cut.cut_extraction(row["extraction"], keep), "cut_of": {"case": case_id, "file": row["id"]}}, who)
+        return case
 
     @app.put("/api/cases/{case_id}/workflow")
     def choose_workflow(case_id: str, body: WorkflowChoice, who=Depends(user)):
