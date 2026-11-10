@@ -197,6 +197,7 @@ class CaseWork:
         self.routing_presumed = {}  # routing facts presumed because only this case's workflow can apply
         self.limits = []  # agents that stopped at their turn limit, with what they had recorded kept
         self.facts_confirmed = False  # set once the second reading has run
+        self.finder_incomplete = False  # set when the document finder's first pass stops before it finishes
         self.brief = self.process_report = self.result = None
         self.documents_looked_for = False  # set once the document finder has reported
         self._state_shape = self._last_state = None
@@ -228,8 +229,8 @@ class CaseWork:
             # A need nobody has recorded is open until the document finder has looked, then missing, as in the result.
             documents.append({"document": row["document"], "title": row["title"], "step": row["step"], "required": row["required"],
                               **({"questions": [q["question"] for q in row["questions"]]} if row.get("questions") else {}),
-                              "status": (mine or {}).get("status", "missing" if self.documents_looked_for and not self.finder_stopped()
-                                                         else "open"),
+                              "status": (mine or {}).get("status", "missing" if self.documents_looked_for else "open"),
+                              **({"not_checked": True} if self.finder_incomplete and mine is None else {}),
                               "verdict": (mine or {}).get("verdict"),
                               **self._origin(row["document"])})
         return {"path": [{"step": r["step"], "state": r["state"], "confirmed": r["step"] in sure,
@@ -314,12 +315,17 @@ class CaseWork:
         return {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] == "accepted"}
 
     def finder_stopped(self):
-        return any(limit["agent"] == "document_finder" for limit in self.limits)
+        """Whether the document finder's first pass stopped before it finished (a stop on a later pass leaves what the
+        first pass recorded as it was)."""
+        return self.finder_incomplete
+
+    def not_checked(self):
+        return [d for d in self.document_defs if d not in self.documents] if self.finder_incomplete else []
 
     def evaluate(self, checked=True):
-        findings, looked = document_inputs(list(self.documents.values()), self.finder_stopped())
+        findings = document_inputs(list(self.documents.values()), self.not_checked())
         asked, partial = casegraph.whole_findings(self.graph, findings)  # a need for all of something stays asked
-        return casegraph.mark_partial(workflows.evaluate(self.graph, self.accepted_facts(), asked, checked=looked and (checked or bool(self.documents))), partial)
+        return casegraph.mark_partial(workflows.evaluate(self.graph, self.accepted_facts(), asked, checked=checked or bool(self.documents)), partial)
 
     def unverified(self):
         return [("fact", k) for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] is None] + \
@@ -673,20 +679,19 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
     return _stopped(work, agent, "turn_limit", f"The {spec['title'].lower()} did not finish within its turn limit.")
 
 
-def document_inputs(documents, finder_stopped):
-    """The document findings evaluation rests on, and whether a need nobody recorded counts as missing. When the document
-    finder stopped before it finished, a need it never recorded is unchecked, not missing: only the needs it recorded
-    as absent are missing."""
+def document_inputs(documents, not_checked=()):
+    """The document findings evaluation rests on. A need the document finder never looked at, because it stopped before
+    it finished, stays requested (missing) and is marked not checked."""
     findings = {d["document"]: d for d in documents if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
-    if not finder_stopped:
-        return findings, True
-    findings.update({d["document"]: {**d, "status": "missing"} for d in documents if d["status"] == "missing"})
-    return findings, False
+    findings.update({d: {"document": d, "status": "missing", "not_checked": True, "files": [], "citations": []} for d in not_checked})
+    return findings
 
 
 def _stopped(work, agent, reason, message):
     """An agent that stops without a valid report ends with what it has recorded: its findings stay, it reports
     nothing, and the result names the limit."""
+    if agent == "document_finder" and not work.documents_looked_for:
+        work.finder_incomplete = True
     work.limits.append({"agent": agent, "reason": reason, "message": message})
     work.emit(agent, "agent.limit", reason=reason, message=message)
     work.emit(agent, "agent.end", summary=message)
@@ -1187,5 +1192,6 @@ def finalize(work):
             "reply": {"needed": result["reply"]["needed"], "subject": result["reply"]["subject"], "clauses": clauses,
                       "status": "draft_not_sent", "label": "AI-generated draft"},
             "learning": learning, "events": work.events, "usage": work.usage,
+            **({"documents_not_checked": work.not_checked()} if work.not_checked() else {}),
             "warnings": [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items() if f.get("instruction_like")]
             + [{"kind": limit["reason"], "agent": limit["agent"], "text": limit["message"]} for limit in work.limits]}

@@ -166,7 +166,7 @@ def build(case, state, files, lang="de", knowledge=()):
         body.append(_heading(L["documents"]))
         rows = []
         for need in checklist:
-            status = L.get(need["status"], need["status"])
+            status = L.get(need["status"], need["status"]) + (f" ({L['unchecked']})" if need.get("not_checked") else "")
             definition = next((d for d in (state.get("process") or {}).get("documents", []) if d["id"] == need["document"]), {}) or {}
             suggested = L["suggested"] if definition.get("knowledge") else L["suggested_case"]
             note = {"suggested": suggested, "optional": L["optional"], "depends": L["depends"]}.get(need.get("required"))

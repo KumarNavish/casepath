@@ -401,10 +401,9 @@ def evaluate(workflow, knowledge, edits, result, case_id):
     rows = result.get("facts", [])
     facts = {f["fact"]: f["value"] for f in rows if f["status"] == "presumed"}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "established" and f.get("verdict") == "accepted"})
-    stopped = any(w.get("agent") == "document_finder" and w.get("kind") in {"turn_limit", "no_report"} for w in result.get("warnings") or [])
-    findings, looked = document_inputs(result.get("documents", []), stopped)
+    findings = document_inputs(result.get("documents", []), result.get("documents_not_checked") or [])
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
-    evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=looked and bool(result.get("documents"))), partial)
+    evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=bool(result.get("documents"))), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings}
 
 

@@ -54,3 +54,10 @@ class ProductTextTests(unittest.TestCase):
         state = {"run": {"result": result}, "process": work.graph}
         self.assertIn("Nicht abgeschlossen", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="de")))
         self.assertIn("Not finished", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="en")))
+
+
+class NotCheckedTests(unittest.TestCase):
+    def test_a_need_the_finder_did_not_reach_shows_as_missing_and_not_checked(self):
+        need = {"document": "d1", "title": "Mietvertrag", "required": "yes", "status": "missing", "not_checked": True, "citations": []}
+        state = {"run": {"result": {"facts": [], "documents": [], "warnings": [], "evaluation": {"documents": [need]}}}, "process": {"documents": []}}
+        self.assertIn("fehlt (nicht geprüft)", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="de")))
