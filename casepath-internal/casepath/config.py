@@ -71,12 +71,20 @@ class Settings:
     run_token_budget: int = 4_000_000
     organisation: str | None = None  # whose case handlers the agents work for (CASEPATH_ORGANISATION); None keeps the default
     writing_language: str | None = None  # how agents choose the language they write in (CASEPATH_WRITING_LANGUAGE)
+    run_scope: str = "full"  # CASEPATH_RUN_SCOPE: "full", or "checklist" for only the steps that can decide the checklist
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
     volume: str | None = None
+
+
+def _scope(value):
+    scope = (value or "full").strip().lower()
+    if scope not in {"full", "checklist"}:
+        raise SettingsError("CASEPATH_RUN_SCOPE is full or checklist")
+    return scope
 
 
 def _flag(env, name, default):
@@ -137,6 +145,7 @@ def load_settings(env=None):
         run_token_budget=int(env.get("CASEPATH_RUN_TOKEN_BUDGET", "4000000")),
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
+        run_scope=_scope(env.get("CASEPATH_RUN_SCOPE")),
         identity_format=identity_format,
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),

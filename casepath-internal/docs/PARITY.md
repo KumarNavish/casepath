@@ -120,12 +120,13 @@ The changes below, made after those, also alter behaviour for existing workflows
   - `readings`, `reason_code` and `flag` on facts;
   - `note_codes`, `replaces` and `second` on documents;
   - `legal_basis` and, on suggestions, `questions` on checklist rows;
-  - `answer_code`, `warnings` kinds (`turn_limit`, `no_report`, `reading_failed`);
+  - `answer_code`, `warnings` kinds (`turn_limit`, `no_report`, `reading_failed`, `document_check_failed`);
   - routing `presumed`, `other_topic` and `reason`.
 
   Tool error texts now name the bound or the missing and unexpected fields.
 
 These changes change nothing unless a workflow or the configuration uses them:
+- the checklist-only run (`CASEPATH_RUN_SCOPE=checklist`, default `full`; the last commit, which can be dropped on its own): a run does only what can decide the checklist. That is routing, the two readings, the document judgments (finder, second judgment and source checker) when the case has more than one file, and evaluation. The claim-reader brief, the process builder and the result checker are skipped. A one-file case is taken as the claim itself, so its document needs count as missing; a one-file dossier needs the full run. The result names each skipped agent and why (`skipped`, `scope`), and the parity manifest lists the setting.
 - presumptions (`presumptions` in a workflow);
 - sufficiency checks (`must_show` on a document need);
 - the configurable organisation and writing language (the defaults keep the earlier text).
