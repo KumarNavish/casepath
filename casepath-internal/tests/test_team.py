@@ -557,3 +557,19 @@ class ChecklistScopeTests(unittest.TestCase):
         self.assertIn("run_scope", json.dumps(non_default_settings(load_settings({"CASEPATH_RUN_SCOPE": "checklist"}))))
         with self.assertRaises(SettingsError):
             load_settings({"CASEPATH_RUN_SCOPE": "fast"})
+
+
+class ChecklistScopeFixupTests(unittest.TestCase):
+    def test_with_active_knowledge_the_process_builder_runs_and_a_one_file_dossier_is_searched(self):
+        from casepath.agents.team import CaseWork
+        item = kb.set_status(kb.new_item("example-defect", "document_need", {"title": "Ventilation record", "why": "Shows ventilation.", "step": "assess"},
+                                         origin={"kind": "case", "by": "test", "case_id": "c0"}), "active", by="expert")
+        team = CaseTeam(ScriptedModel([]), scope="checklist")
+        with_knowledge = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE, knowledge=[item])
+        self.assertNotIn("process_builder", [s["agent"] for s in team._skipped(with_knowledge)])
+        plain = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        self.assertIn("process_builder", [s["agent"] for s in team._skipped(plain)])
+        dossier = CaseWork(case=CASE, files=[{**FILES[0], "segments": [{"first_page": 1, "last_page": 2, "title": "Brief"}]}], base_workflow=FIXTURE)
+        self.assertNotIn("document_finder", [s["agent"] for s in team._skipped(dossier)])
+        single = CaseWork(case=CASE, files=FILES[:1], base_workflow=FIXTURE)
+        self.assertIn("document_finder", [s["agent"] for s in team._skipped(single)])
