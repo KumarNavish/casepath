@@ -1,0 +1,5374 @@
+{
+ "pack": "original extracted theft evidence rules",
+ "rules": [
+  {
+   "rule_id": "overlay_rule_001",
+   "title": "Notify the insurer without delay of the loss event.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_001",
+    "text": "A feared insured event has occurred and the entitled claimant is aware of the event and the insurance claim.",
+    "cited": [
+     "theft-source-0040#p1",
+     "theft-source-0050#p1",
+     "theft-source-0097#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_001.f01",
+     "statement": "The insurer was notified promptly after awareness of the event and claim.",
+     "cited": [
+      "theft-source-0039#p1",
+      "theft-source-0040#p2",
+      "theft-source-0050#p1",
+      "theft-source-0100#p1",
+      "theft-source-0107#p1",
+      "theft-source-0119#p1",
+      "theft-source-0187#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_001.f01.c01",
+       "must_show": "The date and time of the claimant's awareness of the event and insurance claim.",
+       "cited": [
+        "theft-source-0050#p1"
+       ],
+       "routes": []
+      },
+      {
+       "capability_id": "overlay_rule_001.f01.c02",
+       "must_show": "That notice of the loss was given to the insurer and when it was received.",
+       "cited": [
+        "theft-source-0039#p1",
+        "theft-source-0040#p2",
+        "theft-source-0100#p1",
+        "theft-source-0107#p1",
+        "theft-source-0119#p1",
+        "theft-source-0187#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed and submitted insurer claim-notification form is the catalogue's insurer-directed loss-notice record and supports that notice was given through the specified submission channel."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ],
+         "why": "Where no insurer-specific form is required, this catalogue entry is the text-provable written loss notification and supports that notice was given to the insurer."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_001",
+    "must_show": "whether this source-defined applicability condition holds: A feared insured event has occurred and the entitled claimant is aware of the event and the insurance claim.",
+    "cited": [
+     "theft-source-0040#p1",
+     "theft-source-0050#p1",
+     "theft-source-0097#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+      ],
+      "why": "A completed and submitted claim notification evidences that the claimant knew of the reported loss event and was asserting an insurance claim."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+      ],
+      "why": "Where the insurer has not required its own form, the written notification is the source-compatible evidence that the claimant reported the known loss event and insurance claim."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_002",
+   "title": "Notify the police without delay and request an official investigation.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_002",
+    "text": "The loss is connected with theft, attempted theft, robbery, or a theft incident requiring investigation.",
+    "cited": [
+     "theft-source-0028#p1",
+     "theft-source-0103#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_002.f01",
+     "statement": "The theft-related loss was reported to police promptly.",
+     "cited": [
+      "theft-source-0019#p1",
+      "theft-source-0043#p1",
+      "theft-source-0082#p2",
+      "theft-source-0110#p1",
+      "theft-source-0113#p1",
+      "theft-source-0127#p1",
+      "theft-source-0152#p1",
+      "theft-source-0168#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_002.f01.c01",
+       "must_show": "That the theft-related event was reported to police, including the reporting date and event details.",
+       "cited": [
+        "theft-source-0019#p1",
+        "theft-source-0110#p1",
+        "theft-source-0168#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+         ],
+         "why": "The police report is the catalogue record of a theft report and expressly evidences the reporting person and reporting date, together with the police authority details."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_002.f02",
+     "statement": "An official investigation was requested.",
+     "cited": [
+      "theft-source-0019#p2",
+      "theft-source-0043#p2",
+      "theft-source-0082#p3",
+      "theft-source-0113#p2",
+      "theft-source-0127#p2",
+      "theft-source-0152#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_002.f02.c01",
+       "must_show": "That an official investigation was requested and its status.",
+       "cited": [
+        "theft-source-0019#p2",
+        "theft-source-0043#p2",
+        "theft-source-0082#p3",
+        "theft-source-0113#p2",
+        "theft-source-0127#p2",
+        "theft-source-0152#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_002",
+    "must_show": "whether this source-defined applicability condition holds: The loss is connected with theft, attempted theft, robbery, or a theft incident requiring investigation.",
+    "cited": [
+     "theft-source-0028#p1",
+     "theft-source-0103#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+      ],
+      "why": "The catalogue police report is expressly a report on theft and establishes a theft incident for which the police-notification rule applies."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_003",
+   "title": "Preserve crime-scene traces and damaged property; do not alter, remove, dispose of, or use assistance services without the required consent, except where mitigation, public interest, or imminent danger permits action.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_003",
+    "text": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+    "cited": [
+     "theft-source-0043#p3",
+     "theft-source-0096#p1",
+     "theft-source-0156#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_003.f01",
+     "statement": "Crime-scene traces were preserved, or authorized alteration was justified.",
+     "cited": [
+      "theft-source-0043#p3",
+      "theft-source-0043#p4",
+      "theft-source-0072#p1",
+      "theft-source-0127#p3",
+      "theft-source-0127#p4"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_003.f01.c01",
+       "must_show": "The condition of crime-scene traces and, if changed, the authority's consent or the reason permitting the change.",
+       "cited": [
+        "theft-source-0033#p2",
+        "theft-source-0033#p3",
+        "theft-source-0033#p4",
+        "theft-source-0033#p5",
+        "theft-source-0043#p3",
+        "theft-source-0127#p3"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Police consent to the removal or alteration of the Tatspuren"
+         ],
+         "why": "This is the catalogue's express authority for alteration or removal of crime-scene traces, matching the source rule's police-consent exception."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_003.f02",
+     "statement": "Damaged items were preserved pending assessment, or any change, disposal, or assistance use was authorized or justified.",
+     "cited": [
+      "theft-source-0096#p2",
+      "theft-source-0136#p1",
+      "theft-source-0136#p2",
+      "theft-source-0148#p1",
+      "theft-source-0148#p2",
+      "theft-source-0156#p2",
+      "theft-source-0156#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_003.f02.c01",
+       "must_show": "The pre-assessment condition of damaged property and any insurer consent, mitigation necessity, public-interest basis, or imminent danger justifying a change.",
+       "cited": [
+        "theft-source-0096#p2",
+        "theft-source-0136#p1",
+        "theft-source-0136#p2",
+        "theft-source-0148#p1",
+        "theft-source-0148#p2",
+        "theft-source-0156#p2",
+        "theft-source-0156#p3"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's consent to alteration of the damaged items before the loss is determined"
+         ],
+         "why": "This is the catalogue's express insurer consent for a pre-determination alteration of damaged items, matching the source rule's consent-based exception."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_003",
+    "must_show": "whether this source-defined applicability condition holds: Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+    "cited": [
+     "theft-source-0043#p3",
+     "theft-source-0096#p1",
+     "theft-source-0156#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Police consent to the removal or alteration of the Tatspuren"
+      ],
+      "why": "This source-named consent directly evidences the contemplated removal or alteration of crime-scene traces."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Insurer's consent to alteration of the damaged items before the loss is determined"
+      ],
+      "why": "This source-named consent directly evidences a contemplated alteration of damaged property before loss determination."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_004",
+   "title": "Take reasonable preservation, salvage, mitigation, perpetrator-identification, and recovery measures; obtain and follow insurer instructions unless imminent danger applies.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_004",
+    "text": "After the feared event occurs.",
+    "cited": [
+     "theft-source-0116#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_004.f01",
+     "statement": "Reasonable measures were taken to mitigate loss, preserve and recover property, and identify the perpetrator.",
+     "cited": [
+      "theft-source-0056#p1",
+      "theft-source-0099#p1",
+      "theft-source-0116#p1",
+      "theft-source-0170#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_004.f01.c01",
+       "must_show": "The mitigation, preservation, recovery, and perpetrator-identification measures taken and their timing.",
+       "cited": [
+        "theft-source-0056#p1",
+        "theft-source-0099#p1",
+        "theft-source-0116#p1",
+        "theft-source-0170#p1"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_004.f02",
+     "statement": "Applicable insurer instructions were obtained and followed, or imminent danger justified acting without them.",
+     "cited": [
+      "theft-source-0100#p2",
+      "theft-source-0116#p3",
+      "theft-source-0116#p4",
+      "theft-source-0170#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_004.f02.c01",
+       "must_show": "The insurer's instructions and compliance with them, or facts establishing imminent danger.",
+       "cited": [
+        "theft-source-0100#p2",
+        "theft-source-0116#p3",
+        "theft-source-0116#p4",
+        "theft-source-0170#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+         ],
+         "why": "This document directly establishes the insurer's measures instruction and compliance with it."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_004",
+    "must_show": "whether this source-defined applicability condition holds: After the feared event occurs.",
+    "cited": [
+     "theft-source-0116#p2"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+      ],
+      "why": "The completed loss notification establishes the reported occurrence of the feared event, which triggers the post-event mitigation rule."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+      ],
+      "why": "Where a proprietary form is not required, the written loss notification establishes the reported occurrence of the feared event."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_005",
+   "title": "Establish that household-contents damage was caused by burglary theft, robbery, or simple theft, including vandalism where applicable, and was conclusively proven by traces, witnesses, or circumstances.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_005",
+    "text": "A claim seeks household-contents coverage for theft-related damage.",
+    "cited": [
+     "theft-source-0124#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_005.f01",
+     "statement": "A qualifying theft-related event caused household-contents damage, including damage even if no item was stolen where applicable.",
+     "cited": [
+      "theft-source-0025#p2",
+      "theft-source-0025#p4",
+      "theft-source-0158#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_005.f01.c01",
+       "must_show": "The event mechanism, affected household contents, and theft-related or vandalism damage.",
+       "cited": [
+        "theft-source-0025#p2",
+        "theft-source-0025#p4",
+        "theft-source-0158#p2"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_005.f02",
+     "statement": "The occurrence and damage are conclusively supported by traces, witnesses, or circumstances.",
+     "cited": [
+      "theft-source-0005#p1",
+      "theft-source-0025#p1",
+      "theft-source-0067#p1",
+      "theft-source-0124#p2",
+      "theft-source-0146#p1",
+      "theft-source-0158#p1",
+      "theft-source-0195#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_005.f02.c01",
+       "must_show": "Traces, witness information, or circumstances that plausibly establish the occurrence and damage.",
+       "cited": [
+        "theft-source-0005#p1",
+        "theft-source-0025#p1",
+        "theft-source-0067#p1",
+        "theft-source-0124#p2",
+        "theft-source-0146#p1",
+        "theft-source-0158#p1",
+        "theft-source-0195#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_005",
+    "must_show": "whether this source-defined applicability condition holds: A claim seeks household-contents coverage for theft-related damage.",
+    "cited": [
+     "theft-source-0124#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+       "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+      ],
+      "why": "The Hausrat claim notification establishes a household-contents claim, and the theft police report establishes that the reported damage is theft-related."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_006",
+   "title": "Classify the theft as burglary theft, robbery, simple theft at the insured location, simple theft away from home, or breakout burglary theft, based on the event facts.",
+   "process_node": "n02",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_006",
+    "text": "The reported event is theft.",
+    "cited": [
+     "theft-source-0028#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_006.f01",
+     "statement": "The facts establish or exclude forced entry, forced opening, or use of correct keys or codes obtained through burglary theft or robbery.",
+     "cited": [
+      "theft-source-0016#p1",
+      "theft-source-0022#p1",
+      "theft-source-0022#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_006.f01.c01",
+       "must_show": "How entry or access was gained and whether a container was forcibly opened.",
+       "cited": [
+        "theft-source-0016#p1",
+        "theft-source-0022#p1",
+        "theft-source-0022#p2"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_006.f02",
+     "statement": "The facts establish or exclude robbery through threatened or actual violence or inability to resist.",
+     "cited": [
+      "theft-source-0138#p1",
+      "theft-source-0138#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_006.f02.c01",
+       "must_show": "Any threatened or actual violence, or inability to resist due to unconsciousness, accident, or death.",
+       "cited": [
+        "theft-source-0138#p1",
+        "theft-source-0138#p2"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_006.f03",
+     "statement": "The event location and any forced breakout are established for the applicable theft classification.",
+     "cited": [
+      "theft-source-0002#p1",
+      "theft-source-0054#p1",
+      "theft-source-0058#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_006.f03.c01",
+       "must_show": "Where the theft occurred and whether perpetrators forcibly broke out of a building or room.",
+       "cited": [
+        "theft-source-0054#p1",
+        "theft-source-0058#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_006",
+    "must_show": "whether this source-defined applicability condition holds: The reported event is theft.",
+    "cited": [
+     "theft-source-0028#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+      ],
+      "why": "The catalogue police report expressly concerns theft and establishes that the reported event is theft, triggering the theft-classification rule."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_007",
+   "title": "Establish that the theft occurred outside the insured location, was neither burglary theft nor robbery, and that separate supplementary insurance was concluded and listed in the policy; apply the policy's agreed sum insured.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_007",
+    "text": "Coverage is sought for simple theft away from home.",
+    "cited": [
+     "theft-source-0122#p1",
+     "theft-source-0162#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_007.f01",
+     "statement": "The simple theft occurred away from the policy-designated locations.",
+     "cited": [
+      "theft-source-0122#p1",
+      "theft-source-0162#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_007.f01.c01",
+       "must_show": "The location of the theft relative to the policy-designated locations.",
+       "cited": [
+        "theft-source-0122#p1",
+        "theft-source-0162#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The completed claim form records the reported theft location and loss facts; the policy identifies the designated insured locations, allowing the location to be assessed as away from home."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_007.f02",
+     "statement": "The applicable supplementary theft coverage was requested, listed in the policy, and has an agreed sum insured.",
+     "cited": [
+      "theft-source-0024#p1",
+      "theft-source-0160#p1",
+      "theft-source-0160#p2",
+      "theft-source-0162#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_007.f02.c01",
+       "must_show": "That the applicable supplementary coverage was requested, forms part of the policy, and states its sum insured.",
+       "cited": [
+        "theft-source-0024#p1",
+        "theft-source-0160#p1",
+        "theft-source-0160#p2",
+        "theft-source-0162#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The policy schedule establishes that the supplementary theft cover forms part of the policy and states its agreed sum insured."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_007",
+    "must_show": "whether this source-defined applicability condition holds: Coverage is sought for simple theft away from home.",
+    "cited": [
+     "theft-source-0122#p1",
+     "theft-source-0162#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The claim notification records the reported theft circumstances, while the policy establishes the designated locations, whether supplementary cover was concluded, and the agreed insured sum."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "Where the insurer has not required its own form, the written notification records the reported theft circumstances and the policy establishes the insured locations, supplementary cover, and agreed sum."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_008",
+   "title": "Establish that the event occurred at a location designated in the policy within Switzerland.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_008",
+    "text": "The claim concerns theft-related household-contents damage at home.",
+    "cited": [
+     "theft-source-0025#p3",
+     "theft-source-0149#p1",
+     "theft-source-0154#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_008.f01",
+     "statement": "The loss location is a policy-designated insured location within Switzerland.",
+     "cited": [
+      "theft-source-0025#p3",
+      "theft-source-0149#p1",
+      "theft-source-0154#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_008.f01.c01",
+       "must_show": "The loss location and its inclusion among the policy-designated locations.",
+       "cited": [
+        "theft-source-0025#p3",
+        "theft-source-0149#p1",
+        "theft-source-0154#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The completed claim form supplies the loss location, while the policy schedule establishes the locations designated as insured locations."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_008",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns theft-related household-contents damage at home.",
+    "cited": [
+     "theft-source-0025#p3",
+     "theft-source-0149#p1",
+     "theft-source-0154#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The claim notification supplies the reported event location, and the policy identifies the insured locations within Switzerland against which that location is assessed."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "Where no insurer form is required, the written notification supplies the reported event location and the policy identifies the designated insured locations."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_009",
+   "title": "Classify the item as jewellery for the applicable coverage limitation.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_009",
+    "text": "The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+    "cited": [
+     "theft-source-0010#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_009.f01",
+     "statement": "The watch type and individual value are established.",
+     "cited": [
+      "theft-source-0010#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_009.f01.c01",
+       "must_show": "That the item is a wristwatch or pocket watch and its individual value exceeds CHF 5,000.",
+       "cited": [
+        "theft-source-0010#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The signed valued inventory identifies affected items and their stated individual values, permitting establishment of the watch type and that its individual value exceeds CHF 5,000."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ],
+         "why": "An original purchase voucher for the affected watch establishes the item as a wristwatch or pocket watch and documents its individual purchase value."
+        },
+        {
+         "route_id": "r3",
+         "documents": [
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ],
+         "why": "The expert valuation establishes the identity and individual value of the scheduled valuable, including whether the CHF 5,000 threshold is exceeded."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_009",
+    "must_show": "whether this source-defined applicability condition holds: The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+    "cited": [
+     "theft-source-0010#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+      ],
+      "why": "An original purchase voucher for the affected watch can establish both its identity as a wristwatch or pocket watch and its individual value for applying the CHF 5,000 jewellery classification threshold."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+      ],
+      "why": "The signed valued inventory can identify the affected watch and state its individual value, allowing application of the specified classification threshold."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_010",
+   "title": "Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known.",
+   "process_node": "n03",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_010.f01",
+     "statement": "The date and place of loss are established.",
+     "cited": [
+      "theft-source-0027#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_010.f01.c01",
+       "must_show": "The date and location of the loss.",
+       "cited": [
+        "theft-source-0027#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed claim notification form records the loss date and place in the reported loss details."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_010.f02",
+     "statement": "All relevant loss circumstances were communicated fully, correctly, voluntarily, and in good time, including to relevant authorities and experts.",
+     "cited": [
+      "theft-source-0094#p1",
+      "theft-source-0112#p1",
+      "theft-source-0112#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_010.f02.c01",
+       "must_show": "Complete, factually accurate, and timely information concerning the loss circumstances and consequences.",
+       "cited": [
+        "theft-source-0094#p1",
+        "theft-source-0112#p1",
+        "theft-source-0112#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed claim form is the catalogue document for recording the loss date and place, loss circumstances, additional information, and available information about the responsible person."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_010.f03",
+     "statement": "The person who caused the damage is identified where known.",
+     "cited": [
+      "theft-source-0114#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_010.f03.c01",
+       "must_show": "The identity of the person responsible for the damage, or the information available about that person.",
+       "cited": [
+        "theft-source-0114#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+         ],
+         "why": "This is the specifically identified claim-form section that records the person responsible for the loss and the available liability-insurance details."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_011",
+   "title": "Establish the occurrence of the insured event, the existence and value of affected insured items at the event, and the amount of loss.",
+   "process_node": "n03",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_011.f01",
+     "statement": "The insured event occurred.",
+     "cited": [
+      "theft-source-0177#p1",
+      "theft-source-0181#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_011.f01.c01",
+       "must_show": "That the insured event occurred.",
+       "cited": [
+        "theft-source-0177#p1",
+        "theft-source-0181#p1"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_011.f02",
+     "statement": "Affected insured items existed at the event and their values are established independently of insured sums.",
+     "cited": [
+      "theft-source-0139#p1",
+      "theft-source-0166#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_011.f02.c01",
+       "must_show": "The existence, identity, and value of each affected item at the time of the event.",
+       "cited": [
+        "theft-source-0139#p1",
+        "theft-source-0166#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The signed inventory identifies items present before and after the event, identifies affected items, and states their values independently of the insured sums."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_011.f03",
+     "statement": "The claimed loss amount is established.",
+     "cited": [
+      "theft-source-0037#p1",
+      "theft-source-0063#p1",
+      "theft-source-0140#p1",
+      "theft-source-0177#p1",
+      "theft-source-0181#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_011.f03.c01",
+       "must_show": "The amount of loss attributable to each affected item or damage component.",
+       "cited": [
+        "theft-source-0037#p1",
+        "theft-source-0063#p1",
+        "theft-source-0140#p1",
+        "theft-source-0177#p1",
+        "theft-source-0181#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The inventory itemises the affected items and gives their values, establishing loss amounts by affected item or component."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ],
+         "why": "The original vouchers establish the effective costs claimed for affected items and for insured cost heads."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_012",
+   "title": "Provide all known information useful to establish the event circumstances and consequences.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_012",
+    "text": "The insurer has requested information or support for loss handling.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0051#p1",
+     "theft-source-0120#p1",
+     "theft-source-0134#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_012.f01",
+     "statement": "Requested information concerning known event circumstances and consequences was provided.",
+     "cited": [
+      "theft-source-0051#p1",
+      "theft-source-0109#p1",
+      "theft-source-0120#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_012.f01.c01",
+       "must_show": "All known facts useful for determining the event circumstances and consequences.",
+       "cited": [
+        "theft-source-0051#p1",
+        "theft-source-0120#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed claim notification form supplies the recorded loss circumstances and related information for insurer loss handling."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ],
+         "why": "Where no insurer form is required, the written notification route records and provides known event circumstances and consequences in a provable text form."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_012",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has requested information or support for loss handling.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0051#p1",
+     "theft-source-0120#p1",
+     "theft-source-0134#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_013",
+   "title": "Prepare a signed inventory of items existing before and after the event and affected or damaged items, including value information.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_013",
+    "text": "The insurer has requested an inventory or itemized list.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0086#p1",
+     "theft-source-0134#p1",
+     "theft-source-0151#p1",
+     "theft-source-0163#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_013.f01",
+     "statement": "The requested signed inventory identifies pre-event, post-event, affected, and damaged items and their values.",
+     "cited": [
+      "theft-source-0048#p2",
+      "theft-source-0086#p2",
+      "theft-source-0134#p2",
+      "theft-source-0147#p1",
+      "theft-source-0151#p2",
+      "theft-source-0163#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_013.f01.c01",
+       "must_show": "The identity and value of items before and after the event and of affected or damaged items.",
+       "cited": [
+        "theft-source-0048#p2",
+        "theft-source-0086#p2",
+        "theft-source-0134#p2",
+        "theft-source-0147#p1",
+        "theft-source-0163#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The signed valued inventory directly establishes the identity and value of items present before and after the event and those affected or damaged."
+        }
+       ]
+      },
+      {
+       "capability_id": "overlay_rule_013.f01.c02",
+       "must_show": "That the inventory was signed when a signed inventory was requested.",
+       "cited": [
+        "theft-source-0086#p2",
+        "theft-source-0151#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "This catalogue entry is expressly a signed inventory and therefore establishes that the requested inventory was signed."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_013",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has requested an inventory or itemized list.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0086#p1",
+     "theft-source-0134#p1",
+     "theft-source-0151#p1",
+     "theft-source-0163#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+      ],
+      "why": "This is the source-described signed inventory, covering the pre-event and post-event items, affected or damaged items, and their values."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_014",
+   "title": "Provide original purchase evidence for affected items where required.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_014",
+    "text": "Original receipts or specified supporting evidence have been requested, or the claim concerns damaged or stolen items.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0109#p1",
+     "theft-source-0134#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_014.f01",
+     "statement": "Original purchase evidence for affected items was supplied where required.",
+     "cited": [
+      "theft-source-0048#p3",
+      "theft-source-0134#p3",
+      "theft-source-0176#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_014.f01.c01",
+       "must_show": "The purchase, identity, and acquisition value of each affected item.",
+       "cited": [
+        "theft-source-0048#p3",
+        "theft-source-0134#p3",
+        "theft-source-0176#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ],
+         "why": "Original purchase vouchers establish the purchase, identity, and acquisition value of each affected item."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_014",
+    "must_show": "whether this source-defined applicability condition holds: Original receipts or specified supporting evidence have been requested, or the claim concerns damaged or stolen items.",
+    "cited": [
+     "theft-source-0048#p1",
+     "theft-source-0109#p1",
+     "theft-source-0134#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+      ],
+      "why": "This catalogue entry is the required original purchase evidence for affected items, including effective costs claimed under insured cost heads."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_015",
+   "title": "Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_015",
+    "text": "The claim concerns a bicycle.",
+    "cited": [
+     "theft-source-0060#p1",
+     "theft-source-0071#p1",
+     "theft-source-0123#p1",
+     "theft-source-0173#p1",
+     "theft-source-0197#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_015.f01",
+     "statement": "The bicycle's frame number and locked status are established.",
+     "cited": [
+      "theft-source-0060#p1",
+      "theft-source-0173#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_015.f01.c01",
+       "must_show": "The bicycle frame number.",
+       "cited": [
+        "theft-source-0173#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed claim form is the source-defined document containing the bicycle frame-number field."
+        }
+       ]
+      },
+      {
+       "capability_id": "overlay_rule_015.f01.c02",
+       "must_show": "Whether the bicycle was locked.",
+       "cited": [
+        "theft-source-0060#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The completed claim form is the source-defined document that records whether the bicycle was locked."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_015.f02",
+     "statement": "The bicycle's purchase is established.",
+     "cited": [
+      "theft-source-0071#p1",
+      "theft-source-0197#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_015.f02.c01",
+       "must_show": "The bicycle's purchase and purchase value.",
+       "cited": [
+        "theft-source-0071#p1",
+        "theft-source-0197#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)"
+         ],
+         "why": "The bicycle-specific purchase voucher establishes the bicycle's purchase and purchase value."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_015.f03",
+     "statement": "The bicycle repair or loss amount and its visual condition are established.",
+     "cited": [
+      "theft-source-0123#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_015.f03.c01",
+       "must_show": "A detailed estimate of repair or replacement costs.",
+       "cited": [
+        "theft-source-0123#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+         ],
+         "why": "The source expressly requires a detailed cost estimate with a photograph; this catalogue entry directly establishes the required bicycle repair or replacement cost estimate."
+        }
+       ]
+      },
+      {
+       "capability_id": "overlay_rule_015.f03.c02",
+       "must_show": "The visual condition of the damaged or stolen bicycle or part.",
+       "cited": [
+        "theft-source-0123#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+         ],
+         "why": "The source expressly names a photo of the damaged or stolen bicycle or part, and this entry directly provides that visual evidence."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_015",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns a bicycle.",
+    "cited": [
+     "theft-source-0060#p1",
+     "theft-source-0071#p1",
+     "theft-source-0123#p1",
+     "theft-source-0173#p1",
+     "theft-source-0197#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+       "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+       "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "why": "The claim form preserves the source-defined bicycle fields for locked status and frame number; the separately named bicycle purchase voucher establishes purchase evidence; and the expressly required detailed estimate with photograph establishes the damage/theft evidence."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_016",
+   "title": "Provide evidence establishing valuables' acquisition, payment, and value.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_016",
+    "text": "The claim concerns valuables insurance.",
+    "cited": [
+     "theft-source-0191#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_016.f01",
+     "statement": "The claimed valuables and their value are established.",
+     "cited": [
+      "theft-source-0191#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_016.f01.c01",
+       "must_show": "The acquisition, payment, and value of each claimed valuable.",
+       "cited": [
+        "theft-source-0191#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Receipt for the scheduled valuable (Quittung / Rechnung)",
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ],
+         "why": "The receipt/invoice establishes acquisition and payment, while the expressly named expert valuation establishes value; together they satisfy the source's invoices, receipts, and valuations evidence need."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_016",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns valuables insurance.",
+    "cited": [
+     "theft-source-0191#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Receipt for the scheduled valuable (Quittung / Rechnung)",
+       "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+      ],
+      "why": "The receipt/invoice establishes acquisition and payment, while the expressly matching expert valuation or estimate establishes the valuable's value, reflecting the source's named invoices, receipts, and valuations."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_017",
+   "title": "Provide medical evidence and release the treating doctor from confidentiality.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_017",
+    "text": "The loss involves bodily injury or an accident involving personal injury.",
+    "cited": [
+     "theft-source-0057#p1",
+     "theft-source-0079#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_017.f01",
+     "statement": "The bodily injury and relevant medical facts are established.",
+     "cited": [
+      "theft-source-0079#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_017.f01.c01",
+       "must_show": "The bodily injury, diagnosis, and treatment-related facts.",
+       "cited": [
+        "theft-source-0079#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured"
+         ],
+         "why": "The source expressly requires an Arztzeugnis for bodily injury, and this entry establishes the injury, diagnosis, and treatment-related medical facts."
+        }
+       ]
+      },
+      {
+       "capability_id": "overlay_rule_017.f01.c02",
+       "must_show": "That the treating doctor was released from confidentiality.",
+       "cited": [
+        "theft-source-0057#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Release of the treating doctor from professional confidentiality"
+         ],
+         "why": "The source expressly requires release of the treating doctor from confidentiality, which this entry directly establishes."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_017",
+    "must_show": "whether this source-defined applicability condition holds: The loss involves bodily injury or an accident involving personal injury.",
+    "cited": [
+     "theft-source-0057#p1",
+     "theft-source-0079#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+       "Release of the treating doctor from professional confidentiality"
+      ],
+      "why": "These documents jointly provide the specified medical evidence for bodily injury and the required release of the treating doctor from confidentiality."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_018",
+   "title": "Determine whether other insurance, including liability insurance or multiple insurance for the same items, perils, and period, exists.",
+   "process_node": "n04",
+   "requirement_kind": "decision_requirement",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_018.f01",
+     "statement": "Other insurance and liability-insurance status are established.",
+     "cited": [
+      "theft-source-0029#p1",
+      "theft-source-0130#p1",
+      "theft-source-0172#p1",
+      "theft-source-0186#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_018.f01.c01",
+       "must_show": "Whether other insurance or liability insurance exists and, if so, the insurer, covered items, perils, and period.",
+       "cited": [
+        "theft-source-0029#p1",
+        "theft-source-0130#p1",
+        "theft-source-0172#p1",
+        "theft-source-0186#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_019",
+   "title": "Notify the insurer immediately of the multiple insurance; limit the aggregate entitlement to one claim per loss.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_019",
+    "text": "Multiple insurance exists for the same interest, risks, and period.",
+    "cited": [
+     "theft-source-0172#p1",
+     "theft-source-0186#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_019.f01",
+     "statement": "The multiple insurance was reported promptly.",
+     "cited": [
+      "theft-source-0172#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_019.f01.c01",
+       "must_show": "That the multiple insurance was reported to the insurer and when.",
+       "cited": [
+        "theft-source-0172#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case"
+         ],
+         "why": "The completed double-insurance declaration is the catalogue form specifically identifying the other insurance and thereby records its notification to the insurer."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_019.f02",
+     "statement": "The aggregate recovery sought across insurers does not exceed one entitlement per loss.",
+     "cited": [
+      "theft-source-0186#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_019.f02.c01",
+       "must_show": "The compensation sought or received under each insurance for the same loss.",
+       "cited": [
+        "theft-source-0186#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_019",
+    "must_show": "whether this source-defined applicability condition holds: Multiple insurance exists for the same interest, risks, and period.",
+    "cited": [
+     "theft-source-0172#p1",
+     "theft-source-0186#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case"
+      ],
+      "why": "The double-insurance declaration is the catalogue form that identifies other insurers and policy numbers by category, directly supporting determination of insurance for the same items and perils."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_020",
+   "title": "Select and apply one loss-determination route: determination by the parties, a jointly appointed expert, or expert proceedings.",
+   "process_node": "n05",
+   "requirement_kind": "decision_requirement",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_020.f01",
+     "statement": "The selected loss-determination route is established.",
+     "cited": [
+      "theft-source-0009#p1",
+      "theft-source-0178#p1",
+      "theft-source-0193#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_020.f01.c01",
+       "must_show": "Which loss-determination route was selected and the resulting loss determination.",
+       "cited": [
+        "theft-source-0009#p1",
+        "theft-source-0178#p1",
+        "theft-source-0193#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure"
+         ],
+         "why": "This document establishes both selection of the jointly appointed-expert route and that expert's resulting loss determination."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+          "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+         ],
+         "why": "The written appointments establish selection and commencement of expert proceedings, and the experts' findings establish the resulting determination."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_020.f02",
+     "statement": "The policyholder assisted in loss determination.",
+     "cited": [
+      "theft-source-0045#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_020.f02.c01",
+       "must_show": "The policyholder's cooperation in determining the loss.",
+       "cited": [
+        "theft-source-0045#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_021",
+   "title": "Use the expert-procedure route for loss determination.",
+   "process_node": "n05",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_021",
+    "text": "Either party demands expert proceedings.",
+    "cited": [
+     "theft-source-0053#p1",
+     "theft-source-0121#p1",
+     "theft-source-0193#p3"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_021.f01",
+     "statement": "An entitled party required expert proceedings.",
+     "cited": [
+      "theft-source-0053#p1",
+      "theft-source-0121#p1",
+      "theft-source-0193#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_021.f01.c01",
+       "must_show": "That a party demanded expert proceedings.",
+       "cited": [
+        "theft-source-0053#p1",
+        "theft-source-0121#p1",
+        "theft-source-0193#p3"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_021",
+    "must_show": "whether this source-defined applicability condition holds: Either party demands expert proceedings.",
+    "cited": [
+     "theft-source-0053#p1",
+     "theft-source-0121#p1",
+     "theft-source-0193#p3"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_022",
+   "title": "Each party appoint an expert in writing.",
+   "process_node": "n05",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_022",
+    "text": "The expert-procedure route has been selected.",
+    "cited": [
+     "theft-source-0053#p1",
+     "theft-source-0121#p1",
+     "theft-source-0193#p3"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_022.f01",
+     "statement": "Each party appointed its expert in writing.",
+     "cited": [
+      "theft-source-0031#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_022.f01.c01",
+       "must_show": "Each party's written appointment of its expert.",
+       "cited": [
+        "theft-source-0031#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+         ],
+         "why": "This catalogue document expressly records each party's written appointment of its expert, as required for the selected expert-procedure route."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_022",
+    "must_show": "whether this source-defined applicability condition holds: The expert-procedure route has been selected.",
+    "cited": [
+     "theft-source-0053#p1",
+     "theft-source-0121#p1",
+     "theft-source-0193#p3"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_023",
+   "title": "Establish whether the party appointed its expert within 14 days after the written request.",
+   "process_node": "n06",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_023",
+    "text": "The expert-procedure route has been selected and a party has been requested in writing to appoint an expert.",
+    "cited": [
+     "theft-source-0023#p1",
+     "theft-source-0111#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_023.f01",
+     "statement": "The written request date and the 14-day appointment deadline are established.",
+     "cited": [
+      "theft-source-0023#p1",
+      "theft-source-0023#p2",
+      "theft-source-0111#p1",
+      "theft-source-0111#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_023.f01.c01",
+       "must_show": "The written request to appoint an expert, its receipt date, and whether appointment occurred within 14 days.",
+       "cited": [
+        "theft-source-0023#p1",
+        "theft-source-0023#p2",
+        "theft-source-0111#p1",
+        "theft-source-0111#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_023",
+    "must_show": "whether this source-defined applicability condition holds: The expert-procedure route has been selected and a party has been requested in writing to appoint an expert.",
+    "cited": [
+     "theft-source-0023#p1",
+     "theft-source-0111#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+       "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "why": "The written demand supplies the source-required written request, and the written expert-appointment record establishes that the expert-procedure route was selected and records the party appointment relevant to the 14-day rule."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_024",
+   "title": "Have the competent judge appoint the unappointed expert.",
+   "process_node": "n06",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_024",
+    "text": "A party failed to appoint its expert within 14 days after written request, and the other party applies for appointment.",
+    "cited": [
+     "theft-source-0023#p2",
+     "theft-source-0023#p3",
+     "theft-source-0111#p2",
+     "theft-source-0111#p3"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_024.f01",
+     "statement": "The other party applied for judicial appointment and the competent judge appointed the expert.",
+     "cited": [
+      "theft-source-0023#p3",
+      "theft-source-0023#p4",
+      "theft-source-0111#p3",
+      "theft-source-0111#p4"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_024.f01.c01",
+       "must_show": "The application for replacement appointment and the competent judge's appointment decision.",
+       "cited": [
+        "theft-source-0023#p3",
+        "theft-source-0023#p4",
+        "theft-source-0111#p3",
+        "theft-source-0111#p4"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_024",
+    "must_show": "whether this source-defined applicability condition holds: A party failed to appoint its expert within 14 days after written request, and the other party applies for appointment.",
+    "cited": [
+     "theft-source-0023#p2",
+     "theft-source-0023#p3",
+     "theft-source-0111#p2",
+     "theft-source-0111#p3"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_025",
+   "title": "Treat expert findings as binding unless a party proves material deviation from the actual facts.",
+   "process_node": "n05",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_025",
+    "text": "Experts made findings within their authority.",
+    "cited": [
+     "theft-source-0118#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_025.f01",
+     "statement": "Expert findings fall within the experts' authority.",
+     "cited": [
+      "theft-source-0118#p1",
+      "theft-source-0118#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_025.f01.c01",
+       "must_show": "The experts' findings and their scope of authority.",
+       "cited": [
+        "theft-source-0118#p1",
+        "theft-source-0118#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+         ],
+         "why": "This catalogue entry directly supplies the experts' findings required to establish findings made within the expert procedure."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_025.f02",
+     "statement": "If binding effect is challenged, material deviation from actual facts is established.",
+     "cited": [
+      "theft-source-0118#p3",
+      "theft-source-0118#p4"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_025.f02.c01",
+       "must_show": "The actual facts and the material deviation of the expert findings from those facts.",
+       "cited": [
+        "theft-source-0118#p3",
+        "theft-source-0118#p4"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_025",
+    "must_show": "whether this source-defined applicability condition holds: Experts made findings within their authority.",
+    "cited": [
+     "theft-source-0118#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+      ],
+      "why": "This is the catalogue document expressly containing the experts' findings, which are the source-defined condition for the binding-effect rule."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_026",
+   "title": "Calculate compensation using replacement value at the time of loss, less residual value or depreciation; exclude personal sentimental value.",
+   "process_node": "n07",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_026",
+    "text": "The claim concerns movable household contents.",
+    "cited": [
+     "theft-source-0150#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_026.f01",
+     "statement": "The replacement cost at the loss date and residual value or depreciation are established.",
+     "cited": [
+      "theft-source-0117#p1",
+      "theft-source-0150#p1",
+      "theft-source-0150#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_026.f01.c01",
+       "must_show": "The cost to purchase a new equivalent item at the time of loss.",
+       "cited": [
+        "theft-source-0150#p1",
+        "theft-source-0150#p2"
+       ],
+       "routes": []
+      },
+      {
+       "capability_id": "overlay_rule_026.f01.c02",
+       "must_show": "The residual value or depreciation of each affected item.",
+       "cited": [
+        "theft-source-0117#p1"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_026.f02",
+     "statement": "No amount claimed as personal sentimental value is included in compensation.",
+     "cited": [
+      "theft-source-0044#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_026.f02.c01",
+       "must_show": "That the compensation calculation excludes personal sentimental value.",
+       "cited": [
+        "theft-source-0044#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_026",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns movable household contents.",
+    "cited": [
+     "theft-source-0150#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The policy and its schedule establish whether the claim is under household-contents cover, the source condition for applying the movable-property replacement-value rule."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_027",
+   "title": "Determine whether underinsurance exists by comparing the insured sum with actual total replacement value immediately before loss; if it exists, apply proportional indemnification.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_027",
+    "text": "The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+    "cited": [
+     "theft-source-0073#p1",
+     "theft-source-0098#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_027.f01",
+     "statement": "The insured sum and actual total replacement value immediately before loss are established.",
+     "cited": [
+      "theft-source-0102#p1",
+      "theft-source-0144#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_027.f01.c01",
+       "must_show": "The applicable insured sum and actual total replacement value immediately before the loss.",
+       "cited": [
+        "theft-source-0102#p1",
+        "theft-source-0144#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The policy establishes the applicable insured sum, and the signed valued inventory establishes the actual total value of household contents immediately before the event for the required comparison."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_027.f02",
+     "statement": "The applicable proportional compensation calculation is established.",
+     "cited": [
+      "theft-source-0042#p2",
+      "theft-source-0042#p3",
+      "theft-source-0144#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_027.f02.c01",
+       "must_show": "The ratio of insured sum to replacement value and the compensation calculated using that ratio.",
+       "cited": [
+        "theft-source-0042#p2",
+        "theft-source-0042#p3",
+        "theft-source-0144#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "The policy supplies the insured sum and the signed valued inventory supplies the relevant replacement-value basis, jointly allowing the insured-sum-to-replacement-value ratio and proportional compensation to be established."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_027",
+    "must_show": "whether this source-defined applicability condition holds: The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+    "cited": [
+     "theft-source-0073#p1",
+     "theft-source-0098#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+       "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+      ],
+      "why": "The policy establishes the insured sum and whether first-risk cover or an underinsurance waiver applies; the signed valued pre-event inventory establishes the actual total value needed for the underinsurance comparison."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_028",
+   "title": "Apply coverage up to the agreed sum insured without calculating underinsurance.",
+   "process_node": "n08",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_028",
+    "text": "The insurance is on a first-risk basis.",
+    "cited": [
+     "theft-source-0073#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_028.f01",
+     "statement": "The policy provides first-risk insurance and states its agreed sum insured.",
+     "cited": [
+      "theft-source-0073#p1",
+      "theft-source-0073#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_028.f01.c01",
+       "must_show": "That insurance is on a first-risk basis and the agreed sum insured.",
+       "cited": [
+        "theft-source-0073#p1",
+        "theft-source-0073#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The policy and its schedule establish whether the cover is written on a first-risk basis and state the agreed sum insured."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_028",
+    "must_show": "whether this source-defined applicability condition holds: The insurance is on a first-risk basis.",
+    "cited": [
+     "theft-source-0073#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The policy schedule is the catalogue document that establishes whether insurance is agreed on a first-risk basis."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_029",
+   "title": "Apply the jewellery benefit limit of 20% of the insured sum, maximum CHF 30,000, unless jewellery was stored in a built-in wall safe or safe cabinet weighing more than 100 kg.",
+   "process_node": "n08",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_029",
+    "text": "The claim concerns jewellery in simple theft at the insured location, or jewellery in burglary theft that was not stored in a specified locked security container.",
+    "cited": [
+     "theft-source-0080#p1",
+     "theft-source-0182#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_029.f01",
+     "statement": "The theft classification, jewellery status, storage arrangement, and applicable benefit limit are established.",
+     "cited": [
+      "theft-source-0021#p1",
+      "theft-source-0021#p2",
+      "theft-source-0080#p1",
+      "theft-source-0080#p2",
+      "theft-source-0182#p1",
+      "theft-source-0182#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_029.f01.c01",
+       "must_show": "Whether the jewellery was stored in a locked built-in wall safe or a safe cabinet weighing more than 100 kg.",
+       "cited": [
+        "theft-source-0021#p1",
+        "theft-source-0021#p2",
+        "theft-source-0182#p1",
+        "theft-source-0182#p2"
+       ],
+       "routes": []
+      },
+      {
+       "capability_id": "overlay_rule_029.f01.c02",
+       "must_show": "The applicable insured sum and the calculation of the 20% and CHF 30,000 limit.",
+       "cited": [
+        "theft-source-0080#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The policy schedule establishes the applicable insured sum from which the 20% limit can be calculated and compared with the stated CHF 30,000 maximum."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_029",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns jewellery in simple theft at the insured location, or jewellery in burglary theft that was not stored in a specified locked security container.",
+    "cited": [
+     "theft-source-0080#p1",
+     "theft-source-0182#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_030",
+   "title": "Deduct the policy-agreed deductible per event; use CHF 200 per event where that stated default applies.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_030",
+    "text": "A deductible applies and no different agreement or qualifying no-deductible exception applies.",
+    "cited": [
+     "theft-source-0081#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_030.f01",
+     "statement": "The policy-agreed deductible and its deduction from calculated compensation are established.",
+     "cited": [
+      "theft-source-0081#p2",
+      "theft-source-0167#p1",
+      "theft-source-0167#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_030.f01.c01",
+       "must_show": "The applicable deductible term and the deduction from calculated compensation.",
+       "cited": [
+        "theft-source-0081#p2",
+        "theft-source-0167#p1",
+        "theft-source-0167#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_030",
+    "must_show": "whether this source-defined applicability condition holds: A deductible applies and no different agreement or qualifying no-deductible exception applies.",
+    "cited": [
+     "theft-source-0081#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_031",
+   "title": "Do not deduct a deductible.",
+   "process_node": "n08",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_031",
+    "text": "The loss is burglary theft and an activated permanently installed alarm system was present.",
+    "cited": [
+     "theft-source-0145#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_031.f01",
+     "statement": "The alarm system was permanently installed and activated at the time of burglary theft.",
+     "cited": [
+      "theft-source-0145#p1",
+      "theft-source-0145#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_031.f01.c01",
+       "must_show": "The existence, permanent installation, and activated status of the alarm system at the time of the burglary theft.",
+       "cited": [
+        "theft-source-0145#p1",
+        "theft-source-0145#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_031",
+    "must_show": "whether this source-defined applicability condition holds: The loss is burglary theft and an activated permanently installed alarm system was present.",
+    "cited": [
+     "theft-source-0145#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_032",
+   "title": "Determine whether the breach was culpable and whether it influenced the occurrence, extent, or determination of loss; reduce or deny compensation only to the supported extent.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_032",
+    "text": "A statutory or contractual duty was breached and a legal disadvantage for breach was agreed or otherwise applies.",
+    "cited": [
+     "theft-source-0069#p1",
+     "theft-source-0108#p1",
+     "theft-source-0188#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_032.f01",
+     "statement": "The duty, alleged breach, culpability, agreed legal consequence, and impact on loss are established.",
+     "cited": [
+      "theft-source-0069#p1",
+      "theft-source-0108#p1",
+      "theft-source-0137#p1",
+      "theft-source-0188#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_032.f01.c01",
+       "must_show": "The applicable duty, the conduct alleged to breach it, culpability, and how the breach influenced the occurrence, extent, or determination of loss.",
+       "cited": [
+        "theft-source-0069#p1",
+        "theft-source-0108#p1",
+        "theft-source-0137#p1",
+        "theft-source-0188#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_032",
+    "must_show": "whether this source-defined applicability condition holds: A statutory or contractual duty was breached and a legal disadvantage for breach was agreed or otherwise applies.",
+    "cited": [
+     "theft-source-0069#p1",
+     "theft-source-0108#p1",
+     "theft-source-0188#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_033",
+   "title": "To avoid the disadvantage, establish either that the breach was non-culpable or that it did not influence the event, loss extent, determination, or benefits owed, as applicable.",
+   "process_node": "n08",
+   "requirement_kind": "prerequisite",
+   "condition": {
+    "guard_id": "overlay_guard_033",
+    "text": "A compensation reduction or legal disadvantage is proposed because of a breach.",
+    "cited": [
+     "theft-source-0069#p1",
+     "theft-source-0137#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_033.f01",
+     "statement": "The breach was non-culpable, or did not influence the event, loss, loss determination, or benefits owed.",
+     "cited": [
+      "theft-source-0065#p1",
+      "theft-source-0065#p2",
+      "theft-source-0126#p1",
+      "theft-source-0126#p2",
+      "theft-source-0137#p3",
+      "theft-source-0137#p4",
+      "theft-source-0155#p1",
+      "theft-source-0155#p2",
+      "theft-source-0169#p1",
+      "theft-source-0169#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_033.f01.c01",
+       "must_show": "Facts demonstrating that the breach was non-culpable.",
+       "cited": [
+        "theft-source-0065#p1",
+        "theft-source-0126#p1"
+       ],
+       "routes": []
+      },
+      {
+       "capability_id": "overlay_rule_033.f01.c02",
+       "must_show": "Facts demonstrating that the conduct or breach did not influence the event, loss extent, loss determination, or benefits owed.",
+       "cited": [
+        "theft-source-0065#p2",
+        "theft-source-0126#p2",
+        "theft-source-0126#p3",
+        "theft-source-0137#p3",
+        "theft-source-0137#p4",
+        "theft-source-0155#p1",
+        "theft-source-0155#p2",
+        "theft-source-0169#p1",
+        "theft-source-0169#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_033",
+    "must_show": "whether this source-defined applicability condition holds: A compensation reduction or legal disadvantage is proposed because of a breach.",
+    "cited": [
+     "theft-source-0069#p1",
+     "theft-source-0137#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_034",
+   "title": "Determine the compensation reduction by the amount it would have been reduced had notice been timely.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_034",
+    "text": "The entitled claimant culpably breached the duty to give notice.",
+    "cited": [
+     "theft-source-0142#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_034.f01",
+     "statement": "The actual timing of notice and the counterfactual timely-notice reduction are established.",
+     "cited": [
+      "theft-source-0142#p1",
+      "theft-source-0142#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_034.f01.c01",
+       "must_show": "When notice should have been and was given, culpability, and the amount of loss increase attributable to late notice.",
+       "cited": [
+        "theft-source-0142#p1",
+        "theft-source-0142#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_034",
+    "must_show": "whether this source-defined applicability condition holds: The entitled claimant culpably breached the duty to give notice.",
+    "cited": [
+     "theft-source-0142#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_035",
+   "title": "Determine whether the insurer is not bound by the contract toward the entitled claimant.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_035",
+    "text": "The claimant or representative deceptively misstates, conceals, delays, or omits facts or required communications relevant to coverage or benefit reduction.",
+    "cited": [
+     "theft-source-0059#p1",
+     "theft-source-0077#p1",
+     "theft-source-0133#p1",
+     "theft-source-0183#p1",
+     "theft-source-0183#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_035.f01",
+     "statement": "The allegedly deceptive conduct, relevant facts, timing, and intent to deceive are established.",
+     "cited": [
+      "theft-source-0059#p1",
+      "theft-source-0077#p1",
+      "theft-source-0133#p1",
+      "theft-source-0183#p1",
+      "theft-source-0183#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_035.f01.c01",
+       "must_show": "The communication or omission, its inaccuracy or concealment, the relevant coverage or benefit effect, and deceptive intent.",
+       "cited": [
+        "theft-source-0059#p1",
+        "theft-source-0077#p1",
+        "theft-source-0133#p1",
+        "theft-source-0183#p1",
+        "theft-source-0183#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_035",
+    "must_show": "whether this source-defined applicability condition holds: The claimant or representative deceptively misstates, conceals, delays, or omits facts or required communications relevant to coverage or benefit reduction.",
+    "cited": [
+     "theft-source-0059#p1",
+     "theft-source-0077#p1",
+     "theft-source-0133#p1",
+     "theft-source-0183#p1",
+     "theft-source-0183#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_036",
+   "title": "Establish the date complete assessment information was received and calculate the four-week or 30-day payment due date.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_036",
+    "text": "The insurer has received all information and documents needed to determine loss amount and insurance benefit.",
+    "cited": [
+     "theft-source-0001#p1",
+     "theft-source-0157#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_036.f01",
+     "statement": "The complete-assessment-information receipt date and resulting payment due date are established.",
+     "cited": [
+      "theft-source-0001#p1",
+      "theft-source-0034#p2",
+      "theft-source-0157#p1",
+      "theft-source-0157#p2",
+      "theft-source-0179#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_036.f01.c01",
+       "must_show": "When the insurer received all information and documents needed to assess loss amount and benefit obligation.",
+       "cited": [
+        "theft-source-0001#p1",
+        "theft-source-0157#p2"
+       ],
+       "routes": []
+      },
+      {
+       "capability_id": "overlay_rule_036.f01.c02",
+       "must_show": "The due date calculated from complete-information receipt.",
+       "cited": [
+        "theft-source-0034#p2",
+        "theft-source-0157#p1",
+        "theft-source-0179#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_036",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has received all information and documents needed to determine loss amount and insurance benefit.",
+    "cited": [
+     "theft-source-0001#p1",
+     "theft-source-0157#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_037",
+   "title": "Postpone the payment obligation while that condition continues.",
+   "process_node": "n10",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_037",
+    "text": "Compensation cannot be determined or paid because of culpable conduct by the policyholder or beneficiary.",
+    "cited": [
+     "theft-source-0003#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_037.f01",
+     "statement": "The culpable conduct and its continuing effect on determining or paying compensation are established.",
+     "cited": [
+      "theft-source-0003#p1",
+      "theft-source-0003#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_037.f01.c01",
+       "must_show": "The culpable conduct and why it prevents determination or payment of compensation.",
+       "cited": [
+        "theft-source-0003#p1",
+        "theft-source-0003#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_037",
+    "must_show": "whether this source-defined applicability condition holds: Compensation cannot be determined or paid because of culpable conduct by the policyholder or beneficiary.",
+    "cited": [
+     "theft-source-0003#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_038",
+   "title": "Treat the payment obligation as not due while the investigation or proceedings remain ongoing.",
+   "process_node": "n11",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_038",
+    "text": "A police or criminal investigation concerning the loss is ongoing and proceedings against the policyholder or entitled claimant remain unconcluded.",
+    "cited": [
+     "theft-source-0018#p1",
+     "theft-source-0095#p1",
+     "theft-source-0125#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_038.f01",
+     "statement": "The investigation and proceedings status are established.",
+     "cited": [
+      "theft-source-0018#p1",
+      "theft-source-0018#p2",
+      "theft-source-0095#p1",
+      "theft-source-0125#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_038.f01.c01",
+       "must_show": "That a relevant investigation or proceeding is ongoing and has not concluded.",
+       "cited": [
+        "theft-source-0018#p1",
+        "theft-source-0018#p2",
+        "theft-source-0095#p1",
+        "theft-source-0125#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_038",
+    "must_show": "whether this source-defined applicability condition holds: A police or criminal investigation concerning the loss is ongoing and proceedings against the policyholder or entitled claimant remain unconcluded.",
+    "cited": [
+     "theft-source-0018#p1",
+     "theft-source-0095#p1",
+     "theft-source-0125#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_039",
+   "title": "Establish the written request, warning, deadline, and later noncompliance before concluding that the benefit obligation lapsed.",
+   "process_node": "n12",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_039",
+    "text": "The insured person failed to comply with cooperation duties and the insurer issued a written compliance request specifying a 10-day period.",
+    "cited": [
+     "theft-source-0013#p1",
+     "theft-source-0013#p2",
+     "theft-source-0013#p3",
+     "theft-source-0036#p1",
+     "theft-source-0092#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_039.f01",
+     "statement": "The insured person failed to comply by the deadline.",
+     "cited": [
+      "theft-source-0013#p4",
+      "theft-source-0013#p5",
+      "theft-source-0036#p2",
+      "theft-source-0036#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_039.f01.c01",
+       "must_show": "The requested cooperation remained unperformed after the stated deadline.",
+       "cited": [
+        "theft-source-0013#p4",
+        "theft-source-0013#p5",
+        "theft-source-0036#p2",
+        "theft-source-0036#p3"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_039",
+    "must_show": "whether this source-defined applicability condition holds: The insured person failed to comply with cooperation duties and the insurer issued a written compliance request specifying a 10-day period.",
+    "cited": [
+     "theft-source-0013#p1",
+     "theft-source-0013#p2",
+     "theft-source-0013#p3",
+     "theft-source-0036#p1",
+     "theft-source-0092#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_040",
+   "title": "Notify the insurer immediately of the recovery or information received.",
+   "process_node": "n14",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_040",
+    "text": "Stolen items return to possession or information about them is received.",
+    "cited": [
+     "theft-source-0012#p1",
+     "theft-source-0106#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_040.f01",
+     "statement": "The recovery or information receipt and immediate insurer notification are established.",
+     "cited": [
+      "theft-source-0012#p1",
+      "theft-source-0012#p2",
+      "theft-source-0030#p1",
+      "theft-source-0093#p1",
+      "theft-source-0106#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_040.f01.c01",
+       "must_show": "When stolen property was recovered or information was received, and when the insurer was notified.",
+       "cited": [
+        "theft-source-0012#p1",
+        "theft-source-0012#p2",
+        "theft-source-0030#p1",
+        "theft-source-0093#p1",
+        "theft-source-0106#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Report to the insurer that stolen items have been recovered or news of them received"
+         ],
+         "why": "This catalogue entry directly records the source-required report to the insurer concerning recovery of stolen property or receipt of information about it."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_040",
+    "must_show": "whether this source-defined applicability condition holds: Stolen items return to possession or information about them is received.",
+    "cited": [
+     "theft-source-0012#p1",
+     "theft-source-0106#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "why": "This exact catalogue report records the source-defined recovery of stolen items or receipt of news about them and communicates it to the insurer."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_041",
+   "title": "Repay compensation, less any permitted reimbursement for repairs or depreciation.",
+   "process_node": "n14",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_041",
+    "text": "Items or animals for which compensation was already paid are recovered.",
+    "cited": [
+     "theft-source-0011#p1",
+     "theft-source-0032#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_041.f01",
+     "statement": "Prior compensation, recovered property, repair costs, depreciation, and net repayment are established.",
+     "cited": [
+      "theft-source-0011#p1",
+      "theft-source-0011#p2",
+      "theft-source-0032#p1",
+      "theft-source-0032#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_041.f01.c01",
+       "must_show": "The compensation previously paid, the recovered item or animal, any repair costs or depreciation, and net amount repaid.",
+       "cited": [
+        "theft-source-0011#p1",
+        "theft-source-0011#p2",
+        "theft-source-0032#p1",
+        "theft-source-0032#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_041",
+    "must_show": "whether this source-defined applicability condition holds: Items or animals for which compensation was already paid are recovered.",
+    "cited": [
+     "theft-source-0011#p1",
+     "theft-source-0032#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_042",
+   "title": "Assign third-party claims to CSS up to paid benefits and secure recourse against responsible third parties.",
+   "process_node": "n14",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_042",
+    "text": "CSS has paid benefits for which the policyholder has claims against third parties, or a third party caused or increased the loss.",
+    "cited": [
+     "theft-source-0055#p1",
+     "theft-source-0165#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_042.f01",
+     "statement": "The third party, relevant claim, paid benefit amount, assignment, and recourse preservation are established.",
+     "cited": [
+      "theft-source-0055#p1",
+      "theft-source-0055#p2",
+      "theft-source-0165#p1",
+      "theft-source-0165#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_042.f01.c01",
+       "must_show": "The third party's responsibility, the corresponding claim, benefits paid, and assignment or preservation of recourse rights.",
+       "cited": [
+        "theft-source-0055#p1",
+        "theft-source-0055#p2",
+        "theft-source-0165#p1",
+        "theft-source-0165#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+         ],
+         "why": "This entry establishes the required assignment of third-party claims up to benefits paid and includes evidence needed for the insurer's recourse pursuit."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_042",
+    "must_show": "whether this source-defined applicability condition holds: CSS has paid benefits for which the policyholder has claims against third parties, or a third party caused or increased the loss.",
+    "cited": [
+     "theft-source-0055#p1",
+     "theft-source-0165#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_043",
+   "title": "Establish whether the claim was asserted in court within two years after the event; otherwise treat rights as forfeited.",
+   "process_node": "n15",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_043",
+    "text": "The insurer rejected the indemnity claim.",
+    "cited": [
+     "theft-source-0004#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_043.f01",
+     "statement": "The event date, rejection, and date of judicial assertion are established.",
+     "cited": [
+      "theft-source-0004#p1",
+      "theft-source-0004#p3",
+      "theft-source-0004#p4"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_043.f01.c01",
+       "must_show": "The event date, claim rejection, and that judicial assertion occurred within two years after the event.",
+       "cited": [
+        "theft-source-0004#p1",
+        "theft-source-0004#p3",
+        "theft-source-0004#p4"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_043",
+    "must_show": "whether this source-defined applicability condition holds: The insurer rejected the indemnity claim.",
+    "cited": [
+     "theft-source-0004#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's declination of the claim for indemnity"
+      ],
+      "why": "The source-defined condition is that the insurer rejected the indemnity claim; the catalogue declination directly establishes that rejection."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_044",
+   "title": "Establish whether the claim was asserted within five years after the fact giving rise to the benefit obligation, subject to applicable statutory exceptions.",
+   "process_node": "n15",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_044",
+    "text": "A claim arises from the insurance contract.",
+    "cited": [
+     "theft-source-0020#p1",
+     "theft-source-0064#p1",
+     "theft-source-0131#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_044.f01",
+     "statement": "The benefit-triggering fact date and claim assertion date are established.",
+     "cited": [
+      "theft-source-0020#p1",
+      "theft-source-0064#p1",
+      "theft-source-0131#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_044.f01.c01",
+       "must_show": "The date of the fact giving rise to benefits and the date the claim was asserted.",
+       "cited": [
+        "theft-source-0020#p1",
+        "theft-source-0064#p1",
+        "theft-source-0131#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_044",
+    "must_show": "whether this source-defined applicability condition holds: A claim arises from the insurance contract.",
+    "cited": [
+     "theft-source-0020#p1",
+     "theft-source-0064#p1",
+     "theft-source-0131#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_045",
+   "title": "Treat the loss as not having occurred and without consequences.",
+   "process_node": "n16",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_045",
+    "text": "The policyholder reimburses CSS all compensation paid for the matter within 30 days after becoming aware of settlement.",
+    "cited": [
+     "theft-source-0085#p1",
+     "theft-source-0085#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_045.f01",
+     "statement": "The settlement-awareness date, all compensation paid, and full reimbursement within 30 days are established.",
+     "cited": [
+      "theft-source-0085#p1",
+      "theft-source-0085#p2",
+      "theft-source-0085#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_045.f01.c01",
+       "must_show": "When the policyholder became aware of settlement, all compensation paid by CSS, and full reimbursement within 30 days.",
+       "cited": [
+        "theft-source-0085#p1",
+        "theft-source-0085#p2",
+        "theft-source-0085#p3"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_045",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder reimburses CSS all compensation paid for the matter within 30 days after becoming aware of settlement.",
+    "cited": [
+     "theft-source-0085#p1",
+     "theft-source-0085#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_046",
+   "title": "Provide the recipient's account details and the recipient's name and address for payment.",
+   "process_node": "n09",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_046.f01",
+     "statement": "The payment recipient's name, address, and account details are provided.",
+     "cited": [
+      "theft-source-0008#p1",
+      "theft-source-0184#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_046.f01.c01",
+       "must_show": "The recipient's name, address, and account details.",
+       "cited": [
+        "theft-source-0008#p1",
+        "theft-source-0184#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Payment instruction with payee name and address, IBAN and name of the financial institution"
+         ],
+         "why": "This catalogue entry expressly provides the recipient/payee name and address together with the account details required for payment."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_047",
+   "title": "The undersigned person must declare that all questions on all pages have been answered truthfully and completely.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_047.f01",
+     "statement": "A signed declaration confirms that all questions on all pages were answered truthfully and completely.",
+     "cited": [
+      "theft-source-0035#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_047.f01.c01",
+       "must_show": "The undersigned person's declaration covering truthful and complete answers on all pages.",
+       "cited": [
+        "theft-source-0035#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "A completed and signed claim notification form is the catalogue document that preserves the undersigned declaration covering completion of the form's questions."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_048",
+   "title": "Determine whether the Article 39 paragraph 2 number 2 exception applies before treating the contractual shorter limitation period or time restriction as invalid.",
+   "process_node": "n15",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_048",
+    "text": "A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+    "cited": [
+     "theft-source-0038#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_048.f01",
+     "statement": "The claim is subject to a contractual shorter limitation period or other shorter time restriction, and the applicability of the Article 39 paragraph 2 number 2 exception is determined.",
+     "cited": [
+      "theft-source-0038#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_048.f01.c01",
+       "must_show": "The contractual time restriction and whether the cited statutory exception applies.",
+       "cited": [
+        "theft-source-0038#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_048",
+    "must_show": "whether this source-defined applicability condition holds: A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+    "cited": [
+     "theft-source-0038#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The applicability condition concerns a contractual provision imposing a shorter limitation period or other shorter time restriction; the insurance policy is the catalogue document that establishes contractual provisions."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_049",
+   "title": "CSS may request a corresponding police report; when requested, provide the report for claim handling.",
+   "process_node": "n04",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_049",
+    "text": "CSS requests a corresponding police report.",
+    "cited": [
+     "theft-source-0043#p5"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_049.f01",
+     "statement": "CSS requested a corresponding police report, and the report is available or its provision status is established.",
+     "cited": [
+      "theft-source-0043#p5"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_049.f01.c01",
+       "must_show": "The CSS request for the police report and the corresponding report.",
+       "cited": [
+        "theft-source-0043#p5"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_049",
+    "must_show": "whether this source-defined applicability condition holds: CSS requests a corresponding police report.",
+    "cited": [
+     "theft-source-0043#p5"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_050",
+   "title": "Establish that the claimed costs arise from simple theft at home or away from home.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_050",
+    "text": "The claim seeks reimbursement of costs arising from simple theft at home or away from home.",
+    "cited": [
+     "theft-source-0062#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_050.f01",
+     "statement": "The claimed costs arose from simple theft at home or away from home.",
+     "cited": [
+      "theft-source-0062#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_050.f01.c01",
+       "must_show": "The theft classification and whether it occurred at home or away from home.",
+       "cited": [
+        "theft-source-0062#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_050",
+    "must_show": "whether this source-defined applicability condition holds: The claim seeks reimbursement of costs arising from simple theft at home or away from home.",
+    "cited": [
+     "theft-source-0062#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_051",
+   "title": "Determine the beneficiary's entitlement to receive payment before directing payment to that beneficiary.",
+   "process_node": "n09",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_051",
+    "text": "There are doubts about the beneficiary's entitlement to receive payment.",
+    "cited": [
+     "theft-source-0066#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_051.f01",
+     "statement": "The beneficiary's entitlement to receive payment is established where doubts exist.",
+     "cited": [
+      "theft-source-0066#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_051.f01.c01",
+       "must_show": "Facts resolving doubts about the beneficiary's entitlement to receive payment.",
+       "cited": [
+        "theft-source-0066#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_051",
+    "must_show": "whether this source-defined applicability condition holds: There are doubts about the beneficiary's entitlement to receive payment.",
+    "cited": [
+     "theft-source-0066#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_052",
+   "title": "Determine whether theft or robbery occurred, or whether Generali requested compliance, to determine whether the duty applies.",
+   "process_node": "n04",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_052",
+    "text": "A duty governed by the valuables insurance provision is being considered.",
+    "cited": [
+     "theft-source-0082#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_052.f01",
+     "statement": "The occurrence of theft or robbery, or a request by Generali, is established.",
+     "cited": [
+      "theft-source-0082#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_052.f01.c01",
+       "must_show": "Whether theft or robbery occurred or Generali made the relevant request.",
+       "cited": [
+        "theft-source-0082#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_052",
+    "must_show": "whether this source-defined applicability condition holds: A duty governed by the valuables insurance provision is being considered.",
+    "cited": [
+     "theft-source-0082#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_053",
+   "title": "Determine whether the damage was caused by a household member of the insured person or by an employee whose employment position enabled access to the insured premises.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_053",
+    "text": "The claimed damage was caused by a person living in the insured person's household or by a person employed by the insured person.",
+    "cited": [
+     "theft-source-0083#p1",
+     "theft-source-0083#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_053.f01",
+     "statement": "The identity and relationship of the person causing the damage, and where applicable the employee's access to the insured premises through employment, are established.",
+     "cited": [
+      "theft-source-0083#p1",
+      "theft-source-0083#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_053.f01.c01",
+       "must_show": "Whether the damage-causing person lived in the insured person's household or was an employee with employment-enabled access to the insured premises.",
+       "cited": [
+        "theft-source-0083#p1",
+        "theft-source-0083#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_053",
+    "must_show": "whether this source-defined applicability condition holds: The claimed damage was caused by a person living in the insured person's household or by a person employed by the insured person.",
+    "cited": [
+     "theft-source-0083#p1",
+     "theft-source-0083#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_054",
+   "title": "Determine whether the damage was caused by a person living in the same household as the policyholder.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_054",
+    "text": "The applicability of the provision governing the claimed damage is being determined.",
+    "cited": [
+     "theft-source-0014#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_054.f01",
+     "statement": "The identity of the person causing the damage and whether that person lived in the same household as the policyholder are established.",
+     "cited": [
+      "theft-source-0014#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_054.f01.c01",
+       "must_show": "The identity of the damage-causing person and that person's household relationship to the policyholder.",
+       "cited": [
+        "theft-source-0014#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_054",
+    "must_show": "whether this source-defined applicability condition holds: The applicability of the provision governing the claimed damage is being determined.",
+    "cited": [
+     "theft-source-0014#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_055",
+   "title": "Treat the contractual shorter limitation period or shorter time restriction as invalid, subject to the reserved Article 39 paragraph 2 number 2 provision.",
+   "process_node": "n15",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_055",
+    "text": "A contractual agreement subjects a claim against the insurance undertaking to a shorter limitation period or a shorter time restriction.",
+    "cited": [
+     "theft-source-0015#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_055.f01",
+     "statement": "The contractual time restriction and its applicability to the claim against the insurance undertaking are established.",
+     "cited": [
+      "theft-source-0015#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_055.f01.c01",
+       "must_show": "The contractual limitation period or time restriction asserted against the claim and the claim to which it is asserted to apply.",
+       "cited": [
+        "theft-source-0015#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_055",
+    "must_show": "whether this source-defined applicability condition holds: A contractual agreement subjects a claim against the insurance undertaking to a shorter limitation period or a shorter time restriction.",
+    "cited": [
+     "theft-source-0015#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The policy is the catalogue document that can establish the relevant contractual agreement, including any asserted shorter limitation period or time restriction."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_056",
+   "title": "Determine whether the insurance claim was fraudulently asserted, the prohibition on alterations in a loss event was breached, the insured event was intentionally caused, or multiple insurance exists, before determining whether CSS may terminate the insurance or withdraw from it.",
+   "process_node": "n13",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_056",
+    "text": "CSS is considering termination of or withdrawal from the insurance.",
+    "cited": [
+     "theft-source-0026#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_056.f01",
+     "statement": "The facts relevant to fraudulent assertion, alteration of the loss event, intentional causation, and multiple insurance are established.",
+     "cited": [
+      "theft-source-0026#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_056.f01.c01",
+       "must_show": "The claim assertion and facts bearing on fraud; any alteration conduct in the loss event; facts bearing on intentional causation; and whether multiple insurance exists.",
+       "cited": [
+        "theft-source-0026#p1"
+       ],
+       "routes": []
+      }
+     ]
+    },
+    {
+     "fact_id": "overlay_rule_056.f02",
+     "statement": "CSS's election to terminate the insurance or withdraw from it is established.",
+     "cited": [
+      "theft-source-0026#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_056.f02.c01",
+       "must_show": "Whether CSS exercised termination or withdrawal and the predicate on which it relied.",
+       "cited": [
+        "theft-source-0026#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_056",
+    "must_show": "whether this source-defined applicability condition holds: CSS is considering termination of or withdrawal from the insurance.",
+    "cited": [
+     "theft-source-0026#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_057",
+   "title": "Identify the additional theft-specific requirements applicable to the policyholder before determining that theft-related cooperation is complete.",
+   "process_node": "n04",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_057",
+    "text": "The event is theft.",
+    "cited": [
+     "theft-source-0028#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_057.f01",
+     "statement": "The event is theft and the applicable additional theft-specific requirements are identified.",
+     "cited": [
+      "theft-source-0028#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_057.f01.c01",
+       "must_show": "That the event is theft and the content of the additional theft-specific requirements applicable to the policyholder.",
+       "cited": [
+        "theft-source-0028#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_057",
+    "must_show": "whether this source-defined applicability condition holds: The event is theft.",
+    "cited": [
+     "theft-source-0028#p2"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+      ],
+      "why": "A completed claim notification can establish that the reported event is theft."
+     },
+     {
+      "route_id": "r2",
+      "documents": [
+       "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+      ],
+      "why": "A written loss notification can establish that the reported event is theft where the insurer has not required its own form."
+     },
+     {
+      "route_id": "r3",
+      "documents": [
+       "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+      ],
+      "why": "This catalogue entry expressly evidences a theft report and can establish that the event is theft."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_058",
+   "title": "Apply the same referenced rule to the unresolved allocation of the insurance benefit among the multiple entitled persons.",
+   "process_node": "n09",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_058",
+    "text": "It is unclear how the insurance benefit should be allocated among multiple entitled persons.",
+    "cited": [
+     "theft-source-0041#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_058.f01",
+     "statement": "The multiple entitled persons and the unresolved allocation of the insurance benefit among them are established.",
+     "cited": [
+      "theft-source-0041#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_058.f01.c01",
+       "must_show": "The identity and asserted entitlement of each entitled person and the facts showing that benefit allocation among them remains unresolved.",
+       "cited": [
+        "theft-source-0041#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_058",
+    "must_show": "whether this source-defined applicability condition holds: It is unclear how the insurance benefit should be allocated among multiple entitled persons.",
+    "cited": [
+     "theft-source-0041#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_059",
+   "title": "Allow the insurer to determine which contractors must carry out the repair work.",
+   "process_node": "n07",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_059",
+    "text": "Repair work is required for a covered loss.",
+    "cited": [
+     "theft-source-0046#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_059.f01",
+     "statement": "The repair work required and any insurer determination of the contractor to perform it are established.",
+     "cited": [
+      "theft-source-0046#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_059.f01.c01",
+       "must_show": "The repair work required and the insurer's determination, if made, of the contractor required to perform that work.",
+       "cited": [
+        "theft-source-0046#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_059",
+    "must_show": "whether this source-defined applicability condition holds: Repair work is required for a covered loss.",
+    "cited": [
+     "theft-source-0046#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_060",
+   "title": "Provide the name of the financial institution.",
+   "process_node": "n09",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_060",
+    "text": "Payment information is required for payment of the insurance benefit.",
+    "cited": [
+     "theft-source-0047#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_060.f01",
+     "statement": "The name of the financial institution is provided.",
+     "cited": [
+      "theft-source-0047#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_060.f01.c01",
+       "must_show": "The name of the financial institution for the payment information provided.",
+       "cited": [
+        "theft-source-0047#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Payment instruction with payee name and address, IBAN and name of the financial institution"
+         ],
+         "why": "The payment instruction expressly includes the name of the financial institution required by the source proposition."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_060",
+    "must_show": "whether this source-defined applicability condition holds: Payment information is required for payment of the insurance benefit.",
+    "cited": [
+     "theft-source-0047#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Payment instruction with payee name and address, IBAN and name of the financial institution"
+      ],
+      "why": "The payment instruction expressly contains the required name of the financial institution."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_061",
+   "title": "Determine whether the obligation is to be performed in Switzerland and in Swiss currency.",
+   "process_node": "n09",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_061",
+    "text": "An obligation arising from the insurance policy is to be performed.",
+    "cited": [
+     "theft-source-0074#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_061.f01",
+     "statement": "The place of performance and payment currency for the insurance obligation are established as Switzerland and Swiss currency.",
+     "cited": [
+      "theft-source-0074#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_061.f01.c01",
+       "must_show": "The place where the insurance obligation is to be performed and that the required performance currency is Swiss currency.",
+       "cited": [
+        "theft-source-0074#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_061",
+    "must_show": "whether this source-defined applicability condition holds: An obligation arising from the insurance policy is to be performed.",
+    "cited": [
+     "theft-source-0074#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_062",
+   "title": "Record the applicable policy number or claim number.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_062.f01",
+     "statement": "The policy number or claim number associated with the claim is recorded.",
+     "cited": [
+      "theft-source-0075#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_062.f01.c01",
+       "must_show": "The policy number or claim number identifying the insurance relationship or loss file.",
+       "cited": [
+        "theft-source-0075#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "A completed claim notification form is the catalogue form corresponding to the cited claim-form fields for recording the Policen-Nr. / Schaden-Nr."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_063",
+   "title": "Determine whether the entitled claimant breached the relevant obligations in an inexcusable manner.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_063",
+    "text": "An entitled claimant is alleged to have breached the relevant obligations.",
+    "cited": [
+     "theft-source-0076#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_063.f01",
+     "statement": "The relevant obligations, the claimant's conduct, and whether any breach was inexcusable are established.",
+     "cited": [
+      "theft-source-0076#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_063.f01.c01",
+       "must_show": "The obligations at issue, the conduct alleged to breach them, and facts bearing on whether the breach was inexcusable.",
+       "cited": [
+        "theft-source-0076#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_063",
+    "must_show": "whether this source-defined applicability condition holds: An entitled claimant is alleged to have breached the relevant obligations.",
+    "cited": [
+     "theft-source-0076#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_064",
+   "title": "Determine the compensation reduction by the amount by which compensation would have been reduced had the relevant obligations been fulfilled.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_064",
+    "text": "The entitled claimant breached the relevant obligations in an inexcusable manner.",
+    "cited": [
+     "theft-source-0076#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_064.f01",
+     "statement": "The actual compensation and the counterfactual compensation that would have applied if the relevant obligations had been fulfilled are established.",
+     "cited": [
+      "theft-source-0076#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_064.f01.c01",
+       "must_show": "The compensation otherwise payable, the effect of fulfillment of the relevant obligations, and the resulting counterfactual reduction amount.",
+       "cited": [
+        "theft-source-0076#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_064",
+    "must_show": "whether this source-defined applicability condition holds: The entitled claimant breached the relevant obligations in an inexcusable manner.",
+    "cited": [
+     "theft-source-0076#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_065",
+   "title": "Establish whether four weeks have elapsed after occurrence of the loss before determining entitlement to request a first partial payment.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_065",
+    "text": "A first partial payment is requested.",
+    "cited": [
+     "theft-source-0078#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_065.f01",
+     "statement": "The loss-occurrence date and the date four weeks after the loss are established.",
+     "cited": [
+      "theft-source-0078#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_065.f01.c01",
+       "must_show": "When the loss occurred and whether four weeks had elapsed when the first partial payment was requested.",
+       "cited": [
+        "theft-source-0078#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_065",
+    "must_show": "whether this source-defined applicability condition holds: A first partial payment is requested.",
+    "cited": [
+     "theft-source-0078#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_066",
+   "title": "Determine the amount currently shown by the status of loss investigation for the first partial payment.",
+   "process_node": "n09",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_066",
+    "text": "A first partial payment is requested after the applicable four-week period.",
+    "cited": [
+     "theft-source-0078#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_066.f01",
+     "statement": "The current status of loss investigation and the amount it establishes for a first partial payment are determined.",
+     "cited": [
+      "theft-source-0078#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_066.f01.c01",
+       "must_show": "The current loss-investigation findings and the amount those findings establish for the first partial payment.",
+       "cited": [
+        "theft-source-0078#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_066",
+    "must_show": "whether this source-defined applicability condition holds: A first partial payment is requested after the applicable four-week period.",
+    "cited": [
+     "theft-source-0078#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_067",
+   "title": "Determine whether expected repair costs exceed CHF 500.",
+   "process_node": "n03",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_067",
+    "text": "Repairs to insured property are contemplated.",
+    "cited": [
+     "theft-source-0084#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_067.f01",
+     "statement": "The expected repair costs for the insured property are established and it is determined whether they exceed CHF 500.",
+     "cited": [
+      "theft-source-0084#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_067.f01.c01",
+       "must_show": "The expected cost of the contemplated repairs and whether that cost exceeds CHF 500.",
+       "cited": [
+        "theft-source-0084#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_067",
+    "must_show": "whether this source-defined applicability condition holds: Repairs to insured property are contemplated.",
+    "cited": [
+     "theft-source-0084#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_068",
+   "title": "Determine the partial-payment amount from the minimum compensation that must be paid according to the current status of the loss investigation.",
+   "process_node": "n09",
+   "requirement_kind": "decision_requirement",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_068.f01",
+     "statement": "The current loss-investigation status and the minimum compensation payable on that status are established.",
+     "cited": [
+      "theft-source-0090#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_068.f01.c01",
+       "must_show": "The current status of the loss investigation and the minimum compensation that must be paid on that status.",
+       "cited": [
+        "theft-source-0090#p3"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_069",
+   "title": "Determine the governing contract content from the General Insurance Conditions, the policy, and applicable statutory provisions.",
+   "process_node": "n02",
+   "requirement_kind": "decision_requirement",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_069.f01",
+     "statement": "The applicable General Insurance Conditions, policy terms, and statutory provisions governing the claim are established.",
+     "cited": [
+      "theft-source-0104#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_069.f01.c01",
+       "must_show": "The General Insurance Conditions, policy terms, and statutory provisions that determine the contract content applicable to the claim.",
+       "cited": [
+        "theft-source-0104#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_070",
+   "title": "Establish the time limit set by the insurer, when it was communicated, and whether it was reasonable.",
+   "process_node": "n04",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_070",
+    "text": "The insurer has set a time limit for claim handling, cooperation, or provision of requested information.",
+    "cited": [
+     "theft-source-0128#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_070.f01",
+     "statement": "The insurer-set time limit, its communication date, and facts bearing on its reasonableness are established.",
+     "cited": [
+      "theft-source-0128#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_070.f01.c01",
+       "must_show": "The time limit set by the insurer, when and to whom it was communicated, and facts bearing on whether the limit was reasonable.",
+       "cited": [
+        "theft-source-0128#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_070",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has set a time limit for claim handling, cooperation, or provision of requested information.",
+    "cited": [
+     "theft-source-0128#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "why": "The written insurer demand records that a deadline was communicated and states the period set, providing the source-grounded basis to assess the stated time limit."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_071",
+   "title": "Establish CSS's written consent before treating the assignment of benefit claims against CSS to the third party as permitted.",
+   "process_node": "n09",
+   "requirement_kind": "prerequisite",
+   "condition": {
+    "guard_id": "overlay_guard_071",
+    "text": "The policyholder seeks to assign benefit claims against CSS to a third party, or a third party asserts entitlement through such an assignment.",
+    "cited": [
+     "theft-source-0129#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_071.f01",
+     "statement": "The asserted assignment of benefit claims and CSS's written consent are established.",
+     "cited": [
+      "theft-source-0129#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_071.f01.c01",
+       "must_show": "The assignment asserted and CSS's written consent to assignment of the benefit claims to the identified third party.",
+       "cited": [
+        "theft-source-0129#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_071",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder seeks to assign benefit claims against CSS to a third party, or a third party asserts entitlement through such an assignment.",
+    "cited": [
+     "theft-source-0129#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's written consent to an assignment of the benefit claim to a third party"
+      ],
+      "why": "This is the exact written CSS-consent evidence required before an assignment of benefit claims against CSS may be treated as permitted."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_072",
+   "title": "Submit the loss notice in writing and establish that the written notice was provided to the insurer.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_072",
+    "text": "The contract provides that notice of the loss must be submitted in writing.",
+    "cited": [
+     "theft-source-0143#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_072.f01",
+     "statement": "The contract's written-notice term and the written submission of the loss notice are established.",
+     "cited": [
+      "theft-source-0143#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_072.f01.c01",
+       "must_show": "The contractual term requiring written notice and the written loss notice provided to the insurer.",
+       "cited": [
+        "theft-source-0143#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+         ],
+         "why": "The policy establishes the contractual written-notice term, and the completed signed claim notification form establishes written submission to the insurer."
+        },
+        {
+         "route_id": "r2",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+          "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+         ],
+         "why": "The policy establishes the contractual written-notice term, and the written claim notification establishes a text-provable written loss notice to the insurer where its own form was not required."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_072",
+    "must_show": "whether this source-defined applicability condition holds: The contract provides that notice of the loss must be submitted in writing.",
+    "cited": [
+     "theft-source-0143#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_073",
+   "title": "Establish whether the reported theft is simple theft; do not treat simple theft as falling within the theft category addressed by the provision.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_073",
+    "text": "Coverage is sought under the theft category governed by the cited provision.",
+    "cited": [
+     "theft-source-0153#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_073.f01",
+     "statement": "The event facts establish whether the theft was simple theft for purposes of the category addressed by the provision.",
+     "cited": [
+      "theft-source-0153#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_073.f01.c01",
+       "must_show": "The event facts needed to determine whether the theft was simple theft.",
+       "cited": [
+        "theft-source-0153#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_073",
+    "must_show": "whether this source-defined applicability condition holds: Coverage is sought under the theft category governed by the cited provision.",
+    "cited": [
+     "theft-source-0153#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_074",
+   "title": "Determine whether neither a receipt nor an expert valuation can be produced for the listed valuable or individual object.",
+   "process_node": "n04",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_074",
+    "text": "The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+    "cited": [
+     "theft-source-0159#p1",
+     "theft-source-0159#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_074.f01",
+     "statement": "The availability or inability to produce a receipt and an expert valuation for each listed valuable or individual object is established.",
+     "cited": [
+      "theft-source-0159#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_074.f01.c01",
+       "must_show": "Whether a receipt can be produced and whether an expert valuation can be produced for the listed valuable or individual object.",
+       "cited": [
+        "theft-source-0159#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Receipt for the scheduled valuable (Quittung / Rechnung)",
+          "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+         ],
+         "why": "These are the two exact evidence types identified by the source proposition and jointly establish that a receipt and an expert valuation can be produced for the scheduled valuable."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_074",
+    "must_show": "whether this source-defined applicability condition holds: The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+    "cited": [
+     "theft-source-0159#p1",
+     "theft-source-0159#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_075",
+   "title": "Determine whether CSS exercised its right to terminate the contract no later than the compensation payment.",
+   "process_node": "n09",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_075",
+    "text": "Compensation is payable or has been paid in connection with the claim.",
+    "cited": [
+     "theft-source-0164#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_075.f01",
+     "statement": "CSS's termination action and its timing relative to compensation payment are established.",
+     "cited": [
+      "theft-source-0164#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_075.f01.c01",
+       "must_show": "Whether CSS terminated the contract and whether the termination occurred no later than compensation payment.",
+       "cited": [
+        "theft-source-0164#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_075",
+    "must_show": "whether this source-defined applicability condition holds: Compensation is payable or has been paid in connection with the claim.",
+    "cited": [
+     "theft-source-0164#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_076",
+   "title": "Determine whether the policyholder terminated the contract no later than 14 days after becoming aware of the compensation payment.",
+   "process_node": "n09",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_076",
+    "text": "The policyholder became aware of the compensation payment.",
+    "cited": [
+     "theft-source-0164#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_076.f01",
+     "statement": "The compensation-payment awareness date and the timing of the policyholder's termination are established.",
+     "cited": [
+      "theft-source-0164#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_076.f01.c01",
+       "must_show": "When the policyholder became aware of compensation payment and when the policyholder gave notice of termination.",
+       "cited": [
+        "theft-source-0164#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_076",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder became aware of the compensation payment.",
+    "cited": [
+     "theft-source-0164#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_077",
+   "title": "Terminate the contract in writing.",
+   "process_node": "n09",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_077",
+    "text": "The policyholder exercises the stated contract-termination right.",
+    "cited": [
+     "theft-source-0164#p3"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_077.f01",
+     "statement": "The policyholder's written termination of the contract is established.",
+     "cited": [
+      "theft-source-0164#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_077.f01.c01",
+       "must_show": "The written termination communication made by the policyholder.",
+       "cited": [
+        "theft-source-0164#p3"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_077",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder exercises the stated contract-termination right.",
+    "cited": [
+     "theft-source-0164#p3"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_078",
+   "title": "Establish whether 30 days have elapsed after the loss occurred.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_078",
+    "text": "A partial payment is requested after a loss.",
+    "cited": [
+     "theft-source-0171#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_078.f01",
+     "statement": "The loss date and the date on which 30 days after the loss elapsed are established.",
+     "cited": [
+      "theft-source-0171#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_078.f01.c01",
+       "must_show": "When the loss occurred and whether the partial-payment request was made at least 30 days later.",
+       "cited": [
+        "theft-source-0171#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_078",
+    "must_show": "whether this source-defined applicability condition holds: A partial payment is requested after a loss.",
+    "cited": [
+     "theft-source-0171#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_079",
+   "title": "Determine and provide the partial payment amount that is, on the current status of loss assessment, at least payable.",
+   "process_node": "n09",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_079",
+    "text": "A partial payment is requested and the current status of loss assessment establishes an amount that is at least payable.",
+    "cited": [
+     "theft-source-0171#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_079.f01",
+     "statement": "The current loss-assessment status and the amount established as at least payable are determined.",
+     "cited": [
+      "theft-source-0171#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_079.f01.c01",
+       "must_show": "The current loss-assessment findings and the calculation of the amount that is at least payable.",
+       "cited": [
+        "theft-source-0171#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_079",
+    "must_show": "whether this source-defined applicability condition holds: A partial payment is requested and the current status of loss assessment establishes an amount that is at least payable.",
+    "cited": [
+     "theft-source-0171#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_080",
+   "title": "Establish that CSS ordered the loss mitigation giving rise to the claimed costs.",
+   "process_node": "n07",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_080",
+    "text": "The claim seeks coverage of costs arising from loss mitigation ordered by CSS.",
+    "cited": [
+     "theft-source-0174#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_080.f01",
+     "statement": "CSS's loss-mitigation order and the claimed costs arising from the ordered mitigation are established.",
+     "cited": [
+      "theft-source-0174#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_080.f01.c01",
+       "must_show": "The CSS instruction ordering loss mitigation and the connection between that ordered mitigation and the claimed costs.",
+       "cited": [
+        "theft-source-0174#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+          "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads"
+         ],
+         "why": "The insurer's instruction establishes CSS's ordered loss-mitigation measures and that they were followed; the original vouchers establish the effective mitigation costs claimed under the applicable cost heads."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_080",
+    "must_show": "whether this source-defined applicability condition holds: The claim seeks coverage of costs arising from loss mitigation ordered by CSS.",
+    "cited": [
+     "theft-source-0174#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+      ],
+      "why": "The source condition is that CSS ordered the loss mitigation. The catalogue instruction/Anordnung expressly records the insurer's ordered measures."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_081",
+   "title": "Determine whether CSS ordered loss mitigation.",
+   "process_node": "n01",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_081",
+    "text": "Loss mitigation is being considered after a loss.",
+    "cited": [
+     "theft-source-0174#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_081.f01",
+     "statement": "Whether CSS issued a loss-mitigation order, and the scope of any such order, is established.",
+     "cited": [
+      "theft-source-0174#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_081.f01.c01",
+       "must_show": "Whether CSS ordered loss mitigation and the content and scope of that order.",
+       "cited": [
+        "theft-source-0174#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+         ],
+         "why": "The insurer's written Weisung/Anordnung establishes whether CSS ordered loss mitigation and defines the order's content and scope."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_081",
+    "must_show": "whether this source-defined applicability condition holds: Loss mitigation is being considered after a loss.",
+    "cited": [
+     "theft-source-0174#p2"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed"
+      ],
+      "why": "The capability asks whether CSS ordered loss mitigation, which is established by the catalogue document expressly identified as an insurer instruction/Anordnung."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_082",
+   "title": "Determine whether a medical certificate or police proof is absent in the claim circumstances.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_082",
+    "text": "A medical certificate or police proof is absent.",
+    "cited": [
+     "theft-source-0180#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_082.f01",
+     "statement": "The availability or absence of a medical certificate and police proof is established.",
+     "cited": [
+      "theft-source-0180#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_082.f01.c01",
+       "must_show": "Whether a medical certificate or police proof is available, and if absent, the facts establishing its absence.",
+       "cited": [
+        "theft-source-0180#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_082",
+    "must_show": "whether this source-defined applicability condition holds: A medical certificate or police proof is absent.",
+    "cited": [
+     "theft-source-0180#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_083",
+   "title": "Determine whether compensation may be refused because the medical certificate or police proof is absent.",
+   "process_node": "n08",
+   "requirement_kind": "decision_requirement",
+   "condition": {
+    "guard_id": "overlay_guard_083",
+    "text": "A medical certificate or police proof is absent.",
+    "cited": [
+     "theft-source-0180#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_083.f01",
+     "statement": "The absence of the specified proof and the resulting applicability of a possible compensation refusal are established.",
+     "cited": [
+      "theft-source-0180#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_083.f01.c01",
+       "must_show": "Whether a medical certificate or police proof is absent and whether that absence supports refusal of compensation.",
+       "cited": [
+        "theft-source-0180#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_083",
+    "must_show": "whether this source-defined applicability condition holds: A medical certificate or police proof is absent.",
+    "cited": [
+     "theft-source-0180#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_084",
+   "title": "Determine whether the SIM-card misuse causing the claimed financial losses occurred during the period between the theft and reporting it to CSS.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_084",
+    "text": "The claim concerns financial losses caused by misuse of SIM cards.",
+    "cited": [
+     "theft-source-0185#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_084.f01",
+     "statement": "The theft time, CSS-reporting time, SIM-card misuse time, and the misuse-caused financial losses are established.",
+     "cited": [
+      "theft-source-0185#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_084.f01.c01",
+       "must_show": "When the theft occurred, when it was reported to CSS, when the SIM card was misused, and whether the resulting financial loss falls within that interval.",
+       "cited": [
+        "theft-source-0185#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+          "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft"
+         ],
+         "why": "The SIM-theft report establishes the theft and reporting event and timing; the bank statement package establishes the misuse and resulting financial loss, allowing the misuse to be assessed against the theft-to-CSS-reporting interval."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_084",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns financial losses caused by misuse of SIM cards.",
+    "cited": [
+     "theft-source-0185#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_085",
+   "title": "Determine the continuing condition that prevents the due date from occurring and establish whether it remains applicable.",
+   "process_node": "n10",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_085",
+    "text": "The condition stated in the governing due-date provision continues to apply.",
+    "cited": [
+     "theft-source-0190#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_085.f01",
+     "statement": "The condition preventing due date and its continuing status are established.",
+     "cited": [
+      "theft-source-0190#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_085.f01.c01",
+       "must_show": "The condition relied on to postpone due date and facts showing whether and for how long it continues to apply.",
+       "cited": [
+        "theft-source-0190#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_085",
+    "must_show": "whether this source-defined applicability condition holds: The condition stated in the governing due-date provision continues to apply.",
+    "cited": [
+     "theft-source-0190#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_086",
+   "title": "Establish whether the policyholder's cancellation notice was given within the 14-day notice period.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_086",
+    "text": "The policyholder gives cancellation notice under the stated post-compensation cancellation right.",
+    "cited": [
+     "theft-source-0192#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_086.f01",
+     "statement": "The cancellation notice date and compliance with the 14-day notice period are established.",
+     "cited": [
+      "theft-source-0192#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_086.f01.c01",
+       "must_show": "When the policyholder gave cancellation notice and whether it was within 14 days of the applicable commencement date.",
+       "cited": [
+        "theft-source-0192#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_086",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder gives cancellation notice under the stated post-compensation cancellation right.",
+    "cited": [
+     "theft-source-0192#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_087",
+   "title": "Establish when the policyholder became aware of the compensation payment and calculate the start of the 14-day cancellation notice period.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_087",
+    "text": "The policyholder seeks to use the stated 14-day cancellation notice period after payment of compensation.",
+    "cited": [
+     "theft-source-0192#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_087.f01",
+     "statement": "The compensation payment and the policyholder's awareness date are established.",
+     "cited": [
+      "theft-source-0192#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_087.f01.c01",
+       "must_show": "When compensation was paid and when the policyholder became aware of that payment.",
+       "cited": [
+        "theft-source-0192#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_087",
+    "must_show": "whether this source-defined applicability condition holds: The policyholder seeks to use the stated 14-day cancellation notice period after payment of compensation.",
+    "cited": [
+     "theft-source-0192#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_088",
+   "title": "Establish whether the theft was reported to CSS or the provider within 24 hours.",
+   "process_node": "n01",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_088",
+    "text": "The claim concerns financial losses caused by the misuse of SIM cards.",
+    "cited": [
+     "theft-source-0194#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_088.f01",
+     "statement": "The theft-reporting date and time, reporting recipient, and whether reporting occurred within 24 hours are established.",
+     "cited": [
+      "theft-source-0194#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_088.f01.c01",
+       "must_show": "Whether, when, and to which permitted recipient—CSS or the provider—the theft was reported, and whether the report was made within 24 hours.",
+       "cited": [
+        "theft-source-0194#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+         ],
+         "why": "This exact report establishes the permitted reporting recipient and is the source-defined evidence for whether theft notification was made within 24 hours."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_088",
+    "must_show": "whether this source-defined applicability condition holds: The claim concerns financial losses caused by the misuse of SIM cards.",
+    "cited": [
+     "theft-source-0194#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_089",
+   "title": "Identify and apply the provisions pursuant to Article 46c VVG that apply to the claim.",
+   "process_node": "n02",
+   "requirement_kind": "decision_requirement",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_089.f01",
+     "statement": "The applicability and claim-specific effect of the provisions pursuant to Article 46c VVG are established.",
+     "cited": [
+      "theft-source-0196#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_089.f01.c01",
+       "must_show": "That the provisions pursuant to Article 46c VVG apply and the claim-specific requirements, consequences, or routes resulting from their application.",
+       "cited": [
+        "theft-source-0196#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_090",
+   "title": "Obtain simpego's consent before carrying out the repairs.",
+   "process_node": "n01",
+   "requirement_kind": "obligation",
+   "condition": {
+    "guard_id": "overlay_guard_090",
+    "text": "Repairs to insured property are contemplated and their expected costs exceed CHF 500.",
+    "cited": [
+     "theft-source-0084#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_090.f01",
+     "statement": "The property is insured, the contemplated repair's expected cost exceeds CHF 500, and simpego's consent status is established.",
+     "cited": [
+      "theft-source-0084#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_090.f01.c01",
+       "must_show": "That the contemplated work is a repair to insured property, its expected cost, and whether simpego consented before repair.",
+       "cited": [
+        "theft-source-0084#p2"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+         ],
+         "why": "This exact consent document preserves the source rule's required prior insurer consent for repairs expected to exceed the threshold."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_090",
+    "must_show": "whether this source-defined applicability condition holds: Repairs to insured property are contemplated and their expected costs exceed CHF 500.",
+    "cited": [
+     "theft-source-0084#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_091",
+   "title": "Determine any reasonable time limit set by the insurer for preparation of the signed inventory.",
+   "process_node": "n04",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_091",
+    "text": "The insurer has requested preparation of a signed inventory.",
+    "cited": [
+     "theft-source-0086#p3"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_091.f01",
+     "statement": "Any insurer-set time limit for the signed inventory and its reasonableness are established.",
+     "cited": [
+      "theft-source-0086#p3"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_091.f01.c01",
+       "must_show": "The time limit set by the insurer for the signed inventory, when it was communicated, and facts relevant to its reasonableness.",
+       "cited": [
+        "theft-source-0086#p3"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+         ],
+         "why": "This exact inventory entry incorporates the insurer-set reasonable period governing preparation of the signed inventory."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_091",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has requested preparation of a signed inventory.",
+    "cited": [
+     "theft-source-0086#p3"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_092",
+   "title": "Establish that the insurer disputed its obligation to provide benefits and that the period referred to in Article 41 paragraph 1 expired.",
+   "process_node": "n09",
+   "requirement_kind": "prerequisite",
+   "condition": {
+    "guard_id": "overlay_guard_092",
+    "text": "The entitled person seeks advance payments after the insurer disputes its obligation to provide benefits.",
+    "cited": [
+     "theft-source-0087#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_092.f01",
+     "statement": "The insurer's dispute of its benefit obligation and expiry of the referred Article 41 paragraph 1 period are established.",
+     "cited": [
+      "theft-source-0087#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_092.f01.c01",
+       "must_show": "The insurer's communication disputing its obligation to provide benefits and the dates establishing expiry of the period referred to in Article 41 paragraph 1.",
+       "cited": [
+        "theft-source-0087#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_092",
+    "must_show": "whether this source-defined applicability condition holds: The entitled person seeks advance payments after the insurer disputes its obligation to provide benefits.",
+    "cited": [
+     "theft-source-0087#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_093",
+   "title": "The entitled person may demand advance payments up to the amount that is undisputed.",
+   "process_node": "n09",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_093",
+    "text": "The specified period has expired and an entitled person seeks an advance payment.",
+    "cited": [
+     "theft-source-0087#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_093.f01",
+     "statement": "The specified period's expiry, the advance-payment demand, and the undisputed amount are established.",
+     "cited": [
+      "theft-source-0087#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_093.f01.c01",
+       "must_show": "The date on which the specified period expired, the entitled person's demand, and the amount that is undisputed.",
+       "cited": [
+        "theft-source-0087#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_093",
+    "must_show": "whether this source-defined applicability condition holds: The specified period has expired and an entitled person seeks an advance payment.",
+    "cited": [
+     "theft-source-0087#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_094",
+   "title": "Determine whether theft is an insured risk under the applicable CSS coverage.",
+   "process_node": "n02",
+   "requirement_kind": "coverage_condition",
+   "condition": {
+    "guard_id": "overlay_guard_094",
+    "text": "A claim seeks CSS coverage for a theft loss.",
+    "cited": [
+     "theft-source-0088#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_094.f01",
+     "statement": "The applicable CSS coverage and its inclusion of theft among insured risks are established.",
+     "cited": [
+      "theft-source-0088#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_094.f01.c01",
+       "must_show": "That the applicable coverage is CSS coverage and that theft is included among its insured risks.",
+       "cited": [
+        "theft-source-0088#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The policy and its schedule establish the applicable CSS coverage and whether theft is included among the insured perils."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_094",
+    "must_show": "whether this source-defined applicability condition holds: A claim seeks CSS coverage for a theft loss.",
+    "cited": [
+     "theft-source-0088#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+      ],
+      "why": "The policy schedule establishes whether theft is included among the insured perils under the applicable CSS coverage."
+     }
+    ]
+   }
+  },
+  {
+   "rule_id": "overlay_rule_095",
+   "title": "Provide the name of the insurance company.",
+   "process_node": "n04",
+   "requirement_kind": "obligation",
+   "condition": null,
+   "facts": [
+    {
+     "fact_id": "overlay_rule_095.f01",
+     "statement": "The insurance company's name is provided.",
+     "cited": [
+      "theft-source-0089#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_095.f01.c01",
+       "must_show": "The name of the insurance company.",
+       "cited": [
+        "theft-source-0089#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+         ],
+         "why": "The insurance policy identifies the insurance company."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": null
+  },
+  {
+   "rule_id": "overlay_rule_096",
+   "title": "Establish whether four weeks have elapsed after the loss occurred.",
+   "process_node": "n09",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_096",
+    "text": "A partial payment is demanded following a loss.",
+    "cited": [
+     "theft-source-0090#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_096.f01",
+     "statement": "The loss date and the date four weeks after the loss are established.",
+     "cited": [
+      "theft-source-0090#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_096.f01.c01",
+       "must_show": "When the loss occurred and whether four weeks had elapsed when the partial payment was demanded.",
+       "cited": [
+        "theft-source-0090#p1"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_096",
+    "must_show": "whether this source-defined applicability condition holds: A partial payment is demanded following a loss.",
+    "cited": [
+     "theft-source-0090#p1"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_097",
+   "title": "The claimant may demand a partial payment equal to the compensation that must at minimum be paid based on the status of the loss investigation.",
+   "process_node": "n09",
+   "requirement_kind": "permitted_route",
+   "condition": {
+    "guard_id": "overlay_guard_097",
+    "text": "A loss has occurred and a partial payment is sought.",
+    "cited": [
+     "theft-source-0090#p2"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_097.f01",
+     "statement": "The current status of the loss investigation and the minimum compensation payable on that status are established.",
+     "cited": [
+      "theft-source-0090#p2"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_097.f01.c01",
+       "must_show": "The loss-investigation status and the calculation of the minimum compensation that must be paid on that status.",
+       "cited": [
+        "theft-source-0090#p2"
+       ],
+       "routes": []
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_097",
+    "must_show": "whether this source-defined applicability condition holds: A loss has occurred and a partial payment is sought.",
+    "cited": [
+     "theft-source-0090#p2"
+    ],
+    "routes": []
+   }
+  },
+  {
+   "rule_id": "overlay_rule_098",
+   "title": "Establish the written demand, warning of default consequences, issue date, and period.",
+   "process_node": "n12",
+   "requirement_kind": "deadline_condition",
+   "condition": {
+    "guard_id": "overlay_guard_098",
+    "text": "The insurer has issued a written request under warning of the consequences of default and set the applicable period.",
+    "cited": [
+     "theft-source-0052#p2",
+     "theft-source-0101#p1"
+    ]
+   },
+   "facts": [
+    {
+     "fact_id": "overlay_rule_098.f01",
+     "statement": "The written request, its warning of default consequences, receipt, and 10-day or reasonable deadline are established.",
+     "cited": [
+      "theft-source-0013#p2",
+      "theft-source-0013#p3",
+      "theft-source-0036#p1",
+      "theft-source-0052#p1",
+      "theft-source-0052#p2",
+      "theft-source-0092#p1",
+      "theft-source-0101#p1"
+     ],
+     "evidence": [
+      {
+       "capability_id": "overlay_rule_098.f01.c01",
+       "must_show": "The written compliance request, warning of default consequences, its receipt date, and the deadline set.",
+       "cited": [
+        "theft-source-0013#p2",
+        "theft-source-0013#p3",
+        "theft-source-0036#p1",
+        "theft-source-0052#p1",
+        "theft-source-0052#p2",
+        "theft-source-0092#p1",
+        "theft-source-0101#p1"
+       ],
+       "routes": [
+        {
+         "route_id": "r1",
+         "documents": [
+          "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+         ],
+         "why": "This is the source-defined written demand and establishes the warning of default consequences and the period set."
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "confirming_evidence": {
+    "capability_id": "resolver.overlay_rule_098",
+    "must_show": "whether this source-defined applicability condition holds: The insurer has issued a written request under warning of the consequences of default and set the applicable period.",
+    "cited": [
+     "theft-source-0052#p2",
+     "theft-source-0101#p1"
+    ],
+    "routes": [
+     {
+      "route_id": "r1",
+      "documents": [
+       "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "why": "This source-matched written demand establishes the insurer's written request, warning of default consequences, and stated period; as a written demand it also supplies its issue date."
+     }
+    ]
+   }
+  }
+ ]
+}
