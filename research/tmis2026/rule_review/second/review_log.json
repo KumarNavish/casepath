@@ -1,0 +1,585 @@
+[
+ {
+  "rule_id": "overlay_rule_001",
+  "source_situation": "Whenever an insured event has occurred, the entitled claimant must notify the insurer as soon as he knows of the event and his claim (VVG 38; AVB 'sofort/umgehend/unverzueglich').",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_002",
+  "source_situation": "On theft/robbery (Simpego also attempted theft; Generali valuables also on Generali's request) the insured must notify the police without delay and request an official investigation.",
+  "decision": "ambiguous-unchanged",
+  "note": "D07 is the only route for the police notification fact. CSS says the police report is required only when CSS calls for it ('Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden', 0043), while Generali/Simpego require police notification on every theft. The sources differ by insurer, so the rule is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_003",
+  "source_situation": "Before the loss is determined, crime-scene traces (theft) and damaged items must not be altered without police/insurer consent, unless for mitigation or public interest.",
+  "decision": "ambiguous-unchanged",
+  "note": "Police consent (D26) and insurer consent (D27) are needed only if traces or items were actually altered ('ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern', 0043). The rule fires whenever traces exist. Its must_show already says 'if changed', so it is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_004",
+  "source_situation": "After the event the claimant must mitigate the loss and, unless there is imminent danger, obtain and follow the insurer's instructions; on theft also help identify perpetrators and recover items.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_005",
+  "source_situation": "Household contents theft damage is covered only if caused by burglary, robbery or simple theft and conclusively proven by traces, witnesses or circumstances.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_006",
+  "source_situation": "For a theft, the event must be classified (burglary incl. keys obtained by burglary/robbery, robbery, simple theft at home/away, breakout theft) from the event facts.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_007",
+  "source_situation": "Simple theft away from the policy locations is covered (CSS) only under a separate supplementary cover listed in the policy, up to its sum insured.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_008",
+  "source_situation": "Theft cover 'at home' applies to the locations named in the policy (CSS: in Switzerland).",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_009",
+  "source_situation": "Under CSS, wrist and pocket watches with an individual value above CHF 5000 count as jewellery.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_010",
+  "source_situation": "On every claim (form) the claimant gives date/place of loss, complete and correct loss facts, and answers who caused the loss.",
+  "decision": "ambiguous-unchanged",
+  "note": "D14 ('who caused the loss and his liability insurer') is requested on every claim. The form question 'Wer hat den Schaden verursacht?' (0114) presupposes a known causer, but no cited words restrict it, so the rule is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_011",
+  "source_situation": "In every claim the claimant must prove the occurrence of the event and the amount of loss; sums insured are no proof of existence or value.",
+  "decision": "ambiguous-unchanged",
+  "note": "D04 (signed inventory) is a sole or alternative route on every claim. The inventory duty is 'auf Verlangen' only in passages this rule does not cite (0048/0086/0163), so the cited passages give no quotable mismatch."
+ },
+ {
+  "rule_id": "overlay_rule_012",
+  "source_situation": "Only when the insurer asks (auf Begehren/auf Verlangen), the claimant must give all known information useful to establish circumstances and consequences.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_013",
+  "source_situation": "Only on the insurer's request (auf Ersuchen/auf Verlangen) the claimant must produce a signed valued inventory of items before/after the event and affected items.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_014",
+  "source_situation": "CSS AVB: original vouchers on request; the CSS form asks to attach original purchase vouchers for damaged or stolen items.",
+  "decision": "ambiguous-unchanged",
+  "note": "The CSS AVB require original vouchers only 'auf Verlangen' (0048/0134), but the CSS form asks to attach them for all damaged or stolen items ('bitte Originalkaufbelege beilegen', 0176). The disjunctive condition reflects both, so it is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_015",
+  "source_situation": "For a bicycle claim: form asks frame number, whether locked and to attach purchase vouchers; Generali lists purchase voucher and detailed cost estimate with photo.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_016",
+  "source_situation": "Under valuables insurance (Generali), the value is shown by invoices, receipts, estimates etc. (any of these kinds).",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "route split into alternatives",
+    "before": "one route: [D09 receipt + D10 expert valuation] (fact c01 and confirming evidence)",
+    "after": "r1: [D09 receipt]; r2: [D10 expert valuation] (fact c01 and confirming evidence)",
+    "quotation": "Wertsachenversicherung: Rechnungen, Quittungen, Schätzungen usw.",
+    "passage_id": "theft-source-0191"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_017",
+  "source_situation": "Where a person was injured: Generali lists a medical certificate; Simpego requires release of the treating doctor from confidentiality on accidents with personal injury.",
+  "decision": "ambiguous-unchanged",
+  "note": "Each insurer requires its own document (Generali medical certificate 0079; Simpego doctor release 0057, only 'Bei Unfällen mit Personenschaden'). The catalogue marks D28 and D29 as alternatives, but no cited passage accepts either one, so the separate items are left. The joint D28+D29 confirming route is also left."
+ },
+ {
+  "rule_id": "overlay_rule_018",
+  "source_situation": "The form asks on every claim whether other insurances exist for the items and whether there is liability insurance; multiple insurance must be reported.",
+  "decision": "ambiguous-unchanged",
+  "note": "The catalogue says D16 is to be completed in every case, but the 'in jedem Fall auszufüllen' passage (0094) is not cited here, so no route was added."
+ },
+ {
+  "rule_id": "overlay_rule_019",
+  "source_situation": "Where the same interest is insured against the same perils for the same time elsewhere, this must be reported immediately; only one indemnity per loss.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_020",
+  "source_situation": "The loss is determined either by the parties themselves, by a joint expert, or in expert proceedings; documents of an expert exist only on the latter two routes.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "condition added",
+    "before": "condition: null",
+    "after": "The loss is to be determined by a jointly appointed expert or in expert proceedings, not by the parties themselves.",
+    "quotation": "Der Schaden wird entweder durch die Parteien, durch einen gemeinsamen Experten oder im Sachverständigenverfahren ermittelt.",
+    "passage_id": "theft-source-0193"
+   },
+   {
+    "type": "rule split (fact moved)",
+    "before": "fact overlay_rule_020.f02 (policyholder assists in loss determination) inside overlay_rule_020",
+    "after": "fact overlay_rule_020.f02 moved unchanged to new rule overlay_rule_020.a with condition null, so the new condition does not restrict it",
+    "quotation": "Die CSS ermittelt den Schaden unter Mithilfe des Versicherungsnehmers und/oder mit einem gemeinsamen Experten.",
+    "passage_id": "theft-source-0045"
+   }
+  ],
+  "note": "New rule overlay_rule_020.a holds the moved fact."
+ },
+ {
+  "rule_id": "overlay_rule_021",
+  "source_situation": "Either party may demand the expert procedure.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_022",
+  "source_situation": "In the expert procedure, each party appoints its expert in writing.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_023",
+  "source_situation": "In the expert procedure, a party that fails to appoint its expert within 14 days of a written request to do so has it appointed by the judge on the other party's application.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "document removed",
+    "before": "confirming evidence r1: [D20 insurer's written demand for the communications under warning of default + D21 written appointment]",
+    "after": "confirming evidence r1: [D21 written appointment]",
+    "quotation": "Unterlässt eine Partei die Ernennung ihres Sachverständigen innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde (the request concerns appointing an expert, not a demand for Art. 39 communications)",
+    "passage_id": "theft-source-0023"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_024",
+  "source_situation": "Where a party failed to appoint within 14 days after written request, the judge appoints on the other party's application.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_025",
+  "source_situation": "Expert findings within their competence are binding unless a party proves they deviate materially from the facts.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_026",
+  "source_situation": "For household contents (Fahrhabe), compensation is at new value at the time of loss less residual value; no sentimental value.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_027",
+  "source_situation": "Where the sum insured is below the replacement value (underinsurance), the loss is paid proportionally; not on first-risk insurance or where CSS waives underinsurance.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_028",
+  "source_situation": "On first-risk insurance, the loss is paid up to the agreed sum without underinsurance.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_029",
+  "source_situation": "CSS: jewellery limit 20%/max CHF 30000 on simple theft at home and on burglary unless locked in a >=100 kg safe or built-in wall safe.",
+  "decision": "ambiguous-unchanged",
+  "note": "0021 lifts the limit for jewellery kept in a locked safe without naming the theft type, while 0182 lifts it only for burglary. It is unclear whether the first branch of the condition (simple theft) should also exclude safe storage, so the rule is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_030",
+  "source_situation": "The policy deductible (CSS default CHF 200) is deducted per event unless otherwise agreed.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_031",
+  "source_situation": "CSS: no deductible on burglary theft if an activated, permanently installed alarm system was present.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_032",
+  "source_situation": "On a culpable breach of duties, compensation may be reduced/refused to the extent the breach influenced the loss.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_033",
+  "source_situation": "No reduction if the breach was non-culpable or did not influence event, extent or benefits (burden on the insured).",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_034",
+  "source_situation": "On culpable late notice, compensation may be reduced by the amount timely notice would have saved.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_035",
+  "source_situation": "Fraudulent misstatement/concealment or deliberately late/omitted Art. 39 communications free the insurer from the contract.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_036",
+  "source_situation": "Compensation falls due 4 weeks (AXA 30 days) after the insurer has the information needed to determine loss and liability.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_037",
+  "source_situation": "CSS: payment is postponed while compensation cannot be determined or paid through the insured's fault.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_038",
+  "source_situation": "Payment is not due while a police/criminal investigation is ongoing and proceedings against the insured are unconcluded (Generali, AXA: 'und'; CSS: police investigating 'oder' proceedings unconcluded).",
+  "decision": "ambiguous-unchanged",
+  "note": "Generali (0018) and AXA (0125) join the two conditions with 'und', but CSS (0095) uses 'oder' ('ermitteln oder ein Strafverfahren ... nicht abgeschlossen ist'). The sources conflict, so the 'and' condition is left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_039",
+  "source_situation": "Generali: if the insured fails cooperation duties, the insurer may set a written 10-day period; on non-compliance, the benefit obligation lapses.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_040",
+  "source_situation": "When stolen items are recovered or news of them received, the insured must inform the insurer immediately.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_041",
+  "source_situation": "CSS: when items/animals already compensated are recovered, the policyholder repays compensation less repairs/depreciation.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_042",
+  "source_situation": "CSS: after paying benefits, the policyholder assigns his third-party claims up to the benefits; Generali: recourse must be secured if the loss arose or grew through the fault of a third party.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "condition narrowed",
+    "before": "CSS has paid benefits for which the policyholder has claims against third parties, or a third party caused or increased the loss.",
+    "after": "CSS has paid benefits for which the policyholder could assert claims against third parties, or the loss was caused or increased through the fault of a third party.",
+    "quotation": "sofern der Schaden oder Verlust durch die Schuld eines Dritten entstanden oder vergrössert worden ist",
+    "passage_id": "theft-source-0165"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_043",
+  "source_situation": "If the insurer rejects the claim, the claimant must sue within 2 years of the event or forfeit his rights (SVV).",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_044",
+  "source_situation": "Claims under the contract become time-barred five years after the fact founding the benefit obligation.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_045",
+  "source_situation": "CSS: if the policyholder repays all compensation within 30 days of learning of the settlement, the loss is treated as not having occurred.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_046",
+  "source_situation": "On the form, the payee's name, address and account details are given for payment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_047",
+  "source_situation": "The form's signatory declares that all questions were answered truthfully and completely.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_048",
+  "source_situation": "Contract clauses shortening limitation are invalid, reserving Art. 39(2)(2) VVG.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_049",
+  "source_situation": "CSS: the insurer may call for a police report; when it does, the report must be provided.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "document added",
+    "before": "f01.c01 routes: [] ",
+    "after": "f01.c01 r1: [D07 police report]",
+    "quotation": "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden",
+    "passage_id": "theft-source-0043"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_050",
+  "source_situation": "CSS covers costs on simple theft at home or away.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_051",
+  "source_situation": "AXA: payment not due while doubts exist about the claimant's entitlement to receive payment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_052",
+  "source_situation": "Generali valuables: police notification required on theft, robbery or on Generali's request.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_053",
+  "source_situation": "SVV exclusion: damage by household members or employees whose position gives access to the premises.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_054",
+  "source_situation": "CSS exclusion: damage caused by persons living in the policyholder's household.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_055",
+  "source_situation": "Contract clauses shortening limitation are invalid (VVG 46(2)).",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_056",
+  "source_situation": "CSS may terminate/withdraw on fraudulent claim, breach of alteration ban, intentional causation, or multiple insurance.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_057",
+  "source_situation": "CSS: on theft the policyholder has further duties.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_058",
+  "source_situation": "VVG 41a: same rule applies where allocation of the benefit among several claimants is unclear.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_059",
+  "source_situation": "SVV: the insurer may determine which contractors carry out repairs.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_060",
+  "source_situation": "Form: name of the financial institution is given with payment details.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_061",
+  "source_situation": "CSS: obligations are performed in Switzerland in Swiss currency.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_062",
+  "source_situation": "Form field 'Policen-Nr. / Schaden-Nr.' (section s35, the section on who caused the loss).",
+  "decision": "ambiguous-unchanged",
+  "note": "'Policen-Nr. / Schaden-Nr.' (0075) sits in form section s35 on the person who caused the loss and that person's liability insurer, so it may not mean the insured's own policy number. The cited words alone do not show this."
+ },
+ {
+  "rule_id": "overlay_rule_063",
+  "source_situation": "VVG 38a: inexcusable breach of mitigation duties by the claimant.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_064",
+  "source_situation": "VVG 38a: on inexcusable breach, reduction by the amount fulfilment would have saved.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_065",
+  "source_situation": "SVV: 4 weeks after the loss, a first partial payment may be requested.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_066",
+  "source_situation": "SVV: first partial payment equals the amount shown by the current state of loss assessment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_067",
+  "source_situation": "Simpego: repairs need consent if expected costs exceed CHF 500.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_068",
+  "source_situation": "Generali: 4 weeks after the loss, the insured may demand a partial payment of the minimum compensation on the current state of assessment.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "condition added",
+    "before": "condition: null",
+    "after": "A loss has occurred and a partial payment is sought.",
+    "quotation": "4 Wochen nach Eintritt des Schadens können Sie eine Teilzahlung ... verlangen.",
+    "passage_id": "theft-source-0090"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_069",
+  "source_situation": "CSS: contract content results from the AVB, the policy and statute.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_070",
+  "source_situation": "SVV: the insurer may set reasonable time limits (context in the cited fragment: the inventory duty).",
+  "decision": "ambiguous-unchanged",
+  "note": "The cited fragment 0128 ('wobei der Versicherer angemessene Fristen ansetzen kann') concerns the inventory in its context. The condition is broader, and D20 (a demand under warning of default) is not named by 0128. The fragment alone is ambiguous."
+ },
+ {
+  "rule_id": "overlay_rule_071",
+  "source_situation": "CSS: benefit claims may be assigned to third parties only with CSS's written consent.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "document added",
+    "before": "f01.c01 routes: []",
+    "after": "f01.c01 r1: [D18 insurer's written consent to an assignment]",
+    "quotation": "Leistungsansprüche gegenüber der CSS darf der Versicherungsnehmer nur mit schriftlicher Zustimmung der CSS an Dritte abtreten.",
+    "passage_id": "theft-source-0129"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_072",
+  "source_situation": "VVG 38: the contract may require written notice of loss.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_073",
+  "source_situation": "CSS: a provision covering theft excluding simple theft.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_074",
+  "source_situation": "Simpego: listed valuables/single objects insured at >= CHF 1000 are excluded if neither a receipt nor an expert valuation can be produced.",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "route split into alternatives",
+    "before": "one route: [D09 receipt + D10 expert valuation]",
+    "after": "r1: [D09 receipt]; r2: [D10 expert valuation]",
+    "quotation": "wenn im Schadenfall keine Quittung oder ein Wertgutachten eines Sachverständigen vorgewiesen werden kann",
+    "passage_id": "theft-source-0159"
+   }
+  ]
+ },
+ {
+  "rule_id": "overlay_rule_075",
+  "source_situation": "CSS: after a loss, CSS may terminate at the latest on payment of compensation.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_076",
+  "source_situation": "CSS: policyholder may terminate within 14 days after learning of the payment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_077",
+  "source_situation": "CSS: termination after a loss must be in writing.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_078",
+  "source_situation": "AXA: 30 days after the loss, a partial payment may be requested.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_079",
+  "source_situation": "AXA: partial payment equals the minimum amount payable on current assessment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_080",
+  "source_situation": "CSS: mitigation costs are covered if the mitigation was ordered by CSS.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_081",
+  "source_situation": "CSS: whether CSS ordered mitigation determines cost coverage.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_082",
+  "source_situation": "Generali: absence of medical certificate or police proof.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_083",
+  "source_situation": "Generali: compensation may be refused if a medical certificate or police proof is missing.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_084",
+  "source_situation": "CSS: SIM-card misuse losses are covered only if the misuse falls between the theft and the report to CSS.",
+  "decision": "ambiguous-unchanged",
+  "note": "D33 refers to misuse of 'card data' with a police report, while 0185 concerns misuse of SIM cards. Both times (report and misuse) are needed, so the joint route is plausible. Left as it is."
+ },
+ {
+  "rule_id": "overlay_rule_085",
+  "source_situation": "AXA: due date does not occur while listed conditions persist.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_086",
+  "source_situation": "SVV: policyholder's 14-day cancellation period after learning of payment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_087",
+  "source_situation": "SVV: the 14-day period starts when the policyholder learns of the payment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_088",
+  "source_situation": "CSS: SIM misuse losses excluded unless the theft is reported to CSS or the provider within 24 hours.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_089",
+  "source_situation": "CSS: Art. 46c VVG applies.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_090",
+  "source_situation": "Simpego: repairs to insured items expected to cost more than CHF 500 need Simpego's prior consent.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_091",
+  "source_situation": "SVV: when the insurer requests the signed inventory, it may set a reasonable time limit.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_092",
+  "source_situation": "VVG 41a: if the insurer disputes liability, after the Art. 41(1) period the claimant may demand payments on account.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_093",
+  "source_situation": "VVG 41a: payments on account up to the undisputed amount.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_094",
+  "source_situation": "CSS insures fire, natural hazards, water, theft and glass.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_095",
+  "source_situation": "Form field 'Name der Versicherungsgesellschaft' (section s35, on who caused the loss / liability insurance).",
+  "decision": "ambiguous-unchanged",
+  "note": "'Name der Versicherungsgesellschaft' (0089) sits in form section s35 (liability insurer of the person who caused the loss), whereas the rule asks for the insured's own insurer via D03 on every claim. The cited words alone do not show this."
+ },
+ {
+  "rule_id": "overlay_rule_096",
+  "source_situation": "Generali: 4 weeks after the loss, a partial payment may be demanded.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_097",
+  "source_situation": "Generali: partial payment of the minimum compensation on current assessment.",
+  "decision": "unchanged"
+ },
+ {
+  "rule_id": "overlay_rule_098",
+  "source_situation": "VVG 39(2)/Generali: deadline for communications runs from the insurer's written demand under warning of default consequences (Generali: 10 days).",
+  "decision": "unchanged"
+ }
+]

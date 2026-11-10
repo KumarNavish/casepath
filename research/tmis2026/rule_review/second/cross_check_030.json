@@ -1,0 +1,13 @@
+{
+ "rule_id": "overlay_rule_030",
+ "first_editor_change": "condition broadened",
+ "decision": "approve",
+ "approved_condition_text": "A deductible applies to the loss event (the deductible agreed in the policy or, absent a different agreement, CHF 200) and no qualifying no-deductible exception applies.",
+ "approved_citations_added": ["theft-source-0167#p1"],
+ "justification": [
+  {"passage_id": "theft-source-0167", "quotation": "Der Anspruchsberechtigte hat pro Ereignis den in der Police vereinbarten Selbstbehalt zu tragen. Dieser wird von der errechneten Entschädigung abgezogen."},
+  {"passage_id": "theft-source-0081", "quotation": "Ohne abweichende Vereinbarung trägt der Versicherungsnehmer einen Selbstbehalt von CHF 200 pro Schadenereignis."}
+ ],
+ "reasoning": "The original condition ('no different agreement ... applies') leaves out every policy with its own agreed deductible. Under 0167 that deductible is deducted per event, and the rule's own fact f01 says to deduct it. 'Ohne abweichende Vereinbarung' in 0081 only chooses the CHF 200 default; it does not limit when a deductible applies. The original condition was therefore too narrow. My first pass missed this.",
+ "own_review_correction": "My review_log.json marks rule 030 as unchanged. That entry is superseded by this approval. reviewed_rules.json has not yet been updated with the approved text."
+}
