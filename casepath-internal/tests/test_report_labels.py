@@ -34,7 +34,7 @@ class ReportLabelTests(unittest.TestCase):
         self.assertIn("die Prüfung zweifelt: Zitat zu knapp", de)
         self.assertIn("the check doubts it: Zitat zu knapp", en)
         self.assertIn("Hinweise zur Vorbereitung", de)
-        self.assertIn("marked as not checked", en)
+        self.assertIn("documents it did not reach stay requested", en)
 
 
 class ProductTextTests(unittest.TestCase):
@@ -61,3 +61,13 @@ class NotCheckedTests(unittest.TestCase):
         need = {"document": "d1", "title": "Mietvertrag", "required": "yes", "status": "missing", "not_checked": True, "citations": []}
         state = {"run": {"result": {"facts": [], "documents": [], "warnings": [], "evaluation": {"documents": [need]}}}, "process": {"documents": []}}
         self.assertIn("fehlt (nicht geprüft)", text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="de")))
+
+
+class StopNoteTests(unittest.TestCase):
+    def test_a_stop_note_is_true_for_the_part_that_stopped(self):
+        need = {"document": "d1", "title": "x", "required": "yes", "status": "missing", "citations": []}
+        state = {"run": {"result": {"facts": [], "documents": [], "evaluation": {"documents": [need]},
+                                    "warnings": [{"kind": "turn_limit", "agent": "result_checker", "text": "x"}]}}, "process": {"documents": []}}
+        text = text_of(report.build({"id": "case_00000001", "title": "x"}, state, [], lang="en"))
+        self.assertIn("The summary stopped early; no reply draft was prepared.", text)
+        self.assertNotIn("not checked", text.split("Notes on the preparation")[1].split("Where the case stands")[0])
