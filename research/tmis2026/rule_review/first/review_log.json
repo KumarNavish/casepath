@@ -1,0 +1,616 @@
+[
+ {
+  "id": "overlay_rule_001",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_002",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_003",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_004",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "f01 combines general mitigation duties ('nach Eintritt des befürchteten Ereignisses tunlichst für Minderung des Schadens zu sorgen', theft-source-0116) with perpetrator-identification and recovery duties that the AVB impose only on theft (theft-source-0056 and 0099 sit under the theft-specific clauses). The cited passages do not themselves say 'bei Diebstahl', and f01 requests no document, so the rule is left unchanged; a split into a theft-conditioned rule would be cleaner."
+ },
+ {
+  "id": "overlay_rule_005",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_006",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_007",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_008",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_009",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_010",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_011",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_012",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_013",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_014",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "The condition's second limb, 'or the claim concerns damaged or stolen items', goes beyond the AVB ('auf Verlangen ... Originalbelege beizubringen', theft-source-0048/0134). It is supported only by the claim form's request 'Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)' (theft-source-0176, cited in the fact). A request on a form versus an obligation is a matter of reading, so the rule is left unchanged."
+ },
+ {
+  "id": "overlay_rule_015",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_016",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "route split into alternatives",
+    "where": "overlay_rule_016.f01.c01",
+    "before": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "after": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)"
+     ],
+     [
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "quote": "Wertsachenversicherung: Rechnungen, Quittungen, Schätzungen usw.",
+    "passage": "theft-source-0191",
+    "note": "The passage lists examples of acceptable evidence ('usw.'); it does not demand both a receipt and a valuation."
+   },
+   {
+    "type": "route split into alternatives",
+    "where": "overlay_rule_016 confirming_evidence",
+    "before": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "after": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)"
+     ],
+     [
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "quote": "Wertsachenversicherung: Rechnungen, Quittungen, Schätzungen usw.",
+    "passage": "theft-source-0191"
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_017",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "The catalogue lists D28 and D29 as alternatives, but the cited passages come from two insurers and each requires its own document: Generali 'Arztzeugnis (bei Personenschaden)' (0079) and Simpego 'ist der behandelnde Arzt von der Schweigepflicht zu entbinden' (0057). Neither passage contains 'or', so requiring both, as separate evidence items, is left unchanged."
+ },
+ {
+  "id": "overlay_rule_018",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_019",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_020",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_021",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_022",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_023",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "document removed",
+    "where": "overlay_rule_023 confirming_evidence",
+    "before": [
+     [
+      "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+     ]
+    ],
+    "after": [
+     [
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+     ]
+    ],
+    "quote": "Unterlässt eine Partei die Ernennung ihres Sachverständigen innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde",
+    "passage": "theft-source-0023",
+    "note": "The cited written request asks one party to appoint an expert and may come from either party. D20 is the insurer's demand for communications under warning of default (VVG 39 / Generali E122), which is a different document."
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_024",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_025",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_026",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_027",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_028",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_029",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_030",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "condition broadened",
+    "where": "condition",
+    "before": "A deductible applies and no different agreement or qualifying no-deductible exception applies.",
+    "after": "A deductible applies to the loss event (the deductible agreed in the policy or, absent a different agreement, CHF 200) and no qualifying no-deductible exception applies.",
+    "quote": "Der Anspruchsberechtigte hat pro Ereignis den in der Police vereinbarten Selbstbehalt zu tragen. Dieser wird von der errechneten Entschädigung abgezogen.",
+    "passage": "theft-source-0167",
+    "note": "The old condition excluded every policy with an agreed deductible, so the rule's own fact (deduct the policy-agreed deductible) could never apply. 'Ohne abweichende Vereinbarung' (theft-source-0081) only selects the CHF 200 default. Citation 0167#p1 added."
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_031",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_032",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_033",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_034",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_035",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_036",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_037",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_038",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "The sources conflict. Generali (0018) and AXA (0125) require an investigation AND unconcluded proceedings ('geführt wird und das Verfahren ... nicht abgeschlossen ist'). CSS/SVV (0095) are disjunctive ('ermitteln oder ein Strafverfahren ... nicht abgeschlossen ist'). The conjunctive condition is narrower than 0095 but faithful to 0018 and 0125, so it is left unchanged."
+ },
+ {
+  "id": "overlay_rule_039",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_040",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_041",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_042",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_043",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_044",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_045",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_046",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_047",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_048",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_049",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "document added",
+    "where": "overlay_rule_049.f01.c01",
+    "before": [],
+    "after": [
+     [
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer"
+     ]
+    ],
+    "quote": "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden;",
+    "passage": "theft-source-0043",
+    "note": "The evidence item's must_show names 'the corresponding report' but it had no route; the catalogue's police-report entry is that document."
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_050",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_051",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_052",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_053",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_054",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_055",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_056",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_057",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_058",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_059",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_060",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_061",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_062",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "'Policen-Nr. / Schaden-Nr.' (0075) shares form section s35/s36 with 'Wer hat den Schaden verursacht?' and 'Besteht eine Haftpflicht-Versicherung?'. It is therefore probably the liability insurer's number, which would make the rule conditional on a liable third party with insurance. The passage text alone does not say so, so the rule is left unchanged."
+ },
+ {
+  "id": "overlay_rule_063",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_064",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_065",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_066",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_067",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_068",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "condition added",
+    "where": "condition",
+    "before": null,
+    "after": "The policyholder demands a partial payment four weeks or more after the loss occurred.",
+    "quote": "4 Wochen nach Eintritt des Schadens können Sie eine Teilzahlung in Höhe der Entschädigung, die wir nach dem Stand der Schadenermittlung mindestens zahlen müssen, verlangen.",
+    "passage": "theft-source-0090",
+    "note": "The partial-payment amount is relevant only once a partial payment is demanded after four weeks; sibling rules 066/096/097 carry this condition."
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_069",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_070",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_071",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_072",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_073",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_074",
+  "decision": "changed",
+  "changes": [
+   {
+    "type": "route split into alternatives",
+    "where": "overlay_rule_074.f01.c01",
+    "before": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "after": [
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)"
+     ],
+     [
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ]
+    ],
+    "quote": "wenn im Schadenfall keine Quittung oder ein Wertgutachten eines Sachverständigen vorgewiesen werden kann",
+    "passage": "theft-source-0159",
+    "note": "The exclusion bites only if neither can be shown; either a receipt or an expert valuation suffices."
+   }
+  ]
+ },
+ {
+  "id": "overlay_rule_075",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_076",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_077",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_078",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_079",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_080",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_081",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_082",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_083",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_084",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "D33 (bank statement 'where card data were misused') is joined to D32. The passage concerns SIM-card misuse ('missbräuchliche Nutzung von SIM-Karten', 0185); whether a bank statement is the right evidence of the misuse time is unclear. No cited words contradict it, so the rule is left unchanged."
+ },
+ {
+  "id": "overlay_rule_085",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_086",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_087",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_088",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_089",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_090",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_091",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_092",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_093",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_094",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_095",
+  "decision": "ambiguous-unchanged",
+  "changes": [],
+  "note": "'Name der Versicherungsgesellschaft' (0089) sits in form section s35/s36 with 'Besteht eine Haftpflicht-Versicherung?' (0130). It is therefore probably the liable person's insurer, for which D14 is the matching catalogue entry, rather than the claimant's own policy (D03). The bare field label does not say so, so the rule is left unchanged."
+ },
+ {
+  "id": "overlay_rule_096",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_097",
+  "decision": "unchanged",
+  "changes": []
+ },
+ {
+  "id": "overlay_rule_098",
+  "decision": "unchanged",
+  "changes": []
+ }
+]
