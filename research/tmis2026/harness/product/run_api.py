@@ -52,8 +52,12 @@ def settings_env(data_dir, catalogue, model):
 
 def load_product(path):
     sys.path.insert(0, str(Path(path) / "casepath-internal"))
-    mods = {name: importlib.import_module(f"casepath_internal.{name}") for name in ("app", "config", "chat_model", "parity", "workflows")}
-    assert Path(mods["app"].__file__).resolve().is_relative_to(Path(path).resolve()), "imported another casepath_internal"
+    layout = {"app": "casepath.web.app", "config": "casepath.config", "chat_model": "casepath.agents.chat_model",
+              "parity": "casepath.parity", "workflows": "casepath.process.workflows"}  # the package layout since 2821bf3
+    if not (Path(path) / "casepath-internal" / "casepath" / "web").is_dir():
+        layout = {name: f"casepath_internal.{name}" for name in layout}
+    mods = {name: importlib.import_module(module) for name, module in layout.items()}
+    assert Path(mods["app"].__file__).resolve().is_relative_to(Path(path).resolve()), "imported another product package"
     return mods
 
 

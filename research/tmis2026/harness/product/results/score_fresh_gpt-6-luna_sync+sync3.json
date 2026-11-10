@@ -1,0 +1,150 @@
+{
+ "set": "fresh",
+ "model": "gpt-6-luna",
+ "table": {
+  "PRODUCT as built gpt-6-luna (k=1)": {
+   "claim_runs": 72,
+   "requested_share": 0.6244979919678715,
+   "held": 0.041666666666666664,
+   "held_required_now": 0.0,
+   "handed": 0.09722222222222222,
+   "missed": 2.5,
+   "unnecessary": 0.013888888888888888,
+   "premature": 0.027777777777777776,
+   "silent_skip": 0.2361111111111111,
+   "strict_unsafe": 2.875,
+   "spurious_hold": 0.125,
+   "correct_hold_share": 0.13636363636363635,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "PRODUCT sync gpt-6-luna (k=1)": {
+   "claim_runs": 72,
+   "requested_share": 0.9377510040160643,
+   "held": 0.25,
+   "held_required_now": 0.2222222222222222,
+   "handed": 0.06944444444444445,
+   "missed": 0.1388888888888889,
+   "unnecessary": 0.027777777777777776,
+   "premature": 0.041666666666666664,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.2777777777777778,
+   "spurious_hold": 0.4305555555555556,
+   "correct_hold_share": 0.8181818181818182,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "PRODUCT sync3 gpt-6-luna (k=1)": {
+   "claim_runs": 72,
+   "requested_share": 0.9216867469879518,
+   "held": 0.25,
+   "held_required_now": 0.2777777777777778,
+   "handed": 0.0,
+   "missed": 0.2638888888888889,
+   "unnecessary": 0.05555555555555555,
+   "premature": 0.05555555555555555,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.375,
+   "spurious_hold": 0.5555555555555556,
+   "correct_hold_share": 0.8181818181818182,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 0
+  },
+  "CPv2p gpt-6-luna (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9698795180722891,
+   "held": 0.2962962962962963,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.023148148148148147,
+   "missed": 0.1712962962962963,
+   "unnecessary": 0.027777777777777776,
+   "premature": 0.009259259259259259,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.23148148148148148,
+   "spurious_hold": 0.05092592592592592,
+   "correct_hold_share": 0.9696969696969697,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "B1v2p gpt-6-luna (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9544846050870147,
+   "held": 0.3055555555555556,
+   "held_required_now": 0.11574074074074074,
+   "handed": 0.0,
+   "missed": 0.19907407407407407,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.19907407407407407,
+   "spurious_hold": 0.013888888888888888,
+   "correct_hold_share": 1.0,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 0
+  },
+  "CPv2p gpt-6.1-terra (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9799196787148594,
+   "held": 0.28703703703703703,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.027777777777777776,
+   "missed": 0.09722222222222222,
+   "unnecessary": 0.041666666666666664,
+   "premature": 0.013888888888888888,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.18055555555555555,
+   "spurious_hold": 0.06944444444444445,
+   "correct_hold_share": 0.9393939393939394,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "B1v2p gpt-6.1-terra (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9805890227576974,
+   "held": 0.30092592592592593,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 0.13425925925925927,
+   "unnecessary": 0.018518518518518517,
+   "premature": 0.004629629629629629,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.1574074074074074,
+   "spurious_hold": 0.023148148148148147,
+   "correct_hold_share": 0.9848484848484849,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 0
+  }
+ },
+ "attribution": {
+  "lost": {
+   "document finder: judged on file": 12,
+   "failed run": 7,
+   "held behind an open question": 20
+  },
+  "gained": {
+   "premature: requested a document the reference holds": 4,
+   "document finder: supplied sufficient file not accepted": 3,
+   "condition health_effects judged true against the reference": 1
+  },
+  "blocking_facts": {},
+  "agent_added_needs": {
+   "no article / suggested / missing": 12,
+   "statute article / yes / missing": 33,
+   "statute article / suggested / missing": 3,
+   "statute article / depends / missing": 5,
+   "statute article / yes / unusable": 1,
+   "no article / suggested / unusable": 1
+  }
+ },
+ "cost": {
+  "cases": 72,
+  "calls_per_case": 35.34722222222222,
+  "input_tokens_per_case": 160305.47222222222,
+  "cached_per_case": 110640.65277777778,
+  "output_tokens_per_case": 19901.930555555555,
+  "failed": 1,
+  "handed_over": 0,
+  "usd_total": 3.5994381549999916,
+  "usd_per_case": 0.04999219659722211
+ }
+}

@@ -30,7 +30,10 @@ import convert  # noqa: E402  (sets the import paths for casepath-api and the ha
 
 _PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-ui3")
 sys.path.insert(0, f"{_PRODUCT}/casepath-internal")
-from casepath_internal import workflows as product  # noqa: E402
+try:  # the product's package layout since 2821bf3, then the earlier one
+    from casepath.process import workflows as product  # noqa: E402
+except ImportError:
+    from casepath_internal import workflows as product  # noqa: E402
 from casepath_api.assessment_grammar_v1 import FAMILY_FLAGS  # noqa: E402
 from casepath_api.causal_process_v1 import evaluate as paper_evaluate  # noqa: E402
 from casepath_tenancy import supervaluate  # noqa: E402

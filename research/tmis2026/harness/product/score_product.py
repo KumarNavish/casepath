@@ -46,9 +46,10 @@ def dev12(model, label=None):
     as_built = load(RUNS / "product" / f"plans_tenancy_{model}_dev12.json")
     arms = {f"PRODUCT as built {model} (k=1)": arm_plans(as_built, "PRODUCT", DEV12, [0])}
     product = as_built
-    if label:
-        product = load(RUNS / "product" / f"plans_tenancy_{model}_dev12_{label}.json")
-        arms[f"PRODUCT {label} {model} (k=1)"] = arm_plans(product, "PRODUCT", DEV12, [0])
+    for one in (label or "").split(","):  # several labels: each run scored; the last is attributed
+        if one:
+            product = load(RUNS / "product" / f"plans_tenancy_{model}_dev12_{one}.json")
+            arms[f"PRODUCT {one} {model} (k=1)"] = arm_plans(product, "PRODUCT", DEV12, [0])
     for m, runs in (("gpt-6-luna", [0, 1, 2]), ("gpt-6.1-terra", [0])):
         raw = load(RUNS / "v2" / f"plans_tenancy_{m}_original_dev.json")
         for design in ("CPv2p", "B1v2p"):
@@ -79,9 +80,10 @@ def fresh(model, label=None):
     as_built = load(RUNS / "product" / f"plans_tenancy_{model}_fresh.json")
     arms = {f"PRODUCT as built {model} (k=1)": arm_plans(as_built, "PRODUCT", ids, [0])}
     product = as_built
-    if label:
-        product = load(RUNS / "product" / f"plans_tenancy_{model}_fresh_{label}.json")
-        arms[f"PRODUCT {label} {model} (k=1)"] = arm_plans(product, "PRODUCT", ids, [0])
+    for one in (label or "").split(","):  # several labels: each run scored; the last is attributed
+        if one:
+            product = load(RUNS / "product" / f"plans_tenancy_{model}_fresh_{one}.json")
+            arms[f"PRODUCT {one} {model} (k=1)"] = arm_plans(product, "PRODUCT", ids, [0])
     for m in ("gpt-6-luna", "gpt-6.1-terra"):
         raw = load(RUNS / "v2" / f"plans_tenancy_{m}_fresh_heldout.json")
         for design in ("CPv2p", "B1v2p"):
@@ -201,7 +203,7 @@ def main():
     c["usd_total"], c["usd_per_case"] = usd, usd / max(1, c["cases"])
     out = {"set": a.set, "model": a.model, "table": table, "attribution": att, "cost": c}
     (HERE / "results").mkdir(exist_ok=True)
-    (HERE / "results" / f"score_{a.set}_{a.model}{'_' + a.label if a.label else ''}.json").write_text(json.dumps(out, indent=1))
+    (HERE / "results" / f"score_{a.set}_{a.model}{'_' + a.label.replace(',', '+') if a.label else ''}.json").write_text(json.dumps(out, indent=1))
     keys = ["claim_runs", "requested_share", "held", "handed", "missed", "unnecessary", "premature", "silent_skip", "strict_unsafe"]
     print("arm".ljust(36) + " ".join(k[:10].rjust(10) for k in keys))
     for name, row in table.items():
