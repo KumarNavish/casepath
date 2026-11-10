@@ -1,0 +1,842 @@
+{
+ "PRODUCT|fcl_020f2bacedc162a9|0": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ],
+  "calls": 4,
+  "keys": [
+   "8d1766b37dbd2972905ff7892b35f7fe0a160a35c2a9da4ae2193d216ba3752c",
+   "e2c3938c1508cd6b6939884125d5d78567e712fd32caddac83ee2f24e2098fc1",
+   "4a459607ac4e769d15a0cbf1a04500ceb527b09b6bb3340a5c3db74b7a12d9b1",
+   "d97af8368be9245815d938117ddae41a14a3001af5f334f37d1d7069731f4ce7"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "arrears"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "arrears"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "lt_type__gate_arrears",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ]
+   },
+   "document_judgments": {},
+   "facts": {
+    "arrears": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted"
+    },
+    "extension_relevant": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "family_home": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "retaliation_screen": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "termination_received": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "arrears"
+   ],
+   "warnings": []
+  },
+  "seconds": 2.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 3264,
+   "output": 692
+  }
+ },
+ "PRODUCT|fcl_09252315095aa169|0": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ],
+  "calls": 4,
+  "keys": [
+   "2a0ddb5c799db34b24532e402e8625bc6bd6130aff30a33a5cc06fc9935b5437",
+   "f19a39074ef4b9a7593488803b3552b463e362f8046a6ebb4da421d16c9d62a1",
+   "21677ce7c08498c7bacb758ea2d50d22a6c968941d894889bb5359e3661e41e2",
+   "0cc3160f10b87155051c3898c76506ab0ac88720b666cc0f6022843cf1d043b6"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {},
+   "facts": {
+    "arrears": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted"
+    },
+    "extension_relevant": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "family_home": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "retaliation_screen": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "termination_received": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "seconds": 2.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 3240,
+   "output": 771
+  }
+ },
+ "PRODUCT|fcl_09bf4c849ef1ee44|0": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker"
+  ],
+  "calls": 9,
+  "keys": [
+   "254384ea4d90f8018f82a25cb59cebeac29d1b0cf1a25e085fee224f877587d6",
+   "e87fc3a33a9df2c30ee3a74e69d2b4f2625d4383ae60628065c20fbe18922053",
+   "7be4885aff9a7586a233a6a8a425cb5ba1f70fdd6839929894ba5e6519194a15",
+   "ea4a22bf08f94f3d76d44c8d043252a3272e23e843517879dc61302f872523c3",
+   "fa560f9a82c7c9f443c2cf81878c0ec0c8c15f524d3e35adfdf8e1152846e878",
+   "df46eb8855fd330d6b628937da2a8f6d41b0b9fe74c3b90b4da0eaa320e35b0a",
+   "7ae1ad9ee4a37ebc79f7a86419991406a7f1c02c320c04a42fae46cb514f3a30",
+   "3408e1747c3a4017d63e2c4b66e7f8011fba3804f96ca10ad6829290d87c1130",
+   "9bea60b654a7ffe540e4c30a28f852d5b300e07dc7c48a0c2b68905860d0b3d7"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {
+    "current_rent_evidence": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "landlord_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "lease_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rent_adjustment": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "proof_of_receipt": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "reference_rate_basis": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "renovation_cost_breakdown": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_increase_notice": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_calculation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "claim_received": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": true,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted"
+    },
+    "reference_rate": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "renovation": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "seconds": 2.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 11398,
+   "input": 22789,
+   "output": 3168
+  }
+ },
+ "PRODUCT|fcl_0f9a9b0f4a043ab5|0": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "calls": 16,
+  "keys": [
+   "e0349b4e7a8415afc8913ddb2d3a273bb3549adb2769f584b131f1ba4c26c395",
+   "8d9e6794f4432aed9ca549eb463a518abdf9943f954a855e79a522a911f51097",
+   "b9eb781d6769b7f41ad8da90f15511a25066d32e9ef3d1c1cb1be803986f7af9",
+   "9f6a5d17928f87cb0557a49c1c43df149ee93b5ca32b59a116f99aef12f9fecc",
+   "a53f770032e1dc4e7dd7fc1585352469ad7070c70bdcfa28c7670be671255e1d",
+   "a583c3bd3a54d56e3e4ff1476953c07a972e3fe1143c6afe0a6247869a8bb92d",
+   "f203f4fc76c028031e539e8335f2ddd8684d90c13e1cf52556156e02b5467365",
+   "38becd016949a96e9cb8a433fcfbd23b85a204012913f11195ef453d2660cc1f",
+   "cc65f0388ee171b0940ea412ee3351c563126cf6a6f1bd6ccb0a5bedab4cd606",
+   "b061f20128225e8759f4e4ca08266d94f83b37339a368e06a2e4de7b3087b515",
+   "91326313f05d1c8022fc880a6410f51004645d8ac1176d985df1666c90f8c8c3",
+   "dc9d70e21ba459f9392778050b771c51970da6b8f84606195d9d4f02f5bf344d",
+   "4045fb8829aacfaaaa9a7dadf1821e0d831607fa50d55614a6ae405bf55a2142",
+   "24b92eecffb448e41949b1038abb7314b062a225778aae0289948e00ab7aa5ee",
+   "a5128f4cae68ce7c8c1730673fa85fb159682ba4272228900d95ea6fbaccf3a1",
+   "bdba99d1093706c435c6b6a3dedcc2fe62f991fe565c4c698ada0aa9d8b3173f"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {
+    "housing_search_log": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "lease_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 88,
+         "file": "file_1db40126e3b5359a",
+         "page": null,
+         "quote": "Vermieterin: Immobilien Seeblick AG. Mieterin: Barbara Gerber.",
+         "start": 26
+        }
+       ],
+       "item": "contracting parties"
+      },
+      {
+       "citations": [
+        {
+         "end": 150,
+         "file": "file_1db40126e3b5359a",
+         "page": null,
+         "quote": "Mietobjekt: 4-Zimmer-Wohnung, Kirchgasse 81, 9000 St. Gallen.",
+         "start": 89
+        }
+       ],
+       "item": "property"
+      },
+      {
+       "citations": [
+        {
+         "end": 243,
+         "file": "file_1db40126e3b5359a",
+         "page": null,
+         "quote": "Mietbeginn: 1. Oktober 2016. Nettomiete: CHF 2310.– pro Monat. Kündigungsfrist: drei Monate.",
+         "start": 151
+        }
+       ],
+       "item": "tenancy terms"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "notice_period_evidence": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 243,
+         "file": "file_1db40126e3b5359a",
+         "page": null,
+         "quote": "Kündigungsfrist: drei Monate.",
+         "start": 214
+        }
+       ],
+       "item": "agreed notice period"
+      },
+      {
+       "citations": [
+        {
+         "end": 250,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Hiermit kündigen wir das Mietverhältnis per 30. Juni 2027.",
+         "start": 192
+        }
+       ],
+       "item": "termination dates"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "payment_deadline_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_ledger_payment_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 310,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes.",
+         "start": 251
+        }
+       ],
+       "item": "stated ground"
+      },
+      {
+       "citations": [
+        {
+         "end": 310,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes.",
+         "start": 251
+        }
+       ],
+       "item": "factual basis"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "termination_notice": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 68,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Absenderin: Immobilien Seeblick AG.",
+         "start": 33
+        }
+       ],
+       "item": "issuer"
+      },
+      {
+       "citations": [
+        {
+         "end": 129,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Empfängerin: Barbara Gerber, Kirchgasse 81, 9000 St. Gallen.",
+         "start": 69
+        }
+       ],
+       "item": "addressee"
+      },
+      {
+       "citations": [
+        {
+         "end": 250,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Hiermit kündigen wir das Mietverhältnis per 30. Juni 2027.",
+         "start": 192
+        }
+       ],
+       "item": "termination date"
+      },
+      {
+       "citations": [
+        {
+         "end": 310,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Grund der Kündigung: geplante Gesamtsanierung des Gebäudes.",
+         "start": 251
+        }
+       ],
+       "item": "stated grounds"
+      },
+      {
+       "citations": [
+        {
+         "end": 397,
+         "file": "file_26e9dbb02c82203e",
+         "page": null,
+         "quote": "Kündigung des Mietverhältnisses. Absenderin: Immobilien Seeblick AG. Empfängerin: Barbara Gerber, Kirchgasse 81, 9000 St. Gallen. Mietobjekt: 4-Zimmer-Wohnung, Kirchgasse 81, 9000 St. Gallen. Hiermit kündigen wir das Mietverhältnis per 30. Juni 2027. Grund der Kündigung: geplante Gesamtsanierung des Gebäudes. Mit freundlichen Grüssen, Immobilien Seeblick AG, Unterschrift: Immobilien Seeblick AG",
+         "start": 0
+        }
+       ],
+       "item": "form contents"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    }
+   },
+   "facts": {
+    "arrears": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted"
+    },
+    "extension_relevant": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "family_home": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "retaliation_screen": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "termination_received": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [
+    "lease_contract",
+    "termination_notice"
+   ],
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "seconds": 2.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 24929,
+   "input": 52295,
+   "output": 8339
+  }
+ }
+}

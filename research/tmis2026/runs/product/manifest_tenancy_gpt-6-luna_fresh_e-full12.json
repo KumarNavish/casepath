@@ -1,0 +1,82 @@
+{
+ "format": "casepath.parity/1",
+ "package": "casepath",
+ "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+ "source_files": 48,
+ "git": {
+  "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+  "package_modified": false
+ },
+ "workflows": {
+  "defect_mold_heating.json": "c49e05a014a736b50b8ef47983113758fd694be76056ae5464f939e8dbd0d839",
+  "lease_termination_dispute.json": "17840a9d7fe25acfec9881ecbe52050da2ad3310bbd861281c424b0390bd532c",
+  "rent_increase_dispute.json": "7370ed1658502d5d9e6e2ec120bc8347638ea5fa5303481c8e216ca59a585f19"
+ },
+ "knowledge": {},
+ "model": {
+  "provider": "databricks",
+  "name": "gpt-6-luna",
+  "api": "chat",
+  "reading": null,
+  "endpoint_host": "openrouter.ai"
+ },
+ "interface_language_default": "de",
+ "settings": {
+  "readings": 3,
+  "open_rule": "any",
+  "run_scope": "full",
+  "model_reasoning": true
+ },
+ "settings_not_default": {
+  "dev_user": "Case handler (research)",
+  "organisation": "the legal-expenses insurer's",
+  "writing_language": "in the language of the case files",
+  "model.reasoning": true,
+  "model.timeout_seconds": 120.0,
+  "model.max_output_tokens": 16000,
+  "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+  "model.trust_env": true,
+  "model.api_version": null,
+  "model.gateway_hosts": [
+   "openrouter.ai"
+  ],
+  "model.chat_path": "/api/v1/chat/completions",
+  "model.auth": "app",
+  "model.api": "chat",
+  "model.forced_tools": true
+ },
+ "parity_command": "python -m casepath parity --catalogue /home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+ "model_identifier": "openrouter:openai/gpt-6-luna",
+ "run_settings_env": {
+  "CASEPATH_DATA_DIR": "<temporary>",
+  "CASEPATH_WORKFLOW_CATALOGUE": "/home/user/casepath/research/tmis2026/harness/product/workflows/fresh-serial-sync",
+  "CASEPATH_DEV_USER": "Case handler (research)",
+  "CASEPATH_MODEL_PROVIDER": "databricks",
+  "CASEPATH_MODEL_ENDPOINT": "https://openrouter.ai",
+  "CASEPATH_MODEL": "gpt-6-luna",
+  "CASEPATH_MODEL_GATEWAY_HOSTS": "openrouter.ai",
+  "CASEPATH_CHAT_PATH": "/api/v1/chat/completions",
+  "CASEPATH_MODEL_API": "chat",
+  "CASEPATH_CA_BUNDLE": "/root/.ccr/ca-bundle.crt",
+  "CASEPATH_ORGANISATION": "the legal-expenses insurer's",
+  "CASEPATH_WRITING_LANGUAGE": "in the language of the case files",
+  "CASEPATH_MODEL_REASONING": "true"
+ },
+ "entry_point": "run_api.run_case (create_app + HTTP API), one subprocess per claim-run, store ids deterministic per claim-run so repeated requests are served from the cache",
+ "ids": [
+  "fcl_020f2bacedc162a9",
+  "fcl_09252315095aa169",
+  "fcl_09bf4c849ef1ee44",
+  "fcl_0f9a9b0f4a043ab5",
+  "fcl_1132fdb1876df85f",
+  "fcl_1d7e0a19ee376c16",
+  "fcl_1f01a092db41c4bb",
+  "fcl_2021cff640ced3a7",
+  "fcl_20eb1b189ff1c5d1",
+  "fcl_23c7f3a59472b82a",
+  "fcl_2534a534b97da50f",
+  "fcl_284cb44c9617cba6"
+ ],
+ "runs_per_case": 1,
+ "label": "e-full12"
+}

@@ -15,9 +15,9 @@ frontier model given the same rules?
 ## 2. What is tested
 
 **The product, not a research version.** The system under test is the
-package `casepath` at commit `5ed0ea7cf951b799abfb393c5e0cfe066a3629bb`
+package `casepath` at commit `6a72159cdb35a01059d0549b1d437c0b3d5c20cb`
 (source-tree hash
-`c39341b869c02f06a1e3f5b449e7dede1df0c908c71ae24dd613f7865f642847` from
+`030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d` from
 `python -m casepath parity`). It is run through its HTTP
 API as a case worker's browser runs it. The only inputs that differ from an
 inside deployment are the workflows and the case files.
@@ -60,7 +60,10 @@ open or true defining event. The probe was written because `fresh/` has no
 denied or open defining event and `fresh2/` does; its claims are new texts by
 a writer that had not seen `fresh2/`. Theft stories 4–5 of `fresh/` were used
 to develop the product; stories 6–7 were used once, for validation, before
-the last review fixes, and re-run from cached readings after them. Development results are in `WORKLOG.md` and are not evidence.
+the last review fixes, and re-run from cached readings after them. The
+frozen commit is the product branch's tip with the fix commits on top; its
+checklists on all development runs are identical to those of the commit that
+was measured before the rebase (`5ed0ea7c`). Development results are in `WORKLOG.md` and are not evidence.
 
 Limits fixed here: tenancy references come from the engine and silence policy
 that the product implements, and every design receives the policy clause;

@@ -7,10 +7,11 @@ no force-push, as agreed. You or the study lead merge; I do not push to
 ## What I ask
 
 Fast-forward the product branch to
-`claude/casepath-internal-paper-sync-20261110d` at `NEW_HEAD`
-(source-tree hash `NEW_HASH`), or tell me before the merge which behaviour
-you will not take. The branch is your tip `abe968b5` plus 63 commits. All
-tests pass (`NEW_TESTS`), yours included.
+`claude/casepath-internal-paper-sync-20261110d` at `6a72159cdb35a01059d0549b1d437c0b3d5c20cb`
+(source-tree hash `030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d`), or tell me before the merge which behaviour
+you will not take. The branch is your tip `abe968b5` plus 63 commits; the
+rebase onto your tip had no conflicts. All
+tests pass (232), yours included.
 
 **Why a fast-forward matters.** The paper's confirmatory test runs on exactly
 this tree. If the product takes it unchanged, `python -m casepath parity`
