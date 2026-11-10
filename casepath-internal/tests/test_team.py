@@ -118,9 +118,24 @@ class TeamTests(unittest.TestCase):
         model = ScriptedModel([[("list_files", {})], [("list_files", {})], [report("document_finder")]])
         run_agent(model, work, "document_finder", "Find.", max_turns=3)
         self.assertEqual(model.tool_choices, ["required", "required", {"type": "function", "name": "report"}])
-        with self.assertRaises(TeamError) as caught:
-            run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2)
-        self.assertEqual(caught.exception.reason, "turn_limit")
+        # At its turn limit the agent ends with what it has recorded, and the work names the limit.
+        self.assertIsNone(run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2))
+        self.assertEqual([(x["agent"], x["reason"]) for x in work.limits], [("document_finder", "turn_limit")])
+        self.assertTrue(work.documents_looked_for)
+
+    def test_a_turn_limit_still_gives_the_checklist_from_what_was_admitted(self):
+        script = standard_script(
+            finder_calls=[("record_document", {"document": "customer_message", "status": "present", "files": ["f1"],
+                                               "citations": [{"file": "f1", "quote": "Subject: Schimmel im Bad"}], "note": ""})],
+            result_fields={})[:-2] + [[("evaluate", {})]] * 12
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
+        statuses = {d["document"]: d["status"] for d in result["evaluation"]["documents"]}
+        self.assertEqual(statuses, {"customer_message": "present", "photo": "missing", "notice_letter": "missing"})
+        self.assertEqual(result["facts"][0]["verdict"], "accepted")
+        self.assertIn({"kind": "turn_limit", "agent": "result_checker",
+                       "text": "The result checker did not finish within its turn limit."}, result["warnings"])
+        self.assertEqual(result["reply"]["clauses"], [])
+        self.assertEqual(result["open_points"], [a["text"] for a in result["evaluation"]["next_actions"]])
 
     def test_a_case_needs_its_own_step_and_it_can_become_knowledge(self):
         from casepath.process.workflows import evaluate
