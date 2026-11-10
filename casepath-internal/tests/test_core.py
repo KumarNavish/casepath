@@ -62,6 +62,20 @@ class CoreContractTests(unittest.TestCase):
         evaluated = core.evaluate(Catalogue.load(FIXTURES).get("example-defect"), [active], [], outcome["result"], "case_1")
         self.assertEqual(evaluated["evaluation"]["outcome"]["id"], outcome["result"]["evaluation"]["outcome"]["id"])
 
+    def test_the_only_workflow_that_can_apply_is_prepared_with_its_routing_fact_presumed(self):
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(job([], workflow_id=None), script(), core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["status"], outcome["routing"]["status"], outcome["workflow"]["id"]), ("completed", "selected", "example-defect"))
+        presumed = next(f for f in outcome["result"]["facts"] if f["fact"] == "legal_area")
+        self.assertEqual((presumed["status"], presumed["value"], presumed["by"]), ("presumed", "tenancy_defect", "routing"))
+        self.assertEqual(presumed["citations"], [])  # presumed, never shown as established from the files
+
+    def test_a_fallback_workflow_is_prepared(self):
+        fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare({**job([], workflow_id=None), "workflows": [fallback]}, script(), core.DirectoryBlobs(blobs))
+        self.assertEqual((outcome["status"], outcome["routing"]["status"], outcome["workflow"]["id"]), ("completed", "fallback", "general"))
+
     def test_a_run_stops_when_its_token_budget_is_spent(self):
         with tempfile.TemporaryDirectory() as blobs:
             capped = {**job([]), "options": {**job([]).get("options", {}), "token_budget": 40}}
