@@ -70,7 +70,7 @@ class ReaderTests(unittest.TestCase):
         self.assertEqual((details["pages"], details["pages_without_text"], details["reader"]), (2, [2], "builtin"))
         self.assertIn("Mietvertrag für die Wohnung\nMängelrüge vom 3. März\nzweite Zeile", text)  # kerning joins, a wide gap is a space
         images, reasons = pdfread.page_images(text_and_scan_pdf(), [1, 2])
-        self.assertEqual(reasons, {1: "no image"})
+        self.assertEqual(reasons, {1: "no image or drawing"})
         media, blob = images[2]
         width, height, rows = gray_png_pixels(blob)
         self.assertEqual((media, width, height), ("image/png", 16, 8))
@@ -143,6 +143,51 @@ class LayoutAndImageTests(unittest.TestCase):
         self.assertEqual((width, height, rows[0]), (8, 8, bytes([0, 255] * 4)))
         width, height, rows = gray_png_pixels(images[2][1])
         self.assertEqual((width, height, rows[0][:6]), (4, 4, bytes([0, 0, 0, 255, 255, 255])))
+
+
+class VectorPageTests(unittest.TestCase):
+    SHAPES = (b"q 0 g 100 600 200 100 re f Q\n"  # a black box at the top left of the page
+              b"q 0 g 1 0 0 1 400 150 cm 0 80 m 0 124 36 160 80 160 c 124 160 160 124 160 80 c 160 36 124 0 80 0 c 36 0 0 36 0 80 c h "
+              b"40 80 m 40 102 58 120 80 120 c 102 120 120 102 120 80 c 120 58 102 40 80 40 c 58 40 40 58 40 80 c h f* Q\n"
+              b"q 0 G 4 w 50 120 m 545 120 l S Q\n")
+
+    def page(self, rotate=0):
+        return build_pdf({1: b"<< /Type /Catalog /Pages 2 0 R >>", 2: b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+                          3: b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Rotate %d /Contents 4 0 R >>" % rotate,
+                          4: (b"<< >>", self.SHAPES)})
+
+    def test_a_page_drawn_only_with_paths_becomes_an_image(self):
+        images, reasons = pdfread.page_images(self.page(), [1], max_side=842)  # one pixel per point
+        self.assertEqual(reasons, {})
+        width, height, rows = gray_png_pixels(images[1][1])
+        self.assertEqual((width, height), (595, 842))
+        self.assertEqual(rows[842 - 650][200], 0)        # inside the box
+        self.assertEqual(rows[842 - 230][480], 255)      # the ring's hole stays white (even-odd)
+        self.assertEqual(rows[842 - 230][410], 0)        # the ring itself
+        self.assertEqual(rows[842 - 120][300], 0)        # the stroked line
+        self.assertEqual(rows[100][500], 255)            # paper
+
+    def test_a_rotated_page_is_drawn_upright(self):
+        images, _ = pdfread.page_images(self.page(90), [1], max_side=842)
+        width, height, rows = gray_png_pixels(images[1][1])
+        self.assertEqual((width, height), (842, 595))
+        self.assertEqual(rows[200][650], 0)  # the box, turned with the page
+
+    def test_the_drawing_matches_pdfium(self):
+        try:
+            import pypdfium2 as pdfium
+            from PIL import Image
+        except ImportError:
+            self.skipTest("PDFium is the reference where installed")
+        for rotate in (0, 90, 180, 270):
+            data = self.page(rotate)
+            images, _ = pdfread.page_images(data, [1], max_side=842)
+            mine = Image.open(io.BytesIO(images[1][1])).convert("L")
+            reference = pdfium.PdfDocument(data)[0].render(scale=1).to_pil().convert("L").resize(mine.size)
+            a = [v < 128 for v in mine.tobytes()]
+            b = [v < 128 for v in reference.tobytes()]
+            overlap = sum(1 for x, y in zip(a, b) if x and y) / sum(1 for x, y in zip(a, b) if x or y)
+            self.assertGreater(overlap, 0.97, rotate)
 
 
 class FaxTests(unittest.TestCase):

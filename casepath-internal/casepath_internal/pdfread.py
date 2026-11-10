@@ -435,8 +435,15 @@ class Document:
         resources = self.resolve(page.get("Resources")) or {}
         self._images(resources, found, 0, set())
         found += self._inline_images(page, resources)
-        if not found:
-            return None, "no image"
+        if not found:  # a page drawn only with vector paths (text as outlines, for example) is drawn here
+            from .raster import TooComplex, render
+            try:
+                png = render(self, page, max_side)
+            except TooComplex:
+                return None, "vector page too complex to draw"
+            except (PdfError, ValueError, TypeError, IndexError, ZeroDivisionError, OverflowError) as error:
+                return None, f"vector page: {str(error)[:60]}"
+            return ("image/png", png) if png else (None, "no image or drawing")
         stream = max(found, key=lambda s: _int(self.resolve(s.get("Width"))) * _int(self.resolve(s.get("Height"))))
         try:
             return _encode_image(self, stream, max_side)
@@ -1017,9 +1024,8 @@ def compare(paths):
                 doc._images(resources, found, 0, set())
                 inline = doc._inline_images(page, resources)
                 if not found and not inline:
-                    content = doc.page_content(page)
-                    paints = len(re.findall(rb"\s(?:f\*?|F|B\*?|b\*?|S|s|sh)\s", b" " + content + b" "))
-                    empty["blank" if paints == 0 else "drawn with vector paths"] += 1
+                    media, payload = doc.page_image(page)
+                    empty["vector page drawn" if media else payload] += 1
                     continue
                 largest = max(found + inline, key=lambda st: _int(doc.resolve(st.get("Width"))) * _int(doc.resolve(st.get("Height"))))
                 filters = [str(doc.resolve(f)) for f in _list(doc.resolve(largest.get("Filter")))] or ["none"]

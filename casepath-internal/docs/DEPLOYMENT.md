@@ -74,8 +74,9 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
   - **Loose files without extra packages:** uploaded or imported files are read by CasePath itself when the PDF
     libraries are missing (`pdfread.py`, `ccitt.py`, `msg.py`, standard library only):
     - a PDF's text layer, including subset and CID fonts with their Unicode maps and compressed object streams;
-    - each scanned page's own image: JPEG as it is, bitmaps and CCITT Group 3/4 fax scans as PNG. JPEG 2000 and JBIG2
-      pages are reported as not read;
+    - each scanned page's own image: JPEG as it is, bitmaps (also inline, CMYK or 16-bit) and CCITT Group 3/4 fax
+      scans as PNG. A page drawn only with vector paths (text as outlines) is drawn as a PNG (`raster.py`). JPEG 2000
+      and JBIG2 pages are reported as not read;
     - Outlook `.msg` e-mails like `.eml` ones;
     - every e-mail attachment, which becomes a file of the case, marked with the e-mail it came from.
     `/api/health` reports `pdf_text` (`pypdf` or `builtin`) and `scanned_pages` (`rendered` or `embedded images`).
@@ -83,7 +84,10 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
     shipped as wheels checked against PyPI's published SHA-256, installed from the app folder and used first.
   - **Checked:** in a Python 3.11 runtime with no network and only fastapi, uvicorn and httpx, the app starts and loads
     the 17 prepared synthetic cases with their page images. The built-in reader matches pypdf word for word on the 17
-    benchmark dossiers, and decodes Group 3 and Group 4 fax pages bit for bit as libtiff encodes them.
+    benchmark dossiers, and decodes Group 3 and Group 4 fax pages bit for bit as libtiff encodes them. On the 11
+    Hackathon dossiers (750 pages, compared on the DSW without any text leaving it) it finds the same text pages as
+    pypdf, with letter recall 1.0 on ten dossiers and 0.997 on the eleventh, and takes every scanned page's image
+    except one JPEG 2000 page.
 - **Gateway limits:** some gateways reject a temperature and forced tool choice. With `CASEPATH_MODEL_API=messages` and `CASEPATH_MODEL_FORCED_TOOLS=false`, each turn offers only the tool that must be called and says so. A structured answer is checked and asked for once more when it is missing or malformed.
 - **Cost guard:** `CASEPATH_RUN_TOKEN_BUDGET` caps the tokens one run may use over reading, routing and the agents: input not read from the prompt cache, and output; the run stops with that reason when it is spent. The pilot sets 3,000,000.
 - **Prompt caching:** an agent's turns mark the system prompt, the tools and the end of the conversation, so the next turn reads them from the cache. A one-off structured answer marks only the system prompt and tools. Each call's usage in the run record gives `input_tokens` (all input, cached or not), `cached_tokens` (read from the cache) and `cache_write_tokens` (written to it). The marks are dropped only when the gateway refuses them and the same request without them succeeds.
