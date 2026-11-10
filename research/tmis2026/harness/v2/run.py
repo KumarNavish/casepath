@@ -25,6 +25,8 @@ ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--stories", default=None, help="theft: comma-separated story indices (overrides --split selection)")
 args = ap.parse_args()
 
+if args.data == "fresh":
+    common.require_frozen_plan()
 D = common.data(args.exp, args.data)
 if args.exp == "tenancy":
     import tenancy_v2 as mod

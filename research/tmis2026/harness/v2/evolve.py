@@ -12,7 +12,7 @@ CasePath v2 + V5, after each case:
      their condition verdicts, quarantined rules naming it; or (tenancy) the document's condition flag, its
      verdict and whether it was presumed;
   3. ask for a typed repair (theft: split_route, drop_document, bind_condition, condition_for_fact,
-     readmit_rule, quarantine_rule; tenancy: set_presumption), each quoting its evidence verbatim from the
+     readmit_rule, suspend; tenancy: set_presumption), each quoting its evidence verbatim from the
      cited source passages (theft) or the pack's clauses / legal passages (tenancy);
   4. source check: the deterministic checks of induce.apply_operation (or the tenancy equivalent);
   5. regression: replay every earlier corrected case and the current one on their RECORDED judgments
@@ -52,7 +52,7 @@ def theft_errors(score_pair, pair, off_plan, var_plan, best_realization):
 
 
 THEFT_OP = {"type": "string", "enum": ["split_route", "drop_document", "bind_condition", "condition_for_fact",
-                                       "readmit_rule", "quarantine_rule"]}
+                                       "readmit_rule", "suspend"]}
 THEFT_REPAIR_SCHEMA = obj({
     "diagnosis": {"type": "string", "enum": ["rule_error", "judgment_error", "unclear"]},
     "operations": arr(obj({"op": THEFT_OP, "rule_id": {"type": "string", "maxLength": 80},
@@ -71,7 +71,8 @@ typed repair that makes the rule say what its passages say:
 - bind_condition (rule_id, proposition_id): the rule's condition becomes that applicability proposition;
 - condition_for_fact (rule_id, fact_id, proposition_id): one fact gets its own condition;
 - readmit_rule (rule_id): a rule that was not admitted is admitted again because its passages do require it;
-- quarantine_rule (rule_id): the rule's passages do not support requiring its documents.
+- suspend (rule_id): only if no operation above can repair the rule from its passages; the rule stops applying
+  and goes to the review queue for a person.
 Every operation must quote evidence_quote verbatim (contiguous, exact) from the passages cited by that rule. Never use
 the correction itself as evidence: a repair must be justified by the sources. Use empty strings / 0 for unused fields."""
 
@@ -154,7 +155,7 @@ class TheftArmCP:
         if not any(b["node_id"] == rid for b in pack["overlay"]["compiled"]):
             raise induce.RepairRejected("unknown rule")
         block = next(b for b in pack["overlay"]["compiled"] if b["node_id"] == rid)
-        if op["op"] in {"readmit_rule", "quarantine_rule"}:
+        if op["op"] in {"readmit_rule", "suspend"}:
             texts = induce.rule_material(block, pack)[1]
             if not op["evidence_quote"].strip() or not any(op["evidence_quote"] in t for t in texts):
                 raise induce.RepairRejected("evidence_quote is not an exact span of a cited passage")
@@ -164,10 +165,15 @@ class TheftArmCP:
                 if base not in q:
                     raise induce.RepairRejected("rule is not quarantined")
                 q.discard(base)
-            else:
+            else:  # suspend: after a traced correction with no source-verified repair; recorded and queued for review
                 if base in q:
-                    raise induce.RepairRejected("rule already quarantined")
+                    raise induce.RepairRejected("rule already suspended")
                 q.add(base)
+                pack.setdefault("suspended_rules", []).append({"rule_id": base, "evidence_quote": op["evidence_quote"],
+                                                              "explanation": op.get("explanation", "")})
+                queue = pack.setdefault("review_queue", [])
+                if base not in queue:
+                    queue.append(base)
             pack["quarantined_rules"] = sorted(q)
             return pack
         return induce.apply_operation(pack, rid, op)
@@ -187,7 +193,12 @@ class TheftArmCP:
             record.update(trace=rows, proposal=r["result"], proposal_error=r["error"], applied=[], rejected=[])
             if r["result"] and r["result"]["diagnosis"] == "rule_error":
                 before = self.replay_errors(self.pack, episodes, best_realization)
-                for op in r["result"]["operations"]:
+                ops = r["result"]["operations"]
+                ops = [o for o in ops if o["op"] != "suspend"] + [o for o in ops if o["op"] == "suspend"]
+                for op in ops:
+                    if op["op"] == "suspend" and any(a["op"] != "suspend" for a in record["applied"]):
+                        record["rejected"].append({**op, "reason": "a source-verified repair was admitted for this correction"})
+                        continue
                     try:
                         candidate = self.apply(op)
                     except Exception as error:  # noqa: BLE001  (a failed check rejects the operation)
@@ -440,6 +451,8 @@ if __name__ == "__main__":
     ap.add_argument("--train-stories", default=None)
     ap.add_argument("--eval-stories", default=None)
     args = ap.parse_args()
+    if args.data == "fresh":
+        common.require_frozen_plan()
     if args.train_stories:
         out = dryrun_theft(args)
         path = common.OUT / f"evolve_dryrun_theft_{common.TAG}_{args.data}_train{args.train_stories}_eval{args.eval_stories}.json"

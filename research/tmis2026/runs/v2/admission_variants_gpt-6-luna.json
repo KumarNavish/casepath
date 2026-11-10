@@ -1,0 +1,81 @@
+{
+ "cost_per_call": {
+  "v2-tenancy|CPv2p-interpret": {
+   "calls": 272,
+   "usd_per_call": 0.0002772201286764706
+  },
+  "v2-tenancy|CPv2p-verify": {
+   "calls": 283,
+   "usd_per_call": 0.00034329040636042404
+  },
+  "v2-theft|CPv2p-interpret": {
+   "calls": 210,
+   "usd_per_call": 0.0009639829761904762
+  },
+  "v2-theft|CPv2p-verify": {
+   "calls": 206,
+   "usd_per_call": 0.0007181336650485437
+  }
+ },
+ "tenancy": {
+  "a_no_verifier": {
+   "failed": 0,
+   "handed_over": 0.07777777777777778,
+   "held": 0.5111111111111111,
+   "missed": 0.29444444444444445,
+   "n": 180,
+   "requested": 5.933333333333334,
+   "strict_unsafe": 0.4,
+   "unnecessary": 0.027777777777777776
+  },
+  "b_v3": {
+   "failed": 0,
+   "handed_over": 0.07777777777777778,
+   "held": 0.5222222222222223,
+   "missed": 0.28888888888888886,
+   "n": 180,
+   "requested": 5.927777777777778,
+   "strict_unsafe": 0.39444444444444443,
+   "unnecessary": 0.027777777777777776
+  },
+  "c_two_readings": {
+   "failed": 0,
+   "handed_over": 0.07777777777777778,
+   "held": 0.6833333333333333,
+   "missed": 0.29444444444444445,
+   "n": 180,
+   "requested": 5.761111111111111,
+   "strict_unsafe": 0.3888888888888889,
+   "unnecessary": 0.016666666666666666
+  }
+ },
+ "theft": {
+  "a_no_verifier": {
+   "f1": 0.717,
+   "missed": 14,
+   "pair_runs": 81,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.4074074074074074,
+   "wrong": 53,
+   "wrong_plus_missed_per_pair": 0.8271604938271605
+  },
+  "b_v3": {
+   "f1": 0.717,
+   "missed": 14,
+   "pair_runs": 81,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.4074074074074074,
+   "wrong": 53,
+   "wrong_plus_missed_per_pair": 0.8271604938271605
+  },
+  "c_two_readings": {
+   "f1": 0.73,
+   "missed": 15,
+   "pair_runs": 81,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.4444444444444444,
+   "wrong": 47,
+   "wrong_plus_missed_per_pair": 0.7654320987654321
+  }
+ }
+}

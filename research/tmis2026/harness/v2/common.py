@@ -90,3 +90,17 @@ def _retrying_call(**kw):
 
 
 llm.call = _retrying_call
+
+
+def require_frozen_plan():
+    """Refuse fresh-data runs unless ANALYSIS_PLAN_STUDY2.md exists, is tracked, and is committed unmodified."""
+    import subprocess
+    plan = TMIS / "ANALYSIS_PLAN_STUDY2.md"
+    rel = str(plan.relative_to(REPO))
+    ok = plan.exists()
+    if ok:
+        tracked = subprocess.run(["git", "-C", str(REPO), "ls-files", "--error-unmatch", rel], capture_output=True)
+        clean = subprocess.run(["git", "-C", str(REPO), "diff", "--quiet", "HEAD", "--", rel], capture_output=True)
+        ok = tracked.returncode == 0 and clean.returncode == 0
+    if not ok:
+        raise SystemExit("refusing to run on fresh data: research/tmis2026/ANALYSIS_PLAN_STUDY2.md must exist and be committed unmodified")
