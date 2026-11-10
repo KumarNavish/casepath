@@ -277,3 +277,43 @@ says it is not known, with a quotation) and "not stated".
 **Study 3 tooling.** `analysis/study3.py` with spec and 36 tests reproduces the
 round-3 numbers; `harness/study3/run_all.py` runs the whole study in one command
 with preflight checks and a resume log. Expected cost of the run: about USD 24.5.
+
+## 2026-11-10 — Freeze: product commit, Study 3 plan, confirmatory run started
+
+**Pre-freeze.** A second independent review of the round-4 commits found, among
+smaller points, that with three readings a single "not stated" answer let a
+presumption override a doubt two readings had quoted. Decision (overruling my own
+0.05 criterion): a doubt quoted by any reading blocks the presumption; cost on
+development data about 0.09 more wrong holds per claim, no premature request
+under either rule. All findings fixed with tests.
+
+**Validation on theft stories 6–7** (never used in product development):
+product checklist-only 0.57 wrong + missed per pair (runs 0.89, 0.44, 0.39);
+same-model single prompt 1.41; frontier single prompt 0.67 (reviewed rules) and
+0.54 (original rules). The lead over the frontier model seen on stories 4–5 does
+not hold; the lead over the same model does.
+
+**Product on the frontier model** (development, checklist only, one run): theft
+0.83 and 0.78 against 0.54–0.67 for the frontier single prompt; tenancy strict
+0.12 against 0.16 on 65 claims. The product does not lift the frontier model on
+theft. Not pursued before the freeze; added to Study 3 as a one-run secondary
+design without a hypothesis.
+
+**Mechanism check.** In the full product no later agent changed a scored
+checklist (30 of 30 and 32 of 32 texts); full and checklist-only differ only
+through chance in the readings.
+
+**Freeze.** The 63 fix commits were rebased onto the product tip `abe968b5`
+without conflicts; every development checklist is identical to the commit
+measured before the rebase. Frozen product commit
+`6a72159cdb35a01059d0549b1d437c0b3d5c20cb`, source-tree hash `03048020…49ab4d`,
+232 tests. Branch `claude/casepath-internal-paper-sync-20261110d` pushed; brief
+in `BRIEF_PRODUCT_SYNC_20261110D.md`. `ANALYSIS_PLAN_STUDY3.md` committed
+(`fd35e438`) with five hypotheses in a fixed order: theft and tenancy against the
+same model, tenancy against the frontier model, theft against every prior-work
+strategy, theft non-inferiority to the frontier model. All four preflight checks
+passed; the confirmatory run on `fresh2/` started (label `confirm`).
+
+Decision recorded: the run started before the product session confirmed the
+merge. If they reject a behaviour change, the test must be repeated on new sealed
+data.
