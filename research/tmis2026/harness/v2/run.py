@@ -24,6 +24,8 @@ ap.add_argument("--limit", type=int, default=None, help="first N cases (pilots)"
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--stories", default=None, help="theft: comma-separated story indices (overrides --split selection)")
 ap.add_argument("--dry-run", action="store_true", help="build every request, send nothing, report counts and sizes")
+ap.add_argument("--pack", default="v2p", choices=["v2p", "reviewed"], help="theft rule pack for CPv2p and Rv2p")
+ap.add_argument("--pack-file", default=None, help="reviewed rules file (with --pack reviewed)")
 args = ap.parse_args()
 
 if args.data == "fresh" and not args.dry_run:
@@ -46,6 +48,10 @@ if args.exp == "tenancy":
     call = lambda f, c, r: f(D, c, r)
 else:
     import theft_v2 as mod
+    if args.pack == "reviewed":  # a reviewed rules file, for CasePath and Rules in context alike
+        import load_reviewed
+        _tp = mod.TheftPack(load_reviewed.load(args.pack_file), judge_all=True)
+        mod.DESIGNS = {**mod.DESIGNS, "CPv2p": lambda t, x, r: _tp.run_cpv2(t, x, r), "Rv2p": lambda t, x, r: _tp.run_rv2(t, x, r)}
     T = D.texts()
     dev_story = min(v["story"] for v in T.values())
     cases = sorted(k for k, v in T.items() if (v["story"] == dev_story) == (args.split == "dev"))
@@ -57,7 +63,7 @@ else:
 if args.limit:
     cases = cases[:args.limit]
 designs = {d: f for d, f in mod.DESIGNS.items() if not args.designs or d in args.designs.split(",")}
-out_path = common.OUT / f"plans_{args.exp}_{common.TAG}_{args.data}_{args.split}.json"
+out_path = common.OUT / f"plans_{args.exp}_{common.TAG}_{args.data}_{args.split}{'_reviewed' if args.pack == 'reviewed' else ''}.json"
 if args.dry_run:
     for d, f in designs.items():
         for r in range(args.k):
