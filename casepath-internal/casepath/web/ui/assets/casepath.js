@@ -605,7 +605,7 @@ function liveDocuments(live) {
       : d.edit && d.by_agent ? `<span class="cp-kv add">${icon(d.legal_basis ? "law" : "plus")}${d.legal_basis ? T(`required by law (${esc(d.legal_basis)})`, `nach Gesetz verlangt (${esc(d.legal_basis)})`)
         : T("suggested for this case", "für diesen Fall vorgeschlagen")}</span>` : "";
     return `<li class="st-${esc(d.status)}${enter(`doc:${d.document}`)}" data-doc="${esc(d.document)}">${mark}<span><b>${esc(d.title)}</b>
-      <small>${step ? `${T("for", "für")} «${esc(clip(stepLabel(step), 64))}»` : T("for the whole case", "für den ganzen Fall")}${d.required === "depends" ? T(" · if an open answer requires it", " · falls eine offene Antwort es verlangt") : ""}</small>${origin}</span></li>`;
+      <small>${step ? `${T("for", "für")} «${esc(clip(stepLabel(step), 64))}»` : T("for the whole case", "für den ganzen Fall")}${d.required === "depends" ? (d.questions && d.questions.length ? T(` · if the answer requires it: ${esc(d.questions.join(" / "))}`, ` · falls die Antwort es verlangt: ${esc(d.questions.join(" / "))}`) : T(" · if an open answer requires it", " · falls eine offene Antwort es verlangt")) : ""}</small>${origin}</span></li>`;
   }).join("");
   const used = (graph.knowledge || []).filter((k) => !docs.some((d) => d.knowledge === k.item));
   const more = used.map((k) => `<p class="cp-kv">${icon("memory")}${T("Knowledge", "Wissen")} v${esc(k.version)} ${T("used", "genutzt")}: ${esc(clip(knowledgeTitle(k), 48))}</p>`).join("");
@@ -930,7 +930,7 @@ function documentsView() {
     <table class="cp-table"><thead><tr><th>${T("Document", "Dokument")}</th><th>${T("Why", "Wozu")}</th><th>Status</th><th>${T("Proof", "Beleg")}</th><th>${T("Origin", "Herkunft")}</th></tr></thead><tbody>${ev.documents.map((d) => {
       const row = rows[d.document] || {};
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
-      const note = { depends: T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
+      const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
       return `<tr><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
         <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span></td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;

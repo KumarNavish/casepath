@@ -7,10 +7,15 @@ catalogue, asks for the facts it needs, or says plainly that the case is
 unmapped. Nothing here invents a Mobiliar procedure: an empty catalogue routes
 every case to ``unmapped``.
 
-Conditions use three-valued logic. An unknown fact never counts as yes or no;
-evaluation stops at the first branch that depends on it and asks for it.
+Conditions use three-valued logic. An unknown fact never counts as yes or no.
+Evaluation defers exactly: the workflow is walked under every completion of the
+open facts (each true and false), so a step or document needed under every
+answer is needed now, one needed under some answers waits for the questions
+whose answers change it, and one needed under none is left out. With no open
+fact this is the plain walk.
 """
 from dataclasses import dataclass
+import itertools
 import json
 from pathlib import Path
 import re
@@ -275,8 +280,8 @@ def _document_status(document, findings, checked):
     return ("missing" if checked else "unchecked"), [], []
 
 
-def evaluate(workflow, facts, findings=None, *, checked=False):
-    """Walk the workflow from its start with the established facts.
+def _walk(workflow, facts, findings=None, *, checked=False):
+    """Walk the workflow from its start with the established facts, stopping at the first open branch.
 
     ``findings`` maps document ids to accepted document findings
     (``present`` or ``unusable``). ``checked`` says whether a completed run
@@ -372,3 +377,151 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
             "outcome": outcome, "documents": checklist, "next_actions": next_actions,
             "gaps": gaps + [{"kind": "open_question", **q} for q in workflow.get("open_questions", [])],
             "reached": sorted(reached)}
+
+
+MAX_OPEN_FACTS = 10
+
+
+def _used_facts(workflow):
+    used = set()
+    for step in workflow["steps"]:
+        for edge in step.get("next", []):
+            used |= condition_facts(edge.get("when", True))
+    for document in workflow["documents"]:
+        used |= condition_facts(document.get("required_when", True))
+    return used
+
+
+OTHER = "__any_other_value__"
+
+
+def _domain(workflow, fact):
+    """The answers an open fact can take: yes and no, an enum's values, or the values the workflow's conditions name plus
+    any other value."""
+    if fact["type"] == "boolean":
+        return [True, False]
+    if fact["type"] == "enum":
+        return list(fact["values"])
+    named = []
+
+    def visit(condition):
+        if not isinstance(condition, dict):
+            return
+        for key in ("all", "any"):
+            for child in condition.get(key, ()):
+                visit(child)
+        if "not" in condition:
+            visit(condition["not"])
+        if condition.get("fact") == fact["id"]:
+            for value in condition.get("in", [condition["is"]] if "is" in condition else []):
+                if value not in named:
+                    named.append(value)
+    for step in workflow["steps"]:
+        for edge in step.get("next", []):
+            visit(edge.get("when"))
+    for document in workflow["documents"]:
+        visit(document.get("required_when"))
+    return named + [OTHER]
+
+
+def _count(domains):
+    total = 1
+    for d in domains:
+        total *= len(d)
+    return total
+
+
+def evaluate(workflow, facts, findings=None, *, checked=False):
+    """Evaluate the workflow with the established facts, deferring exactly on the open ones.
+
+    ``findings`` maps document ids to accepted document findings (``present`` or
+    ``unusable``). ``checked`` says whether a completed run has looked for
+    documents, so an absent finding means ``missing`` rather than ``unchecked``.
+
+    With no open fact the result is the plain walk. Otherwise the walk runs under
+    every completion of the open facts the workflow uses (yes and no, an enum's values): a document needed under
+    every completion is listed as it would be if the facts were known; one needed
+    under some is listed as ``depends`` with the questions whose answers change it;
+    one needed under none is left out. Steps beyond the open question are listed in
+    ``beyond``: ``reached`` under every completion, ``pending`` under some.
+    ``waiting_for`` names exactly the open facts whose answer changes a step or a
+    document. Above ``MAX_OPEN_FACTS`` open facts the plain walk is returned and
+    ``deferral`` says so.
+    """
+    findings = findings or {}
+    base = _walk(workflow, facts, findings, checked=checked)
+    open_facts = sorted(f for f in _used_facts(workflow) if facts.get(f) is None)
+    if not open_facts:
+        return base
+    if len(open_facts) > MAX_OPEN_FACTS:
+        base["deferral"] = {"mode": "first_open_branch", "open_facts": open_facts,
+                            "reason": f"{len(open_facts)} open facts exceed the limit of {MAX_OPEN_FACTS}; the walk stops at the first open branch"}
+        return base
+    fact_defs = {f["id"]: f for f in workflow["facts"]}
+    domains = [_domain(workflow, fact_defs[f]) for f in open_facts]
+    if _count(domains) > 2 ** MAX_OPEN_FACTS:
+        base["deferral"] = {"mode": "first_open_branch", "open_facts": open_facts,
+                            "reason": "too many answers to compare; the walk stops at the first open branch"}
+        return base
+    completions = []
+    for values in itertools.product(*domains):
+        answer = dict(zip(open_facts, values))
+        run = _walk(workflow, {**facts, **answer}, findings, checked=checked)
+        completions.append((answer, {r["step"] for r in run["path"]}, {d["document"]: d for d in run["documents"]},
+                            (run["outcome"] or {}).get("id"), run))
+    total = len(completions)
+
+    def changes(kind, key):
+        """The open facts whose answer alone changes whether this step or document is needed."""
+        found = set()
+        for i, fact in enumerate(open_facts):
+            groups = {}
+            for answer, steps, docs, _o, _r in completions:
+                rest = tuple(repr(answer[f]) for f in open_facts if f != fact)
+                groups.setdefault(rest, set()).add(key in (steps if kind == "step" else docs))
+            if any(len(seen) > 1 for seen in groups.values()):
+                found.add(fact)
+        return sorted(found)
+
+    def questions(names):
+        return [{"fact": f, "question": fact_defs[f]["question"], "source_refs": fact_defs[f]["source_refs"]} for f in names]
+
+    deciding = set()
+    on_base = {r["step"] for r in base["path"]}
+    beyond, order = [], []
+    for _a, _s, _d, _o, run in completions:
+        for row in run["path"]:
+            if row["step"] not in on_base and row["step"] not in order:
+                order.append(row["step"])
+    for step_id in order:
+        count = sum(step_id in s for _a, s, _d, _o, _r in completions)
+        row = next(r for _a, _s, _d, _o, run in completions for r in run["path"] if r["step"] == step_id)
+        entry = {"step": step_id, "title": row["title"], "role": row.get("role"), "state": "reached" if count == total else "pending"}
+        if count < total:
+            entry["depends_on"] = changes("step", step_id)
+            deciding |= set(entry["depends_on"])
+        beyond.append(entry)
+    checklist = []
+    for document in workflow["documents"]:
+        rows = [d[document["id"]] for _a, _s, d, _o, _r in completions if document["id"] in d]
+        if not rows:
+            continue
+        row = dict(rows[0])
+        if len(rows) < total:
+            facts_here = changes("document", document["id"])
+            deciding |= set(facts_here)
+            row.update(required="depends", condition_facts=facts_here, questions=questions(facts_here))
+        else:
+            needs = {r["required"] for r in rows}
+            row["required"] = "yes" if "yes" in needs else rows[0]["required"]
+        checklist.append(row)
+    # The outcome stays the plain walk's: a case is not at its end while a question that changes its process is open.
+    outcome = base["outcome"]
+    waiting = questions(sorted(deciding))
+    next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
+    next_actions += [a for a in base["next_actions"] if a["kind"] in {"answer", "resolve"} and a["fact"] not in deciding]
+    next_actions += [{"kind": "obtain", "document": c["document"], "text": c["title"], "why": c["why"]}
+                     for c in checklist if c["status"] in {"missing", "unusable"} and c["required"] not in {"suggested", "optional", "depends"}]
+    reached = sorted(set(base["reached"]) | {b["step"] for b in beyond if b["state"] == "reached"})
+    return {**base, "outcome": outcome, "waiting_for": waiting, "documents": checklist, "next_actions": next_actions,
+            "beyond": beyond, "reached": reached, "deferral": {"mode": "exact", "open_facts": open_facts}}

@@ -1,4 +1,5 @@
 import copy
+import itertools
 import json
 from pathlib import Path
 import tempfile
@@ -49,8 +50,15 @@ class EvaluationTests(unittest.TestCase):
         result = evaluate(FIXTURE, {"legal_area": "tenancy_defect"})
         self.assertEqual(result["current"]["step"], "notice")
         self.assertEqual([w["fact"] for w in result["waiting_for"]], ["landlord_notified"])
-        self.assertEqual([d["document"] for d in result["documents"]], ["customer_message"])
+        # Exact deferral: the documents of the branch the answer decides are listed as depending on it, with its question.
+        self.assertEqual([d["document"] for d in result["documents"]], ["customer_message", "photo", "notice_letter"])
         self.assertEqual(result["documents"][0]["status"], "unchecked")
+        self.assertEqual(result["documents"][0]["required"], "yes")
+        for row in result["documents"][1:]:
+            self.assertEqual(row["required"], "depends")
+            self.assertEqual([q["fact"] for q in row["questions"]], ["landlord_notified"])
+        self.assertEqual([b["state"] for b in result["beyond"]], ["pending", "pending"])
+        self.assertEqual(result["deferral"]["mode"], "exact")
         self.assertEqual(result["next_actions"][0]["kind"], "answer")
         self.assertEqual(result["gaps"][0]["kind"], "open_question")
 
@@ -144,3 +152,76 @@ class GateTests(unittest.TestCase):
         self.assertIn(("answer", "party"), [(a["kind"], a.get("fact")) for a in result["next_actions"]])
         self.assertNotIn("resolve", [a["kind"] for a in result["next_actions"]])
         self.assertEqual(evaluate(data, {"landlord_notified": True, "party": "Immo AG"}, {}, checked=True)["outcome"]["id"], "reported")
+
+
+TENANCY = Path(__file__).parent / "fixtures" / "tenancy"
+
+
+class ExactDeferralTests(unittest.TestCase):
+    """Evaluation under every completion of the open facts (synthetic tenancy workflows converted from the public
+    CasePath rule templates)."""
+
+    @staticmethod
+    def flags(workflow):
+        return [f["id"] for f in workflow["facts"] if f["type"] == "boolean"]
+
+    def test_known_facts_give_the_plain_walk(self):
+        from casepath.process.workflows import _walk
+        cases = [(FIXTURE, {"legal_area": "tenancy_defect", "landlord_notified": v}) for v in (True, False)]
+        for path in sorted(TENANCY.glob("*.json")):
+            workflow = json.loads(path.read_text())
+            names = self.flags(workflow)
+            for values in itertools.product((True, False), repeat=len(names)):
+                cases.append((workflow, {"dispute_family": workflow["id"], **dict(zip(names, values))}))
+        for workflow, facts in cases:
+            for checked in (True, False):
+                self.assertEqual(evaluate(workflow, facts, {}, checked=checked), _walk(workflow, facts, {}, checked=checked))
+
+    def test_every_assignment_matches_its_completions(self):
+        """A document is required now exactly when every completion requires it, depends when some do, absent when none do."""
+        from casepath.process.workflows import _walk
+        for path in sorted(TENANCY.glob("*.json")):
+            workflow = json.loads(path.read_text())
+            names = self.flags(workflow)
+            for values in itertools.product((True, False, None), repeat=len(names)):
+                facts = {"dispute_family": workflow["id"], **{n: v for n, v in zip(names, values) if v is not None}}
+                open_ = [n for n, v in zip(names, values) if v is None]
+                result = evaluate(workflow, facts, {}, checked=True)
+                listed = {d["document"]: d["required"] for d in result["documents"]}
+                runs = [_walk(workflow, {**facts, **dict(zip(open_, bits))}, {}, checked=True)
+                        for bits in itertools.product((True, False), repeat=len(open_))]
+                for document in workflow["documents"]:
+                    hits = sum(any(d["document"] == document["id"] for d in run["documents"]) for run in runs)
+                    if hits == 0:
+                        self.assertNotIn(document["id"], listed)
+                    elif hits < len(runs):
+                        self.assertEqual(listed[document["id"]], "depends", (path.name, facts, document["id"]))
+                    else:
+                        self.assertNotEqual(listed[document["id"]], "depends", (path.name, facts, document["id"]))
+                deciding = {w["fact"] for w in result["waiting_for"]}
+                self.assertLessEqual(deciding, set(open_))
+
+    def test_an_open_health_fact_keeps_the_medical_report_with_its_question(self):
+        workflow = json.loads((TENANCY / "defect_mold_heating.json").read_text())
+        facts = {"dispute_family": "defect_mold_heating", "mold": True, "heating": False, "specialist_needed": False,
+                 "deposit_considered": False}
+        result = evaluate(workflow, facts, {}, checked=True)
+        rows = {d["document"]: d for d in result["documents"]}
+        self.assertEqual(rows["medical_confirmation"]["required"], "depends")
+        self.assertEqual([q["fact"] for q in rows["medical_confirmation"]["questions"]], ["health_effects"])
+        self.assertEqual(rows["lease_contract"]["required"], "yes")  # needed whatever the answer
+        self.assertEqual([w["fact"] for w in result["waiting_for"]], ["health_effects"])
+        self.assertIn("lease_contract", [a.get("document") for a in result["next_actions"]])
+        self.assertIsNone(result["outcome"])
+
+    def test_too_many_open_facts_fall_back_to_the_first_open_branch(self):
+        from casepath.process import workflows as wf
+        workflow = json.loads((TENANCY / "defect_mold_heating.json").read_text())
+        limit = wf.MAX_OPEN_FACTS
+        try:
+            wf.MAX_OPEN_FACTS = 1
+            result = evaluate(workflow, {"dispute_family": "defect_mold_heating"}, {}, checked=True)
+        finally:
+            wf.MAX_OPEN_FACTS = limit
+        self.assertEqual(result["deferral"]["mode"], "first_open_branch")
+        self.assertEqual(result["current"]["step"], "dh_intake")

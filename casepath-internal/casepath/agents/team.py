@@ -176,6 +176,7 @@ class CaseWork:
             mine = self.documents.get(row["document"])
             # A need nobody has recorded is open until the document finder has looked, then missing, as in the result.
             documents.append({"document": row["document"], "title": row["title"], "step": row["step"], "required": row["required"],
+                              **({"questions": [q["question"] for q in row["questions"]]} if row.get("questions") else {}),
                               "status": (mine or {}).get("status", "missing" if self.documents_looked_for else "open"),
                               "verdict": (mine or {}).get("verdict"),
                               **self._origin(row["document"])})
@@ -419,7 +420,8 @@ def _dispatch(work, agent, name, args):
         return {"current_step": evaluation["current"] and evaluation["current"]["title"],
                 "waiting_for": [w["question"] for w in evaluation["waiting_for"]],
                 "outcome": evaluation["outcome"] and evaluation["outcome"]["title"],
-                "checklist": [{"document": d["document"], "title": d["title"], "status": d["status"], "required": d["required"]}
+                "checklist": [{"document": d["document"], "title": d["title"], "status": d["status"], "required": d["required"],
+                               **({"depends_on": [q["question"] for q in d["questions"]]} if d.get("questions") else {})}
                               for d in evaluation["documents"]], "next_actions": evaluation["next_actions"]}
     if name == "get_findings":
         return {"facts": [{k: v for k, v in f.items() if k != "citations"} | {"quotes": [c["quote"] for c in f["citations"]]}
