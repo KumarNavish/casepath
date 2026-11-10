@@ -80,7 +80,7 @@ class TraceTests(unittest.TestCase):
             self.assertEqual(card["status"], "completed")
             self.assertEqual(card["delegations"][:2], ["claim_reader", "process_builder"])
             self.assertGreaterEqual(card["agents"]["claim_reader"]["turns"], 2)
-            self.assertEqual(card["agents"]["claim_reader"]["tools"].get("record_fact"), 1)
+            self.assertIsNone(card["agents"]["claim_reader"]["tools"].get("record_fact"))  # the facts are read in one structured reading
             self.assertEqual(card["documents"]["customer_message"]["origin"], "workflow")
             self.assertEqual(card["facts"]["landlord_notified"][0], "established")
             self.assertNotIn("Vermieter", json.dumps(card))
