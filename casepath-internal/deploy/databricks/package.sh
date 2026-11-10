@@ -10,6 +10,8 @@
 set -euo pipefail
 out="${1:?usage: deploy/databricks/package.sh <out-dir>}"
 python="${PYTHON:-python3}"
+# a relative path (.venv/bin/python) must still work after the cd below
+case "$python" in */*) python="$(cd "$(dirname "$python")" && pwd)/$(basename "$python")";; esac
 pip="${PIP:-$python -m pip}"   # any pip can download; the python must run casepath
 here="$(cd "$(dirname "$0")/../.." && pwd)"
 rm -rf "$out" && mkdir -p "$out"

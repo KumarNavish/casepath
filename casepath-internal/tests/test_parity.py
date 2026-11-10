@@ -59,7 +59,7 @@ class InstalledCopyTests(unittest.TestCase):
         project = Path(parity.PACKAGE).parent
         with tempfile.TemporaryDirectory() as d:
             src, site = Path(d) / "src", Path(d) / "site"
-            shutil.copytree(project, src, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "tests", ".git", "build", "*.egg-info"))
+            shutil.copytree(project, src, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "tests", ".git", "build", "*.egg-info", ".venv", "venv"))
             done = subprocess.run([sys.executable, "-m", "pip", "install", "--quiet", "--no-deps", "--no-build-isolation",
                                    "--target", str(site), str(src)], capture_output=True, text=True, timeout=300)
             self.assertEqual(done.returncode, 0, done.stderr[-2000:])
