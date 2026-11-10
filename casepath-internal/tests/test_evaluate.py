@@ -4,9 +4,9 @@ import re
 import tempfile
 import unittest
 
-from casepath_internal import benchmark
-from casepath_internal.evaluate import compare, evaluate_suite, same_value, dates_in
-from casepath_internal.workflows import Catalogue
+from casepath.quality import benchmark
+from casepath.quality.evaluate import compare, evaluate_suite, same_value, dates_in
+from casepath.process.workflows import Catalogue
 from tests.scripted import ScriptedModel, report
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -102,7 +102,7 @@ class EvaluateTests(unittest.TestCase):
         self.assertFalse(any(c["check"] == "applied" for c in t01["checks"]))
 
         # Scoring again from the kept stores gives the same checks, without a model.
-        from casepath_internal.evaluate import rescore
+        from casepath.quality.evaluate import rescore
         again = rescore(self.root / "out", cases, catalogue, FIXTURES)
         self.assertEqual([c["passed"] for r in again["runs"] for c in r["checks"]], [c["passed"] for r in results["runs"] for c in r["checks"]])
 
@@ -111,7 +111,7 @@ class EvaluateTests(unittest.TestCase):
         self.assertEqual(len(compare(results, worse)["regressed"]), 1)
 
     def test_evidence_may_be_any_sentence_of_the_document_that_settles_the_fact(self):
-        from casepath_internal.evaluate import document_of
+        from casepath.quality.evaluate import document_of
         c = case("T01-defect-notice")
         c["documents"].append({**letter(), "title": "Antwort", "blocks": [{"type": "paragraph", "label": "", "text": "Wir prüfen den Fall."}]})
         self.assertEqual(document_of(c, VENT), 0)
@@ -120,7 +120,7 @@ class EvaluateTests(unittest.TestCase):
         self.assertIsNone(document_of(c, "Ein Satz, der nirgends steht."))
 
     def test_synthetic_cases_can_be_seeded_for_everyone_once(self):
-        from casepath_internal.store import CaseStore
+        from casepath.web.store import CaseStore
         self.suite([case("T01-defect-notice"), case("T02-second-case")])
         store = CaseStore(self.root / "data")
         self.addCleanup(store.close)

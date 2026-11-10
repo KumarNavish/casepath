@@ -1,6 +1,6 @@
 """A made-up example case for trying CasePath without any real case data.
 
-    python -m casepath_internal.examples <data-dir> <catalogue-dir>
+    python -m casepath example <data-dir> <catalogue-dir>
 
 It copies the synthetic example workflow into the catalogue and creates one
 case with a customer e-mail, a management letter (PDF) and a photo. Everything
@@ -12,10 +12,10 @@ from pathlib import Path
 import shutil
 import sys
 
-from .extract import extract
+from ..read.extract import extract
 from .synthetic import render_digital
 
-WORKFLOW = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "example-defect.json"
+WORKFLOW = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "example-defect.json"
 TOLD = "Ich habe die Verwaltung am 3. Februar schriftlich über den Schimmel informiert."
 VENT = "Ich lüfte dreimal täglich, trotzdem kommt der Schimmel an der Aussenwand zurück."
 REPLY = "Wir haben Ihre Meldung vom 3. Februar erhalten und werden die Angelegenheit prüfen."
@@ -64,10 +64,10 @@ def seed(store, catalogue_dir, user, title="Beispiel (synthetisch): Schimmel im 
 
 
 def main(argv=None):
-    from .store import CaseStore
+    from ..web.store import CaseStore
     argv = sys.argv[1:] if argv is None else argv
     if len(argv) not in (2, 3):
-        sys.exit("usage: python -m casepath_internal.examples <data-dir> <catalogue-dir> [user]")
+        sys.exit("usage: python -m casepath example <data-dir> <catalogue-dir> [user]")
     case = seed(CaseStore(argv[0]), argv[1], argv[2] if len(argv) == 3 else "example")
     print(f"example case {case['id']}")
 

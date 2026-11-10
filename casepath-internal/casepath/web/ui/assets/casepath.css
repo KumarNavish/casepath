@@ -94,7 +94,13 @@ mark.cp-hit.cited { background: var(--yellow); }
 .cp-plan li { display: flex; gap: 12px; align-items: center; padding: 0 20px; min-height: 58px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-2); position: relative; }
 .cp-plan li:first-child { border-top: 0; }
 .cp-plan li.active { color: var(--ink); padding-bottom: 14px; padding-top: 6px; }
-.cp-plan li.active::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 8px; height: 2px; background: linear-gradient(90deg, var(--crimson) 70%, var(--crimson-track) 70%); }
+.cp-plan li .cp-grow { flex: 1; min-width: 0; }
+.cp-elapsed { flex: none; font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.cp-track { position: absolute; left: 20px; right: 20px; bottom: 8px; height: 2px; background: var(--crimson-track); overflow: hidden; }
+.cp-run { position: absolute; left: 0; top: 0; bottom: 0; background: var(--crimson); transition: width .6s ease; }
+.cp-run.moving { width: 30%; animation: cp-slide 1.6s ease-in-out infinite; }
+@keyframes cp-slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
+@media (prefers-reduced-motion: reduce) { .cp-run.moving { animation: none; width: 100%; opacity: .45; } }
 .cp-spinner { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--crimson-track); border-top-color: var(--crimson); animation: cp-spin 1s linear infinite; flex: none; }
 @keyframes cp-spin { to { transform: rotate(360deg); } }
 .cp-hex { display: inline-grid; place-items: center; width: 40px; height: 40px; background: var(--crimson); color: #fff; clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%); }

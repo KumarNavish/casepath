@@ -1,72 +1,64 @@
-# CasePath, internal
+# CasePath
 
-A fresh CasePath for running inside Mobiliar's own Azure. It does three things for the people who handle cases:
-- **Discover the process** of each case type from its cases: steps, decisions and the conditions that choose between them.
-- **Keep the document checklist** of each case: which documents are required, which are present (with the sentence that shows it), which are missing.
-- **Build a Knowledge base that grows with every case**: new document needs and questions learned from cases, reused only after a person approves them.
+Agents prepare a legal-protection case from its files. A person decides.
 
-Everything rests on exact quotes that an independent checker verifies. A short assessment and a reply draft (never sent) are by-products.
+![A case being prepared: the process forms from the files, the agent reads the quote it cites, the document list grows](docs/img/live.png)
 
-It leaves the public demonstration's hosting, ledger and provider machinery behind.
-
-This folder contains no Mobiliar content. Workflows built from Mobiliar's process diagrams, the case files and the deployment settings live inside Mobiliar. [`docs/COORDINATION.md`](docs/COORDINATION.md) describes how the cloud build session and the Mac bridge share the work.
-
-## What is here
-
-| Module | Does |
-| --- | --- |
-| `workflows.py` | Workflow catalogue format and validation. Every fact, step, branch and document need names its source. Routing selects a workflow, asks for missing facts, or says the case is unmapped. Evaluation finds the current step and the case's document checklist, using three-valued logic. |
-| `drawio.py` | Turns a draw.io process diagram into a draft workflow. Each step and branch is traced to its diagram cell, and ambiguities become open questions. |
-| `extract.py`, `evidence.py` | Read PDF, e-mail, Word and text files, and count pages without a text layer. Locate quotes word for word, and search. |
-| `reading.py` | Real dossiers: scanned pages are read from their page images (in parallel; a page the model cannot read stays listed and is tried again on the next run), and each file is split into its documents with a page range, date, sender and a summary. In a dossier of hundreds of pages, the agents use these summaries to choose what to read. |
-| `azure_model.py`, `config.py` | Azure OpenAI client with Entra sign-in and the exact deployment name. It uses the Responses API with tools (`store: false`), and chat completions for deployments without Responses. It refuses any endpoint that is not an Azure OpenAI resource. |
-| `agents.py` | The agent team on one deployment: claim reader, process builder, document finder, source checker and result checker, each with its own instructions, tools and context. A fixed, auditable plan leads them, so the same case is prepared the same way every time. An independent second reading of the facts that decide the path surfaces disagreements for a person, and one retry round revisits what the source checker rejected. Only located quotes count. Agents must use their tools and report on their last turn. Text in the files that addresses an AI is flagged and never followed. |
-| `casegraph.py` | A case's own process: workflow, applicable Knowledge and validated edits. Edits re-evaluate the case, show a before-and-after diff, and can be undone. |
-| `knowledge.py` | Knowledge items with versions, evidence and use statistics. Candidates wait for review; only items a person has activated reach the agents or shape another case. Proposals that carry personal details of a case are withheld, and deleting a case removes the Knowledge learned from it. |
-| `synthetic.py` | Synthetic cases made inside Mobiliar: a profile of a real dossier from its documents, a planned case written document by document, copy guard, realistic PDF rendering (including scans), loading into the store through the same reading as real cases, a blind judge on read text and on page images, and scoring CasePath's results against each synthetic case's truth. |
-| `store.py`, `runner.py`, `app.py` | Fresh case store, background runs with honest statuses, and the API. The API serves only with a configured sign-in. |
-| `ui/` | The case worker's workspace on the API, in German (`?lang=en` switches to English): the five agents' live work, the case's process with editable decisions, document checklist, case summary, deadlines, reply draft (also as Word), the contents of each dossier, and Knowledge. |
-| `batch.py`, `mining.py` | Import a folder of case PDFs into a running CasePath and prepare them one case at a time, printing content-free lines. Reconstruct each real case's course and the pattern across cases. |
-| `benchmark.py`, `evaluate.py` | Benchmark cases with known answers, and the evaluator. It runs each case through the API, in-process on a fresh store or against a running deployment, and scores routing, facts, documents the case needs beyond its workflow, document needs, outcome, cited evidence, deadlines, next actions, Knowledge reuse across a sequence of cases, flagged instructions and contradictions. Every failed check is listed with what was expected; repeats measure consistency, and `compare` lists regressions between two runs. |
-| `scorecard.py` | Content-free run scorecards, guarded against free text, for results that may leave Mobiliar. |
-| `deploy/workspace/` | One script for setup, start, update and checks on the development workspace, and a private env template. |
-
-## Run the tests
-
-```sh
-cd casepath-internal
-python3 -m unittest discover -s tests -t .
+```mermaid
+flowchart LR
+  files["Files<br/>PDF · scans · e-mail · Outlook · Word"] --> read["read/<br/>text · scanned pages · documents"]
+  read --> route{{"routing<br/>picks the workflow"}}
+  catalogue[("catalogue/<br/>Protekta processes")] --> route
+  route --> brief["claim reader<br/>briefs the case"] --> process["process builder<br/>the case's own process"]
+  law["the applicable law"] --> process
+  knowledge[("Knowledge<br/>activated by a person")] --> process
+  process --> facts["claim reader<br/>facts, with quotes"] --> docs["document finder<br/>needs ↔ files"]
+  docs --> check["source checker<br/>every quote"] --> result["result checker<br/>answer · reply draft"]
+  result -. proposes .-> knowledge
+  result --> out["process · checklist · deadlines<br/>case report (.docx)"]
 ```
 
-The tests use a synthetic workflow and a scripted model. They make no network calls.
+Each fact and each document rests on a quote found word for word in the file, and the source checker checks every one. A document the law requires shows its article.
 
-## Run it on the development workspace
+![The document checklist: each need with its purpose, its status, the quote that shows it, and where the need came from](docs/img/documents.png)
 
-The development workspace is a managed Azure ML compute instance. Sign-in follows the platform guidance: the person's `az` sign-in, never the compute's managed identity (`CASEPATH_AZURE_CREDENTIAL=cli`, the default). The platform specifics are in the setup notes of the internal copy, not here.
-
-1. In the compute instance's terminal, install the network's TLS certificates as the platform guide describes. Without them, pip and `az` fail with certificate errors. `setup` checks for this first.
-2. Put the code on the workspace in `~/casepath-internal`: clone the branch, or upload its zip in the Studio file browser and unzip it there.
-3. Copy `deploy/workspace/env.example` to `~/.casepath/env` and fill it in there. The lab endpoint and deployment are needed, plus `CASEPATH_AZURE_OPENAI_API_VERSION` only if the endpoint answers 404 on `/openai/v1`.
-4. Put the workflow catalogue (JSON) in `$CASEPATH_WORKFLOW_CATALOGUE`.
-5. Sign in as yourself. On a compute instance with single sign-on, `az login --identity` signs in as the person the instance belongs to; otherwise run `az login --use-device-code`. The account needs the model-user role on the lab resource. `check-model` says whether the token was issued to a person, and refuses a machine identity.
-6. Run:
-   ```sh
-   deploy/workspace/casepath.sh setup
-   deploy/workspace/casepath.sh check-model   # one synthetic call, with approval
-   deploy/workspace/casepath.sh start
-   ```
-
-To turn a process diagram into a draft workflow on the workspace:
+## Run
 
 ```sh
-~/.casepath/venv/bin/python -m casepath_internal.drawio case_mold.drawio --version <diagram date> > "$CASEPATH_WORKFLOW_CATALOGUE/case_mold.json"
+make setup      # .venv with the dependencies
+make test       # every test; no network, no model
+make preview    # http://127.0.0.1:8790: synthetic cases, scripted model
 ```
 
-A draft gets its routing condition and document needs from a reviewer before it routes cases automatically. Until then, a case worker selects it by hand.
+## Ship (Databricks App `casepath-pilot`)
 
-## Not done yet
+```sh
+make package    # → build/casepath-app/
+```
 
-- A completed run on the internal model, first on the made-up example and then on real cases, on the development workspace.
-- Running the synthetic pipeline on the internal model.
-- Comparing results with reviewer-labelled references on the Hackathon cases, beyond the structural scorecard.
-- Operated hosting (frontend, business service, agent service).
+Upload `build/casepath-app/` to the workspace. Fill in the three `FILL-IN`s in its `app.yaml` there, never in Git, then deploy. `GET /api/health` answers `"status": "ok"`. Details: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+## Map
+
+```
+casepath/              python -m casepath <command>   (no command: the list)
+  read/                files → text, page images, documents, quotes (PDF, fax and Outlook readers on the standard library)
+  agents/              lead, five agents and their plan (team.py); one job in, one outcome out (core.py); model clients
+  process/             workflows, each case's own process, Knowledge
+  web/                 API (app.py), case store, sign-in, volume, case report, workspace (ui/)
+  quality/             benchmark, evaluator, synthetic cases, content-free scorecards
+  config.py            every setting, from the environment
+catalogue/             Protekta's processes as workflows (JSON)          internal copy
+benchmark/             synthetic cases with known answers                internal copy
+deploy/                databricks/ · workspace/ (DSW) · preview/ · cloudshell/ · Dockerfile at the root
+docs/                  DEPLOYMENT.md · contracts/ (case API) · history/
+tests/
+```
+
+## Rules
+
+- A fact counts only with a quote found word for word in the file.
+- Case content stays inside Mobiliar. Anything that leaves is a content-free count.
+- Knowledge reaches a case only after a person activates it; each use names its version.
+- A run stops at its token budget (`CASEPATH_RUN_TOKEN_BUDGET`) and says so.
+- Text in a file that addresses an AI is flagged, never followed.

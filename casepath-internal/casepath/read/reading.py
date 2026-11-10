@@ -29,9 +29,9 @@ import json
 import re
 import threading
 
-from .azure_model import ModelError
+from ..agents.azure_model import ModelError
 from .evidence import Evidence
-from .schema import arr, obj, text
+from ..agents.schema import arr, obj, text
 
 OCR_INSTRUCTIONS = """Transcribe each page image exactly as written, line by line, in its original language. Mark
 blacked-out or redacted areas as [geschwärzt]. For photos, drawings, stamps or signatures write a short neutral
@@ -324,4 +324,5 @@ def prepare_file(model, store, file_row, *, on_event=lambda e: None, ocr=True, m
         changed = True
     if changed:
         store.update_extraction(file_row["id"], extraction)
+        on_event({"agent": "claim_reader", "kind": "reading.saved", "file": file_row["id"]})  # the workspace shows the read text now
     return extraction

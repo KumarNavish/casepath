@@ -1,5 +1,5 @@
 # CasePath as a Databricks App. Fill in the three marked values in the deployed copy only, never in Git.
-command: ["python", "-m", "casepath_internal", "serve", "--host", "0.0.0.0"]
+command: ["python", "-m", "casepath", "serve", "--host", "0.0.0.0"]
 env:
   # Who may use it: Databricks signs people in and passes their e-mail; CasePath admits only the pilot group.
   - name: CASEPATH_IDENTITY_HEADER

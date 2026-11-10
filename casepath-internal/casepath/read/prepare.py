@@ -5,7 +5,7 @@ the extraction already made (text, pages, pages without a text layer), each orig
 of every page that has no text layer, so the model can read those pages later. A large photo also gets a smaller copy.
 No model is called here: preparing reads and renders only.
 
-    python -m casepath_internal.prepare <file or folder> ... --out <dir> [--image-side 1400]
+    python -m casepath prepare <file or folder> ... --out <dir> [--image-side 1400]
 
 makes one prepared case per file (named after the file), ready to be placed in a volume's ``incoming/`` folder.
 """
@@ -90,7 +90,7 @@ def load_prepared(store, read, user, *, title=None, intake=None):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="casepath_internal.prepare")
+    parser = argparse.ArgumentParser(prog="python -m casepath prepare")
     parser.add_argument("inputs", nargs="+")
     parser.add_argument("--out", required=True)
     parser.add_argument("--image-side", type=int, default=1400)

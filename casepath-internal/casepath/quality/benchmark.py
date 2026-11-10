@@ -17,9 +17,9 @@ synthetic renderer expects them, and its truth:
 The validator checks that a case is well formed, that its truth uses the workflow's own ids and values, and that every
 evidence sentence occurs in the documents, so the truth itself rests on the files.
 
-    python -m casepath_internal.benchmark check <suite-dir> [--catalogue <dir>]
-    python -m casepath_internal.benchmark render <suite-dir>
-    python -m casepath_internal.benchmark prepare <suite-dir>
+    python -m casepath benchmark check <suite-dir> [--catalogue <dir>]
+    python -m casepath benchmark render <suite-dir>
+    python -m casepath benchmark prepare <suite-dir>
 """
 import argparse
 import json
@@ -27,7 +27,7 @@ from pathlib import Path
 import re
 import sys
 
-from .evidence import normalise
+from ..read.evidence import normalise
 from .synthetic import BLOCKS, FEATURES, KINDS, LAYOUTS, render_case
 
 FORMAT = "casepath.benchmark-case/1"
@@ -149,7 +149,7 @@ def seed_title(case):
 
 def prepare_suite(directory, image_side=1400):
     """Write each case's prepared folder (<case>/prepared), so a runtime without PDF libraries can load the suite."""
-    from .prepare import prepare_case
+    from ..read.prepare import prepare_case
 
     cases = load_suite(directory)
     with __import__("tempfile").TemporaryDirectory() as scratch:
@@ -168,9 +168,9 @@ def seed(store, directory, user="synthetisch"):
     worker would. Returns the number of cases added."""
     import tempfile
 
-    from .extract import extract
+    from ..read.extract import extract
 
-    from .prepare import load_prepared
+    from ..read.prepare import load_prepared
 
     existing = {c["title"] for c in store.list_cases()}
     added = 0
@@ -203,9 +203,9 @@ def render(case, directory):
 
 
 def main(argv=None):
-    from .workflows import Catalogue
+    from ..process.workflows import Catalogue
 
-    parser = argparse.ArgumentParser(prog="casepath_internal.benchmark")
+    parser = argparse.ArgumentParser(prog="python -m casepath benchmark")
     parser.add_argument("command", choices=["check", "render", "prepare"])
     parser.add_argument("suite")
     parser.add_argument("--catalogue")

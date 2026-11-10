@@ -20,7 +20,7 @@
 7. **Score.** CasePath's result on a synthetic case is compared with the case's truth: facts, documents present
    and outcome, as counts.
 
-Run inside Mobiliar with ``python -m casepath_internal.synthetic --help``. Only generated cases that pass the
+Run inside Mobiliar with ``python -m casepath synthetic --help``. Only generated cases that pass the
 guard, and judge scorecards, may leave.
 """
 import argparse
@@ -34,8 +34,8 @@ import random
 import re
 import sys
 
-from .evidence import Evidence, normalise
-from .schema import arr, choice, obj, text
+from ..read.evidence import Evidence, normalise
+from ..agents.schema import arr, choice, obj, text
 
 KINDS = ["letter", "email", "form", "contract", "invoice", "protocol", "report", "photo_sheet", "note", "decision", "other"]
 LAYOUTS = ["letterhead", "plain", "form", "email", "scan", "handwritten"]
@@ -442,7 +442,7 @@ def judge_pairs(model, real_texts, synthetic_texts, *, pairs=20, seed=7, limit=6
 
 def judge_pages(model, real_pages, synthetic_pages, *, pairs=20, seed=7):
     """Blind pairs of page images. Each side is a list of (pdf bytes, page number)."""
-    from .reading import Renderer
+    from ..read.reading import Renderer
 
     rng = random.Random(seed)
     renderers, results = {}, []
@@ -506,16 +506,16 @@ def _pages(store, case_id):
 
 
 def main(argv=None):
-    from .azure_model import AzureOpenAIModel, entra_token_provider
-    from .config import load_settings
-    from .extract import extract
-    from .reading import prepare_file
-    from .runner import case_files, case_state
+    from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
+    from ..config import load_settings
+    from ..read.extract import extract
+    from ..read.reading import prepare_file
+    from ..agents.runner import case_files, case_state
     from .scorecard import guard
-    from .store import CaseStore
-    from .workflows import Catalogue
+    from ..web.store import CaseStore
+    from ..process.workflows import Catalogue
 
-    parser = argparse.ArgumentParser(prog="casepath_internal.synthetic", description="Make and judge synthetic cases inside Mobiliar.")
+    parser = argparse.ArgumentParser(prog="python -m casepath synthetic", description="Make and judge synthetic cases inside Mobiliar.")
     commands = parser.add_subparsers(dest="command", required=True)
     make = commands.add_parser("make", help="profile a real case in the store and generate synthetic cases like it")
     make.add_argument("case_id")

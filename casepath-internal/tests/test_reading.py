@@ -6,11 +6,11 @@ from unittest import mock
 
 from pypdf import PdfWriter
 
-from casepath_internal import reading
-from casepath_internal.azure_model import ModelError, ModelResult
-from casepath_internal.extract import extract
-from casepath_internal.store import CaseStore
-from casepath_internal.synthetic import render_digital, render_scanned
+from casepath.read import reading
+from casepath.agents.azure_model import ModelError, ModelResult
+from casepath.read.extract import extract
+from casepath.web.store import CaseStore
+from casepath.quality.synthetic import render_digital, render_scanned
 from tests.test_synthetic import CASE, document
 
 LETTER_LINE = "Wir haben Ihre Meldung erhalten und werden den Schimmel im Badezimmer prüfen lassen."

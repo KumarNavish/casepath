@@ -32,7 +32,7 @@ directory or blob storage. Pages read before a failure still come back in ``extr
 again. The case service applies each Knowledge outcome to the item's current version, so concurrent runs never
 overwrite each other's statistics.
 
-    python -m casepath_internal.core prepare <job.json> --blobs <dir> [--out <outcome.json>]
+    python -m casepath job prepare <job.json> --blobs <dir> [--out <outcome.json>]
 
 runs one job from files, the way a queue worker would, with events as JSON lines on stderr. The model comes from
 the environment, as for the service.
@@ -42,11 +42,11 @@ import json
 from pathlib import Path
 import sys
 
-from . import casegraph, knowledge as kb, workflows
-from .agents import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
+from ..process import casegraph, knowledge as kb, workflows
+from .team import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
 from .azure_model import ModelError
-from .evidence import Evidence
-from .reading import prepare_file
+from ..read.evidence import Evidence
+from ..read.reading import prepare_file
 from .schema import arr, choice, obj, text
 
 JOB = "casepath.agent-job/1"
@@ -349,14 +349,14 @@ def evaluate(workflow, knowledge, edits, result, case_id):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="casepath_internal.core")
+    parser = argparse.ArgumentParser(prog="python -m casepath job")
     parser.add_argument("command", choices=["prepare"])
     parser.add_argument("job")
     parser.add_argument("--blobs", required=True, help="directory of the job's files, each named by its SHA-256")
     parser.add_argument("--out")
     args = parser.parse_args(argv)
-    from .app import default_model_factory
-    from .config import load_settings
+    from ..web.app import default_model_factory
+    from ..config import load_settings
 
     job = json.loads(Path(args.job).read_text())
     model = default_model_factory(load_settings())()

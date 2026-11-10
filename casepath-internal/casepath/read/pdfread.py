@@ -1080,8 +1080,13 @@ def compare(paths):
         print(json.dumps(row, ensure_ascii=False))
 
 
-if __name__ == "__main__":
+def main(argv=None):
     import sys
-    if len(sys.argv) < 3 or sys.argv[1] != "compare":
-        sys.exit("usage: python -m casepath_internal.pdfread compare <file.pdf> ...")
-    compare(sys.argv[2:])
+    argv = sys.argv[1:] if argv is None else argv
+    if not argv:
+        sys.exit("usage: python -m casepath reader-check <file.pdf> ...")
+    compare(argv)
+
+
+if __name__ == "__main__":
+    main()

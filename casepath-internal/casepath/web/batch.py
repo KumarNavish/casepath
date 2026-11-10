@@ -1,10 +1,10 @@
 """Bring real case files into a running CasePath and work through them one case at a time.
 
-    python -m casepath_internal.batch import <folder> [--workflow <id>] [--url http://127.0.0.1:8080]
-    python -m casepath_internal.batch next [--synthetic] [--url ...]
-    python -m casepath_internal.batch retry [--workflow <id>] [--url ...]
-    python -m casepath_internal.batch trace <case id or its last 8 characters> [--url ...]
-    python -m casepath_internal.batch rerun <case id or its last 8 characters> [--url ...]
+    python -m casepath batch import <folder> [--workflow <id>] [--url http://127.0.0.1:8080]
+    python -m casepath batch next [--synthetic] [--url ...]
+    python -m casepath batch retry [--workflow <id>] [--url ...]
+    python -m casepath batch trace <case id or its last 8 characters> [--url ...]
+    python -m casepath batch rerun <case id or its last 8 characters> [--url ...]
 
 ``import`` creates one case per PDF in the folder (titled by its file name) and uploads the file; with ``--workflow``
 the case worker's choice of process is set instead of routing from the documents. ``next`` starts the next case that
@@ -92,7 +92,7 @@ def find_case(url, case_ref):
 
 def trace(url, case_ref):
     """Where a run's effort went and what it found, by agent and by id; guarded as content-free."""
-    from .scorecard import guard
+    from ..quality.scorecard import guard
 
     case = find_case(url, case_ref)
     detail = call(url, f"/api/cases/{case['id']}")
@@ -162,7 +162,7 @@ def retry(url, workflow=None, poll=5):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="casepath_internal.batch")
+    parser = argparse.ArgumentParser(prog="python -m casepath batch")
     parser.add_argument("command", choices=["import", "next", "retry", "trace", "rerun"])
     parser.add_argument("folder", nargs="?")
     parser.add_argument("--workflow")

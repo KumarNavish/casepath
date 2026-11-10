@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 import unittest
 
-from casepath_internal import casegraph, knowledge as kb
-from casepath_internal.agents import CaseTeam, TeamError
+from casepath.process import casegraph, knowledge as kb
+from casepath.agents.team import CaseTeam, TeamError
 from tests.scripted import ScriptedModel, delegate, learn, report
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
@@ -113,7 +113,7 @@ class TeamTests(unittest.TestCase):
         self.assertFalse(result["reply"]["clauses"][0]["supported"])
 
     def test_an_agent_must_report_on_its_last_turn(self):
-        from casepath_internal.agents import CaseWork, run_agent
+        from casepath.agents.team import CaseWork, run_agent
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         model = ScriptedModel([[("list_files", {})], [("list_files", {})], [report("document_finder")]])
         run_agent(model, work, "document_finder", "Find.", max_turns=3)
@@ -123,7 +123,7 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(caught.exception.reason, "turn_limit")
 
     def test_a_case_needs_its_own_step_and_it_can_become_knowledge(self):
-        from casepath_internal.workflows import evaluate
+        from casepath.process.workflows import evaluate
         edit = {"id": "e1", "op": "add_step", "case_id": "c1", "args": {"before": "assess", "title": "Einsprache schreiben",
                 "why": "Die Kündigung fällt in die Sperrfrist.", "legal_basis": "Art. 336c OR"}, "status": "active"}
         graph, provenance = casegraph.build(FIXTURE, edits=[edit])
@@ -138,7 +138,7 @@ class TeamTests(unittest.TestCase):
         self.assertIn(f"k-{item['id']}", {s["id"] for s in later["steps"]})
 
     def test_learning_with_personal_details_is_withheld(self):
-        from casepath_internal.agents import personal_details
+        from casepath.agents.team import personal_details
         names = {"Brunner", "Kramgasse"}
         self.assertFalse(personal_details({"title": "Lüftungsprotokoll", "why": "Zeigt, wie die Mieterin gelüftet hat."}, names))
         self.assertTrue(personal_details({"title": "Brief an Frau Brunner"}, names))
@@ -146,7 +146,7 @@ class TeamTests(unittest.TestCase):
         self.assertTrue(personal_details({"note": "Police 8017.0833.0054"}, set()))
 
     def test_a_second_reading_surfaces_disagreement_and_fills_gaps(self):
-        from casepath_internal.agents import CaseWork, confirm_facts
+        from casepath.agents.team import CaseWork, confirm_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         cite = [{"file": "f1", "quote": QUOTE}]
         same = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}])
@@ -160,7 +160,7 @@ class TeamTests(unittest.TestCase):
         self.assertNotIn("landlord_notified", work.accepted_facts())  # a person settles it
 
     def test_two_readings_of_a_name_with_and_without_its_address_agree(self):
-        from casepath_internal.agents import same_reading
+        from casepath.agents.team import same_reading
         text, date = {"type": "text"}, {"type": "date"}
         self.assertTrue(same_reading(text, "Garage Kälin Occasionen AG", "Garage Kälin Occasionen AG, Zürcherstrasse 140, 8645 Jona."))
         self.assertTrue(same_reading(text, "2 % pro Jahr", "2 % pro Jahr; jeweils am 31. Dezember fällig"))
@@ -232,7 +232,7 @@ class KnowledgeReuseTests(unittest.TestCase):
         item = kb.new_item("example-defect", "document_need", {"title": "Ventilation record", "why": "Shows ventilation."},
                            origin={"kind": "case", "by": "result_checker", "case_id": "c0"})
         graph, _ = casegraph.build(FIXTURE, knowledge=[item])
-        from casepath_internal.workflows import evaluate
+        from casepath.process.workflows import evaluate
         row = next(d for d in evaluate(graph, {}, {}, checked=True)["documents"] if d["document"] == f"k-{item['id']}")
         self.assertEqual((row["required"], row["status"]), ("suggested", "missing"))
         self.assertNotIn(f"k-{item['id']}", [a.get("document") for a in evaluate(graph, {}, {}, checked=True)["next_actions"]])
@@ -256,7 +256,7 @@ class KnowledgeReuseTests(unittest.TestCase):
 
 class EditTests(unittest.TestCase):
     def test_edits_change_the_checklist_and_can_be_undone(self):
-        from casepath_internal.workflows import evaluate
+        from casepath.process.workflows import evaluate
         facts, checked = {"landlord_notified": True}, True
         before = evaluate(casegraph.build(FIXTURE)[0], facts, {}, checked=checked)
         edits = [{"id": "e1", "op": "add_document", "args": {"title": "Ventilation record", "why": "Mould despite ventilation.", "step": "assess"}},

@@ -33,15 +33,15 @@ CASEPATH_AZURE_OPENAI_DEPLOYMENT=$deployment
 CASEPATH_MODEL_REASONING=true
 EOF
 if [ "$example" = "--example" ] && [ ! -f "$home/example-seeded" ]; then
-  "$home/venv/bin/python" -m casepath_internal.examples "$home/data" "$home/catalogue" "${USER:-cloudshell}" && touch "$home/example-seeded"
+  "$home/venv/bin/python" -m casepath example "$home/data" "$home/catalogue" "${USER:-cloudshell}" && touch "$home/example-seeded"
 fi
-"$home/venv/bin/python" -m casepath_internal check-catalogue "$home/catalogue" || true
+"$home/venv/bin/python" -m casepath check-catalogue "$home/catalogue" || true
 
 if [ "${CASEPATH_CHECK_MODEL:-0}" = "1" ]; then
   (set -a; . "$home/env"; set +a; "$home/venv/bin/python" "$here/deploy/workspace/check_model.py")
 fi
 
-(set -a; . "$home/env"; set +a; cd "$here"; nohup "$home/venv/bin/python" -m casepath_internal serve --host 127.0.0.1 --port "$port" > "$home/casepath.log" 2>&1 &)
+(set -a; . "$home/env"; set +a; cd "$here"; nohup "$home/venv/bin/python" -m casepath serve --host 127.0.0.1 --port "$port" > "$home/casepath.log" 2>&1 &)
 sleep 3
 curl -s "http://127.0.0.1:$port/api/health" && echo
 echo "CasePath is running. Open it with Web preview → Configure → port $port."

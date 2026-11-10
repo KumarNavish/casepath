@@ -4,10 +4,10 @@ import tempfile
 import unittest
 from unittest import mock
 
-from casepath_internal import reading
-from casepath_internal.prepare import load_prepared, prepare_case
-from casepath_internal.store import CaseStore
-from casepath_internal.synthetic import render_digital, render_scanned
+from casepath.read import reading
+from casepath.read.prepare import load_prepared, prepare_case
+from casepath.web.store import CaseStore
+from casepath.quality.synthetic import render_digital, render_scanned
 from tests.test_synthetic import CASE, document
 
 
@@ -17,7 +17,7 @@ class Reader:
         self.pages = []
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
-        from casepath_internal.azure_model import ModelResult
+        from casepath.agents.azure_model import ModelResult
         pages = schema["properties"]["pages"]["items"]["properties"]["page"]["enum"]
         self.pages += pages
         return ModelResult(value={"pages": [{"page": p, "text": f"Seite {p}: Antwort der Verwaltung"} for p in pages]},

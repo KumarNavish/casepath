@@ -12,7 +12,7 @@ review. A person activates or retires; nothing is deleted.
 """
 from copy import deepcopy
 
-from .store import new_id, now
+from ..web.store import new_id, now
 
 KINDS = {"document_need", "question", "step", "note"}
 

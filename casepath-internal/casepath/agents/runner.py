@@ -10,9 +10,10 @@ core functions with the same job, and the case service saves the outcome the sam
 """
 from concurrent.futures import ThreadPoolExecutor
 
-from . import core, knowledge as kb, workflows
+from . import core
+from ..process import knowledge as kb, workflows
 from .azure_model import ModelError
-from .store import now
+from ..web.store import now
 
 
 def case_files(store, case_id):

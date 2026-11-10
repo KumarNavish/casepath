@@ -4,9 +4,9 @@ import unittest
 
 import httpx
 
-from casepath_internal.agents import CaseTeam
-from casepath_internal.anthropic_model import AnthropicMessagesModel
-from casepath_internal.config import load_settings
+from casepath.agents.team import CaseTeam
+from casepath.agents.anthropic_model import AnthropicMessagesModel
+from casepath.config import load_settings
 from tests.scripted import ScriptedModel
 from tests.test_team import CASE, FILES, FIXTURE, standard_script
 

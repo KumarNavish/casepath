@@ -15,8 +15,8 @@ Nothing here sends, files or settles anything; a person decides.
 import json
 import re
 
-from . import casegraph, workflows
-from .evidence import Evidence
+from ..process import casegraph, workflows
+from ..read.evidence import Evidence
 from .schema import arr, choice, obj, text, validate_result
 
 COMMON = """You are one agent in CasePath, which prepares legal-protection cases for Protekta case handlers.

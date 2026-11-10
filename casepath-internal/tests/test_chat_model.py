@@ -3,8 +3,8 @@ import unittest
 
 import httpx
 
-from casepath_internal.chat_model import ChatCompletionsModel, databricks_token_provider, to_messages
-from casepath_internal.config import SettingsError, load_settings
+from casepath.agents.chat_model import ChatCompletionsModel, databricks_token_provider, to_messages
+from casepath.config import SettingsError, load_settings
 
 HOST = "https://adb-1234567890.12.azuredatabricks.net"
 
@@ -64,7 +64,7 @@ class UserTokenTests(unittest.TestCase):
     def test_the_model_can_be_called_as_the_person_who_starts_the_run(self):
         import tempfile
         from fastapi.testclient import TestClient
-        from casepath_internal.app import create_app, default_model_factory
+        from casepath.web.app import create_app, default_model_factory
         with tempfile.TemporaryDirectory() as data:
             env = {"CASEPATH_DATA_DIR": data, "CASEPATH_IDENTITY_HEADER": "X-Forwarded-Email", "CASEPATH_MODEL_PROVIDER": "databricks",
                    "DATABRICKS_HOST": HOST, "CASEPATH_MODEL": "m", "CASEPATH_MODEL_AUTH": "user"}
@@ -111,7 +111,7 @@ class StructuredAnswerFallbackTests(unittest.TestCase):
 
 class MessagesApiTests(unittest.TestCase):
     def test_the_agent_dialect_runs_on_the_messages_api_with_caching(self):
-        from casepath_internal.anthropic_model import AnthropicMessagesModel, to_messages as to_blocks
+        from casepath.agents.anthropic_model import AnthropicMessagesModel, to_messages as to_blocks
         bodies = []
 
         def handler(request):
@@ -154,7 +154,7 @@ class MessagesApiTests(unittest.TestCase):
 
 
     def test_cache_writes_are_counted_and_one_off_answers_do_not_write_the_conversation(self):
-        from casepath_internal.anthropic_model import AnthropicMessagesModel
+        from casepath.agents.anthropic_model import AnthropicMessagesModel
         bodies = []
 
         def handler(request):
@@ -174,8 +174,8 @@ class MessagesApiTests(unittest.TestCase):
         self.assertEqual(bodies[0]["system"][0]["cache_control"], {"type": "ephemeral"})
 
     def test_a_400_that_is_not_about_cache_marks_leaves_caching_on(self):
-        from casepath_internal.anthropic_model import AnthropicMessagesModel
-        from casepath_internal.azure_model import ModelError
+        from casepath.agents.anthropic_model import AnthropicMessagesModel
+        from casepath.agents.azure_model import ModelError
         calls = {"n": 0}
 
         def handler(request):
@@ -192,7 +192,7 @@ class MessagesApiTests(unittest.TestCase):
         self.assertTrue(model.cache)  # the marks were not the problem, so the next call still caches
 class UnforcedToolTests(unittest.TestCase):
     def test_without_forced_tool_choice_the_one_tool_needed_is_offered_and_answers_are_checked(self):
-        from casepath_internal.anthropic_model import AnthropicMessagesModel
+        from casepath.agents.anthropic_model import AnthropicMessagesModel
         bodies, replies = [], [
             {"content": [{"type": "text", "text": "I think ok."}]},                                  # no tool call: asked again
             {"content": [{"type": "tool_use", "id": "a", "name": "check", "input": {"ok": True}}]},  # then the answer

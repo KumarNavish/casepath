@@ -5,11 +5,11 @@ import unittest
 
 from pypdf import PdfReader
 
-from casepath_internal import synthetic
-from casepath_internal.azure_model import ModelResult
-from casepath_internal.extract import extract
-from casepath_internal.scorecard import guard
-from casepath_internal.schema import validate_result
+from casepath.quality import synthetic
+from casepath.agents.azure_model import ModelResult
+from casepath.read.extract import extract
+from casepath.quality.scorecard import guard
+from casepath.agents.schema import validate_result
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
 REFERENCE = ["Sehr geehrte Frau Muster, wir bestätigen den Eingang Ihrer Mängelrüge vom 3. Mai betreffend Schimmel im Badezimmer. "

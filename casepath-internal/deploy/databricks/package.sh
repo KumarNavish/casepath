@@ -3,23 +3,23 @@
 # text extracted and scanned pages drawn as images, so the app needs no PDF library), app.yaml and requirements.txt.
 #
 # The app installs nothing beyond what the platform provides (fastapi, uvicorn, httpx). Case files reach it prepared
-# (python -m casepath_internal.prepare) through the volume's incoming/ folder. To let it also read loose PDFs, set
+# (python -m casepath prepare) through the volume's incoming/ folder. To let it also read loose PDFs, set
 # WHEELS_INDEX to the approved package feed: the PDF libraries are then downloaded from it as wheels, checked against
 # PyPI's published SHA-256, and installed from the folder. Run from the internal copy's root:
 #   PYTHON=~/.casepath/venv/bin/python [WHEELS_INDEX=<approved feed>/simple] deploy/databricks/package.sh <out-dir>
 set -euo pipefail
 out="${1:?usage: deploy/databricks/package.sh <out-dir>}"
 python="${PYTHON:-python3}"
-pip="${PIP:-$python -m pip}"   # any pip can download; the python must run casepath_internal
+pip="${PIP:-$python -m pip}"   # any pip can download; the python must run casepath
 here="$(cd "$(dirname "$0")/../.." && pwd)"
 rm -rf "$out" && mkdir -p "$out"
-cp -r "$here/casepath_internal" "$out/"
+cp -r "$here/casepath" "$out/"
 cp "$here/deploy/databricks/app.yaml" "$out/"
 mkdir -p "$out/check" && cp "$here/deploy/databricks/smoke.py" "$out/check/"   # the model capability check, for a notebook
 [ -d "$here/catalogue" ] && cp -r "$here/catalogue" "$out/catalogue" || echo "note: no catalogue/ here (the GitLab copy has it)" >&2
 if [ -d "$here/benchmark" ]; then
   for d in "$here"/benchmark/*/; do mkdir -p "$out/benchmark/$(basename "$d")" && cp "$d/case.json" "$out/benchmark/$(basename "$d")/"; done
-  (cd "$out" && "$python" -m casepath_internal.benchmark prepare benchmark)
+  (cd "$out" && "$python" -m casepath benchmark prepare benchmark)
 fi
 printf 'fastapi>=0.115\nuvicorn>=0.30\nhttpx>=0.27\n' > "$out/requirements.txt"
 

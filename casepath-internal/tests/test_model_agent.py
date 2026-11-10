@@ -4,9 +4,9 @@ import unittest
 
 import httpx
 
-from casepath_internal.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn, in_cloud_shell, token_identity, token_provider
-from casepath_internal.config import ModelSettings, SettingsError, load_settings
-from casepath_internal.schema import obj, text
+from casepath.agents.azure_model import AzureOpenAIModel, ModelError, ModelResult, Turn, in_cloud_shell, token_identity, token_provider
+from casepath.config import ModelSettings, SettingsError, load_settings
+from casepath.agents.schema import obj, text
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
 ENDPOINT = "https://example-resource.openai.azure.com"

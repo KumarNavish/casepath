@@ -1,6 +1,6 @@
 # Workspace UI: north-star self-review
 
-The internal workspace (`casepath_internal/ui/`) follows the three north-star concepts in `design/northstar/`. Everything on screen comes from the live API: the case store, the agents' recorded events and results, the case process and the Knowledge base. Nothing is replayed or staged.
+The internal workspace (`casepath/web/ui/`) follows the three north-star concepts in `design/northstar/`. Everything on screen comes from the live API: the case store, the agents' recorded events and results, the case process and the Knowledge base. Nothing is replayed or staged.
 
 ## Fidelity
 

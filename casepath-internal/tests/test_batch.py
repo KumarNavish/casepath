@@ -7,10 +7,10 @@ from unittest import mock
 
 import uvicorn
 
-from casepath_internal import batch
-from casepath_internal.app import create_app
-from casepath_internal.config import load_settings
-from casepath_internal.synthetic import render_digital
+from casepath.web import batch
+from casepath.web.app import create_app
+from casepath.config import load_settings
+from casepath.quality.synthetic import render_digital
 from tests.test_synthetic import CASE, document
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -49,7 +49,7 @@ class BatchTests(unittest.TestCase):
 
 class TraceTests(unittest.TestCase):
     def test_trace_breaks_a_run_down_by_agent_and_by_id_without_content(self):
-        from casepath_internal.extract import extract
+        from casepath.read.extract import extract
         from tests.scripted import ScriptedModel
         from tests.test_app import EMAIL, finder, team_script
         with tempfile.TemporaryDirectory() as data:

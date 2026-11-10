@@ -7,6 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
+import hashlib
 import json
 import importlib.util
 from dataclasses import replace
@@ -20,16 +21,17 @@ from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
-from . import casegraph, identity, knowledge as kb, workflows
-from .azure_model import AzureOpenAIModel, entra_token_provider
-from .config import load_settings
-from .evidence import Evidence
-from .extract import attachments, extract
-from .runner import RunService, case_state
+from ..process import casegraph, knowledge as kb, workflows
+from . import identity
+from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
+from ..config import load_settings
+from ..read.evidence import Evidence
+from ..read.extract import attachments, extract
+from ..agents.runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
 
 UI = Path(__file__).parent / "ui"
-CONTRACT = Path(__file__).parent.parent / "docs" / "contracts" / "case-api.openapi.json"
+CONTRACT = Path(__file__).parents[2] / "docs" / "contracts" / "case-api.openapi.json"
 
 
 class ImportRequest(BaseModel):
@@ -79,9 +81,9 @@ def default_model_factory(settings):
     def factory(user_token=None):
         def workspace_kind():
             if settings.model.api == "messages":
-                from .anthropic_model import AnthropicMessagesModel
+                from ..agents.anthropic_model import AnthropicMessagesModel
                 return AnthropicMessagesModel
-            from .chat_model import ChatCompletionsModel
+            from ..agents.chat_model import ChatCompletionsModel
             return ChatCompletionsModel
         if settings.model.auth == "user":  # the person's own token: a fresh client per run, nothing shared
             if not user_token:
@@ -93,7 +95,7 @@ def default_model_factory(settings):
             return model
         if "model" not in shared:
             if settings.model.provider == "databricks":
-                from .chat_model import databricks_token_provider
+                from ..agents.chat_model import databricks_token_provider
                 token, kind = databricks_token_provider(settings.model.endpoint), workspace_kind()
             else:
                 token, kind = entra_token_provider(), AzureOpenAIModel
@@ -108,7 +110,7 @@ def volume_mirror(settings, env=None):
     """The volume copy of the case store, when CASEPATH_VOLUME names one (a Databricks App's disk does not survive a restart)."""
     import os
 
-    from .chat_model import databricks_token_provider
+    from ..agents.chat_model import databricks_token_provider
     from .mirror import VolumeMirror
 
     env = os.environ if env is None else env
@@ -121,7 +123,7 @@ def volume_files(settings, env=None):
     """The volume's files, for importing case files placed in its ``incoming`` folder."""
     import os
 
-    from .chat_model import databricks_token_provider
+    from ..agents.chat_model import databricks_token_provider
     from .volume import VolumeClient
 
     env = os.environ if env is None else env
@@ -263,7 +265,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if any(((c.get("intake") or {}).get("import_path") or "").rstrip("/") == body.path.rstrip("/") for c in store.list_cases()):
             raise HTTPException(409, "This file is already imported.")
         if Path(body.path).suffix.lower() not in IMPORTABLE:  # a prepared case folder: no PDF library needed here
-            from .prepare import PreparedError, load_prepared
+            from ..read.prepare import PreparedError, load_prepared
 
             def read(relative):
                 data = files.get(f"{body.path}/{relative}")
@@ -508,14 +510,28 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason))
 
     if UI.is_dir():
+        page = (UI / "index.html").read_text()
         if (UI / "assets").is_dir():
-            app.mount("/assets", StaticFiles(directory=UI / "assets"), name="assets")
+            # Each asset's URL carries its content hash, so a browser never keeps last deploy's script or styles.
+            for asset in sorted((UI / "assets").glob("*.*")):
+                version = hashlib.sha256(asset.read_bytes()).hexdigest()[:12]
+                page = page.replace(f'"/assets/{asset.name}"', f'"/assets/{asset.name}?v={version}"')
+            app.mount("/assets", _Revalidated(directory=UI / "assets"), name="assets")
 
         @app.get("/")
         def index():
-            return FileResponse(UI / "index.html", headers={"Cache-Control": "no-store"})
+            return Response(page, media_type="text/html", headers={"Cache-Control": "no-store"})
 
     return app
+
+
+class _Revalidated(StaticFiles):
+    """Static files a browser must check before reuse (an unchanged file costs one 304)."""
+
+    def file_response(self, *args, **kwargs):
+        response = super().file_response(*args, **kwargs)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
 
 
 def _headers(text):

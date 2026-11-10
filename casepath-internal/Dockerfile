@@ -22,4 +22,4 @@ USER 10001
 VOLUME /data
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s CMD python -c "import os,urllib.request;urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get(\"CASEPATH_PORT\",\"8080\")}/api/health',timeout=4)"
-CMD ["sh", "-c", "exec python -m casepath_internal serve --host 0.0.0.0 --port ${CASEPATH_PORT}"]
+CMD ["sh", "-c", "exec python -m casepath serve --host 0.0.0.0 --port ${CASEPATH_PORT}"]

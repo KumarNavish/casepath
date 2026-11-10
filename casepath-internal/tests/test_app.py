@@ -6,10 +6,10 @@ import unittest
 
 from fastapi.testclient import TestClient
 
-from casepath_internal.app import create_app
-from casepath_internal.config import load_settings
-from casepath_internal.scorecard import ScorecardLeak, guard, scorecard
-from casepath_internal.store import CaseStore
+from casepath.web.app import create_app
+from casepath.config import load_settings
+from casepath.quality.scorecard import ScorecardLeak, guard, scorecard
+from casepath.web.store import CaseStore
 from tests.scripted import ScriptedModel, delegate, learn, report
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -113,7 +113,7 @@ class AppTests(unittest.TestCase):
         other = {"x-identity": token({"preferred_username": "u456", "realm_access": {"roles": ["other"]}})}
         self.assertEqual(gateway.get("/api/cases", headers=other).status_code, 403)
         self.assertEqual(gateway.get("/api/cases", headers={"x-identity": "not a token"}).status_code, 401)
-        from casepath_internal.config import SettingsError
+        from casepath.config import SettingsError
         with self.assertRaises(SettingsError):  # a role cannot be checked on a plain user id
             load_settings({**self.env, "CASEPATH_DEV_USER": "", "CASEPATH_IDENTITY_HEADER": "x-identity", "CASEPATH_REQUIRED_ROLE": "r"})
 
@@ -247,7 +247,7 @@ class AppTests(unittest.TestCase):
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):
         import copy
-        from casepath_internal.workflows import Catalogue, route
+        from casepath.process.workflows import Catalogue, route
 
         example = Catalogue.load(FIXTURES).get("example-defect")
         real = {**copy.deepcopy(example), "id": "real-defect", "example": False}
@@ -258,7 +258,7 @@ class RoutingTests(unittest.TestCase):
 
 class ContractTests(unittest.TestCase):
     def test_the_saved_contract_matches_the_api(self):
-        from casepath_internal.app import CONTRACT, case_api_contract
+        from casepath.web.app import CONTRACT, case_api_contract
 
         def shape(spec):  # operations, parameters and request fields; free of library-version details
             rows = set()
@@ -271,7 +271,7 @@ class ContractTests(unittest.TestCase):
                     rows.add((path, method, params, fields))
             return rows
         self.assertEqual(shape(json.loads(case_api_contract())), shape(json.loads(CONTRACT.read_text())),
-                         "the API changed: run python -m casepath_internal contract --write and review the diff")
+                         "the API changed: run python -m casepath contract --write and review the diff")
 
 
 class GuardTests(unittest.TestCase):

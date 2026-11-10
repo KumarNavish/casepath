@@ -19,13 +19,13 @@ sys.path.insert(0, str(ROOT))
 
 import uvicorn  # noqa: E402
 
-from casepath_internal import knowledge as kb  # noqa: E402
-from casepath_internal.app import create_app  # noqa: E402
-from casepath_internal.config import load_settings  # noqa: E402
-from casepath_internal.synthetic import render_digital  # noqa: E402
+from casepath.process import knowledge as kb  # noqa: E402
+from casepath.web.app import create_app  # noqa: E402
+from casepath.config import load_settings  # noqa: E402
+from casepath.quality.synthetic import render_digital  # noqa: E402
 from tests.scripted import ScriptedModel, delegate, learn, report  # noqa: E402
 
-from casepath_internal.examples import EMAIL, LETTER, REPLY, TOLD, VENT, photo  # noqa: E402
+from casepath.quality.examples import EMAIL, LETTER, REPLY, TOLD, VENT, photo  # noqa: E402
 
 
 class Paced(ScriptedModel):
@@ -99,7 +99,7 @@ def main():
 
     def seed(title):
         case = store.create_case(title, {"synthetic": True}, "N. Kumar")
-        from casepath_internal.extract import extract
+        from casepath.read.extract import extract
         ids = []
         for name, kind, data_bytes in (("Meldung Lea Brunner.eml", "message/rfc822", EMAIL),
                                        ("Antwort Immo Aare AG.pdf", "application/pdf", render_digital(LETTER, {"title": title})),

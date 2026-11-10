@@ -5,9 +5,9 @@ import urllib.parse
 import zipfile
 import zlib
 
-from casepath_internal import drawio
-from casepath_internal.evidence import Evidence
-from casepath_internal.extract import extract
+from casepath.process import drawio
+from casepath.read.evidence import Evidence
+from casepath.read.extract import extract
 
 MODEL = """<mxGraphModel><root>
 <mxCell id="0"/><mxCell id="1" parent="0"/>

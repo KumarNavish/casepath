@@ -393,7 +393,9 @@ function readingNote(doc) {
   const read = (doc.pages_transcribed || []).length, unread = (doc.pages_without_text || []).length;
   const why = [...new Set(Object.values(doc.unread_reasons || {}))].map((reason) => runError(reason)).join("; ");
   const parts = [read ? T(`${read} scanned page${read > 1 ? "s" : ""} read from the page image by the model.`, `${read} gescannte Seite${read > 1 ? "n" : ""} vom Modell aus dem Seitenbild gelesen.`) : "",
-                 unread ? T(`${unread} page${unread > 1 ? "s" : ""} not read${why ? ` (${why})` : ""}.`, `${unread} Seite${unread > 1 ? "n" : ""} nicht gelesen${why ? ` (${why})` : ""}.`) : ""].filter(Boolean);
+                 !unread ? "" : why ? T(`${unread} page${unread > 1 ? "s" : ""} not read (${why}).`, `${unread} Seite${unread > 1 ? "n" : ""} nicht gelesen (${why}).`)
+                   : running() ? T(`${unread} scanned page${unread > 1 ? "s are" : " is"} being read.`, `${unread} gescannte Seite${unread > 1 ? "n werden" : " wird"} gerade gelesen.`)
+                   : T(`${unread} scanned page${unread > 1 ? "s" : ""} not read yet; “Prepare case” reads ${unread > 1 ? "them" : "it"}.`, `${unread} gescannte Seite${unread > 1 ? "n" : ""} noch nicht gelesen; «Fall vorbereiten» liest sie.`)].filter(Boolean);
   const note = parts.length ? parts.join(" ") : doc.note;
   return note ? `<div class="cp-doc-note">${esc(note)}</div>` : "";
 }
@@ -486,14 +488,34 @@ const reducedMotion = () => Boolean(window.matchMedia && window.matchMedia("(pre
 // Marks an element as new the first time it is drawn, so it enters once and stays still on later polls.
 function enter(key) { if (S.shown.has(key)) return ""; S.shown.add(key); return " enter"; }
 
+// The step an agent is on: how long it has been on it, and a bar that shows real progress when there is a count
+// (pages read) and keeps moving otherwise, so a long model call never looks like a pause.
+function activeRow(text, since) {
+  const started = since ? since.seen || Date.parse(since.at) : Date.now();
+  const seconds = Math.max(0, Math.round((Date.now() - started) / 1000));
+  const elapsed = seconds < 60 ? `${seconds} s` : `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")} min`;
+  const count = since && since.kind === "reading.progress" && since.of ? Math.round((100 * since.done) / since.of) : null;
+  const bar = count === null ? '<span class="cp-run moving"></span>' : `<span class="cp-run" style="width:${count}%"></span>`;
+  return `<li class="active"><span class="cp-spinner"></span><span class="cp-grow">${esc(text)}</span>
+    <span class="cp-elapsed" title="${T("on this step for", "an diesem Schritt seit")} ${elapsed}">${elapsed}</span><span class="cp-track" aria-hidden="true">${bar}</span></li>`;
+}
+
+// A redraw replaces the elements, which would restart every spinner and moving bar at its first frame; start each one
+// at the phase the clock says, so the motion is continuous across redraws.
+function keepMotion(root) {
+  const now = performance.now();
+  root.querySelectorAll(".cp-spinner").forEach((el) => { el.style.animationDelay = `-${(now % 1000) / 1000}s`; });
+  root.querySelectorAll(".cp-run.moving").forEach((el) => { el.style.animationDelay = `-${(now % 1600) / 1000}s`; });
+}
+
 function livePanel(live) {
   const agent = activeAgent() || "lead";
-  const mine = S.events.filter((e) => e.agent === agent && !["agent.start", "process.state"].includes(e.kind)).slice(-4);
+  const mine = S.events.filter((e) => e.agent === agent && !["agent.start", "process.state", "reading.saved"].includes(e.kind)).slice(-4);
   const target = S.events.slice().reverse().find((e) => e.agent === agent && (e.target || e.fact || e.document));
   const title = target ? (target.fact || (target.target && facts().some((f) => f.id === target.target)) ? questionOf(target.fact || target.target) : needOf(target.document || target.target))
     : TASK[agent] || AGENT_TITLE[agent];
-  const rows = mine.map((e, i) => `<li class="${i === mine.length - 1 ? "active" : ""}">${i === mine.length - 1 ? '<span class="cp-spinner"></span>' : icon("check")}${esc(describe(e))}</li>`).join("")
-    || `<li class="active"><span class="cp-spinner"></span>${T("Starting", "Beginnt")}</li>`;
+  const rows = mine.map((e, i) => i === mine.length - 1 ? activeRow(describe(e), e)
+    : `<li>${icon("check")}${esc(describe(e))}</li>`).join("") || activeRow(T("Starting", "Beginnt"), S.events[S.events.length - 1]);
   return `<aside><section class="cp-card cp-plan"><h3>${T(`Building “${esc(title)}”`, `In Arbeit: «${esc(title)}»`)}</h3><ol>${rows}</ol></section>
     ${live ? liveDocuments(live) : ""}
     <div class="cp-agent-chip"><span class="cp-hex">${icon(AGENT_ICON[agent])}</span>${esc(AGENT_TITLE[agent])}
@@ -596,7 +618,7 @@ function liveDocuments(live) {
 function attentionTarget(live) {
   for (let i = S.events.length - 1; i >= 0; i -= 1) {
     const e = S.events[i];
-    if (["process.state", "agent.end", "reading.progress"].includes(e.kind)) continue;
+    if (["process.state", "agent.end", "reading.progress", "reading.saved"].includes(e.kind)) continue;
     const hit = $("#live-hit");
     if (e.cite && hit && e.cite.file === S.file) return { el: hit, key: `hit:${e.seq}`, hit: true };
     if (e.document) { const row = document.querySelector(`[data-doc="${CSS.escape(e.document)}"]`); if (row) return { el: row.querySelector("b") || row, key: `doc:${e.seq}` }; }
@@ -975,7 +997,10 @@ function schedulePoll() {
   S.poll = setTimeout(async () => {
     if (S.route.view !== "case" || !running()) return;
     const run = await api(`/api/runs/${S.data.run.id}?after=${S.events.length ? S.events[S.events.length - 1].seq : 0}`);
-    S.events = S.events.concat(run.events);
+    const seen = Date.now();
+    S.events = S.events.concat(run.events.map((e) => ({ ...e, seen })));
+    // a file's reading is saved while the run goes on: show the read text from then on
+    run.events.forEach((e) => { if (e.file && e.kind === "reading.saved") delete S.pages[e.file]; });
     S.data.run.status = run.status;
     if (!["queued", "running"].includes(run.status)) { S.events = []; S.pages = {}; await loadCase(); return; }
     const cite = liveCite();
@@ -999,6 +1024,7 @@ async function renderCase() {
   else if (tab === "result_checker") main = resultView();
   else main = processView();
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
+  keepMotion($("#app"));
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });

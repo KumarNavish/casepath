@@ -51,12 +51,12 @@ case "${1:-}" in
     "$venv/bin/pip" install --quiet --upgrade pip
     "$venv/bin/pip" install --quiet -e "$here[azure]"
     "$venv/bin/python" -m unittest discover -s "$here/tests" -t "$here"
-    "$venv/bin/python" -m casepath_internal check-catalogue "$CASEPATH_WORKFLOW_CATALOGUE"
+    "$venv/bin/python" -m casepath check-catalogue "$CASEPATH_WORKFLOW_CATALOGUE"
     ;;
   start)
     load_env
     running && { echo "already running (pid $(cat "$pid_file"))"; exit 0; }
-    nohup "$venv/bin/python" -m casepath_internal serve --host 127.0.0.1 --port "${CASEPATH_PORT:-8765}" >>"$log_file" 2>&1 &
+    nohup "$venv/bin/python" -m casepath serve --host 127.0.0.1 --port "${CASEPATH_PORT:-8765}" >>"$log_file" 2>&1 &
     echo $! >"$pid_file"
     sleep 2
     running && echo "started on port ${CASEPATH_PORT:-8765} (pid $(cat "$pid_file"))" || { tail -20 "$log_file"; exit 1; }
@@ -83,7 +83,7 @@ case "${1:-}" in
     ;;
   scorecard)
     load_env
-    "$venv/bin/python" -m casepath_internal.scorecard "$CASEPATH_DATA_DIR" "${CASEPATH_SCORECARD_SALT:?set a private salt in $env_file}"
+    "$venv/bin/python" -m casepath scorecard "$CASEPATH_DATA_DIR" "${CASEPATH_SCORECARD_SALT:?set a private salt in $env_file}"
     ;;
   benchmark)
     load_env
@@ -91,7 +91,7 @@ case "${1:-}" in
     out="$home/benchmark/$(date +%Y%m%d-%H%M%S)"
     # The suite's truth is written against the catalogue shipped next to it, not whatever the workspace has collected.
     catalogue="$here/catalogue"; [ -d "$catalogue" ] || catalogue="$CASEPATH_WORKFLOW_CATALOGUE"
-    "$venv/bin/python" -m casepath_internal.evaluate run "$here/benchmark" --catalogue "$catalogue" --out "$out" \
+    "$venv/bin/python" -m casepath evaluate run "$here/benchmark" --catalogue "$catalogue" --out "$out" \
       --repeats "${CASEPATH_BENCHMARK_REPEATS:-2}" --parallel "${CASEPATH_BENCHMARK_PARALLEL:-3}" "${@:2}"
     echo "Report: $out/report.md"
     ;;

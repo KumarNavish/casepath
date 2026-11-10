@@ -6,8 +6,8 @@ from urllib.parse import unquote
 
 import httpx
 
-from casepath_internal.mirror import VolumeMirror
-from casepath_internal.store import CaseStore
+from casepath.web.mirror import VolumeMirror
+from casepath.web.store import CaseStore
 
 VOLUME = "/Volumes/team/casepath/pilot"
 
@@ -54,9 +54,9 @@ class MirrorTests(unittest.TestCase):
 class ImportTests(unittest.TestCase):
     def test_a_dossier_placed_in_the_volume_becomes_a_case(self):
         from fastapi.testclient import TestClient
-        from casepath_internal.app import create_app
-        from casepath_internal.config import load_settings
-        from casepath_internal.volume import VolumeClient
+        from casepath.web.app import create_app
+        from casepath.config import load_settings
+        from casepath.web.volume import VolumeClient
         files, transport = fake_volume()
         files[f"{VOLUME}/incoming/Fall 1.txt"] = b"Der Vermieter hat nicht geantwortet."
         files[f"{VOLUME}/incoming/schimmel/Fall 2.pdf.part"] = b"x"   # not a case file

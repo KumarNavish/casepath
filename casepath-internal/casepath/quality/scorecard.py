@@ -5,14 +5,14 @@ guard rejects any string that is not one of those, so case text, names,
 quotes and model wording can never be published by accident. Full results
 stay in the internal store.
 
-    python -m casepath_internal.scorecard <data-dir> > scorecard.json
+    python -m casepath scorecard <data-dir> > scorecard.json
 """
 from hashlib import sha256
 import json
 import re
 import sys
 
-from .store import CaseStore
+from ..web.store import CaseStore
 
 SAFE = re.compile(r"^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$")
 STATUSES = {"completed", "failed", "interrupted", "queued", "running", "selected", "fallback", "ambiguous",
@@ -104,7 +104,7 @@ def scorecard(store, salt):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     if len(argv) != 2:
-        sys.exit("usage: python -m casepath_internal.scorecard <data-dir> <salt-kept-inside-mobiliar>")
+        sys.exit("usage: python -m casepath scorecard <data-dir> <salt-kept-inside-mobiliar>")
     json.dump(scorecard(CaseStore(argv[0]), argv[1]), sys.stdout, indent=1)
     sys.stdout.write("\n")
 

@@ -1,7 +1,7 @@
 import unittest
 
-from casepath_internal import mining
-from casepath_internal.azure_model import ModelResult
+from casepath.process import mining
+from casepath.agents.azure_model import ModelResult
 
 FILES = [{"id": "f1", "name": "dossier.pdf", "kind": "pdf",
           "text": "[page 1]\nIch melde hiermit den Schimmel im Badezimmer meiner Wohnung schriftlich.\n\n[page 2]\nWir bestätigen die Kostengutsprache für die Abklärung durch einen Fachmann.",

@@ -6,9 +6,9 @@ and whether the answer matched its schema. Run it only with approval.
 import sys
 import time
 
-from casepath_internal.azure_model import AzureOpenAIModel, ModelError, entra_token_provider
-from casepath_internal.config import load_settings
-from casepath_internal.schema import choice, obj
+from casepath.agents.azure_model import AzureOpenAIModel, ModelError, entra_token_provider
+from casepath.config import load_settings
+from casepath.agents.schema import choice, obj
 
 
 def main():

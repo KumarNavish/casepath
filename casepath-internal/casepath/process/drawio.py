@@ -8,7 +8,7 @@ and anything the diagram leaves ambiguous becomes an open question.
 
 Run inside the approved environment that holds the diagram:
 
-    python -m casepath_internal.drawio case_mold.drawio --version 2026-07-23 > case_mold.json
+    python -m casepath drawio case_mold.drawio --version 2026-07-23 > case_mold.json
 """
 import argparse
 import base64

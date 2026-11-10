@@ -3,8 +3,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from casepath_internal import core, knowledge as kb
-from casepath_internal.workflows import Catalogue
+from casepath.agents import core
+from casepath.process import knowledge as kb
+from casepath.process.workflows import Catalogue
 from tests.scripted import ScriptedModel, report
 
 FIXTURES = Path(__file__).parent / "fixtures"

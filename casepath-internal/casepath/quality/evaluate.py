@@ -1,10 +1,10 @@
 """Run benchmark cases through CasePath and score each result against the case's truth.
 
-    python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> [--repeats 2] [--only B01,K01]
+    python -m casepath evaluate run <suite> --catalogue <dir> --out <dir> [--repeats 2] [--only B01,K01]
                                          [--given-workflow] [--parallel 1] [--url http://host:port [--identity-header x-identity]]
-    python -m casepath_internal.evaluate rescore <suite> --catalogue <dir> --out <out of an earlier run>
-    python -m casepath_internal.evaluate report <out>
-    python -m casepath_internal.evaluate compare <old out> <new out>
+    python -m casepath evaluate rescore <suite> --catalogue <dir> --out <out of an earlier run>
+    python -m casepath evaluate report <out>
+    python -m casepath evaluate compare <old out> <new out>
 
 Every case goes through the HTTP API the case worker's browser uses: the case is created, its rendered PDFs are
 uploaded (one combined dossier, or separate files with scans named like scans), a run is started and awaited, and the
@@ -44,7 +44,7 @@ import time
 
 from . import benchmark
 from .benchmark import short_id, uploads
-from .evidence import normalise
+from ..read.evidence import normalise
 
 FORMAT = "casepath.evaluation/1"
 AREAS = ["understanding", "process", "requirements", "grounding", "knowledge", "safety", "reliability"]
@@ -67,8 +67,8 @@ class LocalApi:
     def __init__(self, data_dir, catalogue_dir, model_factory, env=None):
         from fastapi.testclient import TestClient
 
-        from .app import create_app
-        from .config import load_settings
+        from ..web.app import create_app
+        from ..config import load_settings
 
         settings = load_settings({**(os.environ if env is None else env), "CASEPATH_DATA_DIR": str(data_dir),
                                   "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue_dir), "CASEPATH_DEV_USER": "benchmark",
@@ -414,13 +414,13 @@ def evaluate_suite(cases, catalogue, catalogue_dir, out, *, model_factory=None, 
 
     with ThreadPoolExecutor(max_workers=max(1, parallel)) as pool:
         runs = [row for rows in pool.map(execute, tasks) for row in rows]
-    package = Path(__file__).parent
+    package = Path(__file__).parents[1]  # the whole casepath package
     results = {
         "format": FORMAT, "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "config": {"repeats": repeats, "given_workflow": given_workflow, "target": "deployment" if url else "in-process, fresh store per unit",
                    "deployment": deployment or next((r["deployment"] for r in runs if r.get("deployment")), None),
                    "suite": digest([Path(c["_dir"]) / "case.json" for c in cases]),
-                   "catalogue": digest(Path(catalogue_dir).glob("*.json")), "code": digest(package.glob("*.py"))},
+                   "catalogue": digest(Path(catalogue_dir).glob("*.json")), "code": digest(package.rglob("*.py"))},
         "cases": summarise_cases(cases, runs), "runs": runs}
     results["summary"] = summarise(results)
     out.mkdir(parents=True, exist_ok=True)
@@ -541,9 +541,9 @@ def compare(old, new):
 
 
 def main(argv=None):
-    from .workflows import Catalogue
+    from ..process.workflows import Catalogue
 
-    parser = argparse.ArgumentParser(prog="casepath_internal.evaluate")
+    parser = argparse.ArgumentParser(prog="python -m casepath evaluate")
     parser.add_argument("command", choices=["run", "rescore", "report", "compare"])
     parser.add_argument("paths", nargs="+")
     parser.add_argument("--catalogue")
@@ -582,8 +582,8 @@ def main(argv=None):
         benchmark.validate_case(case, workflows)
     model_factory = None
     if not args.url:
-        from .app import default_model_factory
-        from .config import load_settings
+        from ..web.app import default_model_factory
+        from ..config import load_settings
 
         settings = load_settings()
         if settings.model is None:

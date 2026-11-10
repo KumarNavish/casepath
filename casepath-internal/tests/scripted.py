@@ -7,7 +7,7 @@ skipped: the lead is now a fixed plan that does not call the model.
 import json
 import types
 
-from casepath_internal.azure_model import ModelResult, Turn
+from casepath.agents.azure_model import ModelResult, Turn
 
 
 class ScriptedModel:

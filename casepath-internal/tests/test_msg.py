@@ -7,10 +7,10 @@ import unittest
 
 from fastapi.testclient import TestClient
 
-from casepath_internal import msg
-from casepath_internal.app import create_app
-from casepath_internal.config import load_settings
-from casepath_internal.extract import attachments, extract
+from casepath.read import msg
+from casepath.web.app import create_app
+from casepath.config import load_settings
+from casepath.read.extract import attachments, extract
 from tests.msgfile import build_msg, message
 from tests.test_pdfread import text_and_scan_pdf
 

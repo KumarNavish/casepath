@@ -4,8 +4,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from casepath_internal import workflows
-from casepath_internal.workflows import Catalogue, CatalogueError, evaluate, evaluate_condition, route, validate_workflow
+from casepath.process import workflows
+from casepath.process.workflows import Catalogue, CatalogueError, evaluate, evaluate_condition, route, validate_workflow
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
 

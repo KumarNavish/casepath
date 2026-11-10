@@ -2,7 +2,7 @@
 
 Run inside Mobiliar on cases already in the store:
 
-    python -m casepath_internal.mining <data-dir> <report-dir>
+    python -m casepath mining <data-dir> <report-dir>
 
 1. **Each case.** The model reads the case's documents (as split from its dossier) and writes the case's course:
    dated events with who acted, the documents involved, Protekta's own actions, deadlines and the outcome so far.
@@ -20,8 +20,8 @@ from pathlib import Path
 import statistics
 import sys
 
-from .evidence import Evidence
-from .schema import arr, choice, obj, text
+from ..read.evidence import Evidence
+from ..agents.schema import arr, choice, obj, text
 
 ACTORS = ["versicherte Person", "Gegenpartei", "Protekta", "Anwalt/Anwältin", "Behörde/Gericht", "Fachperson/Gutachter", "Andere"]
 
@@ -96,14 +96,14 @@ def pattern(courses, mapping):
 
 
 def main(argv=None):
-    from .azure_model import AzureOpenAIModel, entra_token_provider
-    from .config import load_settings
-    from .runner import case_files
-    from .store import CaseStore
+    from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
+    from ..config import load_settings
+    from ..agents.runner import case_files
+    from ..web.store import CaseStore
 
     argv = sys.argv[1:] if argv is None else argv
     if len(argv) != 2:
-        sys.exit("usage: python -m casepath_internal.mining <data-dir> <report-dir>")
+        sys.exit("usage: python -m casepath mining <data-dir> <report-dir>")
     store, out = CaseStore(argv[0]), Path(argv[1])
     out.mkdir(parents=True, exist_ok=True)
     model = AzureOpenAIModel(load_settings().model, entra_token_provider())

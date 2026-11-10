@@ -1,7 +1,7 @@
 [project]
-name = "casepath-internal"
+name = "casepath"
 version = "0.1.0"
-description = "CasePath for internal deployment: source-grounded workflows, an agent on Azure OpenAI, a fresh case store"
+description = "CasePath: agents prepare a legal-protection case from its files, grounded in quotes that a checker verifies"
 requires-python = ">=3.10"
 dependencies = [
   "fastapi>=0.115",
@@ -22,7 +22,7 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["casepath_internal*"]
+include = ["casepath*"]
 
 [tool.setuptools.package-data]
-casepath_internal = ["ui/*.html", "ui/assets/*"]
+casepath = ["web/ui/*.html", "web/ui/assets/*"]

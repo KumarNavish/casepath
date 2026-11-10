@@ -10,22 +10,22 @@ Every piece that differs between the two environments sits behind one of the bou
 
 ## The two halves
 
-**Agent core** (`core.py`, with `agents.py`, `reading.py`, `casegraph.py` and `workflows.py`) is everything that uses a model. It is stateless: a JSON job goes in and a JSON outcome comes out.
+**Agent core** (`casepath/agents/core.py`, with `casepath/agents/team.py`, `casepath/read/reading.py`, `casepath/process/casegraph.py` and `casepath/process/workflows.py`) is everything that uses a model. It is stateless: a JSON job goes in and a JSON outcome comes out.
 
 - `prepare(job, model, blobs, on_event, on_extraction)` reads scanned pages, routes the case, runs the five agents and works out what the run teaches. It can take many minutes.
 - `recheck(job, prior, documents, model, on_event)` checks only the document needs a process edit added.
 - `evaluate(workflow, knowledge, edits, result, case_id)` gives the case's own process and where the case stands. It uses no model, so it can answer synchronously.
 
-The job and outcome formats (`casepath.agent-job/1`, `casepath.agent-outcome/1`) are specified in `core.py`. `tests/test_core.py` runs a job built from plain JSON with no store at all, as a queue worker would. `python -m casepath_internal.core prepare <job.json> --blobs <dir>` does the same from the command line.
+The job and outcome formats (`casepath.agent-job/1`, `casepath.agent-outcome/1`) are specified in `casepath/agents/core.py`. `tests/test_core.py` runs a job built from plain JSON with no store at all, as a queue worker would. `python -m casepath job prepare <job.json> --blobs <dir>` does the same from the command line.
 
-**Case service** (`app.py`, `store.py`, `runner.py`, `knowledge.py`) owns cases, files, runs, events, edits, Knowledge, feedback, deletion and sign-in. It builds jobs (`RunService.job`) and persists outcomes (`RunService.save`):
+**Case service** (`casepath/web/app.py`, `casepath/web/store.py`, `casepath/agents/runner.py`, `casepath/process/knowledge.py`) owns cases, files, runs, events, edits, Knowledge, feedback, deletion and sign-in. It builds jobs (`RunService.job`) and persists outcomes (`RunService.save`):
 
 - each file's reading as soon as it is done;
 - the result;
 - each applied Knowledge item's statistics, on its current version;
 - the result checker's proposals, as candidates.
 
-The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app.py` fails when the code and the saved contract diverge (`python -m casepath_internal contract --write` updates it). The browser workspace, the batch tool and the benchmark evaluator use only this API, so a reimplementation of the case service that honours the contract keeps all three working.
+The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app.py` fails when the code and the saved contract diverge (`python -m casepath contract --write` updates it). The browser workspace, the batch tool and the benchmark evaluator use only this API, so a reimplementation of the case service that honours the contract keeps all three working.
 
 ## Boundaries and how each is chosen
 
@@ -37,9 +37,9 @@ The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app
 | Model deployment | `CASEPATH_AZURE_OPENAI_DEPLOYMENT`, optional reading deployment and dated API version | Same | Configuration |
 | Long runs | Worker threads in the case service (`RunService`) | A queue consumer that calls `core.prepare` with the same job; events and the outcome go back on the queue, and large outcomes go through blob storage | One adapter around `core.prepare` |
 | File bytes | `core.StoreBlobs` (store files) | A blob-storage reader with the same `read(file)` method (`core.DirectoryBlobs` shows the shape) | One small adapter |
-| Persistence | SQLite plus files (`store.py`) | The case service's database, behind the same API contract | The case service, not the agents |
+| Persistence | SQLite plus files (`casepath/web/store.py`) | The case service's database, behind the same API contract | The case service, not the agents |
 | Workflow catalogue | JSON files in `CASEPATH_WORKFLOW_CATALOGUE` | Same files, shipped with the release | None |
-| Retention | `python -m casepath_internal purge --older-than-days N` | The same rule in the case service's scheduled job | Schedule |
+| Retention | `python -m casepath purge --older-than-days N` | The same rule in the case service's scheduled job | Schedule |
 | Deletion | `DELETE /api/cases/{id}` removes the case and everything derived from it, and keeps a content-free deletion record | Same contract | None |
 | Logs | Run errors and events are stored with the run, not logged | Same; access logs carry ids only | None |
 
@@ -66,16 +66,16 @@ The same application runs as a Databricks App. `deploy/databricks/package.sh <di
 from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `requirements.txt`. In `app.yaml`:
 
 - **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list.
-- **Model:** `CASEPATH_MODEL_PROVIDER=databricks` calls a model in the workspace, such as one from its gateway, through its OpenAI-compatible chat API. The app signs in as its own service principal. `chat_model.py` translates the agents' messages, tool calls, structured answers and page images, so nothing else changes.
-- **Storage:** the app's own disk does not survive a restart. With `CASEPATH_VOLUME` naming a Unity Catalog volume, the case store is restored from the volume at start and copied there every 30 seconds and at shutdown (`mirror.py`). One app instance writes a volume.
+- **Model:** `CASEPATH_MODEL_PROVIDER=databricks` calls a model in the workspace, such as one from its gateway, through its OpenAI-compatible chat API. The app signs in as its own service principal. `casepath/agents/chat_model.py` translates the agents' messages, tool calls, structured answers and page images, so nothing else changes.
+- **Storage:** the app's own disk does not survive a restart. With `CASEPATH_VOLUME` naming a Unity Catalog volume, the case store is restored from the volume at start and copied there every 30 seconds and at shutdown (`casepath/web/mirror.py`). One app instance writes a volume.
 - **Packages:** the app needs nothing beyond the platform's web packages.
-  - **Prepared cases:** where the PDF libraries are, `python -m casepath_internal.prepare <files> --out <dir>` makes a prepared case: the original files, the extracted text and images of the scanned pages, made without a model.
+  - **Prepared cases:** where the PDF libraries are, `python -m casepath prepare <files> --out <dir>` makes a prepared case: the original files, the extracted text and images of the scanned pages, made without a model.
   - **Importing them:** the app imports prepared cases from the volume's `incoming/` folder. The synthetic cases ship prepared.
   - **Loose files without extra packages:** uploaded or imported files are read by CasePath itself when the PDF
-    libraries are missing (`pdfread.py`, `ccitt.py`, `msg.py`, standard library only):
+    libraries are missing (`casepath/read/pdfread.py`, `casepath/read/ccitt.py`, `casepath/read/msg.py`, standard library only):
     - a PDF's text layer, including subset and CID fonts with their Unicode maps and compressed object streams;
     - each scanned page's own image: JPEG as it is, bitmaps (also inline, CMYK or 16-bit) and CCITT Group 3/4 fax
-      scans as PNG. A page drawn only with vector paths (text as outlines) is drawn as a PNG (`raster.py`). JPEG 2000
+      scans as PNG. A page drawn only with vector paths (text as outlines) is drawn as a PNG (`casepath/read/raster.py`). JPEG 2000
       and JBIG2 pages are reported as not read;
     - Outlook `.msg` e-mails like `.eml` ones;
     - every e-mail attachment, which becomes a file of the case, marked with the e-mail it came from.
@@ -103,4 +103,4 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
 1. Confirm the gateway's token claims and the access role's exact name, then set the identity variables.
 2. Grant the service's identity access to the model deployment, and set the credential and, if one is used, the gateway host.
 3. Build the queue consumer around `core.prepare` and the blob reader. Run `tests/test_core.py`'s job through it.
-4. Point the benchmark evaluator at the deployment: `python -m casepath_internal.evaluate run <suite> --catalogue <dir> --out <dir> --url <base url> --identity-header <header>` (the identity value in `CASEPATH_EVAL_IDENTITY`). Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.
+4. Point the benchmark evaluator at the deployment: `python -m casepath evaluate run <suite> --catalogue <dir> --out <dir> --url <base url> --identity-header <header>` (the identity value in `CASEPATH_EVAL_IDENTITY`). Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.

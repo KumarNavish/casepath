@@ -6,8 +6,8 @@ import unittest
 import zlib
 from unittest import mock
 
-from casepath_internal import ccitt, pdfread
-from casepath_internal.extract import extract
+from casepath.read import ccitt, pdfread
+from casepath.read.extract import extract
 
 
 def build_pdf(objects, root=1, trailer_extra=b""):
@@ -115,7 +115,7 @@ class ReaderTests(unittest.TestCase):
 class LayoutAndImageTests(unittest.TestCase):
     def test_letters_placed_one_by_one_keep_their_words(self):
         """A text layer that places every letter on its own, in a standard font without a width table."""
-        from casepath_internal.pdfread import _standard_widths
+        from casepath.read.pdfread import _standard_widths
         widths = _standard_widths("Helvetica")
         ops, x = [], 72.0
         for char in "Mängelrüge vom 31. März":
