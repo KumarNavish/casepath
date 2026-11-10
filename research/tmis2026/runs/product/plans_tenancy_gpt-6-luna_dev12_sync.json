@@ -1,0 +1,1881 @@
+{
+ "PRODUCT|clm_0e11979130681bd0|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Bank payment confirmation or account statement showing the rent transfer’s value date",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 257d OR (payment within the cure period is material to an arrears termination); Art. 8 ZGB (burden of proving performance).",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The requested review turns on timing, and this specific contemporaneous bank record is the most direct missing evidence of the value date. It is not stated to be in the file."
+    }
+   ],
+   "agent_questions": [
+    "What date and deadline did the cure notice specify, when did you initiate the rent payment, what value date does the bank show, and what date does the manager’s rent account show it was credited or posted? Please send the cure notice and the relevant bank and rent-account records."
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "family_home": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "answer": "First obtain bank-generated proof of the transfer’s value date; compare it with the cure deadline and the manager’s posting date, for which the cure letter and rent-account evidence are also needed. No conclusion on cure timing or validity is supported yet.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 255.5,
+  "tokens": {
+   "input": 141553,
+   "cached": 97140,
+   "output": 15655
+  }
+ },
+ "PRODUCT|clm_0c373e693a363f9e|0": {
+  "plan": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  },
+  "status": "completed",
+  "calls": 1,
+  "product_extra": {
+   "routing": {
+    "status": "needs_facts",
+    "needs": [
+     "dispute_family"
+    ],
+    "candidates": [
+     {
+      "id": "defect_mold_heating",
+      "version": "2026-11-10",
+      "title": "Generic defect, moisture, mould, and heating workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "lease_termination_dispute",
+      "version": "2026-11-10",
+      "title": "Generic lease-termination dispute workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "rent_increase_dispute",
+      "version": "2026-11-10",
+      "title": "Generic rent-increase dispute workflow",
+      "status": "reviewed"
+     }
+    ]
+   }
+  },
+  "seconds": 8.5,
+  "tokens": {
+   "input": 783,
+   "cached": 0,
+   "output": 87
+  }
+ },
+ "PRODUCT|clm_16ac3b7054d73cc0|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report",
+    "medical_confirmation",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 32,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Door-system access log and contractor visit/appointment records",
+     "step": "dh_response",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The workflow already requests landlord response history including access arrangements, but the file specifically identifies conflicting access accounts and unresolved arrival times/date order. These concrete logs and visit records are a suggestion to resolve that active issue, not a statutory prerequisite."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "heating": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "deposit_considered": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "mold": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "deposit_considered",
+    "health_effects",
+    "heating",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "answer": "At intake: clarify affected rooms and the unresolved health, heating, specialist-inspection, and rent-deposit questions; obtain the documents the checklist lists as missing, and reconcile access and chronology before drawing conclusions about technical causation.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 238.0,
+  "tokens": {
+   "input": 122287,
+   "cached": 82450,
+   "output": 13192
+  }
+ },
+ "PRODUCT|clm_1afd6bbf29e6539a|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Bank payment confirmation or account statement showing payment dates",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 257d OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The payment timing is directly disputed and is material to assessing the arrears cure process under Art. 257d OR. This supplements, rather than duplicates, the existing rent-ledger/payment-evidence item by specifically requesting the bank record of the payment/value date."
+    }
+   ],
+   "agent_questions": [
+    "What deadline did the cure notice give, and what exact dates do the bank record and the manager's rent account show for payment, value date and posting/credit?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "family_home": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "answer": "The timing cannot yet be checked: cure deadline, termination date, bank value date and manager posting date are unresolved. The file does not explain “bank value date”; bank and rent-account records are needed to compare the dates.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "seconds": 247.8,
+  "tokens": {
+   "input": 131652,
+   "cached": 93150,
+   "output": 15165
+  }
+ },
+ "PRODUCT|clm_136438c6463a5721|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 30,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Nachweis der Zustellung der Zahlungsfristansetzung",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 257d Abs. 1 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Art. 257d Abs. 1 OR verlangt eine schriftliche Fristansetzung; ihre Zustellung und ihr Zeitpunkt sind für die Fristberechnung entscheidend. Der Workflow verlangt das Fristschreiben, aber nennt keinen Zustellnachweis."
+    },
+    {
+     "id": "e-pb2",
+     "title": "Verwaltungs-Kontoblatt oder Buchungsjournal zur Mietzahlung",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Fallbezogene Ergänzung zur ausdrücklich offenen internen Verbuchung; Vorschlag, nicht gesetzliche Voraussetzung."
+    }
+   ],
+   "agent_questions": [
+    "Wann wurde die Miete überwiesen, welches Valutadatum weist die Bank aus, und wann wurde der Betrag laut Verwaltung intern verbucht?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "family_home": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "q-pb3": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "answer": "Eine Prüfung der Kündigung und Fristen ist noch nicht möglich. Zuerst Zugang, Aussteller und Enddatum klären. Die Checkliste nennt fehlende Unterlagen; Bank-Valutadatum und interne Verbuchung sind getrennt festzustellen.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 262.3,
+  "tokens": {
+   "input": 142030,
+   "cached": 100282,
+   "output": 16655
+  }
+ },
+ "PRODUCT|clm_0b431bbf8391ce3e|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "medical_confirmation",
+    "technical_inspection"
+   ],
+   "questions": [
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 35,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Calibrated indoor temperature measurements",
+     "step": "dh_evidence",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The existing humidity/temperature log is conditional on mould; this additional named item addresses the distinct unresolved calibrated-temperature question in a heating case."
+    },
+    {
+     "id": "e-pb3",
+     "title": "Written replacement-part delivery estimate and firm repair schedule",
+     "step": "dh_response",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The existing landlord response history records response/proposed work generally; this item isolates the expressly unresolved delivery estimate and firm schedule."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Assess and pursue immediate interim heating",
+    "If rent is deposited, lodge it with the competent authority and retain proof"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_deposit",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope",
+    "s-pb1",
+    "s-pb4"
+   ],
+   "on_file": [],
+   "answer": "The file is at intake, with no substantive outcome yet; address the requested immediate interim-heating need first and complete the outstanding intake questions and evidence gathering.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 288.5,
+  "tokens": {
+   "input": 135134,
+   "cached": 86621,
+   "output": 16765
+  }
+ },
+ "PRODUCT|clm_329b8e1bf37554bf|0": {
+  "plan": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  },
+  "status": "completed",
+  "calls": 1,
+  "product_extra": {
+   "routing": {
+    "status": "needs_facts",
+    "needs": [
+     "dispute_family"
+    ],
+    "candidates": [
+     {
+      "id": "defect_mold_heating",
+      "version": "2026-11-10",
+      "title": "Generic defect, moisture, mould, and heating workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "lease_termination_dispute",
+      "version": "2026-11-10",
+      "title": "Generic lease-termination dispute workflow",
+      "status": "reviewed"
+     },
+     {
+      "id": "rent_increase_dispute",
+      "version": "2026-11-10",
+      "title": "Generic rent-increase dispute workflow",
+      "status": "reviewed"
+     }
+    ]
+   }
+  },
+  "seconds": 6.2,
+  "tokens": {
+   "input": 779,
+   "cached": 0,
+   "output": 70
+  }
+ },
+ "PRODUCT|clm_2a9c260c26afaa34|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "arrears",
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 36,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Refrigerator repair invoice and supporting repair records",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 257d OR (the arrears ground must concern rent or other amounts due under the tenancy); the documents are evidence of the stated charge and whether it is such an amount.",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The demand separately lists a repair charge, while no invoice or supporting repair record is among the supplied files. This is specific evidence for classifying that item in the arrears assessment, rather than a generic request for supporting papers."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "payment_deadline_letter": {
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "family_home": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears",
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [
+    "payment_deadline_letter"
+   ],
+   "answer": "Whether a termination notice was received and any deadline cannot yet be assessed. Establish receipt and obtain the applicable records before an initial assessment.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "seconds": 342.1,
+  "tokens": {
+   "input": 170228,
+   "cached": 120648,
+   "output": 22528
+  }
+ },
+ "PRODUCT|clm_280ce47169bdff61|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "arrears",
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 37,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb2",
+     "title": "Refrigerator repair invoice and damage/repair records",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 97 OR (if the charge is asserted as contractual damages); this is a suggestion for assessing the separate charge, not a statutory prerequisite to an Art. 257d OR rent-arrears notice.",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The files identify the amount and nature of the disputed non-rent item but do not include the invoice or supporting repair records. The workflow has no specific evidence need for this separate charge."
+    },
+    {
+     "id": "e-pb3",
+     "title": "Payment transfer instruction and creditor payment-allocation record",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Arts. 86–87 OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The existing rent-ledger/payment-evidence need does not specifically require the payment designation and creditor allocation, although those are needed to reconstruct the rent principal outstanding on these facts."
+    },
+    {
+     "id": "e-pb4",
+     "title": "Proof of receipt of the payment demand",
+     "step": "lt_arrears",
+     "required": "depends",
+     "status": "missing",
+     "legal_basis": "Art. 257d OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "The workflow has receipt proof for a termination challenge deadline, but does not expressly require proof of receipt of the earlier cure notice; that receipt date starts the Art. 257d OR cure period."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Separate rent arrears from other demanded charges"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_reason": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "payment_deadline_letter": {
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "housing_search_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "e-pb2": {
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "e-pb3": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb4": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "family_home": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "arrears": {
+     "status": "conflicting",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "retaliation_screen": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "extension_relevant": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [
+    "arrears"
+   ],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears",
+    "extension_relevant",
+    "family_home",
+    "retaliation_screen",
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [
+    "payment_deadline_letter"
+   ],
+   "answer": "The demand and its conditional warning can be itemized, but the rent principal still outstanding is unresolved; the payment records, allocation and demand receipt date are needed to establish it.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "seconds": 357.4,
+  "tokens": {
+   "input": 186346,
+   "cached": 131269,
+   "output": 24956
+  }
+ },
+ "PRODUCT|clm_2c55cdd816b1d0e8|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis",
+    "renovation_cost_breakdown"
+   ],
+   "questions": [
+    "reference_rate",
+    "renovation"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 26,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Separates Begleitschreiben zur Mietzinserhöhung vom 17.11.2025 (einschliesslich allfälliger Beilage)",
+     "step": "ri_form",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": "Art. 269d Abs. 1 und Abs. 2 lit. b OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Das vorhandene Formular ist als Mietzinserhöhungsmitteilung vorhanden, kündigt aber eine separate Begründung an. Die separate Beilage ist für die Prüfung des gesetzlichen Begründungserfordernisses konkret erforderlich; sie ist nicht mit einer allgemeinen Sammlung von Unterlagen gleichzusetzen."
+    }
+   ],
+   "agent_questions": [
+    "An welchem Datum haben Sie das Erhöhungsformular tatsächlich erhalten, und kam die E-Mail zur Marktanpassung mit dem Formular oder erst später? Bitte nennen Sie, falls möglich, auch das Datum der E-Mail."
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "rent_increase_notice": {
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "current_rent_evidence": {
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "prior_rent_adjustment": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "stated_calculation": {
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "reference_rate_basis": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "renovation_cost_breakdown": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_correspondence": {
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "reference_rate": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "renovation": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "reference_rate",
+    "renovation"
+   ],
+   "current_step": "ri_reason__gate_reference_rate",
+   "outcome": null,
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [
+    "rent_increase_notice",
+    "current_rent_evidence"
+   ],
+   "answer": "Die Anfechtungsfrist ist mangels tatsächlichen Empfangsdatums nicht bestimmbar. Empfangsdatum, Verhältnis der E-Mail zur Mitteilung und Erhöhungsgrund müssen geklärt werden; die Checkliste nennt Mietvertrag, Zustellnachweis und frühere Mietzinsanpassung als fehlend.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 237.3,
+  "tokens": {
+   "input": 194650,
+   "cached": 129204,
+   "output": 18137
+  }
+ },
+ "PRODUCT|clm_314f2d309fea25e6|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "medical_confirmation",
+    "technical_inspection",
+    "written_repair_deadline"
+   ],
+   "questions": [
+    "deposit_considered",
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Calibrated temperature measurement record",
+     "step": "dh_evidence",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "This is a case-specific evidential suggestion grounded in the customer's stated unresolved temperature, not an additional legal prerequisite. The existing workflow already requests the lease, defect notice and proof of notification, service report and landlord response history; I have not duplicated those needs."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "deposit_considered": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "deposit_considered",
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope"
+   ],
+   "on_file": [],
+   "answer": "Continue intake: resolve the open health, mould/moisture, specialist-inspection and rent-deposit questions, then obtain the checklist’s required missing evidence. The calibrated temperature record could also help. No letter step has been reached.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "seconds": 251.3,
+  "tokens": {
+   "input": 131461,
+   "cached": 89226,
+   "output": 14258
+  }
+ },
+ "PRODUCT|clm_2e6d8907d83dae8f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "humidity_temperature_log",
+    "medical_confirmation",
+    "technical_inspection"
+   ],
+   "questions": [
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "deferred": false
+  },
+  "status": "completed",
+  "calls": 34,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "defect_mold_heating"
+     }
+    ]
+   },
+   "agent_added_needs": [
+    {
+     "id": "e-pb1",
+     "title": "Calibrated indoor temperature measurement record",
+     "step": "dh_evidence",
+     "required": "suggested",
+     "status": "missing",
+     "legal_basis": null,
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Suggested evidence request grounded in the file, to resolve the specifically identified temperature uncertainty; no separate statutory document form is asserted."
+    },
+    {
+     "id": "e-pb2",
+     "title": "Written notice of rent deposit to landlord and proof of deposit with conciliation authority",
+     "step": "dh_deposit",
+     "required": "yes",
+     "status": "missing",
+     "legal_basis": "Art. 259g OR",
+     "knowledge": null,
+     "by_agent": true,
+     "reason": "Adds the documentary proof of the statutory safeguards missing from the deposit step; applicable when the official deposit route is being considered."
+    }
+   ],
+   "agent_questions": [],
+   "agent_steps": [
+    "Check filing of rent-deposit claims within the statutory period"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "defect_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "proof_of_notification": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "dated_photos": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "landlord_response_history": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "humidity_temperature_log": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "heating_service_report": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "medical_confirmation": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "technical_inspection": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_repair_deadline": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "caretaker_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb1": {
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "e-pb2": {
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "defect_mold_heating",
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "health_effects": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "mold": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "specialist_needed": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader"
+    },
+    "heating": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    },
+    "deposit_considered": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader"
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "health_effects",
+    "mold",
+    "specialist_needed"
+   ],
+   "current_step": "dh_intake",
+   "outcome": null,
+   "reached": [
+    "dh_cause",
+    "dh_close",
+    "dh_deposit",
+    "dh_evidence",
+    "dh_intake",
+    "dh_notice",
+    "dh_resolution",
+    "dh_response",
+    "dh_scope",
+    "s-pb3"
+   ],
+   "on_file": [],
+   "answer": "The file supports identifying an urgent heating defect and the customer’s requested actions, but it does not support a substantive assessment yet: key evidence is missing, calibrated indoor temperature and part delivery remain unresolved, and three intake questions are unanswered.",
+   "reply_clauses": 10,
+   "warnings": []
+  },
+  "seconds": 386.4,
+  "tokens": {
+   "input": 134797,
+   "cached": 91188,
+   "output": 16254
+  }
+ }
+}

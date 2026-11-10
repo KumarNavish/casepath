@@ -1,8 +1,9 @@
 """Score the product's tenancy plans next to the cached arms, with the Study 1 (dev12) and Study 2 (fresh) measures,
 and attribute every lost or extra document to its cause. No model calls.
 
-    python3 score_product.py --set dev12|fresh [--model gpt-6-luna]
-Writes results/score_<set>_<model>.json and prints the table.
+    python3 score_product.py --set dev12|fresh [--model gpt-6-luna] [--label sync]
+Writes results/score_<set>_<model>[_<label>].json and prints the table. With --label, the labelled product run
+(runs/product/plans_tenancy_<model>_<set>_<label>.json) is scored and attributed, beside the as-built row.
 """
 from __future__ import annotations
 
@@ -34,7 +35,7 @@ def arm_plans(raw, design, ids, runs):
     return out
 
 
-def dev12(model):
+def dev12(model, label=None):
     saved = sys.argv
     sys.argv = [saved[0], model]
     from analyze import summ, tenancy_row
@@ -42,8 +43,12 @@ def dev12(model):
     import tenancy_data as D
     from tenancy_score import unscored
     from pilot import DEV12
-    product = load(RUNS / "product" / f"plans_tenancy_{model}_dev12.json")
-    arms = {f"PRODUCT {model} (k=1)": arm_plans(product, "PRODUCT", DEV12, [0])}
+    as_built = load(RUNS / "product" / f"plans_tenancy_{model}_dev12.json")
+    arms = {f"PRODUCT as built {model} (k=1)": arm_plans(as_built, "PRODUCT", DEV12, [0])}
+    product = as_built
+    if label:
+        product = load(RUNS / "product" / f"plans_tenancy_{model}_dev12_{label}.json")
+        arms[f"PRODUCT {label} {model} (k=1)"] = arm_plans(product, "PRODUCT", DEV12, [0])
     for m, runs in (("gpt-6-luna", [0, 1, 2]), ("gpt-6.1-terra", [0])):
         raw = load(RUNS / "v2" / f"plans_tenancy_{m}_original_dev.json")
         for design in ("CPv2p", "B1v2p"):
@@ -67,12 +72,16 @@ def dev12(model):
     return table, product, refs
 
 
-def fresh(model):
+def fresh(model, label=None):
     import study2
     import tenancy_fresh as F
     ids = F.claim_ids("test")
-    product = load(RUNS / "product" / f"plans_tenancy_{model}_fresh.json")
-    arms = {f"PRODUCT {model} (k=1)": arm_plans(product, "PRODUCT", ids, [0])}
+    as_built = load(RUNS / "product" / f"plans_tenancy_{model}_fresh.json")
+    arms = {f"PRODUCT as built {model} (k=1)": arm_plans(as_built, "PRODUCT", ids, [0])}
+    product = as_built
+    if label:
+        product = load(RUNS / "product" / f"plans_tenancy_{model}_fresh_{label}.json")
+        arms[f"PRODUCT {label} {model} (k=1)"] = arm_plans(product, "PRODUCT", ids, [0])
     for m in ("gpt-6-luna", "gpt-6.1-terra"):
         raw = load(RUNS / "v2" / f"plans_tenancy_{m}_fresh_heldout.json")
         for design in ("CPv2p", "B1v2p"):
@@ -129,7 +138,7 @@ def attribute(product, refs, catalogue_dir):
         req_flag = {d["id"]: (d.get("required_when") or {}).get("fact") for d in wf["documents"]}
         for d in sorted(ref["required"] - set(plan["requests"])):
             if d in plan["holds"]:
-                lost[f"held: own condition open ({req_flag[d]})"] += 1
+                lost["held behind an open question"] += 1
             elif d in extra.get("on_file", []):
                 lost["document finder: judged on file"] += 1
             elif not (step_of.get(d, set()) & reached) and extra.get("waiting_for"):
@@ -175,9 +184,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", required=True, choices=["dev12", "fresh"])
     ap.add_argument("--model", default="gpt-6-luna")
+    ap.add_argument("--label", default=None)
     a = ap.parse_args()
-    table, product, refs = dev12(a.model) if a.set == "dev12" else fresh(a.model)
-    catalogue = HERE / "workflows" / ("original-serial" if a.set == "dev12" else "fresh-serial")
+    table, product, refs = dev12(a.model, a.label) if a.set == "dev12" else fresh(a.model, a.label)
+    catalogue = HERE / "workflows" / (("original-serial" if a.set == "dev12" else "fresh-serial") + ("-sync" if a.label else ""))
     att = attribute(product, refs, catalogue)
     ledger = RUNS / "product" / f"ledger_dev_{a.model}.jsonl"
     cases = {f"PRODUCT|{c}|0" for c in refs}
@@ -191,11 +201,11 @@ def main():
     c["usd_total"], c["usd_per_case"] = usd, usd / max(1, c["cases"])
     out = {"set": a.set, "model": a.model, "table": table, "attribution": att, "cost": c}
     (HERE / "results").mkdir(exist_ok=True)
-    (HERE / "results" / f"score_{a.set}_{a.model}.json").write_text(json.dumps(out, indent=1))
+    (HERE / "results" / f"score_{a.set}_{a.model}{'_' + a.label if a.label else ''}.json").write_text(json.dumps(out, indent=1))
     keys = ["claim_runs", "requested_share", "held", "handed", "missed", "unnecessary", "premature", "silent_skip", "strict_unsafe"]
-    print("arm".ljust(32) + " ".join(k[:10].rjust(10) for k in keys))
+    print("arm".ljust(36) + " ".join(k[:10].rjust(10) for k in keys))
     for name, row in table.items():
-        print(name.ljust(32) + " ".join(("-" if row.get(k) is None else f"{row[k]:.2f}").rjust(10) for k in keys))
+        print(name.ljust(36) + " ".join(("-" if row.get(k) is None else f"{row[k]:.2f}").rjust(10) for k in keys))
     print(json.dumps(att, indent=1))
     print(json.dumps(c, indent=1))
 
