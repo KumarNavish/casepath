@@ -141,14 +141,15 @@ class TeamTests(unittest.TestCase):
         run_agent(model, work, "document_finder", "Find.", max_turns=3)
         self.assertEqual(model.tool_choices, ["required", "required", {"type": "function", "name": "report"}])
         # At its turn limit the agent ends with what it has recorded, and the work names the limit.
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         self.assertIsNone(run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Find.", max_turns=2))
         self.assertEqual([(x["agent"], x["reason"]) for x in work.limits], [("document_finder", "turn_limit")])
-        # A need the finder never recorded is unchecked: neither missing (a request) nor present.
-        rows = {d["document"]: d["status"] for d in work.evaluate()["documents"]}
-        self.assertEqual(set(rows.values()), {"unchecked"})
-        self.assertFalse([a for a in work.evaluate()["next_actions"] if a["kind"] == "obtain"])
+        # A need the finder never recorded stays requested and is marked not checked.
+        rows = work.evaluate()["documents"]
+        self.assertEqual({(d["status"], d.get("not_checked")) for d in rows}, {("missing", True)})
+        self.assertTrue([a for a in work.evaluate()["next_actions"] if a["kind"] == "obtain"])
 
-    def test_a_finder_that_stops_without_reporting_leaves_unrecorded_needs_unchecked(self):
+    def test_a_finder_that_stops_without_reporting_keeps_unrecorded_needs_requested_and_not_checked(self):
         from casepath.agents.team import CaseWork, run_agent
         from casepath.agents import core
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
@@ -156,14 +157,23 @@ class TeamTests(unittest.TestCase):
         model = ScriptedModel([[absent], [], []])  # records one need, then stops twice without calling a tool
         self.assertIsNone(run_agent(model, work, "document_finder", "Find."))
         self.assertEqual(work.limits[0]["reason"], "no_report")
-        rows = {d["document"]: d["status"] for d in work.evaluate()["documents"]}
-        self.assertEqual(rows["notice_letter"], "missing")  # recorded as absent
-        self.assertEqual(rows["customer_message"], "unchecked")  # never looked at
+        rows = {d["document"]: (d["status"], d.get("not_checked", False)) for d in work.evaluate()["documents"]}
+        self.assertEqual(rows["notice_letter"], ("missing", False))  # recorded as absent
+        self.assertEqual(rows["customer_message"], ("missing", True))  # never looked at: still requested, not checked
         # The case view evaluates the stored result the same way.
-        result = {"facts": [], "documents": list(work.documents.values()),
-                  "warnings": [{"kind": "no_report", "agent": "document_finder", "text": "x"}]}
+        work.result = None
+        from casepath.agents.team import finalize
+        result = finalize(work)
         view = core.evaluate(FIXTURE, [], [], result, "c1")["evaluation"]
-        self.assertEqual({d["document"]: d["status"] for d in view["documents"]}, rows)
+        self.assertEqual({d["document"]: (d["status"], d.get("not_checked", False)) for d in view["documents"]}, rows)
+
+    def test_a_stop_on_the_retry_pass_does_not_mark_needs_the_first_pass_looked_at(self):
+        from casepath.agents.team import CaseWork, run_agent
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        absent = ("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""})
+        run_agent(ScriptedModel([[absent, report("document_finder")]]), work, "document_finder", "Find.")
+        run_agent(ScriptedModel([[("list_files", {})]] * 2), work, "document_finder", "Again.", max_turns=2)  # the retry pass stops
+        self.assertFalse(any(d.get("not_checked") for d in work.evaluate()["documents"]))
 
     def test_a_report_that_is_too_long_is_told_its_limit(self):
         from casepath.agents.team import CaseWork, run_agent
