@@ -55,10 +55,10 @@ class TeamTests(unittest.TestCase):
         result = CaseTeam(model).run(case=CASE, files=FILES, workflow=FIXTURE)
         self.assertIn("record_fact", model.tools[0])  # the lead is a fixed plan: the first call is the claim reader's
         self.assertNotIn("record_document", model.tools[0])
-        self.assertIn("record_document", model.tools[5])
+        self.assertIn("record_document", model.tools[4])  # the facts are read in one structured reading, not an agent turn
         self.assertEqual(set(model.tool_choices), {"required"})
         self.assertEqual([t["date"] for t in result["brief"]["timeline"]], ["2 March"])
-        fact, = result["facts"]
+        fact = next(f for f in result["facts"] if f["fact"] == "landlord_notified")
         self.assertEqual((fact["value"], fact["verdict"]), (True, "accepted"))
         self.assertEqual(result["evaluation"]["outcome"]["id"], "reported")
         statuses = {d["document"]: d["status"] for d in result["evaluation"]["documents"]}
@@ -108,7 +108,7 @@ class TeamTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script, verdicts={"fact:landlord_notified": "uncertain"})).run(case=CASE, files=FILES, workflow=FIXTURE)
         retry = [e for e in result["events"] if e["kind"] == "delegate" and e["to"] == "claim_reader"][-1]
         self.assertIn("landlord_notified", retry["instruction"])  # one targeted retry before the result
-        self.assertEqual(result["facts"][0]["verdict"], "rejected")
+        self.assertEqual(next(f for f in result["facts"] if f["fact"] == "landlord_notified")["verdict"], "rejected")
         self.assertEqual(result["evaluation"]["current"]["step"], "notice")
         self.assertFalse(result["reply"]["clauses"][0]["supported"])
 
@@ -139,7 +139,7 @@ class TeamTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
         statuses = {d["document"]: d["status"] for d in result["evaluation"]["documents"]}
         self.assertEqual(statuses, {"customer_message": "present", "photo": "missing", "notice_letter": "missing"})
-        self.assertEqual(result["facts"][0]["verdict"], "accepted")
+        self.assertEqual(next(f for f in result["facts"] if f["fact"] == "landlord_notified")["verdict"], "accepted")
         self.assertIn({"kind": "turn_limit", "agent": "result_checker",
                        "text": "The result checker did not finish within its turn limit."}, result["warnings"])
         self.assertEqual(result["reply"]["clauses"], [])
@@ -168,19 +168,52 @@ class TeamTests(unittest.TestCase):
         self.assertTrue(personal_details({"why": "Rückruf unter 031 555 12 34"}, names))
         self.assertTrue(personal_details({"note": "Police 8017.0833.0054"}, set()))
 
-    def test_a_second_reading_surfaces_disagreement_and_fills_gaps(self):
+    def test_a_value_counts_only_when_both_readings_give_it(self):
         from casepath.agents.team import CaseWork, confirm_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         cite = [{"file": "f1", "quote": QUOTE}]
-        same = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}])
-        self.assertEqual(confirm_facts(same, work)["added"], 1)  # the first reading had not recorded it
-        self.assertEqual(work.facts["landlord_notified"]["value"], True)
+        # Only the second reading finds a value: it does not count; the fact stays open with the quote.
+        only_second = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}])
+        self.assertEqual(confirm_facts(only_second, work)["single"], 1)
+        row = work.facts["landlord_notified"]
+        self.assertEqual((row["status"], row["value"], len(row["citations"])), ("unknown", None, 1))
+        self.assertNotIn("landlord_notified", work.accepted_facts())
+        # Only the first reading finds a value: the same.
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True, "citations": cite,
+                                           "verdict": None, "by": "claim_reader"}
+        silent = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}])
+        self.assertEqual(confirm_facts(silent, work)["single"], 1)
+        self.assertEqual(work.facts["landlord_notified"]["status"], "unknown")
+        # Both give it: it stands, for the source checker.
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True, "citations": cite,
+                                           "verdict": None, "by": "claim_reader"}
+        same = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "ja", "citations": cite}])
+        self.assertEqual(confirm_facts(same, work)["agreed"], 1)
+        self.assertEqual((work.facts["landlord_notified"]["status"], work.facts["landlord_notified"]["value"]), ("established", True))
+        # They give different values: a person settles it.
         work.facts["landlord_notified"]["verdict"] = "accepted"
         other = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "no", "citations": cite}])
         self.assertEqual(confirm_facts(other, work)["differed"], 1)
         row = work.facts["landlord_notified"]
         self.assertEqual((row["status"], row["second_value"]), ("conflicting", False))
-        self.assertNotIn("landlord_notified", work.accepted_facts())  # a person settles it
+        self.assertNotIn("landlord_notified", work.accepted_facts())
+
+    def test_both_readings_answer_every_fact_in_the_same_structured_form(self):
+        from casepath.agents.team import CONFIRM, READ_FACTS, READING_RULES, CaseWork, read_facts
+        self.assertIn(READING_RULES, READ_FACTS)
+        self.assertIn(READING_RULES, CONFIRM)
+        self.assertIn("we do not know whether", READING_RULES)  # a stated doubt is unknown
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        doubt = [{"file": "f1", "quote": VENT}]
+        model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": doubt}])
+        calls = []
+        original = model.respond_json
+        model.respond_json = lambda **kw: calls.append(kw) or original(**kw)
+        read_facts(model, work)
+        asked = [f["id"] for f in json.loads(calls[0]["input"][0]["content"])["facts"]]
+        self.assertEqual(asked, ["legal_area", "landlord_notified"])  # every fact of the process is asked, not only those explored
+        self.assertEqual(work.facts["legal_area"]["status"], "unknown")
+        self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 1))
 
     def test_every_fact_a_condition_uses_is_read_twice(self):
         """Facts that only decide whether a document is needed are read a second time too, with the same agreement rule."""

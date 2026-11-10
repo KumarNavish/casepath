@@ -71,7 +71,7 @@ class MessagesTeamTests(unittest.TestCase):
         model = AnthropicMessagesModel(settings, lambda: "t", transport=httpx.MockTransport(gateway.handler))
         result = CaseTeam(model).run(case=CASE, files=FILES, workflow=FIXTURE)
         self.assertEqual(result["evaluation"]["outcome"]["id"], "reported")
-        fact, = result["facts"]
+        fact = next(f for f in result["facts"] if f["fact"] == "landlord_notified")
         self.assertEqual((fact["value"], fact["verdict"]), (True, "accepted"))
         self.assertTrue(result["reply"]["clauses"][0]["supported"])
         self.assertGreater(len(gateway.bodies), 8)

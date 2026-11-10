@@ -11,9 +11,14 @@ from casepath.agents.azure_model import ModelResult, Turn
 
 
 class ScriptedModel:
-    def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=(), routing=()):
+    def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=None, routing=(), first_reading=None):
         self.turns = [t for t in turns if not t or not all(name in {"delegate", "complete"} for name, _ in t)]
-        self.verdicts, self.default, self.second_reading = verdicts or {}, default_verdict, list(second_reading)
+        self.verdicts, self.default = verdicts or {}, default_verdict
+        # The readings of the facts. By default the first reading is the claim reader's scripted record_fact calls (the
+        # turns up to its report), and the second reading agrees with it.
+        self.first_reading = None if first_reading is None else list(first_reading)
+        self.second_reading = None if second_reading is None else list(second_reading)
+        self.last_first_reading = []
         self.routing = list(routing)
         self.tool_choices = []
         self.instructions, self.tools, self.inputs = [], [], []
@@ -39,12 +44,33 @@ class ScriptedModel:
         if name == "casepath_route":
             return ModelResult(value={"facts": self.routing}, usage={"input_tokens": 5}, deployment="d", response_id="r",
                                attempts=1, seconds=0)
+        if name == "casepath_read_facts":
+            rows = self.first_reading if self.first_reading is not None else self._scripted_reading()
+            self.last_first_reading = rows
+            return ModelResult(value={"facts": rows}, usage={"input_tokens": 5}, deployment="d", response_id="f", attempts=1, seconds=0)
         if name == "casepath_confirm_facts":
-            return ModelResult(value={"facts": self.second_reading}, usage={"input_tokens": 5}, deployment="d", response_id="s",
+            asked = {f["id"] for f in json.loads(input[0]["content"])["facts"]}
+            rows = self.second_reading if self.second_reading is not None else [r for r in self.last_first_reading if r["fact"] in asked]
+            return ModelResult(value={"facts": rows}, usage={"input_tokens": 5}, deployment="d", response_id="s",
                                attempts=1, seconds=0)
         items = json.loads(input[0]["content"])["items"]
         value = {"items": [{"item": i["item"], "verdict": self.verdicts.get(i["item"], self.default), "reason": "checked"} for i in items]}
         return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="v", attempts=1, seconds=0)
+
+
+    def _scripted_reading(self):
+        """The claim reader's scripted fact turns (up to and including its report) as one structured reading."""
+        rows = []
+        while self.turns:
+            turn = self.turns.pop(0)
+            for name, args in turn:
+                args = args() if callable(args) else args
+                if name == "record_fact":
+                    rows.append({"fact": args["fact"], "status": "established" if args["status"] == "established" else "unknown",
+                                 "value": args.get("value"), "citations": args.get("citations", [])})
+            if any(name == "report" for name, _ in turn):
+                break
+        return rows
 
 
 def delegate(agent, instruction="Do your part."):
