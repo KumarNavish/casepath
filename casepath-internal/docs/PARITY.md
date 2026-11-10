@@ -61,7 +61,7 @@ Neither the manifest nor this page contains case content or credentials.
 - **Workflow catalogue.** The internal copy carries the insurer's own process catalogue and a set of synthetic benchmark cases (`deploy/databricks/package.sh` copies `catalogue/` and `benchmark/` when they are present). Neither is in this repository. That is proprietary data and an expected difference.
 - **Commits.** The internal copy is kept as separate commits on another host. Their hashes and messages differ from the commits here, so commit hashes cannot show that the code is equal. Use the tree hash instead.
 - **Model.** This is the one declared difference besides proprietary data, and it is configuration, not code:
-  - the internal deployment runs on Claude Opus 5.5;
+  - the internal deployment runs on the model of the workspace's gateway, named in its deployment settings;
   - the external research deployment runs on gpt-6-luna;
   - both use the same connectors, selected by `CASEPATH_MODEL_PROVIDER` and `CASEPATH_MODEL_API`, with the model named in `CASEPATH_MODEL` or `CASEPATH_AZURE_OPENAI_DEPLOYMENT`.
 
@@ -74,7 +74,7 @@ Neither the manifest nor this page contains case content or credentials.
 
 ## Behaviour changes that both deployments must approve
 
-These changes on branch `claude/casepath-internal-paper-sync-20261110` alter behaviour even for workflows that use none of the new optional fields:
+These changes on the paper-sync branch of 10.11.2026 alter behaviour even for workflows that use none of the new optional fields:
 
 - **Exact deferral.** With a fact open, documents and steps after the open question are no longer dropped:
   - those needed under every answer are listed as needed;
