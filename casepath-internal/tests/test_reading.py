@@ -178,3 +178,17 @@ class ReadingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TypographicQuotationTests(unittest.TestCase):
+    def test_a_quotation_matches_across_typographic_quotes_apostrophes_dashes_and_ligatures_but_not_letter_case(self):
+        from casepath.read.evidence import Evidence
+        text = ("Die Vermieterin schreibt: „Wir kündigen das Mietverhältnis per 30. Juni.“ Die Mieterin’s Antwort "
+                "folgt – sofort. Die Oﬃce-Räume sind betroﬀen.")
+        evidence = Evidence([{"id": "f1", "name": "brief.txt", "kind": "text", "text": text}])
+        hit = evidence.locate("f1", '"Wir kündigen das Mietverhältnis per 30. Juni."')
+        self.assertEqual(hit["quote"], "„Wir kündigen das Mietverhältnis per 30. Juni.“")  # the file's own characters
+        self.assertIsNotNone(evidence.locate("f1", "Die Mieterin's Antwort folgt - sofort."))
+        self.assertIsNotNone(evidence.locate("f1", "Die Office-Räume sind betroffen."))
+        self.assertIsNone(evidence.locate("f1", "die vermieterin schreibt"))  # letter case is the file's words
+        self.assertIsNone(evidence.locate("f1", "Wir kündigen das Mietverhältnis per 31. Juli."))

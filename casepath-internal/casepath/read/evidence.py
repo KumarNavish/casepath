@@ -6,6 +6,7 @@ match is otherwise exact and case-sensitive, so a citation either points to
 the words in the document or is rejected.
 """
 import re
+import unicodedata
 
 PAGE = re.compile(r"\[page (\d+)\]\n")
 WORD = re.compile(r"\w+", re.UNICODE)
@@ -15,6 +16,20 @@ def normalise(text):
     text = text.replace("­", "")
     text = re.sub(r"(\w)-[ \t]*\n[ \t]*(\w)", r"\1\2", text)
     return re.sub(r"\s+", " ", text).strip()
+
+
+TYPOGRAPHY = {**{c: '"' for c in "“”„‟«»″〝〞"}, **{c: "'" for c in "‘’‚‛‹›′`´"}, **{c: "-" for c in "‐‑‒–—―−"}}
+
+
+def _typographic(text):
+    """Text with typography folded (NFKC, then quotation marks, apostrophes and dashes unified), and for each folded
+    character the index of the character it came from."""
+    out, index = [], []
+    for i, ch in enumerate(text):
+        for c in unicodedata.normalize("NFKC", ch):
+            out.append(TYPOGRAPHY.get(c, c))
+            index.append(i)
+    return re.sub(r"\s", " ", "".join(out)), index
 
 
 def _fold(text):
@@ -64,6 +79,9 @@ class Evidence:
                 "note": source.get("note")}
 
     def locate(self, file_id, quote):
+        """The quotation's place in the file: an exact match after normalisation, or else a match that ignores only
+        typography (quotation marks, apostrophes, dashes, ligatures and other compatibility forms). Letter case is
+        not folded: a quotation is the file's words. The located quote is the file's own text."""
         source = self.files.get(file_id)
         needle = normalise(quote or "")
         if source is None or len(needle) < 8:
@@ -72,6 +90,13 @@ class Evidence:
             start = text.find(needle)
             if start >= 0:
                 return {"file": file_id, "page": page, "start": start, "end": start + len(needle), "quote": needle}
+        folded_needle, _ = _typographic(needle)
+        for page, text in source["pages_text"]:
+            folded, index = _typographic(text)
+            start = folded.find(folded_needle)
+            if start >= 0 and folded_needle:
+                begin, end = index[start], index[start + len(folded_needle) - 1] + 1
+                return {"file": file_id, "page": page, "start": begin, "end": end, "quote": text[begin:end]}
         return None
 
     def context(self, located, width=300):
