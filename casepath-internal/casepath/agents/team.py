@@ -1021,8 +1021,11 @@ def confirm_facts(model, work, effort="medium"):
             if rows:
                 vals = [v for st, v, _ in rows if st == "established"]
                 # (a failed reading proves no silence; under the rule "any" an answered reading's open words still count)
-                second[fact["id"]] = ("partial", vals[0], [q for _, _, qs in rows for q in qs]) if vals else (
-                    "unknown", None, [q for _, _, qs in rows for q in qs])
+                quotes = [q for _, _, qs in rows for q in qs]
+                if vals and not all(same_reading(fact, vals[0], v) for v in vals):
+                    second[fact["id"]] = ("conflict", vals[0], quotes)  # the readings that answered differ: a person decides
+                else:
+                    second[fact["id"]] = ("partial", vals[0], quotes) if vals else ("unknown", None, quotes)
             continue  # a reading that failed or did not answer: what the others found cannot count alone
         values = [v for st, v, _ in rows if st == "established"]
         quotes = [q for _, _, qs in rows for q in qs]
