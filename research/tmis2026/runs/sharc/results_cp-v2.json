@@ -1,0 +1,2977 @@
+{
+"09f1e41b4ab4aeabbd8806f809eb35d194eb1389": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The intermediary lender's lending and credit requirements are met."
+},
+{
+"id": "c2",
+"statement": "Some type of collateral is provided."
+},
+{
+"id": "c3",
+"statement": "The business owner provides a personal guarantee."
+}
+],
+"formula": "c1 and c2 and c3"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": "Q: Are you a business owner? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"0bf4858058210a355d49c5f0dffb8afbe80af4fd": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"0e78be5f99f99c6d087632fb6d284f38786fda92": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The claim is for goods you still have, or goods that were used to make other goods you still have."
+},
+{
+"id": "c2",
+"statement": "The claim is made within 4 years from your date of registration."
+},
+{
+"id": "c3",
+"statement": "The claim is for services."
+},
+{
+"id": "c4",
+"statement": "The claim is made within 6 months from your date of registration."
+}
+],
+"formula": "(c1 and c2) or (c3 and c4)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "I registered about five years ago.",
+"c3": "",
+"c4": "I registered about five years ago."
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "false"
+}
+},
+"decision": "Inquire",
+"gold": "Yes",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"0ed5cbb19110dcd81e826fede883667969bbca11": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "I am an employee."
+},
+{
+"id": "c2",
+"statement": "I take Paternity Leave."
+},
+{
+"id": "c3",
+"statement": "I take only 26 weeks of Maternity or Adoption Leave."
+},
+{
+"id": "c4",
+"statement": "I take only 26 weeks of Shared Parental Leave between both parents."
+},
+{
+"id": "c5",
+"statement": "I take 4 weeks or less of unpaid Parental Leave."
+}
+],
+"formula": "c1 and (c2 or c3 or c4 or c5)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you taken paternity leave? A: No",
+"c3": "",
+"c4": "",
+"c5": "Q: Has your parental leave been 4 weeks or less? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you taken paternity leave? A: No",
+"c3": "",
+"c4": "",
+"c5": "Q: Has your parental leave been 4 weeks or less? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+}
+},
+"decision": "Inquire",
+"gold": "Yes",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"1f0b09ea7c075e61f2c15c660becc5e28dd329f3": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"207ef555122a58760b00ab293f4bd4acf190cba6": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"22abb2843bd00abacf2e0d43eaf24d223de8fe14": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You sell seeds, roots or other plant ‘propagation material’ from ornamental plants within the EU."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "I am selling onion seeds in Canada."
+},
+"raw": {
+"c1": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "I am selling onion seeds in Canada."
+},
+"raw": {
+"c1": "false"
+}
+},
+"decision": "No",
+"gold": "Inquire",
+"judgments": {
+"c1": "false"
+},
+"kleene": "No",
+"single": "No"
+},
+"274afa4bc38ea8577954f3429eae7a2f2ef3e077": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The product is equipment for skiing, golf, diving or water sports."
+},
+{
+"id": "c2",
+"statement": "The product is equipment for gaming like billiards, automatic bowling, casino games or slot machines."
+}
+],
+"formula": "not c1 and not c2"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "true"
+},
+"quotes": {
+"c1": "",
+"c2": "I am exporting casino games to North Korea."
+},
+"raw": {
+"c1": "unresolved",
+"c2": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "true"
+},
+"quotes": {
+"c1": "I am exporting casino games to North Korea.",
+"c2": "I am exporting casino games to North Korea."
+},
+"raw": {
+"c1": "false",
+"c2": "true"
+}
+},
+"decision": "No",
+"gold": "Inquire",
+"judgments": {
+"c1": "unresolved",
+"c2": "true"
+},
+"kleene": "No",
+"single": "No"
+},
+"2c7fe9344f3fa12c07d70b199407d9144243f07d": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The chemicals have military or potential military uses."
+},
+{
+"id": "c2",
+"statement": "The chemicals are controlled drugs (like opioids, certain stimulants or psychotropic substances), or chemicals that can be used to make them (‘drug precursors’)."
+},
+{
+"id": "c3",
+"statement": "The chemicals are ozone-depleting substances, for example HCFCs."
+},
+{
+"id": "c4",
+"statement": "The chemicals are radioactive substances."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "true",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Do the chemicals have military or potential military uses? A: No",
+"c2": "",
+"c3": "Q: Does the chemical have ozone-depleting substances, for example HCFCs A: Yes",
+"c4": "Q: Does the chemical have radioactive substances? A: No"
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "true",
+"c4": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "true",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Do the chemicals have military or potential military uses? A: No",
+"c2": "",
+"c3": "Q: Does the chemical have ozone-depleting substances, for example HCFCs A: Yes",
+"c4": "The chemical does not have radioactive substances."
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "true",
+"c4": "false"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "true",
+"c4": "false"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"2f646972856ff9fb591c21a7dcb3985dffa23a15": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "I am an agricultural producer seeking to maintain and improve existing conservation systems and adopt additional conservation activities."
+},
+{
+"id": "c2",
+"statement": "I am a CSP participant with conservation performance that earns payments; higher performance earns higher payments."
+}
+],
+"formula": "c1 or c2"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Yes",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"2fe36f881d5e2f8128cfc2f2973af91877f3558f": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are a resident of Indiana."
+},
+{
+"id": "c2",
+"statement": "You are responsible for a child under 18 years of age."
+},
+{
+"id": "c3",
+"statement": "You are a U.S. citizen or qualified alien."
+},
+{
+"id": "c4",
+"statement": "You have very low income."
+}
+],
+"formula": "c1 and c2 and c3 and c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "I live in Louisiana.",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "I live in Louisiana.",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"kleene": "No",
+"single": "No"
+},
+"3477087283e0775c7f775192c7810e92e5445386": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "Your marriage or civil partnership with your deceased partner began before 6 April 2016."
+},
+{
+"id": "c2",
+"statement": "Your partner reached State Pension age before 6 April 2016."
+},
+{
+"id": "c3",
+"statement": "Your partner died before 6 April 2016 but would have reached State Pension age on or after that date."
+}
+],
+"formula": "c1 and (c2 or c3)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Did you partner reach state pension age before April 6 2016? A: No",
+"c3": "My wife passes away on 3 January 2017"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Did you partner reach state pension age before April 6 2016? A: No",
+"c3": "My wife passes away on 3 January 2017 and my current wife gets £64.60 for taking care of her disabled son while I work 40 hours a week driving a lorry through central London."
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"kleene": "No",
+"single": "No"
+},
+"37f465a227298b788a4d6cbddcb1fd385bae34c8": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are a self-employed person running your own business."
+},
+{
+"id": "c2",
+"statement": "You are a company director."
+},
+{
+"id": "c3",
+"statement": "You are a volunteer or voluntary worker."
+},
+{
+"id": "c4",
+"statement": "You are a worker on a government employment programme, such as the Work Programme."
+}
+],
+"formula": "not (c1 or c2 or c3 or c4)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you a self-employed person running your own business? A: No",
+"c2": "Q: Are you a company director? A: No",
+"c3": "Q: Are you a volunteer or voluntary worker? A: Yes",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you a self-employed person running your own business? A: No",
+"c2": "Q: Are you a company director? A: No",
+"c3": "Q: Are you a volunteer or voluntary worker? A: Yes",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"kleene": "No",
+"single": "No"
+},
+"41f8c97b0bc53a13667d2865054f018f1266ddbf": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The benefit is Attendance Allowance."
+},
+{
+"id": "c2",
+"statement": "The benefit is Bereavement Allowance."
+},
+{
+"id": "c3",
+"statement": "The benefit is Carer’s Allowance."
+},
+{
+"id": "c4",
+"statement": "The benefit is child maintenance (sometimes known as ‘child support’)."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is it an attendance allowance? A: No",
+"c2": "Q: Is it bereavement allowance? A: No",
+"c3": "I want to apply for the carer's allowance, as I take care of the elderly for a living.",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is it an attendance allowance? A: No",
+"c2": "Q: Is it bereavement allowance? A: No",
+"c3": "I want to apply for the carer's allowance",
+"c4": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"4388b97acb765b463968dccd3dc363c411df43d0": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "I am an employee."
+},
+{
+"id": "c2",
+"statement": "I take Paternity Leave."
+},
+{
+"id": "c3",
+"statement": "I take only 26 weeks of Maternity or Adoption Leave."
+},
+{
+"id": "c4",
+"statement": "I take only 26 weeks of Shared Parental Leave between both parents."
+},
+{
+"id": "c5",
+"statement": "I take 4 weeks or less of unpaid Parental Leave."
+}
+],
+"formula": "c1 and (c2 or c3 or c4 or c5)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you taken paternity leave? A: No",
+"c3": "",
+"c4": "",
+"c5": "Q: Has your parental leave been unpaid? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false",
+"c4": "unresolved",
+"c5": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you taken paternity leave? A: No",
+"c3": "Q: Are you on maternity leave? A: No",
+"c4": "",
+"c5": "Q: Has your parental leave been unpaid? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false",
+"c4": "unresolved",
+"c5": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "unresolved",
+"c4": "unresolved",
+"c5": "false"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"49d600949fad6969b85dbfcadc8f05735084b733": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The benefit is Attendance Allowance."
+},
+{
+"id": "c2",
+"statement": "The benefit is Bereavement Allowance."
+},
+{
+"id": "c3",
+"statement": "The benefit is Carer’s Allowance."
+},
+{
+"id": "c4",
+"statement": "The benefit is child maintenance (sometimes known as ‘child support’)."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Is it an attendance allowance? A: No",
+"c2": "Q: Is it bereavement allowance? A: No",
+"c3": "Q: Is it carer's allowance? A: No",
+"c4": "I'm looking into getting a widow's pension."
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Is it an attendance allowance? A: No",
+"c2": "Q: Is it bereavement allowance? A: No",
+"c3": "Q: Is it carer's allowance? A: No",
+"c4": "I'm looking into getting a widow's pension."
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+}
+},
+"decision": "No",
+"gold": "Inquire",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"kleene": "No",
+"single": "No"
+},
+"4b14c23fa5b20278f50e8975889dc691b0f9a9f2": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"4d2c711c182ef0b9edbcd24f4f1e78ed573f07a5": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"52ed0a5c4bf1db395d9d61489e2284acc541d688": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The business has registration."
+},
+{
+"id": "c2",
+"statement": "The business has licensing and accreditation."
+},
+{
+"id": "c3",
+"statement": "The business meets financial and privacy laws."
+},
+{
+"id": "c4",
+"statement": "The business has layby services."
+}
+],
+"formula": "c1 and c2 and c3 and c4"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Do you have licensing and accreditation? A: Yes",
+"c3": "I've never been one to go along with financial and privacy laws.",
+"c4": "Q: Do you use layby services? A: Yes"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Do you have licensing and accreditation? A: Yes",
+"c3": "Unfortunately, I've never been one to go along with financial and privacy laws.",
+"c4": "Q: Do you use layby services? A: Yes"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "true"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "true"
+},
+"kleene": "No",
+"single": "No"
+},
+"53b9f5a979b2e20d21d9d5fc46809eede5d48f96": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You’re a student doing work experience as part of a higher or further education course."
+},
+{
+"id": "c2",
+"statement": "You’re of compulsory school age."
+},
+{
+"id": "c3",
+"statement": "You’re a volunteer or doing voluntary work."
+},
+{
+"id": "c4",
+"statement": "You’re on a government or European programme."
+}
+],
+"formula": "not (c1 or c2 or c3 or c4)"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Are you a a student doing work experience as part of a higher or further education course, of compulsory school age, a volunteer or doing voluntary work, or on a government or European programme? A: No",
+"c2": "Q: Are you of compulsory school age? A: No",
+"c3": "Q: Are you a a student doing work experience as part of a higher or further education course, of compulsory school age, a volunteer or doing voluntary work, or on a government or European programme? A: No",
+"c4": "Q: Are you on a government or European program? A: No"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Are you a a student doing work experience as part of a higher or further education course, of compulsory school age, a volunteer or doing voluntary work, or on a government or European programme? A: No",
+"c2": "Q: Are you of compulsory school age? A: No",
+"c3": "Q: Are you doing volunteer work? A: No",
+"c4": "Q: Are you on a government or European program? A: No"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "false"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"596eb8ee049aa30bc9a883549f25142de7dcc247": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have at least one child."
+},
+{
+"id": "c2",
+"statement": "You work less than 24 hours a week between you."
+},
+{
+"id": "c3",
+"statement": "You work at least 16 hours a week and you’re disabled or aged 60 or above."
+},
+{
+"id": "c4",
+"statement": "You work at least 16 hours a week and your partner is incapacitated (getting certain benefits because of disability or ill health), is entitled to Carer’s Allowance, or is in hospital or prison."
+}
+],
+"formula": "c1 and c2 and (c3 or c4)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Do you work less than 24 hours a week between you? A: Yes",
+"c3": "I am 64 years old and work 12 hours a week at a local produce store.",
+"c4": "I am 64 years old and work 12 hours a week at a local produce store."
+},
+"raw": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Do you work less than 24 hours a week between you? A: Yes",
+"c3": "I am 64 years old and work 12 hours a week at a local produce store.",
+"c4": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "unresolved",
+"c2": "true",
+"c3": "false",
+"c4": "unresolved"
+},
+"kleene": "Inquire",
+"single": "No"
+},
+"5db94bfa7f6feaa67cd00500906e120bf1ad1a76": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have reached State Pension age"
+}
+],
+"formula": "not c1"
+},
+"B1": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "Q: Have you reached State Pension Age? A: No"
+},
+"raw": {
+"c1": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "Q: Have you reached State Pension Age? A: No"
+},
+"raw": {
+"c1": "false"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"64c2447e86cc6824e9e52dde418cefeb50c28dd8": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The Veteran met the basic eligibility requirements for S-DVI."
+},
+{
+"id": "c2",
+"statement": "The Veteran did not apply for S-DVI because of a continued mental incompetence due to a service-connected disability."
+},
+{
+"id": "c3",
+"statement": "The Veteran died before the appointment of a guardian or within two years of such appointment."
+}
+],
+"formula": "c1 and c2 and c3"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"67ab089b248402969d994405f316476c786e65ad": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are a disabled Veteran."
+},
+{
+"id": "c2",
+"statement": "You are purchasing an automobile or other transportation."
+},
+{
+"id": "c3",
+"statement": "You need adaptive equipment, or repair, replacement, or reinstallation of automobile equipment, because of disability."
+}
+],
+"formula": "(c1 and c2) or c3"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Irrelevant",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"6889ebb073f7b73e7a10d44a86dd4c5aa2508989": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The chemicals have military or potential military uses."
+},
+{
+"id": "c2",
+"statement": "The chemicals are controlled drugs (like opioids, certain stimulants or psychotropic substances), or chemicals that can be used to make them (‘drug precursors’)."
+},
+{
+"id": "c3",
+"statement": "The chemicals are ozone-depleting substances, for example HCFCs."
+},
+{
+"id": "c4",
+"statement": "The chemicals are radioactive substances."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Do the chemicals have military or potential military uses? A: No",
+"c2": "",
+"c3": "Q: Does the chemical have ozone-depleting substances, for example HCFCs A: No",
+"c4": "Q: Does the chemical have radioactive substances? A: No"
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false",
+"c4": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false",
+"c4": "false"
+},
+"quotes": {
+"c1": "Q: Do the chemicals have military or potential military uses? A: No",
+"c2": "",
+"c3": "Q: Does the chemical have ozone-depleting substances, for example HCFCs A: No",
+"c4": "Q: Does the chemical have radioactive substances? A: No"
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false",
+"c4": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false",
+"c4": "false"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"76f543a9f9c02cf13fb99cf229edd5507f882788": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You live in Cyprus, France, Gibraltar, Greece, Malta, Portugal or Spain."
+}
+],
+"formula": "not c1"
+},
+"B1": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "I live in Malta"
+},
+"raw": {
+"c1": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "I live in Malta"
+},
+"raw": {
+"c1": "true"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "true"
+},
+"kleene": "No",
+"single": "No"
+},
+"774dee470fd87dd8a43c790de8bfa4c44f6c1c05": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have a contract or other arrangement to do work or services personally for a reward (your contract doesn’t have to be written)."
+},
+{
+"id": "c2",
+"statement": "Your reward is for money or a benefit in kind, for example the promise of a contract or future work."
+},
+{
+"id": "c3",
+"statement": "You only have a limited right to send someone else to do the work (subcontract)."
+},
+{
+"id": "c4",
+"statement": "You have to turn up for work even if you don’t want to."
+}
+],
+"formula": "c1 and c2 and c3 and c4"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Do you have a contract or other arrangement to do work or services personally for a reward (your contract doesn’t have to be written)? A: Yes",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Do you have a contract or other arrangement to do work or services personally for a reward (your contract doesn’t have to be written)? A: Yes",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"7a84980b3498bc353e45e84b998db6833efc2357": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The charity or CASC gets back more tax than you’ve paid."
+},
+{
+"id": "c2",
+"statement": "HMRC asks you to pay more tax to cover the difference."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "The charity does NOT get back more than I've paid.",
+"c2": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "The charity does NOT get back more than I've paid.",
+"c2": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "unresolved"
+},
+"kleene": "No",
+"single": "No"
+},
+"804f8b4968002825739083e7cee2b56e338e6504": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You don’t tell the office that pays your benefit you’re going abroad, even if it’s just for a visit."
+},
+{
+"id": "c2",
+"statement": "You deliberately don’t report a change in your circumstances while abroad, like buying a property, working, or claiming a pension or benefit from another country."
+},
+{
+"id": "c3",
+"statement": "You’re dishonest in order to get benefits, like continuing to claim the pension or benefit of someone who has died overseas."
+}
+],
+"formula": "c1 or c2 or c3"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Did you tell the office you're going abroad? A: Yes",
+"c2": "Q: Did you deliberately not report a change in your circumstances while abroad, like buying a property, working, or claiming a pension or benefit from another country? A: No",
+"c3": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Did you tell the office you're going abroad? A: Yes",
+"c2": "Q: Did you deliberately not report a change in your circumstances while abroad, like buying a property, working, or claiming a pension or benefit from another country? A: No",
+"c3": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"851e5e068eaa43d3b612ee7904e46620cf445734": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"873adae4c34ba49439eeb036d62428566bbf115a": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are a Native American/American Indian."
+},
+{
+"id": "c2",
+"statement": "Your child(ren) have a disability."
+},
+{
+"id": "c3",
+"statement": "You or your family member are enrolled in a Federally recognized American Indian tribe or Alaska Native village."
+}
+],
+"formula": "c1 and c2 and c3"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "true",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you a Native American/American Indian? A: Yes",
+"c2": "Q: Do you have a child with a disability? A: Yes",
+"c3": ""
+},
+"raw": {
+"c1": "true",
+"c2": "true",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "true",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you a Native American/American Indian? A: Yes",
+"c2": "Q: Do you have a child with a disability? A: Yes",
+"c3": ""
+},
+"raw": {
+"c1": "true",
+"c2": "true",
+"c3": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Yes",
+"judgments": {
+"c1": "true",
+"c2": "true",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"885b0204255f58a5750855e280349ccfe26b60c5": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The applicant is eligible."
+},
+{
+"id": "c2",
+"statement": "The loan is a direct loan with indebtedness of no more than $300,000."
+},
+{
+"id": "c3",
+"statement": "The loan is a guaranteed loan with indebtedness of no more than $1,392,000, adjusted annually for inflation."
+}
+],
+"formula": "c1 and (c2 or c3)"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"9236388a072a000f2fdfef3c4381dc79a2f409fd": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"9b3cb58455818967a4d5a494619fecb67c490f69": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The drug is a controlled drug like an opioid, certain stimulant or psychotropic substance."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "Q: Is it a controlled drugs like opioids, certain stimulants or psychotropic substances? A: Yes"
+},
+"raw": {
+"c1": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "Q: Is it a controlled drugs like opioids, certain stimulants or psychotropic substances? A: Yes"
+},
+"raw": {
+"c1": "true"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"9b759b6c976e81568b111858b46cba045af31816": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The property was a gift (with different rules if it was given to your spouse, civil partner or a charity)."
+},
+{
+"id": "c2",
+"statement": "You sold the property for less than it was worth to help the buyer."
+},
+{
+"id": "c3",
+"statement": "You inherited the property and do not know its Inheritance Tax value."
+},
+{
+"id": "c4",
+"statement": "You owned the property before April 1982."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "Q: Was the property a gift (there are different rules if it was to your spouse, civil partner or a charity)? A: No",
+"c2": "Q: Did you sell it for less than it was worth to help the buyer? A: No",
+"c3": "Q: did you inherit it? A: No",
+"c4": "I have owned my home since 1980, but do not qualify for private residence relief."
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "Q: Was the property a gift (there are different rules if it was to your spouse, civil partner or a charity)? A: No",
+"c2": "Q: Did you sell it for less than it was worth to help the buyer? A: No",
+"c3": "Q: did you inherit it? A: No",
+"c4": "Q: did you own it before April 1982 A: Yes"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"9c148fb48329109ef8133cfc1ce0ec6c4e4f1654": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You want someone else to deal with us."
+},
+{
+"id": "c2",
+"statement": "You authorise them to enquire, act or get payments for you."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you authorised them to enquire, act or get payments for you? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Have you authorised them to enquire, act or get payments for you? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "false"
+},
+"kleene": "No",
+"single": "No"
+},
+"a0f4ee29ffae29b4123917db7bc0d1e99670c6dc": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have recently updated your address or accommodation details with Centrelink."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved"
+},
+"quotes": {
+"c1": ""
+},
+"raw": {
+"c1": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved"
+},
+"quotes": {
+"c1": ""
+},
+"raw": {
+"c1": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Irrelevant",
+"judgments": {
+"c1": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"a438442785d99f17ba712e24665d7a21ba2267bd": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"a8619054982f164ce3f490d426bf9fdc9eddd6f8": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The benefit is Compensation Recovery Scheme (including NHS recovery claims)."
+},
+{
+"id": "c2",
+"statement": "The benefit is Diffuse Mesotheliomia Payment Scheme."
+},
+{
+"id": "c3",
+"statement": "The benefit is Disability Living Allowance."
+},
+{
+"id": "c4",
+"statement": "The benefit is Employment and Support Allowance (ESA)."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "Q: Is this benefit a Compensation Recovery Scheme (including NHS recovery claims)? A: No",
+"c2": "Q: Is this benefit a Diffuse Mesotheliomia Payment Scheme? A: No",
+"c3": "Q: Is this benefit a Disability Living Allowance? A: No",
+"c4": "Q: Is this benefit an Employment and Support Allowance (ESA)? A: Yes"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "Q: Is this benefit a Compensation Recovery Scheme (including NHS recovery claims)? A: No",
+"c2": "Q: Is this benefit a Diffuse Mesotheliomia Payment Scheme? A: No",
+"c3": "Q: Is this benefit a Disability Living Allowance? A: No",
+"c4": "Q: Is this benefit an Employment and Support Allowance (ESA)? A: Yes"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"a8843bd006b2ac4c854bb983d3440a126355cabb": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are a disabled Veteran."
+},
+{
+"id": "c2",
+"statement": "The purchase is of an automobile or other transportation."
+},
+{
+"id": "c3",
+"statement": "You need adaptive equipment, or repair, replacement, or reinstallation of automobile equipment required because of disability."
+}
+],
+"formula": "(c1 and c2) or c3"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "I am an able-bodied veteran of the Army.",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false"
+},
+"quotes": {
+"c1": "I am an able-bodied veteran of the Army.",
+"c2": "",
+"c3": "I am an able-bodied veteran of the Army."
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"ad1fe62472f0062e2c59cb7a81f02fb9b2b4712d": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "No",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"b8123b64c3443ee5b8376ea7c7dee3b790af6839": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"b8ab6de2894586225711cf9a80bb05c2b57f7f14": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The thing is an item sold to staff, for example a canteen meal."
+},
+{
+"id": "c2",
+"statement": "The thing is business goods used for personal reasons."
+},
+{
+"id": "c3",
+"statement": "The thing is a ‘non-sale’ like bartering, part-exchange or a gift."
+}
+],
+"formula": "c1 or c2 or c3"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Is it a business good used for personal reasons? A: No",
+"c3": "Q: Is it a non-sales item? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"quotes": {
+"c1": "",
+"c2": "Q: Is it a business good used for personal reasons? A: No",
+"c3": "Q: Is it a non-sales item? A: No"
+},
+"raw": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"c4e1c004e099c0e2f068d3ce8bb14d93c229f5b7": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You are part of a family with dependent children."
+},
+{
+"id": "c2",
+"statement": "The adults in your family work or prepare for work."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you a parent with dependent children? A: Yes",
+"c2": ""
+},
+"raw": {
+"c1": "true",
+"c2": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "false"
+},
+"quotes": {
+"c1": "Q: Are you a parent with dependent children? A: Yes",
+"c2": "Q: Are you working or preparing for work? A: No"
+},
+"raw": {
+"c1": "true",
+"c2": "false"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "true",
+"c2": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"c6b83728d8008753edb7893755b383933f0ed681": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The benefit is Guardian’s Allowance."
+},
+{
+"id": "c2",
+"statement": "The benefit is Industrial Injuries Constant Attendance Allowance where a Disablement Pension is payable."
+},
+{
+"id": "c3",
+"statement": "The benefit is Industrial Injuries Exceptionally Severe Disablement Allowance where a Disablement Pension is payable."
+},
+{
+"id": "c4",
+"statement": "The benefit is Personal Independence Payment."
+},
+{
+"id": "c5",
+"statement": "You commit benefit fraud."
+}
+],
+"formula": "c5 and not (c1 or c2 or c3 or c4)"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved",
+"c5": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is the benefit a Guardian's allowance? A: No",
+"c2": "Q: Is the benefit Industrial Injuries Constant Attendance Allowance (where a Disablement Pension is payable)? A: No",
+"c3": "Q: Is the benefit Industrial Injuries Exceptionally Severe Disablement Allowance (where a Disablement Pension is payable)? A: Yes",
+"c4": "",
+"c5": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved",
+"c5": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved",
+"c5": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is the benefit a Guardian's allowance? A: No",
+"c2": "Q: Is the benefit Industrial Injuries Constant Attendance Allowance (where a Disablement Pension is payable)? A: No",
+"c3": "Q: Is the benefit Industrial Injuries Exceptionally Severe Disablement Allowance (where a Disablement Pension is payable)? A: Yes",
+"c4": "",
+"c5": ""
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved",
+"c5": "unresolved"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "false",
+"c3": "true",
+"c4": "unresolved",
+"c5": "unresolved"
+},
+"kleene": "No",
+"single": "No"
+},
+"c8575bdfab931a939a2656969191191776c079f1": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "Your total annual income adds up to more than your Personal Allowance."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved"
+},
+"quotes": {
+"c1": ""
+},
+"raw": {
+"c1": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved"
+},
+"quotes": {
+"c1": ""
+},
+"raw": {
+"c1": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"cb3035587fef7256299d4b556ab0933f28f4f2d8": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"cc853af3b606752b25574e42828675ff67bd9920": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You’re expected to live less than a year because of serious illness."
+},
+{
+"id": "c2",
+"statement": "You’re under 75."
+},
+{
+"id": "c3",
+"statement": "You don’t have more than the lifetime allowance of £1 million in pension savings."
+}
+],
+"formula": "c1 and c2 and c3"
+},
+"B1": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you expected to live less than a year because of serious illness? A: No",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"quotes": {
+"c1": "Q: Are you expected to live less than a year because of serious illness? A: No",
+"c2": "",
+"c3": ""
+},
+"raw": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "false",
+"c2": "unresolved",
+"c3": "unresolved"
+},
+"kleene": "No",
+"single": "No"
+},
+"cd3ace9dc3df52cf6c7414a830284d2da7d989f4": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have fewer than 30 qualifying years."
+}
+],
+"formula": "not c1"
+},
+"B1": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "Q: Do you have fewer than 30 qualifying years? A: Yes"
+},
+"raw": {
+"c1": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "I only have 18 qualifying years"
+},
+"raw": {
+"c1": "true"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "true"
+},
+"kleene": "No",
+"single": "No"
+},
+"cec9f32e0162d6d275a6cc5cfac23e7576d958aa": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You apply for an Intra Trade Animal Health certificate (ITAHC)."
+},
+{
+"id": "c2",
+"statement": "You register your premises."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"quotes": {
+"c1": "",
+"c2": ""
+},
+"raw": {
+"c1": "unresolved",
+"c2": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "No",
+"judgments": {
+"c1": "unresolved",
+"c2": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"d8cba5ccabf5e6ce8e6c792aa58d89f4fc98759c": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"de44bd228ad7bb378650f2085fab947c9aa13f0e": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You have income under the limits."
+},
+{
+"id": "c2",
+"statement": "You meet the principal carer rules and care for a child under 8 if you’re single or under 6 if you’re partnered."
+},
+{
+"id": "c3",
+"statement": "You meet the residence rules."
+},
+{
+"id": "c4",
+"statement": "You claim before the birth of a child."
+}
+],
+"formula": "c1 and c2 and c3 and not c4"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is your income under the limits? A: Yes",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "Q: Is your income under the limits? A: Yes",
+"c2": "",
+"c3": "",
+"c4": ""
+},
+"raw": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+}
+},
+"decision": "Inquire",
+"gold": "Inquire",
+"judgments": {
+"c1": "true",
+"c2": "unresolved",
+"c3": "unresolved",
+"c4": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Inquire"
+},
+"dec1e955ca842666404e21dfc2c706417045e2f5": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "Your browser is set to allow SSL, cookies and JavaScript."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "Q: Is your browser set to allow JavaScript? A: No"
+},
+"raw": {
+"c1": "false"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false"
+},
+"quotes": {
+"c1": "Q: Is your browser set to allow JavaScript? A: No"
+},
+"raw": {
+"c1": "false"
+}
+},
+"decision": "No",
+"gold": "No",
+"judgments": {
+"c1": "false"
+},
+"kleene": "No",
+"single": "No"
+},
+"e016acde185556a86a192cd5c8b4e6574541ab26": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You live in England, Scotland or Wales."
+},
+{
+"id": "c2",
+"statement": "You or your partner have reached Pension Credit qualifying age."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "true"
+},
+"quotes": {
+"c1": "Q: Do you live in Scotland or Wales? A: Yes",
+"c2": "Q: Have you or your partner reached the pension credit qualifying age? A: Yes"
+},
+"raw": {
+"c1": "true",
+"c2": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "true"
+},
+"quotes": {
+"c1": "Q: Do you live in Scotland or Wales? A: Yes",
+"c2": "Q: Have you or your partner reached the pension credit qualifying age? A: Yes"
+},
+"raw": {
+"c1": "true",
+"c2": "true"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "true",
+"c2": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"e434fcedb657faf7f7099d218c35e6ecd0151402": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+},
+"e4f4cb01de2482fbbed25124d4288604b1f2a698": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The farmer is able to obtain credit from the commercial lending sector."
+}
+],
+"formula": "not c1"
+},
+"B1": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "Q: Is this farmer able to obtain credit from the commercial lending sector? A: Yes"
+},
+"raw": {
+"c1": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "Q: Is this farmer able to obtain credit from the commercial lending sector? A: Yes"
+},
+"raw": {
+"c1": "true"
+}
+},
+"decision": "No",
+"gold": "Yes",
+"judgments": {
+"c1": "true"
+},
+"kleene": "No",
+"single": "No"
+},
+"e560abea4210b7d84dfd1ca6922f9b0659f597b5": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You’re working in the UK."
+},
+{
+"id": "c2",
+"statement": "You’re not working because you’re retired."
+},
+{
+"id": "c3",
+"statement": "You’re not working because you’re pregnant or looking after children."
+},
+{
+"id": "c4",
+"statement": "You’re not working because you’re sick or disabled or your partner has died."
+}
+],
+"formula": "c1 or c2 or c3 or c4"
+},
+"B1": {
+"admitted": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+},
+"quotes": {
+"c1": "SCENARIO:\nI am still working, but not in the UK",
+"c2": "Q: Are you retired? A: No",
+"c3": "Q: Are you pregnant? A: No\nQ: Are you looking after children? A: No",
+"c4": "Q: Are you not working because you are sick or disabled? A: Yes"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "unresolved"
+},
+"quotes": {
+"c1": "I am still working, but not in the UK",
+"c2": "Q: Are you retired? A: No",
+"c3": "Q: Are you pregnant? A: No\nQ: Are you looking after children? A: No",
+"c4": "Q: Are you not working because you’re sick or disabled? A: Yes"
+},
+"raw": {
+"c1": "false",
+"c2": "false",
+"c3": "false",
+"c4": "true"
+}
+},
+"decision": "Inquire",
+"gold": "Yes",
+"judgments": {
+"c1": "unresolved",
+"c2": "false",
+"c3": "false",
+"c4": "unresolved"
+},
+"kleene": "Inquire",
+"single": "Yes"
+},
+"e7293de3e983da0c0edfc99888d578acb76a39f9": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "The expense is a normal operating expense, machinery or equipment, a minor real estate repair or improvement, or debt refinancing."
+}
+],
+"formula": "c1"
+},
+"B1": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "My loan will be used to refinance credit card debt"
+},
+"raw": {
+"c1": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true"
+},
+"quotes": {
+"c1": "My loan will be used to refinance credit card debt"
+},
+"raw": {
+"c1": "true"
+}
+},
+"decision": "Yes",
+"gold": "Inquire",
+"judgments": {
+"c1": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"fa0d18aac020cd0cb14ad7aaf7b29e14c02d0c76": {
+"A": {
+"addresses_question": true,
+"conditions": [
+{
+"id": "c1",
+"statement": "You live in England, Scotland or Wales."
+},
+{
+"id": "c2",
+"statement": "You or your partner have reached Pension Credit qualifying age."
+}
+],
+"formula": "c1 and c2"
+},
+"B1": {
+"admitted": {
+"c1": "true",
+"c2": "true"
+},
+"quotes": {
+"c1": "I live in Scotland",
+"c2": "Q: Have you or your partner reached the pension credit qualifying age? A: Yes"
+},
+"raw": {
+"c1": "true",
+"c2": "true"
+}
+},
+"B2": {
+"admitted": {
+"c1": "true",
+"c2": "true"
+},
+"quotes": {
+"c1": "I live in Scotland",
+"c2": "Q: Have you or your partner reached the pension credit qualifying age? A: Yes"
+},
+"raw": {
+"c1": "true",
+"c2": "true"
+}
+},
+"decision": "Yes",
+"gold": "Yes",
+"judgments": {
+"c1": "true",
+"c2": "true"
+},
+"kleene": "Yes",
+"single": "Yes"
+},
+"ff52b5cd613f8506ed5209b32e8892da0f27f02e": {
+"A": {
+"addresses_question": false,
+"conditions": [],
+"formula": "false"
+},
+"decision": "Irrelevant",
+"gold": "Irrelevant",
+"kleene": "Irrelevant",
+"single": "Irrelevant"
+}
+}
