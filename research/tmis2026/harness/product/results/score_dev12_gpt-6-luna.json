@@ -1,0 +1,103 @@
+{
+ "set": "dev12",
+ "model": "gpt-6-luna",
+ "table": {
+  "PRODUCT gpt-6-luna (k=1)": {
+   "claim_runs": 12,
+   "requested_share": 0.09302325581395349,
+   "held": 0.0,
+   "handed": 1.1666666666666667,
+   "missed": 5.333333333333333,
+   "unnecessary": 0.16666666666666666,
+   "premature": null,
+   "silent_skip": null,
+   "strict_unsafe": 6.666666666666667,
+   "required_per_claim": 7.166666666666667,
+   "failed": 0
+  },
+  "CPv2p gpt-6-luna (k=3)": {
+   "claim_runs": 36,
+   "requested_share": 0.7751937984496124,
+   "held": 0.9444444444444444,
+   "handed": 0.3888888888888889,
+   "missed": 0.2777777777777778,
+   "unnecessary": 0.0,
+   "premature": null,
+   "silent_skip": null,
+   "strict_unsafe": 0.6666666666666666,
+   "required_per_claim": 7.166666666666667,
+   "failed": 0
+  },
+  "B1v2p gpt-6-luna (k=3)": {
+   "claim_runs": 36,
+   "requested_share": 0.7751937984496124,
+   "held": 0.2222222222222222,
+   "handed": 0.7777777777777778,
+   "missed": 0.6111111111111112,
+   "unnecessary": 0.027777777777777776,
+   "premature": null,
+   "silent_skip": null,
+   "strict_unsafe": 1.4166666666666667,
+   "required_per_claim": 7.166666666666667,
+   "failed": 0
+  },
+  "CPv2p gpt-6.1-terra (k=1)": {
+   "claim_runs": 12,
+   "requested_share": 0.7325581395348837,
+   "held": 0.3333333333333333,
+   "handed": 1.1666666666666667,
+   "missed": 0.4166666666666667,
+   "unnecessary": 0.08333333333333333,
+   "premature": null,
+   "silent_skip": null,
+   "strict_unsafe": 1.6666666666666667,
+   "required_per_claim": 7.166666666666667,
+   "failed": 0
+  },
+  "B1v2p gpt-6.1-terra (k=1)": {
+   "claim_runs": 12,
+   "requested_share": 0.7209302325581395,
+   "held": 0.08333333333333333,
+   "handed": 1.1666666666666667,
+   "missed": 0.75,
+   "unnecessary": 0.08333333333333333,
+   "premature": null,
+   "silent_skip": null,
+   "strict_unsafe": 2.0,
+   "required_per_claim": 7.166666666666667,
+   "failed": 0
+  }
+ },
+ "attribution": {
+  "lost": {
+   "stop at unknown: step beyond the waiting question": 63,
+   "routing: whole claim handed over": 14,
+   "document finder: judged on file": 1
+  },
+  "gained": {
+   "condition mold judged true against the reference": 1,
+   "condition health_effects judged true against the reference": 1
+  },
+  "blocking_facts": {
+   "health_effects: left unknown by the claim reader": 25,
+   "termination_received: left unknown by the claim reader": 35,
+   "specialist_needed: left unknown by the claim reader": 1,
+   "reference_rate: left unknown by the claim reader": 2
+  },
+  "agent_added_needs": {
+   "no article / suggested / missing": 1,
+   "statute article / suggested / missing": 1
+  }
+ },
+ "cost": {
+  "cases": 12,
+  "calls_per_case": 26.75,
+  "input_tokens_per_case": 112899.83333333333,
+  "cached_per_case": 77489.25,
+  "output_tokens_per_case": 14108.5,
+  "failed": 0,
+  "handed_over": 2,
+  "usd_total": 0.14548640999999995,
+  "usd_per_case": 0.012123867499999996
+ }
+}

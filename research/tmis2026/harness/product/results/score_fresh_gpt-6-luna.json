@@ -1,0 +1,123 @@
+{
+ "set": "fresh",
+ "model": "gpt-6-luna",
+ "table": {
+  "PRODUCT gpt-6-luna (k=1)": {
+   "claim_runs": 72,
+   "requested_share": 0.6244979919678715,
+   "held": 0.041666666666666664,
+   "held_required_now": 0.0,
+   "handed": 0.09722222222222222,
+   "missed": 2.5,
+   "unnecessary": 0.013888888888888888,
+   "premature": 0.027777777777777776,
+   "silent_skip": 0.2361111111111111,
+   "strict_unsafe": 2.875,
+   "spurious_hold": 0.125,
+   "correct_hold_share": 0.13636363636363635,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "CPv2p gpt-6-luna (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9698795180722891,
+   "held": 0.2962962962962963,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.023148148148148147,
+   "missed": 0.1712962962962963,
+   "unnecessary": 0.027777777777777776,
+   "premature": 0.009259259259259259,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.23148148148148148,
+   "spurious_hold": 0.05092592592592592,
+   "correct_hold_share": 0.9696969696969697,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "B1v2p gpt-6-luna (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9544846050870147,
+   "held": 0.3055555555555556,
+   "held_required_now": 0.11574074074074074,
+   "handed": 0.0,
+   "missed": 0.19907407407407407,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.19907407407407407,
+   "spurious_hold": 0.013888888888888888,
+   "correct_hold_share": 1.0,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 0
+  },
+  "CPv2p gpt-6.1-terra (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9799196787148594,
+   "held": 0.28703703703703703,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.027777777777777776,
+   "missed": 0.09722222222222222,
+   "unnecessary": 0.041666666666666664,
+   "premature": 0.013888888888888888,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.18055555555555555,
+   "spurious_hold": 0.06944444444444445,
+   "correct_hold_share": 0.9393939393939394,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 1
+  },
+  "B1v2p gpt-6.1-terra (k=3)": {
+   "claim_runs": 216,
+   "requested_share": 0.9805890227576974,
+   "held": 0.30092592592592593,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 0.13425925925925927,
+   "unnecessary": 0.018518518518518517,
+   "premature": 0.004629629629629629,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.1574074074074074,
+   "spurious_hold": 0.023148148148148147,
+   "correct_hold_share": 0.9848484848484849,
+   "required_now_per_claim": 6.916666666666667,
+   "handoff_runs": 0
+  }
+ },
+ "attribution": {
+  "lost": {
+   "stop at unknown: step beyond the waiting question": 136,
+   "document finder: judged on file": 36,
+   "failed run": 8,
+   "routing: whole claim handed over": 7
+  },
+  "gained": {
+   "premature: requested a document the reference holds": 2,
+   "condition health_effects judged true against the reference": 1
+  },
+  "blocking_facts": {
+   "arrears: left unknown by the claim reader": 35,
+   "specialist_needed: left unknown by the claim reader": 7,
+   "health_effects: source checker rejected": 6,
+   "family_home: left unknown by the claim reader": 10,
+   "health_effects: left unknown by the claim reader": 60,
+   "termination_received: left unknown by the claim reader": 15,
+   "reference_rate: left unknown by the claim reader": 3
+  },
+  "agent_added_needs": {
+   "statute article / yes / missing": 11,
+   "statute article / suggested / missing": 5,
+   "no article / suggested / missing": 11
+  }
+ },
+ "cost": {
+  "cases": 72,
+  "calls_per_case": 33.22222222222222,
+  "input_tokens_per_case": 135320.19444444444,
+  "cached_per_case": 90939.68055555556,
+  "output_tokens_per_case": 17599.777777777777,
+  "failed": 1,
+  "handed_over": 1,
+  "usd_total": 1.1067282700000023,
+  "usd_per_case": 0.015371225972222255
+ }
+}
