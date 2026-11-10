@@ -61,3 +61,25 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.13/http/client.py", line 633, in _read_chunked
     raise IncompleteRead(b''.join(value)) from exc
 http.client.IncompleteRead: IncompleteRead(22 bytes read)
+RESUME after container restart 2026-11-10T00:55:24Z; caps luna 3.9330 terra 8.5575
+>> python3 run.py tenancy --data fresh --split heldout --k 3 --designs CPv2p,B1v2p,CPv1 --workers 8
+0 jobs; v2 spend so far 2.7537 USD
+finished; v2 spend 2.7537 USD -> plans_tenancy_gpt-6-luna_fresh_heldout.json
+<< rc=0 0s
+>> python3 run.py theft --data fresh --split heldout --k 3 --designs CPv2p,Rv2p,R,CPv1 --workers 8
+0 jobs; v2 spend so far 2.7537 USD
+finished; v2 spend 2.7537 USD -> plans_theft_gpt-6-luna_fresh_heldout.json
+<< rc=0 2s
+>> python3 evolve.py theft --data fresh --train-stories 4 --eval-stories 5,6,7 --eval-runs 0,1,2
+train s4-on-PR_scheduled_valuable_1000 errors 0 applied 0
+train s4-on-PR_bicycle_claimed errors 0 applied 0
+train s4-on-PR_sim_card_stolen errors 1 applied 1
+train s4-on-PR_third_party_causer errors 2 applied 0
+train s4-on-PR_expert_procedure_requested errors 1 applied 0
+train s4-on-PR_repair_over_500 errors 2 applied 0
+train s4-on-PR_nachfrist_set errors 1 applied 0
+train s4-on-PR_goods_recovered errors 0 applied 0
+train s4-on-PR_declined errors 0 applied 0
+CP_before {'pairs': 81, 'wrong': 88, 'missed': 16, 'errors_per_pair': 1.2839506172839505}
+CP_after_V5 {'pairs': 81, 'wrong': 79, 'missed': 16, 'errors_per_pair': 1.1728395061728396}
+R_before {'pairs': 81, 'wrong': 135, 'missed': 32, 'errors_per_pair': 2.0617283950617282}

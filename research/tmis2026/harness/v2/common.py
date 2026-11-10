@@ -72,13 +72,26 @@ def _body(system, user, schema, schema_name, max_tokens=3500, effort="low", mode
             "provider": {"allow_fallbacks": False, "require_parameters": True, "data_collection": "deny"}}
 
 
+TRANSIENT_PREFIXES = ("no choices", "http 5", "http 429", "URLError", "TimeoutError", "RemoteDisconnected",
+                      "IncompleteRead", "ConnectionResetError", "transport:")
+
+
 def _retrying_call(**kw):
+    """Transport-level robustness only (disclosed): provider errors inside a 200 body, 5xx/429, timeouts, connection
+    resets and truncated responses (http.client.IncompleteRead) are retried with back-off and never kept in the
+    cache as answers. Prompts, schemas and request bodies are unchanged."""
+    import http.client
     import time
-    for attempt in range(4):
+    r = None
+    for attempt in range(6):
         if attempt:
             time.sleep(15 * attempt)
-        r = _call(**kw)
-        if not (r.get("error") or "").startswith("no choices"):
+        try:
+            r = _call(**kw)
+        except (http.client.HTTPException, ConnectionError, TimeoutError, OSError) as exc:
+            r = {"result": None, "error": f"transport: {type(exc).__name__}: {exc}"[:300], "usage": {}, "cached": False}
+            continue
+        if not (r.get("error") or "").startswith(TRANSIENT_PREFIXES):
             return r
         body = _body(kw["system"], kw["user"], kw["schema"], kw["schema_name"], kw.get("max_tokens", 3500),
                      kw.get("effort", "low"), kw.get("model"))
