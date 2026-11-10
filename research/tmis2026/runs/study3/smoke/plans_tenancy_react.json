@@ -1,0 +1,284 @@
+{
+ "REACT|fcl_020f2bacedc162a9|0": {
+  "calls": 8,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "Beruht die Kündigung tatsächlich auf Mietzinsrückständen? Bitte teilen Sie mit, sobald Sie dies anhand der Kündigung oder weiterer Unterlagen klären können."
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "trace": [
+   {
+    "action": "list_steps",
+    "argument": "lease_termination_dispute",
+    "thought": "Der Fall betrifft eine Kündigung eines Mietvertrags; ich prüfe den passenden Kündigungs-Workflow und seine Schritte."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline",
+    "thought": "Die Kündigung wurde erhalten, daher sind Frist- und Formunterlagen grundsätzlich relevant. Ich prüfe zuerst die Anforderungen dieser Schritte."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form",
+    "thought": "Die Kündigung selbst und der Vertrag werden für die Prüfung von Form und Zustellung benötigt; ich lese die Anforderungen dazu."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears",
+    "thought": "Die Angabe zu verspäteten Zahlungen lässt offen, ob die Kündigung auf Rückständen beruht; ich prüfe die dafür nötigen Nachweise."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family",
+    "thought": "Die Wohnung wird ausdrücklich als gemeinsame Familienwohnung beschrieben; damit ist der Familienwohnungs-Zweig aktiv. Ich prüfe dessen Dokumentanforderung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse",
+    "thought": "Die Begründung ist im Schreiben laut Kunde nicht detailliert und nicht vorgelegt; ich prüfe, was für die Begründungs- und Good-faith-Prüfung verlangt wird."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence",
+    "thought": "Eine Verlängerung wurde nicht angesprochen und ist daher nach der Workflow-Vermutung nicht relevant. Ich prüfe die noch aktive Beweiserhebung."
+   },
+   {
+    "action": "submit",
+    "argument": "",
+    "thought": "Die Kündigung wurde erhalten, und die Wohnung wird als gemeinsame Familienwohnung genutzt. Ob die Kündigung wegen Mietrückständen ausgesprochen wurde, bleibt ausdrücklich offen; deshalb halte ich die davon abhängigen Unterlagen zurück, bis dies geklärt ist. Die vorhandene Nachricht ersetzt weder die Kündigung noch die übrigen Nachweise."
+   }
+  ]
+ },
+ "REACT|fcl_09252315095aa169|0": {
+  "calls": 8,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state?",
+    "Are you seeking an extension of the tenancy, in addition to contesting the termination?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "trace": [
+   {
+    "action": "list_steps",
+    "argument": "lease_termination_dispute",
+    "thought": "This is a dispute about a lease termination for alleged unpaid rent, so I’ll inspect the lease-termination workflow and its required documents."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears",
+    "thought": "The message identifies an arrears termination, says the flat is the family home, and raises retaliation after asserting tenancy rights. I’ll inspect the arrears step’s document conditions."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family",
+    "thought": "The arrears branch is active. I’ll check the family-home evidence requirement next."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse",
+    "thought": "The family-home branch is active, and the customer raises retaliation after asserting rights. I’ll inspect the abuse-screening evidence requirements."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline",
+    "thought": "The termination reason and earlier rights complaints are mentioned, so their evidence is relevant. Extension is not raised and is presumed irrelevant. I’ll inspect deadline evidence requirements."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form",
+    "thought": "Receipt and notice-period evidence are required, but the message provides neither. I’ll check the form and service documents next."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence",
+    "thought": "The only supplied file is the customer’s message; it does not include the underlying lease, termination notice, or other required evidence. The arrears, family-home, and retaliation branches are active. I’ll check the remaining evidence step before submitting the complete checklist."
+   },
+   {
+    "action": "submit",
+    "argument": "",
+    "thought": "The termination workflow applies. The message says the termination is for unpaid rent, the flat is the family home, and the customer raised defects and a rent increase before the arrears issue, supporting a retaliation concern. No underlying notices, lease, payment records, or correspondence are supplied. Extension is not raised and is presumed irrelevant. I’ll request required evidence, mark the optional landlord correspondence not needed, and ask for the missing dates and whether an extension is sought."
+   }
+  ]
+ },
+ "REACT|fcl_09bf4c849ef1ee44|0": {
+  "calls": 10,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [
+    "On what date did you receive the rent-increase notice? Please provide the notice itself and proof of its receipt."
+   ],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "trace": [
+   {
+    "action": "list_steps",
+    "argument": "rent_increase_dispute",
+    "thought": "This appears to be a rent-increase dispute. I’ll inspect the applicable workflow and its requirements before deciding which documents to request or hold."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_deadline",
+    "thought": "The claim expressly raises both reference-rate and renovation grounds, so both branches are active. I’ll inspect the intake and deadline requirements first."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_form",
+    "thought": "Proof of receipt is always needed to preserve the challenge deadline. Next I’ll check the notice-form and timing requirements."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reason",
+    "thought": "The lease and the actual rent-increase notice are always needed; the customer’s message is not the notice itself. I’ll check what calculation evidence is required for the stated grounds."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reference",
+    "thought": "The stated reasons and calculation are required, and the attached prior adjustment may provide some historic rent evidence. I’ll inspect the reference-rate branch requirements."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_renovation",
+    "thought": "The reference-rate basis is needed because that ground is expressly mentioned. I’ll inspect the renovation evidence requirement next."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_evidence",
+    "thought": "Renovation costs are also expressly raised, so a breakdown is needed. I’ll check the remaining evidence requirements and whether the supplied prior adjustment satisfies any item."
+   },
+   {
+    "action": "read_file",
+    "argument": "Mietzinsanpassung_Vorjahr.txt",
+    "thought": "The prior adjustment is on file, but I need to confirm it includes the adjustment date, amount, and calculation basis. I’ll read it before classifying the checklist."
+   },
+   {
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_assessment",
+    "thought": "The supplied prior adjustment shows the date and rent amount, but not the calculation basis, so it is incomplete for that evidence item. I’ll check the final workflow evidence requirement."
+   },
+   {
+    "action": "submit",
+    "argument": "",
+    "thought": "Both stated grounds activate their evidence branches. The prior adjustment copy shows the date and rent amount but not its calculation basis. The optional landlord-correspondence item is not needed; the remaining required items are not supplied in sufficient form."
+   }
+  ]
+ },
+ "REACT|fcl_0f9a9b0f4a043ab5|0": {
+  "calls": 10,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "termination_notice"
+   ],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "housing_search_log",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ]
+  },
+  "trace": [
+   {
+    "action": "list_steps",
+    "argument": "lease_termination_dispute",
+    "thought": "Die Kundin bestreitet eine Kündigung und möchte Anfechtung sowie Erstreckung prüfen lassen; ich prüfe den Kündigungsworkflow und die Belege."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline",
+    "thought": "Die Kündigung ist eingegangen und die Wohnung wird ausdrücklich als Familienwohnung beschrieben; Erstreckung sowie eine mögliche Vergeltungskündigung sind ebenfalls angesprochen. Ich prüfe die Dokumentanforderungen der aktiven Schritte."
+   },
+   {
+    "action": "read_file",
+    "argument": "Kuendigung_Kirchgasse81.txt",
+    "thought": "Die Kundennachricht nennt den Kündigungstermin, belegt aber weder Zugang noch vereinbarte Kündigungsfrist. Ich lese die Kündigung im Original."
+   },
+   {
+    "action": "read_file",
+    "argument": "Mietvertrag_Kirchgasse81.txt",
+    "thought": "Die Kündigung bestätigt Empfängerin, Enddatum und Sanierungsgrund, enthält aber keine Zustell- oder Zugangsinformation. Ich prüfe den Mietvertrag für Frist und Familienwohnung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form",
+    "thought": "Der Mietvertrag belegt die dreimonatige Frist; die Kündigung selbst liegt vor. Ich prüfe die konkreten Anforderungen für die Formprüfung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension",
+    "thought": "Mietvertrag und Kündigung enthalten die für die Formprüfung verlangten Angaben. Da Familienwohnung und Erstreckungswunsch ausdrücklich genannt sind, prüfe ich die Anforderungen für die Erstreckung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse",
+    "thought": "Die Kundin nennt Härte und erfolglose Wohnungssuche; ein Suchprotokoll wäre für die Erstreckung relevant. Ich prüfe die Anforderungen zur Kündigungsbegründung und möglichen Vergeltung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family",
+    "thought": "Die Kündigung nennt eine Gesamtsanierung, die Kundin vermutet aber Vergeltung wegen zuvor geltend gemachter Rechte. Ich prüfe die Anforderungen für die Familienwohnung."
+   },
+   {
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence",
+    "thought": "Die Familienwohnungsregel macht eine separate Kündigungskopie an den Ehepartner relevant. Ich prüfe noch den letzten stets aktiven Belegbedarf."
+   },
+   {
+    "action": "submit",
+    "argument": "",
+    "thought": "Der Kündigungseingang und Familienwohnungsbezug sind angegeben; Erstreckung und Vergeltungsverdacht sind ausdrücklich aufgeworfen. Mietvertrag und Kündigung liegen vor. Es fehlen insbesondere Zugangsnachweis, Unterlagen zur Wohnungssuche, separate Kündigung an den Ehepartner und Korrespondenz zum zuvor geltend gemachten Recht. Die optionale Vermieterkorrespondenz ist nicht erforderlich."
+   }
+  ]
+ }
+}

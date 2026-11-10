@@ -1,0 +1,387 @@
+{
+ "REACT|s4-off|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d15",
+    "d16",
+    "d20",
+    "d26",
+    "d27"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_bicycle_claimed|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d11",
+    "d12",
+    "d14",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_declined|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d20",
+    "d22",
+    "d23",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25",
+    "d31"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_expert_procedure_requested|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d21",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_goods_recovered|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d15",
+    "d16",
+    "d18",
+    "d22",
+    "d23",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25",
+    "d30"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_nachfrist_set|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d16",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d20",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_repair_over_500|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d20",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d24",
+    "d25",
+    "d26",
+    "d27"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_scheduled_valuable_1000|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d16",
+    "d20",
+    "d26",
+    "d27"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d10",
+    "d14",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_sim_card_stolen|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d26",
+    "d27"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25",
+    "d32",
+    "d33"
+   ]
+  }
+ },
+ "REACT|s4-on-PR_third_party_causer|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d20",
+    "d21",
+    "d22",
+    "d23",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d15",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-unres-PR_bicycle_claimed|0": {
+  "calls": 4,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d11",
+    "d12",
+    "d16",
+    "d20",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d15",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-unres-PR_expert_procedure_requested|0": {
+  "calls": 2,
+  "error": "no parse: JSONDecodeError",
+  "plan": null
+ },
+ "REACT|s4-unres-PR_repair_over_500|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d24",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d15",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-unres-PR_scheduled_valuable_1000|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25",
+    "d26",
+    "d27"
+   ]
+  }
+ },
+ "REACT|s4-unres-PR_sim_card_stolen|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d32",
+    "d33"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25"
+   ]
+  }
+ },
+ "REACT|s4-unres-PR_third_party_causer|0": {
+  "calls": 3,
+  "error": null,
+  "ids": true,
+  "plan": {
+   "holds": [
+    "d10",
+    "d15",
+    "d16",
+    "d26",
+    "d27"
+   ],
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25"
+   ]
+  }
+ }
+}

@@ -1,0 +1,102 @@
+{
+ "B1v2p|fcl_020f2bacedc162a9|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "On what date was the termination notice delivered, to whom, and what delivery evidence is available? Please provide it urgently for deadline review.",
+    "Did your wife receive a separate notice, and if so, when and how?",
+    "Is the termination based on alleged rent arrears? Did the landlord send a payment deadline and termination warning?",
+    "Has the landlord supplied a written reason or factual explanation for the termination?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  }
+ },
+ "B1v2p|fcl_09252315095aa169|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "When and how did you receive the termination notice? Please provide the envelope and any delivery or collection record promptly so the challenge deadline can be assessed.",
+    "Did your husband receive a separate termination notice? If so, when and how was it delivered?",
+    "What termination date and reason are stated on the notice, and did the landlord send a prior payment deadline and warning?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  }
+ },
+ "B1v2p|fcl_09bf4c849ef1ee44|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [
+    "When and how was the rent-increase notice delivered, and to whom? Please provide any envelope or delivery record promptly so the deadline can be assessed.",
+    "What are the current net rent and ancillary-charge amounts, and when would the proposed increase take effect?"
+   ],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  }
+ },
+ "B1v2p|fcl_0f9a9b0f4a043ab5|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "stated_reason"
+   ],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "When and how did you receive the termination notice? Please provide the envelope or delivery record promptly so the challenge deadline can be assessed.",
+    "Did your husband receive a separate termination notice? If so, when and how, and can he provide the complete notice and delivery evidence?",
+    "Can you provide the complete termination form, including any accompanying pages, and records of your earlier defect and rent complaints?",
+    "Do you have dated records of housing applications, responses and the hardship a move would cause?"
+   ],
+   "requests": [
+    "housing_search_log",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "termination_notice"
+   ]
+  }
+ }
+}

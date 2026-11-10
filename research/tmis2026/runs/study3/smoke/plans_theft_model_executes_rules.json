@@ -1,0 +1,579 @@
+{
+ "COL|s4-off|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "What is the insurer and which policy, insured locations, coverage, sums insured, and deductible apply?",
+    "Did the theft occur at a policy-designated insured location, or elsewhere?",
+    "What were the date and exact location of the loss, and how and when did the couple notify the insurer?",
+    "What jewellery and binoculars were stolen, and what were their existence, identity, pre-loss value, and claimed loss amounts? Please provide available original purchase evidence.",
+    "Were there witnesses or other circumstances or traces supporting the theft, and has a police report been made requesting an official investigation?",
+    "Has the insurer requested an inventory, other information, or proof of other insurance; and is there any other insurance covering these items or risks?",
+    "Is jewellery coverage being claimed under a valuables policy, and are any of the items wristwatches or pocket watches valued above CHF 5,000?",
+    "Are damaged items or crime-scene traces being changed, removed, or repaired, and if so, what authorization or loss-mitigation reason applies?",
+    "What payment recipient and bank account should be used?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_bicycle_claimed|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "Where exactly did the theft occur, and is that location listed in the policy?",
+    "Was the loss at home or away from home, and does the policy include any supplementary away-from-home theft cover?",
+    "Was any jewellery a wristwatch or pocket watch worth more than CHF 5,000 individually?",
+    "Has the insurer requested information or supporting documents, or specifically requested a signed inventory?",
+    "Is there other insurance covering the same items, risks and period?",
+    "Was a valuables-insurance policy involved, or did the insurer request valuables evidence?",
+    "Was anyone injured?",
+    "Which loss-assessment route has been selected: assessment by the parties, a joint expert, or expert proceedings?",
+    "What are the policy terms, deductible and applicable cover, including whether CSS coverage applies?",
+    "Were crime-scene traces or damaged items altered before assessment; if so, was the change authorized or necessary for mitigation or public interest?"
+   ],
+   "requests": [
+    "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_declined|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Witness names and addresses (Namen und Adressen von allfaelligen Zeugen)",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+    "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+    "Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+   ],
+   "questions": [
+    "When did the couple become aware of the theft and the insurance claim, and when exactly was the insurer notified?",
+    "When was the police report made, and did the police initiate an official investigation?",
+    "Was the forced garden door the means of entry, was any container forced open, and did the thief break out of the building? Was there any violence or inability to resist?",
+    "What is the exact loss location, and is it listed as an insured location in the policy? Is simple theft away from home being claimed, and if so, is supplementary cover listed?",
+    "What jewellery and binoculars were stolen, and what are their values? Are original purchase receipts or other requested supporting documents available?",
+    "Has the insurer requested a signed inventory or other information, and has it requested witness details or other evidence?",
+    "Is there other insurance covering the same items and risks, or any liability insurance?",
+    "Did any person living in the household, or an employee with access through their work, cause the loss?",
+    "Has either party requested a joint expert determination (as opposed to the formal procedure), or selected another loss-determination route?",
+    "Is there bodily injury, a claim for costs, a loss-mitigation order, or contemplated repair work? If so, what are the relevant details and insurer instructions or consents?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's declination of the claim for indemnity",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-on-PR_expert_procedure_requested|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "What are the policy-designated insured locations, and was the theft at one of them?",
+    "Was the event reported to police promptly, and was an official investigation requested?",
+    "Were any crime-scene traces or damaged items altered, and, if so, what consent or justification applied?",
+    "Has the insurer requested information or a signed inventory, and what response deadline, if any, was set?",
+    "Does the policy provide valuables insurance for the claimed jewellery or binoculars?",
+    "Is there other insurance for the same interest, risks, and period?",
+    "Has a written request been made for a party to appoint an expert, and have the experts made findings?",
+    "What policy terms, including the deductible and applicable theft cover, govern this claim?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+   ]
+  }
+ },
+ "COL|s4-on-PR_goods_recovered|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+   ],
+   "questions": [
+    "Where and when did the theft occur, and was the location one of the insured locations or away from home?",
+    "How did the perpetrator gain access, was anything forcibly opened or forcibly exited, and was there any violence or inability to resist?",
+    "What items were stolen, including any watch, and what were their individual values? Is jewellery involved, and how was it stored?",
+    "What policy and coverage apply, including any valuables cover, other insurance, sum insured, deductible, and any applicable supplementary theft cover?",
+    "Has the insurer requested information, an inventory, original receipts, or any other documents? If so, what was requested and by when?",
+    "Were any traces or damaged items altered, removed, repaired, or disposed of before assessment? If so, was there police or insurer consent, or a mitigation or safety reason?",
+    "Has the recovery or news of recovery been reported to the insurer, and when?",
+    "Was a joint expert or expert procedure selected, or has either party requested an expert appointment?",
+    "Were any insurer instructions issued about mitigation, repairs, or the handling of damaged property, and were they followed?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Report to the insurer that stolen items have been recovered or news of them received",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-on-PR_nachfrist_set|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "Report to the insurer that stolen items have been recovered or news of them received",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "Does the claim seek household-contents coverage, and are the missing items household contents insured under this policy?",
+    "Did the theft occur at a policy-designated insured location or away from it? Is supplementary cover for simple theft away from home in the policy?",
+    "What information or support has the insurer requested, and has it requested an inventory or itemised list?",
+    "Are the missing items a wristwatch or pocket watch, and what is each item's individual value?",
+    "Is the policyholder seeking valuables-insurance coverage?",
+    "Was anyone injured in an accident connected with the event?",
+    "Is there other insurance covering the same interests, risks and period?",
+    "Which loss-determination route has been selected?",
+    "Was there burglary theft, and was a permanently installed alarm activated? What deductible applies, and does any exception apply?",
+    "Has any duty been breached, and, if so, what are the circumstances and effects? Has there been any deceptive communication or omission? When did the insurer receive all information needed to assess the claim, and is an investigation ongoing? Was there a written request for cooperation specifying a 10-day period, and was it met? Has any compensation already been paid for recovered property? Has the"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_repair_over_500|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "What are the policy-designated insured locations and the applicable theft cover and sums insured? Is simple-theft-away cover being claimed?",
+    "What are the jewellery's type, individual values, theft classification, and storage arrangements? Is valuables insurance involved?",
+    "Has the insurer requested an inventory, receipts, or other supporting information? What time limits or instructions has it given?",
+    "Were there traces or any changes to the scene or damaged item before assessment; if so, was there police or insurer consent, or a mitigation or public-interest reason?",
+    "When did the claimant become aware of the event and claim, and when were the police and insurer notified? Was an official investigation requested, and is it ongoing?",
+    "Are there other insurance policies covering the same interest, risks, and period?",
+    "Has a joint expert been appointed or has an expert procedure otherwise been selected?",
+    "What deductible, if any, applies, and is the policy first-risk or subject to an underinsurance waiver?",
+    "Did a household member or employee cause the loss? Is there any injury, payment-recipient doubt, third-party assignment, or other relevant claim circumstance?",
+    "Has CSS or the insurer ordered the repair or other loss-mitigation measures? Has consent been obtained for the contemplated CHF 1,200 repair, and which insurer's consent is required?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_scheduled_valuable_1000|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+   ],
+   "questions": [
+    "Is the theft location one of the policy-designated insured locations, or did it occur away from them?",
+    "What policy and insurer apply, and does the policy cover this theft at the location? Please provide the policy schedule and terms.",
+    "Has the insurer requested information or a signed/itemised inventory, and what specific information or inventory was requested?",
+    "Is valuables insurance being claimed, and can receipts or an expert valuation be provided for the scheduled watch and other claimed valuables?",
+    "Is there any other insurance covering the same interest, risks, and period?",
+    "Has the loss been referred to a joint expert or formal expert determination, and what loss-determination route was selected?",
+    "Were crime-scene traces or damaged items changed, removed, disposed of, or otherwise altered before assessment? If so, what consent or justification applied?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_sim_card_stolen|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+   ],
+   "questions": [
+    "Which insurer and policy cover this loss, and what locations and theft covers are listed in the policy?",
+    "Did the theft occur at a policy-designated location or elsewhere, and was there forced entry, violence, or a forced breakout?",
+    "What jewellery was taken, what was its individual value, and was any item a watch worth more than CHF 5,000?",
+    "Has the insurer requested information, an inventory, itemised list, receipts, or other supporting evidence?",
+    "Is valuables insurance involved, and can receipts or expert valuations be provided for any claimed valuables?",
+    "Is there other insurance for the same items and risks, and, if so, was it reported to the insurer?",
+    "Was the loss determined by the parties, a jointly appointed expert, or formal expert proceedings?",
+    "Were repairs, changes to damaged property, or removal of crime-scene traces undertaken or contemplated, and was the necessary consent or other justification obtained?",
+    "Was the SIM-card theft reported to CSS or the provider within 24 hours, and when did misuse and the resulting financial loss occur?"
+   ],
+   "requests": [
+    "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-on-PR_third_party_causer|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "questions": [
+    "Is the loss location listed as an insured location in the policy, and what policy terms and coverage apply?",
+    "Were crime-scene traces or damaged items altered, or is any alteration contemplated? If so, was it authorized or necessary for mitigation or public interest?",
+    "What reasonable mitigation, preservation, recovery, and perpetrator-identification measures were taken, and what instructions did the insurer give?",
+    "What were the date and place of loss, and what is known about the contractor's responsibility and any claim against them?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_bicycle_claimed|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)"
+   ],
+   "questions": [
+    "Was the bicycle in the cellar stolen?",
+    "Does the claim concern valuables insurance, such that a receipt or expert valuation for the jewellery or binoculars is required?",
+    "Are there other insurance policies covering the same items and risks?",
+    "Were crime-scene traces or damaged items altered before assessment, and, if so, was the relevant police or insurer consent obtained, or was the alteration otherwise justified?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_expert_procedure_requested|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+   ],
+   "questions": [
+    "What is the exact loss location, and is it one of the locations listed in the policy?",
+    "What were the date and time when the policyholder became aware of the theft and insurance claim?",
+    "Has the insurer requested information or support, or requested a signed inventory or itemised list?",
+    "What is the type and individual value of each stolen jewellery item; does any include a wristwatch or pocket watch worth more than CHF 5,000?",
+    "Is this a valuables-insurance claim, and can receipts or expert valuations be provided for the claimed valuables?",
+    "Does another policy cover the same interest, risks, and period?",
+    "Has an expert determination procedure been selected, or has either party demanded it?",
+    "Were any crime-scene traces removed or altered, and, if so, did police consent? Were any damaged items changed before assessment, and, if so, was there insurer consent or a mitigation/public-interest reason?",
+    "Was anyone injured in an accident connected with the loss?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_repair_over_500|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Report to the insurer that stolen items have been recovered or news of them received",
+    "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+   ],
+   "questions": [
+    "Were the missing items taken from a policy-designated insured location in Switzerland, or from elsewhere?",
+    "How was entry/access gained, was a container forcibly opened, and did any violence or inability to resist occur?",
+    "What are the missing items, their values, and the circumstances establishing that they existed and were taken? Can original purchase evidence be provided?",
+    "Were police notified with an official investigation requested, and has the insurer asked for the police report?",
+    "Were there witnesses, and what other circumstances or traces establish the theft and loss?",
+    "Has the insurer requested information, an inventory, or other supporting material?",
+    "Was any other insurance in force for the same items, risks, and period?",
+    "What insurer instructions were given about mitigation, preservation, recovery, or identifying the thief, and were they followed?",
+    "Are any damaged items or crime-scene traces to be altered before assessment, and if so, is there police or insurer consent or a justification?",
+    "What is the insurer's name, and does the applicable policy include theft coverage? What are its locations, sums insured, and deductible?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_scheduled_valuable_1000|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "questions": [
+    "When did the policyholder become aware of the theft and insurance claim, and when exactly were the insurer and police notified?",
+    "Where exactly did the theft occur, and is that location listed in the policy? Was the theft away from home, and does the policy include the relevant supplementary cover?",
+    "Please provide the policy schedule and confirm the insurer, insured risks, locations, sums, deductible, and whether the watch is scheduled or valuables cover applies.",
+    "Was the watch a wristwatch or pocket watch, and what was its individual value? Can a receipt or expert valuation be provided?",
+    "Are there any other insurance policies covering the same items and risks?",
+    "Were any witnesses, traces, or other circumstances that establish the theft and damage identified? Were crime-scene traces or damaged items changed, and if so, was this authorized or necessary?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_sim_card_stolen|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's declination of the claim for indemnity",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "Report to the insurer that stolen items have been recovered or news of them received",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+    "Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+   ],
+   "questions": [
+    "When did the couple become aware of the theft and their insurance claim, and when exactly did they notify the insurer?",
+    "What is the policy number, insurer, insured location, and applicable cover? Was the theft at a policy-designated location or away from it?",
+    "How was access gained, was anything forcibly opened, did anyone use violence or threaten violence, and did the thief break out of a building or room?",
+    "What items were affected, what were their values, and can purchase receipts or other original evidence be provided? Is either item a watch worth more than CHF 5,000?",
+    "Was any jewellery kept in a locked built-in wall safe or a safe cabinet weighing more than 100 kg?",
+    "Has the insurer requested an inventory, other supporting information, or payment details?",
+    "Are there witnesses, or other circumstances or traces supporting the theft and damage? Was an official investigation requested, and is any investigation still ongoing?",
+    "Does any other insurance cover the same items, risks, and period? Is there any claimed liability insurer or person responsible whose identity or relationship to the household is known?",
+    "Was any SIM card stolen, and will financial loss from SIM-card misuse be claimed? If so, when was the theft and misuse, and when and to whom was it reported?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ },
+ "COL|s4-unres-PR_third_party_causer|0": {
+  "calls": 1,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+    "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+   ],
+   "questions": [
+    "When did the policyholder become aware of the theft and insurance claim?",
+    "What is the policy number, what cover and insured location apply, and does the policy require written notice?",
+    "Where did the theft occur relative to the policy-designated locations, and was any supplementary away-from-home theft cover included?",
+    "How was entry gained, was any container forced open, was there violence or inability to resist, and did anyone forcibly break out?",
+    "What traces remain at the scene, and have any traces or damaged items been changed or removed? If so, was there police or insurer consent, or a mitigation or public-interest reason?",
+    "What evidence, witnesses, or circumstances establish the theft and the damage?",
+    "What items were present before and after the event, what was affected, and what are the items' values and claimed loss amounts?",
+    "Was any stolen item a wristwatch or pocket watch worth more than CHF 5,000, or jewellery subject to a theft limit? If jewellery, how was it stored?",
+    "Is the claim under valuables insurance, and are receipts or expert valuations available for any claimed valuables?",
+    "Does another policy cover the same property, risks, and period? If so, what insurer, policy number, coverage and amounts have been reported or claimed? Is there liability insurance? Could an identifiable third party have caused or enlarged the loss, and has recourse been preserved? Who, if anyone, caused the damage, and did that person live in the household or have employment-enabled access?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  }
+ }
+}

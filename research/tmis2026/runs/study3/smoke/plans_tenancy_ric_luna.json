@@ -1,0 +1,95 @@
+{
+ "B1v2p|fcl_020f2bacedc162a9|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "Is the termination expressly based on rent arrears, or is that only an oral possibility? If it is based on arrears, what amounts does the landlord claim are outstanding?",
+    "On what date was the termination delivered, to whom was it delivered, and what evidence of delivery is available?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  }
+ },
+ "B1v2p|fcl_09252315095aa169|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  }
+ },
+ "B1v2p|fcl_09bf4c849ef1ee44|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  }
+ },
+ "B1v2p|fcl_0f9a9b0f4a043ab5|0": {
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what evidence records its delivery?",
+    "Was a separate termination notice addressed or delivered to your husband? If so, please provide a copy and service evidence.",
+    "Please provide the correspondence about your reported defects and rent objection, including dates and the landlord’s responses.",
+    "Please provide a dated record of your housing search, responses, and any circumstances supporting the requested extension."
+   ],
+   "requests": [
+    "housing_search_log",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ]
+  }
+ }
+}

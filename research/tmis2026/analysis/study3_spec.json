@@ -7,6 +7,8 @@
   "designs.self_consistency: number of samples per run (draft: 5) and whether the Rules in context runs count as samples",
   "designs.core.cost.multiplier: readings paid per text-run (development: 2, two readings per run)",
   "product_evaluator: worktree of the frozen product commit and the converted fresh2 catalogues",
+  "product.commit and product.source_tree_sha256: the frozen commit (40 hex digits; also product_evaluator.*.package.commit) and its `python -m casepath parity` source_tree_sha256; harness/study3/run_all.py refuses fresh2 until both match the worktree",
+  "product.env: CASEPATH_MODEL_REASONING=true; add the number of readings here if round 4 makes it a setting",
   "tenancy_subsets.defining_event_false: the definition (draft: empty request set and no held document)"
  ],
  "statistics": {
@@ -34,9 +36,18 @@
  },
  "deciding_agents": ["router", "claim_reader", "source_checker", "document_finder"],
  "deciding_agents_note": "Calls that can decide the checklist: routing, the two readings and the document judgments. These are the agents a checklist-only run calls. All other agents (process_builder, result_checker, any other) are 'the rest'.",
+ "product": {
+  "note": "The product under test, read by harness/study3/run_all.py. env: product settings added to harness/product/run_api.settings_env for every product run; design_env: per design. The fresh2 tenancy rule templates have the SHA-256 of fresh/'s (both MANIFEST.json files), so the fresh-serial-sync workflows apply unchanged; run_all.py checks this again before a fresh2 run.",
+  "commit": "FROZEN-COMMIT-OPEN",
+  "source_tree_sha256": "FROZEN-TREE-OPEN",
+  "subdir": "casepath-internal",
+  "env": {"CASEPATH_MODEL_REASONING": "true"},
+  "design_env": {"casepath": {}, "casepath_checklist": {"CASEPATH_RUN_SCOPE": "checklist"}},
+  "catalogues": {"tenancy": "harness/product/workflows/fresh-serial-sync", "theft": "harness/product/workflows/theft-reviewed"}
+ },
  "product_evaluator": {
   "note": "package = the product package at a commit of this repository, extracted read-only with git archive; or a folder path",
-  "tenancy": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh2-serial-sync"},
+  "tenancy": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/fresh-serial-sync"},
   "theft": {"package": {"commit": "FROZEN-COMMIT-OPEN", "subdir": "casepath-internal"}, "catalogue": "harness/product/workflows/theft-reviewed"}
  },
  "designs": [
