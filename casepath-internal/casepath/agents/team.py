@@ -61,9 +61,9 @@ Art. 312 and 318 OR; for a dismissal during sick leave: the employment contract 
 Art. 336c OR) and the procedural steps the law requires (for example an objection or a filing within a statutory
 period). Add each need the workflow does not already name with propose_change: a document need attached to the step
 where it is needed, a question, or a step inserted before the step it must precede. Give its legal basis as the
-statute article (Art. … OR, ZGB, ZPO, SchKG, VVG …): a need grounded in an article is required by law and counts as
-missing when the files lack it. A need without an article must rest on a quote from the files or an applied Knowledge
-item, and stays a suggestion for the case worker. A generic need such as "supporting papers" does not cover anything:
+statute article (Art. … OR, ZGB, ZPO, SchKG, VVG …), or rest it on a quote from the files or an applied Knowledge item.
+Every addition is a suggestion for the case worker, shown with its basis: it does not count as missing until the
+workflow, Knowledge or a case handler confirms it. A generic need such as "supporting papers" does not cover anything:
 name the concrete documents, both those already in the files (the checklist then shows them as present) and those
 still missing. Add nothing the workflow already names and nothing the law and the case do not call for; at most six.
 A person can change or remove any addition. Never remove what the workflow requires. Report the case's questions in
@@ -444,9 +444,9 @@ def _propose_change(work, agent, args):
     if not located and args["basis_knowledge"] not in knowledge_ids and not statute:
         return {"accepted": False, "reason": "name the statute article, an applied Knowledge item, or quote the files as the basis"}
     condition = casegraph.conjunction([{"fact": c["fact"], "value": _coerce(work, c["fact"], c["value"])} for c in args["required_when"]])
-    # An addition the law requires (it names a statute article) or an active Knowledge item requires counts as required;
-    # any other addition is a suggestion for the case worker. A person can change or remove either.
-    suggested = args["basis_knowledge"] not in active and not (statute and args["op"] in ("add_document", "add_step"))
+    # An addition stays a suggestion, shown with its stated basis, until the workflow, Knowledge or a case handler confirms
+    # it; only an addition that rests on an active Knowledge item counts as required. A person can change or remove either.
+    suggested = args["basis_knowledge"] not in active
     if args["op"] == "add_document":
         edit_args = {"title": args["title"], "why": args["why"], "step": args["step"], "required_when": condition, "suggested": suggested,
                      **({"legal_basis": args["legal_basis"]} if args["legal_basis"] else {})}

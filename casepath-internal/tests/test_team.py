@@ -288,7 +288,7 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(row["required"], "suggested")  # an agent's addition waits for a person
         self.assertNotIn("e-pb1", [a.get("document") for a in result["evaluation"]["next_actions"]])
 
-    def test_a_document_the_law_requires_is_required_even_when_the_files_never_mention_it(self):
+    def test_a_need_the_process_builder_adds_from_the_law_is_a_suggestion_with_its_basis(self):
         lease = ("propose_change", {"op": "add_document", "title": "Mietvertrag", "why": "Zeigt das Mietverhältnis.", "question": "",
                                     "step": "assess", "required_when": [], "legal_basis": "Art. 253 OR", "basis_knowledge": None,
                                     "citations": [], "reason": "Das Mietverhältnis ist zu belegen."})
@@ -299,9 +299,9 @@ class TeamTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
         edit, = result["agent_edits"]  # a need with neither an article, a quote nor Knowledge is refused
         row = next(d for d in result["evaluation"]["documents"] if d["document"] == "e-pb1")
-        self.assertEqual((row["title"], row["required"], row["status"]), ("Mietvertrag", "yes", "missing"))
-        self.assertIn({"kind": "obtain", "document": "e-pb1", "text": "Mietvertrag", "why": "Zeigt das Mietverhältnis."},
-                      result["evaluation"]["next_actions"])
+        # It waits for the workflow, Knowledge or a handler to confirm it: shown with its basis, never counted as missing.
+        self.assertEqual((row["title"], row["required"], row["status"], row["legal_basis"]), ("Mietvertrag", "suggested", "missing", "Art. 253 OR"))
+        self.assertNotIn("e-pb1", [a.get("document") for a in result["evaluation"]["next_actions"]])
         self.assertEqual(next(d for d in result["process"]["documents"] if d["id"] == "e-pb1")["legal_basis"], "Art. 253 OR")
         live = [e for e in result["events"] if e["kind"] == "process.state"][-1]
         self.assertEqual(next(d for d in live["documents"] if d["document"] == "e-pb1")["legal_basis"], "Art. 253 OR")

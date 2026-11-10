@@ -407,7 +407,8 @@ def _walk(workflow, facts, findings=None, *, checked=False):
                           "step": step_id, "required": need,
                           "condition_facts": sorted(condition_facts(document.get("required_when"))) if required is None else [],
                           "status": status, "files": files, "citations": citations,
-                          "source_refs": document["source_refs"]})
+                          "source_refs": document["source_refs"],
+                          **({"legal_basis": document["legal_basis"]} if document.get("legal_basis") else {})})
     next_actions = [{"kind": "answer", "fact": w["fact"], "text": w["question"]} for w in waiting]
     # An unmet condition on a fact nobody has established is a question to answer, not a value to resolve.
     next_actions += [{"kind": "answer", "fact": u["fact"], "text": u["question"]} if u["value"] is None else
