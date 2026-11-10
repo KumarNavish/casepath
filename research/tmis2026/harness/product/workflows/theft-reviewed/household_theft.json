@@ -4,7 +4,7 @@
   "is": "household_theft"
  },
  "conversion": {
-  "condition_facts": 27,
+  "condition_facts": 89,
   "conditional_rules": 89,
   "conditions_without_any_need": 62,
   "documents": 27,
@@ -628,6 +628,17 @@
    ]
   },
   {
+   "id": "g001",
+   "question": "Does this hold for the claim: A feared insured event has occurred and the entitled claimant is aware of the event and the insurance claim.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_001",
+    "theft-reviewed-rules#theft-source-0040#p1",
+    "theft-reviewed-rules#theft-source-0050#p1",
+    "theft-reviewed-rules#theft-source-0097#p1"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g002",
    "question": "Does this hold for the claim: The loss is connected with theft, attempted theft, robbery, or a theft incident requiring investigation.",
    "source_refs": [
@@ -676,11 +687,68 @@
    "type": "boolean"
   },
   {
+   "id": "g007",
+   "question": "Does this hold for the claim: Coverage is sought for simple theft away from home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_007",
+    "theft-reviewed-rules#theft-source-0122#p1",
+    "theft-reviewed-rules#theft-source-0162#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g008",
+   "question": "Does this hold for the claim: The claim concerns theft-related household-contents damage at home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_008",
+    "theft-reviewed-rules#theft-source-0025#p3",
+    "theft-reviewed-rules#theft-source-0149#p1",
+    "theft-reviewed-rules#theft-source-0154#p1"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g009",
    "question": "Does this hold for the claim: The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_009",
     "theft-reviewed-rules#theft-source-0010#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g012",
+   "question": "Does this hold for the claim: The insurer has requested information or support for loss handling.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_012",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0051#p1",
+    "theft-reviewed-rules#theft-source-0120#p1",
+    "theft-reviewed-rules#theft-source-0134#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g013",
+   "question": "Does this hold for the claim: The insurer has requested an inventory or itemized list.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_013",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0086#p1",
+    "theft-reviewed-rules#theft-source-0134#p1",
+    "theft-reviewed-rules#theft-source-0151#p1",
+    "theft-reviewed-rules#theft-source-0163#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g014",
+   "question": "Does this hold for the claim: Original receipts or specified supporting evidence have been requested, or the claim concerns damaged or stolen items.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_014",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0109#p1",
+    "theft-reviewed-rules#theft-source-0134#p1"
    ],
    "type": "boolean"
   },
@@ -738,6 +806,17 @@
    "type": "boolean"
   },
   {
+   "id": "g021",
+   "question": "Does this hold for the claim: Either party demands expert proceedings.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_021",
+    "theft-reviewed-rules#theft-source-0053#p1",
+    "theft-reviewed-rules#theft-source-0121#p1",
+    "theft-reviewed-rules#theft-source-0193#p3"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g022",
    "question": "Does this hold for the claim: The expert-procedure route has been selected.",
    "source_refs": [
@@ -759,11 +838,166 @@
    "type": "boolean"
   },
   {
+   "id": "g024",
+   "question": "Does this hold for the claim: A party failed to appoint its expert within 14 days after written request, and the other party applies for appointment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_024",
+    "theft-reviewed-rules#theft-source-0023#p2",
+    "theft-reviewed-rules#theft-source-0023#p3",
+    "theft-reviewed-rules#theft-source-0111#p2",
+    "theft-reviewed-rules#theft-source-0111#p3"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g025",
    "question": "Does this hold for the claim: Experts made findings within their authority.",
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_025",
     "theft-reviewed-rules#theft-source-0118#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g026",
+   "question": "Does this hold for the claim: The claim concerns movable household contents.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_026",
+    "theft-reviewed-rules#theft-source-0150#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g027",
+   "question": "Does this hold for the claim: The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_027",
+    "theft-reviewed-rules#theft-source-0073#p1",
+    "theft-reviewed-rules#theft-source-0098#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g028",
+   "question": "Does this hold for the claim: The insurance is on a first-risk basis.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_028",
+    "theft-reviewed-rules#theft-source-0073#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g029",
+   "question": "Does this hold for the claim: The claim concerns jewellery in simple theft at the insured location, or jewellery in burglary theft that was not stored in a specified locked security container.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_029",
+    "theft-reviewed-rules#theft-source-0080#p1",
+    "theft-reviewed-rules#theft-source-0182#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g030_rev_659606b1",
+   "question": "Does this hold for the claim: A deductible applies to the loss event (the deductible agreed in the policy or, absent a different agreement, CHF 200) and no qualifying no-deductible exception applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_030",
+    "theft-reviewed-rules#theft-source-0081#p1",
+    "theft-reviewed-rules#theft-source-0167#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g031",
+   "question": "Does this hold for the claim: The loss is burglary theft and an activated permanently installed alarm system was present.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_031",
+    "theft-reviewed-rules#theft-source-0145#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g032",
+   "question": "Does this hold for the claim: A statutory or contractual duty was breached and a legal disadvantage for breach was agreed or otherwise applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_032",
+    "theft-reviewed-rules#theft-source-0069#p1",
+    "theft-reviewed-rules#theft-source-0108#p1",
+    "theft-reviewed-rules#theft-source-0188#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g033",
+   "question": "Does this hold for the claim: A compensation reduction or legal disadvantage is proposed because of a breach.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_033",
+    "theft-reviewed-rules#theft-source-0069#p1",
+    "theft-reviewed-rules#theft-source-0137#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g034",
+   "question": "Does this hold for the claim: The entitled claimant culpably breached the duty to give notice.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_034",
+    "theft-reviewed-rules#theft-source-0142#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g035",
+   "question": "Does this hold for the claim: The claimant or representative deceptively misstates, conceals, delays, or omits facts or required communications relevant to coverage or benefit reduction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_035",
+    "theft-reviewed-rules#theft-source-0059#p1",
+    "theft-reviewed-rules#theft-source-0077#p1",
+    "theft-reviewed-rules#theft-source-0133#p1",
+    "theft-reviewed-rules#theft-source-0183#p1",
+    "theft-reviewed-rules#theft-source-0183#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g036",
+   "question": "Does this hold for the claim: The insurer has received all information and documents needed to determine loss amount and insurance benefit.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_036",
+    "theft-reviewed-rules#theft-source-0001#p1",
+    "theft-reviewed-rules#theft-source-0157#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g037",
+   "question": "Does this hold for the claim: Compensation cannot be determined or paid because of culpable conduct by the policyholder or beneficiary.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_037",
+    "theft-reviewed-rules#theft-source-0003#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g038",
+   "question": "Does this hold for the claim: A police or criminal investigation concerning the loss is ongoing and proceedings against the policyholder or entitled claimant remain unconcluded.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_038",
+    "theft-reviewed-rules#theft-source-0018#p1",
+    "theft-reviewed-rules#theft-source-0095#p1",
+    "theft-reviewed-rules#theft-source-0125#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g039",
+   "question": "Does this hold for the claim: The insured person failed to comply with cooperation duties and the insurer issued a written compliance request specifying a 10-day period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_039",
+    "theft-reviewed-rules#theft-source-0013#p1",
+    "theft-reviewed-rules#theft-source-0013#p2",
+    "theft-reviewed-rules#theft-source-0013#p3",
+    "theft-reviewed-rules#theft-source-0036#p1",
+    "theft-reviewed-rules#theft-source-0092#p1"
    ],
    "type": "boolean"
   },
@@ -774,6 +1008,16 @@
     "theft-reviewed-rules#overlay_rule_040",
     "theft-reviewed-rules#theft-source-0012#p1",
     "theft-reviewed-rules#theft-source-0106#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g041",
+   "question": "Does this hold for the claim: Items or animals for which compensation was already paid are recovered.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_041",
+    "theft-reviewed-rules#theft-source-0011#p1",
+    "theft-reviewed-rules#theft-source-0032#p1"
    ],
    "type": "boolean"
   },
@@ -797,11 +1041,204 @@
    "type": "boolean"
   },
   {
+   "id": "g044",
+   "question": "Does this hold for the claim: A claim arises from the insurance contract.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_044",
+    "theft-reviewed-rules#theft-source-0020#p1",
+    "theft-reviewed-rules#theft-source-0064#p1",
+    "theft-reviewed-rules#theft-source-0131#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g045",
+   "question": "Does this hold for the claim: The policyholder reimburses CSS all compensation paid for the matter within 30 days after becoming aware of settlement.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_045",
+    "theft-reviewed-rules#theft-source-0085#p1",
+    "theft-reviewed-rules#theft-source-0085#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g048",
+   "question": "Does this hold for the claim: A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_048",
+    "theft-reviewed-rules#theft-source-0038#p1"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g049",
    "question": "Does this hold for the claim: CSS requests a corresponding police report.",
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_049",
     "theft-reviewed-rules#theft-source-0043#p5"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g050",
+   "question": "Does this hold for the claim: The claim seeks reimbursement of costs arising from simple theft at home or away from home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_050",
+    "theft-reviewed-rules#theft-source-0062#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g051",
+   "question": "Does this hold for the claim: There are doubts about the beneficiary's entitlement to receive payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_051",
+    "theft-reviewed-rules#theft-source-0066#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g052",
+   "question": "Does this hold for the claim: A duty governed by the valuables insurance provision is being considered.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_052",
+    "theft-reviewed-rules#theft-source-0082#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g053",
+   "question": "Does this hold for the claim: The claimed damage was caused by a person living in the insured person's household or by a person employed by the insured person.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_053",
+    "theft-reviewed-rules#theft-source-0083#p1",
+    "theft-reviewed-rules#theft-source-0083#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g054",
+   "question": "Does this hold for the claim: The applicability of the provision governing the claimed damage is being determined.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_054",
+    "theft-reviewed-rules#theft-source-0014#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g055",
+   "question": "Does this hold for the claim: A contractual agreement subjects a claim against the insurance undertaking to a shorter limitation period or a shorter time restriction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_055",
+    "theft-reviewed-rules#theft-source-0015#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g056",
+   "question": "Does this hold for the claim: CSS is considering termination of or withdrawal from the insurance.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_056",
+    "theft-reviewed-rules#theft-source-0026#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g057",
+   "question": "Does this hold for the claim: The event is theft.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_057",
+    "theft-reviewed-rules#theft-source-0028#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g058",
+   "question": "Does this hold for the claim: It is unclear how the insurance benefit should be allocated among multiple entitled persons.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_058",
+    "theft-reviewed-rules#theft-source-0041#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g059",
+   "question": "Does this hold for the claim: Repair work is required for a covered loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_059",
+    "theft-reviewed-rules#theft-source-0046#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g060",
+   "question": "Does this hold for the claim: Payment information is required for payment of the insurance benefit.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_060",
+    "theft-reviewed-rules#theft-source-0047#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g061",
+   "question": "Does this hold for the claim: An obligation arising from the insurance policy is to be performed.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_061",
+    "theft-reviewed-rules#theft-source-0074#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g063",
+   "question": "Does this hold for the claim: An entitled claimant is alleged to have breached the relevant obligations.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_063",
+    "theft-reviewed-rules#theft-source-0076#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g064",
+   "question": "Does this hold for the claim: The entitled claimant breached the relevant obligations in an inexcusable manner.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_064",
+    "theft-reviewed-rules#theft-source-0076#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g065",
+   "question": "Does this hold for the claim: A first partial payment is requested.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_065",
+    "theft-reviewed-rules#theft-source-0078#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g066",
+   "question": "Does this hold for the claim: A first partial payment is requested after the applicable four-week period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_066",
+    "theft-reviewed-rules#theft-source-0078#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g067",
+   "question": "Does this hold for the claim: Repairs to insured property are contemplated.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_067",
+    "theft-reviewed-rules#theft-source-0084#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g068_rev_3767fc15",
+   "question": "Does this hold for the claim: The policyholder demands a partial payment four weeks or more after the loss occurred.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_068",
+    "theft-reviewed-rules#theft-source-0090#p1"
    ],
    "type": "boolean"
   },
@@ -824,12 +1261,75 @@
    "type": "boolean"
   },
   {
+   "id": "g072",
+   "question": "Does this hold for the claim: The contract provides that notice of the loss must be submitted in writing.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_072",
+    "theft-reviewed-rules#theft-source-0143#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g073",
+   "question": "Does this hold for the claim: Coverage is sought under the theft category governed by the cited provision.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_073",
+    "theft-reviewed-rules#theft-source-0153#p1"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g074",
    "question": "Does this hold for the claim: The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_074",
     "theft-reviewed-rules#theft-source-0159#p1",
     "theft-reviewed-rules#theft-source-0159#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g075",
+   "question": "Does this hold for the claim: Compensation is payable or has been paid in connection with the claim.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_075",
+    "theft-reviewed-rules#theft-source-0164#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g076",
+   "question": "Does this hold for the claim: The policyholder became aware of the compensation payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_076",
+    "theft-reviewed-rules#theft-source-0164#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g077",
+   "question": "Does this hold for the claim: The policyholder exercises the stated contract-termination right.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_077",
+    "theft-reviewed-rules#theft-source-0164#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g078",
+   "question": "Does this hold for the claim: A partial payment is requested after a loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_078",
+    "theft-reviewed-rules#theft-source-0171#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g079",
+   "question": "Does this hold for the claim: A partial payment is requested and the current status of loss assessment establishes an amount that is at least payable.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_079",
+    "theft-reviewed-rules#theft-source-0171#p2"
    ],
    "type": "boolean"
   },
@@ -852,11 +1352,56 @@
    "type": "boolean"
   },
   {
+   "id": "g082",
+   "question": "Does this hold for the claim: A medical certificate or police proof is absent.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_082",
+    "theft-reviewed-rules#theft-source-0180#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g083",
+   "question": "Does this hold for the claim: A medical certificate or police proof is absent.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_083",
+    "theft-reviewed-rules#theft-source-0180#p2"
+   ],
+   "type": "boolean"
+  },
+  {
    "id": "g084",
    "question": "Does this hold for the claim: The claim concerns financial losses caused by misuse of SIM cards.",
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_084",
     "theft-reviewed-rules#theft-source-0185#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g085",
+   "question": "Does this hold for the claim: The condition stated in the governing due-date provision continues to apply.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_085",
+    "theft-reviewed-rules#theft-source-0190#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g086",
+   "question": "Does this hold for the claim: The policyholder gives cancellation notice under the stated post-compensation cancellation right.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_086",
+    "theft-reviewed-rules#theft-source-0192#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g087",
+   "question": "Does this hold for the claim: The policyholder seeks to use the stated 14-day cancellation notice period after payment of compensation.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_087",
+    "theft-reviewed-rules#theft-source-0192#p2"
    ],
    "type": "boolean"
   },
@@ -875,6 +1420,60 @@
    "source_refs": [
     "theft-reviewed-rules#overlay_rule_090",
     "theft-reviewed-rules#theft-source-0084#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g091",
+   "question": "Does this hold for the claim: The insurer has requested preparation of a signed inventory.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_091",
+    "theft-reviewed-rules#theft-source-0086#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g092",
+   "question": "Does this hold for the claim: The entitled person seeks advance payments after the insurer disputes its obligation to provide benefits.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_092",
+    "theft-reviewed-rules#theft-source-0087#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g093",
+   "question": "Does this hold for the claim: The specified period has expired and an entitled person seeks an advance payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_093",
+    "theft-reviewed-rules#theft-source-0087#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g094",
+   "question": "Does this hold for the claim: A claim seeks CSS coverage for a theft loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_094",
+    "theft-reviewed-rules#theft-source-0088#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g096",
+   "question": "Does this hold for the claim: A partial payment is demanded following a loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_096",
+    "theft-reviewed-rules#theft-source-0090#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g097",
+   "question": "Does this hold for the claim: A loss has occurred and a partial payment is sought.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_097",
+    "theft-reviewed-rules#theft-source-0090#p2"
    ],
    "type": "boolean"
   },

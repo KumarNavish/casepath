@@ -1,7 +1,14 @@
-"""Model-free check: the converted theft workflow under the product's evaluator vs the harness's CP4 plan_exact."""
+"""Model-free check: the converted theft workflow under the product's evaluator vs the harness's CP4 plan_exact.
+
+    python3 compare_theft.py [--product <worktree>]
+
+Fails (exit 1) when a document decision differs, or when a document the reviewed rules can demand (requested or held by
+plan_exact under some assignment: every condition alone, all together, and the random assignments) has no need in the
+workflow."""
 import json, random, sys
+_PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-product-7ff7af64")
 sys.path[:0] = ["/home/user/casepath/research/tmis2026/harness/product", "/home/user/casepath/research/tmis2026/harness",
-                "/home/user/casepath/research/tmis2026/harness/v2", "/home/user/work/casepath-product-7ff7af64/casepath-internal"]
+                "/home/user/casepath/research/tmis2026/harness/v2", f"{_PRODUCT}/casepath-internal"]
 import convert_theft as ct
 from casepath.process import workflows as W
 import load_reviewed, theft_v2
@@ -29,3 +36,21 @@ for i in range(3000):
     if req != rq or hold != rh:
         print("DIFF", sorted(req ^ rq), sorted(hold ^ rh)); break
 print(f"{n} assignments, {agree}/{docs} document decisions agree")
+# Every document the rules can demand must have a need in the workflow.
+demandable = set()
+for g in pack.guards:
+    nu = {x: "false" for x in pack.guards}
+    nu[g] = "true"
+    plan = pack.plan_exact(nu)
+    demandable |= set(plan["requests"]) | set(plan["holds"])
+plan = pack.plan_exact({x: "true" for x in pack.guards})
+demandable |= set(plan["requests"]) | set(plan["holds"])
+rng = random.Random(7)
+for i in range(3000):
+    plan = pack.plan_exact({g: rng.choice(["true", "false", "unresolved"]) for g in pack.guards})
+    demandable |= set(plan["requests"]) | set(plan["holds"])
+needs = {d["id"] for d in wf["documents"]}
+lacking = sorted(d for d in demandable if ids[d].lower() not in needs)
+print(f"{len(demandable)} documents the rules can demand; {len(lacking)} without a need in the workflow" + (": " + "; ".join(lacking) if lacking else ""))
+if agree != docs or lacking:
+    sys.exit(1)

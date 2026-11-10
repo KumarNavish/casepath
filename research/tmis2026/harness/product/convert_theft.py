@@ -9,7 +9,9 @@ Mapping
                      to a fallback workflow, it returns at routing.)
 - rule condition  -> boolean fact per distinct guard (guard ids as harness/v2/load_reviewed, so rules sharing a
                      condition share the fact: overlay_guard_042 -> g042), question = the condition text; source_refs =
-                     the rules and their cited passages. Only conditions some need depends on become facts.
+                     the rules and their cited passages. Every condition of the rule base becomes a fact, including the
+                     ones no need depends on (they cannot change the checklist; the readings judge each condition among
+                     all the others, as CP4 does).
 - evidence item   -> for each evidence item (rule.facts[].evidence[] and the rule's confirming_evidence) the CHEAPEST
   (capability)       route is chosen at conversion with the harness's route order (fewest documents, then route id;
                      nothing on file), exactly as the paper engine chooses with nothing on file (theft_methods._route_key).
@@ -129,8 +131,10 @@ def convert(rules_path=RULES):
         documents.append(d)
     used = {c["fact"] for d in documents for c in ([d["required_when"]] if "fact" in d.get("required_when", {}) else
                                                      d.get("required_when", {}).get("any", []))}
-    stats["conditions_without_any_need"] = len(set(facts) - used)
-    facts = [facts[f] for f in sorted(used)]  # a condition no need depends on cannot change the checklist
+    stats["conditions_without_any_need"] = len(set(facts) - used)  # kept as facts
+    # Every condition of the rule base is a fact, also one no need depends on: it cannot change the checklist, but the
+    # readings judge each condition among all the others, as CP4 does, and read it differently without them.
+    facts = [facts[f] for f in sorted(facts)]
     sha = hashlib.sha256(Path(rules_path).read_bytes()).hexdigest()
     cited = sorted({r for d in documents for r in d["source_refs"]} | {r for f in facts for r in f["source_refs"]})
     workflow = {
