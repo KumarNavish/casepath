@@ -95,8 +95,8 @@ class ScriptedModel:
 def _condition(row):
     """A scripted fact row ({fact, status, value, citations}) as the reading's answer for one condition."""
     quote = (row.get("citations") or [{}])[0].get("quote", "")
-    if row["status"] != "established":
-        return {"id": row["fact"], "verdict": "unresolved", "value": None, "quote": quote}
+    if row["status"] != "established":  # a quoted unknown is an open answer; an unquoted one says nothing
+        return {"id": row["fact"], "verdict": "open" if quote else "not_stated", "value": None, "quote": quote}
     folded = str(row["value"]).strip().lower()
     if folded in {"true", "yes", "ja"}:
         return {"id": row["fact"], "verdict": "true", "value": None, "quote": quote}
