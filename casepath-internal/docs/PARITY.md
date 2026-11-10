@@ -62,7 +62,7 @@ Neither the manifest nor this page contains case content or credentials.
 - **Commits.** The internal copy is kept as separate commits on another host. Their hashes and messages differ from the commits here, so commit hashes cannot show that the code is equal. Use the tree hash instead.
 - **Model.** This is the one declared difference besides proprietary data, and it is configuration, not code:
   - the internal deployment runs on the model of the workspace's gateway, named in its deployment settings;
-  - the external research deployment runs on gpt-6-luna;
+  - the external research deployment runs on a separately configured model, named in its run manifests;
   - both use the same connectors, selected by `CASEPATH_MODEL_PROVIDER` and `CASEPATH_MODEL_API`, with the model named in `CASEPATH_MODEL` or `CASEPATH_AZURE_OPENAI_DEPLOYMENT`.
 
   No code path depends on the model's name, with one exception: for an Azure OpenAI resource, `CASEPATH_MODEL_REASONING` defaults from the deployment name (on for names containing "gpt-5" or "-o"), and setting it explicitly overrides the default.
@@ -82,6 +82,14 @@ These changes on the paper-sync branch of 10.11.2026 alter behaviour even for wo
 
   With every fact known, evaluation is unchanged; tests assert this for all assignments.
 - **Wider second reading.** Every fact a step or a document condition uses is read twice. This is the existing rule, now covered by a test; no code changed.
+
+The changes below, made after those, also alter behaviour for existing workflows:
+
+- **Routing.** When the routing facts leave exactly one workflow open and no other workflow or fallback can apply, that workflow is prepared and its routing facts are recorded as presumed from routing. Before, such a case was handed over. A catalogue without routing facts now prepares its fallback workflow.
+- **Routed presumption.** The defining event of the routed case type (`applies: "routed"`) is presumed also when the files mention it but leave it open; it yields to an established value or to two conflicting readings. Presumptions for unstated facts are unchanged.
+- **Documents.** A message or another document that only mentions a needed document no longer meets the need (`mentioned_only`; the need stays missing). Quotes for a present document count only from the files named for it. The source checker is asked whether the file is the document itself, and checks each `must_show` item on its own; an item it does not find shown makes the document unusable. The finder names `must_show` items exactly as listed.
+- **Facts.** In a case of up to 40,000 characters the claim reader answers every fact of the process in one structured reading (established, unknown with a quote, or unknown without). The second reading of every deciding fact answers in the same form. A value counts only where both readings give it; a value found by one reading only leaves the fact unknown. A longer dossier is still read by the agent, with the same agreement rule.
+- **Turn limits.** An agent that reaches its turn limit ends with what it recorded; the run completes, evaluates the checklist and names the limit in its warnings, instead of failing.
 
 These changes change nothing unless a workflow or the configuration uses them:
 - presumptions (`presumptions` in a workflow);
