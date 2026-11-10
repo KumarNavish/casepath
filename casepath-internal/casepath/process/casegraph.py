@@ -218,6 +218,13 @@ def build(base, *, knowledge=(), edits=(), facts_known=None, case_id=None):
 
 
 QUANTIFIERS = {"sämtliche", "bisherige", "allfällige", "alle", "weitere", "kopie", "kopien", "ihr", "ihre", "ihren", "die", "der", "das"}
+FUNCTION_WORDS = QUANTIFIERS | {"und", "oder", "inkl", "mit", "von", "vom", "des", "dem", "den", "zum", "zur", "für", "über", "bzw", "sowie", "allenfalls"}
+
+
+def content(title):
+    """The content words of a title, outside parentheses, cut to six letters so inflections meet."""
+    text = re.sub(r"\([^)]*\)", " ", title or "")
+    return {w.lower()[:6] for w in re.findall(r"[A-Za-zÄÖÜäöüß]{3,}", text) if w.lower() not in FUNCTION_WORDS}
 
 
 def head(title):
@@ -231,13 +238,17 @@ def head(title):
 def merge_restated(graph):
     """A need an edit adds that restates a need of the process or of Knowledge becomes one row with both origins.
 
-    ponytail: matches by the title's head noun; a model-side "same as" link would catch paraphrases this misses.
+    Two needs are the same when they share the head noun and one's content words are a subset of the other's.
+    ponytail: title words only; a model-side "same as" link would catch paraphrases this misses.
     """
     kept = {head(d["title"]): d for d in graph["documents"] if not d.get("edit") and head(d["title"])}
     merged = []
     for document in [d for d in graph["documents"] if d.get("edit")]:
         same = kept.get(head(document["title"]))
         if same is None or document.get("suggested"):
+            continue
+        mine, theirs = content(document["title"]), content(same["title"])
+        if not (mine <= theirs or theirs <= mine):  # same head noun, different document ("… mit der Versicherung")
             continue
         same["source_refs"] = same["source_refs"] + [r for r in document["source_refs"] if r not in same["source_refs"]]
         if document.get("legal_basis") and not same.get("legal_basis"):
