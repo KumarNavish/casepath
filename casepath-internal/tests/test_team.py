@@ -223,6 +223,7 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(READ_FACTS, CONFIRM)  # the same question, put the same way, twice
         self.assertIn("never false", READ_FACTS)
         self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is unresolved
+        self.assertIn("YYYY-MM-DD", READ_FACTS)  # dates in the form the fact type accepts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None,
                                                   "citations": [{"file": "f1", "quote": VENT}]}])
