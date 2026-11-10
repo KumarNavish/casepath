@@ -159,6 +159,21 @@ class TeamTests(unittest.TestCase):
         self.assertEqual((row["status"], row["second_value"]), ("conflicting", False))
         self.assertNotIn("landlord_notified", work.accepted_facts())  # a person settles it
 
+    def test_every_fact_a_condition_uses_is_read_twice(self):
+        """Facts that only decide whether a document is needed are read a second time too, with the same agreement rule."""
+        from casepath.agents.team import CaseWork, confirm_facts, gating_facts
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "photos_taken", "type": "boolean", "question": "Did the tenant take photos?", "source_refs": ["fixture#p"]})
+        next(d for d in data["documents"] if d["id"] == "photo")["required_when"] = {"fact": "photos_taken", "is": True}
+        work = CaseWork(case=CASE, files=FILES, base_workflow=data)
+        self.assertEqual(sorted(f["id"] for f in gating_facts(work)), ["landlord_notified", "photos_taken"])
+        cite = [{"file": "f1", "quote": VENT}]
+        work.facts["photos_taken"] = {"fact": "photos_taken", "status": "established", "value": True, "citations": cite,
+                                      "verdict": None, "by": "claim_reader"}
+        other = ScriptedModel([], second_reading=[{"fact": "photos_taken", "status": "established", "value": "no", "citations": cite}])
+        self.assertEqual(confirm_facts(other, work)["differed"], 1)
+        self.assertEqual(work.facts["photos_taken"]["status"], "conflicting")
+
     def test_two_readings_of_a_name_with_and_without_its_address_agree(self):
         from casepath.agents.team import same_reading
         text, date = {"type": "text"}, {"type": "date"}
