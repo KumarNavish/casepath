@@ -65,37 +65,53 @@ The Hackathon cases have gold labels made independently of any handler session. 
 
 Experts can be wrong too, so corrections are scored against gold as well, and since all five experts judge the same items, their agreement is reported for every item.
 
-## The study we can actually run: 5 experts × 3 Hackathon cases
+## The study we can actually run: 5 experts × 3 mould dossiers, nothing but the interface
 
-Five Protekta experts, three Hackathon cases for which Protekta's explicit process reference exists. Mobiliar's consent is in place. Fifteen expert-case sessions is small, so the design spends them where they prove most, and takes everything else from replay, which costs no expert time.
+Five Protekta experts, three sealed mould dossiers (D2, D4, D7), each as it stood at one decision point, measured against the mould process the process owner drew. Mobiliar's consent is in place. **There is no adjudicator, no questionnaire and no interview.** Everything an expert contributes, they contribute by working in CasePath.
 
-**Rules that protect the result**
-- **The three study cases are sealed.** No fix, rule or Knowledge item may be derived from them, and they are scored only at the freeze. Seed Knowledge is counted without them.
-- **One frozen system for all five experts.** Same code, workflows, Knowledge and model; the parity manifest is recorded with every session. Nothing learned from one expert reaches the next during the study.
-- **Fully crossed.** Every expert handles all three cases, so every item has five independent expert judgments.
+**The whole feedback instrument is three gestures**
+1. **Leave it.** Closing the case ("erledigt" or "erledigt, mit Vorbehalt") attests what was left unchanged.
+2. **Change it where it is,** with the reason in one tap.
+3. **"Anmerkung"** on any screen or item, and one optional line when closing the case.
 
-**The session (about two hours per expert)**
-1. Ten minutes on a synthetic practice case, so nobody learns the tool on a study case.
-2. The three cases, in an order balanced across experts (Latin square).
-3. **One of the three is handled unaided first:** the expert works from the dossier alone in the same tool, states the process step, the documents to request and the next action, and only then sees CasePath's result and may revise. Which case is unaided rotates, so each case is unaided for at least one expert and aided for at least three.
-4. Two short validated scales (trust, workload) before and after: ten items in all.
-5. Twenty minutes of stimulated recall: the expert is shown their own corrections from the record and says why. Recorded inside Mobiliar and linked to event ids.
+**The session (about seventy-five minutes per expert)**
+1. Five minutes on a synthetic practice case.
+2. **Case 1, own answer first:** from the original files alone, the expert picks the process step, ticks the documents to request and picks the next action (three pick-lists, a few minutes after reading). Then CasePath's result appears and they review it like any case.
+3. Cases 2 and 3, with CasePath from the start.
+Every expert handles all three cases on one frozen system; which case comes first rotates.
+
+**Where truth comes from, without an adjudicator**
+
+| Source | What it settles | Independent of CasePath? |
+|---|---|---|
+| The file after the decision point | what Protekta then asked for and did | yes: it is what happened |
+| The experts' own answers on their first case | step, documents, next action | yes: given before CasePath is shown |
+| The other four experts on the same item | every item; an expert is always compared with the consensus of the others, never with their own vote | partly: they saw CasePath |
+| The process owner's process | the path | yes |
+| The bridge's labels, made before any session | every item, as a second line | yes, but a single non-expert labeller |
+
+An item's status is reported with the sources that agree on it. Where all experts keep an item that the file or the own answers contradict, that is over-reliance; where the sources cannot settle an item, it is reported as unsettled rather than forced.
 
 **What each part proves**
 
-| Claim | Evidence | Expert time |
+| Claim | Evidence | Extra expert time |
 |---|---|---|
-| Accuracy | CasePath's items against the process reference and gold labels, on the three sealed cases and the eight others | none |
-| Appropriate reliance | per item: was it right, and did the expert keep, verify or change it; five judgments per item | the sessions |
-| Expert agreement | agreement among five experts on the same items; consensus as a second reference beside Protekta's | the sessions |
-| Effort | unaided-first against aided, with case and expert as blocks: time, corrections needed, accuracy; and how far the reveal moves an unaided answer | one case per expert |
-| Learning | Knowledge built from the experts' corrections, then replayed model-free: leave one expert out (how many of the fifth expert's corrections would the other four have prevented), leave one case out, and transfer to the eight unseen dossiers and the synthetic claims | none |
-| Safe learning | each proposal's replayed effect on gold before activation; proposals stopped because they would lower accuracy | none |
-| Why experts change things | the six reasons, plus the recall conversations | twenty minutes each |
+| Accuracy | CasePath's items against what Protekta did, the experts' own answers and consensus | none |
+| Appropriate reliance | kept, verified or changed, against the item's status | none |
+| Expert agreement | five judgments per item | none |
+| Effort and influence | own answer first against CasePath's result on the same case: what the expert had alone, what changed after the reveal, time | a few minutes on one case |
+| Learning | Knowledge from the corrections on two cases, replayed model-free on the third; transfer to the development dossiers and the synthetic claims | none |
+| Safe learning | each proposal's replayed effect before activation | none |
+| Why experts change things | the six reasons and the Anmerkungen | none |
+
+**Rules that protect the result**
+- The three study cases and the reserve (D5) are sealed from development and scored only at the freeze.
+- One frozen system for all five; the parity manifest is recorded with every session; nothing learned from one expert reaches the next.
 
 **Honest limits, stated in advance**
-- Five experts and three cases of one insurer support estimates with intervals and item-level tests that respect the clustering (permutation by expert and by case), not population claims. The experts' learning effect on new live cases is not observed; it is estimated by replay.
-- Accuracy on the sealed cases is reported next to accuracy on the cases used for development, so any gap is visible.
+- Five experts, three cases, one insurer, one process: estimates with intervals, no population claims.
+- No independent human adjudication. Truth rests on what Protekta did, the experts' own answers and their consensus; shared blind spots that none of these reveal stay invisible.
+- No perception scales: what experts think of CasePath is known only from what they do and what they note.
 
 ## Adopted from the paper session's review (binding before the first session)
 
@@ -103,13 +119,13 @@ The paper session reviewed this design against the code (its branch, `research/t
 
 1. **One stored run per case, the same for all five experts.** Each expert works on their own copy of the case, and every copy points to the frozen run. In a session: no re-check, no model call, Knowledge read-only. A session starts only if the copy's item-list hash equals the frozen run's. Four further runs per case, never shown, give run-to-run variation.
 2. **An append-only study event log**, with the fields of `EVENT_FIELDS.md` and a schema field on every record. It includes the time of every undo, the stored difference each correction propagates, the reason, and an "item added" event, so that what CasePath failed to state is counted.
-3. **Item gold before the first session**, by two adjudicators who are not among the five experts and see no session record: correct, incorrect, or cannot be decided from the file; plus the reference items each run lacks.
+3. **No adjudicators (decided by Navish: no expert time beyond the sessions).** Item status comes from the sources in the table above; the bridge's labels are made before any session.
 4. **Learning is leave-one-case-out**, with a gate that sees only the training cases' gold and a mechanical rule from correction to proposal. Leave-one-expert-out is reported as agreement, not as learning. It applies only if the three cases share a process family; otherwise the cross-case claim is dropped.
-5. **The unaided answer is structured and frozen at the reveal**, given in a view with the original files only (text read from scans is model output and is not shown there). The unaided case is always the expert's first study case.
+5. **The unaided answer is structured and frozen at the reveal**, given as three pick-lists, in a view with the original files only (text read from scans is model output and is not shown there). It is always the expert's first study case.
 6. **A single-prompt comparator** on the three cases, labelled in the same blind pass; it may run after the sessions.
 7. **The parity manifest hashes Knowledge by content fields only**, so use statistics do not change it.
 8. **For the outside check on synthetic claims:** each round's commit with its source-tree hash, notice before an API route or result field changes, a research-only setting for deterministic case and file ids, and a model-free `python -m casepath replay` that applies a Knowledge version to stored runs.
-9. **Feedback to experts** on which kept items were wrong is given to all five together after the last session, not at the end of a session.
+9. **Feedback to experts** on which kept items the sources contradict is given to all five together after the last session.
 
 ## Guard rails
 
