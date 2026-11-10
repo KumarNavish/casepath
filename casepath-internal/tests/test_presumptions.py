@@ -101,6 +101,32 @@ class PresumptionUseTests(unittest.TestCase):
                                            "citations": [{"file": "f1", "quote": QUOTE}], "verdict": "not_checked"}
         self.assertEqual(work.accepted_facts(), {})
 
+    def test_the_default_open_rule_holds_a_doubt_one_reading_did_not_see(self):
+        from casepath.agents import team
+        from casepath.process import workflows
+        from tests.scripted import ModelResult, ScriptedModel
+        answers = {"casepath_read_facts": "open", "casepath_confirm_facts": "open", "casepath_confirm_facts_2": "not_stated"}
+        def run(applies):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies=applies))
+            work.readings = 3
+            model = ScriptedModel([])
+            model.respond_json = lambda **kw: ModelResult(
+                value={"conditions": [{"id": "landlord_notified", "verdict": answers[kw["name"]], "value": None,
+                                       "quote": QUOTE if answers[kw["name"]] == "open" else ""}]},
+                usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+            team.read_facts(model, work)
+            team.confirm_facts(model, work)
+            self.assertEqual(work.facts["landlord_notified"]["open_readings"], [True, True, False])
+            return "landlord_notified" in work.presumptions()
+        self.assertEqual(workflows.OPEN_RULE, "any")
+        for applies in ("unstated", "routed"):
+            self.assertFalse(run(applies), applies)  # held: the doubt two readings quoted stands
+            previous, workflows.OPEN_RULE = workflows.OPEN_RULE, "all"
+            try:
+                self.assertTrue(run(applies), applies)  # the other rule would presume it
+            finally:
+                workflows.OPEN_RULE = previous
+
     def test_the_two_open_rules_on_recorded_answers(self):
         from casepath.process.workflows import open_without_raise, raised_open
         row = lambda *opens: {"status": "unknown", "citations": [1], "open_readings": list(opens)}
