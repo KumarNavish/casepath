@@ -34,7 +34,7 @@ class ReportLabelTests(unittest.TestCase):
         self.assertIn("die Prüfung zweifelt: Zitat zu knapp", de)
         self.assertIn("the check doubts it: Zitat zu knapp", en)
         self.assertIn("Hinweise zur Vorbereitung", de)
-        self.assertIn("documents it did not reach stay requested", en)
+        self.assertIn("documents it had never recorded stay requested and are marked not checked; what it had recorded stands", en)
 
 
 class ProductTextTests(unittest.TestCase):

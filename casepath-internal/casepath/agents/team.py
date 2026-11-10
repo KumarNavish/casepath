@@ -131,8 +131,8 @@ PLAN = [
     ("result_checker", "Evaluate the process with the accepted findings, answer, draft the reply and propose what to learn."),
 ]
 
-# Both readings put the same question to the model in the same form: every condition judged true, false or unresolved,
-# one exact quotation for a verdict, unresolved whenever the files do not settle it.
+# Every reading puts the same question to the model in the same form: every condition answered true, false, open or
+# not stated, with one exact quotation for true, false and open.
 READING_RULES = """You support a case handler deciding which documents to request for this case. A document is requested
 only when the case's process requires it; when whether it is required depends on a fact that is still unresolved, it
 is held and that fact is asked about first. Your part: read the case files to judge the conditions that decide this.
@@ -205,7 +205,7 @@ class CaseWork:
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
         self.routing_presumed = {}  # routing facts presumed because only this case's workflow can apply
         self.limits = []  # agents that stopped at their turn limit, with what they had recorded kept
-        self.facts_confirmed = False  # set once the second reading has run
+        self.facts_confirmed = False  # set once the further readings have run
         self.finder_incomplete = False  # set when the document finder's first pass stops before it finishes
         self.brief = self.process_report = self.result = None
         self.documents_looked_for = False  # set once the document finder has reported
@@ -746,7 +746,7 @@ def run_source_checker(model, work, effort="medium", kinds=("fact", "document"))
             row["verdict"] = "accepted" if verdict and verdict["verdict"] == "supported" else "rejected"
             row["verdict_reason"] = verdict["reason"] if verdict else "Not answered by the independent check."
             if kind == "fact" and row.get("agreed") and row["verdict"] == "rejected":
-                # A deciding fact two readings agree on, with exact quotes, stands: the checker's doubt is a flag for the
+                # A deciding fact all readings agree on, with exact quotes, stands: the checker's doubt is a flag for the
                 # case handler, not a change to what the checklist requires.
                 row["verdict"], row["flag"] = "accepted", {"kind": "source_checker_doubt", "reason": row["verdict_reason"]}
             if kind == "document" and row["verdict"] == "accepted" and row["status"] == "present":
@@ -822,7 +822,7 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
     quotes)}; open and not_stated are both unknown, and only an open answer keeps its located quote (the words saying the
     matter is open). A true or false answer without a quotation found word for word in a file, or with a value the fact
     does not allow, counts as unknown without a quote. ``reverse`` lists the conditions in the opposite order, so that the
-    second reading is an independent request for the same judgments."""
+    further readings are independent requests for the same judgments."""
     if work.total_chars <= SMALL_CASE_CHARS:
         view = {"files_text": {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}}
     else:
@@ -915,7 +915,7 @@ def _recorded_open(row):
 
 def read_facts(model, work, effort="medium"):
     """The first reading: every fact of the case's process, answered in one structured reading. Facts that decide the
-    path are read a second time (``confirm_facts``) and count only where both readings agree."""
+    path are read a second time (``confirm_facts``) and count only where all readings agree."""
     facts = work.graph["facts"]
     if not facts:
         return {"read": 0}
@@ -1067,11 +1067,11 @@ def confirm_facts(model, work, effort="medium"):
             continue
         if first_value is not None and status == "established":
             if same_reading(definition, first_value, value):
-                first["agreed"] = True  # two independent readings give it: it decides the checklist
+                first["agreed"] = True  # every independent reading gives it: it decides the checklist
                 agreed += 1
             else:
                 first.update(status="conflicting", verdict="not_checked", citations=first["citations"] + located,
-                             second_value=value, verdict_reason="Two independent readings of the files differ; a person decides.",
+                             second_value=value, verdict_reason="Independent readings of the files differ; a person decides.",
                              reason_code="readings_differ")
                 work.emit("source_checker", "fact.conflicting", fact=fact["id"])
                 differed += 1
@@ -1081,13 +1081,13 @@ def confirm_facts(model, work, effort="medium"):
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": quotes,
                                       "verdict": "not_checked", "by": (first or {}).get("by", "second_reading"),
                                       "readings": [first_value, value],
-                                      "verdict_reason": "Only one of two independent readings found a value; a person decides.",
+                                      "verdict_reason": "Not every independent reading found a value; a person decides.",
                                       "reason_code": "one_reading_only"}
             work.emit("source_checker", "fact.located", fact=fact["id"], status="unknown", quotes=len(quotes), missed=0,
                       cite=quotes[0] if quotes else None)
             single += 1
         elif located and first is not None and first.get("citations"):
-            # Both readings leave it open and both quote a passage that raises it: the fact is raised and left open.
+            # The first reading left it open with words found in the files, and so did a further reading: their words are kept.
             work.facts[fact["id"]] = {"fact": fact["id"], "status": "unknown", "value": None, "citations": first["citations"] + located,
                                       "verdict": "not_checked", "by": first.get("by", "second_reading")}
         elif located and (first is None or first["status"] == "unknown"):
@@ -1119,7 +1119,7 @@ class CaseTeam:
         state["delegations"] += 1
         work.emit("lead", "delegate", to=agent, instruction=instruction[:300])
         if agent == "source_checker":
-            # a checklist-only run checks documents only: a deciding fact both readings agree on is not changed by the check
+            # a checklist-only run checks documents only: a deciding fact all readings agree on is not changed by the check
             return run_source_checker(self.model, work, self.effort, kinds=("document",) if self.scope == "checklist" else ("fact", "document"))
         if agent == "result_checker" and work.unverified():
             run_source_checker(self.model, work, self.effort)
@@ -1188,7 +1188,7 @@ class CaseTeam:
                 out.append({"agent": agent, "step": instruction,
                             "reason": "the case has one file, taken as the claim itself: no attachment can meet a document need"})
         out.append({"agent": "source_checker", "step": "facts",
-                    "reason": "facts: a deciding fact both readings agree on stands; the check could only add a flag"})
+                    "reason": "facts: a deciding fact all readings agree on stands; the check could only add a flag"})
         return out
 
     def _retry_rejected(self, work, state):

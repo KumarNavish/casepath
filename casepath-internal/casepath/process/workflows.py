@@ -709,7 +709,7 @@ class _Reach:
 
 
 def reading_gave_value(row, presumed=None):
-    """Whether one of the two readings gave this fact a value, with an admitted quotation, other than the presumed one.
+    """Whether one of the readings gave this fact a value, with an admitted quotation, other than the presumed one.
     Such a fact stays open for a person: no presumption replaces what a reading found against it. A reading that found
     the presumed value itself does not block the presumption."""
     return any(v is not None and v != presumed for v in (row or {}).get("readings") or [])
