@@ -21,6 +21,7 @@ class ScriptedModel:
         self.last_first_reading = []
         self.routing = list(routing)
         self.other_topic = []
+        self.retries = {}  # name -> the answer to a retry
         self.tool_choices = []
         self.instructions, self.tools, self.inputs = [], [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
@@ -42,6 +43,9 @@ class ScriptedModel:
         if name == "casepath_photo":
             return ModelResult(value={"description": "[Foto] Wand mit dunklen Flecken neben dem Fenster."}, usage={"input_tokens": 5},
                                deployment="d", response_id="p", attempts=1, seconds=0)
+        if len(input) > 1 and name in self.retries:  # a retry asks again in the same conversation
+            value = self.retries[name]
+            return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="q", attempts=1, seconds=0)
         if name == "casepath_route":
             from casepath.agents.schema import validate_result
             value = {"facts": self.routing, "other_topic": self.other_topic}

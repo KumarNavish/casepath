@@ -694,6 +694,19 @@ def same_reading(definition, first, second):
     return bool(shorter) and len(shorter & longer) / len(shorter) >= 0.75
 
 
+REQUOTE = """Some quotations in your answer were not found word for word in the files: {items}. Answer again for
+these only, with the same values where the files support them, each with ONE exact, contiguous quotation copied
+character for character from one file: no ellipsis, no paraphrase, no joined fragments. Where no such passage exists,
+give no value."""
+
+
+def requote(model, request, previous, items):
+    """One retry for answers whose quotation was not found in the files, in the same conversation and schema."""
+    return model.respond_json(**{**request, "input": request["input"] + [
+        {"role": "assistant", "content": json.dumps(previous, ensure_ascii=False)},
+        {"role": "user", "content": REQUOTE.format(items=", ".join(items))}]})
+
+
 def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
     """One reading: every condition judged true, false or unresolved with one exact quotation. Returns
     {fact: (status, value, located quotes)}. A verdict without a quotation found word for word in a file, or with a value
@@ -715,13 +728,24 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
         case_text = "\n\n".join(f"[file {work.evidence.files[fid].get('name') or fid}]\n{t}" for fid, t in view["files_text"].items())
     else:
         case_text = json.dumps(view, ensure_ascii=False)
-    answer = model.respond_json(name=name, effort=effort, schema=schema,
-                                instructions=instructions + f"\n\nThe case is a {work.graph['title']}. Conditions:\n"
-                                + json.dumps(conditions, ensure_ascii=False),
-                                input=[{"role": "user", "content": "CASE:\n" + case_text}])
-    work.usage.append({"agent": "claim_reader" if name == "casepath_read_facts" else "source_checker", **answer.usage})
+    request = dict(name=name, effort=effort, schema=schema,
+                   instructions=instructions + f"\n\nThe case is a {work.graph['title']}. Conditions:\n"
+                   + json.dumps(conditions, ensure_ascii=False),
+                   input=[{"role": "user", "content": "CASE:\n" + case_text}])
+    answer = model.respond_json(**request)
+    agent = "claim_reader" if name == "casepath_read_facts" else "source_checker"
+    work.usage.append({"agent": agent, **answer.usage})
+    answers = answer.value["conditions"]
+
+    def found(row):
+        return bool(row["quote"]) and any(work.evidence.locate(fid, row["quote"]) for fid in work.file_ids)
+    unquoted = list(dict.fromkeys(r["id"] for r in answers if r["verdict"] in {"true", "false"} and not found(r)))
+    if unquoted:  # one retry for verdicts whose quotation was not found word for word
+        again = requote(model, request, answer.value, unquoted)
+        work.usage.append({"agent": agent, **again.usage})
+        answers = [r for r in answers if r["id"] not in unquoted] + [r for r in again.value["conditions"] if r["id"] in unquoted]
     rows = {}
-    for row in answer.value["conditions"]:
+    for row in answers:
         if row["id"] in rows:
             continue  # the first answer per condition counts
         hit = next((h for fid in work.file_ids if (h := work.evidence.locate(fid, row["quote"]))), None) if row["quote"] else None

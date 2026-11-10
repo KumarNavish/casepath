@@ -242,6 +242,15 @@ class TeamTests(unittest.TestCase):
         # Both readings leave it open and quote the passage that raises it.
         self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 2))
 
+    def test_a_verdict_whose_quotation_is_not_found_is_asked_for_once_more(self):
+        from casepath.agents.team import CaseWork, read_facts
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes",
+                                                  "citations": [{"file": "f1", "quote": "Ich habe ... informiert."}]}])
+        model.retries["casepath_read_facts"] = {"conditions": [{"id": "landlord_notified", "verdict": "true", "value": None, "quote": QUOTE}]}
+        read_facts(model, work)
+        self.assertEqual((work.facts["landlord_notified"]["status"], work.facts["landlord_notified"]["value"]), ("established", True))
+
     def test_a_false_verdict_counts_when_both_readings_give_it_with_a_quote(self):
         from casepath.agents.team import CaseWork, confirm_facts, read_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)

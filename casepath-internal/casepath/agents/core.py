@@ -43,7 +43,7 @@ from pathlib import Path
 import sys
 
 from ..process import casegraph, knowledge as kb, workflows
-from .team import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
+from .team import CaseTeam, CaseWork, TeamError, requote, run_agent, run_source_checker
 from .azure_model import ModelError
 from ..read.evidence import Evidence
 from ..read.reading import prepare_file
@@ -234,7 +234,7 @@ def route(model, catalogue, case, files, on_event):
                  other_topic=arr(obj(topic=text(200), file=choice(file_ids), quote=text(1200, minLength=8)), maxItems=4))
     documents = [_both_ends(evidence, fid, 12000) for fid in file_ids[:12]]
     on_event({"agent": "claim_reader", "kind": "agent.start", "instruction": "Find what kind of case this is."})
-    answer = model.respond_json(name="casepath_route", instructions=ROUTE_INSTRUCTIONS, schema=schema, effort="low",
+    request = dict(name="casepath_route", instructions=ROUTE_INSTRUCTIONS, schema=schema, effort="low",
                                 input=[{"role": "user", "content": json.dumps(
                                     {"routing_facts": [{k: f.get(k) for k in ("id", "question", "type", "values")} for f in facts],
                                      "workflows": [{"title": w["title"], "applies_when": w.get("applies_when"), "fallback": bool(w.get("fallback"))}
@@ -242,9 +242,16 @@ def route(model, catalogue, case, files, on_event):
                                      "case": {"title": case["title"], "intake": case.get("intake") or {}},
                                      "catalogue": evidence.catalogue(), "files": documents},
                                     ensure_ascii=False)}])
-    known, cited = {}, {}
+    answer = model.respond_json(**request)
     definitions = {f["id"]: f for f in facts}
-    for row in answer.value["facts"]:
+    unquoted = [row["fact"] for row in answer.value["facts"] if row["value"] is not None
+                and not any(evidence.locate(c["file"], c["quote"]) for c in row["citations"])]
+    rows = answer.value["facts"]
+    if unquoted:  # one retry for the quotations not found word for word, before any decision rests on their absence
+        again = requote(model, request, answer.value, unquoted)
+        rows = [r for r in rows if r["fact"] not in unquoted] + [r for r in again.value["facts"] if r["fact"] in unquoted]
+    known, cited = {}, {}
+    for row in rows:
         located = [hit for c in row["citations"] if (hit := evidence.locate(c["file"], c["quote"]))]
         allowed = definitions[row["fact"]].get("values") or None
         if row["value"] is not None and located and (allowed is None or row["value"] in allowed):
