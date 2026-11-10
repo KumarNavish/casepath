@@ -22,6 +22,7 @@ class ScriptedModel:
         self.routing = list(routing)
         self.other_topic = []
         self.retries = {}  # name -> the answer to a retry
+        self.confirm_documents = None  # the second judgment of documents, when a test sets it
         self.tool_choices = []
         self.instructions, self.tools, self.inputs = [], [], []
         self.settings = types.SimpleNamespace(deployment="example-deployment")
@@ -46,6 +47,14 @@ class ScriptedModel:
         if len(input) > 1 and name in self.retries:  # a retry asks again in the same conversation
             value = self.retries[name]
             return ModelResult(value=value, usage={"input_tokens": 5}, deployment="d", response_id="q", attempts=1, seconds=0)
+        if name == "casepath_confirm_documents":
+            # By default the second judgment agrees with the finder: present, quoting the first file for every item.
+            given = json.loads(input[0]["content"])
+            first = given["files"][0]
+            rows = self.confirm_documents if self.confirm_documents is not None else [
+                {"document": n["document"], "status": "present", "file": first["file"],
+                 "shows": [{"item": i, "quote": first["text"][:30]} for i in (n["must_show"] or ["the document"])]} for n in given["needs"]]
+            return ModelResult(value={"documents": rows}, usage={"input_tokens": 5}, deployment="d", response_id="cd", attempts=1, seconds=0)
         if name == "casepath_route":
             from casepath.agents.schema import validate_result
             value = {"facts": self.routing, "other_topic": self.other_topic}
