@@ -1,0 +1,2875 @@
+{
+ "p7ff": {
+  "tenancy": {
+   "PRODUCT conservative (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.2361111111111111,
+    "held_required_now": 0.09722222222222222,
+    "handed": 0.1111111111111111,
+    "missed": 0.3333333333333333,
+    "unnecessary": 0.5138888888888888,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.0277777777777777,
+    "spurious_hold": 0.4583333333333333,
+    "handoff_runs": 1
+   },
+   "PRODUCT workflow needs only (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.2361111111111111,
+    "held_required_now": 0.09722222222222222,
+    "handed": 0.1111111111111111,
+    "missed": 0.3333333333333333,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 0.5833333333333334,
+    "spurious_hold": 0.4305555555555556,
+    "handoff_runs": 1
+   },
+   "Rules in context B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9538152610441767,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.2638888888888889,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2638888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9839357429718876,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.0,
+    "handed": 0.0,
+    "missed": 0.1111111111111111,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.1388888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "CPv2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9578313253012049,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.041666666666666664,
+    "handed": 0.06944444444444445,
+    "missed": 0.18055555555555555,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2916666666666667,
+    "spurious_hold": 0.027777777777777776,
+    "handoff_runs": 1
+   },
+   "CPv2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9738955823293173,
+    "held": 0.2638888888888889,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.08333333333333333,
+    "missed": 0.08333333333333333,
+    "unnecessary": 0.05555555555555555,
+    "premature": 0.027777777777777776,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.25,
+    "spurious_hold": 0.05555555555555555,
+    "handoff_runs": 1
+   },
+   "(a) self-consistency over B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.963855421686747,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.19444444444444445,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(b) model executes rules, CoL/B2 (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9497991967871486,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.1527777777777778,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.20833333333333334,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(c) ReAct agent (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 3,
+    "requested_share": 0.9096385542168675,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.0,
+    "missed": 0.6111111111111112,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.6388888888888888,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(d) two-valued, unknown=false (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.4305555555555556,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.25,
+    "strict_unsafe": 0.9166666666666666,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "(d) two-valued, unknown=true (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9337349397590361,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.3472222222222222,
+    "unnecessary": 0.4861111111111111,
+    "premature": 0.2916666666666667,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.25,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "_costs": {
+    "PRODUCT": {
+     "calls_per_case": 35.21296296296296,
+     "usd_per_case": 0.017623385532407373,
+     "claim_runs": 216,
+     "note": "calls paid in this task (commit 7ff7af64); interrupted runs re-served from cache"
+    },
+    "COL": {
+     "calls_per_case": 1.0,
+     "usd_per_case": 0.0019326261805555549
+    },
+    "REACT": {
+     "calls_per_case": 8.041666666666666,
+     "usd_per_case": 0.0034696344444444488
+    },
+    "B1v2p gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.001981394236111111
+    },
+    "CPv2p-interpret gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.0014010070833333334
+    },
+    "B1v2p gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.017843012499999998
+    },
+    "CPv2p-interpret gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.01058846111111111
+    },
+    "SC": {
+     "calls_per_case": 9.0,
+     "usd_per_case": 0.005944182708333334
+    }
+   }
+  },
+  "theft": {
+   "PRODUCT conservative (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 27,
+    "missed": 6,
+    "wm_per_pair": 1.8333333333333333,
+    "wrong_per_pair": 1.5,
+    "missed_per_pair": 0.3333333333333333,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.5,
+    "premature_when_open": 0.0
+   },
+   "PRODUCT workflow needs only (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 24,
+    "missed": 6,
+    "wm_per_pair": 1.6666666666666667,
+    "wrong_per_pair": 1.3333333333333333,
+    "missed_per_pair": 0.3333333333333333,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.5,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (luna)": {
+    "pair_runs": 54,
+    "wrong": 70,
+    "missed": 17,
+    "wm_per_pair": 1.6111111111111112,
+    "wrong_per_pair": 1.2962962962962963,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 10,
+    "unchanged_when_open": 0.19444444444444445,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (terra)": {
+    "pair_runs": 54,
+    "wrong": 16,
+    "missed": 13,
+    "wm_per_pair": 0.5370370370370371,
+    "wrong_per_pair": 0.2962962962962963,
+    "missed_per_pair": 0.24074074074074073,
+    "missed_because_held": 5,
+    "unchanged_when_open": 1.0,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 50,
+    "missed": 22,
+    "wm_per_pair": 1.3333333333333333,
+    "wrong_per_pair": 0.9259259259259259,
+    "missed_per_pair": 0.4074074074074074,
+    "missed_because_held": 8,
+    "unchanged_when_open": 0.25,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 9,
+    "missed": 9,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 3,
+    "unchanged_when_open": 0.9722222222222222,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (terra)": {
+    "pair_runs": 54,
+    "wrong": 60,
+    "missed": 17,
+    "wm_per_pair": 1.4259259259259258,
+    "wrong_per_pair": 1.1111111111111112,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 5,
+    "unchanged_when_open": 0.5277777777777778,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna, run 0 only)": {
+    "pair_runs": 18,
+    "wrong": 3,
+    "missed": 3,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.9166666666666666,
+    "premature_when_open": 0.0
+   },
+   "_costs": {
+    "PRODUCT": {
+     "usd_per_text": 0.07337048296875,
+     "calls_per_text": 78.65625
+    },
+    "R gpt-6-luna": {
+     "usd_per_text": 0.000765253125,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6-luna": {
+     "usd_per_text": 0.0023903910416666666,
+     "calls_per_text": 2
+    },
+    "R gpt-6.1-terra": {
+     "usd_per_text": 0.004111801041666667,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6.1-terra": {
+     "usd_per_text": 0.020826077435897435,
+     "calls_per_text": 2
+    }
+   }
+  },
+  "theft_rows": [
+   {
+    "pair": "s4-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [
+     "+Insurer's consent to alteration of the damaged items before the loss is determined",
+     "+Police consent to the removal or alteration of the Tatspuren"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "+e-pb1"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [],
+    "stable": true,
+    "premature": false
+   },
+   {
+    "pair": "s5-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "+Insurer's consent to alteration of the damaged items before the loss is determined",
+     "+Police consent to the removal or alteration of the Tatspuren",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Insurer's consent to alteration of the damaged items before the loss is determined",
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "+Police consent to the removal or alteration of the Tatspuren",
+     "+e-pb1"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "+e-pb1"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [
+     "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+     "-Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "-Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+     "-Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+     "-Payment instruction with payee name and address, IBAN and name of the financial institution",
+     "-Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+     "-Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+     "-The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "missed_held": [],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "+Insurer's consent to alteration of the damaged items before the loss is determined",
+     "+Police consent to the removal or alteration of the Tatspuren"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_declined",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_declined",
+    "run": 0,
+    "wrong": [
+     "+Insurer's consent to alteration of the damaged items before the loss is determined",
+     "+Police consent to the removal or alteration of the Tatspuren"
+    ],
+    "missed": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "missed_held": [],
+    "stable": false,
+    "premature": false
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "cases": 72,
+    "calls_per_case": 35.19444444444444,
+    "failed": 2
+   },
+   "theft": {
+    "cases": 32,
+    "calls_per_case": 25.03125,
+    "failed": 0
+   }
+  },
+  "diagnose": {
+   "tenancy": {
+    "unnecessary": {
+     "process-builder addition marked required": 32,
+     "document finder (with must_show): judged unusable": 3,
+     "document finder (with must_show): judged missing": 2
+    },
+    "missed": {
+     "document finder (with must_show): judged present": 12,
+     "failed run (turn_limit: The document finder did not finish within its tu)": 7,
+     "failed run (turn_limit: The result checker did not finish within its tur)": 5
+    },
+    "spurious_hold": {
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 17,
+     "fact deposit_considered: left unknown by the claim reader (quoted)": 2,
+     "fact deposit_considered: source-checker rejection": 2,
+     "fact family_home: left unknown by the claim reader (quoted)": 2,
+     "fact extension_relevant: second-reading conflict": 2,
+     "process-builder addition held": 2,
+     "fact specialist_needed: source-checker rejection": 1,
+     "fact termination_received: left unknown by the claim reader (quoted)": 1,
+     "fact mold: left unknown by the claim reader (quoted)": 1,
+     "fact health_effects: left unknown by the claim reader (quoted)": 1,
+     "fact extension_relevant: left unknown by the claim reader (quoted)": 1,
+     "fact retaliation_screen: left unknown by the claim reader (quoted)": 1
+    },
+    "premature": {
+     "fact extension_relevant: claim reader judged the wrong value": 1,
+     "fact retaliation_screen: claim reader judged the wrong value": 1,
+     "fact heating: claim reader judged the wrong value": 1,
+     "fact deposit_considered: claim reader judged the wrong value": 1
+    },
+    "held_required_now": {
+     "fact termination_received: left unknown by the claim reader (quoted)": 6,
+     "document finder (with must_show): judged present": 1
+    },
+    "silent_skip": {
+     "failed run": 1
+    },
+    "handed": {
+     "routing: whole claim handed over": 8
+    }
+   },
+   "tenancy_waiting_for_causes": {
+    "left unknown by the claim reader (quoted)": 37,
+    "second-reading conflict": 4,
+    "source-checker rejection": 3
+   },
+   "theft": {
+    "wrong: routing handed one text of the pair over (claim_type not established)": 9,
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 6,
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader": 5,
+    "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 4,
+    "wrong: process-builder addition differs between the two texts": 3,
+    "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 2,
+    "missed: the changed condition not established: claim reader judged the wrong value": 1,
+    "missed: the changed condition not established: left unknown by the claim reader": 1,
+    "missed: routing handed one text of the pair over (claim_type not established)": 1,
+    "missed: document finder judged present (variant text)": 1
+   }
+  }
+ },
+ "sync-c-15": {
+  "tenancy": {
+   "PRODUCT conservative (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.375,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.5833333333333334,
+    "spurious_hold": 0.2777777777777778,
+    "handoff_runs": 1
+   },
+   "PRODUCT workflow needs only (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2222222222222222,
+    "spurious_hold": 0.16666666666666666,
+    "handoff_runs": 1
+   },
+   "Rules in context B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9538152610441767,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.2638888888888889,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2638888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9839357429718876,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.0,
+    "handed": 0.0,
+    "missed": 0.1111111111111111,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.1388888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "CPv2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9578313253012049,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.041666666666666664,
+    "handed": 0.06944444444444445,
+    "missed": 0.18055555555555555,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2916666666666667,
+    "spurious_hold": 0.027777777777777776,
+    "handoff_runs": 1
+   },
+   "CPv2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9738955823293173,
+    "held": 0.2638888888888889,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.08333333333333333,
+    "missed": 0.08333333333333333,
+    "unnecessary": 0.05555555555555555,
+    "premature": 0.027777777777777776,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.25,
+    "spurious_hold": 0.05555555555555555,
+    "handoff_runs": 1
+   },
+   "(a) self-consistency over B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.963855421686747,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.19444444444444445,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(b) model executes rules, CoL/B2 (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9497991967871486,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.1527777777777778,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.20833333333333334,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(c) ReAct agent (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 3,
+    "requested_share": 0.9096385542168675,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.0,
+    "missed": 0.6111111111111112,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.6388888888888888,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(d) two-valued, unknown=false (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.4305555555555556,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.25,
+    "strict_unsafe": 0.9166666666666666,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "(d) two-valued, unknown=true (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9337349397590361,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.3472222222222222,
+    "unnecessary": 0.4861111111111111,
+    "premature": 0.2916666666666667,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.25,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "_costs": {
+    "PRODUCT": {
+     "calls_per_case": 25.86111111111111,
+     "usd_per_case": 0.05287015659722212,
+     "claim_runs": 72,
+     "note": "calls paid in this task (commit 7ff7af64); interrupted runs re-served from cache"
+    },
+    "COL": {
+     "calls_per_case": 1.0,
+     "usd_per_case": 0.0019326261805555549
+    },
+    "REACT": {
+     "calls_per_case": 8.041666666666666,
+     "usd_per_case": 0.0034696344444444488
+    },
+    "B1v2p gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.001981394236111111
+    },
+    "CPv2p-interpret gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.0014010070833333334
+    },
+    "B1v2p gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.017843012499999998
+    },
+    "CPv2p-interpret gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.01058846111111111
+    },
+    "SC": {
+     "calls_per_case": 9.0,
+     "usd_per_case": 0.005944182708333334
+    }
+   }
+  },
+  "theft": {
+   "PRODUCT conservative (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 13,
+    "missed": 5,
+    "wm_per_pair": 1.0,
+    "wrong_per_pair": 0.7222222222222222,
+    "missed_per_pair": 0.2777777777777778,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5,
+    "premature_when_open": 0.0
+   },
+   "PRODUCT workflow needs only (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 11,
+    "missed": 5,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6111111111111112,
+    "missed_per_pair": 0.2777777777777778,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (luna)": {
+    "pair_runs": 54,
+    "wrong": 70,
+    "missed": 17,
+    "wm_per_pair": 1.6111111111111112,
+    "wrong_per_pair": 1.2962962962962963,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 10,
+    "unchanged_when_open": 0.19444444444444445,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (terra)": {
+    "pair_runs": 54,
+    "wrong": 16,
+    "missed": 13,
+    "wm_per_pair": 0.5370370370370371,
+    "wrong_per_pair": 0.2962962962962963,
+    "missed_per_pair": 0.24074074074074073,
+    "missed_because_held": 5,
+    "unchanged_when_open": 1.0,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 50,
+    "missed": 22,
+    "wm_per_pair": 1.3333333333333333,
+    "wrong_per_pair": 0.9259259259259259,
+    "missed_per_pair": 0.4074074074074074,
+    "missed_because_held": 8,
+    "unchanged_when_open": 0.25,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 9,
+    "missed": 9,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 3,
+    "unchanged_when_open": 0.9722222222222222,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (terra)": {
+    "pair_runs": 54,
+    "wrong": 60,
+    "missed": 17,
+    "wm_per_pair": 1.4259259259259258,
+    "wrong_per_pair": 1.1111111111111112,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 5,
+    "unchanged_when_open": 0.5277777777777778,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna, run 0 only)": {
+    "pair_runs": 18,
+    "wrong": 3,
+    "missed": 3,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.9166666666666666,
+    "premature_when_open": 0.0
+   },
+   "_costs": {
+    "PRODUCT": {
+     "usd_per_text": 0.07337048296875,
+     "calls_per_text": 78.65625
+    },
+    "R gpt-6-luna": {
+     "usd_per_text": 0.000765253125,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6-luna": {
+     "usd_per_text": 0.0023903910416666666,
+     "calls_per_text": 2
+    },
+    "R gpt-6.1-terra": {
+     "usd_per_text": 0.004111801041666667,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6.1-terra": {
+     "usd_per_text": 0.020826077435897435,
+     "calls_per_text": 2
+    }
+   }
+  },
+  "theft_rows": [
+   {
+    "pair": "s4-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "missed_held": [],
+    "stable": true,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "+e-pb1"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s5-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "+e-pb1",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_declined",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_declined",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "cases": 72,
+    "calls_per_case": 25.86111111111111,
+    "usd_per_case": 0.012844268333333332,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   },
+   "theft": {
+    "cases": 32,
+    "calls_per_case": 24.375,
+    "usd_per_case": 0.02199629890625,
+    "failed": 0,
+    "turn_limit_warnings": 3
+   }
+  },
+  "diagnose": {
+   "tenancy": {
+    "missed": {
+     "document finder (with must_show): judged present": 7
+    },
+    "spurious_hold": {
+     "process-builder addition held": 8,
+     "fact arrears: left unknown by the claim reader (quoted)": 5,
+     "fact family_home: left unknown by the claim reader (quoted)": 3,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 3,
+     "fact health_effects: left unknown by the claim reader (quoted)": 1
+    },
+    "unnecessary": {
+     "process-builder addition marked required": 26,
+     "document finder (with must_show): judged missing": 1
+    },
+    "held_required_now": {
+     "fact health_effects: left unknown by the claim reader (quoted)": 5,
+     "fact mold: left unknown by the claim reader (quoted)": 4,
+     "fact retaliation_screen: left unknown by the claim reader (quoted)": 2,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 2,
+     "fact deposit_considered: left unknown by the claim reader (quoted)": 2,
+     "fact heating: left unknown by the claim reader (quoted)": 1,
+     "fact renovation: left unknown by the claim reader (quoted)": 1,
+     "fact arrears: left unknown by the claim reader (quoted)": 1
+    },
+    "handed": {
+     "routing: whole claim handed over": 8
+    }
+   },
+   "tenancy_waiting_for_causes": {
+    "left unknown by the claim reader (quoted)": 46
+   },
+   "theft": {
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 9,
+    "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 3,
+    "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 2,
+    "wrong: process-builder addition differs between the two texts": 2,
+    "missed: the changed condition not established: left unknown by the claim reader (quoted)": 2
+   }
+  }
+ },
+ "sync-c-15b": {
+  "tenancy": {
+   "PRODUCT conservative (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.375,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.5833333333333334,
+    "spurious_hold": 0.2777777777777778,
+    "handoff_runs": 1
+   },
+   "PRODUCT workflow needs only (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2222222222222222,
+    "spurious_hold": 0.16666666666666666,
+    "handoff_runs": 1
+   },
+   "Rules in context B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9538152610441767,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.2638888888888889,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2638888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9839357429718876,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.0,
+    "handed": 0.0,
+    "missed": 0.1111111111111111,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.1388888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "CPv2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9578313253012049,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.041666666666666664,
+    "handed": 0.06944444444444445,
+    "missed": 0.18055555555555555,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2916666666666667,
+    "spurious_hold": 0.027777777777777776,
+    "handoff_runs": 1
+   },
+   "CPv2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9738955823293173,
+    "held": 0.2638888888888889,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.08333333333333333,
+    "missed": 0.08333333333333333,
+    "unnecessary": 0.05555555555555555,
+    "premature": 0.027777777777777776,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.25,
+    "spurious_hold": 0.05555555555555555,
+    "handoff_runs": 1
+   },
+   "(a) self-consistency over B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.963855421686747,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.19444444444444445,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(b) model executes rules, CoL/B2 (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9497991967871486,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.1527777777777778,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.20833333333333334,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(c) ReAct agent (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 3,
+    "requested_share": 0.9096385542168675,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.0,
+    "missed": 0.6111111111111112,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.6388888888888888,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(d) two-valued, unknown=false (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.4305555555555556,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.25,
+    "strict_unsafe": 0.9166666666666666,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "(d) two-valued, unknown=true (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9337349397590361,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.3472222222222222,
+    "unnecessary": 0.4861111111111111,
+    "premature": 0.2916666666666667,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.25,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "_costs": {
+    "PRODUCT": {
+     "calls_per_case": 25.86111111111111,
+     "usd_per_case": 0.05287015659722212,
+     "claim_runs": 72,
+     "note": "calls paid in this task (commit 7ff7af64); interrupted runs re-served from cache"
+    },
+    "COL": {
+     "calls_per_case": 1.0,
+     "usd_per_case": 0.0019326261805555549
+    },
+    "REACT": {
+     "calls_per_case": 8.041666666666666,
+     "usd_per_case": 0.0034696344444444488
+    },
+    "B1v2p gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.001981394236111111
+    },
+    "CPv2p-interpret gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.0014010070833333334
+    },
+    "B1v2p gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.017843012499999998
+    },
+    "CPv2p-interpret gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.01058846111111111
+    },
+    "SC": {
+     "calls_per_case": 9.0,
+     "usd_per_case": 0.005944182708333334
+    }
+   }
+  },
+  "theft": {
+   "PRODUCT conservative (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 13,
+    "missed": 5,
+    "wm_per_pair": 1.0,
+    "wrong_per_pair": 0.7222222222222222,
+    "missed_per_pair": 0.2777777777777778,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5,
+    "premature_when_open": 0.0
+   },
+   "PRODUCT workflow needs only (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 11,
+    "missed": 5,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6111111111111112,
+    "missed_per_pair": 0.2777777777777778,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (luna)": {
+    "pair_runs": 54,
+    "wrong": 70,
+    "missed": 17,
+    "wm_per_pair": 1.6111111111111112,
+    "wrong_per_pair": 1.2962962962962963,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 10,
+    "unchanged_when_open": 0.19444444444444445,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (terra)": {
+    "pair_runs": 54,
+    "wrong": 16,
+    "missed": 13,
+    "wm_per_pair": 0.5370370370370371,
+    "wrong_per_pair": 0.2962962962962963,
+    "missed_per_pair": 0.24074074074074073,
+    "missed_because_held": 5,
+    "unchanged_when_open": 1.0,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 50,
+    "missed": 22,
+    "wm_per_pair": 1.3333333333333333,
+    "wrong_per_pair": 0.9259259259259259,
+    "missed_per_pair": 0.4074074074074074,
+    "missed_because_held": 8,
+    "unchanged_when_open": 0.25,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 9,
+    "missed": 9,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 3,
+    "unchanged_when_open": 0.9722222222222222,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (terra)": {
+    "pair_runs": 54,
+    "wrong": 60,
+    "missed": 17,
+    "wm_per_pair": 1.4259259259259258,
+    "wrong_per_pair": 1.1111111111111112,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 5,
+    "unchanged_when_open": 0.5277777777777778,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna, run 0 only)": {
+    "pair_runs": 18,
+    "wrong": 3,
+    "missed": 3,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.9166666666666666,
+    "premature_when_open": 0.0
+   },
+   "_costs": {
+    "PRODUCT": {
+     "usd_per_text": 0.07337048296875,
+     "calls_per_text": 78.65625
+    },
+    "R gpt-6-luna": {
+     "usd_per_text": 0.000765253125,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6-luna": {
+     "usd_per_text": 0.0023903910416666666,
+     "calls_per_text": 2
+    },
+    "R gpt-6.1-terra": {
+     "usd_per_text": 0.004111801041666667,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6.1-terra": {
+     "usd_per_text": 0.020826077435897435,
+     "calls_per_text": 2
+    }
+   }
+  },
+  "theft_rows": [
+   {
+    "pair": "s4-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "missed_held": [],
+    "stable": true,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "+e-pb1"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s5-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "+e-pb1",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_declined",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_declined",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "cases": 72,
+    "calls_per_case": 25.86111111111111,
+    "usd_per_case": 0.012844268333333332,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   },
+   "theft": {
+    "cases": 32,
+    "calls_per_case": 20.90625,
+    "usd_per_case": 0.01850889796875,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   }
+  },
+  "diagnose": {
+   "tenancy": {
+    "missed": {
+     "document finder (with must_show): judged present": 7
+    },
+    "spurious_hold": {
+     "process-builder addition held": 8,
+     "fact arrears: left unknown by the claim reader (quoted)": 5,
+     "fact family_home: left unknown by the claim reader (quoted)": 3,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 3,
+     "fact health_effects: left unknown by the claim reader (quoted)": 1
+    },
+    "unnecessary": {
+     "process-builder addition marked required": 26,
+     "document finder (with must_show): judged missing": 1
+    },
+    "held_required_now": {
+     "fact health_effects: left unknown by the claim reader (quoted)": 5,
+     "fact mold: left unknown by the claim reader (quoted)": 4,
+     "fact retaliation_screen: left unknown by the claim reader (quoted)": 2,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 2,
+     "fact deposit_considered: left unknown by the claim reader (quoted)": 2,
+     "fact heating: left unknown by the claim reader (quoted)": 1,
+     "fact renovation: left unknown by the claim reader (quoted)": 1,
+     "fact arrears: left unknown by the claim reader (quoted)": 1
+    },
+    "handed": {
+     "routing: whole claim handed over": 8
+    }
+   },
+   "tenancy_waiting_for_causes": {
+    "left unknown by the claim reader (quoted)": 46
+   },
+   "theft": {
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 9,
+    "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 3,
+    "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 2,
+    "wrong: process-builder addition differs between the two texts": 2,
+    "missed: the changed condition not established: left unknown by the claim reader (quoted)": 2
+   }
+  }
+ },
+ "sync-c-16": {
+  "tenancy": {
+   "PRODUCT conservative (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 37,
+    "requested_share": 0.46987951807228917,
+    "held": 0.09722222222222222,
+    "held_required_now": 0.1111111111111111,
+    "handed": 0.0,
+    "missed": 3.5555555555555554,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.20833333333333334,
+    "strict_unsafe": 3.763888888888889,
+    "spurious_hold": 0.1527777777777778,
+    "handoff_runs": 0
+   },
+   "PRODUCT workflow needs only (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 37,
+    "requested_share": 0.46987951807228917,
+    "held": 0.09722222222222222,
+    "held_required_now": 0.1111111111111111,
+    "handed": 0.0,
+    "missed": 3.5555555555555554,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.20833333333333334,
+    "strict_unsafe": 3.763888888888889,
+    "spurious_hold": 0.125,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9538152610441767,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.2638888888888889,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2638888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9839357429718876,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.0,
+    "handed": 0.0,
+    "missed": 0.1111111111111111,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.1388888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "CPv2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9578313253012049,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.041666666666666664,
+    "handed": 0.06944444444444445,
+    "missed": 0.18055555555555555,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2916666666666667,
+    "spurious_hold": 0.027777777777777776,
+    "handoff_runs": 1
+   },
+   "CPv2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9738955823293173,
+    "held": 0.2638888888888889,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.08333333333333333,
+    "missed": 0.08333333333333333,
+    "unnecessary": 0.05555555555555555,
+    "premature": 0.027777777777777776,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.25,
+    "spurious_hold": 0.05555555555555555,
+    "handoff_runs": 1
+   },
+   "(a) self-consistency over B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.963855421686747,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.19444444444444445,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(b) model executes rules, CoL/B2 (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9497991967871486,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.1527777777777778,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.20833333333333334,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(c) ReAct agent (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 3,
+    "requested_share": 0.9096385542168675,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.0,
+    "missed": 0.6111111111111112,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.6388888888888888,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(d) two-valued, unknown=false (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.4305555555555556,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.25,
+    "strict_unsafe": 0.9166666666666666,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "(d) two-valued, unknown=true (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9337349397590361,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.3472222222222222,
+    "unnecessary": 0.4861111111111111,
+    "premature": 0.2916666666666667,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.25,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "_costs": {
+    "PRODUCT": {
+     "calls_per_case": 25.942857142857143,
+     "usd_per_case": 0.1087614649999998,
+     "claim_runs": 35,
+     "note": "calls paid in this task (commit 7ff7af64); interrupted runs re-served from cache"
+    },
+    "COL": {
+     "calls_per_case": 1.0,
+     "usd_per_case": 0.0019326261805555549
+    },
+    "REACT": {
+     "calls_per_case": 8.041666666666666,
+     "usd_per_case": 0.0034696344444444488
+    },
+    "B1v2p gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.001981394236111111
+    },
+    "CPv2p-interpret gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.0014010070833333334
+    },
+    "B1v2p gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.017843012499999998
+    },
+    "CPv2p-interpret gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.01058846111111111
+    },
+    "SC": {
+     "calls_per_case": 9.0,
+     "usd_per_case": 0.005944182708333334
+    }
+   }
+  },
+  "theft": {
+   "PRODUCT conservative (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 12,
+    "missed": 4,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6666666666666666,
+    "missed_per_pair": 0.2222222222222222,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "PRODUCT workflow needs only (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 12,
+    "missed": 4,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6666666666666666,
+    "missed_per_pair": 0.2222222222222222,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (luna)": {
+    "pair_runs": 54,
+    "wrong": 70,
+    "missed": 17,
+    "wm_per_pair": 1.6111111111111112,
+    "wrong_per_pair": 1.2962962962962963,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 10,
+    "unchanged_when_open": 0.19444444444444445,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (terra)": {
+    "pair_runs": 54,
+    "wrong": 16,
+    "missed": 13,
+    "wm_per_pair": 0.5370370370370371,
+    "wrong_per_pair": 0.2962962962962963,
+    "missed_per_pair": 0.24074074074074073,
+    "missed_because_held": 5,
+    "unchanged_when_open": 1.0,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 50,
+    "missed": 22,
+    "wm_per_pair": 1.3333333333333333,
+    "wrong_per_pair": 0.9259259259259259,
+    "missed_per_pair": 0.4074074074074074,
+    "missed_because_held": 8,
+    "unchanged_when_open": 0.25,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 9,
+    "missed": 9,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 3,
+    "unchanged_when_open": 0.9722222222222222,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (terra)": {
+    "pair_runs": 54,
+    "wrong": 60,
+    "missed": 17,
+    "wm_per_pair": 1.4259259259259258,
+    "wrong_per_pair": 1.1111111111111112,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 5,
+    "unchanged_when_open": 0.5277777777777778,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna, run 0 only)": {
+    "pair_runs": 18,
+    "wrong": 3,
+    "missed": 3,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.9166666666666666,
+    "premature_when_open": 0.0
+   },
+   "_costs": {
+    "PRODUCT": {
+     "usd_per_text": 0.07337048296875,
+     "calls_per_text": 78.65625
+    },
+    "R gpt-6-luna": {
+     "usd_per_text": 0.000765253125,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6-luna": {
+     "usd_per_text": 0.0023903910416666666,
+     "calls_per_text": 2
+    },
+    "R gpt-6.1-terra": {
+     "usd_per_text": 0.004111801041666667,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6.1-terra": {
+     "usd_per_text": 0.020826077435897435,
+     "calls_per_text": 2
+    }
+   }
+  },
+  "theft_rows": [
+   {
+    "pair": "s4-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s5-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": true,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_declined",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_declined",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "cases": 35,
+    "calls_per_case": 25.942857142857143,
+    "usd_per_case": 0.013140519285714285,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   },
+   "theft": {
+    "cases": 32,
+    "calls_per_case": 25.375,
+    "usd_per_case": 0.02261501328125,
+    "failed": 0,
+    "turn_limit_warnings": 6
+   }
+  },
+  "diagnose": {
+   "tenancy": {
+    "missed": {
+     "document finder (with must_show): judged present": 3
+    },
+    "spurious_hold": {
+     "fact arrears: left unknown by the claim reader (quoted)": 6,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 2,
+     "process-builder addition held": 2,
+     "fact family_home: left unknown by the claim reader (quoted)": 1
+    },
+    "held_required_now": {
+     "fact health_effects: left unknown by the claim reader (quoted)": 3,
+     "fact retaliation_screen: left unknown by the claim reader (quoted)": 2,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 1,
+     "fact deposit_considered: left unknown by the claim reader (quoted)": 1,
+     "fact mold: left unknown by the claim reader (quoted)": 1
+    }
+   },
+   "tenancy_waiting_for_causes": {
+    "left unknown by the claim reader (quoted)": 21
+   },
+   "theft": {
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 10,
+    "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 2,
+    "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 2,
+    "missed: the changed condition not established: left unknown by the claim reader (quoted)": 2
+   }
+  }
+ },
+ "sync-c-16b": {
+  "tenancy": {
+   "PRODUCT conservative (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.375,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.5833333333333334,
+    "spurious_hold": 0.2777777777777778,
+    "handoff_runs": 1
+   },
+   "PRODUCT workflow needs only (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9337349397590361,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.25,
+    "handed": 0.1111111111111111,
+    "missed": 0.09722222222222222,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2222222222222222,
+    "spurious_hold": 0.16666666666666666,
+    "handoff_runs": 1
+   },
+   "Rules in context B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9538152610441767,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.2638888888888889,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2638888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "Rules in context B1v2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9839357429718876,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.0,
+    "handed": 0.0,
+    "missed": 0.1111111111111111,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.1388888888888889,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "CPv2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9578313253012049,
+    "held": 0.2916666666666667,
+    "held_required_now": 0.041666666666666664,
+    "handed": 0.06944444444444445,
+    "missed": 0.18055555555555555,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.013888888888888888,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.2916666666666667,
+    "spurious_hold": 0.027777777777777776,
+    "handoff_runs": 1
+   },
+   "CPv2p (terra)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9738955823293173,
+    "held": 0.2638888888888889,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.08333333333333333,
+    "missed": 0.08333333333333333,
+    "unnecessary": 0.05555555555555555,
+    "premature": 0.027777777777777776,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.25,
+    "spurious_hold": 0.05555555555555555,
+    "handoff_runs": 1
+   },
+   "(a) self-consistency over B1v2p (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.963855421686747,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.05555555555555555,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.19444444444444445,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(b) model executes rules, CoL/B2 (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 0,
+    "requested_share": 0.9497991967871486,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.1527777777777778,
+    "handed": 0.0,
+    "missed": 0.19444444444444445,
+    "unnecessary": 0.013888888888888888,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.20833333333333334,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(c) ReAct agent (luna)": {
+    "claim_runs": 72,
+    "empty_or_failed": 3,
+    "requested_share": 0.9096385542168675,
+    "held": 0.3055555555555556,
+    "held_required_now": 0.013888888888888888,
+    "handed": 0.0,
+    "missed": 0.6111111111111112,
+    "unnecessary": 0.027777777777777776,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "strict_unsafe": 0.6388888888888888,
+    "spurious_hold": 0.013888888888888888,
+    "handoff_runs": 0
+   },
+   "(d) two-valued, unknown=false (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9216867469879518,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.4305555555555556,
+    "unnecessary": 0.06944444444444445,
+    "premature": 0.05555555555555555,
+    "silent_skip": 0.25,
+    "strict_unsafe": 0.9166666666666666,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "(d) two-valued, unknown=true (product facts)": {
+    "claim_runs": 72,
+    "empty_or_failed": 2,
+    "requested_share": 0.9337349397590361,
+    "held": 0.0,
+    "held_required_now": 0.0,
+    "handed": 0.1111111111111111,
+    "missed": 0.3472222222222222,
+    "unnecessary": 0.4861111111111111,
+    "premature": 0.2916666666666667,
+    "silent_skip": 0.013888888888888888,
+    "strict_unsafe": 1.25,
+    "spurious_hold": 0.0,
+    "handoff_runs": 1
+   },
+   "_costs": {
+    "PRODUCT": {
+     "calls_per_case": 25.86111111111111,
+     "usd_per_case": 0.05287015659722212,
+     "claim_runs": 72,
+     "note": "calls paid in this task (commit 7ff7af64); interrupted runs re-served from cache"
+    },
+    "COL": {
+     "calls_per_case": 1.0,
+     "usd_per_case": 0.0019326261805555549
+    },
+    "REACT": {
+     "calls_per_case": 8.041666666666666,
+     "usd_per_case": 0.0034696344444444488
+    },
+    "B1v2p gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.001981394236111111
+    },
+    "CPv2p-interpret gpt-6-luna": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.0014010070833333334
+    },
+    "B1v2p gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.017843012499999998
+    },
+    "CPv2p-interpret gpt-6.1-terra": {
+     "calls_per_case": 3.0,
+     "usd_per_case": 0.01058846111111111
+    },
+    "SC": {
+     "calls_per_case": 9.0,
+     "usd_per_case": 0.005944182708333334
+    }
+   }
+  },
+  "theft": {
+   "PRODUCT conservative (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 12,
+    "missed": 4,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6666666666666666,
+    "missed_per_pair": 0.2222222222222222,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "PRODUCT workflow needs only (luna, k=1)": {
+    "pair_runs": 18,
+    "wrong": 12,
+    "missed": 4,
+    "wm_per_pair": 0.8888888888888888,
+    "wrong_per_pair": 0.6666666666666666,
+    "missed_per_pair": 0.2222222222222222,
+    "missed_because_held": 2,
+    "unchanged_when_open": 0.5833333333333334,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (luna)": {
+    "pair_runs": 54,
+    "wrong": 70,
+    "missed": 17,
+    "wm_per_pair": 1.6111111111111112,
+    "wrong_per_pair": 1.2962962962962963,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 10,
+    "unchanged_when_open": 0.19444444444444445,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, original pack R (terra)": {
+    "pair_runs": 54,
+    "wrong": 16,
+    "missed": 13,
+    "wm_per_pair": 0.5370370370370371,
+    "wrong_per_pair": 0.2962962962962963,
+    "missed_per_pair": 0.24074074074074073,
+    "missed_because_held": 5,
+    "unchanged_when_open": 1.0,
+    "premature_when_open": 0.0
+   },
+   "Rules in context, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 50,
+    "missed": 22,
+    "wm_per_pair": 1.3333333333333333,
+    "wrong_per_pair": 0.9259259259259259,
+    "missed_per_pair": 0.4074074074074074,
+    "missed_because_held": 8,
+    "unchanged_when_open": 0.25,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna)": {
+    "pair_runs": 54,
+    "wrong": 9,
+    "missed": 9,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 3,
+    "unchanged_when_open": 0.9722222222222222,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (terra)": {
+    "pair_runs": 54,
+    "wrong": 60,
+    "missed": 17,
+    "wm_per_pair": 1.4259259259259258,
+    "wrong_per_pair": 1.1111111111111112,
+    "missed_per_pair": 0.3148148148148148,
+    "missed_because_held": 5,
+    "unchanged_when_open": 0.5277777777777778,
+    "premature_when_open": 0.0
+   },
+   "CP4, reviewed rules (luna, run 0 only)": {
+    "pair_runs": 18,
+    "wrong": 3,
+    "missed": 3,
+    "wm_per_pair": 0.3333333333333333,
+    "wrong_per_pair": 0.16666666666666666,
+    "missed_per_pair": 0.16666666666666666,
+    "missed_because_held": 1,
+    "unchanged_when_open": 0.9166666666666666,
+    "premature_when_open": 0.0
+   },
+   "_costs": {
+    "PRODUCT": {
+     "usd_per_text": 0.07337048296875,
+     "calls_per_text": 78.65625
+    },
+    "R gpt-6-luna": {
+     "usd_per_text": 0.000765253125,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6-luna": {
+     "usd_per_text": 0.0023903910416666666,
+     "calls_per_text": 2
+    },
+    "R gpt-6.1-terra": {
+     "usd_per_text": 0.004111801041666667,
+     "calls_per_text": 1
+    },
+    "CP4 (2 readings) gpt-6.1-terra": {
+     "usd_per_text": 0.020826077435897435,
+     "calls_per_text": 2
+    }
+   }
+  },
+  "theft_rows": [
+   {
+    "pair": "s4-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_scheduled_valuable_1000",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_bicycle_claimed",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_sim_card_stolen",
+    "run": 0,
+    "wrong": [
+     "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": false,
+    "premature": false
+   },
+   {
+    "pair": "s5-on-PR_third_party_causer",
+    "run": 0,
+    "wrong": [],
+    "missed": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed_held": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "stable": true,
+    "premature": false
+   },
+   {
+    "pair": "s4-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_expert_procedure_requested",
+    "run": 0,
+    "wrong": [
+     "+Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_repair_over_500",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "-Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_nachfrist_set",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_goods_recovered",
+    "run": 0,
+    "wrong": [
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s4-on-PR_declined",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   },
+   {
+    "pair": "s5-on-PR_declined",
+    "run": 0,
+    "wrong": [],
+    "missed": [],
+    "missed_held": [],
+    "stable": false,
+    "premature": true
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "cases": 72,
+    "calls_per_case": 25.86111111111111,
+    "usd_per_case": 0.012844268333333332,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   },
+   "theft": {
+    "cases": 32,
+    "calls_per_case": 21.1875,
+    "usd_per_case": 0.01817900609375,
+    "failed": 0,
+    "turn_limit_warnings": 0
+   }
+  },
+  "diagnose": {
+   "tenancy": {
+    "missed": {
+     "document finder (with must_show): judged present": 7
+    },
+    "spurious_hold": {
+     "process-builder addition held": 8,
+     "fact arrears: left unknown by the claim reader (quoted)": 5,
+     "fact family_home: left unknown by the claim reader (quoted)": 3,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 3,
+     "fact health_effects: left unknown by the claim reader (quoted)": 1
+    },
+    "unnecessary": {
+     "process-builder addition marked required": 26,
+     "document finder (with must_show): judged missing": 1
+    },
+    "held_required_now": {
+     "fact health_effects: left unknown by the claim reader (quoted)": 5,
+     "fact mold: left unknown by the claim reader (quoted)": 4,
+     "fact retaliation_screen: left unknown by the claim reader (quoted)": 2,
+     "fact specialist_needed: left unknown by the claim reader (quoted)": 2,
+     "fact deposit_considered: left unknown by the claim reader (quoted)": 2,
+     "fact heating: left unknown by the claim reader (quoted)": 1,
+     "fact renovation: left unknown by the claim reader (quoted)": 1,
+     "fact arrears: left unknown by the claim reader (quoted)": 1
+    },
+    "handed": {
+     "routing: whole claim handed over": 8
+    }
+   },
+   "tenancy_waiting_for_causes": {
+    "left unknown by the claim reader (quoted)": 46
+   },
+   "theft": {
+    "wrong: a condition's value differs between the texts (unchanged in the story): left unknown by the claim reader (quoted)": 10,
+    "wrong: a condition's value differs between the texts (unchanged in the story): claim reader judged the wrong value": 2,
+    "missed: the changed condition not established: need unconditional after conversion (cheapest route / OR of conditions)": 2,
+    "missed: the changed condition not established: left unknown by the claim reader (quoted)": 2
+   }
+  }
+ }
+}
