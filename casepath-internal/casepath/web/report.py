@@ -22,7 +22,13 @@ LABELS = {
            "accepted": "belegt", "rejected": "nicht belegt", "not_checked": "nicht geprüft", "conflicting": "widersprüchlich",
            "yes": "ja", "no": "nein", "used": "genutzt", "suggested": "vom Wissen vorgeschlagen", "optional": "freiwillig",
            "depends": "hängt von einer offenen Antwort ab", "obtain": "Einholen", "resolve": "Nicht erfüllt", "ask": "Klären",
-           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet."},
+           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet.",
+           "suggested_case": "für diesen Fall vorgeschlagen", "basis": "Grundlage:", "applies_if": "gilt, falls:", "doubt": "die Prüfung zweifelt:",
+           "warnings": "Hinweise zur Vorbereitung",
+           "turn_limit": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
+           "no_report": "Die Vorbereitung brach in einem Teil vorzeitig ab; was nicht erreicht wurde, ist als nicht geprüft markiert.",
+           "reading_failed": "Ein Lesedurchgang der Fakten schlug fehl; die Fakten, die er bestätigen sollte, bleiben offen.",
+           "instruction_like_text": "Ein Dokument enthält Text, der sich an die KI richtet; er wurde als Inhalt behandelt und nicht befolgt."},
     "en": {"title": "Case report", "notice": "Prepared with CasePath's AI assistance. Every finding names the passage it rests on. "
            "Qualified review is still required; nothing was sent.", "case": "Case", "prepared": "Prepared on", "process": "Process",
            "position": "Where the case stands", "end": "End of the process", "current": "Current step", "waiting": "Waiting for", "next": "Next steps",
@@ -34,7 +40,13 @@ LABELS = {
            "accepted": "supported", "rejected": "not supported", "not_checked": "not checked", "conflicting": "conflicting",
            "yes": "yes", "no": "no", "used": "used", "suggested": "suggested by Knowledge", "optional": "optional",
            "depends": "depends on an open answer", "obtain": "Obtain", "resolve": "Not met", "ask": "Answer",
-           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet."},
+           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet.",
+           "suggested_case": "suggested for this case", "basis": "basis:", "applies_if": "applies if:", "doubt": "the check doubts it:",
+           "warnings": "Notes on the preparation",
+           "turn_limit": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
+           "no_report": "Preparation stopped early in one part; what it did not reach is marked as not checked.",
+           "reading_failed": "One reading of the facts failed; the facts it should have confirmed stay open.",
+           "instruction_like_text": "A document contains text addressed to an AI; it was treated as evidence and not followed."},
 }
 
 
@@ -115,6 +127,12 @@ def build(case, state, files, lang="de", knowledge=()):
     questions = {f["id"]: f["question"] for f in (state.get("process") or {}).get("facts", [])}
     questions.update(result.get("questions") or {})
 
+    warnings = list(dict.fromkeys(L[w["kind"]] for w in result.get("warnings") or [] if w.get("kind") in L))
+    if warnings:
+        body.append(_heading(L["warnings"]))
+        for text_ in warnings:
+            body.append(_para(_run(f"• {text_}"), space_after=40))
+
     body.append(_heading(L["position"]))
     if evaluation.get("outcome"):
         body.append(_para(_run(f"{L['end']}: ", bold=True), _run(evaluation["outcome"].get("title", ""))))
@@ -143,10 +161,14 @@ def build(case, state, files, lang="de", knowledge=()):
         rows = []
         for need in checklist:
             status = L.get(need["status"], need["status"])
-            note = {"suggested": L["suggested"], "optional": L["optional"], "depends": L["depends"]}.get(need.get("required"))
-            basis = (next((d for d in (state.get("process") or {}).get("documents", []) if d["id"] == need["document"]), {}) or {}).get("legal_basis")
-            if basis:
-                note = f"{L['by_law']} {basis}" + (f"; {note}" if note else "")
+            definition = next((d for d in (state.get("process") or {}).get("documents", []) if d["id"] == need["document"]), {}) or {}
+            suggested = L["suggested"] if definition.get("knowledge") else L["suggested_case"]
+            note = {"suggested": suggested, "optional": L["optional"], "depends": L["depends"]}.get(need.get("required"))
+            basis = definition.get("legal_basis")
+            if basis:  # a statute named by a suggestion is its basis, not a requirement
+                note = f"{note}; {L['basis']} {basis}" if need.get("required") == "suggested" else f"{L['by_law']} {basis}" + (f"; {note}" if note else "")
+            if need.get("required") == "suggested" and need.get("questions"):
+                note += f"; {L['applies_if']} " + " / ".join(q["question"] for q in need["questions"])
             cites = (findings.get(need["document"]) or {}).get("citations") or need.get("citations") or []
             rows.append([need["title"] + (f" ({note})" if note else ""), status, "\n".join(where(c) for c in cites) or L["none"]])
         body.append(_table([L["document"], L["status"], L["source"]], rows, [2900, 1300, 5438]))
@@ -154,7 +176,8 @@ def build(case, state, files, lang="de", knowledge=()):
     facts = [f for f in result.get("facts", []) if f.get("status") in ("established", "conflicting")]
     if facts:
         body.append(_heading(L["facts"]))
-        rows = [[questions.get(f["fact"], f["fact"]), _value(f.get("value"), L), L.get(f.get("verdict") or "not_checked", f.get("verdict") or ""),
+        rows = [[questions.get(f["fact"], f["fact"]), _value(f.get("value"), L), L.get(f.get("verdict") or "not_checked", f.get("verdict") or "")
+                 + (f"\n{L['doubt']} {f['flag'].get('reason', '')}" if f.get("flag") else ""),
                  "\n".join(where(c) for c in f.get("citations", [])) or L["none"]] for f in facts]
         body.append(_table([L["question"], L["answer"], L["checked"], L["source"]], rows, [2600, 1500, 1200, 4338]))
 
