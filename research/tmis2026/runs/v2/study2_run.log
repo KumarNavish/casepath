@@ -2,3 +2,62 @@ caps: gpt-6-luna 3.9330 USD, gpt-6.1-terra 8.5575 USD
 648 jobs; v2 spend so far 1.4330 USD
 finished; v2 spend 1.8656 USD -> plans_tenancy_gpt-6-luna_fresh_heldout.json
 768 jobs; v2 spend so far 1.8656 USD
+RESTART 2026-11-10T00:46:26Z (launch process hit the 30-min background limit; resumed with the original caps)
+168 jobs; v2 spend so far 2.5659 USD
+finished; v2 spend 2.7442 USD -> plans_theft_gpt-6-luna_fresh_heldout.json
+0 jobs; v2 spend so far 2.7442 USD
+finished; v2 spend 2.7442 USD -> plans_tenancy_gpt-6-luna_fresh_heldout.json
+train s4-on-PR_scheduled_valuable_1000 errors 0 applied 0
+train s4-on-PR_bicycle_claimed errors 0 applied 0
+train s4-on-PR_sim_card_stolen errors 1 applied 1
+train s4-on-PR_third_party_causer errors 2 applied 0
+train s4-on-PR_expert_procedure_requested errors 1 applied 0
+train s4-on-PR_repair_over_500 errors 2 applied 0
+train s4-on-PR_nachfrist_set errors 1 applied 0
+train s4-on-PR_goods_recovered errors 0 applied 0
+train s4-on-PR_declined errors 0 applied 0
+CP_before {'pairs': 81, 'wrong': 88, 'missed': 16, 'errors_per_pair': 1.2839506172839505}
+CP_after_V5 {'pairs': 81, 'wrong': 79, 'missed': 16, 'errors_per_pair': 1.1728395061728396}
+R_before {'pairs': 81, 'wrong': 135, 'missed': 32, 'errors_per_pair': 2.0617283950617282}
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/http/client.py", line 603, in _get_chunk_left
+    chunk_left = self._read_next_chunk_size()
+  File "/usr/local/lib/python3.13/http/client.py", line 561, in _read_next_chunk_size
+    return int(line, 16)
+ValueError: invalid literal for int() with base 16: b''
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/http/client.py", line 621, in _read_chunked
+    while (chunk_left := self._get_chunk_left()) is not None:
+                         ~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/http/client.py", line 605, in _get_chunk_left
+    raise IncompleteRead(b'')
+http.client.IncompleteRead: IncompleteRead(0 bytes read)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/casepath/research/tmis2026/harness/v2/evolve.py", line 461, in <module>
+    out = dryrun_theft(args)
+  File "/home/user/casepath/research/tmis2026/harness/v2/evolve.py", line 305, in dryrun_theft
+    e = theft_errors(score_pair, pair, plan(pair["off"], r), plan(pair["variant"], r), best_realization)
+                                                             ~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/casepath/research/tmis2026/harness/v2/evolve.py", line 300, in plan
+    cache[(t, r)] = tp.run_rv2(t, T[t]["text"], r, memory=kind)["plan"]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/casepath/research/tmis2026/harness/v2/theft_v2.py", line 73, in run_rv2
+    r = llm.call(system=system, user="CASE:\n" + text, schema=tm.PLAN_SCHEMA, schema_name="checklist", run=run,
+                 tag={"exp": "v2-theft", "method": "Rv2p" + ("+mem" if memory else ""), "case": text_id})
+  File "/home/user/casepath/research/tmis2026/harness/v2/common.py", line 80, in _retrying_call
+    r = _call(**kw)
+  File "/home/user/casepath/research/tmis2026/harness/llm.py", line 74, in call
+    response = json.loads(r.read())
+                          ~~~~~~^^
+  File "/usr/local/lib/python3.13/http/client.py", line 488, in read
+    return self._read_chunked(amt)
+           ~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/local/lib/python3.13/http/client.py", line 633, in _read_chunked
+    raise IncompleteRead(b''.join(value)) from exc
+http.client.IncompleteRead: IncompleteRead(22 bytes read)
