@@ -98,7 +98,10 @@ def load_settings(env=None):
         model = ModelSettings(
             endpoint=endpoint.rstrip("/"),
             deployment=deployment,
-            reasoning=provider == "azure_openai" and _flag(env, "CASEPATH_MODEL_REASONING", "gpt-5" in deployment or "-o" in deployment),
+            # Whether each call's effort is sent as the model's reasoning effort. For an Azure OpenAI resource it defaults from
+            # the deployment name; for a chat-completions endpoint it is off unless CASEPATH_MODEL_REASONING turns it on.
+            reasoning=_flag(env, "CASEPATH_MODEL_REASONING", "gpt-5" in deployment or "-o" in deployment) if provider == "azure_openai"
+            else _flag(env, "CASEPATH_MODEL_REASONING", False),
             timeout_seconds=float(env.get("CASEPATH_MODEL_TIMEOUT_SECONDS", "120")),
             max_output_tokens=int(env.get("CASEPATH_MODEL_MAX_OUTPUT_TOKENS", "16000")),
             ca_bundle=env.get("CASEPATH_CA_BUNDLE") or None,
