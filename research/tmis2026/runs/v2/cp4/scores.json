@@ -1,0 +1,257 @@
+{
+ "costs": {
+  "gpt-6-luna": {
+   "CP4 per text-run (2 readings)": 0.00246,
+   "R per text-run": 0.00074,
+   "R-reviewed per text-run": 0.00065
+  },
+  "gpt-6.1-terra": {
+   "CP4 per text-run (2 readings)": 0.02083,
+   "R per text-run": 0.00395,
+   "R-reviewed per text-run": 0.00399
+  }
+ },
+ "gpt-6-luna": {
+  "CP4-original": {
+   "held_per_text": 11.27,
+   "missed": 45,
+   "missed_because_held": 24,
+   "pair_runs": 189,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.944,
+   "wm_per_pair": 0.418,
+   "wm_per_pair_once": 0.418,
+   "wrong": 34
+  },
+  "CP4-reviewed": {
+   "held_per_text": 10.78,
+   "missed": 39,
+   "missed_because_held": 14,
+   "pair_runs": 189,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.992,
+   "wm_per_pair": 0.381,
+   "wm_per_pair_once": 0.381,
+   "wrong": 33
+  },
+  "R-original": {
+   "held_per_text": 3.06,
+   "missed": 63,
+   "missed_because_held": 37,
+   "pair_runs": 189,
+   "premature_when_open": 0.008,
+   "unchanged_when_open": 0.238,
+   "wm_per_pair": 1.55,
+   "wm_per_pair_once": 0.788,
+   "wrong": 230
+  },
+  "R-reviewed": {
+   "held_per_text": 2.64,
+   "missed": 79,
+   "missed_because_held": 36,
+   "pair_runs": 189,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.262,
+   "wm_per_pair": 1.487,
+   "wm_per_pair_once": 0.862,
+   "wrong": 202
+  }
+ },
+ "gpt-6.1-terra": {
+  "CP4-original": {
+   "held_per_text": 11.06,
+   "missed": 20,
+   "missed_because_held": 8,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.667,
+   "wm_per_pair": 1.148,
+   "wm_per_pair_once": 0.815,
+   "wrong": 42
+  },
+  "CP4-reviewed": {
+   "held_per_text": 10.97,
+   "missed": 17,
+   "missed_because_held": 5,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 0.528,
+   "wm_per_pair": 1.426,
+   "wm_per_pair_once": 0.648,
+   "wrong": 60
+  },
+  "R-original": {
+   "held_per_text": 11.5,
+   "missed": 13,
+   "missed_because_held": 5,
+   "pair_runs": 54,
+   "premature_when_open": 0.0,
+   "unchanged_when_open": 1.0,
+   "wm_per_pair": 0.537,
+   "wm_per_pair_once": 0.537,
+   "wrong": 16
+  },
+  "R-reviewed": {
+   "held_per_text": 10.14,
+   "missed": 20,
+   "missed_because_held": 10,
+   "pair_runs": 54,
+   "premature_when_open": 0.028,
+   "unchanged_when_open": 0.833,
+   "wm_per_pair": 0.63,
+   "wm_per_pair_once": 0.5,
+   "wrong": 14
+  }
+ },
+ "reviewed_rules_effect": {
+  "changed_rules": [
+   "overlay_rule_016",
+   "overlay_rule_020",
+   "overlay_rule_023",
+   "overlay_rule_042",
+   "overlay_rule_049",
+   "overlay_rule_071",
+   "overlay_rule_074"
+  ],
+  "gpt-6-luna": {
+   "overlay_rule_016": {
+    "neutral": 4,
+    "right": 17
+   },
+   "overlay_rule_020": {
+    "wrong": 12
+   },
+   "overlay_rule_023": {
+    "wrong": 2
+   },
+   "overlay_rule_042": {
+    "right": 9,
+    "wrong": 6
+   },
+   "overlay_rule_049": {
+    "wrong": 2
+   },
+   "overlay_rule_074": {
+    "neutral": 4,
+    "right": 17
+   }
+  },
+  "gpt-6.1-terra": {
+   "overlay_rule_016": {
+    "right": 4,
+    "wrong": 2
+   },
+   "overlay_rule_020": {
+    "right": 1
+   },
+   "overlay_rule_023": {
+    "right": 1
+   },
+   "overlay_rule_042": {
+    "right": 2
+   },
+   "overlay_rule_074": {
+    "right": 4,
+    "wrong": 2
+   }
+  }
+ },
+ "terra_vs_luna": {
+  "gpt-6-luna": {
+   "guards_true_per_text_mean": 10.13,
+   "wrong_change_sources(rule,guard)": [
+    [
+     "overlay_rule_084|overlay_guard_084",
+     6
+    ],
+    [
+     "overlay_rule_003|overlay_guard_003",
+     3
+    ],
+    [
+     "overlay_rule_074|overlay_guard_074",
+     1
+    ]
+   ]
+  },
+  "gpt-6.1-terra": {
+   "guards_true_per_text_mean": 10.85,
+   "wrong_change_sources(rule,guard)": [
+    [
+     "overlay_rule_003|overlay_guard_003",
+     45
+    ],
+    [
+     "overlay_rule_084|overlay_guard_084",
+     6
+    ],
+    [
+     "overlay_rule_074|overlay_guard_074",
+     4
+    ],
+    [
+     "overlay_rule_042|overlay_guard_042",
+     2
+    ]
+   ]
+  },
+  "guard_text": {
+   "overlay_guard_007": "Coverage is sought for simple theft away from home.",
+   "overlay_guard_009": "The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+   "overlay_guard_022": "The expert-procedure route has been selected.",
+   "overlay_guard_023": "The expert-procedure route has been selected and a party has been requested in writing to appoint an expert.",
+   "overlay_guard_042": "CSS has paid benefits for which the policyholder has claims against third parties, or a third party caused or increased the loss.",
+   "overlay_guard_094": "A claim seeks CSS coverage for a theft loss."
+  },
+  "verdict_differences(guard,luna,terra)": [
+   [
+    "overlay_guard_022|false|unresolved",
+    84
+   ],
+   [
+    "overlay_guard_094|true|unresolved",
+    80
+   ],
+   [
+    "overlay_guard_042|unresolved|true",
+    52
+   ],
+   [
+    "overlay_guard_023|false|unresolved",
+    47
+   ],
+   [
+    "overlay_guard_007|false|unresolved",
+    43
+   ],
+   [
+    "overlay_guard_009|false|unresolved",
+    33
+   ],
+   [
+    "overlay_guard_042|false|true",
+    31
+   ],
+   [
+    "overlay_guard_005|true|unresolved",
+    29
+   ],
+   [
+    "overlay_guard_008|true|unresolved",
+    29
+   ],
+   [
+    "overlay_guard_044|unresolved|true",
+    27
+   ],
+   [
+    "overlay_guard_092|unresolved|false",
+    23
+   ],
+   [
+    "overlay_guard_008|unresolved|true",
+    22
+   ]
+  ]
+ }
+}

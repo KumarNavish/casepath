@@ -41,7 +41,14 @@ def cp4(t, r):
 
 
 def rpack(t, r):
-    return system.tp.run_rv2(t, T[t]["text"], r)
+    """Rules in context on this pack: the request of TheftPack.run_rv2, under a development ledger tag (cp4-theft)
+    so that it never enters Study 2's cost aggregation."""
+    import theft_methods as tm
+    sysmsg = (tm.POLICY + "\n\n" + tm.sources_block() + "\n\n" + tm.catalogue_block() + "\n\n" + system.tp.rules_block()
+              + "" + "\n\n" + tm.PLAN_TASK)
+    res = llm.call(system=sysmsg, user="CASE:\n" + T[t]["text"], schema=tm.PLAN_SCHEMA, schema_name="checklist", run=r,
+                   tag={"exp": "cp4-theft", "method": "Rpack", "case": t})
+    return {"plan": tm._ids(res["result"]), "error": res["error"]}
 
 
 DESIGNS = {"CP4": cp4, "Rpack": rpack}
