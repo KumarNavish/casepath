@@ -164,3 +164,21 @@ Short record; details are in the files named.
 - **Commit authorship:** commits on this branch up to 2026-11-10 morning carry
   an assistant author line, against the bridge rule; later commits do not.
   Rewriting the history needs the owner's decision (it needs a force-push).
+
+## 2026-11-10 — ShARC pilot (public benchmark): no advantage, not pursued
+- Question: does the core (rule as formula, two agreeing readings with
+  quotations, exact deferral) beat prompting on ShARC decision making with the
+  same model? Train split only, 320 utterances, gpt-6-luna, USD 0.27
+  (`harness/sharc/`, `runs/sharc/summary.json`, commit 546347d8). The dev
+  split was not opened.
+- Result: core 0.725 micro accuracy; direct 0.706, step-by-step 0.713,
+  self-consistency 0.719. No difference is distinguishable from zero (core
+  minus self-consistency +0.006 [−0.035, +0.048]). Exact deferral equals
+  strong Kleene on every item (no formula uses a condition twice); two
+  agreeing readings are not better than one.
+- Reading: with one small rule per item there is little for execution to add.
+  What the earlier studies show is the same: the advantage appears where many
+  rules are in force at once (theft, 98 rules), not on small rule sets.
+  ShARC will not be a headline result. Closest prior work found on the way,
+  to cite: few-shot policy decomposition with a logic formula evaluated in
+  code (arXiv 2501.11335; numbers to be checked against the paper).
