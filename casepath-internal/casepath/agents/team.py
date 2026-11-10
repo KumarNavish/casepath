@@ -86,11 +86,13 @@ plain language, one per fact, for the case handler.""",
     "document_finder": {
         "title": "Document finder",
         "instructions": """You are the document finder. Open the process and, for each document need, find the file that meets it
-and quote the sentence that shows it, using record_document. Mark a need absent only when no file of that kind is in
-the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
-needed), mark it unusable, name the file and quote what it does show. When a need lists what it must show, mark it present
-only with a quote from the file for each item (shows); a file that does not show every item is unusable. Check suggested
-needs too.""",
+and quote the sentence that shows it, using record_document. A need is met only by a file that is that document itself
+(an original, a copy or a scan). When only a message, a statement or another document mentions or describes it (for
+example the customer writing that a letter arrived, or what it said), mark it mentioned_only and quote the mention: the
+document itself is still missing. Mark a need absent when nothing in the case is or mentions it; when a file that is the
+document is there but cannot serve (illegible, incomplete, wrong period, not showing what is needed), mark it unusable,
+name the file and quote what it does show. When a need lists what it must show, mark it present only with a quote from
+that file for each item (shows); a file that does not show every item is unusable. Check suggested needs too.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
@@ -388,7 +390,7 @@ def _tool_specs(work, names):
                                     part={"type": ["string", "null"], "maxLength": 200}))  # the part of an "A / B" value a quote supports
     if documents:
         specs["record_document"] = ("Record whether a file meets one document need, with the sentence that shows it.",
-                                    obj(document=choice(documents), status=choice(["present", "unusable", "absent"]),
+                                    obj(document=choice(documents), status=choice(["present", "unusable", "mentioned_only", "absent"]),
                                         files=arr(choice(files), maxItems=6), citations=_citations(files), note=text(400),
                                         # what a present file shows, item by item, where a need lists what it must show
                                         **({"shows": arr(obj(item=text(200), citations=_citations(files, 2)), maxItems=12)}
@@ -426,15 +428,23 @@ def _record_fact(work, agent, args):
 
 def _record_document(work, agent, args):
     located, missed = work.located(args["citations"])
-    if args["status"] in {"present", "unusable"} and (not args["files"] or not located):
-        work.emit("source_checker", "document.rejected", document=args["document"], reason="no located quote")
-        return {"accepted": False, "reason": "name the file and quote it word for word"}
-    status = "missing" if args["status"] == "absent" else args["status"]
+    named = set(args["files"])
+    if args["status"] in {"present", "unusable"}:
+        # The quotes that show a document come from the file named as that document, never from a file that mentions it.
+        located = [hit for hit in located if hit["file"] in named]
+        if not located:
+            work.emit("source_checker", "document.rejected", document=args["document"], reason="no located quote")
+            return {"accepted": False, "reason": "name the file that is this document and quote it word for word"}
+    status = "missing" if args["status"] in {"absent", "mentioned_only"} else args["status"]
     note, shown = args["note"], []
+    if args["status"] == "mentioned_only":
+        names = sorted({work.evidence.files[hit["file"]].get("name") or hit["file"] for hit in located})
+        note = ((note + " ") if note else "") + (f"Only mentioned in {', '.join(names)}; " if names else "") + \
+            "the document itself is not in the files."
     required_items = work.document_defs.get(args["document"], {}).get("must_show", [])
     if status == "present" and required_items:
         # Present means sufficient: every item the need must show is quoted from the file, word for word.
-        named = set(args["files"])  # a quote counts only from a file named for this document
+        # a quote counts only from a file named for this document
         by_item = {row["item"]: [hit for hit in work.located(row["citations"])[0] if hit["file"] in named] for row in args.get("shows") or []}
         lacking = [item for item in required_items if not by_item.get(item)]
         shown = [{"item": item, "citations": by_item[item]} for item in required_items if by_item.get(item)]
@@ -636,8 +646,14 @@ def run_source_checker(model, work, effort="medium"):
         else:
             need = work.document_defs.get(item_id, {"title": item_id})
             claim = f"The case files contain “{need['title']}” ({row['status']})."
-            if row["status"] == "present" and need.get("must_show"):
-                claim += " It shows: " + "; ".join(need["must_show"]) + "."
+            if row["status"] == "present":
+                names = ", ".join(sorted({work.evidence.files[c["file"]].get("name") or c["file"] for c in row["citations"]}))
+                claim = (f"The file {names} is “{need['title']}” itself (an original, a copy or a scan), not a message or "
+                         f"another document that only mentions or describes it.")
+                # Each item the need must show is checked on its own quotes; one not shown makes the document unusable.
+                for index, shown in enumerate(row.get("shows", [])):
+                    items.append({"item": f"show:{item_id}#{index}", "claim": f"“{need['title']}” shows: {shown['item']}.",
+                                  "passages": [work.evidence.context(c) for c in shown["citations"]]})
         items.append({"item": f"{kind}:{item_id}", "claim": claim,
                       "passages": [work.evidence.context(c) for c in row["citations"] + [c for shown in row.get("shows", []) for c in shown["citations"]]]})
     work.emit("source_checker", "agent.start", instruction=f"Check {len(items)} item(s) independently.")
@@ -650,12 +666,24 @@ def run_source_checker(model, work, effort="medium"):
         verdicts = {row["item"]: row for row in result.value["items"]}
         for item in items:
             kind, item_id = item["item"].split(":", 1)
+            if kind == "show":
+                continue
             row = (work.facts if kind == "fact" else work.documents)[item_id]
             verdict = verdicts.get(item["item"])
             row["verdict"] = "accepted" if verdict and verdict["verdict"] == "supported" else "rejected"
             row["verdict_reason"] = verdict["reason"] if verdict else "Not answered by the independent check."
+            if kind == "document" and row["verdict"] == "accepted" and row["status"] == "present":
+                lacking = [shown["item"] for index, shown in enumerate(row.get("shows", []))
+                           if (verdicts.get(f"show:{item_id}#{index}") or {}).get("verdict") != "supported"]
+                if lacking:
+                    row["status"] = "unusable"
+                    row["note"] = ((row.get("note") or "") + " " if row.get("note") else "") + \
+                        "The check did not find it showing: " + "; ".join(lacking) + "."
+                    row["shows"] = [shown for shown in row["shows"] if shown["item"] not in lacking]
             work.emit("source_checker", f"{kind}.{row['verdict']}", **{kind: item_id})
-    accepted = sum(1 for i in items if (work.facts if i["item"].startswith("fact") else work.documents)[i["item"].split(":", 1)[1]]["verdict"] == "accepted")
+    checked = [i for i in items if not i["item"].startswith("show:")]
+    accepted = sum(1 for i in checked if (work.facts if i["item"].startswith("fact") else work.documents)[i["item"].split(":", 1)[1]]["verdict"] == "accepted")
+    items = checked
     report = {"checked": len(items), "accepted": accepted, "rejected": len(items) - accepted}
     work.emit("source_checker", "agent.end", summary=f"{accepted} of {len(items)} supported by their quotes.",
               counts={"checked": len(items), "accepted": accepted})
