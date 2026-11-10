@@ -102,3 +102,65 @@ Newest entries at the bottom. Times are UTC.
 - Total model spend for this paper: USD 9.42 (terra 8.61, luna 0.81).
 - Not done: sciCORE (Mac offline; computations ran locally and are
   deterministic), PR to `main` (needs the owner's decision).
+
+## 2026-11-09 evening – 2026-11-10 — From the two-study paper to a paper on the product
+
+Short record; details are in the files named.
+
+- **Statistical review of Study 1** (`analysis/DEVIATIONS.md`): handed-over
+  documents now scored as missed in the strict measure; with it the gpt-6-luna
+  H1 result reverses (0.30 vs 0.13); Holm in three families; H4 has six
+  clusters; a failed Direct output is scored empty (F1 0.664 → 0.642).
+- **Study 2** (`STUDY2_DESIGN.md`, `ANALYSIS_PLAN_STUDY2.md` frozen at b86ab9d
+  before any run; `fresh/` sealed; `analysis/STUDY2_RESULTS.md`): none of the
+  four primary contrasts confirmed. Confirmed as fixed: over-deferral (held
+  0.014 vs 3.31 per claim), requested share, correct holds on open facts
+  (64/66). The run was interrupted twice and resumed from cache with the caps
+  unchanged; transport retries were added after the freeze (disclosed).
+  `fresh/` has been development data since.
+- **Designs tried on development data and dropped:** quarantine of unrepaired
+  rules (first v2), a result checker (v3). **Kept:** CP4 = two independent
+  readings must agree, exact quotations, exact deferral (`harness/v2/cp4.py`).
+  On theft stories 4–5 with gpt-6-luna: 0.33 errors per pair with the reviewed
+  rules, 0.42 with the original ones; Rules in context about 1.5 (same model)
+  and 0.54 (gpt-6.1-terra).
+- **Rule review** (`rule_review/`): two blind editors and a reconciliation;
+  9 of 98 rules changed (99 after one split), 14 queued for a jurist.
+- **Owner's direction (2026-11-10):** the paper must report the product
+  itself, the same architecture and rules inside and outside Mobiliar, with
+  proprietary data as the only difference; external runs use gpt-6-luna, the
+  internal deployment its own gateway model. The product is the package
+  `casepath-internal` on branch `claude/casepath-internal-20261027`.
+- **Adapter for the product** (`harness/product/`): converts the tenancy and
+  theft rule bases to the product's workflow format and checks the conversion
+  without a model (5,076/5,076 and 81,000/81,000 evaluations equal); runs the
+  product through its own command line; scores with the Study 2 scorer;
+  baselines from prior work (ReAct, Chain-of-Logic, self-consistency,
+  two-valued) in `baselines.py`.
+- **Merged into the product (7ff7af64, accepted by the product session):**
+  exact deferral in `workflows.evaluate`, optional sourced presumptions,
+  optional `must_show`, configurable organisation and language, the `parity`
+  command with `docs/PARITY.md`. Working rule agreed with the product session:
+  brief first, separate branch, no force-push, they merge.
+- **Product measured as merged, gpt-6-luna, three runs**
+  (`harness/product/results/score_all_p7ff.json`, `diagnose_p7ff.json`):
+  tenancy strict unsafe errors per claim 1.08 (0.58 counting workflow needs
+  only) against 0.16–0.20 for the sensible baselines; theft 1.83 per pair.
+  Six causes named, agent by agent.
+- **Fix branch** `claude/casepath-internal-paper-sync-20261110c` (unpushed):
+  routing with one routable workflow, routed presumption, turn limits,
+  document "present" rules, two structured readings with agreement, added
+  needs as suggestions. One run: tenancy 0.18 (level with the baselines, with
+  0.28 required documents per claim held behind a question); theft 0.94
+  (two runs). Results in `harness/product/results/score_all_sync-c_*.json`.
+  Next: close the remaining gap to CP4 on theft, independent review, brief to
+  the product session, then a pre-registered test on unseen cases.
+- **Figures:** shared theme `analysis/figtheme.py`; eight figures, two from
+  real product screens (`paper/figures/ui_used/`).
+- **Paper text:** background, method, evaluation, results and appendix were
+  rewritten for the two-study framing; abstract, introduction, discussion and
+  conclusion are still the old text. All of it will be rewritten around the
+  product once the confirmatory test has run. `deliverables/` is superseded.
+- **Commit authorship:** commits on this branch up to 2026-11-10 morning carry
+  an assistant author line, against the bridge rule; later commits do not.
+  Rewriting the history needs the owner's decision (it needs a force-push).
