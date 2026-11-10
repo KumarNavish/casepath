@@ -65,22 +65,43 @@ The Hackathon cases have gold labels made independently of any handler session. 
 
 Experts can be wrong too, so corrections are scored against gold as well, and a second expert independently reviews a fifth of all corrections (agreement reported).
 
-## Comparisons that make the claims credible
+## The study we can actually run: 5 experts × 3 Hackathon cases
 
-1. **Learning, counterfactually (no extra work for anyone).** Evaluation needs no model, so every handled case is re-evaluated under the Knowledge as it was at the start and as it is now. The difference is what learning changed for that very case. This is recorded continuously.
-2. **Learning, experimentally.** Two phases. Phase 1: Knowledge frozen at the seed. Then corrections are reviewed, replayed and activated. Phase 2: updated Knowledge. Handlers are in two groups with the case sets swapped between phases, so the phase effect is not a case-set effect. Each case is handled by at least two handlers.
-3. **Effort, with a comparison.** On one study case in five, chosen at random, the handler first notes in half a minute which documents they would request and what they would do next, before CasePath's result appears ("erst selbst, dann CasePath"). This gives the expert's unaided answer on the same case, shows how much CasePath changes it, and costs little. It applies to study cases only, never to live work.
-4. **The safety gate.** Every Knowledge proposal is replayed on stored cases before activation. We record what the replay predicted, what the reviewer decided and what then happened. Proposals that would have lowered the gold score, and were stopped, are the evidence that the gate works.
+Five Protekta experts, three Hackathon cases for which Protekta's explicit process reference exists. Mobiliar's consent is in place. Fifteen expert-case sessions is small, so the design spends them where they prove most, and takes everything else from replay, which costs no expert time.
 
-## Perception, kept small
+**Rules that protect the result**
+- **The three study cases are sealed.** No fix, rule or Knowledge item may be derived from them, and they are scored only at the freeze. Seed Knowledge is counted without them.
+- **One frozen system for all five experts.** Same code, workflows, Knowledge and model; the parity manifest is recorded with every session. Nothing learned from one expert reaches the next during the study.
+- **Fully crossed.** Every expert handles all three cases, so every item has five independent expert judgments.
 
-Three times (before first use, between the phases, at the end), two short validated scales: trust in the system and workload. Two minutes each. A conversation of twenty minutes with a few handlers at the end. No per-case questions.
+**The session (about two hours per expert)**
+1. Ten minutes on a synthetic practice case, so nobody learns the tool on a study case.
+2. The three cases, in an order balanced across experts (Latin square).
+3. **One of the three is handled unaided first:** the expert works from the dossier alone in the same tool, states the process step, the documents to request and the next action, and only then sees CasePath's result and may revise. Which case is unaided rotates, so each case is unaided for at least one expert and aided for at least three.
+4. Two short validated scales (trust, workload) before and after: ten items in all.
+5. Twenty minutes of stimulated recall: the expert is shown their own corrections from the record and says why. Recorded inside Mobiliar and linked to event ids.
+
+**What each part proves**
+
+| Claim | Evidence | Expert time |
+|---|---|---|
+| Accuracy | CasePath's items against the process reference and gold labels, on the three sealed cases and the eight others | none |
+| Appropriate reliance | per item: was it right, and did the expert keep, verify or change it; five judgments per item | the sessions |
+| Expert agreement | agreement among five experts on the same items; consensus as a second reference beside Protekta's | the sessions |
+| Effort | unaided-first against aided, with case and expert as blocks: time, corrections needed, accuracy; and how far the reveal moves an unaided answer | one case per expert |
+| Learning | Knowledge built from the experts' corrections, then replayed model-free: leave one expert out (how many of the fifth expert's corrections would the other four have prevented), leave one case out, and transfer to the eight unseen dossiers and the synthetic claims | none |
+| Safe learning | each proposal's replayed effect on gold before activation; proposals stopped because they would lower accuracy | none |
+| Why experts change things | the six reasons, plus the recall conversations | twenty minutes each |
+
+**Honest limits, stated in advance**
+- Five experts and three cases of one insurer support estimates with intervals and item-level tests that respect the clustering (permutation by expert and by case), not population claims. The experts' learning effect on new live cases is not observed; it is estimated by replay.
+- Accuracy on the sealed cases is reported next to accuracy on the cases used for development, so any gap is visible.
 
 ## Guard rails
 
-- Taking part is voluntary and consented; a handler can withdraw and have their records removed.
+- Consent from Mobiliar is in place. Each expert still agrees individually, can withdraw, and can have their records removed.
 - The record measures CasePath. No individual's numbers are reported; exports carry a pseudonym and no case content. A second export with content, for qualitative reading, never leaves Mobiliar.
-- Hypotheses, measures and the analysis plan are written down before the first study session.
+- Hypotheses, measures and the analysis plan are written down before the first session.
 - Study mode is a setting. Outside it, the product records the same events but assigns nothing and asks nothing.
 
 ## What the product does with it, every day
