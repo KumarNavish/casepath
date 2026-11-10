@@ -37,3 +37,23 @@ class ParityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class InstalledCopyTests(unittest.TestCase):
+    def test_an_installed_copy_hashes_like_the_checkout(self):
+        import importlib.util
+        import shutil
+        import subprocess
+        import sys
+        if importlib.util.find_spec("setuptools") is None:
+            self.skipTest("setuptools is needed to build the package")
+        project = Path(parity.PACKAGE).parent
+        with tempfile.TemporaryDirectory() as d:
+            src, site = Path(d) / "src", Path(d) / "site"
+            shutil.copytree(project, src, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "tests", ".git", "build", "*.egg-info"))
+            done = subprocess.run([sys.executable, "-m", "pip", "install", "--quiet", "--no-deps", "--no-build-isolation",
+                                   "--target", str(site), str(src)], capture_output=True, text=True, timeout=300)
+            self.assertEqual(done.returncode, 0, done.stderr[-2000:])
+            installed = site / "casepath"
+            self.assertTrue((installed / "web" / "ui" / "assets" / "fonts").is_dir(), "the interface fonts must be installed")
+            self.assertEqual(parity.source_tree(installed), parity.source_tree())
