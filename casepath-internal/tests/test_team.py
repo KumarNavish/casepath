@@ -134,6 +134,36 @@ class TeamTests(unittest.TestCase):
         self.assertFalse(_record_fact(work, "claim_reader", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
                                                              "citations": [{"file": "f1", "quote": QUOTE}]})["accepted"])
 
+    def test_a_failed_reading_and_readings_that_differ_at_four_readings(self):
+        from casepath.agents.azure_model import ModelError
+        from casepath.agents.team import CaseWork, confirm_facts, read_facts
+        from tests.scripted import ModelResult
+        def answers(confirming):
+            def respond(**kw):
+                if kw["name"] == "casepath_read_facts":
+                    verdict = "true"
+                elif kw["name"] in confirming and confirming[kw["name"]] is None:
+                    raise ModelError("timeout", "no answer")
+                else:
+                    verdict = confirming[kw["name"]]
+                return ModelResult(value={"conditions": [{"id": "landlord_notified", "verdict": verdict, "value": None, "quote": QUOTE}]},
+                                   usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+            return respond
+        cases = (({"casepath_confirm_facts": "true", "casepath_confirm_facts_2": "false", "casepath_confirm_facts_3": None}, "conflicting"),
+                 ({"casepath_confirm_facts": "true", "casepath_confirm_facts_2": "false", "casepath_confirm_facts_3": "true"}, "conflicting"),
+                 ({"casepath_confirm_facts": "true", "casepath_confirm_facts_2": "true", "casepath_confirm_facts_3": None}, "unknown"))
+        for confirming, status in cases:
+            work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+            work.readings = 4
+            model = ScriptedModel([])
+            model.respond_json = answers(confirming)
+            read_facts(model, work)
+            confirm_facts(model, work)
+            self.assertEqual(work.facts["landlord_notified"]["status"], status, confirming)
+            self.assertNotIn("landlord_notified", work.accepted_facts())
+            if None in confirming.values():
+                self.assertIn("reading_failed", [w["reason"] for w in work.limits])
+
     def test_the_retry_pass_cannot_overwrite_a_routing_fact_after_the_readings(self):
         from casepath.agents.team import CaseTeam, CaseWork, _record_fact, confirm_facts
         cite = [{"file": "f1", "quote": QUOTE}]
