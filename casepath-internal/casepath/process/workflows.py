@@ -715,14 +715,31 @@ def reading_gave_value(row, presumed=None):
     return any(v is not None and v != presumed for v in (row or {}).get("readings") or [])
 
 
-def open_without_raise(row, value):
+# Which readings must answer "open" (the files say the matter is unknown, undecided, disputed or still to be determined,
+# with those words found in the files) for a fact to count as raised and left open, so that no presumption fills it:
+# "any" reading, or "all" readings that answered. A reading that failed or did not answer counts for neither.
+OPEN_RULE = "any"
+
+
+def raised_open(row, rule=None):
+    """Whether the readings recorded in ``row`` raise the fact and leave it open. A row without ``open_readings`` (an
+    earlier stored result) counts as raised when it carries quotations."""
+    opens = (row or {}).get("open_readings")
+    if opens is None:
+        return bool((row or {}).get("citations"))
+    if (rule or OPEN_RULE) == "any":
+        return any(opens)
+    return any(opens) and False not in opens
+
+
+def open_without_raise(row, value, rule=None):
     """Whether a presumption of ``value`` may fill this fact: nothing is recorded, or it is unknown and no reading found
-    another value, and the files do not raise it and leave it open (a passage every reading quoted for it), unless a
-    reading found the presumed value itself."""
+    another value, and the files do not raise it and leave it open (``raised_open``), unless a reading found the
+    presumed value itself. A reading that answered "not stated" raises nothing, whatever it quoted."""
     if row is None:
         return True
     return row.get("status") == "unknown" and not reading_gave_value(row, value) and (
-        not row.get("citations") or value in (row.get("readings") or []))
+        not raised_open(row, rule) or value in (row.get("readings") or []))
 
 
 def presumed(workflow, recorded):

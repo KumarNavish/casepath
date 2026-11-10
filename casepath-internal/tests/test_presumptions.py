@@ -101,17 +101,51 @@ class PresumptionUseTests(unittest.TestCase):
                                            "citations": [{"file": "f1", "quote": QUOTE}], "verdict": "not_checked"}
         self.assertEqual(work.accepted_facts(), {})
 
-    def test_a_fact_counts_as_raised_only_when_both_readings_quote_a_passage_that_raises_it(self):
+    def test_the_two_open_rules_on_recorded_answers(self):
+        from casepath.process.workflows import open_without_raise, raised_open
+        row = lambda *opens: {"status": "unknown", "citations": [1], "open_readings": list(opens)}
+        for opens, any_, all_ in (((True, False, False), True, False), ((True, True, True), True, True),
+                                  ((True, None, True), True, True),  # a failed reading clears nothing
+                                  ((False, False, False), False, False), ((None, None, None), False, False)):
+            self.assertEqual((raised_open(row(*opens), "any"), raised_open(row(*opens), "all")), (any_, all_), opens)
+        self.assertTrue(raised_open({"status": "unknown", "citations": [1]}))  # a row stored before open answers were kept
+        self.assertTrue(open_without_raise({**row(True, True, True), "readings": [False, None, None]}, False))  # R8
+
+    def test_a_fact_is_raised_only_by_open_answers_whose_words_are_found_under_either_rule(self):
+        from casepath.agents import team
         from casepath.agents.team import confirm_facts
+        from casepath.process import workflows
+        from tests.scripted import ModelResult
         from tests.scripted import ScriptedModel
         cite = [{"file": "f1", "quote": QUOTE}]
         open_quoted = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": cite}
         open_silent = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}
-        for second, presumed in ((open_silent, True), (open_quoted, False)):
+        # rule "any": one reading's open answer raises the fact; rule "all": every reading's must
+        for rule, mixed in (("any", False), ("all", True)):
+            for first, second, presumed in ((open_quoted, open_silent, mixed), (open_silent, open_quoted, mixed),
+                                            (open_quoted, open_quoted, False), (open_silent, open_silent, True)):
+                previous, workflows.OPEN_RULE = workflows.OPEN_RULE, rule
+                try:
+                    work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+                    work.readings = 2
+                    work.facts["landlord_notified"] = {**first, "citations": work.located(first["citations"])[0],
+                                                       "verdict": "not_checked", "by": "claim_reader"}
+                    confirm_facts(ScriptedModel([], second_reading=[second]), work)
+                    self.assertEqual("landlord_notified" in work.presumptions(), presumed, (rule, first, second))
+                    self.assertEqual(workflows.raised_open(work.facts["landlord_notified"], "any"), first is open_quoted or second is open_quoted)
+                finally:
+                    workflows.OPEN_RULE = previous
+        # A not_stated answer raises nothing, even when it quotes a related sentence.
+        for verdict, presumed in (("not_stated", True), ("open", False)):
             work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
-            work.facts["landlord_notified"] = {**open_quoted, "citations": work.located(cite)[0], "verdict": "not_checked", "by": "claim_reader"}
-            confirm_facts(ScriptedModel([], second_reading=[second]), work)
-            self.assertEqual("landlord_notified" in work.presumptions(), presumed, second)
+            model = ScriptedModel([])
+            model.respond_json = lambda **kw: ModelResult(
+                value={"conditions": [{"id": "landlord_notified", "verdict": verdict, "value": None, "quote": QUOTE}]},
+                usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+            team.read_facts(model, work)
+            team.confirm_facts(model, work)
+            self.assertEqual(work.facts["landlord_notified"]["status"], "unknown")
+            self.assertEqual("landlord_notified" in work.presumptions(), presumed, verdict)
         # A value found by one reading still holds the fact open: the presumption does not replace it.
         work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
         work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": True,

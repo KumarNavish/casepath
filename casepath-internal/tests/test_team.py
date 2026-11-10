@@ -265,7 +265,8 @@ class TeamTests(unittest.TestCase):
         from casepath.agents.team import CONFIRM, READ_FACTS, CaseWork, confirm_facts, read_facts
         self.assertEqual(READ_FACTS, CONFIRM)  # the same question, put the same way, twice
         self.assertIn("never false", READ_FACTS)
-        self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is unresolved
+        self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is open
+        self.assertIn("not_stated: the\nfiles do not address the matter", READ_FACTS)  # silence is a separate answer
         self.assertIn("YYYY-MM-DD", READ_FACTS)  # dates in the form the fact type accepts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         work.readings = 2  # two readings, as this test describes
@@ -285,7 +286,7 @@ class TeamTests(unittest.TestCase):
         self.assertTrue(calls[0]["input"][0]["content"].startswith("CASE:\n[file message.eml]"))  # the files are the message
         self.assertEqual({c["effort"] for c in calls}, {"low"})
         row = calls[0]["schema"]["properties"]["conditions"]["items"]["properties"]
-        self.assertEqual(row["verdict"]["enum"], ["true", "false", "unresolved"])
+        self.assertEqual(row["verdict"]["enum"], ["true", "false", "open", "not_stated"])
         # Both readings leave it open and quote the passage that raises it.
         self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 2))
 
