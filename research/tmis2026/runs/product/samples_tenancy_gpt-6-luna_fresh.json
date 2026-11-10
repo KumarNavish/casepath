@@ -1,0 +1,6308 @@
+{
+ "fcl_1132fdb1876df85f|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2021cff640ced3a7|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "Do you wish to pursue an extension of the tenancy?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_020f2bacedc162a9|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination stated to be based on rent arrears, or has the landlord otherwise identified arrears as a ground? If so, please provide the cure notice and termination warning, and the rent ledger and payment evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1d7e0a19ee376c16|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Are the dark spots believed or confirmed to be mould or moisture?",
+    "Is there any immediate danger or urgent safety concern related to the entrance door?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09252315095aa169|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1f01a092db41c4bb|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09bf4c849ef1ee44|3": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_0f9a9b0f4a043ab5|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "stated_reason"
+   ],
+   "questions": [
+    "On what date, and by what means, was the termination notice received?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_23c7f3a59472b82a|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2cab6f06f58d2ebd|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2534a534b97da50f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_20eb1b189ff1c5d1|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Are the reported breathing difficulties currently creating an immediate health or safety risk?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_284cb44c9617cba6|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2dffd4707bf2bbad|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason"
+   ],
+   "holds": [],
+   "established": [
+    "termination_notice"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e51df9903135af2|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what dates and by what means did you report the heating defect to the landlords, and do you have copies of those messages or other proof of receipt?",
+    "Are any rooms or occupants currently subject to an immediate health or safety concern requiring urgent attention?",
+    "Do you have dated photographs, heating-service records, or medical records available?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e14148317fc5787|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating actually faulty, or has a heating inspection or service been arranged? This determines whether a heating service report is needed."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3660a91a8038bf36|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b9600e267ebc9f8|3": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the rent-increase notice, and what is its effective date?",
+    "Can you provide the original rent-increase notice and proof showing when it was received?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3004e9cd625e0c4b|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie eine Kündigungsmitteilung tatsächlich erhalten? Falls ja: wann, von wem und auf welchem Weg? Bitte senden Sie die vollständige Mitteilung und vorhandene Zustellnachweise."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3144174d4eaa6a32|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did the heating problem begin, and on what dates were the rooms or radiators observed to be cold?",
+    "Can you provide copies of the defect notices and any records showing when the landlord received them?",
+    "Has the landlord proposed any work or requested access to the apartment?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b8ec390e5f4fbc8|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is there any immediate health or safety risk from the cold apartment that needs urgent attention?",
+    "When and by what means did you notify the landlord, and do you have a copy or evidence of receipt?",
+    "What responses, proposed repairs, or access arrangements has the landlord communicated?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_48ad1556596f887c|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4c8a58711c423e41|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Möchten Sie die Hinterlegung des Mietzinses als möglichen Schritt weiterverfolgen, sodass wir die dafür geltenden Voraussetzungen und Unterlagen prüfen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_495cdb4f0d88d226|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date and by what method did you receive the termination notice?",
+    "Do you dispute the alleged rent arrears, and if so, which amounts or payments are in dispute?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4f31932d66dafbf9|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5f53fea2fcbaf192|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5a191bddbf50f630|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and who received it?",
+    "Can you provide the termination notice itself and any proof of its delivery?",
+    "Was the notice addressed and delivered separately to your husband, and can you provide that notice and service evidence?",
+    "Can you provide the lease, the landlord’s stated termination reasons, any cure notice or termination warning, and the rent ledger/payment records?",
+    "Can you provide the correspondence about the reported defects and rent challenge, including dates and the landlord’s responses?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5e22217a8f028d99|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and do you have evidence showing its delivery date?",
+    "Was a separate termination notice addressed and served to your spouse? If so, please provide a copy and any evidence of service."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_62814fb6c5c0f470|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_63770af748d8f3f7|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [],
+   "questions": [
+    "Do you intend to seek an extension of the tenancy, and do you consider hardship relevant? If so, please provide a dated housing-search log and any responses or evidence of hardship."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5b4d3a3b723b8160|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "An welchem Datum haben Sie die Kündigung erhalten, und welches Beendigungsdatum nennt sie?",
+    "Können Sie die Kündigung selbst sowie Belege zu den Mietzinsforderungen und geleisteten Zahlungen nachreichen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6497fc47bf76f74f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "established": [],
+   "questions": [
+    "Has it been determined whether a building specialist must examine the room to establish the defect’s cause?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_655804bbffa9242f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6cae1116c044a99a|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [
+    "Is there an immediate health or safety risk requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_699677dc46b1150f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Are there immediate health or safety concerns for your son or anyone else in the household that require urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_77b05646bbfc654b|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_7032365a2a7cb080|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "When did you receive the termination notice, and how was it delivered?",
+    "Please provide the termination notice and any evidence of its delivery, including the relevant termination date."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_716f9606b9e15e8f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Are the cool rooms and radiators that do not warm properly evidence of a suspected heating fault, or are you unsure whether there is a fault?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_67f3fc97edbdf375|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What was the date you received the termination notice, and what evidence of delivery or receipt is available?",
+    "What did you recently communicate to the administration that makes you wonder whether the termination was a reaction, and when did you communicate it?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_79cd16a5ca76b01b|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_820ed84f0e81363f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has the landlord replied, proposed repairs, or requested access since you reported the mould?",
+    "Is there any immediate health or safety concern requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_815414e86c968c16|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination stated to be for rent arrears, or were late payments mentioned only in the phone call?",
+    "On what date did you receive the termination notice?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_881c44fa0cda8200|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the termination notice and tell us when and how it was received, by whom, and what termination date it states.",
+    "Was a separate termination notice addressed or delivered to your spouse? If so, please provide it and any service evidence.",
+    "What termination ground did the landlord state, and what facts or explanation did the landlord give?",
+    "Please provide the correspondence about your defect and rent complaints, including dates, and any landlord responses.",
+    "Please provide dated records of your housing search and the difficulties you anticipate before the termination date."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_938145a10416cfa4|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating in fact faulty, or are the cold rooms due to another cause?",
+    "Do you consider the reported sleep disruption to involve a health effect, and is there any immediate health or safety risk?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_893dbc47ca84663f|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "When did the defect begin, and what is the current condition of the sockets and oven?",
+    "Has the proposed contractor visit or any repair taken place, and what is the current access arrangement?",
+    "Please provide the original defect report sent to the landlord and any dated photographs of the affected kitchen area.",
+    "Please provide medical confirmation of the reported health effects, if available."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99be3b386d6fe5d8|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_8cd148548c0c667a|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state?",
+    "Please provide the original termination notice, lease contract, and any proof showing when and how the notice was received.",
+    "Please provide the cure notice or payment-deadline letter, plus a rent ledger and payment records showing the claimed arrears and instalments paid.",
+    "Please provide a dated log of your housing searches, applications, responses, and any resulting hardship."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99e24db5f37c7a3c|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what exact date was the termination notice received, and what termination date does it state?",
+    "Did your registered partner receive a separate termination notice, and if so, when?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_9a62e6a839c5bbfa|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What did you raise with the landlord earlier, when did you raise it, and do you have correspondence or other records of that communication?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a362784e299e172d|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a442849bcc00a706|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Does the household illness constitute a health effect you are alleging is connected to the defect, or is any connection still undetermined?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a53b7aae8525d0d4|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a formal termination notice? If so, when and how was it delivered, and can you provide the notice?",
+    "Was a separate termination notice addressed or delivered to your husband?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_b8e5c045a70c397b|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "Are the dark spots suspected to be mould or moisture, or is their nature still unknown?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c03f5f5c1caa60f2|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a formal termination notice from Wincasa? If so, when and how was it delivered?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_cb0a6837d3f9d819|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "landlord_response_history"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c40e2e2d27b46049|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state? Please provide the notice and any available evidence of receipt.",
+    "What notice period and relevant termination dates are stated in your lease or other documents?",
+    "Please provide the landlord's cure or payment-deadline letter and your rent ledger/payment records so the claimed CHF 6,600 arrears can be reviewed.",
+    "Please provide a dated record of your housing searches and responses to support the requested extension."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d0adca9e774843e2|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Has a formal written defect notice been sent to the landlord? If so, when, and can you provide the notice and evidence of receipt?",
+    "Are you considering paying rent into the official rent deposit account (Hinterlegung) if the defect is not fixed?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d3dc581ee564f805|3": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is the proposed increase based on the mortgage reference interest rate, renovation/value-enhancing work, or both?",
+    "Please provide the rent-increase notice, including the full form and calculation, and evidence showing when it was received.",
+    "What are the current ancillary costs and any other components of the rent, and can you provide evidence of the current rent?",
+    "Please provide evidence of any prior rent adjustment, if applicable."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d4c3b6ed8d30f2f9|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is the termination based on rent arrears, or on another ground? Please provide any explanation or correspondence from the landlord identifying the ground.",
+    "When did you receive the termination notice, who received it, and what are the notice's termination date and stated grounds?",
+    "Was a separate termination notice addressed and delivered to your wife? If so, when and what evidence of service is available?",
+    "Please provide dated records of your housing searches, responses, and any other circumstances supporting the requested extension."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d991bc5ba67d6aff|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering paying rent into the official rent deposit account (Hinterlegung) if the defect is not remedied?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e1a3a168b9bcb5b1|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d51f04e4cc47ab0c|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "proof_of_receipt"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie eine Kündigung erhalten? Falls ja: Wann und an wen wurde sie zugestellt, und können Sie die Kündigung sowie einen Zustellnachweis einreichen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e514cbc96786ff0a|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on rent arrears, and is any rent amount outstanding? Please check your bank records and provide any reminder or account statement you have.",
+    "On what date did you receive the termination notice?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e7ec69ccf6911516|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e77ee7d1e1be2112|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e731dc82c6481239|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ea2f16538f5abd60|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "An welchem Datum und auf welche Weise wurde die Kündigung zugestellt bzw. entgegengenommen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_eeaae036d5c861db|3": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_f072f22a4d308814|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef2f5c99ca9ab008|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef44a7661ccf81b6|3": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and can you provide the notice and evidence showing when and how it was received?",
+    "Was a separate termination notice addressed and delivered to your wife? If so, please provide the copy and any service evidence.",
+    "Please provide the landlord's cure-period letter or other arrears warning, together with the rent ledger and payment records, so the claimed balance and any termination warning can be reviewed."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_fb6908e2671dae22|3": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09bf4c849ef1ee44|4": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_020f2bacedc162a9|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination based on alleged rent arrears, and, if so, what arrears does the administration claim?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09252315095aa169|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1132fdb1876df85f|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_0f9a9b0f4a043ab5|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and what evidence is available of its delivery?",
+    "Was a separate termination notice addressed and served to your husband?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1d7e0a19ee376c16|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Sind die dunklen Flecken Ihrer Einschätzung nach Schimmel, Feuchtigkeit oder etwas anderes?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_23c7f3a59472b82a|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_20eb1b189ff1c5d1|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1f01a092db41c4bb|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is anyone currently facing an immediate health or safety risk from the cold flat, and what action has been taken to address it?",
+    "Which rooms are affected, and when did the heating problem and reported symptoms begin?",
+    "Can you provide the copies of your messages to the landlord and any responses, repair proposals, or access arrangements?",
+    "Has a heating or building specialist inspection since been arranged, and has the landlord agreed to access?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2021cff640ced3a7|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "housing_search_log",
+    "prior_rights_correspondence"
+   ],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "When and how was the termination notice delivered, and is there delivery evidence showing the recipient and date?",
+    "What notice period is agreed in the tenancy, and what are the relevant tenancy and termination dates?",
+    "Was a separate termination notice addressed or delivered to your wife? If so, please provide a copy and any service evidence.",
+    "What were the dates and contents of your defect complaint and rent objection, what response did the landlord give, and when did you receive the termination notice?",
+    "Are you considering seeking an extension of the tenancy? If so, please provide dated housing-search efforts and responses."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2534a534b97da50f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Wann wurden die Mängel erstmals festgestellt, und seit wann bestehen sie?",
+    "Bitte senden Sie die angekündigte Korrespondenz mit der Vermieterin, einschliesslich Ihrer Mängelmeldungen, allfälliger Empfangsbestätigungen und Antworten.",
+    "Haben Sie der Vermieterin bereits eine konkrete schriftliche Reparaturfrist gesetzt? Falls ja, wann und mit welcher Frist?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2cab6f06f58d2ebd|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_284cb44c9617cba6|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2dffd4707bf2bbad|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e14148317fc5787|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is a heating fault suspected, or is the cold-room observation unrelated to a suspected heating defect?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e51df9903135af2|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3144174d4eaa6a32|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3004e9cd625e0c4b|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie eine Kündigung erhalten? Falls ja, wann und wie wurde sie zugestellt, und können Sie die Kündigung sowie einen Zustellnachweis einreichen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3660a91a8038bf36|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you or your spouse receive the termination notice, and what termination date does it state?",
+    "Was a separate termination notice addressed and delivered to your spouse? If so, when?",
+    "What cure deadline, if any, did the landlord give for the claimed arrears, and have you made payments against the amount since then?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b9600e267ebc9f8|4": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b8ec390e5f4fbc8|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "When did you notify the landlord of the heating defect, and by what method?",
+    "Is anyone currently experiencing an immediate health or safety risk from the cold apartment?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4c8a58711c423e41|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you actively considering official rent deposit (Hinterlegung), or would you like to discuss other steps first?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4f31932d66dafbf9|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_48ad1556596f887c|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_495cdb4f0d88d226|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5a191bddbf50f630|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Haben Sie die Kündigung tatsächlich erhalten? Falls ja, an welchem Datum und wer war der Empfänger?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5f53fea2fcbaf192|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5e22217a8f028d99|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "stated_reason"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and do you have evidence of its delivery?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5b4d3a3b723b8160|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "An welchem Datum haben Sie die Kündigung erhalten, und welches Beendigungsdatum nennt sie?",
+    "Bitte reichen Sie die Kündigung selbst sowie den Mietvertrag, Nachweise zum Zugang und Unterlagen zu Mietzinsforderungen und Zahlungen ein.",
+    "Bitte reichen Sie, sofern vorhanden, eine datierte Übersicht Ihrer Wohnungssuche und der erhaltenen Antworten ein."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_62814fb6c5c0f470|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_63770af748d8f3f7|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie entschieden, ob Sie eine Erstreckung des Mietverhältnisses verlangen möchten?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_655804bbffa9242f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6497fc47bf76f74f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "established": [],
+   "questions": [
+    "Has it been decided whether a building specialist needs to examine the room to establish the cause of the defect?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_699677dc46b1150f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Wann traten die Schimmelflecken und feuchten Stellen erstmals auf, und an welchen konkreten Stellen im Kinderzimmer befinden sie sich?",
+    "Wann haben Sie den Mangel jeweils gemeldet, und wann hat Ihr Vermieter die schriftliche Meldung erhalten?",
+    "Haben Sie dem Vermieter bereits eine konkrete schriftliche Reparaturfrist gesetzt? Falls ja, bitte Frist und Schreiben mitteilen.",
+    "Gibt es aktuell eine unmittelbare Gesundheits- oder Sicherheitsgefahr für Ihren Sohn oder andere Bewohner?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_67f3fc97edbdf375|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What did you recently communicate to the landlord that you think may be connected to the termination, and when? Please provide the correspondence if available."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6cae1116c044a99a|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_716f9606b9e15e8f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating in fact faulty, or are the rooms and radiators merely cooler than expected?",
+    "When did you orally notify the landlord about the mould?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_7032365a2a7cb080|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "stated_reason"
+   ],
+   "holds": [
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Did you receive a termination notice? If so, please provide the notice and tell us when and how it was delivered, and to whom.",
+    "What termination date and stated grounds appear in the notice, if you received one?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_77b05646bbfc654b|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate safety danger, such as sparking, a burning smell, electric shocks, or another urgent electrical hazard?",
+    "Can you provide the copies of the 14 October email and 28 October letter, together with any evidence showing they reached the landlord?",
+    "Can you provide the landlord's reply and any records of proposed work or access arrangements?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_815414e86c968c16|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Was the termination given because of alleged rent arrears, or were late payments mentioned only in the phone call? If arrears were the stated ground, were you sent a cure-period letter or termination warning?",
+    "Please provide the termination notice, lease, evidence of when and to whom the notice was delivered, and any separate notice addressed to your wife.",
+    "Please provide the written complaint and rent challenge correspondence, and any written explanation from the landlord of the termination reason."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_820ed84f0e81363f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is anyone experiencing an immediate health or safety risk from the reported breathing problems or mould?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_79cd16a5ca76b01b|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Wann und auf welchem Weg haben Sie die Vermieterin über die Mängel informiert, und liegt eine Bestätigung des Empfangs vor?",
+    "Haben Sie der Vermieterin bereits eine konkrete schriftliche Frist zur Behebung gesetzt? Falls ja, wann, an wen und mit welchem Inhalt?",
+    "Haben die Mängel gesundheitliche Auswirkungen, oder wurde eine technische Fachperson zur Abklärung beigezogen?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_881c44fa0cda8200|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_893dbc47ca84663f|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99be3b386d6fe5d8|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate health or safety risk to the child that requires urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_938145a10416cfa4|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Do you have reason to believe the heating is faulty, or is the cold-room concern still uncertain?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_8cd148548c0c667a|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_9a62e6a839c5bbfa|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What earlier matter or tenancy right did you raise with the landlord, when did you raise it, and what response did the landlord give? Do you want us to assess whether it may be connected to the termination?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a442849bcc00a706|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is a health effect being alleged in connection with the mould or heating defect, or is the connection still unclarified?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a362784e299e172d|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99e24db5f37c7a3c|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "On what exact date did you receive the termination notice, and what termination date does it state?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_b8e5c045a70c397b|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "defect_notification",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "Do the dark marks involve mould or moisture?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a53b7aae8525d0d4|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a termination notice? If so, when and how was it delivered, and can you provide the notice and any delivery evidence?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c40e2e2d27b46049|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c03f5f5c1caa60f2|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a formal termination notice from Wincasa, or is the termination only being discussed?",
+    "If you received a notice, when and how was it delivered, and what termination date and grounds does it state? Please provide the notice and any evidence showing when it was received.",
+    "Was a separate termination notice addressed or delivered to your wife? If so, please provide a copy and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_cb0a6837d3f9d819|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d3dc581ee564f805|4": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is the increase based on the reference-rate change, renovation, or both? Please clarify what the notice states if you can.",
+    "Please provide the complete rent-increase notice, including all pages and attachments, and evidence showing when it was received.",
+    "Please provide evidence of the previous rent adjustment, including its date, amount and calculation basis."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d0adca9e774843e2|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Has the caller decided whether to consider paying rent into the official rent deposit account if the defect remains unfixed?",
+    "Was a written defect notice sent to the landlord, and if so, when and by what method?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d991bc5ba67d6aff|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Have you decided whether you are considering depositing rent into the official rent deposit account (Hinterlegung)?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d51f04e4cc47ab0c|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d4c3b6ed8d30f2f9|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Does the termination notice state that it is based on rent arrears or unpaid rent? If so, please provide the notice and any cure-period or payment-deadline letter.",
+    "Please provide the termination notice and any delivery or receipt evidence, including who received it and when.",
+    "What termination date is stated in the notice, and what date did you or your wife receive it?",
+    "Was a separate termination notice addressed to your wife, or was she otherwise separately served?",
+    "Please provide the correspondence about your defect complaints and rent questions, with dates, and any landlord response."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e514cbc96786ff0a|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Does the written termination notice state that rent arrears are the ground for termination, and does the landlord claim any amount is outstanding? If so, what is the claimed amount and have you checked your payment records?",
+    "Please provide the termination notice and any evidence showing when and to whom it was delivered, including any separate notice addressed to your wife."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e1a3a168b9bcb5b1|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "When did you receive the termination notice, and can you provide the original notice and evidence showing when and to whom it was delivered?",
+    "Was a separate termination notice addressed and delivered to your wife? Please provide a copy and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_eeaae036d5c861db|4": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence",
+    "prior_rent_adjustment"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e77ee7d1e1be2112|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and who received it?",
+    "Was a separate termination notice addressed or delivered to your spouse?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e731dc82c6481239|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e7ec69ccf6911516|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ea2f16538f5abd60|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date was the termination notice received, and what termination date does it state?",
+    "Was a separate termination notice addressed or delivered to the spouse?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef2f5c99ca9ab008|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What date did you receive the termination notice, and what termination date does it state?",
+    "Was a separate termination notice addressed and delivered to your husband? If so, when was it received?",
+    "What reason does the landlord give in the notice, and what dates and correspondence relate to your defect report and rent objection?",
+    "Please provide dated housing-search efforts and any responses, along with information supporting the hardship and extension request."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_f072f22a4d308814|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef44a7661ccf81b6|4": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What date did you receive the termination notice, and how was it delivered?",
+    "Was a separate termination notice addressed and delivered to your wife?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_fb6908e2671dae22|4": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09252315095aa169|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_0f9a9b0f4a043ab5|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_020f2bacedc162a9|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on alleged rent arrears, or was the oral reference to late payments unrelated to the stated termination ground? Please provide the termination notice so the stated grounds can be checked.",
+    "When was the termination notice received, by whom, and is there delivery evidence showing the date?",
+    "Please provide the original termination notice, lease contract, and any separate notice addressed to your wife, together with any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09bf4c849ef1ee44|5": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Haben Sie die formelle Mietzinserhöhungsmitteilung bereits erhalten? Falls ja, wann und von wem?",
+    "Bitte reichen Sie die vollständige Erhöhungsmitteilung sowie einen Nachweis des Empfangs ein.",
+    "Wie hoch ist der derzeit vereinbarte Mietzins, einschliesslich seiner Bestandteile? Bitte legen Sie dafür einen aktuellen Beleg vor.",
+    "Bitte reichen Sie die Berechnung zur Erhöhung und die Unterlagen zur Referenzzinssatzänderung ein, einschliesslich der alten und neuen Grundlagen und der relevanten Daten.",
+    "Bitte reichen Sie die Unterlagen zu den Renovationsarbeiten, Kosten und der geltend gemachten Zuordnung zur Mietzinserhöhung ein.",
+    "Bitte reichen Sie den Mietvertrag und die vollständige Berechnungsgrundlage der letzten Mietzinsanpassung ein."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1132fdb1876df85f|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state? Please provide the complete original notice and any evidence of its delivery.",
+    "What termination ground does the landlord state? Please provide any correspondence explaining that ground.",
+    "Please provide the complete original lease, including its remaining tenancy terms.",
+    "Please provide correspondence about your rent-reduction request and the landlord’s response, with dates."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1d7e0a19ee376c16|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Are the dark wall marks confirmed to be mould or moisture, or is their nature still unknown?",
+    "Does the reported insecurity or health impact involve an immediate safety risk requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1f01a092db41c4bb|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Are there any immediate health or safety concerns requiring urgent attention?",
+    "Will the landlord agree to access for a building or heating specialist inspection, or has the landlord stated any access conditions?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2021cff640ced3a7|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [
+    "termination_notice"
+   ],
+   "questions": [
+    "Will you seek an extension of the tenancy, or would you like to assess that option? If so, please provide any dated housing-search efforts, responses and hardship information.",
+    "Please provide evidence showing who received the termination and when, and the lease or other evidence of the agreed notice period and relevant tenancy dates.",
+    "Please provide the separate notice addressed to your spouse, if one was issued, and any evidence of its service.",
+    "Please provide the correspondence about the defects and rent objection, with dates and any landlord response, to assess the stated retaliation concern."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_23c7f3a59472b82a|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When and how did you report the heating defect to the landlord, and do you have a copy or proof of delivery?",
+    "Has the landlord or a caretaker responded, inspected the heating, proposed work, or requested access? If so, please provide the relevant correspondence.",
+    "Do you have dated photographs or a heating service report documenting the affected radiators?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_20eb1b189ff1c5d1|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2534a534b97da50f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2cab6f06f58d2ebd|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_284cb44c9617cba6|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2dffd4707bf2bbad|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e14148317fc5787|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is a heating fault suspected, or is the cold-room observation the only concern about the heating?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3144174d4eaa6a32|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3660a91a8038bf36|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e51df9903135af2|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate health or safety risk from the cold rooms or your son's current symptoms?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3004e9cd625e0c4b|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Have you actually received a tenancy-termination notice? If so, when and how was it delivered, and can you provide the notice and delivery evidence?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b9600e267ebc9f8|5": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b8ec390e5f4fbc8|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "When and by what method did you notify the landlord, and do you have a copy or evidence of receipt?",
+    "Has the landlord proposed repair work or requested access, and if so, when and on what terms?",
+    "Is there an immediate health or safety risk from the cold apartment or heating failure?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_48ad1556596f887c|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4f31932d66dafbf9|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4c8a58711c423e41|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering pursuing rent deposit if the defect is not repaired, or was this only a possibility you wanted to ask about?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_495cdb4f0d88d226|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and who received it?",
+    "Was a separate termination notice addressed and delivered to your wife? If so, please provide it and any delivery evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5a191bddbf50f630|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5b4d3a3b723b8160|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "An welchem Datum haben Sie die Kündigung erhalten, und welches Beendigungsdatum nennt sie?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5f53fea2fcbaf192|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5e22217a8f028d99|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "stated_reason"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and do you have delivery or other receipt evidence?",
+    "Was a separate termination notice addressed or delivered to your spouse? If so, please provide it and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_62814fb6c5c0f470|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you first notify the landlord of each problem, and what response or repair/access arrangements followed?",
+    "Have you sent the landlord a written repair deadline? If so, please provide it and confirm the deadline date.",
+    "Please provide dated photographs and any available dated humidity/temperature observations and heating service findings."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_63770af748d8f3f7|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [],
+   "questions": [
+    "Do you intend to seek an extension of the tenancy, or should we assess whether that option is relevant? The housing search log depends on this clarification."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6497fc47bf76f74f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "established": [],
+   "questions": [
+    "Has it been decided whether a building specialist must inspect the room to establish the cause?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_655804bbffa9242f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Has a written repair deadline been given to the landlord, and if so, when, to whom, and what did it say?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_67f3fc97edbdf375|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What did you recently tell the landlord, when did you tell them, and was it an assertion or exercise of a tenancy right? Please provide any related correspondence if available."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_699677dc46b1150f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_716f9606b9e15e8f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Are you alleging that the heating is defective, or are you only reporting that some rooms remain cool and some radiators do not heat properly?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6cae1116c044a99a|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_7032365a2a7cb080|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, how was it delivered, and who was named as its recipient?",
+    "Please provide the termination notice, including its stated ground and termination date.",
+    "Please provide the written correspondence about your defect complaints, rent challenge, and the landlord’s responses."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_79cd16a5ca76b01b|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Wurde der Vermieterin bereits eine Mängelanzeige zugestellt? Falls ja, wann und über welchen Weg, und gibt es einen Nachweis des Empfangs?",
+    "Wurde der Vermieterin eine schriftliche Frist zur Behebung gesetzt? Falls ja, bitte die Fristsetzung und den Nachweis der Zustellung einreichen."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_77b05646bbfc654b|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Are there any immediate safety concerns, such as sparks, burning smells, smoke, or shocks, and is the electrical fault still occurring?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_815414e86c968c16|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Were late payments actually stated as the ground for termination, or were they mentioned only in the phone call? If you know, did the landlord send a cure or payment-deadline letter?",
+    "Please provide the termination notice, any separate notice addressed to your wife, and evidence showing when each was received."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_820ed84f0e81363f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_881c44fa0cda8200|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what is its stated termination date? Please provide the original notice and any available delivery evidence.",
+    "Was a separate termination notice addressed or delivered to your spouse? If so, please provide the copy and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_8cd148548c0c667a|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and can you provide the notice and any delivery or receipt evidence?",
+    "What amount do the landlords say is outstanding, and can you provide the rent ledger, payment records, and any cure letter or repayment correspondence?",
+    "What is the termination date stated in the notice, and what housing-search steps and responses have you had so far?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_893dbc47ca84663f|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history"
+   ],
+   "questions": [
+    "Is anyone currently facing an immediate health or safety risk related to the reported defect?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_938145a10416cfa4|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating actually faulty, or are the rooms merely feeling cold?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99be3b386d6fe5d8|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99e24db5f37c7a3c|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a362784e299e172d|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_9a62e6a839c5bbfa|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "Before the termination notice, what issue or tenancy right did you raise with the landlord, when did you raise it, and what response did the landlord give?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a442849bcc00a706|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Is the household member's illness being alleged as a health effect of the mould or heating defect, or is any connection not being claimed?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a53b7aae8525d0d4|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Have you received a written termination notice? If so, when and how did you receive it?",
+    "Was a separate termination notice addressed to your husband, and do you have a copy or service evidence?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c03f5f5c1caa60f2|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state?",
+    "Was a separate termination notice addressed to your wife, and if so, when was it received?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_b8e5c045a70c397b|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "Are the dark spots mould or moisture, or has this been assessed? If known, please provide the findings; the humidity and temperature log depends on this clarification.",
+    "Are the reported symptoms associated with any immediate health or safety risk? If so, please describe the concern and any urgent steps already taken."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c40e2e2d27b46049|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d3dc581ee564f805|5": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ],
+   "established": [
+    "current_rent_evidence",
+    "lease_contract"
+   ],
+   "questions": [
+    "Is the rent increase based on the mortgage reference interest rate, the renovation, or both?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_cb0a6837d3f9d819|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "Did the contractor attend or carry out any work on 16 November 2026, and what is the current status of the proposed repair?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d0adca9e774843e2|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Has a formal written defect notice been sent to the landlord, and if so, when and what did it say?",
+    "Have you decided whether to pursue official rent deposit (Hinterlegung) if the defect is not fixed?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d51f04e4cc47ab0c|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d4c3b6ed8d30f2f9|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Does the termination notice state that rent arrears are a ground for termination?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d991bc5ba67d6aff|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering using the official rent deposit account (Hinterlegung), or have you decided not to pursue that route?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e514cbc96786ff0a|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on rent arrears, or did the landlord state another ground?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e7ec69ccf6911516|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e1a3a168b9bcb5b1|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "Haben Sie tatsächlich eine Kündigung erhalten, getrennt von der Zahlungserinnerung? Falls ja, bitte teilen Sie mit, wann und wie sie zugestellt wurde und legen Sie die Kündigung bei."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e731dc82c6481239|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "written_repair_deadline"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e77ee7d1e1be2112|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ea2f16538f5abd60|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef2f5c99ca9ab008|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_eeaae036d5c861db|5": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [
+    "When did you receive the rent-increase notification, and is there evidence showing its delivery date?",
+    "Please provide the rent-increase notification itself, including its stated effective date and calculation.",
+    "Please provide the lease contract and the amount of the prior rent adjustment, if available.",
+    "For the reference-rate ground, what old and proposed reference-rate bases and relevant dates does the landlord rely on?",
+    "For the renovation ground, what works, costs, and allocation to the rent does the landlord claim?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_f072f22a4d308814|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef44a7661ccf81b6|5": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?",
+    "Has your wife received a separate termination notice addressed to her? If so, when?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_fb6908e2671dae22|5": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_020f2bacedc162a9|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination based on alleged rent arrears, or were late payments mentioned only informally? If it is based on arrears, what amounts and periods are alleged?",
+    "Please provide the original termination notice, the lease contract, and any separate notice addressed to your spouse.",
+    "When and how was the termination notice delivered, and what termination date does it state?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09252315095aa169|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state? Please provide the original notice and any evidence of its delivery.",
+    "Please provide the lease contract, any separate notice addressed to your husband, the arrears cure/deadline letter, and your rent ledger and payment records.",
+    "Please provide your written complaints or other correspondence asserting tenancy rights, together with any landlord responses."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_09bf4c849ef1ee44|6": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Have you received a formal rent-increase notice? If so, when was it received, and can you provide the notice and evidence of receipt?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1132fdb1876df85f|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and how was it delivered?",
+    "Please provide the original termination notice, including all pages and any accompanying service documentation.",
+    "What termination date and ground does the notice state?",
+    "Do you have the complete lease contract and evidence of the agreed notice period?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1f01a092db41c4bb|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_0f9a9b0f4a043ab5|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice, and what evidence records its delivery?",
+    "Was a separate termination notice addressed and served to your husband? If so, when and how?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_1d7e0a19ee376c16|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Do you know whether the dark spots are mould or moisture, or has this not yet been determined?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2021cff640ced3a7|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "Have you decided whether you want to request an extension of the tenancy?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_20eb1b189ff1c5d1|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate health or safety risk requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2534a534b97da50f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_23c7f3a59472b82a|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When and by what method did you report the heating defect to the landlord?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2cab6f06f58d2ebd|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_284cb44c9617cba6|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2dffd4707bf2bbad|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "On what date did you receive the termination notice?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e14148317fc5787|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating actually faulty, or has it been checked? The answer determines whether a heating service report is needed."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3144174d4eaa6a32|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_2e51df9903135af2|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate health or safety concern from the cold rooms that needs urgent attention?",
+    "When did the heating problem begin, and which rooms and radiators are affected now?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3660a91a8038bf36|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3004e9cd625e0c4b|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+   ],
+   "holds": [
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "established": [],
+   "questions": [
+    "Haben Sie eine formelle Kündigung erhalten? Falls ja: wann und auf welchem Weg?",
+    "Falls Sie eine Kündigung erhalten haben: Können Sie die vollständige Kündigung und den Umschlag oder sonstige Zustellnachweise vorlegen?",
+    "Wurde Ihrer Ehefrau eine separate Kündigung zugestellt? Falls ja: wann und mit welchem Zustellnachweis?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b9600e267ebc9f8|6": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_3b8ec390e5f4fbc8|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "When and how did you notify the landlord, and do you have a copy or evidence of receipt?",
+    "Has the landlord replied, proposed repairs, or arranged access? If so, please provide the correspondence and dates.",
+    "Is there any immediate health or safety concern requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_48ad1556596f887c|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4f31932d66dafbf9|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_4c8a58711c423e41|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you actively considering rent deposit as a next step, or was it raised only as a possibility for advice?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5a191bddbf50f630|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_495cdb4f0d88d226|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date and by what means did you and your wife each receive the termination notice? Please provide any available delivery evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5f53fea2fcbaf192|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5e22217a8f028d99|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "proof_of_receipt",
+    "spouse_notice_copy"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "On what date and by what means was the termination notice delivered to you, and do you have evidence showing the recipient and delivery date?",
+    "Was a separate termination notice addressed to and served on your spouse? If so, please provide a copy and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_5b4d3a3b723b8160|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "An welchem Datum haben Sie die Kündigung erhalten? Bitte teilen Sie auch mit, ob Sie einen Zustellnachweis dazu haben."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_62814fb6c5c0f470|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_63770af748d8f3f7|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [],
+   "questions": [
+    "Do you intend to seek an extension of the tenancy, or would you like the insurer to assess whether that option is relevant?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6497fc47bf76f74f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "established": [],
+   "questions": [
+    "Has it been decided whether a building specialist needs to inspect the room to establish the cause of the defect?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_67f3fc97edbdf375|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "Does your concern that the termination may be a reaction relate to a specific tenancy right or complaint you previously asserted to the landlord? If so, what did you raise and when?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_655804bbffa9242f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_6cae1116c044a99a|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_699677dc46b1150f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_716f9606b9e15e8f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Kann eine Fachperson bestätigen, ob die Heizung tatsächlich defekt ist, oder besteht weiterhin Unsicherheit dazu?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_7032365a2a7cb080|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Did you receive a termination notice from the landlord? If so, when, and who was it addressed to?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_77b05646bbfc654b|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Are the sockets still cutting out, and is there any immediate electrical safety concern, such as sparking, burning smells, or a hot outlet?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_893dbc47ca84663f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_79cd16a5ca76b01b|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_815414e86c968c16|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Was the termination stated to be for arrears, or were the late payments mentioned only in the phone call?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_881c44fa0cda8200|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state?",
+    "Can you provide the termination notice and any evidence showing when and to whom it was delivered?",
+    "Was a separate termination notice addressed or delivered to your spouse?",
+    "What reason did the landlord state for the termination?",
+    "Please provide the lease and evidence of the agreed notice period.",
+    "Please provide the correspondence about your prior complaints and rent questioning, including the landlord’s responses.",
+    "Please provide a dated housing-search log and any evidence of the hardship relevant to your extension request."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_820ed84f0e81363f|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Is there an immediate health or safety risk that needs urgent attention?",
+    "Please send the lease contract, the written defect report and any proof of its delivery, dated photographs, and any landlord responses or access arrangements.",
+    "Please provide a humidity and temperature log for the affected areas, if available, and medical confirmation documenting the health findings and any limits on attributing their cause."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99be3b386d6fe5d8|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_938145a10416cfa4|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating actually faulty, or are the rooms merely feeling cold?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_8cd148548c0c667a|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_9a62e6a839c5bbfa|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "What did you raise with the landlord, and when? Do you want the possible connection to the termination assessed as a retaliation concern?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a362784e299e172d|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_99e24db5f37c7a3c|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a53b7aae8525d0d4|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Have you received a termination notice? If so, when, and can you provide the notice and evidence of its receipt?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_a442849bcc00a706|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c03f5f5c1caa60f2|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what is the stated termination date? Please provide the notice and any evidence showing when and to whom it was delivered.",
+    "Please provide the lease contract, the separate notice addressed to your wife (if any), and any correspondence stating Wincasa’s reason for ending the lease."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_c40e2e2d27b46049|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the termination notice, and what termination date does it state?",
+    "Is the tenancy for a family home shared with a spouse or registered partner?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_b8e5c045a70c397b|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [
+    "Are the dark spots on the living-room wall mould, moisture, or something else, or do you want this investigated?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_cb0a6837d3f9d819|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d0adca9e774843e2|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering paying rent into the official rent deposit account (Hinterlegung) if the defect is not fixed?",
+    "Have you sent a written defect notice to the landlord or property management, and if so, when and by what method?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d3dc581ee564f805|6": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [
+    "reference_rate_basis"
+   ],
+   "established": [
+    "current_rent_evidence",
+    "lease_contract"
+   ],
+   "questions": [
+    "Please provide the rent-increase notice and any available evidence showing when and to whom it was delivered.",
+    "Does the landlord rely on the reference-rate change, renovation costs, or both as grounds for the increase? Please provide the notice or calculation identifying the basis.",
+    "Please provide the previous rent-adjustment notice or other record showing its date, amount and calculation basis."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d51f04e4cc47ab0c|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When and how did you or your wife receive the termination notice? Please provide the notice and any delivery evidence, including the date received.",
+    "Was a separate termination notice addressed and delivered to your wife?",
+    "What notice period and termination date are stated in the notice?",
+    "Please provide the complete signed lease, including its appendices and the pages showing the tenancy terms."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d991bc5ba67d6aff|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering paying the rent into the official rent deposit account (Hinterlegung), or is that route not being considered?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_d4c3b6ed8d30f2f9|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Does the termination notice state that rent arrears are a ground for termination, or is the termination based on another ground?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e514cbc96786ff0a|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on rent arrears, and does the landlord claim an outstanding rent balance?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e1a3a168b9bcb5b1|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "proof_of_receipt",
+    "termination_notice"
+   ],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "Haben Sie eine Kündigung erhalten? Falls ja, wann und an wen wurde sie zugestellt? Bitte teilen Sie auch den darin genannten Beendigungstermin mit."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e731dc82c6481239|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "written_repair_deadline"
+   ],
+   "questions": [
+    "Please provide the lease contract and any evidence showing when the landlord received the defect notification.",
+    "Can you provide dated photographs of the affected areas and dated humidity and temperature observations?",
+    "Please provide any landlord replies, repair proposals, or access arrangements; if there has been none, confirm that remains the case.",
+    "Please send the medical confirmation after the appointment, including the documented findings and any stated limits on attributing the symptoms to mould.",
+    "Are the reported breathing difficulties causing an immediate health or safety concern requiring urgent attention?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e7ec69ccf6911516|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Have you sent the landlord a written repair deadline, and if so, please provide the notice and any proof of receipt.",
+    "Please provide the original defect notifications and any evidence showing when the landlord received them.",
+    "Please provide dated photos of the affected radiators and any heating-service report, if available.",
+    "Please provide the landlord's correspondence about the defect, proposed repairs and access arrangements."
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_e77ee7d1e1be2112|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "When did you receive the termination notice, by what method, and what termination date does it state?",
+    "Was a separate termination notice addressed and delivered to your spouse?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ea2f16538f5abd60|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "What date was the termination notice received, and what termination date does it state?",
+    "Was a separate termination notice addressed or delivered to your wife?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef44a7661ccf81b6|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_ef2f5c99ca9ab008|6": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_eeaae036d5c861db|6": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [
+    "current_rent_evidence"
+   ],
+   "questions": [
+    "An welchem Datum haben Sie die aktuelle schriftliche Mietzinserhöhung erhalten?"
+   ],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_f072f22a4d308814|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ },
+ "fcl_fb6908e2671dae22|6": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null
+ }
+}
