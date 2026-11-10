@@ -276,7 +276,9 @@ class TeamTests(unittest.TestCase):
         confirm_facts(model, work)
         first, second = (json.loads(c["instructions"].split("Conditions:\n", 1)[1]) for c in calls)
         self.assertEqual(list(first), ["legal_area", "landlord_notified"])  # every condition, not only those explored
-        self.assertEqual(list(second), ["landlord_notified"])  # the deciding ones, an independent request
+        self.assertEqual(list(second), list(first))  # every condition, in the same order: its own request (another name)
+        self.assertNotEqual(calls[0]["name"], calls[1]["name"])
+        self.assertIn("deciding which documents to request", calls[0]["instructions"])
         self.assertIn(f"The case is a {FIXTURE['title']}.", calls[0]["instructions"])
         self.assertTrue(calls[0]["input"][0]["content"].startswith("CASE:\n[file message.eml]"))  # the files are the message
         self.assertEqual({c["effort"] for c in calls}, {"low"})
