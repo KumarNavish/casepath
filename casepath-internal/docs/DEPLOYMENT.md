@@ -35,6 +35,7 @@ The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app
 | Model credential | `CASEPATH_AZURE_CREDENTIAL=cli` (the person's `az` sign-in) | `managed_identity` or `workload_identity` | Configuration |
 | Model endpoint | The Azure OpenAI resource | The resource, or a gateway host named in `CASEPATH_MODEL_GATEWAY_HOSTS` (it may carry a path) | Configuration |
 | Model deployment | `CASEPATH_AZURE_OPENAI_DEPLOYMENT`, optional reading deployment and dated API version | Same | Configuration |
+| Agents' organisation and writing language | `CASEPATH_ORGANISATION` (default Protekta), `CASEPATH_WRITING_LANGUAGE` (default: the case files' language, usually German, Swiss spelling) | Same | Configuration |
 | Long runs | Worker threads in the case service (`RunService`) | A queue consumer that calls `core.prepare` with the same job; events and the outcome go back on the queue, and large outcomes go through blob storage | One adapter around `core.prepare` |
 | File bytes | `core.StoreBlobs` (store files) | A blob-storage reader with the same `read(file)` method (`core.DirectoryBlobs` shows the shape) | One small adapter |
 | Persistence | SQLite plus files (`casepath/web/store.py`) | The case service's database, behind the same API contract | The case service, not the agents |

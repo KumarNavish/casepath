@@ -17,7 +17,7 @@ A job (``casepath.agent-job/1``)::
      "case": {"id", "title", "intake", "workflow_id", "workflow_version", "workflow_selected_by"},
      "files": [{"id", "name", "kind", "media_type", "sha256", "extraction"}],
      "workflows": [every catalogue workflow version], "knowledge": [active Knowledge items, any family],
-     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers", "page_image_side", "token_budget"}}
+     "edits": [the case's active edits], "options": {"effort", "read_scans", "reading_workers", "page_image_side", "token_budget", "voice"}}
 
 An outcome (``casepath.agent-outcome/1``)::
 
@@ -293,7 +293,7 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)
-        team = CaseTeam(model, effort=options.get("effort", "medium"))
+        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"))
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
         result["usage"] = usage + result["usage"]
@@ -316,8 +316,8 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
         base = catalogue_of(job).get(prior["workflow_id"], prior["workflow_version"])
         result = prior["result"]
         work = CaseWork(case=job["case"], files=case_files(job["files"]), base_workflow=base, knowledge=family_knowledge(job, base),
-                        edits=job["edits"] + result.get("agent_edits", []), on_event=on_event)
-        work.facts = {f["fact"]: f for f in result["facts"]}
+                        edits=job["edits"] + result.get("agent_edits", []), on_event=on_event, voice=(job.get("options") or {}).get("voice"))
+        work.facts = {f["fact"]: f for f in result["facts"] if f["status"] != "presumed"}  # presumptions apply afresh
         work.documents = {d["document"]: d for d in result["documents"] if d["document"] in work.document_defs}
         work.documents_looked_for = True  # the prepared run looked for every need; only the changed ones are checked again
         targets = [d for d in documents if d in work.document_defs]
