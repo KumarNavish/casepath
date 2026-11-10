@@ -127,6 +127,28 @@ class PresumptionUseTests(unittest.TestCase):
             finally:
                 workflows.OPEN_RULE = previous
 
+    def test_an_open_answer_whose_words_are_not_found_is_no_answer(self):
+        from casepath.agents import team
+        from tests.scripted import ModelResult, ScriptedModel
+        calls = []
+        def answer(**kw):
+            calls.append(kw["name"])
+            quote = "Dieser Satz steht in keiner Datei." if kw["name"] == "casepath_confirm_facts" else QUOTE
+            verdict = "not_stated" if kw["name"] == "casepath_confirm_facts_2" else "open"
+            return ModelResult(value={"conditions": [{"id": "landlord_notified", "verdict": verdict, "value": None,
+                                                      "quote": quote if verdict == "open" else ""}]},
+                               usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+        work.readings = 3
+        model = ScriptedModel([])
+        model.respond_json = answer
+        team.read_facts(model, work)
+        team.confirm_facts(model, work)
+        # the unfound open words were asked for once more (the same answer came back): that reading counts as no answer
+        self.assertEqual(calls.count("casepath_confirm_facts"), 2)
+        self.assertEqual(work.facts["landlord_notified"]["open_readings"], [True, None, False])
+        self.assertNotIn("landlord_notified", work.presumptions())  # one found open answer holds it under the default
+
     def test_the_two_open_rules_on_recorded_answers(self):
         from casepath.process.workflows import open_without_raise, raised_open
         row = lambda *opens: {"status": "unknown", "citations": [1], "open_readings": list(opens)}

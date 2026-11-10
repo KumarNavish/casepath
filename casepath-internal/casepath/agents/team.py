@@ -858,7 +858,7 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
     judged = {}
     for row in answers:
         judged.setdefault(row["id"], set()).add((row["verdict"], row["value"]))
-    rows = {f: ("unknown", None, []) for f, seen in judged.items() if len(seen) > 1}
+    rows = _Answers({f: ("unknown", None, []) for f, seen in judged.items() if len(seen) > 1})
     for row in answers:
         if row["id"] in rows:
             continue  # the first answer per condition counts
@@ -869,6 +869,8 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
             # Only an open answer, with the words that say the matter is open found in the files, raises the fact; a
             # sentence quoted for a matter the files do not address raises nothing.
             rows[row["id"]] = ("unknown", None, located if row["verdict"] == "open" else [])
+            if row["verdict"] == "open" and not located:
+                rows.unfound_open.add(row["id"])  # an open answer whose words are not found is no answer
             continue
         raw = row["verdict"] if definition["type"] == "boolean" else row["value"] if row["verdict"] == "true" else None
         value, problem = _fact_value(definition, raw) if raw is not None else (None, "no value")
@@ -876,10 +878,18 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
     return rows
 
 
+class _Answers(dict):
+    """One reading's admitted answers, {fact: (status, value, located quotes)}, with the facts it answered open without
+    words found in the files."""
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.unfound_open = set()
+
+
 def _open_answer(rows, fact_id):
     """Whether one reading answered open with its words found in the files: True or False; None when the reading did not
-    answer the condition (a failed reading proves nothing)."""
-    if fact_id not in rows:
+    answer the condition (a failed reading proves nothing) or answered open with words not found in the files."""
+    if fact_id not in rows or fact_id in getattr(rows, "unfound_open", ()):
         return None
     status, _, located = rows[fact_id]
     return status == "unknown" and bool(located)
