@@ -1,0 +1,62 @@
+{
+ "PRODUCT|s6-on-PR_goods_recovered|0": {
+  "plan": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  },
+  "plan_workflow_only": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  },
+  "status": "completed",
+  "calls": 2,
+  "product_extra": {
+   "routing": {
+    "status": "needs_facts",
+    "needs": [
+     "claim_type"
+    ],
+    "candidates": [
+     {
+      "id": "household_theft",
+      "version": "2026-11-10",
+      "title": "Household insurance: theft claim intake",
+      "status": "reviewed"
+     }
+    ]
+   }
+  },
+  "keys": [
+   "ca66aaf55b6f8289eddfa6cae169a98f7714e2c9bce251252b6d2e53f1ec6574",
+   "ca66aaf55b6f8289eddfa6cae169a98f7714e2c9bce251252b6d2e53f1ec6574",
+   "b64fc1af8482dc3ca5fa21e9d016501b839b8d20c6bd0ae564232196b455ba05",
+   "b64fc1af8482dc3ca5fa21e9d016501b839b8d20c6bd0ae564232196b455ba05"
+  ],
+  "seconds": 11.8,
+  "tokens": {
+   "input": 1675,
+   "cached": 0,
+   "output": 191
+  },
+  "agents": [
+   "router",
+   "router"
+  ],
+  "plan_ids": {
+   "family": null,
+   "requests": [],
+   "holds": [],
+   "questions": [],
+   "deferred": true,
+   "deferral_reason": "routing needs_facts"
+  }
+ }
+}
