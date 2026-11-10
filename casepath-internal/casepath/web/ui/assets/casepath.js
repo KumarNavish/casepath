@@ -1068,7 +1068,7 @@ function overviewView() {
   const cite = (c) => (c ? ` <button class="cp-source-chip" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(clip(fileName(c.file), 22))}${c.page ? `, ${T("p.", "S.")} ${c.page}` : ""}</button>`
     : ` <span class="cp-source-chip none">${T("no source", "ohne Beleg")}</span>`);
   const factCite = (id) => { const f = recorded("fact")[id]; return f && f.status === "established" ? (f.citations || [])[0] : null; };
-  const claimCite = ((brief.timeline || [])[0] || {}).citations ? brief.timeline[0].citations[0] : factCite("rechtsgebiet");
+  const claimCite = factCite("rechtsgebiet");  // the first timeline event is often unrelated to the claim
   const anliegen = clip(brief.request || r.answer || "", 320);
   const parties = (brief.parties || []).map((p) => `${redacted(p.name) ? `<i>${T("name redacted", "Name geschwärzt")}</i>` : esc(p.name)} <span class="cp-muted">· ${esc(p.role)}</span>`).join("; ");
   const next = ev && ev.beyond ? ev.beyond.find((b) => b.state === "reached") || ev.beyond[0] : null;
@@ -1103,7 +1103,7 @@ function overviewView() {
         <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
-        <dt>${T("Documents", "Dokumente")}</dt><dd><a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a></dd>
+        <dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>
         <dt>${T("Next action", "Nächster Schritt")}</dt><dd>${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.next_actions.length ? esc(ev.next_actions[0].text) : "—"}</dd>
       </dl>
       ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre class="cp-reply" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(draft)}</pre>
@@ -1152,6 +1152,7 @@ function bindOverview() {
 // ---------- case page ----------
 async function loadCase() {
   const id = S.route.id;
+  if (S.loadedCase !== id) { S.overviewSource = false; S.loadedCase = id; }  // an opened source belongs to its case
   const [data, workflows, knowledge] = await Promise.all([api(`/api/cases/${id}`), S.workflows ? null : api("/api/workflows"), api("/api/knowledge")]);
   if (workflows) S.workflows = workflows.workflows;
   S.knowledge = knowledge.knowledge;
@@ -1196,14 +1197,14 @@ async function renderCase() {
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "document_finder") main = `${documentsView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "result_checker") main = resultView();
-  else if (tab === "overview") main = overviewView();
+  else if (tab === "overview") main = `${overviewView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
   keepMotion($("#app"));
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
-  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; renderCase(); });
+  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = tab === "overview"; await renderCase(); const box = $("#overview-source"); if (box) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const follow = $("#follow");
   if (follow) follow.addEventListener("click", () => {
