@@ -368,6 +368,9 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
         work = CaseWork(case=job["case"], files=case_files(job["files"]), base_workflow=base, knowledge=family_knowledge(job, base),
                         edits=job["edits"] + result.get("agent_edits", []), on_event=on_event, voice=(job.get("options") or {}).get("voice"))
         work.facts = {f["fact"]: f for f in result["facts"] if f["status"] != "presumed"}  # presumptions apply afresh
+        # the routing presumption came from routing, not from the workflow: it is carried over as it was
+        work.routing_presumed = {f["fact"]: f["value"] for f in result["facts"] if f["status"] == "presumed" and f.get("by") == "routing"}
+        work.facts_confirmed = True  # the facts were read twice in the prepared run
         work.documents = {d["document"]: d for d in result["documents"] if d["document"] in work.document_defs}
         work.documents_looked_for = True  # the prepared run looked for every need; only the changed ones are checked again
         targets = [d for d in documents if d in work.document_defs]

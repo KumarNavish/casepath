@@ -104,6 +104,19 @@ class CoreContractTests(unittest.TestCase):
             self.assertEqual((outcome["routing"]["status"], outcome["workflow"]), ("needs_facts", None))
             self.assertFalse(any(f.get("presumed") for f in outcome["routing"]["facts"]))
 
+    def test_a_recheck_keeps_the_routing_presumption(self):
+        workflow = json.loads(json.dumps(Catalogue.load(FIXTURES).get("example-defect")))
+        next(d for d in workflow["documents"] if d["id"] == "customer_message")["required_when"] = {"fact": "legal_area", "is": "tenancy_defect"}
+        prepared_job = {**job([], workflow_id=None), "workflows": [workflow]}
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(json.loads(json.dumps(prepared_job)), script(), core.DirectoryBlobs(blobs))
+        rows = lambda ev: {d["document"]: (d["required"], d["status"]) for d in ev["documents"]}
+        before = rows(outcome["result"]["evaluation"])
+        self.assertEqual(before["customer_message"][0], "yes")  # needed because the routing fact is presumed
+        prior = {"id": "run_1", "workflow_id": "example-defect", "workflow_version": workflow["version"], "result": outcome["result"]}
+        again = core.recheck({**prepared_job, "case": {**prepared_job["case"], "workflow_id": "example-defect"}}, prior, [], script())
+        self.assertEqual(rows(again["result"]["evaluation"]), before)
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
