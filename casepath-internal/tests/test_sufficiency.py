@@ -8,7 +8,8 @@ from casepath.process.workflows import CatalogueError, validate_workflow
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "example-defect.json").read_text())
 LETTER = "Wir bestätigen den Eingang Ihrer Mängelanzeige vom 2. März 2025 betreffend Schimmel im Bad."
-FILES = [{"id": "f1", "name": "letter.pdf", "kind": "pdf", "text": f"Immo AG\n\n{LETTER}"}]
+FILES = [{"id": "f1", "name": "letter.pdf", "kind": "pdf", "text": f"Immo AG\n\n{LETTER}"},
+         {"id": "f2", "name": "message.eml", "kind": "email", "text": "Der Schimmel im Bad ist seit Januar da."}]
 CASE = {"title": "Schimmel im Bad", "intake": {}}
 
 
@@ -51,6 +52,13 @@ class SufficiencyTests(unittest.TestCase):
                                      {"item": "the defect it reports", "citations": [{"file": "f1", "quote": "betreffend Schimmel im Bad"}]}])
         self.assertEqual(result["status"], "present")
         self.assertEqual([s["item"] for s in work.documents["notice_letter"]["shows"]], ["the date of the notice", "the defect it reports"])
+
+    def test_quotes_count_only_from_the_files_named_for_the_document(self):
+        work = CaseWork(case=CASE, files=FILES, base_workflow=workflow())
+        result = record(work, shows=[{"item": "the date of the notice", "citations": [{"file": "f1", "quote": "vom 2. März 2025"}]},
+                                     {"item": "the defect it reports", "citations": [{"file": "f2", "quote": "Der Schimmel im Bad"}]}])
+        self.assertEqual(result["status"], "unusable")
+        self.assertIn("the defect it reports", work.documents["notice_letter"]["note"])
 
     def test_needs_without_must_show_behave_as_before(self):
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)

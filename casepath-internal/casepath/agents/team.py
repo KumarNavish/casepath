@@ -374,7 +374,8 @@ def _record_document(work, agent, args):
     required_items = work.document_defs.get(args["document"], {}).get("must_show", [])
     if status == "present" and required_items:
         # Present means sufficient: every item the need must show is quoted from the file, word for word.
-        by_item = {row["item"]: work.located(row["citations"])[0] for row in args.get("shows") or []}
+        named = set(args["files"])  # a quote counts only from a file named for this document
+        by_item = {row["item"]: [hit for hit in work.located(row["citations"])[0] if hit["file"] in named] for row in args.get("shows") or []}
         lacking = [item for item in required_items if not by_item.get(item)]
         shown = [{"item": item, "citations": by_item[item]} for item in required_items if by_item.get(item)]
         if lacking:
