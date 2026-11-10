@@ -147,6 +147,9 @@ def validate_workflow(data):
             raise CatalogueError("each document needs an id, a title and why it is needed")
         _refs(document, sources, f"document {document['id']}")
         _check_condition(document.get("required_when", True), facts, f"document {document['id']}")
+        shows = document.get("must_show", [])
+        if not isinstance(shows, list) or any(not isinstance(i, str) or not i.strip() for i in shows) or len(set(shows)) != len(shows):
+            raise CatalogueError(f"document {document['id']}: must_show is a list of distinct, non-empty items")
         documents[document["id"]] = document
     outcomes = {o["id"]: o for o in data.get("outcomes", [])}
     for outcome in outcomes.values():

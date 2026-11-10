@@ -66,7 +66,9 @@ plain language, one per fact, for the case handler.""",
         "instructions": """You are the document finder. Open the process and, for each document need, find the file that meets it
 and quote the sentence that shows it, using record_document. Mark a need absent only when no file of that kind is in
 the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
-needed), mark it unusable, name the file and quote what it does show. Check suggested needs too.""",
+needed), mark it unusable, name the file and quote what it does show. When a need lists what it must show, mark it present
+only with a quote from the file for each item (shows); a file that does not show every item is unusable. Check suggested
+needs too.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
@@ -289,6 +291,7 @@ def _process_view(work):
                        **({"produces": s["produces"]} if s.get("produces") else {}),
                        "next": [{"to": e["to"], "label": e.get("label")} for e in s.get("next", [])]} for s in work.graph["steps"]],
             "documents": [{"id": d["id"], "title": d["title"], "why": d["why"], "suggested": bool(d.get("suggested")),
+                           **({"must_show": d["must_show"]} if d.get("must_show") else {}),
                            "from": d["source_refs"][0].split("#")[0]} for d in work.graph["documents"]],
             "current_step": evaluation["current"] and evaluation["current"]["title"],
             "checklist": [{"document": c["document"], "required": c["required"]} for c in evaluation["documents"]],
@@ -318,7 +321,10 @@ def _tool_specs(work, names):
     if documents:
         specs["record_document"] = ("Record whether a file meets one document need, with the sentence that shows it.",
                                     obj(document=choice(documents), status=choice(["present", "unusable", "absent"]),
-                                        files=arr(choice(files), maxItems=6), citations=_citations(files), note=text(400)))
+                                        files=arr(choice(files), maxItems=6), citations=_citations(files), note=text(400),
+                                        # what a present file shows, item by item, where a need lists what it must show
+                                        **({"shows": arr(obj(item=text(200), citations=_citations(files, 2)), maxItems=12)}
+                                           if any(d.get("must_show") for d in work.graph["documents"]) else {})))
     condition = arr(obj(fact=choice(facts), value=text(200)), maxItems=4) if facts else arr(obj(fact=text(80), value=text(200)), maxItems=0)
     specs["propose_change"] = ("Adapt this case's process: add a document need (attached to `step`), a question, or a step "
                                "(inserted before `step`), with its basis: quotes from the files or an applied Knowledge item, "
@@ -355,8 +361,18 @@ def _record_document(work, agent, args):
         work.emit("source_checker", "document.rejected", document=args["document"], reason="no located quote")
         return {"accepted": False, "reason": "name the file and quote it word for word"}
     status = "missing" if args["status"] == "absent" else args["status"]
+    note, shown = args["note"], []
+    required_items = work.document_defs.get(args["document"], {}).get("must_show", [])
+    if status == "present" and required_items:
+        # Present means sufficient: every item the need must show is quoted from the file, word for word.
+        by_item = {row["item"]: work.located(row["citations"])[0] for row in args.get("shows") or []}
+        lacking = [item for item in required_items if not by_item.get(item)]
+        shown = [{"item": item, "citations": by_item[item]} for item in required_items if by_item.get(item)]
+        if lacking:
+            status = "unusable"
+            note = (note + " " if note else "") + "Does not show: " + "; ".join(lacking) + "."
     work.documents[args["document"]] = {"document": args["document"], "status": status, "files": args["files"],
-                                        "citations": located, "note": args["note"], "by": agent,
+                                        "citations": located, "note": note, "by": agent, "shows": shown,
                                         "verdict": None if status != "missing" else "not_checked"}
     work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"],
               cite=located[0] if located else None)
@@ -541,8 +557,10 @@ def run_source_checker(model, work, effort="medium"):
         else:
             need = work.document_defs.get(item_id, {"title": item_id})
             claim = f"The case files contain “{need['title']}” ({row['status']})."
+            if row["status"] == "present" and need.get("must_show"):
+                claim += " It shows: " + "; ".join(need["must_show"]) + "."
         items.append({"item": f"{kind}:{item_id}", "claim": claim,
-                      "passages": [work.evidence.context(c) for c in row["citations"]]})
+                      "passages": [work.evidence.context(c) for c in row["citations"] + [c for shown in row.get("shows", []) for c in shown["citations"]]]})
     work.emit("source_checker", "agent.start", instruction=f"Check {len(items)} item(s) independently.")
     if items:
         schema = obj(items=arr(obj(item=choice([i["item"] for i in items]), verdict=choice(["supported", "uncertain", "unsupported"]),
