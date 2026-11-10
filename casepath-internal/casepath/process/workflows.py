@@ -734,6 +734,8 @@ def presumed(workflow, recorded):
             stated = row.get("status") == "established" and row.get("verdict") != "rejected"
             if row.get("status") != "conflicting" and not stated and not reading_gave_value(row, item["value"]):
                 out[item["fact"]] = item
-        elif row is None or (row.get("status") == "unknown" and not row.get("citations") and not reading_gave_value(row, item["value"])):
+        elif row is None or (row.get("status") == "unknown" and not reading_gave_value(row, item["value"]) and (
+                not row.get("citations") or item["value"] in (row.get("readings") or []))):
+            # (a quotation that raises the fact blocks it, unless it is a reading that found the presumed value itself)
             out[item["fact"]] = item
     return out

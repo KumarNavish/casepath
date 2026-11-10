@@ -116,7 +116,7 @@ class PresumptionUseTests(unittest.TestCase):
         from tests.scripted import ScriptedModel
         deny = [{"fact": "landlord_notified", "status": "established", "value": "no", "citations": [{"file": "f1", "quote": QUOTE}]}]
         silent = [{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}]
-        for applies, value in (("routed", True), ("unstated", False), ("unstated", True)):
+        for applies, value in (("routed", True), ("unstated", True)):  # the reading found another value than the presumed one
             work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies=applies, value=value))
             model = ScriptedModel([], first_reading=deny, second_reading=silent)
             read_facts(model, work)
@@ -159,6 +159,17 @@ class PresumptionUseTests(unittest.TestCase):
                                                "citations": work.located(cite)[0], "verdict": "not_checked", "by": "claim_reader"}
             confirm_facts(model, work)
             self.assertNotIn("landlord_notified", work.presumptions())  # the doubt the files raise stays open
+
+    def test_one_reading_that_finds_the_presumed_value_supports_an_unstated_presumption_too(self):
+        from casepath.agents.team import confirm_facts, read_facts
+        from tests.scripted import ScriptedModel
+        none = [{"fact": "landlord_notified", "status": "established", "value": "no", "citations": [{"file": "f1", "quote": QUOTE}]}]
+        silent = [{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}]
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies="unstated", value=False))
+        model = ScriptedModel([], first_reading=none, second_reading=silent)
+        read_facts(model, work)
+        confirm_facts(model, work)
+        self.assertEqual(work.accepted_facts(), {"landlord_notified": False})
 
 
 class ReplyTests(unittest.TestCase):
