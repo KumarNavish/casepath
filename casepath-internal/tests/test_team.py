@@ -122,7 +122,7 @@ class TeamTests(unittest.TestCase):
         self.assertTrue(work.facts["landlord_notified"].get("agreed"))
         self.assertNotIn("notice_letter", [d["document"] for d in work.evaluate()["documents"]])
 
-    def test_after_the_two_readings_one_agent_cannot_change_a_deciding_fact(self):
+    def test_after_the_readings_one_agent_cannot_change_a_deciding_fact(self):
         from casepath.agents.team import CaseWork, _record_fact, confirm_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         confirm_facts(ScriptedModel([], second_reading=[]), work)
@@ -130,9 +130,26 @@ class TeamTests(unittest.TestCase):
                                                      "citations": [{"file": "f1", "quote": QUOTE}]})
         self.assertFalse(result["accepted"])
         self.assertNotIn("landlord_notified", work.accepted_facts())
-        # A fact no condition uses can still be recorded.
-        self.assertTrue(_record_fact(work, "claim_reader", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
-                                                            "citations": [{"file": "f1", "quote": QUOTE}]})["accepted"])
+        # Nor a routing fact (the workflow's selection condition): the readings read it too.
+        self.assertFalse(_record_fact(work, "claim_reader", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
+                                                             "citations": [{"file": "f1", "quote": QUOTE}]})["accepted"])
+
+    def test_the_retry_pass_cannot_overwrite_a_routing_fact_after_the_readings(self):
+        from casepath.agents.team import CaseTeam, CaseWork, _record_fact, confirm_facts
+        cite = [{"file": "f1", "quote": QUOTE}]
+        work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        confirm_facts(ScriptedModel([]), work)
+        # routing established it, every reading agreed, and the source checker did not accept it
+        work.facts["legal_area"] = {"fact": "legal_area", "status": "established", "value": "tenancy_defect", "agreed": True,
+                                    "citations": work.located(cite)[0], "verdict": "rejected", "by": "routing"}
+        # the lead's retry pass asks the claim reader to record the rejected facts again
+        recorded = []
+        team = CaseTeam(ScriptedModel([]))
+        team._delegate = lambda w, state, agent, instruction: recorded.append(
+            _record_fact(w, agent, {"fact": "legal_area", "status": "established", "value": "loan", "citations": cite})) if agent == "claim_reader" else None
+        team._retry_rejected(work, {"delegations": 0})
+        self.assertEqual([r["accepted"] for r in recorded], [False])
+        self.assertEqual((work.facts["legal_area"]["value"], work.facts["legal_area"]["by"]), ("tenancy_defect", "routing"))
 
     def test_an_agent_must_report_on_its_last_turn(self):
         from casepath.agents.team import CaseWork, run_agent
