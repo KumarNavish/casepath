@@ -181,7 +181,7 @@ Short record; details are in the files named.
   rules are in force at once (theft, 98 rules), not on small rule sets.
   ShARC will not be a headline result. Closest prior work found on the way,
   to cite: few-shot policy decomposition with a logic formula evaluated in
-  code (arXiv 2501.11335; numbers to be checked against the paper).
+  code (arXiv 2501.11335; read and summarised in `analysis/RELATED_LDPC.md`).
 
 ## 2026-11-10 — Expert study design reviewed; first inside/outside parity match
 - The product session's feedback and study design (5 experts × 3 cases) was

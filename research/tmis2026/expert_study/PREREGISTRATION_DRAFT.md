@@ -65,7 +65,7 @@ the study. It is reduced as follows:
 1. **Seed Knowledge** is rebuilt without the three cases; its content hash is in the freeze record.
 2. **New cut copies.** No run on a cut copy exists before the frozen run, and none may be made before the freeze except the frozen and variation runs themselves.
 3. **Development-exposure record**, made before the freeze from the product's commit history: the commits before the seal whose change was derived from one of the three cases, listed by hash with one line each.
-4. **Consequences for claims.** Q1 on the study cases is accuracy on cases seen in development and is labelled so; accuracy on unseen cases comes from the outside experiments on sealed synthetic claims. Q2, Q3 and Q5 do not need the cases to be unseen, only the item labels to be right. Q4's held-out case is held out from the corrections, not from development, and this is said wherever Q4 is reported.
+4. **Consequences for claims.** Q1 on the study cases is accuracy on cases seen in development and is labelled so; accuracy on unseen cases comes from the outside experiments on sealed synthetic claims. Q2 and Q5 do not need the cases to be unseen, only the item labels to be right. In Q3 the same holds for the expert's own answers (unaided, and after the reveal); the value for CasePath alone is accuracy on a case seen in development and is labelled so wherever it is shown. Q4's held-out case is held out from the corrections, not from development, and this is said wherever Q4 is reported.
 
 ## 4. Materials produced before the first session
 
