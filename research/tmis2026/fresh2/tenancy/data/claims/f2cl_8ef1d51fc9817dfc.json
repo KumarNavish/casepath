@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_8ef1d51fc9817dfc",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-19T21:35:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_9859f9aee0276609",
+  "subject": "Broken roller shutters and spots on the wall",
+  "body": "Name: Sofia Kowalczyk\nAddress: Brunnenrain 46, 4410 Liestal, 4-room flat\nLandlord: Hausverwaltung Pilatus AG\n\nMessage:\nThe roller shutters in our living room and bedroom have been broken since spring. They are stuck in the down position, so both rooms are dark day and night. I have reported it three times. In September I sent the management a letter with a firm repair date (attached); that date has passed and nothing has happened.\n\nBefore you ask: nobody in our household has any health problems because of this, it is just very unpleasant to live in the dark.\n\nBehind the bedroom shutter, on the wall under the window, there are now some dark spots. I really cannot tell whether that is mould or damp coming in, or just dirt from the shutter box. I have not had anyone look at it.\n\nI am not going to keep paying Pilatus a full rent for two rooms I cannot use properly. I have already asked my bank how to set up a payment to the official rent deposit office, and October's rent is still on my account.\n\nWhat should I do next?\n\nSofia Kowalczyk",
+  "sent_at": "2026-10-19T21:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_810cd5e39a4d1ae2"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_810cd5e39a4d1ae2",
+   "file_name": "letter_Pilatus_Sept.txt",
+   "media_type": "text/plain",
+   "content_base64": "U29maWEgS293YWxjenlrCkJydW5uZW5yYWluIDQ2CjQ0MTAgTGllc3RhbAoKSGF1c3ZlcndhbHR1bmcgUGlsYXR1cyBBRwpSaGVpbnN0cmFzc2UgMzAKNDQxMCBMaWVzdGFsCgpMaWVzdGFsLCAxMCBTZXB0ZW1iZXIgMjAyNgoKUm9sbGVyIHNodXR0ZXJzIGluIGxpdmluZyByb29tIGFuZCBiZWRyb29tIOKAkyBkZWFkbGluZSBmb3IgcmVwYWlyCgpEZWFyIFNpciBvciBNYWRhbSwKCkkgcmVmZXIgdG8gbXkgcmVwZWF0ZWQgcmVwb3J0cyBhYm91dCB0aGUgYnJva2VuIHJvbGxlciBzaHV0dGVycyBpbiB0aGUgbGl2aW5nIHJvb20gYW5kIGJlZHJvb20gb2YgbXkgZmxhdCBhdCBCcnVubmVucmFpbiA0Ni4KCkkgaGVyZWJ5IHNldCB5b3UgYSBmaW5hbCBkZWFkbGluZTogdGhlIHNodXR0ZXJzIG11c3QgYmUgcmVwYWlyZWQgYnkgMSBPY3RvYmVyIDIwMjYgYXQgdGhlIGxhdGVzdC4KClBsZWFzZSBjb25maXJtIHRoZSBkYXRlIG9uIHdoaWNoIHRoZSByZXBhaXIgd2lsbCB0YWtlIHBsYWNlLgoKWW91cnMgZmFpdGhmdWxseSwKU29maWEgS293YWxjenlrCg==",
+   "sha256": "8de4da133d5e9c16cc9c9fb09d671c78c1e80b2daae1fed1472c538353e663ab",
+   "size_bytes": 538
+  }
+ ]
+}

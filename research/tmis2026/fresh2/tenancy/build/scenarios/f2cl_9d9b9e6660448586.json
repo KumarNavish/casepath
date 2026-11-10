@@ -1,0 +1,52 @@
+{
+ "claim_id": "f2cl_9d9b9e6660448586",
+ "message_id": "f2msg_6c7f259e1cbbfa81",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_bf333ee5c3c65544",
+ "family_index": 14,
+ "slot": 1,
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "retaliation_screen"
+ ],
+ "routing_true": true,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "unmentioned",
+  "family_home": "absent",
+  "arrears": "stated_true",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "open"
+ },
+ "styles": {
+  "arrears": "passing",
+  "retaliation_screen": "plain"
+ },
+ "open_flag": "extension_relevant",
+ "open_value": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Jasmin Bosshard",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Burgdorf",
+  "canton": "BE",
+  "address": "Schulhausstrasse 65, Burgdorf, 3-room flat",
+  "lease_start": "1 March 2020",
+  "rent": 2230,
+  "utilities": 330,
+  "received_at": "2026-10-12T07:20:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 6690,
+  "defect": "",
+  "notified_on": "28 June 2026",
+  "repair_deadline": "14 September 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "19 October 2026",
+  "household": "the tenant",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

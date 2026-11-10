@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_4e6b3ac31e76c8a6",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-08-08T13:50:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_66490f1a5ea51483",
+  "subject": "Cold radiators and mould – Rebbergstrasse 99",
+  "body": "Dear claims team,\n\nI am a tenant of Stiftung Wohnen Zentral at Rebbergstrasse 99 in Rapperswil-Jona (3.5 rooms) and need advice.\n\nTwo of our four radiators stay cold even when turned up fully. Our living room and our daughter's room are both affected. The heating is clearly not working properly and the foundation has known since early August.\n\nThe second issue is the bathroom: the ceiling has grey-green mould on it, and there is a musty smell in the hallway. Our daughter, who is five, has had one sinus infection after another this autumn; the paediatrician asked us straight away whether there is mould in the flat, and told us that it is very likely the reason.\n\nThe foundation has replied that a contractor has been informed and that a part will be replaced once the supplier delivers it (letter attached). We have heard this before.\n\nA neighbour told me that I could pay the rent into a deposit account instead of to the foundation. I have not decided whether I want to go that far; we have a good relationship with the foundation otherwise. What would you advise?\n\nKind regards,\nDmitri Ndlovu",
+  "sent_at": "2026-08-08T13:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_da1988dd523aa2a1"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_da1988dd523aa2a1",
+   "file_name": "Stiftung_letter.txt",
+   "media_type": "text/plain",
+   "content_base64": "U3RpZnR1bmcgV29obmVuIFplbnRyYWwKWsO8cmNoZXJzdHJhc3NlIDEyLCA4NjQwIFJhcHBlcnN3aWwtSm9uYQoKTXIgRG1pdHJpIE5kbG92dQpSZWJiZXJnc3RyYXNzZSA5OQo4NjQwIFJhcHBlcnN3aWwtSm9uYQoKUmFwcGVyc3dpbC1Kb25hLCAxNSBPY3RvYmVyIDIwMjYKCkhlYXRpbmcgaW4geW91ciBmbGF0CgpEZWFyIE1yIE5kbG92dSwKClRoYW5rIHlvdSBmb3IgeW91ciByZXBvcnQuIFdlIGhhdmUgaW5mb3JtZWQgb3VyIGhlYXRpbmcgY29udHJhY3RvciwgR2Vici4gQsO8aGxlciBBRywgd2hvIGhhcyBpZGVudGlmaWVkIHRoZSBkZWZlY3RpdmUgdmFsdmUgdW5pdC4KClRoZSBkZWZlY3RpdmUgcGFydCB3aWxsIGJlIHJlcGxhY2VkIGFzIHNvb24gYXMgdGhlIHN1cHBsaWVyIGRlbGl2ZXJzIGl0LiBUaGUgY29udHJhY3RvciB3aWxsIG5lZWQgYWNjZXNzIHRvIHlvdXIgZmxhdCBvbiAxMCBOb3ZlbWJlciAyMDI2IGZyb20gOCBhLm0uOyBwbGVhc2UgbGV0IHVzIGtub3cgaWYgdGhpcyBkYXRlIGlzIG5vdCBwb3NzaWJsZS4KCktpbmQgcmVnYXJkcywKU3RpZnR1bmcgV29obmVuIFplbnRyYWwsIHByb3BlcnR5IG1hbmFnZW1lbnQK",
+   "sha256": "0d203011c18d34e225d4f14aa8e544ffd00100deef4953e0caa8a3fb406a7ff6",
+   "size_bytes": 588
+  }
+ ]
+}

@@ -1,0 +1,62 @@
+{
+ "claim_id": "f2cl_dee066dc65128d40",
+ "message_id": "f2msg_c8543dc7e8ceef1d",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_af482252c34039fc",
+ "family_index": 11,
+ "slot": 2,
+ "combo": [
+  "deposit_considered",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "mold": "plain",
+  "heating": "passing",
+  "specialist_needed": "plain",
+  "deposit_considered": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_26cd620d6e3cfb69",
+   "document_type": "lease_contract",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Raphael Furrer",
+  "landlord": "Gerance Bärenplatz AG",
+  "city": "Uster",
+  "canton": "ZH",
+  "address": "Eichholzweg 82, Uster, 4-room flat",
+  "lease_start": "1 December 2011",
+  "rent": 1330,
+  "utilities": 270,
+  "received_at": "2026-09-20T18:05:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 2660,
+  "defect": "grey-green mould on the bathroom ceiling and a musty smell in the hallway and the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "18 May 2026",
+  "repair_deadline": "22 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "25 September 2026",
+  "household": "the tenant's elderly mother who lives with them",
+  "health_detail": "recurring sinus infections"
+ }
+}

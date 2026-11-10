@@ -1,0 +1,54 @@
+{
+ "claim_id": "f2cl_a19c3f71049ae983",
+ "message_id": "f2msg_6a2c7a8c306abc26",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_c4d28befdea40b91",
+ "family_index": 10,
+ "slot": 3,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "open",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "mold": "implied",
+  "deposit_considered": "passing"
+ },
+ "open_flag": "specialist_needed",
+ "open_value": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Arjun Demir",
+  "landlord": "Liegenschaften Sternen AG",
+  "city": "Liestal",
+  "canton": "BL",
+  "address": "Schulhausstrasse 5, Liestal, 3.5-room flat",
+  "lease_start": "1 December 2018",
+  "rent": 1530,
+  "utilities": 280,
+  "received_at": "2026-09-28T20:05:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 3060,
+  "defect": "mould growing behind the wardrobe and along the bedroom ceiling",
+  "notified_on": "2 May 2026",
+  "repair_deadline": "13 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "24 September 2026",
+  "household": "the tenant's elderly mother who lives with them",
+  "health_detail": "recurring sinus infections"
+ }
+}

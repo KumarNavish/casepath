@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_b0a56cd3fe0020ca",
+  "channel": "chat",
+  "language": "de-CH",
+  "received_at": "2026-09-17T18:50:00+02:00",
+  "canton": "AR"
+ },
+ "customer_message": {
+  "message_id": "f2msg_17f31a7959566337",
+  "subject": "Chat – Bad, Heizung, Hinterlegung",
+  "body": "Franziska Furrer: Grüezi, ich bin Mieterin bei der Stiftung Wohnen Zentral, Brunnenrain 23 in Herisau, 4.5 Zimmer\nFranziska Furrer: an der Decke im Bad ist grau-grüner Schimmel, und im Gang riecht es muffig. Das ist eindeutig Schimmel, das hat auch der Hauswart bestätigt\nFranziska Furrer: dazu kommt, dass wir alle paar Tage am Morgen bei 15 Grad aufwachen, bis jemand im Keller den Brenner wieder startet\nFranziska Furrer: mein Mann hat seit dem Frühling eine Nebenhöhlenentzündung nach der anderen, und der HNO-Arzt hat gefragt, ob wir Schimmel in der Wohnung haben\nFranziska Furrer: die Stiftung sagt, der Schimmel komme vom Duschen. ich glaube, das Dach ist undicht. Wir sind uns nicht einig, darum muss jetzt ein Bauexperte die Ursache untersuchen, das verlange ich auch schriftlich\nFranziska Furrer: ich werde ab Dezember die Miete auf das Hinterlegungskonto einzahlen, wenn bis dann nichts passiert. Den Mietvertrag habe ich angehängt. Was muss ich vorher noch machen?",
+  "sent_at": "2026-09-17T18:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_912ea3d79ce891d2"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_912ea3d79ce891d2",
+   "file_name": "Mietvertrag_S2.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcg4oCTIFNlaXRlIDIKCk1pZXRvYmpla3Q6IDQuNS1aaW1tZXItV29obnVuZywgMS4gT2Jlcmdlc2Nob3NzLCBCcnVubmVucmFpbiAyMywgOTEwMCBIZXJpc2F1LCBtaXQgS2VsbGVyYWJ0ZWlsIHVuZCBWZWxvcmF1bQoKTWlldGJlZ2lubjogMS4gTcOkcnogMjAxMgpOZXR0b21pZXR6aW5zOiBDSEYgMTczMC7igJMgcHJvIE1vbmF0CkFrb250b3phaGx1bmcgSGVpei0gdW5kIE5lYmVua29zdGVuOiBnZW3DpHNzIFNlaXRlIDMKS8O8bmRpZ3VuZ3NmcmlzdDogZHJlaSBNb25hdGUgYXVmIGRpZSBvcnRzw7xibGljaGVuIFRlcm1pbmUK",
+   "sha256": "21116f6853103dc66989488e5bafebef9bb8eab1caa440272f97e3e81a72a8a2",
+   "size_bytes": 312
+  }
+ ]
+}

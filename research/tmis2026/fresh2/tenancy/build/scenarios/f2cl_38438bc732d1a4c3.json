@@ -1,0 +1,69 @@
+{
+ "claim_id": "f2cl_38438bc732d1a4c3",
+ "message_id": "f2msg_45b28a09f572ca63",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_a4cb67d21cf348ef",
+ "family_index": 15,
+ "slot": 1,
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "family_home",
+  "retaliation_screen"
+ ],
+ "routing_true": true,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "stated_true"
+ },
+ "styles": {
+  "termination_received": "passing",
+  "family_home": "plain",
+  "arrears": "passing",
+  "retaliation_screen": "plain",
+  "extension_relevant": "implied"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_d6ab7d0092473469",
+   "document_type": "termination_notice",
+   "sufficient": false,
+   "omitted_field": "addressee"
+  },
+  {
+   "artifact_id": "f2att_b1735b9795752d02",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "tenancy_terms"
+  }
+ ],
+ "values": {
+  "tenant": "Dmitri Holm",
+  "landlord": "Wohnwerk Thur GmbH",
+  "city": "Emmen",
+  "canton": "LU",
+  "address": "Zelgweg 38, Emmen, 3.5-room flat",
+  "lease_start": "1 March 2009",
+  "rent": 1790,
+  "utilities": 200,
+  "received_at": "2026-09-25T08:50:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 3580,
+  "defect": "",
+  "notified_on": "4 August 2026",
+  "repair_deadline": "14 October 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "21 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

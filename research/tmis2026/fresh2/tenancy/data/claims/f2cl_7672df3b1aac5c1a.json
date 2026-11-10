@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_7672df3b1aac5c1a",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-09-28T13:50:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_decacce36789ebc6",
+  "subject": "Mould in bedroom – deadline set",
+  "body": "Dear Sir or Madam,\n\nI rent a 2.5-room flat at Allmendstrasse 95 in Langenthal from Domicil Plus Immobilien AG. My lease and the deadline letter I sent are attached.\n\nMould is growing behind the wardrobe in the bedroom and has spread along the ceiling. Domicil Plus says it is a ventilation problem on my side; I believe the outside wall is damp. We cannot agree, and I think an independent building expert must now examine the wall to establish the cause.\n\nThe bedroom also feels colder than it used to. I can't say whether the heating is actually faulty – the radiator gets warm to the touch – or whether it's simply the damp wall making the room feel cold.\n\nAs my letter says, if Domicil Plus does not repair the defect by 19 November, the rent goes into the official deposit.\n\nCould you check my letter and advise me on the next steps?\n\nKind regards,\nIbrahim Wilk",
+  "sent_at": "2026-09-28T13:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_e86377e663eda4a8",
+   "f2att_c8d3a9962ff78fdb"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_e86377e663eda4a8",
+   "file_name": "deadline_letter.txt",
+   "media_type": "text/plain",
+   "content_base64": "SWJyYWhpbSBXaWxrCkFsbG1lbmRzdHJhc3NlIDk1CjQ5MDAgTGFuZ2VudGhhbAoKRG9taWNpbCBQbHVzIEltbW9iaWxpZW4gQUcKU29sb3RodXJuc3RyYXNzZSAxNwoyNTQwIEdyZW5jaGVuCgpMYW5nZW50aGFsLCAyMCBPY3RvYmVyIDIwMjYKCk1vdWxkIGluIG15IGZsYXQg4oCTIGRlYWRsaW5lIGZvciByZXBhaXIKCkRlYXIgU2lyIG9yIE1hZGFtLAoKSSByZWZlciB0byBteSBlYXJsaWVyIHJlcG9ydHMgYWJvdXQgdGhlIG1vdWxkIGluIG15IGJlZHJvb20uIEkgaGVyZWJ5IHNldCB5b3UgYSBkZWFkbGluZTogdGhlIGRlZmVjdCBtdXN0IGJlIHJlcGFpcmVkIGJ5IDE5IE5vdmVtYmVyIDIwMjYuCgpJZiB0aGUgZGVmZWN0IGhhcyBub3QgYmVlbiByZXBhaXJlZCBieSB0aGF0IGRhdGUsIEkgd2lsbCBwYXkgdGhlIHJlbnQgaW50byB0aGUgb2ZmaWNpYWwgZGVwb3NpdCBhY2NvdW50IHVudGlsIHRoZSByZXBhaXIgaGFzIGJlZW4gY29tcGxldGVkLgoKWW91cnMgZmFpdGhmdWxseSwKSWJyYWhpbSBXaWxrCg==",
+   "sha256": "2e2fb65872ef4a0a2bb224e82a21d883a3c65592cae60c3ed1cb104f5236fbf9",
+   "size_bytes": 514
+  },
+  {
+   "artifact_id": "f2att_c8d3a9962ff78fdb",
+   "file_name": "lease_Allmendstrasse95.txt",
+   "media_type": "text/plain",
+   "content_base64": "TEVBU0UgQUdSRUVNRU5UCgpMYW5kbG9yZDogRG9taWNpbCBQbHVzIEltbW9iaWxpZW4gQUcsIFNvbG90aHVybnN0cmFzc2UgMTcsIDI1NDAgR3JlbmNoZW4KVGVuYW50OiBJYnJhaGltIFdpbGsKClByZW1pc2VzOiAyLjUtcm9vbSBmbGF0LCAxc3QgZmxvb3IsIEFsbG1lbmRzdHJhc3NlIDk1LCA0OTAwIExhbmdlbnRoYWwKClN0YXJ0OiAxIE1hcmNoIDIwMTUKTmV0IHJlbnQ6IENIRiAxNjIwIHBlciBtb250aApOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMKCkxhbmdlbnRoYWwsIDIgRmVicnVhcnkgMjAxNQpEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRyAvIEkuIFdpbGsK",
+   "sha256": "b19691201b9287ea37f1239c9b7e105764382f3332946e4944cd391813a4258a",
+   "size_bytes": 327
+  }
+ ]
+}

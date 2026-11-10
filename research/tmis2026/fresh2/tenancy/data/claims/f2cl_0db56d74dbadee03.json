@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_0db56d74dbadee03",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-07T07:35:00+02:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "f2msg_7e1355ef50d2b8f7",
+  "subject": "Steckdosen Küche, Ahornweg 54 Kriens",
+  "body": "Sehr geehrte Damen und Herren\n\nIch bin Mieterin einer 3-Zimmer-Wohnung am Ahornweg 54 in Kriens, Vermieterin ist die Domicil Plus Immobilien AG. Den Mietvertrag sende ich mit.\n\nIn der Küche fallen seit August immer wieder die Steckdosen aus, und der Backofen funktioniert überhaupt nicht mehr. Einmal hat es beim Einstecken des Toasters gefunkt. Seitdem will meine Tochter (5) nicht mehr in die Küche, sie wacht nachts auf, weil sie Angst hat, \"dass es wieder brennt\", und klagt morgens über Kopfweh.\n\nAusserdem kommt mir die Wohnung seit ein paar Wochen kühler vor, vor allem das Kinderzimmer. Ob die Heizung tatsächlich nicht richtig läuft oder ob es einfach am Wetter liegt, kann ich nicht beurteilen.\n\nDie Domicil Plus hat auf zwei Meldungen nicht reagiert. Ich werde den Mietzins ab dem nächsten Monat bei der Schlichtungsbehörde hinterlegen, wenn die Küche bis dahin nicht repariert ist. Bitte teilen Sie mir mit, was ich vorher noch tun muss.\n\nFreundliche Grüsse\nYvonne Wälti",
+  "sent_at": "2026-09-07T07:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_53e2430fee3aade3"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_53e2430fee3aade3",
+   "file_name": "Mietvertrag_Ahornweg54.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgV09ITlVORwoKVmVybWlldGVyaW46IERvbWljaWwgUGx1cyBJbW1vYmlsaWVuIEFHLCBTb2xvdGh1cm5zdHJhc3NlIDE3LCAyNTQwIEdyZW5jaGVuCk1pZXRlcmluOiBZdm9ubmUgV8OkbHRpCgpNaWV0b2JqZWt0OiAzLVppbW1lci1Xb2hudW5nLCAxLiBPRyBsaW5rcywgQWhvcm53ZWcgNTQsIDYwMTAgS3JpZW5zCgpNaWV0YmVnaW5uOiAxLiBEZXplbWJlciAyMDE4Ck5ldHRvbWlldHppbnM6IENIRiAxMzQwLuKAkyBwcm8gTW9uYXQKS8O8bmRpZ3VuZ3NmcmlzdDogZHJlaSBNb25hdGUKCktyaWVucywgNS4gTm92ZW1iZXIgMjAxOApEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRyAvIFkuIFfDpGx0aQo=",
+   "sha256": "ebd453442952e8bd5e9f5fa0ad0231c3d463933f0a4ec9688a7542387ea6f63c",
+   "size_bytes": 353
+  }
+ ]
+}

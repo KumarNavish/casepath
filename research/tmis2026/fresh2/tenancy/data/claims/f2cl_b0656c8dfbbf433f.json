@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_b0656c8dfbbf433f",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-09-14T10:05:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_5df8cc0d656ea6df",
+  "subject": "Cold rooms, Bündtenweg 17 – rent deposit",
+  "body": "Dear Sir or Madam,\n\nMy elderly mother lives with me in a 3-room flat at Bündtenweg 17 in Wil, rented from Domicil Plus Immobilien AG.\n\nTwo of the four radiators in the flat stay cold even when fully open, so the living room and my mother's room never get properly warm. I reported this to Domicil Plus in writing (my letter is attached) and again by phone in September.\n\nMy mother is 84 and has arthritis; she says the pain in her hips has got much worse since her room became cold, and I can see that she is struggling more.\n\nI want to make it clear that I intend to pay the rent into the official rent deposit instead of to Domicil Plus if the radiators are not fixed. I understand there is a procedure for this, and I want to follow it correctly. Could you guide me through the steps and tell me whether my letter was enough as a defect report?\n\nThank you,\nSamuel Voss",
+  "sent_at": "2026-09-14T10:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_caedb9008b001c96"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_caedb9008b001c96",
+   "file_name": "letter_DomicilPlus.txt",
+   "media_type": "text/plain",
+   "content_base64": "U2FtdWVsIFZvc3MKQsO8bmR0ZW53ZWcgMTcKOTUwMCBXaWwKCkRvbWljaWwgUGx1cyBJbW1vYmlsaWVuIEFHClNvbG90aHVybnN0cmFzc2UgMTcKMjU0MCBHcmVuY2hlbgoKU3ViamVjdDogSGVhdGluZyBpbiBteSBmbGF0LCBCw7xuZHRlbndlZyAxNwoKRGVhciBTaXIgb3IgTWFkYW0sCgpJIHdpc2ggdG8gcmVwb3J0IGEgZGVmZWN0IGluIG15IGZsYXQ6IHR3byBvZiB0aGUgZm91ciByYWRpYXRvcnMgc3RheSBjb2xkIGV2ZW4gd2hlbiB0aGV5IGFyZSB0dXJuZWQgdXAgZnVsbHkuIFRoZSBsaXZpbmcgcm9vbSBhbmQgdGhlIHNlY29uZCBiZWRyb29tIHRoZXJlZm9yZSBjYW5ub3QgYmUgaGVhdGVkLgoKSSBhc2sgeW91IHRvIGhhdmUgdGhlIGhlYXRpbmcgcmVwYWlyZWQgYXMgc29vbiBhcyBwb3NzaWJsZS4KCllvdXJzIGZhaXRoZnVsbHksClNhbXVlbCBWb3NzCg==",
+   "sha256": "71d4d571cd33b743a8b5944ea2d571bab1599628e1f537829a4f2cfc81dc70cb",
+   "size_bytes": 433
+  }
+ ]
+}

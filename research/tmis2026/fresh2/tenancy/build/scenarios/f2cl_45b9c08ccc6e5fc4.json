@@ -1,0 +1,54 @@
+{
+ "claim_id": "f2cl_45b9c08ccc6e5fc4",
+ "message_id": "f2msg_5e668d88ed5b1256",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_c4d28befdea40b91",
+ "family_index": 10,
+ "slot": 0,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "open"
+ },
+ "styles": {
+  "health_effects": "implied",
+  "mold": "plain",
+  "specialist_needed": "plain"
+ },
+ "open_flag": "deposit_considered",
+ "open_value": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Karin Habegger",
+  "landlord": "Verwaltung Lindenhof Treuhand GmbH",
+  "city": "Solothurn",
+  "canton": "SO",
+  "address": "Allmendstrasse 62, Solothurn, 4-room flat",
+  "lease_start": "1 September 2016",
+  "rent": 2360,
+  "utilities": 330,
+  "received_at": "2026-09-02T08:05:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 7080,
+  "defect": "mould growing behind the wardrobe and along the bedroom ceiling",
+  "notified_on": "16 August 2026",
+  "repair_deadline": "10 September 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "10 September 2026",
+  "household": "the tenant's son (8)",
+  "health_detail": "persistent coughing"
+ }
+}

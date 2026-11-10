@@ -1,0 +1,48 @@
+{
+ "claim_id": "f2cl_57bd4c7d1979c2c8",
+ "message_id": "f2msg_afb62831575a9c74",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_2dbc8cf5ea2229f9",
+ "family_index": 22,
+ "slot": 0,
+ "combo": [
+  "renovation"
+ ],
+ "routing_true": false,
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "claim_received": "stated_false",
+  "reference_rate": "absent",
+  "renovation": "stated_true"
+ },
+ "styles": {
+  "claim_received": "plain",
+  "renovation": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Nicola Rohner",
+  "landlord": "Verwaltung Lindenhof Treuhand GmbH",
+  "city": "Brugg",
+  "canton": "AG",
+  "address": "Bündtenweg 32, Brugg, 4.5-room flat",
+  "lease_start": "1 May 2016",
+  "rent": 2300,
+  "utilities": 200,
+  "received_at": "2026-10-15T08:20:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 6900,
+  "defect": "",
+  "notified_on": "7 May 2026",
+  "repair_deadline": "15 November 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "4 September 2026",
+  "household": "the tenant's son (8)",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

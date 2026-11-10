@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_ac669bf78a141b38",
+  "channel": "phone_note",
+  "language": "de-CH",
+  "received_at": "2026-10-01T11:50:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_1e55087b0d5ee2d3",
+  "subject": "Telefonnotiz – Liestal, Brunnenrain 21, Schimmel und Bodenheizung",
+  "body": "Anruf von Herrn Dominik Christen, Mieter einer 4.5-Zimmer-Wohnung am Brunnenrain 21 in Liestal; Vermieterin ist die Gerance Bärenplatz AG.\n\nHerr Christen wohnt mit seiner Mutter (82) zusammen. Sie hat Asthma, und ihre Anfälle sind seit dem Sommer deutlich häufiger geworden. Ihr Lungenarzt führt dies laut Herrn Christen auf den Schimmel im Schlafzimmer zurück, der hinter dem Kleiderschrank wächst und sich der Decke entlang ausbreitet.\n\nIm Wohnbereich bleibt der Boden kalt; die Bodenheizung dort springt seit Wochen nicht mehr an.\n\nDie Gerance hat im August geantwortet und im September den Hauswart vorbeigeschickt; seither keine Reaktion. Herr Christen sagt, es brauche eine Fachperson, die abklärt, ob die Feuchtigkeit mit der Bodenheizung zu tun hat.\n\nEr hat der Gerance eine Frist bis 24. November gesetzt und angekündigt, die Miete danach zu hinterlegen. Beide Schreiben hat er uns zugestellt (liegen bei).\n\nHerr Christen bittet um Beratung zum weiteren Vorgehen. Rückruf erbeten.",
+  "sent_at": "2026-10-01T11:50:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_77a6daf5e671e1a1",
+   "f2att_f0da03ecbacbf342"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_77a6daf5e671e1a1",
+   "file_name": "Fristansetzung_Gerance.txt",
+   "media_type": "text/plain",
+   "content_base64": "RG9taW5payBDaHJpc3RlbgpCcnVubmVucmFpbiAyMQo0NDEwIExpZXN0YWwKCkdlcmFuY2UgQsOkcmVucGxhdHogQUcKT2JlcmUgQmFobmhvZnN0cmFzc2UgOQo5NTAwIFdpbAoKTGllc3RhbCwgMjAuIE9rdG9iZXIgMjAyNgoKRnJpc3RhbnNldHp1bmcgenVyIE3DpG5nZWxiZWhlYnVuZwoKU2VociBnZWVocnRlIERhbWVuIHVuZCBIZXJyZW4KCkljaCB2ZXJ3ZWlzZSBhdWYgbWVpbmUgTcOkbmdlbG1lbGR1bmdlbiBiZXRyZWZmZW5kIFNjaGltbWVsIGltIFNjaGxhZnppbW1lciB1bmQgQXVzZmFsbCBkZXIgQm9kZW5oZWl6dW5nLiBJY2ggc2V0emUgSWhuZW4gaGllcm1pdCBlaW5lIEZyaXN0IHp1ciBCZWhlYnVuZyBkZXIgTcOkbmdlbCBiaXMgenVtIDI0LiBOb3ZlbWJlciAyMDI2LgoKU29sbHRlbiBkaWUgTcOkbmdlbCBiaXMgenUgZGllc2VtIERhdHVtIG5pY2h0IGJlaG9iZW4gc2Vpbiwgd2VyZGUgaWNoIGRlbiBNaWV0emlucyBiZWkgZGVyIHZvbSBLYW50b24gYmV6ZWljaG5ldGVuIFN0ZWxsZSBoaW50ZXJsZWdlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKRG9taW5payBDaHJpc3Rlbgo=",
+   "sha256": "a5f0eeb78f977c6304a2d2a742ffbc7f68a2925315663179f7238198541e7410",
+   "size_bytes": 563
+  },
+  {
+   "artifact_id": "f2att_f0da03ecbacbf342",
+   "file_name": "Antwort_Gerance_August.txt",
+   "media_type": "text/plain",
+   "content_base64": "R2VyYW5jZSBCw6RyZW5wbGF0eiBBRwpPYmVyZSBCYWhuaG9mc3RyYXNzZSA5LCA5NTAwIFdpbAoKSGVycm4gRG9taW5payBDaHJpc3RlbgpCcnVubmVucmFpbiAyMQo0NDEwIExpZXN0YWwKCldpbCwgMjcuIEF1Z3VzdCAyMDI2CgpJaHJlIE1lbGR1bmcKClNlaHIgZ2VlaHJ0ZXIgSGVyciBDaHJpc3RlbgoKV2lyIGFuZXJrZW5uZW4sIGRhc3MgaW4gSWhyZXIgV29obnVuZyBlaW4gUHJvYmxlbSBiZXN0ZWh0LCBkYXMgYmVob2JlbiB3ZXJkZW4gbXVzcy4gV2VnZW4gZGVyIEZlcmllbnplaXQgYml0dGVuIHdpciBTaWUgamVkb2NoIG5vY2ggdW0gZXR3YXMgR2VkdWxkLgoKQWxzIGVyc3RlbiBTY2hyaXR0IHdpcmQgdW5zZXIgSGF1c3dhcnQgZGllIFNpdHVhdGlvbiB2b3IgT3J0IGJldXJ0ZWlsZW4uIFdpciBzY2hsYWdlbiBkYWbDvHIgZGVuIDEwLiBTZXB0ZW1iZXIgMjAyNiB1bSAxNCBVaHIgdm9yIHVuZCBiaXR0ZW4gU2llLCBkZW4gWnVnYW5nIHp1ciBXb2hudW5nIHp1IGVybcO2Z2xpY2hlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKR2VyYW5jZSBCw6RyZW5wbGF0eiBBRwo=",
+   "sha256": "d440261e5a1e80e5646ddf96fa0b7b504d468b7f36c3f6a55563ef95e46b25ca",
+   "size_bytes": 554
+  }
+ ]
+}

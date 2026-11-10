@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_1e8b1451917edb48",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-15T13:20:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_9629a0f44a482319",
+  "subject": "Stromausfälle Küche und Hinterlegung",
+  "body": "Name: Ueli Odermatt\nAdresse: Bündtenweg 112, 9500 Wil, 3 Zimmer\nVermieterin: Gerance Bärenplatz AG\n\nAnliegen:\nSeit dem Frühling fallen in der Küche die Steckdosen immer wieder aus, und der Backofen funktioniert gar nicht mehr. Ich wohne mit meiner Mutter (81) zusammen. Sie ist seit diesen Ausfällen völlig verunsichert: Einmal hat es beim Wasserkocher geknallt und gefunkt, seither steht sie nachts auf und kontrolliert die Küche, schläft kaum noch und hat ständig Kopfschmerzen. Ihr Arzt führt das auf die Angst vor diesem Elektrodefekt zurück.\n\nZusätzlich sind mir im Flur hinter der Garderobe dunkle Flecken an der Wand aufgefallen. Ob das Schimmel ist oder nur Schmutz, oder ob die Wand überhaupt feucht ist, kann ich nicht sagen.\n\nDie Gerance reagiert nicht. Ich habe genug: Wenn der Strom in der Küche nicht bis Ende Oktober repariert ist, werde ich den Mietzins bei der Hinterlegungsstelle einzahlen. Was muss ich dafür beachten? Den Mietvertrag lade ich hoch.\n\nDanke und Gruss\nUeli Odermatt",
+  "sent_at": "2026-09-15T13:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_16cfbfbda64306a6"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_16cfbfbda64306a6",
+   "file_name": "Mietvertrag_Buendtenweg112.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOVU5HCgpWZXJtaWV0ZXJpbjogR2VyYW5jZSBCw6RyZW5wbGF0eiBBRywgT2JlcmUgQmFobmhvZnN0cmFzc2UgOSwgOTUwMCBXaWwKTWlldGVyOiBVZWxpIE9kZXJtYXR0CgpNaWV0c2FjaGU6IDMtWmltbWVyLVdvaG51bmcgaW0gMy4gT0csIELDvG5kdGVud2VnIDExMiwgOTUwMCBXaWwKCk1pZXRiZWdpbm46IDEuIERlemVtYmVyIDIwMTEKTmV0dG9taWV0ZTogQ0hGIDI1MzAu4oCTIHBybyBNb25hdApLw7xuZGlndW5nc2ZyaXN0OiBkcmVpIE1vbmF0ZQoKV2lsLCAyLiBOb3ZlbWJlciAyMDExClVudGVyc2NocmlmdGVuOiBHZXJhbmNlIELDpHJlbnBsYXR6IEFHIC8gVS4gT2Rlcm1hdHQK",
+   "sha256": "528dd2b6d2a264598a2b02868b7b08c0ce9c4ee7e04c430fc3a4413016121beb",
+   "size_bytes": 354
+  }
+ ]
+}

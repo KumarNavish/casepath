@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_92ced3f75f592a85",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-10-16T21:05:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_881aabbc20180c9f",
+  "subject": "Heizung defekt – Hinterlegung Mietzins",
+  "body": "Name: Dominik Stalder\nAdresse: Zelgweg 40, 9500 Wil (4 Zimmer)\nVermieterin: Domicil Plus Immobilien AG\n\nBeschreibung:\nZwei von vier Heizkörpern bleiben kalt, auch wenn man sie voll aufdreht. Das Wohnzimmer und das Zimmer meiner Mutter werden nicht mehr warm, die Heizung funktioniert dort schlicht nicht. Die Verwaltung habe ich seit Ende September dreimal informiert, ohne Reaktion.\n\nMeine Mutter wohnt bei mir; sie hatte in den letzten Wochen zweimal eine Erkältung, die in eine Bronchitis überging, weil sie in ihrem kalten Zimmer friert.\n\nIch habe beschlossen, ab November den Mietzins bei der Hinterlegungsstelle zu hinterlegen, solange die Heizung nicht repariert ist. Dazu brauche ich Ihre Hilfe: Was muss ich der Domicil Plus vorher schreiben und welche Frist muss ich setzen? Den Mietvertrag lade ich hoch.\n\nVielen Dank\nDominik Stalder",
+  "sent_at": "2026-10-16T21:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_e8642372ab08ad0b"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_e8642372ab08ad0b",
+   "file_name": "Mietvertrag_Zelgweg40.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcKClZlcm1pZXRlcmluOiBEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRywgU29sb3RodXJuc3RyYXNzZSAxNywgMjU0MCBHcmVuY2hlbgpNaWV0ZXI6IERvbWluaWsgU3RhbGRlcgoKTWlldG9iamVrdDogNC1aaW1tZXItV29obnVuZywgMi4gT0csIFplbGd3ZWcgNDAsIDk1MDAgV2lsCgpNaWV0YmVnaW5uOiAxLiBNYWkgMjAxNApOZXR0b21pZXR6aW5zOiBDSEYgMjExMC7igJMgcHJvIE1vbmF0CkvDvG5kaWd1bmdzZnJpc3Q6IDMgTW9uYXRlCgpXaWwsIDMuIEFwcmlsIDIwMTQKRG9taWNpbCBQbHVzIEltbW9iaWxpZW4gQUcgLyBELiBTdGFsZGVyCg==",
+   "sha256": "5c4f8681627491076882e87ab5a3e196545d5ac5fa42980d9cdd2c02fbd1850b",
+   "size_bytes": 322
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_de2e994b2d16909e",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-10-05T14:35:00+02:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_e14f3f59367778a6",
+  "subject": "chat – shutters, Rebbergstrasse 107",
+  "body": "Owen Mehta: Hello, I need help with my landlord, the Probst heirs (Erbengemeinschaft Probst). I rent a 4.5-room flat at Rebbergstrasse 107 in Kreuzlingen\nOwen Mehta: Both roller shutters in the living room and bedroom are broken and can't be raised, since July\nOwen Mehta: the heirs say it's wear and tear of the straps and want to replace straps. A shutter company told me the motors and the guide rails are damaged and that it may be a construction fault. So someone qualified actually has to examine them, otherwise they'll just put new straps on and it breaks again\nOwen Mehta: and no, there's no damp or mould problem, the flat is dry\nOwen Mehta: also I don't know, the rooms feel colder than usual this autumn, but no idea if the heating is actually faulty or if it's because the shutters let the cold in. haven't checked\nOwen Mehta: I sent them a letter with a deadline, attached, plus my lease. I meant every word of the last paragraph\nOwen Mehta: what happens after 9 November if nothing is done?",
+  "sent_at": "2026-10-05T14:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_2c03179c96c00e31",
+   "f2att_dfc4507cf7c89c22"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_2c03179c96c00e31",
+   "file_name": "lease_Rebbergstrasse107.txt",
+   "media_type": "text/plain",
+   "content_base64": "TEVBU0UgRk9SIFJFU0lERU5USUFMIFBSRU1JU0VTCgpMYW5kbG9yZDogRXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0LCBjL28gSGFuc3J1ZWRpIFByb2JzdCwgS2lyY2hzdHJhc3NlIDgsIDk1MDAgV2lsClRlbmFudDogT3dlbiBNZWh0YQoKUHJlbWlzZXM6IDQuNS1yb29tIGZsYXQsIDNyZCBmbG9vciwgUmViYmVyZ3N0cmFzc2UgMTA3LCA4MjgwIEtyZXV6bGluZ2VuLCB3aXRoIGdhcmFnZSBzcGFjZSBuby4gMTIKClN0YXJ0IG9mIHRlbmFuY3k6IDEgTWFyY2ggMjAxMgpOZXQgcmVudDogQ0hGIDI3MjAgcGVyIG1vbnRoCk5vdGljZSBwZXJpb2Q6IHRocmVlIG1vbnRocwoKS3JldXpsaW5nZW4sIDE0IEZlYnJ1YXJ5IDIwMTIKRm9yIHRoZSBsYW5kbG9yZDogSC4gUHJvYnN0ICAgICAgICAgIFRlbmFudDogTy4gTWVodGEK",
+   "sha256": "9dec0f67f85905c1c088d5e4c1d703d6a09a1852b15cd1e36c8163810e0ce6c1",
+   "size_bytes": 408
+  },
+  {
+   "artifact_id": "f2att_dfc4507cf7c89c22",
+   "file_name": "deadline_letter_Probst.txt",
+   "media_type": "text/plain",
+   "content_base64": "T3dlbiBNZWh0YQpSZWJiZXJnc3RyYXNzZSAxMDcKODI4MCBLcmV1emxpbmdlbgoKRXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0CmMvbyBIYW5zcnVlZGkgUHJvYnN0CktpcmNoc3RyYXNzZSA4Cjk1MDAgV2lsCgpLcmV1emxpbmdlbiwgMTIgT2N0b2JlciAyMDI2CgpCcm9rZW4gcm9sbGVyIHNodXR0ZXJzIOKAkyBmaW5hbCBkZWFkbGluZQoKRGVhciBNciBQcm9ic3QsCgpUaGUgcm9sbGVyIHNodXR0ZXJzIGluIHRoZSBsaXZpbmcgcm9vbSBhbmQgYmVkcm9vbSBvZiBteSBmbGF0IGhhdmUgYmVlbiBvdXQgb2Ygb3JkZXIgc2luY2UgSnVseS4gSSBoZXJlYnkgc2V0IHlvdSBhIGZpbmFsIGRlYWRsaW5lIGZvciB0aGVpciByZXBhaXI6IDkgTm92ZW1iZXIgMjAyNi4KCklmIHRoZSBzaHV0dGVycyBoYXZlIG5vdCBiZWVuIHJlcGFpcmVkIGJ5IHRoYXQgZGF0ZSwgSSB3aWxsIHBheSB0aGUgcmVudCBpbnRvIHRoZSBvZmZpY2lhbCBkZXBvc2l0IGFjY291bnQgdW50aWwgdGhlIGRlZmVjdCBpcyByZW1lZGllZC4KCllvdXJzIHNpbmNlcmVseSwKT3dlbiBNZWh0YQo=",
+   "sha256": "177d276afbb3b1956d7c71d75b0fa5fcf1939056b1420c6584bfd9f7f06a0a6c",
+   "size_bytes": 542
+  }
+ ]
+}

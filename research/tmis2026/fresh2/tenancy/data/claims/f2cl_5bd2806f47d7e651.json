@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_5bd2806f47d7e651",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-27T12:50:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_e892493ac74fe5c1",
+  "subject": "Heating failure and mould – Allmendstrasse 22, Langenthal",
+  "body": "Dear Sir or Madam,\n\nI rent a 2.5-room flat at Allmendstrasse 22 in Langenthal from Mrs Ruth Messerli, a private landlord. I attach the first page of my lease.\n\nThe main problem is the heating. The underfloor heating in the living area stopped working completely at the end of September. The living room is at 17 degrees now, and it is only October. Mrs Messerli says the heating engineer is \"booked up\".\n\nThere is also mould behind the wardrobe in the bedroom, which has started to creep along the ceiling, and my son's cough, which has not gone away since the summer, is something his doctor puts down to the mould in the room where he sleeps.\n\nI have been patient, but I would now like to know what I can do. Can I set a deadline? Can I reduce the rent? And who pays if I have to buy electric heaters in the meantime?\n\nThank you in advance for your help.\n\nKind regards,\nGreta Achterberg",
+  "sent_at": "2026-10-27T12:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_42e6dc216d627263"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_42e6dc216d627263",
+   "file_name": "Lease_page1.txt",
+   "media_type": "text/plain",
+   "content_base64": "TEVBU0UgQUdSRUVNRU5UIEZPUiBSRVNJREVOVElBTCBQUkVNSVNFUyDigJMgcGFnZSAxIG9mIDQKCkxhbmRsb3JkOiBNcnMgUnV0aCBNZXNzZXJsaSwgU2NobG9zc3dlZyAzLCAzNjEyIFN0ZWZmaXNidXJnIChwcml2YXRlIGxhbmRsb3JkKQpUZW5hbnQ6IEdyZXRhIEFjaHRlcmJlcmcKClJlbnRlZCBwcm9wZXJ0eTogMi41LXJvb20gZmxhdCBvbiB0aGUgZ3JvdW5kIGZsb29yLCBBbGxtZW5kc3RyYXNzZSAyMiwgNDkwMCBMYW5nZW50aGFsLCB3aXRoIGJhbGNvbnkgYW5kIGEgY2VsbGFyIGNvbXBhcnRtZW50CgpPdGhlciBvY2N1cGFudHM6IG9uZSBjaGlsZAoKKGNvbnRpbnVlZCBvbiBwYWdlIDIpCg==",
+   "sha256": "cc5deecf9c3df0716144bbd18330835b049a082fb4b1beaa2fd4c954b1fe3e47",
+   "size_bytes": 340
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "claim_id": "f2cl_0c4512154d36a3b4",
+ "message_id": "f2msg_f4a7ee987131c52e",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_2dbc8cf5ea2229f9",
+ "family_index": 22,
+ "slot": 1,
+ "combo": [
+  "renovation"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "claim_received": "stated_false",
+  "reference_rate": "absent",
+  "renovation": "stated_true"
+ },
+ "styles": {
+  "claim_received": "implied",
+  "renovation": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Rafael Ortega",
+  "landlord": "Verwaltung Emme & Söhne",
+  "city": "Dübendorf",
+  "canton": "ZH",
+  "address": "Ahornweg 39, Dübendorf, 2.5-room flat",
+  "lease_start": "1 December 2009",
+  "rent": 1560,
+  "utilities": 180,
+  "received_at": "2026-10-03T13:35:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 4680,
+  "defect": "",
+  "notified_on": "3 June 2026",
+  "repair_deadline": "24 November 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "7 September 2026",
+  "household": "the tenant's partner",
+  "health_detail": "sleep problems and headaches"
+ }
+}

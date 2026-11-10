@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_9d632e27423b34f7",
+  "channel": "phone_note",
+  "language": "de-CH",
+  "received_at": "2026-08-25T08:50:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_826cc6873395cb4d",
+  "subject": "Telefonnotiz – Kündigung Obere Gasse 106, Uster",
+  "body": "Anruf von Frau Brigitte Caduff, Mieterin einer 4-Zimmer-Wohnung an der Obere Gasse 106 in Uster. Vermieterin: Stiftung Wohnen Zentral.\n\nFrau Caduff berichtet, die Stiftung wolle das Mietverhältnis per 31. Juli 2027 beenden. Sie gibt zu, dass sie in diesem Jahr mit zwei Monatsmieten (CHF 5400) in Rückstand geraten ist, nachdem sie ihre Stelle verloren hatte; die Stiftung habe mehrmals gemahnt.\n\nSie vermutet allerdings auch, dass die Stiftung sie loswerden will, seit sie im Frühling mit anderen Mietern eine Mietzinsherabsetzung verlangt hat. Das sei ihr \"schon aufgefallen\".\n\nIhr Mann ist seit einem Jahr wegen der Arbeit in Genf gemeldet und kommt nur an Wochenenden. Ob die Wohnung rechtlich noch als Familienwohnung gilt, weiss sie nicht.\n\nAuf die Frage nach einer Erstreckung sagte sie, das sei kein Thema: Sie habe bereits eine andere Wohnung in Aussicht und wolle nur die Kündigung prüfen lassen.\n\nDen Mietvertrag hat sie per Mail geschickt (liegt bei). Rückruf am Montag.",
+  "sent_at": "2026-08-25T08:50:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_472977d17c316a1e"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_472977d17c316a1e",
+   "file_name": "Mietvertrag_Caduff.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUsOEVU1FCgpWZXJtaWV0ZXJpbjogU3RpZnR1bmcgV29obmVuIFplbnRyYWwsIFrDvHJjaGVyc3RyYXNzZSAxMiwgODY0MCBSYXBwZXJzd2lsLUpvbmEKTWlldGVyaW46IEJyaWdpdHRlIENhZHVmZgoKTWlldG9iamVrdDogNC1aaW1tZXItV29obnVuZywgMy4gT0csIE9iZXJlIEdhc3NlIDEwNiwgODYxMCBVc3RlcgoKTWlldGJlZ2lubjogMS4gTcOkcnogMjAxNwpOZXR0b21pZXR6aW5zOiBDSEYgMjcwMC7igJMgcHJvIE1vbmF0CkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlCgpSYXBwZXJzd2lsLUpvbmEsIDYuIEZlYnJ1YXIgMjAxNwpTdGlmdHVuZyBXb2huZW4gWmVudHJhbCAvIEIuIENhZHVmZgo=",
+   "sha256": "530739c030db2bffbbf5c8997fdd9b6e582977c3f4e80f37006cfad80382914a",
+   "size_bytes": 365
+  }
+ ]
+}

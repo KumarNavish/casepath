@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_0868f24595f5f79a",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-19T15:50:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_782d18fe1ed58f05",
+  "subject": "Rent increase announced on notice board",
+  "body": "Name: Aoife Achterberg\nAddress: Mühlemattstrasse 69, 8640 Rapperswil-Jona, 5.5 rooms\nLandlord: Hausverwaltung Pilatus AG\n\nMessage:\nLast week a notice from Hausverwaltung Pilatus appeared on the board in our entrance hall: \"Rents in this building will be adjusted from 1 April 2027. Tenants will be informed individually.\" No reason was given.\n\nI have not received any individual notification of a rent increase, either by post or by email. All we have is that notice in the hallway.\n\nOur rent is already CHF 2330 for the flat, and with three children we cannot easily absorb an increase. I would like to know whether such an announcement already has any legal effect and what I can do now to prepare, so that I don't miss any deadline once the real notification arrives.\n\nThank you,\nAoife Achterberg",
+  "sent_at": "2026-10-19T15:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

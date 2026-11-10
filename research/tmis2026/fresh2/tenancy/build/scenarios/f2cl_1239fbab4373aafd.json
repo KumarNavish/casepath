@@ -1,0 +1,61 @@
+{
+ "claim_id": "f2cl_1239fbab4373aafd",
+ "message_id": "f2msg_2ccafbfe7bb31fd2",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_df5219d03ec9c84b",
+ "family_index": 6,
+ "slot": 2,
+ "combo": [
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "phone_note",
+ "fact_states": {
+  "health_effects": "stated_false",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "absent"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "mold": "passing",
+  "heating": "plain",
+  "specialist_needed": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_4a6b1c3314c7af29",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "tenancy_terms"
+  }
+ ],
+ "values": {
+  "tenant": "Esther Ammann",
+  "landlord": "Ruth Messerli (private landlord)",
+  "city": "Herisau",
+  "canton": "AR",
+  "address": "Brunnenrain 23, Herisau, 5.5-room flat",
+  "lease_start": "1 September 2014",
+  "rent": 1660,
+  "utilities": 180,
+  "received_at": "2026-10-09T15:05:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 3320,
+  "defect": "condensation running down the walls and mould on the window frames and the heating fails every few days and the flat drops to around 15 degrees",
+  "notified_on": "8 June 2026",
+  "repair_deadline": "11 September 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "25 November 2026",
+  "household": "the tenant",
+  "health_detail": "persistent coughing"
+ }
+}

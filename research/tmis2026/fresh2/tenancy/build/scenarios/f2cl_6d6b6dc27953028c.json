@@ -1,0 +1,67 @@
+{
+ "claim_id": "f2cl_6d6b6dc27953028c",
+ "message_id": "f2msg_8e18cda6343afb44",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_3acf51de7c5aeacb",
+ "family_index": 9,
+ "slot": 3,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating",
+  "mold"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "open",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "mold": "plain",
+  "heating": "plain",
+  "deposit_considered": "plain"
+ },
+ "open_flag": "health_effects",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_6b8b77d12d83f28e",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "property"
+  },
+  {
+   "artifact_id": "f2att_91bfe08cffedb560",
+   "document_type": "defect_notification",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Simon Lehmann",
+  "landlord": "Domicil Plus Immobilien AG",
+  "city": "Uster",
+  "canton": "ZH",
+  "address": "Mühlemattstrasse 73, Uster, 3.5-room flat",
+  "lease_start": "1 December 2016",
+  "rent": 1540,
+  "utilities": 190,
+  "received_at": "2026-10-22T15:35:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 4620,
+  "defect": "damp patches with black mould spots in the corner of the children's room and two of the four radiators stay cold even when turned up fully",
+  "notified_on": "11 July 2026",
+  "repair_deadline": "2 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "27 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "persistent coughing"
+ }
+}

@@ -1,0 +1,68 @@
+{
+ "claim_id": "f2cl_ac851a27a08a4047",
+ "message_id": "f2msg_87414b7446bf3c6e",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_696f685330b38735",
+ "family_index": 8,
+ "slot": 1,
+ "combo": [
+  "health_effects",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "absent"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "mold": "plain",
+  "heating": "plain",
+  "specialist_needed": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_396d76e1bd8d0b3c",
+   "document_type": "defect_notification",
+   "sufficient": false,
+   "omitted_field": "recipient"
+  },
+  {
+   "artifact_id": "f2att_5f0ef2c63a7b1626",
+   "document_type": "landlord_response_history",
+   "sufficient": false,
+   "omitted_field": "proposed_work"
+  }
+ ],
+ "values": {
+  "tenant": "Cédric Bachmann",
+  "landlord": "Erbengemeinschaft Probst (private landlord)",
+  "city": "Herisau",
+  "canton": "AR",
+  "address": "Allmendstrasse 77, Herisau, 3.5-room flat",
+  "lease_start": "1 September 2020",
+  "rent": 2340,
+  "utilities": 160,
+  "received_at": "2026-08-03T14:35:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 4680,
+  "defect": "condensation running down the walls and mould on the window frames and the underfloor heating in the living area has stopped working",
+  "notified_on": "26 May 2026",
+  "repair_deadline": "15 November 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "27 October 2026",
+  "household": "the tenant's son (8)",
+  "health_detail": "persistent coughing"
+ }
+}

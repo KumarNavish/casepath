@@ -1,0 +1,48 @@
+{
+ "claim_id": "f2cl_df19ad9dbc6908e6",
+ "message_id": "f2msg_f7a96c0775999229",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_2801c66871085312",
+ "family_index": 16,
+ "slot": 1,
+ "combo": [],
+ "routing_true": false,
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "termination_received": "stated_false",
+  "family_home": "absent",
+  "arrears": "absent",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_false"
+ },
+ "styles": {
+  "termination_received": "plain",
+  "extension_relevant": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Hannah Mehta",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Wettingen",
+  "canton": "AG",
+  "address": "Ahornweg 97, Wettingen, 4-room flat",
+  "lease_start": "1 March 2017",
+  "rent": 2380,
+  "utilities": 170,
+  "received_at": "2026-09-17T12:50:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 7140,
+  "defect": "",
+  "notified_on": "20 June 2026",
+  "repair_deadline": "20 September 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "13 October 2026",
+  "household": "the tenant's son (8)",
+  "health_detail": "sleep problems and headaches"
+ }
+}

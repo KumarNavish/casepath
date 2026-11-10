@@ -1,0 +1,56 @@
+{
+ "claim_id": "f2cl_95eee877ecc48bf1",
+ "message_id": "f2msg_44dc5cf90daffafe",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_696f685330b38735",
+ "family_index": 8,
+ "slot": 2,
+ "combo": [
+  "health_effects",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_false"
+ },
+ "styles": {
+  "health_effects": "implied",
+  "mold": "plain",
+  "heating": "plain",
+  "specialist_needed": "passing",
+  "deposit_considered": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Beatrix Lindqvist",
+  "landlord": "Verwaltung Emme & Söhne",
+  "city": "Emmen",
+  "canton": "LU",
+  "address": "Obere Gasse 63, Emmen, 4.5-room flat",
+  "lease_start": "1 December 2023",
+  "rent": 2420,
+  "utilities": 180,
+  "received_at": "2026-10-28T21:05:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 7260,
+  "defect": "mould growing behind the wardrobe and along the bedroom ceiling and the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "25 June 2026",
+  "repair_deadline": "18 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "5 October 2026",
+  "household": "the tenant's partner",
+  "health_detail": "persistent coughing"
+ }
+}

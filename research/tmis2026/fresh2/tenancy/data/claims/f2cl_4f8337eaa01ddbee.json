@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_4f8337eaa01ddbee",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-08-23T17:05:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_45f8de52f2e2def6",
+  "subject": "Rent increase announced – no written notice",
+  "body": "Dear Sir or Madam,\n\nI rent a 2.5-room flat at Mühlemattstrasse 68 in Dübendorf from Immo Jura Verwaltungen AG.\n\nAt the end of last month the property manager rang me and said my rent would go up from CHF 1320 by about CHF 40 from April, because \"the mortgage rates the owner pays have gone up and the reference rate followed\". I have not received any written notification of a rent increase, no letter and no form.\n\nTo be clear: no renovation or other work has been done in the building or my flat, so that cannot be a reason.\n\nI'd like to understand whether the increase would be justified, and what I should do now and once the written notification comes.\n\nKind regards,\nJonah Ortega",
+  "sent_at": "2026-08-23T17:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

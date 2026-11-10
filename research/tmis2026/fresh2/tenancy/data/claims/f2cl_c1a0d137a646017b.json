@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_c1a0d137a646017b",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-08-26T10:20:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_5d0ea81b646ab845",
+  "subject": "Schimmel und Heizung – Allmendstrasse 78",
+  "body": "Sehr geehrte Damen und Herren\n\nIch bin Mieterin einer 3.5-Zimmer-Wohnung an der Allmendstrasse 78 in Steffisburg. Vermieterin ist Frau Ruth Messerli, eine Privatperson.\n\nWir haben in der ganzen Wohnung Schimmel: An den Aussenwänden läuft Kondenswasser herunter, und an den Fensterrahmen bildet sich schwarzer Schimmel, im Kinderzimmer am schlimmsten. Dazu kommt, dass der Heizkessel nachts ausgeht, sodass die Schlafzimmer am Morgen kalt sind.\n\nUnsere Tochter (5) hat Asthma, und seit dem Frühling hat sie viel häufiger Anfälle, zweimal mussten wir nachts in den Notfall. Die Kinderärztin sagt deutlich, dass der Schimmel im Kinderzimmer der Auslöser ist.\n\nIch habe Frau Messerli im Mai einen Brief geschrieben (Kopie im Anhang) und seither mehrmals angerufen. Sie sagt, sie kümmere sich, aber es passiert nichts.\n\nIch möchte, dass die Mängel endlich behoben werden, und frage mich auch, ob ich eine Mietzinsreduktion verlangen kann. Wie gehen wir am besten vor?\n\nMit freundlichen Grüssen\nMichèle Gisler",
+  "sent_at": "2026-08-26T10:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_822f0fb696964c93"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_822f0fb696964c93",
+   "file_name": "Brief_Messerli_Mai.txt",
+   "media_type": "text/plain",
+   "content_base64": "TWljaMOobGUgR2lzbGVyCkFsbG1lbmRzdHJhc3NlIDc4CjM2MTIgU3RlZmZpc2J1cmcKCkZyYXUKUnV0aCBNZXNzZXJsaQpTY2hsb3Nzd2VnIDMKMzYxMiBTdGVmZmlzYnVyZwoKU3RlZmZpc2J1cmcsIDExLiBNYWkgMjAyNgoKTWlldHdvaG51bmcgQWxsbWVuZHN0cmFzc2UgNzgKClNlaHIgZ2VlaHJ0ZSBGcmF1IE1lc3NlcmxpCgpXaWUgdGVsZWZvbmlzY2ggYmVzcHJvY2hlbiwgd2VuZGUgaWNoIG1pY2ggbm9jaG1hbHMgc2NocmlmdGxpY2ggYW4gU2llLiBJY2ggYml0dGUgU2llLCBzaWNoIGRpZSBXb2hudW5nIGFuenVzZWhlbiB1bmQgZGllIG5vdHdlbmRpZ2VuIEFyYmVpdGVuIGluIEF1ZnRyYWcgenUgZ2ViZW4uIEJpdHRlIG1lbGRlbiBTaWUgc2ljaCBiZWkgbWlyLCBkYW1pdCB3aXIgZWluZW4gVGVybWluIHZlcmVpbmJhcmVuIGvDtm5uZW4uCgpGcmV1bmRsaWNoZSBHcsO8c3NlCk1pY2jDqGxlIEdpc2xlcgo=",
+   "sha256": "1257bd7fedee531fc0a5c7d98ab030246b28e2a9d18a31f05f15f2224c9d4ca3",
+   "size_bytes": 464
+  }
+ ]
+}

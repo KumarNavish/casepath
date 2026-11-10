@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_d6718680d7e531ea",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-08-13T20:05:00+02:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_e57b85886c71a854",
+  "subject": "Boiler keeps cutting out – Hinterfeld 102",
+  "body": "Dear Sir or Madam,\n\nI'm writing about the flat my partner and I rent at Hinterfeld 102 in Kreuzlingen (4 rooms), managed by Verwaltung Lindenhof Treuhand GmbH.\n\nSince late April we have woken up most mornings to a flat at 15 or 16 degrees. The boiler display shows an error code at some point in the night, and nothing comes out of the radiators until I reset it in the morning. We have tried bleeding the radiators and checking the pressure as the manual suggests; it makes no difference. I wrote to the management in early May, a copy of that letter is attached, and have phoned twice since. Each time I'm told it is \"noted\".\n\nWith winter coming this is becoming serious. My partner, who has had trouble with her knees for years, says they have been much worse since the cold mornings began, which I'm afraid fits.\n\nCould you please tell me what my options are to get the management to carry out the repair, and whether there is anything I should be doing now so that I don't lose any rights? I'm happy to send further information.\n\nKind regards,\nTomasz Castellano",
+  "sent_at": "2026-08-13T20:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_836d8ab7e4b0b351"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_836d8ab7e4b0b351",
+   "file_name": "letter_to_management_May2026.txt",
+   "media_type": "text/plain",
+   "content_base64": "VG9tYXN6IENhc3RlbGxhbm8KSGludGVyZmVsZCAxMDIKODI4MCBLcmV1emxpbmdlbgoKVmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSApSZWNodGVzIFVmZXIgNAo4MjgwIEtyZXV6bGluZ2VuCgpLcmV1emxpbmdlbiwgMiBNYXkgMjAyNgoKRmxhdCBIaW50ZXJmZWxkIDEwMiwgNCByb29tcyDigJMgcmVxdWVzdCBmb3IgcmVwYWlyCgpEZWFyIFNpciBvciBNYWRhbSwKCkFzIHRlbmFudCBvZiB0aGUgYWJvdmUgZmxhdCBJIGFtIHdyaXRpbmcgdG8geW91IGZvcm1hbGx5IGFib3V0IGEgcHJvYmxlbSBpbiB0aGUgZmxhdCB0aGF0IHJlcXVpcmVzIHlvdXIgYXR0ZW50aW9uLiBJIHdvdWxkIGJlIGdyYXRlZnVsIGlmIHlvdSBjb3VsZCBhcnJhbmdlIGZvciBpdCB0byBiZSBsb29rZWQgYXQgYXMgc29vbiBhcyBwb3NzaWJsZSBhbmQgbGV0IG1lIGtub3cgd2hlbiBzb21lb25lIGNhbiBjb21lLgoKSSBjYW4gYmUgcmVhY2hlZCBvbiAwNzkgNDEyIDMzIDA4IGR1cmluZyB0aGUgZGF5LgoKWW91cnMgZmFpdGhmdWxseSwKVC4gQ2FzdGVsbGFubwo=",
+   "sha256": "ca2520edcbde0d49021f6663246ef61df0081cf65b26d41096f342819004a2a6",
+   "size_bytes": 539
+  }
+ ]
+}

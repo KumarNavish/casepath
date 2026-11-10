@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_8a606d2af148582c",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-10-04T16:20:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_72d9b6e1c979902a",
+  "subject": "Wohnung Rebbergstrasse 112 – Verwaltung will mich loswerden",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wohne seit 2023 in einer 3.5-Zimmer-Wohnung an der Rebbergstrasse 112 in Wädenswil. Die Verwaltung Lindenhof Treuhand will das Mietverhältnis per 31. Juli 2027 beenden.\n\nBegründet wird das mit Mietzinsrückständen. Ich schulde tatsächlich zwei Monatsmieten (CHF 3020); die Mahnung lege ich bei. Seltsam finde ich nur, dass die Verwaltung erst so streng wurde, nachdem ich im Sommer die Nebenkostenabrechnung angefochten hatte.\n\nMein Problem ist: Ich habe zwei Kinder in der 3. und 5. Klasse hier im Schulhaus, und in Wädenswil eine bezahlbare Wohnung bis Juli zu finden, ist fast unmöglich. Ich bräuchte also auf jeden Fall mehr Zeit, falls die Kündigung hält.\n\nWas kann ich tun? Einen Auszug aus dem Mietvertrag lege ich ebenfalls bei.\n\nFreundliche Grüsse\nSeverin Stalder",
+  "sent_at": "2026-10-04T16:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_5602e74a74514fea",
+   "f2att_58476b579b905e2a"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_5602e74a74514fea",
+   "file_name": "Mahnung_Lindenhof.txt",
+   "media_type": "text/plain",
+   "content_base64": "VmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSApTZWVzdHJhc3NlIDIxMCwgODgyMCBXw6RkZW5zd2lsCgpIZXJybiBTZXZlcmluIFN0YWxkZXIKUmViYmVyZ3N0cmFzc2UgMTEyCjg4MjAgV8OkZGVuc3dpbAoKV8OkZGVuc3dpbCwgMy4gSnVsaSAyMDI2CgpNYWhudW5nIOKAkyBNaWV0emluc2F1c3N0YW5kCgpTZWhyIGdlZWhydGVyIEhlcnIgU3RhbGRlcgoKR2Vtw6RzcyB1bnNlcmVyIEJ1Y2hoYWx0dW5nIHNpbmQgZGllIE1pZXR6aW5zZSBmw7xyIGRpZSBNb25hdGUgTWFpIHVuZCBKdW5pIDIwMjYgaW0gQmV0cmFnIHZvbiBDSEYgMzAyMC7igJMgbm9jaCBuaWNodCBiZXphaGx0LgoKV2lyIGZvcmRlcm4gU2llIGF1ZiwgZGllc2VuIEJldHJhZyB1bWdlaGVuZCB6dSBiZWdsZWljaGVuLiBFcmZvbGd0IGRpZSBaYWhsdW5nIG5pY2h0IGZyaXN0Z2VyZWNodCwgd2VyZGVuIHdpciBkYXMgTWlldHZlcmjDpGx0bmlzIGvDvG5kaWdlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKVmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSAo=",
+   "sha256": "824a38d4b463873107afb1cf848a266ae8252952e3d29c46e070c8dd2c93df6b",
+   "size_bytes": 536
+  },
+  {
+   "artifact_id": "f2att_58476b579b905e2a",
+   "file_name": "Mietvertrag_Auszug.txt",
+   "media_type": "text/plain",
+   "content_base64": "QXVzenVnIGF1cyBkZW0gTWlldHZlcnRyYWcKCk1pZXRvYmpla3Q6IDMuNS1aaW1tZXItV29obnVuZywgMi4gT2Jlcmdlc2Nob3NzLCBSZWJiZXJnc3RyYXNzZSAxMTIsIDg4MjAgV8OkZGVuc3dpbAoKTWlldGJlZ2lubjogMS4gU2VwdGVtYmVyIDIwMjMKTmV0dG9taWV0emluczogQ0hGIDE1MTAu4oCTIHBybyBNb25hdApLw7xuZGlndW5nc2ZyaXN0OiBkcmVpIE1vbmF0ZQo=",
+   "sha256": "02d9ec5be5eab9e16f6677f1840b532943d76c8775d526e139d92522ab443031",
+   "size_bytes": 212
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_45158e0185bd82b6",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-08-16T08:20:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_250f7e7d3cb226f9",
+  "subject": "Kündigung Familienwohnung Eichholzweg 77",
+  "body": "Name: Michèle Siegrist\nAdresse: Eichholzweg 77, 4132 Muttenz, 3.5 Zimmer\nVermieterin: Baugenossenschaft Sonnhalde\n\nAnliegen:\nIch habe am 4. August die Kündigung der Baugenossenschaft Sonnhalde erhalten, auf den 30. April 2027 (siehe Anhang).\n\nAls Grund steht darin ein Mietzinsrückstand. Wir schulden zwei Monatsmieten, CHF 5240, das bestreite ich nicht.\n\nDie Wohnung ist unsere Familienwohnung: Ich wohne hier mit meinem Ehemann und unseren zwei Kindern.\n\nWir haben im Frühling bei der Genossenschaft verlangt, dass endlich die Fenster ersetzt werden. Ich frage mich manchmal, ob die Kündigung eine Reaktion darauf ist, aber ich weiss es nicht und will der Genossenschaft nichts unterstellen.\n\nFalls die Kündigung gültig ist, brauchen wir mehr Zeit: Unser älterer Sohn macht im Sommer 2027 den Schulabschluss, und eine 3.5-Zimmer-Wohnung zu diesem Preis finden wir in Muttenz nicht. Wir möchten eine Erstreckung beantragen.\n\nDanke für Ihre Hilfe.\nMichèle Siegrist",
+  "sent_at": "2026-08-16T08:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_e93212db9e8fb6e8"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "file_name": "Kuendigung_Sonnhalde.txt",
+   "media_type": "text/plain",
+   "content_base64": "QW10bGljaCBnZW5laG1pZ3RlcyBGb3JtdWxhciB6dXIgS8O8bmRpZ3VuZyB2b24gV29obnLDpHVtZW4KKEZvcm11bGFyIGRlcyBLYW50b25zIEJhc2VsLUxhbmRzY2hhZnQsIEFydC4gMjY2bCBPUikKClZlcm1pZXRlcmluOiBCYXVnZW5vc3NlbnNjaGFmdCBTb25uaGFsZGUsIEFhcmF1ZXJzdHJhc3NlIDE1LCA1MjAwIEJydWdnCgpBbjogRnJhdSBNaWNow6hsZSBTaWVncmlzdCwgRWljaGhvbHp3ZWcgNzcsIDQxMzIgTXV0dGVuegoKTWlldG9iamVrdDogMy41LVppbW1lci1Xb2hudW5nLCBFaWNoaG9sendlZyA3NywgNDEzMiBNdXR0ZW56CgpEYXMgTWlldHZlcmjDpGx0bmlzIHdpcmQgZ2Vrw7xuZGlndCBhdWYgZGVuOiAzMC4gQXByaWwgMjAyNwoKS8O8bmRpZ3VuZ3NncnVuZDogWmFobHVuZ3Nyw7xja3N0YW5kIGRlcyBNaWV0ZXJzIChNaWV0emluc2F1c3N0YW5kKQoKUmVjaHRzYmVsZWhydW5nOiBXaWxsIGRpZSBNaWV0ZXJpbiBkaWUgS8O8bmRpZ3VuZyBhbmZlY2h0ZW4sIHNvIG11c3Mgc2llIGRhcyBCZWdlaHJlbiBpbm5lcnQgMzAgVGFnZW4gbmFjaCBFbXBmYW5nIGRlciBLw7xuZGlndW5nIGRlciBTY2hsaWNodHVuZ3NiZWjDtnJkZSBpbiBNaWV0c2FjaGVuIGVpbnJlaWNoZW4gKEFydC4gMjczIE9SKS4gRWluIEVyc3RyZWNrdW5nc2JlZ2VocmVuIGlzdCBpbm5lcnQgZGVyIGdsZWljaGVuIEZyaXN0IHp1IHN0ZWxsZW4uCgpCcnVnZywgMi4gQXVndXN0IDIwMjYKCkJhdWdlbm9zc2Vuc2NoYWZ0IFNvbm5oYWxkZQooVW50ZXJzY2hyaWZ0KSBSLiBXZW5nZXIsIFByw6RzaWRlbnQK",
+   "sha256": "8ba3988c9cfc83f22b36544955e435c8652da3091e9f724ede0c92ecdc8d3347",
+   "size_bytes": 789
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "claim_id": "f2cl_69f84208279ac66e",
+ "message_id": "f2msg_d7476c1ac48f0ad2",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_3acf51de7c5aeacb",
+ "family_index": 9,
+ "slot": 2,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating",
+  "mold"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "chat",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "passing",
+  "mold": "passing",
+  "heating": "plain",
+  "deposit_considered": "implied"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Regula Christen",
+  "landlord": "Liegenschaften Sternen AG",
+  "city": "Brugg",
+  "canton": "AG",
+  "address": "Mühlemattstrasse 44, Brugg, 3.5-room flat",
+  "lease_start": "1 December 2018",
+  "rent": 1980,
+  "utilities": 300,
+  "received_at": "2026-09-09T13:35:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 3960,
+  "defect": "damp patches with black mould spots in the corner of the children's room and the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "10 June 2026",
+  "repair_deadline": "25 September 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "8 September 2026",
+  "household": "the tenant's elderly mother who lives with them",
+  "health_detail": "recurring sinus infections"
+ }
+}

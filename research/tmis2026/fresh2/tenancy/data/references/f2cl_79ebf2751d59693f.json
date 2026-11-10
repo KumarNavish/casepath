@@ -1,0 +1,109 @@
+{
+ "claim_id": "f2cl_79ebf2751d59693f",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_c4d28befdea40b91",
+ "scenario": {
+  "health_effects": true,
+  "mold": true,
+  "heating": false,
+  "specialist_needed": true,
+  "deposit_considered": true
+ },
+ "implicit_flags": {},
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "absent",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "expression": {
+  "health_effects": "passing",
+  "mold": "passing",
+  "specialist_needed": "plain",
+  "deposit_considered": "passing"
+ },
+ "policy_verdicts": {
+  "health_effects": "true",
+  "mold": "true",
+  "heating": "false",
+  "specialist_needed": "true",
+  "deposit_considered": "true"
+ },
+ "open_fact": null,
+ "document_states": {
+  "lease_contract": "required_now",
+  "defect_notification": "required_now",
+  "proof_of_notification": "required_now",
+  "dated_photos": "required_now",
+  "landlord_response_history": "required_now",
+  "humidity_temperature_log": "required_now",
+  "heating_service_report": "not_needed",
+  "medical_confirmation": "required_now",
+  "technical_inspection": "required_now",
+  "written_repair_deadline": "required_now",
+  "caretaker_correspondence": "not_needed"
+ },
+ "engine_routes": {
+  "lease_contract": "needed_later",
+  "defect_notification": "needed_later",
+  "proof_of_notification": "needed_later",
+  "dated_photos": "needed_later",
+  "landlord_response_history": "needed_later",
+  "humidity_temperature_log": "needed_later",
+  "heating_service_report": "not_needed",
+  "medical_confirmation": "needed_later",
+  "technical_inspection": "needed_later",
+  "written_repair_deadline": "needed_later",
+  "caretaker_correspondence": "optional"
+ },
+ "request_set": [
+  "dated_photos",
+  "defect_notification",
+  "humidity_temperature_log",
+  "landlord_response_history",
+  "lease_contract",
+  "medical_confirmation",
+  "proof_of_notification",
+  "technical_inspection",
+  "written_repair_deadline"
+ ],
+ "held_set": [],
+ "answered": {
+  "document_states": {
+   "lease_contract": "required_now",
+   "defect_notification": "required_now",
+   "proof_of_notification": "required_now",
+   "dated_photos": "required_now",
+   "landlord_response_history": "required_now",
+   "humidity_temperature_log": "required_now",
+   "heating_service_report": "not_needed",
+   "medical_confirmation": "required_now",
+   "technical_inspection": "required_now",
+   "written_repair_deadline": "required_now",
+   "caretaker_correspondence": "not_needed"
+  },
+  "request_set": [
+   "dated_photos",
+   "defect_notification",
+   "humidity_temperature_log",
+   "landlord_response_history",
+   "lease_contract",
+   "medical_confirmation",
+   "proof_of_notification",
+   "technical_inspection",
+   "written_repair_deadline"
+  ]
+ },
+ "attachments": [],
+ "blind_check_reading": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "not_mentioned",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "blind_check_fields": [],
+ "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+ "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+}

@@ -1,0 +1,45 @@
+{
+ "claim_id": "f2cl_73f3fe3323a28288",
+ "message_id": "f2msg_9e02968d112b9f49",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_b1d9e0d08763b788",
+ "family_index": 20,
+ "slot": 3,
+ "combo": [],
+ "routing_true": false,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "claim_received": "open",
+  "reference_rate": "stated_false",
+  "renovation": "absent"
+ },
+ "styles": {
+  "reference_rate": "plain"
+ },
+ "open_flag": "claim_received",
+ "open_value": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Simon Furrer",
+  "landlord": "Erbengemeinschaft Probst (private landlord)",
+  "city": "Dübendorf",
+  "canton": "ZH",
+  "address": "Ahornweg 17, Dübendorf, 3.5-room flat",
+  "lease_start": "1 May 2010",
+  "rent": 1650,
+  "utilities": 250,
+  "received_at": "2026-08-25T16:05:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 4950,
+  "defect": "",
+  "notified_on": "17 July 2026",
+  "repair_deadline": "12 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "13 October 2026",
+  "household": "the tenant's partner",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

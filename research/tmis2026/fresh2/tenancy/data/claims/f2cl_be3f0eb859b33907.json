@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_be3f0eb859b33907",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-08-06T17:05:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_ee178d1b0db84c14",
+  "subject": "chat – mould and floor heating",
+  "body": "Chloe Brennan: hi, I rent a 2.5-room at Schulhausstrasse 62 in Liestal, Verwaltung Lindenhof Treuhand\nChloe Brennan: we have condensation running down the walls and mould on all the window frames. it's getting worse every week\nChloe Brennan: and the floor in the living area is stone cold, the underfloor heating there hasn't come on at all since spring, the thermostat just blinks\nChloe Brennan: Lindenhof says the mould is because we don't air enough. I think it's the walls. the guy from the tenants' association said with a dispute like that you need an expert to check where the damp comes from\nChloe Brennan: my flatmate has been ill a lot lately, coughing and tired, but honestly we don't know if that's the flat or just her job at the daycare\nChloe Brennan: I'm not going to stop paying rent or put it in a deposit thing, I don't want trouble. I just want them to fix it\nChloe Brennan: attaching my letter from May and their reply. they promised a caretaker visit in September, he came for 5 minutes",
+  "sent_at": "2026-08-06T17:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_7a9b01eb8ca51041",
+   "f2att_759c488cdf4a8871"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_7a9b01eb8ca51041",
+   "file_name": "Lindenhof_reply_Aug.txt",
+   "media_type": "text/plain",
+   "content_base64": "VmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSApSYXRoYXVzc3RyYXNzZSA2LCA0NDEwIExpZXN0YWwKCk1zIENobG9lIEJyZW5uYW4KU2NodWxoYXVzc3RyYXNzZSA2Mgo0NDEwIExpZXN0YWwKCkxpZXN0YWwsIDI0IEF1Z3VzdCAyMDI2CgpZb3VyIHJlcG9ydCBvZiBNYXkgMjAyNgoKRGVhciBNcyBCcmVubmFuLAoKV2UgYWNrbm93bGVkZ2UgdGhhdCB0aGVyZSBpcyBhIHByb2JsZW0gaW4geW91ciBmbGF0IGFuZCBhcG9sb2dpc2UgZm9yIHRoZSBkZWxheS4gRHVlIHRvIHRoZSBoaWdoIG51bWJlciBvZiByZXBvcnRzIHdlIGFzayBmb3IgeW91ciBwYXRpZW5jZS4KCk91ciBjYXJldGFrZXIgd2lsbCB2aXNpdCB0byBhc3Nlc3MgdGhlIHByb2JsZW0uIFdlIHByb3Bvc2UgMTUgU2VwdGVtYmVyIDIwMjYgYXQgNCBwLm0uIGZvciBhY2Nlc3MgdG8gdGhlIGZsYXQuCgpLaW5kIHJlZ2FyZHMsClZlcndhbHR1bmcgTGluZGVuaG9mIFRyZXVoYW5kIEdtYkgK",
+   "sha256": "07a18f6101d521fc457f257d2b5548cdb6f207f9f7f3c824648f26a6db6f1179",
+   "size_bytes": 489
+  },
+  {
+   "artifact_id": "f2att_759c488cdf4a8871",
+   "file_name": "my_letter_May.txt",
+   "media_type": "text/plain",
+   "content_base64": "Q2hsb2UgQnJlbm5hbgpTY2h1bGhhdXNzdHJhc3NlIDYyCjQ0MTAgTGllc3RhbAoKVmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSApSYXRoYXVzc3RyYXNzZSA2CjQ0MTAgTGllc3RhbAoKTGllc3RhbCwgMTMgTWF5IDIwMjYKCkRlYXIgU2lyIG9yIE1hZGFtLAoKSSBhbSB3cml0aW5nIHRvIHlvdSBhcyB0aGUgdGVuYW50IG9mIHRoZSBhYm92ZSBmbGF0IHRvIGFzayB5b3UgdG8gYXJyYW5nZSBhbiBpbnNwZWN0aW9uIG9mIG15IGZsYXQgYXMgc29vbiBhcyBwb3NzaWJsZS4gUGxlYXNlIGNvbnRhY3QgbWUgdG8gYWdyZWUgYSB0aW1lLgoKS2luZCByZWdhcmRzLApDaGxvZSBCcmVubmFuCg==",
+   "sha256": "f1a883676f215d1dfd55c9e4f7ec9254efccda718ea36d66ff0c3001827fb722",
+   "size_bytes": 340
+  }
+ ]
+}

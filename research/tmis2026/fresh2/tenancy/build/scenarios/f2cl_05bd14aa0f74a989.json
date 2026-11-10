@@ -1,0 +1,61 @@
+{
+ "claim_id": "f2cl_05bd14aa0f74a989",
+ "message_id": "f2msg_a2fd3112ac182651",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_2304a7106f672571",
+ "family_index": 7,
+ "slot": 3,
+ "combo": [
+  "deposit_considered",
+  "heating",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_false",
+  "mold": "absent",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "passing",
+  "heating": "implied",
+  "specialist_needed": "plain",
+  "deposit_considered": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_1fd7352d76ce74a1",
+   "document_type": "defect_notification",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Fabian Zürcher",
+  "landlord": "Hausverwaltung Pilatus AG",
+  "city": "Wädenswil",
+  "canton": "ZH",
+  "address": "Brunnenrain 80, Wädenswil, 5.5-room flat",
+  "lease_start": "1 December 2022",
+  "rent": 2420,
+  "utilities": 230,
+  "received_at": "2026-09-21T10:20:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 7260,
+  "defect": "the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "24 August 2026",
+  "repair_deadline": "28 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "11 October 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "repeated colds and bronchitis"
+ }
+}

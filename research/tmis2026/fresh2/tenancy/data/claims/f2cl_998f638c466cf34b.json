@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_998f638c466cf34b",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-08-18T16:35:00+02:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "f2msg_c11d42a438b69010",
+  "subject": "Heizung fällt immer wieder aus – Obere Gasse 81",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wohne in einer 4.5-Zimmer-Wohnung an der Obere Gasse 81 in Grenchen, Vermieterin ist die Baugenossenschaft Sonnhalde.\n\nUnsere Heizung fällt alle paar Tage aus, und die Wohnung kühlt dann bis auf etwa 15 Grad ab. Das begann schon im Juli mit dem Warmwasser und betrifft jetzt die ganze Heizung. Ich habe es am 9. August schriftlich gemeldet, die Kopie lege ich bei.\n\nDie Genossenschaft hat einen Monteur geschickt, der nichts gefunden hat. Ob jetzt ein Fachmann die Anlage genauer untersuchen muss, um die Ursache zu finden, ist offen; die Genossenschaft will zuerst abwarten, ob es wieder vorkommt, und ich kann selbst nicht beurteilen, ob das nötig ist.\n\nIch bin nicht bereit, im Winter so weiterzumachen. Ich habe mich beim Kanton schon erkundigt, wie man die Miete auf das Hinterlegungskonto einzahlt, statt sie der Genossenschaft zu überweisen.\n\nBitte sagen Sie mir, wie ich jetzt weiter vorgehen soll.\n\nMit freundlichen Grüssen\nLivia Imhof",
+  "sent_at": "2026-08-18T16:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_54ece3b61e3f3939"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_54ece3b61e3f3939",
+   "file_name": "Maengelmeldung_9Aug.txt",
+   "media_type": "text/plain",
+   "content_base64": "R3JlbmNoZW4sIDkuIEF1Z3VzdCAyMDI2CgpNw6RuZ2VsbWVsZHVuZwoKU2VociBnZWVocnRlIERhbWVuIHVuZCBIZXJyZW4KCkljaCBtZWxkZSBJaG5lbiBoaWVybWl0IGVpbmVuIE1hbmdlbCBpbiBtZWluZXIgV29obnVuZyBhbiBkZXIgT2JlcmUgR2Fzc2UgODEsIDQuNSBaaW1tZXI6IERpZSBIZWl6dW5nIGbDpGxsdCBhbGxlIHBhYXIgVGFnZSBhdXMsIHVuZCBkaWUgV29obnVuZyBrw7xobHQgZGFubiBhdWYgcnVuZCAxNSBHcmFkIGFiLgoKSWNoIGJpdHRlIFNpZSwgZGVuIE1hbmdlbCByYXNjaCBiZWhlYmVuIHp1IGxhc3Nlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKTGl2aWEgSW1ob2YK",
+   "sha256": "4f9023d20d1536df77873068fdf882c290030b0244171afa6a7ac63dacb4e939",
+   "size_bytes": 336
+  }
+ ]
+}

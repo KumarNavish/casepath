@@ -1,0 +1,62 @@
+{
+ "claim_id": "f2cl_45158e0185bd82b6",
+ "message_id": "f2msg_250f7e7d3cb226f9",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_a4cb67d21cf348ef",
+ "family_index": 15,
+ "slot": 0,
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "family_home",
+  "retaliation_screen"
+ ],
+ "routing_true": true,
+ "language": "de-CH",
+ "channel": "portal",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "open",
+  "extension_relevant": "stated_true"
+ },
+ "styles": {
+  "termination_received": "plain",
+  "family_home": "plain",
+  "arrears": "plain",
+  "extension_relevant": "plain"
+ },
+ "open_flag": "retaliation_screen",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "document_type": "termination_notice",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Michèle Siegrist",
+  "landlord": "Baugenossenschaft Sonnhalde",
+  "city": "Muttenz",
+  "canton": "BL",
+  "address": "Eichholzweg 77, Muttenz, 3.5-room flat",
+  "lease_start": "1 December 2017",
+  "rent": 2620,
+  "utilities": 160,
+  "received_at": "2026-08-16T08:20:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 5240,
+  "defect": "",
+  "notified_on": "19 May 2026",
+  "repair_deadline": "17 September 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "12 September 2026",
+  "household": "the tenant's partner",
+  "health_detail": "sleep problems and headaches"
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_0c4512154d36a3b4",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-10-03T13:35:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_f4a7ee987131c52e",
+  "subject": "chat – rent going up after new kitchens",
+  "body": "Rafael Ortega: hi, I'm at Ahornweg 39 in Dübendorf, 2.5 rooms, Verwaltung Emme & Söhne\nRafael Ortega: they put new kitchens and bathrooms into all flats this year and now the manager says everyone will pay more for that, he mentioned CHF 180 a month\nRafael Ortega: he said the papers will be sent out with the official form \"before the end of the year\", so I'm waiting for that\nRafael Ortega: 180 seems a lot for a kitchen I didn't ask for. can they do that? what should I watch out for?",
+  "sent_at": "2026-10-03T13:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

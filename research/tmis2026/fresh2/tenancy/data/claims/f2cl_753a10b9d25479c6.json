@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_753a10b9d25479c6",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-01T16:05:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_394817971242dd2c",
+  "subject": "Cold bedrooms at Eichholzweg 29",
+  "body": "Dear Sir or Madam,\n\nMy family rents a 3.5-room flat at Eichholzweg 29 in Muttenz from Verwaltung Emme & Söhne. I attach our lease.\n\nOur main problem is the heating: the boiler cuts out at night and the bedrooms are cold in the morning. It has happened almost every night since mid-September. We have reported it three times by phone.\n\nProbably because of the cold, there is condensation running down the walls and mould on the window frames, which our five-year-old's doctor thinks is behind the cough she has had for weeks. Emme & Söhne simply says we should heat and air more. I think someone who actually knows about heating systems needs to look at why the boiler fails, since we are going round in circles.\n\nI've been told I could pay our rent to the official deposit office instead of to the landlord, and I intend to do that from December if nothing changes.\n\nCould you let me know how to proceed?\n\nKind regards,\nEleanor Kowalczyk",
+  "sent_at": "2026-10-01T16:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_5a537615d4e32ec0"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_5a537615d4e32ec0",
+   "file_name": "lease_Kowalczyk.txt",
+   "media_type": "text/plain",
+   "content_base64": "TEVBU0UgQUdSRUVNRU5UIEZPUiBBIEZMQVQKCkxhbmRsb3JkOiBWZXJ3YWx0dW5nIEVtbWUgJiBTw7ZobmUsIEJlcm5zdHJhc3NlIDQxLCAzNDAwIEJ1cmdkb3JmClRlbmFudDogRWxlYW5vciBLb3dhbGN6eWsKCkNvbW1lbmNlbWVudDogMSBNYXkgMjAyMApOZXQgbW9udGhseSByZW50OiBDSEYgMjA4MApOb3RpY2UgcGVyaW9kOiB0aHJlZSBtb250aHMKCk11dHRlbnosIDIgQXByaWwgMjAyMApTaWduYXR1cmVzOiBWZXJ3YWx0dW5nIEVtbWUgJiBTw7ZobmUgLyBFLiBLb3dhbGN6eWsK",
+   "sha256": "2b7dc34a0b6f8238d27f51c730dc90f46cf80ba92c49406acd1080dbba4e9bfc",
+   "size_bytes": 276
+  }
+ ]
+}

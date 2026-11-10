@@ -1,0 +1,50 @@
+{
+ "claim_id": "f2cl_46b76c8c72c4d34b",
+ "message_id": "f2msg_f6e64198b9f8bf47",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_608c9565df68fd77",
+ "family_index": 23,
+ "slot": 0,
+ "combo": [
+  "reference_rate",
+  "renovation"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "claim_received": "stated_false",
+  "reference_rate": "stated_true",
+  "renovation": "stated_true"
+ },
+ "styles": {
+  "claim_received": "implied",
+  "reference_rate": "passing",
+  "renovation": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Hannah Gallagher",
+  "landlord": "Wohnwerk Thur GmbH",
+  "city": "Steffisburg",
+  "canton": "BE",
+  "address": "Schulhausstrasse 79, Steffisburg, 4-room flat",
+  "lease_start": "1 December 2009",
+  "rent": 2390,
+  "utilities": 230,
+  "received_at": "2026-08-28T08:20:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 4780,
+  "defect": "",
+  "notified_on": "20 May 2026",
+  "repair_deadline": "13 November 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "21 October 2026",
+  "household": "the tenant's partner",
+  "health_detail": "sleep problems and headaches"
+ }
+}

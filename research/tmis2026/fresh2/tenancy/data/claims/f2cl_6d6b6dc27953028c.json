@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_6d6b6dc27953028c",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-10-22T15:35:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_8e18cda6343afb44",
+  "subject": "Mängel Mühlemattstrasse 73 – Hinterlegung des Mietzinses",
+  "body": "Sehr geehrte Damen und Herren\n\nIch bin Mieter einer 3.5-Zimmer-Wohnung an der Mühlemattstrasse 73 in Uster; Vermieterin ist die Domicil Plus Immobilien AG. Ich lege den Mietvertrag und meine Mängelmeldung vom Juli bei.\n\nIn der Ecke des Kinderzimmers ist die Wand feucht, und es haben sich schwarze Schimmelflecken gebildet. Zudem bleiben zwei der vier Heizkörper kalt, auch wenn man sie voll aufdreht; die Heizung funktioniert in diesen Räumen nicht.\n\nMeine Frau ist seit einigen Wochen öfter krank, Husten und Müdigkeit. Ob das mit der Wohnung zusammenhängt, wissen wir nicht, das ist nicht abgeklärt.\n\nIch habe entschieden, den Mietzins ab dem 1. November bei der Schlichtungsbehörde zu hinterlegen, bis die Mängel behoben sind. Bitte prüfen Sie, ob meine Mängelmeldung dafür genügt und was ich zusätzlich unternehmen muss.\n\nFreundliche Grüsse\nSimon Lehmann",
+  "sent_at": "2026-10-22T15:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_6b8b77d12d83f28e",
+   "f2att_91bfe08cffedb560"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_6b8b77d12d83f28e",
+   "file_name": "Mietvertrag_Lehmann.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcKClZlcm1pZXRlcmluOiBEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRywgU29sb3RodXJuc3RyYXNzZSAxNywgMjU0MCBHcmVuY2hlbgpNaWV0ZXI6IFNpbW9uIExlaG1hbm4KCk1pZXRiZWdpbm46IDEuIERlemVtYmVyIDIwMTYKTmV0dG9taWV0emluczogQ0hGIDE1NDAu4oCTIHBybyBNb25hdApLw7xuZGlndW5nc2ZyaXN0OiBkcmVpIE1vbmF0ZSBhdWYgRW5kZSBqZWRlcyBNb25hdHMgYXVzc2VyIERlemVtYmVyCgpPcnQsIERhdHVtOiBHcmVuY2hlbiwgNC4gTm92ZW1iZXIgMjAxNgpVbnRlcnNjaHJpZnRlbjogRG9taWNpbCBQbHVzIEltbW9iaWxpZW4gQUcgLyBTLiBMZWhtYW5uCg==",
+   "sha256": "8db6c645cdcad3f964309dc87a32ab3c1976451fe84c4b5fb148e23d26164953",
+   "size_bytes": 343
+  },
+  {
+   "artifact_id": "f2att_91bfe08cffedb560",
+   "file_name": "Maengelmeldung_Juli.txt",
+   "media_type": "text/plain",
+   "content_base64": "U2ltb24gTGVobWFubgpNw7xobGVtYXR0c3RyYXNzZSA3Mwo4NjEwIFVzdGVyCgpEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRwpTb2xvdGh1cm5zdHJhc3NlIDE3CjI1NDAgR3JlbmNoZW4KClVzdGVyLCAxMS4gSnVsaSAyMDI2CgpNw6RuZ2VsbWVsZHVuZwoKU2VociBnZWVocnRlIERhbWVuIHVuZCBIZXJyZW4KCkljaCBtZWxkZSBmb2xnZW5kZSBNw6RuZ2VsOiBJbiBkZXIgRWNrZSBkZXMgS2luZGVyemltbWVycyBpc3QgZGllIFdhbmQgZmV1Y2h0LCB1bmQgZXMgaGFiZW4gc2ljaCBzY2h3YXJ6ZSBTY2hpbW1lbGZsZWNrZW4gZ2ViaWxkZXQuIEF1c3NlcmRlbSBibGVpYmVuIHp3ZWkgZGVyIHZpZXIgSGVpemvDtnJwZXIga2FsdCwgYXVjaCB3ZW5uIHNpZSB2b2xsIGF1ZmdlZHJlaHQgc2luZC4KCkljaCBiaXR0ZSB1bSByYXNjaGUgQmVoZWJ1bmcuCgpGcmV1bmRsaWNoZSBHcsO8c3NlClNpbW9uIExlaG1hbm4K",
+   "sha256": "99c94585f77f5c00aa4594ff3caba3168a7f81cfb7e5c070d5ccd7634520a504",
+   "size_bytes": 462
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "claim_id": "f2cl_3e1bdd7883787817",
+ "message_id": "f2msg_95f281e418fde2e5",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_422fec1d8bd32efe",
+ "family_index": 21,
+ "slot": 1,
+ "combo": [
+  "reference_rate"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "claim_received": "open",
+  "reference_rate": "stated_true",
+  "renovation": "absent"
+ },
+ "styles": {
+  "reference_rate": "passing"
+ },
+ "open_flag": "claim_received",
+ "open_value": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Harriet Ndlovu",
+  "landlord": "Liegenschaften Sternen AG",
+  "city": "Grenchen",
+  "canton": "SO",
+  "address": "Bergstrasse 92, Grenchen, 3.5-room flat",
+  "lease_start": "1 May 2023",
+  "rent": 1490,
+  "utilities": 270,
+  "received_at": "2026-08-27T17:50:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 2980,
+  "defect": "",
+  "notified_on": "4 June 2026",
+  "repair_deadline": "27 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "9 October 2026",
+  "household": "the tenant's son (8)",
+  "health_detail": "sleep problems and headaches"
+ }
+}

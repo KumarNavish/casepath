@@ -1,0 +1,147 @@
+{
+ "claim_id": "f2cl_45158e0185bd82b6",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_a4cb67d21cf348ef",
+ "scenario": {
+  "family_home": true,
+  "arrears": true,
+  "retaliation_screen": true,
+  "extension_relevant": true
+ },
+ "implicit_flags": {
+  "termination_received": true
+ },
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "open",
+  "extension_relevant": "stated_true"
+ },
+ "expression": {
+  "termination_received": "plain",
+  "family_home": "plain",
+  "arrears": "plain",
+  "extension_relevant": "plain"
+ },
+ "policy_verdicts": {
+  "termination_received": "true",
+  "family_home": "true",
+  "arrears": "true",
+  "retaliation_screen": "unresolved",
+  "extension_relevant": "true"
+ },
+ "open_fact": {
+  "flag": "retaliation_screen",
+  "true_value": true
+ },
+ "document_states": {
+  "lease_contract": "required_now",
+  "termination_notice": "supplied_sufficient",
+  "proof_of_receipt": "required_now",
+  "notice_period_evidence": "required_now",
+  "stated_reason": "required_now",
+  "spouse_notice_copy": "required_now",
+  "payment_deadline_letter": "required_now",
+  "rent_ledger_payment_evidence": "required_now",
+  "prior_rights_correspondence": "held",
+  "housing_search_log": "required_now",
+  "landlord_correspondence": "not_needed"
+ },
+ "engine_routes": {
+  "lease_contract": "needed_later",
+  "termination_notice": "established",
+  "proof_of_receipt": "needed_later",
+  "notice_period_evidence": "needed_later",
+  "stated_reason": "needed_later",
+  "spouse_notice_copy": "needed_later",
+  "payment_deadline_letter": "needed_later",
+  "rent_ledger_payment_evidence": "needed_later",
+  "prior_rights_correspondence": "held_behind_question",
+  "housing_search_log": "needed_later",
+  "landlord_correspondence": "optional"
+ },
+ "request_set": [
+  "housing_search_log",
+  "lease_contract",
+  "notice_period_evidence",
+  "payment_deadline_letter",
+  "proof_of_receipt",
+  "rent_ledger_payment_evidence",
+  "spouse_notice_copy",
+  "stated_reason"
+ ],
+ "held_set": [
+  "prior_rights_correspondence"
+ ],
+ "answered": {
+  "document_states": {
+   "lease_contract": "required_now",
+   "termination_notice": "supplied_sufficient",
+   "proof_of_receipt": "required_now",
+   "notice_period_evidence": "required_now",
+   "stated_reason": "required_now",
+   "spouse_notice_copy": "required_now",
+   "payment_deadline_letter": "required_now",
+   "rent_ledger_payment_evidence": "required_now",
+   "prior_rights_correspondence": "required_now",
+   "housing_search_log": "required_now",
+   "landlord_correspondence": "not_needed"
+  },
+  "request_set": [
+   "housing_search_log",
+   "lease_contract",
+   "notice_period_evidence",
+   "payment_deadline_letter",
+   "prior_rights_correspondence",
+   "proof_of_receipt",
+   "rent_ledger_payment_evidence",
+   "spouse_notice_copy",
+   "stated_reason"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "document_type": "termination_notice",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "blind_check_reading": {
+  "termination_received": "stated_true",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "open",
+  "extension_relevant": "stated_true"
+ },
+ "blind_check_fields": [
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "item": "issuer",
+   "got": true
+  },
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "item": "addressee",
+   "got": true
+  },
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "item": "termination_date",
+   "got": true
+  },
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "item": "stated_grounds",
+   "got": true
+  },
+  {
+   "artifact_id": "f2att_e93212db9e8fb6e8",
+   "item": "form_contents",
+   "got": true
+  }
+ ],
+ "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+ "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+}

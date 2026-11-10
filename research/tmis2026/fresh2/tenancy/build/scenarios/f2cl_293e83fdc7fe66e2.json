@@ -1,0 +1,48 @@
+{
+ "claim_id": "f2cl_293e83fdc7fe66e2",
+ "message_id": "f2msg_8a1b8fb522de08ff",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_2801c66871085312",
+ "family_index": 16,
+ "slot": 3,
+ "combo": [],
+ "routing_true": false,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_false",
+  "family_home": "absent",
+  "arrears": "absent",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_false"
+ },
+ "styles": {
+  "termination_received": "plain",
+  "extension_relevant": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Luca Achterberg",
+  "landlord": "Domicil Plus Immobilien AG",
+  "city": "Kreuzlingen",
+  "canton": "TG",
+  "address": "Bündtenweg 115, Kreuzlingen, 4.5-room flat",
+  "lease_start": "1 September 2009",
+  "rent": 2740,
+  "utilities": 210,
+  "received_at": "2026-10-18T10:50:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 5480,
+  "defect": "",
+  "notified_on": "2 August 2026",
+  "repair_deadline": "21 October 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "25 October 2026",
+  "household": "the tenant's partner",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

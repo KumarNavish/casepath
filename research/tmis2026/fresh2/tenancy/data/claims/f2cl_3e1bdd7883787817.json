@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_3e1bdd7883787817",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-08-27T17:50:00+02:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "f2msg_95f281e418fde2e5",
+  "subject": "Unclear letter about rent increase",
+  "body": "Name: Harriet Ndlovu\nAddress: Bergstrasse 92, 2540 Grenchen, 3.5 rooms\nLandlord: Liegenschaften Sternen AG\n\nMessage:\nLiegenschaften Sternen AG has sent all tenants a circular. It says that \"due to the increase in the mortgage reference rate, rents will rise by around 3 % from spring 2027\". It is addressed \"To the tenants of Bergstrasse 92\", not to me personally, and there is no form attached.\n\nI am not sure whether this circular is already a formal notification of a rent increase or only an advance notice, and whether an increase has actually been notified to me at all.\n\nMy net rent is CHF 1490. Could you tell me what this letter means legally, whether I need to react now, and how I should check whether the increase is justified?\n\nHarriet Ndlovu",
+  "sent_at": "2026-08-27T17:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

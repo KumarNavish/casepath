@@ -7,7 +7,9 @@
   is never paid twice. TMIS_BUDGET_USD therefore caps the spend recorded in this model's v2 ledger.
 - Selects the dataset: --data original (the existing tenancy_data / theft_data modules) or
   --data fresh (research/tmis2026/fresh/{tenancy_data,theft_data}.py, loaded under distinct module
-  names; this code never opens that folder unless asked to).
+  names; this code never opens that folder unless asked to) or --data fresh2 (the sealed Study 3 data,
+  research/tmis2026/fresh2/{tenancy,theft}_fresh2.py; loading it refuses unless ANALYSIS_PLAN_STUDY3.md is
+  committed unmodified, see fresh2/guard.py).
 """
 from __future__ import annotations
 
@@ -52,7 +54,16 @@ def data(kind: str, which: str = "original"):
         return __import__(f"{kind}_data")
     if which == "fresh":
         return _load(f"fresh_{kind}_data", TMIS / "fresh" / f"{kind}_fresh.py")
+    if which == "fresh2":
+        require_study3_plan()
+        return _load(f"fresh2_{kind}_data", TMIS / "fresh2" / f"{kind}_fresh2.py")
     raise ValueError(which)
+
+
+def require_study3_plan():
+    """Refuse to load fresh2 (Study 3 confirmatory data) unless ANALYSIS_PLAN_STUDY3.md is committed unmodified."""
+    guard = _load("fresh2_guard", TMIS / "fresh2" / "guard.py")
+    guard.require_study3_plan()
 
 
 def dump(path: Path, obj) -> None:

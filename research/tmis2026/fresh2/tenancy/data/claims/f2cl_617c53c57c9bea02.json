@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_617c53c57c9bea02",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-09-19T19:05:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_dc9c1343c672280f",
+  "subject": "chat – is this a termination?",
+  "body": "Maeve Gallagher: hi, I rent a small flat at Bergstrasse 36 in Uster from Gerance Bärenplatz AG, 2.5 rooms, just me\nMaeve Gallagher: I got an email from the Gerance yesterday saying the building is being sold and that my \"rental relationship ends on 31 July 2027\"\nMaeve Gallagher: it's just an email, nothing on paper, no form. I really don't know if that counts as a termination or if they've actually terminated yet or if it's just a heads-up\nMaeve Gallagher: rent's all paid, no arrears, so it's not that\nMaeve Gallagher: if it's real I'd need longer to move, I'm recovering from a knee operation and can't carry anything or look at flats properly until spring\nMaeve Gallagher: what should I do?",
+  "sent_at": "2026-09-19T19:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

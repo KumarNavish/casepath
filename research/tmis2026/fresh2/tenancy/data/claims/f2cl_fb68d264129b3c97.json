@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_fb68d264129b3c97",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-09-27T09:50:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_01f5c3c416fe7fe1",
+  "subject": "Bathroom window – need expert assessment",
+  "body": "Name: Ingrid Ferreira\nFlat: Eichholzweg 115, Wädenswil (5.5 rooms)\nLandlord: Verwaltung Lindenhof Treuhand GmbH\n\nMy message:\nSince the spring our bathroom window cannot be closed any more. The wooden frame has warped so badly that the sash no longer fits; there is a gap of about two centimetres along the top, and the bathroom is draughty. I reported it in June.\n\nThe management and I disagree about why it happened. They say we must have forced the window; I think the frame was rotten when we moved in and that the whole window, perhaps the wall connection too, is affected. A joiner I asked would not commit himself. We really need an independent building expert to look at it and say what the cause is, otherwise this argument will go on forever. The management's latest letter is attached; it offers only a caretaker visit.\n\nOn another note, my husband has been unwell on and off for a few weeks. We have not worked out whether that has anything to do with the draughty bathroom or is simply the season, so I mention it only for completeness.\n\nPlease let me know how you can help and what documents you need.\n\nThank you,\nIngrid Ferreira",
+  "sent_at": "2026-09-27T09:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_3737e48aa7a56237"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_3737e48aa7a56237",
+   "file_name": "Lindenhof_letter_Oct2026.txt",
+   "media_type": "text/plain",
+   "content_base64": "VmVyd2FsdHVuZyBMaW5kZW5ob2YgVHJldWhhbmQgR21iSApTZWVzdHJhc3NlIDIxMCwgODgyMCBXw6RkZW5zd2lsCgpNcnMgSW5ncmlkIEZlcnJlaXJhCkVpY2hob2x6d2VnIDExNQo4ODIwIFfDpGRlbnN3aWwKClfDpGRlbnN3aWwsIDI4IE9jdG9iZXIgMjAyNgoKWW91ciByZXBvcnQgcmVnYXJkaW5nIHRoZSBiYXRocm9vbSB3aW5kb3cKCkRlYXIgTXJzIEZlcnJlaXJhLAoKVGhhbmsgeW91IGZvciB5b3VyIG1lc3NhZ2UuIFdlIHByb3Bvc2UgdGhhdCBvdXIgY2FyZXRha2VyLCBNciBIdWJlciwgdmlzaXRzIHRoZSBmbGF0IHRvIGFzc2VzcyB0aGUgcHJvYmxlbSB3aXRoIHRoZSB3aW5kb3cuCgpIZSBjb3VsZCBjb21lIG9uIE1vbmRheSwgMTYgTm92ZW1iZXIgMjAyNiwgYmV0d2VlbiA5IGFuZCAxMSBhLm0uIFBsZWFzZSBjb25maXJtIHRoYXQgYWNjZXNzIHRvIHRoZSBmbGF0IHdpbGwgYmUgcG9zc2libGUgYXQgdGhhdCB0aW1lLgoKS2luZCByZWdhcmRzLApTLiBLZWxsZXIKUHJvcGVydHkgbWFuYWdlbWVudAo=",
+   "sha256": "127a839ebe44b5a5c350c99e95013de0d75cbfa58f72855ccfb3f33b483c0b1f",
+   "size_bytes": 518
+  }
+ ]
+}

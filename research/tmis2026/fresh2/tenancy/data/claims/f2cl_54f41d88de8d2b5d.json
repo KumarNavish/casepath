@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_54f41d88de8d2b5d",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-14T20:20:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_7bf91dbc49a5f6d4",
+  "subject": "Mietzinserhöhung angekündigt – nichts Schriftliches",
+  "body": "Name: Nicola Habegger\nAdresse: Brunnenrain 28, 3612 Steffisburg, 5.5 Zimmer\nVermieterin: Frau Ruth Messerli\n\nAnliegen:\nFrau Messerli hat mir bei der Wohnungsabnahme der Nachbarwohnung gesagt, sie werde \"die Miete ab nächstem Jahr anpassen\", ungefähr um 150 Franken. Eine schriftliche Mitteilung über eine Mietzinserhöhung habe ich nicht erhalten, weder einen Brief noch das offizielle Formular.\n\nMit dem Referenzzinssatz kann sie es jedenfalls nicht begründen, das hat sie selbst gesagt; der sei ja eher gesunken. Sie meinte nur, alles werde teurer.\n\nIch möchte wissen, ob sie das überhaupt darf, und was ich jetzt schon tun kann, bevor etwas Schriftliches kommt.\n\nFreundliche Grüsse\nNicola Habegger",
+  "sent_at": "2026-09-14T20:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_16523b4063cbf4e6",
+  "channel": "chat",
+  "language": "de-CH",
+  "received_at": "2026-08-13T08:35:00+02:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_7ecfa3a8cc9528ae",
+  "subject": "Chat – Mieterhöhung Dorfbachstrasse 94",
+  "body": "Fabian Schnyder: Grüezi, ich miete von Frau Ruth Messerli eine 3-Zimmer-Wohnung an der Dorfbachstrasse 94 in Kreuzlingen\nFabian Schnyder: sie hat mir gesagt, dass die Miete steigen wird, weil der Referenzzinssatz gestiegen ist und weil sie im Frühling die Küche ersetzt hat\nFabian Schnyder: ich habe noch keine schriftliche Mitteilung über eine Mieterhöhung bekommen, nichts, sie hat es nur gesagt\nFabian Schnyder: sie redet von 200 Franken mehr. Das kommt mir viel vor. Was kann ich tun?",
+  "sent_at": "2026-08-13T08:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

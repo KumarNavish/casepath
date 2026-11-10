@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_153fc1a995729f56",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-16T19:05:00+02:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_5cb245b93b9196fd",
+  "subject": "Kündigung wegen Rückstand – oder Rache?",
+  "body": "Name: Jasmin Furrer\nAdresse: Bergstrasse 47, 5430 Wettingen, 3 Zimmer\nVermieterin: Wohnwerk Thur GmbH\n\nAnliegen:\nDas Formular der Wohnwerk Thur mit dem Datum 31. Januar 2027 liegt seit letzter Woche auf meinem Küchentisch, und ich möchte es anfechten.\n\nAls Grund wird angegeben, dass ich mit der Miete im Rückstand bin. Das stimmt: Mir fehlen zwei Monatsmieten, CHF 2740, weil meine Krankentaggeldversicherung monatelang nicht bezahlt hat.\n\nIch bin aber überzeugt, dass die Kündigung in Wahrheit eine Retourkutsche ist. Ich habe im Juni bei der Schlichtungsbehörde eine Mietzinsherabsetzung wegen des gesunkenen Referenzzinssatzes verlangt, und kurz danach ging es los mit den Mahnungen. Bei anderen Mietern, die auch im Rückstand waren, wurde nie gekündigt.\n\nDen Mietvertrag habe ich hochgeladen. Wie stehen meine Chancen, und welche Frist muss ich einhalten?\n\nFreundliche Grüsse\nJasmin Furrer",
+  "sent_at": "2026-09-16T19:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_bdac881edfc3a731"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_bdac881edfc3a731",
+   "file_name": "Mietvertrag_Furrer.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcKClZlcm1pZXRlcmluOiBXb2hud2VyayBUaHVyIEdtYkgsIFRvZ2dlbmJ1cmdlcnN0cmFzc2UgMTIwLCA5NTAwIFdpbApNaWV0ZXJpbjogSmFzbWluIEZ1cnJlcgoKTWlldG9iamVrdDogMy1aaW1tZXItV29obnVuZywgMi4gT0csIEJlcmdzdHJhc3NlIDQ3LCA1NDMwIFdldHRpbmdlbgoKTWlldGJlZ2lubjogMS4gRGV6ZW1iZXIgMjAxNQpOZXR0b21pZXR6aW5zOiBDSEYgMTM3MC7igJMgbW9uYXRsaWNoCkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlCgpXaWwsIDMuIE5vdmVtYmVyIDIwMTUKV29obndlcmsgVGh1ciBHbWJIIC8gSi4gRnVycmVyCg==",
+   "sha256": "2e53c6407a3628f0fc6062a5795e1ef17ec541c701377490980c4bd279c9ae06",
+   "size_bytes": 325
+  }
+ ]
+}

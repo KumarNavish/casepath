@@ -1,0 +1,49 @@
+{
+ "claim_id": "f2cl_af805d2dd545e678",
+ "message_id": "f2msg_decb4827601b4110",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_b061e8358029fd6e",
+ "family_index": 17,
+ "slot": 3,
+ "combo": [
+  "arrears"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "phone_note",
+ "fact_states": {
+  "termination_received": "open",
+  "family_home": "absent",
+  "arrears": "stated_true",
+  "retaliation_screen": "absent",
+  "extension_relevant": "absent"
+ },
+ "styles": {
+  "arrears": "implied"
+ },
+ "open_flag": "termination_received",
+ "open_value": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Felix Bianchi",
+  "landlord": "Verwaltung Emme & Söhne",
+  "city": "Kriens",
+  "canton": "LU",
+  "address": "Bergstrasse 120, Kriens, 5.5-room flat",
+  "lease_start": "1 May 2014",
+  "rent": 2440,
+  "utilities": 180,
+  "received_at": "2026-08-24T15:05:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 4880,
+  "defect": "",
+  "notified_on": "5 June 2026",
+  "repair_deadline": "21 September 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "6 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

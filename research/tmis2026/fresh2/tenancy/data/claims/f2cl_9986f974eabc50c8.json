@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_9986f974eabc50c8",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-09-27T12:20:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_fbdfd2ff3e1b5381",
+  "subject": "Wohnwerk Thur wants me out – arrears and my complaints",
+  "body": "Dear Sir or Madam,\n\nI rent a 3-room flat at Rebbergstrasse 93 in Langenthal from Wohnwerk Thur GmbH, and they are ending my lease.\n\nThe reason they give is unpaid rent. I did fall behind: three months, CHF 3930, after my hours were cut in spring. They sent the attached reminder in June, and I paid part of it, but not everything in time.\n\nBut I am convinced that the real reason is that I complained in writing in April about the broken lift and the noise from the laundry room, and organised a petition with the other tenants. Since then the management has been openly hostile to me.\n\nI live alone; there is no spouse or partner living in the flat.\n\nI have not yet decided whether to ask for more time before moving out, should the termination stand. It depends on what you think of my chances.\n\nWhat are my options?\n\nKind regards,\nHarriet Marchetti",
+  "sent_at": "2026-09-27T12:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_53359ca8fc7ed289"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_53359ca8fc7ed289",
+   "file_name": "reminder_Wohnwerk_June.txt",
+   "media_type": "text/plain",
+   "content_base64": "V29obndlcmsgVGh1ciBHbWJIClRvZ2dlbmJ1cmdlcnN0cmFzc2UgMTIwLCA5NTAwIFdpbAoKTXMgSGFycmlldCBNYXJjaGV0dGkKUmViYmVyZ3N0cmFzc2UgOTMKNDkwMCBMYW5nZW50aGFsCgpXaWwsIDE1IEp1bmUgMjAyNgoKUkVNSU5ERVIg4oCTIFJlbnQgYXJyZWFycwoKRGVhciBNcyBNYXJjaGV0dGksCgpBY2NvcmRpbmcgdG8gb3VyIHJlY29yZHMsIHJlbnQgb2YgQ0hGIDM5MzAgaXMgb3V0c3RhbmRpbmcgZm9yIHRoZSBtb250aHMgb2YgTWFyY2gsIEFwcmlsIGFuZCBNYXkgMjAyNi4KCldlIGhlcmVieSBnaXZlIHlvdSBhIHBlcmlvZCBvZiAzMCBkYXlzIGZyb20gcmVjZWlwdCBvZiB0aGlzIGxldHRlciB0byBwYXkgdGhlIG91dHN0YW5kaW5nIGFtb3VudC4KClNob3VsZCB0aGUgYW1vdW50IG5vdCBiZSBwYWlkIGluIGZ1bGwgd2l0aGluIHRoaXMgcGVyaW9kLCB3ZSB3aWxsIHRlcm1pbmF0ZSB0aGUgbGVhc2UgaW4gYWNjb3JkYW5jZSB3aXRoIEFydC4gMjU3ZCBvZiB0aGUgU3dpc3MgQ29kZSBvZiBPYmxpZ2F0aW9ucy4KCktpbmQgcmVnYXJkcywKV29obndlcmsgVGh1ciBHbWJILCBhY2NvdW50cyBkZXBhcnRtZW50Cg==",
+   "sha256": "74980a5a00fed4a88a39d3809bbffb254462763b955469a24eb382bdf79a0af2",
+   "size_bytes": 583
+  }
+ ]
+}

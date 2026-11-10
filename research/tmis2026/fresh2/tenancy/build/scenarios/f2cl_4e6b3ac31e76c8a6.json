@@ -1,0 +1,60 @@
+{
+ "claim_id": "f2cl_4e6b3ac31e76c8a6",
+ "message_id": "f2msg_66490f1a5ea51483",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_ca07d3028016bd74",
+ "family_index": 4,
+ "slot": 2,
+ "combo": [
+  "health_effects",
+  "heating",
+  "mold"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "open"
+ },
+ "styles": {
+  "health_effects": "implied",
+  "mold": "passing",
+  "heating": "plain"
+ },
+ "open_flag": "deposit_considered",
+ "open_value": false,
+ "attachments": [
+  {
+   "artifact_id": "f2att_da1988dd523aa2a1",
+   "document_type": "landlord_response_history",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Dmitri Ndlovu",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Rapperswil-Jona",
+  "canton": "SG",
+  "address": "Rebbergstrasse 99, Rapperswil-Jona, 3.5-room flat",
+  "lease_start": "1 May 2016",
+  "rent": 2150,
+  "utilities": 140,
+  "received_at": "2026-08-08T13:50:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 4300,
+  "defect": "grey-green mould on the bathroom ceiling and a musty smell in the hallway and two of the four radiators stay cold even when turned up fully",
+  "notified_on": "12 August 2026",
+  "repair_deadline": "6 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "10 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "recurring sinus infections"
+ }
+}

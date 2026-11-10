@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_dfa1374f699c1317",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-10-12T09:35:00+02:00",
+  "canton": "AR"
+ },
+ "customer_message": {
+  "message_id": "f2msg_7148bc85a8126fe3",
+  "subject": "Telephone note – rent increase after renovation, Herisau",
+  "body": "Call from Mr Jonah Brennan, tenant of a 4-room flat at Mühlemattstrasse 65 in Herisau, landlord Stiftung Wohnen Zentral.\n\nThe Stiftung has renovated the building's roof and installed a lift this year. At an information evening, the Stiftung announced that rents would go up because of these works, by about CHF 160 per month for his flat.\n\nMr Brennan confirmed that he has not yet received any written notification of the increase; only the information evening.\n\nHe considers the lift to be of no use to him (ground floor) and asks whether the increase can be contested. I explained the general procedure. He will send the notification as soon as he receives it.",
+  "sent_at": "2026-10-12T09:35:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

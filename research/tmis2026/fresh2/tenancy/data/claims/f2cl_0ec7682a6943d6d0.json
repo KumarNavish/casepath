@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_0ec7682a6943d6d0",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-10-04T19:35:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_54c174b9af638247",
+  "subject": "Defekter Badlüfter / Gesundheit meines Sohnes",
+  "body": "Sehr geehrte Damen und Herren\n\nWir wohnen in einer 4.5-Zimmer-Wohnung am Bündtenweg 35 in Steffisburg, Vermieterin ist die Verwaltung Emme & Söhne. Ich habe den Defekt im Mai schriftlich gemeldet, das Schreiben finden Sie im Anhang.\n\nDer Ventilator in unserem fensterlosen Bad ist kaputt. Er läuft Tag und Nacht und rattert so laut, dass man es bis ins Kinderzimmer hört. Ausschalten lässt er sich nicht, weil er an der Hauptleitung hängt. Unser Sohn (8) schläft seit Monaten schlecht, wacht nachts mehrmals auf und klagt fast täglich über Kopfweh. Der Kinderarzt sieht den Zusammenhang mit dem Lärm genauso wie wir.\n\nDie Verwaltung sagt, der Monteur habe nichts gefunden, und schiebt es auf den Strom. Der Elektriker meint, es liege am Motor. Bevor das geklärt ist, muss wohl ein unabhängiger Fachmann die Anlage anschauen.\n\nEine Bekannte hat mir erzählt, man könne die Miete bei einer Amtsstelle hinterlegen, statt sie dem Vermieter zu zahlen. Ich weiss noch nicht, ob ich das machen will, ich möchte zuerst wissen, was das genau bedeutet.\n\nWas raten Sie uns?\n\nFreundliche Grüsse\nBrigitte Rohner",
+  "sent_at": "2026-10-04T19:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_82ac4dcfae871c8f"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_82ac4dcfae871c8f",
+   "file_name": "Maengelmeldung_Mai_2026.txt",
+   "media_type": "text/plain",
+   "content_base64": "QnJpZ2l0dGUgUm9obmVyCkLDvG5kdGVud2VnIDM1CjM2MTIgU3RlZmZpc2J1cmcKClZlcndhbHR1bmcgRW1tZSAmIFPDtmhuZQpCZXJuc3RyYXNzZSA0MQozNDAwIEJ1cmdkb3JmCgpTdGVmZmlzYnVyZywgMjQuIE1haSAyMDI2CgpNw6RuZ2VsbWVsZHVuZyBXb2hudW5nIELDvG5kdGVud2VnIDM1LCA0LjUgWmltbWVyCgpTZWhyIGdlZWhydGUgRGFtZW4gdW5kIEhlcnJlbgoKSGllcm1pdCBtZWxkZSBpY2ggSWhuZW4gZm9sZ2VuZGVuIE1hbmdlbDogRGVyIFZlbnRpbGF0b3IgaW0gZmVuc3Rlcmxvc2VuIEJhZGV6aW1tZXIgaXN0IGRlZmVrdC4gRXIgbMOkdWZ0IHVudW50ZXJicm9jaGVuLCBUYWcgdW5kIE5hY2h0LCB1bmQgcmF0dGVydCBkYWJlaSBzZWhyIGxhdXQuIEVyIGzDpHNzdCBzaWNoIG5pY2h0IGF1c3NjaGFsdGVuLgoKSWNoIGJpdHRlIFNpZSwgZGVuIE1hbmdlbCBzbyByYXNjaCB3aWUgbcO2Z2xpY2ggYmVoZWJlbiB6dSBsYXNzZW4sIHVuZCBkYW5rZSBJaG5lbiBmw7xyIGVpbmUga3VyemUgUsO8Y2ttZWxkdW5nLgoKRnJldW5kbGljaGUgR3LDvHNzZQpCcmlnaXR0ZSBSb2huZXIK",
+   "sha256": "5df19a0a59bd7e02bd3e97e16b3e011867327fbb3a2714549de08919c80612ad",
+   "size_bytes": 564
+  }
+ ]
+}

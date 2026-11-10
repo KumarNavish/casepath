@@ -1,0 +1,63 @@
+{
+ "claim_id": "f2cl_a92229584ec74f86",
+ "message_id": "f2msg_3f9f4f6cf910e70d",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_56e3d175f1e08c0b",
+ "family_index": 12,
+ "slot": 1,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "open",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "heating": "implied",
+  "specialist_needed": "plain",
+  "deposit_considered": "plain"
+ },
+ "open_flag": "mold",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_d1e471e1c853aa5c",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "property"
+  }
+ ],
+ "values": {
+  "tenant": "Greta Ndlovu",
+  "landlord": "Wohnwerk Thur GmbH",
+  "city": "Uster",
+  "canton": "ZH",
+  "address": "Zelgweg 33, Uster, 2.5-room flat",
+  "lease_start": "1 May 2022",
+  "rent": 2330,
+  "utilities": 240,
+  "received_at": "2026-09-08T20:05:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 4660,
+  "defect": "the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "13 August 2026",
+  "repair_deadline": "22 November 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "4 October 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "repeated colds and bronchitis"
+ }
+}

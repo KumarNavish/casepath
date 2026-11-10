@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_af805d2dd545e678",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-08-24T15:05:00+02:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "f2msg_decb4827601b4110",
+  "subject": "Telephone note – Bergstrasse 120, Kriens, possible termination",
+  "body": "Call from Mr Felix Bianchi, tenant of a 5.5-room flat at Bergstrasse 120 in Kriens; landlord Verwaltung Emme & Söhne.\n\nMr Bianchi explains that he is CHF 4880 behind with the rent (two months) after an accident and a long period on sick pay. He says he received an e-mail from the management last week stating that \"the tenancy will be ended\" on 31 July 2027 because of the outstanding rent.\n\nHe is unsure whether this e-mail is a valid termination or whether the management has actually issued one yet; he has not received a letter or a form by post, and the e-mail does not have a signature. He asked whether an e-mail can be a termination at all.\n\nHe wants to keep the flat and is prepared to pay the arrears by instalments.\n\nI advised him to send us the e-mail. Callback agreed for tomorrow.",
+  "sent_at": "2026-08-24T15:05:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_38438bc732d1a4c3",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-09-25T08:50:00+02:00",
+  "canton": "LU"
+ },
+ "customer_message": {
+  "message_id": "f2msg_45b28a09f572ca63",
+  "subject": "Termination – Zelgweg 38, Emmen",
+  "body": "Name: Dmitri Holm\nAddress: Zelgweg 38, 6032 Emmen, 3.5 rooms\nLandlord: Wohnwerk Thur GmbH\n\nMessage:\nWohnwerk Thur's termination notice is attached, together with the first page of our lease. They want us out by 31 January 2027, citing the CHF 3580 of rent we were behind with after my wife's maternity leave.\n\nMy wife and I are married and this flat is our family home; we live here with our baby and my wife's teenage son.\n\nI am sure the real motive is different. In June we went to the conciliation authority because the landlord refused to repair the broken heating for weeks, and we won. The termination came three weeks later. That is retaliation and nothing else.\n\nOur son is halfway through his apprenticeship here and my wife has just gone back to work part-time. With a baby, finding something affordable in the area before the end of January is not realistic.\n\nPlease advise on how to contest this.\n\nDmitri Holm",
+  "sent_at": "2026-09-25T08:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_d6ab7d0092473469",
+   "f2att_b1735b9795752d02"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_d6ab7d0092473469",
+   "file_name": "termination_Wohnwerk.txt",
+   "media_type": "text/plain",
+   "content_base64": "T0ZGSUNJQUxMWSBBUFBST1ZFRCBGT1JNIEZPUiBUSEUgVEVSTUlOQVRJT04gT0YgQSBSRVNJREVOVElBTCBMRUFTRQooQ2FudG9uIG9mIEx1Y2VybmUsIEFydC4gMjY2bCBTd2lzcyBDb2RlIG9mIE9ibGlnYXRpb25zKQoKTGFuZGxvcmQ6IFdvaG53ZXJrIFRodXIgR21iSCwgVG9nZ2VuYnVyZ2Vyc3RyYXNzZSAxMjAsIDk1MDAgV2lsCgpSZW50ZWQgcHJvcGVydHk6IDMuNS1yb29tIGZsYXQsIFplbGd3ZWcgMzgsIDYwMzIgRW1tZW4KClRoZSBsZWFzZSBpcyB0ZXJtaW5hdGVkIHdpdGggZWZmZWN0IGZyb206IDMxIEphbnVhcnkgMjAyNwoKR3JvdW5kIGZvciB0ZXJtaW5hdGlvbjogcmVudCBhcnJlYXJzCgpJbmZvcm1hdGlvbiBmb3IgdGhlIHRlbmFudDogSWYgeW91IHdpc2ggdG8gY29udGVzdCB0aGlzIHRlcm1pbmF0aW9uLCB5b3UgbXVzdCBmaWxlIGEgcmVxdWVzdCB3aXRoIHRoZSBjb25jaWxpYXRpb24gYXV0aG9yaXR5IGZvciB0ZW5hbmN5IG1hdHRlcnMgd2l0aGluIDMwIGRheXMgb2YgcmVjZWlwdCAoQXJ0LiAyNzMgQ08pLiBBbiBhcHBsaWNhdGlvbiBmb3IgYW4gZXh0ZW5zaW9uIG9mIHRoZSB0ZW5hbmN5IG11c3QgYmUgZmlsZWQgd2l0aGluIHRoZSBzYW1lIHBlcmlvZC4KCldpbCwgMTggU2VwdGVtYmVyIDIwMjYKV29obndlcmsgVGh1ciBHbWJICihzaWduZWQpIE0uIELDtnNjaCwgTWFuYWdpbmcgRGlyZWN0b3IK",
+   "sha256": "c8237aedd60f1105b590f1b983c390a9a445a28e8d0fe75871cae496c3a5b2f1",
+   "size_bytes": 696
+  },
+  {
+   "artifact_id": "f2att_b1735b9795752d02",
+   "file_name": "lease_page1_Holm.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgTEVBU0Ug4oCTIHBhZ2UgMSBvZiAzCgpMYW5kbG9yZDogV29obndlcmsgVGh1ciBHbWJILCBUb2dnZW5idXJnZXJzdHJhc3NlIDEyMCwgOTUwMCBXaWwKVGVuYW50OiBEbWl0cmkgSG9sbQoKUmVudGVkIHByb3BlcnR5OiAzLjUtcm9vbSBmbGF0LCAxc3QgZmxvb3IgcmlnaHQsIFplbGd3ZWcgMzgsIDYwMzIgRW1tZW4sIHdpdGggY2VsbGFyIGNvbXBhcnRtZW50CgooY29udGludWVkIG9uIHBhZ2UgMikK",
+   "sha256": "e221884d5e5e4263db5196816fe54bfb35ca2a36f7c2dedb5ccd9b86a3e193e2",
+   "size_bytes": 240
+  }
+ ]
+}

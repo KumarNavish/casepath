@@ -1,0 +1,53 @@
+{
+ "claim_id": "f2cl_a6b4080171f0811d",
+ "message_id": "f2msg_c60dc85afff7f245",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_0f3078a41b00c2e0",
+ "family_index": 5,
+ "slot": 1,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "absent",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "heating": "passing",
+  "deposit_considered": "implied"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Priya Petrova",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Brugg",
+  "canton": "AG",
+  "address": "Ahornweg 118, Brugg, 2.5-room flat",
+  "lease_start": "1 May 2021",
+  "rent": 2550,
+  "utilities": 310,
+  "received_at": "2026-08-13T15:20:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 5100,
+  "defect": "the underfloor heating in the living area has stopped working",
+  "notified_on": "9 August 2026",
+  "repair_deadline": "4 October 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "23 October 2026",
+  "household": "the tenant",
+  "health_detail": "aching joints made worse by the cold"
+ }
+}

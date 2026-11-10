@@ -1,0 +1,53 @@
+{
+ "claim_id": "f2cl_31ec410443027eae",
+ "message_id": "f2msg_266d2ae6d9b3b0d5",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_df5219d03ec9c84b",
+ "family_index": 6,
+ "slot": 3,
+ "combo": [
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "open",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "absent"
+ },
+ "styles": {
+  "mold": "plain",
+  "heating": "implied",
+  "specialist_needed": "plain"
+ },
+ "open_flag": "health_effects",
+ "open_value": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Nadia Ortega",
+  "landlord": "Domicil Plus Immobilien AG",
+  "city": "Muttenz",
+  "canton": "BL",
+  "address": "Allmendstrasse 53, Muttenz, 5.5-room flat",
+  "lease_start": "1 May 2020",
+  "rent": 2330,
+  "utilities": 300,
+  "received_at": "2026-09-26T16:05:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 6990,
+  "defect": "grey-green mould on the bathroom ceiling and a musty smell in the hallway and the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "27 May 2026",
+  "repair_deadline": "12 November 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "23 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "recurring sinus infections"
+ }
+}

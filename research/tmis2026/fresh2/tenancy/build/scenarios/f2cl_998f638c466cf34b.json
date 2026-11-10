@@ -1,0 +1,59 @@
+{
+ "claim_id": "f2cl_998f638c466cf34b",
+ "message_id": "f2msg_c11d42a438b69010",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_2304a7106f672571",
+ "family_index": 7,
+ "slot": 2,
+ "combo": [
+  "deposit_considered",
+  "heating",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "absent",
+  "heating": "stated_true",
+  "specialist_needed": "open",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "heating": "plain",
+  "deposit_considered": "implied"
+ },
+ "open_flag": "specialist_needed",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_54ece3b61e3f3939",
+   "document_type": "defect_notification",
+   "sufficient": false,
+   "omitted_field": "recipient"
+  }
+ ],
+ "values": {
+  "tenant": "Livia Imhof",
+  "landlord": "Baugenossenschaft Sonnhalde",
+  "city": "Grenchen",
+  "canton": "SO",
+  "address": "Obere Gasse 81, Grenchen, 4.5-room flat",
+  "lease_start": "1 May 2017",
+  "rent": 1920,
+  "utilities": 190,
+  "received_at": "2026-08-18T16:35:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 5760,
+  "defect": "the heating fails every few days and the flat drops to around 15 degrees",
+  "notified_on": "9 August 2026",
+  "repair_deadline": "8 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "26 November 2026",
+  "household": "the tenant's partner",
+  "health_detail": "aching joints made worse by the cold"
+ }
+}

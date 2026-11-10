@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_6c0beb4edcdc571d",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-03T17:50:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_abec727210d39e65",
+  "subject": "Heizungsausfall Ahornweg 101 Wil",
+  "body": "Sehr geehrte Damen und Herren\n\nIch wende mich wegen meiner 2.5-Zimmer-Wohnung am Ahornweg 101 in Wil an Sie. Vermieterin ist die Erbengemeinschaft Probst.\n\nDer Heizkessel schaltet sich praktisch jede Nacht ab. Am Morgen sind Schlaf- und Wohnzimmer ausgekühlt, und es dauert Stunden, bis es wieder einigermassen warm ist. Ich habe das im Sommer schon gemeldet, damals hiess es, es sei ja noch warm draussen. Inzwischen haben die Erben geantwortet und einen Termin vorgeschlagen; das Schreiben lege ich bei, ebenso meinen Mietvertrag.\n\nMeine Lebenspartnerin, die oft bei mir übernachtet, war in den letzten Wochen mehrmals krank, Halsweh, Fieber, einmal eine ganze Woche. Ob das mit den kalten Nächten in meiner Wohnung zu tun hat, wissen wir ehrlich gesagt nicht. Sie war beim Arzt, aber das ist noch nicht abgeklärt, und ich will da nichts behaupten.\n\nMir geht es vor allem darum, dass die Heizung jetzt wirklich instand gestellt wird und ich weiss, welche Rechte ich habe, falls es im Winter so weitergeht. Können Sie mir sagen, wie ich vorgehen soll?\n\nFreundliche Grüsse\nNicola Bosshard",
+  "sent_at": "2026-09-03T17:50:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_c0e56a271156ddce",
+   "f2att_2fe9b4271acd071a"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_c0e56a271156ddce",
+   "file_name": "Schreiben_Erbengemeinschaft_Probst.txt",
+   "media_type": "text/plain",
+   "content_base64": "RXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0CmMvbyBIYW5zcnVlZGkgUHJvYnN0CktpcmNoc3RyYXNzZSA4LCA5NTAwIFdpbAoKSGVycm4gTmljb2xhIEJvc3NoYXJkCkFob3Jud2VnIDEwMSwgOTUwMCBXaWwKCldpbCwgMi4gT2t0b2JlciAyMDI2CgpJaHJlIE1lbGR1bmcgYmV0cmVmZmVuZCBIZWl6dW5nCgpTZWhyIGdlZWhydGVyIEhlcnIgQm9zc2hhcmQKCldpciBuZWhtZW4gQmV6dWcgYXVmIElocmUgTWVsZHVuZyB6dXIgSGVpenVuZyBpbiBJaHJlciBXb2hudW5nLgoKV2lyIHNjaGxhZ2VuIHZvciwgZGFzcyB6dW7DpGNoc3QgdW5zZXIgSGF1c3dhcnQsIEhlcnIgR23DvHIsIHZvcmJlaWtvbW10IHVuZCBzaWNoIGRpZSBTYWNoZSB2b3IgT3J0IGFuc2llaHQuIEFscyBUZXJtaW4gZsO8ciBkZW4gWnVnYW5nIHp1ciBXb2hudW5nIHNjaGxhZ2VuIHdpciBEb25uZXJzdGFnLCBkZW4gMjYuIE5vdmVtYmVyIDIwMjYsIGFiIDguMDAgVWhyIHZvci4gQml0dGUgdGVpbGVuIFNpZSB1bnMgbWl0LCBvYiBTaWUgYW4gZGllc2VtIFRhZyBhbndlc2VuZCBzZWluIGvDtm5uZW4gb2RlciBvYiBTaWUgZGVuIFNjaGzDvHNzZWwgaGludGVybGVnZW4gbcO2Y2h0ZW4uCgpGcmV1bmRsaWNoZSBHcsO8c3NlCgpGw7xyIGRpZSBFcmJlbmdlbWVpbnNjaGFmdApILiBQcm9ic3QK",
+   "sha256": "bc3898e1fe861024f114c3310d8668714748e7648b2aeb129d826097e9e7e06f",
+   "size_bytes": 657
+  },
+  {
+   "artifact_id": "f2att_2fe9b4271acd071a",
+   "file_name": "Mietvertrag_Ahornweg_101.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUsOEVU1FCgpWZXJtaWV0ZXJpbjogRXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0LCBjL28gSGFuc3J1ZWRpIFByb2JzdCwgS2lyY2hzdHJhc3NlIDgsIDk1MDAgV2lsCk1pZXRlcjogTmljb2xhIEJvc3NoYXJkCgpNaWV0b2JqZWt0OiAyLjUtWmltbWVyLVdvaG51bmcsIDEuIE9iZXJnZXNjaG9zcywgQWhvcm53ZWcgMTAxLCA5NTAwIFdpbCwgbWl0IEtlbGxlcmFidGVpbCBOci4gMwoKTWlldGJlZ2lubjogMS4gU2VwdGVtYmVyIDIwMDkKTmV0dG9taWV0emluczogQ0hGIDI2MTAu4oCTIHBybyBNb25hdApLw7xuZGlndW5nc2ZyaXN0OiBkcmVpIE1vbmF0ZSwgYXVmIGRpZSBvcnRzw7xibGljaGVuIFRlcm1pbmUKCkRpZSBBbGxnZW1laW5lbiBCZXN0aW1tdW5nZW4genVtIE1pZXR2ZXJ0cmFnIGJpbGRlbiBpbnRlZ3JpZXJlbmRlbiBCZXN0YW5kdGVpbCBkaWVzZXMgVmVydHJhZ3MuCgpXaWwsIDEyLiBBdWd1c3QgMjAwOQoKRGllIFZlcm1pZXRlcmluOiBILiBQcm9ic3QgICAgICAgICAgRGVyIE1pZXRlcjogTi4gQm9zc2hhcmQK",
+   "sha256": "df6bfc37f172d9a677feb1c4df7128aed783d0fa99d39314ab9024555a117218",
+   "size_bytes": 546
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "claim_id": "f2cl_1c700d9656587a6d",
+ "message_id": "f2msg_591bef3643ce5167",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_5420aec5e52c279a",
+ "family_index": 18,
+ "slot": 0,
+ "combo": [
+  "extension_relevant"
+ ],
+ "routing_true": false,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "stated_false",
+  "family_home": "absent",
+  "arrears": "absent",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_true"
+ },
+ "styles": {
+  "termination_received": "implied",
+  "extension_relevant": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Jasmin Lehmann",
+  "landlord": "Baugenossenschaft Sonnhalde",
+  "city": "Kreuzlingen",
+  "canton": "TG",
+  "address": "Mühlemattstrasse 24, Kreuzlingen, 4-room flat",
+  "lease_start": "1 March 2019",
+  "rent": 1350,
+  "utilities": 270,
+  "received_at": "2026-09-10T20:20:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "the owner's son wants to move into the flat",
+  "arrears_amount": 2700,
+  "defect": "",
+  "notified_on": "3 August 2026",
+  "repair_deadline": "23 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "10 October 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

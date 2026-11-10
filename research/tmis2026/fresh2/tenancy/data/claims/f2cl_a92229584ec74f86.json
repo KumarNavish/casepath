@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_a92229584ec74f86",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-09-08T20:05:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_3f9f4f6cf910e70d",
+  "subject": "Boiler and my daughter's health – rent deposit",
+  "body": "Name: Greta Ndlovu\nAddress: Zelgweg 33, 8610 Uster (2.5 rooms)\nLandlord: Wohnwerk Thur GmbH\n\nMessage:\nEvery night since the end of August something switches the boiler off; by the morning the thermometer in the bedrooms shows 15 to 16 degrees. My daughter (5) has had three colds since then, the last one turned into bronchitis, and her paediatrician says sleeping in a cold room is a clear factor.\n\nThe cause is a mystery. Wohnwerk Thur's plumber has been twice and says the boiler is fine, the electrician says it is not the power supply. An independent heating expert has to examine the system to find out what is wrong; I have asked Wohnwerk to arrange that.\n\nI've also noticed some dark spots in a corner of the bedroom ceiling. I don't know whether it is mould or damp, or something else entirely.\n\nI have decided that I will pay my rent into the official deposit account until the heating is repaired. Please tell me which formal steps I must take first. My lease is attached.\n\nGreta Ndlovu",
+  "sent_at": "2026-09-08T20:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_d1e471e1c853aa5c"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_d1e471e1c853aa5c",
+   "file_name": "lease_Ndlovu.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgTEVBU0UKCkxhbmRsb3JkOiBXb2hud2VyayBUaHVyIEdtYkgsIFRvZ2dlbmJ1cmdlcnN0cmFzc2UgMTIwLCA5NTAwIFdpbApUZW5hbnQ6IEdyZXRhIE5kbG92dQoKU3RhcnQgb2YgdGVuYW5jeTogMSBNYXkgMjAyMgpOZXQgcmVudDogQ0hGIDIzMzAgcGVyIG1vbnRoCk5vdGljZSBwZXJpb2Q6IHRocmVlIG1vbnRocywgdG8gdGhlIGVuZCBvZiBhIG1vbnRoIGV4Y2VwdCBEZWNlbWJlcgoKU2lnbmVkIGluIFdpbCBvbiA2IEFwcmlsIDIwMjIKV29obndlcmsgVGh1ciBHbWJIIC8gRy4gTmRsb3Z1Cg==",
+   "sha256": "9a2eb96fa7eec653cf7bae54357e907d328824070c40f1d847e6afcd17458725",
+   "size_bytes": 292
+  }
+ ]
+}

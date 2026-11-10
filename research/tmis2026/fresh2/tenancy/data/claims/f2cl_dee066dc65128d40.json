@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_dee066dc65128d40",
+  "channel": "email",
+  "language": "de-CH",
+  "received_at": "2026-09-20T18:05:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_c8543dc7e8ceef1d",
+  "subject": "Eichholzweg 82 Uster – Mängel und Hinterlegung",
+  "body": "Sehr geehrte Damen und Herren\n\nIch miete eine 4-Zimmer-Wohnung am Eichholzweg 82 in Uster von der Gerance Bärenplatz AG. Den Mietvertrag lege ich bei.\n\nAn der Badezimmerdecke wächst grau-grüner Schimmel, und im Gang riecht es seit Monaten muffig. Zudem ist es in den Schlafzimmern jeden Morgen kalt, weil der Heizkessel nachts ausfällt.\n\nDie Gerance sagt, wir sollen mehr lüften. Ein Bekannter, der Bauingenieur ist, hat sich das Bad angeschaut und meint, dass die Ursache nur ein unabhängiger Experte feststellen kann, weil es auch ein Problem mit der Dachisolation sein könnte. Ein solches Gutachten ist aus meiner Sicht unumgänglich.\n\nIch werde den Mietzins ab Dezember bei der Hinterlegungsstelle hinterlegen, falls die Gerance bis dahin nichts unternimmt. Ich möchte das rechtlich korrekt machen und bitte Sie um Unterstützung.\n\nFreundliche Grüsse\nRaphael Furrer",
+  "sent_at": "2026-09-20T18:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_26cd620d6e3cfb69"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_26cd620d6e3cfb69",
+   "file_name": "Mietvertrag_Eichholzweg82.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgRsOcUiBXT0hOUsOEVU1FCgpWZXJtaWV0ZXJpbjogR2VyYW5jZSBCw6RyZW5wbGF0eiBBRywgT2JlcmUgQmFobmhvZnN0cmFzc2UgOSwgOTUwMCBXaWwKTWlldGVyOiBSYXBoYWVsIEZ1cnJlcgoKTWlldG9iamVrdDogNC1aaW1tZXItV29obnVuZywgRGFjaGdlc2Nob3NzLCBFaWNoaG9sendlZyA4MiwgODYxMCBVc3RlcgoKTWlldGJlZ2lubjogMS4gRGV6ZW1iZXIgMjAxMQpOZXR0b21pZXR6aW5zOiBDSEYgMTMzMC7igJMgcHJvIE1vbmF0CkvDvG5kaWd1bmdzZnJpc3Q6IGRyZWkgTW9uYXRlCgpVc3RlciwgMS4gTm92ZW1iZXIgMjAxMQpHZXJhbmNlIELDpHJlbnBsYXR6IEFHIC8gUi4gRnVycmVyCg==",
+   "sha256": "122db03381a66ac619e2882cfe9322404069f2f773ca9e3b1a5a0ecf86d1a2f6",
+   "size_bytes": 352
+  }
+ ]
+}

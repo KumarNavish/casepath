@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_a5d873ad4151b24e",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-25T21:35:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_0ecbed17aa367124",
+  "subject": "Mould in children's room, Hinterfeld 24",
+  "body": "Hello,\n\nWe rent a 2.5-room flat at Hinterfeld 24 in Langenthal from the Probst family (Erbengemeinschaft Probst).\n\nIn the corner of the children's room the wall has been damp since last winter, and black mould spots have been spreading there and behind the cot. We wipe them off with vinegar but they keep coming back within days. We air the room twice a day.\n\nI wrote to the landlords in the summer. Their answer is attached: they agree something is wrong and promise to send the caretaker in September, but they also ask us to be patient. The caretaker came, looked, said \"yes, that's damp\", and that was the end of it. Nothing has been done since.\n\nWe have read that tenants can put the rent into a deposit at the conciliation office if the landlord does not repair a defect. We'd like to do that from December if nothing has happened by then, but we want to do it properly and not risk anything. Could you tell us what steps we need to take first and help us write the necessary letters?\n\nMany thanks,\nLuca Haddad",
+  "sent_at": "2026-10-25T21:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_4f59fa1aab48ec46"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_4f59fa1aab48ec46",
+   "file_name": "Probst_reply.txt",
+   "media_type": "text/plain",
+   "content_base64": "RXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0CmMvbyBIYW5zcnVlZGkgUHJvYnN0CktpcmNoc3RyYXNzZSA4LCA5NTAwIFdpbAoKTXIgTHVjYSBIYWRkYWQKSGludGVyZmVsZCAyNAo0OTAwIExhbmdlbnRoYWwKCldpbCwgMjggQXVndXN0IDIwMjYKCllvdXIgbGV0dGVyIGFib3V0IHRoZSBjaGlsZHJlbidzIHJvb20KCkRlYXIgTXIgSGFkZGFkLAoKVGhhbmsgeW91IGZvciB5b3VyIGxldHRlci4gV2UgYWNjZXB0IHRoYXQgdGhlcmUgaXMgYSBwcm9ibGVtIGluIHRoZSBjaGlsZHJlbidzIHJvb20gdGhhdCBuZWVkcyBhdHRlbnRpb24sIGJ1dCB3ZSBhc2sgZm9yIHlvdXIgcGF0aWVuY2UsIGFzIHRoZSBoZWlycyBtdXN0IGZpcnN0IGFncmVlIG9uIHRoZSB3b3JrIGFuZCB0aGUgY29zdHMuCgpBcyBhIGZpcnN0IHN0ZXAgb3VyIGNhcmV0YWtlciB3aWxsIHZpc2l0IHRvIGFzc2VzcyB0aGUgcHJvYmxlbS4gV2UgcHJvcG9zZSBTYXR1cmRheSwgMTkgU2VwdGVtYmVyIDIwMjYsIGF0IDEwIGEubS4gZm9yIGFjY2VzcyB0byB0aGUgZmxhdC4KCktpbmQgcmVnYXJkcywKSC4gUHJvYnN0LCBvbiBiZWhhbGYgb2YgdGhlIGhlaXJzCg==",
+   "sha256": "a66fd97aed7f744434bfafc50897c54980086c4adb4043800f345b8e83fc67d4",
+   "size_bytes": 577
+  }
+ ]
+}

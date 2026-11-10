@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_597f5ba020b66604",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-24T08:20:00+02:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_fc3d7b95378fefcd",
+  "subject": "Heating failures, Eichholzweg 48 – landlord blames us",
+  "body": "Dear Sir or Madam,\n\nI rent a 5.5-room flat at Eichholzweg 48 in Brugg from Baugenossenschaft Sonnhalde.\n\nThe heating fails every few days and the flat drops to around 15 degrees before it comes back on. This started in August with the first cool nights. In August I wrote to the cooperative setting a deadline for the repair; my letter and their reply are attached.\n\nThe cooperative claims we cause the failures by keeping windows tilted open, which supposedly overloads the boiler. That is nonsense, but the cause has to be established somehow, and the only way I can see is an independent heating expert examining the system. The cooperative says it will replace a part once the supplier delivers it, which suggests they don't really know either.\n\nAs my letter says, I will pay the rent into the official deposit if the heating is not repaired. My deadline has long passed. Before I take that step, I'd like your confirmation that I have done everything correctly so far.\n\nMany thanks,\nJonah Bianchi",
+  "sent_at": "2026-10-24T08:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_aaaefc6e32fc2ed9",
+   "f2att_6a95f5b065eea958"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_aaaefc6e32fc2ed9",
+   "file_name": "deadline_letter_August.txt",
+   "media_type": "text/plain",
+   "content_base64": "Sm9uYWggQmlhbmNoaQpFaWNoaG9sendlZyA0OAo1MjAwIEJydWdnCgpCcnVnZywgMjAgQXVndXN0IDIwMjYKCkhlYXRpbmcgZmFpbHVyZXMgaW4gbXkgZmxhdCDigJMgZGVhZGxpbmUgZm9yIHJlcGFpcgoKRGVhciBTaXIgb3IgTWFkYW0sCgpUaGUgaGVhdGluZyBpbiBteSBmbGF0IGF0IEVpY2hob2x6d2VnIDQ4IGhhcyBiZWVuIGZhaWxpbmcgcmVwZWF0ZWRseS4gSSBoZXJlYnkgc2V0IGEgZGVhZGxpbmU6IHRoZSBoZWF0aW5nIG11c3QgYmUgcmVwYWlyZWQgYnkgMyBTZXB0ZW1iZXIgMjAyNi4KCklmIHRoZSBkZWZlY3QgaGFzIG5vdCBiZWVuIHJlcGFpcmVkIGJ5IHRoZW4sIEkgd2lsbCBwYXkgbXkgcmVudCBpbnRvIHRoZSBvZmZpY2lhbCByZW50IGRlcG9zaXQgb2ZmaWNlLCBhcyBwcm92aWRlZCBieSBsYXcsIHVudGlsIHRoZSByZXBhaXIgaGFzIGJlZW4gY2FycmllZCBvdXQuCgpZb3VycyBmYWl0aGZ1bGx5LApKb25haCBCaWFuY2hpCg==",
+   "sha256": "8746eb2726bf854aaf9d883ebd40127a5b19b6addf67bc7d5c977ca7f6bb339b",
+   "size_bytes": 478
+  },
+  {
+   "artifact_id": "f2att_6a95f5b065eea958",
+   "file_name": "Sonnhalde_reply.txt",
+   "media_type": "text/plain",
+   "content_base64": "QmF1Z2Vub3NzZW5zY2hhZnQgU29ubmhhbGRlCkdlc2Now6RmdHNzdGVsbGUsIEFhcmF1ZXJzdHJhc3NlIDE1LCA1MjAwIEJydWdnCgpNciBKb25haCBCaWFuY2hpCkVpY2hob2x6d2VnIDQ4CjUyMDAgQnJ1Z2cKCkJydWdnLCAxMiBPY3RvYmVyIDIwMjYKCkhlYXRpbmcgaW4geW91ciBmbGF0CgpEZWFyIE1yIEJpYW5jaGksCgpIYXZpbmcgbG9va2VkIGludG8geW91ciBjb21wbGFpbnQsIHdlIG11c3QgcG9pbnQgb3V0IHRoYXQgaW4gb3VyIG9waW5pb24gdGhlIGZhaWx1cmVzIGFyZSBjYXVzZWQgYnkgeW91ciB2ZW50aWxhdGlvbiBoYWJpdHMuIFdpbmRvd3MgbGVmdCB0aWx0ZWQgZm9yIGhvdXJzIG1ha2UgdGhlIHN5c3RlbSB3b3JrIGJleW9uZCBpdHMgY2FwYWNpdHkuCgpUbyBydWxlIG91dCBhbnkgdGVjaG5pY2FsIGZhdWx0LCB3ZSB3aWxsIG5ldmVydGhlbGVzcyBoYXZlIHRoZSBjb250cm9sIHVuaXQgcmVwbGFjZWQgYXMgc29vbiBhcyBvdXIgc3VwcGxpZXIgZGVsaXZlcnMgaXQuIE91ciBoZWF0aW5nIGluc3RhbGxlciB3aWxsIG5lZWQgYWNjZXNzIHRvIHlvdXIgZmxhdCBvbiAxMyBOb3ZlbWJlciAyMDI2IGJldHdlZW4gOCBhbmQgMTAgYS5tLgoKS2luZCByZWdhcmRzLApCYXVnZW5vc3NlbnNjaGFmdCBTb25uaGFsZGUK",
+   "sha256": "f82c15579850094eda4f87761e70319aadae99430991c8ab9df67e4096b550dc",
+   "size_bytes": 642
+  }
+ ]
+}

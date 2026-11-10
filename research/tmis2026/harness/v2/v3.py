@@ -262,7 +262,7 @@ def theft_pack(name, path=None):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("exp", choices=["theft", "tenancy"])
-    ap.add_argument("--data", default="original", choices=["original", "fresh"])
+    ap.add_argument("--data", default="original", choices=["original", "fresh", "fresh2"])
     ap.add_argument("--split", default="dev")
     ap.add_argument("--stories", default=None)
     ap.add_argument("--k", type=int, default=3)

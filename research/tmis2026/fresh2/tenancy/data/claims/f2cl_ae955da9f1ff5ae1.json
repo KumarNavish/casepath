@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_ae955da9f1ff5ae1",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-08-01T07:05:00+02:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_8cf16f50e9d58dc1",
+  "subject": "chat – termination Bergstrasse 39",
+  "body": "Ibrahim Volkov: hi. got the termination letter from Wohnwerk Thur on Monday, my flat at Bergstrasse 39 in Brugg, 2.5 rooms. they want me out by 30 April 2027\nIbrahim Volkov: they say it's because of unpaid rent. yes I owe them three months, CHF 4380, I had a bad year\nIbrahim Volkov: but honestly I think the main reason is that I complained to the building authority about the mould in the basement storage and they had to pay for a renovation. right after that they started sending reminders. it's revenge\nIbrahim Volkov: I attached the first page of my lease\nIbrahim Volkov: can I fight this? how long do I have?",
+  "sent_at": "2026-08-01T07:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_05b39e03f78efc53"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_05b39e03f78efc53",
+   "file_name": "lease_p1.txt",
+   "media_type": "text/plain",
+   "content_base64": "TEVBU0UgRk9SIFJFU0lERU5USUFMIFBSRU1JU0VTIOKAkyBwYWdlIDEKCkxhbmRsb3JkOiBXb2hud2VyayBUaHVyIEdtYkgsIFRvZ2dlbmJ1cmdlcnN0cmFzc2UgMTIwLCA5NTAwIFdpbApUZW5hbnQ6IElicmFoaW0gVm9sa292CgpQcmVtaXNlczogMi41LXJvb20gZmxhdCwgZ3JvdW5kIGZsb29yLCBCZXJnc3RyYXNzZSAzOSwgNTIwMCBCcnVnZywgaW5jbHVkaW5nIGNlbGxhciBjb21wYXJ0bWVudCBuby4gNAoKKER1cmF0aW9uLCByZW50IGFuZCBub3RpY2U6IHNlZSBwYWdlIDIpCg==",
+   "sha256": "5076c2b571fd5f3ad9109b15edca3d211ca087d3a77f18c81f87287ed63639bf",
+   "size_bytes": 274
+  }
+ ]
+}

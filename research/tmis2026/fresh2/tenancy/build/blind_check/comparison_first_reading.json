@@ -1,0 +1,148 @@
+{
+ "claims_read": 96,
+ "fact_judgements": 448,
+ "content_item_judgements": 157,
+ "facts_strict_agreement": 438,
+ "facts_accepted": 447,
+ "content_items_agreement": 150,
+ "claims_all_strict": 80,
+ "claims_all_accepted": 88,
+ "quotes_not_found": [
+  [
+   "f2cl_7850a89c062dfd72",
+   "family_home"
+  ]
+ ],
+ "state_x_reading": {
+  "absent -> not_mentioned": 132,
+  "absent -> stated_false": 6,
+  "absent -> stated_true": 1,
+  "open -> open": 32,
+  "stated_false -> stated_false": 50,
+  "stated_true -> stated_true": 222,
+  "unmentioned -> not_mentioned": 2,
+  "unmentioned -> stated_true": 3
+ },
+ "stated_facts_strict_by_expression": {
+  "implied:read": 48,
+  "passing:read": 89,
+  "plain:read": 135
+ },
+ "disagreements": [
+  {
+   "claim_id": "f2cl_7850a89c062dfd72",
+   "fact": "family_home",
+   "state": "absent",
+   "expression": null,
+   "got": "stated_true",
+   "routing": false
+  }
+ ],
+ "accepted_non_strict": [
+  {
+   "claim_id": "f2cl_293e83fdc7fe66e2",
+   "fact": "arrears",
+   "state": "absent",
+   "got": "stated_false"
+  },
+  {
+   "claim_id": "f2cl_872528b59e47e1b3",
+   "fact": "arrears",
+   "state": "absent",
+   "got": "stated_false"
+  },
+  {
+   "claim_id": "f2cl_8a606d2af148582c",
+   "fact": "termination_received",
+   "state": "unmentioned",
+   "got": "stated_true"
+  },
+  {
+   "claim_id": "f2cl_9986f974eabc50c8",
+   "fact": "termination_received",
+   "state": "unmentioned",
+   "got": "stated_true"
+  },
+  {
+   "claim_id": "f2cl_9d9b9e6660448586",
+   "fact": "termination_received",
+   "state": "unmentioned",
+   "got": "stated_true"
+  },
+  {
+   "claim_id": "f2cl_d6933e639e85dfa7",
+   "fact": "arrears",
+   "state": "absent",
+   "got": "stated_false"
+  },
+  {
+   "claim_id": "f2cl_d70027e84f7be321",
+   "fact": "family_home",
+   "state": "absent",
+   "got": "stated_false"
+  },
+  {
+   "claim_id": "f2cl_d70027e84f7be321",
+   "fact": "arrears",
+   "state": "absent",
+   "got": "stated_false"
+  },
+  {
+   "claim_id": "f2cl_db88646bc6e3f066",
+   "fact": "arrears",
+   "state": "absent",
+   "got": "stated_false"
+  }
+ ],
+ "content_item_disagreements": [
+  {
+   "claim_id": "f2cl_3daad3eb95ae2c15",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_6c0beb4edcdc571d",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_a5d873ad4151b24e",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_ac669bf78a141b38",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_ac851a27a08a4047",
+   "document_type": "landlord_response_history",
+   "item": "landlord_response",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_be3f0eb859b33907",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  },
+  {
+   "claim_id": "f2cl_fb68d264129b3c97",
+   "document_type": "landlord_response_history",
+   "item": "proposed_work",
+   "expected": true,
+   "got": false
+  }
+ ]
+}

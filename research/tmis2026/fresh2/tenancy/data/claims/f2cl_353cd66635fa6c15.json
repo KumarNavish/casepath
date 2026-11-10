@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_353cd66635fa6c15",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-08-01T08:20:00+02:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "f2msg_d54381fd28ad061f",
+  "subject": "chat – mould + heating, Solothurn",
+  "body": "Harriet Okafor: Hello, I'm a tenant of Wohnwerk Thur GmbH at Rebbergstrasse 39 in Solothurn, 4 rooms\nHarriet Okafor: there's mould growing behind my wardrobe and now along the bedroom ceiling. and the underfloor heating in the living area stopped working completely\nHarriet Okafor: I reported both in June, letter attached. nothing happened\nHarriet Okafor: I have asthma and I've had more attacks this summer than in the last 5 years together, the mould in the bedroom doesn't help\nHarriet Okafor: I've decided I'm going to pay my rent into the official rent deposit from next month until they repair things. can you help me do that properly? what do I need to send them first?",
+  "sent_at": "2026-08-01T08:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_f20533f0786730c1"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_f20533f0786730c1",
+   "file_name": "defect_letter_June.txt",
+   "media_type": "text/plain",
+   "content_base64": "U29sb3RodXJuLCAyIEp1bmUgMjAyNgoKRGVmZWN0cyBpbiBteSBmbGF0LCBSZWJiZXJnc3RyYXNzZSAzOQoKRGVhciBTaXIgb3IgTWFkYW0sCgpJIHdpc2ggdG8gcmVwb3J0IHRoZSBmb2xsb3dpbmcgZGVmZWN0cyBpbiBteSBmbGF0OgoxLiBNb3VsZCBpcyBncm93aW5nIGJlaGluZCB0aGUgd2FyZHJvYmUgYW5kIGFsb25nIHRoZSBiZWRyb29tIGNlaWxpbmcuCjIuIFRoZSB1bmRlcmZsb29yIGhlYXRpbmcgaW4gdGhlIGxpdmluZyBhcmVhIGhhcyBzdG9wcGVkIHdvcmtpbmcuCgpQbGVhc2UgaGF2ZSB0aGVzZSBkZWZlY3RzIHJlcGFpcmVkIGFzIHNvb24gYXMgcG9zc2libGUuCgpZb3VycyBmYWl0aGZ1bGx5LApIYXJyaWV0IE9rYWZvcgo=",
+   "sha256": "caaab967e61176cba80a4485cd510d74e42d1737a05e1512f3a821e2bb421dbb",
+   "size_bytes": 362
+  }
+ ]
+}

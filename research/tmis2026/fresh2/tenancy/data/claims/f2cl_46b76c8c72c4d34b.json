@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_46b76c8c72c4d34b",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-08-28T08:20:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_f6e64198b9f8bf47",
+  "subject": "Rent increase after renovation and interest rate",
+  "body": "Name: Hannah Gallagher\nAddress: Schulhausstrasse 79, 3612 Steffisburg, 4 rooms\nLandlord: Wohnwerk Thur GmbH\n\nMessage:\nWohnwerk Thur renovated our building this year: new heating system, new windows and insulated façade. At the tenants' meeting in August the manager told us that our rents will go up because of this renovation work, and that the higher reference rate will be passed on at the same time. He talked about \"around 12 %\" in total.\n\nThey said we would get the \"official paperwork\" in due course. I'm still waiting for it.\n\nMy net rent is CHF 2390. 12 % seems excessive to me. How can I check whether such an increase is justified, and what should I do in the meantime?\n\nHannah Gallagher",
+  "sent_at": "2026-08-28T08:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

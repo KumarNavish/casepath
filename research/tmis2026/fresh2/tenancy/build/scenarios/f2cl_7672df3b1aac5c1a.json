@@ -1,0 +1,67 @@
+{
+ "claim_id": "f2cl_7672df3b1aac5c1a",
+ "message_id": "f2msg_decacce36789ebc6",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_af482252c34039fc",
+ "family_index": 11,
+ "slot": 3,
+ "combo": [
+  "deposit_considered",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "stated_true",
+  "heating": "open",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "mold": "plain",
+  "specialist_needed": "plain",
+  "deposit_considered": "passing"
+ },
+ "open_flag": "heating",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_e86377e663eda4a8",
+   "document_type": "written_repair_deadline",
+   "sufficient": true,
+   "omitted_field": null
+  },
+  {
+   "artifact_id": "f2att_c8d3a9962ff78fdb",
+   "document_type": "lease_contract",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Ibrahim Wilk",
+  "landlord": "Domicil Plus Immobilien AG",
+  "city": "Langenthal",
+  "canton": "BE",
+  "address": "Allmendstrasse 95, Langenthal, 2.5-room flat",
+  "lease_start": "1 March 2015",
+  "rent": 1620,
+  "utilities": 270,
+  "received_at": "2026-09-28T13:50:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 4860,
+  "defect": "mould growing behind the wardrobe and along the bedroom ceiling",
+  "notified_on": "12 May 2026",
+  "repair_deadline": "19 November 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "27 November 2026",
+  "household": "the tenant's partner",
+  "health_detail": "persistent coughing"
+ }
+}

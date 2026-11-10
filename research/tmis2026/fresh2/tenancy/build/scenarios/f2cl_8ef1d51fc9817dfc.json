@@ -1,0 +1,58 @@
+{
+ "claim_id": "f2cl_8ef1d51fc9817dfc",
+ "message_id": "f2msg_9859f9aee0276609",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_2cd8ba3d72701728",
+ "family_index": 3,
+ "slot": 1,
+ "combo": [
+  "deposit_considered",
+  "mold"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "portal",
+ "fact_states": {
+  "health_effects": "stated_false",
+  "mold": "open",
+  "heating": "absent",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "passing",
+  "deposit_considered": "implied"
+ },
+ "open_flag": "mold",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_810cd5e39a4d1ae2",
+   "document_type": "written_repair_deadline",
+   "sufficient": false,
+   "omitted_field": "notice_contents"
+  }
+ ],
+ "values": {
+  "tenant": "Sofia Kowalczyk",
+  "landlord": "Hausverwaltung Pilatus AG",
+  "city": "Liestal",
+  "canton": "BL",
+  "address": "Brunnenrain 46, Liestal, 4-room flat",
+  "lease_start": "1 May 2019",
+  "rent": 2650,
+  "utilities": 240,
+  "received_at": "2026-10-19T21:35:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 7950,
+  "defect": "the roller shutters in the living room and bedroom are broken and cannot be raised",
+  "notified_on": "14 June 2026",
+  "repair_deadline": "1 October 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "5 September 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "sleep problems and headaches"
+ }
+}

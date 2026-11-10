@@ -1,0 +1,51 @@
+{
+ "claim_id": "f2cl_617c53c57c9bea02",
+ "message_id": "f2msg_dc9c1343c672280f",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_5420aec5e52c279a",
+ "family_index": 18,
+ "slot": 3,
+ "combo": [
+  "extension_relevant"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "termination_received": "open",
+  "family_home": "stated_false",
+  "arrears": "stated_false",
+  "retaliation_screen": "absent",
+  "extension_relevant": "stated_true"
+ },
+ "styles": {
+  "family_home": "implied",
+  "arrears": "passing",
+  "extension_relevant": "passing"
+ },
+ "open_flag": "termination_received",
+ "open_value": false,
+ "attachments": [],
+ "values": {
+  "tenant": "Maeve Gallagher",
+  "landlord": "Gerance Bärenplatz AG",
+  "city": "Uster",
+  "canton": "ZH",
+  "address": "Bergstrasse 36, Uster, 2.5-room flat",
+  "lease_start": "1 September 2012",
+  "rent": 2420,
+  "utilities": 260,
+  "received_at": "2026-09-19T19:05:00+02:00",
+  "end_date": "31 July 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 7260,
+  "defect": "",
+  "notified_on": "19 July 2026",
+  "repair_deadline": "21 November 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "4 September 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "claim_id": "f2cl_c1a0d137a646017b",
+ "message_id": "f2msg_5d0ea81b646ab845",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_ca07d3028016bd74",
+ "family_index": 4,
+ "slot": 0,
+ "combo": [
+  "health_effects",
+  "heating",
+  "mold"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "absent",
+  "deposit_considered": "absent"
+ },
+ "styles": {
+  "health_effects": "plain",
+  "mold": "plain",
+  "heating": "passing"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_822f0fb696964c93",
+   "document_type": "defect_notification",
+   "sufficient": false,
+   "omitted_field": "reported_defect"
+  }
+ ],
+ "values": {
+  "tenant": "Michèle Gisler",
+  "landlord": "Ruth Messerli (private landlord)",
+  "city": "Steffisburg",
+  "canton": "BE",
+  "address": "Allmendstrasse 78, Steffisburg, 3.5-room flat",
+  "lease_start": "1 May 2013",
+  "rent": 2620,
+  "utilities": 210,
+  "received_at": "2026-08-26T10:20:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 7860,
+  "defect": "condensation running down the walls and mould on the window frames and the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "11 May 2026",
+  "repair_deadline": "16 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "25 September 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "asthma attacks"
+ }
+}

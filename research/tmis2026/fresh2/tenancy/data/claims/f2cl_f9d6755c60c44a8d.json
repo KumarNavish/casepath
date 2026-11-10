@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_f9d6755c60c44a8d",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-08-24T07:35:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_411a1f5bbac95871",
+  "subject": "Telephone note – announced rent increase, Rebbergstrasse 94",
+  "body": "Call from Mr Tomasz Wilk, tenant of a 4.5-room flat at Rebbergstrasse 94 in Steffisburg. Landlord: Hausverwaltung Pilatus AG.\n\nMr Wilk says the caretaker told several tenants that \"the rents are going up next spring\" and that \"the letters will be sent out after Christmas\". He is waiting to see what the letter will say and how much the increase will be.\n\nHe would like to know in advance what he should check once the increase is notified, how long he has to contest it, and whether an increase can apply only to some flats in a building.\n\nI explained the general procedure and told him to send us the documents as soon as he has them. No documents yet.",
+  "sent_at": "2026-08-24T07:35:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_1239fbab4373aafd",
+  "channel": "phone_note",
+  "language": "de-CH",
+  "received_at": "2026-10-09T15:05:00+02:00",
+  "canton": "AR"
+ },
+ "customer_message": {
+  "message_id": "f2msg_2ccafbfe7bb31fd2",
+  "subject": "Telefonnotiz – Herisau, Brunnenrain 23, Heizung und Schimmel",
+  "body": "Anruf von Frau Esther Ammann, Mieterin einer 5.5-Zimmer-Wohnung am Brunnenrain 23 in Herisau. Vermieterin ist Frau Ruth Messerli, Privatperson.\n\nFrau Ammann berichtet, dass die Heizung seit Ende September alle paar Tage ausfällt. Die Wohnung kühlt dann auf etwa 15 Grad ab. Frau Messerli habe jeweils einen Bekannten geschickt, der die Anlage neu startet.\n\nNebenbei erwähnt sie, dass an den Wänden Kondenswasser herunterläuft und die Fensterrahmen schimmlig sind. Sie vermutet, das habe mit den Heizungsausfällen zu tun, die Vermieterin sieht das anders. Laut Frau Ammann muss deshalb ein Heizungsfachmann die Ursache abklären, wenn man da weiterkommen will.\n\nAuf meine Frage, ob jemand in der Familie gesundheitliche Beschwerden habe, verneint sie ausdrücklich: Alle seien gesund, es gehe ihr um die Wohnung.\n\nSie wünscht Beratung, wie sie die Vermieterin zu einer dauerhaften Reparatur bewegen kann. Sie schickt den Mietvertrag per Mail (liegt bei). Rückruf vereinbart für Donnerstagvormittag.",
+  "sent_at": "2026-10-09T15:05:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_4a6b1c3314c7af29"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_4a6b1c3314c7af29",
+   "file_name": "Mietvertrag_Ammann_S1.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcgKFNlaXRlIDEpCgpWZXJtaWV0ZXJpbjogRnJhdSBSdXRoIE1lc3NlcmxpLCBTY2hsb3Nzd2VnIDMsIDM2MTIgU3RlZmZpc2J1cmcKTWlldGVyaW46IEZyYXUgRXN0aGVyIEFtbWFubgoKTWlldG9iamVrdDogNS41LVppbW1lci1Xb2hudW5nLCAyLiBPYmVyZ2VzY2hvc3MsIEJydW5uZW5yYWluIDIzLCA5MTAwIEhlcmlzYXUsIGlua2wuIEVzdHJpY2hhYnRlaWwgdW5kIEdhcnRlbmFudGVpbAoKQmVzdGltbXVuZ2VuIHp1IE1pZXRkYXVlciwgTWlldHppbnMgdW5kIEvDvG5kaWd1bmc6IHNpZWhlIFNlaXRlIDIK",
+   "sha256": "648db9c8bcd82e593ff2215a1576ba4d8c29f18acdb578a5a7684f508a7202a8",
+   "size_bytes": 300
+  }
+ ]
+}

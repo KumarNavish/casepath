@@ -1,0 +1,52 @@
+{
+ "claim_id": "f2cl_872528b59e47e1b3",
+ "message_id": "f2msg_63ec5544a6632cb0",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_0a72fb91fb35015c",
+ "family_index": 19,
+ "slot": 2,
+ "combo": [
+  "family_home",
+  "retaliation_screen"
+ ],
+ "routing_true": false,
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "termination_received": "stated_false",
+  "family_home": "stated_true",
+  "arrears": "absent",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "styles": {
+  "termination_received": "passing",
+  "family_home": "plain",
+  "retaliation_screen": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Ibrahim Achterberg",
+  "landlord": "Ruth Messerli (private landlord)",
+  "city": "Steffisburg",
+  "canton": "BE",
+  "address": "Bergstrasse 78, Steffisburg, 4-room flat",
+  "lease_start": "1 September 2012",
+  "rent": 2340,
+  "utilities": 330,
+  "received_at": "2026-09-27T16:20:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 4680,
+  "defect": "",
+  "notified_on": "9 August 2026",
+  "repair_deadline": "9 October 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "16 September 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "sleep problems and headaches"
+ }
+}

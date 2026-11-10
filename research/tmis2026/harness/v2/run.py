@@ -16,7 +16,7 @@ import llm
 
 ap = argparse.ArgumentParser()
 ap.add_argument("exp", choices=["tenancy", "theft"])
-ap.add_argument("--data", default="original", choices=["original", "fresh"])
+ap.add_argument("--data", default="original", choices=["original", "fresh", "fresh2"])
 ap.add_argument("--split", default="dev", choices=["dev", "heldout"])
 ap.add_argument("--k", type=int, default=3)
 ap.add_argument("--designs", default=None)
@@ -30,6 +30,8 @@ args = ap.parse_args()
 
 if args.data == "fresh" and not args.dry_run:
     common.require_frozen_plan()
+if args.data == "fresh2":
+    common.require_study3_plan()
 DRY = []
 if args.dry_run:
     import hashlib
@@ -55,7 +57,7 @@ else:
     T = D.texts()
     dev_story = min(v["story"] for v in T.values())
     cases = sorted(k for k, v in T.items() if (v["story"] == dev_story) == (args.split == "dev"))
-    if args.data == "fresh":  # every fresh story is held out
+    if args.data in ("fresh", "fresh2"):  # every fresh story is held out
         cases = sorted(T)
     if args.stories:
         cases = sorted(k for k, v in T.items() if str(v["story"]) in args.stories.split(","))

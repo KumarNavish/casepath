@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_737d9eeb4a66c9c2",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-08-20T18:05:00+02:00",
+  "canton": "SO"
+ },
+ "customer_message": {
+  "message_id": "f2msg_bad4d7226c744918",
+  "subject": "chat – shutters stuck",
+  "body": "Felix Volkov: hi, I have a problem with my flat, Schulhausstrasse 82 in Grenchen, landlord is Domicil Plus Immobilien AG\nFelix Volkov: the roller shutters in the living room and bedroom are broken, they won't go up at all. been like this since June\nFelix Volkov: so I'm living in the dark basically, lights on all day. I work night shifts and sleep in the day, and now I can't tell day from night anymore, I'm up every two hours and completely wiped out at work\nFelix Volkov: no damp or anything like that btw, the flat is dry, it's just the shutters\nFelix Volkov: Domicil keeps saying a technician will call me. nobody calls\nFelix Volkov: it's a simple thing, the straps are torn, the repair man from the neighbours had a look and said so, no need for any expert, just someone with the parts\nFelix Volkov: a friend told me I could stop paying the rent to them and pay it into some official account instead until they fix it. if they don't do anything by end of month that's what I'll do\nFelix Volkov: lease is attached. what do I need to do and what do you need from me?",
+  "sent_at": "2026-08-20T18:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_22074e74e3843f8b"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_22074e74e3843f8b",
+   "file_name": "Mietvertrag_Volkov.txt",
+   "media_type": "text/plain",
+   "content_base64": "TUlFVFZFUlRSQUcKClZlcm1pZXRlcmluOiBEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRywgU29sb3RodXJuc3RyYXNzZSAxNywgMjU0MCBHcmVuY2hlbgpNaWV0ZXI6IEZlbGl4IFZvbGtvdgoKTWlldG9iamVrdDogMi41LVppbW1lci1Xb2hudW5nLCBFcmRnZXNjaG9zcyByZWNodHMsIFNjaHVsaGF1c3N0cmFzc2UgODIsIDI1NDAgR3JlbmNoZW4KCkJlZ2lubiBkZXMgTWlldHZlcmjDpGx0bmlzc2VzOiAxLiBEZXplbWJlciAyMDExCk5ldHRvbWlldHppbnM6IENIRiAxOTIwLuKAkyBtb25hdGxpY2gKS8O8bmRpZ3VuZ3NmcmlzdDogZHJlaSBNb25hdGUKCkdyZW5jaGVuLCA0LiBOb3ZlbWJlciAyMDExCgpEb21pY2lsIFBsdXMgSW1tb2JpbGllbiBBRyAgICAgICAgICBGLiBWb2xrb3YK",
+   "sha256": "a2a26463ca5cdb3c1557bdd371beb89aa56505e52ff29beb1e337e9deeed8426",
+   "size_bytes": 390
+  }
+ ]
+}

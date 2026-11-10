@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_3daad3eb95ae2c15",
+  "channel": "portal",
+  "language": "en",
+  "received_at": "2026-10-19T15:05:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_0a10535761fd8827",
+  "subject": "Bathroom mould and our daughter's cough",
+  "body": "Name: Aoife Marchetti\nAddress: Hinterfeld 91, 3612 Steffisburg, 4 rooms\nLandlord: Hausverwaltung Pilatus AG\n\nMessage:\nThere is grey-green mould on the bathroom ceiling and a musty smell in the hallway that does not go away even with the windows open. We have bleached the ceiling three times since spring.\n\nOur daughter is five. Her cough started in May and has never fully gone; it is worst after her bath in the evening, and the paediatrician asked us to keep her out of the bathroom as much as possible.\n\nPilatus says it is our fault because we do not ventilate enough (their letter is attached). We disagree. The building has had water damage before, and only an independent expert who examines the ceiling and the roof above can tell what the cause really is.\n\nIf they do nothing after the caretaker's visit, I will stop paying them and put the rent into the official deposit, as I have read is allowed. What do you advise, and what do you need from us?\n\nThank you,\nAoife Marchetti",
+  "sent_at": "2026-10-19T15:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_406a698f8b7c2aa9"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_406a698f8b7c2aa9",
+   "file_name": "Pilatus_letter.txt",
+   "media_type": "text/plain",
+   "content_base64": "SGF1c3ZlcndhbHR1bmcgUGlsYXR1cyBBRwpSaGVpbnN0cmFzc2UgMzAsIDQ0MTAgTGllc3RhbAoKTXJzIEFvaWZlIE1hcmNoZXR0aQpIaW50ZXJmZWxkIDkxCjM2MTIgU3RlZmZpc2J1cmcKCkxpZXN0YWwsIDkgT2N0b2JlciAyMDI2CgpZb3VyIGNvbXBsYWludCBhYm91dCB0aGUgYmF0aHJvb20KCkRlYXIgTXJzIE1hcmNoZXR0aSwKCkFjY29yZGluZyB0byBvdXIgZXhwZXJpZW5jZSwgdGhlIG1hcmtzIG9uIHRoZSBiYXRocm9vbSBjZWlsaW5nIGFyZSBjYXVzZWQgYnkgaW5zdWZmaWNpZW50IHZlbnRpbGF0aW9uIGJ5IHRoZSBvY2N1cGFudHMgYWZ0ZXIgc2hvd2VyaW5nIGFuZCBiYXRoaW5nLiBXZSBjb25zaWRlciB5b3VyIHZlbnRpbGF0aW9uIGhhYml0cyB0byBiZSB0aGUgY2F1c2UuCgpOZXZlcnRoZWxlc3MsIG91ciBjYXJldGFrZXIgd2lsbCB2aXNpdCB5b3VyIGZsYXQgdG8gYXNzZXNzIHRoZSBwcm9ibGVtLiBXZSBwcm9wb3NlIDggTm92ZW1iZXIgMjAyNiBhdCA5IGEubS4gZm9yIGFjY2VzcyB0byB0aGUgZmxhdC4KCktpbmQgcmVnYXJkcywKSGF1c3ZlcndhbHR1bmcgUGlsYXR1cyBBRwo=",
+   "sha256": "b8bc620f0a873267eee22abdca713139c61d8f629a3dabb688630e10f16380b2",
+   "size_bytes": 566
+  }
+ ]
+}

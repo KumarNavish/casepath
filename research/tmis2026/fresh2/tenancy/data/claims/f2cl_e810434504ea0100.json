@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_e810434504ea0100",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-08-19T19:20:00+02:00",
+  "canton": "AG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_7e80f3c2e443bfa2",
+  "subject": "Steckdosen Küche defekt, Schulhausstrasse 62",
+  "body": "Name: Severin Rüegg\nAdresse: Schulhausstrasse 62, 5430 Wettingen, 3.5 Zimmer\nVermieterin: Gerance Bärenplatz AG\n\nAnliegen:\nIn der Küche fallen die Steckdosen seit Juni immer wieder aus, und der Backofen geht gar nicht mehr. Die Sicherung springt nicht raus, es ist einfach plötzlich kein Strom mehr da, mal für Minuten, mal für Stunden. Kochen ist kaum möglich.\n\nIch habe es der Gerance zweimal gemeldet. Ihr Elektriker war da und sagt, die Leitungen seien in Ordnung, das Problem liege beim Ofen. Der Ofenmonteur sagt genau das Gegenteil. Damit überhaupt klar wird, woran es liegt, braucht es aus meiner Sicht einen unabhängigen Elektro-Sachverständigen, der die Installation prüft.\n\nSonst ist in der Wohnung alles in Ordnung: Die Heizung läuft einwandfrei, und Feuchtigkeit oder Schimmel hatten wir nie.\n\nMich belastet das Ganze mehr, als ich dachte. Weil der Strom auch nachts kommt und geht und dann der Kühlschrank piepst, schlafe ich schlecht und habe seit Wochen Kopfschmerzen.\n\nIch möchte wissen, wie ich die Gerance zur Reparatur bringe und wer die Kosten für den Experten trägt.\n\nBesten Dank\nSeverin Rüegg",
+  "sent_at": "2026-08-19T19:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

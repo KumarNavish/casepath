@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_d453d1aa043aed04",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-10-08T16:20:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_9bedddb1b26ba957",
+  "subject": "chat – landlord threatening to end lease",
+  "body": "Arjun Ndlovu: hello, I'm renting a 5.5-room flat at Eichholzweg 104 in Wädenswil, managed by Verwaltung Lindenhof Treuhand\nArjun Ndlovu: I'm behind with three months, CHF 4950, the self-employed thing didn't work out\nArjun Ndlovu: the manager told me at the door this morning that if the money isn't there by the end of the month \"we're done and you'll get the termination\"\nArjun Ndlovu: to be clear I haven't received any termination letter or anything written so far\nArjun Ndlovu: can they just kick me out like that? what should I do now?",
+  "sent_at": "2026-10-08T16:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

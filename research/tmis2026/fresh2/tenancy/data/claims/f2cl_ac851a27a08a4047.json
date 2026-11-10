@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_ac851a27a08a4047",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-08-03T14:35:00+02:00",
+  "canton": "AR"
+ },
+ "customer_message": {
+  "message_id": "f2msg_87414b7446bf3c6e",
+  "subject": "Schimmel, Heizung, Gutachten – Allmendstrasse 77",
+  "body": "Name: Cédric Bachmann\nAdresse: Allmendstrasse 77, 9100 Herisau, 3.5 Zimmer\nVermieterin: Erbengemeinschaft Probst\n\nAnliegen:\n1. Schimmel: An den Aussenwänden läuft Kondenswasser herunter, die Fensterrahmen sind voller Schimmel.\n2. Heizung: Die Bodenheizung im Wohnbereich funktioniert seit dem Frühling nicht mehr.\n3. Gesundheit: Unser Sohn (8) hustet seit Monaten. Die Kinderärztin führt das klar auf den Schimmel zurück.\n4. Ursache: Die Erbengemeinschaft behauptet, der Schimmel komme vom falschen Lüften, ich vermute einen Zusammenhang mit der kaputten Bodenheizung. Die Ursache ist umstritten und muss von einem unabhängigen Experten abgeklärt werden.\n\nIch habe die Mängel im Mai gemeldet, die Kopie meines Schreibens lade ich hoch, ebenso die letzte Antwort der Erbengemeinschaft. Bis heute ist nichts gemacht worden.\n\nIch bitte Sie um Beratung, wie ich vorgehen soll, und um Unterstützung gegenüber der Vermieterin.\n\nFreundliche Grüsse\nCédric Bachmann",
+  "sent_at": "2026-08-03T14:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_396d76e1bd8d0b3c",
+   "f2att_5f0ef2c63a7b1626"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_396d76e1bd8d0b3c",
+   "file_name": "Maengelmeldung_Mai.txt",
+   "media_type": "text/plain",
+   "content_base64": "SGVyaXNhdSwgMjYuIE1haSAyMDI2CgpNw6RuZ2VsIGluIGRlciBXb2hudW5nIEFsbG1lbmRzdHJhc3NlIDc3CgpHdXRlbiBUYWcKCkluIG1laW5lciBXb2hudW5nIGJlc3RlaGVuIGZvbGdlbmRlIE3DpG5nZWw6Ci0gQW4gZGVuIEF1c3NlbnfDpG5kZW4gbMOkdWZ0IEtvbmRlbnN3YXNzZXIgaGVydW50ZXIsIHVuZCBhbiBkZW4gRmVuc3RlcnJhaG1lbiB3w6RjaHN0IFNjaGltbWVsLgotIERpZSBCb2RlbmhlaXp1bmcgaW0gV29obmJlcmVpY2ggZnVua3Rpb25pZXJ0IG5pY2h0IG1laHIuCgpJY2ggZXJzdWNoZSB1bSByYXNjaGUgQmVoZWJ1bmcuCgpGcmV1bmRsaWNoZSBHcsO8c3NlCkPDqWRyaWMgQmFjaG1hbm4K",
+   "sha256": "8ab3e9e2972b09dbea0a30765bb5086a4b90bba5cb310c1a76fb877399b148d7",
+   "size_bytes": 348
+  },
+  {
+   "artifact_id": "f2att_5f0ef2c63a7b1626",
+   "file_name": "Antwort_Probst.txt",
+   "media_type": "text/plain",
+   "content_base64": "RXJiZW5nZW1laW5zY2hhZnQgUHJvYnN0CmMvbyBIYW5zcnVlZGkgUHJvYnN0CktpcmNoc3RyYXNzZSA4LCA5NTAwIFdpbAoKSGVycm4gQ8OpZHJpYyBCYWNobWFubgpBbGxtZW5kc3RyYXNzZSA3Nwo5MTAwIEhlcmlzYXUKCldpbCwgMS4gT2t0b2JlciAyMDI2CgpJaHJlIE3DpG5nZWxtZWxkdW5nCgpTZWhyIGdlZWhydGVyIEhlcnIgQmFjaG1hbm4KCldpciBoYWJlbiBkaWUgRmlybWEgSHViZXIgSGF1c3RlY2huaWsgw7xiZXIgSWhyZSBNZWxkdW5nIGluZm9ybWllcnQuCgpCaXR0ZSBoYWx0ZW4gU2llIHNpY2ggYmVyZWl0OiBEaWUgSGFuZHdlcmtlciBiZW7DtnRpZ2VuIGFtIDI3LiBPa3RvYmVyIDIwMjYgYWIgNy4zMCBVaHIgWnVnYW5nIHp1IElocmVyIFdvaG51bmcuCgpGcmV1bmRsaWNoZSBHcsO8c3NlCkguIFByb2JzdAo=",
+   "sha256": "53bc6e14ebbe6d7ea70cdb874123b1b3ea161a945313806cd7549ce3b3fb663f",
+   "size_bytes": 413
+  }
+ ]
+}

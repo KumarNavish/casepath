@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_d39619540633db7d",
+  "channel": "portal",
+  "language": "de-CH",
+  "received_at": "2026-09-12T16:35:00+02:00",
+  "canton": "TG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_f6a501f38f62a5a4",
+  "subject": "Lüftung Badezimmer – Hinterlegung des Mietzinses",
+  "body": "Name: Tanja Portmann\nAdresse: Schulhausstrasse 16, 8280 Kreuzlingen (4.5 Zimmer)\nVermieterin: Immo Jura Verwaltungen AG\n\nMitteilung:\nDer Lüfter im Badezimmer ohne Fenster ist seit Mitte Juli defekt. Er läuft ohne Pause und macht ein lautes Rattern, das man in der ganzen Wohnung hört, auch im Schlafzimmer, das direkt daneben liegt.\n\nSeit fast zwei Monaten schlafe ich deswegen schlecht. Ich wache jede Nacht auf, habe oft Kopfschmerzen und bin tagsüber müde. Das ist eindeutig wegen diesem Lärm, vorher hatte ich das nie.\n\nDie Immo Jura hat mir im August geantwortet, das Schreiben habe ich hochgeladen. Seither ist nichts passiert.\n\nIch habe mich entschieden: Wenn bis Ende Monat niemand kommt, zahle ich die Miete nicht mehr an die Verwaltung, sondern hinterlege sie bei der Schlichtungsbehörde. Bitte sagen Sie mir, was ich dafür vorher genau tun muss, damit ich das richtig mache, und ob Sie mich dabei vertreten können.\n\nFreundliche Grüsse\nTanja Portmann",
+  "sent_at": "2026-09-12T16:35:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_66bfd0f903f8f091"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_66bfd0f903f8f091",
+   "file_name": "Antwort_ImmoJura.txt",
+   "media_type": "text/plain",
+   "content_base64": "SW1tbyBKdXJhIFZlcndhbHR1bmdlbiBBRwpIYXVwdHN0cmFzc2UgNTUsIDgyODAgS3JldXpsaW5nZW4KCkZyYXUgVGFuamEgUG9ydG1hbm4KU2NodWxoYXVzc3RyYXNzZSAxNgo4MjgwIEtyZXV6bGluZ2VuCgpLcmV1emxpbmdlbiwgMjEuIEF1Z3VzdCAyMDI2CgpJaHJlIE1lbGR1bmc6IEJhZGzDvGZ0ZXIKClNlaHIgZ2VlaHJ0ZSBGcmF1IFBvcnRtYW5uCgpCZXN0ZW4gRGFuayBmw7xyIElocmUgTWVsZHVuZy4gV2lyIGhhYmVuIGRlbiBFbGVrdHJpa2VyLCBkaWUgRmlybWEgV2VocmxpIEVsZWt0cm8sIGJlcmVpdHMgaW5mb3JtaWVydC4KClZvcmdlc2VoZW4gaXN0LCBkYXNzIGRlciBkZWZla3RlIEzDvGZ0ZXIgaW4gcnVuZCB6d2VpIFdvY2hlbiBkdXJjaCBkaWUgRmlybWEgV2VocmxpIHJlcGFyaWVydCBiencuIGVyc2V0enQgd2lyZC4gRGllIEZpcm1hIHdpcmQgc2ljaCBkaXJla3QgYmVpIElobmVuIG1lbGRlbi4KCkZyZXVuZGxpY2hlIEdyw7xzc2UKSW1tbyBKdXJhIFZlcndhbHR1bmdlbiBBRwo=",
+   "sha256": "f6d7171dec30457df211aa3911fdee24cd385e280787d951f31f1530aeb43a42",
+   "size_bytes": 512
+  }
+ ]
+}

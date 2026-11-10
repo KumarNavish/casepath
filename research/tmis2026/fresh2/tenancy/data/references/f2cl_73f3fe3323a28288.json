@@ -1,0 +1,83 @@
+{
+ "claim_id": "f2cl_73f3fe3323a28288",
+ "family": "rent_increase_dispute",
+ "family_id": "f2fam_b1d9e0d08763b788",
+ "scenario": {
+  "reference_rate": false,
+  "renovation": false
+ },
+ "implicit_flags": {
+  "claim_received": false
+ },
+ "fact_states": {
+  "claim_received": "open",
+  "reference_rate": "stated_false",
+  "renovation": "absent"
+ },
+ "expression": {
+  "reference_rate": "plain"
+ },
+ "policy_verdicts": {
+  "claim_received": "unresolved",
+  "reference_rate": "false",
+  "renovation": "false"
+ },
+ "open_fact": {
+  "flag": "claim_received",
+  "true_value": false
+ },
+ "document_states": {
+  "lease_contract": "held",
+  "rent_increase_notice": "held",
+  "proof_of_receipt": "held",
+  "current_rent_evidence": "held",
+  "prior_rent_adjustment": "held",
+  "stated_calculation": "held",
+  "reference_rate_basis": "not_needed",
+  "renovation_cost_breakdown": "not_needed",
+  "landlord_correspondence": "not_needed"
+ },
+ "engine_routes": {
+  "lease_contract": "held_behind_question",
+  "rent_increase_notice": "held_behind_question",
+  "proof_of_receipt": "held_behind_question",
+  "current_rent_evidence": "held_behind_question",
+  "prior_rent_adjustment": "held_behind_question",
+  "stated_calculation": "held_behind_question",
+  "reference_rate_basis": "not_needed",
+  "renovation_cost_breakdown": "not_needed",
+  "landlord_correspondence": "optional"
+ },
+ "request_set": [],
+ "held_set": [
+  "current_rent_evidence",
+  "lease_contract",
+  "prior_rent_adjustment",
+  "proof_of_receipt",
+  "rent_increase_notice",
+  "stated_calculation"
+ ],
+ "answered": {
+  "document_states": {
+   "lease_contract": "not_needed",
+   "rent_increase_notice": "not_needed",
+   "proof_of_receipt": "not_needed",
+   "current_rent_evidence": "not_needed",
+   "prior_rent_adjustment": "not_needed",
+   "stated_calculation": "not_needed",
+   "reference_rate_basis": "not_needed",
+   "renovation_cost_breakdown": "not_needed",
+   "landlord_correspondence": "not_needed"
+  },
+  "request_set": []
+ },
+ "attachments": [],
+ "blind_check_reading": {
+  "claim_received": "open",
+  "reference_rate": "stated_false",
+  "renovation": "not_mentioned"
+ },
+ "blind_check_fields": [],
+ "silence_policy": "Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+ "engine": "casepath_api.causal_process_v1.evaluate via harness/casepath_tenancy.py::plan_from_verified_exact (supervaluation)"
+}

@@ -1,0 +1,64 @@
+{
+ "claim_id": "f2cl_b0a56cd3fe0020ca",
+ "message_id": "f2msg_17f31a7959566337",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_56e3d175f1e08c0b",
+ "family_index": 12,
+ "slot": 0,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "chat",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "stated_true",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "implied",
+  "mold": "plain",
+  "heating": "implied",
+  "specialist_needed": "plain",
+  "deposit_considered": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_912ea3d79ce891d2",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "contracting_parties"
+  }
+ ],
+ "values": {
+  "tenant": "Franziska Furrer",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Herisau",
+  "canton": "AR",
+  "address": "Brunnenrain 23, Herisau, 4.5-room flat",
+  "lease_start": "1 March 2012",
+  "rent": 1730,
+  "utilities": 220,
+  "received_at": "2026-09-17T18:50:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "conversion of the flats into holiday apartments",
+  "arrears_amount": 5190,
+  "defect": "grey-green mould on the bathroom ceiling and a musty smell in the hallway and the heating fails every few days and the flat drops to around 15 degrees",
+  "notified_on": "26 May 2026",
+  "repair_deadline": "8 October 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "17 November 2026",
+  "household": "the tenant's partner",
+  "health_detail": "recurring sinus infections"
+ }
+}

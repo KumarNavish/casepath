@@ -1,0 +1,36 @@
+FACT GLOSSARY (fact_id: meaning)
+- termination_received: The tenant has received a written notice of termination of the lease from the landlord.
+- claim_received: The tenant has received a written notification of a rent increase from the landlord.
+- family_home: The flat is the family home of a married couple or registered partners: the tenant's spouse or registered partner lives there too.
+- arrears: The termination is because of unpaid rent (rent arrears).
+- retaliation_screen: The tenant believes the termination is retaliation because the tenant recently asserted tenancy rights against the landlord (for example complained about defects or challenged the rent).
+- extension_relevant: The tenant wants an extension of the tenancy because moving out by the end date would be a hardship (for example a difficult housing search, children's school, illness).
+- reference_rate: The landlord justifies the rent increase with a rise in the mortgage reference interest rate.
+- renovation: The landlord justifies the rent increase with renovation or value-enhancing investment work on the building.
+- mold: There is mould growth or a persistent damp/moisture problem in the flat.
+- heating: The heating does not work properly (rooms stay cold, radiators fail).
+- health_effects: A household member has health problems that the tenant attributes to the defect.
+- specialist_needed: A technical expert inspection is needed to establish the cause of the defect (the cause is disputed or unclear and needs a building or heating specialist).
+- deposit_considered: The tenant intends to pay the rent into the official rent deposit (Hinterlegung) if the defect is not fixed.
+
+CONTENT ITEM GLOSSARY (document kind / item_id: meaning)
+- lease_contract/contracting_parties: the names of the landlord and the tenant
+- lease_contract/property: the address and description of the rented flat
+- lease_contract/tenancy_terms: the agreed terms: start date, net monthly rent and notice period
+- termination_notice/issuer: the issuing landlord's name and signature
+- termination_notice/addressee: the addressee: the tenant
+- termination_notice/termination_date: the date on which the tenancy ends
+- termination_notice/stated_grounds: the stated ground for the termination
+- termination_notice/form_contents: the statement that the notice is given on the officially approved cantonal form, with the information on how to challenge it at the conciliation authority
+- payment_deadline_letter/cure_period: a deadline of 30 days to pay
+- payment_deadline_letter/claimed_arrears: the amount of rent claimed as unpaid
+- payment_deadline_letter/termination_warning: the warning that the lease will be terminated if the amount is not paid in time
+- defect_notification/reported_defect: a description of the defect
+- defect_notification/recipient: the recipient: the landlord or property manager
+- defect_notification/notification_date: the date of the letter
+- written_repair_deadline/repair_deadline: a firm deadline for the repair
+- written_repair_deadline/recipient: the recipient: the landlord or property manager
+- written_repair_deadline/notice_contents: the statement that the tenant will pay the rent into the official deposit if the defect is not repaired by then
+- landlord_response_history/landlord_response: the landlord's position on the defect
+- landlord_response_history/proposed_work: the work the landlord proposes
+- landlord_response_history/access_arrangements: a proposed date for workers to access the flat

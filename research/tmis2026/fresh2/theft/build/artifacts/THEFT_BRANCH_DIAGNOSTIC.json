@@ -1,0 +1,96 @@
+{
+  "scope": "Household contents insurance (Schweizer Hausrat-/Haushaltversicherung): a theft claim under a private-market VVG policy, from occurrence of a theft affecting insured household contents to the insurer's terminal disposition (pay / reduce / decline) and the post-declination time limits. Contractual spine: CSS 519_d AVB 02.2024, the SVV 2022 model wording, Simpego Home 12.2024, AXA Haushaltversicherung 10.2021, Generali Haushaltversicherung; overlaid by VVG (SR 221.229.1) on notification, rescue, alteration, substantiation, fraud, maturity, breach sanctions and limitation. Ordering the sources genuinely impose: (1) occurrence of a covered event triggers the whole duty set (CSS cl. 8 opening; VVG 38(1)); (2) notification to the insurer and, on the theft branch only, notification of the police and preservation of the Tatspuren precede determination of the loss, because the Veraenderungsverbot runs \"Bevor der Schaden ermittelt ist\" (VVG 38b(1)) and the police-consent condition attaches to the same window (CSS cl. 8(f)); (3) classification as theft precedes and opens the additional theft duties (\"Bei Diebstahl hat der Versicherungsnehmer ferner:\"); (4) conclusive proof of the theft by traces, witnesses or circumstances is a cover condition preceding quantification, since only a loss so proven is insured at all (CSS cl. 23.3); (5) substantiation precedes determination of quantum, which precedes maturity, because maturity runs only from the moment the insurer has the information from which it can satisfy itself of the claim's correctness (VVG 41(1)); (6) declination precedes and triggers the contractual forfeiture period, which nonetheless runs from the event, not from the declination (SVV E9). Out of scope: the internal police procedure for taking or issuing a theft report; insurer-internal fraud triage; the loss adjuster's method; the cantonal-monopoly fire/elemental fork.",
+  "predicates": [
+    {
+      "predicate_id": "PR_theft",
+      "statement": "The loss is a theft (Diebstahl), in one of its insured forms, as opposed to fire, elemental, earthquake, water or glass breakage. TRUE opens the additional theft duty set; FALSE closes it entirely.",
+      "released_if_false": [
+        "Witness names and addresses (Namen und Adressen von allfaelligen Zeugen)"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_theft_proven",
+      "statement": "The damage is conclusively established by traces, by witnesses, or by the circumstances. FALSE places the loss outside the insured peril altogether in every wording examined.",
+      "released_if_false": [
+        "Insurer's written consent to an assignment of the benefit claim to a third party",
+        "Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)"
+      ],
+      "n_released": 2
+    },
+    {
+      "predicate_id": "PR_scheduled_valuable_1000",
+      "statement": "A valuable or single object listed in the insurance contract with an insurance value of at least CHF 1'000 is among the claimed items. TRUE makes production of a receipt or an expert's valuation a condition of cover for that item; FALSE removes that document obligation outright.",
+      "released_if_false": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "n_released": 2
+    },
+    {
+      "predicate_id": "PR_bicycle_claimed",
+      "statement": "A bicycle or e-bike is among the stolen items. TRUE opens the bicycle particulars and the bicycle-specific document set; FALSE removes the frame number, the bicycle purchase receipt and the detailed photographed estimate from the checklist.",
+      "released_if_false": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_sim_card_stolen",
+      "statement": "A SIM card is among the stolen items and misuse of it is claimed as a Vermoegensschaden. TRUE imposes a 24-hour reporting clock to the insurer or the provider; FALSE removes it.",
+      "released_if_false": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_third_party_causer",
+      "statement": "An identifiable third party caused the loss. TRUE requires identification of that party, the existence and identity of his liability insurer, the policy/claim number, and preservation and assignment of the recourse claim; FALSE removes every one of those.",
+      "released_if_false": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "n_released": 2
+    },
+    {
+      "predicate_id": "PR_expert_procedure_requested",
+      "statement": "A party has demanded the Sachverstaendigenverfahren, or the equivalent expert procedure at AXA and Generali. TRUE opens the appointment machinery and its 14-day clock and makes the experts' findings binding subject to a material-deviation challenge; FALSE removes the appointment document and the expert's report.",
+      "released_if_false": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_repair_over_500",
+      "statement": "Repairs to insured items are contemplated whose cost is expected to exceed CHF 500. TRUE makes the insurer's prior consent a duty; FALSE removes the consent document from the file.",
+      "released_if_false": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_nachfrist_set",
+      "statement": "The insurer has demanded the communications in writing, under warning of the consequences of default, setting a reasonable contractually determined period. TRUE starts that period and makes non-compliance forfeit the claim; FALSE means no forfeiture can follow from non-production.",
+      "released_if_false": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_goods_recovered",
+      "statement": "Stolen items have been recovered, or news of them has been received. TRUE imposes an immediate reporting duty and, where indemnity was already paid, repayment or surrender of the items; FALSE closes that whole post-payment branch.",
+      "released_if_false": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "n_released": 1
+    },
+    {
+      "predicate_id": "PR_declined",
+      "statement": "The insurer has declined the claim for indemnity. TRUE triggers the contractual forfeiture regime where the wording carries one, and opens the question whether the five-year statutory limitation has run. Note that the trigger is the declination but the two-year period runs from the EVENT.",
+      "released_if_false": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "n_released": 1
+    }
+  ]
+}

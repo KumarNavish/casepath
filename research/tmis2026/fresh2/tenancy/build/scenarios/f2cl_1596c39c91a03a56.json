@@ -1,0 +1,52 @@
+{
+ "claim_id": "f2cl_1596c39c91a03a56",
+ "message_id": "f2msg_4a92b4a9a5fa69c6",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_df5219d03ec9c84b",
+ "family_index": 6,
+ "slot": 1,
+ "combo": [
+  "heating",
+  "mold",
+  "specialist_needed"
+ ],
+ "routing_true": null,
+ "language": "en",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "absent",
+  "mold": "open",
+  "heating": "stated_true",
+  "specialist_needed": "stated_true",
+  "deposit_considered": "absent"
+ },
+ "styles": {
+  "heating": "plain",
+  "specialist_needed": "passing"
+ },
+ "open_flag": "mold",
+ "open_value": true,
+ "attachments": [],
+ "values": {
+  "tenant": "Rafael Mensah",
+  "landlord": "Immo Jura Verwaltungen AG",
+  "city": "Uster",
+  "canton": "ZH",
+  "address": "Bündtenweg 20, Uster, 3.5-room flat",
+  "lease_start": "1 May 2023",
+  "rent": 1930,
+  "utilities": 290,
+  "received_at": "2026-09-08T19:05:00+02:00",
+  "end_date": "31 January 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 5790,
+  "defect": "the boiler cuts out at night so that the bedrooms are cold in the morning",
+  "notified_on": "3 July 2026",
+  "repair_deadline": "3 November 2026",
+  "landlord_position": "the landlord accepts that something is wrong but asks for patience",
+  "proposed_work": "a visit by the caretaker to assess the problem",
+  "access_date": "4 November 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "aching joints made worse by the cold"
+ }
+}

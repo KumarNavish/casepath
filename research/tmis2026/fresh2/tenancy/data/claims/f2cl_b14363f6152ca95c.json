@@ -1,0 +1,35 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_b14363f6152ca95c",
+  "channel": "phone_note",
+  "language": "en",
+  "received_at": "2026-10-18T15:50:00+02:00",
+  "canton": "SG"
+ },
+ "customer_message": {
+  "message_id": "f2msg_148cbf9a85c9e9cd",
+  "subject": "Telephone note – front door lock, Mühlemattstrasse 58",
+  "body": "Call from Mr Kwame Solberg, tenant of a 2.5-room flat at Mühlemattstrasse 58 in Wil. Landlord: Wohnwerk Thur GmbH.\n\nMr Solberg reports that the front door of his flat has not locked properly for about six weeks. The cylinder turns, but the latch does not engage, so the door can be pushed open from outside. He has reported this several times by phone and once in writing. The landlord has not sent anyone.\n\nHe states clearly that if the lock is not repaired he will pay his rent into the official deposit account (Hinterlegungsstelle) rather than to Wohnwerk Thur. He has already written to the landlord announcing this; he will send us a copy of that letter (now attached).\n\nHe also mentioned that his wife has been unwell recently, tired and with frequent headaches. Asked whether this is connected with the door, he said they do not know; she has an appointment with her doctor and it has not been clarified. He did not want to claim anything in that respect at this stage.\n\nMr Solberg asks how to proceed and whether the deposit step is the right one. I explained that we would review the documents. Callback requested in the afternoon.",
+  "sent_at": "2026-10-18T15:50:00+02:00",
+  "from_role": "handler_note",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_163c73a321b23093"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_163c73a321b23093",
+   "file_name": "letter_Wohnwerk_Thur.txt",
+   "media_type": "text/plain",
+   "content_base64": "S3dhbWUgU29sYmVyZwpNw7xobGVtYXR0c3RyYXNzZSA1OAo5NTAwIFdpbAoKV29obndlcmsgVGh1ciBHbWJIClRvZ2dlbmJ1cmdlcnN0cmFzc2UgMTIwCjk1MDAgV2lsCgpXaWwsIDkgT2N0b2JlciAyMDI2CgpGcm9udCBkb29yIGxvY2sg4oCTIGZsYXQgTcO8aGxlbWF0dHN0cmFzc2UgNTgKCkRlYXIgU2lyIG9yIE1hZGFtLAoKSSBoYXZlIHJlcG9ydGVkIHNldmVyYWwgdGltZXMgdGhhdCB0aGUgZnJvbnQgZG9vciBvZiBteSBmbGF0IGNhbm5vdCBiZSBsb2NrZWQuIEkgaGVyZWJ5IGFzayB5b3Ugb25jZSBtb3JlIHRvIGhhdmUgdGhlIGxvY2sgcmVwYWlyZWQgYXMgc29vbiBhcyBwb3NzaWJsZS4KCklmIHRoZSBkZWZlY3QgaXMgbm90IHJlcGFpcmVkLCBJIHdpbGwgcGF5IG15IHJlbnQgaW50byB0aGUgb2ZmaWNpYWwgZGVwb3NpdCBhY2NvdW50IGRlc2lnbmF0ZWQgYnkgdGhlIGNhbnRvbiBpbnN0ZWFkIG9mIHRvIHlvdSwgYXMgdGhlIGxhdyBhbGxvd3MuCgpZb3VycyBmYWl0aGZ1bGx5LApLLiBTb2xiZXJnCg==",
+   "sha256": "d256b102d55b7023599d397db7488d68b2dc4e1cec85061a60df6f46ba73f1be",
+   "size_bytes": 517
+  }
+ ]
+}

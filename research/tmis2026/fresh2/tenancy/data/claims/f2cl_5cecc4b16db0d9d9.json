@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_5cecc4b16db0d9d9",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-22T18:20:00+02:00",
+  "canton": "BL"
+ },
+ "customer_message": {
+  "message_id": "f2msg_60033cb9c44e9149",
+  "subject": "Letter from Stiftung Wohnen Zentral – is this a termination?",
+  "body": "Dear Sir or Madam,\n\nMy husband and I live in a 4.5-room flat at Ahornweg 48 in Liestal, rented from Stiftung Wohnen Zentral. It is our family home; we have lived here with our two children for nine years.\n\nLast week we got a letter from the Stiftung saying the lease \"ends on 31 July 2027\" because of our arrears (we owe three months, CHF 7800, after a difficult year). Honestly, I don't know whether that letter is a formal termination notice or only an announcement; it is a normal letter, not a form, and I can't tell whether they have actually issued a termination.\n\nI am certain about one thing: they are doing this because we joined the tenants' complaint about the rent increase in March. Before that, nobody cared about a few late payments.\n\nIf we have to leave, we need time. My husband is undergoing chemotherapy at the cantonal hospital, and moving house in the middle of his treatment would be terrible. We would want an extension.\n\nCould you look at our situation and tell us what to do?\n\nKind regards,\nHarriet Bianchi",
+  "sent_at": "2026-10-22T18:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

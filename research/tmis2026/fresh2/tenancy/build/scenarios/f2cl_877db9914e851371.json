@@ -1,0 +1,55 @@
+{
+ "claim_id": "f2cl_877db9914e851371",
+ "message_id": "f2msg_b2129b4d967b7572",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_a4cb67d21cf348ef",
+ "family_index": 15,
+ "slot": 3,
+ "combo": [
+  "arrears",
+  "extension_relevant",
+  "family_home",
+  "retaliation_screen"
+ ],
+ "routing_true": true,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "termination_received": "unmentioned",
+  "family_home": "stated_true",
+  "arrears": "stated_true",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "stated_true"
+ },
+ "styles": {
+  "family_home": "passing",
+  "arrears": "passing",
+  "retaliation_screen": "implied",
+  "extension_relevant": "implied"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [],
+ "values": {
+  "tenant": "Kevin Stalder",
+  "landlord": "Stiftung Wohnen Zentral",
+  "city": "Steffisburg",
+  "canton": "BE",
+  "address": "Brunnenrain 48, Steffisburg, 2.5-room flat",
+  "lease_start": "1 December 2011",
+  "rent": 1540,
+  "utilities": 170,
+  "received_at": "2026-08-27T14:35:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 3080,
+  "defect": "",
+  "notified_on": "11 August 2026",
+  "repair_deadline": "27 November 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "24 October 2026",
+  "household": "the tenant's partner",
+  "health_detail": "exhaustion from broken sleep"
+ }
+}

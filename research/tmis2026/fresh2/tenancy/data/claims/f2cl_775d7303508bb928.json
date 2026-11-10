@@ -1,0 +1,24 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_775d7303508bb928",
+  "channel": "chat",
+  "language": "en",
+  "received_at": "2026-10-06T10:05:00+02:00",
+  "canton": "BE"
+ },
+ "customer_message": {
+  "message_id": "f2msg_cbfa9e6fe0b7fa1c",
+  "subject": "chat – mould, boiler, rent",
+  "body": "Maeve Holm: hi there. I rent a 3.5-room at Rebbergstrasse 93 in Steffisburg from Hausverwaltung Pilatus AG\nMaeve Holm: grey-green mould all over the bathroom ceiling and the hallway smells musty\nMaeve Holm: and the boiler cuts out at night, bedrooms are cold every morning, heating basically doesn't work at night\nMaeve Holm: Pilatus sent a painter for the ceiling and a plumber for the boiler and each one said it's the other one's problem. the plumber literally said \"you need someone who can measure the walls and the ventilation, that's not my job\"\nMaeve Holm: I'm going to pay my rent into the official deposit account from November. I've had enough. how do I do that correctly?",
+  "sent_at": "2026-10-06T10:05:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": []
+ },
+ "attachments": []
+}

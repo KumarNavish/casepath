@@ -1,0 +1,44 @@
+{
+ "contract": {
+  "name": "casepath_observable_claim",
+  "version": "fresh2-intake-only/1.0.0",
+  "rule": "Pass this object, and only this object, to downstream inference."
+ },
+ "submission": {
+  "claim_id": "f2cl_440d59612c87d177",
+  "channel": "email",
+  "language": "en",
+  "received_at": "2026-10-26T14:20:00+02:00",
+  "canton": "ZH"
+ },
+ "customer_message": {
+  "message_id": "f2msg_9b3cad947a20d712",
+  "subject": "Front door lock – landlord blames us",
+  "body": "Dear Sir or Madam,\n\nI am a tenant at Schulhausstrasse 3 in Dübendorf, 3.5 rooms, landlord Liegenschaften Sternen AG. The lease and the landlord's reply are attached.\n\nSince the summer the front door of our flat no longer locks properly. The key turns but the bolt only goes in half way, and twice we found the door open in the morning although we had locked it. The management claims we damaged the lock ourselves. I think the door has dropped in its frame, because the gap at the top has become bigger. Honestly, I cannot tell who is right, and a locksmith I called said that the door and frame need to be examined by a specialist before anyone can say what is wrong.\n\nOur daughter is five. Since we found the door open she has been terrified at night, wakes up crying, and the paediatrician says the sleep problems and headaches she has now come from that fear.\n\nEverything else in the flat is fine, it is warm and the heating works.\n\nCan you help us to get the landlord to have this properly examined and repaired?\n\nYours sincerely,\nYusuf Whitaker",
+  "sent_at": "2026-10-26T14:20:00+02:00",
+  "from_role": "customer",
+  "to_role": "claims_inbox",
+  "attachment_ids": [
+   "f2att_5f74716d4add3d8e",
+   "f2att_96f6bb168daa3054"
+  ]
+ },
+ "attachments": [
+  {
+   "artifact_id": "f2att_5f74716d4add3d8e",
+   "file_name": "lease_Schulhausstrasse_3.txt",
+   "media_type": "text/plain",
+   "content_base64": "UkVTSURFTlRJQUwgTEVBU0UgQUdSRUVNRU5UICh0cmFuc2xhdGlvbiBmb3IgdGhlIHRlbmFudCkKCkxhbmRsb3JkOiBMaWVnZW5zY2hhZnRlbiBTdGVybmVuIEFHLCBCYWhuaG9mcGxhdHogMiwgODYwMCBEw7xiZW5kb3JmClRlbmFudDogWXVzdWYgV2hpdGFrZXIKClJlbnRlZCBwcm9wZXJ0eTogMy41LXJvb20gZmxhdCwgMm5kIGZsb29yIGxlZnQsIFNjaHVsaGF1c3N0cmFzc2UgMywgODYwMCBEw7xiZW5kb3JmLCBpbmNsdWRpbmcgY2VsbGFyIGNvbXBhcnRtZW50CgpTdGFydCBvZiBsZWFzZTogMSBNYXJjaCAyMDE3Ck5ldCByZW50OiBDSEYgMjMyMCBwZXIgbW9udGgKTm90aWNlIHBlcmlvZDogdGhyZWUgbW9udGhzLCB0byB0aGUgZW5kIG9mIGFueSBtb250aCBleGNlcHQgRGVjZW1iZXIKCkTDvGJlbmRvcmYsIDMgRmVicnVhcnkgMjAxNwoKU2lnbmVkOiBMaWVnZW5zY2hhZnRlbiBTdGVybmVuIEFHICAgICAgICAgIFNpZ25lZDogWS4gV2hpdGFrZXIK",
+   "sha256": "c55fa25c457596571bb5ce4420c89ac22303789d2dc2ebe4cacc13ef379cb00e",
+   "size_bytes": 486
+  },
+  {
+   "artifact_id": "f2att_96f6bb168daa3054",
+   "file_name": "Sternen_reply.txt",
+   "media_type": "text/plain",
+   "content_base64": "TGllZ2Vuc2NoYWZ0ZW4gU3Rlcm5lbiBBRwpCYWhuaG9mcGxhdHogMiwgODYwMCBEw7xiZW5kb3JmCgpNciBZdXN1ZiBXaGl0YWtlcgpTY2h1bGhhdXNzdHJhc3NlIDMKODYwMCBEw7xiZW5kb3JmCgpEw7xiZW5kb3JmLCAyNSBTZXB0ZW1iZXIgMjAyNgoKRnJvbnQgZG9vciBvZiB5b3VyIGZsYXQKCkRlYXIgTXIgV2hpdGFrZXIsCgpXZSByZWZlciB0byB5b3VyIGNvbXBsYWludCBhYm91dCB0aGUgZnJvbnQgZG9vci4gSW4gb3VyIHZpZXcgdGhlIHByb2JsZW0gaXMgbm90IGEgZGVmZWN0IG9mIHRoZSBidWlsZGluZy4gVGhlIGxvY2sgaGFzIGNsZWFybHkgYmVlbiBoYW5kbGVkIHJvdWdobHksIGFuZCB0aGUgZG9vciBpcyByZWd1bGFybHkgc2xhbW1lZCwgYXMgc2V2ZXJhbCBuZWlnaGJvdXJzIGhhdmUgb2JzZXJ2ZWQuIFdlIHRoZXJlZm9yZSBjb25zaWRlciB0aGF0IHRoZSB3YXkgdGhlIGRvb3IgaXMgdXNlZCBieSB0aGUgb2NjdXBhbnRzIGlzIHRvIGJsYW1lLgoKTmV2ZXJ0aGVsZXNzLCBzb21lb25lIGZyb20gb3VyIHNpZGUgd2lsbCBjb21lIGJ5IG9uIDcgT2N0b2JlciAyMDI2IGF0IDIgcC5tLiBQbGVhc2UgZW5zdXJlIHRoYXQgdGhlIGZsYXQgaXMgYWNjZXNzaWJsZS4KCktpbmQgcmVnYXJkcywKTGllZ2Vuc2NoYWZ0ZW4gU3Rlcm5lbiBBRwo=",
+   "sha256": "c0922566025c776409fb4b6ad4998ec49f7dced87522950b48d55853ef79373c",
+   "size_bytes": 653
+  }
+ ]
+}

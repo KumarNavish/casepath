@@ -446,7 +446,7 @@ def evolve_tenancy(args):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("exp", choices=["theft", "tenancy"])
-    ap.add_argument("--data", default="original", choices=["original", "fresh"])
+    ap.add_argument("--data", default="original", choices=["original", "fresh", "fresh2"])
     ap.add_argument("--split", default="dev", choices=["dev", "heldout"])
     ap.add_argument("--order", default=None)
     ap.add_argument("--limit", type=int, default=None)
@@ -457,6 +457,8 @@ if __name__ == "__main__":
     args = ap.parse_args()
     if args.data == "fresh":
         common.require_frozen_plan()
+    if args.data == "fresh2":
+        common.require_study3_plan()
     if args.train_stories:
         out = dryrun_theft(args)
         path = common.OUT / f"evolve_theft_{common.TAG}_{args.data}_train{args.train_stories}_eval{args.eval_stories.replace(',', '')}.json"

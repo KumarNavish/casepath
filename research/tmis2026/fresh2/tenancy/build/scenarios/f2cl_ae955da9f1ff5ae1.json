@@ -1,0 +1,59 @@
+{
+ "claim_id": "f2cl_ae955da9f1ff5ae1",
+ "message_id": "f2msg_8cf16f50e9d58dc1",
+ "family": "lease_termination_dispute",
+ "family_id": "f2fam_1403e720cffdcaeb",
+ "family_index": 13,
+ "slot": 3,
+ "combo": [
+  "arrears",
+  "retaliation_screen"
+ ],
+ "routing_true": true,
+ "language": "en",
+ "channel": "chat",
+ "fact_states": {
+  "termination_received": "stated_true",
+  "family_home": "absent",
+  "arrears": "stated_true",
+  "retaliation_screen": "stated_true",
+  "extension_relevant": "absent"
+ },
+ "styles": {
+  "termination_received": "passing",
+  "arrears": "plain",
+  "retaliation_screen": "plain"
+ },
+ "open_flag": null,
+ "open_value": null,
+ "attachments": [
+  {
+   "artifact_id": "f2att_05b39e03f78efc53",
+   "document_type": "lease_contract",
+   "sufficient": false,
+   "omitted_field": "tenancy_terms"
+  }
+ ],
+ "values": {
+  "tenant": "Ibrahim Volkov",
+  "landlord": "Wohnwerk Thur GmbH",
+  "city": "Brugg",
+  "canton": "AG",
+  "address": "Bergstrasse 39, Brugg, 2.5-room flat",
+  "lease_start": "1 March 2021",
+  "rent": 1460,
+  "utilities": 330,
+  "received_at": "2026-08-01T07:05:00+02:00",
+  "end_date": "30 April 2027",
+  "grounds": "unpaid rent (rent arrears)",
+  "arrears_amount": 4380,
+  "defect": "",
+  "notified_on": "7 July 2026",
+  "repair_deadline": "21 September 2026",
+  "landlord_position": "the landlord says a contractor has been informed",
+  "proposed_work": "repairs by a contractor in two weeks",
+  "access_date": "3 September 2026",
+  "household": "the tenant's elderly mother who lives with them",
+  "health_detail": "sleep problems and headaches"
+ }
+}

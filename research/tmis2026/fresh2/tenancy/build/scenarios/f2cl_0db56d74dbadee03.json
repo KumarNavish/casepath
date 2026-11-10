@@ -1,0 +1,59 @@
+{
+ "claim_id": "f2cl_0db56d74dbadee03",
+ "message_id": "f2msg_7e1355ef50d2b8f7",
+ "family": "defect_mold_heating",
+ "family_id": "f2fam_0f3078a41b00c2e0",
+ "family_index": 5,
+ "slot": 3,
+ "combo": [
+  "deposit_considered",
+  "health_effects",
+  "heating"
+ ],
+ "routing_true": null,
+ "language": "de-CH",
+ "channel": "email",
+ "fact_states": {
+  "health_effects": "stated_true",
+  "mold": "absent",
+  "heating": "open",
+  "specialist_needed": "absent",
+  "deposit_considered": "stated_true"
+ },
+ "styles": {
+  "health_effects": "implied",
+  "deposit_considered": "plain"
+ },
+ "open_flag": "heating",
+ "open_value": true,
+ "attachments": [
+  {
+   "artifact_id": "f2att_53e2430fee3aade3",
+   "document_type": "lease_contract",
+   "sufficient": true,
+   "omitted_field": null
+  }
+ ],
+ "values": {
+  "tenant": "Yvonne Wälti",
+  "landlord": "Domicil Plus Immobilien AG",
+  "city": "Kriens",
+  "canton": "LU",
+  "address": "Ahornweg 54, Kriens, 3-room flat",
+  "lease_start": "1 December 2018",
+  "rent": 1340,
+  "utilities": 220,
+  "received_at": "2026-09-07T07:35:00+02:00",
+  "end_date": "31 October 2027",
+  "grounds": "sale of the building",
+  "arrears_amount": 4020,
+  "defect": "the electrical sockets in the kitchen keep failing and the oven no longer works",
+  "notified_on": "4 May 2026",
+  "repair_deadline": "13 October 2026",
+  "landlord_position": "the landlord says the tenant's ventilation habits are to blame",
+  "proposed_work": "replacement of the defective part after the supplier delivers it",
+  "access_date": "25 September 2026",
+  "household": "the tenant's daughter (5)",
+  "health_detail": "sleep problems and headaches"
+ }
+}
