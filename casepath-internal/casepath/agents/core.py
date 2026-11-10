@@ -43,7 +43,7 @@ from pathlib import Path
 import sys
 
 from ..process import casegraph, knowledge as kb, workflows
-from .team import CaseTeam, CaseWork, TeamError, document_inputs, requote, run_agent, run_source_checker
+from .team import CaseTeam, CaseWork, TeamError, confirm_documents, document_inputs, requote, run_agent, run_source_checker
 from .azure_model import ModelError
 from ..read.evidence import Evidence
 from ..read.reading import prepare_file
@@ -381,10 +381,13 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
             titles = ", ".join(f"{d} ({work.document_defs[d]['title']})" for d in targets)
             run_agent(model, work, "document_finder", f"A case worker changed the process. Check only these document needs: {titles}.",
                       effort=effort)
+            confirm_documents(model, work)  # a document counts as present only when a second judgment agrees, as in a run
             run_source_checker(model, work, effort)
         rechecked = {**result, "process": work.graph, "provenance": work.provenance, "documents": list(work.documents.values()),
                      "evaluation": work.evaluate(), "events": work.events, "usage": work.usage, "recheck_of": prior["id"],
-                     "rechecked": targets}
+                     "rechecked": targets,
+                     "warnings": list(result.get("warnings") or []) + [{"kind": x["reason"], "agent": x["agent"], "text": x["message"]}
+                                                                        for x in work.limits]}
         return _outcome(workflow=workflows.ref(base), result=rechecked)
     except (ModelError, TeamError) as error:
         return _outcome(status="failed", error=f"{error.reason}: {error}")

@@ -117,6 +117,18 @@ class CoreContractTests(unittest.TestCase):
         again = core.recheck({**prepared_job, "case": {**prepared_job["case"], "workflow_id": "example-defect"}}, prior, [], script())
         self.assertEqual(rows(again["result"]["evaluation"]), before)
 
+    def test_a_recheck_judges_a_present_document_twice_and_names_its_own_limits(self):
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(json.loads(json.dumps(job([]))), script(), core.DirectoryBlobs(blobs))
+        prior = {"id": "run_1", "workflow_id": "example-defect", "workflow_version": None, "result": outcome["result"]}
+        finder = ScriptedModel([[("record_document", {"document": "notice_letter", "status": "present", "files": ["f1"],
+                                                      "citations": [{"file": "f1", "quote": QUOTE}], "note": ""})]] + [[("list_files", {})]] * 12)
+        finder.confirm_documents = [{"document": "notice_letter", "status": "unusable", "file": "f1", "shows": []}]
+        again = core.recheck(job([]), prior, ["notice_letter"], finder)
+        row = next(d for d in again["result"]["documents"] if d["document"] == "notice_letter")
+        self.assertEqual(row["status"], "unusable")  # the second judgment did not confirm it
+        self.assertIn("turn_limit", [w["kind"] for w in again["result"]["warnings"]])
+
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
