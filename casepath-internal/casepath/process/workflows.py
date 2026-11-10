@@ -715,27 +715,31 @@ def reading_gave_value(row, presumed=None):
     return any(v is not None and v != presumed for v in (row or {}).get("readings") or [])
 
 
+def open_without_raise(row, value):
+    """Whether a presumption of ``value`` may fill this fact: nothing is recorded, or it is unknown and no reading found
+    another value, and the files do not raise it and leave it open (a passage every reading quoted for it), unless a
+    reading found the presumed value itself."""
+    if row is None:
+        return True
+    return row.get("status") == "unknown" and not reading_gave_value(row, value) and (
+        not row.get("citations") or value in (row.get("readings") or []))
+
+
 def presumed(workflow, recorded):
-    """The workflow's presumptions that apply: each names a fact for which the files gave no quotation at all.
+    """The workflow's presumptions that apply.
 
-    ``recorded`` maps fact ids to what the case work holds for them (``status`` and ``citations``). A fact that was
-    established, found conflicting, or recorded as unknown with a quotation keeps its own state.
+    ``recorded`` maps fact ids to what the case work holds for them (``status``, ``citations``, ``readings``). No
+    presumption of any kind applies to a fact the files raise and leave open (every reading quoted a passage for it and
+    none found a value), nor to one a reading found another value for; those stay open for a person. A reading that
+    found the presumed value supports the presumption.
 
-    No presumption applies to a fact one of the two readings gave another value with an admitted quotation.
-
-    A ``routed`` presumption is the defining event of the case type the case was routed to: it holds unless the files
-    state otherwise (an established value the source checker did not reject, which then stands on its own) or two
-    readings conflict. A quotation that leaves it unknown does not block it."""
+    A ``routed`` presumption is the defining event of the case type the case was routed to: it holds in the same way,
+    and also when the source checker rejected a stated value; an established value it did not reject stands on its own,
+    and conflicting readings go to a person."""
     out = {}
     for item in workflow.get("presumptions", []):
         row = recorded.get(item["fact"])
-        if item.get("applies") == "routed":
-            row = row or {}
-            stated = row.get("status") == "established" and row.get("verdict") != "rejected"
-            if row.get("status") != "conflicting" and not stated and not reading_gave_value(row, item["value"]):
-                out[item["fact"]] = item
-        elif row is None or (row.get("status") == "unknown" and not reading_gave_value(row, item["value"]) and (
-                not row.get("citations") or item["value"] in (row.get("readings") or []))):
-            # (a quotation that raises the fact blocks it, unless it is a reading that found the presumed value itself)
+        if open_without_raise(row, item["value"]) or (
+                item.get("applies") == "routed" and row.get("status") == "established" and row.get("verdict") == "rejected"):
             out[item["fact"]] = item
     return out

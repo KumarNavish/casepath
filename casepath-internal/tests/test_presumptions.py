@@ -72,12 +72,20 @@ class PresumptionUseTests(unittest.TestCase):
         self.assertEqual(work.accepted_facts(), {"landlord_notified": True})
         self.assertEqual(workflows.presumed(work.graph, {})["landlord_notified"]["applies"], "routed")
 
-    def test_a_quote_that_leaves_the_defining_event_open_does_not_block_its_presumption(self):
+    def test_a_defining_event_the_files_raise_and_leave_open_is_not_presumed(self):
         work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption(applies="routed", value=True))
         cite = [{"file": "f1", "quote": QUOTE}]
+        # every reading quoted a passage for it and none found a value ("I do not know whether the notice was sent")
         work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "unknown", "value": None, "citations": cite,
                                            "verdict": "not_checked"}
+        self.assertEqual(work.accepted_facts(), {})  # held for a person, as the workflow's own clause says
+        work.facts["landlord_notified"]["citations"] = []  # not raised: the event is presumed
         self.assertEqual(work.accepted_facts(), {"landlord_notified": True})
+        # the routing presumption follows the same rule
+        plain = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        plain.routing_presumed = {"legal_area": "tenancy_defect"}
+        plain.facts["legal_area"] = {"fact": "legal_area", "status": "unknown", "value": None, "citations": cite}
+        self.assertNotIn("legal_area", plain.presumptions())
         # The files state that it did not occur: the stated value stands, not the presumption.
         work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": False, "citations": cite,
                                            "verdict": "accepted"}
