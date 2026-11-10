@@ -99,6 +99,35 @@ The interface commits on this branch have not had your design self-review
   `casepath.js` differ from the corrected ones in `report.py`.
 - The warning kind `routing_contradicted` is not shown.
 
+### Interface defects that are also at your tip `abe968b5`
+
+Found while capturing screens of a synthetic claim; each behaves the same at
+your tip and on this branch. Line numbers are in
+`web/ui/assets/casepath.js` at your tip.
+
+- **The Overview tab is blank for every case that reaches an outcome.**
+  Line 1084 calls `label(ev && ev.current)` with `current: null`, and line
+  561 reads `step.asks` on null ("Cannot read properties of null").
+- **A held document is counted as a request.** `askNow` (line 1009) puts rows
+  with `required: "depends"` into "now", so the overview says "Request 6
+  document(s)" and the request draft includes the held document; the count
+  at line 955 gives "6 still needed". The document row and the result
+  checker's next steps are correct.
+- **A case at its outcome would get an empty request list.** `askNow` (line
+  1004) returns no documents when `ev.outcome` is set, and the server sets
+  the outcome when the walk reaches the terminal step, whatever is missing
+  (`process/workflows.py` 332–333). Hidden today by the blank Overview. The
+  text "End of the process: Process closed" (line 958) shows while documents
+  are still needed.
+- **"not needed" under each missing status** (line 937) reads like a second
+  status but is a live action: it posts a `remove_document` edit. It also
+  shows on held and optional rows.
+- **The edit form's inputs overflow** (`casepath.css` 199: grid without
+  `minmax(0, 1fr)`; a 141-character option widens the track to 1022 px).
+
+None of these affects the scored checklist in the API result, which the
+paper's test reads.
+
 ## Names already in the product (not from this branch)
 
 `config.py` ("gpt-5" deployment-name rule), the connector file names

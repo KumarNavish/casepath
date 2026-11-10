@@ -72,22 +72,14 @@ Knowledge holds what an organisation learns from cases, one workflow at a time. 
 \subsection{The interface}
 \label{sec:interface}
 
-The interface shows each case in an overview and one view per agent, and every fact and document links to its quotation in the file. Figure~\ref{fig:hero} shows the running example: one changed sentence turns the request for the medical confirmation into a held document and a question. Figure~\ref{fig:gestures} shows the feedback the interface offers at this commit: marking an item correct or not, settling an open point, and changing the process with a required reason; it has no closing of a case and no free note, and its overview lists held documents among those to request.
+The interface shows each case in an overview and one view per agent, and every fact and document links to its quotation in the file. Figure~\ref{fig:hero} shows the running example: one changed sentence turns the request for the medical confirmation into a held document and a question. A case handler can mark each item correct or not correct, and can change the case's process through an edit form that requires a reason and offers ``Use for similar cases''.
 
 \begin{figure}[t]
 \centering
 \fig{fig_hero}{\linewidth}
-\Description{Crops of CasePath screens for two versions of the mould claim. In the first, the next steps include obtaining the medical confirmation; in the second, the medical confirmation depends on a question and the next steps begin with that question.}
+\Description{Crops of CasePath screens for two versions of the mould claim. In the first, the document finder lists the medical confirmation as missing and the next steps include obtaining it; in the second, the medical confirmation depends on a question and the next steps begin with that question.}
 \caption{The running example in \casepath: when the claim leaves the health effect open, the medical confirmation is no longer requested but held, and the first next step is the question it depends on. Unedited captures of the product at commit 6a72159c on two synthetic claims that differ in one paragraph, run with the tenancy defect workflow; cropped.}
 \label{fig:hero}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\fig{fig_gestures}{\linewidth}
-\Description{Crops of CasePath screens: an open point marked correct with the feedback count, the form for changing the process with a required reason, and a point needing judgement before and after it is marked done.}
-\caption{The feedback a case handler can give in \casepath: mark an item correct or not (a), change the process with a reason (b) and settle a point that needs judgement (c). Unedited captures of the product at commit 6a72159c on the synthetic claim that leaves the health effect open; cropped.}
-\label{fig:gestures}
 \end{figure}
 
 \subsection{Parity}

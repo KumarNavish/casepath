@@ -152,7 +152,8 @@ def place(ax, img, x, top, s, frame=True):
     return x, top - h, x + w, top
 
 
-HERO_S = 1 / 345      # inches per capture pixel (2x capture: 32 px body text prints at about 6.7 pt)
+HERO_S = 1 / 422      # inches per capture pixel (2x capture: 32 px body text prints at about 5.5 pt); the full table row fits the text width
+MED_BOX = (0, 0, 2236, 220)   # one geometry for both document-finder rows: the whole table row (document, why, status, proof, origin)
 
 
 def fig_hero():
@@ -161,12 +162,14 @@ def fig_hero():
     crops = {}
     for v, _ in rows:
         c = crop(f"{v}-claim")
+        m = crop(f"{v}-medical")
         crops[v] = {"claim": c[16:c.shape[0] - 14],                                  # drop the previous line's edge and the panel border
-                    "medical": crop(f"{v}-medical", (0, 0, 300, 222) if v == "stated" else (0, 0, 470, 220)),  # the Document cell only
+                    "medical": m[MED_BOX[1]:MED_BOX[3], MED_BOX[0]:MED_BOX[2]],
                     "steps": crop(f"{v}-stands", (30, 255, 1130, 600) if v == "stated" else (30, 300, 1130, 645))}
     W = th.WIDTH
-    row_h = 0.20 + 0.13 + crops["open"]["claim"].shape[0] * s + 0.20 + crops["open"]["steps"].shape[0] * s
-    H = 2 * row_h + 0.22
+    row_h = (0.31 + crops["open"]["claim"].shape[0] * s + 0.18 + crops["open"]["medical"].shape[0] * s + 0.18
+             + crops["open"]["steps"].shape[0] * s + 0.12)
+    H = 2 * row_h + 0.10
     fig, ax = th.canvas(H, W)
     top = H - 0.06
     x0 = 0.04
@@ -174,15 +177,13 @@ def fig_hero():
         th.text(ax, x0, top - 0.07, title, "label", bold=True)
         th.text(ax, x0, top - 0.24, "claim reader: the claim file, with the quotations the readings found highlighted", "note")
         A = place(ax, crops[v]["claim"], x0, top - 0.31, s)
-        yl = A[1] - 0.10
-        th.text(ax, x0, yl, "document finder", "note")
-        B = place(ax, crops[v]["medical"], x0, yl - 0.08, s)
-        xs = x0 + 470 * s + 0.22
-        th.text(ax, xs, yl, "result checker: where the case stands in its process (next steps)", "note")
-        C = place(ax, crops[v]["steps"], xs, yl - 0.08, s)
-        top = min(B[1], C[1]) - 0.16
+        th.text(ax, x0, A[1] - 0.10, "document finder: the row for the medical confirmation", "note")
+        B = place(ax, crops[v]["medical"], x0, A[1] - 0.18, s)
+        th.text(ax, x0, B[1] - 0.10, "result checker: where the case stands in its process (next steps)", "note")
+        C = place(ax, crops[v]["steps"], x0, B[1] - 0.18, s)
+        top = C[1] - 0.12
         if i == 0:
-            th.line(ax, [0.04, W - 0.04], [top + 0.06, top + 0.06], color=th.NEUTRAL)
+            th.line(ax, [0.04, W - 0.04], [top + 0.05, top + 0.05], color=th.NEUTRAL)
     _save(fig, "fig_hero")
 
 
