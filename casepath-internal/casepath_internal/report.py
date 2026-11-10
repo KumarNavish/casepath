@@ -22,7 +22,7 @@ LABELS = {
            "accepted": "belegt", "rejected": "nicht belegt", "not_checked": "nicht geprüft", "conflicting": "widersprüchlich",
            "yes": "ja", "no": "nein", "used": "genutzt", "suggested": "vom Wissen vorgeschlagen", "optional": "freiwillig",
            "depends": "hängt von einer offenen Antwort ab", "obtain": "Einholen", "resolve": "Nicht erfüllt", "ask": "Klären",
-           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "not_prepared": "Der Fall ist noch nicht vorbereitet."},
+           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet."},
     "en": {"title": "Case report", "notice": "Prepared with CasePath's AI assistance. Every finding names the passage it rests on. "
            "Qualified review is still required; nothing was sent.", "case": "Case", "prepared": "Prepared on", "process": "Process",
            "position": "Where the case stands", "end": "End of the process", "current": "Current step", "waiting": "Waiting for", "next": "Next steps",
@@ -34,7 +34,7 @@ LABELS = {
            "accepted": "supported", "rejected": "not supported", "not_checked": "not checked", "conflicting": "conflicting",
            "yes": "yes", "no": "no", "used": "used", "suggested": "suggested by Knowledge", "optional": "optional",
            "depends": "depends on an open answer", "obtain": "Obtain", "resolve": "Not met", "ask": "Answer",
-           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "not_prepared": "The case is not prepared yet."},
+           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet."},
 }
 
 
@@ -144,6 +144,9 @@ def build(case, state, files, lang="de", knowledge=()):
         for need in checklist:
             status = L.get(need["status"], need["status"])
             note = {"suggested": L["suggested"], "optional": L["optional"], "depends": L["depends"]}.get(need.get("required"))
+            basis = (next((d for d in (state.get("process") or {}).get("documents", []) if d["id"] == need["document"]), {}) or {}).get("legal_basis")
+            if basis:
+                note = f"{L['by_law']} {basis}" + (f"; {note}" if note else "")
             cites = (findings.get(need["document"]) or {}).get("citations") or need.get("citations") or []
             rows.append([need["title"] + (f" ({note})" if note else ""), status, "\n".join(where(c) for c in cites) or L["none"]])
         body.append(_table([L["document"], L["status"], L["source"]], rows, [2900, 1300, 5438]))

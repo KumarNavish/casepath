@@ -181,6 +181,24 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(row["required"], "suggested")  # an agent's addition waits for a person
         self.assertNotIn("e-pb1", [a.get("document") for a in result["evaluation"]["next_actions"]])
 
+    def test_a_document_the_law_requires_is_required_even_when_the_files_never_mention_it(self):
+        lease = ("propose_change", {"op": "add_document", "title": "Mietvertrag", "why": "Zeigt das Mietverhältnis.", "question": "",
+                                    "step": "assess", "required_when": [], "legal_basis": "Art. 253 OR", "basis_knowledge": None,
+                                    "citations": [], "reason": "Das Mietverhältnis ist zu belegen."})
+        hunch = ("propose_change", {"op": "add_document", "title": "Hausratversicherung", "why": "Vielleicht hilfreich.", "question": "",
+                                    "step": "assess", "required_when": [], "legal_basis": "allgemein üblich", "basis_knowledge": None,
+                                    "citations": [], "reason": "Oft dabei."})
+        script = standard_script(builder_calls=[lease, hunch], finder_calls=[], result_fields={})
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
+        edit, = result["agent_edits"]  # a need with neither an article, a quote nor Knowledge is refused
+        row = next(d for d in result["evaluation"]["documents"] if d["document"] == "e-pb1")
+        self.assertEqual((row["title"], row["required"], row["status"]), ("Mietvertrag", "yes", "missing"))
+        self.assertIn({"kind": "obtain", "document": "e-pb1", "text": "Mietvertrag", "why": "Zeigt das Mietverhältnis."},
+                      result["evaluation"]["next_actions"])
+        self.assertEqual(next(d for d in result["process"]["documents"] if d["id"] == "e-pb1")["legal_basis"], "Art. 253 OR")
+        live = [e for e in result["events"] if e["kind"] == "process.state"][-1]
+        self.assertEqual(next(d for d in live["documents"] if d["document"] == "e-pb1")["legal_basis"], "Art. 253 OR")
+
     def test_agents_add_at_most_six_items(self):
         def question(n):
             return ("propose_change", {"op": "add_question", "title": "", "why": "", "question": f"Question {n}?", "step": None,

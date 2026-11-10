@@ -113,7 +113,8 @@ def apply_edit(graph, edit):
         validate_condition_facts(condition, facts)
         graph["documents"].append({"id": document_id, "title": args["title"].strip(), "why": args["why"].strip(),
                                    "required_when": condition if condition is not None else True,
-                                   "source_refs": [ref], "edit": edit["id"], **({"suggested": True} if args.get("suggested") else {})})
+                                   "source_refs": [ref], "edit": edit["id"], **({"suggested": True} if args.get("suggested") else {}),
+                                   **({"legal_basis": args["legal_basis"]} if args.get("legal_basis") else {})})
         _attach(graph, args.get("step"), document_id)
     elif op == "remove_document":
         if args["document"] not in documents:

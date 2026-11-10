@@ -576,7 +576,8 @@ function liveDocuments(live) {
       : ["missing", "unusable"].includes(d.status) ? `<span class="no" title="${esc(word(d.status))}">${icon("xcircle")}</span>` : `<span class="open" title="${T("not looked for yet", "noch nicht gesucht")}"></span>`;
     const step = d.step && steps[d.step];
     const origin = d.knowledge ? `<span class="cp-kv">${icon("memory")}${T("Knowledge", "Wissen")} v${esc(d.version)} ${d.suggested ? T("suggested", "vorgeschlagen") : T("used", "genutzt")}</span>`
-      : d.edit && d.by_agent ? `<span class="cp-kv add">${icon("plus")}${T("added for this case", "für diesen Fall ergänzt")}</span>` : "";
+      : d.edit && d.by_agent ? `<span class="cp-kv add">${icon(d.legal_basis ? "law" : "plus")}${d.legal_basis ? T(`required by law (${esc(d.legal_basis)})`, `nach Gesetz verlangt (${esc(d.legal_basis)})`)
+        : T("suggested for this case", "für diesen Fall vorgeschlagen")}</span>` : "";
     return `<li class="st-${esc(d.status)}${enter(`doc:${d.document}`)}" data-doc="${esc(d.document)}">${mark}<span><b>${esc(d.title)}</b>
       <small>${step ? `${T("for", "für")} «${esc(clip(stepLabel(step), 64))}»` : T("for the whole case", "für den ganzen Fall")}${d.required === "depends" ? T(" · if an open answer requires it", " · falls eine offene Antwort es verlangt") : ""}</small>${origin}</span></li>`;
   }).join("");
@@ -895,7 +896,9 @@ function documentsView() {
   const ev = S.data.evaluation;
   if (!ev) return `<p class="cp-empty">${T("The document checklist appears once the case has a process.", "Die Dokumenten-Checkliste erscheint, sobald der Fall einen Prozess hat.")}</p>`;
   const rows = recorded("document");
-  const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {}; return d.knowledge ? T("From Knowledge", "Aus dem Wissen") : d.edit ? T("Added for this case", "Für diesen Fall ergänzt") : T("From the process", "Aus dem Prozess"); };
+  const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {};
+    return d.knowledge ? T("From Knowledge", "Aus dem Wissen") : d.legal_basis ? T(`Required by law (${d.legal_basis})`, `Nach Gesetz verlangt (${d.legal_basis})`)
+      : d.edit ? T("Added for this case", "Für diesen Fall ergänzt") : T("From the process", "Aus dem Prozess"); };
   const missing = ev.documents.filter((d) => d.status === "missing" && !["suggested", "optional"].includes(d.required)).length;
   return `<h1 class="cp-title">${T("Documents", "Dokumente")} <span class="cp-muted">· ${T(`${missing} missing`, `${missing} fehlen`)}</span></h1>
     <table class="cp-table"><thead><tr><th>${T("Document", "Dokument")}</th><th>${T("Why", "Wozu")}</th><th>Status</th><th>${T("Proof", "Beleg")}</th><th>${T("Origin", "Herkunft")}</th></tr></thead><tbody>${ev.documents.map((d) => {
