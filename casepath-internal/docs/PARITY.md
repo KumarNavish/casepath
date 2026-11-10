@@ -59,8 +59,13 @@ Neither the manifest nor this page contains case content or credentials.
 ## What differs today, as far as can be established from outside
 
 - **Workflow catalogue.** The internal copy carries the insurer's own process catalogue and a set of synthetic benchmark cases (`deploy/databricks/package.sh` copies `catalogue/` and `benchmark/` when they are present). Neither is in this repository. That is proprietary data and an expected difference.
-- **Commits.** The internal copy is kept as separate commits on another host. Their hashes and messages differ from the commits here, so equal hashes cannot be used to show equal code. Use the tree hash instead.
-- **Model.** The internal deployment uses an internal model. The research runs use a public model through the same chat connector. This is configuration.
+- **Commits.** The internal copy is kept as separate commits on another host. Their hashes and messages differ from the commits here, so commit hashes cannot show that the code is equal. Use the tree hash instead.
+- **Model.** This is the one declared difference besides proprietary data, and it is configuration, not code:
+  - the internal deployment runs on Claude Opus 5.5;
+  - the external research deployment runs on gpt-6-luna;
+  - both use the same connectors, selected by `CASEPATH_MODEL_PROVIDER` and `CASEPATH_MODEL_API`, with the model named in `CASEPATH_MODEL` or `CASEPATH_AZURE_OPENAI_DEPLOYMENT`.
+
+  No code path depends on the model's name, with one exception: for an Azure OpenAI resource, `CASEPATH_MODEL_REASONING` defaults from the deployment name (on for names containing "gpt-5" or "-o"), and setting it explicitly overrides the default.
 - **Not established from outside:**
   - whether any code change exists only in the internal copy;
   - which commit here the deployed internal build corresponds to.
