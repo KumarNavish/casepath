@@ -1019,11 +1019,13 @@ class CaseTeam:
         for agent, instruction in PLAN:
             if agent == "claim_reader" and instruction != FACTS_STEP:
                 out.append({"agent": agent, "step": instruction, "reason": "brief: does not decide the checklist"})
-            elif agent == "process_builder":
+            elif agent == "process_builder" and not any(a["applied"] and not a.get("suggested") for a in work.provenance["knowledge"]):
+                # with active Knowledge applied, the builder's additions can rest on it and be required: it runs
                 out.append({"agent": agent, "step": instruction, "reason": "its additions are suggestions: they do not decide the checklist"})
             elif agent == "result_checker":
                 out.append({"agent": agent, "step": instruction, "reason": "summary, answer and reply: they do not decide the checklist"})
-            elif agent == "document_finder" and len(work.file_ids) < 2:
+            elif agent == "document_finder" and len(work.file_ids) < 2 and not work.evidence.files[work.file_ids[0]].get("segments"):
+                # a single file that bundles several documents (a dossier) is searched like any other case
                 out.append({"agent": agent, "step": instruction,
                             "reason": "the case has one file, taken as the claim itself: no attachment can meet a document need"})
         out.append({"agent": "source_checker", "step": "facts",
