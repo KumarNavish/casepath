@@ -112,8 +112,9 @@ def fresh(model, label=None):
 
 def attribute(product, refs, catalogue_dir):
     """Why each reference-required document was not requested, and why each extra request was made."""
-    sys.path.insert(0, "/home/user/work/casepath-ui3/casepath-internal")
-    from casepath_internal.workflows import Catalogue
+    PRODUCT_ROOT = Path(__import__("os").environ.get("CASEPATH_PRODUCT", "/home/user/work/casepath-product-7ff7af64"))  # as run_product
+    sys.path.insert(0, str(PRODUCT_ROOT / "casepath-internal"))
+    from casepath.process.workflows import Catalogue
     cat = Catalogue.load(catalogue_dir)
     lost, gained, added = Counter(), Counter(), Counter()
     blockers = Counter()

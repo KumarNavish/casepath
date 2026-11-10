@@ -3,7 +3,7 @@
 For every family and every assignment of its flags to true / false / unknown (3^n), each non-optional document gets
 one state per semantics:
 
-  product (casepath-internal 55b8030, converted workflow, nothing on file, checked=True)
+  product (casepath-internal at --product, default the 7ff7af64 worktree; converted workflow, nothing on file, checked=True)
     R  in the checklist, required "yes", missing          (a request)
     H  in the checklist, required "depends"               (a hold: its own condition is open)
     W  not in the checklist while the walk waits at a question (`waiting_for` non-empty): the step that needs it lies
@@ -28,7 +28,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import convert  # noqa: E402  (sets the import paths for casepath-api and the harness)
 
-_PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-ui3")
+_PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-product-7ff7af64")
 sys.path.insert(0, f"{_PRODUCT}/casepath-internal")
 try:  # the product's package layout since 2821bf3, then the earlier one
     from casepath.process import workflows as product  # noqa: E402

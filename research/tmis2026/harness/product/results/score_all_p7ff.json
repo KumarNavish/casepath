@@ -1,0 +1,205 @@
+{
+ "tenancy": {
+  "PRODUCT conservative (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 200,
+   "requested_share": 0.06894243641231593,
+   "held": 0.013888888888888888,
+   "held_required_now": 0.032407407407407406,
+   "handed": 0.0,
+   "missed": 6.407407407407407,
+   "unnecessary": 0.032407407407407406,
+   "premature": 0.004629629629629629,
+   "silent_skip": 0.28703703703703703,
+   "strict_unsafe": 6.731481481481482,
+   "spurious_hold": 0.027777777777777776,
+   "handoff_runs": 0
+  },
+  "PRODUCT workflow needs only (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 200,
+   "requested_share": 0.06894243641231593,
+   "held": 0.013888888888888888,
+   "held_required_now": 0.032407407407407406,
+   "handed": 0.0,
+   "missed": 6.407407407407407,
+   "unnecessary": 0.004629629629629629,
+   "premature": 0.004629629629629629,
+   "silent_skip": 0.28703703703703703,
+   "strict_unsafe": 6.703703703703703,
+   "spurious_hold": 0.027777777777777776,
+   "handoff_runs": 0
+  },
+  "Rules in context B1v2p (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 0,
+   "requested_share": 0.9544846050870147,
+   "held": 0.3055555555555556,
+   "held_required_now": 0.11574074074074074,
+   "handed": 0.0,
+   "missed": 0.19907407407407407,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.19907407407407407,
+   "spurious_hold": 0.013888888888888888,
+   "handoff_runs": 0
+  },
+  "Rules in context B1v2p (terra)": {
+   "claim_runs": 216,
+   "empty_or_failed": 0,
+   "requested_share": 0.9805890227576974,
+   "held": 0.30092592592592593,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 0.13425925925925927,
+   "unnecessary": 0.018518518518518517,
+   "premature": 0.004629629629629629,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.1574074074074074,
+   "spurious_hold": 0.023148148148148147,
+   "handoff_runs": 0
+  },
+  "CPv2p (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 0,
+   "requested_share": 0.9698795180722891,
+   "held": 0.2962962962962963,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.023148148148148147,
+   "missed": 0.1712962962962963,
+   "unnecessary": 0.027777777777777776,
+   "premature": 0.009259259259259259,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.23148148148148148,
+   "spurious_hold": 0.05092592592592592,
+   "handoff_runs": 1
+  },
+  "CPv2p (terra)": {
+   "claim_runs": 216,
+   "empty_or_failed": 0,
+   "requested_share": 0.9799196787148594,
+   "held": 0.28703703703703703,
+   "held_required_now": 0.013888888888888888,
+   "handed": 0.027777777777777776,
+   "missed": 0.09722222222222222,
+   "unnecessary": 0.041666666666666664,
+   "premature": 0.013888888888888888,
+   "silent_skip": 0.0,
+   "strict_unsafe": 0.18055555555555555,
+   "spurious_hold": 0.06944444444444445,
+   "handoff_runs": 1
+  },
+  "(a) self-consistency over B1v2p (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 216,
+   "requested_share": 0.0,
+   "held": 0.0,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 6.916666666666667,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.3055555555555556,
+   "strict_unsafe": 7.222222222222222,
+   "spurious_hold": 0.0,
+   "handoff_runs": 0
+  },
+  "(b) model executes rules, CoL/B2 (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 70,
+   "requested_share": 0.6445783132530121,
+   "held": 0.2037037037037037,
+   "held_required_now": 0.10648148148148148,
+   "handed": 0.0,
+   "missed": 2.3518518518518516,
+   "unnecessary": 0.013888888888888888,
+   "premature": 0.009259259259259259,
+   "silent_skip": 0.09259259259259259,
+   "strict_unsafe": 2.4675925925925926,
+   "spurious_hold": 0.018518518518518517,
+   "handoff_runs": 0
+  },
+  "(c) ReAct agent (luna)": {
+   "claim_runs": 216,
+   "empty_or_failed": 177,
+   "requested_share": 0.17001338688085676,
+   "held": 0.05092592592592592,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 5.7407407407407405,
+   "unnecessary": 0.004629629629629629,
+   "premature": 0.0,
+   "silent_skip": 0.25462962962962965,
+   "strict_unsafe": 6.0,
+   "spurious_hold": 0.004629629629629629,
+   "handoff_runs": 0
+  },
+  "(d) two-valued, unknown=false (product facts)": {
+   "claim_runs": 216,
+   "empty_or_failed": 216,
+   "requested_share": 0.0,
+   "held": 0.0,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 6.916666666666667,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.3055555555555556,
+   "strict_unsafe": 7.222222222222222,
+   "spurious_hold": 0.0,
+   "handoff_runs": 0
+  },
+  "(d) two-valued, unknown=true (product facts)": {
+   "claim_runs": 216,
+   "empty_or_failed": 216,
+   "requested_share": 0.0,
+   "held": 0.0,
+   "held_required_now": 0.0,
+   "handed": 0.0,
+   "missed": 6.916666666666667,
+   "unnecessary": 0.0,
+   "premature": 0.0,
+   "silent_skip": 0.3055555555555556,
+   "strict_unsafe": 7.222222222222222,
+   "spurious_hold": 0.0,
+   "handoff_runs": 0
+  },
+  "_costs": {
+   "PRODUCT": {
+    "calls_per_case": 32.411764705882355,
+    "usd_per_case_new_calls": 0.018948898449074034,
+    "note": "usd counts calls paid in this ledger for these claims (all product commits); see usd_7ff"
+   },
+   "COL": {
+    "calls_per_case": 1.0,
+    "usd_per_case": 0.00044340613425925923
+   },
+   "REACT": {
+    "calls_per_case": 8.073170731707316,
+    "usd_per_case": 0.000251160023148148
+   },
+   "B1v2p gpt-6-luna": {
+    "calls_per_case": 1.0,
+    "usd_per_case": 0.0006604647453703704
+   },
+   "CPv2p-interpret gpt-6-luna": {
+    "calls_per_case": 1.0,
+    "usd_per_case": 0.0004670023611111111
+   },
+   "B1v2p gpt-6.1-terra": {
+    "calls_per_case": 1.0,
+    "usd_per_case": 0.005947670833333333
+   },
+   "CPv2p-interpret gpt-6.1-terra": {
+    "calls_per_case": 1.0,
+    "usd_per_case": 0.003529487037037037
+   },
+   "SC": {
+    "calls_per_case": 3.0,
+    "usd_per_case": 0.001981394236111111
+   }
+  }
+ },
+ "theft": {}
+}

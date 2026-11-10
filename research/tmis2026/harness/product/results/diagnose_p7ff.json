@@ -1,0 +1,35 @@
+{
+ "tenancy": {
+  "unnecessary": {
+   "process-builder addition marked required": 8,
+   "document finder (with must_show): judged missing": 2,
+   "document finder (with must_show): judged unusable": 1
+  },
+  "missed": {
+   "failed run (turn_limit: The document finder did not finish within its tu)": 7,
+   "document finder (with must_show): judged present": 4
+  },
+  "spurious_hold": {
+   "fact specialist_needed: left unknown by the claim reader (quoted)": 7,
+   "fact deposit_considered: left unknown by the claim reader (quoted)": 1,
+   "fact deposit_considered: source-checker rejection": 1,
+   "fact specialist_needed: source-checker rejection": 1,
+   "fact termination_received: left unknown by the claim reader (quoted)": 1
+  },
+  "premature": {
+   "fact extension_relevant: claim reader judged the wrong value": 1
+  },
+  "held_required_now": {
+   "fact termination_received: left unknown by the claim reader (quoted)": 6,
+   "document finder (with must_show): judged present": 1
+  },
+  "silent_skip": {
+   "failed run": 0
+  }
+ },
+ "tenancy_waiting_for_causes": {
+  "left unknown by the claim reader (quoted)": 12,
+  "source-checker rejection": 2
+ },
+ "theft": {}
+}

@@ -229,8 +229,9 @@ def convert(templates: dict, family: str, layout: str = "serial", sync: bool = F
 
 
 def write(pack: str, layout: str, out: Path, sync: bool = False) -> list[Path]:
-    sys.path.insert(0, "/home/user/work/casepath-sync/casepath-internal" if sync else "/home/user/work/casepath-ui3/casepath-internal")
-    from casepath_internal.workflows import validate_workflow
+    PRODUCT_ROOT = Path(__import__("os").environ.get("CASEPATH_PRODUCT", "/home/user/work/casepath-product-7ff7af64"))  # as run_product
+    sys.path.insert(0, str(PRODUCT_ROOT / "casepath-internal"))
+    from casepath.process.workflows import validate_workflow  # the product's own validator (commit 7ff7af64)
     templates = load_templates(pack)
     out.mkdir(parents=True, exist_ok=True)
     paths = []

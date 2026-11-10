@@ -1,7 +1,7 @@
 """Run casepath-internal on tenancy claims through its public API, exactly as a case worker's browser does.
 
-    python run_api.py --product /home/user/work/casepath-sync --set dev12|fresh --label sync [--model gpt-6-luna]
-                      [--workers 6] [--cap 2.50] [--only id,id]
+    python run_api.py [--product /home/user/work/casepath-product-7ff7af64] --set dev12|fresh --label p7ff [--k 3]
+                      [--catalogue DIR] [--model gpt-6-luna] [--workers 6] [--cap USD] [--only id,id]
 
 Per claim-run: a fresh app (`create_app`) on a fresh temporary store with the given catalogue and no Knowledge;
 POST /api/cases, POST /api/cases/{id}/files for the message and every attachment, POST /api/cases/{id}/runs, poll
@@ -14,7 +14,9 @@ The one non-product element is the HTTP transport of the model connector: the sa
 from a cache and records cost (run_product.CachingTransport). It is passed through `create_app(model_factory=...)`.
 
 Output: runs/product/plans_tenancy_<model>_<set>_<label>.json keyed "PRODUCT|<claim>|<run>", and
-runs/product/manifest_tenancy_<model>_<set>_<label>.json (casepath_internal.parity manifest plus run settings).
+runs/product/manifest_tenancy_<model>_<set>_<label>.json: the output of the product's own `python -m casepath parity
+--catalogue <dir>` (run as a subprocess in the worktree, with the run settings as its environment), plus the run
+settings; the in-process manifest of the imported package must have the same source_tree_sha256.
 """
 from __future__ import annotations
 
@@ -61,7 +63,7 @@ def load_product(path):
     return mods
 
 
-def run_case(P, rp, catalogue, model, run, cid, text, atts):
+def run_case(P, rp, catalogue, model, run, cid, text, atts, title="Tenancy claim"):
     from fastapi.testclient import TestClient
     data_dir = Path(tempfile.mkdtemp(prefix="cp-api-"))
     try:
@@ -70,7 +72,7 @@ def run_case(P, rp, catalogue, model, run, cid, text, atts):
         factory = lambda: P["chat_model"].ChatCompletionsModel(settings.model, lambda: "proxy-injected", transport=transport)
         app = P["app"].create_app(settings, model_factory=factory)
         with TestClient(app) as client:
-            case = client.post("/api/cases", json={"title": "Tenancy claim", "intake": {}}).json()
+            case = client.post("/api/cases", json={"title": title, "intake": {}}).json()
             files = [("message.txt", text.encode(), "text/plain")] + [(a["file_name"], a["bytes"], a["media_type"]) for a in atts]
             for name, data, media in files:
                 r = client.post(f"/api/cases/{case['id']}/files", files={"file": (name, data, media)})
@@ -98,17 +100,20 @@ def run_case(P, rp, catalogue, model, run, cid, text, atts):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--product", required=True)
+    ap.add_argument("--product", default=None)
+    ap.add_argument("--k", type=int, default=1)
     ap.add_argument("--set", required=True, choices=["dev12", "fresh"])
     ap.add_argument("--label", required=True)
     ap.add_argument("--catalogue", default=None)
     ap.add_argument("--model", default="gpt-6-luna")
     ap.add_argument("--workers", type=int, default=6)
-    ap.add_argument("--cap", type=float, default=2.50)
+    ap.add_argument("--cap", type=float, required=True, help="stop starting claim-runs once the dev ledger reaches this USD total")
     ap.add_argument("--only", default=None)
     a = ap.parse_args()
-    P = load_product(a.product)
-    import run_product as rp  # the caching transport and the plan mapping; it imports the as-built product only by path
+    import run_product as rp  # the caching transport and the plan mapping; imports nothing from the product
+    product = a.product or str(rp.PRODUCT_ROOT)
+    P = load_product(product)
+    assert not any(m.startswith("casepath_internal") for m in sys.modules), "an earlier product package was imported"
     import pilot
     D, ids, default_catalogue = pilot.claims(a.set)
     catalogue = Path(a.catalogue) if a.catalogue else default_catalogue
@@ -116,40 +121,53 @@ def main():
         ids = [i for i in ids if i in a.only.split(",")]
     out = rp.RUNS / f"plans_tenancy_{a.model}_{a.set}_{a.label}.json"
     manifest_path = rp.RUNS / f"manifest_tenancy_{a.model}_{a.set}_{a.label}.json"
-    settings = P["config"].load_settings(settings_env("/tmp/manifest-only", catalogue, a.model))
-    manifest = P["parity"].manifest(settings, catalogue_dir=catalogue, knowledge=[],
-                                    extra={"model_identifier": f"openrouter:openai/{a.model}", "interface_language": "en (not used by the agents)",
-                                           "run_settings_env": {k: v for k, v in settings_env("<temporary>", catalogue, a.model).items()},
-                                           "model_transport": "chat_model.ChatCompletionsModel with the app's settings; httpx transport = response cache + cost ledger",
-                                           "entry_point": "create_app + HTTP API (POST cases, files, runs; GET runs, case)",
-                                           "claims": a.set, "claim_ids": ids})
+    import subprocess
+    env = {"PATH": os.environ.get("PATH", ""), "PYTHONDONTWRITEBYTECODE": "1",
+           **settings_env("/tmp/manifest-only", catalogue, a.model)}
+    cli = subprocess.run([sys.executable, "-m", "casepath", "parity", "--catalogue", str(catalogue)],
+                         cwd=str(Path(product) / "casepath-internal"), env=env, capture_output=True, text=True, check=True)
+    manifest = json.loads(cli.stdout)
+    in_process = P["parity"].manifest(P["config"].load_settings(settings_env("/tmp/manifest-only", catalogue, a.model)),
+                                      catalogue_dir=catalogue, knowledge=[])
+    assert in_process["source_tree_sha256"] == manifest["source_tree_sha256"], "imported package differs from the worktree"
+    assert not (manifest.get("git") or {}).get("package_modified"), "the product worktree is modified"
+    manifest.update({"parity_command": "python -m casepath parity --catalogue " + str(catalogue),
+                     "model_identifier": f"openrouter:openai/{a.model}", "interface_language": "en (not used by the agents)",
+                     "run_settings_env": {k: v for k, v in settings_env("<temporary>", catalogue, a.model).items()},
+                     "model_transport": "chat_model.ChatCompletionsModel with the app's settings; httpx transport = response cache + cost ledger",
+                     "entry_point": "create_app + HTTP API (POST cases, files, runs; GET runs, case)",
+                     "scoring_views": {"plan": "conservative: workflow needs and process-builder additions marked required",
+                                       "plan_workflow_only": "workflow needs only"},
+                     "claims": a.set, "claim_ids": ids, "runs_per_claim": a.k})
     manifest_path.write_text(json.dumps(manifest, indent=1, default=str))
     plans = json.loads(out.read_text()) if out.exists() else {}
-    todo = [cid for cid in ids if f"PRODUCT|{cid}|0" not in plans]
+    todo = [(cid, r) for r in range(a.k) for cid in ids if f"PRODUCT|{cid}|{r}" not in plans]
     print(f"{len(todo)} to do; tree {manifest['source_tree_sha256'][:16]}; spent {rp.spent(a.model):.4f} USD", flush=True)
 
-    def one(cid):
+    def one(cid, r):
         if rp.spent(a.model) >= a.cap:
-            return cid, {"plan": None, "status": "skipped_budget"}
+            return cid, r, {"plan": None, "status": "skipped_budget"}
         text, atts = pilot.inputs(D, cid)
         t0 = time.time()
         try:
-            res = run_case(P, rp, catalogue, a.model, 0, cid, text, atts)
+            res = run_case(P, rp, catalogue, a.model, r, cid, text, atts)
         except Exception as error:  # an adapter failure is recorded, never silently dropped
             res = {"plan": None, "status": "adapter_error", "error": f"{type(error).__name__}: {error}", "usage": []}
         res["seconds"] = round(time.time() - t0, 1)
-        return cid, res
+        return cid, r, res
 
     with ThreadPoolExecutor(a.workers) as pool:
-        for f in as_completed([pool.submit(one, cid) for cid in todo]):
-            cid, res = f.result()
+        for f in as_completed([pool.submit(one, cid, r) for cid, r in todo]):
+            cid, r, res = f.result()
+            if res["status"] == "skipped_budget":
+                continue
             u = res.pop("usage", []) or []
             res["tokens"] = {"input": sum(x.get("input_tokens", 0) for x in u), "cached": sum(x.get("cached_tokens", 0) for x in u),
                              "output": sum(x.get("output_tokens", 0) for x in u)}
-            plans[f"PRODUCT|{cid}|0"] = res
+            plans[f"PRODUCT|{cid}|{r}"] = res
             out.write_text(json.dumps(plans, indent=1, ensure_ascii=False))
             p = res.get("plan") or {}
-            print(cid, res["status"], res.get("calls"), p.get("family"), "req", len(p.get("requests", [])), "hold", len(p.get("holds", [])),
+            print(cid, r, res["status"], res.get("calls"), p.get("family"), "req", len(p.get("requests", [])), "hold", len(p.get("holds", [])),
                   "def", p.get("deferred"), res.get("error") or "", flush=True)
     print(f"spent {rp.spent(a.model):.4f} USD", flush=True)
 

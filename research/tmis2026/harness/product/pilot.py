@@ -46,6 +46,7 @@ def inputs(D, cid):
 
 
 def main():
+    raise SystemExit("superseded: the product is run through its HTTP API by run_api.py (claims() and inputs() remain here)")
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", required=True, choices=["dev12", "fresh"])
     ap.add_argument("--model", default="gpt-6-luna")

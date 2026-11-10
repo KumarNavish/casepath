@@ -1,0 +1,3655 @@
+{
+ "REACT|fcl_020f2bacedc162a9|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Beruht die Kündigung tatsächlich auf Mietzinsrückständen? Bitte teilen Sie mit, sobald Sie dies anhand der Kündigung oder weiterer Unterlagen klären können."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "Der Fall betrifft eine Kündigung eines Mietvertrags; ich prüfe den passenden Kündigungs-Workflow und seine Schritte.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "Die Kündigung wurde erhalten, daher sind Frist- und Formunterlagen grundsätzlich relevant. Ich prüfe zuerst die Anforderungen dieser Schritte.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Die Kündigung selbst und der Vertrag werden für die Prüfung von Form und Zustellung benötigt; ich lese die Anforderungen dazu.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "Die Angabe zu verspäteten Zahlungen lässt offen, ob die Kündigung auf Rückständen beruht; ich prüfe die dafür nötigen Nachweise.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "Die Wohnung wird ausdrücklich als gemeinsame Familienwohnung beschrieben; damit ist der Familienwohnungs-Zweig aktiv. Ich prüfe dessen Dokumentanforderung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "Die Begründung ist im Schreiben laut Kunde nicht detailliert und nicht vorgelegt; ich prüfe, was für die Begründungs- und Good-faith-Prüfung verlangt wird.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Eine Verlängerung wurde nicht angesprochen und ist daher nach der Workflow-Vermutung nicht relevant. Ich prüfe die noch aktive Beweiserhebung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "Die Kündigung wurde erhalten, und die Wohnung wird als gemeinsame Familienwohnung genutzt. Ob die Kündigung wegen Mietrückständen ausgesprochen wurde, bleibt ausdrücklich offen; deshalb halte ich die davon abhängigen Unterlagen zurück, bis dies geklärt ist. Die vorhandene Nachricht ersetzt weder die Kündigung noch die übrigen Nachweise.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_1132fdb1876df85f|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "The customer disputes a landlord’s termination, alleging retaliation after raising defects and requesting a rent reduction. I’ll identify the termination workflow and its steps.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "Termination was received by presumption and the tenant explicitly alleges retaliation. The family-home and arrears branches are not raised, so their presumptions apply. I’ll inspect the contract for relevant evidence, then check document requirements on the active path.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Sonnenbergstrasse7.txt"
+   },
+   {
+    "thought": "The supplied contract identifies the landlord, tenant, and dwelling, but contains no termination terms or signed execution. Retaliation is expressly raised, so the abuse-screen documents apply. I’ll read the deadline step’s document criteria.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The deadline step always requires receipt proof and evidence of the agreed notice period and termination dates. The message and contract do not provide these. I’ll check form and service requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The supplied contract shows the parties and property but omits tenancy terms, so it does not meet the lease-contract evidence requirements. The original termination notice is also absent. I’ll check the retaliation-screen document requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Retaliation is explicitly alleged, activating the request for prior rights correspondence. The stated termination reason is always needed at this step, and neither is substantively supplied. I’ll check the evidence-step requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The active path requires deadline, form, and retaliation evidence. The supplied contract lacks tenancy terms, and no termination notice or supporting correspondence is present. The other branches are inactive by presumption; the optional landlord-correspondence item is not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_09252315095aa169|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it state?",
+    "Are you seeking an extension of the tenancy, in addition to contesting the termination?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a dispute about a lease termination for alleged unpaid rent, so I’ll inspect the lease-termination workflow and its required documents.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The message identifies an arrears termination, says the flat is the family home, and raises retaliation after asserting tenancy rights. I’ll inspect the arrears step’s document conditions.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears branch is active. I’ll check the family-home evidence requirement next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home branch is active, and the customer raises retaliation after asserting rights. I’ll inspect the abuse-screening evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The termination reason and earlier rights complaints are mentioned, so their evidence is relevant. Extension is not raised and is presumed irrelevant. I’ll inspect deadline evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Receipt and notice-period evidence are required, but the message provides neither. I’ll check the form and service documents next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The only supplied file is the customer’s message; it does not include the underlying lease, termination notice, or other required evidence. The arrears, family-home, and retaliation branches are active. I’ll check the remaining evidence step before submitting the complete checklist.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination workflow applies. The message says the termination is for unpaid rent, the flat is the family home, and the customer raised defects and a rent increase before the arrears issue, supporting a retaliation concern. No underlying notices, lease, payment records, or correspondence are supplied. Extension is not raised and is presumed irrelevant. I’ll request required evidence, mark the optional landlord correspondence not needed, and ask for the missing dates and whether an extension is sought.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_09bf4c849ef1ee44|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "On what date did you receive the rent-increase notice? Please provide the notice itself and proof of its receipt."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This appears to be a rent-increase dispute. I’ll inspect the applicable workflow and its requirements before deciding which documents to request or hold.",
+    "action": "list_steps",
+    "argument": "rent_increase_dispute"
+   },
+   {
+    "thought": "The claim expressly raises both reference-rate and renovation grounds, so both branches are active. I’ll inspect the intake and deadline requirements first.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_deadline"
+   },
+   {
+    "thought": "Proof of receipt is always needed to preserve the challenge deadline. Next I’ll check the notice-form and timing requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_form"
+   },
+   {
+    "thought": "The lease and the actual rent-increase notice are always needed; the customer’s message is not the notice itself. I’ll check what calculation evidence is required for the stated grounds.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reason"
+   },
+   {
+    "thought": "The stated reasons and calculation are required, and the attached prior adjustment may provide some historic rent evidence. I’ll inspect the reference-rate branch requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reference"
+   },
+   {
+    "thought": "The reference-rate basis is needed because that ground is expressly mentioned. I’ll inspect the renovation evidence requirement next.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_renovation"
+   },
+   {
+    "thought": "Renovation costs are also expressly raised, so a breakdown is needed. I’ll check the remaining evidence requirements and whether the supplied prior adjustment satisfies any item.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_evidence"
+   },
+   {
+    "thought": "The prior adjustment is on file, but I need to confirm it includes the adjustment date, amount, and calculation basis. I’ll read it before classifying the checklist.",
+    "action": "read_file",
+    "argument": "Mietzinsanpassung_Vorjahr.txt"
+   },
+   {
+    "thought": "The supplied prior adjustment shows the date and rent amount, but not the calculation basis, so it is incomplete for that evidence item. I’ll check the final workflow evidence requirement.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_assessment"
+   },
+   {
+    "thought": "Both stated grounds activate their evidence branches. The prior adjustment copy shows the date and rent amount but not its calculation basis. The optional landlord-correspondence item is not needed; the remaining required items are not supplied in sufficient form.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_0f9a9b0f4a043ab5|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "termination_notice"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "Die Kundin bestreitet eine Kündigung und möchte Anfechtung sowie Erstreckung prüfen lassen; ich prüfe den Kündigungsworkflow und die Belege.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "Die Kündigung ist eingegangen und die Wohnung wird ausdrücklich als Familienwohnung beschrieben; Erstreckung sowie eine mögliche Vergeltungskündigung sind ebenfalls angesprochen. Ich prüfe die Dokumentanforderungen der aktiven Schritte.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Die Kundennachricht nennt den Kündigungstermin, belegt aber weder Zugang noch vereinbarte Kündigungsfrist. Ich lese die Kündigung im Original.",
+    "action": "read_file",
+    "argument": "Kuendigung_Kirchgasse81.txt"
+   },
+   {
+    "thought": "Die Kündigung bestätigt Empfängerin, Enddatum und Sanierungsgrund, enthält aber keine Zustell- oder Zugangsinformation. Ich prüfe den Mietvertrag für Frist und Familienwohnung.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Kirchgasse81.txt"
+   },
+   {
+    "thought": "Der Mietvertrag belegt die dreimonatige Frist; die Kündigung selbst liegt vor. Ich prüfe die konkreten Anforderungen für die Formprüfung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "Mietvertrag und Kündigung enthalten die für die Formprüfung verlangten Angaben. Da Familienwohnung und Erstreckungswunsch ausdrücklich genannt sind, prüfe ich die Anforderungen für die Erstreckung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "Die Kundin nennt Härte und erfolglose Wohnungssuche; ein Suchprotokoll wäre für die Erstreckung relevant. Ich prüfe die Anforderungen zur Kündigungsbegründung und möglichen Vergeltung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Die Kündigung nennt eine Gesamtsanierung, die Kundin vermutet aber Vergeltung wegen zuvor geltend gemachter Rechte. Ich prüfe die Anforderungen für die Familienwohnung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "Die Familienwohnungsregel macht eine separate Kündigungskopie an den Ehepartner relevant. Ich prüfe noch den letzten stets aktiven Belegbedarf.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "Der Kündigungseingang und Familienwohnungsbezug sind angegeben; Erstreckung und Vergeltungsverdacht sind ausdrücklich aufgeworfen. Mietvertrag und Kündigung liegen vor. Es fehlen insbesondere Zugangsnachweis, Unterlagen zur Wohnungssuche, separate Kündigung an den Ehepartner und Korrespondenz zum zuvor geltend gemachten Recht. Die optionale Vermieterkorrespondenz ist nicht erforderlich.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_20eb1b189ff1c5d1|0": {
+  "plan": null,
+  "error": "no parse: JSONDecodeError",
+  "calls": 1,
+  "trace": []
+ },
+ "REACT|fcl_1d7e0a19ee376c16|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Sind die dunklen Flecken Schimmel oder Feuchtigkeit? Wenn das unklar bleibt, lassen Sie die Ursache gegebenenfalls fachlich abklären."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "The reported faulty apartment door and possible wall moisture are tenancy defects, so I’ll identify the applicable defect workflow and its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The message reports sleep problems and headaches in a household member, so the health-effects branch applies even though the cause is uncertain. I’ll check what medical confirmation must establish.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The lease is supplied, but I need to check its substantive contents against the lease-document requirement.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Feldstrasse_54.txt"
+   },
+   {
+    "thought": "The lease content shows the parties, rental start, and rent. I’ll check the scope step’s requirements before completing the checklist.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The supplied contract covers the required parties, property, and tenancy terms. I’ll check the notice-stage evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says she notified the landlord in writing, but the message is not the notice itself and gives no date or delivery proof. I’ll check the cause-stage requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll check which objective defect evidence is required and whether it is conditional.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dark wall spots are mentioned, but whether they are mould or moisture is explicitly uncertain, so that branch remains unresolved. Heating and rent deposit are not mentioned and are presumed absent. I’ll check the landlord-response requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The health-effects branch is active, but the customer’s account is not medical confirmation. The contract is sufficient. The dark spots leave mould/moisture unresolved, so the humidity log is held pending clarification; other required missing evidence is requested. The specialist and deposit branches are presumed inactive because they were not raised.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_1f01a092db41c4bb|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a heating defect dispute, so I’ll inspect the applicable workflow before deciding which evidence to request.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The reported illness activates the health-effects branch, and the customer explicitly says a specialist inspection is needed. I’ll check document conditions for the steps on that path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The health-effects branch is active, and no medical confirmation is supplied. Next I’ll check the always-visited scope step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is needed on the active path. I’ll inspect landlord-notice requirements next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they have copies of messages, but the message does not contain their substantive contents or proof of delivery. I’ll check the causation-step document requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll inspect the objective-evidence step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Heating is explicitly involved, so a heating service report is required. Mould or moisture is not mentioned, so that branch is presumed absent. I’ll check response-history requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The landlord response history is required. Since specialist inspection is explicitly needed, the specialist step is on the path; rent deposit is not mentioned and is presumed not considered.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_specialist"
+   },
+   {
+    "thought": "The specialist inspection is required but has not been arranged, so request it. The active path also requires medical, lease, notice, photo, heating-service, and landlord-response evidence; optional caretaker correspondence and deposit safeguards are not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_23c7f3a59472b82a|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a heating defect dispute, so I’ll inspect the applicable workflow and its document requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The claim explicitly concerns heating and does not mention health effects, specialist inspection, or rent deposit, so those branch facts are presumed absent. I’ll inspect the steps on that path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is required on this path; next I’ll check notice evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer's message says the problem was reported, but it does not provide the notice itself or proof of its delivery. I’ll check the causation step next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it is not requested. I’ll review the objective evidence step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photographs are required, and heating is explicitly raised, so a heating service report is also required. I’ll inspect the landlord-response step and its branches.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The active path is the defect workflow without health escalation, specialist inspection, or rent deposit. The message itself is not the original notice or proof of delivery, and supplies none of the required documents’ substantive contents. I’ll request the required evidence and explain the key missing timeline details.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2021cff640ced3a7|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [
+    "termination_notice"
+   ],
+   "questions": [
+    "Would you like to pursue an extension of the tenancy?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute; I’ll inspect its workflow and requirements before deciding which documents to request.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received and the flat is explicitly described as the spouses’ family home. Extension is undecided, so its branch is unresolved. I’ll inspect the notice contents and exact document criteria.",
+    "action": "read_file",
+    "argument": "Kuendigung_Seestrasse48.txt"
+   },
+   {
+    "thought": "The supplied file contains the termination notice itself and its stated reason, but does not establish receipt date or lease terms. I’ll check deadline-document criteria.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Both deadline documents are required; the notice’s issue date does not prove delivery or the agreed notice period. I’ll verify the form and lease evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The termination notice file appears to provide all required notice contents. The lease contract is still needed; next I’ll check the family-home branch documents.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home branch requires a separate notice copy for the spouse; the attached notice names only Daniela. The retaliation concern is expressly raised, so I’ll inspect the related evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The notice states planned comprehensive renovation, but the file gives no factual basis supporting that plan. The retaliation concern activates prior-rights correspondence; I’ll inspect extension evidence requirements because the customer has not decided whether to seek one.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The housing search log is required only if an extension is relevant; that remains open because the customer has not decided. I’ll check the final evidence step.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination is for renovation, not arrears; the family-home and retaliation branches apply. The extension branch depends on the customer’s undecided choice. The supplied notice satisfies the termination-notice criteria, but not the separate factual-basis requirement for the stated reason.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2534a534b97da50f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Bitte senden Sie die angekündigte Korrespondenz mit der Vermieterin sowie den Mietvertrag, die Mängelanzeigen und vorhandene Zustellnachweise. Bitte reichen Sie außerdem datierte Fotos, ein Feuchte-/Temperaturprotokoll, einen Heizungsservicebericht und den dokumentierten Antwort-/Zugangsverlauf der Vermieterin ein. Falls Sie die Mietzinshinterlegung weiter erwägen, senden Sie bitte auch eine schriftliche Reparaturfrist mit Empfänger und Inhalt."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "Der Fall betrifft Schimmel/Feuchtigkeit und eine nicht funktionierende Heizung. Ich prüfe den passenden Workflow und seine Anforderungen.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Gesundheitsfolgen werden nicht erwähnt und gelten daher als nicht behauptet. Hinterlegung wird ausdrücklich erwogen; der nächste Schritt ist, die Anforderungen der durchlaufenen Schritte zu prüfen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Der Mietvertrag ist für den zeitlichen und vertraglichen Rahmen erforderlich. Als Nächstes prüfe ich, welche Nachweise zur Vermieterbenachrichtigung verlangt werden.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "Die Telefonnotiz berichtet von mehrfachen Mitteilungen, enthält aber weder eine konkrete Mängelanzeige mit Empfänger und Datum noch einen Zustellnachweis. Ich prüfe die weiteren stets durchlaufenen Unterlagen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Die Hauswartkorrespondenz ist ausdrücklich optional. Ich prüfe die erforderlichen objektiven Mängelnachweise.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Schimmel/Feuchtigkeit und Heizung sind ausdrücklich betroffen; daher sind beide bedingten Nachweise einschlägig. Ich prüfe den Antwortverlauf der Vermieterin.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Eine technische Spezialistenprüfung wird nicht erwähnt und gilt daher gemäß Presumption als nicht erforderlich. Die Mietzinshinterlegung wird ausdrücklich erwogen, daher folgt der Hinterlegungsschritt.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "Die angekündigte Korrespondenz ist noch nicht vorgelegt und ersetzt weder die ursprünglichen Mitteilungen noch Zustellnachweise. Gesundheitsfolgen und Spezialistenbedarf wurden nicht erwähnt und gelten deshalb gemäß Presumption als nicht gegeben. Die ausdrücklich erwogene Hinterlegung macht eine schriftliche Reparaturfrist erforderlich.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2cab6f06f58d2ebd|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a reported mould and moisture defect in the rented home, so I’ll identify the defect workflow and follow its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "No health effect is alleged, so the path starts at scope. I’ll inspect the document conditions for the timeline step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is required on this path. I’ll check what is required to establish that the landlord was notified.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they notified the landlord, but supplied no written evidence. I’ll check the cause step’s document requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll review the objective evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is expressly reported, making the humidity and temperature log required; heating was not mentioned. I’ll check the response-history branch.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The claim alleges mould but no health effects, heating issue, specialist need, or rent-deposit consideration. The path therefore requires lease, notice and delivery evidence, dated photos, a humidity/temperature log, and landlord response history; no supplied file shows these documents.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_284cb44c9617cba6|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "questions": [
+    "Please provide the original written defect notice you sent to the landlord and any evidence showing when it was delivered.",
+    "Please send dated photographs showing the mould and damp patches and where they are in the room.",
+    "Do you have a humidity and temperature log for the affected room?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a reported mould and damp defect, so I’ll use the defect/heating workflow and inspect its steps before deciding what evidence is needed.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The claim alleges mould but no health effects. I’ll check the notice step’s evidence requirements; the customer says there was a written report, but the report itself is not among the listed files.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "I’ll review the supplied lease and landlord reply for whether they substantively satisfy any required evidence items.",
+    "action": "read_file",
+    "argument": "tenancy_agreement_Rosenstrasse28.txt"
+   },
+   {
+    "thought": "The lease contents establish the tenancy and are sufficient for the lease item. I’ll inspect the landlord’s reply for any notice or response evidence it actually contains.",
+    "action": "read_file",
+    "argument": "landlord_reply_defect.txt"
+   },
+   {
+    "thought": "The reply acknowledges a written defect report and gives its date and recipient, but it is the landlord’s reply rather than the tenant’s notice or proof of delivery. I’ll check the cause step requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "The caretaker item is optional, so it will not be requested. I’ll inspect objective-evidence requirements for the reported mould and moisture.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photographs are required but have not been supplied; the customer offers to send them, which is not the photographs themselves. Mould is expressly alleged, so the humidity/temperature log is also required. I’ll inspect the response-history requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The mould defect is clear, with no health effects alleged; specialist inspection and rent deposit are not raised and take their absent presumptions. The lease is on file. The landlord’s reply supports the response-history item, but it does not replace the tenant’s original notice or show the delivery date; the photos are only offered, not supplied. Request the missing required evidence and clarify whether a humidity/temperature log is available.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2dffd4707bf2bbad|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason",
+    "termination_notice"
+   ],
+   "questions": [
+    "When did you receive the termination notice, and can you provide evidence showing the delivery date?",
+    "Please provide the lease contract so we can verify the agreed notice period and tenancy terms.",
+    "Please provide copies of your written communications asserting tenant rights and any landlord responses, with dates, to support your concern that the termination was retaliatory."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a challenge to a landlord’s lease termination, so I’ll inspect the termination-dispute workflow and the attached notice.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The claim raises possible retaliation through prior rights assertions, so that branch is active. Arrears, family-home status, and extension relevance are not mentioned and are presumed absent. I’ll inspect the notice and the active steps’ evidence requirements.",
+    "action": "read_file",
+    "argument": "Kuendigung_Lindenstrasse_76.txt"
+   },
+   {
+    "thought": "The attached file contains the actual termination notice and its stated reason, but not evidence of receipt, the lease, or prior correspondence. I’ll check the active deadline and form requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The customer confirms receipt, but gives no delivery date or evidence of delivery. The notice itself does not establish the agreed notice period, so both deadline documents are missing. I’ll check form/service requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The attached notice shows the issuer, addressee, termination date, stated renovation reason, and that it is on the approved form. The lease contract is not supplied. I’ll verify the active good-faith and evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The notice states a planned comprehensive renovation, satisfying the stated-reason evidence requirement. Retaliation is explicitly raised, but the customer’s summary is not the underlying correspondence, so I’ll check the remaining active evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination notice is on file and shows the stated ground and its factual basis. Receipt is confirmed, but its date and proof are missing; the lease and the correspondence supporting the retaliation concern are also missing. The optional landlord correspondence is not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2e14148317fc5787|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Is the heating actually faulty, or are the rooms merely feeling cold without a confirmed heating defect?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This appears to involve mould and damp in the rented flat, with heating mentioned as uncertain; I’ll inspect the applicable defect workflow.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer reports mould and damp, expressly considers official rent deposit, and leaves heating fault uncertain. I’ll check the document conditions along the workflow, including the heating-related evidence.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "No health effects are alleged, so the workflow’s unstated-fact presumption makes the safety step inactive. I’ll inspect the scope and notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is needed to establish the tenancy and property. Next I’ll check what must be shown for the landlord notice and its delivery.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says a written report was sent, but the message is not the actual notice or proof it was delivered. I’ll check the causation evidence requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will be marked not needed. I’ll check the objective evidence requirements, including documents that depend on whether heating is actually faulty.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is established, so a humidity/temperature log is needed. Dated photos were offered but not included and must show the condition, location, and date. Heating is mentioned but left uncertain, so I’ll hold the heating service report pending clarification.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The customer is considering rent deposit, and technical inspection is not mentioned, so the workflow presumes specialist_needed is false. The deposit step is active; I’ll check its document requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The deposit safeguard is active, so a written repair deadline is needed. Heating is raised but expressly uncertain, so I’ll ask whether it is faulty and hold the heating service report pending that answer. No substantive supporting documents were supplied; the customer only offered to send photos and the notice.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_2e51df9903135af2|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "Der Fall betrifft eine behauptete Heizungsstörung in der Mietwohnung. Ich prüfe den passenden Mängel-Workflow und dessen Ablauf.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Gesundheitsauswirkungen werden ausdrücklich geschildert, daher führt der Ablauf über die Sicherheitsprüfung. Ich prüfe die Dokumentanforderungen der besuchten Schritte.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Die gesundheitlichen Folgen sind behauptet, aber ein Arzt hat den Zusammenhang nicht bestätigt; die medizinische Bestätigung ist dennoch erforderlich und liegt nicht vor. Als Nächstes prüfe ich die Anforderungen zum Mietverhältnis und zeitlichen Verlauf.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Der Mietvertrag ist für diesen Ablauf immer erforderlich. Ich prüfe nun die Nachweise zur Mängelmeldung.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "Die Nachricht sagt, dass die Vermieter mehrfach kontaktiert wurden, enthält aber weder die Mängelmeldung selbst noch einen Zustellnachweis. Ich prüfe den Schritt zur Ursache.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Die Korrespondenz mit den Privatvermietern ist keine Betreuungspersonen-Korrespondenz. Dieser Nachweis ist optional; nun prüfe ich die objektiven Heizungsnachweise.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Heizung wird ausdrücklich als betroffen genannt, daher ist der Heizungsservicebericht erforderlich; Feuchtigkeit oder Schimmel werden nicht erwähnt. Ich prüfe die Anforderungen zur Vermieterreaktion.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Der Kunde hält eine unabhängige technische Prüfung für erforderlich; ich prüfe daher den Spezialistenschritt. Eine Mietzinshinterlegung wird nicht erwähnt und ist nach der Stillschweigevermutung nicht zu berücksichtigen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_specialist"
+   },
+   {
+    "thought": "Der Fall folgt dem Mängel-/Heizungsworkflow. Die Heizungsstörung und Gesundheitsbeschwerden sind ausdrücklich genannt; eine unabhängige technische Prüfung wird ausdrücklich als nötig erachtet. Feuchtigkeit, Mietzinshinterlegung und weitere offene Zweige wurden nicht erwähnt und gelten daher als nicht vorliegend. Die vorhandene Nachricht ersetzt weder die Mängelmeldung noch deren Zustellnachweis oder die verlangten Sachunterlagen.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_3004e9cd625e0c4b|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Bitte reichen Sie das Kündigungsschreiben im Original bzw. als vollständige Kopie ein und teilen Sie mit, wann und wie Sie es erhalten haben.",
+    "Bitte senden Sie eine Kopie der an Ihre Ehefrau gerichteten Kündigung samt Zustellungsnachweis, falls vorhanden.",
+    "Bitte reichen Sie Ihre schriftliche Mängelanzeige, die Mietzinsanfechtung und die Antworten der Vermieterin ein, damit Inhalt und zeitlicher Ablauf geprüft werden können."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "Das Anliegen betrifft die Beendigung eines Mietverhältnisses; ich prüfe den passenden Kündigungsworkflow und seine Anforderungen.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "Die Familienwohnung ist ausdrücklich erwähnt; der Familienwohnungszweig ist daher aktiv. Als Nächstes kläre ich die Beleganforderungen für die maßgeblichen Schritte.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Die Beendigung wurde laut Nachricht mitgeteilt, aber ein Kündigungsschreiben selbst ist nicht enthalten. Ich prüfe jetzt die Anforderungen für Vertrag und Kündigungsmitteilung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "Der Vertrag ist als Datei vorhanden, die Kündigungsmitteilung jedoch nicht. Ich prüfe die Belege für Familienwohnung und mögliche Vergeltungskündigung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "Die Familienwohnung ist ausdrücklich bestätigt; eine gesonderte Zustellung an die Ehefrau ist zu prüfen. Die Nachricht schildert außerdem eine mögliche Vergeltung nach Rechtsausübung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Die Vergeltungssorge ist ausdrücklich erhoben und die zeitliche Abfolge beschrieben; dafür benötige ich die tatsächliche frühere Korrespondenz. Ich prüfe den weiteren Belegschritt.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "Der weitere Korrespondenzbeleg ist optional. Ich lese den Mietvertrag, um zu prüfen, ob er die verlangten Vertragsangaben enthält.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Hofackerstrasse34.txt"
+   },
+   {
+    "thought": "Der Mietvertrag belegt Parteien, Mietobjekt und Wohnzweck. Die übrigen erforderlichen Kündigungs- und Zustellungsbelege fehlen; die Nachricht allein ersetzt weder Kündigungsschreiben noch frühere Korrespondenz. Die Vergeltungssorge und Familienwohnung aktivieren die entsprechenden Belegschritte.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_3144174d4eaa6a32|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "The reported dispute concerns defective heating in a rented home, so I’ll use the defect, moisture, mould, and heating workflow.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The claim alleges a heating defect but no health effects. I’ll inspect the always-visited steps and the conditional response steps to determine document requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is required on this path, and no document was supplied beyond the customer’s message. I’ll check the landlord-notice step next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they sent several notices, but has not supplied the notice itself or proof of delivery. I’ll check the remaining always-visited evidence steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll check the objective evidence step; the customer reports cold temperatures, but no dated log or report was supplied.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Heating is explicitly involved, so a heating service report is required. Mould is not mentioned; the workflow presumes it absent. I’ll inspect the landlord-response step to confirm any conditional branch requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The customer does not raise health effects, specialist inspection, or rent deposit; the workflow presumes those branch facts absent when unstated. I’ll confirm the conditional safety document requirement before submitting.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "This is a heating-defect claim. The message establishes neither health effects nor consideration of a specialist inspection or rent deposit; those unstated branch facts are presumed absent. The required evidence is missing, so request it; optional or branch-inactive documents are not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_48ad1556596f887c|0": {
+  "plan": null,
+  "error": "no parse: JSONDecodeError",
+  "calls": 1,
+  "trace": []
+ },
+ "REACT|fcl_3660a91a8038bf36|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason"
+   ],
+   "questions": [
+    "When did you receive the termination notice, and what termination date does it specify?",
+    "Have you received a separate termination notice addressed to your spouse?",
+    "What payments or other information lead you to question the claimed CHF 4,920 arrears?",
+    "Please provide the dates and details of your accommodation search, including applications and responses."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a lease termination over alleged rent arrears, so I’ll identify the termination workflow and its intake requirements.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The message expressly raises arrears, a family home, and a requested extension. I’ll check the document conditions for the active branches and the common termination steps.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Receipt and notice-period evidence are always needed. The customer’s message describes the notice and hardship but is not the original notice or supporting documents; I’ll check the form/service requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The case raises arrears and states the flat is the family home, so both branches are active. I’ll check the arrears evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The family-home branch is active, so I’ll check whether a separate notice to the spouse is required.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The customer explicitly requests an extension, so I’ll check the extension-evidence requirement; then I’ll verify the remaining active termination steps.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The requested extension makes the housing-search log relevant. I’ll check the abuse-screening evidence requirements on this path.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "No retaliation concern is mentioned, so that branch is presumed absent. The extension path still proceeds to type-specific landlord correspondence.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination workflow applies. Arrears, family-home status, and extension relevance are raised, so their branches are active. The message supports the stated arrears ground but does not provide the underlying notices, records, or search log.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_3b8ec390e5f4fbc8|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "The reported dispute concerns a persistent heating defect, so I will inspect the defect workflow and follow its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Health effects are alleged, and the customer requests a specialist assessment. I’ll read the active intake and safety requirements first.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The message alleges health problems but says a medical certificate can be provided; I’ll check the supplied lease and whether it contains the substantive tenancy details.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Seestrasse14.txt"
+   },
+   {
+    "thought": "The lease supplies the rental relationship and premises. I’ll check what else the scope step requires.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The supplied lease shows the parties, property, and tenancy terms. The customer says the landlord was informed, but the message is not proof of the notification; I’ll inspect the notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer reports notifying management, but provides neither the actual notice nor proof of delivery. I’ll inspect the remaining always-active evidence steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll check the objective evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Heating is explicitly the defect, so the heating service report is required; mould or moisture is not mentioned. I’ll inspect the response-history step before deciding the conditional specialist and deposit branches.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The customer expressly requests an independent technical assessment, so specialist_needed is true. Rent deposit is not mentioned and is presumed absent; I’ll inspect the specialist-step requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_specialist"
+   },
+   {
+    "thought": "The lease is on file and satisfies its requirements. The health and heating issues are expressly raised, and a specialist assessment is requested, so their related documents are required. Mould and rent deposit are not mentioned and are presumed absent; caretaker correspondence is optional.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_3b9600e267ebc9f8|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "When did you receive the rent-increase notice, and do you have proof of its delivery date?",
+    "Please provide the complete rent-increase notice, lease, and calculation showing the increase amount, effective date, and calculation inputs.",
+    "What reference-rate basis and relevant dates does the landlord use? Please provide the old and proposed rate basis.",
+    "What renovation work, costs, and rent allocation does the landlord claim?",
+    "Does your current-rent statement or other record show the rent components? Please also provide any prior rent adjustment and its date, amount, and calculation basis."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a rent-increase dispute, with both a reference-rate basis and renovation costs mentioned. I’ll inspect the workflow and follow its conditions.",
+    "action": "list_steps",
+    "argument": "rent_increase_dispute"
+   },
+   {
+    "thought": "The customer explicitly raises both reference-rate and renovation grounds, so both branches are active. I’ll check the deadline-step document criteria first.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_deadline"
+   },
+   {
+    "thought": "Proof of receipt is always required, and the message does not establish delivery evidence or date. I’ll check the form-step requirements next.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_form"
+   },
+   {
+    "thought": "Neither the lease nor the rent-increase notice is supplied; the customer’s description does not provide all required contents of either document. I’ll check the calculation evidence requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reason"
+   },
+   {
+    "thought": "The message identifies the two reasons but gives no calculation inputs, so it does not establish the contents required for the stated-calculation document. I’ll check the reference-rate branch requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_reference"
+   },
+   {
+    "thought": "The reference-rate basis is needed because that ground is expressly raised. I’ll inspect the supplied rent statement to see which evidence it actually contains.",
+    "action": "read_file",
+    "argument": "current_rent_statement.txt"
+   },
+   {
+    "thought": "The rent statement establishes the tenant, property, and current rent, but not reference-rate bases and dates. Renovation is also expressly raised, so I’ll inspect its evidence requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_renovation"
+   },
+   {
+    "thought": "The renovation-cost breakdown is required, but no document supplied so far shows the works, costs, and allocation to this rent. I’ll check the remaining evidence requirements.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_evidence"
+   },
+   {
+    "thought": "The supplied statement shows the current net rent but not rent components, so it is insufficient for current-rent evidence. No prior adjustment evidence is supplied. I’ll check the final evidence step.",
+    "action": "read_step",
+    "argument": "rent_increase_dispute:ri_assessment"
+   },
+   {
+    "thought": "The rent-increase notice is presumed received, and both stated grounds activate their evidence branches. The supplied rent statement only partially supports current-rent evidence; all other mandatory items lack sufficient supplied documentation. Landlord correspondence is optional.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_495cdb4f0d88d226|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a challenge to a landlord’s termination notice, so I’ll inspect the lease-termination workflow and its required documents.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The claim explicitly raises both arrears and family-home status, so I’ll review the branch requirements before deciding what evidence to request.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears documents are needed only if the arrears branch applies. I’ll check the actual termination notice for its contents and form.",
+    "action": "read_file",
+    "argument": "Kuendigung_Rosenstrasse10.txt"
+   },
+   {
+    "thought": "The supplied notice states rent arrears as the reason, confirming that the arrears branch applies. I’ll inspect the lease for tenancy and service details.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Rosenstrasse10.txt"
+   },
+   {
+    "thought": "The notice and lease are on file. I’ll check what evidence is required for the family-home branch, which the customer explicitly describes.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The customer says the spouse is jointly entitled and lives there, so the family-home branch applies. I’ll check the evidence requirements for the stated reason and retaliation concern.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The customer explicitly alleges retaliation after asserting tenancy rights, so the retaliation evidence branch applies. I’ll check the deadline evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The receipt date is not provided, and the lease text does not state a notice period. I’ll confirm the form-check requirements before submitting the checklist.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The main required items are clear; I’ll check the final evidence step so the checklist includes every workflow document that applies.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination was received; the notice identifies arrears, the customer confirms a jointly occupied family home, and they allege retaliation after asserting rights. No extension request is stated, so the extension branch is not activated. The notice and lease are supplied, but their substantive text does not show an addressee or complete tenancy terms, so those items are requested. Receipt date, separate spouse notice, arrears cure/payment evidence, and prior-rights chronology are missing. No further questions are needed to determine the active branches.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_4c8a58711c423e41|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a heating defect dispute. I’ll inspect the applicable workflow and follow its steps to determine which documents are needed.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The heating defect is explicit, with no health effects alleged. Rent deposit is raised as a possible step, so I’ll determine how the workflow treats documents for that branch.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is required on the active path. I’ll check the landlord-notice step to see what its documents must establish.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says she notified the landlord, including in writing, but the message is not the notice itself or delivery proof. I’ll inspect the causation evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll inspect the objective evidence step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photos are required; the customer’s description does not supply them. Heating is explicitly involved, so a heating service report is also required. Mould is not mentioned, so its log is not needed under the stated presumption. I’ll check the response step for conditional branches.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The landlord response history is required, and the message only says the defect remains unrepaired; it does not establish responses, proposed work, or access arrangements. Deposit is being considered, while specialist inspection is not mentioned and is presumed not needed. I’ll inspect the deposit safeguards.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The active path requires the lease, landlord notice and delivery evidence, dated defect photos, a heating service report, response history, and a written repair deadline for the contemplated rent deposit. None of these substantive documents is supplied; the customer message does not substitute for them. Optional or inactive-branch evidence is not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_4f31932d66dafbf9|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the lease contract and the text message you sent the landlord on 3 September, along with any evidence of sending or delivery.",
+    "If available, please send dated photos showing the radiators or affected rooms, and a heating service report with inspection date and findings.",
+    "Please provide any landlord replies or other records showing proposed repair work and access arrangements. Have you sent a written repair deadline? If so, please provide it; if not, let us know."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This concerns malfunctioning heating and a reported tenancy defect, so I’ll use the defect/mould/heating workflow and inspect its path and requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer expressly reports heating trouble and considers rent deposit, but says nothing about health effects. I’ll inspect the workflow’s document conditions and requirements along the applicable path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is required on every path. Next I’ll check what qualifies as landlord notice and proof of notification.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer describes a text message reporting the defect, but has not supplied the message or evidence that it was delivered. I’ll inspect the remaining unconditional evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional and not needed. I’ll check the objective evidence step, including whether the customer’s offer to send photos is enough to have them on file.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photos are required and none were supplied. Heating is explicitly raised, so a service report is required; mould/moisture is not mentioned, so its log is not required. I’ll check the response-history requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Rent deposit is expressly being considered, while need for a technical specialist is not mentioned and is presumed false. The deposit safeguard step therefore applies; I’ll inspect its document requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The applicable path includes scope, notice, objective heating evidence, landlord response history, and rent-deposit safeguards. The customer message is not the underlying text notice or supporting evidence, so missing required documents should be requested; optional or inapplicable items are not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_5a191bddbf50f630|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "stated_reason"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "Die Kundin schildert eine Kündigung des Mietverhältnisses; ich prüfe daher den Ablauf für Kündigungsstreitigkeiten.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "Die Kündigung wurde gemäss Nachricht wegen Mietzinsausständen ausgesprochen; zudem ist die Wohnung ausdrücklich als gemeinsame Familienwohnung beschrieben. Ich prüfe die Anforderungen für Frist, Form und diese Zweige.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Die Fristbelege sind stets erforderlich. Ich prüfe jetzt, was die formelle Prüfung verlangt.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "Die Kündigung wird als wegen Mietzinsausständen ausgesprochen beschrieben, und die Familienwohnung ist ausdrücklich erwähnt. Ich prüfe die erforderlichen Belege für den Rückstands-Zweig.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "Der Rückstand wird als Kündigungsgrund genannt, daher ist der Arrears-Zweig aktiv. Als Nächstes prüfe ich die Anforderungen für die ausdrücklich genannte Familienwohnung.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "Die gemeinsame Familienwohnung ist belegt, sodass die separate Zustellung an den Ehepartner geprüft wird. Ich prüfe nun die Unterlagen für Kündigungsgrund und geltend gemachte Rechte.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Die Kundin äussert ausdrücklich den Verdacht einer Vergeltung wegen geltend gemachter Mieterrechte. Der entsprechende Beleg ist daher erforderlich. Ich prüfe noch den abschliessenden Belegschritt.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "Der Kündigungsstreit fällt unter das Kündigungsworkflow. Mietzinsausstände und Familienwohnung sind ausdrücklich genannt, ebenso der Vergeltungsverdacht; eine Verlängerung wird nicht erwähnt und ist gemäss Presumption nicht relevant. Die Nachricht berichtet den Kündigungsgrund, ersetzt aber weder die Kündigungsurkunde noch die Korrespondenz selbst.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_5b4d3a3b723b8160|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "spouse_notice_copy"
+   ],
+   "established": [
+    "payment_deadline_letter"
+   ],
+   "questions": [
+    "Is the apartment the family home, and is there a spouse or registered partner who also needs to receive a separate termination notice?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a challenge to a landlord's termination for unpaid rent, with an extension request. I will identify the lease-termination workflow and its required steps.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice and arrears termination are explicitly described, and an extension is requested. The family-home branch is not clearly established by the mention of a child, so I’ll inspect the relevant document conditions before deciding what to request or hold.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The deadline step requires proof of receipt and notice-period evidence. The customer's summary does not provide the notice's delivery date or actual termination dates, so I’ll inspect the supplied reminder for whether it satisfies any evidence item.",
+    "action": "read_file",
+    "argument": "Zahlungserinnerung_Regimo_Rosenstrasse21.txt"
+   },
+   {
+    "thought": "The attached reminder contains a 30-day payment demand and warning of termination, but it is not the termination notice. I’ll check the arrears-step requirements to assess whether the reminder is sufficient and what else is needed.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears branch applies, and the supplied reminder shows the cure period, claimed arrears, and termination warning. I’ll check the form-and-service evidence requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The termination notice and lease are missing. The arrears reminder is not the termination notice. I’ll check extension evidence requirements, since the customer expressly requests an extension.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "An extension is clearly relevant, so a housing search log is needed. The child and schooling are mentioned, but it is unclear whether the flat is legally the family home; I’ll check the corresponding evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home branch depends on an unresolved fact, so separate spouse notice evidence may be held. I’ll inspect the abuse-screen requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The stated arrears reason is described, but the underlying termination notice is absent. The family-home issue is arguably raised by the child's schooling but remains unclear; I’ll check the final evidence step before submitting.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The arrears branch and extension branch apply. The payment reminder satisfies the cure-notice requirements, but the termination notice, lease, receipt/deadline evidence, and rent ledger are missing. The message raises but does not resolve whether this is a family home, so the spouse-notice item is held pending clarification.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_5f53fea2fcbaf192|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute. I’ll inspect its workflow and follow the applicable steps.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received, the flat is explicitly described as the family home, and arrears are not raised. I’ll check the deadline evidence requirements first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "No supplied file establishes recipient, delivery date, or agreed notice period and termination dates. I’ll inspect what must be shown for the notice and lease.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The lease and actual termination notice are needed, and the message only offers to provide them; it does not include their contents. The family-home branch applies, so I’ll check its evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home branch requires a separately served notice to the spouse. The retaliation concern and prior rights assertions are expressly raised, so I’ll inspect the abuse-screen evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "Retaliation and prior rights assertions activate correspondence evidence; the claim does not raise extension, so that branch is inactive. I’ll check the remaining evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The lease-termination workflow applies. Receipt and the family-home status are established by the message; arrears and extension are not raised and are presumed absent. The only supplied file is the customer’s message, not the offered documents themselves, so no required document is on file. The housing-search log is not needed because an extension was not raised.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_5e22217a8f028d99|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract",
+    "notice_period_evidence",
+    "stated_reason"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute. I’ll inspect its workflow to determine the applicable steps and document requirements.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received, this is stated to be the family home, and the stated reason is not arrears. I’ll check the active deadline and notice-form requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Receipt proof and notice-period evidence are always required; the message supplies dates and an agreed period but not delivery evidence. I’ll check notice verification requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The lease agreement and original notice were supplied, but their substantive contents need checking against the required items.",
+    "action": "read_file",
+    "argument": "tenancy_agreement.txt"
+   },
+   {
+    "thought": "The agreement shows the contracting parties, property, and tenancy terms. I’ll inspect the supplied termination notice for its required contents.",
+    "action": "read_file",
+    "argument": "termination_notice.txt"
+   },
+   {
+    "thought": "The original notice shows the addressee, end date, stated ground, and official-form information, but its issuer/date are not specified in the text. The family-home branch is active; I’ll check its document requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The spouse’s separate notice is required for a family-home termination, and none is supplied. Retaliation is not raised; extension relevance is unstated and therefore presumed false. I’ll check which remaining evidence is required.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The notice states the ground but gives no further factual basis. Retaliation was not raised, so prior-rights correspondence is not needed. I’ll check the remaining evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "This is a lease-termination dispute. The family-home branch applies; arrears and retaliation are not raised, and extension relevance is presumed false. The supplied agreement and notice cover most requirements, but receipt evidence and the spouse’s separate notice are missing. The notice text also does not identify its issuer.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_62814fb6c5c0f470|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the lease contract, the original defect notification and proof of delivery, dated photos, a humidity and temperature log, any heating service report, and the landlord response/access history. Since you are considering rent deposit, please also provide the written repair deadline notice, if sent."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a reported mould, dampness, and heating-defect dispute. I’ll inspect the applicable workflow and its intake requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer mentions rent deposit, mould, and heating, but not health effects or whether specialist inspection is needed. I’ll check the requirements for the steps on the apparent path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Health effects are not alleged, so the stated presumption takes the direct scope path. I’ll check what qualifies as landlord notice evidence.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they reported defects and can provide correspondence, but no original notice or delivery proof is included. I’ll check the causation step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll check the required objective evidence for the reported mould and heating defects.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould and heating are explicitly raised, so the related evidence is needed. Rent deposit is being considered; specialist inspection is not mentioned and is presumed unnecessary. I’ll check the response-history requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The customer is considering official rent deposit, and specialist inspection is presumed unnecessary because it is not mentioned. I’ll check the deadline evidence required for the deposit step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The customer’s message is the only supplied file; it is not the original notice, delivery proof, photos, or landlord response history. Mould, heating, and rent deposit are explicitly raised, so request their conditional evidence. No health effects or need for a specialist inspection are mentioned, so apply the workflow’s absent presumptions.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_63770af748d8f3f7|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "housing_search_log"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering seeking an extension of the tenancy? If so, please provide a housing-search log showing search dates, efforts, responses, and the hardship you face."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "The customer is disputing a tenancy termination. I’ll inspect that workflow and determine which documents are required given the unresolved decision about seeking an extension.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received, so the deadline and form steps apply. The customer says the flat is the family home, and whether an extension is relevant remains unresolved; I’ll check the document conditions for these branches.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Receipt proof and notice-period evidence are always required. Next I’ll check the form-step requirements; the customer says the termination notice itself is available, but its contents have not been supplied.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The flat is explicitly described as the family home, so the family-home branch applies. I’ll check its required document.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home branch applies. The customer mentions the spouse lives there but does not provide a separate notice copy. The extension question remains open, so I’ll check the abuse-screen requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The stated-reason document is required. Retaliation was not raised, so its presumption makes the conditional correspondence unnecessary. The extension decision is unresolved; I’ll check what evidence that branch requires.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "A housing-search log is needed only if the customer pursues an extension, which is still undecided. I’ll check the final evidence step before submitting the checklist.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination notice and spouse’s separate notice are described as available or applicable, but neither was supplied in the case file, so they cannot be marked on file. The extension decision is expressly unresolved; ask whether the customer intends to seek an extension and hold its conditional evidence pending the answer.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_6497fc47bf76f74f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [
+    "technical_inspection"
+   ],
+   "established": [],
+   "questions": [
+    "Is a technical inspection by a specialist needed to establish the cause of the defect?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a mould and damp defect dispute. I’ll inspect the applicable workflow before deciding which evidence is needed.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer alleges health effects and mentions rent deposit. Specialist need is explicitly unresolved, so I need the conditional document rules for the relevant steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Health effects are alleged, so the safety step is active; the offered medical certificate is not in the supplied files. I’ll check scope requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is needed to establish the tenancy and property. I’ll inspect what must substantiate landlord notice.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they notified the landlord in writing, but the correspondence itself was not supplied. I’ll check the cause evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll check the objective defect evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is explicitly present, so the humidity and temperature log is required; heating is not mentioned and is presumed absent. I’ll inspect the landlord-response step and conditional branches.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The response history is required but not supplied. Specialist need is unresolved, and either outcome leads to a rent-deposit step because deposit is being considered; I’ll check both conditional documents.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_specialist"
+   },
+   {
+    "thought": "Technical inspection is needed only if the unresolved specialist question resolves true. Rent deposit is being considered, so I’ll check its safeguard evidence.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The case follows the defect workflow. Health effects, mould, and rent deposit are raised; specialist need is unresolved, so technical inspection is held pending clarification. No substantive supporting documents were supplied in the case file.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_655804bbffa9242f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a dampness and mould defect with a possible heating/health issue, so I will identify the defect workflow and its steps before deciding which evidence is needed.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer alleges health effects and is considering official rent deposit, so those branches are active. I need the document conditions for the steps on that path, including the deposit safeguards.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The health-effects branch is active, but the customer only offers to send a doctor's letter; no medical confirmation is supplied. Next I will check documents required to establish scope and landlord notice.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "No lease document was supplied. I will inspect the landlord-notice requirements; the message describes a written report but is not the notice itself.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The written report is mentioned, but neither the original notice nor evidence of delivery is provided. I will check the causation correspondence requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional and therefore will not be requested. I will check what objective evidence is required for the defect.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is explicitly reported, so a humidity and temperature log is conditionally required; heating was not mentioned. Specialist inspection was not raised and is presumed unnecessary. I will check the landlord-response and rent-deposit steps on the active path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The customer is considering rent deposit, and specialist inspection is not raised, so the deposit step is on the workflow path. I will check its evidence requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "The active path includes medical confirmation, lease, notice and delivery proof, objective mould evidence, landlord response history, and the written repair deadline. No substantive supporting documents were supplied; optional caretaker correspondence and inactive heating/specialist evidence are not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_67f3fc97edbdf375|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [
+    "stated_reason"
+   ],
+   "questions": [
+    "What did you recently tell the administration, when did you tell them, and what response did you receive? Please share any related correspondence if available."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute; I’ll inspect the applicable workflow before determining document needs.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received, arrears are the stated ground, and an extension is requested. I’ll check the active deadline-step document requirements first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The case mentions arrears, so the arrears branch is active. I’ll inspect the notice-form evidence requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "Arrears are stated explicitly, so I’ll verify the evidence requirements for that branch.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The family-home branch is inactive by presumption. The tenant raises a possible retaliatory motive but is unsure, so I’ll inspect the abuse-screen requirements to determine which evidence depends on that unresolved issue.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "An extension is explicitly requested, so the extension step is active. I’ll check its evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The tenant asks for an extension, so its evidence is needed. I’ll inspect the final evidence step on the active path.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The active path includes the deadline, form, arrears, abuse-screen, extension, and evidence steps. The customer message reports the arrears ground and amount, but does not supply the original notice or other required records. Possible retaliation is expressly raised but unresolved, so I’ll hold the conditional prior-rights evidence pending clarification.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_699677dc46b1150f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "Der Fall betrifft Schimmel und Feuchtigkeit in der Wohnung; ich prüfe den passenden Mängel-Workflow und seine Anforderungen.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Die Nachricht bestätigt gesundheitliche Beschwerden und erwägt eine Mietzinshinterlegung. Ich prüfe die bedingten Anforderungen für diese Pfade.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Es werden Atembeschwerden genannt, aber eine ärztliche Bestätigung liegt nicht vor. Als Nächstes prüfe ich die Unterlagen für den Mietvertrag und die Mängelanzeige.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "Die Kundin berichtet von einer schriftlichen Anzeige, aber die Nachricht ist nicht die Anzeige selbst und belegt keine Zustellung. Ich prüfe die übrigen Pflichtunterlagen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Der Mietvertrag ist erforderlich und nicht beigefügt. Ich prüfe nun die Anforderungen zur offenen Ursache des Mangels.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Die Korrespondenz mit dem Hauswart ist optional. Ich prüfe nun die Unterlagen zur objektiven Dokumentation des Mangels.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Schimmel und Feuchtigkeit sind ausdrücklich genannt, daher ist das Feuchteprotokoll im aktiven Pfad erforderlich. Heizungsprobleme sind nicht erwähnt. Ich prüfe die bedingten nächsten Schritte.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Die Kundin erwägt ausdrücklich eine Hinterlegung, während kein Bedarf für eine technische Begutachtung angesprochen wird. Der Hinterlegungspfad ist aktiv; ich prüfe dessen Anforderungen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "Der aktive Pfad umfasst Gesundheitsbeschwerde, Schimmel/Feuchtigkeit und erwogene Hinterlegung. Für technische Begutachtung gibt es keinen Hinweis; die Workflow-Vermutung setzt sie daher auf nicht erforderlich. Die beigefügte Nachricht erfüllt die inhaltlichen Nachweise der benötigten Unterlagen nicht.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_6cae1116c044a99a|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This concerns an unrepaired defect in the rented home, so I’ll follow the defect/mould/heating workflow and check its steps and evidence requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer reports health effects, so the safety step is on the workflow path. I’ll inspect the attached defect notification to see whether it substantively establishes notice of the defect.",
+    "action": "read_file",
+    "argument": "Mangelmeldung_Lueftung_Badezimmer_2026-07-14.txt"
+   },
+   {
+    "thought": "The attached letter establishes the defect and asks the landlord to repair it, but it does not show that it was sent or received. I’ll check the workflow’s exact requirements for the documents on the active path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The customer alleges sleep problems and headaches, making the health-effects branch active. No medical confirmation is supplied. I’ll check the scope requirements next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is required on this path and is not among the supplied files. I’ll verify the notice evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The attached letter shows the reported defect, recipient, and date, so it can satisfy the defect-notice item. It does not prove delivery. I’ll check the remaining evidence requirements on this workflow path.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it is not needed for this checklist. I’ll check what objective evidence is required.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "The claim concerns a bathroom ventilation fan, not mould, moisture, or heating; those branches are presumed absent. Dated photos are required, but none are supplied. I’ll check the response-stage branch requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The claim does not mention a specialist inspection or rent deposit, so those branch facts are presumed absent. The active path ends without those documents; the missing medical, lease, delivery-proof, photo, and landlord-response evidence should be requested.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_7032365a2a7cb080|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Please provide the termination notice and evidence of when and how you received it, including the delivery date.",
+    "What termination date and reason does the notice state? Please provide the factual grounds given by the landlord.",
+    "Please provide copies of your written defect and rent complaints and any landlord replies, with dates, to document the asserted rights and chronology."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a challenge to a landlord’s termination of the tenancy, so I’ll identify the lease-termination workflow and its intake requirements.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The termination is presumed received, while arrears and family-home branches are unstated and presumed absent. The customer raises a retaliation concern, so I’ll inspect the deadline-step document criteria first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The agreement may establish the notice period, but the customer’s message is not proof of receipt or the termination notice itself. I’ll read the supplied agreement for substantive contents.",
+    "action": "read_file",
+    "argument": "tenancy_agreement_Bahnhofstrasse37.txt"
+   },
+   {
+    "thought": "The agreement shows the agreed three-month notice period, but not termination dates. I’ll check the form-step requirements for the lease and termination notice.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The supplied agreement contains the parties, property and tenancy terms, so it meets the lease-contract requirement. No termination notice is supplied. I’ll inspect the active retaliation-screen requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The customer expressly alleges retaliation after asserting tenancy rights, so the retaliation branch is active and prior-rights correspondence is needed. The supplied message describes the concern but is not the underlying correspondence. I’ll check evidence-step requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The agreement is on file and supports the agreed notice period, but it does not show termination dates. The termination notice, proof of receipt, stated grounds and underlying prior-rights correspondence are missing. The family-home and arrears branches are presumed absent, and extension relevance is unstated and presumed false.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_716f9606b9e15e8f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Can you confirm whether you believe the heating system is defective, or whether the rooms and radiators may simply be cool without a known defect?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "The dispute concerns reported mould and possible heating defects, so I’ll inspect the applicable defect workflow and determine which documents are needed on the facts provided.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "No health effects are alleged, so the walk proceeds through scope, notice, cause, evidence, and response; the unstated specialist and rent-deposit branches are presumed absent. I’ll inspect document conditions for the walked steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is mandatory at the scope step. I’ll check whether the supplied contract contains the required tenancy details.",
+    "action": "read_file",
+    "argument": "Mietvertrag_Hofmann.txt"
+   },
+   {
+    "thought": "The supplied lease identifies the parties and tenancy terms, but does not specify the property; it therefore does not show every required item. I’ll inspect the notice step’s conditions.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer reports only oral notice, without a dated written record or delivery proof. I’ll check the next step’s requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll inspect the objective-evidence requirements for the reported mould and uncertain heating issue.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is explicitly reported, so the humidity/temperature log is required; dated photos are also required. Heating is raised but its defect status is uncertain, so I’ll check whether the heating document depends on that unresolved fact and inspect the response-step branches.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The heating issue is explicitly raised but its defective status is uncertain, so the heating report is held pending clarification. The mould-related log is required; optional caretaker correspondence and unentered specialist/deposit branches are not needed. The supplied lease lacks the property details required.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_77b05646bbfc654b|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This appears to concern an electrical defect in the rented home and the landlord’s failure to repair it, so I’ll identify the defect workflow and its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer reports health effects, so the safety step applies. I’ll check its document requirements first.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Health effects are explicitly alleged, so medical confirmation is needed if it can substantively show findings and limits on causation. I’ll inspect the always-visited scope step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is required on this path. I’ll check what the notice evidence must establish.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they have the notices, but they are not among the supplied files; the actual notice contents and evidence of delivery are still needed. I’ll check the remaining cause and defect-evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional. I’ll inspect the objective evidence step for any required documents.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "The reported problem is not mould, moisture, or heating, so those conditional records are not needed. I’ll check the landlord-response step; specialist inspection and rent deposit are not raised and are presumed absent.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The supplied message describes the defect and reports prior notices and a landlord reply, but does not include those documents or other evidence. Health effects are alleged, so medical confirmation is needed. Specialist inspection and rent deposit were not mentioned and are presumed not under consideration.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_79cd16a5ca76b01b|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "Der Streit betrifft Schimmel und eine unzuverlässige Heizung; ich prüfe den passenden Mängel-Workflow und seine Schritte.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Der Claim betrifft Schimmel und Heizung; gesundheitliche Auswirkungen werden nicht erwähnt und gelten daher als nicht angegeben. Die Mietzinshinterlegung wird ausdrücklich erwogen. Ich prüfe die Unterlagenanforderungen entlang dieses voraussichtlichen Ablaufs.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Der Mietvertrag ist auf dem Ablauf erforderlich. Als Nächstes prüfe ich die Nachweise für die Meldung an die Vermieterin.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "Die Nachricht an die Versicherung belegt keine Meldung an die Vermieterin oder deren Zustellung. Ich prüfe die weiteren bedingten Anforderungen des Mängelablaufs.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "تواصل مسؤول الصيانة اختياري، لذلك لن أطلبه. أتحقق من متطلبات الأدلة الموضوعية.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Schimmel und Heizung sind ausdrücklich genannt; beide bedingten Nachweise sind daher erforderlich. Prüfe die Reaktions- und Zugangsunterlagen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Die Reaktionshistorie ist erforderlich. Die Mietzinshinterlegung wird ausdrücklich erwogen, während eine notwendige Fachinspektion nicht erwähnt wird und daher als nicht erforderlich gilt. Ich prüfe die Sicherungsanforderung für die Hinterlegung.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "Der Mängel-Workflow ist einschlägig. Schimmel, Heizung und die erwogene Hinterlegung sind ausdrücklich genannt; gesundheitliche Folgen und ein erforderlicher Spezialistenbericht werden nicht erwähnt und gelten nach den Presumptionen als abwesend. Die einzige vorgelegte Nachricht richtet sich an die Versicherung und enthält keines der erforderlichen Nachweise in ausreichender Form.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_815414e86c968c16|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "established": [],
+   "questions": [
+    "Is the termination actually based on rent arrears, or was the manager’s phone comment unrelated to the termination?",
+    "Please send the termination notice, including any separate notice addressed to your wife, and the lease. Also provide evidence of when the notice was received and the termination dates so the challenge deadline and notice period can be checked."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute. I’ll inspect its workflow and determine which documents and facts are needed to assess the challenge and deadlines.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received and the flat is explicitly the family home, so those branches apply. The manager’s call raises but does not resolve whether termination is for arrears, so I need the branch’s document conditions before deciding whether to request or hold its documents.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "Arrears documents are conditional, and arrears is unresolved because the call mentioned it without confirming it as the termination ground. I’ll check the family-home document requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "Because the home is explicitly shared with the customer’s wife, the separate spouse notice is needed. I’ll check the abuse-screen evidence conditions, since the customer suspects retaliation and the notice reportedly gives no clear reason.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The stated reason is always needed, and the customer explicitly alleges retaliation, so prior rights correspondence is also needed. Extension is not raised, so its unstated-fact presumption makes that branch inactive. I’ll inspect deadline evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Receipt and notice-period evidence are always needed. The message is not the notice itself, so I’ll confirm the form-check documents before submitting the complete checklist.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The termination workflow applies. The notice was received and the family-home branch is active; the arrears ground is unresolved, so arrears evidence is held pending clarification. No documents have been supplied beyond the customer’s message, which is not a substitute for the notice or other evidence.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_820ed84f0e81363f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a reported mould/moisture defect in a rental flat. I’ll identify the applicable workflow and its intake steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer alleges breathing problems, so the health-effects branch applies. I’ll check the safety step’s document criteria.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Medical confirmation is required on the active health branch; the message alone does not establish medical findings and causal limits. Next I’ll check scope requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is required for the active scope step and is not supplied. I’ll check the landlord-notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says a written report was sent, but the message is not the notice itself or proof of delivery. I’ll check the cause step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it is not needed. I’ll check the objective evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould is expressly reported, so dated photos and a humidity/temperature log are required. Heating is not mentioned, so that branch is presumed absent. I’ll check landlord-response evidence and conditional routing.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The message alleges health effects and mould, so medical confirmation, photos, and a humidity/temperature log are needed. Specialist inspection and rent deposit are not mentioned and are presumed not under consideration; their conditional documents are therefore not needed. The reported written notice does not supply the notice or delivery proof.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_881c44fa0cda8200|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a tenancy termination dispute. I’ll inspect that workflow to determine its steps and required documents.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice is presumed received; the family-home and extension branches are active. Arrears are not mentioned, so that branch is presumed absent. I’ll inspect the deadline evidence requirements first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Both deadline documents are required. I’ll check the form/service evidence requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The case message is not the original notice or lease. I’ll inspect the family-home service requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The customer explicitly says this is the family home, so separate spouse notice evidence is required. I’ll inspect the retaliation/good-faith step.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The customer expressly raises retaliation after asserting tenancy rights, making prior-rights correspondence relevant. The stated termination reason is always needed, but the message does not give the landlord’s stated grounds or their factual basis.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The customer asks for an extension and describes hardship, so housing-search evidence is required. I’ll inspect the final evidence step.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "This is a lease-termination dispute. The customer explicitly identifies the flat as the family home, raises retaliation, and requests an extension. The notice-received presumption applies; arrears are unmentioned and presumed absent. No supplied file contains the required substantive documents, and the landlord correspondence is optional.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_8cd148548c0c667a|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the termination notice and any proof showing who received it and when, along with the lease or other evidence of the agreed notice period and termination dates.",
+    "Please provide the cure notice with its cure period, claimed arrears, and termination warning, plus a rent ledger/payment records showing amounts due, payment dates, and the outstanding balance. What is the basis for the claimed CHF 3,920, and what payments have been credited?",
+    "Please provide the stated termination reason or factual basis if available, and a dated log of housing searches, efforts, responses, and the hardship supporting your extension request."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a challenge to a lease termination for alleged unpaid rent, so I’ll identify and follow the lease-termination workflow.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The message says termination was received, arrears are the stated reason, and an extension is sought. I’ll inspect the deadline-step document criteria first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "No receipt details or notice dates are in the message, and no original documents were supplied. I’ll check what the form/service step requires.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The message expressly identifies unpaid rent as the termination ground, so the arrears branch applies. I’ll inspect its evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears termination branch is active. The claim also expressly seeks an extension, so I’ll check the extension evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The extension request is active; I’ll check the remaining evidence required for the stated reason and termination circumstances.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The message raises no retaliation concern, so that branch is presumed absent. I’ll inspect the final evidence step before preparing the checklist.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "Arrears and extension are both expressly raised, so their evidence is needed. The message is not the termination notice, lease, proof of receipt, or substantive accounting records. I’ll request the missing mandatory evidence; the optional correspondence is not needed.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_938145a10416cfa4|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "heating_service_report"
+   ],
+   "established": [],
+   "questions": [
+    "Can you clarify whether you have evidence or a service assessment confirming the heating is faulty, or whether the rooms merely feel cold?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is primarily a reported bathroom ventilation defect; the possible heating issue is explicitly uncertain, so I’ll inspect the defect workflow and its conditions.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer reports impaired sleep, which may constitute an alleged health effect; I’ll check the safety-step document requirement. The heating issue is raised but left uncertain.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The message explicitly connects the defect noise with sleep disruption, so the health-effects branch applies. I’ll check what the tenancy agreement must establish.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The customer offers to send the lease and correspondence, but neither is included in the supplied file. I’ll check the landlord-notice evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The message states a written report date and recipient, but it is not the actual notice or proof it was delivered. I’ll check the cause and evidence step requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll review what objective defect evidence is relevant, including to the unresolved heating concern.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "The heating report is conditional on heating being defective; the claim raises that possibility but says it is uncertain, so I’ll hold it pending clarification. I’ll check the landlord-response evidence requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The defect workflow applies. Sleep disruption activates the health-effects branch, and heating remains unresolved because it is expressly raised as a possibility. Request required evidence not supplied; hold the heating report pending clarification. The other conditional branches are not active.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_893dbc47ca84663f|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "medical_confirmation"
+   ],
+   "holds": [],
+   "established": [
+    "landlord_response_history",
+    "lease_contract"
+   ],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a reported electrical/oven defect, so I will use the defect, mould, and heating workflow and inspect its steps before assessing the documents.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The caller expressly alleges health effects, so the safety step applies; specialist inspection and rent deposit are not raised and are presumed false. I need the step-level requirements and supplied document contents to assess the checklist.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The reported health effects activate medical confirmation. I will check the requirements for the timeline and notice evidence next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease agreement is on file, but I need its contents to verify it shows the required parties, property, and tenancy terms. Next I’ll check the landlord-notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The caller reports notifying the landlord, but the phone note is not the notice or proof of delivery. I’ll check the causation evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will be not_needed. I’ll inspect the objective-evidence step requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photos are required but not supplied. The defect is neither mould/moisture nor heating, so those conditional logs are not needed. I’ll check the response-history requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The landlord reply could establish response, proposed work, and access arrangements. I’ll read it to assess whether it satisfies those points.",
+    "action": "read_file",
+    "argument": "landlord_reply_defect_2026-11.txt"
+   },
+   {
+    "thought": "The landlord reply shows acknowledgement, proposed repair, and requested access date, satisfying response history. I’ll verify the lease contents.",
+    "action": "read_file",
+    "argument": "tenancy_agreement_Turner_Immobilien_Seeblick.txt"
+   },
+   {
+    "thought": "The lease and landlord reply each show the required contents. The reported health effects make medical confirmation necessary; the defect notice, delivery proof, and dated photos are missing. Mould, heating, specialist inspection, and rent deposit are not raised, so their conditional evidence is not needed. The repair is proposed but not confirmed completed, so ask for an update on its status.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_99be3b386d6fe5d8|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "This is a reported mould and dampness defect with no repair yet, so I will use the defect workflow and inspect its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The caller explicitly alleges a child’s breathing problems, so the health-effects branch applies. I’ll inspect its document requirements and then the common evidence steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Medical confirmation is required on this branch, but the only supplied file is a call summary and does not contain medical findings or causal limits. I’ll inspect the common scope and notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is needed and not in the supplied file. Next I’ll check what is required to establish landlord notification.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The call summary says the landlord was notified, but it is not the actual notice or proof of delivery. I’ll inspect the causation item.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it is not requested. I’ll inspect the objective defect evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould and damp are explicitly reported, so dated photos and a humidity/temperature log are needed. Heating is not mentioned and is presumed absent. I’ll check the landlord-response step to determine whether any later conditional evidence is needed.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The landlord-response history is required, and the call summary does not show the landlord’s response, proposed work, or access arrangements. The specialist and rent-deposit branches are presumed absent because they are not mentioned. I have enough information to submit the checklist.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_9a62e6a839c5bbfa|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "prior_rights_correspondence"
+   ],
+   "established": [],
+   "questions": [
+    "Did you previously assert any rights to your landlord, and was there a response or other event that may connect to the termination? If so, please provide the relevant correspondence and chronology."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 6,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute. I’ll inspect its workflow to identify the steps and document requirements.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The notice was received, so the deadline and form steps apply. The customer raises a possible retaliatory motive but is unsure, so I’ll check how that affects document requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The retaliation concern is raised but unresolved, so prior-rights correspondence may be needed depending on the answer. I’ll inspect the deadline step next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "Proof of receipt and notice-period evidence are required; the message says the notice was received but supplies neither the receipt evidence nor the notice itself. I’ll check form-step requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The lease and original notice are required to assess form and service. The message says the notice is available but does not provide its contents. I’ll check the evidence step for the open retaliation issue.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination workflow applies. Receipt is established, while arrears, family-home status, and extension relevance were not mentioned and take their presumed values. The customer raised possible retaliation but left the connection unresolved, so prior-rights correspondence is held pending clarification. No supplied file contains the requested evidence documents.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_a362784e299e172d|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "Der Fall betrifft Schimmel und ausgefallene Heizkörper. Ich prüfe den passenden Mängel-Workflow und seine Schritte.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Die Nachricht nennt Schimmel und Heizungsdefekte, aber keine gesundheitlichen Auswirkungen; die Sicherheitsabzweigung entfällt. Ich prüfe die Anforderungen der aktiven Schritte.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "Der Mietvertrag wird immer benötigt. Als Nächstes prüfe ich die Anforderungen zum Nachweis der Vermietermeldung.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "Die Kundennachricht beschreibt eine schriftliche Meldung mit Datum und Empfänger, enthält aber nicht den Inhalt des Schreibens oder einen Zustellnachweis. Ich prüfe die nächsten aktiven Dokumentanforderungen.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Die Korrespondenz mit Hauswart oder Hauswartin ist optional. Ich prüfe die objektiven Nachweise zu Schimmel und Heizung.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Schimmel und Heizung sind ausdrücklich genannt, daher gelten beide bedingten Belege. Die Spezialis­tenprüfung und Mietzinshinterlegung sind nicht erwähnt und werden zunächst als nicht vorgesehen behandelt. Ich prüfe den Antwortverlauf-Schritt.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "Der Mängel-Workflow ist einschlägig. Gesundheitliche Auswirkungen, technische Spezialistenprüfung und Mietzinshinterlegung werden nicht erwähnt und sind daher nach den Presumptions nicht aktiv. Die Nachricht schildert zwar eine schriftliche Mängelmeldung, ersetzt aber weder das eigentliche Schreiben noch einen Zustellnachweis. Für die übrigen benötigten Nachweise liegt kein ausreichendes Dokument vor.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_99e24db5f37c7a3c|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the termination notice and proof showing who received it and the date of receipt, and confirm the termination date stated in the notice.",
+    "Please provide the arrears cure notice with its deadline and termination warning, plus a rent ledger and payment records showing amounts due, payment dates, and the current balance.",
+    "Because you say this is your family home, please provide the separate notice addressed to your registered partner and any service evidence."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a tenancy termination dispute based on alleged unpaid rent. I’ll inspect the applicable workflow to identify the path and document requirements.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The message establishes receipt, alleges arrears as the termination reason, and says the flat is the family home. I’ll check the supplied agreement and the document requirements for the active path.",
+    "action": "read_file",
+    "argument": "tenancy_agreement_Gartenweg_83.txt"
+   },
+   {
+    "thought": "The agreement supplies substantive rent and notice-period terms, but it is not the termination notice or proof of when it was received. I’ll inspect deadline-step requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The agreement establishes the agreed notice period, but no termination dates or receipt evidence are supplied. I’ll check the notice-verification requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The agreement identifies the tenant, property, rent and notice period, but does not include the landlord’s signature or all party details. I’ll verify the arrears evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears reason is expressly raised, so that branch applies. The stated CHF 6,660 is only an allegation, not a rent ledger or proof of payment. I’ll check family-home documentation requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The customer says the flat is the family home and their registered partner has lived there throughout, so the family-home branch is active. I’ll check the stated-reason and prior-rights evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "No retaliation concern or extension request is raised, so those facts take their unstated presumptions. The termination reason is mentioned, but the actual notice is needed to show its factual basis. I’ll check the final evidence step.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The termination workflow applies. The arrears and family-home branches are active, while retaliation and extension are not raised and take their stated presumptions. The supplied agreement does not establish all contracting parties or termination dates, and the customer’s message is not a substitute for the termination notice or receipt evidence.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_a442849bcc00a706|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "medical_confirmation"
+   ],
+   "established": [
+    "lease_contract"
+   ],
+   "questions": [
+    "Do you believe the household member’s illness is connected to the mould or heating defect, or has a medical professional indicated a possible connection?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This concerns mould and inadequate heating, so I’ll use the defect/mould/heating workflow and inspect its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The customer mentions illness but leaves any connection to the defect open. That makes health_effects unresolved, so I need to assess documents on both possible paths, starting with the safety step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "Health effects remain unresolved; medical confirmation is needed only if a connection is established. I’ll check what the scope step requires and whether the agreement is sufficient.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is needed on every path. I’ll inspect the supplied agreement to confirm it shows the parties, property, and tenancy terms.",
+    "action": "read_file",
+    "argument": "tenancy_agreement_Seestrasse_8_Thun.txt"
+   },
+   {
+    "thought": "The supplied agreement identifies both parties and the property and states that the landlord leases it to the tenant, satisfying the lease item. I’ll inspect the landlord-notice requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says they reported the defect several times, but provides no actual notice or delivery proof. I’ll inspect the causation step next.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it should be marked not_needed. I’ll check the objective evidence requirements for the active defect types.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Mould and heating are both expressly described, so their conditional evidence items are required. No dated photos, logs, or service report are supplied. I’ll inspect the response and access-history step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The defect, mould, and heating are alleged. Specialist inspection and rent deposit are not mentioned, so their presumptions make those branches inactive. The lease is sufficient on file; medical confirmation depends on the unresolved health connection. Request the missing active evidence and ask about that connection.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_a53b7aae8525d0d4|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "The customer says the landlord is ending the lease and wants to contest it; the retaliation allegation is a reason for the termination dispute, not a separate workflow. I’ll inspect the termination workflow before deciding which documents are needed.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The claim is a termination dispute. The customer says this is their family home and describes prior rights complaints followed by termination, so the family-home and retaliation-related branches are active. I’ll check the document requirements on those branches and the core notice steps.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The termination notice is presumed received under the workflow. Deadline evidence is required, and the customer has not supplied documents showing receipt details or the agreed notice period and termination dates. I’ll check form and service requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The lease and actual termination notice are needed to assess parties, terms, service, form and stated grounds; the customer’s message is not the notice itself. I’ll inspect the family-home requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The customer explicitly says the flat is their family home and that her husband lives there, so the spouse-notice document is required. I’ll check the requirements for the retaliation and stated-reason branch.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The customer explicitly raises retaliation after asserting tenancy rights, so prior-rights correspondence is required. The termination reason is also required but isn’t provided. Extension is not mentioned and is presumed irrelevant; I’ll check the type-specific evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The active path requires deadline evidence, the lease and termination notice, separate notice to the spouse, the stated termination reason, and correspondence about the prior rights complaints. Arrears and extension branches are inactive by presumption; landlord correspondence is optional. No supplied file contains any of the required documents.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_c03f5f5c1caa60f2|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 7,
+  "trace": [
+   {
+    "thought": "This is a lease-termination dispute. I’ll inspect the workflow and then determine which documents are needed from the facts provided.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The termination is treated as received under the workflow presumption. The customer explicitly says this is their family home, so I’ll verify the deadline and notice requirements first.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The customer states the flat is their family home and that his wife lives there, activating the family-home branch. Arrears and extension relevance are not raised, so their presumptions apply. I’ll check the notice/form documents next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The lease contract is offered but not supplied, and the actual termination notice is not included. I’ll inspect the active family-home step’s document requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_family"
+   },
+   {
+    "thought": "The family-home fact is stated, so a separate notice to the spouse is required; none was supplied. The files do not establish retaliation, so its stated-absent presumption applies. I’ll check the evidence step requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The stated reason is required but absent. Retaliation is not raised, so prior-rights correspondence is not needed. I’ll check the always-active landlord-correspondence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The workflow path includes deadline, form, family-home, stated-reason, and evidence steps. Arrears, retaliation, and extension branches are inactive under the stated facts and workflow presumptions. The only supplied file is the customer’s message, which does not substantively show any required evidence.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_b8e5c045a70c397b|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "humidity_temperature_log"
+   ],
+   "established": [
+    "landlord_response_history"
+   ],
+   "questions": [
+    "Do the dark spots involve mould or moisture, or has this been clarified by an inspection?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 10,
+  "trace": [
+   {
+    "thought": "This is a reported apartment defect with a repair proposed, possible wall moisture or mould, and alleged health effects. I’ll inspect the defect workflow and determine its document requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The claim explicitly raises health symptoms, so the safety step is on the path. I’ll check its exact evidence requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_safety"
+   },
+   {
+    "thought": "The message alleges symptoms but leaves medical causation uncertain; there is no medical confirmation supplied. I’ll inspect the scope requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease contract is always needed and is not among the supplied files. Next I’ll check what establishes the landlord notice.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer reports a written notice dated 2 June, but that account alone may not establish the contents or delivery proof. I’ll examine the supplied notice document.",
+    "action": "read_file",
+    "argument": "Meldung_Mangel_Wyss.txt"
+   },
+   {
+    "thought": "The supplied notice gives the parties and date but only says “a defect,” without identifying the door problem, so it does not show the reported defect sufficiently. I’ll check what documents support causation.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is explicitly optional, so it will not be requested. I’ll inspect the objective-evidence step, where possible moisture evidence may depend on whether that issue is actually present.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Dated photos are always needed. The dark spots may be mould or moisture, but the customer leaves that open, so I’ll treat the mould branch as unresolved and hold its log pending clarification. Heating is not raised. I’ll check the landlord-response evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The landlord response history is always needed. The customer describes a proposed repair and access date, but I’ll inspect the supplied response to see whether it shows the required details.",
+    "action": "read_file",
+    "argument": "Antwort_Regimo_Mangel.txt"
+   },
+   {
+    "thought": "The landlord’s response contains the proposed work and access arrangements, so it is on file. The defect notice does not identify the door defect, and no delivery proof or dated photos are supplied. Mould or moisture is expressly raised but unresolved, so the humidity/temperature log is held pending clarification. Specialist inspection and rent deposit are not raised and are presumed absent.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_c40e2e2d27b46049|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "established": [],
+   "questions": [
+    "Please provide the termination notice itself and confirm when and how you received it, including the delivery date.",
+    "Please provide your lease contract, any cure/deadline letter warning of termination, and rent ledger/payment records showing amounts due, payment dates, and the balance.",
+    "Please provide evidence of the agreed notice period and the termination dates.",
+    "Please provide the landlord’s stated reason and its factual basis, if available, and a dated log of your housing search, including efforts, responses, and resulting hardship."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "The dispute concerns a tenancy termination allegedly for rent arrears, so I’ll inspect the lease-termination workflow and its required steps.",
+    "action": "list_steps",
+    "argument": "lease_termination_dispute"
+   },
+   {
+    "thought": "The claim raises both an arrears-based termination and a request for extension. I’ll check the document requirements for the active deadline, notice, arrears, extension, and evidence steps.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_deadline"
+   },
+   {
+    "thought": "The deadline step always needs proof of receipt and notice-period evidence; the message contains neither substantive item. I’ll inspect the form-and-service requirements next.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_form"
+   },
+   {
+    "thought": "The customer offers to provide the lease contract, but it is not included; the termination notice itself is also absent. The stated arrears activate the arrears branch, so I’ll inspect its document conditions.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_arrears"
+   },
+   {
+    "thought": "The arrears branch is active, and the customer expressly seeks an extension citing health and difficulty finding housing. I’ll check the extension evidence requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_extension"
+   },
+   {
+    "thought": "The extension is expressly relevant, so the housing-search log is needed. I’ll check the always-active reason and correspondence evidence requirements.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_abuse"
+   },
+   {
+    "thought": "The stated reason is required, while retaliation-related correspondence is not needed because retaliation was not raised. I’ll inspect the final evidence-step requirement.",
+    "action": "read_step",
+    "argument": "lease_termination_dispute:lt_evidence"
+   },
+   {
+    "thought": "The arrears termination and extension request are both raised. The requested documents are not attached, and the customer only says they can provide some of them. I’ll submit the missing evidence requests and clarify the termination notice and receipt details needed to preserve the deadline.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_d0adca9e774843e2|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [
+    "written_repair_deadline"
+   ],
+   "established": [],
+   "questions": [
+    "Are you considering depositing the rent with the official authority if the heating defect is not remedied?"
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 8,
+  "trace": [
+   {
+    "thought": "The reported dispute concerns a heating defect. I’ll identify the applicable workflow and its document requirements.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "The caller alleges no health effects, so the health-effects branch is presumed absent. I’ll check the requirements for the unconditional scope step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is required. Next I’ll check what must be shown to establish landlord notice.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The phone-call note says the caller is unsure whether written notice was sent, so notice documents are still needed. I’ll check the causation item.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional and therefore not needed. I’ll review the objective evidence requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "Heating is explicitly involved, so the heating service report is required; mould is not mentioned, so its log is not needed. I’ll check the landlord-response step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The caller explicitly leaves rent deposit undecided, so that branch is unresolved. Specialist need is not raised and is presumed absent. I’ll check the deposit safeguard document.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_deposit"
+   },
+   {
+    "thought": "Heating defect workflow applies. The caller explicitly leaves official rent deposit undecided, so the repair-deadline document is held pending clarification. No supplied file substantively satisfies the required evidence items.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ },
+ "REACT|fcl_cb0a6837d3f9d819|0": {
+  "plan": {
+   "family": "defect_mold_heating",
+   "requests": [
+    "dated_photos",
+    "humidity_temperature_log",
+    "lease_contract",
+    "proof_of_notification"
+   ],
+   "holds": [],
+   "established": [
+    "defect_notification",
+    "landlord_response_history"
+   ],
+   "questions": [
+    "Please provide the lease contract showing the parties, property, and tenancy terms.",
+    "Do you have proof showing when and how the defect notice was delivered to the landlord?",
+    "Please provide dated photographs showing the mould and where it is located.",
+    "Please provide a humidity and temperature log for the affected areas, with observation dates."
+   ],
+   "deferred": false
+  },
+  "error": null,
+  "calls": 9,
+  "trace": [
+   {
+    "thought": "This is a reported mould defect in the rental home, so I’ll use the defect, mould, and heating workflow and inspect its steps.",
+    "action": "list_steps",
+    "argument": "defect_mold_heating"
+   },
+   {
+    "thought": "Health effects are not alleged, and neither specialist inspection nor rent deposit is raised, so the stated presumptions route this through scope, notice, cause, evidence, response, and resolution. I’ll check the document requirements for those steps.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_scope"
+   },
+   {
+    "thought": "The lease is required on this route. I’ll inspect what the notice step requires, then verify whether the supplied letter covers it.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_notice"
+   },
+   {
+    "thought": "The customer says a letter is attached, but I need its substantive contents to assess defect notice and delivery proof. I’ll read the tenant letter.",
+    "action": "read_file",
+    "argument": "tenant_letter_2026-06-19.txt"
+   },
+   {
+    "thought": "The tenant letter shows the defect, recipient, and date, but not delivery evidence. I’ll check the cause step’s document requirement.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_cause"
+   },
+   {
+    "thought": "Caretaker correspondence is optional, so it will not be requested. I’ll inspect the objective evidence step requirements.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_evidence"
+   },
+   {
+    "thought": "The claim explicitly involves mould, so the humidity and temperature log is required; dated photos are required regardless. Heating is not mentioned, so its report is not needed. I’ll inspect the response step.",
+    "action": "read_step",
+    "argument": "defect_mold_heating:dh_response"
+   },
+   {
+    "thought": "The response history is required and the customer mentions an attached reply, but I need to confirm it shows the landlord’s response, proposed work, and access arrangements.",
+    "action": "read_file",
+    "argument": "landlord_reply.txt"
+   },
+   {
+    "thought": "The landlord reply confirms receipt and describes proposed work and access, so landlord response history is on file. It does not establish the actual delivery date of the tenant’s notice. The route does not reach specialist or rent-deposit steps under the stated presumptions; the mould-specific log is required.",
+    "action": "submit",
+    "argument": ""
+   }
+  ]
+ }
+}
