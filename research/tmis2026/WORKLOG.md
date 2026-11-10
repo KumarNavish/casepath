@@ -204,3 +204,37 @@ Short record; details are in the files named.
   per concept (no formal controlled-language conformance); no history rewrite
   and no force-push, assistant author lines are dropped by a squash at merge.
 - New sealed cases for the confirmatory test are being built in `fresh2/`.
+
+## 2026-11-10 — Product round 3; Study 3 design drafted
+
+Round 3 on the product fix branch (head `90a50673`, unpushed, 198 tests): quotation
+retry, second judgment before a document counts as present, a fact counts as raised
+only when both readings quote it, the review findings H1, H3, M1–M4, M6 and the
+display fixes, and a checklist-only run setting as the last commit.
+
+Development numbers (gpt-6-luna, three runs, `fresh/`):
+- Tenancy, strict unsafe errors per claim: product .157; checklist only .132 (two
+  runs); Rules in context .199 (same model), .157 (frontier model);
+  self-consistency .194. The product holds more: .065 required documents and .130
+  unneeded documents per claim are held.
+- Theft stories 4–5, wrong + missed per pair: product .80; checklist only .93;
+  core (CP4) .33; Rules in context 1.33 (same model, reviewed rules), .54 (frontier
+  model, original rules); self-consistency 1.50; ReAct 1.11; model executes rules
+  2.06. Fresh readings on three more runs gave .48–.54, so much of the product's
+  .80 is run-to-run variation of the readings; one misread base text costs 16
+  errors.
+- In no measured run did the process builder, the result checker or the brief
+  change a checklist.
+
+Decisions:
+- One last development round (round 4), limited to the readings: compare the
+  product's reading requests with the core's, measure nine runs each, and test
+  agreement rules offline before building anything.
+- An independent review of the 20 fix commits runs in parallel.
+- `fresh2/` contains claims whose defining event is denied or open; `fresh/` has
+  none. Sixteen probe claims (`dev_probe/`) test this case type on development
+  data before the plan is frozen.
+- `STUDY3_DESIGN.md`: the product at a frozen commit against Rules in context
+  (both models), self-consistency, model executes rules, ReAct, two-valued and the
+  core; four primary hypotheses in a fixed order; strict errors stay the tenancy
+  primary measure and "all deviations per claim" is reported beside it.
