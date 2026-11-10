@@ -233,6 +233,7 @@ class TeamTests(unittest.TestCase):
     def test_a_value_counts_only_when_both_readings_give_it(self):
         from casepath.agents.team import CaseWork, confirm_facts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        work.readings = 2  # two readings, as this test describes
         cite = [{"file": "f1", "quote": QUOTE}]
         # Only the second reading finds a value: it does not count; the fact stays open with the quote.
         only_second = ScriptedModel([], second_reading=[{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}])
@@ -267,6 +268,7 @@ class TeamTests(unittest.TestCase):
         self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is unresolved
         self.assertIn("YYYY-MM-DD", READ_FACTS)  # dates in the form the fact type accepts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+        work.readings = 2  # two readings, as this test describes
         model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None,
                                                   "citations": [{"file": "f1", "quote": VENT}]}])
         calls = []
@@ -585,3 +587,33 @@ class ChecklistScopeFixupTests(unittest.TestCase):
         self.assertNotIn("document_finder", [s["agent"] for s in team._skipped(dossier)])
         single = CaseWork(case=CASE, files=FILES[:1], base_workflow=FIXTURE)
         self.assertIn("document_finder", [s["agent"] for s in team._skipped(single)])
+
+
+class ReadingsSettingTests(unittest.TestCase):
+    def test_a_value_counts_only_when_every_reading_gives_it(self):
+        from casepath.agents.team import CaseWork, confirm_facts, read_facts
+        cite = [{"file": "f1", "quote": QUOTE}]
+        yes = [{"fact": "landlord_notified", "status": "established", "value": "yes", "citations": cite}]
+        silent = [{"fact": "landlord_notified", "status": "unknown", "value": None, "citations": []}]
+
+        class Third(ScriptedModel):  # the third reading leaves it open
+            def respond_json(self, **kw):
+                if kw["name"] == "casepath_confirm_facts_2":
+                    self.second_reading = silent
+                return super().respond_json(**kw)
+        for readings, model, expected in ((3, ScriptedModel([], first_reading=yes, second_reading=yes), "established"),
+                                          (3, Third([], first_reading=yes, second_reading=yes), "unknown"),
+                                          (2, Third([], first_reading=yes, second_reading=yes), "established")):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
+            work.readings = readings
+            read_facts(model, work)
+            confirm_facts(model, work)
+            self.assertEqual(work.facts["landlord_notified"]["status"], expected, (readings, type(model).__name__))
+
+    def test_the_setting_defaults_to_three_and_is_named_in_the_parity_manifest(self):
+        from casepath.config import SettingsError, load_settings
+        from casepath.parity import non_default_settings
+        self.assertEqual(load_settings({}).readings, 3)
+        self.assertIn("readings", json.dumps(non_default_settings(load_settings({"CASEPATH_READINGS": "2"}))))
+        with self.assertRaises(SettingsError):
+            load_settings({"CASEPATH_READINGS": "1"})

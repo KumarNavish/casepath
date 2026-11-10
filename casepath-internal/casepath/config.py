@@ -72,12 +72,23 @@ class Settings:
     organisation: str | None = None  # whose case handlers the agents work for (CASEPATH_ORGANISATION); None keeps the default
     writing_language: str | None = None  # how agents choose the language they write in (CASEPATH_WRITING_LANGUAGE)
     run_scope: str = "full"  # CASEPATH_RUN_SCOPE: "full", or "checklist" for only the steps that can decide the checklist
+    readings: int = 3  # CASEPATH_READINGS: independent readings of the facts; a deciding value counts only when all agree
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
     volume: str | None = None
+
+
+def _readings(value):
+    try:
+        number = int(value or 3)
+    except ValueError:
+        raise SettingsError("CASEPATH_READINGS is a whole number of at least 2") from None
+    if number < 2:
+        raise SettingsError("CASEPATH_READINGS is a whole number of at least 2")
+    return number
 
 
 def _scope(value):
@@ -146,6 +157,7 @@ def load_settings(env=None):
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         run_scope=_scope(env.get("CASEPATH_RUN_SCOPE")),
+        readings=_readings(env.get("CASEPATH_READINGS")),
         identity_format=identity_format,
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
