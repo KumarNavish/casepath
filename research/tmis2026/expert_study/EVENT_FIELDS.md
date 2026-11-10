@@ -35,14 +35,15 @@ export carries the field (section 7).
 | Field | Meaning | Pseudonymous | Content | Status |
 |---|---|---|---|---|
 | `schema` | record shape | yes | yes | new |
-| `source_case` | A, B, C in the pseudonymous export; internal case id in the content export | label | id | new |
+| `source_case` | A, B, C in the pseudonymous export; dossier label (D2, D4, D7; D5 if the reserve is used) in the content export | label | dossier label | new |
+| `reserve_used` | whether D5 replaced a study case, and the listed reason (`inclusion_failed`, `cut_impossible`, `leak_unremovable`) | yes | yes | new |
 | `cut_id` | id of the cut copy; `h_` + 12 hex in the pseudonymous export | hashed | yes | new |
 | `point` | `first` or `second` (the optional system-only point) | yes | yes | new |
 | `decision_point` | in the pseudonymous export a label (`DP1`, `DP2`) and an offset in whole days from the case's first document; in the content export the calendar date | label and offset | date | new |
 | `rule_applied` | `first_outgoing_request`, `first_outgoing_action` (no request in the case) or `second_outgoing_action`; plus, content export only, which action and why it is the first | code | code and text | new |
 | `cut_sha256` | SHA-256 of the cut copy | yes | yes | new |
 | `included_documents` | number of included documents (pseudonymous); list of documents or page ranges with dates (content) | count | list | new |
-| `leak_check` | adjudicator (G1/G2), done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
+| `leak_check` | checked by the adjudicator (`P`), done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
 | `routes_to_common_workflow` | inclusion criterion, from routing alone | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
@@ -128,12 +129,13 @@ One row per statement of a frozen run (and of a comparator run).
 
 | Field | Status |
 |---|---|
-| `schema`, `item_id`, `adjudicator` (G1, G2, or A for automatic labels), `rater_kind` (`qualified`, `blind_rater`, `automatic`), `label` (`correct`, `incorrect`, `undecidable`), `basis` (`reference`, `file`) | new |
+| `schema`, `item_id`, `rater` (`P` = the process owner as adjudicator, `A` = the automated labeller), `label` (`correct`, `incorrect`, `undecidable`), `basis` (`reference`, `file`) | new |
+| per label set: `label_set_sha256`, `recorded_at` (date inside, day offset in exports); the automated set's hash recorded before the adjudicator starts | new |
 | `as_of` (`DP1`, `DP2`): the decision point the label is for | new |
 | `reference_action`: the insurer's next action and documents requested, from the later file (catalogue ids pseudonymous; text content only); `alternatives`: those judged equally correct, with the time they were listed (before the first session) | new |
-| `reconciled_label`, `reconciled_by` (`agreement`, `discussion`, `undecidable`) | new |
-| `omission`: `reference_item`, `kind`, `source_case`, `system`, `adjudicator` | new |
-| `correction_label`: `event_id`, `adjudicator`, `label` (after the sessions, blind to the expert) | new |
+| `gold_label`: the adjudicator's label, which stands in every case; the automated label never changes it | new |
+| `omission`: `reference_item`, `kind`, `source_case`, `system`, `rater` | new |
+| `correction_label`: `event_id`, `rater`, `label` (after the sessions, blind to the expert) | new |
 | benchmark truth for synthetic cases (`truth.facts`, `truth.documents`, `next_actions`) | exists for synthetic suites only (`quality/evaluate.py:220`, `score`) |
 
 ## 6. Recall coding record (`casepath.study.recall/1`)
@@ -161,7 +163,7 @@ Kept so that a later, separate paper loses nothing.
 | The unaided answer and every revision after the reveal | catalogue ids and kinds: pseudonymous; free text: content |
 | Scale answers per item, per occasion and per case | pseudonymous |
 | Blind-coded reasons and the tapped reasons | pseudonymous; transcripts: content |
-| Each adjudicator's individual labels, not only the reconciled one | pseudonymous |
+| Both label sets (adjudicator and automated labeller) with their hashes | pseudonymous |
 | The parity manifest per session and per run | pseudonymous |
 | Variation and comparator runs, with their item lists | ids, statuses, hashes: pseudonymous; values: content |
 | Agent run events (`run_events`) of the frozen runs | kinds and counts: pseudonymous; full: content |
@@ -171,17 +173,18 @@ Kept so that a later, separate paper loses nothing.
 | Measure (pre-registration section) | Fields |
 |---|---|
 | Final fate (9.1) | `item.corrected`, `item.dismissed`, `correction.undone`, `item.propagated.change = vanished`, `source.opened`, `item.confirmed`, `item.exposed.from_t/to_t`; item `item_id` |
-| Q1 item accuracy, coverage (9.2) | item `item_id`, `chain`, `system`; gold `reconciled_label`; `omission` |
-| Q2 change shares, over- and under-reliance (9.3) | final fate; gold `reconciled_label`; item `kind`, `source_case`; event `expert` |
+| Q1 item accuracy, coverage (9.2) | item `item_id`, `chain`, `system`; gold `gold_label`; `omission` |
+| Q2 change shares, over- and under-reliance (9.3) | final fate; gold `gold_label`; item `kind`, `source_case`; event `expert` |
 | Q2 correction correctness | `item.corrected.after` (content), gold `correction_label` |
 | Q2 expert agreement | final fate per `expert` and `item_id` |
-| Q3 accuracy unaided / after reveal / CasePath (9.4) | `unaided.saved` (last before `unaided.frozen`), `post_reveal.revised` (last before `case.closed`), item list; gold `reconciled_label`, `omission` |
+| Q3 accuracy unaided / after reveal / CasePath (9.4) | `unaided.saved` (last before `unaided.frozen`), `post_reveal.revised` (last before `case.closed`), item list; gold `gold_label`, `omission` |
 | Q3 time, corrections, letter | `case.opened`, `case.closed`, `idle.*`, `active_seconds`; counts of `item.corrected` / `dismissed` / `added`; `letter.copied.change_ratio` |
 | Q3 relative AI reliance and self-reliance | decision units from `unaided.saved`, `post_reveal.revised`, item list, gold |
 | Q4 proposals, gate, held-out accuracy (9.5) | `item.added` (`what`, `catalogue_id`, `reason`, `node`), `source_case`, `expert`; frozen runs' `result`; Knowledge item fields (`process/knowledge.py`, `new_item`); replay output; gold |
 | Q5 reasons (9.6) | `reason` on corrections, dismissals, additions; recall `coded_reason`; gold `correction_label` for reason 5 |
 | Run-to-run variation (9.7) | item lists of `role = frozen` and `variation` runs, by `kind:key` |
-| Adjudicator agreement | gold `label` per `adjudicator` |
+| Rater agreement, by item kind | gold `label` per `rater`; item `kind` |
+| Expert consensus beside gold | final fate per `expert` and `item_id`; `gold_label` |
 | Calibration | `case.closed.form`; Q1 accuracy per case copy |
 | Trust, workload | `scale.answered` |
 | Decision point, cut, leaks (sections 3.1, 4.4) | cut record; item `leak_flag`; gold `as_of`, `reference_action`, `alternatives` |
