@@ -1,0 +1,55 @@
+{
+  "note": "Practice rules for tenancy-defect cases, derived from Protekta's first document-request letters (7 Hackathon cases, counts only). Activated for the pilot build on Navish Kumar's instruction of 2026-11-10; each stays reviewable in Wissen.",
+  "items": [
+    {
+      "seed": "mold-mietvertrag",
+      "family": "osm-mold",
+      "kind": "document_need",
+      "content": {
+        "title": "Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen",
+        "why": "Belegt Parteien, Mietobjekt und Mietzins; Grundlage jeder Herabsetzung (Art. 253 ff., 259d OR). Protekta verlangt ihn in der ersten Unterlagenanforderung.",
+        "legal_basis": "Art. 253, 259d OR",
+        "replaces": "mietvertrag"
+      },
+      "evidence": [
+        {
+          "kind": "request_letters",
+          "text": "In 6 von 7 ersten Unterlagenanforderungen verlangt"
+        }
+      ]
+    },
+    {
+      "seed": "mold-korrespondenz",
+      "family": "osm-mold",
+      "kind": "document_need",
+      "content": {
+        "title": "Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch)",
+        "why": "Zeigt, wann die Vermieterschaft vom Mangel wusste und wie sie reagierte; neben der Mängelrüge auch Antworten und spätere Meldungen (Art. 257g, 259a OR).",
+        "legal_basis": "Art. 257g, 259a OR"
+      },
+      "evidence": [
+        {
+          "kind": "request_letters",
+          "text": "In 6 von 7 ersten Unterlagenanforderungen verlangt"
+        }
+      ]
+    },
+    {
+      "seed": "mold-beweismittel",
+      "family": "osm-mold",
+      "kind": "document_need",
+      "content": {
+        "title": "Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht)",
+        "why": "Eine Herabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung bewiesen werden kann (Art. 259d OR).",
+        "legal_basis": "Art. 259d OR",
+        "replaces": "fotos"
+      },
+      "evidence": [
+        {
+          "kind": "request_letters",
+          "text": "In 4 von 7 ersten Unterlagenanforderungen verlangt"
+        }
+      ]
+    }
+  ]
+}

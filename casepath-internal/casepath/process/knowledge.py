@@ -108,3 +108,37 @@ def from_edit(family, edit, graph, *, by):
         return new_item(family, "question", {"question": args["question"], "type": args.get("type", "boolean"),
                                               "values": args.get("values")}, origin=origin)
     raise KnowledgeError("only added documents and questions can become Knowledge")
+
+
+SEED_DIR = __import__("pathlib").Path(__file__).with_name("knowledge_seed")
+
+
+def seed(store, families, directory=SEED_DIR):
+    """Add the Knowledge items shipped with the build, once.
+
+    Each file holds items a person instructed for this build (its ``note`` says who and why). An item is added as
+    active the first time, for a process family the catalogue has; afterwards the store's copy governs, so a reviewer's refinement or retirement stays.
+    """
+    import json
+    from ..web.store import NotFound
+
+    added = 0
+    for path in sorted(__import__("pathlib").Path(directory).glob("*.json")):
+        data = json.loads(path.read_text())
+        for spec in data["items"]:
+            if spec["family"] not in families:  # an item only for a process this catalogue has
+                continue
+            item_id = f"know-seed-{spec['seed']}"
+            try:
+                store.get_knowledge(item_id)
+                continue
+            except NotFound:
+                pass
+            item = new_item(spec["family"], spec["kind"], spec["content"], applies_when=spec.get("applies_when"),
+                            applies_when_text=spec.get("applies_when_text", ""),
+                            origin={"by": "build", "note": data.get("note", ""), "file": path.name},
+                            evidence=spec.get("evidence", ()), status="active")
+            item["id"] = item_id
+            store.save_knowledge(item)
+            added += 1
+    return added

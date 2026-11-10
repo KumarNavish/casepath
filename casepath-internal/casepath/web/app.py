@@ -142,6 +142,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         mirror.restore()  # before the store opens its database
     store = store or CaseStore(settings.data_dir)
     catalogue = catalogue or workflows.Catalogue.load(settings.catalogue_dir)
+    kb.seed(store, {w["id"] for w in catalogue.workflows})
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
                       reading_workers=settings.reading_workers, page_image_side=settings.page_image_side,
                       token_budget=settings.run_token_budget,

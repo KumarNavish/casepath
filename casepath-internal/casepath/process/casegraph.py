@@ -67,6 +67,18 @@ def _apply_knowledge(graph, item, facts_known):
     if condition and evaluate_condition(condition, facts_known) is False:
         return {"item": item["id"], "applied": False, "reason": "Its condition does not hold for this case."}
     suggested = item["status"] != "active"
+    if item["kind"] == "document_need" and content.get("replaces") in {d["id"] for d in graph["documents"]}:
+        # The process already names this document, but only on a later step: the item makes it a need of the whole
+        # case (asked for at intake), so the case shows one row, not two.
+        document = next(d for d in graph["documents"] if d["id"] == content["replaces"])
+        if suggested:
+            return {"item": item["id"], "applied": False, "reason": "A suggestion does not change the process's own needs."}
+        for step in graph["steps"]:
+            step["documents"] = [d for d in step.get("documents", []) if d != document["id"]]
+        document.update(title=content["title"], why=content["why"], source_refs=document["source_refs"] + [ref],
+                        knowledge=item["id"], **({"required_when": condition} if condition else {}))
+        document.pop("optional", None)
+        return {"item": item["id"], "applied": True, "document": document["id"], "replaced": True}
     if item["kind"] == "document_need":
         document_id = f"k-{item['id']}"
         graph["documents"].append({"id": document_id, "title": content["title"], "why": content["why"],
