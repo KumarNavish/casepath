@@ -287,6 +287,7 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
             reader = _Counted(getattr(model, "reading", None) or model, "reader", usage)
             for row in job["files"]:
                 prepare_file(reader, storage, storage.rows[row["id"]], on_event=on_event, workers=options.get("reading_workers", 1),
+                             voice=options.get("voice"),
                              image_side=options.get("page_image_side", 1700))
         files = case_files(storage.rows.values())
         decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
