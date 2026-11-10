@@ -73,6 +73,21 @@ class PresumptionUseTests(unittest.TestCase):
         self.assertEqual(workflows.presumed(work.graph, {})["landlord_notified"]["applies"], "routed")
 
 
+class ReplyTests(unittest.TestCase):
+    def test_a_clause_resting_only_on_a_presumption_is_not_supported(self):
+        from casepath.agents.team import finalize
+        work = CaseWork(case=CASE, files=FILES, base_workflow=with_presumption())
+        clause = {"text": "Sie haben den Vermieter nicht informiert.", "kind": "statement", "basis": ["fact:landlord_notified"]}
+        work.result = {"summary": "s", "answer": "a", "open_points": [], "case_summary": [], "learn": [],
+                       "reply": {"needed": True, "subject": "x", "clauses": [clause]}}
+        out = finalize(work)
+        self.assertFalse(out["reply"]["clauses"][0]["supported"])
+        self.assertIn("presumed", [f["status"] for f in out["facts"]])
+        work.facts["landlord_notified"] = {"fact": "landlord_notified", "status": "established", "value": False,
+                                           "citations": [{"file": "f1", "quote": QUOTE}], "verdict": "accepted"}
+        self.assertTrue(finalize(work)["reply"]["clauses"][0]["supported"])
+
+
 class CaseViewTests(unittest.TestCase):
     def test_the_case_view_keeps_presumed_facts_like_the_run(self):
         from casepath.agents import core

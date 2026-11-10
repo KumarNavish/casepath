@@ -750,7 +750,9 @@ def personal_details(row, names):
 def finalize(work):
     evaluation = work.evaluate()
     result = work.result
-    accepted = {f"fact:{k}" for k in work.accepted_facts()} | {f"document:{k}" for k in work.findings()}
+    # A statement rests on what the files establish: established, accepted facts only, never a presumption.
+    accepted = {f"fact:{k}" for k, v in work.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
+    accepted |= {f"document:{k}" for k in work.findings()}
     accepted |= {f"document:{k}" for k, v in work.documents.items() if v["status"] == "missing"}
     known = {f"fact:{k}" for k in work.fact_defs} | {f"document:{k}" for k in work.document_defs}
 
