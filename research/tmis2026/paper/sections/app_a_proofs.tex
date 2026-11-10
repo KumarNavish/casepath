@@ -18,7 +18,7 @@ By Equation~\eqref{eq:exact}, $\exactreq(d)=\U$ exactly when two completions dis
 \paragraph{Exact computation of reading errors}
 To quantify both kinds without depending on any model, we computed exactly, for all \propClaims{} tenancy claims of Study~1 and every partial assignment of their facts, which documents each semantics requests and holds. Assignments were weighted by a model in which each fact is misread independently with probability \propEps, either as unresolved or as the opposite value. Of the \propRequired{} documents that the claims need, unresolved values become \propExactDefer{} expected holds under exact deferral and no unsafe error. Strong Kleene evaluation holds \propKleeneExtra\% more; reading unresolved values as false misses \propClosedMiss{} documents, and reading them as true adds \propEagerUnnec{} unnecessary requests. Wrong values cause \propFlipMiss{} missed documents and \propFlipUnnec{} unnecessary requests under every semantics (Figure~\ref{fig:fate}).
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \fig{fig_fate}{\linewidth}
 \Description{Flow from kinds of reading error to outcomes under four semantics.}
