@@ -434,30 +434,37 @@ def trace(ax, pts, dots=(0, -1)):
 
 
 def fig_hero():
-    """Two aligned rows (the claim states the fact / leaves it open), same columns and the same printed
-    text height: claim quotation -> recorded judgment -> process -> outcome, one ochre trace per row."""
-    W, H = th.WIDTH, 3.62
+    """Two aligned rows (the claim states the fact / leaves it open), one table of crops with the same printed
+    text height: claim quotation -> recorded judgment -> process -> outcome, one ochre trace per row. The four
+    stage labels sit once, on one baseline above the grid, in reading order."""
+    hgt = lambda k: (UI_CROPS[k][1][3] - UI_CROPS[k][1][1]) * UI_BAND / UI_CROPS[k][2]
+    row = 0.12 + hgt("claim_yes") + 0.22 + hgt("step_yes")
+    W, H = th.WIDTH, 0.37 + 2 * row + 0.24 + 0.04
     fig, ax = th.canvas(H)
     x0, gut = 0.04, 0.30
-    top = H - 0.12
+    hdr = H - 0.10
+    xs = x0
+    for j, lab in enumerate(("claim", "recorded judgment", "process", "outcome")):
+        t = th.text(ax, xs, hdr, lab, "note")
+        xs += th.width(ax, lab, "note")
+        if j < 3:
+            th.text(ax, xs + 0.07, hdr, "\u2192", "note")
+            xs += 0.26
+    top = hdr - 0.27
     rows = [("yes", "The claim states the fact", "true", "active"),
             ("open", "The claim leaves the fact open", "unresolved", "unresolved")]
     for i, (k, title, val, node) in enumerate(rows):
         th.text(ax, x0, top, title, "label", bold=True)
-        A = screen(ax, f"claim_{k}", x0, top - 0.13)
-        C = screen(ax, f"step_{k}", x0, A[1] - 0.40)
-        D = screen(ax, f"out_{k}", C[2] + gut, C[3])
-        xj, yj = x0 + 0.42, (A[1] + C[3]) / 2
+        A = screen(ax, f"claim_{k}", x0, top - 0.12)
+        xj, yj = A[2] + 0.30, (A[1] + A[3]) / 2
         th.node(ax, xj, yj, node)
-        th.text(ax, xj + 0.10, yj, "health effects: " + val, "label")
-        if i == 0:
-            th.text(ax, A[2], A[3] + 0.05, "claim", "note", ha="right", va="bottom")
-            th.text(ax, xj + 0.10 + th.width(ax, "health effects: " + val) + 0.14, yj, "(recorded judgment)",
-                    "note")
-            th.text(ax, C[2], C[3] + 0.05, "process", "note", ha="right", va="bottom")
-            th.text(ax, D[2], D[3] + 0.05, "outcome", "note", ha="right", va="bottom")
-        trace(ax, [(xj, A[1]), (xj, yj + 0.05)], dots=(0,))
-        trace(ax, [(xj, yj - 0.05), (xj, C[3])], dots=(-1,))
+        th.text(ax, xj + 0.10, yj, "health effects:\n" + val, "label", linespacing=1.2)
+        C = screen(ax, f"step_{k}", x0, A[1] - 0.22)
+        D = screen(ax, f"out_{k}", C[2] + gut, C[3])
+        trace(ax, [(A[2], yj), (xj - 0.05, yj)], dots=(0,))
+        yg = (A[1] + C[3]) / 2
+        xc = C[0] + 0.30 * (C[2] - C[0])
+        trace(ax, [(xj, yj - 0.05), (xj, yg), (xc, yg), (xc, C[3])], dots=(-1,))
         ys = D[3] - 0.30 * (D[3] - D[1])
         trace(ax, [(C[2], ys), (D[0], ys)])
         top = C[1] - 0.24
@@ -845,8 +852,9 @@ def fig_study2():
         v = D["tenancy"][f"{d}|{m}"]
         th.design_scatter(a1, v["held"], y, mk, th.HELD)
         th.design_scatter(a2, v["unsafe"], y, mk, th.MISSED)
-        a1.text(v["held"] + 0.16, y, f"{v['held']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
-        a2.text(v["unsafe"] + 0.013, y, f"{v['unsafe']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
+        for a, val in ((a1, v["held"]), (a2, v["unsafe"])):
+            a.annotate(f"{val:.2f}", (val, y), xytext=(7, 0), textcoords="offset points", fontsize=th.NOTE,
+                       va="center", color=th.INK)
     for m, ds in S2_TEN:
         ys = [y for y, mm, *_ in R1 if mm == m]
         a1.text(-0.12, sum(ys) / len(ys), m, transform=a1.get_yaxis_transform(), fontsize=th.LABEL, ha="right",
@@ -861,7 +869,8 @@ def fig_study2():
         if abs(v["dedup"] - v["errors"]) > 1e-9:
             a3.plot([v["dedup"]] * 2, [y - 0.32, y + 0.32], color=th.INK, lw=th.THICK, solid_capstyle="butt", zorder=3)
         th.design_scatter(a3, v["errors"], y, mk, th.MISSED)
-        a3.text(v["ci"][1] + 0.06, y, f"{v['errors']:.2f}", fontsize=th.NOTE, va="center", color=th.INK)
+        a3.annotate(f"{v['errors']:.2f}", (v["ci"][1], y), xytext=(5, 0), textcoords="offset points", fontsize=th.NOTE,
+                    va="center", color=th.INK)
     for m, ds in S2_THEFT:
         ys = [y for y, mm, *_ in R2 if mm == m]
         a3.text(-0.06, sum(ys) / len(ys), m, transform=a3.get_yaxis_transform(), fontsize=th.LABEL, ha="right",
