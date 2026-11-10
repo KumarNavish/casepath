@@ -238,3 +238,42 @@ Decisions:
   (both models), self-consistency, model executes rules, ReAct, two-valued and the
   core; four primary hypotheses in a fixed order; strict errors stay the tenancy
   primary measure and "all deviations per claim" is reported beside it.
+
+## 2026-11-10 — Product round 4, review of the fixes, probe, Study 3 tooling
+
+**Readings (theft, development).** Nine runs each showed that the core's earlier
+0.33 was a lucky draw: core 0.75 (sd 0.48), product checklist-only 0.88 (sd 0.62)
+wrong + missed per pair. Two request differences had no reason: the product's
+second reading saw only 27 of 89 conditions, in reverse order, and lacked the
+framing of the task. Resampling stored readings showed that requiring three
+readings to agree lowers errors (0.93 to 0.55) and leaves more open pairs
+unchanged. Built: every reading judges all conditions in the same order; number of
+readings is a setting, default three. Result at the final round-4 commit, nine
+runs: product checklist-only **0.40** (sd 0.09), open pairs unchanged 100%;
+against core 0.75, frontier single prompt 0.67 (reviewed rules) and 0.54 (original
+rules), same-model single prompt 1.33.
+
+**Independent review of the 20 fix commits:** merge after fixes. Fixed: a stopped
+document finder dropped unchecked needs from the request list; a failed reading
+let a presumption fill a doubt; a recheck skipped the second document judgment;
+quotation matching folded superscripts into digits; and smaller points. Each has a
+test that fails without it.
+
+**Incident.** The reviewer's script ran `git checkout` in the worktree
+`casepath-sync-c` that another worker used. No run was affected (all round-4 runs
+came from clean worktrees whose source-tree hash was checked). The tree is left as
+it was found; work moved to `casepath-sync-d`.
+
+**Probe (16 development claims, defining event denied, open or true).** With the
+event denied the product makes 2.2 unsafe errors per claim, the single prompts 6.0
+to 6.6. With the event left open the product requested everything: a presumption
+overrode a doubt that both readings had quoted. Fixed by rule: no presumption
+applies to a fact the readings find raised and left open. Side effect on normal
+claims: a reading's "unresolved" did not separate a stated doubt from silence, so
+claims that take the notice for granted were held (held required documents .065 to
+.787 per claim). Round 4b gives readings two separate answers, "open" (the file
+says it is not known, with a quotation) and "not stated".
+
+**Study 3 tooling.** `analysis/study3.py` with spec and 36 tests reproduces the
+round-3 numbers; `harness/study3/run_all.py` runs the whole study in one command
+with preflight checks and a resume log. Expected cost of the run: about USD 24.5.
