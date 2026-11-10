@@ -176,6 +176,7 @@ class CaseWork:
             raise TeamError("no_files", "The case has no files to read.")
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
         self.routing_presumed = {}  # routing facts presumed because only this case's workflow can apply
+        self.limits = []  # agents that stopped at their turn limit, with what they had recorded kept
         self.brief = self.process_report = self.result = None
         self.documents_looked_for = False  # set once the document finder has reported
         self._state_shape = self._last_state = None
@@ -585,7 +586,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
         conversation.extend(turn.output)
         if not turn.calls:
             if nudged:
-                raise TeamError("no_report", f"The {spec['title'].lower()} stopped without reporting.")
+                return _stopped(work, agent, "no_report", f"The {spec['title'].lower()} stopped without reporting.")
             nudged = True
             conversation.append({"role": "user", "content": "Continue with your tools, then call report."})
             continue
@@ -612,7 +613,16 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
         if report is not None:
             work.emit(agent, "agent.end", summary=report["summary"])
             return report
-    raise TeamError("turn_limit", f"The {spec['title'].lower()} did not finish within its turn limit.")
+    return _stopped(work, agent, "turn_limit", f"The {spec['title'].lower()} did not finish within its turn limit.")
+
+
+def _stopped(work, agent, reason, message):
+    """An agent that stops without a valid report ends with what it has recorded: its findings stay, it reports
+    nothing, and the result names the limit."""
+    work.limits.append({"agent": agent, "reason": reason, "message": message})
+    work.emit(agent, "agent.limit", reason=reason, message=message)
+    work.emit(agent, "agent.end", summary=message)
+    return None
 
 
 def run_source_checker(model, work, effort="medium"):
@@ -741,6 +751,8 @@ class CaseTeam:
         if agent == "result_checker" and work.unverified():
             run_source_checker(self.model, work, self.effort)
         report = run_agent(self.model, work, agent, instruction, effort=self.effort)
+        if report is None:
+            return None
         if agent == "claim_reader" and work.brief is None:
             work.brief = _located_brief(work, report)
         if agent == "process_builder":
@@ -811,7 +823,11 @@ def personal_details(row, names):
 
 def finalize(work):
     evaluation = work.evaluate()
-    result = work.result
+    result = work.result or {  # the result checker stopped at its limit: the checklist still stands on the accepted findings
+        "summary": "The result checker did not finish; the checklist is evaluated from the accepted findings.",
+        "answer": "Not finished: see the checklist and the open points.",
+        "open_points": [a["text"] for a in evaluation["next_actions"]][:12], "case_summary": [],
+        "reply": {"needed": False, "subject": "", "clauses": []}, "learn": []}
     # A statement rests on what the files establish: established, accepted facts only, never a presumption.
     accepted = {f"fact:{k}" for k, v in work.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
     accepted |= {f"document:{k}" for k in work.findings()}
@@ -862,4 +878,5 @@ def finalize(work):
             "reply": {"needed": result["reply"]["needed"], "subject": result["reply"]["subject"], "clauses": clauses,
                       "status": "draft_not_sent", "label": "AI-generated draft"},
             "learning": learning, "events": work.events, "usage": work.usage,
-            "warnings": [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items() if f.get("instruction_like")]}
+            "warnings": [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items() if f.get("instruction_like")]
+            + [{"kind": limit["reason"], "agent": limit["agent"], "text": limit["message"]} for limit in work.limits]}
