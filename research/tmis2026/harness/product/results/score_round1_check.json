@@ -1,0 +1,261 @@
+{
+ "tenancy": {
+  "(a) their tip 41c8e1d1, full, conservative": {
+   "runs": 1,
+   "req": 0.9357429718875502,
+   "heldreq": 0.08333333333333333,
+   "missed": 0.3611111111111111,
+   "unn": 0.5555555555555556,
+   "prem": 0.06944444444444445,
+   "strict": 1.0138888888888888,
+   "spur": 0.1527777777777778,
+   "handed": 0.0,
+   "calls": 30.680555555555557,
+   "usd": 0.015022166458333335,
+   "empty": 2
+  },
+  "(a) their tip 41c8e1d1, full, workflow needs only": {
+   "runs": 1,
+   "req": 0.9357429718875502,
+   "heldreq": 0.08333333333333333,
+   "missed": 0.3611111111111111,
+   "unn": 0.05555555555555555,
+   "prem": 0.06944444444444445,
+   "strict": 0.5138888888888888,
+   "spur": 0.1388888888888889,
+   "handed": 0.0,
+   "calls": 30.680555555555557,
+   "usd": null,
+   "empty": 2
+  },
+  "(b) rebased f277a6aa, checklist-only": {
+   "runs": 3,
+   "req": 0.9618473895582329,
+   "heldreq": 0.14351851851851852,
+   "missed": 0.06481481481481481,
+   "unn": 0.032407407407407406,
+   "prem": 0.0,
+   "strict": 0.1527777777777778,
+   "spur": 0.004629629629629629,
+   "handed": 0.05555555555555555,
+   "calls": 8.99537037037037,
+   "usd": 0.0009040742592592592,
+   "empty": 0
+  },
+  "6a72159c/5ed0ea7c checklist-only (stored e-check)": {
+   "runs": 3,
+   "req": 0.9618473895582329,
+   "heldreq": 0.12962962962962962,
+   "missed": 0.0787037037037037,
+   "unn": 0.041666666666666664,
+   "prem": 0.0,
+   "strict": 0.17592592592592593,
+   "spur": 0.018518518518518517,
+   "handed": 0.05555555555555555,
+   "calls": 9.23611111111111,
+   "usd": 0.00317,
+   "empty": 0
+  },
+  "7ff7af64 merged earlier, full, conservative (stored)": {
+   "runs": 3,
+   "req": 0.9223560910307899,
+   "heldreq": 0.10185185185185185,
+   "missed": 0.23148148148148148,
+   "unn": 0.5648148148148148,
+   "prem": 0.06481481481481481,
+   "strict": 1.0787037037037037,
+   "spur": 0.48148148148148145,
+   "handed": 0.2037037037037037,
+   "calls": 35.21296296296296,
+   "usd": 0.0176,
+   "empty": 3
+  },
+  "7ff7af64 merged earlier, full, workflow needs only": {
+   "runs": 3,
+   "req": 0.9223560910307899,
+   "heldreq": 0.10185185185185185,
+   "missed": 0.23148148148148148,
+   "unn": 0.06944444444444445,
+   "prem": 0.06481481481481481,
+   "strict": 0.5833333333333334,
+   "spur": 0.4351851851851852,
+   "handed": 0.2037037037037037,
+   "calls": 35.21296296296296,
+   "usd": null,
+   "empty": 3
+  },
+  "Rules in context luna (stored)": {
+   "runs": 3,
+   "req": 0.9544846050870147,
+   "heldreq": 0.11574074074074074,
+   "missed": 0.19907407407407407,
+   "unn": 0.0,
+   "prem": 0.0,
+   "strict": 0.19907407407407407,
+   "spur": 0.013888888888888888,
+   "handed": 0.0,
+   "calls": 1,
+   "usd": 0.0006604647453703704,
+   "empty": 0
+  },
+  "Rules in context terra (stored)": {
+   "runs": 3,
+   "req": 0.9805890227576974,
+   "heldreq": 0.0,
+   "missed": 0.13425925925925927,
+   "unn": 0.018518518518518517,
+   "prem": 0.004629629629629629,
+   "strict": 0.1574074074074074,
+   "spur": 0.023148148148148147,
+   "handed": 0.0,
+   "calls": 1,
+   "usd": 0.005947670833333333,
+   "empty": 0
+  }
+ },
+ "theft": {
+  "(a) their tip, full, conservative": {
+   "runs": 1,
+   "wm": 1.5,
+   "unchanged": "5/12",
+   "prem": 2,
+   "calls": 27.0,
+   "usd": 0.02810850390625
+  },
+  "(a) their tip, full, workflow needs only": {
+   "runs": 1,
+   "wm": 1.3888888888888888,
+   "unchanged": "5/12",
+   "prem": 2,
+   "calls": 27.0,
+   "usd": null
+  },
+  "(b) rebased, checklist-only": {
+   "runs": 3,
+   "wm": 0.35185185185185186,
+   "unchanged": "36/36",
+   "prem": 0,
+   "calls": 4.291666666666667,
+   "usd": 0.004620407552083333
+  },
+  "6a72159c/5ed0ea7c checklist-only (stored pf-check)": {
+   "runs": 3,
+   "wm": 0.42592592592592593,
+   "unchanged": "35/36",
+   "prem": 0,
+   "calls": 4.604166666666667,
+   "usd": 0.0044
+  },
+  "7ff7af64 merged earlier, full (stored, 1 run)": {
+   "runs": 1,
+   "wm": 1.8333333333333333,
+   "unchanged": "6/12",
+   "prem": 0,
+   "calls": 25.03125,
+   "usd": 0.02
+  },
+  "RiC reviewed rules luna (stored)": {
+   "runs": 3,
+   "wm": 1.3333333333333333,
+   "unchanged": "9/36",
+   "prem": 0,
+   "calls": 1,
+   "usd": null
+  },
+  "RiC reviewed rules terra (stored)": {
+   "runs": 3,
+   "wm": 0.6666666666666666,
+   "unchanged": "30/36",
+   "prem": 1,
+   "calls": 1,
+   "usd": 0.0041
+  },
+  "RiC original rules luna (stored)": {
+   "runs": 3,
+   "wm": 1.6111111111111112,
+   "unchanged": "7/36",
+   "prem": 0,
+   "calls": 1,
+   "usd": 0.00077
+  },
+  "RiC original rules terra (stored)": {
+   "runs": 3,
+   "wm": 0.5370370370370371,
+   "unchanged": "36/36",
+   "prem": 0,
+   "calls": 1,
+   "usd": 0.0041
+  }
+ },
+ "worse": [
+  {
+   "claim": "fcl_2021cff640ced3a7",
+   "family": "lease_termination_dispute",
+   "tip": 3,
+   "7ff7af64_runs": [
+    1,
+    2,
+    2
+   ]
+  },
+  {
+   "claim": "fcl_3b8ec390e5f4fbc8",
+   "family": "defect_mold_heating",
+   "tip": 1,
+   "7ff7af64_runs": [
+    0,
+    0
+   ]
+  },
+  {
+   "claim": "fcl_5a191bddbf50f630",
+   "family": "lease_termination_dispute",
+   "tip": 2,
+   "7ff7af64_runs": [
+    1,
+    0,
+    1
+   ]
+  },
+  {
+   "claim": "fcl_5f53fea2fcbaf192",
+   "family": "lease_termination_dispute",
+   "tip": 1,
+   "7ff7af64_runs": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "claim": "fcl_62814fb6c5c0f470",
+   "family": "defect_mold_heating",
+   "tip": 2,
+   "7ff7af64_runs": [
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "claim": "fcl_b8e5c045a70c397b",
+   "family": "defect_mold_heating",
+   "tip": 2,
+   "7ff7af64_runs": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "claim": "fcl_d0adca9e774843e2",
+   "family": "defect_mold_heating",
+   "tip": 2,
+   "7ff7af64_runs": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

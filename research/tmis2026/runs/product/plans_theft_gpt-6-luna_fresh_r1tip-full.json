@@ -29157,5 +29157,3157 @@
    "added_requests": [],
    "added_holds": []
   }
+ },
+ "PRODUCT|s5-unres-PR_scheduled_valuable_1000|0": {
+  "plan": {
+   "family": "household_theft",
+   "questions": [
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "household_theft",
+   "questions": [
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+   ]
+  },
+  "status": "completed",
+  "calls": 27,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "claim_type",
+      "value": "household_theft"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {
+    "d01": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d03": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d04": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d05": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d07": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d10": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d11": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d12": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d14": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d15": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d16": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d17": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d18": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d20": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d21": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d22": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d23": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d24": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d25": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d26": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d27": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d28": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d29": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d30": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d31": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d32": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d33": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "claim_type": {
+     "status": "established",
+     "value": "household_theft",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g001": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g002": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g003": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "second_reading",
+     "cited": true
+    },
+    "g004": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g005": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g006": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g007": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g008": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g009": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g012": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g013": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g014": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g015": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g016": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g017": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g019": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g020_rev_b4712e29": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "second_reading",
+     "cited": true
+    },
+    "g021": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g022": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g023": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g024": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g025": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g026": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g027": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g028": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g029": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g030_rev_659606b1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g031": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g032": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g033": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g034": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g035": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g036": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g037": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g038": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g039": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g040": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g041": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g042_rev_92ab8925": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g043": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g044": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g045": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g048": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g049": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g050": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g051": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g052": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g053": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g054": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g055": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g056": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g057": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g058": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g059": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g060": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g061": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g063": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g064": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g065": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g066": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g067": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g068_rev_3767fc15": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g070": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g071": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g072": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g073": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g075": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g076": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g077": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g078": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g079": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g080": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g081": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g082": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g083": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g084": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g085": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g086": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g087": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g088": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g090": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g091": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g092": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g093": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g094": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g096": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g097": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g098": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g074": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "first_open_branch",
+    "open_facts": [
+     "g005",
+     "g009",
+     "g016",
+     "g017",
+     "g019",
+     "g025",
+     "g049",
+     "g070",
+     "g071",
+     "g074",
+     "g080",
+     "g081"
+    ],
+    "reason": "12 open facts exceed the limit of 8; the walk stops at the first open branch"
+   },
+   "answer": "Intake complete : obtenir les documents manquants et requis énumérés par la checklist, puis poursuivre l’examen; la couverture et l’indemnité restent indéterminées.",
+   "reply_clauses": 9,
+   "warnings": []
+  },
+  "keys": [
+   "eb865106aaca1e520afa2c794e5ffe4934ec00748565025af3de925506fd7c68",
+   "eb865106aaca1e520afa2c794e5ffe4934ec00748565025af3de925506fd7c68",
+   "6c1369224e31ab533a4fcd5b8d11760e5c05679ca556f21bf5bee9f444b69529",
+   "6c1369224e31ab533a4fcd5b8d11760e5c05679ca556f21bf5bee9f444b69529",
+   "9e41ed86ff5d478c47e83c989f3890d1f1923698a8bcf711c56151ac0e903ae4",
+   "9e41ed86ff5d478c47e83c989f3890d1f1923698a8bcf711c56151ac0e903ae4",
+   "3871859fd793dd9f4950edc348dc14bf13ea95acce3d7415c42875b84d8095ee",
+   "3871859fd793dd9f4950edc348dc14bf13ea95acce3d7415c42875b84d8095ee",
+   "40eb9a6e14522fb9f6a10063d40ac571186fd688401135516f1a581b02880444",
+   "40eb9a6e14522fb9f6a10063d40ac571186fd688401135516f1a581b02880444",
+   "59a615075b9540fbfbc5c03138280961f18d6e7fa5fe303d619630f9897f285f",
+   "59a615075b9540fbfbc5c03138280961f18d6e7fa5fe303d619630f9897f285f",
+   "d2e7aada2fda95ca1bf9fc50ba4eedf42679e06ef501041a0ceedbd122574513",
+   "d2e7aada2fda95ca1bf9fc50ba4eedf42679e06ef501041a0ceedbd122574513",
+   "d69ef7078b303f8a952389eb375e445ad057b16040200896a5706b603bfd6cf9",
+   "d69ef7078b303f8a952389eb375e445ad057b16040200896a5706b603bfd6cf9",
+   "4df736256b362c61ae81691450c98989ba61e39a31e989d85c68527bd4485aec",
+   "4df736256b362c61ae81691450c98989ba61e39a31e989d85c68527bd4485aec",
+   "4a99796e382e824aecd3c44078aa60985dec8c686c22ed9b00444a5188505ce6",
+   "4a99796e382e824aecd3c44078aa60985dec8c686c22ed9b00444a5188505ce6",
+   "c489a078b14860783c75b950928633604942291ea692cc40e533ea80fd0d5657",
+   "c489a078b14860783c75b950928633604942291ea692cc40e533ea80fd0d5657",
+   "d5e9d7bb95404c7d17612e3c57d981f1817e1a98bd6848671f61acd0501ec43c",
+   "d5e9d7bb95404c7d17612e3c57d981f1817e1a98bd6848671f61acd0501ec43c",
+   "21e42feea0182f31ca3eea429afa54f77894c5a622057d329cc49c1e25e289d9",
+   "21e42feea0182f31ca3eea429afa54f77894c5a622057d329cc49c1e25e289d9",
+   "2cbf31aec898bfa5308cb62008da0a4aa08a82d3e1a47e9d55453abddb63ab5a",
+   "2cbf31aec898bfa5308cb62008da0a4aa08a82d3e1a47e9d55453abddb63ab5a",
+   "1fc828a7a8996f0bb6e2c6b26d73f3c620a57ddffa879d81e80f2236ded3c7d6",
+   "1fc828a7a8996f0bb6e2c6b26d73f3c620a57ddffa879d81e80f2236ded3c7d6",
+   "cf3b0e12a7b6c485c49d554bdd72f50586c26f7ff32c67f4cd2a509a1fb2b3de",
+   "cf3b0e12a7b6c485c49d554bdd72f50586c26f7ff32c67f4cd2a509a1fb2b3de",
+   "66d5e5fd25844a7e30a897da2859b3e1f2c7ddc9a9cad64d79d374ba4035cfd6",
+   "66d5e5fd25844a7e30a897da2859b3e1f2c7ddc9a9cad64d79d374ba4035cfd6",
+   "790d358a5ab8e578f19a01d8db21abd796704e279d214090dce6ef1c130119e5",
+   "790d358a5ab8e578f19a01d8db21abd796704e279d214090dce6ef1c130119e5",
+   "cb6b85e025faf7f024ee5d100222ada2a24d89716ab12423f689696c2909849b",
+   "cb6b85e025faf7f024ee5d100222ada2a24d89716ab12423f689696c2909849b",
+   "695f0364dd987e3099a644c009be4a9b20a8c3e6750c6e3b3ff2fab4c30af05c",
+   "695f0364dd987e3099a644c009be4a9b20a8c3e6750c6e3b3ff2fab4c30af05c",
+   "47dc7e9fc620eaf855e4631069b3c577e68c02704a14ed15ac4d282a02fbf20e",
+   "47dc7e9fc620eaf855e4631069b3c577e68c02704a14ed15ac4d282a02fbf20e",
+   "41dc3f5df484c9274503fd637e0d5430938c00738d9ca8c1c7aac9fa1b8fb883",
+   "41dc3f5df484c9274503fd637e0d5430938c00738d9ca8c1c7aac9fa1b8fb883",
+   "d71d6c2bf0b41926c1d1e94d370dbb3f02208f1042be1c18478808aad60a7e72",
+   "d71d6c2bf0b41926c1d1e94d370dbb3f02208f1042be1c18478808aad60a7e72",
+   "c334761ccb4e9acb82fb59d423be9a40bf1557bf1b79b1e5449d88c6e07d7e61",
+   "c334761ccb4e9acb82fb59d423be9a40bf1557bf1b79b1e5449d88c6e07d7e61",
+   "8a42062288c1bc06e2728529a718a4bd844c6847cfb4cb518e1a4986dd1e3e29",
+   "8a42062288c1bc06e2728529a718a4bd844c6847cfb4cb518e1a4986dd1e3e29",
+   "e0df092fbc87f3bd9109fdd634b9f51b9fa53f5849e96453423116fd52cf294b",
+   "e0df092fbc87f3bd9109fdd634b9f51b9fa53f5849e96453423116fd52cf294b",
+   "747884dee3e9bea8c3abf73aa1c0025cefd6ae7b5d185b6de2ee7ec6e69e6b71",
+   "747884dee3e9bea8c3abf73aa1c0025cefd6ae7b5d185b6de2ee7ec6e69e6b71"
+  ],
+  "seconds": 312.9,
+  "tokens": {
+   "input": 338969,
+   "cached": 229343,
+   "output": 24623
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ],
+  "plan_ids": {
+   "family": "household_theft",
+   "questions": [
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d15",
+    "d17",
+    "d25",
+    "d26",
+    "d27"
+   ],
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d20",
+    "d22",
+    "d28",
+    "d29"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  }
+ },
+ "PRODUCT|s5-unres-PR_sim_card_stolen|0": {
+  "plan": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g084",
+    "g088",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "holds": [
+    "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Release of the treating doctor from professional confidentiality",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g084",
+    "g088",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "holds": [
+    "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Release of the treating doctor from professional confidentiality",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute"
+   ]
+  },
+  "status": "completed",
+  "calls": 30,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "claim_type",
+      "value": "household_theft"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Welche konkrete Unterstützung erbittet die Kundin von der Rechtsschutzversicherung?",
+    "Ist die Kundin Versicherungsnehmerin oder mitversicherte Person, und ist die Wohnung in Luzern als versicherter Ort in der Police aufgeführt?",
+    "Wurde eine SIM-Karte gestohlen, und wird ein finanzieller Schaden aus einer missbräuchlichen Nutzung geltend gemacht?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "d01": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d03": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d04": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d05": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d07": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d10": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d11": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d12": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d14": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d15": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d16": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d17": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d18": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d20": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d21": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d22": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d23": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d24": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d25": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d26": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d27": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d28": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d29": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d30": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d31": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d32": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d33": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "claim_type": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g001": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g002": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g003": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g004": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g005": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g006": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g007": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g008": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g009": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g012": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g013": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g014": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g015": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g016": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g017": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g019": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g020_rev_b4712e29": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g021": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g022": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g023": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g024": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g025": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g026": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g027": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g028": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g029": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g030_rev_659606b1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g031": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g032": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g033": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g034": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g035": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g036": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g037": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g038": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g039": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g040": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g041": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g042_rev_92ab8925": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g043": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g044": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g045": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g048": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g049": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g050": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g051": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g052": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g053": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g054": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g055": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g056": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g057": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g058": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g059": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g060": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g061": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g063": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g064": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g065": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g066": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g067": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g068_rev_3767fc15": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g070": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g071": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g072": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g073": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g074": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g075": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g076": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g077": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g078": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g079": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g080": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g081": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g082": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g083": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g084": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g085": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g086": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g087": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g088": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g090": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g091": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g092": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g093": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g094": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g096": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g097": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g098": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "q-pb2": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "q-pb3": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "first_open_branch",
+    "open_facts": [
+     "g003",
+     "g005",
+     "g009",
+     "g016",
+     "g017",
+     "g019",
+     "g025",
+     "g049",
+     "g070",
+     "g071",
+     "g080",
+     "g081",
+     "g084",
+     "g088"
+    ],
+    "reason": "14 open facts exceed the limit of 8; the walk stops at the first open branch"
+   },
+   "answer": "Intake is complete; obtain the nine documents listed as missing and required, and clarify the customer’s requested assistance, insured status/location, and whether there is a SIM-card misuse claim before assessing coverage.",
+   "reply_clauses": 8,
+   "warnings": []
+  },
+  "keys": [
+   "04d7e164d48c17361febf4f671859fa866a3a0294d975b7cdea50e6aecbb1aef",
+   "04d7e164d48c17361febf4f671859fa866a3a0294d975b7cdea50e6aecbb1aef",
+   "9b0e39e15dcb9a9f86f5cb8c18963b926812a36a24f711b916a19851ddbf8b3f",
+   "9b0e39e15dcb9a9f86f5cb8c18963b926812a36a24f711b916a19851ddbf8b3f",
+   "da360f8523d1bc64e2fc823f4eb81faa593e22e94e1e9ce1a765638d3b812330",
+   "da360f8523d1bc64e2fc823f4eb81faa593e22e94e1e9ce1a765638d3b812330",
+   "f6d0076dafb4b5d19c881587a2a07d3940f14b2ed9bd106f37cfe8606a0e6904",
+   "f6d0076dafb4b5d19c881587a2a07d3940f14b2ed9bd106f37cfe8606a0e6904",
+   "9585027ee070ecd58b1158df1f1d7645f97483783cb3acb7515c0251258144d2",
+   "9585027ee070ecd58b1158df1f1d7645f97483783cb3acb7515c0251258144d2",
+   "61a1af4fbf19407523dbc6414b65adc6ca7dbf976424b1cefdc3282112c40bd0",
+   "61a1af4fbf19407523dbc6414b65adc6ca7dbf976424b1cefdc3282112c40bd0",
+   "fb90f4fda815590fa4416d4ec8e562f7a47af9818c1cc273bc125032ef036f9a",
+   "fb90f4fda815590fa4416d4ec8e562f7a47af9818c1cc273bc125032ef036f9a",
+   "1dc4447308185c59fa2235cc8cd636c4ad163139c3a0f058fe5d3cc114151e74",
+   "1dc4447308185c59fa2235cc8cd636c4ad163139c3a0f058fe5d3cc114151e74",
+   "5d5effd9f672d4c31b7be78f583241ff77d3910fc481f372e99e45a8eb7868d9",
+   "5d5effd9f672d4c31b7be78f583241ff77d3910fc481f372e99e45a8eb7868d9",
+   "e81e66675ffd1a73fb0a595fd2bcff5c5628616424a7dfda8d379949f5ca00eb",
+   "e81e66675ffd1a73fb0a595fd2bcff5c5628616424a7dfda8d379949f5ca00eb",
+   "981baa4e3889fb5d6d603a898ecc42433319cde39cc52e64ace072ea13b0cd0e",
+   "981baa4e3889fb5d6d603a898ecc42433319cde39cc52e64ace072ea13b0cd0e",
+   "8a2886e660df75e02fef83be2ba48d5035a171159fdde5729d261d4804268de8",
+   "8a2886e660df75e02fef83be2ba48d5035a171159fdde5729d261d4804268de8",
+   "1c9dd1a8e1321894d8918b16cb271d30d60206056db3f77b002059d49f72b4bb",
+   "1c9dd1a8e1321894d8918b16cb271d30d60206056db3f77b002059d49f72b4bb",
+   "5e2728bdb5d89728b88fb1c62d65ca75b5c8f7705a51c85ef7bfc5c979786051",
+   "5e2728bdb5d89728b88fb1c62d65ca75b5c8f7705a51c85ef7bfc5c979786051",
+   "bbce361e3b5d37c9eed9da25f7f41f32b8272314b3d6c7ffdcb92d5fe85f58c8",
+   "bbce361e3b5d37c9eed9da25f7f41f32b8272314b3d6c7ffdcb92d5fe85f58c8",
+   "5a38df2f2957251a51b663389e84b5cabc0f4ba2bdeeac6771c81af7bb56a51f",
+   "5a38df2f2957251a51b663389e84b5cabc0f4ba2bdeeac6771c81af7bb56a51f",
+   "b54ac220044bb3698266603f43f558837a50098d4e3a0e75934cf816aa8b8964",
+   "b54ac220044bb3698266603f43f558837a50098d4e3a0e75934cf816aa8b8964",
+   "f3f282e71f9a0cf65835318f05887b7f8ca1ceff39e6f2b85ea44eedfbb511f3",
+   "f3f282e71f9a0cf65835318f05887b7f8ca1ceff39e6f2b85ea44eedfbb511f3",
+   "336f4f8d2aa05dc0736dc2be4f6afbbd7e9c9c64ec161227e25d085731b1cb7c",
+   "336f4f8d2aa05dc0736dc2be4f6afbbd7e9c9c64ec161227e25d085731b1cb7c",
+   "740c2af2b73ea7ee3a712e518bc9948d693ce5f0a434a4e9d41fe3ef9c1e5e47",
+   "740c2af2b73ea7ee3a712e518bc9948d693ce5f0a434a4e9d41fe3ef9c1e5e47",
+   "5d148818d0b64b31220eb509f30f013f9dfb6d04d983b7ab258192b334a7522d",
+   "5d148818d0b64b31220eb509f30f013f9dfb6d04d983b7ab258192b334a7522d",
+   "d5851d28603959688693c5da483931b76f4e7a7910c0480a06b49835cd0f234d",
+   "d5851d28603959688693c5da483931b76f4e7a7910c0480a06b49835cd0f234d",
+   "0e513a2a88ca571077481c46a934cf04fdcdbaa25b5fb66d1ce9755c103c411c",
+   "0e513a2a88ca571077481c46a934cf04fdcdbaa25b5fb66d1ce9755c103c411c",
+   "74a50b0dbc62ff829d3c4ee0205d0def00bbbe6e307762b6593816b2e1e6092f",
+   "74a50b0dbc62ff829d3c4ee0205d0def00bbbe6e307762b6593816b2e1e6092f",
+   "64e4b60943f58048f82e6748dd672da047ddea3e43fd0f9f2c3303510c338cb2",
+   "64e4b60943f58048f82e6748dd672da047ddea3e43fd0f9f2c3303510c338cb2",
+   "bdec567c6ceb4d488184774744257e84622a07d21516609cd176d666596571af",
+   "bdec567c6ceb4d488184774744257e84622a07d21516609cd176d666596571af",
+   "2c1129a1eed8f08463472d96d352f056e7b4d6aaf36ce68a39741708581d7f83",
+   "2c1129a1eed8f08463472d96d352f056e7b4d6aaf36ce68a39741708581d7f83",
+   "5eb0947aa392bbe37781419e68a451dbcf97c8f4b52766a105787f25bdf86492",
+   "5eb0947aa392bbe37781419e68a451dbcf97c8f4b52766a105787f25bdf86492",
+   "bed314b9efc5e46683aa7ae28674b16377ea3438da6c087a3eebeaf69d536728",
+   "bed314b9efc5e46683aa7ae28674b16377ea3438da6c087a3eebeaf69d536728",
+   "4647a85bc4e06ecbaa51f8e45ff8d475f2165e26f9aed3fc3b9c093ac82687e2",
+   "4647a85bc4e06ecbaa51f8e45ff8d475f2165e26f9aed3fc3b9c093ac82687e2"
+  ],
+  "seconds": 315.1,
+  "tokens": {
+   "input": 338935,
+   "cached": 230077,
+   "output": 23565
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ],
+  "plan_ids": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g070",
+    "g071",
+    "g074",
+    "g084",
+    "g088",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d15",
+    "d17",
+    "d25"
+   ],
+   "holds": [
+    "d10",
+    "d16",
+    "d18",
+    "d20",
+    "d22",
+    "d26",
+    "d27",
+    "d28",
+    "d29",
+    "d32",
+    "d33"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  }
+ },
+ "PRODUCT|s5-unres-PR_third_party_causer|0": {
+  "plan": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g042_rev_92ab8925",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g042_rev_92ab8925",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ],
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ]
+  },
+  "status": "completed",
+  "calls": 33,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "claim_type",
+      "value": "household_theft"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [
+    "Welchen Betrag verlangen Sie für die Spielkonsole und die Kopfhörer, und welche konkrete Leistung beantragen Sie vom Versicherer?"
+   ],
+   "agent_steps": [],
+   "document_judgments": {
+    "d01": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d03": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d04": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d05": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d07": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d10": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d11": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d12": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d14": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d15": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d16": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d17": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d18": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d20": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d21": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d22": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d23": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d24": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d25": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d26": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d27": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d28": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d29": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d30": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d31": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d32": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "d33": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "claim_type": {
+     "status": "established",
+     "value": "household_theft",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g001": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g002": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g004": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g005": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g006": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g007": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g008": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g009": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g014": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g015": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g020_rev_b4712e29": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g021": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g022": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g023": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g024": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g026": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g029": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g003": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g012": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g013": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g016": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g017": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g019": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g025": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g027": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g028": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g030_rev_659606b1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g031": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g032": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g033": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g034": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g035": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g036": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g037": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g038": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g039": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g040": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g041": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g042_rev_92ab8925": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g043": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g044": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g045": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g048": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g049": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g050": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g051": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g052": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g053": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g054": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g055": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g056": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g057": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g058": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g059": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g060": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g061": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g063": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g064": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g065": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g066": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g067": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g068_rev_3767fc15": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g070": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g071": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g072": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g073": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g074": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g075": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g076": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g077": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g078": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g079": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g080": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g081": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g082": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g083": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g084": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g085": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g086": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g087": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g088": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g090": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "g091": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g092": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g093": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g094": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g096": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g097": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    },
+    "g098": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "q-pb1": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "first_open_branch",
+    "open_facts": [
+     "g003",
+     "g016",
+     "g017",
+     "g019",
+     "g025",
+     "g042_rev_92ab8925",
+     "g049",
+     "g070",
+     "g071",
+     "g080",
+     "g081"
+    ],
+    "reason": "11 open facts exceed the limit of 8; the walk stops at the first open branch"
+   },
+   "answer": "Die Aufnahme ist abgeschlossen. Forderungshöhe und konkrete Leistung sind zu klären und die acht laut Checkliste erforderlichen fehlenden Dokumente d01, d03, d04, d05, d07, d14, d17 und d25 einzuholen; eine Ablehnung durch den Versicherer ist nicht dokumentiert.",
+   "reply_clauses": 7,
+   "warnings": []
+  },
+  "keys": [
+   "b49ac72f527ca8ad42a9b85e3b8218c6f051e76cc5a68812f6ffab3aefb67ed1",
+   "b49ac72f527ca8ad42a9b85e3b8218c6f051e76cc5a68812f6ffab3aefb67ed1",
+   "3faecc74205c04fd44d32f3c9e9ad597dbedf7a667146fa0c65c41fddf7d3a50",
+   "3faecc74205c04fd44d32f3c9e9ad597dbedf7a667146fa0c65c41fddf7d3a50",
+   "745de41f789efd8edc03b1e723696b58d6a603196d965e658dc1859abfccf8d7",
+   "745de41f789efd8edc03b1e723696b58d6a603196d965e658dc1859abfccf8d7",
+   "74100cfba24bf7ac4a5c3e6430bef87fb2703a675730f6a3f24cac577f980ecc",
+   "74100cfba24bf7ac4a5c3e6430bef87fb2703a675730f6a3f24cac577f980ecc",
+   "c4f7d9f82deab8232c6bce0d795ddf003ad9fc28055b06e67f65f65c2b3e511e",
+   "c4f7d9f82deab8232c6bce0d795ddf003ad9fc28055b06e67f65f65c2b3e511e",
+   "70caf87198ab34041fb019c945333dd3613ad6e216bef64e0e54d00231ed0aaf",
+   "70caf87198ab34041fb019c945333dd3613ad6e216bef64e0e54d00231ed0aaf",
+   "21f5e365c7eb3822def0d1c3fcf20692dbfcc2eeffe53e50ab1d5ac5d8c02bf4",
+   "21f5e365c7eb3822def0d1c3fcf20692dbfcc2eeffe53e50ab1d5ac5d8c02bf4",
+   "88993e4280df6a1bcb16fba7173d185447c845e926a7ffa98fd8960a01f21381",
+   "88993e4280df6a1bcb16fba7173d185447c845e926a7ffa98fd8960a01f21381",
+   "d55fe8846b696fbf4f1e65deae93f9d9b822c94900e57f73844babd14177101e",
+   "d55fe8846b696fbf4f1e65deae93f9d9b822c94900e57f73844babd14177101e",
+   "a3b07e785ca9bb48484d036ab35d0e6d23544d4989c83ae108693b1f8e0b1314",
+   "a3b07e785ca9bb48484d036ab35d0e6d23544d4989c83ae108693b1f8e0b1314",
+   "b6efbbafe314761b0e823bed81c557bb38d66b91fc058d8d9c966a734c781617",
+   "b6efbbafe314761b0e823bed81c557bb38d66b91fc058d8d9c966a734c781617",
+   "8bd97095dce2770a2692e276cf6f0dc4ae0778b3db2fd98ab2c73fefb723bf0e",
+   "8bd97095dce2770a2692e276cf6f0dc4ae0778b3db2fd98ab2c73fefb723bf0e",
+   "88af0b1af891f990ec8881e3595aa610ccdb242daa365eac8d97f91f6de5e420",
+   "88af0b1af891f990ec8881e3595aa610ccdb242daa365eac8d97f91f6de5e420",
+   "d23edcdd493f13de03c2163f92e534ed5a6b24877c51bf0a2b314fc378c07447",
+   "d23edcdd493f13de03c2163f92e534ed5a6b24877c51bf0a2b314fc378c07447",
+   "4dee73e63015142fc5d3a01e38a4e209e229664ff505c09dc56871132b2cee47",
+   "4dee73e63015142fc5d3a01e38a4e209e229664ff505c09dc56871132b2cee47",
+   "1b35ab1c924f36f2712c1356bf3eeb77bbe174d827677467db23cafe4830fde4",
+   "1b35ab1c924f36f2712c1356bf3eeb77bbe174d827677467db23cafe4830fde4",
+   "5d4d0109e2da4865126ac7de6a16592f3363964eeea8d5ca19d26b34792f26ba",
+   "5d4d0109e2da4865126ac7de6a16592f3363964eeea8d5ca19d26b34792f26ba",
+   "3e5640ee8a1fae0c5d66d0e04ecf862384b6988b99f45b20f23a662e413f3819",
+   "3e5640ee8a1fae0c5d66d0e04ecf862384b6988b99f45b20f23a662e413f3819",
+   "4f831f8ef09c2dfdf966e68cf307ca168c1326981f67166edea9bb0f8b6fd718",
+   "4f831f8ef09c2dfdf966e68cf307ca168c1326981f67166edea9bb0f8b6fd718",
+   "8fde95e9f1293a6d63ad3518b26308695cc5089b9a81c3c736b352f2680f61c5",
+   "8fde95e9f1293a6d63ad3518b26308695cc5089b9a81c3c736b352f2680f61c5",
+   "2666c5adb1d5afc9cee56c94b7c91a24c71ed852cbbef3668dc2a328f692cc90",
+   "2666c5adb1d5afc9cee56c94b7c91a24c71ed852cbbef3668dc2a328f692cc90",
+   "e4d4569e7906f7de5f7aebd0cb69fd9774ea3d3eb90a8bd378af696ea2cbe36d",
+   "e4d4569e7906f7de5f7aebd0cb69fd9774ea3d3eb90a8bd378af696ea2cbe36d",
+   "6567b532fe45247f7c132c44773377b611ce65f81a3ab0b12bc0d7d5a76a3090",
+   "6567b532fe45247f7c132c44773377b611ce65f81a3ab0b12bc0d7d5a76a3090",
+   "8f7515865e4d5d470aee55fb316d6959ecd8b6a28365b5b8906db90d9f1b8516",
+   "8f7515865e4d5d470aee55fb316d6959ecd8b6a28365b5b8906db90d9f1b8516",
+   "ff0e57c1e9320ad30c8b426ca3eeb44d2ca83b889e1ccadd16de2f5fd2a52ffc",
+   "ff0e57c1e9320ad30c8b426ca3eeb44d2ca83b889e1ccadd16de2f5fd2a52ffc",
+   "8f3153eb2ded8c87fe86f568df338fcfe92d05a932f3974141a2a964ad837a29",
+   "8f3153eb2ded8c87fe86f568df338fcfe92d05a932f3974141a2a964ad837a29",
+   "36341cde2448222a8a7b8b32b863a1a3debcad459ef0af7b38b93a93d4282e43",
+   "36341cde2448222a8a7b8b32b863a1a3debcad459ef0af7b38b93a93d4282e43",
+   "3f6aa007e24200bb6e73747da7304dfe210e57dc7adb3ce50f439b0e6dc14b5f",
+   "3f6aa007e24200bb6e73747da7304dfe210e57dc7adb3ce50f439b0e6dc14b5f",
+   "9c5cefb601e5f625b4d3793b09d640d7cd467e5edfc695cc4d3c4392656e723f",
+   "9c5cefb601e5f625b4d3793b09d640d7cd467e5edfc695cc4d3c4392656e723f",
+   "6dafa477700bd8a9644e8f41702576494305ef0795f1738e04d9eba7377f5f88",
+   "6dafa477700bd8a9644e8f41702576494305ef0795f1738e04d9eba7377f5f88",
+   "feabb8c38d8480d2a700d430fbb953326373f454f36a2675b4c17fafffe28d30",
+   "feabb8c38d8480d2a700d430fbb953326373f454f36a2675b4c17fafffe28d30",
+   "c819c9f361ff6ec222725458b7e4d4b812e7b3f991e8edbc2f231475bd9f4ead",
+   "c819c9f361ff6ec222725458b7e4d4b812e7b3f991e8edbc2f231475bd9f4ead",
+   "8c0d770aff1cb8e7c8aa5916ed0fa583c027207383e27169bbeebe4913378936",
+   "8c0d770aff1cb8e7c8aa5916ed0fa583c027207383e27169bbeebe4913378936"
+  ],
+  "seconds": 381.4,
+  "tokens": {
+   "input": 424156,
+   "cached": 310864,
+   "output": 27120
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ],
+  "plan_ids": {
+   "family": "household_theft",
+   "questions": [
+    "g003",
+    "g009",
+    "g016",
+    "g017",
+    "g019",
+    "g025",
+    "g042_rev_92ab8925",
+    "g070",
+    "g071",
+    "g074",
+    "g098"
+   ],
+   "deferred": false,
+   "requests": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d14",
+    "d17",
+    "d25"
+   ],
+   "holds": [
+    "d10",
+    "d15",
+    "d16",
+    "d18",
+    "d20",
+    "d22",
+    "d26",
+    "d27",
+    "d28",
+    "d29"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  }
  }
 }

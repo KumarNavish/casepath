@@ -1,0 +1,2084 @@
+{
+ "groups": {
+  "dev:plans_tenancy_gpt-6-luna_fresh_e-check.json": {
+   "case_runs": 216,
+   "misses": 0,
+   "scored_checklist_equal_stored": 216,
+   "all_stored_fields_equal_stored": 216,
+   "same_requests_as_stored": 216,
+   "same_request_order_as_stored": 110,
+   "base_scored_equal_stored": 216,
+   "base_all_fields_equal_stored": 216,
+   "whole_result_equal_to_tested_commit_replay": 216,
+   "same_requests_as_tested_commit_replay": 216,
+   "checklist_published": 214,
+   "published_checklist_equals_result": 214
+  },
+  "dev:plans_tenancy_gpt-6-luna_fresh_e-full12.json": {
+   "case_runs": 12,
+   "misses": 0,
+   "scored_checklist_equal_stored": 12,
+   "all_stored_fields_equal_stored": 12,
+   "same_requests_as_stored": 12,
+   "same_request_order_as_stored": 0,
+   "base_scored_equal_stored": 12,
+   "base_all_fields_equal_stored": 12,
+   "whole_result_equal_to_tested_commit_replay": 10,
+   "same_requests_as_tested_commit_replay": 12,
+   "checklist_published": 12,
+   "published_checklist_equals_result": 12
+  },
+  "dev:plans_tenancy_gpt-6-luna_probe_e.json": {
+   "case_runs": 32,
+   "misses": 0,
+   "scored_checklist_equal_stored": 32,
+   "all_stored_fields_equal_stored": 32,
+   "same_requests_as_stored": 32,
+   "same_request_order_as_stored": 0,
+   "base_scored_equal_stored": 32,
+   "base_all_fields_equal_stored": 32,
+   "whole_result_equal_to_tested_commit_replay": 26,
+   "same_requests_as_tested_commit_replay": 32,
+   "checklist_published": 32,
+   "published_checklist_equals_result": 32
+  },
+  "dev:plans_theft_gpt-6-luna_fresh_e-check.json": {
+   "case_runs": 96,
+   "misses": 0,
+   "scored_checklist_equal_stored": 96,
+   "all_stored_fields_equal_stored": 96,
+   "same_requests_as_stored": 96,
+   "same_request_order_as_stored": 78,
+   "base_scored_equal_stored": 96,
+   "base_all_fields_equal_stored": 96,
+   "whole_result_equal_to_tested_commit_replay": 96,
+   "same_requests_as_tested_commit_replay": 96,
+   "checklist_published": 96,
+   "published_checklist_equals_result": 96
+  },
+  "dev:plans_theft_gpt-6-luna_fresh_e-full-s4.json": {
+   "case_runs": 16,
+   "misses": 0,
+   "scored_checklist_equal_stored": 16,
+   "all_stored_fields_equal_stored": 12,
+   "same_requests_as_stored": 14,
+   "same_request_order_as_stored": 0,
+   "base_scored_equal_stored": 16,
+   "base_all_fields_equal_stored": 12,
+   "whole_result_equal_to_tested_commit_replay": 13,
+   "same_requests_as_tested_commit_replay": 16,
+   "checklist_published": 16,
+   "published_checklist_equals_result": 16
+  },
+  "dev:plans_theft_gpt-6-luna_fresh_e67-check.json": {
+   "case_runs": 96,
+   "misses": 0,
+   "scored_checklist_equal_stored": 96,
+   "all_stored_fields_equal_stored": 96,
+   "same_requests_as_stored": 96,
+   "same_request_order_as_stored": 70,
+   "base_scored_equal_stored": 96,
+   "base_all_fields_equal_stored": 96,
+   "whole_result_equal_to_tested_commit_replay": 96,
+   "same_requests_as_tested_commit_replay": 96,
+   "checklist_published": 94,
+   "published_checklist_equals_result": 94
+  },
+  "study3:plans_tenancy_casepath.json": {
+   "case_runs": 288,
+   "misses": 0,
+   "scored_checklist_equal_stored": 288,
+   "all_stored_fields_equal_stored": 288,
+   "same_requests_as_stored": 288,
+   "same_request_order_as_stored": 2,
+   "base_scored_equal_stored": 288,
+   "base_all_fields_equal_stored": 288,
+   "whole_result_equal_to_tested_commit_replay": 183,
+   "same_requests_as_tested_commit_replay": 288,
+   "checklist_published": 286,
+   "published_checklist_equals_result": 286
+  },
+  "study3:plans_tenancy_casepath_checklist.json": {
+   "case_runs": 288,
+   "misses": 0,
+   "scored_checklist_equal_stored": 288,
+   "all_stored_fields_equal_stored": 288,
+   "same_requests_as_stored": 288,
+   "same_request_order_as_stored": 146,
+   "base_scored_equal_stored": 288,
+   "base_all_fields_equal_stored": 288,
+   "whole_result_equal_to_tested_commit_replay": 288,
+   "same_requests_as_tested_commit_replay": 288,
+   "checklist_published": 286,
+   "published_checklist_equals_result": 286
+  },
+  "study3:plans_theft_casepath.json": {
+   "case_runs": 384,
+   "misses": 0,
+   "scored_checklist_equal_stored": 384,
+   "all_stored_fields_equal_stored": 384,
+   "same_requests_as_stored": 384,
+   "same_request_order_as_stored": 0,
+   "base_scored_equal_stored": 384,
+   "base_all_fields_equal_stored": 384,
+   "whole_result_equal_to_tested_commit_replay": 263,
+   "same_requests_as_tested_commit_replay": 384,
+   "checklist_published": 384,
+   "published_checklist_equals_result": 384
+  },
+  "study3:plans_theft_casepath_checklist.json": {
+   "case_runs": 384,
+   "misses": 0,
+   "scored_checklist_equal_stored": 384,
+   "all_stored_fields_equal_stored": 384,
+   "same_requests_as_stored": 384,
+   "same_request_order_as_stored": 251,
+   "base_scored_equal_stored": 384,
+   "base_all_fields_equal_stored": 384,
+   "whole_result_equal_to_tested_commit_replay": 384,
+   "same_requests_as_tested_commit_replay": 384,
+   "checklist_published": 384,
+   "published_checklist_equals_result": 384
+  }
+ },
+ "differences": [
+  {
+   "key": "plans_tenancy_gpt-6-luna_fresh_e-full12.json:PRODUCT|fcl_09252315095aa169|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_fresh_e-full12.json:PRODUCT|fcl_20eb1b189ff1c5d1|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_a9db07b09902ba29|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_02881d44ed3d778b|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_a9db07b09902ba29|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_b149e3b4d6534055|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_bb531e0f49256cd3|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_gpt-6-luna_probe_e.json:PRODUCT|pcl_e0c0e69ff6e2a6e4|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-on-PR_expert_procedure_requested|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-on-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-unres-PR_bicycle_claimed|0",
+   "vs_stored": {
+    "product_extra": false,
+    "tokens": false,
+    "same_request_order": false
+   },
+   "misses": 0
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-on-PR_sim_card_stolen|0",
+   "vs_stored": {
+    "product_extra": false,
+    "calls": false,
+    "tokens": false,
+    "agents": false,
+    "same_requests": false,
+    "same_request_order": false
+   },
+   "misses": 0
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-unres-PR_scheduled_valuable_1000|0",
+   "vs_stored": {
+    "product_extra": false,
+    "tokens": false,
+    "same_request_order": false
+   },
+   "misses": 0
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-unres-PR_sim_card_stolen|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_gpt-6-luna_fresh_e-full-s4.json:PRODUCT|s4-unres-PR_expert_procedure_requested|0",
+   "vs_stored": {
+    "product_extra": false,
+    "calls": false,
+    "tokens": false,
+    "agents": false,
+    "same_requests": false,
+    "same_request_order": false
+   },
+   "misses": 0
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_03fdd7ee632bb267|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0868f24595f5f79a|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_05bd14aa0f74a989|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0868f24595f5f79a|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0868f24595f5f79a|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0c4512154d36a3b4|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0c4512154d36a3b4|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0db56d74dbadee03|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_1239fbab4373aafd|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_0ec7682a6943d6d0|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_16523b4063cbf4e6|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_16523b4063cbf4e6|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_1c700d9656587a6d|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_16523b4063cbf4e6|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_1c700d9656587a6d|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_201a01ca1e26f323|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_272231054ad3a4c2|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_272231054ad3a4c2|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_293e83fdc7fe66e2|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_296f80eefd7d2863|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_31ec410443027eae|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_2f66e558555d3a41|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_31ec410443027eae|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_31ec410443027eae|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_3daad3eb95ae2c15|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_38438bc732d1a4c3|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_3daad3eb95ae2c15|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_3e1bdd7883787817|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_440d59612c87d177|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_45b9c08ccc6e5fc4|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_45c1b5018d98ecf8|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_46b76c8c72c4d34b|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_4e6b3ac31e76c8a6|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_4f8337eaa01ddbee|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_4e6b3ac31e76c8a6|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_4f8337eaa01ddbee|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_4f8337eaa01ddbee|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_54f41d88de8d2b5d|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_550d580f884338ae|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_54f41d88de8d2b5d|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_57bd4c7d1979c2c8|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_597f5ba020b66604|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_5bd2806f47d7e651|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_617c53c57c9bea02|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_617c53c57c9bea02|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_69f84208279ac66e|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_69f84208279ac66e|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_6c0beb4edcdc571d|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_6c0beb4edcdc571d|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_737d9eeb4a66c9c2|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_6d6b6dc27953028c|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_73f3fe3323a28288|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_737d9eeb4a66c9c2|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_737d9eeb4a66c9c2|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_73f3fe3323a28288|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_73f3fe3323a28288|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_753a10b9d25479c6|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_775d7303508bb928|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_775d7303508bb928|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_7910fcff8a43fe84|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_7910fcff8a43fe84|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_7910fcff8a43fe84|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_79ebf2751d59693f|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_872528b59e47e1b3|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_872528b59e47e1b3|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_872528b59e47e1b3|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_877db9914e851371|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_8da32c6cda5795f7|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_8da32c6cda5795f7|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_8a606d2af148582c|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_92ced3f75f592a85|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_95eee877ecc48bf1|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_95eee877ecc48bf1|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_92ced3f75f592a85|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_9986f974eabc50c8|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_9dc987bc1cc1d51a|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_a256cb8045ef1f54|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_a256cb8045ef1f54|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_a256cb8045ef1f54|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_a5d873ad4151b24e|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_ae955da9f1ff5ae1|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_af805d2dd545e678|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_af805d2dd545e678|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_b0656c8dfbbf433f|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_b0656c8dfbbf433f|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_b0a56cd3fe0020ca|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_be3f0eb859b33907|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_be3f0eb859b33907|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_be3f0eb859b33907|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d39619540633db7d|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d39619540633db7d|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d453d1aa043aed04|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d6718680d7e531ea|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d6933e639e85dfa7|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d70027e84f7be321|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_d6933e639e85dfa7|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_db88646bc6e3f066|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_db88646bc6e3f066|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_de2e994b2d16909e|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_de2e994b2d16909e|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_e810434504ea0100|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_f2b2cd8ecce35340|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_f2b2cd8ecce35340|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_f9d6755c60c44a8d|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_tenancy_casepath.json:PRODUCT|f2cl_f9dc66c1522b99eb|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-off|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_bicycle_claimed|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_declined|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-on-PR_goods_recovered|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_expert_procedure_requested|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_repair_over_500|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_repair_over_500|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_scheduled_valuable_1000|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_sim_card_stolen|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s10-unres-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-off|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-off|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_goods_recovered|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_repair_over_500|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_scheduled_valuable_1000|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-on-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_repair_over_500|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_scheduled_valuable_1000|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_repair_over_500|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_sim_card_stolen|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_sim_card_stolen|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s11-unres-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_declined|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_declined|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_scheduled_valuable_1000|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-on-PR_sim_card_stolen|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-unres-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s12-unres-PR_bicycle_claimed|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-off|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-off|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-off|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_declined|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_goods_recovered|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_nachfrist_set|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_scheduled_valuable_1000|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-on-PR_third_party_causer|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_repair_over_500|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_scheduled_valuable_1000|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_sim_card_stolen|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s13-unres-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-off|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-off|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_declined|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_goods_recovered|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_nachfrist_set|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_repair_over_500|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_scheduled_valuable_1000|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_sim_card_stolen|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_sim_card_stolen|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-on-PR_third_party_causer|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-unres-PR_repair_over_500|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-unres-PR_repair_over_500|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-unres-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s14-unres-PR_sim_card_stolen|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-off|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-off|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_expert_procedure_requested|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_nachfrist_set|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_repair_over_500|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_scheduled_valuable_1000|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-on-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_bicycle_claimed|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_bicycle_claimed|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_expert_procedure_requested|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_expert_procedure_requested|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_repair_over_500|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_repair_over_500|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_sim_card_stolen|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_third_party_causer|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-off|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s15-unres-PR_third_party_causer|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_declined|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_goods_recovered|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_repair_over_500|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_sim_card_stolen|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-on-PR_third_party_causer|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-unres-PR_bicycle_claimed|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-unres-PR_expert_procedure_requested|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-unres-PR_scheduled_valuable_1000|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s8-unres-PR_third_party_causer|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-off|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-off|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_declined|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_goods_recovered|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_nachfrist_set|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_nachfrist_set|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_scheduled_valuable_1000|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_scheduled_valuable_1000|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-on-PR_sim_card_stolen|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_bicycle_claimed|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_bicycle_claimed|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_expert_procedure_requested|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_repair_over_500|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_scheduled_valuable_1000|2",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_sim_card_stolen|0",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  },
+  {
+   "key": "plans_theft_casepath.json:PRODUCT|s9-unres-PR_sim_card_stolen|1",
+   "fields": [
+    "learned"
+   ],
+   "base_status": "completed",
+   "branch_status": "completed"
+  }
+ ]
+}
