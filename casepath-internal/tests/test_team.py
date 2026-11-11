@@ -313,6 +313,9 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(READ_FACTS, CONFIRM)  # the same question, put the same way, twice
         self.assertIn("never false", READ_FACTS)
         self.assertIn("we do not know whether", READ_FACTS)  # a stated doubt is open
+        # a quoted sentence that states the value commits it; a negative needs its own sentence
+        self.assertIn("When the sentence you quote\nstates the value, answer with that value, not open or not_stated", READ_FACTS)
+        self.assertIn("a false answer needs a sentence that states the\nnegative", READ_FACTS)
         self.assertIn("not_stated: the\nfiles do not address the matter", READ_FACTS)  # silence is a separate answer
         self.assertIn("YYYY-MM-DD", READ_FACTS)  # dates in the form the fact type accepts
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
