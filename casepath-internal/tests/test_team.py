@@ -343,3 +343,30 @@ class HandlerFlowTests(unittest.TestCase):
         starts = [e for e in result["events"] if e["kind"] == "agent.start" and e["agent"] == "claim_reader"]
         self.assertEqual(len(starts), 1)  # one reading briefs the case and records the facts
         self.assertEqual(result["facts"][0]["fact"], "landlord_notified")
+
+
+class TooLongTurnTests(unittest.TestCase):
+    def test_a_turn_over_the_output_limit_is_asked_again_shorter_once(self):
+        class TooLong(RuntimeError):
+            reason = "max_output_tokens"
+
+        class OnceTooLong(ScriptedModel):
+            failed = False
+
+            def respond(self, **kw):
+                if not self.failed:
+                    self.failed = True
+                    raise TooLong("The model stopped before finishing its turn.")
+                return super().respond(**kw)
+
+        script = standard_script(finder_calls=[], result_fields={})
+        model = OnceTooLong(script)
+        result = CaseTeam(model).run(case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertIn("turn.too_long", {e["kind"] for e in result["events"]})
+        self.assertTrue(any("shorter turns" in str(m.get("content")) for m in model.inputs[0]))
+
+        class AlwaysTooLong(ScriptedModel):
+            def respond(self, **kw):
+                raise TooLong("The model stopped before finishing its turn.")
+        with self.assertRaises(TooLong):
+            CaseTeam(AlwaysTooLong(script)).run(case=CASE, files=FILES, workflow=FIXTURE)

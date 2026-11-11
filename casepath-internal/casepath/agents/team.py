@@ -562,6 +562,9 @@ def _report_schema(work, agent):
 SMALL_CASE_CHARS = 40000
 
 
+SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
+
+
 def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12):
     spec = AGENTS[agent]
     tools = _tool_specs(work, spec["tools"])
@@ -580,8 +583,15 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
     for number in range(max_turns):
         last = number == max_turns - 1
         choice_ = {"type": "function", "name": "report"} if last else "required"
-        turn = model.respond(instructions=common_instructions(work.voice) + "\n\n" + spec["instructions"], input=conversation, tools=tools, effort=effort,
-                             tool_choice=choice_)
+        try:
+            turn = model.respond(instructions=common_instructions(work.voice) + "\n\n" + spec["instructions"], input=conversation, tools=tools, effort=effort,
+                                 tool_choice=choice_)
+        except Exception as error:  # a turn too long for the output limit: ask again for a shorter one, once per turn
+            if getattr(error, "reason", None) != "max_output_tokens" or (conversation[-1].get("content") or "").startswith(SHORTER):
+                raise
+            work.emit(agent, "turn.too_long")
+            conversation.append({"role": "user", "content": SHORTER})
+            continue
         work.usage.append({"agent": agent, **turn.usage})
         conversation.extend(turn.output)
         if not turn.calls:
