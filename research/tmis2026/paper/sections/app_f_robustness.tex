@@ -182,7 +182,7 @@ All calls & & \sthreeCasePathTenCalls & \sthreeCasePathTenCostFour & \sthreeCase
 \end{table}
 
 \paragraph{Post hoc: ReAct without its failed outputs}
-This analysis is post hoc and not part of the plan (\texttt{analysis/study3\_posthoc.py}). ReAct's failed outputs are left out instead of scored as empty plans: a theft pair-run is dropped for both designs when either of ReAct's two texts failed in that run (\sthreePostReactThDropped{} of \sthreePostReactThTotal{} pair-runs), and a tenancy claim-run when ReAct's output failed (\sthreePostReactTenStrictDropped{} of \sthreeClaimRuns). Clusters, tests and resampling are those of the planned contrasts (Table~\ref{tab:s3-posthoc-react}). ReAct's errors fall, and \casepath still makes fewer.
+This analysis is post hoc and not part of the plan (\texttt{analysis/study3\_posthoc.py}). ReAct's failed outputs are left out instead of scored as empty checklists: a theft pair-run is dropped for both designs when either of ReAct's two texts failed in that run (\sthreePostReactThDropped{} of \sthreePostReactThTotal{} pair-runs), and a tenancy claim-run when ReAct's output failed (\sthreePostReactTenStrictDropped{} of \sthreeClaimRuns). Clusters, tests and resampling are those of the planned contrasts (Table~\ref{tab:s3-posthoc-react}). ReAct's errors fall, and \casepath still makes fewer.
 
 \begin{table}[h]
 \caption{Post hoc, not part of the plan: \casepath against ReAct with ReAct's failed outputs left out.}

@@ -177,6 +177,7 @@ H5 run-to-run agreement (tenancy) & \ctLunaHFiveA & \ctLunaHFiveB & \ctLunaHFive
 \end{tabularx}
 \end{table}
 
+\needspace{6\baselineskip}
 \subsubsection{Accuracy: hypotheses H1, H3 and H4}
 \label{sec:results-accuracy}
 
@@ -191,14 +192,6 @@ When the fact was left open, the designs almost never requested its documents: \
 
 \paragraph{Across models}
 Figure~\ref{fig:models} shows wrong changes per pair by model. Across the two current models and the original study's single run with \texttt{gpt-5.6-terra} (Appendix~\ref{app:original}), the Study~1 configuration made between \rangeCPWrongPPLo{} and \rangeCPWrongPPHi{} wrong changes per pair and \design{Rules in context} between \rangeRWrongPPLo{} and \rangeRWrongPPHi; both upper ends come from that single run, and the \texttt{gpt-6-luna} value of \design{Rules in context} falls from \thLunaRWrongPP{} to \thLunaRDedupWrongPP{} when repeated errors count once. On the tenancy claims the pattern inverts: \design{Rules in context} requested \pct{\tenTerraBoneRecall} and \pct{\tenLunaBoneRecall} of required documents at once with the two models, the Study~1 configuration \pct{\tenTerraCPxRecall} and \pct{\tenLunaCPxRecall}. Scoring every pairing of runs or only the seven conditions with agreed references changes none of these conclusions (Appendix~\ref{app:robustness}).
-
-\begin{figure}[t]
-\centering
-\fig{fig_outcomes}{\linewidth}
-\Description{Unit charts of 100 required documents per design and model, coloured by outcome.}
-\caption{Outcomes of 100 required tenancy documents, per design and model: requested, held, handed over and missed, with unnecessary requests counted separately.}
-\label{fig:outcomes}
-\end{figure}
 
 \begin{figure}[t]
 \centering
@@ -273,6 +266,14 @@ Study~1 configuration & \thLunaCPWrong & \thLunaCPDedupWrong & \thLunaCPMissed &
 \paragraph{Outcomes}
 With \texttt{gpt-6.1-terra}, the Study~1 configuration requested \pct{\tenTerraCPxRecall} of required documents at once, held \pct{\tenTerraCPxHeld}, handed \pct{\tenTerraCPxHanded} over and missed \pct{\tenTerraCPxMiss}; \design{Rules in context} requested \pct{\tenTerraBoneRecall}, held \pct{\tenTerraBoneHeld} and missed \pct{\tenTerraBoneMiss} (Figure~\ref{fig:outcomes}). H2 was supported with both models. Strong Kleene evaluation in the production engine held far more (\pct{\tenTerraCPkHeld} and \pct{\tenLunaCPkHeld}); exact deferral removed \tenTerraExactCut\% and \tenLunaExactCut\% of its deferrals ($p=\ctTerraHTwoBDeferP$ and $p\ctLunaHTwoBDeferP$) without adding an unnecessary request. It added \tenTerraExactAddedMiss{} and \tenLunaExactAddedMiss{} missed documents among \tenTerraExactNR{} required ones: supplied files that the Study~1 configuration had judged sufficient and the reference marks as insufficient, which the holds had hidden. \design{Model executes rules}, told to apply strong Kleene logic, held \pct{\tenTerraBtwoHeld} and so reproduced part of its incompleteness.
 
+\begin{figure}[t]
+\centering
+\fig{fig_outcomes}{\linewidth}
+\Description{Unit charts of 100 required documents per design and model, coloured by outcome.}
+\caption{Outcomes of 100 required tenancy documents, per design and model: requested, held, handed over and missed, with unnecessary requests counted separately.}
+\label{fig:outcomes}
+\end{figure}
+
 \paragraph{Judgments}
 Of \jaTotal{} condition judgments on claims whose family \texttt{gpt-6.1-terra} identified, \jaCorrect{} matched the reference, \jaFlipped{} contradicted it and \jaUnres{} were unresolved; \texttt{gpt-6-luna} made \jaLunaCorrect, \jaLunaFlipped{} and \jaLunaUnres. Of the frontier model's unresolved judgments, \jaUnresFalse{} concern facts that the message never mentions and the scenario sets to false, and \jaUnresTrue{} concern true facts the message does not state clearly, \jaUnresRouting{} of them a routing fact. That one kind of fact holds most deferred documents: \defRouting{} of \defTotal{} (\defRoutingPct\%) with \texttt{gpt-6.1-terra} and \defLunaRouting{} of \defLunaTotal{} (\defLunaRoutingPct\%) with \texttt{gpt-6-luna}; with the frontier model, another \defClaim{} were handed over and \defOther{} waited for other conditions.
 
@@ -340,7 +341,7 @@ Execution has three costs. It defers documents whose requirement depends on fact
 \subsubsection{Implications for practice}
 \label{app:s1-practice}
 
-Table~\ref{tab:guidance} summarises when each design is preferable. Three findings carry most of the guidance. First, if an organisation wants request quality that does not depend on its choice of model, or wants to run a cost-efficient model, it should execute its rules: on the theft cases, the Study~1 configuration with \texttt{gpt-6-luna} was at least as accurate as the frontier model applying the rules in context, at half the cost per case, and on the tenancy claims it made fewer unsafe errors, although it deferred more documents. Second, rules must be verified before they are executed. Extraction errors were the dominant source of the Study~1 configuration's errors, and automated rule verification can focus expert review on a third fewer rules without missing a known error, but it cannot replace that review. Third, an executing agent needs an explicit policy for silence: which unstated facts may be presumed once the claim's category is known, and which must be asked. A single presumption for the routing fact removed most of the Study~1 configuration's deferrals on the tenancy claims without adding unsafe errors.
+Table~\ref{tab:guidance} summarises when each design is preferable. Three findings carry most of the guidance. First, if an organisation wants request quality that does not depend on its choice of model, or wants to run a cost-efficient model, it should execute its rules: on the theft cases, the Study~1 configuration with \texttt{gpt-6-luna} was at least as accurate as the frontier model applying the rules in context, at half the cost per case, and on the tenancy claims it made fewer unsafe errors, although it deferred more documents. Second, rules must be verified before they are executed. Extraction errors were the dominant source of the Study~1 configuration's errors, and automated rule verification can focus a review of the rules on a third fewer rules without missing a known error, but it cannot replace that review. Third, an executing agent needs an explicit policy for silence: which unstated facts may be presumed once the claim's category is known, and which must be asked. A single presumption for the routing fact removed most of the Study~1 configuration's deferrals on the tenancy claims without adding unsafe errors.
 
 \begin{table}[t]
 \caption{When to execute the rules and when to let the model apply them, from the evidence of Study~1.}
@@ -398,16 +399,6 @@ Evidence-first & \origEFCorrect & \origEFWrong & \origEFMissed & \origEFExact/\o
 
 \paragraph{Tenancy claims, original study}
 The following figures are transcribed from the original study's report. In its tenancy comparison every design had to produce a complete process graph within two calls and 4,096 completion tokens. The model-applied designs produced a scoreable output for 28--47\% of claims and the original configuration for 74\%; on the outputs they did produce, checklist $F_1$ was similar (90--95\%). That comparison therefore measured mainly whether a design could emit a valid graph. Its fixed-judgment comparison with a variant that ignored the dispute type removed 98\% of unnecessary requests by construction. Study~1 replaced both: every design returned only its evidence plan, and deferrals were scored against the references.
-
-
-\subsection{Data details}
-\label{app:data}
-
-\paragraph{Tenancy claims}
-The 150 claims comprised 50 defect, 50 lease-termination and 50 rent-increase disputes from 28 scenarios (11 development, 17 held-out), 75 in English and 75 in Swiss Standard German, received by e-mail (70), portal (46), chat (24) or phone note (10); 45 claims carry 57 attachments (47 PDF notices, demands and forms, 10 photographs). Messages had 138--209 words. Attachment text was extracted with \texttt{pypdf} 5.9.0 in plain mode, as in the original study; photographs carry no text. The references specified 1,397 document states: missing (961), conditional on a false flag (395) and provided but insufficient (41). We scored a document as required if its state was missing or provided but insufficient.
-
-\paragraph{Theft cases}
-Each case was an English claim story of 141--155 words followed by nine condition statements. The 197 source passages came from the Swiss Insurance Contract Act, the household-insurance terms of four insurers, one insurer's claim form and the industry's model conditions; the catalogue listed 33 document types named in these sources. The extracted rule pack contained 98 rules with 117 facts, 126 evidence items and 87 conditions.
 
 
 \input{sections/appendix_prompts}
