@@ -94,7 +94,9 @@ function renderTop() {
   let tabs;
   if (route.view === "case") {
     const working = activeAgent();
-    tabs = [["overview", T("Overview", "Übersicht"), "check"]].concat(AGENTS).map(([id, title, ic]) => `<a class="cp-tab ${working === id ? "working" : ""}" href="#/case/${esc(route.id)}/${id}"
+    const work = { claim_reader: "claim_reader", source_checker: "claim_reader", process_builder: "process_builder", document_finder: "document_finder", result_checker: "overview" };
+    tabs = [["overview", T("Overview", "Übersicht"), "check"], ["claim_reader", T("File", "Akte"), "doc"], ["process_builder", T("Process", "Prozess"), "nodes"],
+            ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab ${work[working] === id ? "working" : ""}" href="#/case/${esc(route.id)}/${id}"
       ${route.tab === id ? 'aria-current="page"' : ""} data-tab="${id}">${icon(ic)}${title}<span class="cp-pulse" aria-hidden="true"></span></a>`).join("");
   } else {
     tabs = [["cases", T("Cases", "Fälle"), "folder"], ["knowledge", T("Knowledge", "Wissen"), "memory"]].map(([id, title, ic]) =>
@@ -1039,14 +1041,17 @@ function askNow(ev) {
 }
 function requestDraft(ev) {
   const { now, later } = askNow(ev);
-  const ask = now.filter((d) => d.status !== "present");
+  const lineState = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
+  const keep = (i) => lineState[i.item_id] !== false;
+  const ask = now.filter((d) => d.status !== "present" && lineState[`document:${d.document}`] !== false)
+    .concat(later.filter((d) => lineState[`document:${d.document}`] === true));
   if (!ask.length) return "";
   const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
   const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
   const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
   const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
-  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question");
-  const hints = (S.data.items || []).filter((i) => i.kind === "hint");
+  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question" && keep(i));
+  const hints = (S.data.items || []).filter((i) => i.kind === "hint" && keep(i));
   const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
   return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
     ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
@@ -1129,7 +1134,7 @@ function overviewView() {
     : docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
   const draft = ev ? requestDraft(ev) : "";
   const done = doneRows(), doneKeys = new Set(done.map((f) => f.target.slice(6)));
-  const all = judgementPoints(ev, r), pts = all.filter((p) => !doneKeys.has(p.key));
+  const all = judgementPoints(ev, r).filter((p) => !p.request && !String(p.key).startsWith("chat.")), pts = all.filter((p) => !doneKeys.has(p.key));
   const settled = all.filter((p) => doneKeys.has(p.key));
   const shown = S.allPoints ? pts : pts.slice(0, 7);
   const button = (p, i) => [p.request ? `<button class="cp-button primary" data-point-request>${T("Open draft", "Entwurf öffnen")}</button>` : "",
@@ -1145,19 +1150,20 @@ function overviewView() {
   const setByYou = (S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").length;
   const checked = `${Object.values(recorded("fact")).filter((f) => f.status !== "unknown").length} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by a person)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
   return `<div class="cp-overview"><div>
-    <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
+    ${preparedView(ev, draft)}
+    <section class="cp-card" style="padding:18px 22px;margin-top:18px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">
         <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen)}${claimCite ? cite(claimCite) : ""}</dd>
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
         <dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>
-        <dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
+        <dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} <span class="cp-muted">· ${T("prepared above", "oben vorbereitet")}</span>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
       </dl>
       ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>
         <p class="cp-followup">${followUpLine()}</p>
         <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section></div>
-    <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Needs your judgement", "Braucht Ihr Urteil")} <span class="cp-muted">· ${pts.length}</span></h2>
+    <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("To settle first", "Vorher zu klären")} <span class="cp-muted">· ${pts.length}</span></h2>
       ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li data-item="${esc(p.fact ? `fact:${p.fact}` : p.request ? "next_action:0" : `point:${p.key}`)}"><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
         ${pts.length > 7 && !S.allPoints ? `<button class="cp-link" id="all-points">+${pts.length - 7} ${T("more", "weitere")}</button>` : ""}`
         : `<p>${T("Nothing open.", "Nichts offen.")} <span class="cp-muted">${T("Checked", "Geprüft")}: ${checked}.</span></p>`}
@@ -1234,6 +1240,35 @@ function followUpLine() {
   return `${T("Follow-up", "Wiedervorlage")}: <input type="date" id="followup-date" value="${esc(f.due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}">
     <span class="cp-muted">${f.set_by ? T(`set by ${esc(f.set_by)}`, `gesetzt von ${esc(f.set_by)}`) : T("proposed from practice; documents expected by then", "aus der Praxis vorgeschlagen; Unterlagen bis dann erwartet")}</span>`;
 }
+function preparedView(ev, draft) {
+  // The next piece of the handler's work, already done: the action, its letter with the checklist inside, why, and when.
+  const act = item("next_action", "0");
+  if (!act) return "";
+  const docs = (S.data.items || []).filter((i) => i.kind === "document" && i.ask);
+  const qs = (S.data.items || []).filter((i) => i.kind === "letter_question" || i.kind === "hint");
+  const lines = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
+  const off = new Set(docs.concat(qs).filter((i) => i.ask === "later" ? lines[i.item_id] !== true : lines[i.item_id] === false).map((i) => i.item_id));
+  const stage = (S.data.process.steps || []).find((x) => x.id === (ev && ev.current && ev.current.step)) || {};
+  const line = (i, text, extra) => `<li><label><input type="checkbox" data-line="${esc(i.item_id)}" ${off.has(i.item_id) ? "" : "checked"} ${i.ask === "later" ? "data-later" : ""}> ${esc(text)}</label>${extra || ""}</li>`;
+  const why = [stage.title && T(`Stage: ${stage.title}`, `Stufe: ${stage.title}`), ...(ev ? ev.path.filter((x) => x.via).map((x) => `${x.title} → ${x.via}`) : [])].filter(Boolean);
+  return `<section class="cp-card cp-prepared" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Prepared", "Vorbereitet")}: ${esc(T(act.label.en, act.label.de))}</h2>
+    ${docs.length || qs.length ? `<ul class="cp-checklist">${docs.filter((d) => d.ask === "now").map((d) => line(d, d.label.de, d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "")).join("")}
+      ${docs.filter((d) => d.ask === "later").map((d) => line(d, `${d.label.de} ${T("(later, if needed)", "(später, falls nötig)")}`)).join("")}
+      ${qs.map((q) => line(q, q.kind === "hint" ? `${T("Hint", "Hinweis")}: ${clip(q.value, 140)}` : `${T("Question", "Frage")}: ${q.value}`, q.legal_basis ? ` <span class="cp-muted">· ${esc(q.legal_basis)}</span>` : "")).join("")}</ul>` : ""}
+    ${draft ? `<p><button class="cp-button primary" id="show-draft">${S.showDraft ? T("Hide letter", "Brief ausblenden") : T("Show letter", "Brief zeigen")}</button></p>` : ""}
+    ${why.length ? `<details class="cp-muted"><summary class="cp-link">${T("Why this step", "Warum dieser Schritt")}</summary><ul>${why.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></details>` : ""}
+  </section>`;
+}
+function historyView() {
+  const words = { "item.corrected": T("corrected", "korrigiert"), "item.dismissed": T("not needed", "nicht nötig"), "item.added": T("added", "ergänzt"),
+    "correction.undone": T("undone", "rückgängig"), "note.added": T("note", "Anmerkung"), "letter.copied": T("letter copied", "Brief kopiert"),
+    "case.closed": T("closed", "erledigt"), "followup.set": T("follow-up set", "Wiedervorlage gesetzt"), "letter.line": T("letter changed", "Brief geändert"),
+    "source.opened": T("source opened", "Quelle geöffnet"), "reveal": T("own answer saved", "eigene Einschätzung gespeichert"), "point.settled": T("settled", "erledigt") };
+  const rows = (S.data.caseEvents || []).filter((e) => words[e.kind]).reverse();
+  return `<section class="cp-card" style="padding:18px 22px;max-width:900px"><h2 class="cp-section" style="margin-top:0">${T("History", "Verlauf")}</h2>
+    ${rows.length ? `<ul>${rows.map((e) => `<li>${dateText(e.at)} · ${esc(e.expert || "")} · <b>${esc(words[e.kind])}</b>${e.item_id ? ` <span class="cp-muted">${esc(e.item_id)}</span>` : ""}${e.text ? ` — ${esc(clip(e.text, 120))}` : ""}</li>`).join("")}</ul>`
+      : `<p class="cp-empty">${T("Nothing done on this case yet.", "Noch nichts an diesem Fall erledigt.")}</p>`}</section>`;
+}
 function closed() { return (S.data.caseEvents || []).filter((e) => e.kind === "case.closed").pop(); }
 function closeView() {
   const c = closed();
@@ -1274,6 +1309,12 @@ function bindOverview() {
     if (navigator.clipboard) navigator.clipboard.writeText(text);
     S.letterText = text;
     caseEvent("letter.copied", null, { edited: text.trim() !== draft.trim(), change_ratio: Math.round(100 * Math.abs(text.length - draft.length) / Math.max(1, draft.length)) / 100 });
+  });
+  for (const b of document.querySelectorAll("[data-line]")) b.addEventListener("change", async () => {
+    const reason = b.checked ? "none" : (window.prompt(T("Why? 1 files say otherwise · 2 not in the files · 3 not relevant here · 4 generally so · 5 known from outside · 6 wording",
+      "Warum? 1 Akten anders · 2 nicht in den Akten · 3 hier nicht relevant · 4 gilt generell · 5 von ausserhalb bekannt · 6 Formulierung")) || "none").trim().slice(0, 4);
+    await caseEvent("letter.line", b.dataset.line, { included: b.checked, reason: /^[1-6]$/.test(reason) ? reason : "none" });
+    await loadCase();
   });
   for (const b of document.querySelectorAll("[data-undo-edit]")) b.addEventListener("click", async () => {
     await api(`/api/edits/${b.dataset.undoEdit}/undo`, { method: "POST" }); S.lastEdit = null; S.openMine = true; await loadCase();
@@ -1388,6 +1429,7 @@ async function renderCase() {
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "document_finder") main = `${documentsView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "result_checker") main = resultView();
+  else if (tab === "history") main = historyView();
   else if (tab === "overview") main = `${overviewView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;

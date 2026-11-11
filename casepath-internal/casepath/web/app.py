@@ -56,7 +56,7 @@ class NewCase(BaseModel):
 EVENT_KINDS = {"session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
-               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set"}
+               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line"}
 REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
            "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
 
