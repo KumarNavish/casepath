@@ -330,7 +330,16 @@ class HandlerFlowTests(unittest.TestCase):
                   if not any(name in {"open_process", "view_knowledge"} or args.get("agent") == "process_builder"
                              for name, args in turn)]
         script = [t for t in script if not (len(t) == 1 and t[0][0] == "report" and "questions" in t[0][1])]
+        # one claim-reader delegation: drop the second delegate and fold its fact turn into the first reading
+        second = next(i for i, t in enumerate(script) if i > 0 and t == [delegate("claim_reader", "Record the facts.")])
+        facts_turn = script.pop(second + 1)
+        script.pop(second)
+        brief_report = next(i for i, t in enumerate(script) if t and t[0][0] == "report" and t[0][1].get("request"))
+        script.insert(brief_report, [c for c in facts_turn if c[0] != "report"])
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=workflow)
         agents = {e["agent"] for e in result["events"] if e["kind"] == "agent.start"}
         self.assertNotIn("process_builder", agents)
         self.assertIn("agent.skipped", {e["kind"] for e in result["events"]})
+        starts = [e for e in result["events"] if e["kind"] == "agent.start" and e["agent"] == "claim_reader"]
+        self.assertEqual(len(starts), 1)  # one reading briefs the case and records the facts
+        self.assertEqual(result["facts"][0]["fact"], "landlord_notified")

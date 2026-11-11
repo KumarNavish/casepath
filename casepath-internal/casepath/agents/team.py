@@ -760,7 +760,13 @@ class CaseTeam:
         state = {"delegations": 0}
         work.emit("lead", "agent.start", instruction="Prepare the case.")
         handler_flow = any(s.get("action") for s in work.graph["steps"])
-        for agent, instruction in PLAN:
+        plan = PLAN
+        if handler_flow:  # the process is fixed before reading: one reading briefs the case and records its facts
+            plan = [(a, i) for n, (a, i) in enumerate(PLAN) if not (a == "claim_reader" and n > 0)]
+            plan[0] = ("claim_reader", PLAN[0][1] + " Then, in the same work, " + PLAN[2][1][0].lower() + PLAN[2][1][1:])
+            plan = [(a, i + " This process writes its letters itself: leave the reply draft empty (not needed).")
+                    if a == "result_checker" else (a, i) for a, i in plan]
+        for agent, instruction in plan:
             if agent == "process_builder" and handler_flow:
                 # The handler's own workflow already names each stage's needs and action; its guesses were rarely asked.
                 work.emit("lead", "agent.skipped", skipped=agent, reason="the handler's workflow defines this stage")
