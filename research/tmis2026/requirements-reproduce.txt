@@ -1,0 +1,10 @@
+# reproduce.sh: Python 3.10 or later (tested with CPython 3.13).
+# The analysis of all three studies, the data checks and the tests use only the standard library.
+# These three packages are needed only to draw the figures (analysis/figures.py, fig_s4.py, fig_s6.py).
+# Versions as tested; newer versions are likely to work but are not tested.
+matplotlib==3.11.2
+numpy==2.5.3
+pillow==12.3.0
+# Not packages: git and tar must be installed (the Study 3 data guard and the product evaluator read git).
+# Optional: pdflatex and bibtex for the paper compile inside analysis/verify_paper.py (skipped if absent).
+# The figures use the font Linux Biolinum O when it is installed and fall back to the default font otherwise.
