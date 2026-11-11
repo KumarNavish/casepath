@@ -93,16 +93,17 @@ class ScriptedModel:
 
 
 def _condition(row):
-    """A scripted fact row ({fact, status, value, citations}) as the reading's answer for one condition."""
+    """A scripted fact row ({fact, status, value, citations, part}) as the reading's answer for one condition."""
     quote = (row.get("citations") or [{}])[0].get("quote", "")
+    part = row.get("part")
     if row["status"] != "established":  # a quoted unknown is an open answer; an unquoted one says nothing
-        return {"id": row["fact"], "verdict": "open" if quote else "not_stated", "value": None, "quote": quote}
+        return {"id": row["fact"], "verdict": "open" if quote else "not_stated", "value": None, "quote": quote, "part": None}
     folded = str(row["value"]).strip().lower()
     if folded in {"true", "yes", "ja"}:
-        return {"id": row["fact"], "verdict": "true", "value": None, "quote": quote}
+        return {"id": row["fact"], "verdict": "true", "value": None, "quote": quote, "part": part}
     if folded in {"false", "no", "nein"}:
-        return {"id": row["fact"], "verdict": "false", "value": None, "quote": quote}
-    return {"id": row["fact"], "verdict": "true", "value": row["value"], "quote": quote}
+        return {"id": row["fact"], "verdict": "false", "value": None, "quote": quote, "part": part}
+    return {"id": row["fact"], "verdict": "true", "value": row["value"], "quote": quote, "part": part}
 
 
 def delegate(agent, instruction="Do your part."):

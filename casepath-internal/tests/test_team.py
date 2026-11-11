@@ -318,7 +318,7 @@ class TeamTests(unittest.TestCase):
         self.assertIn("a false answer needs a sentence that states the\nnegative", READ_FACTS)
         self.assertIn("not_stated: the\nfiles do not address the matter", READ_FACTS)  # silence is a separate answer
         # dates in the forms the fact type accepts: a day, a month or a year; a deadline may be "none" or a stated period
-        self.assertIn("YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day", READ_FACTS)
+        self.assertIn("YYYY-MM-DD, or YYYY-MM or YYYY when the file\nstates no day", READ_FACTS)
         self.assertIn('"<n> days from YYYY-MM-DD"', READ_FACTS)
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         work.readings = 2  # two readings, as this test describes
@@ -359,6 +359,31 @@ class TeamTests(unittest.TestCase):
                                                           usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
             read_facts(model, work)
             self.assertEqual(work.facts["reply_deadline"]["value"], kept, value)
+
+    def test_readings_that_agree_on_a_value_keep_the_parts_they_name(self):
+        import copy
+        from casepath.agents.team import CaseWork, confirm_facts, read_facts
+        from casepath.process.workflows import validate_workflow
+        from tests.scripted import ModelResult
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "landlord_reaction", "type": "enum", "values": ["open points / no reaction", "repaired"],
+                              "question": "How did the landlord react?", "source_refs": data["facts"][0]["source_refs"]})
+        data["documents"][0]["required_when"] = {"fact": "landlord_reaction", "is": "open points / no reaction"}
+        wf = validate_workflow(data)
+        parts = {"casepath_read_facts": "open points: a refusal", "casepath_confirm_facts": "no reaction"}
+        work = CaseWork(case=CASE, files=FILES, base_workflow=wf)
+        work.readings = 2
+        model = ScriptedModel([])
+        model.respond_json = lambda **kw: ModelResult(
+            value={"conditions": [{"id": "landlord_reaction", "verdict": "true", "value": "open points / no reaction", "quote": QUOTE,
+                                   "part": parts[kw["name"]]}]},
+            usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+        read_facts(model, work)
+        confirm_facts(model, work)
+        row = work.facts["landlord_reaction"]
+        # agreement compares the value; each reading keeps its own part
+        self.assertEqual((row["status"], row["value"], row.get("agreed")), ("established", "open points / no reaction", True))
+        self.assertEqual((row["part"], row["parts"]), ("open points: a refusal", ["open points: a refusal", "no reaction"]))
 
     def test_a_verdict_whose_quotation_is_not_found_is_asked_for_once_more(self):
         from casepath.agents.team import CaseWork, read_facts
