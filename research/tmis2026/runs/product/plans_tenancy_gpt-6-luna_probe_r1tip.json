@@ -4254,5 +4254,321 @@
    "result_checker",
    "result_checker"
   ]
+ },
+ "PRODUCT|pcl_f29b8a52c7246fd9|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 31,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [
+    "Prüfen, ob eine Erstreckung bei Kündigung wegen Zahlungsrückstands ausgeschlossen ist"
+   ],
+   "document_judgments": {
+    "lease_contract": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "termination_notice": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "proof_of_receipt": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "notice_period_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "stated_reason": {
+     "status": "present",
+     "verdict": "accepted",
+     "shows": [
+      {
+       "item": "stated ground",
+       "citations": [
+        {
+         "file": "file_e47d045da012b0e9",
+         "page": null,
+         "start": 239,
+         "end": 382,
+         "quote": "Die Verwaltung hat mir deshalb am Telefon gesagt, dass sie mir wegen dieser Mietrückstände kündigt (schriftlich ist bis heute nichts gekommen)."
+        }
+       ]
+      },
+      {
+       "item": "factual basis",
+       "citations": [
+        {
+         "file": "file_e47d045da012b0e9",
+         "page": null,
+         "start": 167,
+         "end": 238,
+         "quote": "Im Sommer konnte ich wegen Kurzarbeit zwei Monatsmieten nicht bezahlen."
+        }
+       ]
+      }
+     ]
+    },
+    "spouse_notice_copy": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "payment_deadline_letter": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "rent_ledger_payment_evidence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "prior_rights_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    },
+    "housing_search_log": {
+     "status": "unusable",
+     "verdict": "rejected",
+     "shows": []
+    },
+    "landlord_correspondence": {
+     "status": "missing",
+     "verdict": "not_checked",
+     "shows": []
+    }
+   },
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "termination_received": {
+     "status": "conflicting",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [
+    "termination_received"
+   ],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [
+    "stated_reason"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Klären Sie zuerst, ob ein schriftliches Kündigungsschreiben zugestellt wurde und wann; die davon abhängigen Dokumente und Fristen werden anschliessend geprüft.",
+   "reply_clauses": 5,
+   "warnings": []
+  },
+  "keys": [
+   "dd3a76c591ebd0fe93ed264ac1adaf01fff6eda8c4ad837f938fba85c3424351",
+   "dd3a76c591ebd0fe93ed264ac1adaf01fff6eda8c4ad837f938fba85c3424351",
+   "bbf8e8492942f82393f74a4fd48b47a2205d3158d587a1e60dc583cd48517aff",
+   "bbf8e8492942f82393f74a4fd48b47a2205d3158d587a1e60dc583cd48517aff",
+   "0e98f57634623491b371ba2e278383377adc9924abc4e89ba0111c8dfdf0daca",
+   "0e98f57634623491b371ba2e278383377adc9924abc4e89ba0111c8dfdf0daca",
+   "0826b2ce57e4cf7c756169acaa3234dbaa97b14ba40719a71d374aadc6afa351",
+   "0826b2ce57e4cf7c756169acaa3234dbaa97b14ba40719a71d374aadc6afa351",
+   "49e75efbb4ac2a4ae423dce830abe5ff5998431fc1a649ddd6b5b90986bc98d7",
+   "49e75efbb4ac2a4ae423dce830abe5ff5998431fc1a649ddd6b5b90986bc98d7",
+   "8a307440d434c3dea2e795303225791244a7a09e95c56566e51603b0a672a6c4",
+   "8a307440d434c3dea2e795303225791244a7a09e95c56566e51603b0a672a6c4",
+   "c1d3765759ede5a5d1820c2b69f786fdfd19b663a6ff46781ddcb6a831fce1b7",
+   "c1d3765759ede5a5d1820c2b69f786fdfd19b663a6ff46781ddcb6a831fce1b7",
+   "07c66b9a20c4532107ccbc089331630f918acca6b182f24704a496fbbfff6a6e",
+   "07c66b9a20c4532107ccbc089331630f918acca6b182f24704a496fbbfff6a6e",
+   "22887fb505c83eaf920ba1c5b4aca53c970abda6194707ac7569d0778ce72055",
+   "22887fb505c83eaf920ba1c5b4aca53c970abda6194707ac7569d0778ce72055",
+   "6b3f895c0562bb7e7874c7bceb033dc21cf3955299b3108a7622af77597452c1",
+   "6b3f895c0562bb7e7874c7bceb033dc21cf3955299b3108a7622af77597452c1",
+   "fdfbb7bb65babf3416036a30ce36da619d30070b0daf2b85fcace538281f604b",
+   "fdfbb7bb65babf3416036a30ce36da619d30070b0daf2b85fcace538281f604b",
+   "b4228f682b079f115a580cbcefe8cb5316cb44f22c938f5fcea044c1ceca1299",
+   "b4228f682b079f115a580cbcefe8cb5316cb44f22c938f5fcea044c1ceca1299",
+   "5af5ed65ff661b1684161a35193440ba5129a37cd78f5438ae75f185488fd8b3",
+   "5af5ed65ff661b1684161a35193440ba5129a37cd78f5438ae75f185488fd8b3",
+   "b3a13a128e1641c4e596cc158ef22cd492dd91b696ed60de3fa11a2f9151be56",
+   "b3a13a128e1641c4e596cc158ef22cd492dd91b696ed60de3fa11a2f9151be56",
+   "334122bc8c83a0f8cd8dfcef1c8963c58d78a39ba7137178691d8b7bb6f3cde3",
+   "334122bc8c83a0f8cd8dfcef1c8963c58d78a39ba7137178691d8b7bb6f3cde3",
+   "f528399a857b77d87d916a887a9f9b6a50f800a18d07b15ff35720330dc10f1b",
+   "f528399a857b77d87d916a887a9f9b6a50f800a18d07b15ff35720330dc10f1b",
+   "3b37865925f3e89c9ec33dc9616864c460270b3e862a8e2855bafbec71e472e5",
+   "3b37865925f3e89c9ec33dc9616864c460270b3e862a8e2855bafbec71e472e5",
+   "5d3acc418995e15325f7d333d026e8222750b9a60ee381513389ff8fa10f6e97",
+   "5d3acc418995e15325f7d333d026e8222750b9a60ee381513389ff8fa10f6e97",
+   "62d367ae8edc465d65484390c56f22bec9c3505c3687105d66ceb07edf253b2d",
+   "62d367ae8edc465d65484390c56f22bec9c3505c3687105d66ceb07edf253b2d",
+   "aabf831843a47d2b62a43a4a2775dc1158b642b0c0c7630cede4f64331e0f08f",
+   "aabf831843a47d2b62a43a4a2775dc1158b642b0c0c7630cede4f64331e0f08f",
+   "b98e550998248058a2e57142018ce890bdbac5c1f4b91ba4a449623f1a371392",
+   "b98e550998248058a2e57142018ce890bdbac5c1f4b91ba4a449623f1a371392",
+   "e22ab6fb0fdf239ecb4a0cb5eaf647a76269ab7bafbfea98718dde197abfee91",
+   "e22ab6fb0fdf239ecb4a0cb5eaf647a76269ab7bafbfea98718dde197abfee91",
+   "f9108f5c1433863b1b14786d38c3498ebb5c7d85ea18cd0cf8cb1be46779082a",
+   "f9108f5c1433863b1b14786d38c3498ebb5c7d85ea18cd0cf8cb1be46779082a",
+   "d1f3a0e9ec07193018e4b99229fdc67e9ed88a5eaee6fa1a6200a67ee6f2abe3",
+   "d1f3a0e9ec07193018e4b99229fdc67e9ed88a5eaee6fa1a6200a67ee6f2abe3",
+   "3ac95af7189af400109c2a8eacbdd0654f8ffa80925c31df04d9c507a1babc1f",
+   "3ac95af7189af400109c2a8eacbdd0654f8ffa80925c31df04d9c507a1babc1f",
+   "8d3dcf18c6725112f57a4c09a11079f7ae5e2e89d76290dc9735691d65b3324b",
+   "8d3dcf18c6725112f57a4c09a11079f7ae5e2e89d76290dc9735691d65b3324b",
+   "854083b91d054997445249a35ab6824edb8cd6d50b32212c3fac3dee4b3e8760",
+   "854083b91d054997445249a35ab6824edb8cd6d50b32212c3fac3dee4b3e8760",
+   "58053ea6463719150bb8085975ce55a251b680587e581ed8d16ddeac0cc50b01",
+   "58053ea6463719150bb8085975ce55a251b680587e581ed8d16ddeac0cc50b01",
+   "6edabe5aa9462a2cb62a82ba32dfae6c7def874e0a29b6b80de4dcfa0786c4d7",
+   "6edabe5aa9462a2cb62a82ba32dfae6c7def874e0a29b6b80de4dcfa0786c4d7",
+   "87a55cccbdaf4d011a792b3e3e6cf83649f4534eb65d2af9fd4bc3d7f46c7705",
+   "87a55cccbdaf4d011a792b3e3e6cf83649f4534eb65d2af9fd4bc3d7f46c7705",
+   "adb64c694766d1565cbd5488d6fe64d4104dbe608b61ea8067f36ec9542285a5",
+   "adb64c694766d1565cbd5488d6fe64d4104dbe608b61ea8067f36ec9542285a5"
+  ],
+  "seconds": 302.0,
+  "tokens": {
+   "input": 133472,
+   "cached": 87256,
+   "output": 20329
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
  }
 }
