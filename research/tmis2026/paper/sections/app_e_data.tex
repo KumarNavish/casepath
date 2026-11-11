@@ -1,3 +1,94 @@
 \section{Data}
 \label{app:datasets}
-% Blueprint appendix E: data of all studies, including fresh2/ and the probe claims.
+
+Four sets of synthetic data were used: the data of Study~1, \texttt{fresh/} (Study~2), the development probe \texttt{dev\_probe/}, and \texttt{fresh2/} (Study~3). Table~\ref{tab:datasets} gives their counts. Every set has a tenancy regime, whose references come from the workflow engine under the stated rules, and all but the probe have a theft regime, whose references come from a source contract. Paths are relative to the repository \cite{casepath2026repo}; the folders of Studies 2 and 3 and the probe are under \texttt{research/\allowbreak{}tmis2026/}. Each folder's \texttt{README.md} and \texttt{MANIFEST.json} are the authority for every count given here.
+
+\begin{table}[h]
+\caption{The data sets. ``Open facts'': facts a text raises and leaves open. Counts from each folder's README and manifest; Study~1's unresolved-fact pairs from Appendix~\ref{app:study1}.}
+\label{tab:datasets}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.13\linewidth}@{}}
+\toprule
+Set & Units & Families or stories & Languages & Open facts & Attachments \\
+\midrule
+Study 1, tenancy & 150 claims; 90 held out & 28 families; 17 held out & 75 English, 75 German & none designed & 57 in 45 claims \\
+Study 1, theft & 36 changed-fact pairs, 27 held out; 18 held-out unresolved-fact pairs & 4 stories; 1 development & English & 6 conditions & none \\
+\texttt{fresh/}, tenancy & 72 claims & 18 families & 36 English, 36 German & 18 claims & 38 in 29 claims \\
+\texttt{fresh/}, theft & 36 changed-fact pairs, 24 unresolved-fact pairs & 4 stories (4--7) & English & 6 conditions & none \\
+\texttt{dev\_probe/} & 16 claims & 2 disputes, 8 claims each & 8 English, 8 German & defining event, 2 per dispute & none \\
+\texttt{fresh2/}, tenancy & 96 claims & 24 families of 4 & 48 English, 48 German & 32 claims & 51 in 40 claims \\
+\texttt{fresh2/}, theft & 72 changed-fact pairs, 48 unresolved-fact pairs & 8 stories (8--15) & English & 6 conditions & none \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+All case texts are synthetic. Appendix~\ref{app:release} states which generative models wrote which texts.
+
+\subsection{Study 1}
+\label{app:data-s1}
+
+\paragraph{Tenancy claims}
+The 150 claims (\texttt{data/\allowbreak{}casepath-tenancy-claims/}) comprise 50 defect, 50 lease-termination and 50 rent-increase disputes from 28 families, 11 for development and 17 held out; no family crosses the split. They are written in English (75) and Swiss Standard German (75) and arrive by e-mail (70), portal (46), chat (24) or phone note (10). 45 claims carry 57 attachments: 47 PDF notices, demands and forms, and 10 photographs. Messages have 138--209 words. The references give every document a state: missing (961), conditional on a false flag (395) or provided but insufficient (41). The generator gave every fact a value; a fact that a message never mentions is false in the scenario. The data were released with an earlier study of the product and evaluated in Study~1 on the 90 held-out claims (Appendix~\ref{app:study1}).
+
+\paragraph{Theft pairs}
+The 36 pairs (\texttt{data/\allowbreak{}casepath-theft-pairs/}) are built by script from four story paragraphs and nine condition sentences, without model calls. The two cases of a pair differ in one sentence that switches one condition on. The first story is development data, so 27 pairs are held out. Texts are English, 141--155 words. The references derive from a contract built from 197 source passages, with a catalogue of 33 document types. Study~1 added unresolved-fact variants for six conditions, 18 held-out pairs (Appendix~\ref{app:unresolved}).
+
+\paragraph{Sealing}
+Each folder's \texttt{verify.py} checks the evaluated files against recorded hashes. The checks include the commitments made before the earlier evaluation; for example, the held-out tenancy references are byte-identical to a container whose SHA-256 was committed before it. Both sets have been public since that study, and the held-out tenancy messages were visible during product development (Appendix~\ref{app:study1}).
+
+\subsection{\texttt{fresh/} (Study 2)}
+\label{app:data-fresh}
+
+\paragraph{Construction}
+The theft pairs come from the released construction script, run unchanged except for its list of story contexts, which adds four new settings (stories 4--7). The build checks that the rebuilt original stories reproduce the released benchmark, that the released preflight passes, and that every condition has the same reference in all eight stories. The 72 tenancy claims form 18 families, each a dispute type and a combination of true facts that no Study~1 claim uses: one rent-increase, eight termination and nine defect families. Every true branch fact is stated and every false one is left unmentioned. In 18 claims, one per family, one branch fact is raised and left open; its true value is recorded (9 true, 9 false). The routing fact is stated in 18 of the 36 claims that have one and left unmentioned in the other 18. 29 claims carry 38 attachments, 18 sufficient and 20 insufficient. Messages have 142--219 words.
+
+\paragraph{Reference and check}
+The silence clause is added to each template, and the production engine computes each document's state from the true facts under it, with exact deferral for the open fact. An independent oracle rebuilds all 72 references. A blind check by the writing model in a fresh context read each message for its fact states; 87 claims were written for the 72 slots, and 15 were replaced.
+
+\paragraph{Sealing}
+\texttt{MANIFEST.json} records the SHA-256 of every file, the counts and the writing model; \texttt{seal.py} recomputes the counts, reruns the oracle check and rewrites the manifest. The set was sealed on 9 November 2026, before any compared design ran on it. Since Study~2 ran it is development data.
+
+\subsection{\texttt{dev\_probe/}}
+\label{app:data-probe}
+
+The probe is development data. It was never sealed and is not held-out evidence. It holds 16 tenancy claims, 8 termination and 8 rent-increase disputes, half in English and half in Swiss Standard German, 109--155 words, without attachments. Per dispute, 3 claims deny the defining event (stated plainly, in passing, or implied), 2 leave it open and 3 are controls. Each claim states one to three true branch facts. It was written because \texttt{fresh/} has no denied or open defining event, and its writer had not seen \texttt{fresh2/}. \texttt{build.py} writes the claims and their references, computed by the engine under the silence clause, and checks every reference: a denied event gives no request, an open event holds every branch document, and a control requests at least one document.
+
+\subsection{\texttt{fresh2/} (Study 3)}
+\label{app:data-fresh2}
+
+\paragraph{Theft}
+Eight new stories (8--15) give 72 changed-fact pairs and 48 unresolved-fact pairs. The released construction scripts run unchanged except for their list of contexts. Each new story is a different kind of case document, such as a broker's letter, a loss adjuster's report, a call-centre log or a handover note between handlers, each with its own place, objects, people and policy details. Unlike stories 0--7, which end in a bulleted list, the nine condition sentences are embedded verbatim at different positions in running text. Each changed text replaces exactly one sentence, and each unresolved text replaces it with the open-condition sentence; the build checks both in code. Surrounding detail is written to fit either value of every condition. Texts without a changed condition have 260--320 words. The build checks that the original stories and stories 4--7 are reproduced and that every condition has the same reference in all sixteen stories. Each pair carries the reference of its condition with renamed requirement ids.
+
+\paragraph{Tenancy}
+The 96 claims form 24 families of four, each a dispute type and a combination of true facts that no Study~1 or \texttt{fresh/} claim uses. Only 16 such combinations remain with the defining event true: 13 defect and 3 termination families. The other 8 families are the first in which the defining event is false: the landlord has announced a termination (4 families) or a rent increase (4 families), but the tenant has received nothing in writing. Every true branch fact is stated. A false one is mostly left unmentioned (139 facts) and sometimes denied (50 denials, 24 of them of the defining event). Each stated or denied fact has a designed wording: plain (135), in passing (89) or implied only (48). 32 claims raise one fact and leave it open (17 true, 15 false). In every family with the defining event true, one or two claims leave a fact open; in each family with it false, one claim leaves the event itself open. \texttt{check.py} confirms that every open fact holds at least one document and that resolving it changes the checklist. 40 claims carry 51 plain-text attachments, 25 sufficient and 26 insufficient; none is held behind the open fact, none would reveal an unmentioned notice and none would settle the open fact. Messages have 77--220 words, in channels in Study~1's proportions. References come from the engine under the silence clause, which is identical to that of \texttt{fresh/} (Appendix~\ref{app:silence}); 33 claims have no document to request.
+
+\paragraph{Three subsets}
+The analysis plan defines three tenancy subsets from the reference. \emph{Denied-event} claims (24): the defining event is false and the claim says so. \emph{Open-event} claims (9): the claim leaves the defining event open, 8 in families where it is false and 1 where it is true. \emph{Ordinary} claims (63): all others, of which 23 raise one branch fact and leave it open.
+
+\paragraph{Blind check}
+A reader model of the same family as the writer, in separate sessions without the repository, read each claim with its attachments. It saw the fact ids and the content items of each attachment, never a design value or a reference, and returned a state and a quotation per fact and a judgement per content item. Table~\ref{tab:blindcheck} gives the first reading. An unmentioned branch fact read as denied, and an unmentioned defining event read as stated, are accepted because they leave the reference unchanged under the silence clause. One claim had an authoring error: the message implied a family home that the design leaves unmentioned. Two phrases were changed and a fresh session re-read the claim. 80 of 96 claims were read as designed literally, 88 with the accepted readings, and 89 after the correction; the remaining 7 differ only in content items. Six of the seven remaining disagreements concern a caretaker's inspection visit that the reader did not count as work the landlord proposes; for four attachments the reference says sufficient where the reader would say insufficient. These readings are recorded per claim. The theft texts had no blind check: their condition sentences are fixed verbatim, and the build checks in code that each occurs once and that each changed text differs from its base text by that sentence only.
+
+\begin{table}[h]
+\caption{Blind check of the \texttt{fresh2/} tenancy claims, first reading (\texttt{fresh2/\allowbreak{}BLIND\_CHECK.md}).}
+\label{tab:blindcheck}
+\footnotesize
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Judgement & Number & Read literally as designed & Accepted \\
+\midrule
+Facts, all & 448 & 438 & 447 \\
+\quad stated true & 222 & 222 & 222 \\
+\quad stated false (denied) & 50 & 50 & 50 \\
+\quad raised and left open & 32 & 32 & 32 \\
+\quad absent branch fact & 139 & 132 & 138 \\
+\quad unmentioned defining event & 5 & 2 & 5 \\
+Content items & 157 & 150 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Sealing and guard}
+\texttt{MANIFEST.json} records the SHA-256 of every file and the counts; \texttt{seal.py} rewrites it and \texttt{check.py} verifies data and hashes without a model. The set was sealed on 10 November 2026, before any design, baseline or scorer ran on it, and no design output was consulted while writing it. \texttt{guard.py} makes the loaders refuse every access to the data unless \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY3.md} is committed unmodified, and refuse it in any process that has the repository's model client loaded or a model set.
+
+\paragraph{Known limitations}
+The tenancy references test rule application, not legal correctness: they come from the engine that \casepath implements, under the silence clause that every design receives. The theft regime reuses Study~1's nine conditions, their sentences, the source contract and the rules; only the settings and the embedding are new, and the rule review was made with knowledge of these conditions. No unused rent-increase combination with the notice received exists, so rent appears only in denied-notice families. The references of 24 claims (defining event denied) mark every document not needed, and 8 more hold everything behind the open defining event. The unmentioned-defining-event condition is weak (5 claims, 3 read as stated). One writing model wrote every text and one reader model checked them, so phrasing patterns are shared across the set.

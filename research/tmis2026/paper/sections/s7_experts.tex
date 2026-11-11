@@ -1,3 +1,53 @@
-\section{Expert study}
+\section{A study with claims experts}
 \label{sec:experts}
-% Blueprint §3.7 (1,200 words): five experts, three real cases, pre-registered (expert_study/PREREGISTRATION_DRAFT.md); design now, results after the sessions; claims Q1-Q5 only; Fig. fig_gestures.
+
+The sessions of this study take place after the submission of this version, and their results will be added to it.
+
+\paragraph{Why}
+Synthetic data cannot show what claims experts do with \casepath's checklist on real files: whether they accept an item, change it or override it, and why. We have registered a study in which five claims experts of the insurer's legal-protection unit will work through real files in the product. The only instrument will be their ordinary work in the interface. Appendix~\ref{app:protocol} gives the protocol.
+
+\paragraph{Participants and cases}
+The cases are three closed tenancy-defect (mould) files of an internal hackathon, for which the insurer's process reference exists. A fourth file is held in reserve, usable only before the first session for a reason listed in advance. The seven other files are development files, to be reported separately and never tested. Each study case will be cut at a decision point fixed by rule: the state of the file just before the insurer's first outgoing request for documents or information. Nobody in a session will see anything dated later. The product was developed on these files, so agreement on them is agreement on cases seen in development. Before the freeze, the process owner will handle one development file with the same procedure; this formative session pilots the protocol, its product changes will be listed, and its events will not be analysed.
+
+\paragraph{Procedure}
+A session will last about 75 minutes: a five-minute synthetic practice case, then the three study cases. On the first case each expert will give an own answer before \casepath's result appears: the process step, the documents to request and the next action, from pick-lists, within ten minutes. The first case rotates by lot, so that each case is first for two, two and one experts. All experts will see the same stored run of each case, and no model will be called in a session. Feedback will have three gestures: leave an item, which closing the case as done, or done with a reservation, attests; change it in place with one of six reasons in one tap; or add a note.
+
+\paragraph{Where an item's status comes from}
+There is no gold standard: expert time is limited to the sessions, so no adjudicator labels items, and what the insurer did is practice, not proof of correctness. Item status will come from sources kept apart and never merged (Table~\ref{tab:experts}): the insurer's requests at the decision point (P) and later (P-later), transcribed before any run on the cut file; the experts' own answers on their first case (O); what the other four experts did with the item (C), formed under exposure to \casepath's result; and one automated, non-expert labeller (A). An item is settled only where P, P-later or O speaks to it. Facts, deadlines and document status mostly are not, and will be reported as unsettled, never as right or wrong.
+
+\paragraph{Questions}
+Q1 will ask how far \casepath agrees with what the insurer did on documents, step and next action, beside a single prompt given the same files, workflow and Knowledge. Q2 will ask what five experts do with the same items: agreement per item, the items changed by at least three of five, and reliance on document requests against practice. Q3 will describe work with \casepath: time, interventions, changes to the reply draft and the closing form. Q4 will ask whether \casepath improves from corrections on a case whose corrections it has not seen, by model-free replay that leaves one case out, with a mechanical rule from correction to Knowledge and a gate that never sees the held-out case. Q5 will ask why experts change items: the six reasons and their agreement on the same item.
+
+\begin{table}[t]
+\caption{The five questions of the expert study, their measures and the source of each item's status. P: the insurer's request at the decision point; P-later: its later requests; O: own answers on the first case; C: the other four experts; A: the automated labeller.}
+\label{tab:experts}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.2\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.25\linewidth}@{}}
+\toprule
+Question & Measure & Source of item status \\
+\midrule
+Q1 Agreement with practice & share of P's documents that \casepath requests; share of its requests in P, and in P-later; same step and next action or not; the same for a single prompt & P, P-later; O secondary \\
+Q2 Five experts, same items & kept or changed per expert; Fleiss' kappa; share changed by at least three of five; reliance on document requests; change after the reveal on the first case & C; P and P-later for reliance; O and P for the first case; A beside unsettled items \\
+Q3 Work with \casepath & active time, interventions by kind, change ratio of the reply draft, closing form & none (descriptive) \\
+Q4 Learning from corrections & change in agreement with P on the held-out case; share of the additions made there by at least three of five experts that replayed Knowledge makes unnecessary & P; C for the additions \\
+Q5 Reasons & distribution of the six reasons; agreement of reasons on the same item & none (descriptive) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{The one test}
+One test is stated in advance. For each expert we will take the share removed among \casepath's requests in neither P nor P-later, minus the share removed among its requests in P, and apply a one-sided sign test over the five experts; five of five gives $p=1/32$, the smallest attainable value. A request outside practice is not thereby wrong. Every other result will be an estimate with intervals.
+
+\paragraph{The interface at the tested commit}
+At commit 6a72159c the interface has per-item confirmation, marked correct or not correct, and the change-with-reason gesture: an edit form that requires a reason, typed as free text, not one of the six coded reasons (Figure~\ref{fig:gestures}). It has no control for closing a case and none for a note; the API accepts a short note with an item's mark, but no screen offers it. The product's owners are building the closing attestation and the note before the freeze of the study. The freeze records the study's product commit and its parity output.
+
+\begin{figure}[t]
+\centering
+\fig{fig_gestures}{\linewidth}
+\Description{Three crops of CasePath screens. (a) An item in the result checker with buttons to mark it correct or not correct, and a line counting the marks. (b) The form that changes the case's process, with a required free-text reason and a box for using the change in similar cases. (c) An open point in the overview before and after it is marked done.}
+\caption{The feedback controls of \casepath at commit 6a72159c: (a) marking an item correct or not correct; (b) changing the process, with a required reason; (c) settling an open point. Unedited captures of the product on a synthetic claim; cropped. The closing attestation and the note of the study are not yet in the interface.}
+\label{fig:gestures}
+\end{figure}
+
+\paragraph{Limits}
+Five experts and three cases of one process family at one insurer bound every inference. The process \casepath executes was built from the insurer's process reference, so its structure is not scored, and Q1 is no evidence that the process is right. The study lead, an author who is not a claims expert, will check the transcriptions of the insurer's requests and the cut files. Consensus forms under exposure, so items changed by three of five only bound \casepath's errors from below. There will be no perception data: what experts think will be known only from what they do and note.

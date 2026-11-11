@@ -1,3 +1,154 @@
 \section{Confirmatory test}
 \label{sec:test}
-% Blueprint §3.6 (2,000 words) [S3]: data and freeze; designs; hypotheses of ANALYSIS_PLAN_STUDY3.md; Fig. fig_main; hypothesis table; open facts; cost and which agents mattered (fig_agents); robustness.
+
+We tested \casepath at its frozen commit against every single-agent strategy of Section~\ref{sec:related} and against a frontier model, on sealed data and under a plan fixed in advance. H1 to H3 were confirmed, H4 was not, and H5 was therefore not tested.
+
+\subsection{Data and freeze}
+\label{sec:test-data}
+
+The test data, \texttt{fresh2/}, were built and sealed before any design ran on them (Appendix~\ref{app:datasets}). Theft has \sthreeStories{} new stories (\sthreeStoryFirst--\sthreeStoryLast), each a different kind of case document with the condition sentences embedded in running text: \sthreePairsChanged{} changed-fact pairs and \sthreePairsUnresolved{} unresolved-fact pairs from \sthreeTexts{} texts. Tenancy has \sthreeClaims{} new claims in \sthreeFamilies{} families, \sthreeClaimsEnglish{} in English and \sthreeClaimsGerman{} in Swiss Standard German, with \sthreeAttachments{} attachments, \sthreeAttachmentsSufficient{} of them sufficient. The plan defines three subsets from the reference: \sthreeClaimsDenied{} \emph{denied-event} claims, whose dispute's defining event is false and stated so; \sthreeClaimsOpenEvent{} \emph{open-event} claims, which leave the defining event open; and \sthreeClaimsOrdinary{} \emph{ordinary} claims, of which \sthreeClaimsOpenBranch{} raise one other fact and leave it open.
+
+Development used the Study~1 data, \texttt{fresh/} and \sthreeProbeClaims{} probe claims. Theft stories \sthreeDevStoryFirst--\sthreeDevStoryLast{} of \texttt{fresh/} were used to develop the product, and stories \sthreeValStoryFirst--\sthreeValStoryLast{} once for validation. The probe was written because \texttt{fresh/} has no claim whose defining event is denied or open and \texttt{fresh2/} has; it was written with knowledge of the test set's design but not of its texts. Development results are in the work log and are not evidence.
+
+The system under test is the product package at commit \texttt{6a72159c}, the product branch's tip with the fix commits on top; \texttt{python -m casepath parity} gave the same source-tree hash for every product run as for the frozen tree (Section~\ref{sec:parity}). The plan was committed before any call on the data, and the data loader refused to start otherwise. All settings are the commit's defaults: \sthreeReadings{} readings that must agree, and no presumption for a fact any reading finds raised and left open. The two models are gpt-6-luna, the cost-efficient model, and gpt-6.1-terra, the frontier model.
+
+\subsection{Designs and measures}
+\label{sec:test-designs}
+
+All designs received the same files, document catalogue and rules (Table~\ref{tab:s3-designs}), with \sthreeCasePathTenRuns{} runs per case. No design was matched to the cost of the full product; the checklist-only setting is the cost-matched comparison.
+
+\begin{table}[t]
+\caption{Designs of the confirmatory test. Calls and cost are measured per case and run (tenancy claim, theft text), from the ledgers. All designs run on the cost-efficient model unless the name says frontier model.}
+\label{tab:s3-designs}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}@{}}
+\toprule
+Design & What it is & Calls (tenancy / theft) & USD per case (tenancy / theft) \\
+\midrule
+\casepath & the product at the frozen commit, default settings & \sthreeCasePathTenCalls{} / \sthreeCasePathThCalls & \sthreeCasePathTenCostFour{} / \sthreeCasePathThCostFour \\
+\casepath, checklist only & the same commit with run scope \texttt{checklist}: routing, readings, document judgments, evaluation & \sthreeChecklistTenCalls{} / \sthreeChecklistThCalls & \sthreeChecklistTenCostFour{} / \sthreeChecklistThCostFour \\
+Core & two readings and exact deferral outside the product (theft) & -- / \sthreeCoreThCalls & -- / \sthreeCoreThCostFour \\
+Rules in context & one prompt applies the rules & \sthreeRicTenCalls{} / \sthreeRicThCalls & \sthreeRicTenCostFour{} / \sthreeRicThCostFour \\
+Self-consistency & \sthreeSCSamples{} samples of Rules in context; majority per document & \sthreeSelfConsTenCalls{} / \sthreeSelfConsThCalls & \sthreeSelfConsTenCostFour{} / \sthreeSelfConsThCostFour \\
+Model executes rules & the model names each condition's value and derives the documents in one answer & \sthreeMerTenCalls{} / \sthreeMerThCalls & \sthreeMerTenCostFour{} / \sthreeMerThCostFour \\
+ReAct & a tool-using agent over the same workflow & \sthreeReactTenCalls{} / \sthreeReactThCalls & \sthreeReactTenCostFour{} / \sthreeReactThCostFour \\
+Two-valued & \casepath's readings, unresolved taken as false or as true; no calls & 0 / 0 & 0 / 0 \\
+Rules in context, original rules & the Study~1 rules (theft) & -- / \sthreeRicOrigThCalls & -- / \sthreeRicOrigThCostFour \\
+Rules in context, frontier model & the same prompt on the frontier model & \sthreeRicFrontierTenCalls{} / \sthreeRicFrontierThCalls & \sthreeRicFrontierTenCostFour{} / \sthreeRicFrontierThCostFour \\
+\quad original rules & the Study~1 rules on the frontier model (theft) & -- / \sthreeRicOrigFrontierThCalls & -- / \sthreeRicOrigFrontierThCostFour \\
+\casepath, checklist only, frontier model & the same commit with the frontier model; \sthreeFrontierChecklistTenRuns{} run per case & \sthreeFrontierChecklistTenCalls{} / \sthreeFrontierChecklistThCalls & \sthreeFrontierChecklistTenCostFour{} / \sthreeFrontierChecklistThCostFour \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The measures are those of Study~2, computed by the same functions (Appendix~\ref{app:study2}). In tenancy, \emph{strict unsafe errors per claim} count unnecessary requests, missed and handed-over required documents, premature requests and silent skips. \emph{All deviations per claim} add both kinds of wrong hold, so that a design cannot look good by holding. In theft, the measure is \emph{wrong + missed changes per pair} between the two texts of a changed-fact pair; unresolved-fact pairs count premature requests and pairs left otherwise unchanged.
+
+\subsection{Hypotheses}
+\label{sec:test-hypotheses}
+
+The plan states \sthreeHypotheses{} hypotheses in a fixed order: H1 theft and H2 tenancy against Rules in context on the same model; H3 tenancy against Rules in context on the frontier model; H4 theft against each of Self-consistency, Model executes rules and ReAct, all three required; H5 theft non-inferiority to Rules in context on the frontier model, margin \sthreeHFiveMargin. Each is tested at the \sthreeAlpha{} level only if all before it were confirmed. The tests are exact two-sided sign-flip tests over clusters, the \sthreeTheftClusters{} changed facts and the \sthreeTenancyClusters{} families, and a hypothesis of fewer errors also needs the difference to favour \casepath. With \sthreeTheftClusters{} clusters the smallest attainable $p$ is \sthreeMinPTheft.
+
+\subsection{Results}
+\label{sec:test-results}
+
+Table~\ref{tab:s3-hypotheses} gives the five hypotheses and Figure~\ref{fig:main} every design on both regimes.
+
+\begin{table}[t]
+\caption{Primary hypotheses, in the fixed order. Values per pair (theft) or per claim (tenancy); difference \casepath minus comparator with its 95\% cluster-bootstrap interval; clusters with the number of non-zero differences; exact two-sided sign-flip $p$.}
+\label{tab:s3-hypotheses}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X r r r r r r l@{}}
+\toprule
+Hypothesis and comparator & \casepath & Comparator & Difference & 95\% interval & Clusters & $p$ & Status \\
+\midrule
+H1 Theft, Rules in context & \sthreeHOneA & \sthreeHOneB & \sthreeHOneDiff & \sthreeHOneLo{} to \sthreeHOneHi & \sthreeHOneClusters{} (\sthreeHOneNonzero) & \sthreeHOnePCell & \sthreeHOneStatus \\
+H2 Tenancy, Rules in context & \sthreeHTwoA & \sthreeHTwoB & \sthreeHTwoDiff & \sthreeHTwoLo{} to \sthreeHTwoHi & \sthreeHTwoClusters{} (\sthreeHTwoNonzero) & \sthreeHTwoPCell & \sthreeHTwoStatus \\
+H3 Tenancy, Rules in context, frontier model & \sthreeHThreeA & \sthreeHThreeB & \sthreeHThreeDiff & \sthreeHThreeLo{} to \sthreeHThreeHi & \sthreeHThreeClusters{} (\sthreeHThreeNonzero) & \sthreeHThreePCell & \sthreeHThreeStatus \\
+H4 Theft, Self-consistency & \sthreeHFourSCA & \sthreeHFourSCB & \sthreeHFourSCDiff & \sthreeHFourSCLo{} to \sthreeHFourSCHi & \sthreeHFourSCClusters{} (\sthreeHFourSCNonzero) & \sthreeHFourSCPCell & \sthreeHFourStatus \\
+\quad Model executes rules & \sthreeHFourMERA & \sthreeHFourMERB & \sthreeHFourMERDiff & \sthreeHFourMERLo{} to \sthreeHFourMERHi & \sthreeHFourMERClusters{} (\sthreeHFourMERNonzero) & \sthreeHFourMERPCell & \\
+\quad ReAct & \sthreeHFourReactA & \sthreeHFourReactB & \sthreeHFourReactDiff & \sthreeHFourReactLo{} to \sthreeHFourReactHi & \sthreeHFourReactClusters{} (\sthreeHFourReactNonzero) & \sthreeHFourReactPCell & \\
+H5 Theft, Rules in context, frontier model & \multicolumn{6}{l}{not tested: H4 was not confirmed} & \sthreeHFiveStatus \\
+\midrule
+\multicolumn{8}{@{}l}{\emph{Outside the procedure (H5 as it would have been computed; non-inferiority, margin \sthreeHFiveMargin, bootstrap $p$):}} \\
+H5 Theft, Rules in context, frontier model & \sthreeHFiveA & \sthreeHFiveB & \sthreeHFiveDiff & \sthreeHFiveLo{} to \sthreeHFiveHi & \sthreeHFiveClusters{} (\sthreeHFiveNonzero) & \sthreeHFivePCell & not tested \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\fig{fig_main}{\linewidth}
+\Description{Two dot plots side by side with one row per design. Left, tenancy strict unsafe errors per claim; right, theft wrong plus missed changes per pair; each dot has a horizontal 95 percent interval. CasePath, in blue, is near zero on tenancy and at the low end on theft.}
+\caption{Every design on both regimes. Dot: the design's mean over its clusters (\sthreeTenancyClusters{} families, \sthreeTheftClusters{} changed facts); bar: 95\% cluster-bootstrap interval of that mean, with the analysis's resampling settings. Open markers: frontier model. The thin blue line marks \casepath's value. Compare each row with \casepath on the same panel; the axes differ between panels. Two-valued rows are in Table~\ref{tab:s3-open}.}
+\label{fig:main}
+\end{figure}
+
+\paragraph{H1, confirmed}
+On theft, with the same model and the same rules, \casepath made \sthreeHOneA{} wrong + missed changes per pair against \sthreeHOneB{} for Rules in context (difference \sthreeHOneDiff, interval \sthreeHOneLo{} to \sthreeHOneHi, $p\sthreeHOnePeq$).
+
+\paragraph{H2, confirmed}
+On tenancy, with the same model, \casepath made \sthreeHTwoA{} strict unsafe errors per claim against \sthreeHTwoB{} ($p\sthreeHTwoPeq$).
+
+\paragraph{H3, confirmed}
+On tenancy, against the frontier model, \casepath made \sthreeHThreeA{} strict unsafe errors per claim against \sthreeHThreeB{} ($p\sthreeHThreePeq$).
+
+\paragraph{H4, not confirmed}
+H4 required \casepath to make fewer theft errors than each of the three prior-work strategies. It made fewer than Model executes rules (\sthreeHFourMERA{} against \sthreeHFourMERB, $p\sthreeHFourMERPeq$) and ReAct (\sthreeHFourReactA{} against \sthreeHFourReactB, $p\sthreeHFourReactPeq$). Against Self-consistency the values were \sthreeHFourSCA{} against \sthreeHFourSCB{} (interval \sthreeHFourSCLo{} to \sthreeHFourSCHi), and the test over \sthreeHFourSCClusters{} changed facts gave $p\sthreeHFourSCPeq$. \casepath had fewer errors on \sthreePostSCFavourCasePath{} changed facts and more on \sthreePostSCFavourSelfCons{} (Appendix~\ref{app:rob-study3}). The hypothesis failed.
+
+\paragraph{H5, not tested}
+Because H4 failed, H5 was not tested. Outside the procedure, \casepath made \sthreeHFiveA{} wrong + missed changes per pair against \sthreeHFiveB{} for the frontier model with the same rules, and \sthreeSecFourBA{} against \sthreeSecFourBB{} with the original rules.
+
+\paragraph{Where the tenancy difference lies}
+The plan predicted that H2 and H3 would be carried by the claims whose defining event is denied or open, and so they were. On the \sthreeClaimsDeniedOpen{} such claims, \casepath made \sthreeHTwoDeniedOpenA{} strict unsafe errors per claim, against \sthreeHTwoDeniedOpenB{} for Rules in context and \sthreeHThreeDeniedOpenB{} for the frontier model. On the \sthreeClaimsOrdinary{} ordinary claims the values were \sthreeHTwoOrdinaryA{} against \sthreeHTwoOrdinaryB{} and \sthreeHThreeOrdinaryB{}. These values are means of family values, as in the tests; per-claim values are in Appendix~\ref{app:rob-study3}. Against the frontier model the ordinary claims show no difference ($p\sthreeHThreeOrdinaryPeq$), and non-inferiority at margin \sthreeSecOneAMargin{} holds as a secondary result ($p\sthreeSecOneAPeq$). Against the same model the ordinary claims also show a difference (\sthreeHTwoOrdinaryDiff, $p\sthreeHTwoOrdinaryPeq$, descriptive), which the plan did not predict.
+
+\paragraph{Open facts}
+\casepath held what the file left open (Table~\ref{tab:s3-open}). On theft it left \sthreeCasePathThOpenUnchanged\% of unresolved-fact pairs otherwise unchanged, against \sthreeRicThOpenUnchanged--\sthreeReactThOpenUnchanged\% for every single-prompt design on either model with the reviewed rules; the frontier single prompt with the original rules left \sthreeRicOrigFrontierThOpenUnchanged\% unchanged. On tenancy it held \sthreeCasePathTenCorrectHold\% of the documents the reference holds, against \sthreeRicTenCorrectHold\% for Rules in context and \sthreeRicFrontierTenCorrectHold\% for the frontier model. Two-valued execution of the product's own readings fails on open facts by construction. With unresolved taken as false it skipped \sthreeTwoValFalseOpenEventSilentSkip{} held documents per open-event claim; with unresolved taken as true it requested \sthreeTwoValTrueOpenEventPremature{} of them too early. On theft, where only requests are scored, the first variant gives \casepath's own requests.
+
+\begin{table}[t]
+\caption{Open facts. Theft: share of unresolved-fact pairs left otherwise unchanged, and pairs with a premature request. Tenancy: share of reference-held documents held; premature requests and silent skips per claim on the \sthreeClaimsOpenEvent{} open-event claims. Shares in percent.}
+\label{tab:s3-open}
+\footnotesize
+\begin{tabular}{@{}l r r r r r@{}}
+\toprule
+& \multicolumn{2}{c}{Theft} & \multicolumn{3}{c}{Tenancy} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-6}
+Design & Unchanged & Premature & Held & Premature & Silent skips \\
+\midrule
+\casepath & \sthreeCasePathThOpenUnchanged & \sthreeCasePathThOpenPremature & \sthreeCasePathTenCorrectHold & \sthreeCasePathOpenEventPremature & \sthreeCasePathOpenEventSilentSkip \\
+\casepath, checklist only & \sthreeChecklistThOpenUnchanged & \sthreeChecklistThOpenPremature & \sthreeChecklistTenCorrectHold & \sthreeChecklistOpenEventPremature & \sthreeChecklistOpenEventSilentSkip \\
+Rules in context & \sthreeRicThOpenUnchanged & \sthreeRicThOpenPremature & \sthreeRicTenCorrectHold & \sthreeRicOpenEventPremature & \sthreeRicOpenEventSilentSkip \\
+Rules in context, frontier model & \sthreeRicFrontierThOpenUnchanged & \sthreeRicFrontierThOpenPremature & \sthreeRicFrontierTenCorrectHold & \sthreeRicFrontierOpenEventPremature & \sthreeRicFrontierOpenEventSilentSkip \\
+Self-consistency & \sthreeSelfConsThOpenUnchanged & \sthreeSelfConsThOpenPremature & \sthreeSelfConsTenCorrectHold & \sthreeSelfConsOpenEventPremature & \sthreeSelfConsOpenEventSilentSkip \\
+Model executes rules & \sthreeMerThOpenUnchanged & \sthreeMerThOpenPremature & \sthreeMerTenCorrectHold & \sthreeMerOpenEventPremature & \sthreeMerOpenEventSilentSkip \\
+ReAct & \sthreeReactThOpenUnchanged & \sthreeReactThOpenPremature & \sthreeReactTenCorrectHold & \sthreeReactOpenEventPremature & \sthreeReactOpenEventSilentSkip \\
+Two-valued, unresolved = false & \sthreeTwoValFalseThOpenUnchanged & \sthreeTwoValFalseThOpenPremature & \sthreeTwoValFalseTenCorrectHold & \sthreeTwoValFalseOpenEventPremature & \sthreeTwoValFalseOpenEventSilentSkip \\
+Two-valued, unresolved = true & \sthreeTwoValTrueThOpenUnchanged & \sthreeTwoValTrueThOpenPremature & \sthreeTwoValTrueTenCorrectHold & \sthreeTwoValTrueOpenEventPremature & \sthreeTwoValTrueOpenEventSilentSkip \\
+Core & \sthreeCoreThOpenUnchanged & \sthreeCoreThOpenPremature & -- & -- & -- \\
+Rules in context, original rules & \sthreeRicOrigThOpenUnchanged & \sthreeRicOrigThOpenPremature & -- & -- & -- \\
+\quad frontier model & \sthreeRicOrigFrontierThOpenUnchanged & \sthreeRicOrigFrontierThOpenPremature & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{All deviations and the cost of holding}
+Counting wrong holds as errors, \casepath made \sthreeCasePathTenAllDev{} deviations per claim, against \sthreeRicTenAllDev{} for Rules in context ($p\sthreeSecThreeAPeq$) and \sthreeRicFrontierTenAllDev{} for the frontier model ($p\sthreeSecThreeBPeq$). \casepath holds more than the single prompts: \sthreeCasePathTenSpurHold{} holds per claim of documents the reference neither requires nor holds, against \sthreeRicTenSpurHold{} and \sthreeRicFrontierTenSpurHold. Most of them fall on denied-event claims (\sthreeCasePathDeniedSpurHold{} per claim), where the readings did not all agree on the denial. It also held \sthreeCasePathTenHeldReq{} required documents per claim, against \sthreeRicTenHeldReq{} and \sthreeRicFrontierTenHeldReq.
+
+\paragraph{Which agents matter, and what they cost}
+The checklist-only setting did as well as the full product on every measure: \sthreeChecklistTenStrict{} against \sthreeCasePathTenStrict{} strict unsafe errors per claim ($p\sthreeSecFiveAPeq$) and \sthreeChecklistThErrors{} against \sthreeCasePathThErrors{} wrong + missed changes per pair ($p\sthreeSecFiveCPeq$). The two runs are not fully independent: \sthreeSharedTenCallShare\% and \sthreeSharedThCallShare\% of the full product's calls returned responses first paid by the checklist-only run (Appendix~\ref{app:dev-study3}). Against the Core outside the product, \casepath made \sthreeCasePathThErrors{} against \sthreeCoreThErrors{} ($p\sthreeSecFiveDPeq$). In no case-run did a need added by a later agent enter the scored checklist (\sthreeChangesCasePathTenEntered{} of \sthreeChangesCasePathTenCaseRuns{} tenancy and \sthreeChangesCasePathThEntered{} of \sthreeChangesCasePathThCaseRuns{} theft case-runs); the agents added \sthreeChangesCasePathTenAdded{} and \sthreeChangesCasePathThAdded{} needs, all as suggestions. The checklist-only setting costs \sthreeCostChecklistShareTen\% and \sthreeCostChecklistShareTh\% of the full product (Figure~\ref{fig:agents}). The full product costs USD~\sthreeCasePathTenCost{} per tenancy claim and USD~\sthreeCasePathThCost{} per theft text; checklist only USD~\sthreeChecklistTenCost{} and USD~\sthreeChecklistThCost; the frontier single prompt USD~\sthreeRicFrontierTenCost{} and USD~\sthreeRicFrontierThCost. The full product therefore costs more than the frontier single prompt, \sthreeCasePathTenRatio{} times on tenancy and \sthreeCasePathThRatio{} times on theft. Checklist only costs \sthreeChecklistTenRatio{} and \sthreeChecklistThRatio{} times as much.
+
+\begin{figure}[t]
+\centering
+\fig{fig_agents}{\linewidth}
+\Description{Two horizontal bar charts of the full product's cost per case by agent, tenancy and theft. Router, claim reader, source checker and document finder in blue; process builder and result checker in grey; a last bar stacks the whole cost. Dashed and dotted vertical lines mark the checklist-only cost and the frontier single prompt's cost.}
+\caption{Cost per case of the full product by agent, from the ledgers. Blue: agents that can decide the checklist; grey: agents that cannot. No need added by an agent entered a scored checklist in any of the \sthreeChangesCasePathTenCaseRuns{} tenancy and \sthreeChangesCasePathThCaseRuns{} theft case-runs. The claim reader includes the first reading; the source checker includes the further readings and the second document judgment. The last bar stacks the whole cost; its white part could not be attributed to an agent (\sthreeCasePathTenNotLinedUp{} of \sthreeCasePathTenCaseRuns{} tenancy and \sthreeCasePathThNotLinedUp{} of \sthreeCasePathThCaseRuns{} theft case-runs). Dashed line: \casepath, checklist only; dotted line: Rules in context, frontier model.}
+\label{fig:agents}
+\end{figure}
+
+\paragraph{Model for model}
+The plan stated no hypothesis for \casepath on the frontier model, which ran once per case. On tenancy it made \sthreeFrontierChecklistTenStrict{} strict unsafe errors per claim, against \sthreeCasePathTenStrict{} for \casepath on the cost-efficient model ($p\sthreeSecSevenDPeq$) and \sthreeRicFrontierTenStrict{} for the frontier single prompt. On theft it was not better than the frontier single prompt: \sthreeFrontierChecklistThErrors{} against \sthreeRicFrontierThErrors{} wrong + missed changes per pair ($p\sthreeSecSevenAPeq$). The gain from executing rules is largest for the cost-efficient model. On the frontier model the product cost USD~\sthreeFrontierChecklistTenCost{} per claim and USD~\sthreeFrontierChecklistThCost{} per text.
+
+\paragraph{Robustness}
+Appendix~\ref{app:rob-study3} gives the secondary tables. In both languages \casepath made fewer strict unsafe errors per claim than every single-prompt design (English \sthreeCasePathEnglishStrict{} against at least \sthreeMerEnglishStrict, German \sthreeCasePathGermanStrict{} against at least \sthreeMerGermanStrict). \casepath's requests agreed more between runs than those of Rules in context (Jaccard \sthreeCasePathTenJaccard{} against \sthreeRicTenJaccard{} on tenancy, \sthreeCasePathThJaccard{} against \sthreeRicThJaccard{} on theft). Counting an error repeated across a story's pairs once, \casepath made \sthreeCasePathThErrorsDedup{} theft errors per pair against \sthreeRicThErrorsDedup{} for Rules in context and \sthreeSelfConsThErrorsDedup{} for Self-consistency. ReAct returned \sthreeRunFailedReact{} failed outputs, scored as empty plans as planned. A post-hoc analysis that leaves them out gives \sthreePostReactThA{} against \sthreePostReactThB{} on theft ($p\sthreePostReactThPeq$) and \sthreePostReactTenStrictA{} against \sthreePostReactTenStrictB{} on tenancy ($p\sthreePostReactTenStrictPeq$).
+
+\paragraph{Irregularities}
+Of \sthreeRunInvocations{} invocations of the run, \sthreeRunNotComplete{} stopped before the run was complete; each was resumed from the response cache with the analysis settings unchanged. \sthreeRunFailedOutputs{} outputs failed, none from the product and \sthreeRunFailedReact{} from ReAct. The run started before the product's owners confirmed the merge of the tested commit. Appendix~\ref{app:dev-study3} lists every irregularity and every departure from the plan's text.

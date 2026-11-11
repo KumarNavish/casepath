@@ -1,0 +1,231 @@
+{
+ "data": "fresh2",
+ "h4_self_consistency_by_fact": {
+  "favouring_casepath": 7,
+  "favouring_self_consistency": 2,
+  "id": "H4.1 by changed fact",
+  "mean_difference": -0.625,
+  "note": "Exact two-sided sign-flip test over 2^9 = 512 sign patterns: p is the share of patterns whose absolute sum of differences is at least the observed one.",
+  "planned_p": 0.0625,
+  "rows": [
+   {
+    "casepath": 0.16666666666666666,
+    "changed_fact": "PR_bicycle_claimed",
+    "difference": -0.625,
+    "self_consistency": 0.7916666666666666
+   },
+   {
+    "casepath": 0.08333333333333333,
+    "changed_fact": "PR_declined",
+    "difference": -1.6666666666666667,
+    "self_consistency": 1.75
+   },
+   {
+    "casepath": 0.7916666666666666,
+    "changed_fact": "PR_expert_procedure_requested",
+    "difference": 0.125,
+    "self_consistency": 0.6666666666666666
+   },
+   {
+    "casepath": 0.125,
+    "changed_fact": "PR_goods_recovered",
+    "difference": -0.75,
+    "self_consistency": 0.875
+   },
+   {
+    "casepath": 0.16666666666666666,
+    "changed_fact": "PR_nachfrist_set",
+    "difference": -0.8750000000000001,
+    "self_consistency": 1.0416666666666667
+   },
+   {
+    "casepath": 0.08333333333333333,
+    "changed_fact": "PR_repair_over_500",
+    "difference": -1.75,
+    "self_consistency": 1.8333333333333333
+   },
+   {
+    "casepath": 0.875,
+    "changed_fact": "PR_scheduled_valuable_1000",
+    "difference": -0.5833333333333333,
+    "self_consistency": 1.4583333333333333
+   },
+   {
+    "casepath": 1.1666666666666667,
+    "changed_fact": "PR_sim_card_stolen",
+    "difference": -0.5,
+    "self_consistency": 1.6666666666666667
+   },
+   {
+    "casepath": 1.7916666666666667,
+    "changed_fact": "PR_third_party_causer",
+    "difference": 1.0,
+    "self_consistency": 0.7916666666666666
+   }
+  ],
+  "signflip_p": 0.0625,
+  "zero": 0
+ },
+ "inputs": {
+  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
+  "runs/study3/confirm/plans_theft_casepath.json": "08dc0d1d409f4fca03c171fc6073bd224de7cc1cc7c800bed73196b442ceb501",
+  "runs/study3/confirm/plans_theft_react.json": "f600708bc6ee2e5db84bf05d386da07f8d46fbd5c818288264812f33240aef57",
+  "runs/study3/confirm/samples_tenancy_ric_luna.json": "1016547eced137672b44dfd832843652869a637b461d0cea2253afcbcc2b1fa4",
+  "runs/study3/confirm/samples_theft_ric_luna.json": "ab1dbaf32a84362b551c38ae510ced29d4d5833eee26394fcfc6244e5853f60d"
+ },
+ "label": "POST HOC: not part of ANALYSIS_PLAN_STUDY3.md",
+ "posthoc": true,
+ "react_sensitivity": {
+  "tenancy": [
+   {
+    "a": "casepath",
+    "b": "react",
+    "claim_runs_dropped": 23,
+    "claim_runs_kept": 265,
+    "claim_runs_total": 288,
+    "families_with_a_dropped_claim_run": 16,
+    "id": "S2c without ReAct's failed outputs",
+    "measure": "strict_unsafe",
+    "planned": {
+     "a_value": 0.3125,
+     "b_value": 1.8368055555555556,
+     "clusters": 24,
+     "diff": -1.5243055555555556,
+     "diff_ci": [
+      -2.069444444444444,
+      -1.0555555555555556
+     ],
+     "nonzero_clusters": 24,
+     "p": 3.5762786865234375e-07
+    },
+    "regime": "tenancy",
+    "result": {
+     "a_value": 0.3023358585858586,
+     "b_value": 1.6313973063973064,
+     "clusters": 24,
+     "diff": -1.3290614478114477,
+     "diff_ci": [
+      -2.0258854166666667,
+      -0.7411921296296298
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 1.1920928955078125e-07,
+     "nonzero_clusters": 24,
+     "p": 2.9802322387695312e-06,
+     "p_signflip": 2.9802322387695312e-06,
+     "significant_at_0.05": true,
+     "test": "signflip"
+    }
+   },
+   {
+    "a": "casepath",
+    "b": "react",
+    "claim_runs_dropped": 23,
+    "claim_runs_kept": 265,
+    "claim_runs_total": 288,
+    "families_with_a_dropped_claim_run": 16,
+    "id": "S2f without ReAct's failed outputs",
+    "measure": "all_deviations",
+    "planned": {
+     "a_value": 0.7291666666666666,
+     "b_value": 2.0034722222222223,
+     "clusters": 24,
+     "diff": -1.2743055555555556,
+     "diff_ci": [
+      -1.84375,
+      -0.7777777777777778
+     ],
+     "nonzero_clusters": 23,
+     "p": 2.4318695068359375e-05
+    },
+    "regime": "tenancy",
+    "result": {
+     "a_value": 0.6672348484848486,
+     "b_value": 1.8124789562289563,
+     "clusters": 24,
+     "diff": -1.1452441077441078,
+     "diff_ci": [
+      -1.7672558922558923,
+      -0.6520359848484849
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 4.76837158203125e-07,
+     "nonzero_clusters": 22,
+     "p": 4.76837158203125e-06,
+     "p_signflip": 4.76837158203125e-06,
+     "significant_at_0.05": true,
+     "test": "signflip"
+    }
+   }
+  ],
+  "theft": {
+   "a": "casepath",
+   "b": "react",
+   "casepath_errors_per_pair_kept": 0.5980392156862745,
+   "id": "H4.3 without ReAct's failed outputs",
+   "measure": "errors",
+   "pair_runs_dropped": 12,
+   "pair_runs_kept": 204,
+   "pair_runs_total": 216,
+   "per_cluster_kept_pair_runs": {
+    "PR_bicycle_claimed": 21,
+    "PR_declined": 22,
+    "PR_expert_procedure_requested": 22,
+    "PR_goods_recovered": 22,
+    "PR_nachfrist_set": 22,
+    "PR_repair_over_500": 23,
+    "PR_scheduled_valuable_1000": 24,
+    "PR_sim_card_stolen": 24,
+    "PR_third_party_causer": 24
+   },
+   "planned": {
+    "a_value": 0.5833333333333334,
+    "b_value": 1.6851851851851851,
+    "clusters": 9,
+    "diff": -1.1018518518518519,
+    "diff_ci": [
+     -1.574074074074074,
+     -0.574074074074074
+    ],
+    "nonzero_clusters": 9,
+    "p": 0.01171875
+   },
+   "react_errors_per_pair_kept": 1.1862745098039216,
+   "react_failed_texts": 17,
+   "regime": "theft",
+   "result": {
+    "a_value": 0.5779639040508606,
+    "b_value": 1.1796798209841688,
+    "clusters": 9,
+    "diff": -0.6017159169333082,
+    "diff_ci": [
+     -0.8832428189765147,
+     -0.27746774159817655
+    ],
+    "favours": "a",
+    "higher_is_better": false,
+    "min_p": 0.00390625,
+    "min_p_signflip": 0.00390625,
+    "min_p_signflip_given_nonzero": 0.00390625,
+    "nonzero_clusters": 9,
+    "p": 0.01171875,
+    "p_signflip": 0.01171875,
+    "significant_at_0.05": true,
+    "test": "signflip"
+   }
+  }
+ },
+ "run_label": "confirm",
+ "statistics": {
+  "bootstrap_resamples": 10000,
+  "seed": 20261111,
+  "test": "exact two-sided sign flip"
+ }
+}

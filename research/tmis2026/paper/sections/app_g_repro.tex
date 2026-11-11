@@ -1,3 +1,56 @@
 \section{Reproducibility, release and use of generative AI}
 \label{app:release}
-% Blueprint appendix G: release, frozen commit, parity, computation, and use of generative AI.
+
+\subsection{What is released}
+\label{app:release-contents}
+
+Everything listed here is in the repository \cite{casepath2026repo}; paths below \texttt{research/\allowbreak{}tmis2026/} are given without that prefix.
+%% AUTHORS: commit 6a72159c is on the product branch, not on the paper branch; the release must contain it (tag or merge).
+{\sloppy
+\begin{description}[leftmargin=1em,style=nextline,itemsep=2pt]
+\item[The product] The package \texttt{casepath} at the tested commit \texttt{6a72159cdb35a01059d0\allowbreak 549b1d437c0b3d5c20cb} (directory \texttt{casepath-internal/}). The command \texttt{python -m casepath parity} prints the SHA-256 over its source files, \texttt{030480203f7d10b364e4ecc3\allowbreak 4e0c0b544c4038e107f489bc\allowbreak 2080aba6b349ab4d} at that commit, with the hashes of the workflows and Knowledge items, the model and the run settings (Section~\ref{sec:parity}). Study~3's driver refused to run unless the product it was given printed this hash and the required settings.
+\item[The workflows] The tenancy workflows (\texttt{harness/\allowbreak{}product/\allowbreak{}workflows/\allowbreak{}fresh-\allowbreak{}serial-\allowbreak{}sync/}) and the theft workflow (\texttt{harness/\allowbreak{}product/\allowbreak{}workflows/\allowbreak{}theft-reviewed/}), with the scripts that convert them from the templates and the reviewed rules (\texttt{convert.py}, \texttt{convert\_theft.py}) and the scripts that check them against the reference engines (\texttt{compare.py}, \texttt{compare\_theft.py}); the reviewed rules and both editors' reviews (\texttt{rule\_review/}).
+\item[The data] The four synthetic data sets of Appendix~\ref{app:datasets}, each with its README and its manifest or verification script: \texttt{data/\allowbreak{}casepath-tenancy-claims/} and \texttt{data/\allowbreak{}casepath-theft-pairs/} (Study~1), \texttt{fresh/} (Study~2), \texttt{dev\_probe/} and \texttt{fresh2/} (Study~3), with the scripts that built them and the records of the blind checks.
+\item[Harness, analysis and outputs] The harness of all three studies (\texttt{harness/}; Study~3's driver in \texttt{harness/\allowbreak{}study3/}), the analysis scripts (\texttt{analysis/}), and the stored outputs: every plan of every design and run, the ledgers that record each model call with its tokens and cost, and the response caches (Study~1: \texttt{runs/}, with \texttt{runs/\allowbreak{}responses\_cache.tar.gz}; Study~2: \texttt{runs/\allowbreak{}v2/}; Study~3: \texttt{runs/\allowbreak{}study3/\allowbreak{}confirm/} with its manifest and run log, and the ledgers and cache under \texttt{runs/\allowbreak{}product/} and \texttt{runs/\allowbreak{}v2/}).
+\item[The frozen plans] \texttt{ANALYSIS\_PLAN.md} (Study~1, frozen at commit 46a503b6), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY2.md} (b86ab9d5), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY3.md} with \texttt{analysis/\allowbreak{}study3\_spec.json} (fd35e438), and the expert study's pre-registration with its record fields (\texttt{expert\_study/}).
+\end{description}\par}
+The repository's code is released under Apache~2.0. The Study~1 data are released under CC~BY~4.0; quoted legal passages, policy terms and form templates keep their own terms, as each folder's README states.
+%% AUTHORS: no licence is stated for fresh/, dev_probe/ and fresh2/; add one here.
+
+\subsection{Reproducing Study 3}
+\label{app:release-reproduce}
+
+Two steps reproduce Study~3's tables and figure from the stored outputs, without model calls. From \texttt{research/\allowbreak{}tmis2026/}:
+\begin{lstlisting}
+python3 analysis/study3.py --data fresh2 --label confirm
+python3 analysis/make_numbers_study3.py && python3 analysis/fig_s6.py
+\end{lstlisting}
+The first command scores every stored plan and runs every test of the plan; it reads the data only through the guard of Appendix~\ref{app:data-fresh2} and refuses to run in a process that has a model client loaded. It reproduces the stored results file (\texttt{analysis/\allowbreak{}study3\_results\_fresh2\_confirm.json} and \texttt{.md}) byte for byte. The second line writes the number macros and the figure of Section~\ref{sec:test}. The numbers of Studies 1 and 2 are recomputed in the same way by \texttt{analysis/\allowbreak{}verify\_paper.py}, after the Study~1 response cache is unpacked, with the model client's budget set to zero.
+
+One command re-runs Study~3 with model calls (\texttt{harness/\allowbreak{}study3/\allowbreak{}README.md}):
+\begin{lstlisting}
+CASEPATH_PRODUCT=<product worktree at 6a72159c> <venv>/bin/python harness/study3/run_all.py --data fresh2 --label <new label> --k 3
+\end{lstlisting}
+It first runs four checks: the plan is committed unmodified, the product is at the tested commit with the expected parity hash and settings, the tenancy templates have the recorded hash, and the converted workflows agree with the reference engines. With the stored response cache in place, every call is answered from the cache. With an empty cache, the calls are made again, and their answers can differ from the stored ones because the models are not deterministic.
+
+\paragraph{Cost}
+The run log of Study~3 (\texttt{runs/\allowbreak{}study3/\allowbreak{}confirm/\allowbreak{}RUNLOG.jsonl}) records the spend of its five invocations: USD 19.56 logged by the driver for the last two, and USD 12.23 in the dated notes written by hand for the first three, which the driver could not log, in total USD 31.79. Three portions are not in the log, and the ledgers hold them: Rules in context in the first invocation, the part of Self-consistency on theft that the second completed, and the part of \casepath on tenancy that the third completed. A full re-run with an empty cache makes the same calls; the cost of each design per case is given in Section~\ref{sec:test}.
+
+\subsection{What is not released, and why}
+\label{app:release-not}
+
+The insurer's process catalogue, its Knowledge and its case files are not released: they belong to the insurer, and the case files are real claims. The expert study's records leave the insurer only as the pre-registered pseudonymous export, which holds identifiers, statuses, counts, relative times and randomised labels, and no case content (Appendix~\ref{app:protocol}). Its content export, with item texts, notes and the passages behind the insurer's requests, stays with the insurer.
+%% AUTHORS: casepath-internal/ at 6a72159c names the insurer in source, documentation and tests, and holds a seed Knowledge file derived from the insurer's request letters (casepath/process/knowledge_seed/osm-mold.pilot.json). Decide before release whether these are released as they stand.
+
+\subsection{Use of generative AI}
+\label{app:genai}
+
+\paragraph{Models as objects of study}
+The evaluated models, \texttt{gpt-6-luna} and \texttt{gpt-6.1-terra}, are the objects of study: they read the files inside \casepath and answer every baseline. Study~1 also re-scored the recorded predictions of \texttt{gpt-5.6-terra} from the original study. In the original study a language model extracted the theft rules and their conditions from the source passages, and the theft references derive from a contract built by an agent; Study~2 tested a repair of these rules by a model (Section~\ref{sec:history}).
+
+\paragraph{Synthetic case texts}
+The case texts of \texttt{fresh/}, \texttt{dev\_probe/} and \texttt{fresh2/} were written by generative models that are not among the evaluated ones. The texts of \texttt{fresh2/} were written by Claude Opus 5.5, working as an agent in this repository, from the design briefs; no evaluated model read or wrote any of these data before the test. Their blind check used a different model of the same family, \texttt{claude-fable-5-2}, in four separate Claude Code Remote sessions and one more for a re-read. The messages of \texttt{fresh/} were written by \texttt{anthropic/\allowbreak{}claude-haiku-5.5}, and its blind check used the same model in a fresh context. The 16 probe claims of \texttt{dev\_probe/} were written by Claude in an agent session, by hand in the build script, without any model call. The Study~1 theft cases were built by script, without model calls.
+
+\paragraph{Assistance to the authors}
+%% AUTHORS: name the AI coding and writing assistant(s) and version(s) here, as the venue's policy requires.
+AI coding and writing assistants were used to implement the harness and the product changes, to run the analyses, and to draft and edit the text, under the authors' direction. The authors reviewed all code, results and text and are responsible for them.

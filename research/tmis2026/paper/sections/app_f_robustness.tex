@@ -30,3 +30,197 @@ Counting each error repeated from a story's unchanged case once per story and ru
 
 \paragraph{Run pairing}
 Averaged over all nine pairings of runs, errors per theft pair were \stThCPvTwoLunaErrorsAllPair{} for the Study~2 configuration and \stThRVTwoLunaErrorsAllPair{} for Rules in context with the same workflow (cost-efficient model), and \stThRTerraErrorsAllPair{} for Rules in context with the original workflow on the frontier model.
+
+\subsection{Study 3}
+\label{app:rob-study3}
+
+All values are from \texttt{analysis/study3\_results\_fresh2\_confirm.json}, the one output of the pre-registered analysis, except the two tables marked post hoc. Tenancy values are per claim, theft values per changed-fact pair; shares in percent.
+
+\paragraph{Subsets}
+Table~\ref{tab:s3-subsets} gives per-claim values on each subset. Because the subsets are unbalanced across families, these values differ slightly from the family means of Section~\ref{sec:test-results}.
+
+\begin{table}[h]
+\caption{Tenancy by subset, per claim: strict unsafe errors (strict) and all deviations (all). Denied event \sthreeClaimsDenied{} claims, open event \sthreeClaimsOpenEvent, ordinary \sthreeClaimsOrdinary, of which \sthreeClaimsOpenBranch{} with an open branch fact.}
+\label{tab:s3-subsets}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X rr rr rr r@{}}
+\toprule
+& \multicolumn{2}{c}{Denied event} & \multicolumn{2}{c}{Open event} & \multicolumn{2}{c}{Ordinary} & Open branch \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(l){8-8}
+Design & strict & all & strict & all & strict & all & strict \\
+\midrule
+\casepath & \sthreeCasePathDeniedStrict & \sthreeCasePathDeniedAllDev & \sthreeCasePathOpenEventStrict & \sthreeCasePathOpenEventAllDev & \sthreeCasePathOrdinaryStrict & \sthreeCasePathOrdinaryAllDev & \sthreeCasePathOpenBranchStrict \\
+\casepath, checklist only & \sthreeChecklistDeniedStrict & \sthreeChecklistDeniedAllDev & \sthreeChecklistOpenEventStrict & \sthreeChecklistOpenEventAllDev & \sthreeChecklistOrdinaryStrict & \sthreeChecklistOrdinaryAllDev & \sthreeChecklistOpenBranchStrict \\
+Rules in context & \sthreeRicDeniedStrict & \sthreeRicDeniedAllDev & \sthreeRicOpenEventStrict & \sthreeRicOpenEventAllDev & \sthreeRicOrdinaryStrict & \sthreeRicOrdinaryAllDev & \sthreeRicOpenBranchStrict \\
+Rules in context, frontier model & \sthreeRicFrontierDeniedStrict & \sthreeRicFrontierDeniedAllDev & \sthreeRicFrontierOpenEventStrict & \sthreeRicFrontierOpenEventAllDev & \sthreeRicFrontierOrdinaryStrict & \sthreeRicFrontierOrdinaryAllDev & \sthreeRicFrontierOpenBranchStrict \\
+Self-consistency & \sthreeSelfConsDeniedStrict & \sthreeSelfConsDeniedAllDev & \sthreeSelfConsOpenEventStrict & \sthreeSelfConsOpenEventAllDev & \sthreeSelfConsOrdinaryStrict & \sthreeSelfConsOrdinaryAllDev & \sthreeSelfConsOpenBranchStrict \\
+Model executes rules & \sthreeMerDeniedStrict & \sthreeMerDeniedAllDev & \sthreeMerOpenEventStrict & \sthreeMerOpenEventAllDev & \sthreeMerOrdinaryStrict & \sthreeMerOrdinaryAllDev & \sthreeMerOpenBranchStrict \\
+ReAct & \sthreeReactDeniedStrict & \sthreeReactDeniedAllDev & \sthreeReactOpenEventStrict & \sthreeReactOpenEventAllDev & \sthreeReactOrdinaryStrict & \sthreeReactOrdinaryAllDev & \sthreeReactOpenBranchStrict \\
+Two-valued, unresolved = false & \sthreeTwoValFalseDeniedStrict & \sthreeTwoValFalseDeniedAllDev & \sthreeTwoValFalseOpenEventStrict & \sthreeTwoValFalseOpenEventAllDev & \sthreeTwoValFalseOrdinaryStrict & \sthreeTwoValFalseOrdinaryAllDev & \sthreeTwoValFalseOpenBranchStrict \\
+Two-valued, unresolved = true & \sthreeTwoValTrueDeniedStrict & \sthreeTwoValTrueDeniedAllDev & \sthreeTwoValTrueOpenEventStrict & \sthreeTwoValTrueOpenEventAllDev & \sthreeTwoValTrueOrdinaryStrict & \sthreeTwoValTrueOrdinaryAllDev & \sthreeTwoValTrueOpenBranchStrict \\
+\casepath, checklist only, frontier model & \sthreeFrontierChecklistDeniedStrict & \sthreeFrontierChecklistDeniedAllDev & \sthreeFrontierChecklistOpenEventStrict & \sthreeFrontierChecklistOpenEventAllDev & \sthreeFrontierChecklistOrdinaryStrict & \sthreeFrontierChecklistOrdinaryAllDev & \sthreeFrontierChecklistOpenBranchStrict \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Languages}
+Table~\ref{tab:s3-lang} splits the tenancy claims by language (\sthreeClaimsEnglish{} English, \sthreeClaimsGerman{} German).
+
+\begin{table}[h]
+\caption{Tenancy by language: strict unsafe errors and all deviations per claim, and the share of reference-held documents held.}
+\label{tab:s3-lang}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X rr rr rr@{}}
+\toprule
+& \multicolumn{2}{c}{Strict unsafe} & \multicolumn{2}{c}{All deviations} & \multicolumn{2}{c}{Held (\%)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Design & English & German & English & German & English & German \\
+\midrule
+\casepath & \sthreeCasePathEnglishStrict & \sthreeCasePathGermanStrict & \sthreeCasePathEnglishAllDev & \sthreeCasePathGermanAllDev & \sthreeCasePathEnglishCorrectHold & \sthreeCasePathGermanCorrectHold \\
+\casepath, checklist only & \sthreeChecklistEnglishStrict & \sthreeChecklistGermanStrict & \sthreeChecklistEnglishAllDev & \sthreeChecklistGermanAllDev & \sthreeChecklistEnglishCorrectHold & \sthreeChecklistGermanCorrectHold \\
+Rules in context & \sthreeRicEnglishStrict & \sthreeRicGermanStrict & \sthreeRicEnglishAllDev & \sthreeRicGermanAllDev & \sthreeRicEnglishCorrectHold & \sthreeRicGermanCorrectHold \\
+Rules in context, frontier model & \sthreeRicFrontierEnglishStrict & \sthreeRicFrontierGermanStrict & \sthreeRicFrontierEnglishAllDev & \sthreeRicFrontierGermanAllDev & \sthreeRicFrontierEnglishCorrectHold & \sthreeRicFrontierGermanCorrectHold \\
+Self-consistency & \sthreeSelfConsEnglishStrict & \sthreeSelfConsGermanStrict & \sthreeSelfConsEnglishAllDev & \sthreeSelfConsGermanAllDev & \sthreeSelfConsEnglishCorrectHold & \sthreeSelfConsGermanCorrectHold \\
+Model executes rules & \sthreeMerEnglishStrict & \sthreeMerGermanStrict & \sthreeMerEnglishAllDev & \sthreeMerGermanAllDev & \sthreeMerEnglishCorrectHold & \sthreeMerGermanCorrectHold \\
+ReAct & \sthreeReactEnglishStrict & \sthreeReactGermanStrict & \sthreeReactEnglishAllDev & \sthreeReactGermanAllDev & \sthreeReactEnglishCorrectHold & \sthreeReactGermanCorrectHold \\
+Two-valued, unresolved = false & \sthreeTwoValFalseEnglishStrict & \sthreeTwoValFalseGermanStrict & \sthreeTwoValFalseEnglishAllDev & \sthreeTwoValFalseGermanAllDev & \sthreeTwoValFalseEnglishCorrectHold & \sthreeTwoValFalseGermanCorrectHold \\
+Two-valued, unresolved = true & \sthreeTwoValTrueEnglishStrict & \sthreeTwoValTrueGermanStrict & \sthreeTwoValTrueEnglishAllDev & \sthreeTwoValTrueGermanAllDev & \sthreeTwoValTrueEnglishCorrectHold & \sthreeTwoValTrueGermanCorrectHold \\
+\casepath, checklist only, frontier model & \sthreeFrontierChecklistEnglishStrict & \sthreeFrontierChecklistGermanStrict & \sthreeFrontierChecklistEnglishAllDev & \sthreeFrontierChecklistGermanAllDev & \sthreeFrontierChecklistEnglishCorrectHold & \sthreeFrontierChecklistGermanCorrectHold \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Theft errors, repeated errors and agreement between runs}
+Table~\ref{tab:s3-agree} splits theft errors into wrong and missed changes, counts an error repeated across the pairs of one story and run once, and gives the mean Jaccard index of the requested documents over pairs of runs.
+
+\begin{table}[h]
+\caption{Theft errors per changed-fact pair, with repeated errors counted once, and run-to-run agreement of requests (Jaccard) on both regimes.}
+\label{tab:s3-agree}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X rrrr rr@{}}
+\toprule
+Design & Wrong & Missed & Wrong + missed & Repeated once & Jaccard, tenancy & Jaccard, theft \\
+\midrule
+\casepath & \sthreeCasePathThWrong & \sthreeCasePathThMissed & \sthreeCasePathThErrors & \sthreeCasePathThErrorsDedup & \sthreeCasePathTenJaccard & \sthreeCasePathThJaccard \\
+\casepath, checklist only & \sthreeChecklistThWrong & \sthreeChecklistThMissed & \sthreeChecklistThErrors & \sthreeChecklistThErrorsDedup & \sthreeChecklistTenJaccard & \sthreeChecklistThJaccard \\
+Core & \sthreeCoreThWrong & \sthreeCoreThMissed & \sthreeCoreThErrors & \sthreeCoreThErrorsDedup & -- & \sthreeCoreThJaccard \\
+Rules in context & \sthreeRicThWrong & \sthreeRicThMissed & \sthreeRicThErrors & \sthreeRicThErrorsDedup & \sthreeRicTenJaccard & \sthreeRicThJaccard \\
+Self-consistency & \sthreeSelfConsThWrong & \sthreeSelfConsThMissed & \sthreeSelfConsThErrors & \sthreeSelfConsThErrorsDedup & \sthreeSelfConsTenJaccard & \sthreeSelfConsThJaccard \\
+Model executes rules & \sthreeMerThWrong & \sthreeMerThMissed & \sthreeMerThErrors & \sthreeMerThErrorsDedup & \sthreeMerTenJaccard & \sthreeMerThJaccard \\
+ReAct & \sthreeReactThWrong & \sthreeReactThMissed & \sthreeReactThErrors & \sthreeReactThErrorsDedup & \sthreeReactTenJaccard & \sthreeReactThJaccard \\
+Rules in context, original rules & \sthreeRicOrigThWrong & \sthreeRicOrigThMissed & \sthreeRicOrigThErrors & \sthreeRicOrigThErrorsDedup & -- & \sthreeRicOrigThJaccard \\
+Rules in context, frontier model & \sthreeRicFrontierThWrong & \sthreeRicFrontierThMissed & \sthreeRicFrontierThErrors & \sthreeRicFrontierThErrorsDedup & \sthreeRicFrontierTenJaccard & \sthreeRicFrontierThJaccard \\
+Rules in context, original rules, frontier model & \sthreeRicOrigFrontierThWrong & \sthreeRicOrigFrontierThMissed & \sthreeRicOrigFrontierThErrors & \sthreeRicOrigFrontierThErrorsDedup & -- & \sthreeRicOrigFrontierThJaccard \\
+Two-valued, unresolved = false & \sthreeTwoValFalseThWrong & \sthreeTwoValFalseThMissed & \sthreeTwoValFalseThErrors & \sthreeTwoValFalseThErrorsDedup & \sthreeTwoValFalseTenJaccard & \sthreeTwoValFalseThJaccard \\
+Two-valued, unresolved = true & \sthreeTwoValTrueThWrong & \sthreeTwoValTrueThMissed & \sthreeTwoValTrueThErrors & \sthreeTwoValTrueThErrorsDedup & \sthreeTwoValTrueTenJaccard & \sthreeTwoValTrueThJaccard \\
+\casepath, checklist only, frontier model (one run) & \sthreeFrontierChecklistThWrong & \sthreeFrontierChecklistThMissed & \sthreeFrontierChecklistThErrors & \sthreeFrontierChecklistThErrorsDedup & -- & -- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Secondary contrasts}
+Table~\ref{tab:s3-secondary} gives every secondary contrast of the plan. They are outside the fixed sequence. The S7 rows compare the frontier-model product, run once per case, with designs run three times; they are descriptive.
+
+\begin{table}[h]
+\caption{Secondary contrasts: \casepath (A) against the comparator (B), unless the measure names another A. Exact sign-flip $p$, or bootstrap $p$ for non-inferiority.}
+\label{tab:s3-secondary}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\linewidth}rrrrrr@{}}
+\toprule
+& Measure & B & A & B & A $-$ B & 95\% interval & Clusters & $p$ \\
+\midrule
+S1a & ordinary claims, strict unsafe (non-inferiority, margin \sthreeSecOneAMargin) & Rules in context, frontier model & \sthreeSecOneAA & \sthreeSecOneAB & \sthreeSecOneADiff & \sthreeSecOneALo{} to \sthreeSecOneAHi & \sthreeSecOneAClusters{} (\sthreeSecOneANonzero) & \sthreeSecOneAPCell \\
+S1b & ordinary claims, requested share (non-inferiority, margin \sthreeSecOneBMargin{} points) & Rules in context, frontier model & \sthreeSecOneBA & \sthreeSecOneBB & \sthreeSecOneBDiff & \sthreeSecOneBLo{} to \sthreeSecOneBHi & \sthreeSecOneBClusters{} (\sthreeSecOneBNonzero) & \sthreeSecOneBPCell \\
+S2a & strict unsafe & Self-consistency & \sthreeSecTwoAA & \sthreeSecTwoAB & \sthreeSecTwoADiff & \sthreeSecTwoALo{} to \sthreeSecTwoAHi & \sthreeSecTwoAClusters{} (\sthreeSecTwoANonzero) & \sthreeSecTwoAPCell \\
+S2b & strict unsafe & Model executes rules & \sthreeSecTwoBA & \sthreeSecTwoBB & \sthreeSecTwoBDiff & \sthreeSecTwoBLo{} to \sthreeSecTwoBHi & \sthreeSecTwoBClusters{} (\sthreeSecTwoBNonzero) & \sthreeSecTwoBPCell \\
+S2c & strict unsafe & ReAct & \sthreeSecTwoCA & \sthreeSecTwoCB & \sthreeSecTwoCDiff & \sthreeSecTwoCLo{} to \sthreeSecTwoCHi & \sthreeSecTwoCClusters{} (\sthreeSecTwoCNonzero) & \sthreeSecTwoCPCell \\
+S2d & all deviations & Self-consistency & \sthreeSecTwoDA & \sthreeSecTwoDB & \sthreeSecTwoDDiff & \sthreeSecTwoDLo{} to \sthreeSecTwoDHi & \sthreeSecTwoDClusters{} (\sthreeSecTwoDNonzero) & \sthreeSecTwoDPCell \\
+S2e & all deviations & Model executes rules & \sthreeSecTwoEA & \sthreeSecTwoEB & \sthreeSecTwoEDiff & \sthreeSecTwoELo{} to \sthreeSecTwoEHi & \sthreeSecTwoEClusters{} (\sthreeSecTwoENonzero) & \sthreeSecTwoEPCell \\
+S2f & all deviations & ReAct & \sthreeSecTwoFA & \sthreeSecTwoFB & \sthreeSecTwoFDiff & \sthreeSecTwoFLo{} to \sthreeSecTwoFHi & \sthreeSecTwoFClusters{} (\sthreeSecTwoFNonzero) & \sthreeSecTwoFPCell \\
+S3a & all deviations & Rules in context & \sthreeSecThreeAA & \sthreeSecThreeAB & \sthreeSecThreeADiff & \sthreeSecThreeALo{} to \sthreeSecThreeAHi & \sthreeSecThreeAClusters{} (\sthreeSecThreeANonzero) & \sthreeSecThreeAPCell \\
+S3b & all deviations & Rules in context, frontier model & \sthreeSecThreeBA & \sthreeSecThreeBB & \sthreeSecThreeBDiff & \sthreeSecThreeBLo{} to \sthreeSecThreeBHi & \sthreeSecThreeBClusters{} (\sthreeSecThreeBNonzero) & \sthreeSecThreeBPCell \\
+S4a & theft errors & Rules in context, frontier model & \sthreeSecFourAA & \sthreeSecFourAB & \sthreeSecFourADiff & \sthreeSecFourALo{} to \sthreeSecFourAHi & \sthreeSecFourAClusters{} (\sthreeSecFourANonzero) & \sthreeSecFourAPCell \\
+S4b & theft errors (non-inferiority, margin \sthreeSecFourBMargin) & Rules in context, original rules, frontier model & \sthreeSecFourBA & \sthreeSecFourBB & \sthreeSecFourBDiff & \sthreeSecFourBLo{} to \sthreeSecFourBHi & \sthreeSecFourBClusters{} (\sthreeSecFourBNonzero) & \sthreeSecFourBPCell \\
+S4c & theft errors & Rules in context, original rules & \sthreeSecFourCA & \sthreeSecFourCB & \sthreeSecFourCDiff & \sthreeSecFourCLo{} to \sthreeSecFourCHi & \sthreeSecFourCClusters{} (\sthreeSecFourCNonzero) & \sthreeSecFourCPCell \\
+S5a & strict unsafe & \casepath, checklist only & \sthreeSecFiveAA & \sthreeSecFiveAB & \sthreeSecFiveADiff & \sthreeSecFiveALo{} to \sthreeSecFiveAHi & \sthreeSecFiveAClusters{} (\sthreeSecFiveANonzero) & \sthreeSecFiveAPCell \\
+S5b & all deviations & \casepath, checklist only & \sthreeSecFiveBA & \sthreeSecFiveBB & \sthreeSecFiveBDiff & \sthreeSecFiveBLo{} to \sthreeSecFiveBHi & \sthreeSecFiveBClusters{} (\sthreeSecFiveBNonzero) & \sthreeSecFiveBPCell \\
+S5c & theft errors & \casepath, checklist only & \sthreeSecFiveCA & \sthreeSecFiveCB & \sthreeSecFiveCDiff & \sthreeSecFiveCLo{} to \sthreeSecFiveCHi & \sthreeSecFiveCClusters{} (\sthreeSecFiveCNonzero) & \sthreeSecFiveCPCell \\
+S5d & theft errors & Core & \sthreeSecFiveDA & \sthreeSecFiveDB & \sthreeSecFiveDDiff & \sthreeSecFiveDLo{} to \sthreeSecFiveDHi & \sthreeSecFiveDClusters{} (\sthreeSecFiveDNonzero) & \sthreeSecFiveDPCell \\
+S7a & theft errors; A = frontier-model product & Rules in context, frontier model & \sthreeSecSevenAA & \sthreeSecSevenAB & \sthreeSecSevenADiff & \sthreeSecSevenALo{} to \sthreeSecSevenAHi & \sthreeSecSevenAClusters{} (\sthreeSecSevenANonzero) & \sthreeSecSevenAPCell \\
+S7b & strict unsafe; A = frontier-model product & Rules in context, frontier model & \sthreeSecSevenBA & \sthreeSecSevenBB & \sthreeSecSevenBDiff & \sthreeSecSevenBLo{} to \sthreeSecSevenBHi & \sthreeSecSevenBClusters{} (\sthreeSecSevenBNonzero) & \sthreeSecSevenBPCell \\
+S7c & theft errors; A = frontier-model product & \casepath & \sthreeSecSevenCA & \sthreeSecSevenCB & \sthreeSecSevenCDiff & \sthreeSecSevenCLo{} to \sthreeSecSevenCHi & \sthreeSecSevenCClusters{} (\sthreeSecSevenCNonzero) & \sthreeSecSevenCPCell \\
+S7d & strict unsafe; A = frontier-model product & \casepath & \sthreeSecSevenDA & \sthreeSecSevenDB & \sthreeSecSevenDDiff & \sthreeSecSevenDLo{} to \sthreeSecSevenDHi & \sthreeSecSevenDClusters{} (\sthreeSecSevenDNonzero) & \sthreeSecSevenDPCell \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Cost per agent}
+Table~\ref{tab:s3-agents} gives the full product's calls and cost per case by agent (Figure~\ref{fig:agents}). Calls of \sthreeCasePathTenNotLinedUp{} of \sthreeCasePathTenCaseRuns{} tenancy and \sthreeCasePathThNotLinedUp{} of \sthreeCasePathThCaseRuns{} theft case-runs could not be attributed to an agent (USD~\sthreeCasePathTenCostUnattributed{} and \sthreeCasePathThCostUnattributed{} per case).
+
+\begin{table}[h]
+\caption{\casepath, full product: calls and USD per case by agent, and whether the agent can decide the checklist.}
+\label{tab:s3-agents}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X l rr rr@{}}
+\toprule
+& & \multicolumn{2}{c}{Tenancy} & \multicolumn{2}{c}{Theft} \\
+\cmidrule(lr){3-4}\cmidrule(l){5-6}
+Agent & Decides & Calls & USD & Calls & USD \\
+\midrule
+Router & yes & \sthreeCasePathTenRouterCalls & \sthreeCasePathTenRouterCost & \sthreeCasePathThRouterCalls & \sthreeCasePathThRouterCost \\
+Claim reader (with the first reading) & yes & \sthreeCasePathTenClaimReaderCalls & \sthreeCasePathTenClaimReaderCost & \sthreeCasePathThClaimReaderCalls & \sthreeCasePathThClaimReaderCost \\
+Source checker (with further readings, second judgment) & yes & \sthreeCasePathTenSourceCheckerCalls & \sthreeCasePathTenSourceCheckerCost & \sthreeCasePathThSourceCheckerCalls & \sthreeCasePathThSourceCheckerCost \\
+Document finder & yes & \sthreeCasePathTenDocumentFinderCalls & \sthreeCasePathTenDocumentFinderCost & \sthreeCasePathThDocumentFinderCalls & \sthreeCasePathThDocumentFinderCost \\
+Process builder & no & \sthreeCasePathTenProcessBuilderCalls & \sthreeCasePathTenProcessBuilderCost & \sthreeCasePathThProcessBuilderCalls & \sthreeCasePathThProcessBuilderCost \\
+Result checker & no & \sthreeCasePathTenResultCheckerCalls & \sthreeCasePathTenResultCheckerCost & \sthreeCasePathThResultCheckerCalls & \sthreeCasePathThResultCheckerCost \\
+\midrule
+Can decide the checklist & & & \sthreeCasePathTenCostDecide & & \sthreeCasePathThCostDecide \\
+Cannot & & & \sthreeCasePathTenCostRest & & \sthreeCasePathThCostRest \\
+All calls & & \sthreeCasePathTenCalls & \sthreeCasePathTenCostFour & \sthreeCasePathThCalls & \sthreeCasePathThCostFour \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Post hoc: ReAct without its failed outputs}
+This analysis is post hoc and not part of the plan (\texttt{analysis/study3\_posthoc.py}). ReAct's failed outputs are left out instead of scored as empty plans: a theft pair-run is dropped for both designs when either of ReAct's two texts failed in that run (\sthreePostReactThDropped{} of \sthreePostReactThTotal{} pair-runs), and a tenancy claim-run when ReAct's output failed (\sthreePostReactTenStrictDropped{} of \sthreeClaimRuns). Clusters, tests and resampling are those of the planned contrasts (Table~\ref{tab:s3-posthoc-react}). ReAct's errors fall, and \casepath still makes fewer.
+
+\begin{table}[h]
+\caption{Post hoc, not part of the plan: \casepath against ReAct with ReAct's failed outputs left out.}
+\label{tab:s3-posthoc-react}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X rrrrrr@{}}
+\toprule
+Contrast & \casepath & ReAct & Difference & 95\% interval & Clusters & $p$ \\
+\midrule
+H4, ReAct (theft errors) & \sthreePostReactThA & \sthreePostReactThB & \sthreePostReactThDiff & \sthreePostReactThLo{} to \sthreePostReactThHi & \sthreePostReactThClusters{} (\sthreePostReactThNonzero) & \sthreePostReactThPCell \\
+Tenancy, strict unsafe & \sthreePostReactTenStrictA & \sthreePostReactTenStrictB & \sthreePostReactTenStrictDiff & \sthreePostReactTenStrictLo{} to \sthreePostReactTenStrictHi & \sthreePostReactTenStrictClusters{} (\sthreePostReactTenStrictNonzero) & \sthreePostReactTenStrictPCell \\
+Tenancy, all deviations & \sthreePostReactTenAllDevA & \sthreePostReactTenAllDevB & \sthreePostReactTenAllDevDiff & \sthreePostReactTenAllDevLo{} to \sthreePostReactTenAllDevHi & \sthreePostReactTenAllDevClusters{} (\sthreePostReactTenAllDevNonzero) & \sthreePostReactTenAllDevPCell \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Post hoc: H4's Self-consistency contrast by changed fact}
+Table~\ref{tab:s3-posthoc-sc}, also post hoc, shows the \sthreeTheftClusters{} cluster values behind H4's test against Self-consistency. \casepath had fewer errors on \sthreePostSCFavourCasePath{} changed facts and more on \sthreePostSCFavourSelfCons. The exact test counts the sign patterns of the differences whose sum is at least as far from zero as the observed one; with \sthreePostSCFavourSelfCons{} differences against \casepath, one of them large, that share is \sthreePostSCP.
+
+\begin{table}[h]
+\caption{Post hoc, not part of the plan: wrong + missed changes per pair by changed fact (mean over stories and runs), \casepath and Self-consistency.}
+\label{tab:s3-posthoc-sc}
+\footnotesize
+\begin{tabular}{@{}l rrr@{}}
+\toprule
+Changed fact & \casepath & Self-consistency & Difference \\
+\midrule
+bicycle claimed & \sthreePostSCBicycleCasePath & \sthreePostSCBicycleSelfCons & \sthreePostSCBicycleDiff \\
+declined & \sthreePostSCDeclinedCasePath & \sthreePostSCDeclinedSelfCons & \sthreePostSCDeclinedDiff \\
+expert procedure requested & \sthreePostSCExpertCasePath & \sthreePostSCExpertSelfCons & \sthreePostSCExpertDiff \\
+goods recovered & \sthreePostSCRecoveredCasePath & \sthreePostSCRecoveredSelfCons & \sthreePostSCRecoveredDiff \\
+deadline set (Nachfrist) & \sthreePostSCDeadlineCasePath & \sthreePostSCDeadlineSelfCons & \sthreePostSCDeadlineDiff \\
+repair cost above the policy threshold & \sthreePostSCRepairCasePath & \sthreePostSCRepairSelfCons & \sthreePostSCRepairDiff \\
+scheduled valuable above the policy threshold & \sthreePostSCValuableCasePath & \sthreePostSCValuableSelfCons & \sthreePostSCValuableDiff \\
+SIM card stolen & \sthreePostSCSimCardCasePath & \sthreePostSCSimCardSelfCons & \sthreePostSCSimCardDiff \\
+third party caused the loss & \sthreePostSCThirdPartyCasePath & \sthreePostSCThirdPartySelfCons & \sthreePostSCThirdPartyDiff \\
+\midrule
+Mean & \sthreeHFourSCA & \sthreeHFourSCB & \sthreePostSCMeanDiff \\
+\bottomrule
+\end{tabular}
+\end{table}
