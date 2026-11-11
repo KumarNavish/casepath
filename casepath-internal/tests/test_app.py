@@ -200,6 +200,13 @@ class AppTests(unittest.TestCase):
         client.put(url, json={"target": "answer", "verdict": "wrong", "note": "Die Frist ist falsch gelesen."})
         client.put(url, json={"target": "summary:0", "verdict": "wrong"})
         client.put(url, json={"target": "summary:0", "verdict": None})
+        events = client.get(f"/api/cases/{case['id']}/events").json()["events"]
+        self.assertEqual([e["kind"] for e in events][-4:], ["item.confirmed", "item.corrected", "item.corrected", "correction.undone"])
+        self.assertEqual((events[-3]["item_id"], events[-3]["reason"], events[-3]["note_present"]), ("answer:0", "none", True))
+        self.assertTrue(all(e["schema"] == "casepath.study.event/1" and e["parity_sha"] and e["frozen_run_id"] == run["id"] for e in events))
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "note.added", "item_id": "fact:frist",
+                                                                            "fields": {"text": "Datum prüfen", "reason": "5"}}).status_code, 201)
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "made.up"}).status_code, 422)
         self.assertEqual(client.put(url, json={"target": "Der Vermieter", "verdict": "wrong"}).status_code, 422)
         self.assertEqual(client.put(url, json={"target": "answer", "verdict": "maybe"}).status_code, 422)
         rows = client.get(f"/api/cases/{case['id']}").json()["feedback"]

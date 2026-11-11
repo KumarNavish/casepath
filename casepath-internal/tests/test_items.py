@@ -24,7 +24,7 @@ def evaluation(required="yes"):
                           {"document": "ruege", "title": "Mängelrüge", "status": "missing", "required": "yes", "step": "n8", "citations": []}]}
 
 
-RESULT = {"facts": [{"fact": "login", "status": "unknown", "value": None},
+RESULT = {"answer": "Die Mängelrüge fehlt noch.", "facts": [{"fact": "login", "status": "unknown", "value": None},
                     {"fact": "notified", "status": "established", "value": "5 years before 2024-09-05", "verdict": "accepted", "citations": []}]}
 
 
@@ -37,6 +37,7 @@ class ItemTests(unittest.TestCase):
         self.assertEqual((items["document:ruege"]["part_of"], items["document:korr"]["legal_basis"]), ("korr", "Art. 257g OR"))
         self.assertEqual(items["next_action:0"]["label"]["de"], "1 Unterlage(n) beim Kunden anfordern")
         self.assertEqual(set(items["step:n3"]["label"]), {"de", "en"})
+        self.assertFalse(items["answer:0"]["chain"])
 
     def test_the_hash_follows_the_assertion_not_its_explanation(self):
         state = {"process": graph(), "evaluation": evaluation()}

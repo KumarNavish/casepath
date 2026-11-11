@@ -155,6 +155,9 @@ def build_items(state, result):
     for i, point in enumerate(result.get("open_points") or []):
         add("open_point", str(i), value=point if isinstance(point, str) else json.dumps(point, ensure_ascii=False), stated_as="put_to_handler",
             verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None)
+    if result.get("answer"):
+        add("answer", "0", value=result["answer"], stated_as="established", verdict=None, evidence=[], node=None, origin="result_checker",
+            chain=False, label=None)
     if brief.get("request") or result.get("summary"):
         add("summary", "0", value=brief.get("request") or result.get("summary"), stated_as="established", verdict=None, evidence=[],
             node=None, origin="claim_reader", chain=False, label=None)

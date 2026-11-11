@@ -26,6 +26,7 @@ from ..process.items import build_items, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
+from ..parity import source_tree
 from ..read import cut
 from ..read.evidence import Evidence
 from ..read.pdfread import PdfError
@@ -51,6 +52,20 @@ class NewCase(BaseModel):
     intake: dict = {}
 
 
+EVENT_KINDS = {"session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
+               "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
+               "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
+               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added"}
+REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
+           "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
+
+
+class EventRequest(BaseModel):
+    kind: str = Field(min_length=3, max_length=40)
+    item_id: str | None = Field(None, max_length=120, pattern=r"^[a-z_]+:[A-Za-z0-9_.:-]{1,100}$")
+    fields: dict = Field(default_factory=dict)
+
+
 class CutRequest(BaseModel):
     pages: str = Field(min_length=1, max_length=200)  # original page numbers to keep, e.g. "5-10"
     file: str | None = Field(None, max_length=80)
@@ -65,6 +80,7 @@ class EditRequest(BaseModel):
     op: str
     args: dict
     reason: str
+    reason_code: Literal["1", "2", "3", "4", "5", "6", "none"] | None = None  # the one-tap reason; the text above is the note
     use_for_similar: bool = False
     activate: bool = False
     recheck: bool = True
@@ -76,9 +92,10 @@ class StatusChange(BaseModel):
 
 class Feedback(BaseModel):
     """A case worker's verdict on one result item; target names the item, never its content."""
-    target: str = Field(pattern=r"^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point):[A-Za-z0-9_.-]{1,80})$")
+    target: str = Field(pattern=r"^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point|step|next_action|party|answer):[A-Za-z0-9_.-]{1,80})$")
     verdict: Literal["correct", "wrong", "done"] | None  # "done": a point under Braucht Ihr Urteil a case worker settled
     note: str = Field("", max_length=500)
+    reason_code: Literal["1", "2", "3", "4", "5", "6", "none"] | None = None  # the one-tap reason for a correction
 
 
 def default_model_factory(settings):
@@ -190,6 +207,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             return call(*args)
         except NotFound:
             raise HTTPException(404, "Not found.") from None
+
+    parity_sha = source_tree()[0]
+
+    def record(case_id, who, kind, item_id=None, **fields):
+        """One event in the case's append-only log (casepath.study.event/1). Outside a study session the session fields stay empty."""
+        completed = store.latest_run(case_id, "completed")
+        return store.append_case_event(case_id, {"schema": "casepath.study.event/1", "session_id": None, "expert": who, "case_copy": case_id,
+                                            "source_case": None, "frozen_run_id": (completed or {}).get("id"), "kind": kind,
+                                            "parity_sha": parity_sha, "item_id": item_id, **fields})
 
     def state(case_id):
         found(store.get_case, case_id)
@@ -375,6 +401,24 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                        {**cut.cut_extraction(row["extraction"], keep), "cut_of": {"case": case_id, "file": row["id"]}}, who)
         return case
 
+    @app.post("/api/cases/{case_id}/events", status_code=201)
+    def add_event(case_id: str, body: EventRequest, who=Depends(user)):
+        """A gesture the browser saw (exposure, a source opened, a note, the letter copied, the case closed)."""
+        found(store.get_case, case_id)
+        if body.kind not in EVENT_KINDS:
+            raise HTTPException(422, "Unknown event kind.")
+        if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
+            raise HTTPException(422, "Unknown reason.")
+        if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
+            raise HTTPException(422, "Too much in one event.")
+        reserved = {"schema", "event_id", "seq", "at", "session_id", "expert", "case_copy", "source_case", "frozen_run_id", "kind", "parity_sha", "item_id"}
+        return record(case_id, who, body.kind, item_id=body.item_id, **{k: v for k, v in body.fields.items() if k not in reserved})
+
+    @app.get("/api/cases/{case_id}/events")
+    def list_events(case_id: str, who=Depends(user)):
+        found(store.get_case, case_id)
+        return {"events": store.list_case_events(case_id), "reasons": REASONS}
+
     @app.put("/api/cases/{case_id}/workflow")
     def choose_workflow(case_id: str, body: WorkflowChoice, who=Depends(user)):
         workflow = catalogue.get(body.workflow_id, body.version)
@@ -447,7 +491,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.put("/api/runs/{run_id}/feedback")
     def feedback(run_id: str, body: Feedback, who=Depends(user)):
-        return {"feedback": found(store.set_feedback, run_id, body.target, body.verdict, body.note, who)}
+        listed = found(store.set_feedback, run_id, body.target, body.verdict, body.note, who)
+        run = store.get_run(run_id)
+        target = body.target if ":" in body.target else f"{body.target}:0"
+        if body.target.startswith("point:"):
+            record(run["case_id"], who, "point.settled" if body.verdict else "correction.undone", item_id=target)
+        else:
+            kind = {"correct": "item.confirmed", "wrong": "item.corrected", None: "correction.undone"}.get(body.verdict, "item.confirmed")
+            record(run["case_id"], who, kind, item_id=target, **({"reason": body.reason_code or "none", "note_present": bool(body.note)} if kind == "item.corrected" else {}))
+        return {"feedback": listed}
 
     @app.get("/api/cases/{case_id}/report.docx")
     def report_docx(case_id: str, lang: str = "de", who=Depends(user)):
@@ -495,6 +547,21 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             learned = store.save_knowledge(item)
         after = state(case_id)
         change = casegraph.diff(before["evaluation"], after["evaluation"])
+        target = f"document:{body.args.get('document')}" if body.args.get("document") else f"step:{body.args.get('step')}" if body.args.get("step") else None
+        kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added"}.get(body.op, "item.corrected")
+        what = {"add_document": "document", "add_step": "step", "add_question": "question"}.get(body.op)
+        cause = record(case_id, who, kind, item_id=target, edit_id=edit["id"], op=body.op, reason=body.reason_code or "none",
+                       note_present=bool(body.reason.strip()), **({"what": what, "free_text_present": True} if what else {}))
+        for row in change["documents_added"]:
+            record(case_id, who, "item.propagated", item_id=f"document:{row['document']}", caused_by=cause["event_id"], change="appeared", before=None, after=row["status"])
+        for row in change["documents_removed"]:
+            record(case_id, who, "item.propagated", item_id=f"document:{row['document']}", caused_by=cause["event_id"], change="vanished", before=row["status"], after=None)
+        for row in change["documents_changed"]:
+            record(case_id, who, "item.propagated", item_id=f"document:{row['document']}", caused_by=cause["event_id"], change="changed",
+                   before=f"{row['before']}/{row['required_before']}", after=f"{row['after']}/{row['required_after']}")
+        if change["current_step"]["before"] != change["current_step"]["after"]:
+            record(case_id, who, "item.propagated", item_id=f"step:{change['current_step']['after']}", caused_by=cause["event_id"], change="changed",
+                   before=change["current_step"]["before"], after=change["current_step"]["after"])
         recheck = None
         added = [d["document"] for d in change["documents_added"]]
         if body.recheck and added and before["run"] is not None:
@@ -509,6 +576,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         edit = found(store.get_edit, edit_id)
         before = state(edit["case_id"])
         store.set_edit_status(edit_id, "undone", who)
+        undoes = next((e["event_id"] for e in reversed(store.list_case_events(edit["case_id"])) if e.get("edit_id") == edit_id), None)
+        record(edit["case_id"], who, "correction.undone", undoes=undoes, edit_id=edit_id)
         after = state(edit["case_id"])
         return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
 

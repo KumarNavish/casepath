@@ -62,6 +62,26 @@
       "title": "Reason",
       "type": "string"
      },
+     "reason_code": {
+      "anyOf": [
+       {
+        "enum": [
+         "1",
+         "2",
+         "3",
+         "4",
+         "5",
+         "6",
+         "none"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason Code"
+     },
      "recheck": {
       "default": true,
       "title": "Recheck",
@@ -81,6 +101,39 @@
     "title": "EditRequest",
     "type": "object"
    },
+   "EventRequest": {
+    "properties": {
+     "fields": {
+      "additionalProperties": true,
+      "title": "Fields",
+      "type": "object"
+     },
+     "item_id": {
+      "anyOf": [
+       {
+        "maxLength": 120,
+        "pattern": "^[a-z_]+:[A-Za-z0-9_.:-]{1,100}$",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Item Id"
+     },
+     "kind": {
+      "maxLength": 40,
+      "minLength": 3,
+      "title": "Kind",
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind"
+    ],
+    "title": "EventRequest",
+    "type": "object"
+   },
    "Feedback": {
     "description": "A case worker's verdict on one result item; target names the item, never its content.",
     "properties": {
@@ -90,8 +143,28 @@
       "title": "Note",
       "type": "string"
      },
+     "reason_code": {
+      "anyOf": [
+       {
+        "enum": [
+         "1",
+         "2",
+         "3",
+         "4",
+         "5",
+         "6",
+         "none"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason Code"
+     },
      "target": {
-      "pattern": "^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point):[A-Za-z0-9_.-]{1,80})$",
+      "pattern": "^(answer|(fact|document|summary|timeline|deadline|open_point|reply|point|step|next_action|party|answer):[A-Za-z0-9_.-]{1,80})$",
       "title": "Target",
       "type": "string"
      },
@@ -500,6 +573,89 @@
      }
     },
     "summary": "Edit Process"
+   }
+  },
+  "/api/cases/{case_id}/events": {
+   "get": {
+    "operationId": "list_events_api_cases__case_id__events_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Events"
+   },
+   "post": {
+    "description": "A gesture the browser saw (exposure, a source opened, a note, the letter copied, the case closed).",
+    "operationId": "add_event_api_cases__case_id__events_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EventRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Add Event"
    }
   },
   "/api/cases/{case_id}/files": {

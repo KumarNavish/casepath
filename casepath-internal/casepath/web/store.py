@@ -39,6 +39,9 @@ create table if not exists case_edits(
 create table if not exists feedback(
   run_id text not null references runs(id), target text not null, by text not null, verdict text not null,
   note text not null, at text not null, primary key(run_id, target, by));
+create table if not exists events(
+  event_id text primary key, case_id text not null references cases(id), seq integer not null, at text not null, data text not null);
+create index if not exists events_case on events(case_id, seq);
 create table if not exists deletions(
   case_id text primary key, deleted_at text not null, deleted_by text not null, reason text not null, removed text not null);
 """
@@ -266,7 +269,7 @@ class CaseStore:
             for run_id in runs:
                 self._db.execute("delete from feedback where run_id=?", (run_id,))
                 self._db.execute("delete from run_events where run_id=?", (run_id,))
-            for table in ("runs", "case_edits", "knowledge_uses", "files"):
+            for table in ("runs", "case_edits", "knowledge_uses", "files", "events"):
                 self._db.execute(f"delete from {table} where case_id=?", (case_id,))
             for row in self._all("select id, data from knowledge"):
                 item = json.loads(row["data"])
@@ -320,6 +323,18 @@ class CaseStore:
 
     def list_feedback(self, run_id):
         return self._all("select target, by, verdict, note, at from feedback where run_id=? order by at", run_id)
+
+    # The append-only event log: every gesture on a case, never updated or removed except with the case itself
+    def append_case_event(self, case_id, record):
+        with self._lock:
+            seq = (self._one("select max(seq) as seq from events where case_id=?", case_id) or {}).get("seq") or 0
+            event = {**record, "event_id": new_id("ev"), "seq": seq + 1, "at": now()}
+            self._db.execute("insert into events values(?,?,?,?,?)",
+                             (event["event_id"], case_id, event["seq"], event["at"], json.dumps(event, ensure_ascii=False)))
+        return event
+
+    def list_case_events(self, case_id):
+        return [json.loads(r["data"]) for r in self._all("select data from events where case_id=? order by seq", case_id)]
 
     # Edits to a case's process
     def add_edit(self, case_id, op, args, user, reason):
