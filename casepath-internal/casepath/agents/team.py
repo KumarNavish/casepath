@@ -15,6 +15,7 @@ Nothing here sends, files or settles anything; a person decides.
 import json
 import re
 from concurrent.futures import ThreadPoolExecutor
+import threading
 from datetime import date, timedelta
 
 from ..process import casegraph, workflows
@@ -564,6 +565,7 @@ def _report_schema(work, agent):
 SMALL_CASE_CHARS = 40000
 
 
+TOOL_LOCK = threading.RLock()  # ponytail: one lock for all cases; per-case locks if runs ever overlap heavily
 SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
 
 
@@ -619,7 +621,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
                     args = call["arguments"]
                     work.emit(agent, "tool", tool=call["name"], file=args.get("file"), query=args.get("query"),
                               target=args.get("fact") or args.get("document"))
-                    result = _dispatch(work, agent, call["name"], call["arguments"])
+                    with TOOL_LOCK:  # the reading and the document search may run side by side on one case
+                        result = _dispatch(work, agent, call["name"], call["arguments"])
             conversation.append({"type": "function_call_output", "call_id": call["call_id"],
                                  "output": json.dumps(result, ensure_ascii=False, default=str)})
         if report is not None:
