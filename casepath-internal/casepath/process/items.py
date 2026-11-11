@@ -110,6 +110,8 @@ def build_items(state, result, files=None):
             d = docs.get(row["document"], {})
             if ev.get("outcome") or row["status"] == "present":
                 ask = None
+            elif d.get("offered") and row["required"] in {"yes", "depends"}:
+                ask = "proposed"  # practice is split: a mention of the missing document ticks it as its own line
             elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
                 ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
             elif graph.get("action_by_stage") and d.get("edit") and not d.get("knowledge"):
