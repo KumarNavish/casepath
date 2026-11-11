@@ -1,0 +1,33 @@
+# Cross-check, editor A
+
+Decided from the cited passages only (same allowed files as the lint review).
+
+## overlay_rule_014 (overlay_guard_014)
+
+**Proposal:** Narrow condition to: "The insurer has asked the claimant to produce original purchase vouchers (Originalbelege) for the affected items, either by a request in the claim file or through the insurer's claim form used for this claim, which asks for them to be attached; not merely that items were damaged or stolen."
+
+**Decision:** approve as written.
+
+**Deciding passages:** `theft-source-0134#p1`: "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;"; `theft-source-0176#p1`: "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)"
+
+**Reason:** The AVB tie the vouchers to a request ('auf Verlangen', 0048/0134). The claim form's 'bitte Originalkaufbelege beilegen' (0176) is itself the insurer asking, so the proposed wording reconciles the two passages I had found in conflict: it fires on an explicit request or where that form was used, and not merely because items were stolen. The exclusion is supported by 'auf Verlangen'. The open legal doubt (whether a form instruction carries the same force as a specific request) now only affects claims filed on that form, and the condition can be checked against the file.
+
+## overlay_rule_004 (overlay_guard_004)
+
+**Proposal:** Remove condition g004 from the whole rule (facts f01 and f02, including D25, unconditional) instead of splitting off f02 to overlay_rule_004.a.
+
+**Decision:** reject; maintain the split.
+
+**Deciding passages:** `theft-source-0116#p3`: "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen."; `theft-source-0170#p2`: "dabei die Anordnungen der CSS zu befolgen"
+
+**Reason:** The passage ties the instruction to 'die zu ergreifenden Massnahmen' and excuses it 'wenn ... Gefahr im Verzug liegt'. CSS 0170 and Simpego 0100 only require following instructions that were given. So the passages do not make D25 ('Insurer's instruction ... and evidence that it was followed') due in every case, and the unconditional version would demand a document that may not exist. Making it unconditional would need a jurist to decide that every claim triggers the duty to obtain an instruction; until then I reject it.
+
+## overlay_rule_003 (overlay_guard_003)
+
+**Proposal:** Other editor's narrowed text: "Before the loss was determined, crime-scene traces were removed or altered, or the damaged items or the place of the loss were altered or disposed of, or assistance services were used on the damaged items, or such a step is intended; not merely that crime-scene traces or damaged items exist."
+
+**Decision:** accept either wording as equivalent in substance.
+
+**Deciding passages:** `theft-source-0043#p3`: "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern"; `theft-source-0096#p1`: "an den beschädigten Gegenständen keine Veränderung vorgenommen oder Hilfeleistungen in Anspruch genommen werden"
+
+**Reason:** Both texts cover the same arms: traces removed or altered; the loss place or damaged items altered or disposed of (0033, 0136); help or assistance services used (0096); and planned or intended steps. Both exclude the mere existence of traces or items. My 'repaired' is a case of 'altered', and 'planned' and 'intended' mean the same here. There is no difference that matters, and I have no objection to their wording being adopted.

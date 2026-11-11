@@ -1,0 +1,24 @@
+# Cross-check of the other editor's three proposals (editor B)
+
+Each decision rests on the cited passages alone. A change is adopted only if both editors made it, or one made it and the other approves it.
+
+## 1. overlay_rule_042: REJECT
+
+- **Condition:** g042_rev_92ab8925 (overlay_guard_042)
+- **Passages:** theft-source-0165#p1, theft-source-0055#p1
+- **Deciding words:** "sofern der Schaden oder Verlust durch die Schuld eines Dritten entstanden oder vergrössert worden ist"; "Sofern die CSS aus diesem Vertrag Leistungen erbracht hat, für welche der Versicherungsnehmer gegenüber Dritten Ansprüche geltend machen könnte"
+- **Reason:** 0165 covers fault of 'eines Dritten' with no exception. 'z. B. eine Transportfirma' is an example, not a limit, so excluding the unidentified thief adds an exclusion the passage does not state; whether that thief counts is a question for a jurist (my LINT_REVIEW point 6). The proposal also drops the CSS precondition 'Sofern die CSS ... Leistungen erbracht hat' and adds 'is liable', which neither passage words that way.
+
+## 2. overlay_rule_073: APPROVE AS WRITTEN
+
+- **Condition:** g073 (overlay_guard_073)
+- **Passages:** theft-source-0153#p1
+- **Deciding words:** "Diebstahl (ohne einfachen Diebstahl)"
+- **Reason:** The proposal restates the passage as a fact that can be checked against the policy terms, and it does not guess which cover clause 26 belongs to; that was my reason for keeping the condition. 'ohne einfachen Diebstahl' directly supports 'a cover that includes simple theft does not count'. It replaces wording ('the cited provision') that could not be checked against a claim file. Which CSS cover this is remains open for a jurist, but the condition is right whatever the answer.
+
+## 3. overlay_rule_004 / overlay_rule_004.a: APPROVE AS WRITTEN
+
+- **Condition:** new condition on overlay_rule_004.a (overlay_rule_004 stays unconditional)
+- **Passages:** theft-source-0116#p3, theft-source-0170#p2, theft-source-0100#p2
+- **Deciding words:** "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen."; "dabei die Anordnungen der CSS zu befolgen"; "die Weisungen von simpego befolgen"
+- **Reason:** The VVG ties the instruction duty to 'die zu ergreifenden Massnahmen' and to the absence of 'Gefahr im Verzug'. CSS and Simpego require only that instructions given be followed. The two limbs therefore match the passages, and 'the occurrence of the event alone does not count' is supported. The split mirrors 020/020.a and resolves my LINT_REVIEW point 3 without disturbing my U decision for f01. This approval assumes f02 moves to 004.a unchanged (fact_id, capability_id, citations, D25 route).
