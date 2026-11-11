@@ -424,7 +424,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         data, _ = store.file_bytes(row["id"])
         try:
             keep = cut.parse_pages(body.pages, int(row["extraction"].get("pages") or 0))
-            data = cut.cut_pdf(data, keep)
+            data = cut.extract_pdf(data, keep)  # a new PDF: the later pages are not in it at all
         except (ValueError, PdfError) as error:
             raise HTTPException(422, str(error)) from None
         case = store.create_case(f"{source['title']} · Auszug S. {body.pages.replace(' ', '')}"[:300], source["intake"], who)

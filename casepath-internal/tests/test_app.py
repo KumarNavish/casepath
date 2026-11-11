@@ -286,6 +286,19 @@ class AppTests(unittest.TestCase):
             self.assertLess(len(part.content), 5_000)
             self.assertEqual(client.get(url + "?pages=7").status_code, 422)
 
+    def test_a_cut_is_a_new_pdf_without_the_later_pages(self):
+        from tests.test_cut import pages_with_a_heavy_first_page
+        client = self.client()
+        case = client.post("/api/cases", json={"title": "Akte"}).json()
+        client.post(f"/api/cases/{case['id']}/files", files={"file": ("akte.pdf", pages_with_a_heavy_first_page(3), "application/pdf")})
+        cut_case = client.post(f"/api/cases/{case['id']}/cut", json={"pages": "2-3"}).json()
+        cut_file, = client.get(f"/api/cases/{cut_case['id']}").json()["files"]
+        data = client.get(f"/api/files/{cut_file['id']}/original").content
+        self.assertLess(len(data), 5_000)
+        self.assertNotIn(b"Seite 1", data)  # the dropped page is not hidden in the file, it is gone
+        self.assertIn(b"Seite 3", client.get(f"/api/files/{cut_file['id']}/original?pages=3").content)  # original numbering
+        self.assertEqual(client.get(f"/api/files/{cut_file['id']}/original?pages=1").status_code, 422)
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

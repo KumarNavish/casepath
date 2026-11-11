@@ -386,12 +386,17 @@ async function sourceCard(fileId) {
   const head = doc.headers ? `<dl class="cp-doc-head">${["From", "To", "Date", "Subject"].filter((k) => doc.headers[k]).map((k) => `<dt>${headerName[k]}:</dt><dd>${esc(doc.headers[k])}</dd>`).join("")}</dl>` : "";
   // An e-mail's header lines are shown above; its body starts after the first blank line.
   const skip = (p) => (doc.headers && p === doc.pages[0] && p.text.indexOf("\n\n") >= 0 ? p.text.indexOf("\n\n") + 2 : 0);
-  const body = doc.pages.length ? doc.pages.map((p) => `${p.page ? `<span class="page" id="page-${p.page}">${T("Page", "Seite")} ${p.page}</span>` : ""}${highlight(p.text, p.page, cites, skip(p))}`).join("\n")
+  const isPdf = doc.media_type === "application/pdf";
+  const pageUrl = (n) => `/api/files/${esc(fileId)}/original?pages=${n}`;  // one original page: always small enough to open
+  const firstCited = (cites.find((c) => c.live && c.page) || cites.find((c) => c.page) || {}).page || (doc.pages[0] || {}).page;
+  const body = doc.pages.length ? doc.pages.map((p) => `${p.page ? (isPdf
+      ? `<a class="page" id="page-${p.page}" href="${pageUrl(p.page)}" target="_blank" rel="noopener" title="${T("Open this original page", "Originalseite öffnen")}">${T("Page", "Seite")} ${p.page} ${icon("external")}</a>`
+      : `<span class="page" id="page-${p.page}">${T("Page", "Seite")} ${p.page}</span>`) : ""}${highlight(p.text, p.page, cites, skip(p))}`).join("\n")
     : doc.kind === "image" ? `<img alt="${esc(doc.name)}" src="/api/files/${esc(fileId)}/original" style="max-width:100%">` : `<span class="cp-muted">${T("No readable text.", "Kein lesbarer Text.")}</span>`;
   return `<article class="cp-card" aria-label="${esc(doc.name)}"><div class="cp-doc-toolbar">
       <button class="cp-icon-button" data-step-file="${esc(files[index - 1] || "")}" aria-label="${T("Previous source", "Vorherige Quelle")}" ${index <= 0 ? "disabled" : ""}>${icon("left")}</button>
       <button class="cp-icon-button" data-step-file="${esc(files[index + 1] || "")}" aria-label="${T("Next source", "Nächste Quelle")}" ${index >= files.length - 1 ? "disabled" : ""}>${icon("right")}</button>
-      <span class="grow"><span class="name">${esc(doc.name)}</span></span><a class="cp-icon-button" href="/api/files/${esc(fileId)}/original" target="_blank" rel="noopener" aria-label="${T("Open full source", "Original öffnen")}">${icon("external")}</a></div>
+      <span class="grow"><span class="name">${esc(doc.name)}</span></span><a class="cp-icon-button" href="${isPdf && firstCited ? pageUrl(firstCited) : `/api/files/${esc(fileId)}/original`}" target="_blank" rel="noopener" aria-label="${T("Open full source", "Original öffnen")}">${icon("external")}</a></div>
     ${head}<div class="cp-doc-body">${body}</div>${readingNote(doc)}</article>`;
 }
 
