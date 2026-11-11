@@ -188,8 +188,11 @@ def build_items(state, result, files=None):
         if planned and planned.get("kind") == "A1" and action and action[0] == "A1":
             for f in graph["facts"]:
                 if f.get("ask_customer") and known.get(f["id"]) is None:
-                    add("letter_question", f["id"], value=f["question"], stated_as="put_to_handler", verdict=None, evidence=[],
-                        node=here.get("id"), origin="workflow", chain=True, label=f["question"])
+                    asked = f.get("customer_question") or f["question"]
+                    # a question's default follows practice: "offered" ones Protekta rarely asks wait unticked
+                    add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
+                        node=here.get("id"), origin="workflow", chain=True, label=asked,
+                        ask="proposed" if f["ask_customer"] == "offered" else "now")
             for hint in graph.get("hints", []):
                 if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True:
                     continue

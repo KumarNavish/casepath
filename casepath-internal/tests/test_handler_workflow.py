@@ -46,6 +46,13 @@ class HandlerWorkflowTests(unittest.TestCase):
         listed = {i["item_id"]: i for i in build_items(state, {"facts": base})}
         self.assertEqual(listed["next_action:0"]["action"], "A1")
         self.assertIn("letter_question:mangel_seit", listed)
+        self.assertEqual(listed["letter_question:mangel_seit"]["ask"], "now")  # Protekta asks it (4 of 7)
+        self.assertNotIn("letter_question:maengelruege_schriftlich", listed)  # known here: not asked
+        bare = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("mangel_gemeldet", True)]
+        state2 = core.evaluate(wf, [], [], {"facts": bare, "documents": []}, "c")
+        listed2 = {i["item_id"]: i for i in build_items(state2, {"facts": bare})}
+        self.assertEqual(listed2["letter_question:will_schadenersatz"]["ask"], "proposed")  # asked in 0 of 5: offered
+        self.assertIn("hint:ruege_einschreiben", listed2)  # notified, form unknown: the hint to repeat it in writing
         self.assertEqual(listed["hint:dokumentieren"]["stated_as"], "put_to_handler")  # offered while a reduction is not established
         self.assertNotIn("hint:ruege_einschreiben", listed)  # a written notice was sent: no hint to send one
         self.assertEqual((listed["fact:a1_versandt"]["value"], listed["fact:a1_versandt"]["stated_as"]), (False, "computed"))  # derived, listed

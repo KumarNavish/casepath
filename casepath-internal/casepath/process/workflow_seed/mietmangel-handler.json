@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-11.5",
+ "version": "2026-11-11.6",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -64,8 +64,11 @@
    "question": "Will die Kundschaft Schadenersatz (z.B. für beschädigte Gegenstände)?",
    "source_refs": [
     "law#259e",
-    "practice#3of7"
-   ]
+    "practice#3of7",
+    "practice#asked0of5"
+   ],
+   "ask_customer": "offered",
+   "customer_question": "Was möchten Sie erreichen (Behebung des Mangels, Mietzinsreduktion, Ersatz von Schäden oder Kosten)?"
   },
   {
    "id": "will_auszug",
@@ -127,8 +130,11 @@
    "question": "Wurde der Mangel der Vermieterschaft schriftlich gemeldet?",
    "source_refs": [
     "law#257g",
-    "practice#7of7"
-   ]
+    "practice#7of7",
+    "practice#asked0of5"
+   ],
+   "ask_customer": "offered",
+   "customer_question": "Haben Sie der Vermieterschaft den Mangel gemeldet, und wenn ja wann und in welcher Form (Brief, E-Mail, mündlich)?"
   },
   {
    "id": "mangel_seit",
@@ -183,9 +189,12 @@
    "type": "boolean",
    "question": "Ist auch der Mietzins strittig (Ausstände, Herabsetzung)?",
    "source_refs": [
+    "law#259d",
     "practice#2of7",
-    "law#259d"
-   ]
+    "practice#asked0of5"
+   ],
+   "ask_customer": "offered",
+   "customer_question": "Besteht bereits eine Auseinandersetzung über den Mietzins (Reduktion, Rückforderung oder Hinterlegung)?"
   },
   {
    "id": "frist",
@@ -276,6 +285,14 @@
    "question": "War die letzte Handlung ein Telefonat, nach dem die Sache offen ist?",
    "source_refs": [
     "practice#2of7"
+   ]
+  },
+  {
+   "id": "mangel_gemeldet",
+   "type": "boolean",
+   "question": "Wurde der Mangel der Vermieterschaft gemeldet, in welcher Form auch immer (mit Datum)?",
+   "source_refs": [
+    "law#257g"
    ]
   }
  ],
@@ -738,8 +755,24 @@
   {
    "id": "ruege_einschreiben",
    "when": {
-    "fact": "maengelruege_schriftlich",
-    "is": false
+    "any": [
+     {
+      "fact": "maengelruege_schriftlich",
+      "is": false
+     },
+     {
+      "all": [
+       {
+        "fact": "mangel_gemeldet",
+        "is": true
+       },
+       {
+        "fact": "maengelruege_schriftlich",
+        "known": false
+       }
+      ]
+     }
+    ]
    },
    "text": "Liegt ein Mangel vor, ist die Vermieterschaft nachweislich in Kenntnis zu setzen; die Mängelrüge erfolgt zu Beweiszwecken idealerweise per Einschreiben.",
    "legal_basis": "Art. 257g OR",

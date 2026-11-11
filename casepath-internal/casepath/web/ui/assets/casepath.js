@@ -1075,7 +1075,7 @@ function requestDraft(ev) {
   const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
   const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
   const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
-  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question" && keep(i));
+  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question" && (i.ask === "proposed" ? lineState[i.item_id] === true : keep(i)));
   const hints = (S.data.items || []).filter((i) => i.kind === "hint" && (i.stated_as === "put_to_handler" ? lineState[i.item_id] === true : keep(i)));
   const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
   return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",

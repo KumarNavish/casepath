@@ -33,6 +33,10 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 
 **Defaults follow practice.** A line's default is the one that needs fewer handler changes in practice. Named exceptions: D8 (all correspondence asked, practice 6 of 7); D10 (Protekta asked "allfällige weitere Beweismittel" although photos were in the file; practice 4 of 5 the other way).
 
+**Stage facts left open (from 2026-11-11).** Counted over the facts of the current stage the reader may set (klaeren: written notice, rent dispute, damages). Row: open · of which stated in the file (the reader's gap) · of which asked in the letter · neither. Handler-workflow cuts: 14 of 21 open; stated in the file 0, one borderline (notified, form not stated); no miss found by keyword search and reading the hits, a paraphrase could escape it. Round 1 is not comparable (other workflow, other stage facts).
+
+**Question defaults follow practice.** Asked by Protekta when the file left it open: written notice 0 of 5, rent dispute 0 of 4, what the customer wants 0 of 5, so all three are offered unticked; "Seit wann" stays ticked (4 of 7).
+
 **Round 2 list (with Dominik's points, one combined re-run before the freeze):** conditional needs whose condition the file states (D1 expert report, D8 rent payments, D9 and D11 receipts for damaged goods); ask for the rest of an all-of need only when the file refers to correspondence it does not hold; the seeded evidence need asks for more than Protekta does at intake ("über die ganze Dauer, Messprotokoll oder Fachbericht"), so a few undated photos fail it (D6): when a document is there but falls short, the letter asks for exactly what is short ("weitere Fotos über die Dauer oder ein Messprotokoll"), not for the document as if nothing existed; whether the need's bar is right is a question for Dominik's session. The brief carries the sentence of the claim report it took the customer's request from, so the Anliegen line has its source (until then it shows no chip).
 
 ## Ground rules
