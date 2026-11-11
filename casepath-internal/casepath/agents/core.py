@@ -226,6 +226,8 @@ def route(model, catalogue, case, files, on_event):
     facts = catalogue.routing_facts()
     if not facts:  # nothing to read: a fallback, or the one workflow that can apply, is prepared without a model call
         decision = workflows.route(catalogue, {})
+        on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.", "routing": decision["status"],
+                  "workflow": decision["workflow"] and decision["workflow"]["id"]})  # shown, never silent
         return decision, catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None
     evidence = Evidence(files)
     file_ids = list(evidence.files)

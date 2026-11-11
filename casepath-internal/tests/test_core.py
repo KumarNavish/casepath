@@ -259,8 +259,12 @@ class CoreContractTests(unittest.TestCase):
     def test_a_fallback_workflow_is_prepared(self):
         fallback = {**Catalogue.load(FIXTURES).get("example-defect"), "id": "general", "fallback": True, "applies_when": None}
         with tempfile.TemporaryDirectory() as blobs:
-            outcome = core.prepare({**job([], workflow_id=None), "workflows": [fallback]}, script(), core.DirectoryBlobs(blobs))
+            events = []
+            outcome = core.prepare({**job([], workflow_id=None), "workflows": [fallback]}, script(), core.DirectoryBlobs(blobs), on_event=events.append)
         self.assertEqual((outcome["status"], outcome["routing"]["status"], outcome["workflow"]["id"]), ("completed", "fallback", "general"))
+        # never silently: the routing names the fallback with its reason, and the journal has the routing event
+        self.assertIn("fallback workflow is prepared", outcome["routing"]["reason"])
+        self.assertTrue(any(e.get("routing") == "fallback" for e in events))
 
     def test_a_run_stops_when_its_token_budget_is_spent(self):
         with tempfile.TemporaryDirectory() as blobs:

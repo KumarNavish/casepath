@@ -302,7 +302,8 @@ def route(catalogue, facts):
         needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - known)
         return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown + fallback], "needs": needs}
     if len(fallback) == 1:
-        return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": []}
+        return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": [],
+                "reason": "No other workflow can apply to the routing facts; the fallback workflow is prepared."}
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}
 
 
