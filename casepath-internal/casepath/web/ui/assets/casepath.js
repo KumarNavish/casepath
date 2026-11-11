@@ -1135,11 +1135,12 @@ function overviewView() {
     p.tab ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/${p.tab}">${T("check", "prüfen")}</a>` : "",
     `<button class="cp-link" data-note="${esc(p.fact ? `fact:${p.fact}` : `point:${p.key}`)}">${T("note", "Anmerkung")}</button>`,
     ratedRun() ? `<button class="cp-button" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
-  const checked = `${Object.keys(recorded("fact")).length} ${T("facts", "Fakten")}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
+  const setByYou = (S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").length;
+  const checked = `${Object.values(recorded("fact")).filter((f) => f.status !== "unknown").length} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by a person)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
   return `<div class="cp-overview"><div>
     <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">
-        <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen)}${cite(claimCite)}</dd>
+        <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen)}${claimCite ? cite(claimCite) : ""}</dd>
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
@@ -1155,6 +1156,7 @@ function overviewView() {
       ${settled.length ? `<details class="cp-muted"><summary class="cp-link">${T(`${settled.length} settled`, `${settled.length} erledigt`)}</summary><ul>${settled.map((p) => { const f = done.find((x) => x.target === `point:${p.key}`);
         return `<li>${esc(p.text)} <span>· ${esc(f.by)} · ${dateText(f.at)}</span> ${f.by === S.me ? `<button class="cp-link" data-point-undone="${esc(p.key)}">${T("undo", "rückgängig")}</button>` : ""}</li>`; }).join("")}</ul></details>` : ""}
       ${S.lastEdit ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : ""}
+      ${myChanges()}
       <p class="cp-muted" style="margin-top:14px"><button class="cp-link" data-note="case:0">${T("Note on this case", "Anmerkung zum Fall")}</button></p></section>
     ${closeView()}</div>`;
 }
@@ -1206,13 +1208,25 @@ function watchExposure(view) {
   for (const el of document.querySelectorAll("[data-item]")) EXPOSURE.observer.observe(el);
 }
 document.addEventListener("visibilitychange", () => { if (document.hidden) for (const key of Object.keys(EXPOSURE.since)) flushExposure(key); });
+function myChanges() {
+  // A person's changes to this case stay on the Übersicht after a reload: what, before → after, reason, when, undo.
+  const edits = (S.data.edits || []).filter((e) => e.status === "active" && ["set_fact", "remove_document", "add_document", "set_required_when"].includes(e.op));
+  if (!edits.length) return "";
+  const event = (id) => (S.data.caseEvents || []).find((e) => e.edit_id === id && e.kind !== "item.propagated") || {};
+  const what = (e) => e.op === "set_fact" ? questionOf(e.args.fact) : e.op === "remove_document" ? T(`not needed: ${titleOf(e.args.document)}`, `nicht nötig: ${titleOf(e.args.document)}`)
+    : e.op === "add_document" ? T(`added: ${e.args.title}`, `hinzugefügt: ${e.args.title}`) : titleOf(e.args.document);
+  const change = (e) => { const ev = event(e.id); return e.op === "set_fact" ? ` · ${esc(valueText(ev.before ?? "—"))} → <b>${esc(valueText(ev.after ?? e.args.value))}</b>` : ""; };
+  return `<details class="cp-mine" ${S.openMine ? "open" : ""}><summary class="cp-link">${T(`Your changes: ${edits.length}`, `Ihre Änderungen: ${edits.length}`)}</summary><ul>${edits.map((e) =>
+    `<li>${esc(clip(what(e), 90))}${change(e)} <span class="cp-muted">· ${esc(e.reason || "")} · ${esc(e.by)} · ${dateText(e.at)}</span> <button class="cp-link" data-undo-edit="${esc(e.id)}">${T("undo", "rückgängig")}</button></li>`).join("")}</ul></details>`;
+}
+function titleOf(documentId) { const d = (S.data.process.documents || []).find((x) => x.id === documentId); return d ? d.title : documentId; }
 function closed() { return (S.data.caseEvents || []).filter((e) => e.kind === "case.closed").pop(); }
 function closeView() {
   const c = closed();
   return `<section class="cp-card" style="padding:14px 22px;margin-top:18px;grid-column:1 / -1">${c
     ? `<b>${c.form === "erledigt" ? T("Closed", "Erledigt") : T("Closed, with a reservation", "Erledigt, mit Vorbehalt")}</b> <span class="cp-muted">· ${esc(c.expert)} · ${dateText(c.at)}</span>`
     : `<span class="cp-muted">${T("When you are done with this case:", "Wenn Sie mit dem Fall fertig sind:")}</span>
-       <button class="cp-button" data-close="erledigt">${T("Closed", "Erledigt")}</button>
+       <button class="cp-button primary" data-close="erledigt">${T("Closed", "Erledigt")}</button>
        <button class="cp-button" data-close="erledigt_mit_vorbehalt">${T("Closed, with a reservation", "Erledigt, mit Vorbehalt")}</button>
        <span class="cp-muted">${T("What you leave unchanged counts as checked.", "Was Sie unverändert lassen, gilt als geprüft.")}</span>`}</section>`;
 }
@@ -1246,6 +1260,9 @@ function bindOverview() {
     if (navigator.clipboard) navigator.clipboard.writeText(text);
     S.letterText = text;
     caseEvent("letter.copied", null, { edited: text.trim() !== draft.trim(), change_ratio: Math.round(100 * Math.abs(text.length - draft.length) / Math.max(1, draft.length)) / 100 });
+  });
+  for (const b of document.querySelectorAll("[data-undo-edit]")) b.addEventListener("click", async () => {
+    await api(`/api/edits/${b.dataset.undoEdit}/undo`, { method: "POST" }); S.lastEdit = null; S.openMine = true; await loadCase();
   });
   for (const b of document.querySelectorAll("[data-set-fact]")) b.addEventListener("click", () => { S.pick = { fact: b.dataset.setFact, value: b.dataset.value }; renderCase(); });
   for (const b of document.querySelectorAll("[data-reason]")) b.addEventListener("click", async () => {
