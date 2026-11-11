@@ -1,6 +1,6 @@
 import unittest
 
-from casepath.agents.team import _fact_value, computed_deadline
+from casepath.agents.team import _fact_value, computed_date
 from casepath.process import casegraph
 
 
@@ -16,9 +16,14 @@ class FactValueTests(unittest.TestCase):
         deadline = {"type": "date", "deadline": True}
         self.assertEqual(_fact_value(deadline, "None"), ("none", None))
         self.assertEqual(_fact_value(deadline, "14 days from 2024-08-14"), ("14 days from 2024-08-14", None))
-        self.assertEqual(computed_deadline("14 days from 2024-08-14"), "2024-08-28")
-        self.assertEqual(computed_deadline("1 months from 2024-01-31"), "2024-02-29")
-        self.assertIsNone(computed_deadline("2024-08-28"))
+        self.assertEqual(computed_date("14 days from 2024-08-14"), "2024-08-28")
+        self.assertEqual(computed_date("1 months from 2024-01-31"), "2024-02-29")
+        self.assertIsNone(computed_date("2024-08-28"))
+
+    def test_a_period_before_a_dated_statement_is_kept_as_stated(self):
+        self.assertEqual(_fact_value({"type": "date"}, "5 years before 2024-09-05"), ("5 years before 2024-09-05", None))
+        self.assertEqual(computed_date("5 years before 2024-09-05"), "2019-09-05")
+        self.assertEqual(computed_date("1 years before 2024-02-29"), "2023-02-28")
 
 
 class WholeNeedTests(unittest.TestCase):

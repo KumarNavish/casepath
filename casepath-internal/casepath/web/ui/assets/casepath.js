@@ -452,7 +452,24 @@ function describe(e) {
   }[e.kind];
   return what ? what() : e.kind;
 }
-const valueText = (v) => (v === true ? T("yes", "ja") : v === false ? T("no", "nein") : String(v));
+const PERIOD_RE = /^(\d{1,3}) (days|weeks|months|years) (from|before) (\d{4})-(\d{2})-(\d{2})$/;
+function computedDate(v) {
+  // A stated period and its anchor ("5 years before 2024-09-05"): the date is our arithmetic, shown as such, never as a fact.
+  const m = PERIOD_RE.exec(String(v || ""));
+  if (!m) return null;
+  const n = Number(m[1]) * (m[3] === "before" ? -1 : 1), d = new Date(Date.UTC(+m[4], +m[5] - 1, +m[6])), day = d.getUTCDate();
+  if (m[2] === "days" || m[2] === "weeks") d.setUTCDate(day + n * (m[2] === "weeks" ? 7 : 1));
+  else { d.setUTCMonth(d.getUTCMonth() + n * (m[2] === "years" ? 12 : 1)); if (d.getUTCDate() !== day) d.setUTCDate(0); }
+  const iso = d.toISOString().slice(0, 10);
+  const units = { days: ["days", "Tage"], weeks: ["weeks", "Wochen"], months: ["months", "Monate"], years: ["years", "Jahre"] }[m[2]];
+  return { date: m[2] === "years" ? iso.slice(0, 4) : iso,
+           stated: T(`${m[1]} ${units[0]} ${m[3]} ${m[4]}-${m[5]}-${m[6]}`, `${m[1]} ${units[1]} ${m[3] === "from" ? "ab" : "vor"} ${m[6]}.${m[5]}.${m[4]}`) };
+}
+const valueText = (v) => {
+  const c = computedDate(v);
+  if (c) return T(`≈ ${c.date} (computed from: ${c.stated})`, `≈ ${c.date} (berechnet aus: ${c.stated})`);
+  return v === true ? T("yes", "ja") : v === false ? T("no", "nein") : v === "none" ? T("none", "keine") : String(v);
+};
 const learnAction = (a) => ({ new: T("new", "neu"), refine: T("refine", "verfeinern"), contradict: T("contradict", "widerspricht") }[a] || a);
 
 // ---------- case workers' feedback on a prepared case ----------

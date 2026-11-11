@@ -57,9 +57,10 @@ says so, such as the customer writing that nobody answered or the form's own "Ne
 unknown. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
 "part" (for example "open points: refusal of 26.08.2024"); a reply or act that leaves the matter unresolved supports the
 "open points" part, and the "no reaction" part alone needs a sentence saying nobody answered.
-For a date: YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day. For a deadline: its date when the file states one;
-"none" when a passage says there is no deadline-triggering letter; a period from a dated event as "<n> days from
-YYYY-MM-DD" (or weeks or months), never a date you computed yourself.""",
+For a date: YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day. When the file states only a period from or before
+a dated statement ("innert 14 Tagen" from a letter of 2024-08-14, "seit 5 Jahren" in an e-mail of 2024-09-05), record
+"<n> days|weeks|months|years from|before YYYY-MM-DD", never a date you computed yourself. For a deadline, also "none"
+when a passage says there is no deadline-triggering letter.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_fact"],
     },
     "process_builder": {
@@ -293,16 +294,19 @@ class CaseWork:
 
 # -- tools --------------------------------------------------------------------
 
-PERIOD = re.compile(r"(\d{1,3}) (days|weeks|months) from (\d{4}-\d{2}-\d{2})")
+PERIOD = re.compile(r"(\d{1,3}) (days|weeks|months|years) (from|before) (\d{4}-\d{2}-\d{2})")
 
 
-def computed_deadline(value):
-    """The end of a stated period ("14 days from 2024-08-14" → "2024-08-28"), by calendar arithmetic only: no rule on
-    which day counts, weekends or holidays. Shown as computed, never as a fact. None for any other value."""
+def computed_date(value):
+    """The date a stated period gives ("14 days from 2024-08-14" → "2024-08-28"; "5 years before 2024-09-05" →
+    "2019-09-05"), by calendar arithmetic only: no rule on which day counts, weekends or holidays. Shown as computed,
+    never counted as an established fact. None for any other value."""
     match = PERIOD.fullmatch(value or "")
     if not match:
         return None
-    n, unit, start = int(match.group(1)), match.group(2), date.fromisoformat(match.group(3))
+    n, unit, start = int(match.group(1)) * (-1 if match.group(3) == "before" else 1), match.group(2), date.fromisoformat(match.group(4))
+    if unit == "years":
+        n, unit = n * 12, "months"
     if unit == "months":
         month = start.month - 1 + n
         year, month = start.year + month // 12, month % 12 + 1
@@ -327,9 +331,12 @@ def _fact_value(definition, value):
         value = value.strip()
         if re.fullmatch(r"\d{4}(-\d{2}(-\d{2})?)?", value):
             return value, None
-        if definition.get("deadline") and (value.lower() == "none" or PERIOD.fullmatch(value)):
-            return value.lower() if value.lower() == "none" else value, None
-        return None, "value must be YYYY-MM-DD, YYYY-MM or YYYY" + (', "none", or "<n> days|weeks|months from YYYY-MM-DD"' if definition.get("deadline") else "")
+        if PERIOD.fullmatch(value):  # a stated period and its dated anchor, as the file states them
+            return value, None
+        if definition.get("deadline") and value.lower() == "none":
+            return "none", None
+        return None, ('value must be YYYY-MM-DD, YYYY-MM, YYYY or "<n> days|weeks|months|years from|before YYYY-MM-DD"'
+                      + (', or "none"' if definition.get("deadline") else ""))
     return value, None
 
 
@@ -834,8 +841,8 @@ def finalize(work):
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
             "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],
-                           **({"date": f["value"]} if not computed_deadline(f["value"]) else
-                              {"date": computed_deadline(f["value"]), "computed": True, "stated": f["value"],
+                           **({"date": f["value"]} if not computed_date(f["value"]) else
+                              {"date": computed_date(f["value"]), "computed": True, "stated": f["value"],
                                "rule": "calendar days from the stated date; which day counts, weekends and holidays not applied"})}
                           for f in work.facts.values() if f["verdict"] == "accepted" and work.fact_defs.get(f["fact"], {}).get("deadline")
                           and f["value"] != "none"],
