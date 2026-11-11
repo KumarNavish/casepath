@@ -1,0 +1,4261 @@
+{
+ "note": "Post hoc development analysis; no model calls; nothing in the product, the plan, the spec or stored runs changed.",
+ "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+ "reviewed_workflow_equals_stored": true,
+ "mapping": {
+  "background_true": {
+   "g002": "certain: the loss is connected with theft",
+   "g005": "certain: household-contents coverage for theft-related damage",
+   "g006": "certain: the reported event is theft",
+   "g004": "near-certain: 'After the feared event occurs' (the event has occurred)",
+   "g003": "uncertain: every story reports a forced entry, so crime-scene traces exist; constant within a story either way, and its documents (D26, D27) are in no reference, so it cannot change a pair's floor"
+  },
+  "changed": {
+   "PR_scheduled_valuable_1000": {
+    "g074": {
+     "value": true,
+     "certainty": "certain: object listed in the contract, insured value >= CHF 1,000"
+    },
+    "g016": {
+     "value": true,
+     "certainty": "uncertain: 'claim concerns valuables insurance' (a scheduled item); same documents as g074, so the floor does not depend on it"
+    },
+    "g009": {
+     "value": false,
+     "certainty": "near-certain: watch scheduled at CHF 4,000, not > CHF 5,000"
+    }
+   },
+   "PR_bicycle_claimed": {
+    "g015": {
+     "value": true,
+     "certainty": "certain"
+    }
+   },
+   "PR_sim_card_stolen": {
+    "g084": {
+     "value": true,
+     "certainty": "certain"
+    },
+    "g088": {
+     "value": true,
+     "certainty": "certain (same text as g084)"
+    }
+   },
+   "PR_third_party_causer": {
+    "g042": {
+     "value": true,
+     "certainty": "near-certain: an identified contractor caused the loss (fault implied)"
+    }
+   },
+   "PR_expert_procedure_requested": {
+    "g021": {
+     "value": true,
+     "certainty": "certain: a party demands expert proceedings (no document depends on it)"
+    },
+    "g022": {
+     "value": true,
+     "certainty": "UNCERTAIN: is a written request by one party 'the expert-procedure route has been selected'? varied below"
+    },
+    "g020": {
+     "value": true,
+     "certainty": "UNCERTAIN (reviewed rules only): 'the loss is to be determined ... in expert proceedings'; varied below"
+    },
+    "g023": {
+     "value": false,
+     "certainty": "near-certain: no party has been requested to appoint an expert"
+    }
+   },
+   "PR_repair_over_500": {
+    "g090": {
+     "value": true,
+     "certainty": "certain"
+    }
+   },
+   "PR_nachfrist_set": {
+    "g070": {
+     "value": true,
+     "certainty": "certain: the insurer set a time limit"
+    },
+    "g098": {
+     "value": true,
+     "certainty": "certain"
+    }
+   },
+   "PR_goods_recovered": {
+    "g040": {
+     "value": true,
+     "certainty": "certain"
+    }
+   },
+   "PR_declined": {
+    "g043": {
+     "value": true,
+     "certainty": "certain"
+    }
+   }
+  },
+  "other_facts": "false in every text (no sentence of any text states them; they are inert unless a document need depends on them)",
+  "expert_variants": {
+   "primary (g022 T, g020 T)": {
+    "g022": true,
+    "g020": true
+   },
+   "g022 T, g020 F": {
+    "g022": true,
+    "g020": false
+   },
+   "g022 F, g020 T": {
+    "g022": false,
+    "g020": true
+   },
+   "g022 F, g020 F": {
+    "g022": false,
+    "g020": false
+   }
+  },
+  "literal_g042_variant": "g042 true in every text: the reviewed condition ('... or the loss was caused or increased through the fault of a third party') read literally includes the unidentified thief"
+ },
+ "part1_2_floor": {
+  "reviewed": {
+   "primary (g022 T, g020 T)": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.111,
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     },
+     "PR_expert_procedure_requested": {
+      "w+D23": 16
+     }
+    },
+    "per_story_errors": [
+     0.333
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 T, g020 F": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.111,
+     "missed": 0.111,
+     "errors": 0.222,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 0.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     }
+    },
+    "per_story_errors": [
+     0.222
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 F, g020 T": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.222,
+     "errors": 0.444,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.667
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 2.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     },
+     "PR_expert_procedure_requested": {
+      "w+D23": 16,
+      "m+D21": 16
+     }
+    },
+    "per_story_errors": [
+     0.444
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 F, g020 F": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.111,
+     "missed": 0.222,
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.667
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     },
+     "PR_expert_procedure_requested": {
+      "m+D21": 16
+     }
+    },
+    "per_story_errors": [
+     0.333
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "literal g042 (+primary)": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.222,
+     "errors": 0.444,
+     "unres_unchanged": 0.833,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 2.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16,
+      "m+D15": 16
+     },
+     "PR_expert_procedure_requested": {
+      "w+D23": 16
+     }
+    },
+    "per_story_errors": [
+     0.444
+    ],
+    "texts_where_engine_differs": null
+   },
+   "route_sensitivity": {
+    "items_with_alternatives": 16,
+    "alternatives_tried": 18,
+    "lowest_floor_change": 0.0,
+    "changes": [
+     {
+      "item": "overlay_rule_016:overlay_rule_016.f01.c01",
+      "condition_fact": "g016",
+      "chosen": [
+       "D10"
+      ],
+      "alternative": [
+       "D09"
+      ],
+      "errors_per_pair": 0.4444,
+      "change": 0.1111,
+      "by_fact": {
+       "PR_scheduled_valuable_1000": 1.0,
+       "PR_bicycle_claimed": 0.0,
+       "PR_sim_card_stolen": 1.0,
+       "PR_third_party_causer": 1.0,
+       "PR_expert_procedure_requested": 1.0,
+       "PR_repair_over_500": 0.0,
+       "PR_nachfrist_set": 0.0,
+       "PR_goods_recovered": 0.0,
+       "PR_declined": 0.0
+      }
+     },
+     {
+      "item": "overlay_rule_016:resolver.overlay_rule_016",
+      "condition_fact": "g016",
+      "chosen": [
+       "D10"
+      ],
+      "alternative": [
+       "D09"
+      ],
+      "errors_per_pair": 0.4444,
+      "change": 0.1111,
+      "by_fact": {
+       "PR_scheduled_valuable_1000": 1.0,
+       "PR_bicycle_claimed": 0.0,
+       "PR_sim_card_stolen": 1.0,
+       "PR_third_party_causer": 1.0,
+       "PR_expert_procedure_requested": 1.0,
+       "PR_repair_over_500": 0.0,
+       "PR_nachfrist_set": 0.0,
+       "PR_goods_recovered": 0.0,
+       "PR_declined": 0.0
+      }
+     },
+     {
+      "item": "overlay_rule_074:overlay_rule_074.f01.c01",
+      "condition_fact": "g074",
+      "chosen": [
+       "D10"
+      ],
+      "alternative": [
+       "D09"
+      ],
+      "errors_per_pair": 0.4444,
+      "change": 0.1111,
+      "by_fact": {
+       "PR_scheduled_valuable_1000": 1.0,
+       "PR_bicycle_claimed": 0.0,
+       "PR_sim_card_stolen": 1.0,
+       "PR_third_party_causer": 1.0,
+       "PR_expert_procedure_requested": 1.0,
+       "PR_repair_over_500": 0.0,
+       "PR_nachfrist_set": 0.0,
+       "PR_goods_recovered": 0.0,
+       "PR_declined": 0.0
+      }
+     }
+    ]
+   }
+  },
+  "original": {
+   "primary (g022 T, g020 T)": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.111,
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 1.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 0.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 16
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     }
+    },
+    "per_story_errors": [
+     0.333
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 T, g020 F": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.111,
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 1.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 0.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 16
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     }
+    },
+    "per_story_errors": [
+     0.333
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 F, g020 T": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.222,
+     "errors": 0.444,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.667
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 1.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 16
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     },
+     "PR_expert_procedure_requested": {
+      "m+D21": 16
+     }
+    },
+    "per_story_errors": [
+     0.444
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "g022 F, g020 F": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.222,
+     "errors": 0.444,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.667
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 1.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 1.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 16
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16
+     },
+     "PR_expert_procedure_requested": {
+      "m+D21": 16
+     }
+    },
+    "per_story_errors": [
+     0.444
+    ],
+    "texts_where_engine_differs": 0
+   },
+   "literal g042 (+primary)": {
+    "summary": {
+     "pairs": 144,
+     "wrong": 0.222,
+     "missed": 0.222,
+     "errors": 0.444,
+     "unres_unchanged": 0.833,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 1.0,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 2.0,
+     "PR_expert_procedure_requested": 0.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 16
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 16
+     },
+     "PR_third_party_causer": {
+      "m+D14": 16,
+      "m+D15": 16
+     }
+    },
+    "per_story_errors": [
+     0.444
+    ],
+    "texts_where_engine_differs": null
+   },
+   "route_sensitivity": {
+    "items_with_alternatives": 13,
+    "alternatives_tried": 15,
+    "lowest_floor_change": 0.0,
+    "changes": [
+     {
+      "item": "overlay_rule_020:overlay_rule_020.f01.c01",
+      "condition_fact": null,
+      "chosen": [
+       "D23"
+      ],
+      "alternative": [
+       "D21",
+       "D22"
+      ],
+      "errors_per_pair": 0.4444,
+      "change": 0.1111,
+      "by_fact": {
+       "PR_scheduled_valuable_1000": 1.0,
+       "PR_bicycle_claimed": 0.0,
+       "PR_sim_card_stolen": 1.0,
+       "PR_third_party_causer": 1.0,
+       "PR_expert_procedure_requested": 1.0,
+       "PR_repair_over_500": 0.0,
+       "PR_nachfrist_set": 0.0,
+       "PR_goods_recovered": 0.0,
+       "PR_declined": 0.0
+      }
+     }
+    ]
+   }
+  }
+ },
+ "floor_rules": {
+  "D33": {
+   "overlay_rule_084": {
+    "reviewed": {
+     "condition": "The claim concerns financial losses caused by misuse of SIM cards.",
+     "title": "Determine whether the SIM-card misuse causing the claimed financial losses occurred during the period between the theft and reporting it to CSS.",
+     "routes": [
+      [
+       [
+        "D32",
+        "D33"
+       ]
+      ]
+     ]
+    },
+    "original": {
+     "condition": "The claim concerns financial losses caused by misuse of SIM cards.",
+     "title": "Determine whether the SIM-card misuse causing the claimed financial losses occurred during the period between the theft and reporting it to CSS.",
+     "routes": [
+      [
+       [
+        "D32",
+        "D33"
+       ]
+      ]
+     ]
+    }
+   }
+  },
+  "D14": {
+   "overlay_rule_010": {
+    "reviewed": {
+     "condition": null,
+     "title": "Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known.",
+     "routes": [
+      [
+       [
+        "D01"
+       ]
+      ],
+      [
+       [
+        "D01"
+       ]
+      ],
+      [
+       [
+        "D14"
+       ]
+      ]
+     ]
+    },
+    "original": {
+     "condition": null,
+     "title": "Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known.",
+     "routes": [
+      [
+       [
+        "D01"
+       ]
+      ],
+      [
+       [
+        "D01"
+       ]
+      ],
+      [
+       [
+        "D14"
+       ]
+      ]
+     ]
+    }
+   }
+  },
+  "D23": {
+   "overlay_rule_020": {
+    "reviewed": {
+     "condition": "The loss is to be determined by a jointly appointed expert or in expert proceedings, not by the parties themselves.",
+     "title": "Where the loss is determined by a joint expert or in expert proceedings, establish that route and its resulting determination.",
+     "routes": [
+      [
+       [
+        "D23"
+       ],
+       [
+        "D21",
+        "D22"
+       ]
+      ]
+     ]
+    },
+    "original": {
+     "condition": null,
+     "title": "Select and apply one loss-determination route: determination by the parties, a jointly appointed expert, or expert proceedings.",
+     "routes": [
+      [
+       [
+        "D23"
+       ],
+       [
+        "D21",
+        "D22"
+       ]
+      ],
+      []
+     ]
+    }
+   }
+  },
+  "D10": {
+   "overlay_rule_074": {
+    "reviewed": {
+     "condition": "The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+     "title": "Determine whether neither a receipt nor an expert valuation can be produced for the listed valuable or individual object.",
+     "routes": [
+      [
+       [
+        "D09"
+       ],
+       [
+        "D10"
+       ]
+      ]
+     ]
+    },
+    "original": {
+     "condition": "The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+     "title": "Determine whether neither a receipt nor an expert valuation can be produced for the listed valuable or individual object.",
+     "routes": [
+      [
+       [
+        "D09",
+        "D10"
+       ]
+      ]
+     ]
+    }
+   },
+   "overlay_rule_016": {
+    "reviewed": {
+     "condition": "The claim concerns valuables insurance.",
+     "title": "Provide evidence establishing valuables' acquisition, payment, and value.",
+     "routes": [
+      [
+       [
+        "D09"
+       ],
+       [
+        "D10"
+       ]
+      ]
+     ]
+    },
+    "original": {
+     "condition": "The claim concerns valuables insurance.",
+     "title": "Provide evidence establishing valuables' acquisition, payment, and value.",
+     "routes": [
+      [
+       [
+        "D09",
+        "D10"
+       ]
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "part3_readings": {
+  "casepath": {
+   "model": "gpt-6-luna",
+   "runs": 3,
+   "changed_condition_on": {
+    "PR_scheduled_valuable_1000": {
+     "text_runs": 24,
+     "readings_conflict": 8,
+     "admitted_true": 7,
+     "left_open": 9
+    },
+    "PR_bicycle_claimed": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_sim_card_stolen": {
+     "text_runs": 24,
+     "admitted_true": 23,
+     "left_open": 1
+    },
+    "PR_third_party_causer": {
+     "text_runs": 24,
+     "admitted_true": 13,
+     "left_open": 11
+    },
+    "PR_expert_procedure_requested": {
+     "text_runs": 24,
+     "admitted_true": 22,
+     "left_open": 2
+    },
+    "PR_repair_over_500": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_nachfrist_set": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_goods_recovered": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_declined": {
+     "text_runs": 24,
+     "admitted_true": 24
+    }
+   },
+   "false_admitted_true": {
+    "on": {
+     "g081": 1
+    }
+   },
+   "true_not_admitted": {
+    "off": {
+     "g003:open": 19
+    },
+    "on": {
+     "g003:open": 177,
+     "g005:open": 5,
+     "g002:open": 3,
+     "g004:open": 1,
+     "g006:open": 1
+    },
+    "unresolved": {
+     "g003:open": 109,
+     "g005:open": 3,
+     "g006:open": 2,
+     "g002:open": 2,
+     "g004:open": 1
+    }
+   },
+   "open_given_value": {},
+   "text_runs": {
+    "off": 8,
+    "on": 72,
+    "unresolved": 48
+   },
+   "single_readings": {
+    "key_on": {
+     "PR_scheduled_valuable_1000|g016": {
+      "not_stated": 71,
+      "false": 1
+     },
+     "PR_scheduled_valuable_1000|g074": {
+      "true": 45,
+      "false": 13,
+      "not_stated": 13,
+      "open": 1
+     },
+     "PR_bicycle_claimed|g015": {
+      "true": 72
+     },
+     "PR_sim_card_stolen|g084": {
+      "true": 71,
+      "not_stated": 1
+     },
+     "PR_sim_card_stolen|g088": {
+      "true": 71,
+      "not_stated": 1
+     },
+     "PR_third_party_causer|g042_rev_92ab8925": {
+      "true": 55,
+      "not_stated": 17
+     },
+     "PR_expert_procedure_requested|g022": {
+      "true": 69,
+      "open": 3
+     },
+     "PR_repair_over_500|g090": {
+      "true": 72
+     },
+     "PR_nachfrist_set|g070": {
+      "true": 72
+     },
+     "PR_nachfrist_set|g098": {
+      "true": 71,
+      "false": 1
+     },
+     "PR_goods_recovered|g040": {
+      "true": 72
+     },
+     "PR_declined|g043": {
+      "true": 72
+     }
+    },
+    "g042_off": {
+     "not_stated": 14,
+     "false": 48,
+     "true": 10
+    },
+    "g042_unresolved_other_conditions": {
+     "false": 231,
+     "not_stated": 85,
+     "true": 43,
+     "open": 1
+    },
+    "g003": {
+     "off": {
+      "not_stated": 43,
+      "true": 27,
+      "open": 2
+     },
+     "on_other": {
+      "not_stated": 373,
+      "true": 197,
+      "open": 6
+     },
+     "unresolved": {
+      "not_stated": 254,
+      "true": 172,
+      "open": 5,
+      "false": 1
+     },
+     "on_repair": {
+      "true": 34,
+      "not_stated": 36,
+      "open": 2
+     }
+    },
+    "examples": {
+     "g042_rev_92ab8925|true|off": [
+      {
+       "text": "s8-off",
+       "run": 2,
+       "reading": 0,
+       "quote": "apart from the unidentified thief"
+      },
+      {
+       "text": "s9-off",
+       "run": 0,
+       "reading": 1,
+       "quote": "the unidentified thief"
+      }
+     ],
+     "g016|not_stated|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      }
+     ],
+     "g074|true|on": [],
+     "g074|false|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000."
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 2,
+       "reading": 1,
+       "quote": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000."
+      }
+     ],
+     "g074|not_stated|on": [
+      {
+       "text": "s10-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      },
+      {
+       "text": "s10-on-PR_scheduled_valuable_1000",
+       "run": 1,
+       "reading": 2,
+       "quote": ""
+      }
+     ],
+     "g074|open|on": [
+      {
+       "text": "s11-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 0,
+       "quote": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000."
+      }
+     ],
+     "g016|false|on": [
+      {
+       "text": "s14-on-PR_scheduled_valuable_1000",
+       "run": 2,
+       "reading": 2,
+       "quote": "Policy: 61-338-207, household contents"
+      }
+     ],
+     "g015|true|on": [],
+     "g084|true|on": [],
+     "g088|true|on": [],
+     "g084|not_stated|on": [
+      {
+       "text": "s8-on-PR_sim_card_stolen",
+       "run": 1,
+       "reading": 0,
+       "quote": ""
+      }
+     ],
+     "g088|not_stated|on": [
+      {
+       "text": "s8-on-PR_sim_card_stolen",
+       "run": 1,
+       "reading": 0,
+       "quote": ""
+      }
+     ],
+     "g042_rev_92ab8925|true|on": [],
+     "g042_rev_92ab8925|not_stated|on": [
+      {
+       "text": "s8-on-PR_third_party_causer",
+       "run": 1,
+       "reading": 2,
+       "quote": ""
+      },
+      {
+       "text": "s9-on-PR_third_party_causer",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      }
+     ],
+     "g022|true|on": [],
+     "g022|open|on": [
+      {
+       "text": "s11-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 1,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      },
+      {
+       "text": "s11-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 2,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      }
+     ],
+     "g090|true|on": [],
+     "g003|true|repair": [
+      {
+       "text": "s8-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 0,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s8-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 1,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 1,
+       "reading": 1,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 2,
+       "reading": 2,
+       "quote": "A repair to a damaged insured item is contemplated"
+      }
+     ],
+     "g070|true|on": [],
+     "g098|true|on": [],
+     "g098|false|on": [
+      {
+       "text": "s14-on-PR_nachfrist_set",
+       "run": 0,
+       "reading": 0,
+       "quote": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days."
+      }
+     ],
+     "g040|true|on": [],
+     "g043|true|on": []
+    }
+   },
+   "unresolved_pairs_changed": [
+    {
+     "pair": "s11-unres-PR_scheduled_valuable_1000",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g070",
+       null,
+       false
+      ],
+      [
+       "g074",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_bicycle_claimed",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g015",
+       false,
+       null
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g070",
+       null,
+       false
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_bicycle_claimed",
+     "run": 2,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g015",
+       false,
+       null
+      ],
+      [
+       "g084",
+       null,
+       false
+      ],
+      [
+       "g088",
+       null,
+       false
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_third_party_causer",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_expert_procedure_requested",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g022",
+       false,
+       null
+      ],
+      [
+       "g023",
+       false,
+       null
+      ],
+      [
+       "g070",
+       null,
+       false
+      ],
+      [
+       "g088",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s12-unres-PR_expert_procedure_requested",
+     "run": 2,
+     "delta": [
+      "-D07",
+      "-D25"
+     ],
+     "facts_differing": [
+      [
+       "g002",
+       true,
+       null
+      ],
+      [
+       "g004",
+       true,
+       null
+      ],
+      [
+       "g005",
+       true,
+       null
+      ],
+      [
+       "g006",
+       true,
+       null
+      ],
+      [
+       "g015",
+       false,
+       null
+      ],
+      [
+       "g022",
+       false,
+       null
+      ],
+      [
+       "g040",
+       false,
+       null
+      ],
+      [
+       "g042_rev_92ab8925",
+       false,
+       null
+      ],
+      [
+       "g043",
+       false,
+       null
+      ],
+      [
+       "g074",
+       false,
+       null
+      ],
+      [
+       "g090",
+       false,
+       null
+      ],
+      [
+       "g098",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_repair_over_500",
+     "run": 0,
+     "delta": [
+      "-D26",
+      "-D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       true,
+       null
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g042_rev_92ab8925",
+       false,
+       null
+      ],
+      [
+       "g070",
+       null,
+       false
+      ],
+      [
+       "g090",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_repair_over_500",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g088",
+       false,
+       null
+      ],
+      [
+       "g090",
+       false,
+       null
+      ]
+     ]
+    }
+   ],
+   "stored_requests_reproduced_from_admitted_facts": "383 of 384"
+  },
+  "casepath_checklist": {
+   "model": "gpt-6-luna",
+   "runs": 3,
+   "changed_condition_on": {
+    "PR_scheduled_valuable_1000": {
+     "text_runs": 24,
+     "readings_conflict": 9,
+     "admitted_true": 10,
+     "left_open": 5
+    },
+    "PR_bicycle_claimed": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_sim_card_stolen": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_third_party_causer": {
+     "text_runs": 24,
+     "admitted_true": 14,
+     "left_open": 10
+    },
+    "PR_expert_procedure_requested": {
+     "text_runs": 24,
+     "admitted_true": 22,
+     "left_open": 2
+    },
+    "PR_repair_over_500": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_nachfrist_set": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_goods_recovered": {
+     "text_runs": 24,
+     "admitted_true": 24
+    },
+    "PR_declined": {
+     "text_runs": 24,
+     "admitted_true": 24
+    }
+   },
+   "false_admitted_true": {},
+   "true_not_admitted": {
+    "off": {
+     "g003:open": 19
+    },
+    "on": {
+     "g003:open": 173,
+     "g005:open": 3,
+     "g002:open": 1
+    },
+    "unresolved": {
+     "g003:open": 109,
+     "g006:open": 2,
+     "g005:open": 1,
+     "g002:open": 1
+    }
+   },
+   "open_given_value": {},
+   "text_runs": {
+    "off": 8,
+    "on": 72,
+    "unresolved": 48
+   },
+   "single_readings": {
+    "key_on": {
+     "PR_scheduled_valuable_1000|g016": {
+      "not_stated": 70,
+      "true": 1,
+      "false": 1
+     },
+     "PR_scheduled_valuable_1000|g074": {
+      "true": 50,
+      "false": 14,
+      "not_stated": 8
+     },
+     "PR_bicycle_claimed|g015": {
+      "true": 72
+     },
+     "PR_sim_card_stolen|g084": {
+      "true": 72
+     },
+     "PR_sim_card_stolen|g088": {
+      "true": 72
+     },
+     "PR_third_party_causer|g042_rev_92ab8925": {
+      "true": 54,
+      "not_stated": 18
+     },
+     "PR_expert_procedure_requested|g022": {
+      "true": 69,
+      "open": 3
+     },
+     "PR_repair_over_500|g090": {
+      "true": 72
+     },
+     "PR_nachfrist_set|g070": {
+      "true": 72
+     },
+     "PR_nachfrist_set|g098": {
+      "true": 71,
+      "false": 1
+     },
+     "PR_goods_recovered|g040": {
+      "true": 72
+     },
+     "PR_declined|g043": {
+      "true": 72
+     }
+    },
+    "g042_off": {
+     "not_stated": 12,
+     "false": 52,
+     "true": 8
+    },
+    "g042_unresolved_other_conditions": {
+     "not_stated": 95,
+     "false": 220,
+     "true": 44,
+     "open": 1
+    },
+    "g003": {
+     "off": {
+      "not_stated": 47,
+      "true": 24,
+      "open": 1
+     },
+     "on_other": {
+      "not_stated": 358,
+      "true": 216,
+      "open": 2
+     },
+     "unresolved": {
+      "true": 169,
+      "not_stated": 260,
+      "open": 3
+     },
+     "on_repair": {
+      "not_stated": 39,
+      "open": 1,
+      "true": 32
+     }
+    },
+    "examples": {
+     "g042_rev_92ab8925|true|off": [
+      {
+       "text": "s8-off",
+       "run": 2,
+       "reading": 2,
+       "quote": "apart from the unidentified thief"
+      },
+      {
+       "text": "s9-off",
+       "run": 0,
+       "reading": 1,
+       "quote": "the unidentified thief"
+      }
+     ],
+     "g016|not_stated|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      }
+     ],
+     "g074|true|on": [],
+     "g074|false|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000."
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 2,
+       "reading": 2,
+       "quote": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000."
+      }
+     ],
+     "g074|not_stated|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 2,
+       "reading": 0,
+       "quote": ""
+      },
+      {
+       "text": "s12-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 2,
+       "quote": ""
+      }
+     ],
+     "g016|true|on": [],
+     "g016|false|on": [
+      {
+       "text": "s14-on-PR_scheduled_valuable_1000",
+       "run": 2,
+       "reading": 1,
+       "quote": "Policy: 61-338-207, household contents"
+      }
+     ],
+     "g015|true|on": [],
+     "g084|true|on": [],
+     "g088|true|on": [],
+     "g042_rev_92ab8925|true|on": [],
+     "g042_rev_92ab8925|not_stated|on": [
+      {
+       "text": "s8-on-PR_third_party_causer",
+       "run": 1,
+       "reading": 2,
+       "quote": ""
+      },
+      {
+       "text": "s9-on-PR_third_party_causer",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      }
+     ],
+     "g022|true|on": [],
+     "g022|open|on": [
+      {
+       "text": "s11-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 1,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      },
+      {
+       "text": "s11-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 2,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      }
+     ],
+     "g090|true|on": [],
+     "g003|true|repair": [
+      {
+       "text": "s8-on-PR_repair_over_500",
+       "run": 1,
+       "reading": 1,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 1,
+       "reading": 1,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 2,
+       "reading": 2,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s10-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 0,
+       "quote": "The police in Fribourg came the same day and took fingerprints"
+      }
+     ],
+     "g070|true|on": [],
+     "g098|true|on": [],
+     "g098|false|on": [
+      {
+       "text": "s14-on-PR_nachfrist_set",
+       "run": 0,
+       "reading": 0,
+       "quote": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days."
+      }
+     ],
+     "g040|true|on": [],
+     "g043|true|on": []
+    }
+   },
+   "unresolved_pairs_changed": [
+    {
+     "pair": "s11-unres-PR_scheduled_valuable_1000",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g070",
+       null,
+       false
+      ],
+      [
+       "g074",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_bicycle_claimed",
+     "run": 2,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g015",
+       false,
+       null
+      ],
+      [
+       "g023",
+       null,
+       false
+      ],
+      [
+       "g070",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_sim_card_stolen",
+     "run": 2,
+     "delta": [
+      "-D26",
+      "-D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       true,
+       null
+      ],
+      [
+       "g020_rev_b4712e29",
+       false,
+       null
+      ],
+      [
+       "g042_rev_92ab8925",
+       false,
+       null
+      ],
+      [
+       "g070",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_third_party_causer",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ]
+     ]
+    },
+    {
+     "pair": "s14-unres-PR_third_party_causer",
+     "run": 2,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g042_rev_92ab8925",
+       false,
+       null
+      ],
+      [
+       "g070",
+       null,
+       false
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_expert_procedure_requested",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g022",
+       false,
+       null
+      ],
+      [
+       "g023",
+       false,
+       null
+      ],
+      [
+       "g070",
+       null,
+       false
+      ],
+      [
+       "g088",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_repair_over_500",
+     "run": 1,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g020_rev_b4712e29",
+       null,
+       false
+      ],
+      [
+       "g088",
+       false,
+       null
+      ],
+      [
+       "g090",
+       false,
+       null
+      ]
+     ]
+    }
+   ],
+   "stored_requests_reproduced_from_admitted_facts": "384 of 384"
+  },
+  "casepath_frontier_checklist": {
+   "model": "gpt-6.1-terra",
+   "runs": 1,
+   "changed_condition_on": {
+    "PR_scheduled_valuable_1000": {
+     "text_runs": 8,
+     "left_open": 6,
+     "admitted_true": 2
+    },
+    "PR_bicycle_claimed": {
+     "text_runs": 8,
+     "admitted_true": 8
+    },
+    "PR_sim_card_stolen": {
+     "text_runs": 8,
+     "admitted_true": 8
+    },
+    "PR_third_party_causer": {
+     "text_runs": 8,
+     "admitted_true": 7,
+     "left_open": 1
+    },
+    "PR_expert_procedure_requested": {
+     "text_runs": 8,
+     "left_open": 8
+    },
+    "PR_repair_over_500": {
+     "text_runs": 8,
+     "admitted_true": 8
+    },
+    "PR_nachfrist_set": {
+     "text_runs": 8,
+     "admitted_true": 8
+    },
+    "PR_goods_recovered": {
+     "text_runs": 8,
+     "admitted_true": 8
+    },
+    "PR_declined": {
+     "text_runs": 8,
+     "admitted_true": 8
+    }
+   },
+   "false_admitted_true": {
+    "off": {
+     "g042_rev_92ab8925": 8
+    },
+    "on": {
+     "g042_rev_92ab8925": 61
+    },
+    "unresolved": {
+     "g042_rev_92ab8925": 39
+    }
+   },
+   "true_not_admitted": {
+    "off": {
+     "g003:open": 5
+    },
+    "on": {
+     "g003:open": 38
+    },
+    "unresolved": {
+     "g003:open": 30
+    }
+   },
+   "open_given_value": {},
+   "text_runs": {
+    "off": 8,
+    "on": 72,
+    "unresolved": 48
+   },
+   "single_readings": {
+    "key_on": {
+     "PR_scheduled_valuable_1000|g016": {
+      "not_stated": 24
+     },
+     "PR_scheduled_valuable_1000|g074": {
+      "not_stated": 10,
+      "true": 14
+     },
+     "PR_bicycle_claimed|g015": {
+      "true": 24
+     },
+     "PR_sim_card_stolen|g084": {
+      "true": 24
+     },
+     "PR_sim_card_stolen|g088": {
+      "true": 24
+     },
+     "PR_third_party_causer|g042_rev_92ab8925": {
+      "true": 23,
+      "not_stated": 1
+     },
+     "PR_expert_procedure_requested|g022": {
+      "true": 7,
+      "not_stated": 12,
+      "open": 5
+     },
+     "PR_repair_over_500|g090": {
+      "true": 24
+     },
+     "PR_nachfrist_set|g070": {
+      "true": 24
+     },
+     "PR_nachfrist_set|g098": {
+      "true": 24
+     },
+     "PR_goods_recovered|g040": {
+      "true": 24
+     },
+     "PR_declined|g043": {
+      "true": 24
+     }
+    },
+    "g042_off": {
+     "true": 24
+    },
+    "g042_unresolved_other_conditions": {
+     "true": 119,
+     "not_stated": 1
+    },
+    "g003": {
+     "off": {
+      "not_stated": 10,
+      "true": 14
+     },
+     "on_other": {
+      "not_stated": 70,
+      "true": 122
+     },
+     "unresolved": {
+      "not_stated": 56,
+      "true": 85,
+      "open": 3
+     },
+     "on_repair": {
+      "not_stated": 3,
+      "true": 21
+     }
+    },
+    "examples": {
+     "g042_rev_92ab8925|true|off": [
+      {
+       "text": "s8-off",
+       "run": 0,
+       "reading": 0,
+       "quote": "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      },
+      {
+       "text": "s8-off",
+       "run": 0,
+       "reading": 1,
+       "quote": "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      }
+     ],
+     "g016|not_stated|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      }
+     ],
+     "g074|not_stated|on": [
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 0,
+       "quote": ""
+      },
+      {
+       "text": "s8-on-PR_scheduled_valuable_1000",
+       "run": 0,
+       "reading": 2,
+       "quote": ""
+      }
+     ],
+     "g074|true|on": [],
+     "g015|true|on": [],
+     "g084|true|on": [],
+     "g088|true|on": [],
+     "g042_rev_92ab8925|true|on": [],
+     "g042_rev_92ab8925|not_stated|on": [
+      {
+       "text": "s11-on-PR_third_party_causer",
+       "run": 0,
+       "reading": 2,
+       "quote": ""
+      }
+     ],
+     "g022|true|on": [],
+     "g022|not_stated|on": [
+      {
+       "text": "s8-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      },
+      {
+       "text": "s9-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 1,
+       "quote": ""
+      }
+     ],
+     "g022|open|on": [
+      {
+       "text": "s10-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 0,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      },
+      {
+       "text": "s12-on-PR_expert_procedure_requested",
+       "run": 0,
+       "reading": 1,
+       "quote": "The policyholder has requested the formal expert determination procedure in writing."
+      }
+     ],
+     "g090|true|on": [],
+     "g003|true|repair": [
+      {
+       "text": "s8-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 2,
+       "quote": "the balcony door forced"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 0,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 1,
+       "quote": "A repair to a damaged insured item is contemplated"
+      },
+      {
+       "text": "s9-on-PR_repair_over_500",
+       "run": 0,
+       "reading": 2,
+       "quote": "the bedroom window facing the courtyard had been levered open"
+      }
+     ],
+     "g070|true|on": [],
+     "g098|true|on": [],
+     "g040|true|on": [],
+     "g043|true|on": []
+    }
+   },
+   "unresolved_pairs_changed": [
+    {
+     "pair": "s10-unres-PR_scheduled_valuable_1000",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ],
+      [
+       "g074",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_sim_card_stolen",
+     "run": 0,
+     "delta": [
+      "-D26",
+      "-D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       true,
+       null
+      ],
+      [
+       "g084",
+       false,
+       null
+      ],
+      [
+       "g088",
+       false,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s8-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s9-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s10-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s11-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s12-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s14-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "+D26",
+      "+D27",
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s15-unres-PR_third_party_causer",
+     "run": 0,
+     "delta": [
+      "-D15"
+     ],
+     "facts_differing": [
+      [
+       "g042_rev_92ab8925",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s13-unres-PR_expert_procedure_requested",
+     "run": 0,
+     "delta": [
+      "-D26",
+      "-D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       true,
+       null
+      ]
+     ]
+    },
+    {
+     "pair": "s14-unres-PR_repair_over_500",
+     "run": 0,
+     "delta": [
+      "+D26",
+      "+D27"
+     ],
+     "facts_differing": [
+      [
+       "g003",
+       null,
+       true
+      ],
+      [
+       "g090",
+       false,
+       null
+      ]
+     ]
+    }
+   ],
+   "stored_requests_reproduced_from_admitted_facts": "128 of 128"
+  }
+ },
+ "part4_decomposition": {
+  "casepath": {
+   "model": "gpt-6-luna",
+   "primary (g022 T, g020 T)": {
+    "total": {
+     "measured": 0.579,
+     "floor": 0.333,
+     "off": 0.0,
+     "changed": 0.088,
+     "other": 0.157,
+     "remainder": 0.0,
+     "pair_runs": 216,
+     "product_steps_beyond_readings": 0.005,
+     "stored_measured": 0.583
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.708,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.167,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_third_party_causer": {
+      "measured": 1.792,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.458,
+      "other": 0.333,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 0.792,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": -0.375,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_repair_over_500": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_goods_recovered": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_declined": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     }
+    }
+   },
+   "g022 T, g020 F": {
+    "total": {
+     "measured": 0.579,
+     "floor": 0.222,
+     "off": 0.0,
+     "changed": 0.199,
+     "other": 0.157,
+     "remainder": 0.0,
+     "pair_runs": 216,
+     "product_steps_beyond_readings": 0.005,
+     "stored_measured": 0.583
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.708,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.167,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_third_party_causer": {
+      "measured": 1.792,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.458,
+      "other": 0.333,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 0.792,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.625,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_repair_over_500": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_goods_recovered": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_declined": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     }
+    }
+   },
+   "counterfactual_fixes": {
+    "none": {
+     "errors": 0.579,
+     "unres_unchanged": 0.944,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.167,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.792,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.083,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.083
+     }
+    },
+    "g003": {
+     "errors": 0.431,
+     "unres_unchanged": 0.993,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.792,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.458,
+      "PR_expert_procedure_requested": 0.625,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g042": {
+     "errors": 0.528,
+     "unres_unchanged": 0.944,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.167,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.333,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.083,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.083
+     }
+    },
+    "g074,g016": {
+     "errors": 0.5,
+     "unres_unchanged": 0.944,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.167,
+      "PR_bicycle_claimed": 0.167,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.792,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.083,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.083
+     }
+    },
+    "g022": {
+     "errors": 0.569,
+     "unres_unchanged": 0.944,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.167,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.792,
+      "PR_expert_procedure_requested": 0.708,
+      "PR_repair_over_500": 0.083,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.083
+     }
+    },
+    "g003,g042": {
+     "errors": 0.38,
+     "unres_unchanged": 0.993,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.792,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 0.625,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g003,g042,g074,g016,g022": {
+     "errors": 0.292,
+     "unres_unchanged": 0.993,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.083,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 0.542,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "changed": {
+     "errors": 0.491,
+     "unres_unchanged": 0.944,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.167,
+      "PR_bicycle_claimed": 0.167,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.333,
+      "PR_expert_procedure_requested": 1.167,
+      "PR_repair_over_500": 0.083,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.083
+     }
+    },
+    "changed,g003,g042": {
+     "errors": 0.343,
+     "unres_unchanged": 0.993,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.083,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 1.0,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    }
+   }
+  },
+  "casepath_checklist": {
+   "model": "gpt-6-luna",
+   "primary (g022 T, g020 T)": {
+    "total": {
+     "measured": 0.551,
+     "floor": 0.333,
+     "off": 0.0,
+     "changed": 0.069,
+     "other": 0.148,
+     "remainder": 0.0,
+     "pair_runs": 216,
+     "product_steps_beyond_readings": 0.0,
+     "stored_measured": 0.551
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.583,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.583,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.25,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.167,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_third_party_causer": {
+      "measured": 1.75,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.417,
+      "other": 0.333,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 0.792,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": -0.375,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_repair_over_500": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_goods_recovered": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_declined": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 24
+     }
+    }
+   },
+   "g022 T, g020 F": {
+    "total": {
+     "measured": 0.551,
+     "floor": 0.222,
+     "off": 0.0,
+     "changed": 0.181,
+     "other": 0.148,
+     "remainder": 0.0,
+     "pair_runs": 216,
+     "product_steps_beyond_readings": 0.0,
+     "stored_measured": 0.551
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.583,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.583,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.25,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.167,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_third_party_causer": {
+      "measured": 1.75,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.417,
+      "other": 0.333,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 0.792,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.625,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_repair_over_500": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.167,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.167,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_goods_recovered": {
+      "measured": 0.083,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.083,
+      "remainder": 0.0,
+      "pair_runs": 24
+     },
+     "PR_declined": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 24
+     }
+    }
+   },
+   "counterfactual_fixes": {
+    "none": {
+     "errors": 0.551,
+     "unres_unchanged": 0.951,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.583,
+      "PR_bicycle_claimed": 0.25,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.75,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.167,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.0
+     }
+    },
+    "g003": {
+     "errors": 0.403,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.583,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.417,
+      "PR_expert_procedure_requested": 0.625,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g042": {
+     "errors": 0.505,
+     "unres_unchanged": 0.951,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.583,
+      "PR_bicycle_claimed": 0.25,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.333,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.167,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.0
+     }
+    },
+    "g074,g016": {
+     "errors": 0.486,
+     "unres_unchanged": 0.951,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.25,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.75,
+      "PR_expert_procedure_requested": 0.792,
+      "PR_repair_over_500": 0.167,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.0
+     }
+    },
+    "g022": {
+     "errors": 0.542,
+     "unres_unchanged": 0.951,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.583,
+      "PR_bicycle_claimed": 0.25,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.75,
+      "PR_expert_procedure_requested": 0.708,
+      "PR_repair_over_500": 0.167,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.0
+     }
+    },
+    "g003,g042": {
+     "errors": 0.356,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.583,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 0.625,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g003,g042,g074,g016,g022": {
+     "errors": 0.282,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 0.542,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "changed": {
+     "errors": 0.481,
+     "unres_unchanged": 0.951,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.25,
+      "PR_sim_card_stolen": 1.167,
+      "PR_third_party_causer": 1.333,
+      "PR_expert_procedure_requested": 1.167,
+      "PR_repair_over_500": 0.167,
+      "PR_nachfrist_set": 0.167,
+      "PR_goods_recovered": 0.083,
+      "PR_declined": 0.0
+     }
+    },
+    "changed,g003,g042": {
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 1.0,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    }
+   }
+  },
+  "casepath_frontier_checklist": {
+   "model": "gpt-6.1-terra",
+   "primary (g022 T, g020 T)": {
+    "total": {
+     "measured": 0.833,
+     "floor": 0.333,
+     "off": 0.111,
+     "changed": 0.097,
+     "other": 0.292,
+     "remainder": 0.0,
+     "pair_runs": 72,
+     "product_steps_beyond_readings": 0.0,
+     "stored_measured": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.75,
+      "other": 0.125,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.625,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.625,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.25,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_third_party_causer": {
+      "measured": 2.375,
+      "floor": 1.0,
+      "off": 1.0,
+      "changed": 0.125,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 1.25,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_repair_over_500": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.875,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_goods_recovered": {
+      "measured": 0.25,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_declined": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 8
+     }
+    }
+   },
+   "g022 T, g020 F": {
+    "total": {
+     "measured": 0.833,
+     "floor": 0.222,
+     "off": 0.111,
+     "changed": 0.208,
+     "other": 0.292,
+     "remainder": 0.0,
+     "pair_runs": 72,
+     "product_steps_beyond_readings": 0.0,
+     "stored_measured": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.75,
+      "other": 0.125,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_bicycle_claimed": {
+      "measured": 0.625,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.625,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_sim_card_stolen": {
+      "measured": 1.25,
+      "floor": 1.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_third_party_causer": {
+      "measured": 2.375,
+      "floor": 1.0,
+      "off": 1.0,
+      "changed": 0.125,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_expert_procedure_requested": {
+      "measured": 1.25,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 1.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_repair_over_500": {
+      "measured": 0.875,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.875,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_nachfrist_set": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_goods_recovered": {
+      "measured": 0.25,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.25,
+      "remainder": 0.0,
+      "pair_runs": 8
+     },
+     "PR_declined": {
+      "measured": 0.0,
+      "floor": 0.0,
+      "off": 0.0,
+      "changed": 0.0,
+      "other": 0.0,
+      "remainder": 0.0,
+      "pair_runs": 8
+     }
+    }
+   },
+   "counterfactual_fixes": {
+    "none": {
+     "errors": 0.833,
+     "unres_unchanged": 0.75,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.625,
+      "PR_sim_card_stolen": 1.25,
+      "PR_third_party_causer": 2.375,
+      "PR_expert_procedure_requested": 1.25,
+      "PR_repair_over_500": 0.875,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.25,
+      "PR_declined": 0.0
+     }
+    },
+    "g003": {
+     "errors": 0.583,
+     "unres_unchanged": 0.812,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.125,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 2.125,
+      "PR_expert_procedure_requested": 1.0,
+      "PR_repair_over_500": 0.125,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g042": {
+     "errors": 0.667,
+     "unres_unchanged": 0.917,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.75,
+      "PR_bicycle_claimed": 0.5,
+      "PR_sim_card_stolen": 1.25,
+      "PR_third_party_causer": 1.25,
+      "PR_expert_procedure_requested": 1.25,
+      "PR_repair_over_500": 0.75,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.25,
+      "PR_declined": 0.0
+     }
+    },
+    "g074,g016": {
+     "errors": 0.75,
+     "unres_unchanged": 0.75,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.125,
+      "PR_bicycle_claimed": 0.625,
+      "PR_sim_card_stolen": 1.25,
+      "PR_third_party_causer": 2.375,
+      "PR_expert_procedure_requested": 1.25,
+      "PR_repair_over_500": 0.875,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.25,
+      "PR_declined": 0.0
+     }
+    },
+    "g022": {
+     "errors": 0.722,
+     "unres_unchanged": 0.75,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.875,
+      "PR_bicycle_claimed": 0.625,
+      "PR_sim_card_stolen": 1.25,
+      "PR_third_party_causer": 2.375,
+      "PR_expert_procedure_requested": 0.25,
+      "PR_repair_over_500": 0.875,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.25,
+      "PR_declined": 0.0
+     }
+    },
+    "g003,g042": {
+     "errors": 0.417,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.75,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 1.0,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "g003,g042,g074,g016,g022": {
+     "errors": 0.222,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 0.0,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    },
+    "changed": {
+     "errors": 0.736,
+     "unres_unchanged": 0.75,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.125,
+      "PR_bicycle_claimed": 0.625,
+      "PR_sim_card_stolen": 1.25,
+      "PR_third_party_causer": 2.25,
+      "PR_expert_procedure_requested": 1.25,
+      "PR_repair_over_500": 0.875,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.25,
+      "PR_declined": 0.0
+     }
+    },
+    "changed,g003,g042": {
+     "errors": 0.333,
+     "unres_unchanged": 1.0,
+     "by_fact": {
+      "PR_scheduled_valuable_1000": 0.0,
+      "PR_bicycle_claimed": 0.0,
+      "PR_sim_card_stolen": 1.0,
+      "PR_third_party_causer": 1.0,
+      "PR_expert_procedure_requested": 1.0,
+      "PR_repair_over_500": 0.0,
+      "PR_nachfrist_set": 0.0,
+      "PR_goods_recovered": 0.0,
+      "PR_declined": 0.0
+     }
+    }
+   }
+  },
+  "same_model": {
+   "ric": {
+    "model": "gpt-6-luna",
+    "rules": "reviewed",
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "single": 1.833,
+      "floor_rules_given": 0.0,
+      "casepath": 0.875,
+      "casepath_minus_single": -0.958,
+      "casepath_checklist": 0.583,
+      "casepath_checklist_minus_single": -1.25
+     },
+     "PR_bicycle_claimed": {
+      "single": 1.292,
+      "floor_rules_given": 0.0,
+      "casepath": 0.167,
+      "casepath_minus_single": -1.125,
+      "casepath_checklist": 0.25,
+      "casepath_checklist_minus_single": -1.042
+     },
+     "PR_sim_card_stolen": {
+      "single": 2.083,
+      "floor_rules_given": 1.0,
+      "casepath": 1.167,
+      "casepath_minus_single": -0.917,
+      "casepath_checklist": 1.167,
+      "casepath_checklist_minus_single": -0.917
+     },
+     "PR_third_party_causer": {
+      "single": 1.542,
+      "floor_rules_given": 1.0,
+      "casepath": 1.792,
+      "casepath_minus_single": 0.25,
+      "casepath_checklist": 1.75,
+      "casepath_checklist_minus_single": 0.208
+     },
+     "PR_expert_procedure_requested": {
+      "single": 1.125,
+      "floor_rules_given": 1.0,
+      "casepath": 0.792,
+      "casepath_minus_single": -0.333,
+      "casepath_checklist": 0.792,
+      "casepath_checklist_minus_single": -0.333
+     },
+     "PR_repair_over_500": {
+      "single": 2.5,
+      "floor_rules_given": 0.0,
+      "casepath": 0.083,
+      "casepath_minus_single": -2.417,
+      "casepath_checklist": 0.167,
+      "casepath_checklist_minus_single": -2.333
+     },
+     "PR_nachfrist_set": {
+      "single": 1.958,
+      "floor_rules_given": 0.0,
+      "casepath": 0.167,
+      "casepath_minus_single": -1.792,
+      "casepath_checklist": 0.167,
+      "casepath_checklist_minus_single": -1.792
+     },
+     "PR_goods_recovered": {
+      "single": 1.167,
+      "floor_rules_given": 0.0,
+      "casepath": 0.125,
+      "casepath_minus_single": -1.042,
+      "casepath_checklist": 0.083,
+      "casepath_checklist_minus_single": -1.083
+     },
+     "PR_declined": {
+      "single": 2.125,
+      "floor_rules_given": 0.0,
+      "casepath": 0.083,
+      "casepath_minus_single": -2.042,
+      "casepath_checklist": 0.0,
+      "casepath_checklist_minus_single": -2.125
+     }
+    },
+    "overall": {
+     "single": 1.736,
+     "casepath": 0.583,
+     "casepath_checklist": 0.551
+    },
+    "single_unres_unchanged": 0.271,
+    "single_atoms": {
+     "PR_scheduled_valuable_1000": {
+      "m+D09": 0.833,
+      "w+D04": 0.208,
+      "w-D16": 0.167,
+      "w+D16": 0.167,
+      "w+D05": 0.083,
+      "w-D04": 0.083,
+      "w+D01": 0.042,
+      "w+D14": 0.042
+     },
+     "PR_bicycle_claimed": {
+      "w-D16": 0.208,
+      "w-D04": 0.167,
+      "w+D16": 0.167,
+      "w+D01": 0.125,
+      "w+D04": 0.125,
+      "m+D12": 0.083,
+      "w-D03": 0.083,
+      "w+D05": 0.083
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 0.875,
+      "w-D16": 0.25,
+      "w+D16": 0.208,
+      "w+D04": 0.167,
+      "w+D01": 0.125,
+      "m+D32": 0.083,
+      "w+D05": 0.083,
+      "w+D25": 0.042
+     },
+     "PR_third_party_causer": {
+      "m+D15": 0.292,
+      "w+D16": 0.292,
+      "w+D04": 0.25,
+      "w+D01": 0.167,
+      "w-D16": 0.125,
+      "w-D01": 0.083,
+      "w-D17": 0.083,
+      "w+D17": 0.042
+     },
+     "PR_expert_procedure_requested": {
+      "w+D04": 0.208,
+      "w-D16": 0.167,
+      "w+D16": 0.167,
+      "w+D14": 0.083,
+      "w-D01": 0.083,
+      "w+D01": 0.083,
+      "m+D21": 0.083,
+      "w+D05": 0.083
+     },
+     "PR_repair_over_500": {
+      "m+D24": 1.0,
+      "w-D16": 0.333,
+      "w+D04": 0.25,
+      "w-D04": 0.167,
+      "w-D17": 0.167,
+      "w-D01": 0.125,
+      "w-D03": 0.083,
+      "w+D05": 0.083
+     },
+     "PR_nachfrist_set": {
+      "m+D20": 0.542,
+      "w-D16": 0.333,
+      "w+D04": 0.25,
+      "w-D04": 0.208,
+      "w+D16": 0.208,
+      "w+D01": 0.083,
+      "w+D05": 0.083,
+      "w+D14": 0.042
+     },
+     "PR_goods_recovered": {
+      "w-D16": 0.333,
+      "w+D04": 0.167,
+      "w+D16": 0.125,
+      "m+D30": 0.125,
+      "w+D05": 0.083,
+      "w-D17": 0.083,
+      "w+D01": 0.042,
+      "w+D17": 0.042
+     },
+     "PR_declined": {
+      "m+D31": 0.5,
+      "w+D16": 0.333,
+      "w-D16": 0.292,
+      "w+D04": 0.208,
+      "w-D04": 0.125,
+      "w+D01": 0.125,
+      "w-D17": 0.125,
+      "w-D01": 0.125
+     }
+    },
+    "floor_atoms_in_single": {
+     "PR_sim_card_stolen": {
+      "w+D33": {
+       "floor_rate": 1.0,
+       "single_rate": 0.875
+      }
+     },
+     "PR_third_party_causer": {
+      "m+D14": {
+       "floor_rate": 1.0,
+       "single_rate": 0.0
+      }
+     },
+     "PR_expert_procedure_requested": {
+      "w+D23": {
+       "floor_rate": 1.0,
+       "single_rate": 0.0
+      }
+     }
+    },
+    "facts_below_floor": []
+   },
+   "ric_original": {
+    "model": "gpt-6-luna",
+    "rules": "original",
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "single": 2.125,
+      "floor_rules_given": 1.0,
+      "casepath": 0.875,
+      "casepath_minus_single": -1.25,
+      "casepath_checklist": 0.583,
+      "casepath_checklist_minus_single": -1.542
+     },
+     "PR_bicycle_claimed": {
+      "single": 1.042,
+      "floor_rules_given": 0.0,
+      "casepath": 0.167,
+      "casepath_minus_single": -0.875,
+      "casepath_checklist": 0.25,
+      "casepath_checklist_minus_single": -0.792
+     },
+     "PR_sim_card_stolen": {
+      "single": 2.0,
+      "floor_rules_given": 1.0,
+      "casepath": 1.167,
+      "casepath_minus_single": -0.833,
+      "casepath_checklist": 1.167,
+      "casepath_checklist_minus_single": -0.833
+     },
+     "PR_third_party_causer": {
+      "single": 1.0,
+      "floor_rules_given": 1.0,
+      "casepath": 1.792,
+      "casepath_minus_single": 0.792,
+      "casepath_checklist": 1.75,
+      "casepath_checklist_minus_single": 0.75
+     },
+     "PR_expert_procedure_requested": {
+      "single": 1.083,
+      "floor_rules_given": 0.0,
+      "casepath": 0.792,
+      "casepath_minus_single": -0.292,
+      "casepath_checklist": 0.792,
+      "casepath_checklist_minus_single": -0.292
+     },
+     "PR_repair_over_500": {
+      "single": 1.958,
+      "floor_rules_given": 0.0,
+      "casepath": 0.083,
+      "casepath_minus_single": -1.875,
+      "casepath_checklist": 0.167,
+      "casepath_checklist_minus_single": -1.792
+     },
+     "PR_nachfrist_set": {
+      "single": 1.417,
+      "floor_rules_given": 0.0,
+      "casepath": 0.167,
+      "casepath_minus_single": -1.25,
+      "casepath_checklist": 0.167,
+      "casepath_checklist_minus_single": -1.25
+     },
+     "PR_goods_recovered": {
+      "single": 1.125,
+      "floor_rules_given": 0.0,
+      "casepath": 0.125,
+      "casepath_minus_single": -1.0,
+      "casepath_checklist": 0.083,
+      "casepath_checklist_minus_single": -1.042
+     },
+     "PR_declined": {
+      "single": 1.458,
+      "floor_rules_given": 0.0,
+      "casepath": 0.083,
+      "casepath_minus_single": -1.375,
+      "casepath_checklist": 0.0,
+      "casepath_checklist_minus_single": -1.458
+     }
+    },
+    "overall": {
+     "single": 1.468,
+     "casepath": 0.583,
+     "casepath_checklist": 0.551
+    },
+    "single_unres_unchanged": 0.306,
+    "single_atoms": {
+     "PR_scheduled_valuable_1000": {
+      "m+D09": 0.833,
+      "w-D16": 0.417,
+      "w+D10": 0.167,
+      "w-D04": 0.125,
+      "w+D14": 0.125,
+      "w-D01": 0.083,
+      "w+D16": 0.083,
+      "w+D17": 0.042
+     },
+     "PR_bicycle_claimed": {
+      "w-D16": 0.333,
+      "w+D16": 0.167,
+      "w-D01": 0.083,
+      "w+D01": 0.083,
+      "w+D14": 0.083,
+      "w-D17": 0.042,
+      "w+D17": 0.042,
+      "w+D07": 0.042
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 0.875,
+      "w-D16": 0.417,
+      "w+D14": 0.167,
+      "m+D32": 0.167,
+      "w+D16": 0.125,
+      "w+D01": 0.083,
+      "w+D17": 0.042,
+      "w+D07": 0.042
+     },
+     "PR_third_party_causer": {
+      "w-D16": 0.292,
+      "w+D16": 0.208,
+      "w+D01": 0.083,
+      "m+D14": 0.083,
+      "m+D15": 0.083,
+      "w+D17": 0.042,
+      "w+D07": 0.042,
+      "w+D04": 0.042
+     },
+     "PR_expert_procedure_requested": {
+      "w-D16": 0.5,
+      "w+D16": 0.125,
+      "m+D21": 0.083,
+      "w-D01": 0.083,
+      "w+D17": 0.042,
+      "w+D25": 0.042,
+      "w+D07": 0.042,
+      "w+D01": 0.042
+     },
+     "PR_repair_over_500": {
+      "m+D24": 0.958,
+      "w-D16": 0.292,
+      "w+D16": 0.125,
+      "w+D01": 0.083,
+      "w+D14": 0.083,
+      "w+D17": 0.042,
+      "w-D04": 0.042,
+      "w-D07": 0.042
+     },
+     "PR_nachfrist_set": {
+      "w-D16": 0.417,
+      "m+D20": 0.417,
+      "w+D14": 0.083,
+      "w+D16": 0.083,
+      "w+D01": 0.083,
+      "w-D03": 0.083,
+      "w-D01": 0.042,
+      "w+D17": 0.042
+     },
+     "PR_goods_recovered": {
+      "w-D16": 0.375,
+      "m+D30": 0.167,
+      "w+D16": 0.125,
+      "w-D04": 0.125,
+      "w+D14": 0.083,
+      "w+D17": 0.042,
+      "w+D07": 0.042,
+      "w-D01": 0.042
+     },
+     "PR_declined": {
+      "m+D31": 0.542,
+      "w-D16": 0.458,
+      "w+D14": 0.083,
+      "w-D01": 0.083,
+      "w+D01": 0.083,
+      "w+D17": 0.042,
+      "w+D07": 0.042,
+      "w+D16": 0.042
+     }
+    },
+    "floor_atoms_in_single": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": {
+       "floor_rate": 1.0,
+       "single_rate": 0.167
+      }
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": {
+       "floor_rate": 1.0,
+       "single_rate": 0.875
+      }
+     },
+     "PR_third_party_causer": {
+      "m+D14": {
+       "floor_rate": 1.0,
+       "single_rate": 0.083
+      }
+     }
+    },
+    "facts_below_floor": []
+   },
+   "ric_frontier": {
+    "model": "gpt-6.1-terra",
+    "rules": "reviewed",
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "single": 0.625,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.875,
+      "casepath_frontier_checklist_minus_single": 0.25
+     },
+     "PR_bicycle_claimed": {
+      "single": 0.458,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.625,
+      "casepath_frontier_checklist_minus_single": 0.167
+     },
+     "PR_sim_card_stolen": {
+      "single": 1.333,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 1.25,
+      "casepath_frontier_checklist_minus_single": -0.083
+     },
+     "PR_third_party_causer": {
+      "single": 1.292,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 2.375,
+      "casepath_frontier_checklist_minus_single": 1.083
+     },
+     "PR_expert_procedure_requested": {
+      "single": 0.708,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 1.25,
+      "casepath_frontier_checklist_minus_single": 0.542
+     },
+     "PR_repair_over_500": {
+      "single": 1.5,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.875,
+      "casepath_frontier_checklist_minus_single": -0.625
+     },
+     "PR_nachfrist_set": {
+      "single": 0.583,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.0,
+      "casepath_frontier_checklist_minus_single": -0.583
+     },
+     "PR_goods_recovered": {
+      "single": 0.542,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.25,
+      "casepath_frontier_checklist_minus_single": -0.292
+     },
+     "PR_declined": {
+      "single": 1.5,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.0,
+      "casepath_frontier_checklist_minus_single": -1.5
+     }
+    },
+    "overall": {
+     "single": 0.949,
+     "casepath_frontier_checklist": 0.833
+    },
+    "single_unres_unchanged": 0.451,
+    "single_atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w-D14": 0.292,
+      "w+D14": 0.125,
+      "m+D09": 0.125,
+      "w+D01": 0.083
+     },
+     "PR_bicycle_claimed": {
+      "w-D14": 0.25,
+      "w+D14": 0.167,
+      "w-D01": 0.042
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 1.0,
+      "w-D14": 0.208,
+      "w+D01": 0.042,
+      "w-D03": 0.042,
+      "w+D14": 0.042
+     },
+     "PR_third_party_causer": {
+      "m+D15": 0.75,
+      "m+D14": 0.5,
+      "w-D01": 0.042
+     },
+     "PR_expert_procedure_requested": {
+      "w+D14": 0.292,
+      "w+D22": 0.292,
+      "w+D01": 0.083,
+      "w-D01": 0.042
+     },
+     "PR_repair_over_500": {
+      "m+D24": 1.0,
+      "w+D14": 0.292,
+      "w-D14": 0.167,
+      "w+D01": 0.042
+     },
+     "PR_nachfrist_set": {
+      "w-D14": 0.292,
+      "w+D14": 0.167,
+      "w+D01": 0.083,
+      "w-D01": 0.042
+     },
+     "PR_goods_recovered": {
+      "w+D14": 0.292,
+      "w-D14": 0.125,
+      "w+D01": 0.083,
+      "m+D30": 0.042
+     },
+     "PR_declined": {
+      "m+D31": 1.0,
+      "w-D14": 0.25,
+      "w+D14": 0.167,
+      "w+D01": 0.083
+     }
+    },
+    "floor_atoms_in_single": {
+     "PR_sim_card_stolen": {
+      "w+D33": {
+       "floor_rate": 1.0,
+       "single_rate": 1.0
+      }
+     },
+     "PR_third_party_causer": {
+      "m+D14": {
+       "floor_rate": 1.0,
+       "single_rate": 0.5
+      }
+     },
+     "PR_expert_procedure_requested": {
+      "w+D23": {
+       "floor_rate": 1.0,
+       "single_rate": 0.0
+      }
+     }
+    },
+    "facts_below_floor": [
+     "PR_expert_procedure_requested"
+    ]
+   },
+   "ric_original_frontier": {
+    "model": "gpt-6.1-terra",
+    "rules": "original",
+    "by_fact": {
+     "PR_scheduled_valuable_1000": {
+      "single": 1.083,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 0.875,
+      "casepath_frontier_checklist_minus_single": -0.208
+     },
+     "PR_bicycle_claimed": {
+      "single": 0.083,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.625,
+      "casepath_frontier_checklist_minus_single": 0.542
+     },
+     "PR_sim_card_stolen": {
+      "single": 1.125,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 1.25,
+      "casepath_frontier_checklist_minus_single": 0.125
+     },
+     "PR_third_party_causer": {
+      "single": 1.208,
+      "floor_rules_given": 1.0,
+      "casepath_frontier_checklist": 2.375,
+      "casepath_frontier_checklist_minus_single": 1.167
+     },
+     "PR_expert_procedure_requested": {
+      "single": 0.625,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 1.25,
+      "casepath_frontier_checklist_minus_single": 0.625
+     },
+     "PR_repair_over_500": {
+      "single": 1.083,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.875,
+      "casepath_frontier_checklist_minus_single": -0.208
+     },
+     "PR_nachfrist_set": {
+      "single": 0.208,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.0,
+      "casepath_frontier_checklist_minus_single": -0.208
+     },
+     "PR_goods_recovered": {
+      "single": 0.083,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.25,
+      "casepath_frontier_checklist_minus_single": 0.167
+     },
+     "PR_declined": {
+      "single": 0.542,
+      "floor_rules_given": 0.0,
+      "casepath_frontier_checklist": 0.0,
+      "casepath_frontier_checklist_minus_single": -0.542
+     }
+    },
+    "overall": {
+     "single": 0.671,
+     "casepath_frontier_checklist": 0.833
+    },
+    "single_unres_unchanged": 0.91,
+    "single_atoms": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": 1.0,
+      "w-D01": 0.042,
+      "w+D01": 0.042
+     },
+     "PR_bicycle_claimed": {
+      "w+D14": 0.042,
+      "w+D01": 0.042
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": 1.0,
+      "w+D14": 0.083,
+      "w+D01": 0.042
+     },
+     "PR_third_party_causer": {
+      "m+D14": 0.875,
+      "m+D15": 0.292,
+      "w+D01": 0.042
+     },
+     "PR_expert_procedure_requested": {
+      "w+D22": 0.25,
+      "w+D16": 0.208,
+      "w+D14": 0.083,
+      "w+D01": 0.042,
+      "w-D01": 0.042
+     },
+     "PR_repair_over_500": {
+      "m+D24": 1.0,
+      "w+D01": 0.042,
+      "w-D01": 0.042
+     },
+     "PR_nachfrist_set": {
+      "w+D14": 0.083,
+      "w-D14": 0.042,
+      "w+D01": 0.042,
+      "w-D01": 0.042
+     },
+     "PR_goods_recovered": {
+      "w-D01": 0.083
+     },
+     "PR_declined": {
+      "m+D31": 0.417,
+      "w-D01": 0.042,
+      "w+D01": 0.042,
+      "w+D14": 0.042
+     }
+    },
+    "floor_atoms_in_single": {
+     "PR_scheduled_valuable_1000": {
+      "w+D10": {
+       "floor_rate": 1.0,
+       "single_rate": 1.0
+      }
+     },
+     "PR_sim_card_stolen": {
+      "w+D33": {
+       "floor_rate": 1.0,
+       "single_rate": 1.0
+      }
+     },
+     "PR_third_party_causer": {
+      "m+D14": {
+       "floor_rate": 1.0,
+       "single_rate": 0.875
+      }
+     }
+    },
+    "facts_below_floor": []
+   }
+  }
+ },
+ "part5": {
+  "design": {
+   "question": "With each condition's cited source passage shown next to it in the reading form (variant (d), one general rule applied to all 89 conditions), do gpt-6.1-terra's three agreeing readings stop admitting g042 (third-party fault, reviewed rule 042) true on the off sentence 'No identifiable third party caused or enlarged the loss apart from the unidentified thief.'? (Also observed: g022, g074 would need on texts; g003 on the same texts.)",
+   "why_this_one": "g042 read true in every off text is the largest reading-level cause of the frontier product's excess (off misreading 0.111 per pair, all eight third-party unresolved pairs changed); the model-free upper bound for (d) fixing g042, g022 and g074 is 0.472 against 0.671; without g042 it is about 0.64, which one run cannot tell from 0.671.",
+   "texts": "fresh2 s8-off, then s9-off (development data); one product run each, run index 0; checklist scope, reasoning on, as the stored frontier run; baseline = the stored run 0 (cached, reproduced from the cache with zero cost for s8-off before any paid call)",
+   "decision_rule": "if g042 is still admitted true in the off texts, (d) cannot repair the decisive error and no further run is made",
+   "variant": "workflow fact question + ' (Read the condition as its source means it. Source: <texts of the passages the rule's condition cites>)'; validated with the product's validate_workflow; the product itself unchanged"
+  },
+  "paid_calls": 9,
+  "spend_usd": 0.1202,
+  "texts": {
+   "s8-off": {
+    "usd": 0.0795,
+    "variant_readings": {
+     "g042_rev_92ab8925": [
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ]
+     ],
+     "g003": [
+      [
+       "true",
+       "found the balcony door forced"
+      ],
+      [
+       "true",
+       "found the balcony door forced and the apartment ransacked"
+      ],
+      [
+       "true",
+       "the balcony door forced"
+      ]
+     ],
+     "g022": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ]
+     ],
+     "g074": [
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ]
+     ]
+    },
+    "baseline_readings": {
+     "g042_rev_92ab8925": [
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ]
+     ],
+     "g003": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ]
+     ],
+     "g022": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ]
+     ],
+     "g074": [
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ]
+     ]
+    },
+    "baseline_admitted": {
+     "g003": null,
+     "g042_rev_92ab8925": true
+    }
+   },
+   "s9-off": {
+    "usd": 0.0407,
+    "variant_readings": {
+     "g042_rev_92ab8925": [
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ]
+     ],
+     "g003": [
+      [
+       "true",
+       "the bedroom window facing the courtyard had been levered open"
+      ],
+      [
+       "true",
+       "the bedroom window facing the courtyard had been levered open"
+      ],
+      [
+       "true",
+       "the bedroom window facing the courtyard had been levered open"
+      ]
+     ],
+     "g022": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "not_stated",
+       ""
+      ]
+     ],
+     "g074": [
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ]
+     ]
+    },
+    "baseline_readings": {
+     "g042_rev_92ab8925": [
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ],
+      [
+       "true",
+       "No identifiable third party caused or enlarged the loss apart from the unidentified thief."
+      ]
+     ],
+     "g003": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "true",
+       "the bedroom window facing the courtyard had been levered open"
+      ],
+      [
+       "true",
+       "the bedroom window facing the courtyard had been levered open"
+      ]
+     ],
+     "g022": [
+      [
+       "not_stated",
+       ""
+      ],
+      [
+       "false",
+       "Neither party has requested the formal expert determination procedure."
+      ],
+      [
+       "not_stated",
+       ""
+      ]
+     ],
+     "g074": [
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ],
+      [
+       "false",
+       "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more."
+      ]
+     ]
+    },
+    "baseline_admitted": {
+     "g003": null,
+     "g042_rev_92ab8925": true
+    }
+   }
+  }
+ }
+}
