@@ -1,0 +1,1593 @@
+{
+ "note": "Model-free evaluation of the lint-reviewed theft rule files. No model calls.\n\n    python3 rule_lint_eval.py      # writes rule_lint_eval.json and rule_lint_eval.md; writes two workflow folders\n\nRule files: before = rule_review/final/reviewed_rules.json; final = rule_review/lint/final/reviewed_rules.json;\npending = rule_review/lint/pending_jurist/reviewed_rules_with_042.json (final + editor A's rule-042 narrowing, NOT adopted).\nEach is converted with harness/product/convert_theft.convert (final and pending written to new folders\nharness/product/workflows/theft-lint-final and theft-lint-pending042), validated with the product's validate_workflow at\n6a72159c, and checked against TheftPack.plan_exact as harness/product/compare_theft.py does.\n\nThis is post hoc analysis with the reference: the floor uses the designed truth of theft_diagnosis.py, extended to the\nchanged and new conditions (EXTRA below; uncertain assignments marked and varied).\n",
+ "files": {
+  "before": "rule_review/final/reviewed_rules.json",
+  "final": "rule_review/lint/final/reviewed_rules.json",
+  "pending": "rule_review/lint/pending_jurist/reviewed_rules_with_042.json"
+ },
+ "mapping_extra": {
+  "g003_rev": "UNCERTAIN: narrowed 'traces removed or altered, or the loss location or damaged items altered, repaired or disposed of ... or such a change is planned'. True in the repair on text ('A repair to a damaged insured item is contemplated'), open in the repair unresolved text, false elsewhere (no text states a change to traces or items); varied: false everywhere",
+  "g004_a": "UNCERTAIN: narrowed 'measures were to be taken to reduce the loss or to preserve or rescue insured items ... or the insurer gave instructions'. No text states either; varied: true in every text (a forced entry calls for securing the premises)",
+  "g014_rev": "UNCERTAIN: 'the insurer has asked the claimant to produce original purchase vouchers ... or through the insurer's claim form used for this claim'. No text states it (some texts are claim forms); varied: true in every text. Its document D05 is due unconditionally through another rule, so it cannot change a checklist",
+  "g073_rev": "no document depends on it",
+  "g042_rev_03390de5": "pending file only: A's narrowing ('someone other than the policyholder who is identified ... an unidentified thief does not count'); true in the third-party on text, open in its unresolved text, false elsewhere (near-certain)"
+ },
+ "workflows": {
+  "before": {
+   "facts": 90,
+   "documents": 27,
+   "conversion": {
+    "from": "rule_review/final/reviewed_rules.json",
+    "sha256": "d109f64fd845125e22c009cdb212a107afea0ed559806c169047a33fedf0e5b1",
+    "route_choice": "cheapest (fewest documents, then route id), nothing on file",
+    "rules": 99,
+    "conditional_rules": 89,
+    "evidence_items": 213,
+    "items_without_route": 128,
+    "items_with_alternatives": 16,
+    "conditions_without_any_need": 62,
+    "documents": 27,
+    "condition_facts": 89
+   }
+  },
+  "final": {
+   "facts": 82,
+   "documents": 27,
+   "conversion": {
+    "from": "rule_review/final/reviewed_rules.json",
+    "sha256": "ab35ee0c8efd8d3cd58d967f3fee1bd1ba21b38b32238dcab4b60bdd48ef8568",
+    "route_choice": "cheapest (fewest documents, then route id), nothing on file",
+    "rules": 100,
+    "conditional_rules": 81,
+    "evidence_items": 204,
+    "items_without_route": 126,
+    "items_with_alternatives": 13,
+    "conditions_without_any_need": 58,
+    "documents": 27,
+    "condition_facts": 81
+   }
+  },
+  "pending": {
+   "facts": 82,
+   "documents": 27,
+   "conversion": {
+    "from": "rule_review/final/reviewed_rules.json",
+    "sha256": "0d64edbb6ec1cadac32960cca0d5095cd27e148ed05275183f683349939e3e34",
+    "route_choice": "cheapest (fewest documents, then route id), nothing on file",
+    "rules": 100,
+    "conditional_rules": 81,
+    "evidence_items": 204,
+    "items_without_route": 126,
+    "items_with_alternatives": 13,
+    "conditions_without_any_need": 58,
+    "documents": 27,
+    "condition_facts": 81
+   }
+  }
+ },
+ "engine_check": {
+  "before": {
+   "assignments": 3000,
+   "document_decisions": 81000,
+   "agree": 81000,
+   "first_difference": null,
+   "demandable_without_need": []
+  },
+  "final": {
+   "assignments": 3000,
+   "document_decisions": 81000,
+   "agree": 81000,
+   "first_difference": null,
+   "demandable_without_need": []
+  },
+  "pending": {
+   "assignments": 3000,
+   "document_decisions": 81000,
+   "agree": 81000,
+   "first_difference": null,
+   "demandable_without_need": []
+  }
+ },
+ "document_condition_changes": {
+  "final": {
+   "D07": {
+    "before": {
+     "any": [
+      {
+       "fact": "g002",
+       "is": true
+      },
+      {
+       "fact": "g005",
+       "is": true
+      },
+      {
+       "fact": "g006",
+       "is": true
+      },
+      {
+       "fact": "g049",
+       "is": true
+      }
+     ]
+    },
+    "after": null
+   },
+   "D25": {
+    "before": {
+     "any": [
+      {
+       "fact": "g004",
+       "is": true
+      },
+      {
+       "fact": "g080",
+       "is": true
+      },
+      {
+       "fact": "g081",
+       "is": true
+      }
+     ]
+    },
+    "after": {
+     "any": [
+      {
+       "fact": "g004_a_rev_bc64a5b9",
+       "is": true
+      },
+      {
+       "fact": "g080",
+       "is": true
+      },
+      {
+       "fact": "g081",
+       "is": true
+      }
+     ]
+    }
+   },
+   "D26": {
+    "before": {
+     "fact": "g003",
+     "is": true
+    },
+    "after": {
+     "fact": "g003_rev_fbae4865",
+     "is": true
+    }
+   },
+   "D27": {
+    "before": {
+     "fact": "g003",
+     "is": true
+    },
+    "after": {
+     "fact": "g003_rev_fbae4865",
+     "is": true
+    }
+   }
+  },
+  "pending": {
+   "D07": {
+    "before": {
+     "any": [
+      {
+       "fact": "g002",
+       "is": true
+      },
+      {
+       "fact": "g005",
+       "is": true
+      },
+      {
+       "fact": "g006",
+       "is": true
+      },
+      {
+       "fact": "g049",
+       "is": true
+      }
+     ]
+    },
+    "after": null
+   },
+   "D15": {
+    "before": {
+     "fact": "g042_rev_92ab8925",
+     "is": true
+    },
+    "after": {
+     "fact": "g042_rev_03390de5",
+     "is": true
+    }
+   },
+   "D25": {
+    "before": {
+     "any": [
+      {
+       "fact": "g004",
+       "is": true
+      },
+      {
+       "fact": "g080",
+       "is": true
+      },
+      {
+       "fact": "g081",
+       "is": true
+      }
+     ]
+    },
+    "after": {
+     "any": [
+      {
+       "fact": "g004_a_rev_bc64a5b9",
+       "is": true
+      },
+      {
+       "fact": "g080",
+       "is": true
+      },
+      {
+       "fact": "g081",
+       "is": true
+      }
+     ]
+    }
+   },
+   "D26": {
+    "before": {
+     "fact": "g003",
+     "is": true
+    },
+    "after": {
+     "fact": "g003_rev_fbae4865",
+     "is": true
+    }
+   },
+   "D27": {
+    "before": {
+     "fact": "g003",
+     "is": true
+    },
+    "after": {
+     "fact": "g003_rev_fbae4865",
+     "is": true
+    }
+   }
+  }
+ },
+ "floors": {
+  "before | primary": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "final | primary": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "pending | primary": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "before | g003_rev false": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "final | g003_rev false": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "pending | g003_rev false": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "before | g004_a true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "final | g004_a true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "pending | g004_a true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "before | g014_rev true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.111,
+    "errors": 0.333,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "final | g014_rev true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "pending | g014_rev true": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.111,
+    "errors": 0.556,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "before | g020 F (expert)": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.111,
+    "missed": 0.111,
+    "errors": 0.222,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 0.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    }
+   }
+  },
+  "final | g020 F (expert)": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.333,
+    "missed": 0.111,
+    "errors": 0.444,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 0.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "pending | g020 F (expert)": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.333,
+    "missed": 0.111,
+    "errors": 0.444,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 0.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  },
+  "before | literal g042 (before/final only)": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.222,
+    "missed": 0.222,
+    "errors": 0.444,
+    "unres_unchanged": 0.833,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 2.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16,
+     "m+D15": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    }
+   }
+  },
+  "final | literal g042 (before/final only)": {
+   "summary": {
+    "pairs": 144,
+    "wrong": 0.444,
+    "missed": 0.222,
+    "errors": 0.667,
+    "unres_unchanged": 0.833,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.0,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 2.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "atoms": {
+    "PR_sim_card_stolen": {
+     "w+D33": 16
+    },
+    "PR_third_party_causer": {
+     "m+D14": 16,
+     "m+D15": 16
+    },
+    "PR_expert_procedure_requested": {
+     "w+D23": 16
+    },
+    "PR_repair_over_500": {
+     "w+D27": 16,
+     "w+D26": 16
+    }
+   }
+  }
+ },
+ "off_checklists": {
+  "before | primary": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | primary": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "pending | primary": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "before | g003_rev false": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | g003_rev false": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "pending | g003_rev false": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "before | g004_a true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | g004_a true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "pending | g004_a true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "before | g014_rev true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | g014_rev true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "pending | g014_rev true": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "before | g020 F (expert)": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | g020 F (expert)": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "pending | g020 F (expert)": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "before | literal g042 (before/final only)": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "holds_in_every_off_text": []
+  },
+  "final | literal g042 (before/final only)": {
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17"
+   ],
+   "holds_in_every_off_text": []
+  }
+ },
+ "requested_in_every_text": {
+  "before | primary": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | primary": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "pending | primary": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "before | g003_rev false": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | g003_rev false": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "pending | g003_rev false": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "before | g004_a true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | g004_a true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25"
+  ],
+  "pending | g004_a true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25"
+  ],
+  "before | g014_rev true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | g014_rev true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "pending | g014_rev true": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "before | g020 F (expert)": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | g020 F (expert)": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "pending | g020 F (expert)": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ],
+  "before | literal g042 (before/final only)": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17",
+   "D25",
+   "D26",
+   "D27"
+  ],
+  "final | literal g042 (before/final only)": [
+   "D01",
+   "D03",
+   "D04",
+   "D05",
+   "D07",
+   "D14",
+   "D17"
+  ]
+ },
+ "off_checklist_changes": {
+  "final | primary": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "pending | primary": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "final | g003_rev false": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "pending | g003_rev false": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "final | g004_a true": {
+   "requests_leave": [
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "pending | g004_a true": {
+   "requests_leave": [
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "final | g014_rev true": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "pending | g014_rev true": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "final | g020 F (expert)": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "pending | g020 F (expert)": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  },
+  "final | literal g042 (before/final only)": {
+   "requests_leave": [
+    "D25",
+    "D26",
+    "D27"
+   ],
+   "requests_enter": [],
+   "holds_leave": [],
+   "holds_enter": []
+  }
+ },
+ "original_rule_base_requests_in_every_off_text": [
+  "D01",
+  "D03",
+  "D04",
+  "D05",
+  "D07",
+  "D14",
+  "D17",
+  "D23",
+  "D25",
+  "D26",
+  "D27"
+ ],
+ "frontier_prediction": {
+  "before | new facts never admitted true": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.417,
+    "missed": 0.417,
+    "errors": 0.833,
+    "unres_unchanged": 0.75,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.875,
+    "PR_bicycle_claimed": 0.625,
+    "PR_sim_card_stolen": 1.25,
+    "PR_third_party_causer": 2.375,
+    "PR_expert_procedure_requested": 1.25,
+    "PR_repair_over_500": 0.875,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.25,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17",
+    "D25"
+   ]
+  },
+  "before | new facts at their designed value (primary)": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.417,
+    "missed": 0.417,
+    "errors": 0.833,
+    "unres_unchanged": 0.75,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.875,
+    "PR_bicycle_claimed": 0.625,
+    "PR_sim_card_stolen": 1.25,
+    "PR_third_party_causer": 2.375,
+    "PR_expert_procedure_requested": 1.25,
+    "PR_repair_over_500": 0.875,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.25,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17",
+    "D25"
+   ]
+  },
+  "final | new facts never admitted true": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.167,
+    "missed": 0.417,
+    "errors": 0.583,
+    "unres_unchanged": 0.812,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.875,
+    "PR_bicycle_claimed": 0.125,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 2.125,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.125,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [
+    "g003_rev_fbae4865",
+    "g004_a_rev_bc64a5b9"
+   ],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17"
+   ]
+  },
+  "final | new facts at their designed value (primary)": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.389,
+    "missed": 0.417,
+    "errors": 0.806,
+    "unres_unchanged": 0.812,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.875,
+    "PR_bicycle_claimed": 0.125,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 2.125,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.125,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [
+    "g003_rev_fbae4865",
+    "g004_a_rev_bc64a5b9"
+   ],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D15",
+    "D17"
+   ]
+  },
+  "pending | new facts never admitted true": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.111,
+    "missed": 0.417,
+    "errors": 0.528,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.75,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 2.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 0.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [
+    "g003_rev_fbae4865",
+    "g004_a_rev_bc64a5b9",
+    "g042_rev_03390de5"
+   ],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ]
+  },
+  "pending | new facts at their designed value (primary)": {
+   "summary": {
+    "pairs": 72,
+    "wrong": 0.333,
+    "missed": 0.306,
+    "errors": 0.639,
+    "unres_unchanged": 1.0,
+    "unres_premature": 0.0,
+    "unres_held": 0.833
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": 0.75,
+    "PR_bicycle_claimed": 0.0,
+    "PR_sim_card_stolen": 1.0,
+    "PR_third_party_causer": 1.0,
+    "PR_expert_procedure_requested": 1.0,
+    "PR_repair_over_500": 2.0,
+    "PR_nachfrist_set": 0.0,
+    "PR_goods_recovered": 0.0,
+    "PR_declined": 0.0
+   },
+   "new_or_changed_facts": [
+    "g003_rev_fbae4865",
+    "g004_a_rev_bc64a5b9",
+    "g042_rev_03390de5"
+   ],
+   "requests_in_every_off_text": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17"
+   ]
+  }
+ }
+}

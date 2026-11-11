@@ -1,0 +1,1455 @@
+{
+ "applies_when": {
+  "fact": "claim_type",
+  "is": "household_theft"
+ },
+ "conversion": {
+  "condition_facts": 81,
+  "conditional_rules": 81,
+  "conditions_without_any_need": 58,
+  "documents": 27,
+  "evidence_items": 204,
+  "from": "rule_review/final/reviewed_rules.json",
+  "items_with_alternatives": 13,
+  "items_without_route": 126,
+  "loses": [
+   "alternative routes (fixed at conversion; alternatives only as text)",
+   "rule -> fact -> evidence-item structure and requirement kinds; process-node order",
+   "text of the cited source passages",
+   "internal structure of a rule condition"
+  ],
+  "route_choice": "cheapest (fewest documents, then route id), nothing on file",
+  "rules": 100,
+  "sha256": "ab35ee0c8efd8d3cd58d967f3fee1bd1ba21b38b32238dcab4b60bdd48ef8568"
+ },
+ "documents": [
+  {
+   "id": "d01",
+   "must_show": [
+    "That notice of the loss was given to the insurer and when it was received.",
+    "The location of the theft relative to the policy-designated locations.",
+    "whether this source-defined applicability condition holds: Coverage is sought for simple theft away from home.",
+    "The loss location and its inclusion among the policy-designated locations.",
+    "whether this source-defined applicability condition holds: The claim concerns theft-related household-contents damage at home.",
+    "The date and location of the loss.",
+    "Complete, factually accurate, and timely information concerning the loss circumstances and consequences.",
+    "All known facts useful for determining the event circumstances and consequences.",
+    "The bicycle frame number.",
+    "Whether the bicycle was locked.",
+    "whether this source-defined applicability condition holds: The claim concerns a bicycle.",
+    "The undersigned person's declaration covering truthful and complete answers on all pages.",
+    "The policy number or claim number identifying the insurance relationship or loss file.",
+    "The contractual term requiring written notice and the written loss notice provided to the insurer."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_001.f01.c02",
+    "theft-reviewed-rules#overlay_rule_007.f01.c01",
+    "theft-reviewed-rules#overlay_rule_008.f01.c01",
+    "theft-reviewed-rules#overlay_rule_010.f01.c01",
+    "theft-reviewed-rules#overlay_rule_010.f02.c01",
+    "theft-reviewed-rules#overlay_rule_012.f01.c01",
+    "theft-reviewed-rules#overlay_rule_015.f01.c01",
+    "theft-reviewed-rules#overlay_rule_015.f01.c02",
+    "theft-reviewed-rules#overlay_rule_047.f01.c01",
+    "theft-reviewed-rules#overlay_rule_062.f01.c01",
+    "theft-reviewed-rules#overlay_rule_072.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_007",
+    "theft-reviewed-rules#resolver.overlay_rule_008",
+    "theft-reviewed-rules#resolver.overlay_rule_015"
+   ],
+   "title": "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+   "why": "overlay_rule_001: Notify the insurer without delay of the loss event. (overlay_rule_001.f01.c02, route r1); alternatives not chosen: D02 | overlay_rule_007: Establish that the theft occurred outside the insured location, was neither burglary theft nor robbery, and that separate supplementary insurance was concluded and listed in the policy; apply the policy's agreed sum insured. (overlay_rule_007.f01.c01, route r1) | overlay_rule_007 (confirms its condition) (resolver.overlay_rule_007, route r1); alternatives not chosen: D02 + D03 | overlay_rule_008: Establish that the event occurred at a location designated in the policy within Switzerland. (overlay_rule_008.f01.c01, route r1) | overlay_rule_008 (confirms its condition) (resolver.overlay_rule_008, route r1); alternatives not chosen: D02 + D03 | overlay_rule_010: Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known. (overlay_rule_010.f01.c01, route r1) | overlay_rule_010: Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known. (overlay_rule_010.f02.c01, route r1) | overlay_rule_012: Provide all known information useful to establish the event circumstances and consequences. (overlay_rule_012.f01.c01, route r1); alternatives not chosen: D02 | overlay_rule_015: Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part. (overlay_rule_015.f01.c01, route r1) | overlay_rule_015: Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part. (overlay_rule_015.f01.c02, route r1) | overlay_rule_015 (confirms its condition) (resolver.overlay_rule_015, route r1) | overlay_rule_047: The undersigned person must declare that all questions on all pages have been answered truthfully and completely. (overlay_rule_047.f01.c01, route r1) | overlay_rule_062: Record the applicable policy number or claim number. (overlay_rule_062.f01.c01, route r1) | overlay_rule_072: Submit the loss notice in writing and establish that the written notice was provided to the insurer. (overlay_rule_072.f01.c01, route r1); alternatives not chosen: D03 + D02"
+  },
+  {
+   "id": "d03",
+   "must_show": [
+    "The location of the theft relative to the policy-designated locations.",
+    "That the applicable supplementary coverage was requested, forms part of the policy, and states its sum insured.",
+    "whether this source-defined applicability condition holds: Coverage is sought for simple theft away from home.",
+    "The loss location and its inclusion among the policy-designated locations.",
+    "whether this source-defined applicability condition holds: The claim concerns theft-related household-contents damage at home.",
+    "The applicable insured sum and actual total replacement value immediately before the loss.",
+    "The ratio of insured sum to replacement value and the compensation calculated using that ratio.",
+    "whether this source-defined applicability condition holds: The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+    "That insurance is on a first-risk basis and the agreed sum insured.",
+    "whether this source-defined applicability condition holds: The insurance is on a first-risk basis.",
+    "The applicable insured sum and the calculation of the 20% and CHF 30,000 limit.",
+    "whether this source-defined applicability condition holds: A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+    "whether this source-defined applicability condition holds: A contractual agreement subjects a claim against the insurance undertaking to a shorter limitation period or a shorter time restriction.",
+    "The contractual term requiring written notice and the written loss notice provided to the insurer.",
+    "That the applicable coverage is CSS coverage and that theft is included among its insured risks.",
+    "whether this source-defined applicability condition holds: A claim seeks CSS coverage for a theft loss.",
+    "The name of the insurance company."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_007.f01.c01",
+    "theft-reviewed-rules#overlay_rule_007.f02.c01",
+    "theft-reviewed-rules#overlay_rule_008.f01.c01",
+    "theft-reviewed-rules#overlay_rule_027.f01.c01",
+    "theft-reviewed-rules#overlay_rule_027.f02.c01",
+    "theft-reviewed-rules#overlay_rule_028.f01.c01",
+    "theft-reviewed-rules#overlay_rule_029.f01.c02",
+    "theft-reviewed-rules#overlay_rule_072.f01.c01",
+    "theft-reviewed-rules#overlay_rule_094.f01.c01",
+    "theft-reviewed-rules#overlay_rule_095.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_007",
+    "theft-reviewed-rules#resolver.overlay_rule_008",
+    "theft-reviewed-rules#resolver.overlay_rule_027",
+    "theft-reviewed-rules#resolver.overlay_rule_028",
+    "theft-reviewed-rules#resolver.overlay_rule_048",
+    "theft-reviewed-rules#resolver.overlay_rule_055",
+    "theft-reviewed-rules#resolver.overlay_rule_094"
+   ],
+   "title": "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+   "why": "overlay_rule_007: Establish that the theft occurred outside the insured location, was neither burglary theft nor robbery, and that separate supplementary insurance was concluded and listed in the policy; apply the policy's agreed sum insured. (overlay_rule_007.f01.c01, route r1) | overlay_rule_007: Establish that the theft occurred outside the insured location, was neither burglary theft nor robbery, and that separate supplementary insurance was concluded and listed in the policy; apply the policy's agreed sum insured. (overlay_rule_007.f02.c01, route r1) | overlay_rule_007 (confirms its condition) (resolver.overlay_rule_007, route r1); alternatives not chosen: D02 + D03 | overlay_rule_008: Establish that the event occurred at a location designated in the policy within Switzerland. (overlay_rule_008.f01.c01, route r1) | overlay_rule_008 (confirms its condition) (resolver.overlay_rule_008, route r1); alternatives not chosen: D02 + D03 | overlay_rule_027: Determine whether underinsurance exists by comparing the insured sum with actual total replacement value immediately before loss; if it exists, apply proportional indemnification. (overlay_rule_027.f01.c01, route r1) | overlay_rule_027: Determine whether underinsurance exists by comparing the insured sum with actual total replacement value immediately before loss; if it exists, apply proportional indemnification. (overlay_rule_027.f02.c01, route r1) | overlay_rule_027 (confirms its condition) (resolver.overlay_rule_027, route r1) | overlay_rule_028: Apply coverage up to the agreed sum insured without calculating underinsurance. (overlay_rule_028.f01.c01, route r1) | overlay_rule_028 (confirms its condition) (resolver.overlay_rule_028, route r1) | overlay_rule_029: Apply the jewellery benefit limit of 20% of the insured sum, maximum CHF 30,000, unless jewellery was stored in a built-in wall safe or safe cabinet weighing more than 100 kg. (overlay_rule_029.f01.c02, route r1) | overlay_rule_048 (confirms its condition) (resolver.overlay_rule_048, route r1) | overlay_rule_055 (confirms its condition) (resolver.overlay_rule_055, route r1) | overlay_rule_072: Submit the loss notice in writing and establish that the written notice was provided to the insurer. (overlay_rule_072.f01.c01, route r1); alternatives not chosen: D03 + D02 | overlay_rule_094: Determine whether theft is an insured risk under the applicable CSS coverage. (overlay_rule_094.f01.c01, route r1) | overlay_rule_094 (confirms its condition) (resolver.overlay_rule_094, route r1) | overlay_rule_095: Provide the name of the insurance company. (overlay_rule_095.f01.c01, route r1)"
+  },
+  {
+   "id": "d04",
+   "must_show": [
+    "The existence, identity, and value of each affected item at the time of the event.",
+    "The identity and value of items before and after the event and of affected or damaged items.",
+    "That the inventory was signed when a signed inventory was requested.",
+    "whether this source-defined applicability condition holds: The insurer has requested an inventory or itemized list.",
+    "The applicable insured sum and actual total replacement value immediately before the loss.",
+    "The ratio of insured sum to replacement value and the compensation calculated using that ratio.",
+    "whether this source-defined applicability condition holds: The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+    "The time limit set by the insurer for the signed inventory, when it was communicated, and facts relevant to its reasonableness."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_011.f02.c01",
+    "theft-reviewed-rules#overlay_rule_013.f01.c01",
+    "theft-reviewed-rules#overlay_rule_013.f01.c02",
+    "theft-reviewed-rules#overlay_rule_027.f01.c01",
+    "theft-reviewed-rules#overlay_rule_027.f02.c01",
+    "theft-reviewed-rules#overlay_rule_091.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_013",
+    "theft-reviewed-rules#resolver.overlay_rule_027"
+   ],
+   "title": "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+   "why": "overlay_rule_011: Establish the occurrence of the insured event, the existence and value of affected insured items at the event, and the amount of loss. (overlay_rule_011.f02.c01, route r1) | overlay_rule_013: Prepare a signed inventory of items existing before and after the event and affected or damaged items, including value information. (overlay_rule_013.f01.c01, route r1) | overlay_rule_013: Prepare a signed inventory of items existing before and after the event and affected or damaged items, including value information. (overlay_rule_013.f01.c02, route r1) | overlay_rule_013 (confirms its condition) (resolver.overlay_rule_013, route r1) | overlay_rule_027: Determine whether underinsurance exists by comparing the insured sum with actual total replacement value immediately before loss; if it exists, apply proportional indemnification. (overlay_rule_027.f01.c01, route r1) | overlay_rule_027: Determine whether underinsurance exists by comparing the insured sum with actual total replacement value immediately before loss; if it exists, apply proportional indemnification. (overlay_rule_027.f02.c01, route r1) | overlay_rule_027 (confirms its condition) (resolver.overlay_rule_027, route r1) | overlay_rule_091: Determine any reasonable time limit set by the insurer for preparation of the signed inventory. (overlay_rule_091.f01.c01, route r1)"
+  },
+  {
+   "id": "d05",
+   "must_show": [
+    "whether this source-defined applicability condition holds: The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+    "The amount of loss attributable to each affected item or damage component.",
+    "The purchase, identity, and acquisition value of each affected item.",
+    "whether this source-defined applicability condition holds: The insurer has asked the claimant to produce original purchase vouchers (Originalbelege) for the affected items, either by a request in the claim file or through the insurer's claim form used for this claim, which asks for them to be attached; not merely that items were damaged or stolen.",
+    "The CSS instruction ordering loss mitigation and the connection between that ordered mitigation and the claimed costs."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_011.f03.c01",
+    "theft-reviewed-rules#overlay_rule_014.f01.c01",
+    "theft-reviewed-rules#overlay_rule_080.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_009",
+    "theft-reviewed-rules#resolver.overlay_rule_014"
+   ],
+   "title": "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+   "why": "overlay_rule_009 (confirms its condition) (resolver.overlay_rule_009, route r1); alternatives not chosen: D04 | overlay_rule_011: Establish the occurrence of the insured event, the existence and value of affected insured items at the event, and the amount of loss. (overlay_rule_011.f03.c01, route r2); alternatives not chosen: D04 | overlay_rule_014: Provide original purchase evidence for affected items where required. (overlay_rule_014.f01.c01, route r1) | overlay_rule_014 (confirms its condition) (resolver.overlay_rule_014, route r1) | overlay_rule_080: Establish that CSS ordered the loss mitigation giving rise to the claimed costs. (overlay_rule_080.f01.c01, route r1)"
+  },
+  {
+   "id": "d07",
+   "must_show": [
+    "That the theft-related event was reported to police, including the reporting date and event details.",
+    "The CSS request for the police report and the corresponding report."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_002.f01.c01",
+    "theft-reviewed-rules#overlay_rule_049.f01.c01"
+   ],
+   "title": "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+   "why": "overlay_rule_002: Notify the police without delay and request an official investigation. (overlay_rule_002.f01.c01, route r1) | overlay_rule_049: CSS may request a corresponding police report; when requested, provide the report for claim handling. (overlay_rule_049.f01.c01, route r1)"
+  },
+  {
+   "id": "d10",
+   "must_show": [
+    "That the item is a wristwatch or pocket watch and its individual value exceeds CHF 5,000.",
+    "The acquisition, payment, and value of each claimed valuable.",
+    "whether this source-defined applicability condition holds: The claim concerns valuables insurance.",
+    "Whether a receipt can be produced and whether an expert valuation can be produced for the listed valuable or individual object."
+   ],
+   "required_when": {
+    "any": [
+     {
+      "fact": "g009",
+      "is": true
+     },
+     {
+      "fact": "g016",
+      "is": true
+     },
+     {
+      "fact": "g074",
+      "is": true
+     }
+    ]
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_009.f01.c01",
+    "theft-reviewed-rules#overlay_rule_016.f01.c01",
+    "theft-reviewed-rules#overlay_rule_074.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_016"
+   ],
+   "title": "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+   "why": "overlay_rule_009: Classify the item as jewellery for the applicable coverage limitation. (overlay_rule_009.f01.c01, route r3); alternatives not chosen: D04; D05 | overlay_rule_016: Provide evidence establishing valuables' acquisition, payment, and value. (overlay_rule_016.f01.c01, route r2); alternatives not chosen: D09 | overlay_rule_016 (confirms its condition) (resolver.overlay_rule_016, route r2); alternatives not chosen: D09 | overlay_rule_074: Determine whether neither a receipt nor an expert valuation can be produced for the listed valuable or individual object. (overlay_rule_074.f01.c01, route r2); alternatives not chosen: D09"
+  },
+  {
+   "id": "d11",
+   "must_show": [
+    "The bicycle's purchase and purchase value.",
+    "whether this source-defined applicability condition holds: The claim concerns a bicycle."
+   ],
+   "required_when": {
+    "fact": "g015",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_015.f02.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_015"
+   ],
+   "title": "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+   "why": "overlay_rule_015: Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part. (overlay_rule_015.f02.c01, route r1) | overlay_rule_015 (confirms its condition) (resolver.overlay_rule_015, route r1)"
+  },
+  {
+   "id": "d12",
+   "must_show": [
+    "A detailed estimate of repair or replacement costs.",
+    "The visual condition of the damaged or stolen bicycle or part.",
+    "whether this source-defined applicability condition holds: The claim concerns a bicycle."
+   ],
+   "required_when": {
+    "fact": "g015",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_015.f03.c01",
+    "theft-reviewed-rules#overlay_rule_015.f03.c02",
+    "theft-reviewed-rules#resolver.overlay_rule_015"
+   ],
+   "title": "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+   "why": "overlay_rule_015: Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part. (overlay_rule_015.f03.c01, route r1) | overlay_rule_015: Establish the bicycle's locked status and frame number; provide purchase evidence; and provide a detailed cost estimate and a photograph of the damaged or stolen bicycle or part. (overlay_rule_015.f03.c02, route r1) | overlay_rule_015 (confirms its condition) (resolver.overlay_rule_015, route r1)"
+  },
+  {
+   "id": "d14",
+   "must_show": [
+    "The identity of the person responsible for the damage, or the information available about that person."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_010.f03.c01"
+   ],
+   "title": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+   "why": "overlay_rule_010: Provide the loss date and place, complete and accurate loss facts, and identify the person who caused the damage where known. (overlay_rule_010.f03.c01, route r1)"
+  },
+  {
+   "id": "d15",
+   "must_show": [
+    "The third party's responsibility, the corresponding claim, benefits paid, and assignment or preservation of recourse rights."
+   ],
+   "required_when": {
+    "fact": "g042_rev_92ab8925",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_042.f01.c01"
+   ],
+   "title": "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+   "why": "overlay_rule_042: Assign third-party claims to CSS up to paid benefits and secure recourse against responsible third parties. (overlay_rule_042.f01.c01, route r1)"
+  },
+  {
+   "id": "d16",
+   "must_show": [
+    "That the multiple insurance was reported to the insurer and when.",
+    "whether this source-defined applicability condition holds: Multiple insurance exists for the same interest, risks, and period."
+   ],
+   "required_when": {
+    "fact": "g019",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_019.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_019"
+   ],
+   "title": "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+   "why": "overlay_rule_019: Notify the insurer immediately of the multiple insurance; limit the aggregate entitlement to one claim per loss. (overlay_rule_019.f01.c01, route r1) | overlay_rule_019 (confirms its condition) (resolver.overlay_rule_019, route r1)"
+  },
+  {
+   "id": "d17",
+   "must_show": [
+    "The recipient's name, address, and account details.",
+    "The name of the financial institution for the payment information provided.",
+    "whether this source-defined applicability condition holds: Payment information is required for payment of the insurance benefit."
+   ],
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_046.f01.c01",
+    "theft-reviewed-rules#overlay_rule_060.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_060"
+   ],
+   "title": "Payment instruction with payee name and address, IBAN and name of the financial institution",
+   "why": "overlay_rule_046: Provide the recipient's account details and the recipient's name and address for payment. (overlay_rule_046.f01.c01, route r1) | overlay_rule_060: Provide the name of the financial institution. (overlay_rule_060.f01.c01, route r1) | overlay_rule_060 (confirms its condition) (resolver.overlay_rule_060, route r1)"
+  },
+  {
+   "id": "d18",
+   "must_show": [
+    "The assignment asserted and CSS's written consent to assignment of the benefit claims to the identified third party.",
+    "whether this source-defined applicability condition holds: The policyholder seeks to assign benefit claims against CSS to a third party, or a third party asserts entitlement through such an assignment."
+   ],
+   "required_when": {
+    "fact": "g071",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_071.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_071"
+   ],
+   "title": "Insurer's written consent to an assignment of the benefit claim to a third party",
+   "why": "overlay_rule_071: Establish CSS's written consent before treating the assignment of benefit claims against CSS to the third party as permitted. (overlay_rule_071.f01.c01, route r1) | overlay_rule_071 (confirms its condition) (resolver.overlay_rule_071, route r1)"
+  },
+  {
+   "id": "d20",
+   "must_show": [
+    "whether this source-defined applicability condition holds: The insurer has set a time limit for claim handling, cooperation, or provision of requested information.",
+    "The written compliance request, warning of default consequences, its receipt date, and the deadline set.",
+    "whether this source-defined applicability condition holds: The insurer has issued a written request under warning of the consequences of default and set the applicable period."
+   ],
+   "required_when": {
+    "any": [
+     {
+      "fact": "g070",
+      "is": true
+     },
+     {
+      "fact": "g098",
+      "is": true
+     }
+    ]
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_098.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_070",
+    "theft-reviewed-rules#resolver.overlay_rule_098"
+   ],
+   "title": "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+   "why": "overlay_rule_070 (confirms its condition) (resolver.overlay_rule_070, route r1) | overlay_rule_098: Establish the written demand, warning of default consequences, issue date, and period. (overlay_rule_098.f01.c01, route r1) | overlay_rule_098 (confirms its condition) (resolver.overlay_rule_098, route r1)"
+  },
+  {
+   "id": "d21",
+   "must_show": [
+    "Each party's written appointment of its expert.",
+    "whether this source-defined applicability condition holds: The expert-procedure route has been selected and a party has been requested in writing to appoint an expert."
+   ],
+   "required_when": {
+    "any": [
+     {
+      "fact": "g022",
+      "is": true
+     },
+     {
+      "fact": "g023",
+      "is": true
+     }
+    ]
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_022.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_023"
+   ],
+   "title": "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+   "why": "overlay_rule_022: Each party appoint an expert in writing. (overlay_rule_022.f01.c01, route r1) | overlay_rule_023 (confirms its condition) (resolver.overlay_rule_023, route r1)"
+  },
+  {
+   "id": "d22",
+   "must_show": [
+    "The experts' findings and their scope of authority.",
+    "whether this source-defined applicability condition holds: Experts made findings within their authority."
+   ],
+   "required_when": {
+    "fact": "g025",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_025.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_025"
+   ],
+   "title": "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+   "why": "overlay_rule_025: Treat expert findings as binding unless a party proves material deviation from the actual facts. (overlay_rule_025.f01.c01, route r1) | overlay_rule_025 (confirms its condition) (resolver.overlay_rule_025, route r1)"
+  },
+  {
+   "id": "d23",
+   "must_show": [
+    "Which loss-determination route was selected and the resulting loss determination."
+   ],
+   "required_when": {
+    "fact": "g020_rev_b4712e29",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_020.f01.c01"
+   ],
+   "title": "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+   "why": "overlay_rule_020: Where the loss is determined by a joint expert or in expert proceedings, establish that route and its resulting determination. (overlay_rule_020.f01.c01, route r1); alternatives not chosen: D21 + D22"
+  },
+  {
+   "id": "d24",
+   "must_show": [
+    "That the contemplated work is a repair to insured property, its expected cost, and whether simpego consented before repair."
+   ],
+   "required_when": {
+    "fact": "g090",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_090.f01.c01"
+   ],
+   "title": "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+   "why": "overlay_rule_090: Obtain simpego's consent before carrying out the repairs. (overlay_rule_090.f01.c01, route r1)"
+  },
+  {
+   "id": "d25",
+   "must_show": [
+    "The insurer's instructions and compliance with them, or facts establishing imminent danger.",
+    "The CSS instruction ordering loss mitigation and the connection between that ordered mitigation and the claimed costs.",
+    "whether this source-defined applicability condition holds: The claim seeks coverage of costs arising from loss mitigation ordered by CSS.",
+    "Whether CSS ordered loss mitigation and the content and scope of that order.",
+    "whether this source-defined applicability condition holds: Loss mitigation is being considered after a loss."
+   ],
+   "required_when": {
+    "any": [
+     {
+      "fact": "g004_a_rev_bc64a5b9",
+      "is": true
+     },
+     {
+      "fact": "g080",
+      "is": true
+     },
+     {
+      "fact": "g081",
+      "is": true
+     }
+    ]
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_004.f02.c01",
+    "theft-reviewed-rules#overlay_rule_080.f01.c01",
+    "theft-reviewed-rules#overlay_rule_081.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_080",
+    "theft-reviewed-rules#resolver.overlay_rule_081"
+   ],
+   "title": "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+   "why": "overlay_rule_004.a: Obtain and follow the insurer's instructions on the measures to be taken, unless imminent danger applies. (overlay_rule_004.f02.c01, route r1) | overlay_rule_080: Establish that CSS ordered the loss mitigation giving rise to the claimed costs. (overlay_rule_080.f01.c01, route r1) | overlay_rule_080 (confirms its condition) (resolver.overlay_rule_080, route r1) | overlay_rule_081: Determine whether CSS ordered loss mitigation. (overlay_rule_081.f01.c01, route r1) | overlay_rule_081 (confirms its condition) (resolver.overlay_rule_081, route r1)"
+  },
+  {
+   "id": "d26",
+   "must_show": [
+    "The condition of crime-scene traces and, if changed, the authority's consent or the reason permitting the change."
+   ],
+   "required_when": {
+    "fact": "g003_rev_fbae4865",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_003.f01.c01"
+   ],
+   "title": "Police consent to the removal or alteration of the Tatspuren",
+   "why": "overlay_rule_003: Preserve crime-scene traces and damaged property; do not alter, remove, dispose of, or use assistance services without the required consent, except where mitigation, public interest, or imminent danger permits action. (overlay_rule_003.f01.c01, route r1)"
+  },
+  {
+   "id": "d27",
+   "must_show": [
+    "The pre-assessment condition of damaged property and any insurer consent, mitigation necessity, public-interest basis, or imminent danger justifying a change.",
+    "whether this source-defined applicability condition holds: Before the loss was determined, crime-scene traces were removed or altered, or the loss location or the damaged items were altered, repaired or disposed of, or help services were engaged on the damaged items, or such a change is planned; traces or damaged items that exist but were left unchanged do not count."
+   ],
+   "required_when": {
+    "fact": "g003_rev_fbae4865",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_003.f02.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_003"
+   ],
+   "title": "Insurer's consent to alteration of the damaged items before the loss is determined",
+   "why": "overlay_rule_003: Preserve crime-scene traces and damaged property; do not alter, remove, dispose of, or use assistance services without the required consent, except where mitigation, public interest, or imminent danger permits action. (overlay_rule_003.f02.c01, route r1) | overlay_rule_003 (confirms its condition) (resolver.overlay_rule_003, route r2); alternatives not chosen: D26"
+  },
+  {
+   "id": "d28",
+   "must_show": [
+    "The bodily injury, diagnosis, and treatment-related facts.",
+    "whether this source-defined applicability condition holds: The loss involves bodily injury or an accident involving personal injury."
+   ],
+   "required_when": {
+    "fact": "g017",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_017.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_017"
+   ],
+   "title": "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+   "why": "overlay_rule_017: Provide medical evidence and release the treating doctor from confidentiality. (overlay_rule_017.f01.c01, route r1) | overlay_rule_017 (confirms its condition) (resolver.overlay_rule_017, route r1)"
+  },
+  {
+   "id": "d29",
+   "must_show": [
+    "That the treating doctor was released from confidentiality.",
+    "whether this source-defined applicability condition holds: The loss involves bodily injury or an accident involving personal injury."
+   ],
+   "required_when": {
+    "fact": "g017",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_017.f01.c02",
+    "theft-reviewed-rules#resolver.overlay_rule_017"
+   ],
+   "title": "Release of the treating doctor from professional confidentiality",
+   "why": "overlay_rule_017: Provide medical evidence and release the treating doctor from confidentiality. (overlay_rule_017.f01.c02, route r1) | overlay_rule_017 (confirms its condition) (resolver.overlay_rule_017, route r1)"
+  },
+  {
+   "id": "d30",
+   "must_show": [
+    "When stolen property was recovered or information was received, and when the insurer was notified.",
+    "whether this source-defined applicability condition holds: Stolen items return to possession or information about them is received."
+   ],
+   "required_when": {
+    "fact": "g040",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_040.f01.c01",
+    "theft-reviewed-rules#resolver.overlay_rule_040"
+   ],
+   "title": "Report to the insurer that stolen items have been recovered or news of them received",
+   "why": "overlay_rule_040: Notify the insurer immediately of the recovery or information received. (overlay_rule_040.f01.c01, route r1) | overlay_rule_040 (confirms its condition) (resolver.overlay_rule_040, route r1)"
+  },
+  {
+   "id": "d31",
+   "must_show": [
+    "whether this source-defined applicability condition holds: The insurer rejected the indemnity claim."
+   ],
+   "required_when": {
+    "fact": "g043",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#resolver.overlay_rule_043"
+   ],
+   "title": "Insurer's declination of the claim for indemnity",
+   "why": "overlay_rule_043 (confirms its condition) (resolver.overlay_rule_043, route r1)"
+  },
+  {
+   "id": "d32",
+   "must_show": [
+    "When the theft occurred, when it was reported to CSS, when the SIM card was misused, and whether the resulting financial loss falls within that interval.",
+    "Whether, when, and to which permitted recipient—CSS or the provider—the theft was reported, and whether the report was made within 24 hours."
+   ],
+   "required_when": {
+    "any": [
+     {
+      "fact": "g084",
+      "is": true
+     },
+     {
+      "fact": "g088",
+      "is": true
+     }
+    ]
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_084.f01.c01",
+    "theft-reviewed-rules#overlay_rule_088.f01.c01"
+   ],
+   "title": "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+   "why": "overlay_rule_084: Determine whether the SIM-card misuse causing the claimed financial losses occurred during the period between the theft and reporting it to CSS. (overlay_rule_084.f01.c01, route r1) | overlay_rule_088: Establish whether the theft was reported to CSS or the provider within 24 hours. (overlay_rule_088.f01.c01, route r1)"
+  },
+  {
+   "id": "d33",
+   "must_show": [
+    "When the theft occurred, when it was reported to CSS, when the SIM card was misused, and whether the resulting financial loss falls within that interval."
+   ],
+   "required_when": {
+    "fact": "g084",
+    "is": true
+   },
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_084.f01.c01"
+   ],
+   "title": "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+   "why": "overlay_rule_084: Determine whether the SIM-card misuse causing the claimed financial losses occurred during the period between the theft and reporting it to CSS. (overlay_rule_084.f01.c01, route r1)"
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "claim_type",
+   "question": "Is this a household-insurance claim for a theft (household_theft), or something else (other)?",
+   "source_refs": [
+    "theft-reviewed-rules#scope"
+   ],
+   "type": "enum",
+   "values": [
+    "household_theft",
+    "other"
+   ]
+  },
+  {
+   "id": "g003_rev_fbae4865",
+   "question": "Does this hold for the claim: Before the loss was determined, crime-scene traces were removed or altered, or the loss location or the damaged items were altered, repaired or disposed of, or help services were engaged on the damaged items, or such a change is planned; traces or damaged items that exist but were left unchanged do not count.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_003",
+    "theft-reviewed-rules#theft-source-0033#p2",
+    "theft-reviewed-rules#theft-source-0043#p3",
+    "theft-reviewed-rules#theft-source-0096#p1",
+    "theft-reviewed-rules#theft-source-0127#p3",
+    "theft-reviewed-rules#theft-source-0136#p1",
+    "theft-reviewed-rules#theft-source-0156#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g004_a_rev_bc64a5b9",
+   "question": "Does this hold for the claim: After the event, measures were to be taken to reduce the loss or to preserve or rescue insured items and there was no imminent danger preventing the claimant from first obtaining the insurer's instruction, or the insurer gave instructions (Weisung / Anordnung) on measures to be taken; the occurrence of the event alone does not count.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_004.a",
+    "theft-reviewed-rules#theft-source-0100#p2",
+    "theft-reviewed-rules#theft-source-0116#p3",
+    "theft-reviewed-rules#theft-source-0170#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g007",
+   "question": "Does this hold for the claim: Coverage is sought for simple theft away from home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_007",
+    "theft-reviewed-rules#theft-source-0122#p1",
+    "theft-reviewed-rules#theft-source-0162#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g008",
+   "question": "Does this hold for the claim: The claim concerns theft-related household-contents damage at home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_008",
+    "theft-reviewed-rules#theft-source-0025#p3",
+    "theft-reviewed-rules#theft-source-0149#p1",
+    "theft-reviewed-rules#theft-source-0154#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g009",
+   "question": "Does this hold for the claim: The claimed item is a wristwatch or pocket watch with an individual value exceeding CHF 5,000.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_009",
+    "theft-reviewed-rules#theft-source-0010#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g012",
+   "question": "Does this hold for the claim: The insurer has requested information or support for loss handling.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_012",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0051#p1",
+    "theft-reviewed-rules#theft-source-0120#p1",
+    "theft-reviewed-rules#theft-source-0134#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g013",
+   "question": "Does this hold for the claim: The insurer has requested an inventory or itemized list.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_013",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0086#p1",
+    "theft-reviewed-rules#theft-source-0134#p1",
+    "theft-reviewed-rules#theft-source-0151#p1",
+    "theft-reviewed-rules#theft-source-0163#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g014_rev_c58c4d3c",
+   "question": "Does this hold for the claim: The insurer has asked the claimant to produce original purchase vouchers (Originalbelege) for the affected items, either by a request in the claim file or through the insurer's claim form used for this claim, which asks for them to be attached; not merely that items were damaged or stolen.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_014",
+    "theft-reviewed-rules#theft-source-0048#p1",
+    "theft-reviewed-rules#theft-source-0109#p1",
+    "theft-reviewed-rules#theft-source-0134#p1",
+    "theft-reviewed-rules#theft-source-0176#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g015",
+   "question": "Does this hold for the claim: The claim concerns a bicycle.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_015",
+    "theft-reviewed-rules#theft-source-0060#p1",
+    "theft-reviewed-rules#theft-source-0071#p1",
+    "theft-reviewed-rules#theft-source-0123#p1",
+    "theft-reviewed-rules#theft-source-0173#p1",
+    "theft-reviewed-rules#theft-source-0197#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g016",
+   "question": "Does this hold for the claim: The claim concerns valuables insurance.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_016",
+    "theft-reviewed-rules#theft-source-0191#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g017",
+   "question": "Does this hold for the claim: The loss involves bodily injury or an accident involving personal injury.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_017",
+    "theft-reviewed-rules#theft-source-0057#p1",
+    "theft-reviewed-rules#theft-source-0079#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g019",
+   "question": "Does this hold for the claim: Multiple insurance exists for the same interest, risks, and period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_019",
+    "theft-reviewed-rules#theft-source-0172#p1",
+    "theft-reviewed-rules#theft-source-0186#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g020_rev_b4712e29",
+   "question": "Does this hold for the claim: The loss is to be determined by a jointly appointed expert or in expert proceedings, not by the parties themselves.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_020",
+    "theft-reviewed-rules#theft-source-0009#p1",
+    "theft-reviewed-rules#theft-source-0178#p1",
+    "theft-reviewed-rules#theft-source-0193#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g021",
+   "question": "Does this hold for the claim: Either party demands expert proceedings.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_021",
+    "theft-reviewed-rules#theft-source-0053#p1",
+    "theft-reviewed-rules#theft-source-0121#p1",
+    "theft-reviewed-rules#theft-source-0193#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g022",
+   "question": "Does this hold for the claim: The expert-procedure route has been selected.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_022",
+    "theft-reviewed-rules#theft-source-0053#p1",
+    "theft-reviewed-rules#theft-source-0121#p1",
+    "theft-reviewed-rules#theft-source-0193#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g023",
+   "question": "Does this hold for the claim: The expert-procedure route has been selected and a party has been requested in writing to appoint an expert.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_023",
+    "theft-reviewed-rules#theft-source-0023#p1",
+    "theft-reviewed-rules#theft-source-0111#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g024",
+   "question": "Does this hold for the claim: A party failed to appoint its expert within 14 days after written request, and the other party applies for appointment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_024",
+    "theft-reviewed-rules#theft-source-0023#p2",
+    "theft-reviewed-rules#theft-source-0023#p3",
+    "theft-reviewed-rules#theft-source-0111#p2",
+    "theft-reviewed-rules#theft-source-0111#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g025",
+   "question": "Does this hold for the claim: Experts made findings within their authority.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_025",
+    "theft-reviewed-rules#theft-source-0118#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g027",
+   "question": "Does this hold for the claim: The policy is not first-risk insurance and no applicable waiver of underinsurance applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_027",
+    "theft-reviewed-rules#theft-source-0073#p1",
+    "theft-reviewed-rules#theft-source-0098#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g028",
+   "question": "Does this hold for the claim: The insurance is on a first-risk basis.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_028",
+    "theft-reviewed-rules#theft-source-0073#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g029",
+   "question": "Does this hold for the claim: The claim concerns jewellery in simple theft at the insured location, or jewellery in burglary theft that was not stored in a specified locked security container.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_029",
+    "theft-reviewed-rules#theft-source-0080#p1",
+    "theft-reviewed-rules#theft-source-0182#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g030_rev_659606b1",
+   "question": "Does this hold for the claim: A deductible applies to the loss event (the deductible agreed in the policy or, absent a different agreement, CHF 200) and no qualifying no-deductible exception applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_030",
+    "theft-reviewed-rules#theft-source-0081#p1",
+    "theft-reviewed-rules#theft-source-0167#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g031",
+   "question": "Does this hold for the claim: The loss is burglary theft and an activated permanently installed alarm system was present.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_031",
+    "theft-reviewed-rules#theft-source-0145#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g032",
+   "question": "Does this hold for the claim: A statutory or contractual duty was breached and a legal disadvantage for breach was agreed or otherwise applies.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_032",
+    "theft-reviewed-rules#theft-source-0069#p1",
+    "theft-reviewed-rules#theft-source-0108#p1",
+    "theft-reviewed-rules#theft-source-0188#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g033",
+   "question": "Does this hold for the claim: A compensation reduction or legal disadvantage is proposed because of a breach.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_033",
+    "theft-reviewed-rules#theft-source-0069#p1",
+    "theft-reviewed-rules#theft-source-0137#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g034",
+   "question": "Does this hold for the claim: The entitled claimant culpably breached the duty to give notice.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_034",
+    "theft-reviewed-rules#theft-source-0142#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g035",
+   "question": "Does this hold for the claim: The claimant or representative deceptively misstates, conceals, delays, or omits facts or required communications relevant to coverage or benefit reduction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_035",
+    "theft-reviewed-rules#theft-source-0059#p1",
+    "theft-reviewed-rules#theft-source-0077#p1",
+    "theft-reviewed-rules#theft-source-0133#p1",
+    "theft-reviewed-rules#theft-source-0183#p1",
+    "theft-reviewed-rules#theft-source-0183#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g036",
+   "question": "Does this hold for the claim: The insurer has received all information and documents needed to determine loss amount and insurance benefit.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_036",
+    "theft-reviewed-rules#theft-source-0001#p1",
+    "theft-reviewed-rules#theft-source-0157#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g037",
+   "question": "Does this hold for the claim: Compensation cannot be determined or paid because of culpable conduct by the policyholder or beneficiary.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_037",
+    "theft-reviewed-rules#theft-source-0003#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g038",
+   "question": "Does this hold for the claim: A police or criminal investigation concerning the loss is ongoing and proceedings against the policyholder or entitled claimant remain unconcluded.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_038",
+    "theft-reviewed-rules#theft-source-0018#p1",
+    "theft-reviewed-rules#theft-source-0095#p1",
+    "theft-reviewed-rules#theft-source-0125#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g039",
+   "question": "Does this hold for the claim: The insured person failed to comply with cooperation duties and the insurer issued a written compliance request specifying a 10-day period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_039",
+    "theft-reviewed-rules#theft-source-0013#p1",
+    "theft-reviewed-rules#theft-source-0013#p2",
+    "theft-reviewed-rules#theft-source-0013#p3",
+    "theft-reviewed-rules#theft-source-0036#p1",
+    "theft-reviewed-rules#theft-source-0092#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g040",
+   "question": "Does this hold for the claim: Stolen items return to possession or information about them is received.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_040",
+    "theft-reviewed-rules#theft-source-0012#p1",
+    "theft-reviewed-rules#theft-source-0106#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g041",
+   "question": "Does this hold for the claim: Items or animals for which compensation was already paid are recovered.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_041",
+    "theft-reviewed-rules#theft-source-0011#p1",
+    "theft-reviewed-rules#theft-source-0032#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g042_rev_92ab8925",
+   "question": "Does this hold for the claim: CSS has paid benefits for which the policyholder could assert claims against third parties, or the loss was caused or increased through the fault of a third party.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_042",
+    "theft-reviewed-rules#theft-source-0055#p1",
+    "theft-reviewed-rules#theft-source-0165#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g043",
+   "question": "Does this hold for the claim: The insurer rejected the indemnity claim.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_043",
+    "theft-reviewed-rules#theft-source-0004#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g045",
+   "question": "Does this hold for the claim: The policyholder reimburses CSS all compensation paid for the matter within 30 days after becoming aware of settlement.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_045",
+    "theft-reviewed-rules#theft-source-0085#p1",
+    "theft-reviewed-rules#theft-source-0085#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g048",
+   "question": "Does this hold for the claim: A contractual provision subjects a claim against the insurance undertaking to a shorter limitation period or other shorter time restriction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_048",
+    "theft-reviewed-rules#theft-source-0038#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g049",
+   "question": "Does this hold for the claim: CSS requests a corresponding police report.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_049",
+    "theft-reviewed-rules#theft-source-0043#p5"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g050",
+   "question": "Does this hold for the claim: The claim seeks reimbursement of costs arising from simple theft at home or away from home.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_050",
+    "theft-reviewed-rules#theft-source-0062#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g051",
+   "question": "Does this hold for the claim: There are doubts about the beneficiary's entitlement to receive payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_051",
+    "theft-reviewed-rules#theft-source-0066#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g052",
+   "question": "Does this hold for the claim: A duty governed by the valuables insurance provision is being considered.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_052",
+    "theft-reviewed-rules#theft-source-0082#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g053",
+   "question": "Does this hold for the claim: The claimed damage was caused by a person living in the insured person's household or by a person employed by the insured person.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_053",
+    "theft-reviewed-rules#theft-source-0083#p1",
+    "theft-reviewed-rules#theft-source-0083#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g054",
+   "question": "Does this hold for the claim: The applicability of the provision governing the claimed damage is being determined.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_054",
+    "theft-reviewed-rules#theft-source-0014#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g055",
+   "question": "Does this hold for the claim: A contractual agreement subjects a claim against the insurance undertaking to a shorter limitation period or a shorter time restriction.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_055",
+    "theft-reviewed-rules#theft-source-0015#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g056",
+   "question": "Does this hold for the claim: CSS is considering termination of or withdrawal from the insurance.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_056",
+    "theft-reviewed-rules#theft-source-0026#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g058",
+   "question": "Does this hold for the claim: It is unclear how the insurance benefit should be allocated among multiple entitled persons.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_058",
+    "theft-reviewed-rules#theft-source-0041#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g059",
+   "question": "Does this hold for the claim: Repair work is required for a covered loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_059",
+    "theft-reviewed-rules#theft-source-0046#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g060",
+   "question": "Does this hold for the claim: Payment information is required for payment of the insurance benefit.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_060",
+    "theft-reviewed-rules#theft-source-0047#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g063",
+   "question": "Does this hold for the claim: An entitled claimant is alleged to have breached the relevant obligations.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_063",
+    "theft-reviewed-rules#theft-source-0076#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g064",
+   "question": "Does this hold for the claim: The entitled claimant breached the relevant obligations in an inexcusable manner.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_064",
+    "theft-reviewed-rules#theft-source-0076#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g065",
+   "question": "Does this hold for the claim: A first partial payment is requested.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_065",
+    "theft-reviewed-rules#theft-source-0078#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g066",
+   "question": "Does this hold for the claim: A first partial payment is requested after the applicable four-week period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_066",
+    "theft-reviewed-rules#theft-source-0078#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g067",
+   "question": "Does this hold for the claim: Repairs to insured property are contemplated.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_067",
+    "theft-reviewed-rules#theft-source-0084#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g068_rev_3767fc15",
+   "question": "Does this hold for the claim: The policyholder demands a partial payment four weeks or more after the loss occurred.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_068",
+    "theft-reviewed-rules#theft-source-0090#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g070",
+   "question": "Does this hold for the claim: The insurer has set a time limit for claim handling, cooperation, or provision of requested information.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_070",
+    "theft-reviewed-rules#theft-source-0128#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g071",
+   "question": "Does this hold for the claim: The policyholder seeks to assign benefit claims against CSS to a third party, or a third party asserts entitlement through such an assignment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_071",
+    "theft-reviewed-rules#theft-source-0129#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g072",
+   "question": "Does this hold for the claim: The contract provides that notice of the loss must be submitted in writing.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_072",
+    "theft-reviewed-rules#theft-source-0143#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g073_rev_191f682f",
+   "question": "Does this hold for the claim: The claim is made under a CSS cover whose terms list the insured theft risk as 'Diebstahl (ohne einfachen Diebstahl)', that is theft excluding simple theft; a cover that includes simple theft does not count.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_073",
+    "theft-reviewed-rules#theft-source-0153#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g074",
+   "question": "Does this hold for the claim: The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_074",
+    "theft-reviewed-rules#theft-source-0159#p1",
+    "theft-reviewed-rules#theft-source-0159#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g075",
+   "question": "Does this hold for the claim: Compensation is payable or has been paid in connection with the claim.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_075",
+    "theft-reviewed-rules#theft-source-0164#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g076",
+   "question": "Does this hold for the claim: The policyholder became aware of the compensation payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_076",
+    "theft-reviewed-rules#theft-source-0164#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g077",
+   "question": "Does this hold for the claim: The policyholder exercises the stated contract-termination right.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_077",
+    "theft-reviewed-rules#theft-source-0164#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g078",
+   "question": "Does this hold for the claim: A partial payment is requested after a loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_078",
+    "theft-reviewed-rules#theft-source-0171#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g079",
+   "question": "Does this hold for the claim: A partial payment is requested and the current status of loss assessment establishes an amount that is at least payable.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_079",
+    "theft-reviewed-rules#theft-source-0171#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g080",
+   "question": "Does this hold for the claim: The claim seeks coverage of costs arising from loss mitigation ordered by CSS.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_080",
+    "theft-reviewed-rules#theft-source-0174#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g081",
+   "question": "Does this hold for the claim: Loss mitigation is being considered after a loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_081",
+    "theft-reviewed-rules#theft-source-0174#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g082",
+   "question": "Does this hold for the claim: A medical certificate or police proof is absent.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_082",
+    "theft-reviewed-rules#theft-source-0180#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g083",
+   "question": "Does this hold for the claim: A medical certificate or police proof is absent.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_083",
+    "theft-reviewed-rules#theft-source-0180#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g084",
+   "question": "Does this hold for the claim: The claim concerns financial losses caused by misuse of SIM cards.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_084",
+    "theft-reviewed-rules#theft-source-0185#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g085",
+   "question": "Does this hold for the claim: The condition stated in the governing due-date provision continues to apply.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_085",
+    "theft-reviewed-rules#theft-source-0190#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g086",
+   "question": "Does this hold for the claim: The policyholder gives cancellation notice under the stated post-compensation cancellation right.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_086",
+    "theft-reviewed-rules#theft-source-0192#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g087",
+   "question": "Does this hold for the claim: The policyholder seeks to use the stated 14-day cancellation notice period after payment of compensation.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_087",
+    "theft-reviewed-rules#theft-source-0192#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g088",
+   "question": "Does this hold for the claim: The claim concerns financial losses caused by the misuse of SIM cards.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_088",
+    "theft-reviewed-rules#theft-source-0194#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g090",
+   "question": "Does this hold for the claim: Repairs to insured property are contemplated and their expected costs exceed CHF 500.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_090",
+    "theft-reviewed-rules#theft-source-0084#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g091",
+   "question": "Does this hold for the claim: The insurer has requested preparation of a signed inventory.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_091",
+    "theft-reviewed-rules#theft-source-0086#p3"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g092",
+   "question": "Does this hold for the claim: The entitled person seeks advance payments after the insurer disputes its obligation to provide benefits.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_092",
+    "theft-reviewed-rules#theft-source-0087#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g093",
+   "question": "Does this hold for the claim: The specified period has expired and an entitled person seeks an advance payment.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_093",
+    "theft-reviewed-rules#theft-source-0087#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g094",
+   "question": "Does this hold for the claim: A claim seeks CSS coverage for a theft loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_094",
+    "theft-reviewed-rules#theft-source-0088#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g096",
+   "question": "Does this hold for the claim: A partial payment is demanded following a loss.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_096",
+    "theft-reviewed-rules#theft-source-0090#p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g097",
+   "question": "Does this hold for the claim: A loss has occurred and a partial payment is sought.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_097",
+    "theft-reviewed-rules#theft-source-0090#p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "g098",
+   "question": "Does this hold for the claim: The insurer has issued a written request under warning of the consequences of default and set the applicable period.",
+   "source_refs": [
+    "theft-reviewed-rules#overlay_rule_098",
+    "theft-reviewed-rules#theft-source-0052#p2",
+    "theft-reviewed-rules#theft-source-0101#p1"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "household_theft",
+ "notes": [
+  {
+   "source_refs": [
+    "theft-reviewed-rules#conversion"
+   ],
+   "text": "Each document need comes from one or more reviewed evidence rules; where a rule allows several routes, the cheapest route (fewest documents) was fixed at conversion and the alternatives are named in the need's text."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "theft-reviewed-rules#intake"
+   ],
+   "title": "Intake complete"
+  }
+ ],
+ "sources": [
+  {
+   "id": "theft-reviewed-rules",
+   "kind": "expert_review",
+   "title": "Reviewed theft evidence rules (four-eyes reconciliation), rule_review/final/reviewed_rules.json sha256 ab35ee0c8efd8d3c"
+  }
+ ],
+ "start": "intake",
+ "status": "reviewed",
+ "steps": [
+  {
+   "documents": [
+    "d01",
+    "d03",
+    "d04",
+    "d05",
+    "d07",
+    "d10",
+    "d11",
+    "d12",
+    "d14",
+    "d15",
+    "d16",
+    "d17",
+    "d18",
+    "d20",
+    "d21",
+    "d22",
+    "d23",
+    "d24",
+    "d25",
+    "d26",
+    "d27",
+    "d28",
+    "d29",
+    "d30",
+    "d31",
+    "d32",
+    "d33"
+   ],
+   "id": "intake",
+   "outcome": "closed",
+   "role": "claim_handler",
+   "source_refs": [
+    "theft-reviewed-rules#intake"
+   ],
+   "title": "Theft claim intake: request the evidence the rules require"
+  }
+ ],
+ "title": "Household insurance: theft claim intake",
+ "version": "2026-11-10"
+}
