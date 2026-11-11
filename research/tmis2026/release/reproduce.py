@@ -118,14 +118,22 @@ def child(task, out):
     elif task == "numbers_sharc":
         exec_redirected(AN / "make_numbers_sharc.py", 'OUT = HERE.parent / "paper" / "results" / "numbers_sharc.tex"',
                         f"OUT = Path({str(out / 'numbers_sharc.tex')!r})")
-    elif task in ("fig_s6", "fig_s4", "figures"):
+    elif task in ("fig_s6", "fig_s4", "figures", "fig_review"):
         m = load(AN / f"{task}.py", task)
         m.FIG = out
         names = {"fig_s6": ["fig_main", "fig_cost"], "fig_s4": ["fig_pipeline", "fig_hero", "fig_gestures"],
                  "figures": ["fig_reconverge", "fig_fate", "fig_outcomes", "fig_trace", "fig_models", "fig_knowledge",
-                             "fig_study2"]}[task]
+                             "fig_study2"], "fig_review": ["fig_families"]}[task]
         for n in names:
             getattr(m, n)()
+    elif task == "review":
+        m = load(AN / "study3_review.py", "study3_review")
+        m.OUT = out / "study3_review"
+        m.main()
+    elif task == "numbers_study3_review":
+        exec_redirected(AN / "make_numbers_study3_review.py",
+                        'OUT = TMIS / "paper" / "results" / "numbers_study3_review.tex"',
+                        f"OUT = Path({str(out / 'numbers_study3_review.tex')!r})")
     elif task == "dev_probe":
         sys.path.insert(0, str(TMIS / "dev_probe"))
         m = load(TMIS / "dev_probe" / "build.py", "dev_probe_build")
@@ -186,6 +194,10 @@ def product_step(tmp):
     ok = got == spec["source_tree_sha256"]
     report("product: parity source-tree hash", "PASS" if ok else "FAIL", f"{got[:16]}…" + ("" if ok else " expected "
                                                                                            + spec["source_tree_sha256"][:16]), s)
+    r, s = run([sys.executable, AN / "check_fragment.py"], TMIS)
+    counts = [l[5:] for l in r.stdout.splitlines() if l.startswith(("PASS counts", "FAIL counts"))]
+    report("product: Appendix A fragment check (analysis/check_fragment.py)", "PASS" if r.returncode == 0 else "FAIL",
+           ("; ".join(counts) + "; theft 5000 random assignments") if r.returncode == 0 else tail(r, 400), s)
     return True
 
 
@@ -217,8 +229,74 @@ def study3_steps(tmp):
             report(f"{label}: {len(names)} PDFs written", "FAIL" if miss else "PASS", ", ".join(miss))
 
 
+# Parts of analysis/study3_review.py that read the product's response cache (runs/product/cache, ignored by git): the
+# readings in R3 and the cost split by component in R7. Everything else in the output must reproduce without it.
+REVIEW_CACHE_PARTS = [("R3", d, k) for d in ("casepath", "casepath_checklist")
+                      for k in ("readings_agreement", "readings_per_case_run", "all_readings_agree_on_wrong_value",
+                                "admitted_wrong_with_all_readings_agreeing")] + [("R7", "cost"), ("cache_missing",)]
+REVIEW_CACHE_MD = ("## R3.", "## R7.")
+
+
+def _pop(d, path):
+    for k in path[:-1]:
+        d = d[k]
+    return d.pop(path[-1])
+
+
+def _md_sections(text):
+    """Markdown split at '## ' headings; the line that counts missing cache files is dropped from 'Inputs'."""
+    parts, cur = {}, "head"
+    for line in text.splitlines():
+        if line.startswith("## "):
+            cur = line
+        if "response-cache files missing" in line:
+            continue
+        parts.setdefault(cur, []).append(line)
+    return parts
+
+
+def review_steps(tmp):
+    out = tmp / "review"
+    out.mkdir()
+    r = child_step("study 3 review: analysis/study3_review.py", "review", out)
+    if r.returncode == 0:
+        new = json.loads((out / "study3_review.json").read_text())
+        old = json.loads((AN / "study3_review.json").read_text())
+        missing = new.get("cache_missing")
+        a, b = json.loads(json.dumps(new)), json.loads(json.dumps(old))
+        for p in REVIEW_CACHE_PARTS:
+            _pop(a, p)
+            _pop(b, p)
+        diff = sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+        report("study 3 review: JSON equal without the cache-dependent parts", "FAIL" if diff else "PASS",
+               f"differ: {', '.join(diff)}" if diff else f"{len(a)} top-level entries; R3 and R7 compared without "
+                                                          "their cache parts")
+        ma, mb = _md_sections((out / "study3_review.md").read_text()), _md_sections((AN / "study3_review.md").read_text())
+        mdiff = [k for k in set(ma) | set(mb) if not k.startswith(REVIEW_CACHE_MD) and ma.get(k) != mb.get(k)]
+        report("study 3 review: .md equal outside sections R3 and R7", "FAIL" if mdiff else "PASS", ", ".join(mdiff)[:300])
+        if missing == 0:
+            for ext in (".json", ".md"):
+                ok, why = same(out / f"study3_review{ext}", AN / f"study3_review{ext}")
+                report(f"study 3 review: whole {ext} equals the stored file (cache present)", "PASS" if ok else "FAIL", why)
+        else:
+            msg = (f"{missing} response-cache files missing (runs/product/cache is not in git); the readings of R3 and "
+                   "the cost split of R7 were not compared")
+            for ext in (".json", ".md"):
+                report(f"study 3 review: cache-dependent parts of {ext}", "SKIP", msg)
+    r = child_step("study 3 review: analysis/make_numbers_study3_review.py", "numbers_study3_review", out)
+    if r.returncode == 0:
+        ok, why = same(out / "numbers_study3_review.tex", TMIS / "paper" / "results" / "numbers_study3_review.tex")
+        report("study 3 review: numbers_study3_review.tex equals the stored file", "PASS" if ok else "FAIL", why)
+    fig = tmp / "figures"
+    fig.mkdir(exist_ok=True)
+    r = child_step("study 3 review figure (fig_review.py) build", "fig_review", fig)
+    if r.returncode == 0:
+        ok = (fig / "fig_families.pdf").is_file() and (fig / "fig_families.pdf").stat().st_size > 0
+        report("study 3 review figure: fig_families.pdf written", "PASS" if ok else "FAIL")
+
+
 def test_steps():
-    for t in ("test_study3.py", "test_study2.py"):
+    for t in ("test_study3.py", "test_study3_review.py", "test_study2.py"):
         script_step(f"tests: analysis/{t}", [sys.executable, t], cwd=AN)
 
 
@@ -226,7 +304,7 @@ def copy_for_verify(tmp):
     """A copy of research/tmis2026 at the same depth, with data/ and casepath-api/ linked from the checkout."""
     root = tmp / "s12"
     dst = root / "research" / "tmis2026"
-    skip = {TMIS / "runs" / "product" / "cache", TMIS / "runs" / "cache", TMIS / "runs" / "study3",
+    skip = {TMIS / "runs" / "product" / "cache", TMIS / "runs" / "cache",
             TMIS / "deliverables", TMIS / "paper" / "figures" / "ui", TMIS / "release"}
 
     def ignore(d, names):
@@ -249,22 +327,19 @@ def study12_steps(tmp, skip_latex):
     report(f"studies 1-2: verify_paper.py ran {len(ran)} analysis scripts", "FAIL" if failed_runs or not ran else "PASS",
            "; ".join(failed_runs)[:300] if failed_runs else ("no script ran: " + tail(r) if not ran else ""), s)
 
-    def line(prefix):
-        x = [l for l in lines if l[5:].startswith(prefix)]
-        return x[0] if x else None
-    for prefix, label in (("evidence files reproduce", "studies 1-2: analysis/*.json evidence files byte for byte"),
-                          ("number macros reproduce", "studies 1-2: paper/results/numbers.tex byte for byte"),
-                          ("all citation keys resolve", "paper: every citation key resolves")):
-        x = line(prefix)
-        report(label, "FAIL" if x is None else x[:4], "" if x is None or x.startswith("PASS") else (x[5:][:300] if x else "not reported"))
     latex = shutil.which("pdflatex") and shutil.which("bibtex")
-    for prefix, label in (("clean compile", "paper: compiles in a clean copy"),
-                          ("no undefined", "paper: no undefined references")):
-        x = line(prefix)
-        if skip_latex or not latex:
-            report(label, "SKIP", "--skip-latex" if skip_latex else "pdflatex/bibtex not installed")
+    for l in lines:
+        if " ran " in l:
+            continue
+        what = l[5:]
+        compile_line = what.startswith(("main:", "supplement:"))
+        if compile_line and (skip_latex or not latex):
+            report(f"paper: {what.split(' — ')[0]}", "SKIP", "--skip-latex" if skip_latex else "pdflatex/bibtex not installed")
         else:
-            report(label, "FAIL" if x is None else x[:4], "" if x and x.startswith("PASS") else "see verify_paper.py")
+            report(("paper: " if compile_line or "citation" in what or "Section" in what or "wording" in what
+                    else "verify_paper: ") + what.split(" — ")[0], l[:4], what.split(" — ")[1][:300] if " — " in what else "")
+    if not any(l[5:].startswith("supplement:") for l in lines) and (TMIS / "paper" / "supplement.tex").exists():
+        report("paper: supplement built", "FAIL", "verify_paper.py did not build supplement.tex")
 
     out = tmp / "s12_out"
     out.mkdir()
@@ -320,6 +395,7 @@ def main():
             data_steps(tmp)
             product_step(tmp)
             study3_steps(tmp)
+            review_steps(tmp)
             test_steps()
             study12_steps(tmp, a.skip_latex)
     finally:

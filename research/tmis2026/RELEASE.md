@@ -90,19 +90,40 @@ closed local port. Steps:
    rebuilt into a temporary folder and compared byte for byte; `verify.py` of both Study 1 data sets;
    `rule_review/SHA256SUMS`.
 2. Product: the commit `6a72159c` is in the clone, and its `python -m casepath parity` hash is the one in
-   `analysis/study3_spec.json`.
+   `analysis/study3_spec.json`. Then `analysis/check_fragment.py` checks the claims of Appendix A ("The tested
+   workflows are flow workflows", "The plain walk on theft") with the product's own `process/workflows.py` taken
+   from that commit by `git archive`, as `analysis/study3.py` takes it. For the three tenancy workflows it compares
+   the product's walk with Equations (1)–(2) under every complete assignment (32, 32 and 8) and the product's
+   evaluation with exact deferral, Equation (4), under every three-valued assignment (243, 243 and 27). For the
+   theft workflow it checks that it is one step without transitions and compares the product's evaluation with
+   exact deferral on 5,000 random three-valued assignments (seed 1; 4,881 of them go through the plain walk). It
+   fails on any disagreement and on any count that differs from the appendix.
 3. Study 3: `analysis/study3.py --data fresh2 --label confirm` into a temporary folder, compared byte for byte with
    `analysis/study3_results_fresh2_confirm.json` and `.md`; the same for `analysis/study3_posthoc.py`
    (`study3_posthoc.json`, `.md`) and `analysis/make_numbers_study3.py` (`paper/results/numbers_study3.tex`);
    the Study 3 figures (`fig_s6.py`: `fig_main`, `fig_cost`) and the Section 4 figures (`fig_s4.py`) are built
    into a temporary folder (built, not compared).
-4. Tests: `analysis/test_study3.py`, `analysis/test_study2.py`.
-5. Studies 1 and 2: `analysis/verify_paper.py` in a temporary copy of this folder with
+4. Study 3, analyses added after review: `analysis/study3_review.py` into a temporary folder. Two of its parts read
+   the product's response cache (`runs/product/cache/`, ignored by git, so absent from a clone): the individual
+   readings in R3 (`readings_agreement`, `readings_per_case_run`, `all_readings_agree_on_wrong_value`,
+   `admitted_wrong_with_all_readings_agreeing`, for both product designs) and the cost split by component in R7
+   (`R7.cost`), and the count `cache_missing`. The script runs without the cache; those parts then come out
+   different. The step compares everything else with the stored `analysis/study3_review.json` and `.md`
+   (the JSON entry by entry, the Markdown section by section outside R3 and R7). When every cache file the
+   analysis reads is present (`cache_missing` is 0) it also compares both files byte for byte; otherwise these
+   two lines are SKIP and say how many cache files are missing. Then `make_numbers_study3_review.py` is compared
+   with `paper/results/numbers_study3_review.tex` (it reads the stored JSON), and `fig_review.py` builds
+   `fig_families`.
+5. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (30), `analysis/test_study2.py`.
+6. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
    `runs/responses_cache.tar.gz` unpacked. It re-runs 18 scripts and checks that every `analysis/*.json`
-   evidence file and `paper/results/numbers.tex` come out byte for byte the same, that every citation key
-   resolves and that the paper compiles (the compile is reported as SKIP when pdflatex is missing or with
-   `--skip-latex`). Then `make_numbers_sharc.py` is compared with `paper/results/numbers_sharc.tex`, and
-   `figures.py` is built.
+   evidence file and `paper/results/numbers.tex` come out byte for byte the same; regenerates
+   `numbers_study3.tex` and `numbers_sharc.tex`; checks the structure of the included sections and that every
+   citation key resolves; and builds the two documents of the paper, `main.tex` and `supplement.tex`, in the order
+   they need (main, supplement, main, each with BibTeX, because each reads the other's `.aux`), then checks both
+   logs for errors, undefined references, multiply defined labels and overfull boxes over 5 pt. The compile lines
+   are SKIP when pdflatex is missing or with `--skip-latex`. Then `make_numbers_sharc.py` is compared with
+   `paper/results/numbers_sharc.tex`, and `figures.py` is built.
 
 **What Studies 1 and 2 re-check, and what not.** Re-checked from stored outputs: every number in
 `paper/results/numbers.tex` and every `analysis/*.json` that `verify_paper.py` regenerates (Study 1 scoring and
@@ -114,6 +135,11 @@ jobs) and the tenancy entries of `analysis/error_causes.json`; `runs/sharc/summa
 into macros); and the Study 1 and 2 figures (built, not compared).
 
 Run time of the fresh-clone test: see section 8.
+
+**What needs the cache archive.** Only the two cache-dependent parts of the review analysis (step 4): the readings
+of R3 and the cost split of R7. To check them, put the product's response cache (79,404 files, 0.9 GB; not in the
+repository) at `runs/product/cache/` and run `reproduce.sh` again; the two SKIP lines then become byte-for-byte
+comparisons. Every other step needs only the repository.
 
 ## 4. Re-run Study 3 with model calls
 
@@ -141,9 +167,13 @@ Four limits for anyone outside the original container:
 - **Response caches are not in git.** `runs/product/cache/` and `runs/cache/` are ignored by `.gitignore`. None of
   the 22,999 cached product responses that Study 3's stored plans reference is tracked. A re-run from a clone
   therefore pays for every call again, and its answers can differ because the models are not deterministic.
-- **Absolute paths.** `harness/product/compare_theft.py:9-17` (run by the driver's fourth check) and
-  `harness/v2/cp4_score.py:17` use absolute paths of the original container (`/home/user/...`). They fail in a
-  clone at another path until those lines are made relative.
+- **Absolute paths.** `harness/product/compare_theft.py` (run by the driver's fourth check) and
+  `harness/v2/cp4_score.py` now find their files relative to their own location; their output is unchanged. Other
+  defaults still point outside the repository and must be given on the command line or in the environment:
+  the product worktree (`--product`, `CASEPATH_PRODUCT`; the driver passes it), the CA bundle
+  `/root/.ccr/ca-bundle.crt` (`harness/product/run_product.py:62`, `run_api.py:51`), and three development-only
+  paths (`harness/product/baselines_theft.py:208`, `harness/parity_original.py:7`,
+  `harness/v2/build_review_bundle.py:15`) that no step of Study 3 or of `reproduce.sh` uses.
 - **Stored labels are not overwritten.** Use a new `--label`; a resumed run must keep its settings.
 
 ## 5. Licences

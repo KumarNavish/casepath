@@ -3,6 +3,7 @@ Writes runs/v2/cp4/scores.json."""
 import json
 import sys
 from collections import Counter, defaultdict
+from pathlib import Path
 
 import common
 import theft_v2
@@ -14,7 +15,7 @@ from theft_score import delta  # noqa: E402
 
 K = 3
 OUT = common.OUT / "cp4"
-REV = "/home/user/casepath/research/tmis2026/rule_review/final/reviewed_rules.json"
+REV = str(Path(__file__).resolve().parents[2] / "rule_review" / "final" / "reviewed_rules.json")  # was an absolute path
 STORIES = {"gpt-6-luna": [0, 1, 2, 4, 5, 6, 7], "gpt-6.1-terra": [4, 5]}
 EMPTY = {"requests": [], "holds": []}
 

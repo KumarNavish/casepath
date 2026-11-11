@@ -6,15 +6,16 @@ Fails (exit 1) when a document decision differs, or when a document the reviewed
 plan_exact under some assignment: every condition alone, all together, and the random assignments) has no need in the
 workflow."""
 import json, random, sys
+from pathlib import Path
+_HERE = Path(__file__).resolve().parent  # harness/product; paths below are relative to this file (were absolute)
 _PRODUCT = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--product"), "/home/user/work/casepath-product-7ff7af64")
-sys.path[:0] = ["/home/user/casepath/research/tmis2026/harness/product", "/home/user/casepath/research/tmis2026/harness",
-                "/home/user/casepath/research/tmis2026/harness/v2", f"{_PRODUCT}/casepath-internal"]
+sys.path[:0] = [str(_HERE), str(_HERE.parent), str(_HERE.parent / "v2"), f"{_PRODUCT}/casepath-internal"]
 import convert_theft as ct
 from casepath.process import workflows as W
 import load_reviewed, theft_v2
 from theft_data import doc_ids
 ids = doc_ids()
-wf = json.load(open("/home/user/casepath/research/tmis2026/harness/product/workflows/theft-reviewed/household_theft.json"))
+wf = json.load(open(_HERE / "workflows" / "theft-reviewed" / "household_theft.json"))
 pack = theft_v2.TheftPack(load_reviewed.load(ct.RULES), judge_all=True)
 g2f = {g: ct.fact_id(g) for g in pack.guards}
 used = {f["id"] for f in wf["facts"]}

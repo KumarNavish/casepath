@@ -9,8 +9,8 @@
    (make_numbers_study3.py, make_numbers_sharc.py; the saved files are restored afterwards).
 4. Structure of the included sections: no removed figure in the body, no "expert review" wording,
    model names in Sections 1-9 only once, in Section 6.
-5. The paper compiles from a clean copy without errors, undefined references, multiply defined
-   labels or overfull boxes over 5pt.
+5. The paper (main.tex, and supplement.tex when present, built main, supplement, main) compiles from a
+   clean copy without errors, undefined references, multiply defined labels or overfull boxes over 5pt.
 
     python3 verify_paper.py               all checks
     python3 verify_paper.py --paper-only  skip check 1 (Studies 1-2 recomputation, needs the unpacked cache)
@@ -93,14 +93,19 @@ with tempfile.TemporaryDirectory() as tmp:
     shutil.copytree(PAPER, dst, ignore=shutil.ignore_patterns("*.aux", "*.log", "*.bbl", "*.blg", "*.out", "*.pdf", "build*.log", "comment.cut"))
     for fig in (PAPER / "figures").glob("*.pdf"):
         shutil.copy(fig, dst / "figures" / fig.name)
-    for args in (["pdflatex", "-interaction=nonstopmode", "main.tex"], ["bibtex", "main"],
-                 ["pdflatex", "-interaction=nonstopmode", "main.tex"], ["pdflatex", "-interaction=nonstopmode", "main.tex"]):
-        subprocess.run(args, cwd=dst, capture_output=True, text=True)
-    log = (dst / "main.log").read_text(errors="ignore")
-    step("clean compile without errors", (dst / "main.pdf").exists() and "\n! " not in log)
-    step("no undefined references or citations", "undefined" not in re.sub(r"Font shape .*? undefined", "", log))
-    step("no multiply defined labels", "multiply defined" not in log)
-    big = [float(m) for m in re.findall(r"Overfull \\[hv]box \(([0-9.]+)pt too", log) if float(m) > 5]
-    step("no overfull box over 5pt", not big, ", ".join(f"{b}pt" for b in big))
+    # The paper is two documents that read each other's .aux through xr-hyper (prefixes S- and M-). Build order, as
+    # main.tex states: main, supplement, main, each with BibTeX. Both logs are checked after the last pass.
+    docs = ["main"] + (["supplement", "main"] if (dst / "supplement.tex").exists() else [])
+    for doc in docs:
+        for args in (["pdflatex", "-interaction=nonstopmode", f"{doc}.tex"], ["bibtex", doc],
+                     ["pdflatex", "-interaction=nonstopmode", f"{doc}.tex"], ["pdflatex", "-interaction=nonstopmode", f"{doc}.tex"]):
+            subprocess.run(args, cwd=dst, capture_output=True, text=True)
+    for doc in dict.fromkeys(docs):
+        log = (dst / f"{doc}.log").read_text(errors="ignore")
+        step(f"{doc}: clean compile without errors", (dst / f"{doc}.pdf").exists() and "\n! " not in log)
+        step(f"{doc}: no undefined references or citations", "undefined" not in re.sub(r"Font shape .*? undefined", "", log))
+        step(f"{doc}: no multiply defined labels", "multiply defined" not in log)
+        big = [float(m) for m in re.findall(r"Overfull \\[hv]box \(([0-9.]+)pt too", log) if float(m) > 5]
+        step(f"{doc}: no overfull box over 5pt", not big, ", ".join(f"{b}pt" for b in big))
 print("ALL CHECKS PASSED" if ok else "SOME CHECKS FAILED")
 sys.exit(0 if ok else 1)
