@@ -63,7 +63,9 @@ def load_product(path):
     return mods
 
 
-def run_case(P, rp, catalogue, model, run, cid, text, atts, title="Tenancy claim"):
+def run_case(P, rp, catalogue, model, run, cid, text, atts, title="Tenancy claim", record_path=None):
+    """``record_path``: also write the claim-run's full run record there (gzipped JSON: the run as GET /api/runs/{id}
+    returns it and the case as GET /api/cases/{id} returns it), for a replay bundle. Off by default."""
     from fastapi.testclient import TestClient
     data_dir = Path(tempfile.mkdtemp(prefix="cp-api-"))
     try:
@@ -88,6 +90,12 @@ def run_case(P, rp, catalogue, model, run, cid, text, atts, title="Tenancy claim
                 if state["status"] == "completed":
                     break
             full = client.get(f"/api/cases/{case['id']}").json()
+        if record_path is not None:
+            import gzip
+            Path(record_path).parent.mkdir(parents=True, exist_ok=True)
+            with gzip.open(record_path, "wt", encoding="utf-8") as fh:
+                json.dump({"format": "casepath.harness.run_record/1", "claim": cid, "run_index": run, "model": model,
+                           "catalogue": str(catalogue), "run": state, "case": full}, fh, ensure_ascii=False, default=str)
         run_full = full["run"]
         outcome = {"status": run_full["status"], "error": run_full.get("error"), "result": run_full.get("result") or {},
                    "routing": run_full.get("routing") or {},
@@ -109,6 +117,8 @@ def main():
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--cap", type=float, required=True, help="stop starting claim-runs once the dev ledger reaches this USD total")
     ap.add_argument("--only", default=None)
+    ap.add_argument("--records", action="store_true", help="also store each claim-run's full run record under "
+                    "runs/product/records_<model>_<set>_<label>/ (off by default)")
     a = ap.parse_args()
     import run_product as rp  # the caching transport and the plan mapping; imports nothing from the product
     product = a.product or str(rp.PRODUCT_ROOT)
@@ -150,7 +160,8 @@ def main():
         text, atts = pilot.inputs(D, cid)
         t0 = time.time()
         try:
-            res = run_case(P, rp, catalogue, a.model, r, cid, text, atts)
+            res = run_case(P, rp, catalogue, a.model, r, cid, text, atts,
+                           record_path=(rp.RUNS / f"records_{a.model}_{a.set}_{a.label}" / f"{cid}_{r}.json.gz") if a.records else None)
         except Exception as error:  # an adapter failure is recorded, never silently dropped
             res = {"plan": None, "status": "adapter_error", "error": f"{type(error).__name__}: {error}", "usage": []}
         res["seconds"] = round(time.time() - t0, 1)

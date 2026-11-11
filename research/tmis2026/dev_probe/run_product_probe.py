@@ -27,7 +27,8 @@ import run_api  # noqa: E402
 import run_product as rp  # noqa: E402
 
 _se = run_api.settings_env
-run_api.settings_env = lambda *a: {**_se(*a), "CASEPATH_MODEL_REASONING": "true"}
+run_api.settings_env = lambda *a: {**_se(*a), "CASEPATH_MODEL_REASONING": "true",  # SCOPE=checklist: the checklist-only run scope
+                                   **({"CASEPATH_RUN_SCOPE": os.environ["SCOPE"]} if os.environ.get("SCOPE") else {})}
 CATALOGUE = H / "workflows" / "fresh-serial-sync"
 
 
@@ -50,7 +51,9 @@ def child(a):
     import pilot
     import tenancy_probe as D
     text, atts = pilot.inputs(D, a.cid)
-    res = run_api.run_case(P, rp, CATALOGUE, a.model, a.run, a.cid, text, atts)
+    records = os.environ.get("RECORDS")  # also store the full run record there (off by default)
+    res = run_api.run_case(P, rp, CATALOGUE, a.model, a.run, a.cid, text, atts,
+                           record_path=(Path(records) / f"{a.cid}_{a.run}.json.gz") if records else None)
     res["keys"] = keys
     Path(a.outcomes).mkdir(parents=True, exist_ok=True)
     (Path(a.outcomes) / f"{a.cid}_{a.run}.json").write_text(json.dumps(seen.get("outcome"), ensure_ascii=False, default=str))
