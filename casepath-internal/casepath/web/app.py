@@ -133,6 +133,7 @@ def default_model_factory(settings):
             model = kind(settings.model, lambda: user_token)
             if settings.model.reading_deployment:
                 model.reading = kind(replace(settings.model, deployment=settings.model.reading_deployment), lambda: user_token)
+            model.agents = {a: kind(replace(settings.model, deployment=d), lambda: user_token) for a, d in settings.model.agent_deployments}
             return model
         if "model" not in shared:
             if settings.model.provider == "databricks":
@@ -143,6 +144,7 @@ def default_model_factory(settings):
             shared["model"] = kind(settings.model, token)
             if settings.model.reading_deployment:  # page reading and dossier splitting on another deployment
                 shared["model"].reading = kind(replace(settings.model, deployment=settings.model.reading_deployment), token)
+            shared["model"].agents = {a: kind(replace(settings.model, deployment=d), token) for a, d in settings.model.agent_deployments}
         return shared["model"]
     return factory
 

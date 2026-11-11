@@ -336,7 +336,11 @@ class HandlerFlowTests(unittest.TestCase):
         script.pop(second)
         brief_report = next(i for i, t in enumerate(script) if t and t[0][0] == "report" and t[0][1].get("request"))
         script.insert(brief_report, [c for c in facts_turn if c[0] != "report"])
-        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=workflow)
+        model = ScriptedModel(script)
+        result = CaseTeam(model).run(case=CASE, files=FILES, workflow=workflow)
+        openings = [json.loads(i[0]["content"]) for i in model.inputs if i and isinstance(i[0].get("content"), str) and i[0]["content"].startswith("{")]
+        checker = [o for o in openings if "evaluate" in o]
+        self.assertTrue(checker and "get_findings" in checker[0])  # the result checker is handed what it used to fetch
         agents = {e["agent"] for e in result["events"] if e["kind"] == "agent.start"}
         self.assertNotIn("process_builder", agents)
         self.assertIn("agent.skipped", {e["kind"] for e in result["events"]})
@@ -370,3 +374,20 @@ class TooLongTurnTests(unittest.TestCase):
                 raise TooLong("The model stopped before finishing its turn.")
         with self.assertRaises(TooLong):
             CaseTeam(AlwaysTooLong(script)).run(case=CASE, files=FILES, workflow=FIXTURE)
+
+
+class AgentModelTests(unittest.TestCase):
+    def test_an_agent_runs_on_its_own_model_when_one_is_configured(self):
+        main, other = ScriptedModel([]), ScriptedModel([])
+        main.agents = {"claim_reader": other}
+        team = CaseTeam(main)
+        self.assertIs(team.model_for("claim_reader"), other)
+        self.assertIs(team.model_for("result_checker"), main)
+        self.assertIs(CaseTeam(ScriptedModel([])).model_for("claim_reader").__class__, ScriptedModel)
+        from casepath.config import load_settings
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            env = {"CASEPATH_DATA_DIR": tmp, "CASEPATH_DEV_USER": "u", "CASEPATH_AZURE_OPENAI_ENDPOINT": "https://example.openai.azure.com",
+                   "CASEPATH_AZURE_OPENAI_DEPLOYMENT": "big", "CASEPATH_AGENT_MODELS": "claim_reader=small, document_finder = small"}
+            self.assertEqual(dict(load_settings(env).model.agent_deployments), {"claim_reader": "small", "document_finder": "small"})
+            self.assertEqual(load_settings({**env, "CASEPATH_AGENT_MODELS": ""}).model.agent_deployments, ())

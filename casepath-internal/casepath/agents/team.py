@@ -569,9 +569,10 @@ TOOL_LOCK = threading.RLock()  # ponytail: one lock for all cases; per-case lock
 SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
 
 
-def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12):
+def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12, given=()):
+    """``given``: tools the lead runs itself and hands over in the opening, so the agent needs no turn for them."""
     spec = AGENTS[agent]
-    tools = _tool_specs(work, spec["tools"])
+    tools = _tool_specs(work, [t for t in spec["tools"] if t not in given])
     tools.append({"name": "report", "description": f"Report back to the lead. Ends your task as {spec['title']}.",
                   "parameters": _report_schema(work, agent)})
     by_name = {t["name"]: t for t in tools}
@@ -580,6 +581,9 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12)
                "files": work.evidence.catalogue(), "process": workflows.ref(work.graph)}
     if work.brief and agent != "claim_reader":
         opening["brief"] = work.brief
+    for name in given:
+        with TOOL_LOCK:
+            opening[name] = _dispatch(work, agent, name, {})
     if work.total_chars <= SMALL_CASE_CHARS and "read_file" in spec["tools"]:
         opening["files_text"] = {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}
     conversation = [{"role": "user", "content": json.dumps(opening, ensure_ascii=False)}]
@@ -747,16 +751,21 @@ class CaseTeam:
     def __init__(self, model, *, effort="medium", max_delegations=12, voice=None):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
 
+    def model_for(self, agent):
+        """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
+        return (getattr(self.model, "agents", None) or {}).get(agent, self.model)
+
     def _delegate(self, work, state, agent, instruction):
         if state["delegations"] >= self.max_delegations:
             raise TeamError("delegation_limit", "The case needed more steps than allowed.")
         state["delegations"] += 1
         work.emit("lead", "delegate", to=agent, instruction=instruction[:300])
         if agent == "source_checker":
-            return run_source_checker(self.model, work, self.effort)
+            return run_source_checker(self.model_for(agent), work, self.effort)
         if agent == "result_checker" and work.unverified():
-            run_source_checker(self.model, work, self.effort)
-        report = run_agent(self.model, work, agent, instruction, effort=self.effort)
+            run_source_checker(self.model_for("source_checker"), work, self.effort)
+        given = ("open_process", "evaluate", "get_findings") if agent == "result_checker" and getattr(self, "handler_flow", False) else ()
+        report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given)
         if agent == "claim_reader" and work.brief is None:
             work.brief = _located_brief(work, report)
         if agent == "process_builder":
@@ -774,12 +783,13 @@ class CaseTeam:
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0}
         work.emit("lead", "agent.start", instruction="Prepare the case.")
-        handler_flow = any(s.get("action") for s in work.graph["steps"])
+        handler_flow = self.handler_flow = any(s.get("action") for s in work.graph["steps"])
         plan = PLAN
         if handler_flow:  # the process is fixed before reading: one reading briefs the case and records its facts
             plan = [(a, i) for n, (a, i) in enumerate(PLAN) if not (a == "claim_reader" and n > 0)]
             plan[0] = ("claim_reader", PLAN[0][1] + " Then, in the same work, " + PLAN[2][1][0].lower() + PLAN[2][1][1:])
-            plan = [(a, i + " This process writes its letters itself: leave the reply draft empty (not needed).")
+            plan = [(a, i + " This process writes its letters itself: leave the reply draft empty (not needed). The process, its"
+                        " evaluation and the findings are given to you: report in your first turn; open a file only for a quote you need.")
                     if a == "result_checker" else (a, i) for a, i in plan]
         if handler_flow:  # the reading and the document search do not depend on each other: run them side by side
             reading, finding = plan[0], next(p for p in plan if p[0] == "document_finder")

@@ -31,6 +31,7 @@ class ModelSettings:
     trust_env: bool
     api_version: str | None = None
     reading_deployment: str | None = None
+    agent_deployments: tuple = ()  # (("claim_reader", "<deployment>"), …): an agent on another model; empty = all on ``deployment``
     gateway_hosts: tuple = ()
     provider: str = "azure_openai"
     chat_path: str | None = None
@@ -105,6 +106,7 @@ def load_settings(env=None):
             trust_env=_flag(env, "CASEPATH_MODEL_TRUST_ENV", True),
             api_version=env.get("CASEPATH_AZURE_OPENAI_API_VERSION") or None,
             reading_deployment=env.get("CASEPATH_AZURE_OPENAI_READING_DEPLOYMENT") or env.get("CASEPATH_READING_MODEL") or None,
+            agent_deployments=tuple(tuple(x.strip() for x in pair.split("=", 1)) for pair in env.get("CASEPATH_AGENT_MODELS", "").split(",") if "=" in pair),
             provider=provider, chat_path=env.get("CASEPATH_CHAT_PATH") or None,
             auth=(env.get("CASEPATH_MODEL_AUTH") or "app").strip().lower(),
             api=(env.get("CASEPATH_MODEL_API") or "chat").strip().lower(),
