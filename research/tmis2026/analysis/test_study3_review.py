@@ -214,6 +214,54 @@ class ProductComparison(unittest.TestCase):
                          {"a": "stated_true", "b": "stated_false", "c": "open", "d": "open"})
 
 
+class RunPairs(unittest.TestCase):
+    def test_run_pair_identity(self):
+        a, b = {"requests": ["x"], "holds": []}, {"requests": ["x"], "holds": ["y"]}
+        plans = {"c1": [a, a, a], "c2": [a, b, a], "c3": [a, b, None]}
+        out = R.run_pair_identity(plans, lambda c: "g1" if c == "c1" else "g2")
+        self.assertEqual(out["all"], (9, 4))   # c1: 3 identical pairs; c2: runs 1 and 3 only; c3: none
+        self.assertEqual(out["g1"], (3, 3))
+        self.assertEqual(out["g2"], (6, 1))
+
+    def test_single_run_has_no_pair(self):
+        self.assertEqual(R.run_pair_identity({"c": [{"requests": []}]}, lambda c: "g"), {})
+
+
+class KleeneScored(unittest.TestCase):
+    REF = WrongPresumptions.REF
+
+    def test_scored_adds_all_deviations(self):
+        row = R.scored(ref_of(["a"], ["c"], ["d"]), {"requests": ["d"], "holds": ["a", "e"]})
+        self.assertEqual((row["strict_unsafe"], row["held_req"], row["spurious_hold"]), (2, 1, 1))  # d unnecessary, c skipped
+        self.assertEqual(row["all_dev"], 4)
+
+    def test_paired_counts(self):
+        a = [{"x": 1}, {"x": 0}, {"x": 2}]
+        b = [{"x": 0}, {"x": 0}, {"x": 3}]
+        self.assertEqual(R.paired_counts(a, b, "x"), {"a more": 1, "a fewer": 1, "equal": 1})
+
+    def test_states_to_plan(self):
+        st = {"a": "required_now", "b": "supplied_insufficient", "c": "held", "d": "not_needed", "e": "supplied_sufficient"}
+        self.assertEqual(R.states_to_plan(st), {"requests": ["a", "b"], "holds": ["c"]})
+
+    def test_kleene_holds_more_after_reconvergence(self):
+        """Health effects open in the defect workflow: strong Kleene holds the documents after the branches meet
+        again, exact deferral only those on which the completions disagree (Proposition 3.2)."""
+        build, ct = R.build_module(), __import__("casepath_tenancy")
+        acc = lambda v: {"status": "established", "verdict": "accepted", "value": v}
+        facts = {"dispute_family": acc("defect_mold_heating"), "health_effects": {"status": "unknown", "value": None},
+                 "mold": acc(True), "heating": acc(False), "specialist_needed": acc(False), "deposit_considered": acc(False)}
+        entry = {"product_extra": {"facts": facts, "document_judgments": {}}}
+        ex, kl, left_out = R.harness_checklists(build, ct, self.REF, entry, "defect_mold_heating")
+        self.assertEqual(left_out, 0)
+        self.assertTrue(set(ex["holds"]) < set(kl["holds"]))
+        self.assertTrue(set(kl["requests"]) < set(ex["requests"]))
+        facts["health_effects"] = acc(False)
+        ex2, kl2, _ = R.harness_checklists(build, ct, self.REF, entry, "defect_mold_heating")
+        self.assertEqual(ex2, kl2)  # no open fact: the two evaluations agree
+        self.assertEqual(ex2["holds"], [])
+
+
 class CostSplit(unittest.TestCase):
     def test_classify(self):
         calls = [("router", False, 1.0), ("claim_reader", False, 2.0), ("claim_reader", False, 3.0),

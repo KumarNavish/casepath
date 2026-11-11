@@ -104,7 +104,7 @@ The checklist is formed from $\exactreq$ as from $\req$. An open fact becomes a 
 (a) For any workflow over two-valued facts whose need under a complete assignment is defined, exact deferral holds a document if and only if two completions of $\val$ disagree on it, and a document it requests or marks \skipd has that status under every completion. (b) If the workflow is moreover a flow workflow, exact deferral never holds a document that strong Kleene evaluation requests or marks \skipd.
 \end{proposition}
 
-Exact deferral holds what the open facts can change and nothing else. In Figure~\ref{fig:reconverge} it requests the lease, the defect notice and the later documents, holds the medical confirmation and asks whether the mould has affected anyone's health. It costs one evaluation per completion. Above eight open facts or 256 combinations of answers, the product returns the plain walk instead, which stops at the first transition whose condition is open and holds each document whose own condition is open. In Study~3 tenancy case-runs had at most \sthreeDeferralCasePathTenMaxOpen{} open facts. Every theft case-run had more (\sthreeDeferralCasePathThMinOpenPlain--\sthreeDeferralCasePathThMaxOpen) and got the plain walk, which on the theft workflow gives what exact deferral gives (Appendix~\ref{app:proofs}). Study~1's research implementation fell back to strong Kleene evaluation above twelve open facts, which its claims never reached.
+Exact deferral holds what the open facts can change and nothing else. In Figure~\ref{fig:reconverge} it requests the lease, the defect notice and the later documents, holds the medical confirmation and asks whether the mould has affected anyone's health. It costs one evaluation per completion. Above eight open facts or 256 combinations of answers, the product returns the plain walk instead, which stops at the first transition whose condition is open and holds each document whose own condition is open. In Study~3, tenancy claims had at most \sthreeDeferralCasePathTenMaxOpen{} open facts and got exact deferral. Exact deferral never ran on theft: every theft text had \sthreeDeferralCasePathThMinOpenPlain--\sthreeDeferralCasePathThMaxOpen{} open facts and got the plain walk, which on the theft workflow gives what exact deferral gives (Appendix~\ref{app:proofs}). Study~1's research implementation fell back to strong Kleene evaluation above twelve open facts, which its claims never reached.
 
 \subsection{Reading errors}
 \label{sec:fate}
@@ -118,20 +118,4 @@ Let the workflow be over two-valued facts, and take whether a document is on fil
 
 An unresolved value costs holds and a question; a wrong value that passes admission produces an error the evaluation cannot detect. A presumption that the file's facts contradict is such a wrong value. Without a model, we computed exactly the expected outcome over the \propClaims{} tenancy claims of Study~1 when each fact is misjudged independently with probability \propEps, once with every misjudgement unresolved and once with every misjudgement the opposite value (Appendix~\ref{app:proofs}). Of the \propRequired{} documents the claims need, unresolved values became \propExactDefer{} expected holds under exact deferral and no unsafe error; wrong values became \propFlipMiss{} expected missed documents and \propFlipUnnec{} unnecessary requests.
 
-Admission and agreement exist to turn wrong values into unresolved ones; Table~\ref{tab:fact-accuracy} measures how far they did in Study~3 (added after review). Over \sthreeRThreeCasePathFactRuns{} fact values in tenancy claim-runs, \casepath admitted \sthreeRThreeCasePathAdmittedWrong{} wrong values and applied \sthreeRThreeCasePathPresumedWrong{} wrong presumptions; \sthreeRThreeCasePathDeniedEventAdmWrong{} of the wrong values were a denied defining event read as stated. In all \sthreeRThreeCasePathAdmittedWrongAllAgree{} wrong admissions every reading gave the wrong value. Three readings by one model with one prompt are not independent readers, and agreement does not remove a misreading the model makes consistently. Theft was not measured, because no file maps the changed conditions to the workflow's facts.
-
-\begin{table}[t]
-\caption{Added after review: what \casepath did with each tenancy fact in Study~3, against the fact's designed value, per fact and claim-run. Unresolved is right for the facts the texts leave open by design. The rows do not add up to the total where a case-run was routed to another workflow or failed.}
-\label{tab:fact-accuracy}
-\footnotesize
-\begin{tabular}{@{}l rrrrrrr@{}}
-\toprule
-Fact & $n$ & \multicolumn{2}{c}{Admitted} & \multicolumn{2}{c}{Presumed} & Unresolved & Readings \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
-& & right & wrong & right & wrong & & differ \\
-\midrule
-Branch facts & \sthreeRThreeCasePathBranchN & \sthreeRThreeCasePathBranchAdmRight & \sthreeRThreeCasePathBranchAdmWrong & \sthreeRThreeCasePathBranchPresRight & \sthreeRThreeCasePathBranchPresWrong & \sthreeRThreeCasePathBranchUnresolved & \sthreeRThreeCasePathBranchConflicting \\
-Defining event & \sthreeRThreeCasePathEventN & \sthreeRThreeCasePathEventAdmRight & \sthreeRThreeCasePathEventAdmWrong & \sthreeRThreeCasePathEventPresRight & \sthreeRThreeCasePathEventPresWrong & \sthreeRThreeCasePathEventUnresolved & \sthreeRThreeCasePathEventConflicting \\
-\bottomrule
-\end{tabular}
-\end{table}
+Admission and agreement exist to turn wrong values into unresolved ones; Section~\ref{sec:test-review} measures how often wrong values were admitted in Study~3.

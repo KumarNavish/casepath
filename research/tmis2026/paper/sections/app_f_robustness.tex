@@ -7,7 +7,7 @@ This appendix gives the tables behind the pointers of Section~\ref{sec:test}; th
 \subsection{Registered secondary results}
 
 \paragraph{Subsets}
-Table~\ref{tab:s3-subsets} gives per-claim values on each subset. Because the subsets are unbalanced across families, these values differ slightly from the family means of Section~\ref{sec:test-results}.
+Table~\ref{tab:s3-subsets} gives per-claim values on each subset. Because the subsets are unbalanced across families, these values differ in the second decimal from the family means that Section~\ref{sec:test-results} reports.
 
 \begin{table}[h]
 \caption{Tenancy by subset, per claim: strict unsafe errors (strict) and all deviations (all). Denied event \sthreeClaimsDenied{} claims, open event \sthreeClaimsOpenEvent, ordinary \sthreeClaimsOrdinary, of which \sthreeClaimsOpenBranch{} with an open branch fact.}
@@ -92,15 +92,13 @@ Two-valued, unresolved = true & \sthreeTwoValTrueThWrong & \sthreeTwoValTrueThMi
 Table~\ref{tab:s3-secondary} gives every secondary contrast of the plan. They are outside the fixed sequence. The S7 rows compare \casepath, checklist only, on the frontier model (one run) with designs run three times; they are descriptive. The non-inferiority rows (S1a, S1b, S4b) give the share of bootstrap resamples whose difference reaches the margin; with 9 or 16 clusters this share is not a calibrated $p$ and is descriptive only.
 
 \begin{table}[h]
-\caption{Secondary contrasts: \casepath (A) against the comparator (B), unless the measure names another A. Exact sign-flip $p$, or, for non-inferiority, the share of bootstrap resamples reaching the margin (descriptive; see the text).}
+\caption{Secondary contrasts: \casepath (A) against the comparator (B), unless the measure names another A. Upper block: exact two-sided sign-flip $p$. Lower block, non-inferiority: the share of bootstrap resamples reaching the margin (descriptive; see the text).}
 \label{tab:s3-secondary}
 \scriptsize
 \begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\linewidth}rrrrrr@{}}
 \toprule
-& Measure & B & A & B & A $-$ B & 95\% interval & Clusters & $p$ \\
+& Measure & B & A & B & A $-$ B & 95\% interval & Clusters & $p$ or share \\
 \midrule
-S1a & ordinary claims, strict unsafe (non-inferiority, margin \sthreeSecOneAMargin) & Rules in context, frontier model & \sthreeSecOneAA & \sthreeSecOneAB & \sthreeSecOneADiff & \sthreeSecOneALo{} to \sthreeSecOneAHi & \sthreeSecOneAClusters{} (\sthreeSecOneANonzero) & \sthreeSecOneAPCell \\
-S1b & ordinary claims, requested share (non-inferiority, margin \sthreeSecOneBMargin{} points) & Rules in context, frontier model & \sthreeSecOneBA & \sthreeSecOneBB & \sthreeSecOneBDiff & \sthreeSecOneBLo{} to \sthreeSecOneBHi & \sthreeSecOneBClusters{} (\sthreeSecOneBNonzero) & \sthreeSecOneBPCell \\
 S2a & strict unsafe & Self-consistency & \sthreeSecTwoAA & \sthreeSecTwoAB & \sthreeSecTwoADiff & \sthreeSecTwoALo{} to \sthreeSecTwoAHi & \sthreeSecTwoAClusters{} (\sthreeSecTwoANonzero) & \sthreeSecTwoAPCell \\
 S2b & strict unsafe & Model executes rules & \sthreeSecTwoBA & \sthreeSecTwoBB & \sthreeSecTwoBDiff & \sthreeSecTwoBLo{} to \sthreeSecTwoBHi & \sthreeSecTwoBClusters{} (\sthreeSecTwoBNonzero) & \sthreeSecTwoBPCell \\
 S2c & strict unsafe & ReAct & \sthreeSecTwoCA & \sthreeSecTwoCB & \sthreeSecTwoCDiff & \sthreeSecTwoCLo{} to \sthreeSecTwoCHi & \sthreeSecTwoCClusters{} (\sthreeSecTwoCNonzero) & \sthreeSecTwoCPCell \\
@@ -110,7 +108,6 @@ S2f & all deviations & ReAct & \sthreeSecTwoFA & \sthreeSecTwoFB & \sthreeSecTwo
 S3a & all deviations & Rules in context & \sthreeSecThreeAA & \sthreeSecThreeAB & \sthreeSecThreeADiff & \sthreeSecThreeALo{} to \sthreeSecThreeAHi & \sthreeSecThreeAClusters{} (\sthreeSecThreeANonzero) & \sthreeSecThreeAPCell \\
 S3b & all deviations & Rules in context, frontier model & \sthreeSecThreeBA & \sthreeSecThreeBB & \sthreeSecThreeBDiff & \sthreeSecThreeBLo{} to \sthreeSecThreeBHi & \sthreeSecThreeBClusters{} (\sthreeSecThreeBNonzero) & \sthreeSecThreeBPCell \\
 S4a & theft errors & Rules in context, frontier model & \sthreeSecFourAA & \sthreeSecFourAB & \sthreeSecFourADiff & \sthreeSecFourALo{} to \sthreeSecFourAHi & \sthreeSecFourAClusters{} (\sthreeSecFourANonzero) & \sthreeSecFourAPCell \\
-S4b & theft errors (non-inferiority, margin \sthreeSecFourBMargin) & Rules in context, original rules, frontier model & \sthreeSecFourBA & \sthreeSecFourBB & \sthreeSecFourBDiff & \sthreeSecFourBLo{} to \sthreeSecFourBHi & \sthreeSecFourBClusters{} (\sthreeSecFourBNonzero) & \sthreeSecFourBPCell \\
 S4c & theft errors & Rules in context, original rules & \sthreeSecFourCA & \sthreeSecFourCB & \sthreeSecFourCDiff & \sthreeSecFourCLo{} to \sthreeSecFourCHi & \sthreeSecFourCClusters{} (\sthreeSecFourCNonzero) & \sthreeSecFourCPCell \\
 S5a & strict unsafe & \casepath, checklist only & \sthreeSecFiveAA & \sthreeSecFiveAB & \sthreeSecFiveADiff & \sthreeSecFiveALo{} to \sthreeSecFiveAHi & \sthreeSecFiveAClusters{} (\sthreeSecFiveANonzero) & \sthreeSecFiveAPCell \\
 S5b & all deviations & \casepath, checklist only & \sthreeSecFiveBA & \sthreeSecFiveBB & \sthreeSecFiveBDiff & \sthreeSecFiveBLo{} to \sthreeSecFiveBHi & \sthreeSecFiveBClusters{} (\sthreeSecFiveBNonzero) & \sthreeSecFiveBPCell \\
@@ -120,6 +117,11 @@ S7a & theft errors; A = \casepath, checklist only, on the frontier model (one ru
 S7b & strict unsafe; A = \casepath, checklist only, on the frontier model (one run) & Rules in context, frontier model & \sthreeSecSevenBA & \sthreeSecSevenBB & \sthreeSecSevenBDiff & \sthreeSecSevenBLo{} to \sthreeSecSevenBHi & \sthreeSecSevenBClusters{} (\sthreeSecSevenBNonzero) & \sthreeSecSevenBPCell \\
 S7c & theft errors; A = \casepath, checklist only, on the frontier model (one run) & \casepath & \sthreeSecSevenCA & \sthreeSecSevenCB & \sthreeSecSevenCDiff & \sthreeSecSevenCLo{} to \sthreeSecSevenCHi & \sthreeSecSevenCClusters{} (\sthreeSecSevenCNonzero) & \sthreeSecSevenCPCell \\
 S7d & strict unsafe; A = \casepath, checklist only, on the frontier model (one run) & \casepath & \sthreeSecSevenDA & \sthreeSecSevenDB & \sthreeSecSevenDDiff & \sthreeSecSevenDLo{} to \sthreeSecSevenDHi & \sthreeSecSevenDClusters{} (\sthreeSecSevenDNonzero) & \sthreeSecSevenDPCell \\
+\midrule
+& \multicolumn{8}{l}{\emph{Non-inferiority: the last column is the share of bootstrap resamples reaching the margin, not a $p$}} \\
+S1a & ordinary claims, strict unsafe (non-inferiority, margin \sthreeSecOneAMargin) & Rules in context, frontier model & \sthreeSecOneAA & \sthreeSecOneAB & \sthreeSecOneADiff & \sthreeSecOneALo{} to \sthreeSecOneAHi & \sthreeSecOneAClusters{} (\sthreeSecOneANonzero) & \sthreeSecOneAPCell \\
+S1b & ordinary claims, requested share (non-inferiority, margin \sthreeSecOneBMargin{} points) & Rules in context, frontier model & \sthreeSecOneBA & \sthreeSecOneBB & \sthreeSecOneBDiff & \sthreeSecOneBLo{} to \sthreeSecOneBHi & \sthreeSecOneBClusters{} (\sthreeSecOneBNonzero) & \sthreeSecOneBPCell \\
+S4b & theft errors (non-inferiority, margin \sthreeSecFourBMargin) & Rules in context, original rules, frontier model & \sthreeSecFourBA & \sthreeSecFourBB & \sthreeSecFourBDiff & \sthreeSecFourBLo{} to \sthreeSecFourBHi & \sthreeSecFourBClusters{} (\sthreeSecFourBNonzero) & \sthreeSecFourBPCell \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -150,6 +152,16 @@ All calls & & \sthreeCasePathTenCalls & \sthreeCasePathTenCostFour & \sthreeCase
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\begin{figure}[t]
+\centering
+\fig{fig_cost}{\linewidth}
+\Description{Two scatter plots, tenancy above and theft below, of errors against cost per case on a logarithmic axis, one point per design with a vertical 95 percent interval. CasePath in blue; designs on the frontier model as open circles.}
+\caption{Errors against cost per case (log scale) for every design, with the intervals of Figure~\ref{fig:main}. Open markers: frontier model; ``checklist only'' is \casepath, checklist only. The full product costs \sthreeCostFullOverChecklistTen{} (tenancy) and \sthreeCostFullOverChecklistTh{} (theft) times as much as checklist only, with no detectable difference in errors.}
+\label{fig:cost}
+\end{figure}
+
+Figure~\ref{fig:cost} sets each design's errors against its cost per case.
 
 \subsection{Post-hoc analyses}
 
@@ -263,7 +275,7 @@ Two-valued, unresolved = true & \sthreeROneTwoValTrueAllUnsafe & \sthreeROneTwoV
 Table~\ref{tab:s3-mixes} reweights the three tenancy subsets to other prevalences. Intervals: \sthreeRResamples{} paired cluster-bootstrap resamples of the families.
 
 \begin{table}[h]
-\caption{Added after review: strict unsafe errors per claim when the subsets are reweighted (ordinary / denied event / open event), and \casepath's difference from the two Rules-in-context designs with its 95\% interval.}
+\caption{Added after review: strict unsafe errors per claim when the subsets are reweighted (ordinary / denied event / open event), and \casepath's difference from the two Rules-in-context designs with its 95\% interval. Values are means over claim-runs within each subset, so they can differ in the second decimal from the family means of Table~\ref{tab:s3-hypotheses} and Section~\ref{sec:test-results}. The intervals hold the subset weights fixed and pool claim-runs within each subset; they leave out the variation in subset composition across families and are therefore narrower than the registered intervals of H2 and H3.}
 \label{tab:s3-mixes}
 \scriptsize
 \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X rrrr@{}}
@@ -318,6 +330,9 @@ Model executes rules & \sthreeRTwoMerTestMix & \sthreeRFourFiveMer{} [\sthreeRFo
 \paragraph{Full product against checklist only (R7)}
 On tenancy the two settings' scored checklists were identical in \sthreeRSevenTenIdentical{} of \sthreeRSevenTenCaseRuns{} case-runs (ordinary \sthreeRSevenTenOrdinaryIdenticalShare, denied event \sthreeRSevenTenDeniedIdenticalShare, open event \sthreeRSevenTenOpenEventIdenticalShare); where they differed, a document's status differed in \sthreeRSevenTenStageDocument{} case-runs and a fact's value in \sthreeRSevenTenStageFact, and routing never. On theft they were identical in \sthreeRSevenThIdentical{} of \sthreeRSevenThCaseRuns, and every difference began at a fact value. The components the checklist-only run does not call take \sthreeRSevenTenNotCalledShare{} (tenancy) and \sthreeRSevenThNotCalledShare{} (theft) of a full run's cost; the brief alone takes \sthreeRSevenTenBriefShare{} and \sthreeRSevenThBriefShare. The registered split puts \sthreeRSevenTenCanDecideShare{} and \sthreeRSevenThCanDecideShare{} of the cost in agents that can decide the checklist because it counts the brief among them. The checklist-only run costs \sthreeRSevenTenChecklistRatio{} and \sthreeRSevenThChecklistRatio{} of a full run because the components both make also cost less in it, on tenancy mainly the document finder, which it calls only for claims with attachments.
 
+\paragraph{Run-to-run baseline (R7b, added after the second review round)}
+Two runs of the full product on the same case gave identical scored checklists in \sthreeRSevenBTenCasePathIdentical{} of \sthreeRSevenBTenCasePathPairs{} run pairs on tenancy (\sthreeRSevenBTenCasePathIdenticalShare) and \sthreeRSevenBThCasePathIdentical{} of \sthreeRSevenBThCasePathPairs{} on theft (\sthreeRSevenBThCasePathIdenticalShare); two checklist-only runs in \sthreeRSevenBTenChecklistIdentical{} of \sthreeRSevenBTenChecklistPairs{} (\sthreeRSevenBTenChecklistIdenticalShare) and \sthreeRSevenBThChecklistIdentical{} of \sthreeRSevenBThChecklistPairs{} (\sthreeRSevenBThChecklistIdenticalShare). Each case gives three run pairs. Runs of one setting share no cached response, because the run index is part of the cache key; the full product and checklist only in the same run do share responses, which is why R7's shares are higher.
+
 \paragraph{Single prompts on denied-event claims (R8)}
 The stored outputs of the single prompts hold no reasons, so the classification reads their questions: a question acknowledges the denial when it asks whether the notice has since been received. Rules in context asked such a question in \sthreeREightRicAck{} of \sthreeREightRicRuns{} claim-runs, asked no question at all in \sthreeREightRicNoQuestion, requested documents in \sthreeREightRicRequests{} and requested the notice itself in \sthreeREightRicRequestsNotice. On the frontier model the counts were \sthreeREightRicFrontierAck, \sthreeREightRicFrontierNoQuestion, \sthreeREightRicFrontierRequests{} and \sthreeREightRicFrontierRequestsNotice{} of \sthreeREightRicFrontierRuns.
 
@@ -347,6 +362,24 @@ Rules in context, frontier model (one call) & \sthreeRTenRicFrontierTenMedian & 
 
 \paragraph{Exact deferral against two-valued and strong Kleene evaluation (R11)}
 ``Unresolved = false'' is the product's own evaluator at the tested commit on the same admitted facts and presumptions. The product has no strong Kleene mode, so strong Kleene evaluation uses the research engine on the product's stored fact values and accepted document findings, compared with the same engine's exact deferral on the same input; that engine's exact deferral reproduced the product's checklist in \sthreeRElevenTenHarnessAgrees{} of \sthreeRElevenTenEvaluated{} evaluated claim-runs. Exact deferral differed from ``unresolved = false'' in \sthreeRElevenTenDiffFalseShare{} and from strong Kleene in \sthreeRElevenTenDiffKleeneShare{} of the evaluated tenancy claim-runs.
+
+\paragraph{Strong Kleene evaluation scored (R11b, added after the second review round)}
+On the \sthreeRElevenBReproduced{} of \sthreeRElevenBEvaluated{} evaluated claim-runs on which the research engine's exact deferral reproduces \casepath's checklist, Table~\ref{tab:s3-kleene} scores the engine's strong Kleene and exact-deferral checklists, both from \casepath's stored facts and document findings, against the reference. They differ in \sthreeRElevenBKleeneDiffers{} claim-runs. Strong Kleene evaluation had fewer strict unsafe errors in \sthreeRElevenBKleeneFewerStrict{} claim-runs and more in \sthreeRElevenBKleeneMoreStrict, more holds of required documents in \sthreeRElevenBKleeneMoreHeldReq, and more holds the reference neither requires nor holds in \sthreeRElevenBKleeneMoreSpurHold; it had fewer of either in none.
+
+\begin{table}[h]
+\caption{Added after the second review round: tenancy checklists scored against the reference, per claim, on the \sthreeRElevenBReproduced{} claim-runs where the research engine reproduces \casepath's checklist.}
+\label{tab:s3-kleene}
+\footnotesize
+\begin{tabular}{@{}l rrrr@{}}
+\toprule
+Checklist & Strict unsafe & Held, required now & Held, unneeded & All deviations \\
+\midrule
+Strong Kleene evaluation & \sthreeRElevenBKleeneStrict & \sthreeRElevenBKleeneHeldReq & \sthreeRElevenBKleeneSpurHold & \sthreeRElevenBKleeneAllDev \\
+Exact deferral & \sthreeRElevenBExactStrict & \sthreeRElevenBExactHeldReq & \sthreeRElevenBExactSpurHold & \sthreeRElevenBExactAllDev \\
+\casepath, stored & \sthreeRElevenBCasePathStrict & \sthreeRElevenBCasePathHeldReq & \sthreeRElevenBCasePathSpurHold & \sthreeRElevenBCasePathAllDev \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{The earlier worked example}
 Before review, Section~\ref{sec:test} described the first defect claim with an open fact in the manifest's order, a German e-mail about cold radiators in which a specialist's visit is undecided: \casepath, Rules in context and the frontier model each held the technical inspection in \sthreeExampleCasePathHeld, \sthreeExampleRicHeld{} and \sthreeExampleRicFrontierHeld{} of \sthreeCasePathTenRuns{} runs and requested exactly the reference's \sthreeExampleRequests{} other documents in every run, so it did not separate the designs.

@@ -52,7 +52,7 @@
 
 \maketitle
 
-This supplement accompanies the article ``CasePath: Agents That Read, Rules That Decide''. It reports the two pre-registered studies that preceded the article's confirmatory test (Study~3): Study~1 (Section~\ref{app:study1}) and Study~2 (Section~\ref{app:study2}), as written at the time with the least editing, then their deviations from plan (Section~\ref{supp:deviations}), their robustness analyses (Section~\ref{supp:robustness}), their data (Section~\ref{supp:data}), and the instructions of the product's agents that the article's Appendix~\ref{M-app:workflows} does not quote (Section~\ref{supp:agent-prompts}). Neither study confirmed its primary hypotheses; Section~\ref{M-sec:history} of the article states what the design took from them. The guidance written after Study~1 (Table~\ref{tab:guidance}) is superseded by Study~2 and by the confirmatory test. In this supplement, \casepath and ``CasePath'' in figure legends mean the configuration of the study at hand, not the product tested in Study~3. Section, figure and table numbers here carry the prefix S; references without it point into the article.
+This supplement accompanies the article ``CasePath: Agents That Read, Rules That Decide''. It reports the two pre-registered studies that preceded the article's confirmatory test (Study~3): Study~1 (Section~\ref{app:study1}) and Study~2 (Section~\ref{app:study2}), as written at the time with the least editing, then their deviations from plan (Section~\ref{supp:deviations}), their robustness analyses (Section~\ref{supp:robustness}), their data (Section~\ref{supp:data}), the unplanned ShARC pilot (Section~\ref{supp:sharc}), and the instructions of the product's agents that the article's Appendix~\ref{M-app:workflows} does not quote (Section~\ref{supp:agent-prompts}). Neither study confirmed its primary hypotheses; Section~\ref{M-sec:history} of the article states what the design took from them. The guidance written after Study~1 (Table~\ref{tab:guidance}) is superseded by Study~2 and by the confirmatory test. In this supplement, \casepath and ``CasePath'' in figure legends mean the configuration of the study at hand, not the product tested in Study~3. Section, figure and table numbers here carry the prefix S; references without it point into the article.
 
 \input{sections/app_b_study1}
 \input{sections/app_c_study2}
@@ -112,6 +112,11 @@ The silence clause is added to each template, and the production engine computes
 \paragraph{Sealing}
 \texttt{MANIFEST.json} records the SHA-256 of every file, the counts and the writing model; \texttt{seal.py} recomputes the counts, reruns the oracle check and rewrites the manifest. The set was sealed on 9 November 2026, before any compared design ran on it. Since Study~2 ran it is development data.
 
+
+\section{A public benchmark: the ShARC pilot}
+\label{supp:sharc}
+
+After Study~2 we ran an unplanned pilot on ShARC \cite{saeidi2018sharc}, in which a system reads a short rule text and a user's scenario and answers yes, no or irrelevant, or asks a follow-up question. It asked whether the two-reading core, with the rule as a formula and exact deferral, does better than prompting when each item has one short rule. On \sharcN{} utterances of the training split (\sharcClusters{} rule texts) with the cost-efficient model, the core's accuracy was \sharcCoreMicro, against \sharcSCMicro{} for self-consistency over three samples, \sharcStepsMicro{} for step-by-step prompting and \sharcDirectMicro{} for a direct prompt; its difference from self-consistency was \sharcCoreVsSCDiff{} (95\% interval \sharcCoreVsSCLo{} to \sharcCoreVsSCHi). Sixty of the \sharcN{} utterances had been used to develop the core; without them the accuracies were 0.742 and 0.735. Exact deferral gave the same answer as strong Kleene evaluation on every item. The pilot was not pre-registered, and no claim in the article about other data rests on it.
 
 \section{Instructions of the product's other agents}
 \label{supp:agent-prompts}

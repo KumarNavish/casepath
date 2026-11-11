@@ -20,7 +20,7 @@ Before anything is made public, read `release/SCRUB_REPORT.md`. It lists what mu
 | Study 3 development probe | `dev_probe/` | `dev_probe/build.py` rebuilds `claims.json` and `references.json` |
 | Study 3 data (sealed) | `fresh2/` | `fresh2/check.py` (oracle, loaders, novelty, manifest); `fresh2/guard.py` refuses data access unless the Study 3 plan is committed unmodified and no model client is loaded |
 | Harness | `harness/` (Study 3 driver in `harness/study3/`, product runners in `harness/product/`, Study 2 in `harness/v2/`) | READMEs in `harness/study3/` and `harness/product/` |
-| Analysis | `analysis/` (Study 3 analyses added after review: `study3_review.py`, `make_numbers_study3_review.py`, `fig_review.py`; Appendix A check: `check_fragment.py`) | `analysis/test_study3.py` (43 tests), `analysis/test_study3_review.py` (30), `analysis/test_study2.py` |
+| Analysis | `analysis/` (Study 3 analyses added after review: `study3_review.py`, `make_numbers_study3_review.py`, `fig_review.py`; Appendix A check: `check_fragment.py`) | `analysis/test_study3.py` (43 tests), `analysis/test_study3_review.py` (36), `analysis/test_study2.py` |
 | Stored outputs and ledgers | Study 1: `runs/plans_*.json`, `runs/ledger.jsonl`, `runs/responses_cache.tar.gz`. Study 2: `runs/v2/`. Study 3: `runs/study3/confirm/` (plans, `MANIFEST.json`, `RUNLOG.jsonl`) and the ledgers in `runs/product/` and `runs/v2/`. | `reproduce.sh` re-scores them |
 | Frozen plans | `ANALYSIS_PLAN.md` (Study 1), `ANALYSIS_PLAN_STUDY2.md`, `ANALYSIS_PLAN_STUDY3.md` with `analysis/study3_spec.json`, `expert_study/PREREGISTRATION_DRAFT.md` with `expert_study/EVENT_FIELDS.md` | Freeze commits are named in `paper/sections/app_g_repro.tex` |
 | Paper sources | `paper/` (LaTeX, `results/numbers*.tex`, `figures/`) | `analysis/verify_paper.py` compiles a clean copy |
@@ -114,7 +114,7 @@ closed local port. Steps:
    two lines are SKIP and say how many cache files are missing. Then `make_numbers_study3_review.py` is compared
    with `paper/results/numbers_study3_review.tex` (it reads the stored JSON), and `fig_review.py` builds
    `fig_families`.
-5. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (30), `analysis/test_study2.py`.
+5. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (36), `analysis/test_study2.py`.
 6. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
    `runs/responses_cache.tar.gz` unpacked. It re-runs 18 scripts and checks that every `analysis/*.json`
    evidence file and `paper/results/numbers.tex` come out byte for byte the same; regenerates

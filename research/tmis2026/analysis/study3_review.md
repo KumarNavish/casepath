@@ -431,6 +431,47 @@ Theft: unresolved = false gives exactly CasePath's requests in 384 of 384 text-r
 | of these: exact differs from strong Kleene | 80 |
 | no evaluated checklist (failed or handed over) | 2 |
 
+## R7b. Run-to-run baseline for identical checklists
+
+This counts, for the full product and for checklist only separately, how often two runs of the same design on the same case gave identical scored checklists, as a baseline for R7's share between the two settings.
+
+For each case and each of the three pairs of runs (1-2, 1-3, 2-3) of one design, whether the two scored checklists are identical (same requests, same holds, same hand-over; as R7). Run pairs of one design share no cached response: the harness keys every response by the run index. R7 compares the full product with checklist only in the same run, where the two share cached responses.
+
+| Tenancy: group | Full product: run pairs | identical | share | Checklist only: run pairs | identical | share | R7: full vs checklist only, same run |
+|---|---|---|---|---|---|---|---|
+| all | 288 | 232 | 80.6% | 288 | 230 | 79.9% | 93.1% |
+| denied_event | 72 | 59 | 81.9% | 72 | 61 | 84.7% | 98.6% |
+| open_event | 27 | 25 | 92.6% | 27 | 27 | 100.0% | 96.3% |
+| ordinary | 189 | 148 | 78.3% | 189 | 142 | 75.1% | 90.5% |
+
+| Theft: group | Full product: run pairs | identical | share | Checklist only: run pairs | identical | share | R7: full vs checklist only, same run |
+|---|---|---|---|---|---|---|---|
+| all | 384 | 64 | 16.7% | 384 | 57 | 14.8% | 58.6% |
+| changed-fact text | 216 | 32 | 14.8% | 216 | 27 | 12.5% | 54.6% |
+| off text | 24 | 4 | 16.7% | 24 | 4 | 16.7% | 50.0% |
+| unresolved-fact text | 144 | 28 | 19.4% | 144 | 26 | 18.1% | 66.0% |
+
+## R11b. Strong Kleene evaluation scored against the reference (tenancy)
+
+This scores the strong Kleene checklists computed from the product's stored facts against the reference, beside exact deferral on the same input, where the research engine reproduces the product's checklist.
+
+Claim-runs: the evaluated tenancy claim-runs of R11 (not failed, not handed over) on which the research engine's exact deferral gives exactly the product's workflow checklist. On these the engine's strong Kleene checklist (harness/casepath_tenancy.py plan_from_verified) and its exact-deferral checklist (plan_from_verified_exact), both from the product's used fact values and accepted document findings, and the product's stored checklist are scored against the reference with study2.ten_row: strict unsafe errors, held documents the reference requires now, holds the reference neither requires nor holds, and all deviations (their sum with strict unsafe errors), per claim-run. Descriptive; no test.
+
+Counts: evaluated: 286; reproduced: 277; reproduced, strong Kleene differs from exact: 75.
+
+| Checklist | Strict unsafe | Held, required now | Held, neither required nor held | All deviations | Unnecessary | Missed | Premature | Silent skips |
+|---|---|---|---|---|---|---|---|---|
+| strong Kleene (research engine) | 0.235 | 0.477 | 0.596 | 1.307 | 0.202 | 0.007 | 0.025 | 0.000 |
+| exact deferral (research engine) | 0.245 | 0.069 | 0.332 | 0.646 | 0.213 | 0.007 | 0.025 | 0.000 |
+| CasePath (stored checklist) | 0.245 | 0.069 | 0.332 | 0.646 | 0.213 | 0.007 | 0.025 | 0.000 |
+
+| Strong Kleene against exact deferral | Kleene more | Kleene fewer | Equal |
+|---|---|---|---|
+| strict_unsafe | 0 | 3 | 274 |
+| held_req | 28 | 0 | 249 |
+| spurious_hold | 64 | 0 | 213 |
+| all_dev | 75 | 0 | 202 |
+
 ## Inputs
 
 Files read: 24; response-cache files missing: 0.

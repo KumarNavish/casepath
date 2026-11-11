@@ -237,6 +237,36 @@ m("sthreeRElevenTenDiffFalseShare", pct(get(t, "exact differs from unresolved = 
 m("sthreeRElevenTenDiffKleeneShare", pct(get(t, "exact differs from strong Kleene (harness, same facts)") / get(t, "evaluated")))
 m("sthreeRElevenTenHarnessAgrees", get(t, "harness exact equals the product's workflow checklist"))
 
+# R7b (added after the second review round)
+for regime, rn in (("tenancy", "Ten"), ("theft", "Th")):
+    for d, dn in (("casepath", "CasePath"), ("casepath_checklist", "Checklist")):
+        x = get(res, "R7b", regime, d, "all")
+        m(f"sthreeRSevenB{rn}{dn}Pairs", get(x, "run_pairs"))
+        m(f"sthreeRSevenB{rn}{dn}Identical", get(x, "identical"))
+        m(f"sthreeRSevenB{rn}{dn}IdenticalShare", pct(get(x, "share")))
+
+# R11b (added after the second review round)
+x = get(res, "R11b")
+m("sthreeRElevenBEvaluated", get(x, "counts", "evaluated"))
+m("sthreeRElevenBReproduced", get(x, "counts", "reproduced"))
+m("sthreeRElevenBKleeneDiffers", get(x, "counts", "reproduced, strong Kleene differs from exact"))
+for k, nm in (("strong Kleene (research engine)", "Kleene"), ("exact deferral (research engine)", "Exact"),
+              ("CasePath (stored checklist)", "CasePath")):
+    for f, fn in (("strict_unsafe", "Strict"), ("held_req", "HeldReq"), ("spurious_hold", "SpurHold"), ("all_dev", "AllDev")):
+        m(f"sthreeRElevenB{nm}{fn}", num(get(x, "per_claim", k, f)))
+for f, fn in (("strict_unsafe", "Strict"), ("held_req", "HeldReq"), ("spurious_hold", "SpurHold"), ("all_dev", "AllDev")):
+    c = get(x, "kleene_against_exact", f)
+    m(f"sthreeRElevenBKleeneMore{fn}", get(c, "a more"))
+    m(f"sthreeRElevenBKleeneFewer{fn}", get(c, "a fewer"))
+
+# R3, unresolved split into right (designed open) and wrong (settled by design); added after the second review round
+for d in ("casepath", "casepath_checklist"):
+    tab = get(res, "R3", d, "table")
+    for role, nm in (("branch fact", "Branch"), ("defining event", "Event")):
+        rows = [r for r in tab if r["role"] == role]
+        m(f"sthreeRThree{DESIGNS[d]}{nm}UnresolvedRight", sum(r.get("unresolved", 0) for r in rows if r["designed_state"] == "open"))
+        m(f"sthreeRThree{DESIGNS[d]}{nm}UnresolvedWrong", sum(r.get("unresolved", 0) for r in rows if r["designed_state"] != "open"))
+
 OUT.parent.mkdir(parents=True, exist_ok=True)
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")

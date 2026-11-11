@@ -1,4 +1,4 @@
-"""Study 3, analyses added after review (R1-R11). NOT pre-registered: not part of ANALYSIS_PLAN_STUDY3.md, decided after
+"""Study 3, analyses added after review (R1-R11, and R7b and R11b after the second review round). NOT pre-registered: not part of ANALYSIS_PLAN_STUDY3.md, decided after
 the results and an independent referee report were known. No model calls, no network.
 
     python3 study3_review.py      # writes study3_review.json and study3_review.md
@@ -735,6 +735,43 @@ def r7(study, cache):
     return res
 
 
+# ======================================================================= R7b: run-to-run baseline for identical checklists
+def run_pair_identity(plans_by_case, group_of):
+    """plans_by_case: {case: [scored plan of run 0, 1, ...]} of one design. For every case and every pair of its runs
+    (r < r'), whether the two scored checklists are identical (same_checklist). Returns {group: [run pairs, identical]}
+    for the group 'all' and the case's own group (group_of(case))."""
+    out = defaultdict(lambda: [0, 0])
+    for c, plans in plans_by_case.items():
+        for i in range(len(plans)):
+            for j in range(i + 1, len(plans)):
+                same = same_checklist(plans[i], plans[j])
+                for k in ("all", group_of(c)):
+                    out[k][0] += 1
+                    out[k][1] += same
+    return {k: tuple(v) for k, v in out.items()}
+
+
+def r7b(study):
+    """The share of identical scored checklists between two runs of the same design on the same case (full product
+    run pairs, checklist-only run pairs), per regime, beside R7's share between the full product and checklist only
+    in the same run."""
+    res = {}
+    for regime in ("tenancy", "theft"):
+        if regime == "tenancy":
+            group = lambda c: next(s for s in SUBSETS if study.in_subset(c, s))
+        else:
+            group = lambda c: {"off": "off text", "on": "changed-fact text", "unres": "unresolved-fact text"}[c.split("-")[1]]
+        res[regime] = {}
+        for d in ("casepath", "casepath_checklist"):
+            cnt = run_pair_identity({c: study.plans[(d, regime)][c] for c in study.cases[regime]}, group)
+            res[regime][d] = {k: {"run_pairs": n, "identical": s, "share": s / n} for k, (n, s) in sorted(cnt.items())}
+    res["method"] = ("For each case and each of the three pairs of runs (1-2, 1-3, 2-3) of one design, whether the two "
+                     "scored checklists are identical (same requests, same holds, same hand-over; as R7). Run pairs of "
+                     "one design share no cached response: the harness keys every response by the run index. R7 compares "
+                     "the full product with checklist only in the same run, where the two share cached responses.")
+    return res
+
+
 # ======================================================================= R8: single prompts on denied-event claims
 NOTICE = re.compile(r"(notice|notification|written|writing|\bform\b|termination letter|letter of termination|k[üu]ndigung|"
                     r"mitteilung|formular|schriftlich|anzeige)", re.I)
@@ -920,6 +957,29 @@ def product_fact_states(entry, flags):
     return {f: "open" if u.get(f) is None else ("stated_true" if u[f] else "stated_false") for f in flags}
 
 
+def states_to_plan(st):
+    """Document states of the reference engine as a scored checklist: requested = required now (REQ_NOW), held."""
+    return {"requests": sorted(d for d, s in st.items() if s in s2.REQ_NOW),
+            "holds": sorted(d for d, s in st.items() if s == "held")}
+
+
+def harness_checklists(build, ct, ref, entry, fam):
+    """The research engine's checklists on one stored product claim-run: exact deferral and strong Kleene evaluation of
+    the product's used fact values and accepted document findings (R11). Returns (exact, strong Kleene, number of
+    product findings left out because the claim has no attachment of that document type)."""
+    fs = product_fact_states(entry, build.FAMILY_FLAGS[fam])
+    find = used_findings(entry)
+    atts = [{"artifact_id": a["artifact_id"], "document_type": a["document_type"],
+             "sufficient": find.get(a["document_type"]) == "present", "omitted_field": None}
+            for a in ref["attachments"] if find.get(a["document_type"]) in ("present", "unusable")]
+    left_out = sum(1 for d, s in find.items() if s in ("present", "unusable") and d not in {a["document_type"] for a in ref["attachments"]})
+    rr = {**ref, "family": fam}
+    ex = engine_states(rr, (), build, fs, atts)
+    with patched(build, "plan_from_verified_exact", ct.plan_from_verified):
+        kl = engine_states(rr, (), build, fs, atts)
+    return states_to_plan(ex), states_to_plan(kl), left_out
+
+
 def r11(study):
     T = study.plans[("casepath", "theft")]
     F = study.plans[("two_valued_false", "theft")]
@@ -948,24 +1008,11 @@ def r11(study):
             cnt["with a workflow fact left without a value"] += open_
             diff_false = not same_checklist(p, TF[c][r])
             cnt["exact differs from unresolved = false"] += diff_false
-            fam = p["family"]
-            flags = build.FAMILY_FLAGS[fam]
-            fs = product_fact_states(e, flags)
-            find = used_findings(e)
-            atts = [{"artifact_id": a["artifact_id"], "document_type": a["document_type"],
-                     "sufficient": find.get(a["document_type"]) == "present", "omitted_field": None}
-                    for a in ref["attachments"] if find.get(a["document_type"]) in ("present", "unusable")]
-            cnt["product findings without a matching attachment (left out)"] += sum(
-                1 for d, s in find.items() if s in ("present", "unusable") and d not in {a["document_type"] for a in ref["attachments"]})
-            rr = {**ref, "family": fam}
-            ex = engine_states(rr, (), build, fs, atts)
-            with patched(build, "plan_from_verified_exact", ct.plan_from_verified):
-                kl = engine_states(rr, (), build, fs, atts)
-            to_plan = lambda st: {"requests": sorted(d for d, s in st.items() if s in s2.REQ_NOW),
-                                  "holds": sorted(d for d, s in st.items() if s == "held")}
-            diff_kleene = not same_checklist(to_plan(ex), to_plan(kl))
+            ex, kl, left_out = harness_checklists(build, ct, ref, e, p["family"])
+            cnt["product findings without a matching attachment (left out)"] += left_out
+            diff_kleene = not same_checklist(ex, kl)
             cnt["exact differs from strong Kleene (harness, same facts)"] += diff_kleene
-            cnt["harness exact equals the product's workflow checklist"] += same_checklist(to_plan(ex), e.get("plan_workflow_only"))
+            cnt["harness exact equals the product's workflow checklist"] += same_checklist(ex, e.get("plan_workflow_only"))
             if open_:
                 cnt["of these: exact differs from unresolved = false"] += diff_false
                 cnt["of these: exact differs from strong Kleene"] += diff_kleene
@@ -978,6 +1025,63 @@ def r11(study):
         "harness's exact deferral (plan_from_verified_exact) on the same input, through fresh2/tenancy/build.py "
         "engine_plan. A product finding is passed only where the claim has an attachment of that document type. The row "
         "'harness exact equals the product's workflow checklist' shows how closely the harness reproduces the product.")}
+
+
+SCORED = ("strict_unsafe", "held_req", "spurious_hold", "all_dev", "unnecessary", "missed", "premature", "silent_skip")
+
+
+def scored(ref, plan):
+    """study2.ten_row with all deviations (strict unsafe + held required now + held but neither required nor held by
+    the reference), as study3.tenancy_rows adds it."""
+    row = s2.ten_row(ref, plan)
+    row["all_dev"] = row["strict_unsafe"] + row["held_req"] + row["spurious_hold"]
+    return row
+
+
+def paired_counts(rows_a, rows_b, field):
+    """Over paired claim-runs: how often a has more, fewer and as many of `field` as b."""
+    out = {"a more": 0, "a fewer": 0, "equal": 0}
+    for x, y in zip(rows_a, rows_b):
+        out["a more" if x[field] > y[field] else "a fewer" if x[field] < y[field] else "equal"] += 1
+    return out
+
+
+def r11b(study):
+    """Strong Kleene evaluation scored against the reference: the research engine's strong Kleene and exact-deferral
+    checklists from the product's stored fact values and document findings (as R11), on the evaluated tenancy
+    claim-runs where that engine's exact deferral reproduces the product's workflow checklist."""
+    build = build_module()
+    import casepath_tenancy as ct
+    TP = study.plans[("casepath", "tenancy")]
+    rows = {"strong Kleene (research engine)": [], "exact deferral (research engine)": [], "CasePath (stored checklist)": []}
+    cnt = Counter()
+    for c in study.cases["tenancy"]:
+        ref = study.D["tenancy"].reference(c)
+        for r, e in enumerate(study.entries[("casepath", "tenancy")][c]):
+            p = TP[c][r]
+            if e is None or p is None or p.get("deferred") or not (e.get("product_extra") or {}).get("facts"):
+                continue
+            cnt["evaluated"] += 1
+            ex, kl, _ = harness_checklists(build, ct, ref, e, p["family"])
+            if not same_checklist(ex, e.get("plan_workflow_only")):
+                continue
+            cnt["reproduced"] += 1
+            cnt["reproduced, strong Kleene differs from exact"] += not same_checklist(ex, kl)
+            for name, plan in (("strong Kleene (research engine)", kl), ("exact deferral (research engine)", ex),
+                               ("CasePath (stored checklist)", p)):
+                rows[name].append(scored(ref, plan))
+    n = cnt["reproduced"]
+    per_claim = {name: {f: sum(x[f] for x in rs) / n for f in SCORED} for name, rs in rows.items()}
+    k, x = rows["strong Kleene (research engine)"], rows["exact deferral (research engine)"]
+    return {"counts": dict(cnt), "per_claim": per_claim,
+            "kleene_against_exact": {f: paired_counts(k, x, f) for f in ("strict_unsafe", "held_req", "spurious_hold", "all_dev")},
+            "method": ("Claim-runs: the evaluated tenancy claim-runs of R11 (not failed, not handed over) on which the research "
+                       "engine's exact deferral gives exactly the product's workflow checklist. On these the engine's strong "
+                       "Kleene checklist (harness/casepath_tenancy.py plan_from_verified) and its exact-deferral checklist "
+                       "(plan_from_verified_exact), both from the product's used fact values and accepted document findings, "
+                       "and the product's stored checklist are scored against the reference with study2.ten_row: strict "
+                       "unsafe errors, held documents the reference requires now, holds the reference neither requires nor "
+                       "holds, and all deviations (their sum with strict unsafe errors), per claim-run. Descriptive; no test.")}
 
 
 # ======================================================================= report
@@ -1173,6 +1277,32 @@ def markdown(res):
            "This confirms that on theft treating unresolved facts as false gives CasePath's requests, and counts the tenancy "
            "claim-runs where exact deferral changed the checklist.", "", x["theft"]["statement"], "", x["method"], ""]
     md += [table(["Tenancy count", "Claim-runs"], [[k, v] for k, v in x["tenancy"].items()]), ""]
+    # R7b
+    x = res["R7b"]
+    md += ["## R7b. Run-to-run baseline for identical checklists", "",
+           "This counts, for the full product and for checklist only separately, how often two runs of the same design on "
+           "the same case gave identical scored checklists, as a baseline for R7's share between the two settings.", "",
+           x["method"], ""]
+    for regime in ("tenancy", "theft"):
+        groups = list(x[regime]["casepath"])
+        md += [table([f"{regime.capitalize()}: group", "Full product: run pairs", "identical", "share",
+                      "Checklist only: run pairs", "identical", "share", "R7: full vs checklist only, same run"],
+                     [[g, x[regime]["casepath"][g]["run_pairs"], x[regime]["casepath"][g]["identical"],
+                       pct(x[regime]["casepath"][g]["share"]), x[regime]["casepath_checklist"][g]["run_pairs"],
+                       x[regime]["casepath_checklist"][g]["identical"], pct(x[regime]["casepath_checklist"][g]["share"]),
+                       pct(res["R7"]["identical"][regime][g]["share"])] for g in groups]), ""]
+    # R11b
+    x = res["R11b"]
+    md += ["## R11b. Strong Kleene evaluation scored against the reference (tenancy)", "",
+           "This scores the strong Kleene checklists computed from the product's stored facts against the reference, beside "
+           "exact deferral on the same input, where the research engine reproduces the product's checklist.", "",
+           x["method"], "", "Counts: " + "; ".join(f"{k}: {v}" for k, v in x["counts"].items()) + ".", ""]
+    md += [table(["Checklist", "Strict unsafe", "Held, required now", "Held, neither required nor held", "All deviations",
+                  "Unnecessary", "Missed", "Premature", "Silent skips"],
+                 [[k] + [fmt(v[f]) for f in ("strict_unsafe", "held_req", "spurious_hold", "all_dev", "unnecessary", "missed",
+                                             "premature", "silent_skip")] for k, v in x["per_claim"].items()]), ""]
+    md += [table(["Strong Kleene against exact deferral", "Kleene more", "Kleene fewer", "Equal"],
+                 [[f, v["a more"], v["a fewer"], v["equal"]] for f, v in x["kleene_against_exact"].items()]), ""]
     md += ["## Inputs", "", f"Files read: {len(res['inputs'])}; response-cache files missing: {res['cache_missing']}.", ""]
     return "\n".join(md)
 
@@ -1190,7 +1320,8 @@ def main():
     for name, fn in (("R1", lambda: r1(study)), ("R2", lambda: r2(study)), ("R3", lambda: r3(study, cache)),
                      ("R4", lambda: r4(study)), ("R5", lambda: r5(study, res3)), ("R6", lambda: r6(study)),
                      ("R7", lambda: r7(study, cache)), ("R8", lambda: r8(study)), ("R9", lambda: r9(study)),
-                     ("R10", lambda: r10(study)), ("R11", lambda: r11(study))):
+                     ("R10", lambda: r10(study)), ("R11", lambda: r11(study)),
+                     ("R7b", lambda: r7b(study)), ("R11b", lambda: r11b(study))):
         res[name] = fn()
         print(name, "done", flush=True)
     res["cache_missing"] = len(cache.missing)
