@@ -50,7 +50,9 @@ read short files whole, and in a dossier read the documents that carry the reque
 each timeline entry with an exact quote. For facts: open the process, and for each fact it asks about record what the
 files say with record_fact: established with quotes, unknown, or conflicting with quotes for both sides.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
-document or a step; then the other files. When a sentence you quote states the value, record it as established with that
+document or a step; then the other files. Work in few turns: call record_fact for all the facts you can settle in the
+same turn, many calls at once, rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
+about the rent; a measuring, drying or building expert called in is an expert involved. When a sentence you quote states the value, record it as established with that
 sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"); record unknown
 only when no passage states the value. A negative value (no reply, no, not present, no deadline) needs a sentence that
 says so, such as the customer writing that nobody answered or the form's own "Nein"; the mere absence of a positive is
@@ -93,7 +95,7 @@ and quote the sentence that shows it, using record_document. Mark a need absent 
 the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
 needed), mark it unusable, name the file and quote what it does show. When a need lists what it must show, mark it present
 only with a quote from the file for each item (shows); a file that does not show every item is unusable. Check suggested
-needs too.""",
+needs too. Work in one or two turns: open the process, then call record_document for every need in the same turn.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
@@ -757,7 +759,12 @@ class CaseTeam:
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0}
         work.emit("lead", "agent.start", instruction="Prepare the case.")
+        handler_flow = any(s.get("action") for s in work.graph["steps"])
         for agent, instruction in PLAN:
+            if agent == "process_builder" and handler_flow:
+                # The handler's own workflow already names each stage's needs and action; its guesses were rarely asked.
+                work.emit("lead", "agent.skipped", agent=agent, reason="the handler's workflow defines this stage")
+                continue
             if agent == "document_finder":
                 confirm_facts(self.model, work, self.effort)
             if agent == "result_checker":

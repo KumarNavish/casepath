@@ -1272,6 +1272,7 @@ function preparedView(ev, draft) {
     if (i.legal_basis) return i.legal_basis;
     const d = pd[i.key] || {};
     if (d.knowledge) return T("asked in practice", "in der Praxis verlangt");
+    if (i.ask === "proposed" && i.reason && /liegen vor/.test(i.reason)) return i.reason;
     if (i.ask === "proposed") return T("proposed for this case", "für diesen Fall vorgeschlagen");
     if (i.ask === "later") return T("later, if needed", "später, falls nötig");
     if (i.kind === "letter_question") return T("only the customer can say", "nur die Kundschaft weiss es");

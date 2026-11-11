@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-11.3",
+ "version": "2026-11-11.4",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -259,6 +259,15 @@
    "source_refs": [
     "practice#1of7"
    ]
+  },
+  {
+   "id": "fachperson_beigezogen",
+   "type": "boolean",
+   "question": "Wurde eine Fachperson oder Messfirma beigezogen (Gutachten, Messung)?",
+   "source_refs": [
+    "practice#1of7",
+    "law#259d"
+   ]
   }
  ],
  "start": "eingang",
@@ -296,7 +305,8 @@
     "maengelruege",
     "fotos",
     "quittungen",
-    "mietzinszahlungen"
+    "mietzinszahlungen",
+    "fachbericht"
    ],
    "action": {
     "kind": "A1",
@@ -618,7 +628,17 @@
    "source_refs": [
     "law#259d",
     "practice#4of7"
-   ]
+   ],
+   "offered_when_in_file": {
+    "kinds": [
+     "foto",
+     "fotoprotokoll",
+     "fotodokumentation",
+     "messprotokoll"
+    ],
+    "label": "weitere Beweismittel",
+    "practice": "in 4 von 5 Fällen mit Fotos in den Akten nicht verlangt"
+   }
   },
   {
    "id": "quittungen",
@@ -639,6 +659,19 @@
    "why": "Klärt Ausstände und Grundlage einer Herabsetzung.",
    "required_when": {
     "fact": "streit_mietzins",
+    "is": true
+   },
+   "source_refs": [
+    "law#259d",
+    "practice#1of7"
+   ]
+  },
+  {
+   "id": "fachbericht",
+   "title": "Bericht der beigezogenen Fachperson (Messprotokoll)",
+   "why": "Belegt den Mangel und seine Ursache über die Dauer (Art. 259d OR).",
+   "required_when": {
+    "fact": "fachperson_beigezogen",
     "is": true
    },
    "source_refs": [

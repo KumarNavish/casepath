@@ -31,6 +31,8 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 - D10: "seit 5 Jahren" in a 2024 e-mail is kept as a stated period ("5 years before …"); the year is shown as berechnet and not counted as an established fact.
 - "Left open" is approximate in round 1: the process builder's own questions differ between runs, so items whose question was not asked are counted neither way.
 
+**Defaults follow practice.** A line's default is the one that needs fewer handler changes in practice. Named exceptions: D8 (all correspondence asked, practice 6 of 7); D10 (Protekta asked "allfällige weitere Beweismittel" although photos were in the file; practice 4 of 5 the other way).
+
 **Round 2 list (with Dominik's points, one combined re-run before the freeze):** conditional needs whose condition the file states (D1 expert report, D8 rent payments, D9 and D11 receipts for damaged goods); ask for the rest of an all-of need only when the file refers to correspondence it does not hold; the seeded evidence need asks for more than Protekta does at intake ("über die ganze Dauer, Messprotokoll oder Fachbericht"), so a few undated photos fail it (D6): when a document is there but falls short, the letter asks for exactly what is short ("weitere Fotos über die Dauer oder ein Messprotokoll"), not for the document as if nothing existed; whether the need's bar is right is a question for Dominik's session. The brief carries the sentence of the claim report it took the customer's request from, so the Anliegen line has its source (until then it shows no chip).
 
 ## Ground rules

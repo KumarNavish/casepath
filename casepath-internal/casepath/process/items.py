@@ -83,7 +83,13 @@ def _evidence(citations):
     return [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for c in citations or ()]
 
 
-def build_items(state, result):
+def _in_file(files, kinds):
+    """How many documents in the case's files are of one of these kinds (from the reading's document list)."""
+    return sum(1 for f in files or () for s in ((f.get("extraction") or {}).get("segments") or [])
+               if any(k in (s.get("kind") or "").lower() for k in kinds))
+
+
+def build_items(state, result, files=None):
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
     items = []
     def add(kind, key, label=None, **fields):
@@ -104,6 +110,8 @@ def build_items(state, result):
             d = docs.get(row["document"], {})
             if ev.get("outcome") or row["status"] == "present":
                 ask = None
+            elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
+                ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
             elif graph.get("action_by_stage") and d.get("edit") and not d.get("knowledge"):
                 ask = "proposed"  # the process builder's own addition: offered in the checklist, unticked, for the handler to tick
             elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (d.get("edit") and not d.get("knowledge"))):
@@ -118,7 +126,9 @@ def build_items(state, result):
                 node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
-                reason=note if row["status"] in {"unusable", "missing"} and note else None,
+                reason=(f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
+                        if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]) else
+                        note if row["status"] in {"unusable", "missing"} and note else None),
                 **({"partial": row["partial"]} if row.get("partial") else {}))
         definitions = {f["id"]: f for f in graph["facts"]}
         overrides, set_by_hand = state.get("overrides") or {}, (state.get("facts") or {})

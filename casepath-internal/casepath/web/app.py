@@ -371,7 +371,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             if row.get("run_status") == "completed":
                 try:
                     current = state(row["id"])
-                    listed = build_items(current, (current["run"] or {}).get("result"))
+                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]))
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]))
                     row["follow_up"] = clock and clock["due"]
@@ -391,7 +391,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_case(case_id: str, who=Depends(user)):
         current = state(case_id)
         completed = current["run"]
-        listed = build_items(current, (completed or {}).get("result"))  # everything the case's screens and exports assert
+        listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id))  # everything the case's screens and exports assert
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock,
