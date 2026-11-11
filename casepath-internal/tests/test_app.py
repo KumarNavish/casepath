@@ -207,6 +207,18 @@ class AppTests(unittest.TestCase):
         self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "note.added", "item_id": "fact:frist",
                                                                             "fields": {"text": "Datum prüfen", "reason": "5"}}).status_code, 201)
         self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "made.up"}).status_code, 422)
+        changed = client.post(f"/api/cases/{case['id']}/edits", json={"op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"},
+                                                                     "reason": "", "reason_code": "1", "recheck": False})
+        self.assertEqual(changed.status_code, 201, changed.text)
+        changed = changed.json()
+        self.assertNotEqual(changed["diff"]["outcome"]["before"], changed["diff"]["outcome"]["after"])
+        facts = {i["key"]: i for i in client.get(f"/api/cases/{case['id']}").json()["items"] if i["kind"] == "fact"}
+        self.assertEqual((facts["landlord_notified"]["value"], facts["landlord_notified"]["origin"]), (False, f"edit#{changed['edit']['id']}"))
+        corrected = [e for e in client.get(f"/api/cases/{case['id']}/events").json()["events"] if e.get("edit_id") == changed["edit"]["id"]][0]
+        self.assertEqual((corrected["kind"], corrected["reason"], corrected["before"], corrected["after"]), ("item.corrected", "1", True, False))
+        client.post(f"/api/edits/{changed['edit']['id']}/undo")
+        facts = {i["key"]: i for i in client.get(f"/api/cases/{case['id']}").json()["items"] if i["kind"] == "fact"}
+        self.assertEqual(facts["landlord_notified"]["origin"], "workflow")
         self.assertEqual(client.put(url, json={"target": "Der Vermieter", "verdict": "wrong"}).status_code, 422)
         self.assertEqual(client.put(url, json={"target": "answer", "verdict": "maybe"}).status_code, 422)
         rows = client.get(f"/api/cases/{case['id']}").json()["feedback"]

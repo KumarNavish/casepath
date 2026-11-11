@@ -374,10 +374,13 @@ def evaluate(workflow, knowledge, edits, result, case_id):
     rows = result.get("facts", [])
     facts = {f["fact"]: f["value"] for f in rows if f["status"] == "presumed"}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "established" and f.get("verdict") == "accepted"})
+    overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
+    facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=bool(result.get("documents"))), partial)
-    return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings}
+    return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
+            "overrides": {k: e for k, (_, e) in overrides.items()}}
 
 
 def main(argv=None):

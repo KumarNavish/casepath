@@ -116,14 +116,21 @@ def build_items(state, result):
                 reason=note if row["status"] in {"unusable", "missing"} and note else None,
                 **({"partial": row["partial"]} if row.get("partial") else {}))
         definitions = {f["id"]: f for f in graph["facts"]}
-        for fact in result.get("facts", []):
+        overrides, set_by_hand = state.get("overrides") or {}, (state.get("facts") or {})
+        rows = {f["fact"]: f for f in result.get("facts", [])}
+        for key in overrides:  # a fact a case worker set shows the value set, whatever the run read
+            rows[key] = {**rows.get(key, {"fact": key, "citations": []}), "status": "established", "value": set_by_hand.get(key),
+                         "verdict": "set_by_handler", "by_edit": overrides[key]}
+        for fact in rows.values():
             if fact["fact"] not in definitions:
                 continue
             computed = isinstance(fact.get("value"), str) and PERIOD.fullmatch(fact["value"])
             add("fact", fact["fact"], value=fact.get("value"),
                 stated_as="computed" if computed and fact["status"] == "established" else fact["status"],
                 verdict=fact.get("verdict"), evidence=_evidence(fact.get("citations")), node=_fact_node(graph, fact["fact"]),
-                origin="workflow" if not str(fact["fact"]).startswith(("k-", "q-")) else "process_builder", chain=fact["fact"] in gating,
+                origin=f"edit#{fact['by_edit']}" if fact.get("by_edit") else "workflow" if not str(fact["fact"]).startswith(("k-", "q-")) else "process_builder",
+                chain=fact["fact"] in gating, values=definitions[fact["fact"]].get("values") or (["ja", "nein"] if definitions[fact["fact"]].get("type") == "boolean" else None),
+                type=definitions[fact["fact"]].get("type"),
                 label=definitions[fact["fact"]].get("question"), chat_only=fact["fact"] in customer, path=fact["fact"] in waiting,
                 **({"part": fact["part"]} if fact.get("part") else {}))
         for d in result.get("deadlines", []):

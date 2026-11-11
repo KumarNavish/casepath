@@ -15,7 +15,37 @@ from .workflows import CatalogueError, evaluate, evaluate_condition, validate_wo
 
 EXTRA_SOURCES = [{"id": "knowledge", "kind": "knowledge", "title": "CasePath Knowledge learned from earlier cases"},
                  {"id": "edit", "kind": "case_edit", "title": "Changes made to this case's process"}]
-EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step"}
+EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step", "set_fact"}
+
+
+def fact_value(definition, value):
+    """A case worker's value for a fact, in the fact's own type; EditError when it does not fit."""
+    kind = definition.get("type")
+    if kind == "boolean":
+        folded = str(value).strip().lower()
+        if folded in {"true", "ja", "yes"}:
+            return True
+        if folded in {"false", "nein", "no"}:
+            return False
+        raise EditError("a yes or no is required")
+    if kind == "enum" and value not in definition.get("values", ()):
+        raise EditError("the value is not one of the fact's values")
+    if value in (None, ""):
+        raise EditError("a value is required")
+    return value
+
+
+def fact_overrides(graph, edits):
+    """Facts a case worker set: {fact: (value, edit_id)}; the latest active edit wins."""
+    definitions = {f["id"]: f for f in graph["facts"]}
+    out = {}
+    for edit in edits:
+        if edit.get("op") == "set_fact" and edit.get("status", "active") == "active" and edit["args"].get("fact") in definitions:
+            try:
+                out[edit["args"]["fact"]] = (fact_value(definitions[edit["args"]["fact"]], edit["args"].get("value")), edit["id"])
+            except EditError:
+                continue
+    return out
 
 
 class EditError(ValueError):
@@ -169,6 +199,11 @@ def apply_edit(graph, edit):
         step["next"][args["index"]] = {**step["next"][args["index"]], "to": args["to"],
                                        "when": args.get("when", step["next"][args["index"]].get("when", True))}
         step["source_refs"] = step["source_refs"] + [ref]
+    elif op == "set_fact":  # changes the facts the case is evaluated with, not the process; see fact_overrides
+        definition = next((f for f in graph["facts"] if f["id"] == args.get("fact")), None)
+        if definition is None:
+            raise EditError("unknown fact")
+        fact_value(definition, args.get("value"))
     elif op == "rename_step":
         if args["step"] not in steps:
             raise EditError("unknown step")

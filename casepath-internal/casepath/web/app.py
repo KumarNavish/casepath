@@ -529,13 +529,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         before = state(case_id)
         if before["process"] is None:
             raise HTTPException(409, "Choose or route a workflow before editing the process.")
-        if not body.reason.strip():
+        if not body.reason.strip() and not body.reason_code:
             raise HTTPException(422, "Say why the process changes.")
+        reason_text = body.reason.strip() or REASONS[body.reason_code]
         try:
             casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
             raise HTTPException(422, f"This change cannot be applied: {error}") from None
-        edit = store.add_edit(case_id, body.op, body.args, who, body.reason.strip())
+        edit = store.add_edit(case_id, body.op, body.args, who, reason_text)
         learned = None
         if body.use_for_similar:
             try:
@@ -547,11 +548,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             learned = store.save_knowledge(item)
         after = state(case_id)
         change = casegraph.diff(before["evaluation"], after["evaluation"])
-        target = f"document:{body.args.get('document')}" if body.args.get("document") else f"step:{body.args.get('step')}" if body.args.get("step") else None
+        args = body.args
+        target = (f"fact:{args['fact']}" if body.op == "set_fact" and args.get("fact") else f"document:{args.get('document')}" if args.get("document")
+                  else f"step:{args.get('step')}" if args.get("step") else None)
+        values = {"before": before["facts"].get(args.get("fact")), "after": after["facts"].get(args.get("fact"))} if body.op == "set_fact" else {}
         kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added"}.get(body.op, "item.corrected")
         what = {"add_document": "document", "add_step": "step", "add_question": "question"}.get(body.op)
         cause = record(case_id, who, kind, item_id=target, edit_id=edit["id"], op=body.op, reason=body.reason_code or "none",
-                       note_present=bool(body.reason.strip()), **({"what": what, "free_text_present": True} if what else {}))
+                       note_present=bool(body.reason.strip()), **values, **({"what": what, "free_text_present": True} if what else {}))
         for row in change["documents_added"]:
             record(case_id, who, "item.propagated", item_id=f"document:{row['document']}", caused_by=cause["event_id"], change="appeared", before=None, after=row["status"])
         for row in change["documents_removed"]:
