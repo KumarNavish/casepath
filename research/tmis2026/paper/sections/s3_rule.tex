@@ -2,7 +2,7 @@
 \label{sec:rule}
 \label{sec:method}
 
-The decision rule divides the work: a model reads the file and gives each fact a value, and code applies the workflow to those values. This section defines the rule and states four results, proved in Appendix~\ref{app:proofs}.
+The decision rule divides the work: a model reads the file and gives each fact a value, and code applies the workflow to those values. This section defines the rule and states four results with their scope; the proofs are in Appendix~\ref{app:proofs}.
 
 We carry the mould claim of Section~\ref{sec:intro} throughout. One file says: ``Our daughter has been coughing for weeks; the paediatrician suspects a link with the mould. I do not have a medical report yet.'' Another says: ``\ldots we do not know whether it has anything to do with the mould and have not seen a doctor.'' The first file needs the medical confirmation; the second leaves the need open, so the confirmation should be held and one question asked.
 
@@ -11,18 +11,39 @@ We carry the mould claim of Section~\ref{sec:intro} throughout. One file says: `
 
 A workflow states an organisation's rules for one kind of claim. It names a finite set $\mathcal{C}$ of facts, the conditions its rules depend on, such as $\mathit{health}$: the mould has affected someone's health. A fact is true ($\T$), false ($\F$) or unresolved ($\U$).
 
-The workflow arranges steps in an acyclic graph $G=(N,E)$ with one entry step. Each step $n$ has a condition $c_n$, and each transition $(u,n)\in E$ has a condition $c_{un}$. Each document type $d$ is needed at a set of steps $L(d)\subseteq N$ under its own condition $c_d$. Conditions are formulas over facts built with \emph{and}, \emph{or} and \emph{not}.
+The workflow arranges steps in an acyclic graph $G=(N,E)$ with one entry step. Each step $n$ has a condition $c_n$, and each transition $(u,n)\in E$ has a condition $c_{un}$. Each document type $d$ is needed at a set of steps $L(d)\subseteq N$ under its own condition $c_d$. Conditions are formulas over facts built with \emph{and}, \emph{or} and \emph{not}. We call such a workflow a \emph{flow workflow}: its transitions only enable or branch to a step, with no relation that blocks, suppresses or waits for another step.
 
-The output, a checklist, marks each document type \request, \hold, \skipd or \onfile, and lists as questions the facts on which held documents wait.
+The output, a checklist, marks each document type \request, \hold, \skipd or \onfile, and lists as questions the facts on which held documents wait. Whether a document is on file is decided by two model judgments (Section~\ref{sec:pipeline}); the propositions take it as given.
+
+The product also has facts that take one of a list of values, a date or a text; for exact deferral such an open fact takes each listed value, or each value the conditions name and one for any other. In the tested workflows only the fact that selects the workflow is not two-valued. Completions treat facts as independent, so for related facts exact deferral can hold a document that every completion consistent with the relation needs.
 
 \subsection{Readings, admission and presumptions}
 \label{sec:admission}
 
-A reading is one model pass over the file that answers every fact true or false with a quotation, open (the file says it is not known, quoting the words) or not stated. \casepath makes three readings independently by default. A value is \emph{admitted} when every reading gives it and each quotation is found in the file after a fixed normalisation. Every other fact is unresolved: a reading answered open or not stated, the readings disagree, or a quotation is not in the file. Code, not the model, performs these checks.
+A reading is one model pass over the file that answers every fact true or false with a quotation, open (the file says it is not known, quoting the words) or not stated. \casepath makes three readings by default, each a separate request. A quotation is \emph{found} when, after soft hyphens are removed, words split by a hyphen at a line break are joined and white space is collapsed, it occurs letter for letter, with letter case kept, on one page of a file; failing that, a second match also equates the typographic variants of quotation marks, apostrophes, dashes, ligatures and spaces. Nothing else is folded, and a quotation shorter than eight characters is never found. A value whose quotation is not found, even after one request to quote again, counts as no value.
 
-For the first file every reading gives $\mathit{health}=\T$ and quotes ``Our daughter has been coughing for weeks; the paediatrician suspects a link with the mould'', which is in the file, so $\T$ is admitted. For the second every reading answers open, quoting ``we do not know whether it has anything to do with the mould''.
+Table~\ref{tab:admission} gives the admission rule of the tested commit for the facts that decide the checklist or the routing: those in a transition, in a document's condition or in the workflow's selection condition. Code, not the model, applies it. Other facts are recorded from the first reading alone and do not enter the evaluation.
 
-Files are often silent on a fact, and silence is not doubt. A \emph{presumption} states, with a clause from the organisation's sources, what an unstated fact is taken to be. It does not apply when any reading answers open with words found in the file, or when a reading finds another value; a reading that finds the presumed value supports it. A fact that the file raises and leaves open thus stays unresolved. The checklist records a presumed value as a presumption, and a statement in the file overrides it. The tenancy workflow presumes that the mould has affected no one's health when the file never mentions health. In the second file the readings answer open, so $\mathit{health}$ stays $\U$.
+\begin{table}[t]
+\caption{Admission of a fact that decides the checklist or the routing, at commit 6a72159c. ``Value'' means a true or false answer, or a value, with its quotation found. A fact left unresolved holds the documents whose need it can change.}
+\label{tab:admission}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.26\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}@{}}
+\toprule
+What the readings give & No presumption & Presumption of value $v$ \\
+\midrule
+Every reading gives the same value $x$ & $x$ is admitted & $x$ is admitted \\
+Readings give different values & unresolved; marked for a person & unresolved; marked for a person \\
+Some readings give $x$, the others no value & unresolved & $v$ if $x=v$; otherwise unresolved \\
+No reading gives a value; one or more answer open with words found & unresolved & unresolved \\
+No reading gives a value; none answers open with words found & unresolved & $v$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For the first file every reading gives $\mathit{health}=\T$ and quotes ``Our daughter has been coughing for weeks; the paediatrician suspects a link with the mould'', which is found, so $\T$ is admitted. For the second every reading answers open, quoting ``we do not know whether it has anything to do with the mould''.
+
+Files are often silent on a fact, and silence is not doubt. A \emph{presumption} states, with a clause from the organisation's sources, what an unstated fact is taken to be; in our tests the clause is a silence clause we wrote, not the insurer's. The checklist records a presumed value as a presumption. The tenancy workflow presumes that the mould has affected no one's health when the file never mentions health. In the second file the readings answer open, so $\mathit{health}$ stays $\U$.
 
 Admitted values and presumptions form an assignment $\val:\mathcal{C}\to\Vals$. A \emph{completion} of $\val$ is an assignment $\val':\mathcal{C}\to\{\T,\F\}$ that agrees with $\val$ wherever $\val(f)\neq\U$.
 
@@ -39,27 +60,27 @@ A document is needed when a step that needs it is active and its own condition h
 \req(d) \;=\; \Bigl[\,\bigvee_{n\in L(d)}\act(n)\Bigr]\;\kand\;\val(c_d).
 \label{eq:requirement}
 \end{equation}
-A document with $\req(d)=\F$ is \skipd; one with $\req(d)=\U$ is held; one with $\req(d)=\T$ is \onfile if the file contains it and requested otherwise. We write $\req_\val$ when the assignment matters.
+A document with $\req(d)=\F$ is \skipd; one with $\req(d)=\U$ is held; one with $\req(d)=\T$ is \onfile if the file contains it and requested otherwise. We write $\req_\val$ when the assignment matters. Equations~\eqref{eq:activation} and~\eqref{eq:requirement} are the semantics of flow workflows. All four tested workflows are flow workflows: under every complete assignment, the product's own walk at the tested commit lists the documents these equations give (Appendix~\ref{app:proofs} says how we checked).
 
 \begin{proposition}[Soundness relative to admitted facts]
 \label{prop:sound}
-If $\req_\val(d)\in\{\T,\F\}$, then $\req_{\val'}(d)=\req_\val(d)$ for every completion $\val'$ of $\val$.
+Let the workflow be a flow workflow over two-valued facts. If $\req_\val(d)\in\{\T,\F\}$, then $\req_{\val'}(d)=\req_\val(d)$ for every completion $\val'$ of $\val$.
 \end{proposition}
 
-Whatever the open facts turn out to be, a request stays needed and a document marked \skipd stays unneeded. An answer can only resolve holds. Two-valued evaluation lacks this property. Reading $\U$ as $\F$, the closed-world assumption \cite{reiter1978closed}, drops documents that an open fact may require; reading $\U$ as $\T$ requests them too early.
+Whatever the open facts turn out to be, a request stays needed and a document marked \skipd stays unneeded. Learning an open fact's value can turn a held document into a request or into \skipd, but never reverses a request or a \skipd. Two-valued evaluation lacks this property. Reading $\U$ as $\F$, the closed-world assumption \cite{reiter1978closed}, drops documents that an open fact may require; reading $\U$ as $\T$ requests them too early.
 
 \begin{proposition}[Strong Kleene evaluation over-holds]
 \label{prop:incomplete}
-Strong Kleene evaluation can hold a document that every completion of $\val$ needs.
+Even in a flow workflow over two-valued facts, strong Kleene evaluation can hold a document that every completion of $\val$ needs.
 \end{proposition}
 
-Strong Kleene evaluation forgets that two branches of a fork meet again. The tenancy defect workflow branches on $\mathit{health}$: to ``Escalate health risk'' if it is true, directly to ``Dated defect timeline'' otherwise, and the first leads to the second. With $\mathit{health}=\U$, Equation~\eqref{eq:activation} makes the timeline step $\U$, and every document from there on is held. Under both completions the step is active (Figure~\ref{fig:reconverge}).
+Strong Kleene evaluation forgets that two branches of a fork meet again. The tenancy defect workflow branches on $\mathit{health}$: to ``Escalate health risk'' if it is true, directly to ``Dated defect timeline'' otherwise, and the first leads to the second. With $\mathit{health}=\U$, Equation~\eqref{eq:activation} makes the timeline step $\U$, and every later document whose own condition is not false is held. Under both completions the step is active (Figure~\ref{fig:reconverge}).
 
 \begin{figure}[t]
 \centering
 \fig{fig_reconverge}{\linewidth}
 \Description{Process graph of the tenancy defect workflow evaluated under strong Kleene logic and under exact deferral.}
-\caption{The tenancy defect workflow with $\mathit{health}$ unresolved. Strong Kleene evaluation (left) holds every document after the branch. Exact deferral (right) holds only the medical confirmation, on which the two completions disagree.}
+\caption{The tenancy defect workflow with $\mathit{health}$ unresolved, mould true, the other facts false and no document on file. Strong Kleene evaluation (left) holds every document after the branch whose own condition is not false; the heating report, the inspection and the repair deadline are not needed because their conditions are false. Exact deferral (right) holds only the medical confirmation, on which the two completions disagree. Because nothing is on file, the lease is requested here; in Figure~\ref{fig:hero} the claims attach the lease, so the product lists it as present and does not request it.}
 \label{fig:reconverge}
 \end{figure}
 
@@ -80,10 +101,10 @@ The checklist is formed from $\exactreq$ as from $\req$. An open fact becomes a 
 
 \begin{proposition}[Exact deferral]
 \label{prop:exact}
-Exact deferral holds a document if and only if its need depends on an open fact, that is, two completions of $\val$ disagree on it. It is sound, and it never holds a document that strong Kleene evaluation requests or marks \skipd.
+(a) For any workflow over two-valued facts whose need under a complete assignment is defined, exact deferral holds a document if and only if two completions of $\val$ disagree on it, and a document it requests or marks \skipd has that status under every completion. (b) If the workflow is moreover a flow workflow, exact deferral never holds a document that strong Kleene evaluation requests or marks \skipd.
 \end{proposition}
 
-Exact deferral holds what the open facts can change and nothing else. In Figure~\ref{fig:reconverge} it requests the lease, the defect notice and the later documents, holds the medical confirmation and asks whether the mould has affected anyone's health. The cost is $2^u$ evaluations for $u$ open facts; the Study~1 claims had at most five; above eight, \casepath stops at the first open branch.
+Exact deferral holds what the open facts can change and nothing else. In Figure~\ref{fig:reconverge} it requests the lease, the defect notice and the later documents, holds the medical confirmation and asks whether the mould has affected anyone's health. It costs one evaluation per completion. Above eight open facts or 256 combinations of answers, the product returns the plain walk instead, which stops at the first transition whose condition is open and holds each document whose own condition is open. In Study~3 tenancy case-runs had at most \sthreeDeferralCasePathTenMaxOpen{} open facts. Every theft case-run had more (\sthreeDeferralCasePathThMinOpenPlain--\sthreeDeferralCasePathThMaxOpen) and got the plain walk, which on the theft workflow gives what exact deferral gives (Appendix~\ref{app:proofs}). Study~1's research implementation fell back to strong Kleene evaluation above twelve open facts, which its claims never reached.
 
 \subsection{Reading errors}
 \label{sec:fate}
@@ -92,7 +113,25 @@ A reading can err in two ways: it can leave a settled fact unresolved or give it
 
 \begin{proposition}[Reading errors]
 \label{prop:errors}
-(a) If $\val(f)=\val^\ast(f)$ for every fact with $\val(f)\neq\U$, exact deferral makes no unsafe error. (b) If $\val(f)\neq\val^\ast(f)$ for some fact with $\val(f)\neq\U$, every document whose $\exactreq_\val$ is $\T$ or $\F$ but differs from $\req_{\val^\ast}$ is an unsafe error.
+Let the workflow be over two-valued facts, and take whether a document is on file as given. (a) If $\val(f)=\val^\ast(f)$ for every fact with $\val(f)\neq\U$, exact deferral makes no unsafe error. (b) If $\val(f)\neq\val^\ast(f)$ for some fact with $\val(f)\neq\U$, every document whose $\exactreq_\val$ is $\T$ or $\F$ but differs from $\req_{\val^\ast}$ is an unsafe error.
 \end{proposition}
 
-Doubt costs a question; a confident mistake costs an error, and code cannot tell it from a correct value. A presumption that the file's facts contradict is such a mistake. Admission and agreement exist to turn mistakes of kind (b) into kind (a): a wrong value survives only if every reading gives it and quotes text that is in the file. Over all \propClaims{} tenancy claims of Study~1, with each fact misread with probability \propEps, unresolved values became \propExactDefer{} expected holds and no unsafe error; wrong values caused \propFlipMiss{} missed documents and \propFlipUnnec{} unnecessary requests (Appendix~\ref{app:proofs}).
+An unresolved value costs holds and a question; a wrong value that passes admission produces an error the evaluation cannot detect. A presumption that the file's facts contradict is such a wrong value. Without a model, we computed exactly the expected outcome over the \propClaims{} tenancy claims of Study~1 when each fact is misjudged independently with probability \propEps, once with every misjudgement unresolved and once with every misjudgement the opposite value (Appendix~\ref{app:proofs}). Of the \propRequired{} documents the claims need, unresolved values became \propExactDefer{} expected holds under exact deferral and no unsafe error; wrong values became \propFlipMiss{} expected missed documents and \propFlipUnnec{} unnecessary requests.
+
+Admission and agreement exist to turn wrong values into unresolved ones; Table~\ref{tab:fact-accuracy} measures how far they did in Study~3 (added after review). Over \sthreeRThreeCasePathFactRuns{} fact values in tenancy claim-runs, \casepath admitted \sthreeRThreeCasePathAdmittedWrong{} wrong values and applied \sthreeRThreeCasePathPresumedWrong{} wrong presumptions; \sthreeRThreeCasePathDeniedEventAdmWrong{} of the wrong values were a denied defining event read as stated. In all \sthreeRThreeCasePathAdmittedWrongAllAgree{} wrong admissions every reading gave the wrong value. Three readings by one model with one prompt are not independent readers, and agreement does not remove a misreading the model makes consistently. Theft was not measured, because no file maps the changed conditions to the workflow's facts.
+
+\begin{table}[t]
+\caption{Added after review: what \casepath did with each tenancy fact in Study~3, against the fact's designed value, per fact and claim-run. Unresolved is right for the facts the texts leave open by design. The rows do not add up to the total where a case-run was routed to another workflow or failed.}
+\label{tab:fact-accuracy}
+\footnotesize
+\begin{tabular}{@{}l rrrrrrr@{}}
+\toprule
+Fact & $n$ & \multicolumn{2}{c}{Admitted} & \multicolumn{2}{c}{Presumed} & Unresolved & Readings \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+& & right & wrong & right & wrong & & differ \\
+\midrule
+Branch facts & \sthreeRThreeCasePathBranchN & \sthreeRThreeCasePathBranchAdmRight & \sthreeRThreeCasePathBranchAdmWrong & \sthreeRThreeCasePathBranchPresRight & \sthreeRThreeCasePathBranchPresWrong & \sthreeRThreeCasePathBranchUnresolved & \sthreeRThreeCasePathBranchConflicting \\
+Defining event & \sthreeRThreeCasePathEventN & \sthreeRThreeCasePathEventAdmRight & \sthreeRThreeCasePathEventAdmWrong & \sthreeRThreeCasePathEventPresRight & \sthreeRThreeCasePathEventPresWrong & \sthreeRThreeCasePathEventUnresolved & \sthreeRThreeCasePathEventConflicting \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,26 +1,28 @@
 \section{CasePath}
 \label{sec:casepath}
 
-\casepath prepares a legal-protection claim from its files: it routes the claim to a workflow, reads the facts the workflow asks about and returns a checklist, a brief and a reply draft for a case handler. Models read and write; code decides which documents are requested, held or present, and nothing is sent.
+\casepath prepares a legal-protection claim from its files: it routes the claim to a workflow, reads the facts the workflow asks about and returns a checklist, a brief and a reply draft for a case handler. Models read and write. Code decides, from the admitted facts and the presumptions, which documents are needed, requested or held; two model judgments decide whether a document is present; nothing is sent.
 
 \subsection{The pipeline}
 \label{sec:pipeline}
 
-A claim passes through a fixed sequence of agents and checks (Figure~\ref{fig:pipeline}); each agent is a separate model conversation with its own instructions and tools. The \emph{router} reads the routing facts from the beginning and end of each file. A value counts only if its quotation is found in the file, and code selects the workflow whose condition the values satisfy; when none or several remain, the claim goes to a person, or to a fallback workflow where the catalogue has one. The \emph{claim reader} then writes a brief: the request, the parties and a dated timeline, each timeline entry kept only with a quotation found in the file. The \emph{process builder} may add document needs, questions or steps, at most six, each with a statute article, a quotation or a Knowledge item as its basis. Its additions stay suggestions unless they rest on active Knowledge.
+A claim passes through a fixed sequence of steps (Figure~\ref{fig:pipeline}); each agent is a separate model conversation with its own instructions and tools. Routing comes first. The \emph{router} reads each of the first twelve files, whole if it has at most 12,000 characters and otherwise its beginning and end. A routing value counts only with a quotation found in a file. Code selects the workflow whose condition the values satisfy, or the only workflow whose condition they leave open, whose routing facts then count as presumed. Several candidates go to a person; a fallback workflow is used only when no workflow can apply.
 
-Next come the readings of Section~\ref{sec:admission}. Three readings by default, each a separate request, answer every condition of the workflow true, false, open or not stated, with one quotation for the first three. A quotation that is not found is asked for once more. Code then admits values and applies the workflow's presumptions as Section~\ref{sec:admission} defines; readings that give different values leave the fact for a person, and a value only some readings give leaves it unresolved.
+Two agents run before the readings. The \emph{claim reader} writes a brief: the request, the parties and a dated timeline, each entry kept only with a quotation found in the file. The \emph{process builder} may add up to six document needs, questions or steps, each resting on a statute article, a quotation or a Knowledge item; its additions stay suggestions unless they rest on active Knowledge.
 
-The \emph{document finder} matches each need to a file and quotes it. A file that only mentions a document does not meet the need, and a document counts as present only if the file named for it shows every item the need lists. A \emph{second judgment}, one independent model call, must name the same file and quote each item; otherwise the document is unusable and stays requested. The \emph{source checker} sees each fact and document with its quoted passages only, not the other agents' reasoning, and accepts or rejects it. Its doubt about a deciding fact that all readings agree on becomes a flag for the case handler, not a change. Items it rejects are tried once more. The \emph{result checker} writes a summary, an answer, the open points, a reply draft in which each statement is marked as resting on accepted findings or not, and proposals for Knowledge. Evaluation is code: it applies exact deferral (Section~\ref{sec:exact}) to the admitted facts, the presumptions and the accepted documents, and forms the checklist.
+The readings follow (Section~\ref{sec:admission}). The claim reader makes the first and the source checker the others, each a separate request that answers every condition of the workflow; Table~\ref{tab:admission} decides what is admitted. If the readings admit a routing fact that contradicts the chosen workflow's condition, code routes once more on the admitted value and runs the workflow it selects; a second contradiction, or no single workflow, hands the claim to a person.
+
+The \emph{document finder} matches each need to a file and quotes it. A file that only mentions a document does not meet the need, and a document counts as present only if the file named for it shows every item the need lists. A \emph{second judgment}, one independent model call, must name the same file and quote each item; otherwise the document is unusable and stays requested. The \emph{source checker} sees each fact and document with its quoted passages only, not the other agents' reasoning, and accepts or rejects it. Its doubt about a fact every reading agrees on becomes a flag for the case handler, not a change. Rejected items are tried once more. The \emph{result checker} writes a summary, the open points, a reply draft whose statements name the accepted findings they rest on, and proposals for Knowledge. Evaluation is code: exact deferral (Section~\ref{sec:exact}) over the admitted facts, the presumptions and the accepted documents.
 
 \begin{figure}[t]
 \centering
 \fig{fig_pipeline}{\linewidth}
 \Description{Flow diagram of the CasePath pipeline: router, claim reader, process builder, three readings, code checks, presumptions, document finder, second judgment, source checker, result checker and evaluation.}
-\caption{The \casepath pipeline in the order a claim passes through it. Model readings and agents (thin boxes) propose values; code checks (thick boxes) reject a value whose quotation is not in the file or on which the readings differ; code alone decides the workflow, the presumptions and the checklist (tinted boxes), and below the dashed line no agent can change a deciding fact. Drawn from the product's step names at commit 6a72159c.}
+\caption{The \casepath pipeline in the order a claim passes through it. Model readings and agents (thin boxes) propose values; code checks (thick boxes) reject a value whose quotation is not found or on which the readings differ; code alone decides the workflow, the presumptions and the checklist (tinted boxes), and below the dashed line no agent can change a deciding fact. Whether a document is present is decided by two model calls, the document finder and the second judgment, not by code. Drawn from the product's step names at commit 6a72159c.}
 \label{fig:pipeline}
 \end{figure}
 
-Table~\ref{tab:agents} states what each step reads and may change, as the code enforces it. Once the readings are in, the tool that records a fact refuses any deciding fact or routing fact, so no later agent can change what decides the checklist. In a claim over 40,000 characters, the claim reader records the facts itself and the further readings see keyword passages, so more deciding facts stay unresolved.
+Table~\ref{tab:agents} states what each step reads and may change, as the code enforces it. Once the readings are in, the tool that records a fact refuses any deciding or routing fact. A claim over 40,000 characters is read differently: the claim reader records the facts with its tools, and the further readings see keyword passages instead of the full text.
 
 \begin{table}[t]
 \caption{What each step of the pipeline reads and may change, at commit 6a72159c. ``Code'' marks steps without a model.}
@@ -30,11 +32,11 @@ Table~\ref{tab:agents} states what each step reads and may change, as the code e
 \toprule
 Agent or step & Reads & May change & May never change \\
 \midrule
-Router & the routing questions; the beginning and end of each file & routing-fact values, each with a quotation found in a file & which workflow applies (code selects it); a workflow a case handler chose \\
+Router & the routing questions; each of the first twelve files, whole up to 12,000 characters, else its beginning and end & routing-fact values, each with a quotation found in a file & which workflow applies (code selects it); a workflow a case handler chose \\
 Claim reader (brief) & the files & the brief; a timeline entry only with a quotation found & a deciding fact once the readings are in \\
 Process builder & the case's process, its Knowledge, the files & adds up to six needs, questions or steps, each with a basis; suggestions unless the basis is active Knowledge & the workflow's own needs and steps; any fact \\
-Readings 1--3 & the full text of the files (up to 40,000 characters); the conditions & one answer per condition: true, false, open or not stated, with a quotation & a value alone: it counts only when every reading gives it with a quotation found \\
-Presumptions (code) & the workflow's presumptions; every reading's answer & an unstated fact, set to its presumed value & a fact a reading answers open with words found, or gives another value \\
+Readings 1--3 & the full text of the files (up to 40,000 characters); the conditions & one answer per condition: true, false, open or not stated, with a quotation & a value alone: it counts only as Table~\ref{tab:admission} admits it \\
+Presumptions (code) & the workflow's presumptions; every reading's answer & an unstated fact, set to its presumed value & a fact a reading gives another value; a fact a reading answers open with words found, unless a reading gives the presumed value \\
 Document finder & the files; the case's process & each need's status (present, unusable, mentioned only, absent), quoting the file named for it & facts; the process \\
 Second judgment & each need found present, its items, the files & a present document to unusable & nothing becomes present by it \\
 Source checker & each item's claim and quoted passages, without the other agents' reasoning & accepts or rejects facts and documents; present to unusable when an item is not shown & a deciding fact all readings agree on (only flagged) \\
@@ -47,39 +49,32 @@ Evaluation (code) & the case's process; admitted facts; presumptions; accepted d
 \subsection{Workflows}
 \label{sec:format}
 
-A workflow is a data file in the format \texttt{casepath.workflow/1}. It names its sources, and every fact, step, document need and presumption must cite one of them; a file that does not validate is rejected. Steps form a graph with conditions on transitions, document needs have a condition (\texttt{required\_when}) and may list what the document must show (\texttt{must\_show}). Listing~\ref{lst:workflow} shows the tenancy defect workflow used in the running example, trimmed.
+A workflow is a data file in the format \texttt{casepath.workflow/\allowbreak{}1}. It names its sources, and every fact, step, document need and presumption must cite one of them; a file that does not validate is rejected. Steps form a graph with conditions on transitions; a document need has a condition (\texttt{required\_\allowbreak{}when}) and may list what the document must show (\texttt{must\_show}). Listing~\ref{lst:workflow} shows the tenancy defect workflow of the running example.
 
-\begin{lstlisting}[float=t,caption={The tenancy defect workflow (\texttt{defect\_mold\_heating.json}), trimmed with ellipses; nothing is added.},label=lst:workflow]
-{"applies_when": {"fact": "dispute_family", "is": "defect_mold_heating"}, ...
- "documents": [..., {"id": "medical_confirmation", "must_show": ["health findings", "causal limits"],
-   "required_when": {"fact": "health_effects", "is": true}, ..., "title": "Medical confirmation", ...}, ...],
- "facts": [..., {"id": "health_effects", "question":
-   "Does the claim allege effects of the defect on anyone's health?", ..., "type": "boolean"}, ...],
- "format": "casepath.workflow/1", "id": "defect_mold_heating", ...
- "presumptions": [{"applies": "unstated", "fact": "health_effects", "source_ref":
-   "policy-defect_mold_heating-v1#policy-defect_mold_heating-v1.clause-silence", ..., "value": false}, ...],
- ..., "status": "reviewed", "steps": [{"id": "dh_intake", "next": [
-   {"label": "health effects alleged", "to": "dh_safety", "when": {"fact": "health_effects", "is": true}},
-   {"label": "no immediate health escalation", "to": "dh_scope",
-    "when": {"fact": "health_effects", "is": false}}], ...}, ...], ...}
+\begin{lstlisting}[float=t,caption={The tenancy defect workflow (\texttt{defect\_\allowbreak{}mold\_\allowbreak{}heating.json}), trimmed with ellipses and with keys reordered for reading; nothing is added.},label=lst:workflow]
+{"id": "defect_mold_heating", "applies_when": {"fact": "dispute_family", "is": "defect_mold_heating"}, ...
+ "facts": [{"id": "health_effects", "type": "boolean", "question": "Does the claim allege effects of the defect on anyone's health?", ...}, ...],
+ "documents": [{"id": "medical_confirmation", "required_when": {"fact": "health_effects", "is": true}, "must_show": ["health findings", "causal limits"], ...}, ...],
+ "steps": [{"id": "dh_intake", "next": [{"to": "dh_safety", "when": {"fact": "health_effects", "is": true}, ...}, {"to": "dh_scope", "when": {"fact": "health_effects", "is": false}, ...}], ...}, ...],
+ "presumptions": [{"fact": "health_effects", "applies": "unstated", "value": false, "source_ref": "policy-defect_mold_heating-v1#...clause-silence", ...}, ...], ...}
 \end{lstlisting}
 
-\subsection{Knowledge: how a correction becomes a rule}
+\subsection{Knowledge}
 \label{sec:knowledge}
 
-Knowledge holds what an organisation learns from cases, one workflow at a time. A case handler who adds a document need, a question or a step can tick ``Use for similar cases''; the change then becomes a Knowledge item, a candidate. The result checker proposes candidates too, each with a quotation from the case; a proposal that carries party names or contact details is withheld. A candidate reaches no other case until a person activates it; the handler may activate the item when making the change. An active item applies to later cases of the same workflow, never to the case it came from, and each use names its version. A document need from active Knowledge is required, not a suggestion. Each completed run records whether the document was found and whether the result checker reported the item contradicted, and an item contradicted at least twice and more often than confirmed is marked for review. A proposed refinement, once activated, becomes the item's next version. Knowledge cannot do more. An item learned from a case only adds a need, a question, a step or a note: it cannot remove a need or change a condition of the workflow, and a learned question decides no document. Ratings, ``Done'' on an open point and the reasons given are stored with the case but teach nothing, and no correction can set a fact's value.
+Knowledge holds what an organisation learns from cases, per workflow; this paper's test did not exercise it. A case handler's change marked ``Use for similar cases'', or a result checker's proposal without party names or contact details, becomes a candidate that reaches no other case until a person activates it. An active item applies to later cases of its workflow, and a document need it adds is required. A learned item can add a need, a question, a step or a note, but cannot remove a need or set a fact's value; an item shipped with a build can also move a need to the first step and set its condition. An item contradicted at least twice and more often than confirmed is marked for review. In Study~3 every case-run started from an empty store, and the shipped items belong to a workflow the test catalogue lacks.
 
 \subsection{The interface}
 \label{sec:interface}
 
-The interface shows each case in an overview and one view per agent, and every fact and document links to its quotation in the file. Figure~\ref{fig:hero} shows the running example in the interface. A case handler can mark each item correct or not correct, and can change the case's process through an edit form that requires a reason and offers ``Use for similar cases''.
+The interface shows each case in an overview and one view per agent, and every fact and document links to its quotation (Figure~\ref{fig:hero}). A case handler can mark each item correct or not and can change the case's process through a form that requires a reason.
 
 \subsection{Parity}
 \label{sec:parity}
 
-The same package runs inside the insurer and outside it; only workflows, Knowledge, case files and configuration may differ. The command \texttt{python -m casepath parity} prints a SHA-256 hash over every source file of the imported package, with the hash of each workflow file and Knowledge item, the model, and the settings that define a run. Equal tree hashes prove that two deployments run the same code; they do not show that the model, the workflows or the data are the same, which the other hashes and names report.
+The same package runs inside the insurer and outside it; only workflows, Knowledge, case files and configuration may differ. The command \texttt{python -m casepath parity} prints a SHA-256 hash over every source file of the imported package, with the hash of each workflow file and Knowledge item, the model and the settings that define a run. Equal source hashes prove that two deployments run identical code. They say nothing about the model, the workflows or the data, which the other hashes and names report.
 
 \subsection{The tested configuration}
 \label{sec:configuration}
 
-Three settings define the configuration under test, and the parity output records each. The number of readings is a setting (\texttt{CASEPATH\_READINGS}, at least two, three by default). The open rule is a constant in the code (\texttt{OPEN\_RULE}): with \texttt{any}, the default, one reading that answers open with words found in the file keeps a presumption from applying. The run scope (\texttt{CASEPATH\_RUN\_SCOPE}) is \texttt{full} by default; the tested runs also pass the model's reasoning effort (\texttt{CASEPATH\_MODEL\_REASONING}), so the readings are sampled independently. The checklist-only setting (run scope \texttt{checklist}) runs only what can change the checklist: routing, the readings, the document judgments and evaluation, and the process builder only when active Knowledge applies. It skips the brief, the result checker and the source checker's check of facts, and a claim of one file is taken as the claim itself, so its document needs count as missing.
+Four settings define a run, and the parity output records each. The number of readings (\texttt{CASEPATH\_\allowbreak{}READINGS}) is at least two, three by default. The open rule is a constant (\texttt{OPEN\_RULE}): with \texttt{any}, the default, one reading that answers open with words found keeps a presumption from applying, unless a reading gives the presumed value. The run scope (\texttt{CASEPATH\_\allowbreak{}RUN\_\allowbreak{}SCOPE}) is \texttt{full} by default. The reasoning flag (\texttt{CASEPATH\_\allowbreak{}MODEL\_\allowbreak{}REASONING}) is off by default for a chat-completions endpoint, and each call then sends a temperature of 0; when it is on, each call sends a reasoning effort and no temperature: low for routing, the readings and the second judgment, medium otherwise. The checklist-only setting (run scope \texttt{checklist}) skips the brief, the process builder (unless active Knowledge applies), the result checker and the source checker's check of facts. It also skips the document finder for a claim of one file, which it takes as the claim itself, so that claim's document needs count as missing.

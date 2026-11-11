@@ -6,7 +6,7 @@
 \subsection{The Study 1 configuration}
 \label{sec:agent}
 
-The Study~1 configuration obtained its readings in four stages (Algorithm~\ref{alg:agent}). First, a typed interpretation: the model read the message and the supplied files against the rule pack and returned the dispute family, a verdict with an exact quotation for every condition of that family, and a sufficiency assessment for each supplied original. Its instructions stated that silence, tentative language and contradictions mean unresolved, never false, and that a claimant's description of a document does not replace the document. Second, an independent verification: a second model call received the same sources and the proposed items and accepted or rejected each one. Third, admission: code checked that every quotation occurs verbatim in the named source, and turned every unquoted, rejected or incompletely extracted item into $\U$ (or ``insufficient'' for a document). Fourth, execution as defined in Section~\ref{sec:rule}. A tenancy claim was handed to a person as a whole when admission failed at the claim level (line~3); the theft pipeline judged conditions only and had no family stage.
+The Study~1 configuration obtained its readings in four stages (Algorithm~\ref{alg:agent}). First, a typed interpretation: the model read the message and the supplied files against the rule pack and returned the dispute family, a verdict with an exact quotation for every condition of that family, and a sufficiency assessment for each supplied original. Its instructions stated that silence, tentative language and contradictions mean unresolved, never false, and that a claimant's description of a document does not replace the document. Second, an independent verification: a second model call received the same sources and the proposed items and accepted or rejected each one. Third, admission: code checked that every quotation occurs verbatim in the named source, and turned every unquoted, rejected or incompletely extracted item into $\U$ (or ``insufficient'' for a document). Fourth, execution as defined in Section~\ref{M-sec:rule} of the article. A tenancy claim was handed to a person as a whole when admission failed at the claim level (line~3); the theft pipeline judged conditions only and had no family stage.
 
 \begin{algorithm}[t]
 \caption{The Study~1 configuration decided the evidence plan of one claim.}
@@ -25,7 +25,7 @@ The Study~1 configuration obtained its readings in four stages (Algorithm~\ref{a
 \EndFor
 \State $G \gets$ process graph of the family in $\mathcal{P}$; record files verified as sufficient
 \ForAll{document types $d$}
-  \State compute $\exactreq(d)$ by Equations~\eqref{eq:activation}--\eqref{eq:exact}
+  \State compute $\exactreq(d)$ by Equations~\eqref{M-eq:activation}--\eqref{M-eq:exact} of the article
   \State $\delta(d)\gets$ \request if all completions request $d$; \hold if some do; else its state under $\val$ (all-$\T$ completion if $\req_\val(d)=\U$)
 \EndFor
 \State $Q\gets$ open flags whose flip changes a held document's request status (theft: all)
@@ -34,7 +34,7 @@ The Study~1 configuration obtained its readings in four stages (Algorithm~\ref{a
 \end{algorithm}
 
 \paragraph{Rule packs and implementation}
-The tenancy rule pack consisted of three process templates admitted by the product, one per dispute family, with nine to eleven document types each. For household theft, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{casepath2026repo}. Rule packs were versioned and admitted before use; the model that judged a case could not add or change a rule. The tenancy experiments called the product's modules unchanged: the admission function, the process compiler and the process engine, whose flow fragment implements Equations~\eqref{eq:activation} and~\eqref{eq:requirement}; supervaluation ran on top of that engine under every completion of the open flags. Each theft requirement was a disjunction of conditions without negation, on which strong Kleene evaluation equals supervaluation; route choice followed Equation~\eqref{eq:route}.
+The tenancy rule pack consisted of three process templates admitted by the product, one per dispute family, with nine to eleven document types each. For household theft, a language model extracted 98 evidence rules over 87 conditions from 197 verbatim passages of Swiss insurance law, four insurers' policy terms, a claim form and industry model conditions \cite{casepath2026repo}. Rule packs were versioned and admitted before use; the model that judged a case could not add or change a rule. The tenancy experiments called the product's modules unchanged: the admission function, the process compiler and the process engine, whose flow fragment implements Equations~\eqref{M-eq:activation} and~\eqref{M-eq:requirement} of the article; supervaluation ran on top of that engine under every completion of the open flags. Each theft requirement was a disjunction of conditions without negation, on which strong Kleene evaluation equals supervaluation; route choice followed Equation~\eqref{eq:route}.
 
 The implementation compared request status across completions: it requested a document that every completion requests and held one that only some request, so a document on file or optional whose requirement is open kept its state under the all-$\T$ completion. On tenancy claims, a flag $f$ became a question only if flipping $f$ in some completion changed the request status of a held document, so every held document had a question, though one answer alone need not settle it; on theft claims every open condition was a question. Above twelve open flags the implementation fell back to strong Kleene evaluation; our claims had at most five. Two properties follow from the definitions. \emph{Locality}: if two cases differ in the judgment of one flag $f$, only documents whose requirement mentions $f$ can change decision. \emph{Traceability}: if $\req_\val(d)=\T$, $d$ is witnessed by an applicable step and a chain of transitions, each tied to a source passage and a quoted judgment; if only $\exactreq(d)=\T$, the witness is one such chain per answer to the open flags, which the implementation does not record.
 
@@ -47,13 +47,13 @@ When an evidence requirement $e$ had alternative routes, as with the receipt or 
 compared lexicographically with $\rho\setminus H$ as a sorted list; a document $d\notin H$ was then required by the strong Kleene disjunction of the conditions of the requirements whose chosen route contains $d$. This minimises the requested documents per requirement ($H$ was empty in all our experiments). Minimising the total over requirements that share documents generalises minimum hitting set (the case of single-document routes) and is therefore NP-hard; per-requirement selection is optimal when the document sets $\bigcup\mathcal{R}_e$ of different requirements are pairwise disjoint.
 
 \paragraph{Complexity}
-Equations~\eqref{eq:activation} and~\eqref{eq:requirement} are evaluated once in topological order, in time linear in the size of the graph and its formulas. Supervaluation is exponential only in the number $u$ of open flags: it evaluates the graph under $2^u$ completions. Deciding whether a formula is true under all completions is coNP-complete in general \cite{cook1971complexity}, but a claim in our rule packs had at most five flags; Section~\ref{sec:results-cost} reports measured runtimes.
+Equations~\eqref{M-eq:activation} and~\eqref{M-eq:requirement} of the article are evaluated once in topological order, in time linear in the size of the graph and its formulas. Supervaluation is exponential only in the number $u$ of open flags: it evaluates the graph under $2^u$ completions. Deciding whether a formula is true under all completions is coNP-complete in general \cite{cook1971complexity}, but a claim in our rule packs had at most five flags; Section~\ref{sec:results-cost} reports measured runtimes.
 
 
 \subsection{Design}
 \label{sec:evaluation}
 
-We fixed hypotheses, comparators, measures and statistics in an analysis plan committed before the first held-out model call \cite{casepath2026repo}. Appendix~\ref{app:deviations} lists every deviation from it.
+We fixed hypotheses, comparators, measures and statistics in an analysis plan committed before the first held-out model call \cite{casepath2026repo}. Section~\ref{supp:deviations} lists every deviation from it.
 
 \subsubsection{Hypotheses}
 \label{sec:hypotheses}
@@ -80,7 +80,7 @@ The two datasets came from the original study of the product \cite{casepath2026r
 36 pairs of household-theft cases differed in one sentence that switches one of nine conditions from false to true, for instance from ``No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more'' to ``A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000''. Each pair's reference listed the checklist changes that the sources justify, with alternatives where either document suffices. The rules were extracted by a language model from 197 source passages and were imperfect, which is what this regime was for. One of four stories was development data; the other three gave 27 held-out pairs.
 
 \paragraph{Unresolved-fact variants (new)}
-For six conditions whose documents are downstream requirements, we replaced the condition's sentence with one that leaves it open, for example ``A stolen watch may be separately scheduled in the policy, but the policyholder has not yet found the policy schedule to confirm this'' (Appendix~\ref{app:unresolved}). The correct response was to change no request and to hold the condition's documents until the fact is clarified. This yielded 18 held-out pairs. We excluded the other three conditions because their document was itself the evidence that settles the fact.
+For six conditions whose documents are downstream requirements, we replaced the condition's sentence with one that leaves it open, for example ``A stolen watch may be separately scheduled in the policy, but the policyholder has not yet found the policy schedule to confirm this'' (Section~\ref{app:unresolved}). The correct response was to change no request and to hold the condition's documents until the fact is clarified. This yielded 18 held-out pairs. We excluded the other three conditions because their document was itself the evidence that settles the fact.
 
 \paragraph{Reference check}
 To test whether the theft references depend on how they were built, a separate model run that saw only the source passages and the catalogue re-derived, three times per condition, the documents each condition change requires. For seven of nine conditions it reproduced the reference exactly in all three runs. For the formal expert procedure it also required the experts' findings; for the insurer's declination it required no document, where the reference requires the declination letter. We reported results on all conditions and, as a sensitivity analysis, on the seven agreed ones.
@@ -145,7 +145,7 @@ Two dependencies in the theft design were not addressed by the plan. All pairs o
 \subsection{Results}
 \label{sec:results}
 
-This subsection reports the experiments of Appendix~\ref{sec:evaluation}. Numbers pool the three runs of every held-out case. Table~\ref{tab:tests} gives the pre-registered tests, Tables~\ref{tab:tenancy} and~\ref{tab:theft} the full outcomes.
+This subsection reports the experiments of Section~\ref{sec:evaluation}. Numbers pool the three runs of every held-out case. Table~\ref{tab:tests} gives the pre-registered tests, Tables~\ref{tab:tenancy} and~\ref{tab:theft} the full outcomes.
 
 \begin{table}[t]
 \caption{Pre-registered contrasts of the Study~1 configuration with \design{Rules in context}: values of each design, paired difference with 95\% cluster-bootstrap interval, clusters (with a nonzero difference), exact two-sided sign-flip $p$, and Holm-adjusted $p$ within the analysis's family of five and across all ten tests. $^\dagger$: $p$ equals the smallest value attainable with that many informative clusters. Post-hoc sensitivity rows are not in any Holm family.}
@@ -191,13 +191,13 @@ With \texttt{gpt-6.1-terra}, \design{Rules in context} made \thTerraRWrong{} wro
 When the fact was left open, the designs almost never requested its documents: \design{Rules in context} with \texttt{gpt-6-luna} did so in \thLunaRPremature\% of pair runs, the Study~1 configuration and every other model-written design never; only two-valued execution with open facts read as true did so often (Section~\ref{sec:results-uncertainty}). The designs differed in what else they changed. With \texttt{gpt-6.1-terra}, \design{Rules in context} left every request unchanged in \thTerraRStable\% of pair runs and the Study~1 configuration in \thTerraCPStable\% (the difference favours \design{Rules in context}; $p=\ptTerraHFourRaw$ at its floor, Holm \ptTerraHFour); with \texttt{gpt-6-luna}, the Study~1 configuration did so in \thLunaCPStable\% and \design{Rules in context} in \thLunaRStable\% ($p=\ptLunaHFourRaw$ at its floor; Holm \ptLunaHFour{} within, \ptLunaHFourHolmAll{} across ten). With six clusters, no H4 result can be stronger than these.
 
 \paragraph{Across models}
-Figure~\ref{fig:models} shows wrong changes per pair by model. Across the two current models and the original study's single run with \texttt{gpt-5.6-terra} (Appendix~\ref{app:original}), the Study~1 configuration made between \rangeCPWrongPPLo{} and \rangeCPWrongPPHi{} wrong changes per pair and \design{Rules in context} between \rangeRWrongPPLo{} and \rangeRWrongPPHi; both upper ends come from that single run, and the \texttt{gpt-6-luna} value of \design{Rules in context} falls from \thLunaRWrongPP{} to \thLunaRDedupWrongPP{} when repeated errors count once. On the tenancy claims the pattern inverts: \design{Rules in context} requested \pct{\tenTerraBoneRecall} and \pct{\tenLunaBoneRecall} of required documents at once with the two models, the Study~1 configuration \pct{\tenTerraCPxRecall} and \pct{\tenLunaCPxRecall}. Scoring every pairing of runs or only the seven conditions with agreed references changes none of these conclusions (Appendix~\ref{app:robustness}).
+Figure~\ref{fig:models} shows wrong changes per pair by model. Across the two current models and the original study's single run with \texttt{gpt-5.6-terra} (Section~\ref{app:original}), the Study~1 configuration made between \rangeCPWrongPPLo{} and \rangeCPWrongPPHi{} wrong changes per pair and \design{Rules in context} between \rangeRWrongPPLo{} and \rangeRWrongPPHi; both upper ends come from that single run, and the \texttt{gpt-6-luna} value of \design{Rules in context} falls from \thLunaRWrongPP{} to \thLunaRDedupWrongPP{} when repeated errors count once. On the tenancy claims the pattern inverts: \design{Rules in context} requested \pct{\tenTerraBoneRecall} and \pct{\tenLunaBoneRecall} of required documents at once with the two models, the Study~1 configuration \pct{\tenTerraCPxRecall} and \pct{\tenLunaCPxRecall}. Scoring every pairing of runs or only the seven conditions with agreed references changes none of these conclusions (Section~\ref{supp:robustness}).
 
 \begin{figure}[t]
 \centering
 \fig{fig_models}{0.8\linewidth}
 \Description{Wrong changes per theft pair for two designs across three models.}
-\caption{Wrong changes per theft pair for the Study~1 configuration and \design{Rules in context} with three models; the original study is a single run, and the repeated-error sensitivity is shown alongside.}
+\caption{Wrong changes per theft pair for the Study~1 configuration and \design{Rules in context} with three models; the original study is a single run, and the repeated-error sensitivity is shown alongside. ``CasePath'' in the figure is the Study~1 configuration.}
 \label{fig:models}\label{fig:theft}
 \end{figure}
 
@@ -270,7 +270,7 @@ With \texttt{gpt-6.1-terra}, the Study~1 configuration requested \pct{\tenTerraC
 \centering
 \fig{fig_outcomes}{\linewidth}
 \Description{Unit charts of 100 required documents per design and model, coloured by outcome.}
-\caption{Outcomes of 100 required tenancy documents, per design and model: requested, held, handed over and missed, with unnecessary requests counted separately.}
+\caption{Outcomes of 100 required tenancy documents, per design and model: requested, held, handed over and missed, with unnecessary requests counted separately. ``CasePath'' in the figure is the Study~1 configuration, with strong Kleene evaluation or exact deferral.}
 \label{fig:outcomes}
 \end{figure}
 
@@ -319,7 +319,7 @@ A tenancy claim cost \$$\costTerraTenCP\times10^{-3}$ with the Study~1 configura
 \subsection{Discussion at the time}
 \label{app:s1-discussion}
 
-This subsection is the discussion written after Study~1. Study~2 (Appendix~\ref{app:study2}) did not confirm its practical guidance, and Section~\ref{sec:history} states what remained.
+This subsection is the discussion written after Study~1. Study~2 (Section~\ref{app:study2}) did not confirm its practical guidance, and Section~\ref{M-sec:history} of the article states what remained.
 
 We built the Study~1 configuration, an agent that lets a language model judge the facts of a claim and lets code apply the organisation's evidence rules to those judgments, and compared it with the alternatives that place the rules in the model's hands. Executing the rules made the agent's requests safe under uncertainty by construction and much less dependent on which model read the claim: with a cost-efficient model and with the model of the original study, it made far fewer wrong changes than the model applying the rules itself. With a frontier model, the model applying the rules in context performed as well on correct rules and better on automatically extracted ones. The sections below explain what this means for the design of such agents, for practice and for research.
 
@@ -330,7 +330,7 @@ We built the Study~1 configuration, an agent that lets a language model judge th
 The largest effect of execution was on how much request quality depended on the model. Across the three models, the Study~1 configuration made between \thLunaCPWrongPP{} and \rangeCPWrongPPHi{} wrong changes per theft pair; the model applying the rules in context made between \thTerraRWrongPP{} and \rangeRWrongPPHi{} (Figure~\ref{fig:theft}). Execution confines the model's role to judging conditions, a narrower task on which the two current models agreed closely---of \jaTotal{} tenancy condition judgments, \texttt{gpt-6-luna} matched the reference in \jaLunaCorrect, contradicted it in \jaLunaFlipped{} and left \jaLunaUnres{} open, \texttt{gpt-6.1-terra} in \jaCorrect, \jaFlipped{} and \jaUnres---and makes everything downstream of those judgments deterministic. When an organisation changes models---for cost, for availability or because a provider retires a version---an executing agent's requests change only where the model's judgments change.
 
 \paragraph{Safety under uncertainty}
-Proposition~\ref{prop:sound} guarantees that an executing agent never requests a document that an unresolved fact could make unnecessary. In our experiments the frontier model also avoided premature requests on its own; the cost-efficient model did so less reliably. The guarantee therefore matters most where it cannot be checked case by case: for weaker or changing models, and for the audit question of whether a request was justified at the time it was made.
+Proposition~\ref{M-prop:sound} of the article guarantees that an executing agent never requests a document that an unresolved fact could make unnecessary. In our experiments the frontier model also avoided premature requests on its own; the cost-efficient model did so less reliably. The guarantee therefore matters most where it cannot be checked case by case: for weaker or changing models, and for the audit question of whether a request was justified at the time it was made.
 
 \paragraph{Traceability and repair}
 Because every request follows from a recorded judgment and a rule, every error has an address. On the theft cases, \ecWrongFaulty{} of the Study~1 configuration's \thTerraCPWrong{} wrong changes trace to five of 98 extracted rules, and a blind rule verification flags all five. A model applying the rules in context partly compensated for the same faulty rules, but its corrections, like its errors, are not recorded anywhere. Execution turns rule errors from occasional and invisible into systematic and repairable.
@@ -344,7 +344,7 @@ Execution has three costs. It defers documents whose requirement depends on fact
 Table~\ref{tab:guidance} summarises when each design is preferable. Three findings carry most of the guidance. First, if an organisation wants request quality that does not depend on its choice of model, or wants to run a cost-efficient model, it should execute its rules: on the theft cases, the Study~1 configuration with \texttt{gpt-6-luna} was at least as accurate as the frontier model applying the rules in context, at half the cost per case, and on the tenancy claims it made fewer unsafe errors, although it deferred more documents. Second, rules must be verified before they are executed. Extraction errors were the dominant source of the Study~1 configuration's errors, and automated rule verification can focus a review of the rules on a third fewer rules without missing a known error, but it cannot replace that review. Third, an executing agent needs an explicit policy for silence: which unstated facts may be presumed once the claim's category is known, and which must be asked. A single presumption for the routing fact removed most of the Study~1 configuration's deferrals on the tenancy claims without adding unsafe errors.
 
 \begin{table}[t]
-\caption{When to execute the rules and when to let the model apply them, from the evidence of Study~1.}
+\caption{Superseded by Study~2 and by the confirmatory test (Study~3); kept as the guidance written after Study~1, which Study~2 did not confirm. When to execute the rules and when to let the model apply them, from the evidence of Study~1.}
 \label{tab:guidance}
 \small
 \begin{tabularx}{\linewidth}{@{}XX@{}}

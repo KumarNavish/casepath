@@ -54,7 +54,7 @@ D & tenancy, Rules in context, same workflow, frontier & \stDA & \stDB & \stDDif
 \centering
 \fig{fig_study2}{\linewidth}
 \Description{Dot plots of Study 2 results by design and model: tenancy held needed documents and strict unsafe errors per claim; theft wrong plus missed changes per pair with intervals.}
-\caption{Study~2 by design and model. Left: held needed documents and strict unsafe errors per tenancy claim. Right: wrong plus missed changes per theft pair with 95\% cluster-bootstrap intervals; a bar marks the value with repeated errors counted once. v1 and v2 are the Study~1 and Study~2 configurations.}
+\caption{Study~2 by design and model. Left: held needed documents and strict unsafe errors per tenancy claim. Right: wrong plus missed changes per theft pair with 95\% cluster-bootstrap intervals; a bar marks the value with repeated errors counted once. ``CasePath v1'' and ``CasePath v2'' in the figure are the Study~1 and Study~2 configurations, not the product tested in Study~3.}
 \label{fig:study2}
 \end{figure}
 
@@ -142,4 +142,4 @@ Per case and run, in $10^{-3}$ US dollars, the configuration cost \stCostTenCPvT
 \subsection{Interpretation at the time}
 \label{app:s2-interpretation}
 
-Study~2 did not show that the Study~2 configuration requests evidence better than Rules in context. It fixed what it targeted on tenancy: needed documents were no longer held behind facts the claim never raised. Three features of the data limit what it could show. Tenancy was near ceiling for every design, because references were computed by the engine and messages were selected for explicitness. The strict measure did not count held needed documents, so the benefit of presumptions appeared only in the requested share and in spurious holds. Most theft errors were errors in a story's unchanged case repeated across its pairs; counted once, contrast~C shrank to \stSecCDedupDiff{} (Appendix~\ref{app:rob-study2}). The repaired workflow helped neither design, and agreement of two readings was the largest single gain.
+Study~2 did not show that the Study~2 configuration requests evidence better than Rules in context. It fixed what it targeted on tenancy: needed documents were no longer held behind facts the claim never raised. Three features of the data limit what it could show. Tenancy was near ceiling for every design, because references were computed by the engine and messages were selected for explicitness. The strict measure did not count held needed documents, so the benefit of presumptions appeared only in the requested share and in spurious holds. Most theft errors were errors in a story's unchanged case repeated across its pairs; counted once, contrast~C shrank to \stSecCDedupDiff{} (Section~\ref{supp:robustness}). The repaired workflow helped neither design, and agreement of two readings was the largest single gain.

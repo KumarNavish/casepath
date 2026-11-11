@@ -90,10 +90,14 @@ def fig_families():
         ax.scatter([b], [j - dy], s=22, marker="o", facecolors="white", edgecolors=th.INK, linewidths=th.THICK * 0.8, zorder=4)
     # direct labels on the first row (no legend box)
     a, b = R[0]["diff_ric"], R[0]["diff_ric_frontier"]
-    ax.annotate("against the frontier model", (b, 0), xytext=(b, -1.25), ha="center", va="bottom", fontsize=th.NOTE,
-                annotation_clip=False, arrowprops=dict(arrowstyle="-", color=th.NEUTRAL, lw=th.THIN, shrinkA=0, shrinkB=4))
-    ax.annotate("against the same model", (a, 0), xytext=(a + 0.15, -1.25), ha="left", va="bottom", fontsize=th.NOTE,
-                annotation_clip=False, arrowprops=dict(arrowstyle="-", color=th.NEUTRAL, lw=th.THIN, shrinkA=0, shrinkB=4))
+    # each label sits straight above its marker, on the side away from the other, so the leaders are vertical and
+    # neither label crosses the other's leader
+    left, right = (b, a) if b <= a else (a, b)
+    for x, text, ha in ((left, "against the frontier model" if left == b else "against the same model", "right"),
+                        (right, "against the same model" if right == a else "against the frontier model", "left")):
+        ax.annotate(text, (x, 0), xytext=(x, -1.25), ha=ha, va="bottom", fontsize=th.NOTE, annotation_clip=False,
+                    arrowprops=dict(arrowstyle="-", color=th.NEUTRAL, lw=th.THIN, shrinkA=0, shrinkB=4,
+                                    relpos=(1.0, 0.0) if ha == "right" else (0.0, 0.0)))
     th.save(fig, FIG / "fig_families.pdf", PREVIEW)
 
 

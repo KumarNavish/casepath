@@ -315,6 +315,25 @@ m("sthreeRunCauseFourTime", get(cause4, 0, "time")[11:16])
 planned = sum("only early stop that was planned" in get(e, "text") for e in cause4)
 m("sthreeRunPlannedStops", planned)
 m("sthreeRunUnplannedStops", sum(get(e, "stopped") != "complete" for e in entries) - planned)
+# Each early stop by its cause, from the run log's own words: deliberate (the operator's interrupt of the first
+# invocation, told by the dated correction note; the wrapper's planned stop of the fourth, told by its dated note) or
+# a failure of the environment (the background command's time limit; the container restart).
+correction = " ".join(get(e, "text") for e in notes if "start" not in e)
+causes = []
+for i, e in enumerate(entries):
+    if get(e, "stopped") == "complete":
+        continue
+    text = get(e, "stopped") + " " + (e.get("text") or "")
+    if i == 0 and "operator interrupted it" in correction:
+        causes.append("deliberate")
+    elif i == 3 and "stopped on purpose by the operator's wrapper script" in correction:
+        causes.append("deliberate")
+    elif "killed by the time limit" in text or "container that runs the session was restarted" in text:
+        causes.append("failure")
+    else:
+        raise Missing(f"no recorded cause for the early stop of invocation {i + 1}")
+m("sthreeRunDeliberateStops", causes.count("deliberate"))
+m("sthreeRunFailureStops", causes.count("failure"))
 mo = re.search(r"after (\d+) minutes", get(cause4, 0, "text"))
 if not mo:
     raise Missing("the note on the fourth stop no longer gives the wrapper's minutes")
@@ -460,6 +479,49 @@ for f, pre, name in (("plans_tenancy_casepath.json", "PRODUCT", "CasePath"), ("p
     m(f"sthreeExample{name}Held", sum(held[0] in p.get("holds", []) for p in plans))
     m(f"sthreeExample{name}Requested", sum(held[0] in p.get("requests", []) for p in plans))
     m(f"sthreeExample{name}OtherRequestsSame", sum(sorted(p.get("requests", [])) == sorted(get(ref, "request_set")) for p in plans))
+
+# ------------------------------------------------------------------------------- worked example after review (Section 6)
+# rule (chosen after the results were known): the first claim in fresh2/MANIFEST.json's file order in the denied-event
+# subset as the analysis defines it (empty request set, no held document)
+dx = None
+for k in fm_files:
+    if not k.startswith("tenancy/data/claims/"):
+        continue
+    cid = k.rsplit("/", 1)[1][:-5]
+    ref = json.loads((TMIS / "fresh2" / "tenancy" / "data" / "references" / f"{cid}.json").read_text())
+    if not ref.get("request_set") and not ref.get("held_set"):
+        dx = (cid, ref)
+        break
+if dx is None:
+    raise Missing("no denied-event claim in fresh2")
+cid, ref = dx
+m("sthreeDeniedExampleDocs", len(get(ref, "document_states")))
+m("sthreeDeniedExampleNotNeeded", sum(v == "not_needed" for v in get(ref, "document_states").values()))
+for f, pre, name in (("plans_tenancy_casepath.json", "PRODUCT", "CasePath"), ("plans_tenancy_ric_luna.json", "B1v2p", "Ric"),
+                     ("plans_tenancy_ric_terra.json", "B1v2p", "RicFrontier")):
+    d = json.loads((RUN / f).read_text())
+    for r in range(3):
+        p = get(d, f"{pre}|{cid}|{r}", "plan")
+        m(f"sthreeDeniedExample{name}Run{WORD[str(r + 1)]}Req", len(p.get("requests", [])))
+        m(f"sthreeDeniedExample{name}Run{WORD[str(r + 1)]}Hold", len(p.get("holds", [])))
+        m(f"sthreeDeniedExample{name}Run{WORD[str(r + 1)]}Ask", len(p.get("questions", [])))
+d = json.loads((RUN / "plans_tenancy_casepath.json").read_text())
+conflicting = [get(d, f"PRODUCT|{cid}|{r}", "product_extra", "facts", "claim_received", "status") == "conflicting" for r in range(3)]
+m("sthreeDeniedExampleCasePathConflictRuns", sum(conflicting))
+
+# ------------------------------------------------------------------------------- open facts per case-run (Section 3)
+# the product's own record of each evaluation: exact deferral, or the plain walk above its limit of open facts
+for regime in ("tenancy", "theft"):
+    for f, name in (("casepath", "CasePath"), ("casepath_checklist", "Checklist"),
+                    ("casepath_checklist_frontier", "FrontierChecklist")):
+        d = json.loads((RUN / f"plans_{regime}_{f}.json").read_text())
+        modes = [((e.get("product_extra") or {}).get("deferral") or {}) for e in d.values()]
+        opens = [len(x.get("open_facts", [])) for x in modes]
+        m(f"sthreeDeferral{name}{REG[regime]}CaseRuns", len(d))
+        m(f"sthreeDeferral{name}{REG[regime]}PlainWalk", sum(x.get("mode") == "first_open_branch" for x in modes))
+        m(f"sthreeDeferral{name}{REG[regime]}MaxOpen", max(opens))
+        m(f"sthreeDeferral{name}{REG[regime]}MinOpenPlain",
+          min([n for n, x in zip(opens, modes) if x.get("mode") == "first_open_branch"] or [0]))
 
 # ------------------------------------------------------------------------------- post hoc
 t = get(post, "react_sensitivity", "theft")

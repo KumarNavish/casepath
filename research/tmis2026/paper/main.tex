@@ -16,11 +16,17 @@
 \usepackage{needspace}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,breakatwhitespace=true,postbreak=\mbox{\hspace{1em}},columns=fullflexible,frame=single,rulecolor=\color{black!25},xleftmargin=2pt,xrightmargin=2pt,aboveskip=2pt,belowskip=4pt}
+%% References into the separate supplement (supplement.tex -> supplement.pdf) use the prefix S-, e.g.
+%% Supplement, Section~\ref{S-app:study1}. xr-hyper reads supplement.aux when it exists; build main,
+%% supplement, main (each with BibTeX). Either document builds alone, with "??" for references into the other.
+\usepackage{xr-hyper}
+\IfFileExists{supplement.aux}{\externaldocument[S-]{supplement}}{}
 
 \input{macros}
 \input{results/numbers}
 \input{results/numbers_sharc}
 \input{results/numbers_study3}
+\input{results/numbers_study3_review}
 
 %% \pendingref{text}: a work discussed in the text whose bibliography entry is not yet verified.
 \newcommand{\pendingref}[1]{[#1; reference pending]}
@@ -70,10 +76,14 @@
 \input{sections/s4_casepath}
 \input{sections/s5_history}
 \input{sections/s6_test}
-\input{sections/s7_experts}
+%% Section 7 (sections/s7_experts.tex, the expert study) is no longer input: brief D3. It returns with results.
 \input{sections/s8_discussion}
 \input{sections/s9_conclusion}
 
+%% AUTHORS: conflict of interest and roles. State each author's relation to the insurer and to the product's
+%% owners (who they are, and who decided the merge of the tested commit), as the venue requires.
+%% AUTHORS: disclosure of the conference version (venue, year, title) and what is new in this article; the
+%% venue requires it in a footnote on the first page and in the cover letter.
 \begin{acks}
 \input{sections/acknowledgments}
 \end{acks}
@@ -83,8 +93,7 @@
 
 \appendix
 \input{sections/app_a_proofs}
-\input{sections/app_b_study1}
-\input{sections/app_c_study2}
+%% Appendices B and C (Studies 1 and 2 in full) moved to the supplement (supplement.tex): brief D4.
 \input{sections/app_d_deviations}
 \input{sections/app_e_data}
 \input{sections/app_f_robustness}
