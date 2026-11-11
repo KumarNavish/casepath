@@ -22,6 +22,7 @@ from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 from ..process import casegraph, knowledge as kb, workflows
+from ..process.items import build_items, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
@@ -339,7 +340,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_case(case_id: str, who=Depends(user)):
         current = state(case_id)
         completed = current["run"]
-        return {"case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
+        listed = build_items(current, (completed or {}).get("result"))  # everything the case's screens and exports assert
+        return {"items": listed, "items_sha256": items_sha256(listed),
+                "case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
                 "feedback": store.list_feedback(completed["id"]) if completed else []}

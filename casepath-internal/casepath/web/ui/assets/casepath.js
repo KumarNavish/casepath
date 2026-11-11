@@ -951,7 +951,7 @@ function documentsView() {
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
       const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
       return `<tr><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
-        <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${d.partial ? `<br><small class="cp-muted">${T(`${d.partial.files.length || 1} already in the file; the rest is asked`, `${d.partial.files.length || 1} liegt/liegen vor; der Rest wird angefordert`)}</small>` : ""}${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
+        <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${d.status === "unusable" && (item("document", d.document) || {}).reason ? `<br><small class="cp-muted">${esc(clip(item("document", d.document).reason, 160))}</small>` : ""}${d.partial ? `<br><small class="cp-muted">${T(`${d.partial.files.length || 1} already in the file; the rest is asked`, `${d.partial.files.length || 1} liegt/liegen vor; der Rest wird angefordert`)}</small>` : ""}${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;
     }).join("")}</tbody></table>`;
 }
@@ -998,6 +998,7 @@ function resultView() {
 const DEADLINES_RELIABLE = false;  // until the claim reader lists deadlines with their quotes (verified on real dossiers)
 const CHAT_ROLE = /^user/i;  // a step the customer answers in the online form or chat
 function chatOnly() {
+  if (S.data.items) return new Set(S.data.items.filter((i) => i.kind === "fact" && i.chat_only).map((i) => i.key));
   // A fact only the customer's chat answers: every step it is asked on is a customer step. The files cannot settle it.
   const asked = {};
   for (const s of S.data.process.steps || []) for (const ref of s.source_refs || []) (asked[ref] = asked[ref] || []).push(s);
@@ -1017,7 +1018,12 @@ function seededNote(item) {
   return T(`activated for the pilot · from Protekta’s first request letters${e ? `: ${e.text}` : ""}`,
            `für den Pilot aktiviert · aus Protektas ersten Unterlagenanforderungen${e ? `: ${e.text}` : ""}`);
 }
+const item = (kind, key) => (S.data.items || []).find((i) => i.kind === kind && i.key === key);  // the server's one item list
 function askNow(ev) {
+  if (S.data.items) {
+    const ask = (d) => (item("document", d.document) || {}).ask;
+    return { now: ev.documents.filter((d) => ask(d) === "now"), later: ev.documents.filter((d) => ask(d) === "later") };
+  }
   if (ev.outcome) return { now: [], later: [] };  // a process at its end sends no first request
   // The first request asks for what every path needs and what practice asks for; a builder's case-specific
   // conditional need waits until its condition is settled.
@@ -1110,7 +1116,9 @@ function overviewView() {
     return `${dateText(d.date)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : n < 0 ? T(`expired ${-n} d ago`, `abgelaufen seit ${-n} T.`) : T(`${n} d`, `${n} T.`)}</span> ${esc(d.question)}${cite((d.citations || [])[0])}`; }).join("<br>")
     : T("none established in the files", "in den Akten keine festgestellt");
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional", "depends"].includes(d.required)) : [];
-  const present = docs.filter((d) => d.status === "present").length, open = docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
+  const present = docs.filter((d) => d.status === "present").length;
+  const open = S.data.items ? S.data.items.filter((i) => i.kind === "document" && i.ask === "now").length  // the same list the letter asks from
+    : docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
   const draft = ev ? requestDraft(ev) : "";
   const done = doneRows(), doneKeys = new Set(done.map((f) => f.target.slice(6)));
   const all = judgementPoints(ev, r), pts = all.filter((p) => !doneKeys.has(p.key));
@@ -1131,7 +1139,7 @@ function overviewView() {
         <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
         <dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>
-        <dt>${T("Next action", "Nächster Schritt")}</dt><dd>${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
+        <dt>${T("Next action", "Nächster Schritt")}</dt><dd>${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
       </dl>
       ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre class="cp-reply" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(draft)}</pre>
         <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section></div>

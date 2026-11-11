@@ -1,0 +1,177 @@
+"""The canonical item list: everything CasePath states about a case, built in one place.
+
+What the Übersicht shows, what the letter asks, what exports and gold labels refer to, and the list's hash all come
+from build_items. The browser only draws it. Model-free; the evaluator is used as it is.
+
+Item ids are "<kind>:<key>". Fact, document, step and deadline keys are the process's own ids and stay stable across
+reloads and re-evaluations; party, open_point, summary and reply keys are positions, valid within one run.
+"""
+import hashlib
+import json
+import re
+
+CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
+DECISION_ROLE = re.compile(r"^entscheidung", re.I)
+PERIOD = re.compile(r"\d{1,3} (days|weeks|months|years) (from|before) \d{4}-\d{2}-\d{2}")
+
+
+def _node_ids(refs):
+    return {r.split("#", 1)[1] for r in refs or () if r.startswith("diagram#") and "#" in r}
+
+
+def _condition_facts(condition, out):
+    if isinstance(condition, dict):
+        if "fact" in condition:
+            out.add(condition["fact"])
+        for key in ("all", "any"):
+            for child in condition.get(key, ()):
+                _condition_facts(child, out)
+        if "not" in condition:
+            _condition_facts(condition["not"], out)
+    return out
+
+
+def gating_facts(graph):
+    """Facts that decide a step's way on or whether a document is needed."""
+    out = set()
+    for step in graph["steps"]:
+        for edge in step.get("next", []):
+            _condition_facts(edge.get("when"), out)
+    for document in graph["documents"]:
+        _condition_facts(document.get("required_when"), out)
+    return out
+
+
+def customer_facts(graph):
+    """Facts only the customer's own answers settle: apart from the decision it gates, every step the fact refers to,
+    and every step its branches lead to, is a customer step. The files cannot settle such a fact."""
+    steps = {s["id"]: s for s in graph["steps"]}
+    out = set()
+    for fact in graph["facts"]:
+        ids = _node_ids(fact.get("source_refs"))
+        touched = [steps[i] for i in ids if i in steps]
+        for step in graph["steps"]:
+            for edge in step.get("next", []):
+                if fact["id"] in _condition_facts(edge.get("when"), set()) and edge["to"] in steps:
+                    touched.append(steps[edge["to"]])
+        others = [s for s in touched if not DECISION_ROLE.match(s.get("role") or "")]
+        if others and all(CUSTOMER_ROLE.match(s.get("role") or "") for s in others):
+            out.add(fact["id"])
+    return out
+
+
+def _fact_node(graph, fact_id):
+    """The step a fact is there for: the decision that branches on it, else the first step it refers to."""
+    for step in graph["steps"]:
+        if any(fact_id in _condition_facts(e.get("when"), set()) for e in step.get("next", [])):
+            return step["id"]
+    ids = _node_ids(next((f.get("source_refs") for f in graph["facts"] if f["id"] == fact_id), ()))
+    return next((s["id"] for s in graph["steps"] if s["id"] in ids), None)
+
+
+def _origin(document):
+    if document.get("knowledge"):
+        return f"knowledge#{document['knowledge']}"
+    if document.get("edit"):
+        return f"edit#{document['edit']}"
+    return "workflow"
+
+
+def _evidence(citations):
+    return [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for c in citations or ()]
+
+
+def build_items(state, result):
+    graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
+    items = []
+    def add(kind, key, label=None, **fields):
+        text = label if isinstance(label, dict) else {"de": label, "en": label}  # the process speaks German; both keys always present
+        items.append({"item_id": f"{kind}:{key}", "kind": kind, "key": key, "system": "casepath", "label": text, **fields})
+    if graph and ev:
+        gating, customer = gating_facts(graph), customer_facts(graph)
+        waiting = {w["fact"] for w in ev.get("waiting_for", [])}
+        for row in ev.get("path", []):
+            step = next((s for s in graph["steps"] if s["id"] == row["step"]), {})
+            add("step", row["step"], value=row["state"], stated_as="established", verdict=None, evidence=[], node=row["step"],
+                origin="workflow", chain=True, label=row.get("title") or row["step"], legal_basis=step.get("legal_basis"))
+        docs = {d["id"]: d for d in graph["documents"]}
+        part_of = {part: whole for whole, d in docs.items() for part in d.get("includes", ())}
+        found = {d["document"]: d for d in result.get("documents", [])}
+        for row in ev["documents"]:
+            d = docs.get(row["document"], {})
+            if ev.get("outcome") or row["status"] == "present":
+                ask = None
+            elif row["required"] == "yes" or (row["required"] == "depends" and not (d.get("edit") and not d.get("knowledge"))):
+                ask = "now"
+            elif row["required"] == "depends":
+                ask = "later"
+            else:
+                ask = None
+            note = (found.get(row["document"]) or {}).get("note")
+            add("document", row["document"], value=row["status"], stated_as="put_to_handler" if row["required"] == "depends" else "established",
+                verdict=(found.get(row["document"]) or {}).get("verdict"), evidence=_evidence(row.get("citations")),
+                node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
+                legal_basis=d.get("legal_basis") or row.get("legal_basis"),
+                required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
+                reason=note if row["status"] in {"unusable", "missing"} and note else None,
+                **({"partial": row["partial"]} if row.get("partial") else {}))
+        definitions = {f["id"]: f for f in graph["facts"]}
+        for fact in result.get("facts", []):
+            if fact["fact"] not in definitions:
+                continue
+            computed = isinstance(fact.get("value"), str) and PERIOD.fullmatch(fact["value"])
+            add("fact", fact["fact"], value=fact.get("value"),
+                stated_as="computed" if computed and fact["status"] == "established" else fact["status"],
+                verdict=fact.get("verdict"), evidence=_evidence(fact.get("citations")), node=_fact_node(graph, fact["fact"]),
+                origin="workflow" if not str(fact["fact"]).startswith(("k-", "q-")) else "process_builder", chain=fact["fact"] in gating,
+                label=definitions[fact["fact"]].get("question"), chat_only=fact["fact"] in customer, path=fact["fact"] in waiting,
+                **({"part": fact["part"]} if fact.get("part") else {}))
+        for d in result.get("deadlines", []):
+            add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
+                evidence=[], node=_fact_node(graph, d["fact"]), origin="workflow", chain=True, label=d.get("question"),
+                **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
+        asked = [i for i in items if i["kind"] == "document" and i["ask"] == "now"]
+        lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
+        if ev.get("outcome"):
+            title = ev["outcome"].get("title") or ev["outcome"]["id"]
+            action = ("close", title, {"de": f"Fall abschliessen: {title}", "en": f"Close the case: {title}"})
+        elif asked:
+            action = ("request", f"{lines} documents", {"de": f"{lines} Unterlage(n) beim Kunden anfordern", "en": f"Request {lines} document(s) from the customer"})
+        elif ev.get("next_actions"):
+            first = ev["next_actions"][0]
+            action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])
+        else:
+            action = None
+        if action:
+            add("next_action", "0", value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+                origin="workflow", chain=True, label=action[2], action=action[0])
+    brief = result.get("brief") or {}
+    for i, party in enumerate(brief.get("parties") or []):
+        add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None, origin="claim_reader",
+            chain=False, label=party.get("role"))
+    for i, event in enumerate(brief.get("timeline") or []):
+        add("timeline", str(i), value=f"{event.get('date') or ''} {event.get('event') or ''}".strip(), stated_as="established",
+            verdict=None, evidence=_evidence(event.get("citations")), node=None, origin="claim_reader", chain=False, label=None)
+    for i, point in enumerate(result.get("open_points") or []):
+        add("open_point", str(i), value=point if isinstance(point, str) else json.dumps(point, ensure_ascii=False), stated_as="put_to_handler",
+            verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None)
+    if brief.get("request") or result.get("summary"):
+        add("summary", "0", value=brief.get("request") or result.get("summary"), stated_as="established", verdict=None, evidence=[],
+            node=None, origin="claim_reader", chain=False, label=None)
+    for i, clause in enumerate((result.get("reply") or {}).get("clauses") or []):
+        add("reply", str(i), value=clause.get("text") if isinstance(clause, dict) else clause, stated_as="established", verdict=None,
+            evidence=_evidence((clause or {}).get("citations") if isinstance(clause, dict) else None), node=None, origin="result_checker",
+            chain=False, label=None)
+    return items
+
+
+# The hash covers what an expert judges: item_id, kind, key, value, stated_as, and by kind
+#   document: status, required, ask, part_of · fact: part · next_action: action · deadline: stated, rule
+# It leaves out label, evidence, origin, verdict, node, chain, legal_basis and reason, which explain an assertion.
+# The study's integrity check rests on this list: change it only with a new hash version.
+HASHED = ("item_id", "kind", "key", "value", "stated_as", "status", "required", "ask", "part_of", "part", "action", "stated", "rule")
+
+
+def items_sha256(items):
+    rows = sorted([[i.get(k) for k in HASHED] for i in items], key=lambda r: r[0])
+    return hashlib.sha256(json.dumps(rows, ensure_ascii=False, separators=(",", ":"), default=str).encode()).hexdigest()
