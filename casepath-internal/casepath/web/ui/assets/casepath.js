@@ -255,9 +255,9 @@ function renderRail() {
     <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small></div>
     <div class="cp-rail-head">${T("Sources", "Quellen")}<span>${files.length}</span>${S.canUpload === false ? "" : `<label class="cp-link">${icon("plus")}${T("Add source", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case documents here", "Falldokumente hierher ziehen")}</div>`}
-    ${S.message ? `<p class="cp-error" style="padding:0 27px">${esc(S.message)}</p>` : ""}
-    <div class="cp-rail-foot">${chooser}
-      <button class="cp-button primary" id="run" ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${T("Prepare case", "Fall vorbereiten")}</button>
+    ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
+    <div class="cp-rail-foot">${unaidedPending() ? "" : chooser}
+      <button class="cp-button primary" id="run" ${unaidedPending() ? "hidden" : ""} ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${T("Prepare case", "Fall vorbereiten")}</button>
       <span class="cp-status ${run && run.status === "failed" ? "failed" : ""}">${esc(status)}</span>
       ${S.file ? `<a class="cp-button" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${T("Open full source", "Original öffnen")} ${icon("external")}</a>` : ""}</div>
   </aside>`;
@@ -1272,7 +1272,7 @@ function bindOverview() {
   });
   for (const b of document.querySelectorAll("[data-note]")) b.addEventListener("click", async () => {
     const text = window.prompt(T("Note (stays inside Mobiliar)", "Anmerkung (bleibt in der Mobiliar)"));
-    if (text && text.trim()) { await caseEvent("note.added", b.dataset.note === "case:0" ? null : b.dataset.note, { text: text.trim().slice(0, 2000), note_present: true }); S.message = T("Note saved.", "Anmerkung gespeichert."); renderCase(); }
+    if (text && text.trim()) { await caseEvent("note.added", b.dataset.note === "case:0" ? null : b.dataset.note, { text: text.trim().slice(0, 2000), note_present: true }); S.message = T("Note saved.", "Anmerkung gespeichert."); S.messageOk = true; renderCase(); setTimeout(() => { S.message = null; S.messageOk = false; renderCase(); }, 2500); }
   });
   for (const b of document.querySelectorAll("[data-close]")) b.addEventListener("click", async () => {
     const line = b.dataset.close === "erledigt_mit_vorbehalt" ? window.prompt(T("Reservation (optional)", "Vorbehalt (freiwillig)")) || "" : "";
