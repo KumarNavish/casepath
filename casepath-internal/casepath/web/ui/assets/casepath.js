@@ -194,6 +194,7 @@ function recorded(kind) {
 }
 function fileName(id) { const f = (S.data.files || []).find((x) => x.id === id); return f ? f.name : id; }
 function proofFor(fileId) {
+  if (unaidedPending()) return "";  // the own answer comes first: no result shows beside the files
   const factRows = recorded("fact"), docRows = recorded("document");
   const numbers = facts().map((f, i) => (factRows[f.id] && factRows[f.id].verdict === "accepted" && factRows[f.id].citations.some((c) => c.file === fileId) ? i + 1 : null)).filter(Boolean);
   const needs = Object.values(docRows).filter((d) => d.verdict === "accepted" && (d.files || []).includes(fileId));
@@ -950,7 +951,7 @@ function documentsView() {
       const row = rows[d.document] || {};
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
       const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
-      return `<tr><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
+      return `<tr data-item="document:${esc(d.document)}"><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
         <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${d.status === "unusable" && (item("document", d.document) || {}).reason ? `<br><small class="cp-muted">${esc(clip(item("document", d.document).reason, 160))}</small>` : ""}${d.partial ? `<br><small class="cp-muted">${T(`${d.partial.files.length || 1} already in the file; the rest is asked`, `${d.partial.files.length || 1} liegt/liegen vor; der Rest wird angefordert`)}</small>` : ""}${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;
     }).join("")}</tbody></table>`;
@@ -1138,17 +1139,17 @@ function overviewView() {
   return `<div class="cp-overview"><div>
     <section class="cp-card" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">
-        <dt>${T("Request", "Anliegen")}</dt><dd>${esc(anliegen)}${cite(claimCite)}</dd>
-        <dt>${T("Parties", "Parteien")}</dt><dd>${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
-        <dt>${T("Process", "Prozessstand")}</dt><dd>${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
+        <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen)}${cite(claimCite)}</dd>
+        <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
+        <dt>${T("Process", "Prozessstand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
         <dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>
-        <dt>${T("Next action", "Nächster Schritt")}</dt><dd>${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
+        <dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
       </dl>
-      ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>
+      ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>
         <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section></div>
     <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Needs your judgement", "Braucht Ihr Urteil")} <span class="cp-muted">· ${pts.length}</span></h2>
-      ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
+      ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li data-item="${esc(p.fact ? `fact:${p.fact}` : p.request ? "next_action:0" : `point:${p.key}`)}"><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
         ${pts.length > 7 && !S.allPoints ? `<button class="cp-link" id="all-points">+${pts.length - 7} ${T("more", "weitere")}</button>` : ""}`
         : `<p>${T("Nothing open.", "Nichts offen.")} <span class="cp-muted">${T("Checked", "Geprüft")}: ${checked}.</span></p>`}
       ${settled.length ? `<details class="cp-muted"><summary class="cp-link">${T(`${settled.length} settled`, `${settled.length} erledigt`)}</summary><ul>${settled.map((p) => { const f = done.find((x) => x.target === `point:${p.key}`);
@@ -1182,6 +1183,29 @@ function changeLine(diff) {
   if (diff.documents_changed.length) parts.push(T(`${diff.documents_changed.length} document(s) changed`, `${diff.documents_changed.length} Unterlage(n) geändert`));
   return `${T("Changed", "Geändert")}: ${parts.join("; ") || T("nothing else moved", "sonst nichts verschoben")}.`;
 }
+const EXPOSURE = { observer: null, since: {}, view: null };
+function flushExposure(key, el) {
+  const start = EXPOSURE.since[key];
+  if (start === undefined) return;
+  delete EXPOSURE.since[key];
+  const item = key.split("|")[1];
+  if (/^[a-z_]+:./.test(item) && S.route.id) caseEvent("item.exposed", item, { from_ms: start, to_ms: Math.round(performance.now()), view: EXPOSURE.view }).catch(() => {});
+}
+function watchExposure(view) {
+  // Which items were on screen and for how long, for "seen and kept" versus "not seen". Raw intervals; no mouse data.
+  if (EXPOSURE.observer) { EXPOSURE.observer.disconnect(); for (const key of Object.keys(EXPOSURE.since)) flushExposure(key); }
+  if (typeof IntersectionObserver === "undefined" || unaidedPending()) return;
+  EXPOSURE.view = view;
+  EXPOSURE.observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const key = `${view}|${entry.target.dataset.item}`;
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) EXPOSURE.since[key] = EXPOSURE.since[key] ?? Math.round(performance.now());
+      else flushExposure(key);
+    }
+  }, { threshold: [0, 0.5] });
+  for (const el of document.querySelectorAll("[data-item]")) EXPOSURE.observer.observe(el);
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden) for (const key of Object.keys(EXPOSURE.since)) flushExposure(key); });
 function closed() { return (S.data.caseEvents || []).filter((e) => e.kind === "case.closed").pop(); }
 function closeView() {
   const c = closed();
@@ -1244,9 +1268,9 @@ function bindOverview() {
     const form = new FormData(unaided);
     const answer = { step: form.get("step") || null, documents: form.getAll("doc"), documents_free_text_present: Boolean((form.get("doc_other") || "").trim()),
                      action_kind: form.get("action") || null, action_free_text_present: false };
-    await caseEvent("unaided.saved", null, { ...answer, ...(form.get("doc_other") ? { documents_other: String(form.get("doc_other")).slice(0, 500) } : {}) });
-    await caseEvent("unaided.frozen", null, { answer_sha256: await sha256(JSON.stringify(answer)) });
-    await caseEvent("reveal", null, {});
+    // one POST: the server stores the answer, hashes and freezes it, and reveals; a second answer is refused
+    await api(`/api/cases/${S.route.id}/own-answer`, { method: "POST", body: JSON.stringify({ step: answer.step, documents: answer.documents,
+      documents_other: String(form.get("doc_other") || "").slice(0, 500), action_kind: answer.action_kind }) });
     await loadCase();
   });
   const all = $("#all-points");
@@ -1322,7 +1346,7 @@ async function renderCase() {
   const live = liveView ? liveState() : null;
   if (liveView) {
     main = `${live ? liveSpine(live) : spine()}<div class="cp-live"><div>${await sourceCard(S.file)}${factCards()}</div>${livePanel(live)}</div>`;
-  } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;  // every tab
+  } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${esc(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
   else if (tab === "claim_reader") main = claimView(await sourceCard(S.file));
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "document_finder") main = `${documentsView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
@@ -1334,6 +1358,10 @@ async function renderCase() {
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
+  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => {
+    const holder = b.closest("[data-item]");
+    caseEvent("source.opened", holder && /^[a-z_]+:/.test(holder.dataset.item) ? holder.dataset.item : null, { file_id: b.dataset.citeFile, page: Number(b.dataset.page) || null }).catch(() => {});
+  });
   for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = tab === "overview"; await renderCase(); const box = $("#overview-source"); if (box) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const follow = $("#follow");
@@ -1354,6 +1382,7 @@ async function renderCase() {
   if (undo) undo.addEventListener("click", async () => { await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }); S.lastEdit = null; await loadCase(); });
   bindEdit();
   bindOverview();
+  watchExposure(tab);
   const hit = $("#live-hit"), body = hit && hit.closest(".cp-doc-body");
   if (body) {  // centre the quote inside its card at once, so the pointer lands where the quote stays
     const a = hit.getBoundingClientRect(), b = body.getBoundingClientRect();

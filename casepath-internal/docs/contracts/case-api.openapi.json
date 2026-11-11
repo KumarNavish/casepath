@@ -259,6 +259,62 @@
     "title": "NewCase",
     "type": "object"
    },
+   "OwnAnswer": {
+    "properties": {
+     "action_kind": {
+      "anyOf": [
+       {
+        "enum": [
+         "request",
+         "answer",
+         "advise",
+         "close",
+         "other"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Action Kind"
+     },
+     "action_other": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Action Other",
+      "type": "string"
+     },
+     "documents": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 60,
+      "title": "Documents",
+      "type": "array"
+     },
+     "documents_other": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Documents Other",
+      "type": "string"
+     },
+     "step": {
+      "anyOf": [
+       {
+        "maxLength": 80,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Step"
+     }
+    },
+    "title": "OwnAnswer",
+    "type": "object"
+   },
    "StatusChange": {
     "properties": {
      "reason": {
@@ -703,6 +759,54 @@
      }
     },
     "summary": "Upload"
+   }
+  },
+  "/api/cases/{case_id}/own-answer": {
+   "post": {
+    "description": "The own answer before CasePath's result: stored, hashed and frozen with the reveal, once per person and case.",
+    "operationId": "own_answer_api_cases__case_id__own_answer_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/OwnAnswer"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Own Answer"
    }
   },
   "/api/cases/{case_id}/report.docx": {

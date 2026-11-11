@@ -60,6 +60,18 @@ REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3
            "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
 
 
+class OwnAnswer(BaseModel):
+    step: str | None = Field(None, max_length=80)
+    documents: list[str] = Field(default_factory=list, max_length=60)
+    documents_other: str = Field("", max_length=500)
+    action_kind: Literal["request", "answer", "advise", "close", "other"] | None = None
+    action_other: str = Field("", max_length=500)
+
+
+SERVER_KINDS = {"unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
+                "item.confirmed", "correction.undone", "point.settled"}  # written by the server only
+
+
 class EventRequest(BaseModel):
     kind: str = Field(min_length=3, max_length=40)
     item_id: str | None = Field(None, max_length=120, pattern=r"^[a-z_]+:[A-Za-z0-9_.:-]{1,100}$")
@@ -405,14 +417,37 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def add_event(case_id: str, body: EventRequest, who=Depends(user)):
         """A gesture the browser saw (exposure, a source opened, a note, the letter copied, the case closed)."""
         found(store.get_case, case_id)
-        if body.kind not in EVENT_KINDS:
-            raise HTTPException(422, "Unknown event kind.")
+        if body.kind not in EVENT_KINDS or body.kind in SERVER_KINDS:
+            raise HTTPException(422, "Unknown event kind, or one only the server writes.")
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
+        if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
+                                                            "party", "timeline", "answer", "point", "letter"}:
+            raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")
         reserved = {"schema", "event_id", "seq", "at", "session_id", "expert", "case_copy", "source_case", "frozen_run_id", "kind", "parity_sha", "item_id"}
         return record(case_id, who, body.kind, item_id=body.item_id, **{k: v for k, v in body.fields.items() if k not in reserved})
+
+    @app.post("/api/cases/{case_id}/own-answer", status_code=201)
+    def own_answer(case_id: str, body: OwnAnswer, who=Depends(user)):
+        """The own answer before CasePath's result: stored, hashed and frozen with the reveal, once per person and case."""
+        found(store.get_case, case_id)
+        answer = {"step": body.step, "documents": sorted(set(body.documents)), "documents_free_text_present": bool(body.documents_other.strip()),
+                  "action_kind": body.action_kind, "action_free_text_present": bool(body.action_other.strip())}
+        digest = hashlib.sha256(json.dumps({**answer, "documents_other": body.documents_other.strip(), "action_other": body.action_other.strip()},
+                                           ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+        completed = store.latest_run(case_id, "completed")
+        base = {"schema": "casepath.study.event/1", "session_id": None, "expert": who, "case_copy": case_id, "source_case": None,
+                "frozen_run_id": (completed or {}).get("id"), "parity_sha": parity_sha, "item_id": None}
+        written = store.append_case_events(case_id, [
+            {**base, "kind": "unaided.saved", **answer, **({"documents_other": body.documents_other.strip()} if body.documents_other.strip() else {}),
+             **({"action_other": body.action_other.strip()} if body.action_other.strip() else {})},
+            {**base, "kind": "unaided.frozen", "answer_sha256": digest},
+            {**base, "kind": "reveal"}], unless=lambda events: any(e["kind"] == "reveal" and e["expert"] == who for e in events))
+        if written is None:
+            raise HTTPException(409, "Your own answer for this case is already saved and frozen.")
+        return {"events": written}
 
     @app.get("/api/cases/{case_id}/events")
     def list_events(case_id: str, who=Depends(user)):

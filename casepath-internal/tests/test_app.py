@@ -207,6 +207,11 @@ class AppTests(unittest.TestCase):
         self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "note.added", "item_id": "fact:frist",
                                                                             "fields": {"text": "Datum prüfen", "reason": "5"}}).status_code, 201)
         self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "made.up"}).status_code, 422)
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "reveal"}).status_code, 422)
+        own = client.post(f"/api/cases/{case['id']}/own-answer", json={"step": "notice", "documents": ["photo"], "action_kind": "request"})
+        self.assertEqual([e["kind"] for e in own.json()["events"]], ["unaided.saved", "unaided.frozen", "reveal"])
+        self.assertEqual(len(own.json()["events"][1]["answer_sha256"]), 64)
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/own-answer", json={"step": "intake"}).status_code, 409)
         changed = client.post(f"/api/cases/{case['id']}/edits", json={"op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"},
                                                                      "reason": "", "reason_code": "1", "recheck": False})
         self.assertEqual(changed.status_code, 201, changed.text)

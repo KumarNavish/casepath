@@ -333,6 +333,14 @@ class CaseStore:
                              (event["event_id"], case_id, event["seq"], event["at"], json.dumps(event, ensure_ascii=False)))
         return event
 
+    def append_case_events(self, case_id, records, unless=None):
+        """Several events in one transaction; ``unless(existing)`` true refuses them all (returns None)."""
+        with self._lock:
+            existing = self.list_case_events(case_id)
+            if unless and unless(existing):
+                return None
+            return [self.append_case_event(case_id, r) for r in records]
+
     def list_case_events(self, case_id):
         return [json.loads(r["data"]) for r in self._all("select data from events where case_id=? order by seq", case_id)]
 
