@@ -1300,6 +1300,7 @@ function historyView() {
     "source.opened": T("source opened", "Quelle geöffnet"), "reveal": T("own answer saved", "eigene Einschätzung gespeichert"), "point.settled": T("settled", "erledigt") };
   const rows = (S.data.caseEvents || []).filter((e) => words[e.kind]).reverse();
   return `<section class="cp-card" style="padding:18px 22px;max-width:900px"><h2 class="cp-section" style="margin-top:0">${T("History", "Verlauf")}</h2>
+    ${S.data.governing_version ? `<p class="cp-muted">${T(`Process updated since the case was prepared (${S.data.run_version} → ${S.data.governing_version}).`, `Prozess seit der Vorbereitung aktualisiert (${S.data.run_version} → ${S.data.governing_version}).`)}</p>` : ""}
     ${rows.length ? `<ul>${rows.map((e) => `<li>${dateText(e.at)} · ${esc(e.expert || "")} · <b>${esc(words[e.kind])}</b>${e.item_id ? ` <span class="cp-muted">${esc(e.item_id)}</span>` : ""}${e.text ? ` — ${esc(clip(e.text, 120))}` : ""}</li>`).join("")}</ul>`
       : `<p class="cp-empty">${T("Nothing done on this case yet.", "Noch nichts an diesem Fall erledigt.")}</p>`}</section>`;
 }

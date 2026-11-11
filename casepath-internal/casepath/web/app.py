@@ -395,6 +395,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock,
+                **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
