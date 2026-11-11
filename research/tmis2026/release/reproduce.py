@@ -290,12 +290,18 @@ def preflight():
         return False
     head = subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     report("git checkout", "PASS", f"HEAD {head[:12]}")
-    miss = []
-    for mod in ("matplotlib", "numpy", "PIL"):
-        if importlib.util.find_spec(mod) is None:
-            miss.append(mod)
+    miss = [mod for mod in ("matplotlib", "numpy", "PIL") if importlib.util.find_spec(mod) is None]
     report("packages for the figures", "FAIL" if miss else "PASS",
            f"missing {', '.join(miss)}; pip install -r requirements-reproduce.txt" if miss else "")
+    # Study 1 reads the PDF attachments with pypdf; the text, and so the key of every cached model response, depends
+    # on its version. Another version makes the cached responses unreachable and the Study 1 re-analysis fails.
+    try:
+        import pypdf
+        version = pypdf.__version__
+    except ImportError:
+        version = None
+    report("pypdf 5.9.0 for the Study 1 attachments", "PASS" if version == "5.9.0" else "FAIL",
+           "" if version == "5.9.0" else f"found {version or 'none'}; pip install -r requirements-reproduce.txt")
     return True
 
 

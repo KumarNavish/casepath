@@ -1,7 +1,10 @@
 # reproduce.sh: Python 3.10 or later (tested with CPython 3.13).
-# The analysis of all three studies, the data checks and the tests use only the standard library.
-# These three packages are needed only to draw the figures (analysis/figures.py, fig_s4.py, fig_s6.py).
-# Versions as tested; newer versions are likely to work but are not tested.
+# The analysis of Study 3, the data checks and the tests use only the standard library.
+# Studies 1 and 2: the Study 1 PDF attachments are read with pypdf. The exact version matters: the extracted text is
+# part of every request whose cached response the re-analysis looks up, and pypdf 7 extracts the same PDFs with
+# different spacing, so no cached response is found.
+pypdf==5.9.0
+# Only to draw the figures (analysis/figures.py, fig_s4.py, fig_s6.py). Versions as tested; others are not tested.
 matplotlib==3.11.2
 numpy==2.5.3
 pillow==12.3.0
