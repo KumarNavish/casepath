@@ -11,6 +11,8 @@ from casepath.agents.azure_model import ModelResult, Turn
 
 
 class ScriptedModel:
+    sequential = True  # its turns are one ordered script
+
     def __init__(self, turns, verdicts=None, default_verdict="supported", second_reading=()):
         self.turns = [t for t in turns if not t or not all(name in {"delegate", "complete"} for name, _ in t)]
         self.verdicts, self.default, self.second_reading = verdicts or {}, default_verdict, list(second_reading)

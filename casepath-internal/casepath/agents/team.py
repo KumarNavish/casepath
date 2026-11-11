@@ -14,6 +14,7 @@ Nothing here sends, files or settles anything; a person decides.
 """
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 
 from ..process import casegraph, workflows
@@ -48,13 +49,14 @@ AGENTS = {
 read short files whole, and in a dossier read the documents that carry the request, the parties and the course of events
 (the document summaries tell you which). For a brief: state the customer's request in one sentence, the parties and their roles, and a dated timeline,
 each timeline entry with an exact quote. For facts: open the process, and for each fact it asks about record what the
-files say with record_fact: established with quotes, unknown, or conflicting with quotes for both sides.
+files say with record_fact: established with quotes, or conflicting with quotes for both sides. Do not record a fact
+the files do not speak to: unknown is the default and costs nothing. Quote only the words that state the value (one
+sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve).
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
-document or a step; then the other files. Work in few turns: call record_fact for all the facts you can settle in the
-same turn, many calls at once, rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
+document or a step; then the other files. Work in few turns: call record_fact for up to eight facts in the same turn,
+rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
 about the rent; a measuring, drying or building expert called in is an expert involved. When a sentence you quote states the value, record it as established with that
-sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"); record unknown
-only when no passage states the value. A negative value (no reply, no, not present, no deadline) needs a sentence that
+sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"). A negative value (no reply, no, not present, no deadline) needs a sentence that
 says so, such as the customer writing that nobody answered or the form's own "Nein"; the mere absence of a positive is
 unknown. For the insurer's own earlier actions in the file, use these codes with their dates: A1 request for documents,
 A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
@@ -95,7 +97,7 @@ and quote the sentence that shows it, using record_document. Mark a need absent 
 the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
 needed), mark it unusable, name the file and quote what it does show. When a need lists what it must show, mark it present
 only with a quote from the file for each item (shows); a file that does not show every item is unusable. Check suggested
-needs too. Work in one or two turns: open the process, then call record_document for every need in the same turn.""",
+needs too. Work in few turns: open the process, then call record_document for up to eight needs per turn.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
@@ -776,6 +778,17 @@ class CaseTeam:
             plan[0] = ("claim_reader", PLAN[0][1] + " Then, in the same work, " + PLAN[2][1][0].lower() + PLAN[2][1][1:])
             plan = [(a, i + " This process writes its letters itself: leave the reply draft empty (not needed).")
                     if a == "result_checker" else (a, i) for a, i in plan]
+        if handler_flow:  # the reading and the document search do not depend on each other: run them side by side
+            reading, finding = plan[0], next(p for p in plan if p[0] == "document_finder")
+            if getattr(self.model, "sequential", False):  # a scripted model hands out its turns in order
+                self._delegate(work, state, *reading)
+                self._delegate(work, state, *finding)
+            else:
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    for future in [pool.submit(self._delegate, work, state, *reading), pool.submit(self._delegate, work, state, *finding)]:
+                        future.result()
+            confirm_facts(self.model, work, self.effort)
+            plan = [p for p in plan if p not in (reading, finding)]
         for agent, instruction in plan:
             if agent == "process_builder" and handler_flow:
                 # The handler's own workflow already names each stage's needs and action; its guesses were rarely asked.
@@ -791,7 +804,8 @@ class CaseTeam:
 
     def _retry_rejected(self, work, state):
         """One more pass on items the source checker rejected, since the files may still settle them."""
-        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected"]
+        deciding = {f["id"] for f in gating_facts(work)}  # a rejected fact that decides nothing a handler sees is not read again
+        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected" and k in deciding]
         documents = [k for k, v in work.documents.items() if v["verdict"] == "rejected"]
         if not facts and not documents:
             return

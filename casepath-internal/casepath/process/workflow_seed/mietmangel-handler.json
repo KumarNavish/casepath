@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-11.6",
+ "version": "2026-11-12.1",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -654,11 +654,20 @@
    "title": "Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)",
    "why": "Die Mängelrechte entstehen ab der Meldung (Art. 257g, 259a OR).",
    "required_when": {
-    "fact": "maengelruege_schriftlich",
-    "is": true
+    "any": [
+     {
+      "fact": "maengelruege_schriftlich",
+      "is": true
+     },
+     {
+      "fact": "maengelruege_schriftlich",
+      "known": false
+     }
+    ]
    },
    "source_refs": [
     "law#257g",
+    "practice#3of5-when-unknown",
     "practice#3of7"
    ]
   },

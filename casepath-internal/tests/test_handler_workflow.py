@@ -53,6 +53,7 @@ class HandlerWorkflowTests(unittest.TestCase):
         listed2 = {i["item_id"]: i for i in build_items(state2, {"facts": bare})}
         self.assertEqual(listed2["letter_question:will_schadenersatz"]["ask"], "proposed")  # asked in 0 of 5: offered
         self.assertIn("hint:ruege_einschreiben", listed2)  # notified, form unknown: the hint to repeat it in writing
+        self.assertEqual(listed2["document:maengelruege"]["ask"], "now")  # notice not in the file: asked (practice 3 of 5)
         self.assertEqual(listed["hint:dokumentieren"]["stated_as"], "put_to_handler")  # offered while a reduction is not established
         self.assertNotIn("hint:ruege_einschreiben", listed)  # a written notice was sent: no hint to send one
         self.assertEqual((listed["fact:a1_versandt"]["value"], listed["fact:a1_versandt"]["stated_as"]), (False, "computed"))  # derived, listed
