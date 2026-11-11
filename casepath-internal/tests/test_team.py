@@ -317,7 +317,9 @@ class TeamTests(unittest.TestCase):
         self.assertIn("When the sentence you quote\nstates the value, answer with that value, not open or not_stated", READ_FACTS)
         self.assertIn("a false answer needs a sentence that states the\nnegative", READ_FACTS)
         self.assertIn("not_stated: the\nfiles do not address the matter", READ_FACTS)  # silence is a separate answer
-        self.assertIn("YYYY-MM-DD", READ_FACTS)  # dates in the form the fact type accepts
+        # dates in the forms the fact type accepts: a day, a month or a year; a deadline may be "none" or a stated period
+        self.assertIn("YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day", READ_FACTS)
+        self.assertIn('"<n> days from YYYY-MM-DD"', READ_FACTS)
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         work.readings = 2  # two readings, as this test describes
         model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None,
@@ -339,6 +341,24 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(row["verdict"]["enum"], ["true", "false", "open", "not_stated"])
         # Both readings leave it open and quote the passage that raises it.
         self.assertEqual((work.facts["landlord_notified"]["status"], len(work.facts["landlord_notified"]["citations"])), ("unknown", 2))
+
+    def test_a_reading_keeps_the_precision_of_a_date_and_a_stated_period(self):
+        import copy
+        from casepath.agents.team import CaseWork, read_facts
+        from casepath.process.workflows import validate_workflow
+        from tests.scripted import ModelResult
+        data = copy.deepcopy(FIXTURE)
+        data["facts"].append({"id": "reply_deadline", "type": "date", "deadline": True, "question": "By when must the reply come?",
+                              "source_refs": data["facts"][0]["source_refs"]})
+        wf = validate_workflow(data)
+        for value, kept in (("2024-03", "2024-03"), ("14 days from 2024-03-02", "14 days from 2024-03-02"), ("none", "none"),
+                            ("March 2024", None)):
+            work = CaseWork(case=CASE, files=FILES, base_workflow=wf)
+            model = ScriptedModel([])
+            model.respond_json = lambda **kw: ModelResult(value={"conditions": [{"id": "reply_deadline", "verdict": "true", "value": value, "quote": QUOTE}]},
+                                                          usage={"input_tokens": 5}, deployment="d", response_id="x", attempts=1, seconds=0)
+            read_facts(model, work)
+            self.assertEqual(work.facts["reply_deadline"]["value"], kept, value)
 
     def test_a_verdict_whose_quotation_is_not_found_is_asked_for_once_more(self):
         from casepath.agents.team import CaseWork, read_facts
