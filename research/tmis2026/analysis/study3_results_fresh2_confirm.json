@@ -1,0 +1,4309 @@
+{
+ "data": "fresh2",
+ "designs": {
+  "casepath": {
+   "label": "CasePath",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 6.534722222222222,
+        "cost_per_case_run": 0.002773373368055556,
+        "decides_checklist": true
+       },
+       "document_finder": {
+        "calls_per_case_run": 6.0625,
+        "cost_per_case_run": 0.002906002135416668,
+        "decides_checklist": true
+       },
+       "process_builder": {
+        "calls_per_case_run": 5.100694444444445,
+        "cost_per_case_run": 0.002733793333333333,
+        "decides_checklist": false
+       },
+       "result_checker": {
+        "calls_per_case_run": 4.135416666666667,
+        "cost_per_case_run": 0.0028098496354166617,
+        "decides_checklist": false
+       },
+       "router": {
+        "calls_per_case_run": 0.9444444444444444,
+        "cost_per_case_run": 0.0001631240451388889,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 3.3819444444444446,
+        "cost_per_case_run": 0.0009584148263888888,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.006800914375000024,
+       "not attributed (agent list does not line up)": 0.0010409232118055558,
+       "the rest": 0.005543642968749995
+      },
+      "calls_per_case_run": 28.12847222222222,
+      "calls_without_ledger_row": 0,
+      "case_runs": 288,
+      "case_runs_with_agents_lined_up": 271,
+      "cost_per_case_run": 0.013385480555555563,
+      "method": "plan_keys",
+      "usd_total": 3.8550184000000023
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_tenancy_casepath.json",
+     "measures": {
+      "all_deviations_per_claim": 0.7291666666666666,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 251,
+      "correct_hold_share": 0.9728682170542635,
+      "handed": 13,
+      "handed_held": 0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_req": 26,
+      "held_required_now_per_claim": 0.09027777777777778,
+      "missed": 11,
+      "missed_per_claim": 0.03819444444444445,
+      "premature": 7,
+      "premature_per_claim": 0.024305555555555556,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1393,
+      "requested_share": 0.9653499653499653,
+      "silent_skip": 0,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold": 94,
+      "spurious_holds_per_claim": 0.3263888888888889,
+      "strict_unsafe_per_claim": 0.3125,
+      "unnecessary": 59,
+      "unnecessary_per_claim": 0.2048611111111111
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.943521274250441,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 8.479166666666666,
+        "cost_per_case_run": 0.005765367929687497,
+        "decides_checklist": true
+       },
+       "document_finder": {
+        "calls_per_case_run": 7.020833333333333,
+        "cost_per_case_run": 0.00718385529947915,
+        "decides_checklist": true
+       },
+       "process_builder": {
+        "calls_per_case_run": 5.052083333333333,
+        "cost_per_case_run": 0.004837101484375003,
+        "decides_checklist": false
+       },
+       "result_checker": {
+        "calls_per_case_run": 4.5625,
+        "cost_per_case_run": 0.006362426575520827,
+        "decides_checklist": false
+       },
+       "router": {
+        "calls_per_case_run": 0.9921875,
+        "cost_per_case_run": 0.00015553255208333348,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 3.7135416666666665,
+        "cost_per_case_run": 0.005457401171874997,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.01856215695312504,
+       "not attributed (agent list does not line up)": 0.0002286813671875,
+       "the rest": 0.011199528059895832
+      },
+      "calls_per_case_run": 30.057291666666668,
+      "calls_without_ledger_row": 0,
+      "case_runs": 384,
+      "case_runs_with_agents_lined_up": 381,
+      "cost_per_case_run": 0.02999036638020837,
+      "method": "plan_keys",
+      "usd_total": 11.516300690000014
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_casepath.json",
+     "measures": {
+      "correct": 209,
+      "errors_dedup_per_pair": 0.49074074074074076,
+      "errors_per_pair": 0.5833333333333334,
+      "f1": 0.7683823529411765,
+      "missed": 55,
+      "missed_per_pair": 0.25462962962962965,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.1111111111111111,
+       "pair_runs": 144,
+       "premature_rate": 0.0,
+       "stable_rate": 0.9444444444444444
+      },
+      "wrong": 71,
+      "wrong_per_pair": 0.3287037037037037
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9736729271885521,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "casepath_checklist": {
+   "label": "CasePath, checklist only",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 0.9444444444444444,
+        "cost_per_case_run": 0.0002270825694444444,
+        "decides_checklist": true
+       },
+       "document_finder": {
+        "calls_per_case_run": 2.2708333333333335,
+        "cost_per_case_run": 0.0010553445486111116,
+        "decides_checklist": true
+       },
+       "router": {
+        "calls_per_case_run": 0.875,
+        "cost_per_case_run": 0.00014872647569444435,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 2.517361111111111,
+        "cost_per_case_run": 0.0006405725347222223,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.0020717261284722236,
+       "not attributed (agent list does not line up)": 0.0008891047916666664
+      },
+      "calls_per_case_run": 8.73611111111111,
+      "calls_without_ledger_row": 0,
+      "case_runs": 288,
+      "case_runs_with_agents_lined_up": 251,
+      "cost_per_case_run": 0.002960830920138894,
+      "method": "plan_keys",
+      "usd_total": 0.8527193050000015
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_tenancy_casepath_checklist.json",
+     "measures": {
+      "all_deviations_per_claim": 0.7326388888888888,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 257,
+      "correct_hold_share": 0.9961240310077519,
+      "handed": 13,
+      "handed_held": 0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_req": 25,
+      "held_required_now_per_claim": 0.08680555555555555,
+      "missed": 15,
+      "missed_per_claim": 0.052083333333333336,
+      "premature": 0,
+      "premature_per_claim": 0.0,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1390,
+      "requested_share": 0.9632709632709633,
+      "silent_skip": 1,
+      "silent_skip_per_claim": 0.003472222222222222,
+      "spurious_hold": 87,
+      "spurious_holds_per_claim": 0.3020833333333333,
+      "strict_unsafe_per_claim": 0.34375,
+      "unnecessary": 70,
+      "unnecessary_per_claim": 0.24305555555555555
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9556189373897707,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 1.2708333333333333,
+        "cost_per_case_run": 0.0015911563151041672,
+        "decides_checklist": true
+       },
+       "router": {
+        "calls_per_case_run": 1.0,
+        "cost_per_case_run": 0.00015685000000000015,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 2.5286458333333335,
+        "cost_per_case_run": 0.003153667395833332,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.004901673710937503
+      },
+      "calls_per_case_run": 4.799479166666667,
+      "calls_without_ledger_row": 0,
+      "case_runs": 384,
+      "case_runs_with_agents_lined_up": 384,
+      "cost_per_case_run": 0.004901673710937503,
+      "method": "plan_keys",
+      "usd_total": 1.882242705000001
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_casepath_checklist.json",
+     "measures": {
+      "correct": 214,
+      "errors_dedup_per_pair": 0.47685185185185186,
+      "errors_per_pair": 0.5509259259259259,
+      "f1": 0.7824497257769653,
+      "missed": 50,
+      "missed_per_pair": 0.23148148148148148,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.09722222222222222,
+       "pair_runs": 144,
+       "premature_rate": 0.0,
+       "stable_rate": 0.9513888888888888
+      },
+      "wrong": 69,
+      "wrong_per_pair": 0.3194444444444444
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9732796717171717,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "casepath_frontier_checklist": {
+   "label": "CasePath on the frontier model, checklist only (one run)",
+   "model": "gpt-6.1-terra",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 0.875,
+        "cost_per_case_run": 0.001792348958333333,
+        "decides_checklist": true
+       },
+       "document_finder": {
+        "calls_per_case_run": 1.65625,
+        "cost_per_case_run": 0.007163586979166668,
+        "decides_checklist": true
+       },
+       "router": {
+        "calls_per_case_run": 0.875,
+        "cost_per_case_run": 0.0014938489583333342,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 2.4270833333333335,
+        "cost_per_case_run": 0.005394958333333332,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.01584474322916666,
+       "not attributed (agent list does not line up)": 0.005563113020833334
+      },
+      "calls_per_case_run": 7.4375,
+      "calls_without_ledger_row": 0,
+      "case_runs": 96,
+      "case_runs_with_agents_lined_up": 84,
+      "cost_per_case_run": 0.02140785624999998,
+      "method": "plan_keys",
+      "usd_total": 2.055154199999998
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json",
+     "measures": {
+      "all_deviations_per_claim": 0.6979166666666666,
+      "claim_runs": 96,
+      "claims": 96,
+      "correct_hold": 75,
+      "correct_hold_share": 0.872093023255814,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_req": 1,
+      "held_required_now_per_claim": 0.010416666666666666,
+      "missed": 9,
+      "missed_per_claim": 0.09375,
+      "premature": 10,
+      "premature_per_claim": 0.10416666666666667,
+      "ref_held": 86,
+      "req_now": 481,
+      "requested": 471,
+      "requested_share": 0.9792099792099792,
+      "silent_skip": 1,
+      "silent_skip_per_claim": 0.010416666666666666,
+      "spurious_hold": 37,
+      "spurious_holds_per_claim": 0.3854166666666667,
+      "strict_unsafe_per_claim": 0.3020833333333333,
+      "unnecessary": 9,
+      "unnecessary_per_claim": 0.09375
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": null,
+     "runs": 1,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "by_agent": {
+       "claim_reader": {
+        "calls_per_case_run": 1.0703125,
+        "cost_per_case_run": 0.012315226171875004,
+        "decides_checklist": true
+       },
+       "router": {
+        "calls_per_case_run": 1.0,
+        "cost_per_case_run": 0.0017730625,
+        "decides_checklist": true
+       },
+       "source_checker": {
+        "calls_per_case_run": 2.1015625,
+        "cost_per_case_run": 0.02449793593750001,
+        "decides_checklist": true
+       }
+      },
+      "by_group_per_case_run": {
+       "can decide the checklist": 0.03858622460937501
+      },
+      "calls_per_case_run": 4.171875,
+      "calls_without_ledger_row": 0,
+      "case_runs": 128,
+      "case_runs_with_agents_lined_up": 128,
+      "cost_per_case_run": 0.03858622460937501,
+      "method": "plan_keys",
+      "usd_total": 4.939036750000001
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_casepath_checklist_frontier.json",
+     "measures": {
+      "correct": 58,
+      "errors_dedup_per_pair": 0.7361111111111112,
+      "errors_per_pair": 0.8333333333333334,
+      "f1": 0.6590909090909091,
+      "missed": 30,
+      "missed_per_pair": 0.4166666666666667,
+      "pair_runs": 72,
+      "unresolved": {
+       "other_changes_per_pair": 0.1875,
+       "pair_runs": 48,
+       "premature_rate": 0.0,
+       "stable_rate": 0.75
+      },
+      "wrong": 30,
+      "wrong_per_pair": 0.4166666666666667
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": null,
+     "runs": 1,
+     "status": "ran"
+    }
+   }
+  },
+  "core": {
+   "label": "Core (two readings, outside the product)",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 2.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0028117435937499977,
+      "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "tag.exp": "v3-theft",
+       "tag.method": "CPv3-read"
+      },
+      "method": "ledger",
+      "multiplier": 2.0,
+      "usd_total": 1.0797095399999992
+     },
+     "failed_outputs": 1,
+     "file": "runs/study3/confirm/plans_theft_core_luna.json",
+     "measures": {
+      "correct": 228,
+      "errors_dedup_per_pair": 0.5416666666666666,
+      "errors_per_pair": 0.7731481481481481,
+      "f1": 0.7319422150882825,
+      "missed": 36,
+      "missed_per_pair": 0.16666666666666666,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.375,
+       "pair_runs": 144,
+       "premature_rate": 0.0,
+       "stable_rate": 0.8472222222222222
+      },
+      "wrong": 131,
+      "wrong_per_pair": 0.6064814814814815
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9652256742100492,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "model_executes_rules": {
+   "label": "Model executes rules",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 288,
+      "cost_per_case_run": 0.0006751665624999999,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 288,
+      "match": {
+       "arm": "COL"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.19444796999999997
+     },
+     "failed_outputs": 2,
+     "file": "runs/study3/confirm/plans_tenancy_model_executes_rules.json",
+     "measures": {
+      "all_deviations_per_claim": 1.4930555555555556,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 221,
+      "correct_hold_share": 0.8565891472868217,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_req": 24,
+      "held_required_now_per_claim": 0.08333333333333333,
+      "missed": 50,
+      "missed_per_claim": 0.1736111111111111,
+      "premature": 35,
+      "premature_per_claim": 0.12152777777777778,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1369,
+      "requested_share": 0.9487179487179487,
+      "silent_skip": 2,
+      "silent_skip_per_claim": 0.006944444444444444,
+      "spurious_hold": 167,
+      "spurious_holds_per_claim": 0.5798611111111112,
+      "strict_unsafe_per_claim": 0.8298611111111112,
+      "unnecessary": 152,
+      "unnecessary_per_claim": 0.5277777777777778
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.8589037698412699,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0017411094140625,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "arm": "COL_THEFT"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.668586015
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_model_executes_rules.json",
+     "measures": {
+      "correct": 160,
+      "errors_dedup_per_pair": 1.0462962962962963,
+      "errors_per_pair": 1.9444444444444444,
+      "f1": 0.4324324324324325,
+      "missed": 104,
+      "missed_per_pair": 0.48148148148148145,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 1.3333333333333333,
+       "pair_runs": 144,
+       "premature_rate": 0.013888888888888888,
+       "stable_rate": 0.2708333333333333
+      },
+      "wrong": 316,
+      "wrong_per_pair": 1.462962962962963
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.8409110637626263,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "react": {
+   "label": "ReAct",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "calls_per_case_run": 8.055555555555555,
+      "case_runs": 288,
+      "cost_per_case_run": 0.0011875515104166636,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 2320,
+      "match": {
+       "arm": "REACT"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.34201483499999913
+     },
+     "failed_outputs": 23,
+     "file": "runs/study3/confirm/plans_tenancy_react.json",
+     "measures": {
+      "all_deviations_per_claim": 2.0034722222222223,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 141,
+      "correct_hold_share": 0.5465116279069767,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_req": 23,
+      "held_required_now_per_claim": 0.0798611111111111,
+      "missed": 188,
+      "missed_per_claim": 0.6527777777777778,
+      "premature": 94,
+      "premature_per_claim": 0.3263888888888889,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1232,
+      "requested_share": 0.8537768537768538,
+      "silent_skip": 23,
+      "silent_skip_per_claim": 0.0798611111111111,
+      "spurious_hold": 25,
+      "spurious_holds_per_claim": 0.08680555555555555,
+      "strict_unsafe_per_claim": 1.8368055555555556,
+      "unnecessary": 224,
+      "unnecessary_per_claim": 0.7777777777777778
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.8347469118745715,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 2.9401041666666665,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0018700933723958346,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 1129,
+      "match": {
+       "arm": "REACT_THEFT"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.7181158550000005
+     },
+     "failed_outputs": 17,
+     "file": "runs/study3/confirm/plans_theft_react.json",
+     "measures": {
+      "correct": 220,
+      "errors_dedup_per_pair": 0.9305555555555556,
+      "errors_per_pair": 1.6851851851851851,
+      "f1": 0.5472636815920399,
+      "missed": 44,
+      "missed_per_pair": 0.2037037037037037,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 1.1319444444444444,
+       "pair_runs": 144,
+       "premature_rate": 0.020833333333333332,
+       "stable_rate": 0.4652777777777778
+      },
+      "wrong": 320,
+      "wrong_per_pair": 1.4814814814814814
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9222768264106846,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "ric": {
+   "label": "Rules in context",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 288,
+      "cost_per_case_run": 0.0006764197222222225,
+      "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+      "ledger_calls": 288,
+      "match": {
+       "tag.exp": "v2-tenancy",
+       "tag.method": "B1v2p"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.19480888000000007
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_tenancy_ric_luna.json",
+     "measures": {
+      "all_deviations_per_claim": 2.329861111111111,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 125,
+      "correct_hold_share": 0.4844961240310077,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_req": 7,
+      "held_required_now_per_claim": 0.024305555555555556,
+      "missed": 56,
+      "missed_per_claim": 0.19444444444444445,
+      "premature": 128,
+      "premature_per_claim": 0.4444444444444444,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1380,
+      "requested_share": 0.9563409563409564,
+      "silent_skip": 5,
+      "silent_skip_per_claim": 0.017361111111111112,
+      "spurious_hold": 48,
+      "spurious_holds_per_claim": 0.16666666666666666,
+      "strict_unsafe_per_claim": 2.138888888888889,
+      "unnecessary": 427,
+      "unnecessary_per_claim": 1.4826388888888888
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.859056712962963,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0007174053385416664,
+      "ledger": "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "tag.method": "Rv2p"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.2754836499999999
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_ric_luna.json",
+     "measures": {
+      "correct": 179,
+      "errors_dedup_per_pair": 0.9259259259259259,
+      "errors_per_pair": 1.7361111111111112,
+      "f1": 0.48840381991814463,
+      "missed": 85,
+      "missed_per_pair": 0.39351851851851855,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 1.2222222222222223,
+       "pair_runs": 144,
+       "premature_rate": 0.006944444444444444,
+       "stable_rate": 0.2708333333333333
+      },
+      "wrong": 290,
+      "wrong_per_pair": 1.3425925925925926
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.797275958994709,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "ric_frontier": {
+   "label": "Rules in context, frontier",
+   "model": "gpt-6.1-terra",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 288,
+      "cost_per_case_run": 0.0063028598958333355,
+      "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl",
+      "ledger_calls": 288,
+      "match": {
+       "tag.exp": "v2-tenancy",
+       "tag.method": "B1v2p"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 1.8152236500000007
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_tenancy_ric_terra.json",
+     "measures": {
+      "all_deviations_per_claim": 2.0868055555555554,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 90,
+      "correct_hold_share": 0.3488372093023256,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_req": 11,
+      "held_required_now_per_claim": 0.03819444444444445,
+      "missed": 37,
+      "missed_per_claim": 0.1284722222222222,
+      "premature": 168,
+      "premature_per_claim": 0.5833333333333334,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1395,
+      "requested_share": 0.9667359667359667,
+      "silent_skip": 0,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold": 53,
+      "spurious_holds_per_claim": 0.1840277777777778,
+      "strict_unsafe_per_claim": 1.8645833333333333,
+      "unnecessary": 332,
+      "unnecessary_per_claim": 1.1527777777777777
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9235697751322752,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.004078276041666666,
+      "ledger": "runs/v2/cp4/ledger_dev_gpt-6.1-terra.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "tag.method": "Rv2p"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 1.5660579999999997
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_ric_terra.json",
+     "measures": {
+      "correct": 182,
+      "errors_dedup_per_pair": 0.6388888888888888,
+      "errors_per_pair": 0.9490740740740741,
+      "f1": 0.6397188049209139,
+      "missed": 82,
+      "missed_per_pair": 0.37962962962962965,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.4583333333333333,
+       "pair_runs": 144,
+       "premature_rate": 0.08333333333333333,
+       "stable_rate": 0.4513888888888889
+      },
+      "wrong": 123,
+      "wrong_per_pair": 0.5694444444444444
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9487588872354498,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "ric_original": {
+   "label": "Rules in context, original rules",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0007567438411458335,
+      "ledger": "runs/v2/ledger_gpt-6-luna.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "tag.exp": "theft",
+       "tag.method": "R"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.29058963500000007
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_ric_original_luna.json",
+     "measures": {
+      "correct": 183,
+      "errors_dedup_per_pair": 0.8240740740740741,
+      "errors_per_pair": 1.4675925925925926,
+      "f1": 0.5358711566617863,
+      "missed": 81,
+      "missed_per_pair": 0.375,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.9583333333333334,
+       "pair_runs": 144,
+       "premature_rate": 0.013888888888888888,
+       "stable_rate": 0.3055555555555556
+      },
+      "wrong": 236,
+      "wrong_per_pair": 1.0925925925925926
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.8479425016534392,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "ric_original_frontier": {
+   "label": "Rules in context, original rules, frontier",
+   "model": "gpt-6.1-terra",
+   "regimes": {
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 1.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.004023438020833333,
+      "ledger": "runs/v2/ledger_gpt-6.1-terra.jsonl",
+      "ledger_calls": 384,
+      "match": {
+       "tag.exp": "theft",
+       "tag.method": "R"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 1.5450001999999998
+     },
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/plans_theft_ric_original_terra.json",
+     "measures": {
+      "correct": 202,
+      "errors_dedup_per_pair": 0.5925925925925926,
+      "errors_per_pair": 0.6712962962962963,
+      "f1": 0.7358834244080146,
+      "missed": 62,
+      "missed_per_pair": 0.28703703703703703,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.09722222222222222,
+       "pair_runs": 144,
+       "premature_rate": 0.020833333333333332,
+       "stable_rate": 0.9097222222222222
+      },
+      "wrong": 83,
+      "wrong_per_pair": 0.38425925925925924
+     },
+     "missing_entries": 0,
+     "run_to_run_jaccard": 0.9777870783730159,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "self_consistency": {
+   "label": "Self-consistency",
+   "model": "gpt-6-luna",
+   "regimes": {
+    "tenancy": {
+     "cost": {
+      "calls_per_case_run": 5.0,
+      "case_runs": 288,
+      "cost_per_case_run": 0.0033882387847222212,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 1440,
+      "match": {
+       "arm": "B1V2P_SAMPLE"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 0.9758127699999998
+     },
+     "derived": "majority",
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/samples_tenancy_ric_luna.json",
+     "measures": {
+      "all_deviations_per_claim": 2.3125,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 143,
+      "correct_hold_share": 0.5542635658914729,
+      "handed": 0,
+      "handed_held": 0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_req": 9,
+      "held_required_now_per_claim": 0.03125,
+      "missed": 53,
+      "missed_per_claim": 0.1840277777777778,
+      "premature": 115,
+      "premature_per_claim": 0.3993055555555556,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1381,
+      "requested_share": 0.957033957033957,
+      "silent_skip": 0,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold": 52,
+      "spurious_holds_per_claim": 0.18055555555555555,
+      "strict_unsafe_per_claim": 2.1006944444444446,
+      "unnecessary": 437,
+      "unnecessary_per_claim": 1.5173611111111112
+     },
+     "missing_entries": null,
+     "missing_samples": 1,
+     "run_to_run_jaccard": 0.9179866622574956,
+     "runs": 3,
+     "samples_per_run": 5,
+     "status": "ran"
+    },
+    "theft": {
+     "cost": {
+      "calls_per_case_run": 5.0,
+      "case_runs": 384,
+      "cost_per_case_run": 0.0035101464192708307,
+      "ledger": "runs/product/ledger_dev_gpt-6-luna.jsonl",
+      "ledger_calls": 1920,
+      "match": {
+       "arm": "RPACK"
+      },
+      "method": "ledger",
+      "multiplier": 1.0,
+      "usd_total": 1.347896224999999
+     },
+     "derived": "majority",
+     "failed_outputs": 0,
+     "file": "runs/study3/confirm/samples_theft_ric_luna.json",
+     "measures": {
+      "correct": 173,
+      "errors_dedup_per_pair": 0.7175925925925926,
+      "errors_per_pair": 1.2083333333333333,
+      "f1": 0.5700164744645799,
+      "missed": 91,
+      "missed_per_pair": 0.4212962962962963,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.625,
+       "pair_runs": 144,
+       "premature_rate": 0.0,
+       "stable_rate": 0.4513888888888889
+      },
+      "wrong": 170,
+      "wrong_per_pair": 0.7870370370370371
+     },
+     "missing_entries": null,
+     "missing_samples": 6,
+     "run_to_run_jaccard": 0.8973493303571428,
+     "runs": 3,
+     "samples_per_run": 5,
+     "status": "ran"
+    }
+   }
+  },
+  "two_valued_false": {
+   "label": "Two-valued, unresolved = false",
+   "model": "none (product readings)",
+   "regimes": {
+    "tenancy": {
+     "catalogue": "harness/product/workflows/fresh-serial-sync",
+     "cost": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "method": "none"
+     },
+     "derived": "two_valued",
+     "failed_outputs": 0,
+     "from_design": "casepath",
+     "measures": {
+      "all_deviations_per_claim": 1.2743055555555556,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 0,
+      "correct_hold_share": 0.0,
+      "handed": 13,
+      "handed_held": 0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_req": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed": 37,
+      "missed_per_claim": 0.1284722222222222,
+      "premature": 7,
+      "premature_per_claim": 0.024305555555555556,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1393,
+      "requested_share": 0.9653499653499653,
+      "silent_skip": 251,
+      "silent_skip_per_claim": 0.8715277777777778,
+      "spurious_hold": 0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.2743055555555556,
+      "unnecessary": 59,
+      "unnecessary_per_claim": 0.2048611111111111
+     },
+     "missing_entries": null,
+     "product_package": {
+      "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+      "subdir": "casepath-internal"
+     },
+     "run_to_run_jaccard": 0.943521274250441,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "catalogue": "harness/product/workflows/theft-reviewed",
+     "cost": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "method": "none"
+     },
+     "derived": "two_valued",
+     "failed_outputs": 0,
+     "from_design": "casepath",
+     "measures": {
+      "correct": 209,
+      "errors_dedup_per_pair": 0.49074074074074076,
+      "errors_per_pair": 0.5833333333333334,
+      "f1": 0.7683823529411765,
+      "missed": 55,
+      "missed_per_pair": 0.25462962962962965,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 0.1111111111111111,
+       "pair_runs": 144,
+       "premature_rate": 0.0,
+       "stable_rate": 0.9444444444444444
+      },
+      "wrong": 71,
+      "wrong_per_pair": 0.3287037037037037
+     },
+     "missing_entries": null,
+     "product_package": {
+      "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+      "subdir": "casepath-internal"
+     },
+     "run_to_run_jaccard": 0.9736729271885521,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  },
+  "two_valued_true": {
+   "label": "Two-valued, unresolved = true",
+   "model": "none (product readings)",
+   "regimes": {
+    "tenancy": {
+     "catalogue": "harness/product/workflows/fresh-serial-sync",
+     "cost": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "method": "none"
+     },
+     "derived": "two_valued",
+     "failed_outputs": 0,
+     "from_design": "casepath",
+     "measures": {
+      "all_deviations_per_claim": 1.5069444444444444,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 0,
+      "correct_hold_share": 0.0,
+      "handed": 13,
+      "handed_held": 0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_req": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed": 11,
+      "missed_per_claim": 0.03819444444444445,
+      "premature": 258,
+      "premature_per_claim": 0.8958333333333334,
+      "ref_held": 258,
+      "req_now": 1443,
+      "requested": 1419,
+      "requested_share": 0.9833679833679834,
+      "silent_skip": 0,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold": 0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.5069444444444444,
+      "unnecessary": 152,
+      "unnecessary_per_claim": 0.5277777777777778
+     },
+     "missing_entries": null,
+     "product_package": {
+      "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+      "subdir": "casepath-internal"
+     },
+     "run_to_run_jaccard": 0.9420827821869487,
+     "runs": 3,
+     "status": "ran"
+    },
+    "theft": {
+     "catalogue": "harness/product/workflows/theft-reviewed",
+     "cost": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "method": "none"
+     },
+     "derived": "two_valued",
+     "failed_outputs": 0,
+     "from_design": "casepath",
+     "measures": {
+      "correct": 175,
+      "errors_dedup_per_pair": 1.0185185185185186,
+      "errors_per_pair": 2.4583333333333335,
+      "f1": 0.39727582292849034,
+      "missed": 89,
+      "missed_per_pair": 0.41203703703703703,
+      "pair_runs": 216,
+      "unresolved": {
+       "other_changes_per_pair": 2.0416666666666665,
+       "pair_runs": 144,
+       "premature_rate": 0.6458333333333334,
+       "stable_rate": 0.06944444444444445
+      },
+      "wrong": 442,
+      "wrong_per_pair": 2.0462962962962963
+     },
+     "missing_entries": null,
+     "product_package": {
+      "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+      "subdir": "casepath-internal"
+     },
+     "run_to_run_jaccard": 0.9174314750697738,
+     "runs": 3,
+     "status": "ran"
+    }
+   }
+  }
+ },
+ "hypotheses": [
+  {
+   "a": "casepath",
+   "all_must_hold": false,
+   "b": [
+    "ric"
+   ],
+   "beside": [],
+   "id": "H1",
+   "inside_procedure": true,
+   "margin": null,
+   "measure": "errors",
+   "not_run": [],
+   "regime": "theft",
+   "status": "confirmed",
+   "test": "signflip",
+   "tests": [
+    {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "ric",
+     "b_value": 1.7361111111111112,
+     "clusters": 9,
+     "diff": -1.1527777777777777,
+     "diff_ci": [
+      -1.6528935185185183,
+      -0.6388888888888888
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.0078125,
+     "p_signflip": 0.0078125,
+     "regime": "theft",
+     "significant": true,
+     "subset": null,
+     "test": "signflip"
+    }
+   ],
+   "text": "Theft, same model, same rules: CasePath makes fewer wrong + missed changes per pair than Rules in context."
+  },
+  {
+   "a": "casepath",
+   "all_must_hold": false,
+   "b": [
+    "ric"
+   ],
+   "beside": [
+    {
+     "b": "ric",
+     "claims": 63,
+     "descriptive": true,
+     "note": "",
+     "result": {
+      "a": "casepath",
+      "a_value": 0.203125,
+      "b": "ric",
+      "b_value": 0.4375,
+      "clusters": 16,
+      "diff": -0.234375,
+      "diff_ci": [
+       -0.421875,
+       -0.03645833333333335
+      ],
+      "favours": "a",
+      "higher_is_better": false,
+      "measure": "strict_unsafe",
+      "min_p": 3.0517578125e-05,
+      "min_p_signflip": 3.0517578125e-05,
+      "min_p_signflip_given_nonzero": 0.0001220703125,
+      "nonzero_clusters": 14,
+      "p": 0.041748046875,
+      "p_signflip": 0.041748046875,
+      "regime": "tenancy",
+      "subset": "ordinary",
+      "test": "signflip"
+     },
+     "subset": "ordinary"
+    },
+    {
+     "b": "ric",
+     "claims": 33,
+     "descriptive": true,
+     "note": "",
+     "result": {
+      "a": "casepath",
+      "a_value": 0.4722222222222222,
+      "b": "ric",
+      "b_value": 5.694444444444445,
+      "clusters": 9,
+      "diff": -5.222222222222222,
+      "diff_ci": [
+       -6.305555555555555,
+       -4.361111111111111
+      ],
+      "favours": "a",
+      "higher_is_better": false,
+      "measure": "strict_unsafe",
+      "min_p": 0.00390625,
+      "min_p_signflip": 0.00390625,
+      "min_p_signflip_given_nonzero": 0.00390625,
+      "nonzero_clusters": 9,
+      "p": 0.00390625,
+      "p_signflip": 0.00390625,
+      "regime": "tenancy",
+      "subset": [
+       "denied_event",
+       "open_event"
+      ],
+      "test": "signflip"
+     },
+     "subset": "denied_event+open_event"
+    }
+   ],
+   "id": "H2",
+   "inside_procedure": true,
+   "margin": null,
+   "measure": "strict_unsafe",
+   "not_run": [],
+   "regime": "tenancy",
+   "status": "confirmed",
+   "test": "signflip",
+   "tests": [
+    {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "ric",
+     "b_value": 2.138888888888889,
+     "clusters": 24,
+     "diff": -1.826388888888889,
+     "diff_ci": [
+      -2.71875,
+      -0.9894965277777791
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 4.76837158203125e-07,
+     "nonzero_clusters": 22,
+     "p": 0.0001506805419921875,
+     "p_signflip": 0.0001506805419921875,
+     "regime": "tenancy",
+     "significant": true,
+     "subset": null,
+     "test": "signflip"
+    }
+   ],
+   "text": "Tenancy, same model: CasePath makes fewer strict unsafe errors per claim than Rules in context."
+  },
+  {
+   "a": "casepath",
+   "all_must_hold": false,
+   "b": [
+    "ric_frontier"
+   ],
+   "beside": [
+    {
+     "b": "ric_frontier",
+     "claims": 63,
+     "descriptive": true,
+     "note": "",
+     "result": {
+      "a": "casepath",
+      "a_value": 0.203125,
+      "b": "ric_frontier",
+      "b_value": 0.28125,
+      "clusters": 16,
+      "diff": -0.078125,
+      "diff_ci": [
+       -0.22408854166666656,
+       0.08854166666666666
+      ],
+      "favours": "a",
+      "higher_is_better": false,
+      "measure": "strict_unsafe",
+      "min_p": 3.0517578125e-05,
+      "min_p_signflip": 3.0517578125e-05,
+      "min_p_signflip_given_nonzero": 0.00048828125,
+      "nonzero_clusters": 12,
+      "p": 0.4091796875,
+      "p_signflip": 0.4091796875,
+      "regime": "tenancy",
+      "subset": "ordinary",
+      "test": "signflip"
+     },
+     "subset": "ordinary"
+    },
+    {
+     "b": "ric_frontier",
+     "claims": 33,
+     "descriptive": true,
+     "note": "",
+     "result": {
+      "a": "casepath",
+      "a_value": 0.4722222222222222,
+      "b": "ric_frontier",
+      "b_value": 5.305555555555555,
+      "clusters": 9,
+      "diff": -4.833333333333333,
+      "diff_ci": [
+       -6.435185185185186,
+       -3.4814814814814814
+      ],
+      "favours": "a",
+      "higher_is_better": false,
+      "measure": "strict_unsafe",
+      "min_p": 0.00390625,
+      "min_p_signflip": 0.00390625,
+      "min_p_signflip_given_nonzero": 0.00390625,
+      "nonzero_clusters": 9,
+      "p": 0.00390625,
+      "p_signflip": 0.00390625,
+      "regime": "tenancy",
+      "subset": [
+       "denied_event",
+       "open_event"
+      ],
+      "test": "signflip"
+     },
+     "subset": "denied_event+open_event"
+    }
+   ],
+   "id": "H3",
+   "inside_procedure": true,
+   "margin": null,
+   "measure": "strict_unsafe",
+   "not_run": [],
+   "regime": "tenancy",
+   "status": "confirmed",
+   "test": "signflip",
+   "tests": [
+    {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "ric_frontier",
+     "b_value": 1.8645833333333333,
+     "clusters": 24,
+     "diff": -1.5520833333333333,
+     "diff_ci": [
+      -2.444444444444444,
+      -0.7673611111111112
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 9.5367431640625e-07,
+     "nonzero_clusters": 21,
+     "p": 0.0007991790771484375,
+     "p_signflip": 0.0007991790771484375,
+     "regime": "tenancy",
+     "significant": true,
+     "subset": null,
+     "test": "signflip"
+    }
+   ],
+   "text": "Tenancy, against the frontier model: CasePath makes fewer strict unsafe errors per claim than Rules in context, frontier."
+  },
+  {
+   "a": "casepath",
+   "all_must_hold": true,
+   "b": [
+    "self_consistency",
+    "model_executes_rules",
+    "react"
+   ],
+   "beside": [],
+   "id": "H4",
+   "inside_procedure": true,
+   "margin": null,
+   "measure": "errors",
+   "not_run": [],
+   "regime": "theft",
+   "status": "not confirmed",
+   "test": "signflip",
+   "tests": [
+    {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "self_consistency",
+     "b_value": 1.2083333333333333,
+     "clusters": 9,
+     "diff": -0.625,
+     "diff_ci": [
+      -1.125,
+      -0.07858796296296464
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.0625,
+     "p_signflip": 0.0625,
+     "regime": "theft",
+     "significant": false,
+     "subset": null,
+     "test": "signflip"
+    },
+    {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "model_executes_rules",
+     "b_value": 1.9444444444444444,
+     "clusters": 9,
+     "diff": -1.361111111111111,
+     "diff_ci": [
+      -1.648148148148148,
+      -1.083333333333333
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.00390625,
+     "p_signflip": 0.00390625,
+     "regime": "theft",
+     "significant": true,
+     "subset": null,
+     "test": "signflip"
+    },
+    {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "react",
+     "b_value": 1.6851851851851851,
+     "clusters": 9,
+     "diff": -1.1018518518518519,
+     "diff_ci": [
+      -1.574074074074074,
+      -0.574074074074074
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.01171875,
+     "p_signflip": 0.01171875,
+     "regime": "theft",
+     "significant": true,
+     "subset": null,
+     "test": "signflip"
+    }
+   ],
+   "text": "Theft, every prior-work strategy: CasePath makes fewer wrong + missed changes per pair than each of Self-consistency, Model executes rules and ReAct (all three must hold)."
+  },
+  {
+   "a": "casepath",
+   "all_must_hold": false,
+   "b": [
+    "ric_frontier"
+   ],
+   "beside": [],
+   "id": "H5",
+   "inside_procedure": false,
+   "margin": 0.25,
+   "measure": "errors",
+   "not_run": [],
+   "regime": "theft",
+   "status": "not tested (an earlier hypothesis failed)",
+   "test": "noninferiority",
+   "tests": [
+    {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "ric_frontier",
+     "b_value": 0.949074074074074,
+     "clusters": 9,
+     "diff": -0.36574074074074076,
+     "diff_ci": [
+      -0.800925925925926,
+      0.02777777777777779
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "margin": 0.25,
+     "measure": "errors",
+     "min_p": 0.0001,
+     "min_p_noninferiority": 0.0001,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.0001,
+     "p_noninferiority": 0.0001,
+     "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+     "p_signflip": 0.1640625,
+     "regime": "theft",
+     "significant": true,
+     "subset": null,
+     "test": "noninferiority"
+    }
+   ],
+   "text": "Theft, against the frontier model: CasePath's wrong + missed changes per pair are not higher than those of Rules in context, frontier (same reviewed rules), by 0.25 or more."
+  }
+ ],
+ "inputs": {
+  "files_missing": [],
+  "files_read": {
+   "runs/product/ledger_dev_gpt-6-luna.jsonl": "4b900a6de626d4c651ccb52aa1949e6e8ab7974a1dc53bc03527a5cbc3a1360a",
+   "runs/product/ledger_dev_gpt-6.1-terra.jsonl": "d889e6cf991ca174e2a7502ec3f243b5a7d2f0166f083dced954c75b38f765a8",
+   "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+   "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
+   "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",
+   "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
+   "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
+   "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",
+   "runs/study3/confirm/plans_tenancy_ric_terra.json": "74f8362129b03a9abcb7932886e248f48aa2c479d95f0b1b31d207df176f7a61",
+   "runs/study3/confirm/plans_theft_casepath.json": "08dc0d1d409f4fca03c171fc6073bd224de7cc1cc7c800bed73196b442ceb501",
+   "runs/study3/confirm/plans_theft_casepath_checklist.json": "5306b6252945dca490632f7d304bd30eeda2d2a47bf1c7b3b3fefca082f91e00",
+   "runs/study3/confirm/plans_theft_casepath_checklist_frontier.json": "e405428bd3c8879b5d6508b9fcf00ba6f20aefc9ca0a63333cc7b0370a16ce75",
+   "runs/study3/confirm/plans_theft_core_luna.json": "ad75b769b350d5025df2dd77d1862e21f4285fd83980cb362eaf9ac480391dd4",
+   "runs/study3/confirm/plans_theft_model_executes_rules.json": "bbf6b2e365b675d788cb0177541b4402d5c8287efb5b488047f12fbd4f259605",
+   "runs/study3/confirm/plans_theft_react.json": "f600708bc6ee2e5db84bf05d386da07f8d46fbd5c818288264812f33240aef57",
+   "runs/study3/confirm/plans_theft_ric_luna.json": "2b49762a37bdc9876f020d54cfe29d273fe3877fe240fc008f4a9e58190a3785",
+   "runs/study3/confirm/plans_theft_ric_original_luna.json": "caf37254d9a0813ea02606623d3f5754d2db85660849a6de248f25a8442fe675",
+   "runs/study3/confirm/plans_theft_ric_original_terra.json": "54c943bf564141768283c846d07422d51e31532296b4eb859247ca4f7d4fac5e",
+   "runs/study3/confirm/plans_theft_ric_terra.json": "c5a8cb80d1ab5687ddcf4d88e3247e3e4df50aa4af46fe1d82525acc094d905d",
+   "runs/study3/confirm/samples_tenancy_ric_luna.json": "1016547eced137672b44dfd832843652869a637b461d0cea2253afcbcc2b1fa4",
+   "runs/study3/confirm/samples_theft_ric_luna.json": "ab1dbaf32a84362b551c38ae510ced29d4d5833eee26394fcfc6244e5853f60d",
+   "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl": "0f697055d6061fe0d05e7b21ff820eca2f3572741bd22b32c6f0644212d0da8e",
+   "runs/v2/cp4/ledger_dev_gpt-6.1-terra.jsonl": "2147a545efafd1559fcb56619dc860cc0a9e43238807bff05ce47e9b62489f8b",
+   "runs/v2/ledger_gpt-6-luna.jsonl": "0f035b14e0e3a951405d22d7a972e8f55fd56f57775771723c516bc28909e9d2",
+   "runs/v2/ledger_gpt-6.1-terra.jsonl": "dd9f9bade7cae1b0638a77ff7358225c0bd09eb3a44c7a21c4c9fbe7b0be8733"
+  }
+ },
+ "label": "confirm",
+ "secondary": {
+  "contrasts": [
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "descriptive": false,
+    "id": "S1a",
+    "margin": 0.1,
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.203125,
+     "b": "ric_frontier",
+     "b_value": 0.28125,
+     "clusters": 16,
+     "diff": -0.078125,
+     "diff_ci": [
+      -0.22395833333333334,
+      0.09375
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "margin": 0.1,
+     "measure": "strict_unsafe",
+     "min_p": 0.0001,
+     "min_p_noninferiority": 0.0001,
+     "min_p_signflip": 3.0517578125e-05,
+     "min_p_signflip_given_nonzero": 0.00048828125,
+     "nonzero_clusters": 12,
+     "p": 0.0225,
+     "p_noninferiority": 0.0225,
+     "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+     "p_signflip": 0.4091796875,
+     "regime": "tenancy",
+     "subset": "ordinary",
+     "test": "noninferiority"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "ordinary claims, against the frontier model",
+    "subset": "ordinary",
+    "test": "noninferiority"
+   },
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "descriptive": false,
+    "id": "S1b",
+    "margin": 0.05,
+    "measure": "requested_share",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.9619484570563435,
+     "b": "ric_frontier",
+     "b_value": 0.9642833242359421,
+     "clusters": 16,
+     "diff": -0.0023348671795986736,
+     "diff_ci": [
+      -0.026468159291946357,
+      0.017413325141030396
+     ],
+     "favours": "b",
+     "higher_is_better": true,
+     "margin": 0.05,
+     "measure": "requested_share",
+     "min_p": 0.0001,
+     "min_p_noninferiority": 0.0001,
+     "min_p_signflip": 3.0517578125e-05,
+     "min_p_signflip_given_nonzero": 0.000244140625,
+     "nonzero_clusters": 13,
+     "p": 0.0001,
+     "p_noninferiority": 0.0001,
+     "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+     "p_signflip": 0.86083984375,
+     "regime": "tenancy",
+     "subset": "ordinary",
+     "test": "noninferiority"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "ordinary claims, against the frontier model",
+    "subset": "ordinary",
+    "test": "noninferiority"
+   },
+   {
+    "a": "casepath",
+    "b": "self_consistency",
+    "descriptive": false,
+    "id": "S2a",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "self_consistency",
+     "b_value": 2.100694444444444,
+     "clusters": 24,
+     "diff": -1.7881944444444444,
+     "diff_ci": [
+      -2.7500868055555556,
+      -0.9131944444444445
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 9.5367431640625e-07,
+     "nonzero_clusters": 21,
+     "p": 0.000232696533203125,
+     "p_signflip": 0.000232696533203125,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "model_executes_rules",
+    "descriptive": false,
+    "id": "S2b",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "model_executes_rules",
+     "b_value": 0.8298611111111112,
+     "clusters": 24,
+     "diff": -0.517361111111111,
+     "diff_ci": [
+      -0.90625,
+      -0.20833333333333337
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 1.9073486328125e-06,
+     "nonzero_clusters": 20,
+     "p": 0.0007152557373046875,
+     "p_signflip": 0.0007152557373046875,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "react",
+    "descriptive": false,
+    "id": "S2c",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "react",
+     "b_value": 1.8368055555555556,
+     "clusters": 24,
+     "diff": -1.5243055555555556,
+     "diff_ci": [
+      -2.069444444444444,
+      -1.0555555555555556
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 1.1920928955078125e-07,
+     "nonzero_clusters": 24,
+     "p": 3.5762786865234375e-07,
+     "p_signflip": 3.5762786865234375e-07,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "self_consistency",
+    "descriptive": false,
+    "id": "S2d",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "self_consistency",
+     "b_value": 2.3125,
+     "clusters": 24,
+     "diff": -1.5833333333333333,
+     "diff_ci": [
+      -2.493142361111111,
+      -0.7430555555555555
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 2.384185791015625e-07,
+     "nonzero_clusters": 23,
+     "p": 0.0012733936309814453,
+     "p_signflip": 0.0012733936309814453,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "model_executes_rules",
+    "descriptive": false,
+    "id": "S2e",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "model_executes_rules",
+     "b_value": 1.4930555555555556,
+     "clusters": 24,
+     "diff": -0.7638888888888888,
+     "diff_ci": [
+      -1.3368055555555556,
+      -0.28124999999999994
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 2.384185791015625e-07,
+     "nonzero_clusters": 23,
+     "p": 0.004709959030151367,
+     "p_signflip": 0.004709959030151367,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "react",
+    "descriptive": false,
+    "id": "S2f",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "react",
+     "b_value": 2.0034722222222223,
+     "clusters": 24,
+     "diff": -1.2743055555555556,
+     "diff_ci": [
+      -1.84375,
+      -0.7777777777777778
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 2.384185791015625e-07,
+     "nonzero_clusters": 23,
+     "p": 2.4318695068359375e-05,
+     "p_signflip": 2.4318695068359375e-05,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "tenancy, same model",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "ric",
+    "descriptive": false,
+    "id": "S3a",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "ric",
+     "b_value": 2.329861111111111,
+     "clusters": 24,
+     "diff": -1.6006944444444444,
+     "diff_ci": [
+      -2.46875,
+      -0.7881944444444445
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 2.384185791015625e-07,
+     "nonzero_clusters": 23,
+     "p": 0.001012563705444336,
+     "p_signflip": 0.001012563705444336,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "all deviations per claim",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "descriptive": false,
+    "id": "S3b",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "ric_frontier",
+     "b_value": 2.086805555555556,
+     "clusters": 24,
+     "diff": -1.357638888888889,
+     "diff_ci": [
+      -2.267361111111111,
+      -0.5763888888888888
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 9.5367431640625e-07,
+     "nonzero_clusters": 21,
+     "p": 0.0023212432861328125,
+     "p_signflip": 0.0023212432861328125,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "all deviations per claim",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "descriptive": false,
+    "id": "S4a",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "ric_frontier",
+     "b_value": 0.949074074074074,
+     "clusters": 9,
+     "diff": -0.36574074074074076,
+     "diff_ci": [
+      -0.7916666666666666,
+      0.013888888888888902
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.1640625,
+     "p_signflip": 0.1640625,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "theft, frontier and original rules",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "ric_original_frontier",
+    "descriptive": false,
+    "id": "S4b",
+    "margin": 0.25,
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "ric_original_frontier",
+     "b_value": 0.6712962962962963,
+     "clusters": 9,
+     "diff": -0.08796296296296292,
+     "diff_ci": [
+      -0.37037037037037035,
+      0.1666666666666667
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "margin": 0.25,
+     "measure": "errors",
+     "min_p": 0.0001,
+     "min_p_noninferiority": 0.0001,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.0035,
+     "p_noninferiority": 0.0035,
+     "p_noninferiority_resolution": "0 means no resample reached the margin (resolution 1/10000)",
+     "p_signflip": 0.63671875,
+     "regime": "theft",
+     "subset": null,
+     "test": "noninferiority"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "theft, frontier and original rules",
+    "test": "noninferiority"
+   },
+   {
+    "a": "casepath",
+    "b": "ric_original",
+    "descriptive": false,
+    "id": "S4c",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "ric_original",
+     "b_value": 1.4675925925925926,
+     "clusters": 9,
+     "diff": -0.8842592592592592,
+     "diff_ci": [
+      -1.3055555555555556,
+      -0.3748842592592609
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.01171875,
+     "p_signflip": 0.01171875,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "theft, frontier and original rules",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "descriptive": false,
+    "id": "S5a",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.3125,
+     "b": "casepath_checklist",
+     "b_value": 0.34375,
+     "clusters": 24,
+     "diff": -0.03125,
+     "diff_ci": [
+      -0.1076388888888889,
+      0.045138888888888895
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 0.015625,
+     "nonzero_clusters": 7,
+     "p": 0.5,
+     "p_signflip": 0.5,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "CasePath against its parts",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "descriptive": false,
+    "id": "S5b",
+    "measure": "all_deviations",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.7291666666666666,
+     "b": "casepath_checklist",
+     "b_value": 0.7326388888888888,
+     "clusters": 24,
+     "diff": -0.003472222222222224,
+     "diff_ci": [
+      -0.05902777777777778,
+      0.06597222222222221
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "all_deviations",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 0.001953125,
+     "nonzero_clusters": 10,
+     "p": 1.0,
+     "p_signflip": 1.0,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "CasePath against its parts",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "casepath_checklist",
+    "descriptive": false,
+    "id": "S5c",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "casepath_checklist",
+     "b_value": 0.5509259259259259,
+     "clusters": 9,
+     "diff": 0.03240740740740741,
+     "diff_ci": [
+      -0.027777777777777773,
+      0.1111111111111111
+     ],
+     "favours": "b",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.03125,
+     "nonzero_clusters": 6,
+     "p": 0.59375,
+     "p_signflip": 0.59375,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "CasePath against its parts",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath",
+    "b": "core",
+    "descriptive": false,
+    "id": "S5d",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath",
+     "a_value": 0.5833333333333334,
+     "b": "core",
+     "b_value": 0.7731481481481481,
+     "clusters": 9,
+     "diff": -0.18981481481481483,
+     "diff_ci": [
+      -0.4537037037037038,
+      0.04629629629629632
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.2109375,
+     "p_signflip": 0.2109375,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 3,
+     "b": 3
+    },
+    "section": "CasePath against its parts",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath_frontier_checklist",
+    "b": "ric_frontier",
+    "descriptive": true,
+    "id": "S7a",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath_frontier_checklist",
+     "a_value": 0.8333333333333334,
+     "b": "ric_frontier",
+     "b_value": 0.949074074074074,
+     "clusters": 9,
+     "diff": -0.11574074074074076,
+     "diff_ci": [
+      -0.5787037037037037,
+      0.32870370370370366
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.00390625,
+     "nonzero_clusters": 9,
+     "p": 0.671875,
+     "p_signflip": 0.671875,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 1,
+     "b": 3
+    },
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath_frontier_checklist",
+    "b": "ric_frontier",
+    "descriptive": true,
+    "id": "S7b",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath_frontier_checklist",
+     "a_value": 0.3020833333333333,
+     "b": "ric_frontier",
+     "b_value": 1.8645833333333333,
+     "clusters": 24,
+     "diff": -1.5625,
+     "diff_ci": [
+      -2.5034722222222223,
+      -0.71875
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 1.9073486328125e-06,
+     "nonzero_clusters": 20,
+     "p": 0.001247406005859375,
+     "p_signflip": 0.001247406005859375,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 1,
+     "b": 3
+    },
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath_frontier_checklist",
+    "b": "casepath",
+    "descriptive": true,
+    "id": "S7c",
+    "measure": "errors",
+    "not_run": [],
+    "regime": "theft",
+    "result": {
+     "a": "casepath_frontier_checklist",
+     "a_value": 0.8333333333333334,
+     "b": "casepath",
+     "b_value": 0.5833333333333334,
+     "clusters": 9,
+     "diff": 0.25,
+     "diff_ci": [
+      0.05092592592592593,
+      0.45844907407407237
+     ],
+     "favours": "b",
+     "higher_is_better": false,
+     "measure": "errors",
+     "min_p": 0.00390625,
+     "min_p_signflip": 0.00390625,
+     "min_p_signflip_given_nonzero": 0.0078125,
+     "nonzero_clusters": 8,
+     "p": 0.078125,
+     "p_signflip": 0.078125,
+     "regime": "theft",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 1,
+     "b": 3
+    },
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "test": "signflip"
+   },
+   {
+    "a": "casepath_frontier_checklist",
+    "b": "casepath",
+    "descriptive": true,
+    "id": "S7d",
+    "measure": "strict_unsafe",
+    "not_run": [],
+    "regime": "tenancy",
+    "result": {
+     "a": "casepath_frontier_checklist",
+     "a_value": 0.3020833333333333,
+     "b": "casepath",
+     "b_value": 0.3125,
+     "clusters": 24,
+     "diff": -0.010416666666666663,
+     "diff_ci": [
+      -0.21180555555555555,
+      0.1909722222222222
+     ],
+     "favours": "a",
+     "higher_is_better": false,
+     "measure": "strict_unsafe",
+     "min_p": 1.1920928955078125e-07,
+     "min_p_signflip": 1.1920928955078125e-07,
+     "min_p_signflip_given_nonzero": 6.103515625e-05,
+     "nonzero_clusters": 15,
+     "p": 0.95745849609375,
+     "p_signflip": 0.95745849609375,
+     "regime": "tenancy",
+     "subset": null,
+     "test": "signflip"
+    },
+    "runs": {
+     "a": 1,
+     "b": 3
+    },
+    "section": "CasePath on the frontier model, checklist only (one run per case; descriptive)",
+    "test": "signflip"
+   }
+  ],
+  "cost": {
+   "tenancy": {
+    "baseline": "ric_frontier",
+    "by_design": {
+     "casepath": {
+      "calls_per_case_run": 28.12847222222222,
+      "cost_per_case_run": 0.013385480555555563,
+      "ratio_to_ric_frontier": 2.1237153890100546
+     },
+     "casepath_checklist": {
+      "calls_per_case_run": 8.73611111111111,
+      "cost_per_case_run": 0.002960830920138894,
+      "ratio_to_ric_frontier": 0.46975991360623864
+     },
+     "casepath_frontier_checklist": {
+      "calls_per_case_run": 7.4375,
+      "cost_per_case_run": 0.02140785624999998,
+      "ratio_to_ric_frontier": 3.396530559746724
+     },
+     "model_executes_rules": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0006751665624999999,
+      "ratio_to_ric_frontier": 0.10712066802346912
+     },
+     "react": {
+      "calls_per_case_run": 8.055555555555555,
+      "cost_per_case_run": 0.0011875515104166636,
+      "ratio_to_ric_frontier": 0.18841470856772882
+     },
+     "ric": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0006764197222222225,
+      "ratio_to_ric_frontier": 0.10731949200860182
+     },
+     "ric_frontier": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0063028598958333355,
+      "ratio_to_ric_frontier": 1.0
+     },
+     "self_consistency": {
+      "calls_per_case_run": 5.0,
+      "cost_per_case_run": 0.0033882387847222212,
+      "ratio_to_ric_frontier": 0.5375716485403875
+     },
+     "two_valued_false": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "ratio_to_ric_frontier": 0.0
+     },
+     "two_valued_true": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "ratio_to_ric_frontier": 0.0
+     }
+    }
+   },
+   "theft": {
+    "baseline": "ric_frontier",
+    "by_design": {
+     "casepath": {
+      "calls_per_case_run": 30.057291666666668,
+      "cost_per_case_run": 0.02999036638020837,
+      "ratio_to_ric_frontier": 7.3536872133726945
+     },
+     "casepath_checklist": {
+      "calls_per_case_run": 4.799479166666667,
+      "cost_per_case_run": 0.004901673710937503,
+      "ratio_to_ric_frontier": 1.2018984641692718
+     },
+     "casepath_frontier_checklist": {
+      "calls_per_case_run": 4.171875,
+      "cost_per_case_run": 0.03858622460937501,
+      "ratio_to_ric_frontier": 9.461405803616472
+     },
+     "core": {
+      "calls_per_case_run": 2.0,
+      "cost_per_case_run": 0.0028117435937499977,
+      "ratio_to_ric_frontier": 0.6894441585177555
+     },
+     "model_executes_rules": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0017411094140625,
+      "ratio_to_ric_frontier": 0.42692289493748004
+     },
+     "react": {
+      "calls_per_case_run": 2.9401041666666665,
+      "cost_per_case_run": 0.0018700933723958346,
+      "ratio_to_ric_frontier": 0.45854997388347085
+     },
+     "ric": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0007174053385416664,
+      "ratio_to_ric_frontier": 0.17590897016585588
+     },
+     "ric_frontier": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.004078276041666666,
+      "ratio_to_ric_frontier": 1.0
+     },
+     "ric_original": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.0007567438411458335,
+      "ratio_to_ric_frontier": 0.1855548357723661
+     },
+     "ric_original_frontier": {
+      "calls_per_case_run": 1.0,
+      "cost_per_case_run": 0.004023438020833333,
+      "ratio_to_ric_frontier": 0.9865536270048747
+     },
+     "self_consistency": {
+      "calls_per_case_run": 5.0,
+      "cost_per_case_run": 0.0035101464192708307,
+      "ratio_to_ric_frontier": 0.8606936812046547
+     },
+     "two_valued_false": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "ratio_to_ric_frontier": 0.0
+     },
+     "two_valued_true": {
+      "calls_per_case_run": 0.0,
+      "cost_per_case_run": 0.0,
+      "ratio_to_ric_frontier": 0.0
+     }
+    }
+   }
+  },
+  "product_checklist_changes": {
+   "casepath, tenancy": {
+    "case_runs": 288,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {
+     "suggested": 209
+    }
+   },
+   "casepath, theft": {
+    "case_runs": 384,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {
+     "suggested": 211
+    }
+   },
+   "casepath_checklist, tenancy": {
+    "case_runs": 288,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {}
+   },
+   "casepath_checklist, theft": {
+    "case_runs": 384,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {}
+   },
+   "casepath_frontier_checklist, tenancy": {
+    "case_runs": 96,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {}
+   },
+   "casepath_frontier_checklist, theft": {
+    "case_runs": 128,
+    "case_runs_where_added_needs_entered_the_checklist": 0,
+    "needs_added_by_agents_by_required": {}
+   }
+  },
+  "run_to_run_jaccard": {
+   "casepath, tenancy": 0.943521274250441,
+   "casepath, theft": 0.9736729271885521,
+   "casepath_checklist, tenancy": 0.9556189373897707,
+   "casepath_checklist, theft": 0.9732796717171717,
+   "casepath_frontier_checklist, tenancy": null,
+   "casepath_frontier_checklist, theft": null,
+   "core, theft": 0.9652256742100492,
+   "model_executes_rules, tenancy": 0.8589037698412699,
+   "model_executes_rules, theft": 0.8409110637626263,
+   "react, tenancy": 0.8347469118745715,
+   "react, theft": 0.9222768264106846,
+   "ric, tenancy": 0.859056712962963,
+   "ric, theft": 0.797275958994709,
+   "ric_frontier, tenancy": 0.9235697751322752,
+   "ric_frontier, theft": 0.9487588872354498,
+   "ric_original, theft": 0.8479425016534392,
+   "ric_original_frontier, theft": 0.9777870783730159,
+   "self_consistency, tenancy": 0.9179866622574956,
+   "self_consistency, theft": 0.8973493303571428,
+   "two_valued_false, tenancy": 0.943521274250441,
+   "two_valued_false, theft": 0.9736729271885521,
+   "two_valued_true, tenancy": 0.9420827821869487,
+   "two_valued_true, theft": 0.9174314750697738
+  },
+  "tenancy_languages": {
+   "by_design": {
+    "casepath": {
+     "English": {
+      "all_deviations_per_claim": 0.7291666666666666,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.041666666666666664,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.06944444444444445,
+      "missed_per_claim": 0.0625,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9645390070921985,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.2777777777777778,
+      "strict_unsafe_per_claim": 0.3819444444444444,
+      "unnecessary_per_claim": 0.2777777777777778
+     },
+     "German": {
+      "all_deviations_per_claim": 0.7291666666666666,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.9351851851851852,
+      "handed_per_claim": 0.04861111111111111,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.1111111111111111,
+      "missed_per_claim": 0.013888888888888888,
+      "premature_per_claim": 0.04861111111111111,
+      "requested_share": 0.9661246612466124,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.375,
+      "strict_unsafe_per_claim": 0.24305555555555555,
+      "unnecessary_per_claim": 0.13194444444444445
+     }
+    },
+    "casepath_checklist": {
+     "English": {
+      "all_deviations_per_claim": 0.7569444444444444,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.9933333333333333,
+      "handed_per_claim": 0.041666666666666664,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.05555555555555555,
+      "missed_per_claim": 0.09027777777777778,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9617021276595744,
+      "silent_skip_per_claim": 0.006944444444444444,
+      "spurious_holds_per_claim": 0.2777777777777778,
+      "strict_unsafe_per_claim": 0.4236111111111111,
+      "unnecessary_per_claim": 0.2847222222222222
+     },
+     "German": {
+      "all_deviations_per_claim": 0.7083333333333334,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.04861111111111111,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.11805555555555555,
+      "missed_per_claim": 0.013888888888888888,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.964769647696477,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.3263888888888889,
+      "strict_unsafe_per_claim": 0.2638888888888889,
+      "unnecessary_per_claim": 0.2013888888888889
+     }
+    },
+    "casepath_frontier_checklist": {
+     "English": {
+      "all_deviations_per_claim": 0.6458333333333334,
+      "claim_runs": 48,
+      "claims": 48,
+      "correct_hold_share": 0.96,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.125,
+      "premature_per_claim": 0.020833333333333332,
+      "requested_share": 0.9744680851063829,
+      "silent_skip_per_claim": 0.020833333333333332,
+      "spurious_holds_per_claim": 0.2916666666666667,
+      "strict_unsafe_per_claim": 0.3541666666666667,
+      "unnecessary_per_claim": 0.1875
+     },
+     "German": {
+      "all_deviations_per_claim": 0.75,
+      "claim_runs": 48,
+      "claims": 48,
+      "correct_hold_share": 0.75,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.020833333333333332,
+      "missed_per_claim": 0.0625,
+      "premature_per_claim": 0.1875,
+      "requested_share": 0.983739837398374,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.4791666666666667,
+      "strict_unsafe_per_claim": 0.25,
+      "unnecessary_per_claim": 0.0
+     }
+    },
+    "model_executes_rules": {
+     "English": {
+      "all_deviations_per_claim": 1.1041666666666667,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.92,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.006944444444444444,
+      "missed_per_claim": 0.1597222222222222,
+      "premature_per_claim": 0.06944444444444445,
+      "requested_share": 0.9659574468085106,
+      "silent_skip_per_claim": 0.013888888888888888,
+      "spurious_holds_per_claim": 0.4652777777777778,
+      "strict_unsafe_per_claim": 0.6319444444444444,
+      "unnecessary_per_claim": 0.3888888888888889
+     },
+     "German": {
+      "all_deviations_per_claim": 1.8819444444444444,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.7685185185185185,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.1597222222222222,
+      "missed_per_claim": 0.1875,
+      "premature_per_claim": 0.1736111111111111,
+      "requested_share": 0.9322493224932249,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.6944444444444444,
+      "strict_unsafe_per_claim": 1.0277777777777777,
+      "unnecessary_per_claim": 0.6666666666666666
+     }
+    },
+    "react": {
+     "English": {
+      "all_deviations_per_claim": 1.9305555555555556,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.7,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.06944444444444445,
+      "missed_per_claim": 0.6180555555555556,
+      "premature_per_claim": 0.3055555555555556,
+      "requested_share": 0.8595744680851064,
+      "silent_skip_per_claim": 0.006944444444444444,
+      "spurious_holds_per_claim": 0.04861111111111111,
+      "strict_unsafe_per_claim": 1.8125,
+      "unnecessary_per_claim": 0.8819444444444444
+     },
+     "German": {
+      "all_deviations_per_claim": 2.076388888888889,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.3333333333333333,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.09027777777777778,
+      "missed_per_claim": 0.6875,
+      "premature_per_claim": 0.3472222222222222,
+      "requested_share": 0.8482384823848238,
+      "silent_skip_per_claim": 0.1527777777777778,
+      "spurious_holds_per_claim": 0.125,
+      "strict_unsafe_per_claim": 1.8611111111111112,
+      "unnecessary_per_claim": 0.6736111111111112
+     }
+    },
+    "ric": {
+     "English": {
+      "all_deviations_per_claim": 2.423611111111111,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.44666666666666666,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.020833333333333332,
+      "missed_per_claim": 0.2638888888888889,
+      "premature_per_claim": 0.5416666666666666,
+      "requested_share": 0.9418439716312057,
+      "silent_skip_per_claim": 0.034722222222222224,
+      "spurious_holds_per_claim": 0.14583333333333334,
+      "strict_unsafe_per_claim": 2.2569444444444446,
+      "unnecessary_per_claim": 1.4166666666666667
+     },
+     "German": {
+      "all_deviations_per_claim": 2.236111111111111,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.5370370370370371,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.027777777777777776,
+      "missed_per_claim": 0.125,
+      "premature_per_claim": 0.3472222222222222,
+      "requested_share": 0.9701897018970189,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.1875,
+      "strict_unsafe_per_claim": 2.0208333333333335,
+      "unnecessary_per_claim": 1.5486111111111112
+     }
+    },
+    "ric_frontier": {
+     "English": {
+      "all_deviations_per_claim": 2.3541666666666665,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.32,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.006944444444444444,
+      "missed_per_claim": 0.16666666666666666,
+      "premature_per_claim": 0.7083333333333334,
+      "requested_share": 0.9645390070921985,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.3055555555555556,
+      "strict_unsafe_per_claim": 2.0416666666666665,
+      "unnecessary_per_claim": 1.1666666666666667
+     },
+     "German": {
+      "all_deviations_per_claim": 1.8194444444444444,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.3888888888888889,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.06944444444444445,
+      "missed_per_claim": 0.09027777777777778,
+      "premature_per_claim": 0.4583333333333333,
+      "requested_share": 0.9688346883468835,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0625,
+      "strict_unsafe_per_claim": 1.6875,
+      "unnecessary_per_claim": 1.1388888888888888
+     }
+    },
+    "self_consistency": {
+     "English": {
+      "all_deviations_per_claim": 2.388888888888889,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.5533333333333333,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.013888888888888888,
+      "missed_per_claim": 0.2222222222222222,
+      "premature_per_claim": 0.4652777777777778,
+      "requested_share": 0.9517730496453901,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.1527777777777778,
+      "strict_unsafe_per_claim": 2.2222222222222223,
+      "unnecessary_per_claim": 1.5347222222222223
+     },
+     "German": {
+      "all_deviations_per_claim": 2.236111111111111,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.5555555555555556,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.04861111111111111,
+      "missed_per_claim": 0.14583333333333334,
+      "premature_per_claim": 0.3333333333333333,
+      "requested_share": 0.962059620596206,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.20833333333333334,
+      "strict_unsafe_per_claim": 1.9791666666666667,
+      "unnecessary_per_claim": 1.5
+     }
+    },
+    "two_valued_false": {
+     "English": {
+      "all_deviations_per_claim": 1.4930555555555556,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.041666666666666664,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.13194444444444445,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9645390070921985,
+      "silent_skip_per_claim": 1.0416666666666667,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.4930555555555556,
+      "unnecessary_per_claim": 0.2777777777777778
+     },
+     "German": {
+      "all_deviations_per_claim": 1.0555555555555556,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.04861111111111111,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.125,
+      "premature_per_claim": 0.04861111111111111,
+      "requested_share": 0.9661246612466124,
+      "silent_skip_per_claim": 0.7013888888888888,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.0555555555555556,
+      "unnecessary_per_claim": 0.13194444444444445
+     }
+    },
+    "two_valued_true": {
+     "English": {
+      "all_deviations_per_claim": 1.7013888888888888,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.041666666666666664,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0625,
+      "premature_per_claim": 1.0416666666666667,
+      "requested_share": 0.9787234042553191,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.7013888888888888,
+      "unnecessary_per_claim": 0.5555555555555556
+     },
+     "German": {
+      "all_deviations_per_claim": 1.3125,
+      "claim_runs": 144,
+      "claims": 48,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.04861111111111111,
+      "handoffs": 1,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.013888888888888888,
+      "premature_per_claim": 0.75,
+      "requested_share": 0.9878048780487805,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.3125,
+      "unnecessary_per_claim": 0.5
+     }
+    }
+   },
+   "claims": {
+    "English": 48,
+    "German": 48
+   }
+  },
+  "tenancy_subsets": {
+   "by_design": {
+    "casepath": {
+     "all claims": {
+      "all_deviations_per_claim": 0.7291666666666666,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.9728682170542635,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.09027777777777778,
+      "missed_per_claim": 0.03819444444444445,
+      "premature_per_claim": 0.024305555555555556,
+      "requested_share": 0.9653499653499653,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.3263888888888889,
+      "strict_unsafe_per_claim": 0.3125,
+      "unnecessary_per_claim": 0.2048611111111111
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 1.7777777777777777,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 1.1666666666666667,
+      "strict_unsafe_per_claim": 0.6111111111111112,
+      "unnecessary_per_claim": 0.6111111111111112
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.5217391304347826,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.18840579710144928,
+      "missed_per_claim": 0.15942028985507245,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9490445859872612,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.10144927536231885,
+      "strict_unsafe_per_claim": 0.2318840579710145,
+      "unnecessary_per_claim": 0.07246376811594203
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 0.25925925925925924,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.9629629629629629,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.25925925925925924,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.25925925925925924,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 0.25925925925925924,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.9629629629629629,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.25925925925925924,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.25925925925925924,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 0.4479166666666667,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.9728682170542635,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.13541666666666666,
+      "missed_per_claim": 0.11458333333333333,
+      "premature_per_claim": 0.07291666666666667,
+      "requested_share": 0.9490445859872612,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.07291666666666667,
+      "strict_unsafe_per_claim": 0.23958333333333334,
+      "unnecessary_per_claim": 0.052083333333333336
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.3968253968253968,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.06878306878306878,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.13756613756613756,
+      "missed_per_claim": 0.0582010582010582,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9653499653499653,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.05291005291005291,
+      "strict_unsafe_per_claim": 0.20634920634920634,
+      "unnecessary_per_claim": 0.07936507936507936
+     }
+    },
+    "casepath_checklist": {
+     "all claims": {
+      "all_deviations_per_claim": 0.7326388888888888,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.9961240310077519,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.08680555555555555,
+      "missed_per_claim": 0.052083333333333336,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9632709632709633,
+      "silent_skip_per_claim": 0.003472222222222222,
+      "spurious_holds_per_claim": 0.3020833333333333,
+      "strict_unsafe_per_claim": 0.34375,
+      "unnecessary_per_claim": 0.24305555555555555
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 1.7777777777777777,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 1.0555555555555556,
+      "strict_unsafe_per_claim": 0.7222222222222222,
+      "unnecessary_per_claim": 0.7222222222222222
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.6086956521739131,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.9855072463768116,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.18840579710144928,
+      "missed_per_claim": 0.2028985507246377,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9426751592356688,
+      "silent_skip_per_claim": 0.014492753623188406,
+      "spurious_holds_per_claim": 0.10144927536231885,
+      "strict_unsafe_per_claim": 0.3188405797101449,
+      "unnecessary_per_claim": 0.10144927536231885
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 0.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 0.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 0.4375,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.9961240310077519,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.13541666666666666,
+      "missed_per_claim": 0.14583333333333334,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9426751592356688,
+      "silent_skip_per_claim": 0.010416666666666666,
+      "spurious_holds_per_claim": 0.07291666666666667,
+      "strict_unsafe_per_claim": 0.22916666666666666,
+      "unnecessary_per_claim": 0.07291666666666667
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.43915343915343913,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.9855072463768116,
+      "handed_per_claim": 0.06878306878306878,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.13227513227513227,
+      "missed_per_claim": 0.07936507936507936,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9632709632709633,
+      "silent_skip_per_claim": 0.005291005291005291,
+      "spurious_holds_per_claim": 0.0582010582010582,
+      "strict_unsafe_per_claim": 0.24867724867724866,
+      "unnecessary_per_claim": 0.09523809523809523
+     }
+    },
+    "casepath_frontier_checklist": {
+     "all claims": {
+      "all_deviations_per_claim": 0.6979166666666666,
+      "claim_runs": 96,
+      "claims": 96,
+      "correct_hold_share": 0.872093023255814,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.010416666666666666,
+      "missed_per_claim": 0.09375,
+      "premature_per_claim": 0.10416666666666667,
+      "requested_share": 0.9792099792099792,
+      "silent_skip_per_claim": 0.010416666666666666,
+      "spurious_holds_per_claim": 0.3854166666666667,
+      "strict_unsafe_per_claim": 0.3020833333333333,
+      "unnecessary_per_claim": 0.09375
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 1.7916666666666667,
+      "claim_runs": 24,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 1.5,
+      "strict_unsafe_per_claim": 0.2916666666666667,
+      "unnecessary_per_claim": 0.2916666666666667
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.6521739130434783,
+      "claim_runs": 23,
+      "claims": 23,
+      "correct_hold_share": 0.782608695652174,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.043478260869565216,
+      "missed_per_claim": 0.391304347826087,
+      "premature_per_claim": 0.17391304347826086,
+      "requested_share": 0.9363057324840764,
+      "silent_skip_per_claim": 0.043478260869565216,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.6086956521739131,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 0.7777777777777778,
+      "claim_runs": 9,
+      "claims": 9,
+      "correct_hold_share": 0.9047619047619048,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.6666666666666666,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.1111111111111111,
+      "strict_unsafe_per_claim": 0.6666666666666666,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 0.7777777777777778,
+      "claim_runs": 9,
+      "claims": 9,
+      "correct_hold_share": 0.9047619047619048,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.6666666666666666,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.1111111111111111,
+      "strict_unsafe_per_claim": 0.6666666666666666,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 0.6875,
+      "claim_runs": 32,
+      "claims": 32,
+      "correct_hold_share": 0.872093023255814,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.03125,
+      "missed_per_claim": 0.28125,
+      "premature_per_claim": 0.3125,
+      "requested_share": 0.9363057324840764,
+      "silent_skip_per_claim": 0.03125,
+      "spurious_holds_per_claim": 0.03125,
+      "strict_unsafe_per_claim": 0.625,
+      "unnecessary_per_claim": 0.0
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.2698412698412698,
+      "claim_runs": 63,
+      "claims": 63,
+      "correct_hold_share": 0.782608695652174,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.015873015873015872,
+      "missed_per_claim": 0.14285714285714285,
+      "premature_per_claim": 0.06349206349206349,
+      "requested_share": 0.9792099792099792,
+      "silent_skip_per_claim": 0.015873015873015872,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.25396825396825395,
+      "unnecessary_per_claim": 0.031746031746031744
+     }
+    },
+    "model_executes_rules": {
+     "all claims": {
+      "all_deviations_per_claim": 1.4930555555555556,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.8565891472868217,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.08333333333333333,
+      "missed_per_claim": 0.1736111111111111,
+      "premature_per_claim": 0.12152777777777778,
+      "requested_share": 0.9487179487179487,
+      "silent_skip_per_claim": 0.006944444444444444,
+      "spurious_holds_per_claim": 0.5798611111111112,
+      "strict_unsafe_per_claim": 0.8298611111111112,
+      "unnecessary_per_claim": 0.5277777777777778
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 4.069444444444445,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 2.125,
+      "strict_unsafe_per_claim": 1.9444444444444444,
+      "unnecessary_per_claim": 1.9444444444444444
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.6956521739130435,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.8695652173913043,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.15942028985507245,
+      "missed_per_claim": 0.3188405797101449,
+      "premature_per_claim": 0.13043478260869565,
+      "requested_share": 0.9299363057324841,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.07246376811594203,
+      "strict_unsafe_per_claim": 0.463768115942029,
+      "unnecessary_per_claim": 0.014492753623188406
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 1.037037037037037,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.8518518518518519,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.9629629629629629,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.07407407407407407,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.037037037037037,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 1.037037037037037,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.8518518518518519,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.9629629629629629,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.07407407407407407,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.037037037037037,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 0.7916666666666666,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.8565891472868217,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.11458333333333333,
+      "missed_per_claim": 0.22916666666666666,
+      "premature_per_claim": 0.3645833333333333,
+      "requested_share": 0.9299363057324841,
+      "silent_skip_per_claim": 0.020833333333333332,
+      "spurious_holds_per_claim": 0.052083333333333336,
+      "strict_unsafe_per_claim": 0.625,
+      "unnecessary_per_claim": 0.010416666666666666
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.5767195767195767,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.8695652173913043,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.12698412698412698,
+      "missed_per_claim": 0.26455026455026454,
+      "premature_per_claim": 0.047619047619047616,
+      "requested_share": 0.9487179487179487,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.07407407407407407,
+      "strict_unsafe_per_claim": 0.37566137566137564,
+      "unnecessary_per_claim": 0.06349206349206349
+     }
+    },
+    "react": {
+     "all claims": {
+      "all_deviations_per_claim": 2.0034722222222223,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.5465116279069767,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0798611111111111,
+      "missed_per_claim": 0.6527777777777778,
+      "premature_per_claim": 0.3263888888888889,
+      "requested_share": 0.8537768537768538,
+      "silent_skip_per_claim": 0.0798611111111111,
+      "spurious_holds_per_claim": 0.08680555555555555,
+      "strict_unsafe_per_claim": 1.8368055555555556,
+      "unnecessary_per_claim": 0.7777777777777778
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 3.236111111111111,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.2361111111111111,
+      "strict_unsafe_per_claim": 3.0,
+      "unnecessary_per_claim": 3.0
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 1.565217391304348,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.8260869565217391,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.17391304347826086,
+      "missed_per_claim": 1.144927536231884,
+      "premature_per_claim": 0.028985507246376812,
+      "requested_share": 0.8067940552016986,
+      "silent_skip_per_claim": 0.14492753623188406,
+      "spurious_holds_per_claim": 0.043478260869565216,
+      "strict_unsafe_per_claim": 1.3478260869565217,
+      "unnecessary_per_claim": 0.028985507246376812
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 3.888888888888889,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.4444444444444444,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 3.4074074074074074,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.48148148148148145,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 3.888888888888889,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 3.888888888888889,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.4444444444444444,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 3.4074074074074074,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.48148148148148145,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 3.888888888888889,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 2.21875,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.5465116279069767,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.125,
+      "missed_per_claim": 0.8229166666666666,
+      "premature_per_claim": 0.9791666666666666,
+      "requested_share": 0.8067940552016986,
+      "silent_skip_per_claim": 0.23958333333333334,
+      "spurious_holds_per_claim": 0.03125,
+      "strict_unsafe_per_claim": 2.0625,
+      "unnecessary_per_claim": 0.020833333333333332
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 1.2645502645502646,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.8260869565217391,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.12169312169312169,
+      "missed_per_claim": 0.9947089947089947,
+      "premature_per_claim": 0.010582010582010581,
+      "requested_share": 0.8537768537768538,
+      "silent_skip_per_claim": 0.05291005291005291,
+      "spurious_holds_per_claim": 0.042328042328042326,
+      "strict_unsafe_per_claim": 1.1005291005291005,
+      "unnecessary_per_claim": 0.042328042328042326
+     }
+    },
+    "ric": {
+     "all claims": {
+      "all_deviations_per_claim": 2.329861111111111,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.4844961240310077,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.024305555555555556,
+      "missed_per_claim": 0.19444444444444445,
+      "premature_per_claim": 0.4444444444444444,
+      "requested_share": 0.9563409563409564,
+      "silent_skip_per_claim": 0.017361111111111112,
+      "spurious_holds_per_claim": 0.16666666666666666,
+      "strict_unsafe_per_claim": 2.138888888888889,
+      "unnecessary_per_claim": 1.4826388888888888
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 6.236111111111111,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.5555555555555556,
+      "strict_unsafe_per_claim": 5.680555555555555,
+      "unnecessary_per_claim": 5.680555555555555
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.5942028985507246,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.8840579710144928,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.043478260869565216,
+      "missed_per_claim": 0.2898550724637681,
+      "premature_per_claim": 0.10144927536231885,
+      "requested_share": 0.9511677282377919,
+      "silent_skip_per_claim": 0.014492753623188406,
+      "spurious_holds_per_claim": 0.043478260869565216,
+      "strict_unsafe_per_claim": 0.5072463768115942,
+      "unnecessary_per_claim": 0.10144927536231885
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 4.62962962962963,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.3386243386243386,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 4.481481481481482,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.14814814814814814,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 4.62962962962963,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 4.62962962962963,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.3386243386243386,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 4.481481481481482,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.14814814814814814,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 4.62962962962963,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 1.7291666666666667,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.4844961240310077,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.03125,
+      "missed_per_claim": 0.20833333333333334,
+      "premature_per_claim": 1.3333333333333333,
+      "requested_share": 0.9511677282377919,
+      "silent_skip_per_claim": 0.052083333333333336,
+      "spurious_holds_per_claim": 0.03125,
+      "strict_unsafe_per_claim": 1.6666666666666667,
+      "unnecessary_per_claim": 0.07291666666666667
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.5132275132275133,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.8840579710144928,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.037037037037037035,
+      "missed_per_claim": 0.2962962962962963,
+      "premature_per_claim": 0.037037037037037035,
+      "requested_share": 0.9563409563409564,
+      "silent_skip_per_claim": 0.005291005291005291,
+      "spurious_holds_per_claim": 0.042328042328042326,
+      "strict_unsafe_per_claim": 0.43386243386243384,
+      "unnecessary_per_claim": 0.09523809523809523
+     }
+    },
+    "ric_frontier": {
+     "all claims": {
+      "all_deviations_per_claim": 2.0868055555555554,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.3488372093023256,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.03819444444444445,
+      "missed_per_claim": 0.1284722222222222,
+      "premature_per_claim": 0.5833333333333334,
+      "requested_share": 0.9667359667359667,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.1840277777777778,
+      "strict_unsafe_per_claim": 1.8645833333333333,
+      "unnecessary_per_claim": 1.1527777777777777
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 5.055555555555555,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.625,
+      "strict_unsafe_per_claim": 4.430555555555555,
+      "unnecessary_per_claim": 4.430555555555555
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.6376811594202898,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.9420289855072463,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.14492753623188406,
+      "missed_per_claim": 0.30434782608695654,
+      "premature_per_claim": 0.057971014492753624,
+      "requested_share": 0.9341825902335457,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.043478260869565216,
+      "strict_unsafe_per_claim": 0.4492753623188406,
+      "unnecessary_per_claim": 0.08695652173913043
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 6.111111111111111,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.13227513227513227,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 6.074074074074074,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.037037037037037035,
+      "strict_unsafe_per_claim": 6.074074074074074,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 6.111111111111111,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.13227513227513227,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 6.074074074074074,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.037037037037037035,
+      "strict_unsafe_per_claim": 6.074074074074074,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 2.1770833333333335,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.3488372093023256,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.10416666666666667,
+      "missed_per_claim": 0.21875,
+      "premature_per_claim": 1.75,
+      "requested_share": 0.9341825902335457,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.041666666666666664,
+      "strict_unsafe_per_claim": 2.03125,
+      "unnecessary_per_claim": 0.0625
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.38095238095238093,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.9420289855072463,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0582010582010582,
+      "missed_per_claim": 0.19576719576719576,
+      "premature_per_claim": 0.021164021164021163,
+      "requested_share": 0.9667359667359667,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.037037037037037035,
+      "strict_unsafe_per_claim": 0.2857142857142857,
+      "unnecessary_per_claim": 0.06878306878306878
+     }
+    },
+    "self_consistency": {
+     "all claims": {
+      "all_deviations_per_claim": 2.3125,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.5542635658914729,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.03125,
+      "missed_per_claim": 0.1840277777777778,
+      "premature_per_claim": 0.3993055555555556,
+      "requested_share": 0.957033957033957,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.18055555555555555,
+      "strict_unsafe_per_claim": 2.1006944444444446,
+      "unnecessary_per_claim": 1.5173611111111112
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 6.583333333333333,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.6666666666666666,
+      "strict_unsafe_per_claim": 5.916666666666667,
+      "unnecessary_per_claim": 5.916666666666667
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 0.5652173913043478,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.8840579710144928,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.08695652173913043,
+      "missed_per_claim": 0.30434782608695654,
+      "premature_per_claim": 0.11594202898550725,
+      "requested_share": 0.9426751592356688,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.028985507246376812,
+      "strict_unsafe_per_claim": 0.4492753623188406,
+      "unnecessary_per_claim": 0.028985507246376812
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 3.962962962962963,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.43386243386243384,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 3.962962962962963,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 3.962962962962963,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 3.962962962962963,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.43386243386243384,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 3.962962962962963,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 3.962962962962963,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 1.5208333333333333,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.5542635658914729,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0625,
+      "missed_per_claim": 0.21875,
+      "premature_per_claim": 1.1979166666666667,
+      "requested_share": 0.9426751592356688,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.020833333333333332,
+      "strict_unsafe_per_claim": 1.4375,
+      "unnecessary_per_claim": 0.020833333333333332
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.4497354497354497,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.8840579710144928,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.047619047619047616,
+      "missed_per_claim": 0.2804232804232804,
+      "premature_per_claim": 0.042328042328042326,
+      "requested_share": 0.957033957033957,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.021164021164021163,
+      "strict_unsafe_per_claim": 0.38095238095238093,
+      "unnecessary_per_claim": 0.0582010582010582
+     }
+    },
+    "two_valued_false": {
+     "all claims": {
+      "all_deviations_per_claim": 1.2743055555555556,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.1284722222222222,
+      "premature_per_claim": 0.024305555555555556,
+      "requested_share": 0.9653499653499653,
+      "silent_skip_per_claim": 0.8715277777777778,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.2743055555555556,
+      "unnecessary_per_claim": 0.2048611111111111
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 0.6111111111111112,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.6111111111111112,
+      "unnecessary_per_claim": 0.6111111111111112
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 1.4202898550724639,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.34782608695652173,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9490445859872612,
+      "silent_skip_per_claim": 1.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.4202898550724639,
+      "unnecessary_per_claim": 0.07246376811594203
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 7.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.25925925925925924,
+      "requested_share": null,
+      "silent_skip_per_claim": 6.7407407407407405,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 7.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 7.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.25925925925925924,
+      "requested_share": null,
+      "silent_skip_per_claim": 6.7407407407407405,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 7.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 2.9895833333333335,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.25,
+      "premature_per_claim": 0.07291666666666667,
+      "requested_share": 0.9490445859872612,
+      "silent_skip_per_claim": 2.6145833333333335,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 2.9895833333333335,
+      "unnecessary_per_claim": 0.052083333333333336
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.708994708994709,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.06878306878306878,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.19576719576719576,
+      "premature_per_claim": 0.0,
+      "requested_share": 0.9653499653499653,
+      "silent_skip_per_claim": 0.36507936507936506,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.708994708994709,
+      "unnecessary_per_claim": 0.07936507936507936
+     }
+    },
+    "two_valued_true": {
+     "all claims": {
+      "all_deviations_per_claim": 1.5069444444444444,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.04513888888888889,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.03819444444444445,
+      "premature_per_claim": 0.8958333333333334,
+      "requested_share": 0.9833679833679834,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.5069444444444444,
+      "unnecessary_per_claim": 0.5277777777777778
+     },
+     "denied_event": {
+      "all_deviations_per_claim": 1.7777777777777777,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.7777777777777777,
+      "unnecessary_per_claim": 1.7777777777777777
+     },
+     "open_branch_fact": {
+      "all_deviations_per_claim": 1.318840579710145,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.15942028985507245,
+      "premature_per_claim": 1.0,
+      "requested_share": 0.9766454352441614,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 1.318840579710145,
+      "unnecessary_per_claim": 0.15942028985507245
+     },
+     "open_defining_event": {
+      "all_deviations_per_claim": 7.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 7.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 7.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_event": {
+      "all_deviations_per_claim": 7.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 7.0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 7.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "open_fact": {
+      "all_deviations_per_claim": 2.9166666666666665,
+      "claim_runs": 96,
+      "claims": 32,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.0,
+      "handoffs": 0,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.11458333333333333,
+      "premature_per_claim": 2.6875,
+      "requested_share": 0.9766454352441614,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 2.9166666666666665,
+      "unnecessary_per_claim": 0.11458333333333333
+     },
+     "ordinary": {
+      "all_deviations_per_claim": 0.6190476190476191,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold_share": 0.0,
+      "handed_per_claim": 0.06878306878306878,
+      "handoffs": 2,
+      "held_required_now_per_claim": 0.0,
+      "missed_per_claim": 0.0582010582010582,
+      "premature_per_claim": 0.36507936507936506,
+      "requested_share": 0.9833679833679834,
+      "silent_skip_per_claim": 0.0,
+      "spurious_holds_per_claim": 0.0,
+      "strict_unsafe_per_claim": 0.6190476190476191,
+      "unnecessary_per_claim": 0.12698412698412698
+     }
+    }
+   },
+   "claims": {
+    "denied_event": 24,
+    "open_branch_fact": 23,
+    "open_defining_event": 9,
+    "open_event": 9,
+    "open_fact": 32,
+    "ordinary": 63
+   },
+   "definitions": {
+    "denied_event": {
+     "held_set_empty": true,
+     "label": "denied event (empty request set, no held document)",
+     "request_set_empty": true
+    },
+    "open_branch_fact": {
+     "label": "open branch fact (open fact, request set not empty)",
+     "open_fact": true,
+     "request_set_empty": false
+    },
+    "open_defining_event": {
+     "label": "open defining event (open fact, request set empty)",
+     "open_fact": true,
+     "request_set_empty": true
+    },
+    "open_event": {
+     "held_set_empty": false,
+     "label": "open event (empty request set, at least one held document)",
+     "request_set_empty": true
+    },
+    "open_fact": {
+     "label": "one fact left open",
+     "open_fact": true
+    },
+    "ordinary": {
+     "label": "ordinary (request set not empty)",
+     "request_set_empty": false
+    }
+   }
+  },
+  "theft_unresolved": {
+   "casepath": {
+    "other_changes_per_pair": 0.1111111111111111,
+    "pair_runs": 144,
+    "premature_rate": 0.0,
+    "stable_rate": 0.9444444444444444
+   },
+   "casepath_checklist": {
+    "other_changes_per_pair": 0.09722222222222222,
+    "pair_runs": 144,
+    "premature_rate": 0.0,
+    "stable_rate": 0.9513888888888888
+   },
+   "casepath_frontier_checklist": {
+    "other_changes_per_pair": 0.1875,
+    "pair_runs": 48,
+    "premature_rate": 0.0,
+    "stable_rate": 0.75
+   },
+   "core": {
+    "other_changes_per_pair": 0.375,
+    "pair_runs": 144,
+    "premature_rate": 0.0,
+    "stable_rate": 0.8472222222222222
+   },
+   "model_executes_rules": {
+    "other_changes_per_pair": 1.3333333333333333,
+    "pair_runs": 144,
+    "premature_rate": 0.013888888888888888,
+    "stable_rate": 0.2708333333333333
+   },
+   "react": {
+    "other_changes_per_pair": 1.1319444444444444,
+    "pair_runs": 144,
+    "premature_rate": 0.020833333333333332,
+    "stable_rate": 0.4652777777777778
+   },
+   "ric": {
+    "other_changes_per_pair": 1.2222222222222223,
+    "pair_runs": 144,
+    "premature_rate": 0.006944444444444444,
+    "stable_rate": 0.2708333333333333
+   },
+   "ric_frontier": {
+    "other_changes_per_pair": 0.4583333333333333,
+    "pair_runs": 144,
+    "premature_rate": 0.08333333333333333,
+    "stable_rate": 0.4513888888888889
+   },
+   "ric_original": {
+    "other_changes_per_pair": 0.9583333333333334,
+    "pair_runs": 144,
+    "premature_rate": 0.013888888888888888,
+    "stable_rate": 0.3055555555555556
+   },
+   "ric_original_frontier": {
+    "other_changes_per_pair": 0.09722222222222222,
+    "pair_runs": 144,
+    "premature_rate": 0.020833333333333332,
+    "stable_rate": 0.9097222222222222
+   },
+   "self_consistency": {
+    "other_changes_per_pair": 0.625,
+    "pair_runs": 144,
+    "premature_rate": 0.0,
+    "stable_rate": 0.4513888888888889
+   },
+   "two_valued_false": {
+    "other_changes_per_pair": 0.1111111111111111,
+    "pair_runs": 144,
+    "premature_rate": 0.0,
+    "stable_rate": 0.9444444444444444
+   },
+   "two_valued_true": {
+    "other_changes_per_pair": 2.0416666666666665,
+    "pair_runs": 144,
+    "premature_rate": 0.6458333333333334,
+    "stable_rate": 0.06944444444444445
+   }
+  }
+ },
+ "spec": {
+  "file": "analysis/study3_spec.json",
+  "sha256": "149749a616f911d7d1b9134ec4d1c2de33715adcaf24a3bfa20aab1f3c1143af"
+ },
+ "tenancy_partition": {
+  "claims": {
+   "denied_event": 24,
+   "open_event": 9,
+   "ordinary": 63
+  },
+  "is_partition": true,
+  "subsets": [
+   "denied_event",
+   "open_event",
+   "ordinary"
+  ],
+  "total": 96
+ }
+}
