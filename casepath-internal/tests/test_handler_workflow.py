@@ -48,6 +48,7 @@ class HandlerWorkflowTests(unittest.TestCase):
         self.assertIn("letter_question:mangel_seit", listed)
         self.assertEqual(listed["hint:dokumentieren"]["stated_as"], "put_to_handler")  # offered while a reduction is not established
         self.assertNotIn("hint:ruege_einschreiben", listed)  # a written notice was sent: no hint to send one
+        self.assertEqual((listed["fact:a1_versandt"]["value"], listed["fact:a1_versandt"]["stated_as"]), (False, "computed"))  # derived, listed
         done = base + [fact("bisherige_handlungen", "A1 2024-08-28; A4 2024-09-10")]
         state = core.evaluate(wf, [], [], {"facts": done, "documents": [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]}, "c")
         self.assertTrue(state["facts"]["a1_versandt"])
