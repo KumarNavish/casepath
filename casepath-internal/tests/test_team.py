@@ -319,7 +319,7 @@ class TeamTests(unittest.TestCase):
         self.assertIn("not_stated: the\nfiles do not address the matter", READ_FACTS)  # silence is a separate answer
         # dates in the forms the fact type accepts: a day, a month or a year; a deadline may be "none" or a stated period
         self.assertIn("YYYY-MM-DD, or YYYY-MM or YYYY when the file\nstates no day", READ_FACTS)
-        self.assertIn('"<n> days from YYYY-MM-DD"', READ_FACTS)
+        self.assertIn('"<n> days|weeks|months|years\nfrom|before YYYY-MM-DD"', READ_FACTS)
         work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
         work.readings = 2  # two readings, as this test describes
         model = ScriptedModel([], first_reading=[{"fact": "landlord_notified", "status": "unknown", "value": None,
@@ -351,7 +351,8 @@ class TeamTests(unittest.TestCase):
         data["facts"].append({"id": "reply_deadline", "type": "date", "deadline": True, "question": "By when must the reply come?",
                               "source_refs": data["facts"][0]["source_refs"]})
         wf = validate_workflow(data)
-        for value, kept in (("2024-03", "2024-03"), ("14 days from 2024-03-02", "14 days from 2024-03-02"), ("none", "none"),
+        for value, kept in (("2024-03", "2024-03"), ("14 days from 2024-03-02", "14 days from 2024-03-02"), ("5 years before 2024-03-02", "5 years before 2024-03-02"),
+                            ("none", "none"),
                             ("March 2024", None)):
             work = CaseWork(case=CASE, files=FILES, base_workflow=wf)
             model = ScriptedModel([])
