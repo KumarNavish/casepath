@@ -1,0 +1,708 @@
+{
+ "format": "casepath.workflow/1",
+ "id": "mietmangel-handler",
+ "version": "2026-11-11.2",
+ "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
+ "status": "draft",
+ "supersedes": [
+  "osm-mold"
+ ],
+ "sources": [
+  {
+   "id": "practice",
+   "kind": "process_guidance",
+   "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"
+  },
+  {
+   "id": "law",
+   "kind": "process_guidance",
+   "title": "Schweizerisches Obligationenrecht, Mietrecht (Art. 253 ff. OR)"
+  },
+  {
+   "id": "intake",
+   "kind": "process_diagram",
+   "title": "OSM+ Online-Schadenmeldung (Eingang): Angaben und Unterlagen der Kundschaft"
+  }
+ ],
+ "applies_when": {
+  "fact": "rechtsgebiet",
+  "is": "Mietrecht / Mangel"
+ },
+ "facts": [
+  {
+   "id": "rechtsgebiet",
+   "type": "enum",
+   "values": [
+    "Mietrecht / Mangel"
+   ],
+   "question": "Geht es um einen Mangel an der Mietsache?",
+   "source_refs": [
+    "intake#title"
+   ]
+  },
+  {
+   "id": "will_beseitigung",
+   "type": "boolean",
+   "question": "Will die Kundschaft die Beseitigung des Mangels?",
+   "source_refs": [
+    "law#259b",
+    "practice#5of7"
+   ]
+  },
+  {
+   "id": "will_reduktion",
+   "type": "boolean",
+   "question": "Will die Kundschaft eine Herabsetzung des Mietzinses?",
+   "source_refs": [
+    "law#259d",
+    "practice#4of7"
+   ]
+  },
+  {
+   "id": "will_schadenersatz",
+   "type": "boolean",
+   "question": "Will die Kundschaft Schadenersatz (z.B. für beschädigte Gegenstände)?",
+   "source_refs": [
+    "law#259e",
+    "practice#3of7"
+   ]
+  },
+  {
+   "id": "will_auszug",
+   "type": "boolean",
+   "question": "Will die Kundschaft vorzeitig ausziehen oder kündigen?",
+   "source_refs": [
+    "law#264",
+    "practice#1of7"
+   ]
+  },
+  {
+   "id": "deckung",
+   "type": "enum",
+   "values": [
+    "offen",
+    "bestätigt",
+    "abgelehnt"
+   ],
+   "handler_only": true,
+   "question": "Ist die Versicherungsdeckung gegeben? (Entscheid der Fallbearbeitung)",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "bisherige_handlungen",
+   "type": "text",
+   "question": "Welche Schreiben und Notizen hat Protekta in diesem Fall schon verfasst (Art und Datum, z.B. «A1 2024-08-28; A2 2024-09-03»)?",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "a1_versandt",
+   "type": "boolean",
+   "derived": "action_A1",
+   "question": "Hat Protekta die Unterlagen schon angefordert?",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "anforderungen",
+   "type": "enum",
+   "values": [
+    "0",
+    "1",
+    "2+"
+   ],
+   "derived": "requests_count",
+   "question": "Wie oft wurden Unterlagen schon angefordert?",
+   "source_refs": [
+    "practice#1of7"
+   ]
+  },
+  {
+   "id": "maengelruege_schriftlich",
+   "type": "boolean",
+   "question": "Wurde der Mangel der Vermieterschaft schriftlich gemeldet?",
+   "source_refs": [
+    "law#257g",
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "mangel_seit",
+   "type": "date",
+   "question": "Seit wann besteht der Mangel?",
+   "ask_customer": true,
+   "source_refs": [
+    "practice#4of7"
+   ]
+  },
+  {
+   "id": "mangel_besteht",
+   "type": "boolean",
+   "question": "Besteht der Mangel aktuell noch?",
+   "ask_customer": true,
+   "source_refs": [
+    "practice#2of7"
+   ]
+  },
+  {
+   "id": "gegenpartei",
+   "type": "text",
+   "question": "Wer ist die Gegenpartei (Vermieterschaft / Verwaltung)?",
+   "source_refs": [
+    "intake#n17"
+   ]
+  },
+  {
+   "id": "mietbeginn",
+   "type": "date",
+   "question": "Seit wann besteht das Mietverhältnis?",
+   "source_refs": [
+    "intake#n17",
+    "law#253"
+   ]
+  },
+  {
+   "id": "reaktion_vermieter",
+   "type": "enum",
+   "values": [
+    "Mangel behoben / Einigung",
+    "Abgelehnt / offene Punkte",
+    "Keine Reaktion"
+   ],
+   "question": "Wie hat die Vermieterschaft reagiert?",
+   "source_refs": [
+    "practice#5of7"
+   ]
+  },
+  {
+   "id": "streit_mietzins",
+   "type": "boolean",
+   "question": "Ist auch der Mietzins strittig (Ausstände, Herabsetzung)?",
+   "source_refs": [
+    "practice#2of7",
+    "law#259d"
+   ]
+  },
+  {
+   "id": "frist",
+   "type": "date",
+   "deadline": true,
+   "question": "Läuft eine Frist (Gericht, Vermieterschaft, Kündigung)?",
+   "source_refs": [
+    "practice#3of7"
+   ]
+  },
+  {
+   "id": "unterlagen_vollstaendig",
+   "type": "boolean",
+   "derived": "documents_complete",
+   "question": "Liegen die verlangten Unterlagen vor?",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "mitwirkung_fehlt",
+   "type": "boolean",
+   "question": "Fehlen Unterlagen auch nach zweimaliger Anforderung?",
+   "source_refs": [
+    "practice#1of7"
+   ],
+   "derived": "missing_after_two_requests"
+  },
+  {
+   "id": "kunde_still",
+   "type": "boolean",
+   "question": "Ist eine Statusanfrage mit Abschlussankündigung (A7) verschickt worden und die Frist abgelaufen?",
+   "source_refs": [
+    "practice#2of7"
+   ],
+   "derived": "closing_announced"
+  },
+  {
+   "id": "weiteres_vorgehen",
+   "type": "boolean",
+   "question": "Will die Kundschaft gegen die Gegenpartei vorgehen (nicht nur Beratung)?",
+   "source_refs": [
+    "practice#3of7"
+   ]
+  },
+  {
+   "id": "vorgehen",
+   "type": "enum",
+   "values": [
+    "Selbst führen",
+    "Mandat an Anwaltskanzlei"
+   ],
+   "question": "Führt Protekta selbst oder wird mandatiert? (Entscheid der Fallbearbeitung; CasePath schlägt vor)",
+   "source_refs": [
+    "practice#2of7"
+   ],
+   "handler_only": true
+  },
+  {
+   "id": "einigung",
+   "type": "boolean",
+   "question": "Ist eine Einigung erzielt oder das Mandat abgeschlossen?",
+   "source_refs": [
+    "practice#2of7"
+   ]
+  },
+  {
+   "id": "zahlung_erhalten",
+   "type": "boolean",
+   "question": "Ist die vereinbarte Zahlung eingegangen?",
+   "source_refs": [
+    "practice#1of7"
+   ]
+  }
+ ],
+ "start": "eingang",
+ "steps": [
+  {
+   "id": "eingang",
+   "title": "Eingang der Schadenmeldung",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#7of7"
+   ],
+   "documents": [],
+   "action": {
+    "kind": "A0",
+    "title": "Eingangsbestätigung (automatisch)"
+   },
+   "next": [
+    {
+     "to": "klaeren",
+     "label": null,
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "klaeren",
+   "title": "Deckung und Sachverhalt klären",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#7of7",
+    "law#253"
+   ],
+   "documents": [
+    "mietvertrag",
+    "maengelruege",
+    "fotos",
+    "quittungen",
+    "mietzinszahlungen"
+   ],
+   "action": {
+    "kind": "A1",
+    "title": "Unterlagen und Angaben anfordern",
+    "next_in_days": 21,
+    "follow_up": "A6",
+    "skip_if": {
+     "fact": "a1_versandt",
+     "is": true
+    }
+   },
+   "next": [
+    {
+     "to": "abschluss_mitwirkung",
+     "label": "Deckung abgelehnt",
+     "when": {
+      "fact": "deckung",
+      "is": "abgelehnt"
+     }
+    },
+    {
+     "to": "abschluss_mitwirkung",
+     "label": "Mitwirkung fehlt",
+     "when": {
+      "fact": "mitwirkung_fehlt",
+      "is": true
+     }
+    },
+    {
+     "to": "abschluss_still",
+     "label": "keine Rückmeldung",
+     "when": {
+      "fact": "kunde_still",
+      "is": true
+     }
+    },
+    {
+     "to": "beurteilen",
+     "label": "Unterlagen vollständig",
+     "when": {
+      "all": [
+       {
+        "fact": "unterlagen_vollstaendig",
+        "is": true
+       },
+       {
+        "fact": "deckung",
+        "is": "bestätigt"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "beurteilen",
+   "title": "Beurteilen und beraten",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#3of7",
+    "law#259a",
+    "law#259d"
+   ],
+   "documents": [],
+   "action": {
+    "kind": "A5",
+    "title": "Rechtliche Einschätzung an die Kundschaft",
+    "next_in_days": 28,
+    "follow_up": "A7"
+   },
+   "next": [
+    {
+     "to": "vorgehen",
+     "label": "Vorgehen gewünscht",
+     "when": {
+      "fact": "weiteres_vorgehen",
+      "is": true
+     }
+    },
+    {
+     "to": "abschluss_beraten",
+     "label": "Beratung genügt",
+     "when": {
+      "fact": "weiteres_vorgehen",
+      "is": false
+     }
+    },
+    {
+     "to": "abschluss_still",
+     "label": "keine Rückmeldung",
+     "when": {
+      "fact": "kunde_still",
+      "is": true
+     }
+    }
+   ],
+   "suggestions": [
+    {
+     "title": "Mietzinsherabsetzung ab Mängelrüge geltend machen",
+     "legal_basis": "Art. 259d OR",
+     "observed": "3 von 7"
+    },
+    {
+     "title": "Schadenersatz beziffern und geltend machen",
+     "legal_basis": "Art. 259e OR",
+     "observed": "2 von 7"
+    }
+   ]
+  },
+  {
+   "id": "vorgehen",
+   "title": "Vorgehen festlegen",
+   "role": "Entscheidung",
+   "source_refs": [
+    "practice#2of7"
+   ],
+   "documents": [],
+   "next": [
+    {
+     "to": "gegenpartei",
+     "label": "selbst führen",
+     "when": {
+      "fact": "vorgehen",
+      "is": "Selbst führen"
+     }
+    },
+    {
+     "to": "mandat",
+     "label": "mandatieren",
+     "when": {
+      "fact": "vorgehen",
+      "is": "Mandat an Anwaltskanzlei"
+     }
+    }
+   ]
+  },
+  {
+   "id": "gegenpartei",
+   "title": "Gegenüber der Gegenpartei vorgehen",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#1of7",
+    "law#257g",
+    "law#259b"
+   ],
+   "documents": [],
+   "action": {
+    "kind": "A8",
+    "title": "Schreiben an die Gegenpartei (Entwurf zuerst an die Kundschaft)",
+    "next_in_days": 14,
+    "follow_up": "A9"
+   },
+   "next": [
+    {
+     "to": "abwicklung",
+     "label": "Einigung",
+     "when": {
+      "fact": "einigung",
+      "is": true
+     }
+    }
+   ],
+   "suggestions": [
+    {
+     "title": "Der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung setzen, mit Androhung der Hinterlegung",
+     "legal_basis": "Art. 259g OR",
+     "observed": "0 von 7"
+    },
+    {
+     "title": "Mietzins hinterlegen; innert 30 Tagen nach Fälligkeit des ersten hinterlegten Mietzinses an die Schlichtungsbehörde gelangen",
+     "legal_basis": "Art. 259h OR",
+     "observed": "0 von 7",
+     "deadline": {
+      "days": 30,
+      "from": "Fälligkeit des ersten hinterlegten Mietzinses",
+      "kind": "gesetzliche Frist"
+     }
+    }
+   ]
+  },
+  {
+   "id": "mandat",
+   "title": "Mandat an Anwaltskanzlei",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#1of7"
+   ],
+   "documents": [],
+   "action": {
+    "kind": "A10",
+    "title": "Mandatsanfrage, Kostengutsprache und Information der Kundschaft",
+    "next_in_days": 30,
+    "follow_up": "A2"
+   },
+   "next": [
+    {
+     "to": "abwicklung",
+     "label": "Mandat abgeschlossen",
+     "when": {
+      "fact": "einigung",
+      "is": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "abwicklung",
+   "title": "Abwicklung der Einigung",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#1of7"
+   ],
+   "documents": [],
+   "action": {
+    "kind": "A11",
+    "title": "Zahlung abwickeln (IBAN, Auszahlung nachverfolgen)",
+    "next_in_days": 21,
+    "follow_up": "A11"
+   },
+   "next": [
+    {
+     "to": "abschluss_zahlung",
+     "label": "Zahlung erhalten",
+     "when": {
+      "fact": "zahlung_erhalten",
+      "is": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "abschluss_still",
+   "title": "Abschluss: keine Rückmeldung",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#2of7"
+   ],
+   "documents": [],
+   "outcome": "stillschweigen",
+   "action": {
+    "kind": "A12",
+    "title": "Dossier schliessen"
+   },
+   "next": []
+  },
+  {
+   "id": "abschluss_beraten",
+   "title": "Abschluss: Beratung erfolgt",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#2of7"
+   ],
+   "documents": [],
+   "outcome": "beraten",
+   "action": {
+    "kind": "A12",
+    "title": "Dossier schliessen"
+   },
+   "next": []
+  },
+  {
+   "id": "abschluss_zahlung",
+   "title": "Abschluss: Zahlung erhalten",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#1of7"
+   ],
+   "documents": [],
+   "outcome": "zahlung",
+   "action": {
+    "kind": "A12",
+    "title": "Dossier abschliessen"
+   },
+   "next": []
+  },
+  {
+   "id": "abschluss_mitwirkung",
+   "title": "Abschluss: fehlende Mitwirkung",
+   "role": "Fallbearbeitung",
+   "source_refs": [
+    "practice#1of7"
+   ],
+   "documents": [],
+   "outcome": "mitwirkung",
+   "action": {
+    "kind": "A12",
+    "title": "Leistungseinstellung mitteilen"
+   },
+   "next": []
+  }
+ ],
+ "documents": [
+  {
+   "id": "mietvertrag",
+   "title": "Mietvertrag",
+   "why": "Belegt Parteien, Mietobjekt und Mietzins (Art. 253 ff. OR).",
+   "source_refs": [
+    "law#253",
+    "practice#6of7"
+   ]
+  },
+  {
+   "id": "maengelruege",
+   "title": "Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)",
+   "why": "Die Mängelrechte entstehen ab der Meldung (Art. 257g, 259a OR).",
+   "required_when": {
+    "fact": "maengelruege_schriftlich",
+    "is": true
+   },
+   "source_refs": [
+    "law#257g",
+    "practice#3of7"
+   ]
+  },
+  {
+   "id": "fotos",
+   "title": "Fotos des Mangels",
+   "why": "Der Mangel muss für die ganze Dauer bewiesen werden (Art. 259d OR).",
+   "source_refs": [
+    "law#259d",
+    "practice#4of7"
+   ]
+  },
+  {
+   "id": "quittungen",
+   "title": "Kaufbelege und Liste der beschädigten Gegenstände",
+   "why": "Schadenersatz setzt einen bezifferten Schaden voraus (Art. 259e OR).",
+   "required_when": {
+    "fact": "will_schadenersatz",
+    "is": true
+   },
+   "source_refs": [
+    "law#259e",
+    "practice#2of7"
+   ]
+  },
+  {
+   "id": "mietzinszahlungen",
+   "title": "Zusammenstellung der Mietzinszahlungen",
+   "why": "Klärt Ausstände und Grundlage einer Herabsetzung.",
+   "required_when": {
+    "fact": "streit_mietzins",
+    "is": true
+   },
+   "source_refs": [
+    "law#259d",
+    "practice#1of7"
+   ]
+  }
+ ],
+ "outcomes": [
+  {
+   "id": "stillschweigen",
+   "title": "Abgeschlossen: keine Rückmeldung der Kundschaft",
+   "source_refs": [
+    "practice#2of7"
+   ]
+  },
+  {
+   "id": "beraten",
+   "title": "Abgeschlossen: Beratung erfolgt",
+   "source_refs": [
+    "practice#2of7"
+   ]
+  },
+  {
+   "id": "zahlung",
+   "title": "Abgeschlossen: Zahlung erhalten",
+   "source_refs": [
+    "practice#1of7"
+   ]
+  },
+  {
+   "id": "mitwirkung",
+   "title": "Abgeschlossen: Leistungseinstellung wegen fehlender Mitwirkung",
+   "source_refs": [
+    "practice#1of7"
+   ]
+  }
+ ],
+ "hints": [
+  {
+   "id": "ruege_einschreiben",
+   "when": {
+    "fact": "maengelruege_schriftlich",
+    "is": false
+   },
+   "text": "Liegt ein Mangel vor, ist die Vermieterschaft nachweislich in Kenntnis zu setzen; die Mängelrüge erfolgt zu Beweiszwecken idealerweise per Einschreiben.",
+   "legal_basis": "Art. 257g OR",
+   "source_refs": [
+    "law#257g",
+    "practice#3of7"
+   ]
+  },
+  {
+   "id": "dokumentieren",
+   "when": true,
+   "text": "Eine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos).",
+   "legal_basis": "Art. 259d OR",
+   "source_refs": [
+    "law#259d",
+    "practice#3of7"
+   ]
+  }
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

@@ -319,6 +319,37 @@ def mark_partial(evaluation, partial):
     return evaluation
 
 
+def derive_facts(graph, facts, findings, evaluate):
+    """Facts a workflow marks "derived": computed from other facts and the findings, never read or set by hand.
+
+    action_A1 / requests_count: from the handler's earlier actions as read from the file ("A1 2024-08-28; A4 …").
+    documents_complete: every document the evaluation needs now is present. missing_after_two_requests: asked at least
+    twice and still incomplete. ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
+    """
+    kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
+    if not kinds:
+        return facts
+    done = re.findall(r"\bA(\d{1,2})\b", str(next((facts.get(f["id"]) for f in graph["facts"] if f["id"] == "bisherige_handlungen"), "") or ""))
+    requests = sum(1 for n in done if n in {"1", "4"})
+    out = {k: v for k, v in facts.items() if k not in kinds}
+    for fact, kind in kinds.items():
+        if kind == "action_A1":
+            out[fact] = "1" in done
+        elif kind == "closing_announced":  # the clock: after a status inquiry announcing closure (A7), the case closes
+            out[fact] = "7" in done
+        elif kind == "requests_count":
+            out[fact] = "0" if requests == 0 else "1" if requests == 1 else "2+"
+    evaluation = evaluate(out)
+    needed = [d for d in evaluation["documents"] if d["required"] == "yes"]
+    complete = bool(needed) and all(d["status"] == "present" for d in needed)
+    for fact, kind in kinds.items():
+        if kind == "documents_complete":
+            out[fact] = complete
+        elif kind == "missing_after_two_requests":
+            out[fact] = requests >= 2 and not complete
+    return out
+
+
 def check_edit(base_graph, edit):
     """Validate one proposed edit against the current case process before saving it."""
     trial = deepcopy(base_graph)

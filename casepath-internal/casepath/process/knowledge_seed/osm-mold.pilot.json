@@ -3,7 +3,10 @@
   "items": [
     {
       "seed": "mold-mietvertrag",
-      "family": "osm-mold",
+      "family": [
+        "osm-mold",
+        "mietmangel-handler"
+      ],
       "kind": "document_need",
       "content": {
         "title": "Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen",
@@ -20,7 +23,10 @@
     },
     {
       "seed": "mold-korrespondenz",
-      "family": "osm-mold",
+      "family": [
+        "osm-mold",
+        "mietmangel-handler"
+      ],
       "kind": "document_need",
       "content": {
         "title": "Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch)",
@@ -39,7 +45,10 @@
     },
     {
       "seed": "mold-beweismittel",
-      "family": "osm-mold",
+      "family": [
+        "osm-mold",
+        "mietmangel-handler"
+      ],
       "kind": "document_need",
       "content": {
         "title": "Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht)",

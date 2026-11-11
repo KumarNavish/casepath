@@ -54,7 +54,10 @@ document or a step; then the other files. When a sentence you quote states the v
 sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"); record unknown
 only when no passage states the value. A negative value (no reply, no, not present, no deadline) needs a sentence that
 says so, such as the customer writing that nobody answered or the form's own "Nein"; the mere absence of a positive is
-unknown. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
+unknown. For the insurer's own earlier actions in the file, use these codes with their dates: A1 request for documents,
+A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
+announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
+A12 closing or end of benefits. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
 "part" (for example "open points: refusal of 26.08.2024"); a reply or act that leaves the matter unresolved supports the
 "open points" part, and the "no reaction" part alone needs a sentence saying nobody answered.
 For a date: YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day. When the file states only a period from or before
@@ -285,7 +288,9 @@ class CaseWork:
     def evaluate(self, checked=True):
         missing_checked = checked or bool(self.documents)
         asked, partial = casegraph.whole_findings(self.graph, self.findings())  # a need for all of something stays asked
-        return casegraph.mark_partial(workflows.evaluate(self.graph, self.accepted_facts(), asked, checked=missing_checked), partial)
+        facts = casegraph.derive_facts(self.graph, self.accepted_facts(), asked,
+                                       lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked))
+        return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
     def unverified(self):
         return [("fact", k) for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] is None] + \
@@ -396,6 +401,8 @@ def _tool_specs(work, names):
 
 def _record_fact(work, agent, args):
     definition = work.fact_defs[args["fact"]]
+    if definition.get("handler_only") or definition.get("derived"):  # cover, the way to proceed, computed facts: not the agents'
+        return {"accepted": False, "reason": "a case worker decides this fact, or it is computed; do not record it"}
     known = work.facts.get(args["fact"])
     if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
         return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}

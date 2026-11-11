@@ -25,4 +25,4 @@ build-backend = "setuptools.build_meta"
 include = ["casepath*"]
 
 [tool.setuptools.package-data]
-casepath = ["web/ui/*.html", "web/ui/assets/*", "web/ui/assets/fonts/*", "process/knowledge_seed/*.json"]
+casepath = ["web/ui/*.html", "web/ui/assets/*", "web/ui/assets/fonts/*", "process/knowledge_seed/*.json", "process/workflow_seed/*.json"]

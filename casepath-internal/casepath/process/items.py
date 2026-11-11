@@ -10,6 +10,8 @@ import hashlib
 import json
 import re
 
+from .workflows import evaluate_condition
+
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
 DECISION_ROLE = re.compile(r"^entscheidung", re.I)
 PERIOD = re.compile(r"\d{1,3} (days|weeks|months|years) (from|before) \d{4}-\d{2}-\d{2}")
@@ -140,7 +142,16 @@ def build_items(state, result):
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
         asked = [i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
-        if ev.get("outcome"):
+        steps = {x["id"]: x for x in graph["steps"]}
+        here = steps.get((ev.get("current") or {}).get("step")) or (steps.get(ev["path"][-1]["step"]) if ev.get("path") else None) or {}
+        planned = here.get("action")  # the handler's workflow names the action each stage ends in
+        if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
+            title = planned["title"]
+            action = (planned["kind"], title, {"de": title, "en": title})
+        elif planned:  # this stage's action was already taken: its follow-up comes next
+            title = {"A6": "Dossier pendent halten mit Frist", "A7": "Statusanfrage mit Abschlussankündigung"}.get(planned.get("follow_up"), planned.get("follow_up"))
+            action = (planned.get("follow_up"), title, {"de": title, "en": title})
+        elif ev.get("outcome"):
             title = ev["outcome"].get("title") or ev["outcome"]["id"]
             action = ("close", title, {"de": f"Fall abschliessen: {title}", "en": f"Close the case: {title}"})
         elif asked:
@@ -151,7 +162,7 @@ def build_items(state, result):
         else:
             action = None
         if action:
-            add("next_action", "0", value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+            add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up")} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
     brief = result.get("brief") or {}
     for i, party in enumerate(brief.get("parties") or []):

@@ -113,6 +113,28 @@ def from_edit(family, edit, graph, *, by):
 SEED_DIR = __import__("pathlib").Path(__file__).with_name("knowledge_seed")
 
 
+def _seed_one(store, spec, item_id, data, path):
+    from ..web.store import NotFound
+    try:
+        stored = store.get_knowledge(item_id)
+    except NotFound:
+        stored = None
+    if stored is not None:
+        # The build's own item follows the seed file as a new version; once a reviewer touched it, theirs governs.
+        untouched = stored["status"] == "active" and all(h.get("by") == "build" for h in stored["history"])
+        if untouched and stored["content"] != _content(stored["kind"], spec["content"]):
+            store.save_knowledge(refine(stored, content=spec["content"], by="build", reason=f"seed file {path.name} changed"))
+            return 1
+        return 0
+    item = new_item(spec["family"], spec["kind"], spec["content"], applies_when=spec.get("applies_when"),
+                    applies_when_text=spec.get("applies_when_text", ""),
+                    origin={"by": "build", "note": data.get("note", ""), "file": path.name},
+                    evidence=spec.get("evidence", ()), status="active")
+    item["id"] = item_id
+    store.save_knowledge(item)
+    return 1
+
+
 def seed(store, families, directory=SEED_DIR):
     """Add the Knowledge items shipped with the build, once.
 
@@ -121,31 +143,12 @@ def seed(store, families, directory=SEED_DIR):
     refreshes it as a new version; a reviewer's refinement or retirement always stays. Returns items added or refreshed.
     """
     import json
-    from ..web.store import NotFound
 
     added = 0
     for path in sorted(__import__("pathlib").Path(directory).glob("*.json")):
         data = json.loads(path.read_text())
-        for spec in data["items"]:
-            if spec["family"] not in families:  # an item only for a process this catalogue has
-                continue
-            item_id = f"know-seed-{spec['seed']}"
-            try:
-                stored = store.get_knowledge(item_id)
-            except NotFound:
-                stored = None
-            if stored is not None:
-                # The build's own item follows the seed file as a new version; once a reviewer touched it, theirs governs.
-                untouched = stored["status"] == "active" and all(h.get("by") == "build" for h in stored["history"])
-                if untouched and stored["content"] != _content(stored["kind"], spec["content"]):
-                    store.save_knowledge(refine(stored, content=spec["content"], by="build", reason=f"seed file {path.name} changed"))
-                    added += 1
-                continue
-            item = new_item(spec["family"], spec["kind"], spec["content"], applies_when=spec.get("applies_when"),
-                            applies_when_text=spec.get("applies_when_text", ""),
-                            origin={"by": "build", "note": data.get("note", ""), "file": path.name},
-                            evidence=spec.get("evidence", ()), status="active")
-            item["id"] = item_id
-            store.save_knowledge(item)
-            added += 1
+        for raw in data["items"]:
+            for n, family in enumerate([raw["family"]] if isinstance(raw["family"], str) else raw["family"]):
+                if family in families:  # an item only for a process this catalogue has
+                    added += _seed_one(store, {**raw, "family": family}, f"know-seed-{raw['seed']}" + (f"--{family}" if n else ""), data, path)
     return added

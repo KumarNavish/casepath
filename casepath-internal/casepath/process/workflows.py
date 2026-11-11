@@ -204,6 +204,9 @@ def validate_workflow(data):
     return data
 
 
+SEED_WORKFLOWS = Path(__file__).with_name("workflow_seed")
+
+
 @dataclass(frozen=True)
 class Catalogue:
     workflows: tuple
@@ -218,6 +221,12 @@ class Catalogue:
                 rows.append(validate_workflow(json.loads(path.read_text(encoding="utf-8"))))
             except (CatalogueError, json.JSONDecodeError) as error:
                 raise CatalogueError(f"{path.name}: {error}") from error
+        # Workflows written for this build join a catalogue that has the intake workflow they build on, unless it has its own copy.
+        present = {w["id"] for w in rows}
+        for path in sorted(SEED_WORKFLOWS.glob("*.json")):
+            seed = validate_workflow(json.loads(path.read_text(encoding="utf-8")))
+            if seed["id"] not in present and present & set(seed.get("supersedes", ())):
+                rows.append(seed)
         keys = [(w["id"], w["version"]) for w in rows]
         if len(keys) != len(set(keys)):
             raise CatalogueError("a workflow id and version appear twice")
@@ -233,7 +242,8 @@ class Catalogue:
 
     def routable(self):
         """The workflows routing chooses from: example workflows only when the catalogue has nothing else."""
-        latest = self.latest()
+        superseded = {i for w in self.latest() for i in w.get("supersedes", ())}
+        latest = [w for w in self.latest() if w["id"] not in superseded]
         real = [w for w in latest if not w.get("example")]
         return real or latest
 

@@ -4,21 +4,43 @@
 
 A handler does not want facts, a graph or a checklist. A handler wants the **next piece of work, already done**: the letter written, the decision reasoned, the follow-up dated. CasePath's job is to hand them that, show why, and learn from what they change before it goes out.
 
-## How a handler's work actually runs
+## How a handler's work actually runs (from the seven development dossiers)
 
-A case is not one task. It is a chain of **actions**, each triggered by something arriving in the file and each ending in something leaving it:
+Every document Protekta itself produced in D1, D3, D6, D8, D9, D10 and D11, read as the record of a handler's work. Counts are dossiers out of 7.
 
-| Something arrives | The handler decides | Something leaves |
-|---|---|---|
-| the claim | is it ours, is it covered, what is missing | acknowledgement and request for documents |
-| the documents | what is the legal position, what can the customer claim | assessment to the customer; advice or a draft for them to send |
-| the other side's answer, or silence | escalate, wait, or close | letter to the other side, a deadline set, conciliation request, mandate to a lawyer |
-| a deadline approaching | act before it lapses | a reminder, a filing, a note |
-| the matter settled | nothing further | closing letter and file note |
+| Kind | Action | In | Triggered by |
+|---|---|---|---|
+| A0 | Automatic receipt of the online claim | 6 | the claim |
+| A1 | First request: provisional registration, document list, 1–3 questions on facts, often first legal hints, the deadline sentence | 7 | a claim with too few documents; 0–2 working days |
+| A2 | Phone call and file note (also "nicht erreicht") | 4 | unclear facts, the customer calling |
+| A3 | Upload link | 2 | large files, after a call |
+| A4 | Question back on one point (an expert's visit, a measurement) | 2 | an answer that leaves one point open |
+| A5 | Legal assessment to the customer: rights, conditions, what follows here, recommendation | 3 | documents arrived, or "what can I do" |
+| A6 | Pending with a deadline: "ohne Rückmeldung bis <Datum> … schliessen" | 2 | after a call or silence; 3–4 weeks out |
+| A7 | Status inquiry announcing closure | 1 | months of silence |
+| A8 | Letter to the other side for the customer (representation, unpräjudiziell, demand with deadline), draft to the customer first | 1 | the customer wants action and the matter is standard |
+| A9 | Negotiation: offer, counter-offer, acceptance with reservations, reminders | 1 | a reply from the other side or its lawyer |
+| A10 | Mandate to a law firm: request, cost guarantee, transfer link, information to the customer, all on one day | 1 | value or complexity beyond advice |
+| A11 | Payment handling: IBAN, payout chased, receipt confirmed | 1 | a settlement |
+| A12 | Closing, or end of benefits for lack of cooperation | 2 (others close silently after A6/A7) | payment, silence, documents still missing after repeated requests |
 
-Between actions the case waits. A handler holds dozens of waiting cases; what they fear is the one where a deadline passed or a document was never asked for.
+**What this says about the work.**
+1. **Most of it is waiting and chasing.** After A1 every case runs on dates: pending until X, reminder, closing. The product needs a clock.
+2. **The phone is a main channel.** Decisions are taken on calls and written as short dated notes; notes are evidence.
+3. **A1 is not only a document list.** It asks one to three questions and often gives first legal hints.
+4. **Three ways a case ends:** silence (A6, A7), payment (A11, A12), lack of cooperation (A12).
+5. **Two more actors:** the other side or its lawyer, and an external law firm under a cost guarantee; the handler decides "selbst führen oder mandatieren".
+6. **Drafts to the other side go to the customer first.**
 
-**These rows are a hypothesis.** The eleven Hackathon dossiers are closed files and contain everything Protekta actually did, in order. The real chain is read from them (section "What we take from the dossiers") and replaces this table.
+**Forms** (structure and standard wording). Every letter: "Unsere Referenz <Nr>" → greeting → "Vielen Dank für …" → body → "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung." → signature.
+A1: registration → "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:" → list ending "allfällige weitere relevante Unterlagen und Informationen" → questions → hints (Art. 257g OR, Mängelrüge per Einschreiben, document continuously) → "bis zur definitiven Deckungsprüfung … selbst für die Einhaltung allfällig laufender Fristen zuständig".
+A6/A7: thanks for the call or the time since the last contact → state of things → "Ohne Ihre Rückmeldung bis <Datum> gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."
+A5: "Grundsätzlich hat die Mieterschaft …" → rights → conditions → this case → recommendation.
+A8: "zeigen Ihnen an, dass wir die Interessen … vertreten" → "unpräjudiziell und ohne Anerkennung einer Rechtspflicht" → facts → defects → demand and deadline.
+A10: "Kostengutsprache nach den bekannten Modalitäten wie folgt: Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen" → prior contact for any extension → copies of the main documents.
+A12 (end of benefits): what was asked, when, still missing → benefits end.
+
+The handler's own process, written from this and the law, is `casepath/process/workflow_seed/mietmangel-handler.json`: Eingang → Deckung und Sachverhalt klären → Beurteilen und beraten → Vorgehen (selbst | Mandat) → Abwicklung → Abschluss (Stillschweigen | Beratung | Zahlung | fehlende Mitwirkung). Each stage names the action it ends in. Cover and the way to proceed are the handler's decisions. The OSM+ flow stays the intake.
 
 ## What follows for the product
 
