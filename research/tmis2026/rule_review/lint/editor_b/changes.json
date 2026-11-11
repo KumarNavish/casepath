@@ -1,0 +1,156 @@
+{
+ "source": "rule_review/final/reviewed_rules.json",
+ "lint": "analysis/rule_lint.md",
+ "changes": [
+  {
+   "rule_id": "overlay_rule_001",
+   "condition_id": "overlay_guard_001",
+   "decision": "U",
+   "old_text": "A feared insured event has occurred and the entitled claimant is aware of the event and the insurance claim.",
+   "new_text": null,
+   "passage_id": "theft-source-0040#p1",
+   "quotation": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_002",
+   "condition_id": "overlay_guard_002",
+   "decision": "U",
+   "old_text": "The loss is connected with theft, attempted theft, robbery, or a theft incident requiring investigation.",
+   "new_text": null,
+   "passage_id": "theft-source-0110#p1",
+   "quotation": "Bei allen Schäden im Zusammenhang mit Diebstahl oder dem Versuch dazu ist unverzüglich bei der örtlichen Polizei Anzeige zu erstatten.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_003",
+   "condition_id": "overlay_guard_003",
+   "decision": "N",
+   "old_text": "Crime-scene traces exist or alterations at the loss location or to damaged property are contemplated before loss determination.",
+   "new_text": "Before the loss was determined, crime-scene traces were removed or altered, or the damaged items or the place of the loss were altered or disposed of, or assistance services were used on the damaged items, or such a step is intended; not merely that crime-scene traces or damaged items exist.",
+   "passage_id": "theft-source-0043#p3; theft-source-0096#p1; theft-source-0033#p2",
+   "quotation": "\"ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern\" (0043); \"Bevor der Schaden ermittelt ist, darf ohne Zustimmung der simpego ... an den beschädigten Gegenständen keine Veränderung vorgenommen oder Hilfeleistungen in Anspruch genommen werden.\" (0096); \"Nehmen Sie am Ort des Schadens oder an der beschädigten Sache keine Veränderung vor. Sie dürfen eine Veränderung nur dann vornehmen, wenn die Polizei zustimmt\" (0033)",
+   "note": "guard_id kept (loader derives .rev-<hash>); condition citations extended; confirming_evidence must_show and citations aligned with new text; routes unchanged"
+  },
+  {
+   "rule_id": "overlay_rule_004",
+   "condition_id": "overlay_guard_004",
+   "decision": "U",
+   "old_text": "After the feared event occurs.",
+   "new_text": null,
+   "passage_id": "theft-source-0116#p2",
+   "quotation": "Der Anspruchsberechtigte ist verpflichtet, nach Eintritt des befürchteten Ereignisses tunlichst für Minderung des Schadens zu sorgen. Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_005",
+   "condition_id": "overlay_guard_005",
+   "decision": "U",
+   "old_text": "A claim seeks household-contents coverage for theft-related damage.",
+   "new_text": null,
+   "passage_id": "theft-source-0124#p1",
+   "quotation": "Diebstahl: Versichert sind Schäden am Hausrat, wenn sie durch folgende Ereignisse verursacht wurden und wenn dies durch Spuren, Zeugen oder die Umstände schlüssig nachgewiesen wurde.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_006",
+   "condition_id": "overlay_guard_006",
+   "decision": "U",
+   "old_text": "The reported event is theft.",
+   "new_text": null,
+   "passage_id": "theft-source-0028#p1",
+   "quotation": "Bei Diebstahl hat der Versicherungsnehmer ferner:",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_008",
+   "condition_id": "overlay_guard_008",
+   "decision": "K",
+   "old_text": "The claim concerns theft-related household-contents damage at home.",
+   "new_text": null,
+   "passage_id": "theft-source-0149#p1",
+   "quotation": "Der Versicherungsschutz gilt zu Hause, d.h. an den in der Police aufgeführten Standorten innerhalb der Schweiz.",
+   "note": "unchanged"
+  },
+  {
+   "rule_id": "overlay_rule_014",
+   "condition_id": "overlay_guard_014",
+   "decision": "N",
+   "old_text": "Original receipts or specified supporting evidence have been requested, or the claim concerns damaged or stolen items.",
+   "new_text": "The insurer has asked the claimant to produce original purchase vouchers (Originalbelege) for the affected items, either by a request in the claim file or through the insurer's claim form used for this claim, which asks for them to be attached; not merely that items were damaged or stolen.",
+   "passage_id": "theft-source-0048#p1; theft-source-0134#p1; theft-source-0176#p1",
+   "quotation": "\"auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;\" (0134/0048); \"Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)\" (0176, claim form)",
+   "note": "guard_id kept (loader derives .rev-<hash>); condition citations extended; confirming_evidence must_show and citations aligned with new text; routes unchanged"
+  },
+  {
+   "rule_id": "overlay_rule_026",
+   "condition_id": "overlay_guard_026",
+   "decision": "U",
+   "old_text": "The claim concerns movable household contents.",
+   "new_text": null,
+   "passage_id": "theft-source-0150#p1",
+   "quotation": "bei Fahrhabe (Hausrat) der Neuwert. Das ist der Betrag, den die Neuanschaffung zum Zeitpunkt des Schadenfalles erfordert;",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_042",
+   "condition_id": "overlay_guard_042",
+   "decision": "K",
+   "old_text": "CSS has paid benefits for which the policyholder could assert claims against third parties, or the loss was caused or increased through the fault of a third party.",
+   "new_text": null,
+   "passage_id": "theft-source-0165#p1",
+   "quotation": "Sie müssen den Rückgriff gegen Dritte (z. B. eine Transportfirma) sicherstellen, sofern der Schaden oder Verlust durch die Schuld eines Dritten entstanden oder vergrössert worden ist.",
+   "note": "unchanged"
+  },
+  {
+   "rule_id": "overlay_rule_044",
+   "condition_id": "overlay_guard_044",
+   "decision": "U",
+   "old_text": "A claim arises from the insurance contract.",
+   "new_text": null,
+   "passage_id": "theft-source-0131#p1",
+   "quotation": "Die Forderungen aus dem Versicherungsvertrag verjähren unter Vorbehalt von Absatz 3 fünf Jahre nach Eintritt der Tatsache, welche die Leistungspflicht begründet.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_057",
+   "condition_id": "overlay_guard_057",
+   "decision": "U",
+   "old_text": "The event is theft.",
+   "new_text": null,
+   "passage_id": "theft-source-0028#p2",
+   "quotation": "Bei Diebstahl hat der Versicherungsnehmer ferner:",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_061",
+   "condition_id": "overlay_guard_061",
+   "decision": "U",
+   "old_text": "An obligation arising from the insurance policy is to be performed.",
+   "new_text": null,
+   "passage_id": "theft-source-0074#p1",
+   "quotation": "Die Verpflichtungen aus den Versicherungen sind in der Schweiz und in schweizerischer Währung zu erfüllen.",
+   "note": "condition removed; confirming_evidence set to null (it confirmed only the removed condition)"
+  },
+  {
+   "rule_id": "overlay_rule_073",
+   "condition_id": "overlay_guard_073",
+   "decision": "K",
+   "old_text": "Coverage is sought under the theft category governed by the cited provision.",
+   "new_text": null,
+   "passage_id": "theft-source-0153#p1",
+   "quotation": "Diebstahl (ohne einfachen Diebstahl)",
+   "note": "unchanged"
+  },
+  {
+   "rule_id": "overlay_rule_094",
+   "condition_id": "overlay_guard_094",
+   "decision": "K",
+   "old_text": "A claim seeks CSS coverage for a theft loss.",
+   "new_text": null,
+   "passage_id": "theft-source-0088#p1",
+   "quotation": "Die CSS Versicherung AG (nachfolgend «CSS» genannt) versichert die Gefahren von Feuer, Elementarereignissen, Erdbeben und vulkanischen Eruptionen, Wasser, Diebstahl sowie Glasbruch.",
+   "note": "unchanged"
+  }
+ ]
+}
