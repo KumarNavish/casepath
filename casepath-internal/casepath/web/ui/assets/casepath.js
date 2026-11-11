@@ -1042,6 +1042,8 @@ function requestDraft(ev) {
   const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
   const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
   const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
+  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question");
+  const hints = (S.data.items || []).filter((i) => i.kind === "hint");
   const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
   return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
     ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
@@ -1049,6 +1051,8 @@ function requestDraft(ev) {
         : T("Thank you for registering your matter. It is provisionally registered with us.", "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert."), "",
     T("To check the insurance cover and assess the facts and the law, we need in particular:", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:"),
     ...lines, T("– any further relevant documents and information.", "– allfällige weitere relevante Unterlagen und Informationen."), "",
+    ...(questions.length ? [T("Please also answer the following questions:", "Weiter bitten wir Sie um die Beantwortung folgender Fragen:"), ...questions.map((q) => `– ${q.value}`), ""] : []),
+    ...(hints.length ? [T("On the situation you describe, we can already say:", "Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:"), ...hints.map((h) => `${h.value}${h.legal_basis ? ` (${h.legal_basis})` : ""}`), ""] : []),
     T("Please send copies or scans, not originals. We will then inform you about the next steps and the legal position.",
       "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage."), "",
     T("Until the cover is confirmed, you remain responsible for keeping any running deadlines.",

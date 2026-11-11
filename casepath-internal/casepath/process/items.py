@@ -164,6 +164,22 @@ def build_items(state, result):
         if action:
             add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up")} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
+        # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
+        known = state.get("facts") or {}
+        if planned and planned.get("kind") == "A1" and action and action[0] == "A1":
+            for f in graph["facts"]:
+                if f.get("ask_customer") and known.get(f["id"]) is None:
+                    add("letter_question", f["id"], value=f["question"], stated_as="put_to_handler", verdict=None, evidence=[],
+                        node=here.get("id"), origin="workflow", chain=True, label=f["question"])
+            for hint in graph.get("hints", []):
+                if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True:
+                    continue
+                add("hint", hint["id"], value=hint["text"], stated_as="established", verdict=None, evidence=[], node=here.get("id"),
+                    origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
+            for hint in graph.get("hints", []):  # a hint whose condition is still open is offered too: Protekta gives it early
+                if hint["when"] is not True and evaluate_condition(hint["when"], known) is None:
+                    add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
+                        origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
     brief = result.get("brief") or {}
     for i, party in enumerate(brief.get("parties") or []):
         add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None, origin="claim_reader",

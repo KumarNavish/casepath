@@ -42,6 +42,12 @@ class HandlerWorkflowTests(unittest.TestCase):
         state = core.evaluate(wf, [], [], {"facts": base, "documents": [document("mietvertrag")]}, "c")
         self.assertEqual(state["evaluation"]["current"]["step"], "klaeren")
         self.assertFalse(state["facts"]["a1_versandt"])
+        from casepath.process.items import build_items
+        listed = {i["item_id"]: i for i in build_items(state, {"facts": base})}
+        self.assertEqual(listed["next_action:0"]["action"], "A1")
+        self.assertIn("letter_question:mangel_seit", listed)
+        self.assertIn("hint:dokumentieren", listed)
+        self.assertNotIn("hint:ruege_einschreiben", listed)  # a written notice was sent: no hint to send one
         done = base + [fact("bisherige_handlungen", "A1 2024-08-28; A4 2024-09-10")]
         state = core.evaluate(wf, [], [], {"facts": done, "documents": [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]}, "c")
         self.assertTrue(state["facts"]["a1_versandt"])

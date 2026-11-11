@@ -422,7 +422,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
         if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
-                                                            "party", "timeline", "answer", "point", "letter"}:
+                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint"}:
             raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")
