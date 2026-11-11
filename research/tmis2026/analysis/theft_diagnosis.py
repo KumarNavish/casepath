@@ -1031,11 +1031,42 @@ def part6(W, texts, pairs, prev):
                          for name in ("A", "B")}
     sp = sp_all
     out["scores"] = res
+    bgc = {}
+    for name in ("stored product (6a72159c)", "A", "B"):
+        ent = arms[name]
+        n = len(ent)
+        bgc[name] = {"text_runs": n,
+                     "admitted_true": {stem(f): sum(admitted(ent[t], fu)[f] is True for t in ent) for f in fu if stem(f) in ("g002", "g004", "g005", "g006", "g003", "g042")},
+                     "requested": {d: sum(d in {IDS.get(x, x) for x in s3.to_names(ent[t]["plan"], INV)["requests"]} for t in ent) for d in ("D07", "D25", "D15", "D26")},
+                     "held": {d: sum(d in {IDS.get(x, x) for x in s3.to_names(ent[t]["plan"], INV)["holds"]} for t in ent) for d in ("D07", "D25", "D15", "D16", "D21", "D23")}}
+    out["background_and_documents"] = bgc
+    out["verdict"] = PART6_VERDICT
     # unresolved changes
     out["unresolved_changes"] = {name: unresolved_changes(ex, [p for p in sp if p["off"] in arms[name] and p["variant"] in arms[name]], texts,
                                                           {t: [arms[name][t]] for t in arms[name]}, fu, 1) for name in arms} if sp else {}
     return out
 
+
+
+PART6_VERDICT = (
+    "**Verdict.** Decision rule (fixed before running): supported if in B the third-party condition is no longer admitted true in "
+    "the off texts and wrong + missed per pair on stories 8 and 9 is lower than A and lower than the frontier single prompt with "
+    "both rule bases. Measured: g042 is admitted in no B text (off texts of both stories included); B 0.556 per pair on story 8 "
+    "and 0.556 on story 9 against A 3.111 (story 8; A on story 9 not run, cap), Rules in context original 0.630 / 0.667 and reviewed "
+    "0.926 / 1.037; unresolved pairs unchanged 6 of 6 (story 8). The rule is met, so the harm check was run, but the margin over "
+    "the original-rules single prompt is less than one error per story in one run (5 vs 5.7 and 6.0 errors over 9 pairs). "
+    "The harm check fails, and it shows what B's gain consists of: (1) on the frontier model the readings answer not_stated for the "
+    "defining-event facts the rules use as conditions (g002, g004, g005, g006 admitted in 0 of 26 B text-runs against 26 of 26 "
+    "stored), so the police report D07 and D25 are requested in no B checklist and held in all, and D15, D16, D21, D23 are held "
+    "in every text; the pair measure cannot see this because the loss is the same in both texts of a pair; (2) on gpt-6-luna "
+    "the same instruction makes those facts unstable between texts (g006 admitted 20 / 96 text-runs vs 96 / 96 off; D07 requested "
+    "64 / 96, D25 29 / 96), and theft wrong + missed rises from 0.370 to 1.870 per pair (three runs each; per run 0.389, 0.389, "
+    "0.333 vs 2.722, 1.556, 1.333) with unresolved pairs unchanged falling from 97% to 17%; (3) on tenancy (40 claims, one run) "
+    "stated facts left open rise from 0.025 to 0.275 per claim (spread 0.095) and held required-now documents from 0 to 0.175: "
+    "the readings refuse stated branch facts of a defect dispute (heating, mold, health effects) and the defining notice itself "
+    "as 'what the case type involves'. Arm A shows separately that the branch's own reading sentences destabilise the frontier "
+    "model's off text (g042 not agreed in s8-off but admitted in 13 of 15 variants; g003 the reverse): 3.111 per pair on story 8 "
+    "against 0.778 for the stored run of the tested commit. The idea is not supported as a product setting.")
 
 
 HARM_SPREAD = {  # 2 x standard error of a between-run mean difference over 40 claims, from the stored 3 luna checklist runs (fresh2)
@@ -1092,8 +1123,14 @@ def part6_harm(texts, pairs, W, prev):
                 on, un = score(sp, {t: [P[t][r]] for t in tx}, 1)
                 per_run.append({k: r3(v) for k, v in summ(on, un).items()})
             on, un = score(sp, P, runs)
-            out["theft"]["on" if setting == "true" else "off"] = {"runs": runs, "summary": {k: r3(v) for k, v in summ(on, un).items()},
-                                                                  "per_run": per_run, "by_fact": {k: r3(v) for k, v in by_fact(on).items()}}
+            wfj = json.loads((TMIS / "harness/product/workflows/theft-reviewed/household_theft.json").read_text())
+            fu_ = used_facts(wfj)
+            raws = [e for job, e in raw.items() if job.startswith("theft|") and job.endswith("|" + setting)]
+            out["theft"]["on" if setting == "true" else "off"] = {
+                "runs": runs, "summary": {k: r3(v) for k, v in summ(on, un).items()}, "per_run": per_run,
+                "by_fact": {k: r3(v) for k, v in by_fact(on).items()}, "text_runs": len(raws),
+                "admitted_true": {stem(f): sum(admitted(e, fu_)[f] is True for e in raws) for f in fu_ if stem(f) in ("g002", "g004", "g005", "g006", "g003", "g042")},
+                "requested": {d: sum(d in {IDS.get(x, x) for x in s3.to_names(e.get("plan"), INV)["requests"]} for e in raws) for d in ("D07", "D25", "D15")}}
     out["data_tenancy"] = ten
     return out
 
@@ -1128,9 +1165,16 @@ def part6_md(P):
                         ["unresolved unchanged"] + [f3(r[n]["summary"].get("unres_unchanged")) for n in cols]]))
     if P.get("decomposition"):
         L += ["", "Decomposition (method of Part 4; F + O + C + S + I = measured):", ""]
-        L.append(tbl(["Story | design | mapping", "Floor F", "Off misreading O", "Changed condition C", "Other conditions S", "Interaction I", "Measured"],
-                     [[k, f3(d["floor"]), f3(d["off"]), f3(d["changed"]), f3(d["other"]), f3(d["remainder"]), f3(d["stored_measured"])]
+        L.append(tbl(["Story, design, mapping", "Floor F", "Off misreading O", "Changed condition C", "Other conditions S", "Interaction I", "Measured"],
+                     [[k.replace(" | ", ", "), f3(d["floor"]), f3(d["off"]), f3(d["changed"]), f3(d["other"]), f3(d["remainder"]), f3(d["stored_measured"])]
                       for k, d in P["decomposition"].items()]))
+    bg = P.get("background_and_documents") or {}
+    if bg:
+        L += ["", "Defining-event facts and the documents that depend on them, gpt-6.1-terra (text-runs; g002 'loss connected with theft', "
+              "g004 'after the feared event', g005 'contents coverage for theft damage', g006 'the event is theft'; D07 police report, D25 "
+              "insurer's instruction on measures; both depend only on these facts):", ""]
+        L.append(tbl(["Design", "Text-runs", "Admitted true", "Requested", "Held"],
+                     [[n, v["text_runs"], json.dumps(v["admitted_true"]), json.dumps(v["requested"]), json.dumps(v["held"])] for n, v in bg.items()]))
     H = P.get("harm")
     if H:
         L += ["", "**Harm check on gpt-6-luna** (setting on vs off, branch head with the patch, checklist only). Threshold for harm = the "
@@ -1146,6 +1190,10 @@ def part6_md(P):
             L.append(tbl(["Theft (stories 8-9), gpt-6-luna", "Runs", "Wrong + missed", "Per run", "Unresolved unchanged"],
                          [[k, v["runs"], f3(v["summary"]["errors"]), ", ".join(f3(x["errors"]) for x in v["per_run"]), f3(v["summary"].get("unres_unchanged"))]
                           for k, v in H["theft"].items()]))
+            L += ["", "Defining-event facts admitted true and dependent documents requested, gpt-6-luna theft text-runs (off / on): "
+                  + "; ".join(f"{k} {H['theft']['off']['admitted_true'][k]} / {H['theft']['on']['admitted_true'][k]}" for k in H["theft"]["off"]["admitted_true"])
+                  + "; " + "; ".join(f"{d} requested {H['theft']['off']['requested'][d]} / {H['theft']['on']['requested'][d]}" for d in H["theft"]["off"]["requested"])
+                  + f" (of {H['theft']['off']['text_runs']} / {H['theft']['on']['text_runs']}).", ""]
             L += ["", "By changed fact (off / on): " + "; ".join(f"{SHORT[c]} {f3(H['theft'].get('off', {}).get('by_fact', {}).get(c))} / "
                                                                 f"{f3(H['theft'].get('on', {}).get('by_fact', {}).get(c))}" for c in COND) + "."]
     L += ["", P.get("verdict", ""), ""]

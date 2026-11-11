@@ -289,3 +289,109 @@ Result: with its source passages (including "Rückgriff gegen Dritte (z. B. eine
 
 1. With these rules the product on gpt-6.1-terra cannot be shown to beat the frontier single prompt on theft: the floor of the reviewed rules under perfect facts is 0.333 wrong + missed per pair (0.222–0.444 over the uncertain mappings; original rules 0.333), the frontier product measured 0.833 in one run, and its excess of 0.500 over the floor comes from reading rule conditions that are broader than or worded differently from what the sources mean (g042 third-party fault includes the thief: off misreading 0.111 and the 75% on unresolved pairs; g003 traces flip between texts: setting g003 to its designed value alone removes 0.250; g074 'the provision applies' and g022 'route selected' left open: 0.097, or 0.208 if g020 is false), not from conversion (0) or from open facts given values (0). 2. The single prompt with the same rules makes the same floor errors (+D33 on every SIM pair; +D10 on every scheduled-valuable pair with the original rules), repairs rule 010's D14 only partly (50% and 12.5% of third-party pair-runs) and is below the floor on no fact except the expert procedure under the uncertain g020 mapping; it wins on third party (1.21–1.29 vs 2.38), expert (0.63–0.71 vs 1.25) and bicycle (0.08–0.46 vs 0.63) and loses on repair, declined and deadline, where the product is at or near 0. 3. The smallest general change that could make the product win is in the rule base, not in the readings: re-derive each condition from its cited passages as a case fact that a claim text can state, by independent derivations of the frontier model that must agree (disagreements, and every condition true for a bare theft by an unknown thief, go to a jurist), and resolve the review-queue items 003, 010, 042 and 084; the model-free bound for fixing only g003 and g042 is 0.417 (100% unchanged on unresolved pairs) against 0.671 and 0.949, and for all four flagged facts 0.222. 4. Showing the source passages to the reading (variant (d)) did not change the decisive g042 reading in two off texts (USD 0.12), so the change has to be made in the conditions themselves; reasoning effort is a product constant and cannot repair a literally correct reading. 5. Test: freeze the re-derived rule base before any run, convert it unchanged with convert_theft, and run the product (checklist only) and Rules in context with the same new rules and the original rules on gpt-6.1-terra, three runs each, on development stories 4–15, with the floor recomputed model-free first; the claim holds only if the product is lower than both single prompts per changed fact cluster (sign-flip over the nine facts) and the result is then confirmed on unseen stories.
 
+## Part 6. Follow-up: the case-type reading (decided in advance)
+
+Setting `CASEPATH_READING_CASE_TYPE` (off by default) on the branch head `1b96f82e`, patch `analysis/reading_case_type.patch` (with `tests/test_reading_case_type.py`; the product's 242 tests pass with it). With the setting off the reading request is the branch's own, byte for byte. With it on, the line 'The case is a <workflow title>.' becomes 'Case type: <workflow title> (<description, if the workflow has one>).' followed by this wording, written once and not revised after any result:
+
+> The files are one case of the case type named above. Take as given what every case of that type involves. Answer a condition true only when the files state something beyond what the case type itself involves: the event that defines the case type, and what that event necessarily implies, never make a condition true. A condition is true only if the sentence you quote states it; do not infer it from a neighbouring fact.
+
+Spend on gpt-6.1-terra: arm A USD 0.7303, arm B USD 1.0646. Pairs scored (both texts run in both arms): {'on': 18, 'unresolved': 6}.
+
+Admitted values of the four conditions (T true, F false, · no agreed value); columns: g042, g003, g074, g016, g022, g020
+
+| Text | stored product (6a72159c) | A | B |
+|---|---|---|---|
+| s8-off | T · F · · · | · T F · · · | · · F · · · |
+| s8-on-PR_bicycle_claimed | T · F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_declined | T · F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_expert_procedure_requested | T T F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_goods_recovered | T · F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_nachfrist_set | T · F · · · | T T F · · · | · · F · · · |
+| s8-on-PR_repair_over_500 | T · F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_scheduled_valuable_1000 | T · · · · · | T · · · · · | · · · · · · |
+| s8-on-PR_sim_card_stolen | T · F · · · | T · F · · · | · · F · · · |
+| s8-on-PR_third_party_causer | T · F · · · | T · F · · · | · · F · · · |
+| s8-unres-PR_bicycle_claimed | T · F · · · | T · F · · · | · · F · · · |
+| s8-unres-PR_expert_procedure_requested | T · F · · · | T · F · · · | · · F · · · |
+| s8-unres-PR_repair_over_500 | T · F · · · | · T F · · · | · · F · · · |
+| s8-unres-PR_scheduled_valuable_1000 | T · · · · · | T · · · · · | · · · · · · |
+| s8-unres-PR_sim_card_stolen | T · F · · · | T · F · · · | · · F · · · |
+| s8-unres-PR_third_party_causer | · · F · · · | · · F · · · | · · F · · · |
+
+**story 8** (9 changed-fact pairs, 6 unresolved pairs; one run per arm; single prompts: mean of 3 stored runs; not run: none). Wrong + missed per pair:
+
+| Changed fact | stored product (6a72159c) | A | B | Rules in context, reviewed (gpt-6.1-terra) | Rules in context, original (gpt-6.1-terra) | floor (reviewed, primary) |
+|---|---|---|---|---|---|---|
+| Scheduled valuable | 1.000 | 4.000 | 1.000 | 0.333 | 1.000 | 0.000 |
+| Bicycle | 0.000 | 3.000 | 0.000 | 0.667 | 0.000 | 0.000 |
+| SIM card | 1.000 | 4.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| Third party | 2.000 | 3.000 | 2.000 | 1.333 | 2.000 | 1.000 |
+| Expert procedure | 3.000 | 4.000 | 1.000 | 0.667 | 0.333 | 1.000 |
+| Repair > 500 | 0.000 | 3.000 | 0.000 | 1.667 | 1.000 | 0.000 |
+| Deadline demand | 0.000 | 1.000 | 0.000 | 0.667 | 0.333 | 0.000 |
+| Recovered | 0.000 | 3.000 | 0.000 | 0.667 | 0.000 | 0.000 |
+| Declined | 0.000 | 3.000 | 0.000 | 1.333 | 0.000 | 0.000 |
+| **all** | 0.778 | 3.111 | 0.556 | 0.926 | 0.630 | 0.333 |
+| unresolved unchanged | 0.833 | 0.167 | 1.000 | 0.444 | 0.944 | 1.000 |
+
+**story 9** (9 changed-fact pairs, 0 unresolved pairs; one run per arm; single prompts: mean of 3 stored runs; not run: A). Wrong + missed per pair:
+
+| Changed fact | stored product (6a72159c) | B | Rules in context, reviewed (gpt-6.1-terra) | Rules in context, original (gpt-6.1-terra) | floor (reviewed, primary) |
+|---|---|---|---|---|---|
+| Scheduled valuable | 1.000 | 1.000 | 1.000 | 1.000 | 0.000 |
+| Bicycle | 0.000 | 0.000 | 0.667 | 0.000 | 0.000 |
+| SIM card | 1.000 | 1.000 | 1.333 | 1.000 | 1.000 |
+| Third party | 2.000 | 2.000 | 1.333 | 1.000 | 1.000 |
+| Expert procedure | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| Repair > 500 | 2.000 | 0.000 | 2.000 | 1.000 | 0.000 |
+| Deadline demand | 0.000 | 0.000 | 0.333 | 0.000 | 0.000 |
+| Recovered | 0.000 | 0.000 | 0.333 | 0.000 | 0.000 |
+| Declined | 0.000 | 0.000 | 1.333 | 1.000 | 0.000 |
+| **all** | 0.778 | 0.556 | 1.037 | 0.667 | 0.333 |
+| unresolved unchanged | – | – | – | – | – |
+
+Decomposition (method of Part 4; F + O + C + S + I = measured):
+
+| Story, design, mapping | Floor F | Off misreading O | Changed condition C | Other conditions S | Interaction I | Measured |
+|---|---|---|---|---|---|---|
+| story 8, A, primary (g022 T, g020 T) | 0.333 | 0.000 | 0.111 | 2.667 | 0.000 | 3.111 |
+| story 8, A, g022 T, g020 F | 0.222 | 0.000 | 0.222 | 2.667 | 0.000 | 3.111 |
+| story 8, B, primary (g022 T, g020 T) | 0.333 | 0.000 | 0.222 | 0.000 | 0.000 | 0.556 |
+| story 8, B, g022 T, g020 F | 0.222 | 0.000 | 0.333 | 0.000 | 0.000 | 0.556 |
+| story 8, stored product (6a72159c), primary (g022 T, g020 T) | 0.333 | 0.111 | 0.111 | 0.222 | 0.000 | 0.778 |
+| story 8, stored product (6a72159c), g022 T, g020 F | 0.222 | 0.111 | 0.222 | 0.222 | 0.000 | 0.778 |
+| story 9, B, primary (g022 T, g020 T) | 0.333 | 0.000 | 0.222 | 0.000 | 0.000 | 0.556 |
+| story 9, B, g022 T, g020 F | 0.222 | 0.000 | 0.333 | 0.000 | 0.000 | 0.556 |
+| story 9, stored product (6a72159c), primary (g022 T, g020 T) | 0.333 | 0.111 | 0.111 | 0.222 | 0.000 | 0.778 |
+| story 9, stored product (6a72159c), g022 T, g020 F | 0.222 | 0.111 | 0.222 | 0.222 | 0.000 | 0.778 |
+
+Defining-event facts and the documents that depend on them, gpt-6.1-terra (text-runs; g002 'loss connected with theft', g004 'after the feared event', g005 'contents coverage for theft damage', g006 'the event is theft'; D07 police report, D25 insurer's instruction on measures; both depend only on these facts):
+
+| Design | Text-runs | Admitted true | Requested | Held |
+|---|---|---|---|---|
+| stored product (6a72159c) | 26 | {"g002": 26, "g003": 2, "g004": 26, "g005": 26, "g006": 26, "g042": 25} | {"D07": 26, "D25": 26, "D15": 25, "D26": 2} | {"D07": 0, "D25": 0, "D15": 1, "D16": 26, "D21": 26, "D23": 26} |
+| A | 16 | {"g002": 16, "g003": 3, "g004": 16, "g005": 16, "g006": 16, "g042": 13} | {"D07": 16, "D25": 16, "D15": 13, "D26": 3} | {"D07": 0, "D25": 0, "D15": 3, "D16": 16, "D21": 16, "D23": 16} |
+| B | 26 | {"g002": 0, "g003": 0, "g004": 0, "g005": 0, "g006": 0, "g042": 0} | {"D07": 0, "D25": 0, "D15": 0, "D26": 0} | {"D07": 26, "D25": 26, "D15": 26, "D16": 26, "D21": 26, "D23": 26} |
+
+**Harm check on gpt-6-luna** (setting on vs off, branch head with the patch, checklist only). Threshold for harm = the stored run-to-run spread: 2 x the standard error of a between-run mean difference over 40 claims (strict_unsafe 0.317, spurious_hold 0.429, stated_open 0.095).
+
+| Tenancy subset | Claims | Strict unsafe off / on | Spurious holds off / on | Held required-now off / on | Stated facts left open off / on |
+|---|---|---|---|---|---|
+| tenancy-fresh | 24 | 0.000 / 0.000 (+0.000) | 0.000 / 0.000 (+0.000) | 0.000 / 0.292 (+0.292) | 0.000 / 0.375 (+0.375) |
+| tenancy-probe | 16 | 0.875 / 0.875 (+0.000) | 0.625 / 1.000 (+0.375) | 0.000 / 0.000 (+0.000) | 0.062 / 0.125 (+0.062) |
+| all | 40 | 0.350 / 0.350 (+0.000) | 0.250 / 0.400 (+0.150) | 0.000 / 0.175 (+0.175) | 0.025 / 0.275 (+0.250) |
+
+Stated facts left open with the setting on: {"heating": 2, "deposit_considered": 1, "termination_received": 3, "retaliation_screen": 1, "health_effects": 1, "mold": 2, "claim_received": 1}; off: {"claim_received": 1}.
+
+| Theft (stories 8-9), gpt-6-luna | Runs | Wrong + missed | Per run | Unresolved unchanged |
+|---|---|---|---|---|
+| off | 3 | 0.370 | 0.389, 0.389, 0.333 | 0.972 |
+| on | 3 | 1.870 | 2.722, 1.556, 1.333 | 0.167 |
+
+Defining-event facts admitted true and dependent documents requested, gpt-6-luna theft text-runs (off / on): g002 95 / 48; g003 1 / 2; g004 96 / 29; g005 96 / 58; g006 96 / 20; g042 3 / 2; D07 requested 96 / 64; D25 requested 96 / 29; D15 requested 3 / 2 (of 96 / 96).
+
+
+By changed fact (off / on): Scheduled valuable 0.500 / 1.833; Bicycle 0.000 / 1.500; SIM card 1.000 / 2.500; Third party 1.500 / 3.333; Expert procedure 0.333 / 2.167; Repair > 500 0.000 / 1.667; Deadline demand 0.000 / 1.000; Recovered 0.000 / 1.333; Declined 0.000 / 1.500.
+
+**Verdict.** Decision rule (fixed before running): supported if in B the third-party condition is no longer admitted true in the off texts and wrong + missed per pair on stories 8 and 9 is lower than A and lower than the frontier single prompt with both rule bases. Measured: g042 is admitted in no B text (off texts of both stories included); B 0.556 per pair on story 8 and 0.556 on story 9 against A 3.111 (story 8; A on story 9 not run, cap), Rules in context original 0.630 / 0.667 and reviewed 0.926 / 1.037; unresolved pairs unchanged 6 of 6 (story 8). The rule is met, so the harm check was run, but the margin over the original-rules single prompt is less than one error per story in one run (5 vs 5.7 and 6.0 errors over 9 pairs). The harm check fails, and it shows what B's gain consists of: (1) on the frontier model the readings answer not_stated for the defining-event facts the rules use as conditions (g002, g004, g005, g006 admitted in 0 of 26 B text-runs against 26 of 26 stored), so the police report D07 and D25 are requested in no B checklist and held in all, and D15, D16, D21, D23 are held in every text; the pair measure cannot see this because the loss is the same in both texts of a pair; (2) on gpt-6-luna the same instruction makes those facts unstable between texts (g006 admitted 20 / 96 text-runs vs 96 / 96 off; D07 requested 64 / 96, D25 29 / 96), and theft wrong + missed rises from 0.370 to 1.870 per pair (three runs each; per run 0.389, 0.389, 0.333 vs 2.722, 1.556, 1.333) with unresolved pairs unchanged falling from 97% to 17%; (3) on tenancy (40 claims, one run) stated facts left open rise from 0.025 to 0.275 per claim (spread 0.095) and held required-now documents from 0 to 0.175: the readings refuse stated branch facts of a defect dispute (heating, mold, health effects) and the defining notice itself as 'what the case type involves'. Arm A shows separately that the branch's own reading sentences destabilise the frontier model's off text (g042 not agreed in s8-off but admitted in 13 of 15 variants; g003 the reverse): 3.111 per pair on story 8 against 0.778 for the stored run of the tested commit. The idea is not supported as a product setting.
+
