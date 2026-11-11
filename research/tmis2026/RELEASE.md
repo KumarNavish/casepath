@@ -20,7 +20,7 @@ Before anything is made public, read `release/SCRUB_REPORT.md`. It lists what mu
 | Study 3 development probe | `dev_probe/` | `dev_probe/build.py` rebuilds `claims.json` and `references.json` |
 | Study 3 data (sealed) | `fresh2/` | `fresh2/check.py` (oracle, loaders, novelty, manifest); `fresh2/guard.py` refuses data access unless the Study 3 plan is committed unmodified and no model client is loaded |
 | Harness | `harness/` (Study 3 driver in `harness/study3/`, product runners in `harness/product/`, Study 2 in `harness/v2/`) | READMEs in `harness/study3/` and `harness/product/` |
-| Analysis | `analysis/` | `analysis/test_study3.py` (43 tests), `analysis/test_study2.py` |
+| Analysis | `analysis/` (Study 3 analyses added after review: `study3_review.py`, `make_numbers_study3_review.py`, `fig_review.py`; Appendix A check: `check_fragment.py`) | `analysis/test_study3.py` (43 tests), `analysis/test_study3_review.py` (30), `analysis/test_study2.py` |
 | Stored outputs and ledgers | Study 1: `runs/plans_*.json`, `runs/ledger.jsonl`, `runs/responses_cache.tar.gz`. Study 2: `runs/v2/`. Study 3: `runs/study3/confirm/` (plans, `MANIFEST.json`, `RUNLOG.jsonl`) and the ledgers in `runs/product/` and `runs/v2/`. | `reproduce.sh` re-scores them |
 | Frozen plans | `ANALYSIS_PLAN.md` (Study 1), `ANALYSIS_PLAN_STUDY2.md`, `ANALYSIS_PLAN_STUDY3.md` with `analysis/study3_spec.json`, `expert_study/PREREGISTRATION_DRAFT.md` with `expert_study/EVENT_FIELDS.md` | Freeze commits are named in `paper/sections/app_g_repro.tex` |
 | Paper sources | `paper/` (LaTeX, `results/numbers*.tex`, `figures/`) | `analysis/verify_paper.py` compiles a clean copy |
@@ -223,19 +223,25 @@ the entry above.
 - **Items to remove before publication** (names of the insurer, internal documents, a Knowledge file derived from
   the insurer's letters, local paths): `release/SCRUB_REPORT.md`.
 
-## 8. Fresh-clone test of `reproduce.sh`
+## 8. Tests of `reproduce.sh`
 
-Run on 2026-11-11 in a container (Linux, CPython 3.13.18, pdflatex present):
+Both runs on 2026-11-11 in a container (Linux, CPython 3.13.18, pdflatex present), with a new virtual environment
+holding only `requirements-reproduce.txt` (it installed pypdf 5.9.0, matplotlib 3.11.2, numpy 2.5.3, pillow 12.3.0
+and their dependencies).
 
-1. `git clone --single-branch --branch claude/casepath-tmis-paper-20261109` of the local repository at commit
-   `40965582`, then `git fetch` of the product branch.
-2. The three release files copied in at their current state.
-3. A new virtual environment with only `requirements-reproduce.txt` (it installed pypdf 5.9.0, matplotlib 3.11.2,
-   numpy 2.5.3, pillow 12.3.0 and their dependencies).
+**Fresh clone, cache absent.** `git clone --single-branch --branch claude/casepath-tmis-paper-20261109` of the
+local repository at commit `1104e1f8`, then `git fetch` of the product branch; the files changed for this release
+(`release/reproduce.py`, `analysis/check_fragment.py`, `analysis/verify_paper.py`,
+`harness/product/compare_theft.py`, `harness/v2/cp4_score.py`) copied in at their current state. Result: 59 steps
+passed, 2 skipped, none failed, in 11 min 20 s of wall time. The two SKIP lines are the cache-dependent parts of
+the review analysis (21,667 cache files missing). The Study 1–2 re-analysis and the paper build in
+`verify_paper.py` took 612 s of that; the review analysis 32 s; everything else about 40 s. Afterwards
+`git status` showed no new or changed file in the clone apart from the copied files.
 
-Result: all 39 steps passed, none skipped, in 10 min 26 s of wall time. The Study 1–2 re-analysis in
-`verify_paper.py` took 596 s of that; everything else took about 30 s. Afterwards `git status` showed no new or
-changed file in the clone apart from the copied release files.
+**Working repository, cache present.** The same files in the working repository at commit `f0450649`, with the product's
+response cache in `runs/product/cache/`. Result: 61 steps passed, none skipped, none failed, in 11 min 27 s of wall
+time; the review analysis's JSON and Markdown both reproduced byte for byte, including R3 and R7. The run wrote
+nothing into the checkout (`git status`, ignored files included, was the same before and after).
 
 An earlier run in a virtual environment without the pypdf pin failed the Study 1–2 step: pypdf 7.0.0 extracts the
 Study 1 PDFs with different spacing, so the cached model responses were not found. That is why the pin is there.

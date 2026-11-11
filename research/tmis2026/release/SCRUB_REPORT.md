@@ -334,10 +334,11 @@ intended). The others:
 **Internal hosts and paths (203 / 98).**
 
 - 186 are container paths (`/home/user/...`) in harness code, run manifests and logs. Examples:
-  `research/tmis2026/harness/v2/cp4_score.py:17`, `harness/product/compare.py:31`, `compare_theft.py:9-17`,
-  `harness/parity_original.py:7`, `harness/v2/build_review_bundle.py:15`, `harness/product/run_product.py:45`.
-  They name no organisation, but they make the scripts fail elsewhere. **Recommendation:** replace by paths
-  relative to the repository where a released script uses them.
+  `harness/product/compare.py:31`, `harness/parity_original.py:7`, `harness/v2/build_review_bundle.py:15`,
+  `harness/product/run_product.py:45`. They name no organisation. The repository-internal ones in
+  `harness/v2/cp4_score.py` and `harness/product/compare_theft.py` are now relative (output unchanged); the rest
+  are defaults for folders outside the repository (product worktree, CA bundle, development archives) and can be
+  overridden. **Recommendation:** replace the remaining defaults by neutral placeholders in the public export.
 - 3 are local paths of the owner's computer (item 8).
 - 2 are the subsidiary's public web page (item 9).
 - `research/tmis2026/paper/figures/ui_used/*/source/launch*.sh` name a scratch folder of an agent session.
