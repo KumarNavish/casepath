@@ -1,0 +1,266 @@
+{
+ "configs": {
+  "tenancy/base-check": {
+   "to_checklist_s": {
+    "n": 12,
+    "median": 65.705,
+    "min": 11.08,
+    "max": 134.15
+   },
+   "to_result_s": {
+    "n": 12,
+    "median": 65.705,
+    "min": 11.08,
+    "max": 134.15
+   },
+   "usd": {
+    "n": 12,
+    "median": 0.0039048075000000003,
+    "min": 0.0007335999999999999,
+    "max": 0.010740940000000001
+   },
+   "calls": {
+    "n": 12,
+    "median": 11.0,
+    "min": 4,
+    "max": 23
+   },
+   "output": {
+    "n": 12,
+    "median": 4517.0,
+    "min": 847,
+    "max": 12947
+   },
+   "input": {
+    "n": 12,
+    "median": 30854.5,
+    "min": 3101,
+    "max": 70880
+   },
+   "cached_input": {
+    "n": 12,
+    "median": 18076.0,
+    "min": 0,
+    "max": 43810
+   },
+   "usd_mean": 0.004163786666666666,
+   "cached_calls_total": 1
+  },
+  "tenancy/base-full": {
+   "to_checklist_s": {
+    "n": 12,
+    "median": 169.7,
+    "min": 137.57,
+    "max": 241.39
+   },
+   "to_result_s": {
+    "n": 12,
+    "median": 169.7,
+    "min": 137.57,
+    "max": 241.39
+   },
+   "usd": {
+    "n": 12,
+    "median": 0.0119898,
+    "min": 0.008760045,
+    "max": 0.018254255
+   },
+   "calls": {
+    "n": 12,
+    "median": 27.0,
+    "min": 22,
+    "max": 34
+   },
+   "output": {
+    "n": 12,
+    "median": 13888.5,
+    "min": 9822,
+    "max": 21250
+   },
+   "input": {
+    "n": 12,
+    "median": 112388.0,
+    "min": 80807,
+    "max": 163414
+   },
+   "cached_input": {
+    "n": 12,
+    "median": 74774.5,
+    "min": 49907,
+    "max": 115726
+   },
+   "usd_mean": 0.012914893749999998,
+   "cached_calls_total": 0
+  },
+  "tenancy/branch-check": {
+   "to_checklist_s": {
+    "n": 12,
+    "median": 36.275000000000006,
+    "min": 5.96,
+    "max": 124.13
+   },
+   "to_result_s": {
+    "n": 12,
+    "median": 36.275000000000006,
+    "min": 5.96,
+    "max": 124.13
+   },
+   "usd": {
+    "n": 12,
+    "median": 0.0033288475,
+    "min": 0.0007276,
+    "max": 0.01101076
+   },
+   "calls": {
+    "n": 12,
+    "median": 10.0,
+    "min": 4,
+    "max": 22
+   },
+   "output": {
+    "n": 12,
+    "median": 3811.0,
+    "min": 819,
+    "max": 12846
+   },
+   "input": {
+    "n": 12,
+    "median": 24814.5,
+    "min": 3101,
+    "max": 78571
+   },
+   "cached_input": {
+    "n": 12,
+    "median": 13711.0,
+    "min": 0,
+    "max": 44546
+   },
+   "usd_mean": 0.003846474166666667,
+   "cached_calls_total": 1
+  },
+  "tenancy/branch-full": {
+   "to_checklist_s": {
+    "n": 11,
+    "median": 118.06,
+    "min": 96.95,
+    "max": 199.34
+   },
+   "to_result_s": {
+    "n": 11,
+    "median": 139.09,
+    "min": 118.3,
+    "max": 244.37
+   },
+   "usd": {
+    "n": 11,
+    "median": 0.01157656,
+    "min": 0.00993111,
+    "max": 0.021428955
+   },
+   "calls": {
+    "n": 11,
+    "median": 27,
+    "min": 23,
+    "max": 38
+   },
+   "output": {
+    "n": 11,
+    "median": 13113,
+    "min": 11187,
+    "max": 24760
+   },
+   "input": {
+    "n": 11,
+    "median": 113195,
+    "min": 86513,
+    "max": 193206
+   },
+   "cached_input": {
+    "n": 11,
+    "median": 76896,
+    "min": 55076,
+    "max": 129703
+   },
+   "usd_mean": 0.013027520909090907,
+   "cached_calls_total": 0
+  }
+ },
+ "paired": {
+  "tenancy: branch-full - base-full": {
+   "to_checklist_s": {
+    "n": 11,
+    "median": -42.04999999999998,
+    "min": -76.46,
+    "max": -18.019999999999982
+   },
+   "to_result_s": {
+    "n": 11,
+    "median": -12.860000000000014,
+    "min": -46.290000000000006,
+    "max": 13.960000000000008
+   },
+   "usd": {
+    "n": 11,
+    "median": 6.0440000000000146e-05,
+    "min": -0.0033083599999999998,
+    "max": 0.003174699999999999
+   }
+  },
+  "tenancy: branch-check - base-check": {
+   "to_checklist_s": {
+    "n": 12,
+    "median": -10.255000000000004,
+    "min": -36.68,
+    "max": 0.730000000000004
+   },
+   "to_result_s": {
+    "n": 12,
+    "median": -10.255000000000004,
+    "min": -36.68,
+    "max": 0.730000000000004
+   },
+   "usd": {
+    "n": 12,
+    "median": -8.3075e-05,
+    "min": -0.0017635250000000002,
+    "max": 0.0014379249999999996
+   }
+  },
+  "tenancy: branch-full - base-check": {
+   "to_checklist_s": {
+    "n": 11,
+    "median": 83.97,
+    "min": -6.939999999999998,
+    "max": 104.34
+   },
+   "to_result_s": {
+    "n": 11,
+    "median": 108.07,
+    "min": 23.36,
+    "max": 125.37
+   },
+   "usd": {
+    "n": 11,
+    "median": 0.009516165,
+    "min": 0.0037988849999999992,
+    "max": 0.010688014999999999
+   }
+  },
+  "theft: branch-full - base-full": {
+   "to_checklist_s": null,
+   "to_result_s": null,
+   "usd": null
+  },
+  "theft: branch-check - base-check": {
+   "to_checklist_s": null,
+   "to_result_s": null,
+   "usd": null
+  },
+  "theft: branch-full - base-check": {
+   "to_checklist_s": null,
+   "to_result_s": null,
+   "usd": null
+  }
+ },
+ "failed": []
+}
