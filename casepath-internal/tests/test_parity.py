@@ -34,6 +34,7 @@ class ParityTests(unittest.TestCase):
         self.assertNotIn("data_dir", out["settings_not_default"])
         # the reading settings are always given as values, defaults included
         self.assertEqual({k: out["settings"][k] for k in ("readings", "open_rule", "run_scope")}, {"readings": 3, "open_rule": "any", "run_scope": "full"})
+        self.assertEqual(out["settings"]["reading_chars"], 40000)
         self.assertIn("model_reasoning", out["settings"])
         json.dumps(out, default=str)
 

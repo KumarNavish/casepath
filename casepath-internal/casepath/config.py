@@ -73,6 +73,7 @@ class Settings:
     writing_language: str | None = None  # how agents choose the language they write in (CASEPATH_WRITING_LANGUAGE)
     run_scope: str = "full"  # CASEPATH_RUN_SCOPE: "full", or "checklist" for only the steps that can decide the checklist
     readings: int = 3  # CASEPATH_READINGS: independent readings of the facts; a deciding value counts only when all agree
+    reading_chars: int = 40_000  # CASEPATH_READING_CHARS: up to this many characters the readings see the whole files
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
@@ -88,6 +89,16 @@ def _readings(value):
         raise SettingsError("CASEPATH_READINGS is a whole number of at least 2") from None
     if number < 2:
         raise SettingsError("CASEPATH_READINGS is a whole number of at least 2")
+    return number
+
+
+def _reading_chars(value):
+    try:
+        number = int(value or 40_000)
+    except ValueError:
+        raise SettingsError("CASEPATH_READING_CHARS is a whole number of at least 1000") from None
+    if number < 1000:
+        raise SettingsError("CASEPATH_READING_CHARS is a whole number of at least 1000")
     return number
 
 
@@ -158,6 +169,7 @@ def load_settings(env=None):
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         run_scope=_scope(env.get("CASEPATH_RUN_SCOPE")),
         readings=_readings(env.get("CASEPATH_READINGS")),
+        reading_chars=_reading_chars(env.get("CASEPATH_READING_CHARS")),
         identity_format=identity_format,
         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),

@@ -661,6 +661,27 @@ class ReadingsSettingTests(unittest.TestCase):
             confirm_facts(model, work)
             self.assertEqual(work.facts["landlord_notified"]["status"], expected, (readings, type(model).__name__))
 
+    def test_the_reading_size_limit_is_a_setting_and_reaches_the_readings(self):
+        from casepath.config import SettingsError, load_settings
+        from casepath.parity import manifest
+        self.assertEqual(load_settings({}).reading_chars, 40000)
+        self.assertEqual(manifest(load_settings({"CASEPATH_READING_CHARS": "120000"}))["settings"]["reading_chars"], 120000)
+        with self.assertRaises(SettingsError):
+            load_settings({"CASEPATH_READING_CHARS": "12"})
+        big = [{**FILES[0], "text": FILES[0]["text"] + " Lorem ipsum." * 200}]
+        from casepath.agents.team import CaseWork, confirm_facts
+        self.assertEqual(CaseTeam(ScriptedModel([]), reading_chars=1000).reading_chars, 1000)
+        self.assertEqual(CaseTeam(ScriptedModel([])).reading_chars, 40000)
+        for limit, whole in ((40000, True), (1000, False)):  # above the limit the readings see keyword passages only
+            work = CaseWork(case=CASE, files=big, base_workflow=FIXTURE)
+            work.reading_chars = limit
+            model = ScriptedModel([])
+            seen, original = [], model.respond_json
+            model.respond_json = lambda **kw: seen.append(kw) or original(**kw)
+            confirm_facts(model, work)
+            confirm = next(kw for kw in seen if kw["name"] == "casepath_confirm_facts")
+            self.assertEqual(confirm["input"][0]["content"].startswith("CASE:\n[file "), whole, limit)
+
     def test_the_setting_defaults_to_three_and_is_named_in_the_parity_manifest(self):
         from casepath.config import SettingsError, load_settings
         from casepath.parity import non_default_settings

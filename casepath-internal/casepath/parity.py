@@ -79,7 +79,7 @@ def manifest(settings=None, catalogue_dir=None, knowledge=None, extra=None):
                                              "reading": model.reading_deployment, "endpoint_host": model.endpoint.split("/")[2]},
         "interface_language_default": "de",
         # the settings that decide what a run reads and how far it goes, always as values
-        "settings": {"readings": settings.readings, "open_rule": workflows_module.OPEN_RULE, "run_scope": settings.run_scope,
+        "settings": {"readings": settings.readings, "reading_chars": settings.reading_chars, "open_rule": workflows_module.OPEN_RULE, "run_scope": settings.run_scope,
                      "model_reasoning": None if model is None else model.reasoning},
         "settings_not_default": non_default_settings(settings),
         **(extra or {}),

@@ -825,8 +825,9 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
     matter is open). A true or false answer without a quotation found word for word in a file, or with a value the fact
     does not allow, counts as unknown without a quote. ``reverse`` lists the conditions in the opposite order, so that the
     further readings are independent requests for the same judgments."""
-    if work.total_chars <= SMALL_CASE_CHARS:
-        view = {"files_text": {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}}
+    limit = getattr(work, "reading_chars", SMALL_CASE_CHARS)  # above it the readings see keyword passages only
+    if work.total_chars <= limit:
+        view = {"files_text": {fid: work.evidence.read(fid, limit=limit)["text"] for fid in work.file_ids}}
     else:
         view = {"files": work.evidence.catalogue(),
                 "passages": {f["id"]: work.evidence.search(f["question"], limit=4) for f in facts}}
@@ -1110,9 +1111,10 @@ def confirm_facts(model, work, effort="medium"):
 
 
 class CaseTeam:
-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, scope="full", readings=None):
+    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, scope="full", readings=None, reading_chars=None):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
         self.readings = readings or DEFAULT_READINGS
+        self.reading_chars = reading_chars or SMALL_CASE_CHARS  # up to this size the readings see the whole files
         self.scope = scope  # "checklist": only the steps that can decide the checklist
 
     def _delegate(self, work, state, agent, instruction):
@@ -1141,7 +1143,7 @@ class CaseTeam:
     def run(self, *, case, files, workflow, knowledge=(), edits=(), on_event=None, routed=()):
         """``routed``: facts routing established with located quotes; they start as recorded facts and are checked like any other."""
         work = CaseWork(case=case, files=files, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
-        work.readings = self.readings
+        work.readings, work.reading_chars = self.readings, self.reading_chars
         for row in routed:
             if row.get("presumed") and row["fact"] in work.fact_defs and row.get("value") is not None:
                 work.routing_presumed[row["fact"]] = row["value"]
@@ -1160,7 +1162,7 @@ class CaseTeam:
                             row["verdict"] = "accepted"
             if agent == "result_checker":
                 self._retry_rejected(work, state)
-            if instruction == FACTS_STEP and work.total_chars <= SMALL_CASE_CHARS:
+            if instruction == FACTS_STEP and work.total_chars <= work.reading_chars:
                 read_facts(self.model, work, self.effort)  # a structured first reading; a long dossier is read by the agent
                 continue
             if any(s["agent"] == agent and s["step"] == instruction for s in skipped):
