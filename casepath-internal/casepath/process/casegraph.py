@@ -329,8 +329,13 @@ def derive_facts(graph, facts, findings, evaluate):
     kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
     if not kinds:
         return facts
-    done = re.findall(r"\bA(\d{1,2})\b", str(next((facts.get(f["id"]) for f in graph["facts"] if f["id"] == "bisherige_handlungen"), "") or ""))
-    requests = sum(1 for n in done if n in {"1", "4"})
+    history = str(facts.get("bisherige_handlungen") or "")
+    # Each earlier action of the insurer: its own dated fact (handlung_a1 …, one quote each) or the accepted history line.
+    dated = [(m.group(1), str(v)[:10]) for k, v in facts.items() if v and (m := re.fullmatch(r"handlung_a(\d{1,2})", k))]
+    dated += [(code, day) for code, day in re.findall(r"\bA(\d{1,2})\s+(\d{4}-\d{2}-\d{2})", history)]
+    done = sorted({c for c, _ in dated} | set(re.findall(r"\bA(\d{1,2})\b", history)))
+    requests = max(sum(1 for n in re.findall(r"\bA(\d{1,2})\b", history) if n in {"1", "4"}),
+                   sum(1 for k in ("handlung_a1", "handlung_a4") if facts.get(k)))
     out = {k: v for k, v in facts.items() if k not in kinds}
     for fact, kind in kinds.items():
         if kind == "action_A1":
@@ -338,8 +343,7 @@ def derive_facts(graph, facts, findings, evaluate):
         elif kind == "closing_announced":  # the clock: after a status inquiry announcing closure (A7), the case closes
             out[fact] = "7" in done
         elif kind == "last_action_A2":  # the last thing done was a phone call (its note in the file)
-            dated = sorted(re.findall(r"\bA(\d{1,2})\s+(\d{4}-\d{2}-\d{2})", str(facts.get("bisherige_handlungen") or "")), key=lambda x: x[1])
-            last = dated[-1][0] if dated else (done[-1] if done else None)  # by date, whatever order the reader listed them in
+            last = max(dated, key=lambda x: x[1])[0] if dated else None  # by date, whatever order the reader listed them in
             out[fact] = last == "2"
         elif kind == "requests_count":
             out[fact] = "0" if requests == 0 else "1" if requests == 1 else "2+"

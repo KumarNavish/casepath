@@ -61,7 +61,9 @@ rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a
 about the rent; a measuring, drying or building expert called in is an expert involved. When a sentence you quote states the value, record it as established with that
 sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"). A negative value (no reply, no, not present, no deadline) needs a sentence that
 says so, such as the customer writing that nobody answered or the form's own "Nein"; the mere absence of a positive is
-unknown. For the insurer's own earlier actions in the file, use these codes with their dates: A1 request for documents,
+unknown. For the insurer's own earlier actions in the file, record the date fact of each kind (handlung_a1, handlung_a2 …:
+the date of the latest such letter or note), each with one quote that shows that letter or note and its date line; the
+history list uses these codes with their dates: A1 request for documents,
 A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
 announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
 A12 closing or end of benefits. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
@@ -685,6 +687,13 @@ def gating_facts(work):
             used |= workflows.condition_facts(edge.get("when", True))
     for document in work.graph["documents"]:
         used |= workflows.condition_facts(document.get("required_when", True))
+    for step in work.graph["steps"]:  # the stage's action: when it is skipped and when it is answered otherwise
+        action = step.get("action") or {}
+        used |= workflows.condition_facts(action.get("skip_if") or True)
+        for variant in action.get("instead", []):
+            used |= workflows.condition_facts(variant["when"])
+    if any(f.get("derived") and f["id"] in used for f in work.graph["facts"]):  # derived facts rest on the action history
+        used |= {f["id"] for f in work.graph["facts"] if f["id"] == "bisherige_handlungen" or f["id"].startswith("handlung_")}
     return [f for f in work.graph["facts"] if f["id"] in used]
 
 

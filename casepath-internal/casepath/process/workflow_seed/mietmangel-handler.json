@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-12.2",
+ "version": "2026-11-12.3",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -97,6 +97,54 @@
    "id": "bisherige_handlungen",
    "type": "text",
    "question": "Welche Schreiben und Notizen hat Protekta in diesem Fall schon verfasst (Art und Datum, z.B. «A1 2024-08-28; A2 2024-09-03»)?",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a1",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt eine Anforderung von Unterlagen und Angaben (A1) verfasst hat",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a2",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt eine Telefonnotiz (A2) verfasst hat",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a4",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt eine Rückfrage (A4) verfasst hat",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a5",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt eine rechtliche Einschätzung (A5) verfasst hat",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a6",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt ein Pendenthalten mit Frist (A6) verfasst hat",
+   "source_refs": [
+    "practice#7of7"
+   ]
+  },
+  {
+   "id": "handlung_a7",
+   "type": "date",
+   "question": "Datum, an dem Protekta zuletzt eine Statusanfrage mit Abschlussankündigung (A7) verfasst hat",
    "source_refs": [
     "practice#7of7"
    ]

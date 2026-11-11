@@ -74,6 +74,10 @@ class HandlerWorkflowTests(unittest.TestCase):
         state = core.evaluate(wf, [], [], {"facts": called, "documents": [document("mietvertrag")]}, "c")
         nxt = {i["item_id"]: i for i in build_items(state, {"facts": called})}["next_action:0"]
         self.assertEqual((nxt["action"], nxt["next_in_days"]), ("A6", 25))  # after a call that leaves it open: pending with a deadline
+        separate = base + [fact("handlung_a1", "2024-03-12"), fact("handlung_a2", "2024-03-18")]  # the history line was rejected
+        state = core.evaluate(wf, [], [], {"facts": separate, "documents": [document("mietvertrag")]}, "c")
+        self.assertEqual((state["facts"]["a1_versandt"], state["facts"]["anruf_offen"]), (True, True))
+        self.assertEqual({i["item_id"]: i for i in build_items(state, {"facts": separate})}["next_action:0"]["action"], "A6")
         newest_first = base + [fact("bisherige_handlungen", "A2 2024-03-18; A1 2024-02-20")]
         self.assertTrue(core.evaluate(wf, [], [], {"facts": newest_first, "documents": []}, "c")["facts"]["anruf_offen"])
         covered = done + [fact("deckung", "bestätigt")]
