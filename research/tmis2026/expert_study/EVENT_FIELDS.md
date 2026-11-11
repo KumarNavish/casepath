@@ -58,14 +58,28 @@ One row per statement of a frozen run (and of a comparator run).
 | `key` | fact id, document id, step id, `answer:<fact>` / `obtain:<document>` for next actions, list index for open points, clauses, parties, timeline | partial: fact and document ids exist (`result.facts[].fact`, `evaluation.documents[].document`); next-action keys new; index keys are positional and valid only within one run |
 | `chain` | true for step, gating fact, deadline, document, next action | new |
 | `value` | what CasePath said (fact value; document `required` and `status`; step id; action text) | exists in `result` and `evaluation` (`process/workflows.py:383–395`) |
-| `stated_as` | `established`, `presumed`, `conflicting`, `unknown`, `put_to_handler` (open point, waiting_for, depends) | partial: `facts[].status`, `evaluation.waiting_for`, `documents[].required = depends` |
+| `stated_as` | `established`, `presumed`, `conflicting`, `unknown`, `put_to_handler` (open point, waiting_for, depends), `computed` (a date or deadline derived from a stated period; not an established value and not counted as asserted) | partial: `facts[].status`, `evaluation.waiting_for`, `documents[].required = depends` |
 | `verdict` | the source checker's verdict | exists (`facts[].verdict`, `documents[].verdict`) |
 | `evidence` | citations: file id, quote offsets | exists (`facts[].citations`, `documents[].citations`) |
 | `node` | process node the item is there for ("wegen") | partial: `evaluation.documents[].step`; new for facts and actions |
 | `origin` | `workflow`, `knowledge#<id>@v<n>`, `agent_edit#<id>` | exists (`source_refs`, `documents[].knowledge`, `agent_edits`) |
+| `status`, `required`, `ask`, `part_of`, `reason` | document items: status in the file; whether required; `ask` = `now`, `later` or null (whether the first request asks for it now); the document it is part of; the reason shown | product (`items`, commit ea88df9d) |
+| `part`, `chat_only`, `path` | fact items: the alternative a quote supports when the value names alternatives; whether the fact came from the chat only; whether it lies on the path | product |
+| `action` | next-action items: `request`, `answer`, `close` or `resolve` (the product's name; this file earlier wrote `obtain` for `request`) | product |
+| `stated`, `rule` | deadline items: the period as stated and how a computed date was derived | product |
+| `legal_basis`, `label` | the basis shown with an item; its label in German and English | product |
 | `system` | `casepath` or `comparator` | new |
 | `source_case`, `cut_sha256` | the study case and the cut copy the item belongs to | new |
 | `leak_flag` | set if a leak found after a session affects the item: `leak_id` and date found (content); boolean (pseudonymous) | new |
+
+**Source of the item list (2026-11-11).** From product commit `ea88df9d` the item list is built by one server
+function (`casepath/process/items.py`) and returned as `items` on `GET /api/cases/{id}`, with `items_sha256`: the
+SHA-256 over the canonical JSON of each item's assertion fields (`item_id`, `kind`, `key`, `value`, `stated_as`,
+`status`, `required`, `ask`, `part_of`, `part`, `action`, `stated`, `rule`), sorted by `item_id`. Labels, evidence,
+origin, verdict, node, chain, legal basis and reason are not in the hash. The study prefix `<frozen_run_id>:` is
+added to `item_id` at the freeze. Evidence is `{file, page, quote}`. Keys of `open_point`, `summary`, `reply` and
+`timeline` items are positions and are valid within one run only; analyses across runs (the variation runs) use
+chain items, whose keys are ids. Where this file's names differed from the product's, the product's names hold.
 
 ## 3. Event record (`casepath.study.event/1`)
 

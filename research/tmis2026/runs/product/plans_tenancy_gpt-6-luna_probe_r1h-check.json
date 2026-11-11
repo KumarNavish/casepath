@@ -1,0 +1,4186 @@
+{
+ "PRODUCT|pcl_29a12f48f41287b2|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "8664771affc5850dd83254feba0099f40cb0d0305a5aa1146baa5489264fabe0",
+   "08a93ccf23bfe2ceab7b8b2d60c58f26922cb5c6053d8b1cffd6c5c3869b07fa",
+   "08a93ccf23bfe2ceab7b8b2d60c58f26922cb5c6053d8b1cffd6c5c3869b07fa",
+   "23933c1b0006195a3c1097a3dc77fa2b976a9c26134de65413109a52bd4f61f0",
+   "23933c1b0006195a3c1097a3dc77fa2b976a9c26134de65413109a52bd4f61f0",
+   "7f454417de93d60654999569e754f8925bb6be3384e3823268e80d1998f3db2d",
+   "7f454417de93d60654999569e754f8925bb6be3384e3823268e80d1998f3db2d"
+  ],
+  "seconds": 21.1,
+  "tokens": {
+   "input": 3498,
+   "cached": 0,
+   "output": 1137
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_048e0f1cc96e77a7|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "16ac6a1825d82bb9ffd868fa0aec52c173531e6d4e60c43d306fdc5d5e9a6666",
+   "e0257db89864195f3b90a540c51885a2e635328267e6086e42ba443e628c169d",
+   "e0257db89864195f3b90a540c51885a2e635328267e6086e42ba443e628c169d",
+   "77633adf0de9eed7460c871fdf905ed5c767f44c6f0ca7d309c60e8d8c7de408",
+   "77633adf0de9eed7460c871fdf905ed5c767f44c6f0ca7d309c60e8d8c7de408",
+   "ba40717923fa45d73a92c2d853e7b8af04714b1156f3359bc2e58211b10e4717",
+   "ba40717923fa45d73a92c2d853e7b8af04714b1156f3359bc2e58211b10e4717"
+  ],
+  "seconds": 23.1,
+  "tokens": {
+   "input": 3503,
+   "cached": 0,
+   "output": 1532
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_3d6f28bfed11c4ab|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "5945308c926b1da2e43f6c7f475f5a04879bb0256ea09c214bc128b9b3bad9f9",
+   "e3c184aac0194c36c1108c696d63575c755a0591eeeb7056ea9cf3fde40c2cf0",
+   "e3c184aac0194c36c1108c696d63575c755a0591eeeb7056ea9cf3fde40c2cf0",
+   "3091dfdf629fcd2fbe18bf85a241b9585d9c0baf06eee873422afcc806719c3e",
+   "3091dfdf629fcd2fbe18bf85a241b9585d9c0baf06eee873422afcc806719c3e",
+   "74ef0c63c8087ffac9d80bf7e62e3d69dd118e1955a015a833b775c0ae4cced9",
+   "74ef0c63c8087ffac9d80bf7e62e3d69dd118e1955a015a833b775c0ae4cced9"
+  ],
+  "seconds": 24.9,
+  "tokens": {
+   "input": 3351,
+   "cached": 0,
+   "output": 1349
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_02881d44ed3d778b|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 5,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "b7915902b1c03c5a640ffd15e9021f7b2bfabc9067ddec8aa611215a860df5f1",
+   "ea6919adbf3899804c4d977ad6241fdddb0ee13a2f4d7f9c4fec1b8b96017e4c",
+   "ea6919adbf3899804c4d977ad6241fdddb0ee13a2f4d7f9c4fec1b8b96017e4c",
+   "2fb8f8f0b9a8555d71cf82ca23ef88cc3374c2dd4d8502fdc472ddad609df445",
+   "2fb8f8f0b9a8555d71cf82ca23ef88cc3374c2dd4d8502fdc472ddad609df445",
+   "339ada1ebb959596b1b4e1265263a66fc3b4e07f3ebb6ba4d3eccacb8378ed0f",
+   "339ada1ebb959596b1b4e1265263a66fc3b4e07f3ebb6ba4d3eccacb8378ed0f",
+   "b12958267d08bec79318a7cb663bbbbf7d9b79c3a9f58949afe85081cf8b8c92",
+   "b12958267d08bec79318a7cb663bbbbf7d9b79c3a9f58949afe85081cf8b8c92"
+  ],
+  "seconds": 25.1,
+  "tokens": {
+   "input": 4714,
+   "cached": 0,
+   "output": 1152
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_a3491c1dff5ee4e1|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "1bdd31fa3acc5d8e16514dc8a39c30afd0c1a568f2edcf4eb62f7f72b97b9a4d",
+   "ebc18273239b5340536985c10cfecaac0bb1c08e93319d8f73e4f77d81dad17f",
+   "ebc18273239b5340536985c10cfecaac0bb1c08e93319d8f73e4f77d81dad17f",
+   "c580bd22e089acf21ea5a00b7ea1221a9ad53b42a48262a7cdb43539d21b76d6",
+   "c580bd22e089acf21ea5a00b7ea1221a9ad53b42a48262a7cdb43539d21b76d6",
+   "153764ce52dcaf8ab0b348aa5688dbf2eb34d72b01a9cd9974413c5d0384aab3",
+   "153764ce52dcaf8ab0b348aa5688dbf2eb34d72b01a9cd9974413c5d0384aab3"
+  ],
+  "seconds": 18.5,
+  "tokens": {
+   "input": 3367,
+   "cached": 0,
+   "output": 867
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_aede8e94e7a06939|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "18b4dc9e531c48063fa2e2e0c0e392a8cfbaa7214e27686d3bf9827aa3cd7bae",
+   "7530ec874ab75ba661ee98c3934d629df3ee8221984a87181343d8ce782bebf3",
+   "7530ec874ab75ba661ee98c3934d629df3ee8221984a87181343d8ce782bebf3",
+   "2f7e919edb4a2687776126cee20562b7145b32bda0152e400193f4c454b838a3",
+   "2f7e919edb4a2687776126cee20562b7145b32bda0152e400193f4c454b838a3",
+   "fff38f41560640b8cd409903dd8a4ec08dbcc3e1c6f0f4f596841f911d0ce19c",
+   "fff38f41560640b8cd409903dd8a4ec08dbcc3e1c6f0f4f596841f911d0ce19c"
+  ],
+  "seconds": 16.8,
+  "tokens": {
+   "input": 3327,
+   "cached": 0,
+   "output": 757
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_5a5dc10821680996|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "25359d98f5f5186cfcb08f7fa90c8a53a1a562527d9d8b0ffac3d52e37ada084",
+   "d74470770dd91eb49d7225d0be7f4866867041bc787d5a8ab724a285b6151397",
+   "d74470770dd91eb49d7225d0be7f4866867041bc787d5a8ab724a285b6151397",
+   "11f72ac27d6b64a91a924d7c8d9da32f32905474293374def4e29b5f8f57ffda",
+   "11f72ac27d6b64a91a924d7c8d9da32f32905474293374def4e29b5f8f57ffda",
+   "bb0e82aa6c634394bb94505be8eb46a8e2fc0cf93abc96863cf12bf19a82a02e",
+   "bb0e82aa6c634394bb94505be8eb46a8e2fc0cf93abc96863cf12bf19a82a02e"
+  ],
+  "seconds": 22.5,
+  "tokens": {
+   "input": 3475,
+   "cached": 0,
+   "output": 1124
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_a9db07b09902ba29|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "dd4914edb61df1dcbfc752d6d909300bf1859ae32c46299d7a40e619660e2a2b",
+   "c8f8cca9093f83a2a26ab7e9e2cc5feac514e5497d5f9d693d3bb86b04621332",
+   "c8f8cca9093f83a2a26ab7e9e2cc5feac514e5497d5f9d693d3bb86b04621332",
+   "4b68576de79cc740986a93c9d433c86c087ccf5dbf4bf2ce5afcc632f771ff65",
+   "4b68576de79cc740986a93c9d433c86c087ccf5dbf4bf2ce5afcc632f771ff65",
+   "33c08c2a067676d1f1f7b930fcdd44da2f696d8c9e1a3c64669b7d596d11372d",
+   "33c08c2a067676d1f1f7b930fcdd44da2f696d8c9e1a3c64669b7d596d11372d"
+  ],
+  "seconds": 22.8,
+  "tokens": {
+   "input": 3666,
+   "cached": 0,
+   "output": 1287
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_bb531e0f49256cd3|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "e84e8847622fba0a0a8a1523ac3dc7b0ca37da80c8bccf6a631056d42a60c046",
+   "0bbba61b922072a063aeebb40674038b2772fa79a17d1ba50daf046e4755ff58",
+   "0bbba61b922072a063aeebb40674038b2772fa79a17d1ba50daf046e4755ff58",
+   "e6ff659f26c6e08c017101832432e879fd9e8d73125023635610819a3bc0cd11",
+   "e6ff659f26c6e08c017101832432e879fd9e8d73125023635610819a3bc0cd11",
+   "0e9d79ede05056724ca73409f9dc08477440c200c683d64042e386ca6934fe3f",
+   "0e9d79ede05056724ca73409f9dc08477440c200c683d64042e386ca6934fe3f"
+  ],
+  "seconds": 20.6,
+  "tokens": {
+   "input": 3526,
+   "cached": 0,
+   "output": 1116
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_b149e3b4d6534055|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "499f32261f3790ce8a19bd5885f076acba36398855c1f17cbbdaa18b71c5948c",
+   "220bf99e3116cd701de65a4014b3592670481e4ea36b1705a7ee9319f11c90c2",
+   "220bf99e3116cd701de65a4014b3592670481e4ea36b1705a7ee9319f11c90c2",
+   "0391d696775293f657fd2ddb9f023d979b6c5fb512c4dfedef31996e98c9d3e3",
+   "0391d696775293f657fd2ddb9f023d979b6c5fb512c4dfedef31996e98c9d3e3",
+   "813f0001bb309188a454b34a37a780fb732307c8f4522ba4f56f5ecf328f4eab",
+   "813f0001bb309188a454b34a37a780fb732307c8f4522ba4f56f5ecf328f4eab"
+  ],
+  "seconds": 22.6,
+  "tokens": {
+   "input": 3574,
+   "cached": 0,
+   "output": 1349
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_cdfe2344f51f6fdf|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "fc84a968e12d31b921e7052e3867ebb4ad6436fbef7a39e5f4e613fafd4174b1",
+   "b5ad457cbe766c2e621913c2c49a78639aa1dc29615620609b11890ab2f2ec07",
+   "b5ad457cbe766c2e621913c2c49a78639aa1dc29615620609b11890ab2f2ec07",
+   "aec0eb6ff6d0317c42d159c5058a307c99c1cdd13b86c2aca264b865b7452db0",
+   "aec0eb6ff6d0317c42d159c5058a307c99c1cdd13b86c2aca264b865b7452db0",
+   "9d387a2509ffab69ce5b4cd71e71fa9397660e230089827c44f4967e04ed35b8",
+   "9d387a2509ffab69ce5b4cd71e71fa9397660e230089827c44f4967e04ed35b8"
+  ],
+  "seconds": 20.7,
+  "tokens": {
+   "input": 3415,
+   "cached": 0,
+   "output": 974
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_d5630662a78c69f6|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "f2318a649dea0663c545f1851b7a97caae52146f14c341610cbc9ddd688762b9",
+   "f6d6e2904be6c8e9cfd8997050984c27b68abead25edb7393928678c5e4e0fd8",
+   "f6d6e2904be6c8e9cfd8997050984c27b68abead25edb7393928678c5e4e0fd8",
+   "a3e8703e3a4efffc4f45b46c0798aa40836934bf15c302797f0414263a3e8a70",
+   "a3e8703e3a4efffc4f45b46c0798aa40836934bf15c302797f0414263a3e8a70",
+   "3b407cf8a62da25925e7664aabf7ea46ac41e4f74c624610bfbb51782baf7bf7",
+   "3b407cf8a62da25925e7664aabf7ea46ac41e4f74c624610bfbb51782baf7bf7"
+  ],
+  "seconds": 16.6,
+  "tokens": {
+   "input": 3279,
+   "cached": 0,
+   "output": 792
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_e0c0e69ff6e2a6e4|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "f3b632ff962ed163ef8e4179a1586a771e1e67238badae109298f05480da9b6d",
+   "83c1fe95a3b427bdce533799032c1b5bf57d30920b6e08c5d224b27680c5de3f",
+   "83c1fe95a3b427bdce533799032c1b5bf57d30920b6e08c5d224b27680c5de3f",
+   "99e154b683faea63f4de9fc8e97969e7b8d34c3243ace6e48902bd1378c9bf37",
+   "99e154b683faea63f4de9fc8e97969e7b8d34c3243ace6e48902bd1378c9bf37",
+   "b091e40a8600ff97d3031a7bdcace91d4bc6c32313c9fd3c0b458e7bff8bc8af",
+   "b091e40a8600ff97d3031a7bdcace91d4bc6c32313c9fd3c0b458e7bff8bc8af"
+  ],
+  "seconds": 20.5,
+  "tokens": {
+   "input": 3546,
+   "cached": 0,
+   "output": 1091
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_e35e791327998dd2|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "d3c71f9654482cc21b14742f635a39819ad30e880f24e03cc86d48283591c593",
+   "7413606b4a9b92ddf1fba529d02655042c81abe73b2bebac095994b8d5877779",
+   "7413606b4a9b92ddf1fba529d02655042c81abe73b2bebac095994b8d5877779",
+   "a9770ab3f6b6113d728266388800eba1ff71655f582cac8f781c77d44139dc69",
+   "a9770ab3f6b6113d728266388800eba1ff71655f582cac8f781c77d44139dc69",
+   "b95c5622efd83fd97f4f6d8dc0e3e9517295cf6c5d8319abb74adebf33000b4a",
+   "b95c5622efd83fd97f4f6d8dc0e3e9517295cf6c5d8319abb74adebf33000b4a"
+  ],
+  "seconds": 20.7,
+  "tokens": {
+   "input": 3351,
+   "cached": 0,
+   "output": 1022
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_fa8300535a4c20dc|0": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "conflicting",
+     "value": true,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "second_value": true,
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [
+    "claim_received"
+   ],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "b93c429f15c4fdd4d7850b102a538404b2e5360f916c5dc63516c14b0a93dbb5",
+   "d45514e304698a4acdd8a473ce3d8e8c1333d5bcbd3aa4936ec594f63a733340",
+   "d45514e304698a4acdd8a473ce3d8e8c1333d5bcbd3aa4936ec594f63a733340",
+   "b72875823ffaefcb65419b511dea8eb81e625886a4e62a25e01f839f3ab4caf8",
+   "b72875823ffaefcb65419b511dea8eb81e625886a4e62a25e01f839f3ab4caf8",
+   "8da6d63e2b1c52324b92a2892f8111b0e199d88ad468e0e36b37cc3d602e4fc7",
+   "8da6d63e2b1c52324b92a2892f8111b0e199d88ad468e0e36b37cc3d602e4fc7"
+  ],
+  "seconds": 24.8,
+  "tokens": {
+   "input": 3387,
+   "cached": 0,
+   "output": 1300
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_f29b8a52c7246fd9|0": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "169a7a261e41007c6ddc9456820f950df7074e3e9a9c75a7c73412bdcf0a3fb8",
+   "f562c5cdc013d72052967c2b6669b3094069922b4564c633fae7ada4cffb1ea7",
+   "f562c5cdc013d72052967c2b6669b3094069922b4564c633fae7ada4cffb1ea7",
+   "a6721d7d3f61afb9975a19b3a29d7e06997d8cfbe84cac723e4155b6c946e1fa",
+   "a6721d7d3f61afb9975a19b3a29d7e06997d8cfbe84cac723e4155b6c946e1fa",
+   "4cd8342ad242176e9289aa637c8aa395b47c6c5d0690fce1bde04fb6157da284",
+   "4cd8342ad242176e9289aa637c8aa395b47c6c5d0690fce1bde04fb6157da284"
+  ],
+  "seconds": 28.8,
+  "tokens": {
+   "input": 3606,
+   "cached": 0,
+   "output": 1893
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_02881d44ed3d778b|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 5,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_family",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "373df7f4692882689e0895547f03149d0387ac46b17277568db2c3e58c79338e",
+   "3d0d777ed003210dd84ddc05656206466cce6389aa473252d727f8008a5ae972",
+   "3d0d777ed003210dd84ddc05656206466cce6389aa473252d727f8008a5ae972",
+   "25cb4c99731c7d5bf9aab17d23888901a109d203bea8fa9de6152c856cb4807a",
+   "25cb4c99731c7d5bf9aab17d23888901a109d203bea8fa9de6152c856cb4807a",
+   "c757f8981cac4345cf427d673e121eddc5e4875bc09e4aa2ba58876b36a4d1cf",
+   "c757f8981cac4345cf427d673e121eddc5e4875bc09e4aa2ba58876b36a4d1cf",
+   "f7edda1b3706fb4f8a9419ccf38497d2c90842ec90013f48087338c5e58a6379",
+   "f7edda1b3706fb4f8a9419ccf38497d2c90842ec90013f48087338c5e58a6379"
+  ],
+  "seconds": 24.6,
+  "tokens": {
+   "input": 4761,
+   "cached": 0,
+   "output": 1342
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_048e0f1cc96e77a7|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "1de72016f3e58b105b12c70da6996d2f0d72eba41093904806239f79eb5d774b",
+   "c4fa8dce26c50a1ed0ebf6ca76b3733a5fd542e85b18ad63ecd13fea616f7566",
+   "c4fa8dce26c50a1ed0ebf6ca76b3733a5fd542e85b18ad63ecd13fea616f7566",
+   "efc58b7642ad03f5dea2ec0872346890302d07cf968ea1c459e91624700a197d",
+   "efc58b7642ad03f5dea2ec0872346890302d07cf968ea1c459e91624700a197d",
+   "baf9457757078ae0629f05b928c447b770a20696f1fbff71892b5de02252e8a1",
+   "baf9457757078ae0629f05b928c447b770a20696f1fbff71892b5de02252e8a1"
+  ],
+  "seconds": 22.6,
+  "tokens": {
+   "input": 3515,
+   "cached": 0,
+   "output": 1392
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_29a12f48f41287b2|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "lt_abuse",
+    "lt_arrears",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "8d697b592820271b498daad790592727587a6101cb7106088e8eea6bb30ef3de",
+   "d5b19966e51fb57b5a95018847d94820ee1addb59156dda1c0c515fece549da4",
+   "d5b19966e51fb57b5a95018847d94820ee1addb59156dda1c0c515fece549da4",
+   "f65684a08617fcabc3cc72a9b179814a5f173821f22118b1cef5c24c8cea5bc4",
+   "f65684a08617fcabc3cc72a9b179814a5f173821f22118b1cef5c24c8cea5bc4",
+   "88e066d31393a2d91737493c1f921f6667d29700f7d0bc9b9c03bedb6053402a",
+   "88e066d31393a2d91737493c1f921f6667d29700f7d0bc9b9c03bedb6053402a"
+  ],
+  "seconds": 20.6,
+  "tokens": {
+   "input": 3498,
+   "cached": 0,
+   "output": 1126
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_3d6f28bfed11c4ab|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "fc7fcb899f759796715a2762ec78c794577a99affbcffd181806c911a2f53b6e",
+   "ffc405de52edc4326b3a28e02254ec333dced677a7276e2744fc853da109b4f6",
+   "ffc405de52edc4326b3a28e02254ec333dced677a7276e2744fc853da109b4f6",
+   "10c558eefb01811bd61c8459474aa1f399841e575c36fd2124305be590937ac3",
+   "10c558eefb01811bd61c8459474aa1f399841e575c36fd2124305be590937ac3",
+   "ace59c4eed52de41b76cc91e387ddbd5707da9616288b1ad15928aae2bb4d4c4",
+   "ace59c4eed52de41b76cc91e387ddbd5707da9616288b1ad15928aae2bb4d4c4"
+  ],
+  "seconds": 24.6,
+  "tokens": {
+   "input": 3355,
+   "cached": 0,
+   "output": 1308
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_a3491c1dff5ee4e1|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "909d939bdf70e537cb0a4a7a307262eebcf11836d20ec07849c54b1cdb4c248e",
+   "37a0937b065b6b06966d3ce0a823fa7e43e6fe812138ba1f1aa99f4de62e270d",
+   "37a0937b065b6b06966d3ce0a823fa7e43e6fe812138ba1f1aa99f4de62e270d",
+   "5e6c38dd1f29075a946ad85746f6381197625f09664c7a5cf59a8291e0d6427e",
+   "5e6c38dd1f29075a946ad85746f6381197625f09664c7a5cf59a8291e0d6427e",
+   "2f5a8a8722a7e479e486e8338f5bfd3fceaacabf28901fd51f9700483162ebf2",
+   "2f5a8a8722a7e479e486e8338f5bfd3fceaacabf28901fd51f9700483162ebf2"
+  ],
+  "seconds": 18.6,
+  "tokens": {
+   "input": 3371,
+   "cached": 0,
+   "output": 961
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_5a5dc10821680996|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "7588211b418fd032e20d104c958bdeb907543b6496c0ebd6acec7785727aa525",
+   "94622591b5044856cdd33dafda1aca4fb39ab6b4fd8a036ad24694676f2131b4",
+   "94622591b5044856cdd33dafda1aca4fb39ab6b4fd8a036ad24694676f2131b4",
+   "a83de62e65f20873ced1319338f70e3ecef45f2f9c4fad084d0404f4155eeb2f",
+   "a83de62e65f20873ced1319338f70e3ecef45f2f9c4fad084d0404f4155eeb2f",
+   "9d804a9d7812e518ca95bcc63cfe9606e2be248db23a7e05b7fe51a694aea088",
+   "9d804a9d7812e518ca95bcc63cfe9606e2be248db23a7e05b7fe51a694aea088"
+  ],
+  "seconds": 20.6,
+  "tokens": {
+   "input": 3479,
+   "cached": 0,
+   "output": 1182
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_a9db07b09902ba29|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "ec7e9536392177605f67cf145116933c9ce830a960fe3f8832e79c260e50b1de",
+   "34eb60665d5594430a07a1d15c2a5b2b35c832d8f846fc80d1cdfd737c615598",
+   "34eb60665d5594430a07a1d15c2a5b2b35c832d8f846fc80d1cdfd737c615598",
+   "5700a5025d2d96642c3845a0a5e432321e14cb92e2076d5329f5c7c91bb3f8e5",
+   "5700a5025d2d96642c3845a0a5e432321e14cb92e2076d5329f5c7c91bb3f8e5",
+   "e93ccc8eb326fbe5587ebb614ddebe581e22d5e1cb28c26166244d9d66ff4ecf",
+   "e93ccc8eb326fbe5587ebb614ddebe581e22d5e1cb28c26166244d9d66ff4ecf"
+  ],
+  "seconds": 22.6,
+  "tokens": {
+   "input": 3662,
+   "cached": 0,
+   "output": 1373
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_aede8e94e7a06939|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "4efaaaa272e3327f36e6b3ca1c177bee67712a95b89f03c75f73f1353d437b53",
+   "3a8b5bec67f9272910df9cb0455ea9216eb44ddf9021bd6be8ef2660cbb8d116",
+   "3a8b5bec67f9272910df9cb0455ea9216eb44ddf9021bd6be8ef2660cbb8d116",
+   "2d1e8896f69e5e687abd8e10fc01adb6eaa9707585d6fc950af4859ca23b8ea8",
+   "2d1e8896f69e5e687abd8e10fc01adb6eaa9707585d6fc950af4859ca23b8ea8",
+   "82f0fff5a09aad5b7e97f92447091e1683c0741ac18b04f94275697836b6334e",
+   "82f0fff5a09aad5b7e97f92447091e1683c0741ac18b04f94275697836b6334e"
+  ],
+  "seconds": 18.5,
+  "tokens": {
+   "input": 3327,
+   "cached": 0,
+   "output": 772
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_bb531e0f49256cd3|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "7f7fae7746e139573e0e9f213a90ebb65773469717429f8c42f95affacd7eead",
+   "39ea03adce567ecffd22b4fda0a8c34339024f6bc4d1acf04e4b67923b906cd7",
+   "39ea03adce567ecffd22b4fda0a8c34339024f6bc4d1acf04e4b67923b906cd7",
+   "98e9e60045544d8a1fa81140fb2af9c537f6d4ea70b42e15ed795318b65912db",
+   "98e9e60045544d8a1fa81140fb2af9c537f6d4ea70b42e15ed795318b65912db",
+   "d2bff9503e9372410f10b4cae874b8d7d79b30669fce560bd0c2f345c49dd595",
+   "d2bff9503e9372410f10b4cae874b8d7d79b30669fce560bd0c2f345c49dd595"
+  ],
+  "seconds": 20.5,
+  "tokens": {
+   "input": 3522,
+   "cached": 0,
+   "output": 1102
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_b149e3b4d6534055|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "arrears"
+   ],
+   "deferred": false,
+   "requests": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "retaliation_screen": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "arrears"
+   ],
+   "current_step": "lt_type__gate_arrears",
+   "outcome": null,
+   "reached": [
+    "lt_abuse",
+    "lt_close",
+    "lt_deadline",
+    "lt_evidence",
+    "lt_extension",
+    "lt_form",
+    "lt_intake",
+    "lt_resolution",
+    "lt_type",
+    "lt_type__gate_arrears",
+    "lt_type__gate_family_home"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "arrears"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "0a8991db9d8f617465f9647f6fea5ee829f0e517ed5335694056308867575c95",
+   "fc93172cf7b06bc36b79e3366ebc33061d7c18b8f7825a6e2952de584eb9bd43",
+   "fc93172cf7b06bc36b79e3366ebc33061d7c18b8f7825a6e2952de584eb9bd43",
+   "3229ab29fc16ca46061228ace07a5ed9c74cec67b27e81e52532dcf157cff271",
+   "3229ab29fc16ca46061228ace07a5ed9c74cec67b27e81e52532dcf157cff271",
+   "a9d638607c9ba2f3ee6151479dfd3bcd9eeb02b6734b18314669e2afb2d42579",
+   "a9d638607c9ba2f3ee6151479dfd3bcd9eeb02b6734b18314669e2afb2d42579"
+  ],
+  "seconds": 22.7,
+  "tokens": {
+   "input": 3578,
+   "cached": 0,
+   "output": 1463
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_cdfe2344f51f6fdf|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "eb7302638c1ae3741403d6c8ce27c983654c24c3a4b25e7e9468001f8dbf0deb",
+   "754427e47df55da49a74d168b2388d9dd495bdd0120bae6ad110401864636fe3",
+   "754427e47df55da49a74d168b2388d9dd495bdd0120bae6ad110401864636fe3",
+   "34f9e3b1508d3ad636973d5ab50f0cbb8d0c9484595a24a4523e05b75b33ed57",
+   "34f9e3b1508d3ad636973d5ab50f0cbb8d0c9484595a24a4523e05b75b33ed57",
+   "91a116832da3f9ac2da99a316f0effc3d891568ee052c3d5a5c1a1099aea5d49",
+   "91a116832da3f9ac2da99a316f0effc3d891568ee052c3d5a5c1a1099aea5d49"
+  ],
+  "seconds": 20.6,
+  "tokens": {
+   "input": 3411,
+   "cached": 0,
+   "output": 960
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_d5630662a78c69f6|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_reference",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "f2152000a6e1183802c85f5cd17acb6ff42ea24b585b989eedccefe9a9348573",
+   "01f34337c325abc065716ec57428231cdeb0eaa6d957f770ff92a095a20a9fc8",
+   "01f34337c325abc065716ec57428231cdeb0eaa6d957f770ff92a095a20a9fc8",
+   "cffb1b4a0abae334785f42c694cb492bce495e03de72d28e1299dc97a3bced10",
+   "cffb1b4a0abae334785f42c694cb492bce495e03de72d28e1299dc97a3bced10",
+   "6e9f4a849605b8a131ad8c5294b02ee5c9003bcead395a8e86f90dd9cb3467e0",
+   "6e9f4a849605b8a131ad8c5294b02ee5c9003bcead395a8e86f90dd9cb3467e0"
+  ],
+  "seconds": 20.6,
+  "tokens": {
+   "input": 3275,
+   "cached": 0,
+   "output": 915
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_e35e791327998dd2|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": null,
+   "outcome": "closed",
+   "reached": [
+    "ri_assessment",
+    "ri_close",
+    "ri_deadline",
+    "ri_evidence",
+    "ri_form",
+    "ri_intake",
+    "ri_reason",
+    "ri_reason__gate_reference_rate",
+    "ri_reason__gate_renovation",
+    "ri_renovation",
+    "ri_resolution"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "0aee0102084af0bf978b68002ab941eca412a6cb626bab44559dd182072e0d1a",
+   "bd82b96f709a4ea3f5f94203003324d46ff3ed975809529f11f0c9a222027898",
+   "bd82b96f709a4ea3f5f94203003324d46ff3ed975809529f11f0c9a222027898",
+   "cd232544b8704441c708652c5edb4862cae84bda3269e5751b077492c8b9bf8b",
+   "cd232544b8704441c708652c5edb4862cae84bda3269e5751b077492c8b9bf8b",
+   "46ff321e58f3627757abeae5d0973d9836957a5aab3da7d389679f25fa7e8952",
+   "46ff321e58f3627757abeae5d0973d9836957a5aab3da7d389679f25fa7e8952"
+  ],
+  "seconds": 18.9,
+  "tokens": {
+   "input": 3355,
+   "cached": 0,
+   "output": 932
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_e0c0e69ff6e2a6e4|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": [],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [],
+   "deferred": false,
+   "requests": [],
+   "holds": []
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "established",
+     "value": false,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "arrears": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "extension_relevant": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [],
+   "rejected_facts": [],
+   "waiting_for": [],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": null,
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "87510fa79fdba4b16327aac369cdaf4cf2148cc2cc54f2e144696bfcbe293bbb",
+   "8ce1c95bb06ceea50bc9d1e8d71ca78fa533c8d8073e98f5a6b7a7ab642cbc41",
+   "8ce1c95bb06ceea50bc9d1e8d71ca78fa533c8d8073e98f5a6b7a7ab642cbc41",
+   "f8c29f4287afd90e0ac2f039af23d3a64dd0ff691211b98b73a33d9696c45444",
+   "f8c29f4287afd90e0ac2f039af23d3a64dd0ff691211b98b73a33d9696c45444",
+   "19bff06a4b4316bbda8a9b9f2a2300498817cea5df5c6c2e02a21790ab6d3d24",
+   "19bff06a4b4316bbda8a9b9f2a2300498817cea5df5c6c2e02a21790ab6d3d24"
+  ],
+  "seconds": 20.7,
+  "tokens": {
+   "input": 3550,
+   "cached": 0,
+   "output": 910
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_f29b8a52c7246fd9|1": {
+  "plan": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "lease_termination_dispute",
+   "questions": [
+    "termination_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "housing_search_log",
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "status": "completed",
+  "calls": 4,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "lease_termination_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "termination_received": {
+     "status": "conflicting",
+     "value": true,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "second_value": false,
+     "cited": true
+    },
+    "arrears": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "extension_relevant": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "family_home": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    },
+    "retaliation_screen": {
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed",
+     "by": "presumption",
+     "cited": false
+    }
+   },
+   "conflicting_facts": [
+    "termination_received"
+   ],
+   "rejected_facts": [],
+   "waiting_for": [
+    "termination_received"
+   ],
+   "current_step": "lt_intake",
+   "outcome": null,
+   "reached": [
+    "lt_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "termination_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "1812b94b6fcf326b4a40f2f0f4b966fb9494ae20753ff4cc08f114fd4b5a8d4b",
+   "991df49d6b02661f47d8afd983affad55d3229f429378fe09b39e2c0474afbeb",
+   "991df49d6b02661f47d8afd983affad55d3229f429378fe09b39e2c0474afbeb",
+   "d604715db69f7825bb3ee48ae7209906228b22b3f3e6f82075899118d5df5ed7",
+   "d604715db69f7825bb3ee48ae7209906228b22b3f3e6f82075899118d5df5ed7",
+   "4d3d3d478723c7099f514e99b4ca3e0ca2ac3a9c8339c209e3fe3a98d58d4f05",
+   "4d3d3d478723c7099f514e99b4ca3e0ca2ac3a9c8339c209e3fe3a98d58d4f05"
+  ],
+  "seconds": 30.6,
+  "tokens": {
+   "input": 3610,
+   "cached": 0,
+   "output": 2066
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker"
+  ]
+ },
+ "PRODUCT|pcl_fa8300535a4c20dc|1": {
+  "plan": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "added_requests": [],
+   "added_holds": []
+  },
+  "plan_workflow_only": {
+   "family": "rent_increase_dispute",
+   "questions": [
+    "claim_received"
+   ],
+   "deferred": false,
+   "requests": [],
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "status": "completed",
+  "calls": 5,
+  "product_extra": {
+   "routing": {
+    "status": "selected",
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "rent_increase_dispute"
+     }
+    ]
+   },
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "document_judgments": {},
+   "facts": {
+    "dispute_family": {
+     "status": "established",
+     "value": "rent_increase_dispute",
+     "verdict": "accepted",
+     "by": "routing",
+     "cited": true
+    },
+    "claim_received": {
+     "status": "conflicting",
+     "value": true,
+     "verdict": "not_checked",
+     "by": "claim_reader",
+     "second_value": false,
+     "cited": true
+    },
+    "reference_rate": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    },
+    "renovation": {
+     "status": "established",
+     "value": true,
+     "verdict": "accepted",
+     "by": "claim_reader",
+     "cited": true
+    }
+   },
+   "conflicting_facts": [
+    "claim_received"
+   ],
+   "rejected_facts": [],
+   "waiting_for": [
+    "claim_received"
+   ],
+   "current_step": "ri_intake",
+   "outcome": null,
+   "reached": [
+    "ri_intake"
+   ],
+   "on_file": [],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "claim_received"
+    ],
+    "completions": 2
+   },
+   "answer": "Checklist only: see the checklist and the open points.",
+   "reply_clauses": 0,
+   "warnings": []
+  },
+  "keys": [
+   "b5ad2c259627ce7c4dc73dcbd9697d96b4286d45826424182359ea26a3fe1ac4",
+   "f61cbde4b8ac8ce0148f597e36481f69753104f09fc7b911812798bab7abd8a8",
+   "f61cbde4b8ac8ce0148f597e36481f69753104f09fc7b911812798bab7abd8a8",
+   "9c03b912a05a6882ae3c46a262c615b978ce77e32bce1efa22e7579e42537011",
+   "9c03b912a05a6882ae3c46a262c615b978ce77e32bce1efa22e7579e42537011",
+   "1708c9c35e1ba39ce17af194e35cacafbb1c5dfdccff5b730e46fd1c02bd9194",
+   "1708c9c35e1ba39ce17af194e35cacafbb1c5dfdccff5b730e46fd1c02bd9194",
+   "b3344b9ed28fe142c1145b3dc6f28010de5f52c982f6680e56a2fe9891d195a2",
+   "b3344b9ed28fe142c1145b3dc6f28010de5f52c982f6680e56a2fe9891d195a2"
+  ],
+  "seconds": 32.6,
+  "tokens": {
+   "input": 4502,
+   "cached": 0,
+   "output": 1963
+  },
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker"
+  ]
+ }
+}

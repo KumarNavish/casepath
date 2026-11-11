@@ -58,6 +58,10 @@ def arms():
     for k, v in load(OUT / "live_partd.json").items():
         _, c, r = k.split("|")
         short[(c, int(r) - 50)] = v
+    # only complete runs of the shorter answer (Part D was stopped during its second run)
+    cases = {c for c, _ in short}
+    complete = {r for r in {r for _, r in short} if all((c, r) in short for c in cases)}
+    short = {k: v for k, v in short.items() if k[1] in complete}
     return {"tested": tested, "short": short}
 
 

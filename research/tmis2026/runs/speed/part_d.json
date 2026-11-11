@@ -1,0 +1,340 @@
+{
+ "coverage": {
+  "tested": 456,
+  "short": 152
+ },
+ "tenancy": {
+  "per_claim_run": {
+   "tested": {
+    "strict_unsafe": 0.17592592592592593,
+    "held_req": 0.12962962962962965,
+    "spurious_hold": 0.018518518518518517,
+    "premature": 0.0,
+    "missed": 0.0787037037037037,
+    "unnecessary": 0.041666666666666664,
+    "correct_hold": 0.3055555555555556,
+    "handed": 0.05555555555555555,
+    "claims": 72
+   },
+   "short": {
+    "strict_unsafe": 0.16666666666666666,
+    "held_req": 0.125,
+    "spurious_hold": 0.0,
+    "premature": 0.0,
+    "missed": 0.06944444444444445,
+    "unnecessary": 0.013888888888888888,
+    "correct_hold": 0.3055555555555556,
+    "handed": 0.08333333333333333,
+    "claims": 72
+   }
+  },
+  "paired": {
+   "strict_unsafe": {
+    "mean": -0.009259259259259254,
+    "lo": -0.08333333333333333,
+    "hi": 3.0839528461809902e-18,
+    "units": 72,
+    "clusters": 3
+   },
+   "held_req": {
+    "mean": -0.00462962962962963,
+    "lo": -0.14583333333333334,
+    "hi": 0.12037037037037036,
+    "units": 72,
+    "clusters": 3
+   },
+   "spurious_hold": {
+    "mean": -0.018518518518518517,
+    "lo": -0.041666666666666664,
+    "hi": 0.0,
+    "units": 72,
+    "clusters": 3
+   },
+   "premature": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 72,
+    "clusters": 3
+   },
+   "missed": {
+    "mean": -0.009259259259259257,
+    "lo": -0.037037037037037035,
+    "hi": 0.020833333333333332,
+    "units": 72,
+    "clusters": 3
+   },
+   "unnecessary": {
+    "mean": -0.027777777777777776,
+    "lo": -0.08333333333333333,
+    "hi": -0.018518518518518517,
+    "units": 72,
+    "clusters": 3
+   },
+   "correct_hold": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 72,
+    "clusters": 3
+   },
+   "handed": {
+    "mean": 0.027777777777777776,
+    "lo": 0.0,
+    "hi": 0.05555555555555555,
+    "units": 72,
+    "clusters": 3
+   }
+  }
+ },
+ "probe": {
+  "per_claim_run": {
+   "tested": {
+    "strict_unsafe": 0.4375,
+    "held_req": 0.0,
+    "spurious_hold": 1.1875,
+    "premature": 0.0,
+    "missed": 0.0,
+    "unnecessary": 0.4375,
+    "correct_hold": 1.75,
+    "handed": 0.0,
+    "claims": 16
+   },
+   "short": {
+    "strict_unsafe": 0.4375,
+    "held_req": 0.0,
+    "spurious_hold": 0.5625,
+    "premature": 0.0,
+    "missed": 0.0,
+    "unnecessary": 0.4375,
+    "correct_hold": 1.75,
+    "handed": 0.0,
+    "claims": 16
+   }
+  },
+  "paired": {
+   "strict_unsafe": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "held_req": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "spurious_hold": {
+    "mean": -0.625,
+    "lo": -1.0,
+    "hi": -0.24999999999999997,
+    "units": 16,
+    "clusters": 2
+   },
+   "premature": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "missed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "unnecessary": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "correct_hold": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   },
+   "handed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "units": 16,
+    "clusters": 2
+   }
+  },
+  "by_kind": {
+   "tested": {
+    "control": {
+     "strict_unsafe": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.2222222222222222,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 0.0,
+     "correct_hold": 0.0,
+     "handed": 0.0,
+     "claims": 6
+    },
+    "denied": {
+     "strict_unsafe": 1.1666666666666667,
+     "held_req": 0.0,
+     "spurious_hold": 2.9444444444444446,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 1.1666666666666667,
+     "correct_hold": 0.0,
+     "handed": 0.0,
+     "claims": 6
+    },
+    "open": {
+     "strict_unsafe": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.0,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 0.0,
+     "correct_hold": 7.0,
+     "handed": 0.0,
+     "claims": 4
+    }
+   },
+   "short": {
+    "control": {
+     "strict_unsafe": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.3333333333333333,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 0.0,
+     "correct_hold": 0.0,
+     "handed": 0.0,
+     "claims": 6
+    },
+    "denied": {
+     "strict_unsafe": 1.1666666666666667,
+     "held_req": 0.0,
+     "spurious_hold": 1.1666666666666667,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 1.1666666666666667,
+     "correct_hold": 0.0,
+     "handed": 0.0,
+     "claims": 6
+    },
+    "open": {
+     "strict_unsafe": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.0,
+     "premature": 0.0,
+     "missed": 0.0,
+     "unnecessary": 0.0,
+     "correct_hold": 7.0,
+     "handed": 0.0,
+     "claims": 4
+    }
+   }
+  }
+ },
+ "theft": {
+  "per_pair_run": {
+   "tested": {
+    "wrong_plus_missed_per_pair": 0.5,
+    "open_unchanged_share": 0.9722222222222222,
+    "on_pairs": 36,
+    "open_pairs": 24
+   },
+   "short": {
+    "wrong_plus_missed_per_pair": 1.0555555555555556,
+    "open_unchanged_share": 0.4583333333333333,
+    "on_pairs": 36,
+    "open_pairs": 24
+   }
+  },
+  "paired": {
+   "wrong_plus_missed_per_pair": {
+    "mean": 0.5555555555555556,
+    "lo": 0.3240740740740741,
+    "hi": 0.7685185185185186,
+    "units": 36,
+    "clusters": 9
+   },
+   "open_unchanged_share": {
+    "mean": -0.513888888888889,
+    "lo": -0.611111111111111,
+    "hi": -0.4444444444444444,
+    "units": 24,
+    "clusters": 6
+   }
+  }
+ },
+ "cost": {
+  "tenancy": {
+   "tested": {
+    "case_runs": 216,
+    "usd_per_case_run": 0.003171620949074074,
+    "output_tokens_per_case_run": 3618.675925925926,
+    "reasoning_tokens_per_case_run": 1447.9953703703704,
+    "paid_calls_logged": 0
+   },
+   "short": {
+    "case_runs": 72,
+    "usd_per_case_run": 0.0029418752083333333,
+    "output_tokens_per_case_run": 3249.4444444444443,
+    "reasoning_tokens_per_case_run": 1350.3194444444443,
+    "time_to_checklist_median_s": 8.4,
+    "time_min_s": 1.45,
+    "time_max_s": 125.63,
+    "paid_calls_logged": 644
+   }
+  },
+  "theft": {
+   "tested": {
+    "case_runs": 192,
+    "usd_per_case_run": 0.004524449739583333,
+    "output_tokens_per_case_run": 7954.973958333333,
+    "reasoning_tokens_per_case_run": 1540.84375,
+    "paid_calls_logged": 0
+   },
+   "short": {
+    "case_runs": 64,
+    "usd_per_case_run": 0.00262680375,
+    "output_tokens_per_case_run": 4423.390625,
+    "reasoning_tokens_per_case_run": 2185.140625,
+    "time_to_checklist_median_s": 16.73,
+    "time_min_s": 13.35,
+    "time_max_s": 22.58,
+    "paid_calls_logged": 321
+   }
+  },
+  "probe": {
+   "tested": {
+    "case_runs": 48,
+    "usd_per_case_run": 0.00085705625,
+    "output_tokens_per_case_run": 1073.4791666666667,
+    "reasoning_tokens_per_case_run": 474.6666666666667,
+    "time_to_checklist_median_s": 10.13,
+    "time_min_s": 0.21,
+    "time_max_s": 20.67,
+    "paid_calls_logged": 105
+   },
+   "short": {
+    "case_runs": 16,
+    "usd_per_case_run": 0.00077288125,
+    "output_tokens_per_case_run": 920.125,
+    "reasoning_tokens_per_case_run": 443.8125,
+    "time_to_checklist_median_s": 7.295,
+    "time_min_s": 5.13,
+    "time_max_s": 9.84,
+    "paid_calls_logged": 66
+   }
+  }
+ }
+}
