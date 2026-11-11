@@ -369,3 +369,50 @@ model calls; it passes in a fresh clone. A public release is blocked on the
 owner's decisions listed in `release/SCRUB_REPORT.md` (git history, the
 insurer's name in the tested product, a Knowledge seed derived from its
 letters, internal documents, licences, the cache archive).
+
+## 2026-11-11 (later) — After the test: product round 1, cost and time, the open same-model cell
+
+**Owner's framing.** The claim is same-model: for a given model, CasePath against
+every baseline on that model; nothing beyond the frontier model; credits used
+sparingly, no blind runs.
+
+**Product.** The product's owners pushed "round 1" without the fix commits and set
+a gate (their check on seven real development dossiers by 15 Nov) for taking the
+fix branch unchanged or not at all. The fix branch was rebased onto their tip with
+five rule collisions resolved (`REPLY_PRODUCT_ROUND1.md`), pushed as
+`claude/casepath-internal-paper-sync-20261111f` (head `1b96f82e`). On our
+development data round 1 alone scores 1.01 strict errors per tenancy claim and
+1.50 per theft pair; the rebased branch 0.13–0.16 and 0.35–0.50. Whatever the gate
+decides, the product will differ from the tested commit; a repeat of the test on
+the frozen product needs new sealed data.
+
+**Expert study.** The product's process for mould cases is now a handler process
+written by the builders from seven development dossiers and the law; the drawn
+diagrams describe the intake chat. Pre-registration, field list and protocol
+appendix adjusted: practice is the reference for the handler's path; a leakage
+rule and an order at the freeze were added.
+
+**Cost and time (USD 1.40).** Readings asked at once, checklist stored before the
+reply draft, two first turns asked ahead: no request and no checklist changed
+(1,812 stored case-runs replayed from stored responses); time to a checklist about
+halved. Cost unchanged: output tokens dominate. Three attempts to cut cost failed
+(the endpoint ignores a request for three samples; listing only addressed
+conditions doubled theft errors; a position-aligned encoding did not decode).
+
+**The open cell: theft on the frontier model (USD 3.0).** Model-free diagnosis:
+with perfect facts the theft rules give 0.33 errors per pair in either rule base;
+the frontier-model product's excess comes mostly from two over-broad conditions
+read literally. A general reading instruction (take the case type as given) met
+its pre-set rule on the pair measure and failed the harm check: it dropped the
+defining-event conditions. A reference-free lint (conditions admitted true in most
+ordinary cases) flags both over-broad conditions with the frontier model's
+readings. Two blind AI editors reviewed the flags under a four-eyes rule; the
+third-party narrowing was rejected by one editor (the passage states no
+exclusion). Evaluated without model calls, the reconciled rules drop three
+documents from every ordinary checklist and may raise the floor, so no model test
+was run. Decision: no further credits on this cell; it needs a jurist's decision
+on three points (`rule_review/lint/final/RECONCILIATION.md`).
+
+**Paper.** Reframed around the same-model claim as a two-by-two (holds in three
+cells, not shown on theft with the frontier model); new subsection "After the
+test"; abstract rewritten. Main paper 59 pages, supplement 27; all checks pass.

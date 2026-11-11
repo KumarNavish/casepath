@@ -6,7 +6,7 @@
    byte for byte.
 2. Every citation key resolves to references.bib.
 3. The Study 3 and ShARC macros regenerate from their result files byte for byte
-   (make_numbers_study3.py, make_numbers_sharc.py; the saved files are restored afterwards).
+   (make_numbers_study3.py, make_numbers_sharc.py, make_numbers_followup.py; the saved files are restored afterwards).
 4. Structure of the included sections: no removed figure in the body, no "expert review" wording,
    model names in Sections 1-9 only once, in Section 6.
 5. The paper (main.tex, and supplement.tex when present, built main, supplement, main) compiles from a
@@ -56,7 +56,7 @@ if not PAPER_ONLY:
          "" if before == after else f"{sum(a != b for a, b in zip(before.splitlines(), after.splitlines()))} lines differ")
 
 # 3. Study 3 and ShARC macros from their result files (no model calls).
-for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex")):
+for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex"), ("make_numbers_followup.py", "numbers_followup.tex")):
     target = PAPER / "results" / name
     saved = target.read_bytes()
     try:
