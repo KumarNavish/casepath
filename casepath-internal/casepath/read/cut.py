@@ -6,7 +6,7 @@ ponytail: the later pages' bytes stay inside the file (a viewer never shows them
 """
 import re
 
-from .pdfread import Document, Name, PdfError, Ref
+from .pdfread import Document, Name, PdfError, Ref, Stream
 
 
 def parse_pages(spec, total):
@@ -102,3 +102,65 @@ def cut_extraction(extraction, keep):
         out["segments"] = [{**s, "last_page": max(p for p in kept if s["first_page"] <= p <= s["last_page"])}
                            for s in extraction["segments"] if s["first_page"] in kept]
     return out
+
+
+def extract_pdf(data, keep):
+    """A new PDF holding only the kept pages (1-based) and the objects they use, so it is small.
+
+    Links and annotations are left out: they can point at other pages and would pull the whole file back in.
+    """
+    doc = Document(data)
+    numbers, order = {}, []
+
+    def walk(value):
+        if isinstance(value, Ref):
+            if value[0] not in numbers and value[0] in doc.objects:
+                numbers[value[0]] = len(numbers) + 3 + len(keep)
+                order.append(value[0])
+                walk(doc.objects[value[0]])
+        elif isinstance(value, Stream):
+            walk(value.dict)
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                if key not in ("Parent", "P"):
+                    walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+
+    def renumber(value):
+        if isinstance(value, Ref):
+            return Ref((numbers[value[0]], 0)) if value[0] in numbers else None
+        if isinstance(value, dict):
+            return {k: renumber(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [renumber(v) for v in value]
+        return value
+
+    pages = [{k: v for k, v in doc.pages[p - 1].items() if k not in ("Parent", "Annots", "StructParents", "B")} for p in keep]
+    for page in pages:
+        walk(page)
+    out = bytearray(b"%PDF-1.7\n%\xe2\xe3\xcf\xd3\n")
+    offsets = {}
+
+    def write(number, body):
+        offsets[number] = len(out)
+        out.extend(f"{number} 0 obj\n".encode("latin-1") + body + b"\nendobj\n")
+
+    write(1, _pdf({"Type": Name("Catalog"), "Pages": Ref((2, 0))}).encode("latin-1"))
+    write(2, _pdf({"Type": Name("Pages"), "Kids": [Ref((3 + i, 0)) for i in range(len(pages))], "Count": len(pages)}).encode("latin-1"))
+    for i, page in enumerate(pages):
+        write(3 + i, _pdf({**renumber(page), "Parent": Ref((2, 0))}).encode("latin-1"))
+    for old in order:
+        obj = doc.objects[old]
+        if isinstance(obj, Stream):
+            head = _pdf({**renumber(obj.dict), "Length": len(obj.raw)}).encode("latin-1")
+            write(numbers[old], head + b"\nstream\n" + obj.raw + b"\nendstream")
+        else:
+            write(numbers[old], _pdf(renumber(obj)).encode("latin-1"))
+    size = 3 + len(keep) + len(order)
+    xref = len(out)
+    out += f"xref\n0 {size}\n0000000000 65535 f \n".encode("latin-1")
+    out += "".join(f"{offsets[n]:010d} 00000 n \n" for n in range(1, size)).encode("latin-1")
+    out += f"trailer\n<< /Size {size} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode("latin-1")
+    return bytes(out)

@@ -8,6 +8,7 @@ The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
 import hashlib
+import html
 import json
 import importlib.util
 from dataclasses import replace
@@ -16,7 +17,7 @@ from typing import Literal
 from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
@@ -31,6 +32,8 @@ from ..parity import source_tree
 from ..read import cut
 from ..read.evidence import Evidence
 from ..read.pdfread import PdfError
+
+SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
 from ..agents.runner import RunService, case_state
 from .store import CaseStore, Conflict, NotFound
@@ -493,8 +496,32 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         app.post("/api/cases/{case_id}/files", status_code=201)(upload)
 
     @app.get("/api/files/{file_id}/original")
-    def original(file_id: str, who=Depends(user)):
+    def original(file_id: str, pages: str | None = None, who=Depends(user)):
         data, row = found(store.file_bytes, file_id)
+        pdf = row["media_type"] == "application/pdf"
+        total = int(row["extraction"].get("pages") or 0) if pdf else 0
+        if pdf and pages:
+            try:
+                keep = cut.parse_pages(pages, total)
+                kept = row["extraction"].get("kept_pages")  # a cut keeps the original numbers; its PDF holds those pages only
+                if kept:
+                    if not set(keep) <= set(kept):
+                        raise ValueError("these pages are not in this file")
+                    keep = [kept.index(p) + 1 for p in keep]
+                data = cut.extract_pdf(data, keep)
+            except (ValueError, PdfError) as error:
+                raise HTTPException(422, str(error))
+        elif pdf and total > 1 and len(data) > SERVED_WHOLE_BYTES:
+            # The Apps proxy returns an error page for a response of about 18 MB or more: offer the file in parts.
+            shown = row["extraction"].get("kept_pages") or list(range(1, total + 1))
+            step = max(1, int(SERVED_WHOLE_BYTES * 0.5 * total / len(data)))
+            parts = [shown[i:i + step] for i in range(0, len(shown), step)]
+            links = "".join(f'<li><a href="?pages={p[0]}-{p[-1]}">Seiten {p[0]}–{p[-1]}</a></li>' for p in parts)
+            name = html.escape(row["name"])
+            return HTMLResponse(f'<!doctype html><meta charset="utf-8"><title>{name}</title><body style="font:15px system-ui;margin:24px">'
+                                f"<h1 style=\"font-size:18px\">{name}</h1><p>Die Datei ist zu gross, um sie hier als Ganzes zu öffnen "
+                                f"({len(data) // 1048576} MB). Öffnen Sie die Seiten in Teilen:</p><ul>{links}</ul></body>",
+                                headers={"Cache-Control": "private, no-store"})
         return Response(data, media_type=row["media_type"],
                         headers={"Content-Disposition": f"inline; filename*=UTF-8''{quote(row['name'], safe='')}",
                                  "X-Content-Type-Options": "nosniff", "Cache-Control": "private, no-store"})

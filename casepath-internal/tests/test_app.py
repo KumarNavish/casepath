@@ -268,6 +268,25 @@ class AppTests(unittest.TestCase):
         self.assertEqual(CaseStore(self.directory.name).get_run(run["id"])["status"], "interrupted")
 
 
+    def test_a_large_pdf_is_offered_in_parts_and_each_part_is_a_small_pdf(self):
+        from unittest import mock
+        from tests.test_cut import pages_with_a_heavy_first_page
+        client = self.client()
+        case = client.post("/api/cases", json={"title": "Gross"}).json()
+        data = pages_with_a_heavy_first_page(3)
+        pdf = client.post(f"/api/cases/{case['id']}/files", files={"file": ("akte.pdf", data, "application/pdf")}).json()
+        url = f"/api/files/{pdf['id']}/original"
+        self.assertEqual(client.get(url).content, data)  # under the limit: the whole file
+        with mock.patch("casepath.web.app.SERVED_WHOLE_BYTES", 100_000):
+            index = client.get(url)
+            self.assertIn("text/html", index.headers["content-type"])
+            self.assertIn('?pages=1-1"', index.text)
+            part = client.get(url + "?pages=2-3")
+            self.assertEqual(part.headers["content-type"], "application/pdf")
+            self.assertLess(len(part.content), 5_000)
+            self.assertEqual(client.get(url + "?pages=7").status_code, 422)
+
+
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):
         import copy

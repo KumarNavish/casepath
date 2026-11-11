@@ -990,6 +990,22 @@
        "title": "File Id",
        "type": "string"
       }
+     },
+     {
+      "in": "query",
+      "name": "pages",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Pages"
+      }
      }
     ],
     "responses": {
