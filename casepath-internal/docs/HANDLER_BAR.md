@@ -7,14 +7,31 @@ autonomous work → effortless expert review → corrections propagate at once �
 
 **The test.** A Protekta employee handles a real case with little effort, corrects the system with confidence, and has less work than before. Every interaction leaves evidence for the product and for research, and none of it is a separate task for the handler.
 
-## Where we stand (Hackathon reference, 7 cases with a request letter)
+## Scoreboard (7 development dossiers, cut just before Protekta's first request)
 
-| | start | now | target |
+Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels by the Mac bridge, from the cut files.
+
+| Measure | Baseline (975aa9ef) | Round 1 (ec2c2cae) | Target |
 |---|---|---|---|
-| Reference documents in CasePath's first request | 27 % | 73 % | ≥ 90 % |
-| CasePath's requests that are in the reference | 73 % | 77 % | ≥ 80 % |
+| Routing: right process | 6/7 | 7/7 | 7/7 |
+| Asserted and right: facts | 23/24 | 32/32 | ≥ 98 % |
+| Asserted and right: document statuses | 40/41 | 45/45 | ≥ 98 % |
+| Wrong on a fact that decides the path | 1 | 0 | 0 |
+| Stated in the file but left open | 19 of 43 (44 %) | ≈ 6 (≈ 14 %) | ≤ 10 % |
+| First request: Protekta's documents asked now | 14/22 (64 %) | 18/22 (82 %) | ≥ 90 % |
+| First request: asked now or "später evtl. nötig" | 19/22 | 22/22 | |
+| First request: accuracy (a part of a requested whole is neither extra nor hit) | 14/17 (82 %) | 18/22 (82 %) | ≥ 90 % |
+| Next action of the same kind as Protekta's | 7/7 | 7/7 | 7/7 |
+| Corrections needed (one per wrong or missing item) | 32 | ≈ 14 | halve each round |
+| Cost: non-cached tokens, all 7 runs | 1.31 M | 1.29 M | no rise |
 
-No later change may lower these. The numbers are re-scored model-free from stored runs after every change to process building.
+**Named in the scores.**
+- D8: 1 extra from the all-of rule ("Sämtliche Korrespondenz"), accepted: Protekta asked for it in 6 of 7 letters.
+- D6: the round-1 run judged five undated photos from one moment "unbrauchbar" (the need asks for photos over the whole period); the baseline run had them "vorhanden". Judged against the need, round 1 is right and the baseline status is the one wrong document status; Protekta did not ask for photos in D6, so the letter asks one document more than Protekta did.
+- D10: "seit 5 Jahren" in a 2024 e-mail is kept as a stated period ("5 years before …"); the year is shown as berechnet and not counted as an established fact.
+- "Left open" is approximate in round 1: the process builder's own questions differ between runs, so items whose question was not asked are counted neither way.
+
+**Round 2 list (with Dominik's points, one combined re-run before the freeze):** conditional needs whose condition the file states (D1 expert report, D8 rent payments, D9 and D11 receipts for damaged goods); ask for the rest of an all-of need only when the file refers to correspondence it does not hold; the document finder's judgment of evidence against the need versus Protekta's practice (D6).
 
 ## Ground rules
 
