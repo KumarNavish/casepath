@@ -22,6 +22,7 @@ from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 from ..process import casegraph, knowledge as kb, workflows
+from ..process.clock import follow_up
 from ..process.items import build_items, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -55,7 +56,7 @@ class NewCase(BaseModel):
 EVENT_KINDS = {"session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
-               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added"}
+               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set"}
 REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
            "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
 
@@ -365,7 +366,19 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
-        return {"cases": store.list_cases()}
+        rows = store.list_cases()
+        for row in rows:  # the next date a case is to be looked at: the list sorts by it
+            if row.get("run_status") == "completed":
+                try:
+                    current = state(row["id"])
+                    listed = build_items(current, (current["run"] or {}).get("result"))
+                    action = next((i for i in listed if i["kind"] == "next_action"), None)
+                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]))
+                    row["follow_up"] = clock and clock["due"]
+                    row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
+                except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
+                    row["follow_up"] = None
+        return {"cases": rows}
 
     @app.post("/api/cases", status_code=201)
     def create_case(body: NewCase, who=Depends(user)):
@@ -379,7 +392,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         current = state(case_id)
         completed = current["run"]
         listed = build_items(current, (completed or {}).get("result"))  # everything the case's screens and exports assert
-        return {"items": listed, "items_sha256": items_sha256(listed),
+        action = next((i for i in listed if i["kind"] == "next_action"), None)
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
+        return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock,
                 "case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
@@ -422,7 +437,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
         if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
-                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint"}:
+                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint", "followup"}:
             raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")

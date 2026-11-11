@@ -112,9 +112,12 @@ async function renderCases() {
   const imports = health.imports ? await api("/api/imports").catch(() => null) : null;
   S.workflows = workflows.workflows;
   const titles = Object.fromEntries(S.workflows.map((w) => [w.id, w.title]));
-  const rows = cases.cases.map((c) => `<tr><td><a href="#/case/${esc(c.id)}/overview">${esc(c.title)}</a>
+  const today = new Date().toISOString().slice(0, 10);
+  const ordered = [...cases.cases].sort((a, b) => (a.follow_up || "9999") < (b.follow_up || "9999") ? -1 : (a.follow_up || "9999") > (b.follow_up || "9999") ? 1 : 0);
+  const rows = ordered.map((c) => `<tr><td><a href="#/case/${esc(c.id)}/overview">${esc(c.title)}</a>
+      ${c.next_action ? `<br><small class="cp-muted">${esc(T(c.next_action.label.en, c.next_action.label.de))}</small>` : ""}
       ${c.intake && c.intake.synthetic ? ` <span class="cp-chip">${T("synthetic", "synthetisch")}</span>` : ""}</td>
-      <td>${esc(titles[c.workflow_id] || c.workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${dateText(c.updated_at)}</td></tr>`).join("");
+      <td>${esc(titles[c.workflow_id] || c.workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${c.follow_up ? `<span class="cp-chip ${c.follow_up <= today ? "bad" : ""}">${dateText(c.follow_up)}</span>` : "—"}</td></tr>`).join("");
   const catalogue = S.workflows.map((w) => `<tr><td>${esc(w.title)}</td><td><span class="cp-chip ${w.status === "reviewed" ? "good" : "wait"}">${esc(word(w.status))}</span></td>
       <td>${T(`${w.steps} steps · ${w.documents} document needs`, `${w.steps} Schritte · ${w.documents} Dokumente`)}</td><td>${w.open_questions ? T(`${w.open_questions} open questions`, `${w.open_questions} offene Fragen`) : "—"}</td>
       <td class="cp-muted">${w.sources.map((s) => esc(s.title)).join("; ")}</td></tr>`).join("");
@@ -123,7 +126,7 @@ async function renderCases() {
       "CasePath erkennt aus den Akten den Prozess jedes Falls, führt seine Dokumenten-Checkliste (nötig, vorhanden, fehlend) und baut Wissen auf, das mit jedem Fall wächst. Neues Wissen wird erst nach Freigabe durch einen Menschen wiederverwendet.")}</p>
     <form class="cp-form" id="new-case"><input name="title" placeholder="${T("New case: a short title", "Neuer Fall: kurzer Titel")}" aria-label="${T("New case title", "Titel des neuen Falls")}" required maxlength="300">
       <button class="cp-button primary">${icon("plus")}${T("Create case", "Fall anlegen")}</button></form>
-    ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Updated", "Geändert")}</th></tr></thead><tbody>${rows}</tbody></table>`
+    ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Follow-up", "Wiedervorlage")}</th></tr></thead><tbody>${rows}</tbody></table>`
            : `<p class="cp-empty">${T("No cases yet. Create one, then add its documents.", "Noch keine Fälle. Legen Sie einen an und fügen Sie dann seine Dokumente hinzu.")}</p>`}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       <p class="cp-muted">${T("Files placed in the shared folder", "Dateien im gemeinsamen Ordner")} <code>${esc(imports.folder)}</code>. ${T("Each file becomes one case.", "Jede Datei wird zu einem Fall.")}</p>
@@ -1152,6 +1155,7 @@ function overviewView() {
         <dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} · <button class="cp-link" id="show-draft">${T("draft", "Entwurf")}</button>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
       </dl>
       ${draft ? `<div id="draft" ${S.showDraft ? "" : "hidden"}><pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>
+        <p class="cp-followup">${followUpLine()}</p>
         <button class="cp-button" id="copy-draft">${T("Copy", "Kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></div>` : ""}</section></div>
     <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Needs your judgement", "Braucht Ihr Urteil")} <span class="cp-muted">· ${pts.length}</span></h2>
       ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li data-item="${esc(p.fact ? `fact:${p.fact}` : p.request ? "next_action:0" : `point:${p.key}`)}"><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>
@@ -1224,6 +1228,12 @@ function myChanges() {
     `<li>${esc(clip(what(e), 90))}${change(e)} <span class="cp-muted">· ${esc(e.reason || "")} · ${esc(e.by)} · ${dateText(e.at)}</span> <button class="cp-link" data-undo-edit="${esc(e.id)}">${T("undo", "rückgängig")}</button></li>`).join("")}</ul></details>`;
 }
 function titleOf(documentId) { const d = (S.data.process.documents || []).find((x) => x.id === documentId); return d ? d.title : documentId; }
+function followUpLine() {
+  const f = S.data.follow_up;
+  if (!f) return "";
+  return `${T("Follow-up", "Wiedervorlage")}: <input type="date" id="followup-date" value="${esc(f.due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}">
+    <span class="cp-muted">${f.set_by ? T(`set by ${esc(f.set_by)}`, `gesetzt von ${esc(f.set_by)}`) : T("proposed from practice; documents expected by then", "aus der Praxis vorgeschlagen; Unterlagen bis dann erwartet")}</span>`;
+}
 function closed() { return (S.data.caseEvents || []).filter((e) => e.kind === "case.closed").pop(); }
 function closeView() {
   const c = closed();
@@ -1281,6 +1291,12 @@ function bindOverview() {
   for (const b of document.querySelectorAll("[data-close]")) b.addEventListener("click", async () => {
     const line = b.dataset.close === "erledigt_mit_vorbehalt" ? window.prompt(T("Reservation (optional)", "Vorbehalt (freiwillig)")) || "" : "";
     await caseEvent("case.closed", null, { form: b.dataset.close, note_present: Boolean(line.trim()), ...(line.trim() ? { text: line.trim().slice(0, 2000) } : {}) });
+    await loadCase();
+  });
+  const fu = $("#followup-date");
+  if (fu) fu.addEventListener("change", async () => {
+    if (!fu.value) return;
+    await caseEvent("followup.set", "followup:0", { date: fu.value, before: (S.data.follow_up || {}).due || null });
     await loadCase();
   });
   const unaided = $("#unaided");
