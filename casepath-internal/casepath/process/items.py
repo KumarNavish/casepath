@@ -90,6 +90,7 @@ def build_items(state, result):
         text = label if isinstance(label, dict) else {"de": label, "en": label}  # the process speaks German; both keys always present
         items.append({"item_id": f"{kind}:{key}", "kind": kind, "key": key, "system": "casepath", "label": text, **fields})
     if graph and ev:
+        graph = {**graph, "action_by_stage": any(x.get("action") for x in graph["steps"])}
         gating, customer = gating_facts(graph), customer_facts(graph)
         waiting = {w["fact"] for w in ev.get("waiting_for", [])}
         for row in ev.get("path", []):
@@ -103,8 +104,8 @@ def build_items(state, result):
             d = docs.get(row["document"], {})
             if ev.get("outcome") or row["status"] == "present":
                 ask = None
-            elif row["required"] == "yes" or (row["required"] == "depends" and not (d.get("edit") and not d.get("knowledge"))):
-                ask = "now"
+            elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (d.get("edit") and not d.get("knowledge"))):
+                ask = "now"  # in the handler's workflow a need whose condition nobody has established waits: it is asked later
             elif row["required"] == "depends":
                 ask = "later"
             else:
