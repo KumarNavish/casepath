@@ -117,7 +117,8 @@ def seed(store, families, directory=SEED_DIR):
     """Add the Knowledge items shipped with the build, once.
 
     Each file holds items a person instructed for this build (its ``note`` says who and why). An item is added as
-    active the first time, for a process family the catalogue has; afterwards the store's copy governs, so a reviewer's refinement or retirement stays.
+    active the first time, for a process family the catalogue has. While no reviewer has touched it, a changed seed file
+    refreshes it as a new version; a reviewer's refinement or retirement always stays. Returns items added or refreshed.
     """
     import json
     from ..web.store import NotFound
@@ -130,10 +131,16 @@ def seed(store, families, directory=SEED_DIR):
                 continue
             item_id = f"know-seed-{spec['seed']}"
             try:
-                store.get_knowledge(item_id)
-                continue
+                stored = store.get_knowledge(item_id)
             except NotFound:
-                pass
+                stored = None
+            if stored is not None:
+                # The build's own item follows the seed file as a new version; once a reviewer touched it, theirs governs.
+                untouched = stored["status"] == "active" and all(h.get("by") == "build" for h in stored["history"])
+                if untouched and stored["content"] != _content(stored["kind"], spec["content"]):
+                    store.save_knowledge(refine(stored, content=spec["content"], by="build", reason=f"seed file {path.name} changed"))
+                    added += 1
+                continue
             item = new_item(spec["family"], spec["kind"], spec["content"], applies_when=spec.get("applies_when"),
                             applies_when_text=spec.get("applies_when_text", ""),
                             origin={"by": "build", "note": data.get("note", ""), "file": path.name},

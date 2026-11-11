@@ -32,6 +32,28 @@ class KnowledgeSeedTests(unittest.TestCase):
             self.assertEqual(store.get_knowledge("know-seed-mold-mietvertrag")["status"], "retired")
             store.close()
 
+    def test_a_changed_seed_file_refreshes_an_untouched_item_but_never_a_reviewed_one(self):
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            seeds = Path(tmp) / "seeds"
+            seeds.mkdir()
+            spec = lambda title: {"note": "n", "items": [{"seed": "a", "family": "osm-mold", "kind": "document_need",
+                                                          "content": {"title": title, "why": "w"}},
+                                                         {"seed": "b", "family": "osm-mold", "kind": "document_need",
+                                                          "content": {"title": title, "why": "w"}}]}
+            (seeds / "s.json").write_text(json.dumps(spec("Alt")))
+            store = CaseStore(Path(tmp) / "store")
+            self.assertEqual(knowledge.seed(store, {"osm-mold"}, seeds), 2)
+            reviewed = store.get_knowledge("know-seed-b")
+            store.save_knowledge(knowledge.refine(reviewed, content={"why": "reviewer"}, by="N. Kumar", reason="checked"))
+            (seeds / "s.json").write_text(json.dumps(spec("Neu")))
+            self.assertEqual(knowledge.seed(store, {"osm-mold"}, seeds), 1)
+            fresh, kept = store.get_knowledge("know-seed-a"), store.get_knowledge("know-seed-b")
+            self.assertEqual((fresh["content"]["title"], fresh["version"]), ("Neu", 2))
+            self.assertEqual((kept["content"]["title"], kept["content"]["why"]), ("Alt", "reviewer"))
+            self.assertEqual(knowledge.seed(store, {"osm-mold"}, seeds), 0)
+            store.close()
+
     def test_an_item_that_replaces_a_later_step_need_makes_it_a_need_of_the_whole_case(self):
         base = _workflow()
         before = workflows.evaluate(base, {}, {}, checked=True)
