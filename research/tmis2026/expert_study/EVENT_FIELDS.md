@@ -55,7 +55,7 @@ One row per statement of a frozen run (and of a comparator run).
 | `schema` | record shape | new |
 | `item_id` | `<frozen_run_id>:<kind>:<key>`; stable for all copies of the case | partial: `kind:key` is the feedback target (`web/app.py:71`) |
 | `kind` | `step`, `fact`, `deadline`, `document`, `next_action`, `reply`, `open_point`, `summary`, `party`, `timeline`, `answer` | partial: all but `step`, `next_action`, `party` exist as target kinds (`web/app.py:71`) |
-| `key` | fact id, document id, step id, `answer:<fact>` / `obtain:<document>` for next actions, list index for open points, clauses, parties, timeline | partial: fact and document ids exist (`result.facts[].fact`, `evaluation.documents[].document`); next-action keys new; index keys are positional and valid only within one run |
+| `key` | fact id, document id, step id; for next actions as the product's item function gives it (`casepath/process/items.py`), to be confirmed; list index for open points, clauses, parties, timeline | partial: fact and document ids exist (`result.facts[].fact`, `evaluation.documents[].document`); next-action keys: to be confirmed; index keys are positional and valid only within one run |
 | `chain` | true for step, gating fact, deadline, document, next action | new |
 | `value` | what CasePath said (fact value; document `required` and `status`; step id; action text) | exists in `result` and `evaluation` (`process/workflows.py:383–395`) |
 | `stated_as` | `established`, `presumed`, `conflicting`, `unknown`, `put_to_handler` (open point, waiting_for, depends), `computed` (a date or deadline derived from a stated period; not an established value and not counted as asserted) | partial: `facts[].status`, `evaluation.waiting_for`, `documents[].required = depends` |
@@ -65,7 +65,9 @@ One row per statement of a frozen run (and of a comparator run).
 | `origin` | `workflow`, `knowledge#<id>@v<n>`, `agent_edit#<id>` | exists (`source_refs`, `documents[].knowledge`, `agent_edits`) |
 | `status`, `required`, `ask`, `part_of`, `reason` | document items: status in the file; whether required; `ask` = `now`, `later` or null (whether the first request asks for it now); the document it is part of; the reason shown | product (`items`, commit ea88df9d) |
 | `part`, `chat_only`, `path` | fact items: the alternative a quote supports when the value names alternatives; whether the fact came from the chat only; whether it lies on the path | product |
-| `action` | next-action items: `request`, `answer`, `close` or `resolve` (the product's name; this file earlier wrote `obtain` for `request`) | product |
+| `action` | next-action items: the handler's action kind from the catalogue A1–A12, defined in the product's handler process (`casepath/process/workflow_seed/mietmangel-handler.json`); for example A1 first request, A5 assessment, A6 pending with deadline, A12 closing. Replaces the earlier values `request`, `answer`, `close`, `resolve`, which this file listed until 2026-11-11 (and before that `obtain` for `request`) | product |
+| `next_in_days` | next-action items: the number of days to the next action, as the product gives it | product |
+| `follow_up` | next-action items: the follow-up the product gives with the action, as the product gives it | product |
 | `stated`, `rule` | deadline items: the period as stated and how a computed date was derived | product |
 | `legal_basis`, `label` | the basis shown with an item; its label in German and English | product |
 | `system` | `casepath` or `comparator` | new |
@@ -80,6 +82,9 @@ origin, verdict, node, chain, legal basis and reason are not in the hash. The st
 added to `item_id` at the freeze. Evidence is `{file, page, quote}`. Keys of `open_point`, `summary`, `reply` and
 `timeline` items are positions and are valid within one run only; analyses across runs (the variation runs) use
 chain items, whose keys are ids. Where this file's names differed from the product's, the product's names hold.
+From 2026-11-11 the `action` of next-action items is an action kind A1–A12 of the handler process, and next-action
+items carry `next_in_days` and `follow_up`. Whether `next_in_days` and `follow_up` enter `items_sha256` is to be
+confirmed by the product's builders.
 
 ## 3. Event record (`casepath.study.event/1`)
 
@@ -115,7 +120,7 @@ chain items, whose keys are ids. Where this file's names differed from the produ
 | `correction.undone` | `undoes` (event id), `edit_id` | partial: `/api/edits/{id}/undo` sets status `undone` without time (`web/store.py`, `set_edit_status`) |
 | `item.propagated` | `caused_by` (event id), `item_id`, `change` (`changed`, `vanished`, `appeared`), `before`, `after` | partial: `casegraph.diff` computes it (`process/casegraph.py:226`) but it is not stored; recomputed model-free from the log |
 | `point.settled` | `item_id` | exists: verdict `done` on `point:<key>` (`web/app.py:72`) |
-| `own_answer.saved` | the three pick-lists: `step` (step id or `not_in_list`), `documents` (catalogue ids), `action_kind` | new |
+| `own_answer.saved` | the three pick-lists: `step` (step id of the handler process or `not_in_list`), `documents` (catalogue ids), `action_kind` (A1–A12) | new |
 | `own_answer.frozen` | `answer_sha256` | new |
 | `reveal` | | new |
 | `note.added` | `where` (screen, or `closing`), `item_id` (optional), `length` (characters) in the pseudonymous export; `text` in the content export only | partial: feedback `note` on an item; no screen-level note today |
@@ -145,9 +150,9 @@ Sources are kept apart; no record merges them into one label. C is derived from 
 
 | Record | Fields | Pseudonymous | Content | Status |
 |---|---|---|---|---|
-| **P** (per study case) | `source_case`, `as_of` (`DP1`; `DP2` if a second point is made), `requested` (catalogue ids of the documents and information in the insurer's first outgoing request), `next_action` (action kind), `step` (step id, where the mapping names one), `passage` (verbatim text with page) | ids, kinds | plus `passage` | new |
+| **P** (per study case) | `source_case`, `as_of` (`DP1`; `DP2` if a second point is made), `requested` (catalogue ids of the documents and information in the insurer's first outgoing request), `next_action` (action kind), with `action` (catalogue kind A1–A12 of the frozen catalogue, or `other` when the action in the file fits no entry; `other` counts as disagreement for every system), `next_in_days` and `follow_up` (where the file shows them, else null), `step` (step id, where the mapping names one; kept, but P no longer settles the step), `passage` (verbatim text with page) | ids, kinds, days | plus `passage` | new |
 | **P-later** (per study case) | `source_case`, `requested_later` (catalogue ids, each with a day offset from the decision point), `passage` | ids, offsets | plus `passage` and dates | new |
-| P and P-later, provenance | `made_by` (`automated_labeller`), `made_at` (before any run on the cut copy), `sha256`; `owner_check`: checked (bool), result (`agrees`, `corrected`), `checked_at` | yes | plus what was corrected | new |
+| P and P-later, provenance | `made_by` (`automated_labeller`), `made_at` (after the product's freeze hash exists, before any run on the cut copy), `sha256`; `owner_check` (the study lead's check, after the frozen and variation runs): checked (bool), result (`agrees`, `corrected`), `checked_at`; a correction is logged with its reason and both versions are kept | yes | plus what was corrected and why | new |
 | **O** | derived from `own_answer.saved` (last before `own_answer.frozen`) | yes | yes | new |
 | **A** (per item of every frozen run, and of the comparator) | `item_id`, `label`, `made_at`, `label_set_sha256` (recorded before the first session) | yes | yes | new |
 | Prior handling | `expert` (pseudonym inside, label outside), `source_case`, `prior_handling` (bool), `basis` (`file_metadata`), set by the automated labeller | flag | flag and basis | new |
@@ -190,8 +195,9 @@ Kept so that a later, separate paper loses nothing.
 | Measure (pre-registration section) | Fields |
 |---|---|
 | Final fate (9.1) | `item.corrected`, `item.dismissed`, `correction.undone`, `item.propagated.change = vanished`, `source.opened`, `item.confirmed`, `item.exposed.from_t/to_t`, `case.attested`; item `item_id` |
-| Settled / unsettled (4.3) | item `kind`; P, P-later, O |
-| Q1 agreement with practice (9.2) | item list (`kind = document`, `next_action`, `step`), `system`, `role`; P, P-later, O |
+| Settled / unsettled (4.3) | item `kind`; P, P-later, O (the step: O only) |
+| Q1 agreement with practice (9.2) | item list (`kind = document`; `kind = next_action` with `action`, and `next_in_days`, `follow_up` reported descriptively), `system`, `role`; P (`requested`, `action`, `next_in_days`, `follow_up`), P-later; O for the secondary measures. The step is not part of Q1 |
+| Q2 step (9.3) | final fate of `kind = step` items; `own_answer.saved.step` (O) on the first case, final state at `case.closed` |
 | Q2 expert agreement, consensus-changed (9.3) | final fate per `expert` and `item_id`; item `kind` |
 | Q2 reliance on document requests, sign test (9.3) | final fate of document items; `item.added` (`what = document`, `catalogue_id`); P, P-later |
 | Q2 first case: change after the reveal, RAIR and RSR (9.3) | `own_answer.saved` (last before `own_answer.frozen`), final state at `case.closed`, item list; P |
