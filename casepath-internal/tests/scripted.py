@@ -51,7 +51,7 @@ def delegate(agent, instruction="Do your part."):
 
 def report(agent, **fields):
     defaults = {
-        "claim_reader": {"summary": "Read.", "request": "", "parties": [], "timeline": []},
+        "claim_reader": {"summary": "Read.", "request": "", "parties": [], "timeline": [], "not_enclosed": []},
         "process_builder": {"summary": "Built.", "questions": []},
         "document_finder": {"summary": "Found."},
         "result_checker": {"summary": "Checked.", "answer": "An answer.", "open_points": [],

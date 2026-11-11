@@ -203,6 +203,10 @@ def build_items(state, result, files=None):
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
     brief = result.get("brief") or {}
+    for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: asked as such
+        add("document", f"mention-{i}", value="missing", stated_as="established", verdict="accepted", evidence=_evidence(doc.get("citations")),
+            node=None, origin="claim_reader", chain=True, label=doc["title"], status="missing", legal_basis=None, required="yes",
+            ask="now", part_of=None, reason=f'{"in " + doc["mentioned"] + " " if doc.get("mentioned") else ""}erwähnt, lag nicht bei')
     for i, party in enumerate(brief.get("parties") or []):
         add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None, origin="claim_reader",
             chain=False, label=party.get("role"))

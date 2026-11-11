@@ -1069,7 +1069,9 @@ function requestDraft(ev) {
   const keep = (i) => lineState[i.item_id] !== false;
   const ask = now.filter((d) => d.status !== "present" && lineState[`document:${d.document}`] !== false)
     .concat(later.filter((d) => lineState[`document:${d.document}`] === true))
-    .concat(ev.documents.filter((d) => (item("document", d.document) || {}).ask === "proposed" && lineState[`document:${d.document}`] === true));
+    .concat(ev.documents.filter((d) => (item("document", d.document) || {}).ask === "proposed" && lineState[`document:${d.document}`] === true))
+    .concat((S.data.items || []).filter((i) => i.kind === "document" && /^mention-/.test(i.key) && lineState[i.item_id] !== false)
+      .map((i) => ({ document: i.key, title: `${i.label.de} (${i.reason})` })));  // mentioned in the file, not in it
   if (!ask.length) return "";
   const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
   const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));

@@ -52,7 +52,9 @@ read short files whole, and in a dossier read the documents that carry the reque
 each timeline entry with an exact quote. For facts: open the process, and for each fact it asks about record what the
 files say with record_fact: established with quotes, or conflicting with quotes for both sides. Do not record a fact
 the files do not speak to: unknown is the default and costs nothing. Quote only the words that state the value (one
-sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve).
+sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve). In the brief, list in not_enclosed
+each document the files mention as existing, attached or sent (a report, a letter, an attachment) that is not among the
+case files, with the sentence that mentions it and where ("E-Mail vom 12.06.2023"); not a document the case merely needs.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
 document or a step; then the other files. Work in few turns: call record_fact for up to eight facts in the same turn,
 rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
@@ -539,7 +541,8 @@ def _report_schema(work, agent):
     if agent == "claim_reader":
         return obj(summary=text(800, minLength=1), request=text(500),
                    parties=arr(obj(role=text(80), name=text(120)), maxItems=10),
-                   timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20))
+                   timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
+                   not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8))
     if agent == "process_builder":
         return obj(summary=text(800, minLength=1),
                    questions=arr(obj(fact=choice(facts) if facts else text(80), plain=text(300, minLength=1)), maxItems=40))
@@ -839,8 +842,13 @@ def _located_brief(work, report):
         located, _ = work.located(entry["citations"])
         if located:
             timeline.append({"date": entry["date"], "event": entry["event"], "citations": located})
+    missing = []  # documents the file mentions as existing or attached that are not among the case files
+    for entry in report.get("not_enclosed", []):
+        located, _ = work.located(entry["citations"])
+        if located:
+            missing.append({"title": entry["title"], "mentioned": entry.get("mentioned"), "citations": located})
     return {"request": report.get("request"), "parties": report.get("parties", []), "timeline": timeline,
-            "summary": report.get("summary")}
+            "summary": report.get("summary"), "not_enclosed": missing}
 
 
 PERSONAL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+|\+?\d[\d ()/.-]{7,}\d|\bCH\d{2}[\d ]{10,}|\b\d{5,}\b")
