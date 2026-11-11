@@ -1039,6 +1039,24 @@ function askNow(ev) {
   const later = ev.documents.filter((d) => d.required === "depends" && fromEdit(d.document));
   return { now, later };
 }
+function draftFor(ev) {
+  // The letter the prepared action needs, in the form Protekta's handlers use (from the development dossiers).
+  const act = item("next_action", "0");
+  const kind = act && act.action;
+  if (!kind || kind === "A1" || kind === "request") return requestDraft(ev);
+  const due = (S.data.follow_up || {}).due;
+  const by = due ? dateText(due) : "…";
+  const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
+  const head = [...(ref ? [`Unsere Referenz: ${ref[0]}`, ""] : []), "Sehr geehrte/r …", ""];
+  const tail = ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"];
+  const close = `Ohne Ihre Rückmeldung bis ${by} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können.`;
+  if (kind === "A6") return [...head, "Vielen Dank für Ihre Nachricht. Wir halten Ihr Dossier vorerst noch pendent und erwarten die angeforderten Unterlagen und Angaben.", "", close, ...tail].join("\n");
+  if (kind === "A7") return [...head, "Nachdem bereits einige Zeit seit unserem letzten Kontakt vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen oder ob die Angelegenheit zwischenzeitlich erledigt werden konnte.", "", close, ...tail].join("\n");
+  if (kind === "A12") return [...head, (S.data.evaluation && S.data.evaluation.outcome && S.data.evaluation.outcome.id === "mitwirkung")
+    ? "Wir haben Sie mehrfach um die für die Prüfung notwendigen Unterlagen gebeten. Da uns diese bis heute nicht vorliegen, stellen wir unsere Leistungen in dieser Angelegenheit ein und schliessen Ihr Dossier."
+    : "Wir schliessen Ihr Dossier in dieser Angelegenheit. Sollte sich die Situation ändern, können Sie sich jederzeit wieder an uns wenden.", ...tail].join("\n");
+  return "";
+}
 function requestDraft(ev) {
   const { now, later } = askNow(ev);
   const lineState = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
@@ -1132,7 +1150,7 @@ function overviewView() {
   const present = docs.filter((d) => d.status === "present").length;
   const open = S.data.items ? S.data.items.filter((i) => i.kind === "document" && i.ask === "now").length  // the same list the letter asks from
     : docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
-  const draft = ev ? requestDraft(ev) : "";
+  const draft = ev ? draftFor(ev) : "";
   const done = doneRows(), doneKeys = new Set(done.map((f) => f.target.slice(6)));
   const all = judgementPoints(ev, r).filter((p) => !p.request && !String(p.key).startsWith("chat.")), pts = all.filter((p) => !doneKeys.has(p.key));
   const settled = all.filter((p) => doneKeys.has(p.key));
@@ -1171,7 +1189,8 @@ function overviewView() {
         return `<li>${esc(p.text)} <span>· ${esc(f.by)} · ${dateText(f.at)}</span> ${f.by === S.me ? `<button class="cp-link" data-point-undone="${esc(p.key)}">${T("undo", "rückgängig")}</button>` : ""}</li>`; }).join("")}</ul></details>` : ""}
       ${S.lastEdit ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : ""}
       ${myChanges()}
-      <p class="cp-muted" style="margin-top:14px"><button class="cp-link" data-note="case:0">${T("Note on this case", "Anmerkung zum Fall")}</button></p></section>
+      <p class="cp-muted" style="margin-top:14px"><button class="cp-link" id="phone-note">${T("Record phone note", "Telefonnotiz erfassen")}</button> ·
+        <button class="cp-link" data-note="case:0">${T("Note on this case", "Anmerkung zum Fall")}</button></p></section>
     ${closeView()}</div>`;
 }
 const REASONS = { "1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
@@ -1332,6 +1351,20 @@ function bindOverview() {
   for (const b of document.querySelectorAll("[data-close]")) b.addEventListener("click", async () => {
     const line = b.dataset.close === "erledigt_mit_vorbehalt" ? window.prompt(T("Reservation (optional)", "Vorbehalt (freiwillig)")) || "" : "";
     await caseEvent("case.closed", null, { form: b.dataset.close, note_present: Boolean(line.trim()), ...(line.trim() ? { text: line.trim().slice(0, 2000) } : {}) });
+    await loadCase();
+  });
+  const phone = $("#phone-note");
+  if (phone) phone.addEventListener("click", async () => {
+    const who = window.prompt(T("Phone call with (e.g. customer, other side's lawyer)", "Telefon mit (z.B. VN, Gegenanwalt)"), "VN");
+    if (!who) return;
+    const reached = window.confirm(T("Reached? OK = yes, Cancel = not reached", "Erreicht? OK = ja, Abbrechen = nicht erreicht"));
+    const text = reached ? (window.prompt(T("A few lines: what was said or agreed", "Einige Zeilen: was besprochen oder vereinbart wurde")) || "") : "";
+    const at = new Date(), stamp = `${at.toISOString().slice(0, 10)} ${at.toTimeString().slice(0, 5)}`;
+    const body = `Aktennotiz Telefon ${stamp}\n${reached ? `Telefon mit ${who}` : `Telefonversuch an ${who} – nicht erreicht`}\n${text}\nErfasst von ${S.me}`;
+    const form = new FormData();
+    form.append("file", new File([body], `Aktennotiz Telefon ${stamp.replace(":", "")}.txt`, { type: "text/plain" }));
+    await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form });
+    await caseEvent("note.added", null, { text: `phone: ${reached ? "reached" : "not reached"}`, phone: true, note_present: Boolean(text) });
     await loadCase();
   });
   const fu = $("#followup-date");
