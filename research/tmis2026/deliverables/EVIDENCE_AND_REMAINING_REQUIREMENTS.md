@@ -1,171 +1,163 @@
-# Verified evidence and remaining requirements
+# Evidence and remaining requirements
 
-Paper A (TMIS): *CasePath: Executing Process Rules over LLM Judgments to Request Evidence*
-Branch `claude/casepath-tmis-paper-20261109` of `KumarNavish/casepath`, folder `research/tmis2026/`.
+Paper: *CasePath: Agents That Read, Rules That Decide* (ACM TMIS draft), folder `research/tmis2026/`, branch `claude/casepath-tmis-paper-20261109`.
+Pointers refer to `CasePath_TMIS.pdf` (55 pages) and, with "Supp.", to `CasePath_TMIS_supplement.pdf` (27 pages), both built on 2026-11-11. Numbers are quoted from the built PDFs. File paths are relative to `research/tmis2026/`.
 
-## 1. Bottom line
+Status labels: **confirmed hypothesis** (pre-registered, tested in the fixed order, confirmed); **failed** or **not tested** (pre-registered); **secondary** (registered secondary or descriptive contrast, outside the fixed order); **descriptive** (reported without a test); **added after review** (not pre-registered, from `analysis/study3_review.py`); **post hoc** (`analysis/study3_posthoc.py`); **development** (Studies 1 and 2, the probe, or deterministic computations on development data); **formal** (proved).
 
-The evidence changes the paper's central claim. The ICLR version argued that executing rules is more accurate. The new experiments show that **this depends on the model**:
+## (a) What the paper claims
 
-- **With the cost-efficient model (gpt-6-luna, the product's model), execution wins clearly.**
-  - Unsafe errors: 4× fewer on complete request lists (0.03 vs 0.11 per claim, Holm p = 0.031).
-  - Wrong changes when a fact changes: 4× fewer (17 vs 68, p = 0.012).
-- **With the frontier model (gpt-6.1-terra), rules in the prompt do as well or better**, but the differences are not significant. The reason is that execution reproduces the errors of automatically extracted rules exactly.
-- **What holds across models:**
-  - Execution makes request quality far less model-dependent (0.21–0.56 vs 0.27–1.52 wrong changes per pair across three models).
-  - It never requests prematurely, by construction.
-  - Every error is traceable to a rule or a judgment.
-- **Its price is deferral:** 20–30% of required documents are held behind questions, most of them waiting on one unstated routing fact.
+### The test and its hypotheses (Study 3, Section 6)
 
-The paper now argues exactly this. No result was typed by hand: every number in the PDF is generated from the evidence files.
+System under test: the product at commit `6a72159c`, cost-efficient model (gpt-6-luna) unless stated; comparators on the same files and rules; 3 runs per case. Data `fresh2/`: 72 theft changed-fact pairs and 48 unresolved-fact pairs (8 stories, 9 changed facts); 96 tenancy claims in 24 families. Registered output: `analysis/study3_results_fresh2_confirm.md` (and `.json`), produced once by `analysis/study3.py` from `analysis/study3_spec.json`.
 
-## 2. What was run
+| # | Claim | Evidence | Status | Where |
+|---|---|---|---|---|
+| H1 | On theft, fewer wrong + missed changes per pair than the same model's single prompt (Rules in context), with the reviewed rules. | 0.58 against 1.74, 9 clusters, p = 0.0078. The rules were reviewed by editors who knew the test conditions. | confirmed hypothesis | §6.4, Table 7 |
+| H2 | On tenancy, fewer strict unsafe errors per claim than the same model's single prompt. | 0.31 against 2.14, 24 families, p = 0.0002. | confirmed hypothesis | §6.4, Table 7 |
+| H3 | On tenancy, fewer strict unsafe errors than the frontier model's single prompt. | 0.31 against 1.86, p = 0.0008. Tested only because of the reorder below. | confirmed hypothesis | §6.3, §6.4, Table 7 |
+| H4 | On theft, fewer errors than each of Self-consistency, Model executes rules and ReAct (all three required). | **Failed.** Against Self-consistency 0.58 against 1.21, p = 0.0625 (fewer on 7 changed facts, more on 2). Components that passed: Model executes rules 1.94 (p = 0.0039), ReAct 1.69 (p = 0.0117). The inverted sign-flip interval against Self-consistency includes zero (Table 21). | failed | §6.4, Table 7, Table 21 |
+| H5 | On theft, non-inferior to the frontier single prompt (margin 0.25). | **Not tested**, because H4 failed. Values for information: 0.58 against 0.95. | not tested | §6.4, Table 7 |
+| Reorder | The order of the hypotheses was changed at 21:51 on 10 November (commit `482873e3`), shortly before the freeze, on development evidence. In the final draft of 21:26 the tenancy contrast against the frontier model came fifth. Under that order the prior-work hypothesis would have been tested third and failed, the tenancy-frontier contrast would not have been tested, and only H1 and H2 would have been confirmed. H3's confirmation depends on this decision. | Commits `984d2991`, `482873e3`, `fd35e438`; `WORKLOG.md` (entry of 2026-11-11). | disclosed | §1, §6.3, App. B.2, §7 "Limits", §8 |
 
-| Item | Detail |
-|---|---|
-| Agent | Latest CasePath (`claude/casepath-internal-20261027` @ `aa4fb25`). The production admission, process compiler and causal process engine are called unchanged. |
-| Models | `openai/gpt-6.1-terra` (frontier) and `openai/gpt-6-luna` (cost-efficient, the product's configured model), via OpenRouter, low reasoning effort, strict JSON schema. The original study's `gpt-5.6-terra` predictions were re-scored. |
-| Tenancy | 90 held-out claims (17 families), 3 runs per design and model. |
-| Theft | 27 changed-fact pairs plus 18 new unresolved-fact pairs, 3 runs per design and model. |
-| Designs | Direct; Rules in context; Self-consistency (majority of 3); Model executes rules; Two-valued execution (open read as false or as true); CasePath (product engine and exact deferral, with and without the verifier). |
-| Plan | `ANALYSIS_PLAN.md`, frozen in commit `46a503b` before any held-out run. |
-| Statistics | Cluster bootstrap (10,000 resamples) over 17 families or 9 conditions; exact sign-flip tests; Holm correction over H1–H5. |
-| Spend | USD 9.42 in total: 8.61 terra and 0.81 luna, including pilots and diagnostics. Every call is logged in `runs/ledger.jsonl`. |
+### Secondary and descriptive results of the test
 
-## 3. Results
+| Claim | Evidence | Status | File | Where |
+|---|---|---|---|---|
+| The tenancy difference lies mostly in the 33 denied- and open-event claims, which the test set was designed to include. | 0.47 against 5.69 and 5.31 errors per claim there; on the 63 ordinary claims 0.20 against 0.44 (p = 0.0417, not predicted) and 0.28 (p = 0.409). | secondary (registered descriptive subset rows) | `analysis/study3_results_fresh2_confirm.md` | §1, §6.4, Table 14 |
+| Against the single prompts with the original theft rules. | Same model: 0.58 against 1.47 (p = 0.0117). Frontier model: 0.58 against 0.67, the best single prompt on theft (non-inferiority share 0.0035, descriptive). | secondary | same | §1, §6.4, Table 17 |
+| CasePath held almost every document the engine's reference holds, and more it does not hold. | Held 97% of reference-held documents against 48% and 35%; unneeded holds 0.33 per claim against 0.17 and 0.18 (1.17 on denied-event claims). Theft: 94% of unresolved-fact pairs otherwise unchanged against 27–47% for prior-work designs. All deviations 0.73 against 2.33 (p = 0.001) and 2.09 (p = 0.0023). | secondary | same | §6.4, Table 8 |
+| Two-valued execution of CasePath's own readings turns holds into errors. | 1.27 (unresolved taken as false) and 1.51 (taken as true) strict unsafe errors per claim, against 0.31. | secondary | same | §6.4, Table 14 |
+| The checklist-only setting showed no detectable difference. | 0.34 against 0.31 (p = 0.5); 0.55 against 0.58 (p = 0.594); at 22% and 16% of the full product's cost. The two settings share cached responses, so this is no independent repetition. | secondary | same | §6.4, Table 17 |
+| Cost. | Full product USD 0.013 (tenancy claim) and 0.030 (theft text); frontier single prompt 0.006 and 0.004: 2.1 and 7.4 times. | descriptive | same | §6.4, Table 6 |
+| CasePath on the frontier model, checklist only, one run: not better than the frontier single prompt on theft. | 0.83 against 0.95, p = 0.672. | descriptive (no hypothesis) | same | §7 "Where it does not pay", Table 17 |
+| Repeated errors counted once. | Theft 0.49 against 0.93 (Rules in context) and 0.72 (Self-consistency). | descriptive | same | §6.4 |
+| Worked example. | Claim `f2cl_0868f24595f5f79a`, chosen after the results by a stated rule. | descriptive | stored plans in `runs/study3/confirm/` | §6.4, Table 9 |
+| Failed outputs. | 50 comparator outputs failed and were scored as empty checklists (40 from ReAct); none from the product. Leaving ReAct's out changes no p-value (H4 component against ReAct stays at p = 0.0117). | post hoc | `analysis/study3_posthoc.md` | App. B.1, Table 19 |
 
-### Pre-specified tests (Holm-adjusted p)
+### Added after review (not pre-registered; none changes a status)
 
-| Claim | gpt-6.1-terra | gpt-6-luna |
-|---|---|---|
-| H1 Unsafe errors on complete lists (CasePath exact vs Rules in context) | 0.08 vs 0.06 per claim; no sig. difference (p = 0.42) | **0.03 vs 0.11; fewer with CasePath (p = 0.031)** |
-| H2 Deferred required documents | more with CasePath (p < 0.001) | more with CasePath (p < 0.001) |
-| H3 Wrong changes when a fact changes | 38 vs 22; no sig. difference (p = 0.42) | **17 vs 68; fewer with CasePath (p = 0.012)** |
-| H4 Other requests unchanged when a fact is open | 72% vs 98%; no sig. difference (p = 0.094) | **89% vs 43%; better with CasePath (p = 0.031)** |
-| H5 Test–retest agreement (tenancy) | not supported: rules in context higher (p = 0.002) | not supported: rules in context higher (p = 0.006) |
+File: `analysis/study3_review.md` (and `.json`), macros `paper/results/numbers_study3_review.tex`.
 
-H2's second part was **not supported**. It predicted that exact deferral would cut deferrals without adding unsafe errors:
+| ID | Claim | Evidence | Where |
+|---|---|---|---|
+| R1 | CasePath's whole tenancy checklist was exactly right more often. | 75% of claim-runs against 42% and 53%. | §6.5, Table 10, Table 22 |
+| R2 | With fewer gating claims the difference shrinks but stays below zero. | With 5% denied and 5% open: −0.68 (same model) and −0.55 (frontier), intervals below zero. No mix is tied to an insurer's real intake. | §6.5, Table 23 |
+| R3 | Few wrong values were admitted; agreement did not catch a shared misreading. | Of 1344 tenancy fact values, 9 admitted values and 2 presumptions were wrong; in every wrong admission all readings gave the wrong value; 34 settled branch-fact values left unresolved. Theft not measured. | §6.5, Table 11 |
+| R4 | Wrong presumptions raise every design's errors by about as much. | 0.31 rises to 0.36, 0.41 and 0.51 at 5, 10 and 20%; at 20% the difference is −1.82 and −1.55. | §6.5, Table 24 |
+| R5 | Theft inference with other units. | Inverted sign-flip intervals; stories as clusters p = 0.0156 for H4; two-way resampling. | §6.4, Table 21 |
+| R6 | Family-level tenancy differences. | Plot of the 24 families. | Fig. 7 |
+| R7, R7b | Full product and checklist only differ no more than two runs of either. | Identical checklists in 93% (tenancy) and 59% (theft); two runs of the full product 81% and 17%, of checklist only 80% and 15%. Skipped steps take 65% and 82% of a full run's cost. | §6.5, Table 18 |
+| R8 | The single prompts mostly saw the denial and still requested documents. | On 72 denied-event claim-runs, Rules in context asked in 40 and requested in 69; the frontier model 71 and 49. | §6.5 |
+| R9 | The reviewed theft rules raised the single prompts' errors; the outputs do not show why. | 1.74 against 1.47 (same model), 0.95 against 0.67 (frontier). | §6.5 |
+| R10 | Time per case. | Full product median 204 s (tenancy) and 287 s (theft); checklist only 33 and 87 s; single prompt 10–14 s. A handler's time was not measured. | §6.4, Table 25 |
+| R11, R11b | Against strong Kleene evaluation of the same facts, exact deferral made no fewer strict unsafe errors but far fewer wrong holds. | 0.23 against 0.25 strict errors; held required documents 0.48 against 0.07; deviations 1.31 against 0.65 (277 claim-runs). | §6.5, §7 Principle 2, Table 26 |
 
-- Exact deferral removed 43% (terra) and 58% (luna) of the product engine's deferrals.
-- It added no unnecessary request.
-- It added 4 and 2 silent misses among 1,779 required documents. Each was a supplied document that CasePath had judged sufficient and that the reference marks as insufficient (5) or missing (1). The product engine had hidden these errors by holding the documents.
+### Formal results and deterministic computations
 
-### Tenancy
+| Claim | Evidence | Status | File | Where |
+|---|---|---|---|---|
+| Soundness relative to admitted facts (Prop. 3.1), strong Kleene over-holds at reconvergence (Prop. 3.2), exact deferral holds exactly what completions disagree on (Prop. 3.3), reading errors (Prop. 3.4); each within the scope stated in Section 3 (flow workflows, two-valued independent facts, document presence taken as given). | Proofs; the tested workflows are flow workflows and the plain walk on theft equals exact deferral, checked with the product's own evaluator. | formal | `analysis/check_fragment.py` (step of `reproduce.sh`) | §3, App. A |
+| What reading errors become. | Over the 150 Study 1 tenancy claims, misjudgement probability 0.1: unresolved values gave 84.5 expected holds and no unsafe error; wrong values gave 84.5 expected missed documents and 37.0 unnecessary requests. | development (deterministic, no model) | `analysis/` Study 1 evidence files | §3.5, App. A, Fig. 5 |
+| Exact deferral never ran on theft (9–28 open facts per text; the plain walk ran). | Section 3.4; App. A. | stated scope | `analysis/check_fragment.py` | §3.4, App. A |
 
-Requested / deferred / silently missed, as % of required documents; unnecessary as % of requests.
+### How the design was found (Studies 1 and 2)
 
-| Design | gpt-6.1-terra | gpt-6-luna |
-|---|---|---|
-| Rules in context | 96.6 / 2.6 / 0.8 / 0.1 | 96.6 / 1.8 / 1.6 / 0.1 |
-| — majority of 3 | 96.6 / 2.5 / 0.8 / 0.2 | 97.0 / 1.7 / 1.3 / 0.0 |
-| Model executes rules | 78.1 / 21.0 / 0.9 / 0.6 | not run |
-| CasePath, product engine | 45.9 / 53.5 / 0.6 / 0.8 | 53.1 / 46.7 / 0.3 / 0.0 |
-| CasePath, exact deferral | 68.9 / 30.2 / 0.8 / 0.6 | 79.8 / 19.8 / 0.4 / 0.0 |
-| — without verifier | 79.8 / 19.3 / 0.8 / 0.5 | 87.8 / 11.6 / 0.6 / 0.0 |
-| Two-valued, open read as false | 68.9 / 0 / 31.1 / 0.6 | 79.8 / 0 / 20.2 / 0.0 |
-| Two-valued, open read as true | 94.3 / 0 / 5.7 / 29.5 | 95.4 / 0 / 4.6 / 29.4 |
+| Claim | Evidence | Status | Where |
+|---|---|---|---|
+| Neither earlier configuration was better than Rules in context. Study 1 (frontier model): 38 against 22 wrong theft changes (p = 0.211). Study 2: none of four primary contrasts confirmed. | `paper/results/numbers.tex`, `analysis/*.json` regenerated by `analysis/verify_paper.py` | development (pre-registered at the time, failed) | §5; Supp. S1, S2 |
+| Likely causes and the changes they led to (faulty rules, silence read as doubt, a checking call that rejected correct values, strong Kleene over-holding). | Attributed post hoc; no row's evidence comes from a confirmatory test. | development | §5, Table 4 |
+| Label-free rule repair failed; the theft rules were then reviewed by two AI editor sessions (9 changed, 14 queued for a jurist, no jurist review). | `rule_review/` | development | §5, App. E.4 |
+| ShARC pilot. | Unplanned; no claim rests on it. | development | §5; Supp. S6 |
 
-### Theft
+## (b) What the paper does not claim, and why
 
-Wrong changes / missed changes / F1 over 81 pair runs, and the share of unresolved-fact pairs with no other request changed.
+- **Not legal correctness.** Tenancy references come from the engine CasePath implements, under a silence clause the researchers wrote; they test how a design applies the rules (§6.1, §7 "Limits", App. C.2).
+- **Not an advantage on theft over Self-consistency or over the frontier single prompt with the original rules.** H4 failed; 0.67 against 0.58 is close (§6.4, §7 "Where it does not pay").
+- **Not a result for the frontier model run in full.** Only "checklist only", one run, without a hypothesis (§6.2, §7).
+- **Not real or long files.** Texts have 77–320 words; long-file paths never ran (§6.1, §7 "Limits").
+- **Not wrong presumptions in the test data.** Every unmentioned branch fact is false by design; only the stress test R4 varies this (§6.5, App. C.2).
+- **Not that agreement catches misreadings.** All readings share one model and prompt (§6.5, §7 Principle 3).
+- **Not new rules on theft.** Theft reuses Study 1's conditions with rules reviewed knowing them (§7 "Limits").
+- **Not the value of the brief and reply draft to a handler, and not a handler's time.** Neither was measured (§6.4, §7 Principle 4).
+- **Not that Knowledge (learning from corrections) works.** The test did not exercise it (§4.3).
+- **Not any result of the expert study.** It has not run (§7, App. G).
+- **Not regulatory standing.** The paper claims none for CasePath's records (§2).
+- **Not that the tested commit is the released product.** Its merge has not been confirmed by the product's owners (§6.1, App. B.2).
 
-| Design | gpt-6.1-terra | gpt-6-luna |
-|---|---|---|
-| Direct | 43 / 28 / 0.664 / 43% | not run |
-| Rules in context | 22 / 20 / 0.790 / 98% | 68 / 29 / 0.591 / 43% |
-| — majority of 3 | 18 / 21 / 0.800 / 100% | 48 / 33 / 0.620 / 56% |
-| CasePath | 38 / 30 / 0.670 / 72% | 17 / 20 / 0.810 / 89% |
-| — without verifier | 32 / 28 / 0.703 / 81% | 29 / 15 / 0.792 / 80% |
-| Two-valued, open read as true | 34 / 45 / 0.578 / 46% | 97 / 44 / 0.438 / 20% |
+## (c) What remains before submission
 
-Premature requests on unresolved-fact pairs: CasePath 0% with both models. The in-context designs made premature requests in at most 2% of pairs. Reading open facts as true made them in 50–52%.
+### Authors' facts in the source (`%% AUTHORS:` lines; 10 lines in 5 files)
 
-### Mechanisms and checks
+- [ ] **Conflict of interest and roles** (authors). `paper/main.tex:83`. Each author's relation to the insurer and to the product's owners; who decided the merge of the tested commit.
+- [ ] **Conference-version disclosure** (authors). `paper/main.tex:85`. Venue, year, title of the conference version and what is new; first-page footnote and cover letter. The previous version of this file names it as the ICLR 2027 submission 57404 and notes that ACM does not allow simultaneous submission; its current status (withdrawn or decided) is not recorded in the repository.
+- [ ] **Merge status of `6a72159c`, Section 6.1** (authors, after the product owners decide). `paper/sections/s6_test.tex:18`. Confirmed, rejected or pending.
+- [ ] **Merge status, Appendix B.2** (authors). `paper/sections/app_d_deviations.tex:29`. Same fact as above.
+- [ ] **Which commit is published** (authors, after the scrub decision). `paper/sections/app_g_repro.tex:13`. The scrubbed commit with its parity hash, or the tested commit with the insurer's approval.
+- [ ] **Location of the response-cache archive** (authors). `paper/sections/app_g_repro.tex:17`. DOI or URL, or delete the sentence offering it.
+- [ ] **Licences of the data and outputs** (authors). `paper/sections/app_g_repro.tex:21`. For `fresh/`, `dev_probe/`, `fresh2/`, `rule_review/`, `runs/`, or a statement that the root licence covers them.
+- [ ] **Record of the rule editors** (authors). `paper/sections/app_g_repro.tex:53`. Record in `rule_review/` which model and sessions were the two editors, or change the text to "two independent editors".
+- [ ] **AI assistants used** (authors). `paper/sections/app_g_repro.tex:60`. Names and versions of the coding and writing assistants, as the venue requires.
+- [ ] **Ethics statement for the expert study** (authors, with the study lead). `paper/sections/app_i_protocol.tex:33`. Approving body and reference, or why none is required.
 
-- **Judgments are cautious, not wrong.**
-  - Terra, of 1,170 condition judgments: 428 matched the reference, 7 contradicted it, 735 were unresolved. 638 of the unresolved concern facts that the claim never mentions and that the reference reads as false.
-  - Luna: 450, 0 and 720.
-- **The verifier helps only with the cheaper model.**
-  - With terra it rejected 35 verdicts, all correct, and caught none of the 7 wrong ones.
-  - With luna it cut wrong theft changes from 29 to 17 but increased tenancy deferrals.
-- **Deferral causes.**
-  - The unstated routing fact accounts for 74% of deferrals with terra (397 of 538) and 59% with luna (206 of 352).
-  - Presuming that fact once the family is admitted (a post-hoc analysis, disclosed as such) gives recall of 95.6% and 95.0%, with 0.4% and 0.0% unnecessary requests.
-- **Semantics.** On CasePath's recorded judgments, two-valued execution turns deferrals into errors:
-  - reading open facts as false gives 31.1% and 20.2% silent misses;
-  - reading them as true makes 29.5% and 29.4% of requests unnecessary.
-- **Error origins (terra, theft).**
-  - 37 of 38 wrong changes and 17 of 30 misses trace to 5 of 98 extracted rules.
-  - A blind rule verifier flags all 5, plus 59 other rules.
-  - Tenancy: CasePath's 7 unnecessary requests come from its 7 wrong verdicts, and its 15 misses are supplied files it judged sufficient.
-- **Citations.**
-  - Terra: 100% verbatim for every design.
-  - Luna: 98.8% for rules in context and 99.4% for CasePath's interpreter. CasePath's admission rejects non-verbatim quotations.
-- **Reference checks.**
-  - Oracle: the true flags reproduce 147 of 150 tenancy reference sets.
-  - A blind re-derivation reproduces 7 of 9 theft conditions exactly; on those 7, the design ranking is unchanged.
-- **Original study.** The harness reproduces all 54 original CasePath checklists and the original scores (24 / 15 / 9, F1 0.667).
-- **Exact computations (deterministic, all 150 claims).** Strong Kleene evaluation defers 68% more documents than necessary.
-- **Engine runtime.** 65 ms for a 100-step process; 22 s for exact deferral over 10 open flags. Real claims have at most 5 flags.
-- **Cost per case (USD × 10⁻³).**
-  - Tenancy: CasePath 7.0 vs rules in context 5.5 (terra); 0.9 vs 0.7 (luna).
-  - Theft: 15.4 vs 4.0 (terra); 1.9 vs 0.7 (luna).
-  - CasePath with luna is at least as accurate on theft as terra with rules in context, at half the cost.
+### The tested product
 
-## 4. Corrections from the final evidence audit
+- [ ] **Merge of the tested commit** (product owners). Commit `6a72159cdb35a01059d0549b1d437c0b3d5c20cb`, branch `claude/casepath-internal-paper-sync-20261110d`. Confirm that `python -m casepath parity` prints `source_tree_sha256` `030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d` at the merged commit. If they reject a change of behaviour, the test must be repeated on new sealed data (App. B.2). Then update the two merge-status lines above.
 
-Before packaging, every claim in the abstract, introduction, results, discussion and conclusion was checked against the evidence files. Four statements overstated the evidence and were corrected:
+### Release (`release/SCRUB_REPORT.md`, section 2; `RELEASE.md`)
 
-1. **Exact deferral.** "Halves deferrals without adding a single unsafe error" became the measured result: 43–58% fewer deferrals, no added unnecessary request, and 4 and 2 added silent misses, explained above. The paper now states that H2's second part was not supported.
-2. **Deferral causes.** "Almost all" deferrals from the routing fact became "most" (74% and 59%). The cost-efficient model's numbers were added.
-3. **Significance.** The frontier model's accuracy advantage on extracted rules is described as not significant in the abstract, introduction, guidance table and conclusion.
-4. **Mismatched figure.** One sentence quoted F1 for a claim about wrong-change counts; it now gives the counts (17 vs 68).
+- [ ] **Git history** (product owners). 1,110 commits on 12 branches, including earlier states of pseudonymised data. Recommendation: publish a new repository whose first commit is a reviewed export.
+- [ ] **Insurer's name in the tested product** (product owners). Decide: (a) publish `6a72159c` unchanged with the insurer's written approval, or (b) a scrubbed commit with its new parity hash reported beside the tested one.
+- [ ] **Knowledge seed derived from the insurer's letters** (product owners). Remove it with its test, loader line and interface text, or keep it only with written approval.
+- [ ] **Internal product documents** (product owners). Remove the five documents named in the scrub report and neutralise the README lines.
+- [ ] **Deployment files for the insurer's platform** (product owners). Keep with approval or remove.
+- [ ] **`design-plans/` and the paper branch's own `casepath-internal/`** (product owners). Leave out of the public export.
+- [ ] **Local paths and names** (authors). Replace in the files that ship.
+- [ ] **Licences** (authors). Add a licence file to `fresh/`, `fresh2/`, `dev_probe/`, `rule_review/`, `runs/`, `expert_study/`, `inputs/`, `paper/`.
+- [ ] **Cache archive** (authors). Study 3's cache is about 23,000 files (730 MB, App. E.1); the whole `runs/product/cache/` holds 79,404 files (0.9 GB, `RELEASE.md` section 3). Publish it with a DOI, or remove the offer from App. E.1.
+- [ ] **Public repository URL** (authors). The paper cites `github.com/KumarNavish/casepath`; the folder exists only on this branch, and `git clone <repository URL>` was not tested from a public address (`RELEASE.md` section 2). Replace the anonymous citation in the root `README.md`.
+- [ ] **Delete `release/SCRUB_REPORT.md` from the export** (authors). The report says it is internal.
 
-One analysis script (`analysis/tenancy_extra.py`) always read the frontier model's cached responses, whatever model was named. It now binds the model before import and runs on cached responses only. The terra results reproduce unchanged, and the luna results are new. No model call was made.
+### Expert study (`expert_study/PREREGISTRATION_DRAFT.md`, section 13; App. G, Table 27)
 
-The limitations section now also says why no ReAct-style tool-using agent was compared.
+- [ ] **Formative step** (study lead): day 7, 17 November 2026; product changes from it on 17–19 November, each listed.
+- [ ] **Freeze as version 1.0** (study lead): day 10, 20 November 2026, with the contents listed in section 13.3.
+- [ ] **Status-source hash** (study lead): by day 13, 23 November 2026. No session before it exists.
+- [ ] **First session** (study lead): day 14, 24 November 2026, or soon after.
+- [ ] **Ethics statement** (authors, study lead): see the `%% AUTHORS:` line above.
+- [ ] **When results exist** (authors): Section 7 (`paper/sections/s7_experts.tex`, now not input) returns to the article with the results of Q1–Q5 (agreement with the insurer's requests and a single prompt; what five experts do with the same items; how they work; learning from corrections on a held-out case; reasons for changes), the deviations from the frozen protocol, and the limits App. G names. The article now reports no result of the study.
 
-## 5. How to verify
+### Text and layout
 
-```bash
-cd research/tmis2026 && tar -xzf runs/responses_cache.tar.gz -C runs
+- [ ] **Swiss supervisory guidance** (authors). The internal referee asked for it; it is not cited because title, number and date could not be confirmed from an official page (`analysis/REFERENCES_ADDED.md`). Verify and add it, or leave it out.
+- [ ] **Abstract** (authors). Kept unchanged by decision. Still open from round 2: gloss "per pair", the qualifier "by editors who knew the test conditions", and the mechanism sentence (presumptions; plain walk on theft). See `REVIEW_RESPONSE_CHECKLIST.md`.
+- [ ] **Template options** (authors). Remove `nonacm` from `\documentclass` in `main.tex` and `supplement.tex`; add `anonymous,review` only if the venue requires it; confirm the CCS concepts.
+- [ ] **Length** (authors). The article is 55 pages (body pp. 1–22), the supplement 27. TMIS length limits were not checked against an official page.
+- [ ] **Open review items not done**: a glossary table (J09), a recap at the start of §7 (J15), an explicit research-question sentence (J01), a reason for the published designs not run (2Kwe Q3), a complexity sentence (SBTv W3), routing accuracy for Study 3 (CptP Q2). See the checklist.
+- [ ] **Build state** (none open). Both documents build from clean with zero undefined references or citations, zero overfull boxes and zero `??`. The logs show 14 harmless "`h` float specifier changed to `ht`" warnings in the article; BibTeX warns of a missing address, publisher or page range in 16 entries of the article and in 1 further entry of the supplement.
+
+## (d) How to reproduce
+
+**One command, no model calls** (`RELEASE.md` section 3; App. E.2):
+
+```sh
+git clone <repository URL> casepath && cd casepath
+git fetch origin claude/casepath-internal-paper-sync-20261110d
+python3 -m venv .venv-repro && .venv-repro/bin/pip install -r research/tmis2026/requirements-reproduce.txt
+PYTHON=.venv-repro/bin/python research/tmis2026/reproduce.sh
 ```
 
-```bash
-cd research/tmis2026/analysis && python3 verify_paper.py
-```
+What it checks: the data manifests and the probe rebuild; that the product commit prints the recorded parity hash; the claims of App. A with the product's own evaluator; Study 3's registered analysis, the post-hoc analysis and the number macros, byte for byte; the analyses added after review; the analysis tests (43 + 36 + Study 2); Studies 1 and 2 from their stored checklists and Study 1's response cache; and a clean build of both documents. It blocks model calls and writes nothing into the checkout. It does not re-check the model runs themselves, a few inputs of the Study 1–2 re-analysis, or the Study 1–2 figures.
 
-`verify_paper.py` recomputes every analysis from the saved plans and cached responses, with the budget capped so no model call is possible. It regenerates `paper/results/numbers.tex` and requires a byte-for-byte match, resolves every citation key, and compiles the paper from a clean copy. Current status: **all checks pass**, with 0 LaTeX errors, 0 undefined references and 0 overfull boxes.
+How long: 11 min 20 s in a fresh clone (59 steps passed, 2 skipped); 11 min 27 s with the cache (61 passed). `pypdf==5.9.0` is required; another version breaks the Study 1 cache lookup.
 
-## 6. Remaining requirements before submission
+What needs the cache archive: only two parts of the review analysis, the individual readings behind R3 and the cost split of R7. Without the archive these two lines are SKIP; every other step needs only the repository.
 
-**Must**
+**Re-running Study 3 with model calls** (`harness/study3/run_all.py`; App. E.2; `RELEASE.md` section 4):
 
-1. **Resolve the ICLR 2027 submission (57404).** ACM does not permit simultaneous submission. Withdraw it, or wait for the decision, before submitting to TMIS.
-2. **Co-author approval.** The conclusion now reverses for the frontier model. All four authors should approve this framing, the author order and affiliations, and add ORCIDs and funding to the acknowledgments.
-3. **Template.** Remove `nonacm` from `\documentclass` in `main.tex`. TMIS reviews single-blind, so no `anonymous` option is needed. Confirm the CCS concepts in ACM's CCS tool.
-4. **Length.** Running text in §1–7 is about 7,200 words, plus 9 tables, 4 figures, 1 algorithm and a 5-page appendix; the abstract has 199 words. I could not verify TMIS's current length limits from an official page (a search snippet suggested 4,000–6,000 words and a 150–200-word abstract). Check the current author guidelines. If a limit applies, move Appendix E (verbatim prompts) to supplementary material first, then Appendices B–C.
-5. **Public release.** The data-availability statement (App. D) points to `github.com/KumarNavish/casepath`, folder `research/tmis2026`. That folder exists only on this branch, so the branch must be merged or the folder released as a tagged snapshot, ideally with a DOI. The repository must also be public by submission.
-6. **AI-use statement.** App. D describes how generative AI was used in the method, in creating the original datasets, and in assisting the authors. Confirm it matches your actual use, including this revision.
+- Cost of the stored run: USD 34.33 in the ledgers (22.41 cost-efficient model, 11.92 frontier model); the planned caps were USD 32 plus USD 8 for the frontier product design (App. B.1). Without the cache every call is paid again.
+- Time of the stored run: five invocations between 22:30 on 10 November and 04:17 on 11 November 2026 UTC, about 5 h 40 min of running time with up to 20 parallel workers.
+- What a reader must do: use their own model endpoint and key; adapt the two model clients (`harness/llm.py`, `harness/product/run_product.py`) to read a key and CA bundle from the environment; pass the product worktree path; use a new `--label`. Answers can differ: the models are not deterministic and no snapshot is recorded. If the two model endpoints are retired, only the re-check from stored outputs remains.
+- For orientation (summed by folder from the ledgers' `cost` fields; each folder mixes development, pilots, diagnostics and study runs, and Study 3's spend is split between `runs/v2/` and `runs/product/`; these totals are not stated in the paper): `runs/ledger.jsonl` USD 9.88 (Study 1); `runs/v2/` USD 20.86; `runs/product/` USD 62.02.
 
-**Should**
-
-7. **Expert review of rules and references.** All three reviewers raised this; the paper discloses it as a limitation. A legal expert should check the 98 theft rules (start with the 64 the verifier flags) and a sample of both reference sets.
-8. **Merge to `main`.** The ruleset requires a pull request, the "CasePath regression" check and CodeQL. No PR has been opened yet.
-
-**Optional**
-
-9. **sciCORE rerun.** The deterministic computations were run in the cloud container because the Mac running Commander was offline, so sciCORE was never reached. `scicore/array.sbatch` is ready; results should reproduce byte for byte. The paper makes no sciCORE claim.
-10. **ReAct-style baseline.** A tool-using agent that chooses when to call the rule engine (reviewer SBTv). It is named as future work in §6.4.
-
-## 7. Provenance
-
-| Commit | Content |
-|---|---|
-| `dcc20c1` | Workspace on the latest CasePath agent |
-| `46a503b` | Harness and analysis plan, frozen before held-out runs |
-| `2e0e9c3` | Held-out terra results, diagnostics, draft sections |
-| `e288bf3` | Luna results, mechanism analyses, paper draft |
-| branch head | Final audit corrections and these deliverables |
-
-`WORKLOG.md` records every step, decision and expense in order.
+Note: `RELEASE.md` section 4 gives the stored run's spend as USD 31.79 (run log plus hand-written notes), while the paper gives USD 34.33 from the ledgers and says the run log does not record all spend (App. E.2). The ledgers are the source.

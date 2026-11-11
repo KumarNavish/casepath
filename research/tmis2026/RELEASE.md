@@ -154,9 +154,10 @@ with the expected parity hash and settings; the tenancy templates have the recor
 agree with the reference engines. Details: `harness/study3/README.md`.
 
 Cost and time of the stored run (`runs/study3/confirm/RUNLOG.jsonl`): five invocations between 2026-11-10 22:30
-and 2026-11-11 04:17 UTC, about 5 h 40 min of running time (29, 118, 47, 110 and 38 minutes; three stops were
-unplanned). Spend USD 31.79: USD 19.56 logged by the driver for the last two invocations and USD 12.23 in the
-hand-written notes for the first three. Section 6 of the paper gives the cost per case of each design.
+and 2026-11-11 04:17 UTC, about 5 h 40 min of running time (29, 118, 47, 110 and 38 minutes; four invocations
+stopped early, two deliberately and two by failures of the environment). Spend USD 34.33 according to the ledgers
+(USD 22.41 on the cost-efficient model, USD 11.92 on the frontier model); the run log's own totals are incomplete
+because three invocations could not log their end. Section 6 of the paper gives the cost per case of each design.
 
 Four limits for anyone outside the original container:
 
