@@ -8,7 +8,9 @@ import os
 import re
 import shutil
 
-USERS, MODEL, VOLUME = "navish.kumar@mobi.ch", "system.ai.claude-opus-5-5", "/Volumes/dsw_prod_mobi_gcop_metrics_dsw/scratch_800dev/casepath_pilot"
+# The three deployment values are filled in here in the notebook only, never in Git (as in app.yaml).
+USERS, MODEL, VOLUME = "FILL-IN: pilot e-mail addresses", "FILL-IN: the gateway model's exact name", "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
+assert not any(v.startswith("FILL-IN") for v in (USERS, MODEL, VOLUME)), "fill in USERS, MODEL and VOLUME in this cell first"
 confirm = dbutils.widgets.get("confirm").strip()  # noqa: F821  (Databricks provides dbutils)
 match = re.fullmatch(r"deploy ([0-9a-f]{7,40}) (\d+) ([0-9a-f]{12})", confirm)
 assert match, "confirm must read: deploy <build> <files> <hash>"
