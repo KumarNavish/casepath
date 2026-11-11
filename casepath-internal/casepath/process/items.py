@@ -161,6 +161,9 @@ def build_items(state, result, files=None):
         steps = {x["id"]: x for x in graph["steps"]}
         here = steps.get((ev.get("current") or {}).get("step")) or (steps.get(ev["path"][-1]["step"]) if ev.get("path") else None) or {}
         planned = here.get("action")  # the handler's workflow names the action each stage ends in
+        variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
+        if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
+            planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})

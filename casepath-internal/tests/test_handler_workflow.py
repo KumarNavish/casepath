@@ -56,6 +56,12 @@ class HandlerWorkflowTests(unittest.TestCase):
         self.assertTrue(state["facts"]["unterlagen_vollstaendig"])
         self.assertEqual(state["evaluation"]["current"]["step"], "klaeren")  # cover is still the handler's to decide
         self.assertIn("deckung", {w["fact"] for w in state["evaluation"]["waiting_for"]})
+        called = base + [fact("bisherige_handlungen", "A1 2024-02-20; A2 2024-03-18")]
+        state = core.evaluate(wf, [], [], {"facts": called, "documents": [document("mietvertrag")]}, "c")
+        nxt = {i["item_id"]: i for i in build_items(state, {"facts": called})}["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["next_in_days"]), ("A6", 25))  # after a call that leaves it open: pending with a deadline
+        newest_first = base + [fact("bisherige_handlungen", "A2 2024-03-18; A1 2024-02-20")]
+        self.assertTrue(core.evaluate(wf, [], [], {"facts": newest_first, "documents": []}, "c")["facts"]["anruf_offen"])
         covered = done + [fact("deckung", "bestätigt")]
         state = core.evaluate(wf, [], [], {"facts": covered, "documents": [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]}, "c")
         self.assertEqual(state["evaluation"]["current"]["step"], "beurteilen")

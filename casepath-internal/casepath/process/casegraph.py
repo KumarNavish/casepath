@@ -337,6 +337,10 @@ def derive_facts(graph, facts, findings, evaluate):
             out[fact] = "1" in done
         elif kind == "closing_announced":  # the clock: after a status inquiry announcing closure (A7), the case closes
             out[fact] = "7" in done
+        elif kind == "last_action_A2":  # the last thing done was a phone call (its note in the file)
+            dated = sorted(re.findall(r"\bA(\d{1,2})\s+(\d{4}-\d{2}-\d{2})", str(facts.get("bisherige_handlungen") or "")), key=lambda x: x[1])
+            last = dated[-1][0] if dated else (done[-1] if done else None)  # by date, whatever order the reader listed them in
+            out[fact] = last == "2"
         elif kind == "requests_count":
             out[fact] = "0" if requests == 0 else "1" if requests == 1 else "2+"
     evaluation = evaluate(out)
