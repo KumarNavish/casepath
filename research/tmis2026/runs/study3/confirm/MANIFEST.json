@@ -648,6 +648,53 @@
    ],
    "start": "2026-11-11T01:49:02Z",
    "workers": 20
+  },
+  {
+   "argv": [
+    "--data",
+    "fresh2",
+    "--label",
+    "confirm",
+    "--k",
+    "3",
+    "--cap-usd",
+    "6.5",
+    "--cap-frontier-product-usd",
+    "8",
+    "--workers",
+    "20"
+   ],
+   "cap_usd": 6.5,
+   "checks": [
+    "check (a) plan: ANALYSIS_PLAN_STUDY3.md committed unmodified: yes",
+    "check (c) templates: fresh2 daaa76eddc5ac2b6 vs fresh daaa76eddc5ac2b6: identical, workflows/fresh-serial-sync apply unchanged",
+    "check (b) product: /home/user/work/casepath-sync-e at 6a72159cdb35, clean, source tree 030480203f7d10b3, settings {\"model_reasoning\": true, \"open_rule\": \"any\", \"readings\": 3, \"run_scope\": \"full\"}: matches the spec",
+    "check (d) compare: tenancy 5076 of 5076 decisions agree with exact deferral (pass); theft 3000 assignments, 81000/81000 document decisions agree / 27 documents the rules can demand; 0 without a need in the workflow (pass)",
+    "check (b) settings of every product run (casepath/tenancy, casepath/theft, casepath_checklist/tenancy, casepath_checklist/theft, casepath_frontier_checklist/tenancy, casepath_frontier_checklist/theft): readings, open rule, run scope and reasoning as the spec requires"
+   ],
+   "designs": [
+    "ric/tenancy",
+    "ric/theft",
+    "ric_original/theft",
+    "model_executes_rules/tenancy",
+    "model_executes_rules/theft",
+    "react/tenancy",
+    "react/theft",
+    "core/theft",
+    "casepath_checklist/tenancy",
+    "casepath_checklist/theft",
+    "self_consistency/tenancy",
+    "self_consistency/theft",
+    "ric_original_frontier/theft",
+    "ric_frontier/tenancy",
+    "ric_frontier/theft",
+    "casepath/tenancy",
+    "casepath/theft",
+    "casepath_frontier_checklist/tenancy",
+    "casepath_frontier_checklist/theft"
+   ],
+   "start": "2026-11-11T03:39:33Z",
+   "workers": 20
   }
  ],
  "label": "confirm",
@@ -939,7 +986,7 @@
    }
   }
  },
- "repository_head": "2a6c36419f4ef6f939a369b8657b473b359923ea",
+ "repository_head": "a062edd8825ecfa36160971086fd33ca5def7fa0",
  "run_environment": {
   "model_client": "harness/llm.py through harness/v2/common.py (ledger per design as the spec names it); TMIS_MODEL=openai/<model> per design",
   "product_entry_point": "harness/product/run_api.run_case (create_app + HTTP API), one subprocess per case-run, store ids deterministic per case-run",
