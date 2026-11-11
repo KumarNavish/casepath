@@ -41,7 +41,7 @@ ORDER = [("casepath", "CasePath"), ("casepath_checklist", "CasePath, checklist o
          ("ric_original", "Rules in context, original rules"),
          ("ric_frontier", "Rules in context, frontier model"),
          ("ric_original_frontier", "Rules in context, original rules, frontier model"),
-         ("casepath_frontier_checklist", "CasePath, checklist only, frontier model (one run)")]
+         ("casepath_frontier_checklist", "CasePath, checklist only, on the frontier model (one run)")]
 FRONTIER = {k for k, d in RES["designs"].items() if d["model"] == "gpt-6.1-terra"}
 
 
@@ -132,7 +132,7 @@ COST_LABEL = {"casepath": "CasePath", "casepath_checklist": "checklist only", "c
               "ric": "Rules in context", "self_consistency": "Self-consistency", "model_executes_rules": "Model executes rules",
               "react": "ReAct", "ric_original": "Rules in context, original rules",
               "ric_frontier": "Rules in context, frontier", "ric_original_frontier": "Rules in context, original rules, frontier",
-              "casepath_frontier_checklist": "checklist only, frontier (one run)"}
+              "casepath_frontier_checklist": "checklist only, on the frontier model (one run)"}
 # Label placement, by hand: (dx, dy, ha) in points from the point, or ("at", x, y, ha, leader) in data coordinates
 # (x in USD, y in errors), with a thin leader line to the point when leader is True.
 NUDGE = {"tenancy": {"casepath": (-7, 0, "right"), "casepath_checklist": (-7, 0, "right"),
