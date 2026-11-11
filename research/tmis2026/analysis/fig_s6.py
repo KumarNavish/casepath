@@ -1,6 +1,6 @@
-"""Section 6 figures: fig_main and fig_agents (Study 3, data fresh2, run label confirm). No model calls.
+"""Section 6 figures: fig_main and fig_cost (Study 3, data fresh2, run label confirm). No model calls.
 
-    python3 fig_s6.py [--png DIR]
+    python3 fig_s6.py [--png DIR] [fig_main] [fig_cost]
 
 fig_main: CasePath against every design on both regimes. Left tenancy (strict unsafe errors per claim), right theft
 (wrong + missed changes per pair), one shared row order. Dot = the design's mean (the mean of its cluster values, as in
@@ -9,9 +9,9 @@ analysis's own resampling (study2.paired_bootstrap with the spec's resamples and
 and the nine changed facts). The values are checked against the results file. CasePath is the only saturated colour;
 designs on the frontier model have an open marker. Two-valued rows are left out (they are in the open-facts table).
 
-fig_agents: the full product's cost per case by agent on each regime, as horizontal bars from zero, coloured by whether
-the agent can decide the checklist (spec: deciding_agents); a last row stacks the whole per-case cost. Reference lines:
-the checklist-only cost per case and the frontier single prompt's cost per case. All values from the results file.
+fig_cost: what each design buys per dollar. Two panels (tenancy above, theft below): x = cost per case from the results
+file (log axis), y = the same errors and intervals as fig_main, from zero. Same colours and markers as fig_main;
+labels placed by hand (NUDGE) so that none overlaps. Two-valued rows are left out (no model calls, no cost).
 """
 from __future__ import annotations
 
@@ -127,84 +127,69 @@ def fig_main():
     _save(fig, "fig_main")
 
 
-AGENT_ROWS = [("router", "Router"), ("claim_reader", "Claim reader"), ("source_checker", "Source checker"),
-              ("document_finder", "Document finder"), ("process_builder", "Process builder"),
-              ("result_checker", "Result checker")]
+# fig_cost: short labels (the caption names them in full); offsets in points, chosen by hand so that no label overlaps
+COST_LABEL = {"casepath": "CasePath", "casepath_checklist": "checklist only", "core": "Core",
+              "ric": "Rules in context", "self_consistency": "Self-consistency", "model_executes_rules": "Model executes rules",
+              "react": "ReAct", "ric_original": "Rules in context, original rules",
+              "ric_frontier": "Rules in context, frontier", "ric_original_frontier": "Rules in context, original rules, frontier",
+              "casepath_frontier_checklist": "checklist only, frontier (one run)"}
+# (dx, dy, ha) in points from the point
+NUDGE = {"tenancy": {"casepath": (6, 4, "left"), "casepath_checklist": (-6, 4, "right"),
+                     "ric": (6, 4, "left"), "self_consistency": (6, 4, "left"), "model_executes_rules": (6, 4, "left"),
+                     "react": (6, 4, "left"), "ric_frontier": (6, 4, "left"),
+                     "casepath_frontier_checklist": (-6, 4, "right")},
+         "theft": {"casepath": (6, -2, "left"), "casepath_checklist": (6, -9, "left"), "core": (-6, -2, "right"),
+                   "ric": (6, 4, "left"), "self_consistency": (-6, 4, "right"), "model_executes_rules": (6, 4, "left"),
+                   "react": (6, -3, "left"), "ric_original": (6, -3, "left"), "ric_frontier": (6, 4, "left"),
+                   "ric_original_frontier": (-6, 4, "right"), "casepath_frontier_checklist": (-6, 5, "right")}}
 
 
-def fig_agents():
+def fig_cost():
+    """Errors against cost per case: one point per design (log cost axis), 95% interval as a vertical line."""
     import matplotlib.pyplot as plt
+    from matplotlib.ticker import FixedLocator, NullLocator
     th.setup()
-    deciding = set(SPEC["deciding_agents"])
-    dec = [a for a in AGENT_ROWS if a[0] in deciding]
-    rest = [a for a in AGENT_ROWS if a[0] not in deciding]
-    # rows: a group heading, its agents; the second heading, its agents; then the whole cost per case
-    layout, y = [], 0.0
-    for head, group, col in (("can decide the checklist", dec, CP), ("cannot decide the checklist", rest, GREY_TEXT)):
-        layout.append(("head", y, head, col)); y += 0.85
-        for a, lab in group:
-            layout.append(("agent", y, lab, a)); y += 1
-        y += 0.25
-    layout.append(("total", y + 0.15, "All calls of a case", None))
-    ymax = y + 0.15
-    row = 0.20
-    H = 0.70 + (ymax + 1.2) * row + 0.44
+    iv = design_intervals()
+    H = 5.0
     fig = plt.figure(figsize=(th.WIDTH, H))
-    lab_w, gap, right = 1.42, 0.30, 0.16
-    pw = (th.WIDTH - lab_w - gap - right) / 2
-    bottom, top = 0.44, 0.70
-    for i, (regime, title, unit) in enumerate((("tenancy", "Tenancy", "USD per claim"), ("theft", "Theft", "USD per text"))):
-        c = RES["designs"]["casepath"]["regimes"][regime]["cost"]
-        groups = c["by_group_per_case_run"]
-        total = c["cost_per_case_run"]
-        check = RES["designs"]["casepath_checklist"]["regimes"][regime]["cost"]["cost_per_case_run"]
-        front = RES["designs"]["ric_frontier"]["regimes"][regime]["cost"]["cost_per_case_run"]
-        x0 = lab_w + i * (pw + gap)
-        ax = fig.add_axes([x0 / th.WIDTH, bottom / H, pw / th.WIDTH, (H - bottom - top) / H])
-        ax.set_ylim(ymax + 0.6, -0.5)
-        xmax = total * 1.22
-        ax.set_xlim(0, xmax)
-        for s_ in ("top", "right", "left"):
+    left, right = 0.52, 0.12
+    panels = (("tenancy", "Tenancy", "strict unsafe errors per claim", "USD per claim"),
+              ("theft", "Theft", "wrong + missed changes per pair", "USD per text"))
+    ph, gapv, bottom = 1.72, 0.62, 0.46
+    for i, (regime, title, ylab, xlab) in enumerate(panels):
+        y0 = bottom + (1 - i) * (ph + gapv)
+        ax = fig.add_axes([left / th.WIDTH, y0 / H, (th.WIDTH - left - right) / th.WIDTH, ph / H])
+        for s_ in ("top", "right"):
             ax.spines[s_].set_visible(False)
-        ax.tick_params(axis="y", length=0)
-        ax.tick_params(axis="x", length=2.5, pad=2)
-        ax.set_xlabel(unit, labelpad=3)
-        ax.xaxis.set_major_locator(plt.MaxNLocator(3))
-        ax.text(0, -2.15, title, fontsize=th.TITLE, fontweight=th.BOLD, ha="left", va="bottom", clip_on=False)
-        ax.set_yticks([l[1] for l in layout])
-        ax.set_yticklabels([l[2] for l in layout] if i == 0 else [""] * len(layout))
-        if i == 0:
-            for t, l in zip(ax.get_yticklabels(), layout):
-                if l[0] == "head":
-                    t.set_color(l[3]); t.set_fontweight(th.BOLD); t.set_fontsize(th.NOTE)
-        h = 0.62
-        for kind, yy, lab, a in layout:
-            if kind == "agent":
-                v = c["by_agent"][a]["cost_per_case_run"]
-                ax.barh(yy, v, height=h, color=CP if a in deciding else th.NEUTRAL, edgecolor="none", zorder=2)
-                ax.text(v + 0.015 * xmax, yy, f"{v:.4f}", fontsize=th.NOTE, va="center", ha="left", zorder=4,
-                        bbox=dict(boxstyle="square,pad=0.18", fc="white", ec="none"))
-            elif kind == "total":
-                left = 0.0
-                for g, col in (("can decide the checklist", CP), ("the rest", th.NEUTRAL),
-                               ("not attributed (agent list does not line up)", "white")):
-                    v = groups.get(g, 0.0)
-                    if v:
-                        ax.barh(yy, v, left=left, height=h, color=col, edgecolor=th.NEUTRAL if col == "white" else "none",
-                                lw=th.THIN, zorder=2)
-                        left += v
-                ax.text(total + 0.015 * xmax, yy, f"{total:.4f}", fontsize=th.NOTE, va="center", ha="left", zorder=4,
-                        bbox=dict(boxstyle="square,pad=0.18", fc="white", ec="none"))
-        # reference lines: the checklist-only and the frontier single prompt's cost per case, labelled at the top
-        for v, ls in ((check, (0, (3, 2))), (front, (0, (1, 1.4)))):
-            ax.plot([v, v], [-0.45, ymax + 0.45], color=th.INK, lw=th.THIN, ls=ls, zorder=1)
-        # the line further left takes the upper label, so no line crosses the other's label
-        refs = sorted(((check, "checklist only"), (front, "frontier single prompt")))
-        for (v, lab), yl in zip(refs, (-1.25, -0.55)):
-            ax.plot([v, v], [yl + 0.1, -0.45], color=th.INK, lw=th.THIN, clip_on=False,
-                    ls=(0, (3, 2)) if lab == "checklist only" else (0, (1, 1.4)))
-            ax.text(v + 0.01 * xmax, yl, lab, fontsize=th.NOTE, ha="left", va="bottom", clip_on=False)
-    _save(fig, "fig_agents")
+        ax.set_xscale("log")
+        ax.set_xlim(0.0004, 0.06)
+        ticks = [0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05]
+        ax.xaxis.set_major_locator(FixedLocator(ticks))
+        ax.xaxis.set_minor_locator(NullLocator())
+        ax.set_xticklabels([f"{t:g}" for t in ticks])
+        hi = max(v[2] for v in iv[regime].values())
+        ax.set_ylim(0, 0.5 * (int(hi / 0.5) + 1))
+        ax.set_yticks([k * 0.5 for k in range(int(hi / 0.5) + 2)])
+        ax.set_yticklabels([f"{k * 0.5:g}" for k in range(int(hi / 0.5) + 2)])
+        ax.tick_params(length=2.5, pad=2)
+        ax.set_ylabel(ylab, labelpad=3)
+        ax.set_xlabel(xlab + " (log scale)", labelpad=3)
+        ax.text(0.0004, ax.get_ylim()[1] * 1.04, title, fontsize=th.TITLE, fontweight=th.BOLD, ha="left", va="bottom")
+        for d, _ in ORDER:
+            if d not in iv[regime]:
+                continue
+            mean, lo, hi_ = iv[regime][d]
+            x = RES["designs"][d]["regimes"][regime]["cost"]["cost_per_case_run"]
+            col = CP if d == "casepath" else OTHER
+            ax.plot([x, x], [lo, hi_], color=col, lw=th.THICK, solid_capstyle="round", zorder=2, alpha=0.9)
+            ax.scatter([x], [mean], s=30, marker="o", facecolors="white" if d in FRONTIER else col, edgecolors=col,
+                       linewidths=th.THICK, zorder=3)
+            dx, dy, ha = NUDGE[regime][d]
+            ax.annotate(COST_LABEL[d], (x, mean), xytext=(dx, dy), textcoords="offset points", ha=ha, va="center",
+                        fontsize=th.NOTE, color=CP if d == "casepath" else th.INK,
+                        fontweight=th.BOLD if d == "casepath" else "normal", zorder=4,
+                        bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none", alpha=0.85))
+    _save(fig, "fig_cost")
 
 
 if __name__ == "__main__":
@@ -213,6 +198,6 @@ if __name__ == "__main__":
         PREVIEW = args[args.index("--png") + 1]
         Path(PREVIEW).mkdir(parents=True, exist_ok=True)
     only = [a for a in args if a.startswith("fig_")]
-    for f in only or ["fig_main", "fig_agents"]:
+    for f in only or ["fig_main", "fig_cost"]:
         globals()[f]()
     print("written to", FIG)
