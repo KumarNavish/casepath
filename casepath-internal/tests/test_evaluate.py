@@ -39,7 +39,7 @@ def scripted_model():
         return re.search(r"file_[0-9a-f]{16}", json.dumps(model.inputs[-1])).group(0)
 
     def fact():
-        return {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": file_id(), "quote": QUOTE}]}
+        return {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": file_id(), "quote": QUOTE}], "part": None}
 
     def proposal():
         return {"op": "add_document", "title": "Ventilation record", "why": "The tenant says they ventilate.", "question": "",

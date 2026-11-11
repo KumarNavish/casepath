@@ -31,7 +31,7 @@ def script():
     return ScriptedModel([
         [report("claim_reader", request="Check the mould defect.")],
         [("open_process", {}), report("process_builder")],
-        [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes",
+        [("record_fact", {"part": None, "fact": "landlord_notified", "status": "established", "value": "yes",
                           "citations": [{"file": "f1", "quote": QUOTE}]}), report("claim_reader")],
         [("record_document", {"document": "notice_letter", "status": "absent", "files": [], "citations": [], "note": ""}),
          report("document_finder")],

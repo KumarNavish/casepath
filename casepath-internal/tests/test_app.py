@@ -27,7 +27,7 @@ def team_script(file_id, *, finder_calls=(), learn_rows=()):
         [delegate("process_builder")],
         [("open_process", {}), report("process_builder")],
         [delegate("claim_reader", "Record the facts.")],
-        [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes",
+        [("record_fact", {"part": None, "fact": "landlord_notified", "status": "established", "value": "yes",
                           "citations": [{"file": file_id, "quote": QUOTE}]}), report("claim_reader")],
         [delegate("document_finder")],
         [*finder_calls, report("document_finder")],

@@ -28,7 +28,7 @@ def standard_script(*, finder_calls, result_fields, builder_calls=(), retry_turn
         [("open_process", {}), ("view_knowledge", {})],
         [*builder_calls, report("process_builder", questions=[{"fact": "landlord_notified", "plain": "Was the landlord told?"}])],
         [delegate("claim_reader", "Record the facts.")],
-        [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "ja", "citations": [{"file": "f1", "quote": QUOTE}]}),
+        [("record_fact", {"part": None, "fact": "landlord_notified", "status": "established", "value": "ja", "citations": [{"file": "f1", "quote": QUOTE}]}),
          report("claim_reader")],
         [delegate("document_finder")],
         [*finder_calls, report("document_finder")],
@@ -315,7 +315,7 @@ class HandlerDeliverableTests(unittest.TestCase):
         workflow["facts"].append({"id": "frist", "type": "date", "deadline": True, "question": "Welche Frist gilt?", "source_refs": ["fixture#f"]})
         files = [{"id": "f1", "name": "m.eml", "kind": "email", "text": f"Subject: Schimmel\n\n{QUOTE} Bitte beheben Sie den Mangel bis zum 15. März 2025."}]
         script = standard_script(finder_calls=[], result_fields={"case_summary": [{"field": "gegenpartei", "text": "Immo Aare AG, Bern"}]})
-        script[7].insert(1, ("record_fact", {"fact": "frist", "status": "established", "value": "2025-03-15",
+        script[7].insert(1, ("record_fact", {"part": None, "fact": "frist", "status": "established", "value": "2025-03-15",
                                              "citations": [{"file": "f1", "quote": "Bitte beheben Sie den Mangel bis zum 15. März 2025."}]}))
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=files, workflow=workflow)
         self.assertEqual(result["case_summary"], [{"field": "gegenpartei", "label": "Gegenpartei", "text": "Immo Aare AG, Bern"}])
