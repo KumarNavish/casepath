@@ -934,7 +934,7 @@ function documentsView() {
       const chip = d.status === "present" ? "good" : d.status === "missing" || d.status === "unusable" ? (["suggested", "optional"].includes(d.required) ? "wait" : "bad") : "wait";
       const note = { depends: d.questions && d.questions.length ? T(`depends on: ${esc(d.questions.map((q) => q.question).join(" / "))}`, `hängt ab von: ${esc(d.questions.map((q) => q.question).join(" / "))}`) : T("depends on an open answer", "hängt von einer offenen Antwort ab"), suggested: T("suggested by Knowledge", "vom Wissen vorgeschlagen"), optional: T("optional", "freiwillig") }[d.required];
       return `<tr><td><b>${esc(d.title)}</b>${note ? `<br><small class="cp-muted">${note}</small>` : ""}</td>
-        <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
+        <td>${esc(d.why)}</td><td><span class="cp-chip ${chip}">${esc(word(d.status))}</span>${d.partial ? `<br><small class="cp-muted">${T(`${d.partial.files.length || 1} already in the file; the rest is asked`, `${d.partial.files.length || 1} liegt/liegen vor; der Rest wird angefordert`)}</small>` : ""}${["missing", "unusable"].includes(d.status) && d.required !== "suggested" ? `<br><button class="cp-link" data-point-notneeded="${esc(d.document)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
         <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button>`).join("<br>") || "—"}</td><td class="cp-muted">${esc(origin(d.document))}</td></tr>`;
     }).join("")}</tbody></table>`;
 }
@@ -1015,7 +1015,10 @@ function requestDraft(ev) {
   const ask = now.filter((d) => d.status !== "present");
   if (!ask.length) return "";
   const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
-  const lines = ask.map((d) => `– ${d.title}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
+  const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
+  const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
+  const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
+  const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
   return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
     ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
             `Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz ${ref[0]} provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an.`)
@@ -1033,7 +1036,7 @@ function judgementPoints(ev, r) {
   const pts = [];
   const routing = (S.data.run || {}).routing || ((S.data.lastCompleted || {}).routing) || {};
   const other = routing.other_topic;
-  if (other) pts.push({ key: "other-topic", urgency: 2, text: T(`The case has a further topic: ${other.topic}`, `Der Fall hat ein weiteres Thema: ${other.topic}`), cite: (other.citations || [])[0], choose: true });
+  if (other) pts.push({ key: "other-topic", urgency: 2, text: T(`Confirm the process: the case also concerns ${other.topic}`, `Prozess bestätigen: auch «${other.topic}»`), cite: (other.citations || [])[0], choose: true });
   if (ev && !ev.documents.length) pts.push({ key: "no-process", urgency: 1, text: T("No documented process gives this case document needs yet. Choose the process that fits.",
       "Für diesen Fall ist noch kein passender Prozess mit Dokumenten hinterlegt. Wählen Sie den Prozess, der passt."), choose: true });
   for (const f of Object.values(recorded("fact"))) {

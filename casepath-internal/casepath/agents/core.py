@@ -59,7 +59,9 @@ when the case is about that matter; a value for everything else applies otherwis
 A long dossier is shown by its beginning and its end, and dossiers often run newest first. Route by the claim the
 customer first reported (the claim report and the earliest correspondence), not by a topic that came up later. If later
 documents turn to another dispute, still route by the original claim and name that other topic in other_topic with one
-exact quote."""
+exact quote. A value for everything else is chosen only when no matter that has its own workflow is reported in the
+claim: when the first-reported matter has no workflow of its own but another reported matter has one, route to that
+matter's workflow and name the first-reported matter in other_topic with one exact quote, so a person confirms it."""
 
 
 class JobError(ValueError):
@@ -373,7 +375,8 @@ def evaluate(workflow, knowledge, edits, result, case_id):
     facts = {f["fact"]: f["value"] for f in rows if f["status"] == "presumed"}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "established" and f.get("verdict") == "accepted"})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
-    evaluation = workflows.evaluate(graph, facts, findings, checked=bool(result.get("documents")))
+    asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
+    evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=bool(result.get("documents"))), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings}
 
 

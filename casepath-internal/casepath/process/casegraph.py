@@ -84,7 +84,9 @@ def _apply_knowledge(graph, item, facts_known):
         document_id = f"k-{item['id']}"
         graph["documents"].append({"id": document_id, "title": content["title"], "why": content["why"],
                                    "required_when": _combine(condition, content.get("required_when")),
-                                   "source_refs": [ref], "suggested": suggested, "knowledge": item["id"]})
+                                   "source_refs": [ref], "suggested": suggested, "knowledge": item["id"],
+                                   **({"includes": [d for d in content["includes"] if d in {x["id"] for x in graph["documents"]}]}
+                                      if content.get("includes") else {})})
         step = content.get("step") if content.get("step") in {s["id"] for s in graph["steps"]} else None
         _attach(graph, step, document_id)
         return {"item": item["id"], "applied": True, "document": document_id, "suggested": suggested}
@@ -258,6 +260,28 @@ def merge_restated(graph):
             step["documents"] = [d for d in step.get("documents", []) if d != document["id"]]
         merged.append({"document": document["id"], "into": same["id"]})
     return merged
+
+
+ALL_OF = {"sämtliche", "sämtlichen", "alle", "bisherige", "bisherigen"}
+
+
+def open_ended(graph):
+    """Needs for all of something ("Sämtliche Korrespondenz …"): a file can never show them complete."""
+    return {d["id"] for d in graph["documents"] if (re.findall(r"[A-Za-zÄÖÜäöüß]+", d["title"]) or [""])[0].lower() in ALL_OF}
+
+
+def whole_findings(graph, findings):
+    """The findings the evaluator sees, and the part of an open-ended need already in the file: such a need stays asked."""
+    ends = open_ended(graph)
+    partial = {k: v for k, v in findings.items() if k in ends and v["status"] == "present"}
+    return {k: v for k, v in findings.items() if k not in partial}, partial
+
+
+def mark_partial(evaluation, partial):
+    for row in evaluation["documents"]:
+        if row["document"] in partial:
+            row["partial"] = {"files": partial[row["document"]].get("files", []), "citations": partial[row["document"]].get("citations", [])}
+    return evaluation
 
 
 def check_edit(base_graph, edit):
