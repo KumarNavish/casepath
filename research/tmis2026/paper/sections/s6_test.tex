@@ -32,8 +32,8 @@ Time & Event & Record \\
 10 Nov, 21:53 & open rule \texttt{any} committed to the product & commit a0d6211d \\
 10 Nov, 22:18 & product frozen at the tested commit & commit 6a72159c \\
 10 Nov, 22:29 & plan, specification, driver and analysis frozen & commit fd35e438 \\
-\sthreeRunFirstDate, \sthreeRunFirstStart & run starts; all preflight checks pass & run log \\
-\sthreeRunLastDate, \sthreeRunLastEnd & fifth invocation completes the run & run log \\
+10 Nov, \sthreeRunFirstStart & run starts; all preflight checks pass & run log \\
+11 Nov, \sthreeRunLastEnd & fifth invocation completes the run & run log \\
 11 Nov, 04:18 & analysis run once on the stored outputs; results committed & commit 48488138 \\
 \bottomrule
 \end{tabularx}
@@ -70,7 +70,7 @@ Rules in context, frontier model & the same prompt on the frontier model & \sthr
 \end{tabularx}
 \end{table}
 
-The measures are Study~2's, computed by the same functions (Supplement, Study~2). In tenancy, \emph{strict unsafe errors per claim} count unnecessary requests, missed and handed-over required documents, premature requests and silent skips. \emph{All deviations per claim} add both kinds of wrong hold, so that a design cannot look good by holding. In theft, \emph{wrong + missed changes per pair} count the document changes between the two texts of a changed-fact pair that are wrong or missing; unresolved-fact pairs count premature requests and pairs left otherwise unchanged.
+The measures are Study~2's, computed by the same functions (Supplement, Section~\ref{S-app:study2}). In tenancy, \emph{strict unsafe errors per claim} count unnecessary requests, missed and handed-over required documents, premature requests and silent skips. \emph{All deviations per claim} add both kinds of wrong hold, so that a design cannot look good by holding. In theft, \emph{wrong + missed changes per pair} count the document changes between the two texts of a changed-fact pair that are wrong or missing; unresolved-fact pairs count premature requests and pairs left otherwise unchanged.
 
 \subsection{Hypotheses}
 \label{sec:test-hypotheses}
@@ -105,12 +105,12 @@ H5 Theft, Rules in context, frontier model & \multicolumn{6}{l}{not tested, beca
 \centering
 \fig{fig_main}{\linewidth}
 \Description{Two dot plots side by side with one row per design. Left, tenancy strict unsafe errors per claim; right, theft wrong plus missed changes per pair; each dot has a horizontal 95 percent interval. CasePath, in blue, is near zero on tenancy and at the low end on theft.}
-\caption{Every design on both regimes. Dot: the design's mean over its clusters (\sthreeTenancyClusters{} families, \sthreeTheftClusters{} changed facts); bar: 95\% cluster-bootstrap interval of that mean, with the analysis's resampling settings. Open markers: frontier model. The thin blue line marks \casepath's value. Compare each row with \casepath on the same panel; the axes differ between panels. The two-valued rows' strict unsafe errors are in Table~\ref{tab:s3-subsets}.}
+\caption{Every design on both regimes. Dot: the design's mean over its clusters (\sthreeTenancyClusters{} families, \sthreeTheftClusters{} changed facts); bar: 95\% cluster-bootstrap interval of that mean, with the analysis's resampling settings. Open markers: frontier model. The thin blue line marks \casepath's value. Compare each row with \casepath on the same panel; the axes differ between panels. The two-valued rows' strict unsafe errors are in Tables~\ref{tab:s3-mixes} (test mix) and~\ref{tab:s3-agree}.}
 \label{fig:main}
 \end{figure}
 
 \paragraph{H1, confirmed}
-On theft, with the same model and the same rules, \casepath made \sthreeHOneA{} wrong + missed changes per pair against \sthreeHOneB{} for Rules in context ($p\sthreeHOnePeq$). The theft rules were reviewed for execution, with knowledge of the test conditions (Section~\ref{sec:history}). Against Rules in context with the original rules the difference remained large on the same model (\sthreeSecFourCA{} against \sthreeSecFourCB, $p\sthreeSecFourCPeq$) and was small on the frontier model (\sthreeSecFourBA{} against \sthreeSecFourBB); both are secondary contrasts.
+On theft, with the same model and the same rules, \casepath made \sthreeHOneA{} wrong + missed changes per pair against \sthreeHOneB{} for Rules in context ($p\sthreeHOnePeq$). The theft rules had been reviewed for execution, with knowledge of the test conditions (the review is in Section~\ref{sec:history}). Against Rules in context with the original rules the difference remained large on the same model (\sthreeSecFourCA{} against \sthreeSecFourCB, $p\sthreeSecFourCPeq$) and was small on the frontier model (\sthreeSecFourBA{} against \sthreeSecFourBB); both are secondary contrasts.
 
 \paragraph{H2 and H3, confirmed}
 On tenancy, \casepath made \sthreeHTwoA{} strict unsafe errors per claim against \sthreeHTwoB{} for the same model ($p\sthreeHTwoPeq$) and \sthreeHThreeB{} for the frontier model ($p\sthreeHThreePeq$).
@@ -128,27 +128,27 @@ The plan predicted that H2 and H3 would be carried by the denied- and open-event
 \casepath held what the file left open (Table~\ref{tab:s3-open}). On theft it left \sthreeCasePathThOpenUnchanged\% of unresolved-fact pairs otherwise unchanged, against \sthreeRicThOpenUnchanged--\sthreeReactThOpenUnchanged\% for every other design from prior work on either model with the reviewed rules; the frontier single prompt with the original rules left \sthreeRicOrigFrontierThOpenUnchanged\% unchanged. On tenancy it held \sthreeCasePathTenCorrectHold\% of the documents the engine's reference holds, against \sthreeRicTenCorrectHold\% for Rules in context and \sthreeRicFrontierTenCorrectHold\% for the frontier model, and it held more documents that the reference does not hold (below). As expected, two-valued execution of the same readings cannot hold anything: with unresolved taken as false it skipped \sthreeTwoValFalseOpenEventSilentSkip{} held documents per open-event claim, and with unresolved taken as true it requested \sthreeTwoValTrueOpenEventPremature{} of them too early.
 
 \begin{table}[t]
-\caption{Open facts. Theft: share of unresolved-fact pairs left otherwise unchanged, and pairs with a premature request. Tenancy: share of reference-held documents held; premature requests and silent skips per claim on the \sthreeClaimsOpenEvent{} open-event claims. Shares in percent.}
+\caption{Open facts. Theft: share of unresolved-fact pairs left otherwise unchanged, and pairs with a premature request. Tenancy: share of reference-held documents held; holds per claim of documents the reference neither requires nor holds (unneeded), on all claims; premature requests and silent skips per claim on the \sthreeClaimsOpenEvent{} open-event claims. Shares in percent.}
 \label{tab:s3-open}
 \footnotesize
-\begin{tabular}{@{}l r r r r r@{}}
+\begin{tabular}{@{}l r r r r r r@{}}
 \toprule
-& \multicolumn{2}{c}{Theft} & \multicolumn{3}{c}{Tenancy} \\
-\cmidrule(lr){2-3}\cmidrule(l){4-6}
-Design & Unchanged & Premature & Held & Premature & Silent skips \\
+& \multicolumn{2}{c}{Theft} & \multicolumn{4}{c}{Tenancy} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-7}
+Design & Unchanged & Premature & Held & Unneeded & Premature & Silent skips \\
 \midrule
-\casepath & \sthreeCasePathThOpenUnchanged & \sthreeCasePathThOpenPremature & \sthreeCasePathTenCorrectHold & \sthreeCasePathOpenEventPremature & \sthreeCasePathOpenEventSilentSkip \\
-\casepath, checklist only & \sthreeChecklistThOpenUnchanged & \sthreeChecklistThOpenPremature & \sthreeChecklistTenCorrectHold & \sthreeChecklistOpenEventPremature & \sthreeChecklistOpenEventSilentSkip \\
-Rules in context & \sthreeRicThOpenUnchanged & \sthreeRicThOpenPremature & \sthreeRicTenCorrectHold & \sthreeRicOpenEventPremature & \sthreeRicOpenEventSilentSkip \\
-Rules in context, frontier model & \sthreeRicFrontierThOpenUnchanged & \sthreeRicFrontierThOpenPremature & \sthreeRicFrontierTenCorrectHold & \sthreeRicFrontierOpenEventPremature & \sthreeRicFrontierOpenEventSilentSkip \\
-Self-consistency & \sthreeSelfConsThOpenUnchanged & \sthreeSelfConsThOpenPremature & \sthreeSelfConsTenCorrectHold & \sthreeSelfConsOpenEventPremature & \sthreeSelfConsOpenEventSilentSkip \\
-Model executes rules & \sthreeMerThOpenUnchanged & \sthreeMerThOpenPremature & \sthreeMerTenCorrectHold & \sthreeMerOpenEventPremature & \sthreeMerOpenEventSilentSkip \\
-ReAct & \sthreeReactThOpenUnchanged & \sthreeReactThOpenPremature & \sthreeReactTenCorrectHold & \sthreeReactOpenEventPremature & \sthreeReactOpenEventSilentSkip \\
-Two-valued, unresolved = false & \sthreeTwoValFalseThOpenUnchanged & \sthreeTwoValFalseThOpenPremature & \sthreeTwoValFalseTenCorrectHold & \sthreeTwoValFalseOpenEventPremature & \sthreeTwoValFalseOpenEventSilentSkip \\
-Two-valued, unresolved = true & \sthreeTwoValTrueThOpenUnchanged & \sthreeTwoValTrueThOpenPremature & \sthreeTwoValTrueTenCorrectHold & \sthreeTwoValTrueOpenEventPremature & \sthreeTwoValTrueOpenEventSilentSkip \\
-Core & \sthreeCoreThOpenUnchanged & \sthreeCoreThOpenPremature & -- & -- & -- \\
-Rules in context, original rules & \sthreeRicOrigThOpenUnchanged & \sthreeRicOrigThOpenPremature & -- & -- & -- \\
-\quad frontier model & \sthreeRicOrigFrontierThOpenUnchanged & \sthreeRicOrigFrontierThOpenPremature & -- & -- & -- \\
+\casepath & \sthreeCasePathThOpenUnchanged & \sthreeCasePathThOpenPremature & \sthreeCasePathTenCorrectHold & \sthreeCasePathTenSpurHold & \sthreeCasePathOpenEventPremature & \sthreeCasePathOpenEventSilentSkip \\
+\casepath, checklist only & \sthreeChecklistThOpenUnchanged & \sthreeChecklistThOpenPremature & \sthreeChecklistTenCorrectHold & \sthreeChecklistTenSpurHold & \sthreeChecklistOpenEventPremature & \sthreeChecklistOpenEventSilentSkip \\
+Rules in context & \sthreeRicThOpenUnchanged & \sthreeRicThOpenPremature & \sthreeRicTenCorrectHold & \sthreeRicTenSpurHold & \sthreeRicOpenEventPremature & \sthreeRicOpenEventSilentSkip \\
+Rules in context, frontier model & \sthreeRicFrontierThOpenUnchanged & \sthreeRicFrontierThOpenPremature & \sthreeRicFrontierTenCorrectHold & \sthreeRicFrontierTenSpurHold & \sthreeRicFrontierOpenEventPremature & \sthreeRicFrontierOpenEventSilentSkip \\
+Self-consistency & \sthreeSelfConsThOpenUnchanged & \sthreeSelfConsThOpenPremature & \sthreeSelfConsTenCorrectHold & \sthreeSelfConsTenSpurHold & \sthreeSelfConsOpenEventPremature & \sthreeSelfConsOpenEventSilentSkip \\
+Model executes rules & \sthreeMerThOpenUnchanged & \sthreeMerThOpenPremature & \sthreeMerTenCorrectHold & \sthreeMerTenSpurHold & \sthreeMerOpenEventPremature & \sthreeMerOpenEventSilentSkip \\
+ReAct & \sthreeReactThOpenUnchanged & \sthreeReactThOpenPremature & \sthreeReactTenCorrectHold & \sthreeReactTenSpurHold & \sthreeReactOpenEventPremature & \sthreeReactOpenEventSilentSkip \\
+Two-valued, unresolved = false & \sthreeTwoValFalseThOpenUnchanged & \sthreeTwoValFalseThOpenPremature & \sthreeTwoValFalseTenCorrectHold & \sthreeTwoValFalseTenSpurHold & \sthreeTwoValFalseOpenEventPremature & \sthreeTwoValFalseOpenEventSilentSkip \\
+Two-valued, unresolved = true & \sthreeTwoValTrueThOpenUnchanged & \sthreeTwoValTrueThOpenPremature & \sthreeTwoValTrueTenCorrectHold & \sthreeTwoValTrueTenSpurHold & \sthreeTwoValTrueOpenEventPremature & \sthreeTwoValTrueOpenEventSilentSkip \\
+Core & \sthreeCoreThOpenUnchanged & \sthreeCoreThOpenPremature & -- & -- & -- & -- \\
+Rules in context, original rules & \sthreeRicOrigThOpenUnchanged & \sthreeRicOrigThOpenPremature & -- & -- & -- & -- \\
+\quad frontier model & \sthreeRicOrigFrontierThOpenUnchanged & \sthreeRicOrigFrontierThOpenPremature & -- & -- & -- & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -240,4 +240,4 @@ Rules in context, frontier model & \sthreeDeniedExampleRicFrontierRunOneReq & \s
 Appendix~\ref{app:rob-study3} gives the secondary tables. In both languages \casepath made fewer strict unsafe errors per claim than every single-prompt design, and its requests agreed more between runs than those of Rules in context. Counting an error repeated across a story's pairs once, \casepath made \sthreeCasePathThErrorsDedup{} theft errors per pair against \sthreeRicThErrorsDedup{} for Rules in context and \sthreeSelfConsThErrorsDedup{} for Self-consistency. A post-hoc analysis that leaves out ReAct's failed outputs gives \sthreePostReactThA{} against \sthreePostReactThB{} on theft ($p\sthreePostReactThPeq$).
 
 \paragraph{The run}
-The run took \sthreeRunInvocations{} invocations of the driver, from \sthreeRunFirstDate{} \sthreeRunFirstStart{} to \sthreeRunLastDate{} \sthreeRunLastEnd{} UTC. \sthreeRunNotComplete{} stopped early. \sthreeRunDeliberateStops{} stops were deliberate: the operator interrupted the first invocation to raise the number of parallel workers, and its log line, which gives a wrong reason and a spend of zero, is corrected by a dated note; the wrapper stopped the fourth as planned, before a time limit. \sthreeRunFailureStops{} were failures of the environment: the session's time limit on background commands, and a container restart. Each later invocation resumed from the response cache with the same commit, settings, models, data and analysis; the number of workers and the spending cap changed. \sthreeRunFailedOutputs{} outputs failed, none from the product and \sthreeRunFailedReact{} from ReAct, and were scored as empty checklists as planned. The run started before the product's owners confirmed the merge of the tested commit. Appendix~\ref{app:dev-study3} lists every irregularity and every departure from the plan's text.
+The run took \sthreeRunInvocations{} invocations of the driver, from \sthreeRunFirstDate{} \sthreeRunFirstStart{} to \sthreeRunLastDate{} \sthreeRunLastEnd{} UTC, and \sthreeRunNotComplete{} of them stopped early. Of these stops, \sthreeRunDeliberateStops{} were deliberate: the operator interrupted the first invocation to raise the number of parallel workers, and its log line, which gives a wrong reason and a spend of zero, is corrected by a dated note; the wrapper stopped the fourth as planned, before a time limit. The other \sthreeRunFailureStops{} were failures of the environment: the session's time limit on background commands, and a container restart. Each later invocation resumed from the response cache with the same commit, settings, models, data and analysis; the number of workers and the spending cap changed. \sthreeRunFailedOutputs{} outputs failed, none from the product and \sthreeRunFailedReact{} from ReAct, and were scored as empty checklists as planned. The run started before the product's owners confirmed the merge of the tested commit. Appendix~\ref{app:dev-study3} lists every irregularity and every departure from the plan's text.

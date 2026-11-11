@@ -41,7 +41,7 @@ ORDER = [("casepath", "CasePath"), ("casepath_checklist", "CasePath, checklist o
          ("ric_original", "Rules in context, original rules"),
          ("ric_frontier", "Rules in context, frontier model"),
          ("ric_original_frontier", "Rules in context, original rules, frontier model"),
-         ("casepath_frontier_checklist", "CasePath, checklist only, on the frontier model (one run)")]
+         ("casepath_frontier_checklist", "CasePath, checklist only,\non the frontier model (one run)")]
 FRONTIER = {k for k, d in RES["designs"].items() if d["model"] == "gpt-6.1-terra"}
 
 
