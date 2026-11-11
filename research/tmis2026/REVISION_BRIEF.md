@@ -207,3 +207,23 @@ line of work).
 Do not re-run or edit the registered analysis. Do not remove a failure or an
 irregularity. Do not add a result that is not in the stored analyses. Do not
 soften a limit into a footnote: a limit is stated where its claim is made.
+
+## Added after the release check (D16)
+
+Appendix G must be true of a fresh clone. `reproduce.sh` reproduces every
+Study 3 table and macro and re-checks Studies 1 and 2 from stored outputs in
+about ten minutes without model calls (39 steps; say what is and is not
+re-checked, from `RELEASE.md`). The response caches of Study 3 are not in the
+repository (about 23,000 files, 730 MB, ignored by git): do not say they are
+released or that a re-run is answered from them; say that stored checklists,
+ledgers and the run log are in the repository and that the cache is offered
+as a separate archive (leave a marked `%% AUTHORS:` line for its location). A
+re-run with model calls needs the reader's own model endpoint; say so. The
+product source at the tested commit names the insurer's subsidiary as the
+default organisation and ships a Knowledge seed derived from its letters:
+Appendix G says that the public release is a scrubbed commit whose parity
+hash is reported beside the tested one, or the tested commit with the
+insurer's approval; leave a marked `%% AUTHORS:` line for the choice. The
+analyses added after review (`analysis/study3_review.py`) are to be covered
+by `reproduce.sh`; tell the planner which step to add rather than editing the
+script.

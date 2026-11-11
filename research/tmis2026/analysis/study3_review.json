@@ -1,0 +1,2875 @@
+{
+ "R1": {
+  "definitions": {
+   "any_unsafe": "strict unsafe errors > 0 (unnecessary + missed + handed over + premature + silent skips)",
+   "any_wrong_hold": "held a required-now document, or held a document the reference neither requires nor holds",
+   "exact": "requests = the reference's required-now set and holds = its held set, claim not handed over",
+   "theft_changed": "changed-fact pair-run with no wrong and no missed change (frozen scorer)",
+   "theft_unresolved": "unresolved-fact pair-run whose requests did not change"
+  },
+  "tenancy": {
+   "casepath": {
+    "all claims": {
+     "any_unsafe_share": 0.11458333333333333,
+     "any_wrong_hold_share": 0.13541666666666666,
+     "claim_runs": 288,
+     "exact_share": 0.7534722222222222,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.08333333333333333,
+     "any_wrong_hold_share": 0.16666666666666666,
+     "claim_runs": 72,
+     "exact_share": 0.75,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.037037037037037035,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.9629629629629629,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.13756613756613756,
+     "any_wrong_hold_share": 0.14285714285714285,
+     "claim_runs": 189,
+     "exact_share": 0.7248677248677249,
+     "handed_over": 2
+    }
+   },
+   "casepath_checklist": {
+    "all claims": {
+     "any_unsafe_share": 0.1388888888888889,
+     "any_wrong_hold_share": 0.13194444444444445,
+     "claim_runs": 288,
+     "exact_share": 0.7361111111111112,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.09722222222222222,
+     "any_wrong_hold_share": 0.1527777777777778,
+     "claim_runs": 72,
+     "exact_share": 0.75,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.0,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 1.0,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.1746031746031746,
+     "any_wrong_hold_share": 0.14285714285714285,
+     "claim_runs": 189,
+     "exact_share": 0.6931216931216931,
+     "handed_over": 2
+    }
+   },
+   "casepath_frontier_checklist": {
+    "all claims": {
+     "any_unsafe_share": 0.15625,
+     "any_wrong_hold_share": 0.07291666666666667,
+     "claim_runs": 96,
+     "exact_share": 0.78125,
+     "handed_over": 0
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.041666666666666664,
+     "any_wrong_hold_share": 0.20833333333333334,
+     "claim_runs": 24,
+     "exact_share": 0.75,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.1111111111111111,
+     "any_wrong_hold_share": 0.1111111111111111,
+     "claim_runs": 9,
+     "exact_share": 0.7777777777777778,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.20634920634920634,
+     "any_wrong_hold_share": 0.015873015873015872,
+     "claim_runs": 63,
+     "exact_share": 0.7936507936507936,
+     "handed_over": 0
+    }
+   },
+   "model_executes_rules": {
+    "all claims": {
+     "any_unsafe_share": 0.2847222222222222,
+     "any_wrong_hold_share": 0.14930555555555555,
+     "claim_runs": 288,
+     "exact_share": 0.5798611111111112,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.2916666666666667,
+     "any_wrong_hold_share": 0.3194444444444444,
+     "claim_runs": 72,
+     "exact_share": 0.3888888888888889,
+     "handed_over": 2
+    },
+    "open_event": {
+     "any_unsafe_share": 0.2222222222222222,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.7777777777777778,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.291005291005291,
+     "any_wrong_hold_share": 0.10582010582010581,
+     "claim_runs": 189,
+     "exact_share": 0.6243386243386243,
+     "handed_over": 0
+    }
+   },
+   "react": {
+    "all claims": {
+     "any_unsafe_share": 0.4409722222222222,
+     "any_wrong_hold_share": 0.1111111111111111,
+     "claim_runs": 288,
+     "exact_share": 0.4826388888888889,
+     "handed_over": 0
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.4583333333333333,
+     "any_wrong_hold_share": 0.08333333333333333,
+     "claim_runs": 72,
+     "exact_share": 0.5,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.5555555555555556,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.4444444444444444,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.41798941798941797,
+     "any_wrong_hold_share": 0.13756613756613756,
+     "claim_runs": 189,
+     "exact_share": 0.48148148148148145,
+     "handed_over": 0
+    }
+   },
+   "ric": {
+    "all claims": {
+     "any_unsafe_share": 0.5520833333333334,
+     "any_wrong_hold_share": 0.07291666666666667,
+     "claim_runs": 288,
+     "exact_share": 0.4166666666666667,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.9583333333333334,
+     "any_wrong_hold_share": 0.1388888888888889,
+     "claim_runs": 72,
+     "exact_share": 0.0,
+     "handed_over": 2
+    },
+    "open_event": {
+     "any_unsafe_share": 0.8888888888888888,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.1111111111111111,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.3492063492063492,
+     "any_wrong_hold_share": 0.0582010582010582,
+     "claim_runs": 189,
+     "exact_share": 0.6190476190476191,
+     "handed_over": 0
+    }
+   },
+   "ric_frontier": {
+    "all claims": {
+     "any_unsafe_share": 0.4201388888888889,
+     "any_wrong_hold_share": 0.08680555555555555,
+     "claim_runs": 288,
+     "exact_share": 0.53125,
+     "handed_over": 0
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.6805555555555556,
+     "any_wrong_hold_share": 0.16666666666666666,
+     "claim_runs": 72,
+     "exact_share": 0.25,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.9259259259259259,
+     "any_wrong_hold_share": 0.037037037037037035,
+     "claim_runs": 27,
+     "exact_share": 0.07407407407407407,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.24867724867724866,
+     "any_wrong_hold_share": 0.06349206349206349,
+     "claim_runs": 189,
+     "exact_share": 0.7037037037037037,
+     "handed_over": 0
+    }
+   },
+   "self_consistency": {
+    "all claims": {
+     "any_unsafe_share": 0.5520833333333334,
+     "any_wrong_hold_share": 0.08333333333333333,
+     "claim_runs": 288,
+     "exact_share": 0.4270833333333333,
+     "handed_over": 0
+    },
+    "denied_event": {
+     "any_unsafe_share": 1.0,
+     "any_wrong_hold_share": 0.19444444444444445,
+     "claim_runs": 72,
+     "exact_share": 0.0,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 0.8888888888888888,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.1111111111111111,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.3333333333333333,
+     "any_wrong_hold_share": 0.05291005291005291,
+     "claim_runs": 189,
+     "exact_share": 0.6349206349206349,
+     "handed_over": 0
+    }
+   },
+   "two_valued_false": {
+    "all claims": {
+     "any_unsafe_share": 0.4409722222222222,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 288,
+     "exact_share": 0.5590277777777778,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.08333333333333333,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 72,
+     "exact_share": 0.9166666666666666,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 1.0,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.0,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.4973544973544973,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 189,
+     "exact_share": 0.5026455026455027,
+     "handed_over": 2
+    }
+   },
+   "two_valued_true": {
+    "all claims": {
+     "any_unsafe_share": 0.4479166666666667,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 288,
+     "exact_share": 0.5520833333333334,
+     "handed_over": 2
+    },
+    "denied_event": {
+     "any_unsafe_share": 0.25,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 72,
+     "exact_share": 0.75,
+     "handed_over": 0
+    },
+    "open_event": {
+     "any_unsafe_share": 1.0,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 27,
+     "exact_share": 0.0,
+     "handed_over": 0
+    },
+    "ordinary": {
+     "any_unsafe_share": 0.4444444444444444,
+     "any_wrong_hold_share": 0.0,
+     "claim_runs": 189,
+     "exact_share": 0.5555555555555556,
+     "handed_over": 2
+    }
+   }
+  },
+  "theft": {
+   "casepath": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.5972222222222222,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.9444444444444444
+   },
+   "casepath_checklist": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.6111111111111112,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.9513888888888888
+   },
+   "casepath_frontier_checklist": {
+    "changed_pair_runs": 72,
+    "no_wrong_or_missed_share": 0.4722222222222222,
+    "unresolved_pair_runs": 48,
+    "unresolved_unchanged_share": 0.75
+   },
+   "core": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.4861111111111111,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.8472222222222222
+   },
+   "model_executes_rules": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.12962962962962962,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.2708333333333333
+   },
+   "react": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.30092592592592593,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.4652777777777778
+   },
+   "ric": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.13425925925925927,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.2708333333333333
+   },
+   "ric_frontier": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.25925925925925924,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.4513888888888889
+   },
+   "ric_original": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.14814814814814814,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.3055555555555556
+   },
+   "ric_original_frontier": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.4212962962962963,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.9097222222222222
+   },
+   "self_consistency": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.19444444444444445,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.4513888888888889
+   },
+   "two_valued_false": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.5972222222222222,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.9444444444444444
+   },
+   "two_valued_true": {
+    "changed_pair_runs": 216,
+    "no_wrong_or_missed_share": 0.06018518518518518,
+    "unresolved_pair_runs": 144,
+    "unresolved_unchanged_share": 0.06944444444444445
+   }
+  }
+ },
+ "R10": {
+  "by_design": {
+   "casepath, tenancy": {
+    "case_runs": 288,
+    "measure": "elapsed seconds per case-run (stored 'seconds')",
+    "median": 203.55,
+    "p90": 292.23
+   },
+   "casepath, theft": {
+    "case_runs": 384,
+    "measure": "elapsed seconds per case-run (stored 'seconds')",
+    "median": 286.85,
+    "p90": 383.4
+   },
+   "casepath_checklist, tenancy": {
+    "case_runs": 288,
+    "measure": "elapsed seconds per case-run (stored 'seconds')",
+    "median": 32.6,
+    "p90": 135.84000000000003
+   },
+   "casepath_checklist, theft": {
+    "case_runs": 384,
+    "measure": "elapsed seconds per case-run (stored 'seconds')",
+    "median": 87.1,
+    "p90": 97.1
+   },
+   "ric, tenancy": {
+    "case_runs": 288,
+    "measure": "model call latency per case-run (ledger latency_s of its one call; sum if several)",
+    "median": 11.340485095977783,
+    "p90": 15.22800853252411
+   },
+   "ric, theft": {
+    "case_runs": 384,
+    "measure": "model call latency per case-run (ledger latency_s of its one call; sum if several)",
+    "median": 12.44539999961853,
+    "p90": 15.077604055404663
+   },
+   "ric_frontier, tenancy": {
+    "case_runs": 288,
+    "measure": "model call latency per case-run (ledger latency_s of its one call; sum if several)",
+    "median": 14.157601475715637,
+    "p90": 16.407808327674864
+   },
+   "ric_frontier, theft": {
+    "case_runs": 384,
+    "measure": "model call latency per case-run (ledger latency_s of its one call; sum if several)",
+    "median": 9.812409043312073,
+    "p90": 11.852853155136108
+   }
+  },
+  "note": "Product rows: 'seconds' stored per case-run by harness/study3/worker.py, the wall-clock time of the product subprocess for one case-run (its HTTP run through the API, all its model calls in sequence, plus waiting for the API) while 20 case-runs ran in parallel (--workers 20 in RUNLOG.jsonl). Calls answered from the response cache (shared between settings, and on resumed invocations) take no model time, so these times are lower bounds for an uncached run. Single-prompt rows: the ledger's latency_s, the duration of the one model call; no stored time includes preparing the prompt or scoring. The two measures are not the same quantity."
+ },
+ "R11": {
+  "method": "(a) the product's stored checklist against 'Two-valued, unresolved = false' (study3.two_valued: the product's own evaluator at the frozen commit on the same admitted facts and presumptions). (b) The product's evaluator offers exact deferral only (casepath/process/workflows.py at the frozen commit has no strong Kleene mode), so strong Kleene uses harness/casepath_tenancy.py (plan_from_verified, the casepath_api engine) on the product's stored fact values (used value true/false, otherwise unresolved) and its accepted document findings, against the same harness's exact deferral (plan_from_verified_exact) on the same input, through fresh2/tenancy/build.py engine_plan. A product finding is passed only where the claim has an attachment of that document type. The row 'harness exact equals the product's workflow checklist' shows how closely the harness reproduces the product.",
+  "tenancy": {
+   "claim_runs": 288,
+   "evaluated": 286,
+   "exact differs from strong Kleene (harness, same facts)": 80,
+   "exact differs from unresolved = false": 123,
+   "harness exact equals the product's workflow checklist": 277,
+   "no evaluated checklist (failed or handed over)": 2,
+   "of these: exact differs from strong Kleene": 80,
+   "of these: exact differs from unresolved = false": 123,
+   "product findings without a matching attachment (left out)": 24,
+   "with a workflow fact left without a value": 168
+  },
+  "theft": {
+   "identical_requests": 384,
+   "statement": "Theft: unresolved = false gives exactly CasePath's requests in 384 of 384 text-runs.",
+   "text_runs": 384
+  }
+ },
+ "R2": {
+  "by_design": {
+   "casepath": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 0.2521164021164021,
+     "90% ordinary, 5% denied, 5% open": 0.22923280423280423,
+     "all ordinary": 0.20634920634920634,
+     "test mix (63/24/9 of 96)": 0.3125
+    },
+    "subset_means": {
+     "denied_event": 0.6111111111111112,
+     "open_event": 0.25925925925925924,
+     "ordinary": 0.20634920634920634
+    }
+   },
+   "casepath_checklist": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 0.27116402116402116,
+     "90% ordinary, 5% denied, 5% open": 0.2599206349206349,
+     "all ordinary": 0.24867724867724866,
+     "test mix (63/24/9 of 96)": 0.34375
+    },
+    "subset_means": {
+     "denied_event": 0.7222222222222222,
+     "open_event": 0.0,
+     "ordinary": 0.24867724867724866
+    }
+   },
+   "casepath_frontier_checklist": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 0.2990079365079365,
+     "90% ordinary, 5% denied, 5% open": 0.27648809523809526,
+     "all ordinary": 0.25396825396825395,
+     "test mix (63/24/9 of 96)": 0.3020833333333333
+    },
+    "subset_means": {
+     "denied_event": 0.2916666666666667,
+     "open_event": 0.6666666666666666,
+     "ordinary": 0.25396825396825395
+    }
+   },
+   "model_executes_rules": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 0.5986772486772487,
+     "90% ordinary, 5% denied, 5% open": 0.48716931216931214,
+     "all ordinary": 0.37566137566137564,
+     "test mix (63/24/9 of 96)": 0.829861111111111
+    },
+    "subset_means": {
+     "denied_event": 1.9444444444444444,
+     "open_event": 1.037037037037037,
+     "ordinary": 0.37566137566137564
+    }
+   },
+   "react": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.5693121693121694,
+     "90% ordinary, 5% denied, 5% open": 1.3349206349206348,
+     "all ordinary": 1.1005291005291005,
+     "test mix (63/24/9 of 96)": 1.8368055555555556
+    },
+    "subset_means": {
+     "denied_event": 3.0,
+     "open_event": 3.888888888888889,
+     "ordinary": 1.1005291005291005
+    }
+   },
+   "ric": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.3781084656084657,
+     "90% ordinary, 5% denied, 5% open": 0.9059854497354498,
+     "all ordinary": 0.43386243386243384,
+     "test mix (63/24/9 of 96)": 2.138888888888889
+    },
+    "subset_means": {
+     "denied_event": 5.680555555555555,
+     "open_event": 4.62962962962963,
+     "ordinary": 0.43386243386243384
+    }
+   },
+   "ric_frontier": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.2790343915343916,
+     "90% ordinary, 5% denied, 5% open": 0.7823743386243387,
+     "all ordinary": 0.2857142857142857,
+     "test mix (63/24/9 of 96)": 1.8645833333333333
+    },
+    "subset_means": {
+     "denied_event": 4.430555555555555,
+     "open_event": 6.074074074074074,
+     "ordinary": 0.2857142857142857
+    }
+   },
+   "self_consistency": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.2927248677248677,
+     "90% ordinary, 5% denied, 5% open": 0.8368386243386243,
+     "all ordinary": 0.38095238095238093,
+     "test mix (63/24/9 of 96)": 2.1006944444444446
+    },
+    "subset_means": {
+     "denied_event": 5.916666666666667,
+     "open_event": 3.962962962962963,
+     "ordinary": 0.38095238095238093
+    }
+   },
+   "two_valued_false": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.3283068783068783,
+     "90% ordinary, 5% denied, 5% open": 1.0186507936507936,
+     "all ordinary": 0.708994708994709,
+     "test mix (63/24/9 of 96)": 1.2743055555555556
+    },
+    "subset_means": {
+     "denied_event": 0.6111111111111112,
+     "open_event": 7.0,
+     "ordinary": 0.708994708994709
+    }
+   },
+   "two_valued_true": {
+    "by_mix": {
+     "80% ordinary, 10% denied, 10% open": 1.373015873015873,
+     "90% ordinary, 5% denied, 5% open": 0.996031746031746,
+     "all ordinary": 0.6190476190476191,
+     "test mix (63/24/9 of 96)": 1.5069444444444444
+    },
+    "subset_means": {
+     "denied_event": 1.7777777777777777,
+     "open_event": 7.0,
+     "ordinary": 0.6190476190476191
+    }
+   }
+  },
+  "claims_per_subset": {
+   "denied_event": 24,
+   "open_event": 9,
+   "ordinary": 63
+  },
+  "contrasts": {
+   "casepath - ric": {
+    "80% ordinary, 10% denied, 10% open": {
+     "ci": [
+      -1.3666666666666667,
+      -0.895631154156578
+     ],
+     "diff": -1.1259920634920635,
+     "redraws": 1
+    },
+    "90% ordinary, 5% denied, 5% open": {
+     "ci": [
+      -0.87565285124287,
+      -0.4745421067611679
+     ],
+     "diff": -0.6767526455026456,
+     "redraws": 2
+    },
+    "all ordinary": {
+     "ci": [
+      -0.417910447761194,
+      -0.034722222222222224
+     ],
+     "diff": -0.2275132275132275,
+     "redraws": 0
+    },
+    "test mix (63/24/9 of 96)": {
+     "ci": [
+      -2.085339697195166,
+      -1.57161268635878
+     ],
+     "diff": -1.8263888888888888,
+     "redraws": 0
+    }
+   },
+   "casepath - ric_frontier": {
+    "80% ordinary, 10% denied, 10% open": {
+     "ci": [
+      -1.259086159309051,
+      -0.7981477591036414
+     ],
+     "diff": -1.0269179894179894,
+     "redraws": 1
+    },
+    "90% ordinary, 5% denied, 5% open": {
+     "ci": [
+      -0.7152837627617558,
+      -0.3730923970946791
+     ],
+     "diff": -0.5531415343915345,
+     "redraws": 0
+    },
+    "all ordinary": {
+     "ci": [
+      -0.23529411764705882,
+      0.09283476048647296
+     ],
+     "diff": -0.07936507936507936,
+     "redraws": 0
+    },
+    "test mix (63/24/9 of 96)": {
+     "ci": [
+      -1.963778369134382,
+      -1.1752004523026316
+     ],
+     "diff": -1.5520833333333333,
+     "redraws": 0
+    }
+   }
+  },
+  "method": "Overall strict unsafe errors per claim = sum over the three subsets of weight x the subset's mean per claim-run. Interval: 10,000 paired cluster-bootstrap resamples of the 24 families (with replacement); in each resample the subset means of the CasePath-minus-comparator differences are pooled over the drawn families' claim-runs and reweighted; percentile 2.5-97.5. A resample with no claim of a weighted subset is drawn again (count reported).",
+  "mixes": {
+   "80% ordinary, 10% denied, 10% open": {
+    "denied_event": 0.1,
+    "open_event": 0.1,
+    "ordinary": 0.8
+   },
+   "90% ordinary, 5% denied, 5% open": {
+    "denied_event": 0.05,
+    "open_event": 0.05,
+    "ordinary": 0.9
+   },
+   "all ordinary": {
+    "denied_event": 0.0,
+    "open_event": 0.0,
+    "ordinary": 1.0
+   },
+   "test mix (63/24/9 of 96)": {
+    "denied_event": 0.25,
+    "open_event": 0.09375,
+    "ordinary": 0.65625
+   }
+  }
+ },
+ "R3": {
+  "casepath": {
+   "admitted_wrong": 9,
+   "admitted_wrong_with_all_readings_agreeing": 9,
+   "all_readings_agree_on_wrong_value": 9,
+   "fact_claim_runs": 1344,
+   "presumed_wrong": 2,
+   "readings_agreement": [
+    {
+     "all agree right / admitted right": 5,
+     "all agree wrong / admitted wrong": 2,
+     "designed_state": "absent",
+     "not unanimous / presumed right": 394,
+     "not unanimous / unresolved": 13,
+     "role": "branch fact"
+    },
+    {
+     "designed_state": "open",
+     "not unanimous / unresolved": 69,
+     "role": "branch fact"
+    },
+    {
+     "all agree right / admitted right": 71,
+     "designed_state": "stated_false",
+     "not unanimous / conflicting": 1,
+     "not unanimous / presumed right": 3,
+     "role": "branch fact"
+    },
+    {
+     "all agree right / admitted right": 619,
+     "all agree right / unresolved": 4,
+     "designed_state": "stated_true",
+     "not unanimous / conflicting": 2,
+     "not unanimous / presumed wrong": 2,
+     "not unanimous / unresolved": 17,
+     "role": "branch fact"
+    },
+    {
+     "all agree wrong / admitted wrong": 1,
+     "designed_state": "open",
+     "not unanimous / unresolved": 26,
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 54,
+     "all agree wrong / admitted wrong": 6,
+     "designed_state": "stated_false",
+     "not unanimous / conflicting": 12,
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 18,
+     "designed_state": "stated_true",
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 5,
+     "designed_state": "unmentioned",
+     "not unanimous / presumed right": 9,
+     "not unanimous / unresolved": 1,
+     "role": "defining event"
+    }
+   ],
+   "readings_per_case_run": {
+    "3": 286
+   },
+   "table": [
+    {
+     "absent": 3,
+     "admitted right": 5,
+     "admitted wrong": 2,
+     "designed_state": "absent",
+     "n": 417,
+     "presumed right": 394,
+     "role": "branch fact",
+     "unresolved": 13,
+     "wording": "-"
+    },
+    {
+     "designed_state": "open",
+     "n": 69,
+     "role": "branch fact",
+     "unresolved": 69,
+     "wording": "-"
+    },
+    {
+     "absent": 1,
+     "admitted right": 8,
+     "designed_state": "stated_false",
+     "n": 12,
+     "presumed right": 3,
+     "role": "branch fact",
+     "wording": "implied"
+    },
+    {
+     "absent": 1,
+     "admitted right": 31,
+     "conflicting": 1,
+     "designed_state": "stated_false",
+     "n": 33,
+     "role": "branch fact",
+     "wording": "passing"
+    },
+    {
+     "absent": 1,
+     "admitted right": 32,
+     "designed_state": "stated_false",
+     "n": 33,
+     "role": "branch fact",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 101,
+     "conflicting": 2,
+     "designed_state": "stated_true",
+     "n": 111,
+     "presumed wrong": 2,
+     "role": "branch fact",
+     "unresolved": 6,
+     "wording": "implied"
+    },
+    {
+     "absent": 1,
+     "admitted right": 194,
+     "designed_state": "stated_true",
+     "n": 207,
+     "role": "branch fact",
+     "unresolved": 12,
+     "wording": "passing"
+    },
+    {
+     "absent": 3,
+     "admitted right": 324,
+     "designed_state": "stated_true",
+     "n": 330,
+     "role": "branch fact",
+     "unresolved": 3,
+     "wording": "plain"
+    },
+    {
+     "admitted wrong": 1,
+     "designed_state": "open",
+     "n": 27,
+     "role": "defining event",
+     "unresolved": 26,
+     "wording": "-"
+    },
+    {
+     "admitted right": 14,
+     "admitted wrong": 1,
+     "conflicting": 3,
+     "designed_state": "stated_false",
+     "n": 18,
+     "role": "defining event",
+     "wording": "implied"
+    },
+    {
+     "admitted right": 14,
+     "admitted wrong": 2,
+     "conflicting": 2,
+     "designed_state": "stated_false",
+     "n": 18,
+     "role": "defining event",
+     "wording": "passing"
+    },
+    {
+     "admitted right": 26,
+     "admitted wrong": 3,
+     "conflicting": 7,
+     "designed_state": "stated_false",
+     "n": 36,
+     "role": "defining event",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 3,
+     "designed_state": "stated_true",
+     "n": 3,
+     "role": "defining event",
+     "wording": "implied"
+    },
+    {
+     "admitted right": 9,
+     "designed_state": "stated_true",
+     "n": 9,
+     "role": "defining event",
+     "wording": "passing"
+    },
+    {
+     "admitted right": 6,
+     "designed_state": "stated_true",
+     "n": 6,
+     "role": "defining event",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 5,
+     "designed_state": "unmentioned",
+     "n": 15,
+     "presumed right": 9,
+     "role": "defining event",
+     "unresolved": 1,
+     "wording": "-"
+    }
+   ]
+  },
+  "casepath_checklist": {
+   "admitted_wrong": 9,
+   "admitted_wrong_with_all_readings_agreeing": 9,
+   "all_readings_agree_on_wrong_value": 9,
+   "fact_claim_runs": 1344,
+   "presumed_wrong": 3,
+   "readings_agreement": [
+    {
+     "all agree right / admitted right": 4,
+     "all agree wrong / admitted wrong": 2,
+     "designed_state": "absent",
+     "not unanimous / presumed right": 394,
+     "not unanimous / unresolved": 14,
+     "role": "branch fact"
+    },
+    {
+     "designed_state": "open",
+     "not unanimous / presumed wrong": 1,
+     "not unanimous / unresolved": 68,
+     "role": "branch fact"
+    },
+    {
+     "all agree right / admitted right": 71,
+     "designed_state": "stated_false",
+     "not unanimous / conflicting": 1,
+     "not unanimous / presumed right": 3,
+     "role": "branch fact"
+    },
+    {
+     "all agree right / admitted right": 620,
+     "all agree right / unresolved": 3,
+     "designed_state": "stated_true",
+     "not unanimous / presumed wrong": 2,
+     "not unanimous / unresolved": 19,
+     "role": "branch fact"
+    },
+    {
+     "designed_state": "open",
+     "not unanimous / unresolved": 27,
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 54,
+     "all agree wrong / admitted wrong": 7,
+     "designed_state": "stated_false",
+     "not unanimous / conflicting": 11,
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 18,
+     "designed_state": "stated_true",
+     "role": "defining event"
+    },
+    {
+     "all agree right / admitted right": 5,
+     "designed_state": "unmentioned",
+     "not unanimous / presumed right": 9,
+     "not unanimous / unresolved": 1,
+     "role": "defining event"
+    }
+   ],
+   "readings_per_case_run": {
+    "3": 286
+   },
+   "table": [
+    {
+     "absent": 3,
+     "admitted right": 4,
+     "admitted wrong": 2,
+     "designed_state": "absent",
+     "n": 417,
+     "presumed right": 394,
+     "role": "branch fact",
+     "unresolved": 14,
+     "wording": "-"
+    },
+    {
+     "designed_state": "open",
+     "n": 69,
+     "presumed wrong": 1,
+     "role": "branch fact",
+     "unresolved": 68,
+     "wording": "-"
+    },
+    {
+     "absent": 1,
+     "admitted right": 8,
+     "designed_state": "stated_false",
+     "n": 12,
+     "presumed right": 3,
+     "role": "branch fact",
+     "wording": "implied"
+    },
+    {
+     "absent": 1,
+     "admitted right": 31,
+     "conflicting": 1,
+     "designed_state": "stated_false",
+     "n": 33,
+     "role": "branch fact",
+     "wording": "passing"
+    },
+    {
+     "absent": 1,
+     "admitted right": 32,
+     "designed_state": "stated_false",
+     "n": 33,
+     "role": "branch fact",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 104,
+     "designed_state": "stated_true",
+     "n": 111,
+     "presumed wrong": 2,
+     "role": "branch fact",
+     "unresolved": 5,
+     "wording": "implied"
+    },
+    {
+     "absent": 1,
+     "admitted right": 193,
+     "designed_state": "stated_true",
+     "n": 207,
+     "role": "branch fact",
+     "unresolved": 13,
+     "wording": "passing"
+    },
+    {
+     "absent": 3,
+     "admitted right": 323,
+     "designed_state": "stated_true",
+     "n": 330,
+     "role": "branch fact",
+     "unresolved": 4,
+     "wording": "plain"
+    },
+    {
+     "designed_state": "open",
+     "n": 27,
+     "role": "defining event",
+     "unresolved": 27,
+     "wording": "-"
+    },
+    {
+     "admitted right": 14,
+     "admitted wrong": 1,
+     "conflicting": 3,
+     "designed_state": "stated_false",
+     "n": 18,
+     "role": "defining event",
+     "wording": "implied"
+    },
+    {
+     "admitted right": 14,
+     "admitted wrong": 3,
+     "conflicting": 1,
+     "designed_state": "stated_false",
+     "n": 18,
+     "role": "defining event",
+     "wording": "passing"
+    },
+    {
+     "admitted right": 26,
+     "admitted wrong": 3,
+     "conflicting": 7,
+     "designed_state": "stated_false",
+     "n": 36,
+     "role": "defining event",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 3,
+     "designed_state": "stated_true",
+     "n": 3,
+     "role": "defining event",
+     "wording": "implied"
+    },
+    {
+     "admitted right": 9,
+     "designed_state": "stated_true",
+     "n": 9,
+     "role": "defining event",
+     "wording": "passing"
+    },
+    {
+     "admitted right": 6,
+     "designed_state": "stated_true",
+     "n": 6,
+     "role": "defining event",
+     "wording": "plain"
+    },
+    {
+     "admitted right": 5,
+     "designed_state": "unmentioned",
+     "n": 15,
+     "presumed right": 9,
+     "role": "defining event",
+     "unresolved": 1,
+     "wording": "-"
+    }
+   ]
+  },
+  "notes": [
+   "Product value = what the evaluator used: an established fact with verdict 'accepted' (admitted), a presumption, or nothing (unresolved: no reading gave a value; conflicting: readings gave different values; not accepted; absent: the case-run was routed to another workflow or failed). Truth = the designed true value (scenario, defining event, open fact's recorded value). For a designed open fact the right outcome is unresolved.",
+   "Readings: the reading responses of each case-run in the response cache (calls whose answer is a 'conditions' object), combined as team._reading does: a response that answers fewer facts than the workflow has is the requote of the reading before it. Agreement uses the raw verdicts (true / false / open / not_stated) before the quotation check.",
+   "Theft: the nine changed conditions cannot be mapped to the product's workflow facts from the harness. The reviewed workflow's facts are rule guards (g001 ...), one per distinct rule condition, and no file of the harness maps a benchmark condition (PR_...) to guards (analysis/theft_error_origin.py leaves COND_GUARD empty). A mapping would have to be made by hand from the condition texts, which is a new coding decision; it was not made."
+  ]
+ },
+ "R4": {
+  "absent_branch_facts": 139,
+  "by_q": {
+   "0.05": {
+    "casepath": {
+     "mean": 0.3635243055555556,
+     "p2_5": 0.3229166666666667,
+     "p97_5": 0.40625
+    },
+    "casepath - model_executes_rules": {
+     "mean": -0.5146180555555556,
+     "p2_5": -0.5243923611111111,
+     "p97_5": -0.49652777777777773
+    },
+    "casepath - ric": {
+     "mean": -1.825329861111111,
+     "p2_5": -1.8368055555555556,
+     "p97_5": -1.8194444444444444
+    },
+    "casepath - ric_frontier": {
+     "mean": -1.5527430555555555,
+     "p2_5": -1.5625,
+     "p97_5": -1.548611111111111
+    },
+    "casepath - self_consistency": {
+     "mean": -1.7886631944444447,
+     "p2_5": -1.7986111111111112,
+     "p97_5": -1.784722222222222
+    },
+    "claims_with_changed_reference": {
+     "mean": 4.905,
+     "p2_5": 1.9750000000000005,
+     "p97_5": 9.0
+    },
+    "draws": 200,
+    "model_executes_rules": {
+     "mean": 0.8781423611111111,
+     "p2_5": 0.8402777777777778,
+     "p97_5": 0.9236111111111112
+    },
+    "ric": {
+     "mean": 2.1888541666666668,
+     "p2_5": 2.1493055555555554,
+     "p97_5": 2.232638888888889
+    },
+    "ric_frontier": {
+     "mean": 1.9162673611111112,
+     "p2_5": 1.875,
+     "p97_5": 1.9583333333333333
+    },
+    "self_consistency": {
+     "mean": 2.1521875,
+     "p2_5": 2.111111111111111,
+     "p97_5": 2.1944444444444446
+    }
+   },
+   "0.1": {
+    "casepath": {
+     "mean": 0.41296875,
+     "p2_5": 0.3541666666666667,
+     "p97_5": 0.4791666666666667
+    },
+    "casepath - model_executes_rules": {
+     "mean": -0.5133333333333333,
+     "p2_5": -0.5277777777777778,
+     "p97_5": -0.49296874999999996
+    },
+    "casepath - ric": {
+     "mean": -1.8246354166666665,
+     "p2_5": -1.8368055555555556,
+     "p97_5": -1.8158854166666665
+    },
+    "casepath - ric_frontier": {
+     "mean": -1.5536631944444446,
+     "p2_5": -1.5625868055555558,
+     "p97_5": -1.548611111111111
+    },
+    "casepath - self_consistency": {
+     "mean": -1.7895486111111112,
+     "p2_5": -1.8020833333333333,
+     "p97_5": -1.784722222222222
+    },
+    "claims_with_changed_reference": {
+     "mean": 9.32,
+     "p2_5": 4.0,
+     "p97_5": 15.0
+    },
+    "draws": 200,
+    "model_executes_rules": {
+     "mean": 0.9263020833333333,
+     "p2_5": 0.8680555555555556,
+     "p97_5": 0.9930555555555556
+    },
+    "ric": {
+     "mean": 2.2376041666666664,
+     "p2_5": 2.1805555555555554,
+     "p97_5": 2.3020833333333335
+    },
+    "ric_frontier": {
+     "mean": 1.9666319444444447,
+     "p2_5": 1.90625,
+     "p97_5": 2.03125
+    },
+    "self_consistency": {
+     "mean": 2.202517361111111,
+     "p2_5": 2.142361111111111,
+     "p97_5": 2.267361111111111
+    }
+   },
+   "0.2": {
+    "casepath": {
+     "mean": 0.5118923611111111,
+     "p2_5": 0.4375,
+     "p97_5": 0.5938368055555556
+    },
+    "casepath - model_executes_rules": {
+     "mean": -0.5084548611111112,
+     "p2_5": -0.5277777777777777,
+     "p97_5": -0.47916666666666674
+    },
+    "casepath - ric": {
+     "mean": -1.8243055555555554,
+     "p2_5": -1.8368055555555556,
+     "p97_5": -1.8124131944444444
+    },
+    "casepath - ric_frontier": {
+     "mean": -1.5548611111111112,
+     "p2_5": -1.5659722222222223,
+     "p97_5": -1.5486111111111112
+    },
+    "casepath - self_consistency": {
+     "mean": -1.7911979166666665,
+     "p2_5": -1.8020833333333335,
+     "p97_5": -1.784722222222222
+    },
+    "claims_with_changed_reference": {
+     "mean": 17.595,
+     "p2_5": 12.0,
+     "p97_5": 26.0
+    },
+    "draws": 200,
+    "model_executes_rules": {
+     "mean": 1.0203472222222223,
+     "p2_5": 0.9408854166666667,
+     "p97_5": 1.10078125
+    },
+    "ric": {
+     "mean": 2.3361979166666664,
+     "p2_5": 2.263802083333333,
+     "p97_5": 2.4166666666666665
+    },
+    "ric_frontier": {
+     "mean": 2.0667534722222225,
+     "p2_5": 1.9861111111111112,
+     "p97_5": 2.1528645833333333
+    },
+    "self_consistency": {
+     "mean": 2.3030902777777778,
+     "p2_5": 2.229079861111111,
+     "p97_5": 2.392361111111111
+    }
+   }
+  },
+  "claims": 96,
+  "claims_whose_reference_can_change": 59,
+  "claims_with_an_absent_branch_fact": 79,
+  "method": "Each unmentioned branch fact (fact state 'absent': 139 facts, all false by design) is drawn true with probability q, independently, 200 seeded draws per q. For a drawn-true fact the reference is the engine's (fresh2/tenancy/build.py engine_plan, exact deferral, silence policy) with that fact stated true; every design's stored checklists are kept and rescored with study2.ten_row. Strict unsafe errors per claim = mean over claim-runs. Check: with no fact drawn (q = 0) the engine reproduces all 96 stored references exactly and the rescoring reproduces the stored values.",
+  "q0": {
+   "casepath": 0.3125,
+   "model_executes_rules": 0.8298611111111112,
+   "ric": 2.138888888888889,
+   "ric_frontier": 1.8645833333333333,
+   "self_consistency": 2.1006944444444446
+  },
+  "q0_reproduces_stored_references": true
+ },
+ "R5": {
+  "contrasts": [
+   {
+    "a": "casepath",
+    "b": "ric",
+    "diff": -1.1527777777777777,
+    "fact_differences": {
+     "PR_bicycle_claimed": -1.125,
+     "PR_declined": -2.0416666666666665,
+     "PR_expert_procedure_requested": -0.33333333333333337,
+     "PR_goods_recovered": -1.0416666666666667,
+     "PR_nachfrist_set": -1.7916666666666665,
+     "PR_repair_over_500": -2.4166666666666665,
+     "PR_scheduled_valuable_1000": -0.9583333333333333,
+     "PR_sim_card_stolen": -0.9166666666666667,
+     "PR_third_party_causer": 0.25
+    },
+    "facts_inverted_ci": [
+     -1.8020826822916667,
+     -0.48958365885416655
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_p": 0.0078125,
+    "name": "H1",
+    "registered": {
+     "clusters": 9,
+     "p": 0.0078125,
+     "percentile_bootstrap_ci": [
+      -1.6528935185185183,
+      -0.6388888888888888
+     ],
+     "test": "signflip"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -1.6851844979745372,
+     -0.5925927010995371
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_p": 0.015625,
+    "story_differences": {
+     "8": -1.7037037037037037,
+     "9": -1.666666666666667,
+     "10": -1.1851851851851851,
+     "11": 0.07407407407407418,
+     "12": -1.259259259259259,
+     "13": -0.7037037037037037,
+     "14": -2.037037037037037,
+     "15": -0.7407407407407407
+    },
+    "twoway_ci": [
+     -1.8056712962962962,
+     -0.4259259259259259
+    ]
+   },
+   {
+    "a": "casepath",
+    "b": "self_consistency",
+    "diff": -0.625,
+    "fact_differences": {
+     "PR_bicycle_claimed": -0.625,
+     "PR_declined": -1.6666666666666667,
+     "PR_expert_procedure_requested": 0.125,
+     "PR_goods_recovered": -0.75,
+     "PR_nachfrist_set": -0.8750000000000001,
+     "PR_repair_over_500": -1.75,
+     "PR_scheduled_valuable_1000": -0.5833333333333333,
+     "PR_sim_card_stolen": -0.5,
+     "PR_third_party_causer": 1.0
+    },
+    "facts_inverted_ci": [
+     -1.25,
+     0.08333300781250008
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_p": 0.0625,
+    "name": "H4 Self-consistency",
+    "registered": {
+     "clusters": 9,
+     "p": 0.0625,
+     "percentile_bootstrap_ci": [
+      -1.125,
+      -0.07858796296296464
+     ],
+     "test": "signflip"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -0.9506168981481482,
+     -0.19753096064814812
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_p": 0.015625,
+    "story_differences": {
+     "8": -0.5185185185185186,
+     "9": -0.8148148148148148,
+     "10": -1.1481481481481481,
+     "11": 0.37037037037037046,
+     "12": -0.4444444444444444,
+     "13": -0.962962962962963,
+     "14": -0.7407407407407407,
+     "15": -0.7407407407407407
+    },
+    "twoway_ci": [
+     -1.1944444444444444,
+     0.02314814814814817
+    ]
+   },
+   {
+    "a": "casepath",
+    "b": "model_executes_rules",
+    "diff": -1.361111111111111,
+    "fact_differences": {
+     "PR_bicycle_claimed": -1.1666666666666665,
+     "PR_declined": -1.9583333333333333,
+     "PR_expert_procedure_requested": -1.1666666666666665,
+     "PR_goods_recovered": -1.625,
+     "PR_nachfrist_set": -1.0833333333333333,
+     "PR_repair_over_500": -2.083333333333333,
+     "PR_scheduled_valuable_1000": -1.1666666666666665,
+     "PR_sim_card_stolen": -1.3749999999999998,
+     "PR_third_party_causer": -0.6249999999999998
+    },
+    "facts_inverted_ci": [
+     -1.729166341145833,
+     -1.0000003255208332
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_p": 0.00390625,
+    "name": "H4 Model executes rules",
+    "registered": {
+     "clusters": 9,
+     "p": 0.00390625,
+     "percentile_bootstrap_ci": [
+      -1.648148148148148,
+      -1.083333333333333
+     ],
+     "test": "signflip"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -2.061727973090278,
+     -0.7283959418402777
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_p": 0.0078125,
+    "story_differences": {
+     "8": -1.0,
+     "9": -1.0370370370370372,
+     "10": -2.0740740740740744,
+     "11": -0.4074074074074072,
+     "12": -2.7777777777777777,
+     "13": -1.3333333333333333,
+     "14": -1.5185185185185186,
+     "15": -0.7407407407407407
+    },
+    "twoway_ci": [
+     -1.9675925925925926,
+     -0.7824074074074074
+    ]
+   },
+   {
+    "a": "casepath",
+    "b": "react",
+    "diff": -1.1018518518518519,
+    "fact_differences": {
+     "PR_bicycle_claimed": -1.9999999999999998,
+     "PR_declined": -1.625,
+     "PR_expert_procedure_requested": -1.291666666666667,
+     "PR_goods_recovered": -1.6666666666666667,
+     "PR_nachfrist_set": -1.5416666666666665,
+     "PR_repair_over_500": -1.5416666666666667,
+     "PR_scheduled_valuable_1000": -0.04166666666666663,
+     "PR_sim_card_stolen": -0.5833333333333333,
+     "PR_third_party_causer": 0.375
+    },
+    "facts_inverted_ci": [
+     -1.7083330078124999,
+     -0.4444453124999997
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_p": 0.01171875,
+    "name": "H4 ReAct",
+    "registered": {
+     "clusters": 9,
+     "p": 0.01171875,
+     "percentile_bootstrap_ci": [
+      -1.574074074074074,
+      -0.574074074074074
+     ],
+     "test": "signflip"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -1.777776837384259,
+     -0.407407696759259
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_p": 0.0078125,
+    "story_differences": {
+     "8": -2.259259259259259,
+     "9": -1.6296296296296298,
+     "10": -0.6666666666666667,
+     "11": -0.4814814814814814,
+     "12": -1.4074074074074074,
+     "13": -1.6666666666666667,
+     "14": -0.6296296296296298,
+     "15": -0.07407407407407407
+    },
+    "twoway_ci": [
+     -1.912037037037037,
+     -0.4027777777777778
+    ]
+   },
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "diff": -0.36574074074074076,
+    "fact_differences": {
+     "PR_bicycle_claimed": -0.29166666666666663,
+     "PR_declined": -1.4166666666666667,
+     "PR_expert_procedure_requested": 0.08333333333333326,
+     "PR_goods_recovered": -0.41666666666666663,
+     "PR_nachfrist_set": -0.41666666666666674,
+     "PR_repair_over_500": -1.4166666666666667,
+     "PR_scheduled_valuable_1000": 0.25,
+     "PR_sim_card_stolen": -0.16666666666666652,
+     "PR_third_party_causer": 0.5
+    },
+    "facts_inverted_ci": [
+     -0.9166666666666667,
+     0.1354163411458333
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_ni_p_onesided": 0.01171875,
+    "facts_signflip_p": 0.1640625,
+    "name": "H5 (non-inferiority, margin 0.25)",
+    "registered": {
+     "clusters": 9,
+     "p": 0.0001,
+     "percentile_bootstrap_ci": [
+      -0.800925925925926,
+      0.02777777777777779
+     ],
+     "test": "noninferiority"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -0.5925924479166668,
+     -6.510416667407544e-07
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_ni_p_onesided": 0.0078125,
+    "stories_signflip_p": 0.0546875,
+    "story_differences": {
+     "8": -0.5185185185185186,
+     "9": -0.6666666666666666,
+     "10": -0.4444444444444444,
+     "11": 0.5185185185185186,
+     "12": -0.4814814814814815,
+     "13": -0.2592592592592593,
+     "14": -0.40740740740740744,
+     "15": -0.6666666666666667
+    },
+    "twoway_ci": [
+     -0.8472222222222222,
+     0.15740740740740744
+    ]
+   },
+   {
+    "a": "casepath",
+    "b": "ric_frontier",
+    "diff": -0.36574074074074076,
+    "fact_differences": {
+     "PR_bicycle_claimed": -0.29166666666666663,
+     "PR_declined": -1.4166666666666667,
+     "PR_expert_procedure_requested": 0.08333333333333326,
+     "PR_goods_recovered": -0.41666666666666663,
+     "PR_nachfrist_set": -0.41666666666666674,
+     "PR_repair_over_500": -1.4166666666666667,
+     "PR_scheduled_valuable_1000": 0.25,
+     "PR_sim_card_stolen": -0.16666666666666652,
+     "PR_third_party_causer": 0.5
+    },
+    "facts_inverted_ci": [
+     -0.9166666666666667,
+     0.1354163411458333
+    ],
+    "facts_inverted_ci_contiguous": true,
+    "facts_signflip_p": 0.1640625,
+    "name": "S4a superiority against the frontier model",
+    "registered": {
+     "clusters": 9,
+     "p": 0.1640625,
+     "percentile_bootstrap_ci": [
+      -0.7916666666666666,
+      0.013888888888888902
+     ],
+     "test": "signflip"
+    },
+    "stories": 8,
+    "stories_inverted_ci": [
+     -0.5925924479166668,
+     -6.510416667407544e-07
+    ],
+    "stories_inverted_ci_contiguous": true,
+    "stories_min_p": 0.0078125,
+    "stories_nonzero": 8,
+    "stories_signflip_p": 0.0546875,
+    "story_differences": {
+     "8": -0.5185185185185186,
+     "9": -0.6666666666666666,
+     "10": -0.4444444444444444,
+     "11": 0.5185185185185186,
+     "12": -0.4814814814814815,
+     "13": -0.2592592592592593,
+     "14": -0.40740740740740744,
+     "15": -0.6666666666666667
+    },
+    "twoway_ci": [
+     -0.8472222222222222,
+     0.15740740740740744
+    ]
+   }
+  ],
+  "h4_self_consistency_paragraph": "The nine changed-fact differences (CasePath minus Self-consistency) are PR_repair_over_500 -1.750, PR_declined -1.667, PR_nachfrist_set -0.875, PR_goods_recovered -0.750, PR_bicycle_claimed -0.625, PR_scheduled_valuable_1000 -0.583, PR_sim_card_stolen -0.500, PR_expert_procedure_requested +0.125, PR_third_party_causer +1.000; mean -0.625. 7 are negative and 2 positive (PR_expert_procedure_requested, PR_third_party_causer). The percentile bootstrap resamples these nine values with replacement and asks how the mean varies if the nine were a sample from a population like themselves: because almost all of them are negative, few resamples have a mean at or above zero, so the 95% interval [-1.125, -0.079] excludes zero. The exact test asks a different question: under the null each difference is as likely to have the opposite sign, and p is the share of the 2^9 = 512 sign patterns whose absolute sum is at least the observed 5.625. 32 patterns reach it (p = 32/512 = 0.0625): the differences are unequal in size, so flipping the signs of a few small ones still leaves sums as large as the observed one, while the magnitude-blind percentile interval with nine clusters is known to be too narrow. The inverted sign-flip interval, [-1.250, +0.083], includes zero, in agreement with the exact test.",
+  "method": {
+   "inverted": "the set of shifts delta for which the exact two-sided sign-flip test of (differences - delta) gives p >= 0.05; grid of step 0.0005 from the smallest to the largest cluster difference, ends refined by bisection to 1e-6; contiguity checked on the grid",
+   "noninferiority": "for H5 also the exact one-sided sign-flip p of (differences - 0.25), H0: mean difference >= 0.25",
+   "registered": "as stored in study3_results_fresh2_confirm.json (nine changed-fact clusters; percentile cluster-bootstrap interval, 10,000 resamples)",
+   "stories": "exact two-sided sign-flip test over the eight stories (story value = mean over its nine changed-fact pairs and three runs); 2^8 = 256 patterns, smallest p 0.0078",
+   "twoway": "10,000 draws; stories (8) and changed facts (9) resampled independently with replacement; statistic = mean of the cell differences (cell = story x fact, mean over three runs) over the drawn 8 x 9 grid; percentile 2.5-97.5"
+  }
+ },
+ "R6": {
+  "families": [
+   {
+    "casepath": 0.0,
+    "denied_event": 3,
+    "diff_ric": -5.25,
+    "diff_ric_frontier": -6.666666666666667,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_0a72fb91fb35015c",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 5.25,
+    "ric_frontier": 6.666666666666667
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 3,
+    "diff_ric": -3.6666666666666665,
+    "diff_ric_frontier": -5.583333333333333,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_5420aec5e52c279a",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 3.6666666666666665,
+    "ric_frontier": 5.583333333333333
+   },
+   {
+    "casepath": 1.75,
+    "denied_event": 3,
+    "diff_ric": -4.166666666666667,
+    "diff_ric_frontier": -5.083333333333333,
+    "family": "rent_increase_dispute",
+    "family_id": "f2fam_422fec1d8bd32efe",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 5.916666666666667,
+    "ric_frontier": 6.833333333333333
+   },
+   {
+    "casepath": 1.1666666666666667,
+    "denied_event": 3,
+    "diff_ric": -5.25,
+    "diff_ric_frontier": -4.833333333333333,
+    "family": "rent_increase_dispute",
+    "family_id": "f2fam_2dbc8cf5ea2229f9",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 6.416666666666667,
+    "ric_frontier": 6.0
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 3,
+    "diff_ric": -3.5833333333333335,
+    "diff_ric_frontier": -3.3333333333333335,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_2801c66871085312",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 3.5833333333333335,
+    "ric_frontier": 3.3333333333333335
+   },
+   {
+    "casepath": 1.3333333333333333,
+    "denied_event": 3,
+    "diff_ric": -5.666666666666667,
+    "diff_ric_frontier": -3.166666666666667,
+    "family": "rent_increase_dispute",
+    "family_id": "f2fam_608c9565df68fd77",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 7.0,
+    "ric_frontier": 4.5
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 3,
+    "diff_ric": -5.0,
+    "diff_ric_frontier": -2.5,
+    "family": "rent_increase_dispute",
+    "family_id": "f2fam_b1d9e0d08763b788",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 5.0,
+    "ric_frontier": 2.5
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 0,
+    "diff_ric": -2.75,
+    "diff_ric_frontier": -2.5,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_a4cb67d21cf348ef",
+    "open_event": 1,
+    "ordinary": 3,
+    "ric": 2.75,
+    "ric_frontier": 2.5
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 3,
+    "diff_ric": -5.416666666666667,
+    "diff_ric_frontier": -2.3333333333333335,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_b061e8358029fd6e",
+    "open_event": 1,
+    "ordinary": 0,
+    "ric": 5.416666666666667,
+    "ric_frontier": 2.3333333333333335
+   },
+   {
+    "casepath": 0.25,
+    "denied_event": 0,
+    "diff_ric": -0.75,
+    "diff_ric_frontier": -0.5,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_2304a7106f672571",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 1.0,
+    "ric_frontier": 0.75
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 0,
+    "diff_ric": -0.5,
+    "diff_ric_frontier": -0.5,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_3acf51de7c5aeacb",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.5,
+    "ric_frontier": 0.5
+   },
+   {
+    "casepath": 0.08333333333333333,
+    "denied_event": 0,
+    "diff_ric": -0.75,
+    "diff_ric_frontier": -0.4166666666666667,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_56e3d175f1e08c0b",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.8333333333333334,
+    "ric_frontier": 0.5
+   },
+   {
+    "casepath": 0.4166666666666667,
+    "denied_event": 0,
+    "diff_ric": 0.0,
+    "diff_ric_frontier": -0.3333333333333333,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_2cd8ba3d72701728",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.4166666666666667,
+    "ric_frontier": 0.75
+   },
+   {
+    "casepath": 0.25,
+    "denied_event": 0,
+    "diff_ric": -0.75,
+    "diff_ric_frontier": -0.25,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_696f685330b38735",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 1.0,
+    "ric_frontier": 0.5
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 0,
+    "diff_ric": -0.5,
+    "diff_ric_frontier": -0.25,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_35a113d96b032cf8",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.5,
+    "ric_frontier": 0.25
+   },
+   {
+    "casepath": 0.08333333333333333,
+    "denied_event": 0,
+    "diff_ric": -0.33333333333333337,
+    "diff_ric_frontier": -0.25,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_ca07d3028016bd74",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.4166666666666667,
+    "ric_frontier": 0.3333333333333333
+   },
+   {
+    "casepath": 0.08333333333333333,
+    "denied_event": 0,
+    "diff_ric": 0.0,
+    "diff_ric_frontier": -0.16666666666666669,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_af482252c34039fc",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.08333333333333333,
+    "ric_frontier": 0.25
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 0,
+    "diff_ric": -0.25,
+    "diff_ric_frontier": 0.0,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_0f3078a41b00c2e0",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.25,
+    "ric_frontier": 0.0
+   },
+   {
+    "casepath": 0.0,
+    "denied_event": 0,
+    "diff_ric": -0.16666666666666666,
+    "diff_ric_frontier": 0.0,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_df5219d03ec9c84b",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.16666666666666666,
+    "ric_frontier": 0.0
+   },
+   {
+    "casepath": 0.3333333333333333,
+    "denied_event": 0,
+    "diff_ric": 0.25,
+    "diff_ric_frontier": 0.0,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_d80548f2c2525fdb",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.08333333333333333,
+    "ric_frontier": 0.3333333333333333
+   },
+   {
+    "casepath": 0.16666666666666666,
+    "denied_event": 0,
+    "diff_ric": -0.08333333333333334,
+    "diff_ric_frontier": 0.16666666666666666,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_bf333ee5c3c65544",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.25,
+    "ric_frontier": 0.0
+   },
+   {
+    "casepath": 0.25,
+    "denied_event": 0,
+    "diff_ric": -0.08333333333333331,
+    "diff_ric_frontier": 0.16666666666666669,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_c4d28befdea40b91",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.3333333333333333,
+    "ric_frontier": 0.08333333333333333
+   },
+   {
+    "casepath": 0.25,
+    "denied_event": 0,
+    "diff_ric": 0.25,
+    "diff_ric_frontier": 0.25,
+    "family": "lease_termination_dispute",
+    "family_id": "f2fam_1403e720cffdcaeb",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.0,
+    "ric_frontier": 0.0
+   },
+   {
+    "casepath": 1.0833333333333333,
+    "denied_event": 0,
+    "diff_ric": 0.5833333333333333,
+    "diff_ric_frontier": 0.8333333333333333,
+    "family": "defect_mold_heating",
+    "family_id": "f2fam_fb3ffb490f621413",
+    "open_event": 0,
+    "ordinary": 4,
+    "ric": 0.5,
+    "ric_frontier": 0.25
+   }
+  ],
+  "measure": "strict unsafe errors per claim, family mean over claims and runs (as H2 and H3)"
+ },
+ "R7": {
+  "cost": {
+   "tenancy": {
+    "brief_share_of_full_cost": 0.20219922099806725,
+    "checklist_only": {
+     "attributed_cost_per_attributed_case_run": 0.002377120019920319,
+     "case_runs": 288,
+     "case_runs_attributed": 251,
+     "components": {
+      "claim reader: first reading": {
+       "calls_per_attributed_case_run": 0.9920318725099602,
+       "cost_per_attributed_case_run": 0.0002421510756972112,
+       "share_of_attributed_cost": 0.1018674167345274
+      },
+      "claim reader: first reading (requote)": {
+       "calls_per_attributed_case_run": 0.09163346613545817,
+       "cost_per_attributed_case_run": 1.8405816733067733e-05,
+       "share_of_attributed_cost": 0.007742905944515455
+      },
+      "document_finder": {
+       "calls_per_attributed_case_run": 2.605577689243028,
+       "cost_per_attributed_case_run": 0.0012109132669322709,
+       "share_of_attributed_cost": 0.5094035037292146
+      },
+      "router": {
+       "calls_per_attributed_case_run": 1.00398406374502,
+       "cost_per_attributed_case_run": 0.00017065029880478078,
+       "share_of_attributed_cost": 0.07178867595019497
+      },
+      "source checker: confirming readings": {
+       "calls_per_attributed_case_run": 2.139442231075697,
+       "cost_per_attributed_case_run": 0.0005155337649402391,
+       "share_of_attributed_cost": 0.21687325865755813
+      },
+      "source checker: fact and document check": {
+       "calls_per_attributed_case_run": 0.749003984063745,
+       "cost_per_attributed_case_run": 0.00021946579681274896,
+       "share_of_attributed_cost": 0.09232423898398932
+      }
+     },
+     "cost_per_case_run_all": 0.0029608309201388902
+    },
+    "components_the_checklist_only_run_did_not_call": [
+     "claim reader: brief",
+     "claim reader: re-recording after the check",
+     "process_builder",
+     "result_checker"
+    ],
+    "full": {
+     "attributed_cost_per_attributed_case_run": 0.013118939169741696,
+     "case_runs": 288,
+     "case_runs_attributed": 271,
+     "components": {
+      "claim reader: brief": {
+       "calls_per_attributed_case_run": 5.833948339483395,
+       "cost_per_attributed_case_run": 0.0026526392804428023,
+       "share_of_attributed_cost": 0.20219922099806725
+      },
+      "claim reader: first reading": {
+       "calls_per_attributed_case_run": 0.992619926199262,
+       "cost_per_attributed_case_run": 0.0002659809963099629,
+       "share_of_attributed_cost": 0.020274581112734887
+      },
+      "claim reader: first reading (requote)": {
+       "calls_per_attributed_case_run": 0.09225092250922509,
+       "cost_per_attributed_case_run": 1.886088560885609e-05,
+       "share_of_attributed_cost": 0.0014376837459813797
+      },
+      "claim reader: re-recording after the check": {
+       "calls_per_attributed_case_run": 0.025830258302583026,
+       "cost_per_attributed_case_run": 9.867656826568267e-06,
+       "share_of_attributed_cost": 0.0007521688071645015
+      },
+      "document_finder": {
+       "calls_per_attributed_case_run": 6.442804428044281,
+       "cost_per_attributed_case_run": 0.0030882974723247243,
+       "share_of_attributed_cost": 0.2354075609594835
+      },
+      "process_builder": {
+       "calls_per_attributed_case_run": 5.4206642066420665,
+       "cost_per_attributed_case_run": 0.002905285904059042,
+       "share_of_attributed_cost": 0.22145738054491226
+      },
+      "result_checker": {
+       "calls_per_attributed_case_run": 4.394833948339484,
+       "cost_per_attributed_case_run": 0.0029861132656826567,
+       "share_of_attributed_cost": 0.22761850078320406
+      },
+      "router": {
+       "calls_per_attributed_case_run": 1.003690036900369,
+       "cost_per_attributed_case_run": 0.00017335691881918819,
+       "share_of_attributed_cost": 0.013214248238838468
+      },
+      "source checker: confirming readings": {
+       "calls_per_attributed_case_run": 2.180811808118081,
+       "cost_per_attributed_case_run": 0.0005728532103321032,
+       "share_of_attributed_cost": 0.04366612291742049
+      },
+      "source checker: fact and document check": {
+       "calls_per_attributed_case_run": 1.4132841328413284,
+       "cost_per_attributed_case_run": 0.0004456835793357932,
+       "share_of_attributed_cost": 0.033972531892193264
+      }
+     },
+     "cost_per_case_run_all": 0.013385480555555565
+    },
+    "registered_can_decide_share_of_attributed": 0.550924118671885,
+    "registered_groups_per_case_run": {
+     "can decide the checklist": 0.006800914375000024,
+     "not attributed (agent list does not line up)": 0.0010409232118055558,
+     "the rest": 0.005543642968749995
+    },
+    "share_of_full_cost_in_components_checklist_only_did_not_call": 0.6520272711333481,
+    "shared_components_cost_checklist_only": 0.002377120019920319,
+    "shared_components_cost_full": 0.004565033062730628,
+    "stored_cost_per_case_run": {
+     "checklist_only": 0.002960830920138894,
+     "full": 0.013385480555555563,
+     "ratio": 0.22119720751527439
+    }
+   },
+   "theft": {
+    "brief_share_of_full_cost": 0.049194697232121685,
+    "checklist_only": {
+     "attributed_cost_per_attributed_case_run": 0.004901673710937501,
+     "case_runs": 384,
+     "case_runs_attributed": 384,
+     "components": {
+      "claim reader: first reading": {
+       "calls_per_attributed_case_run": 1.0,
+       "cost_per_attributed_case_run": 0.0014748645963541666,
+       "share_of_attributed_cost": 0.30088999866783905
+      },
+      "claim reader: first reading (requote)": {
+       "calls_per_attributed_case_run": 0.2708333333333333,
+       "cost_per_attributed_case_run": 0.00011629171874999999,
+       "share_of_attributed_cost": 0.02372490002557879
+      },
+      "router": {
+       "calls_per_attributed_case_run": 1.0,
+       "cost_per_attributed_case_run": 0.00015685000000000015,
+       "share_of_attributed_cost": 0.0319992739724817
+      },
+      "source checker: confirming readings": {
+       "calls_per_attributed_case_run": 2.5286458333333335,
+       "cost_per_attributed_case_run": 0.003153667395833334,
+       "share_of_attributed_cost": 0.6433858273341004
+      }
+     },
+     "cost_per_case_run_all": 0.004901673710937497
+    },
+    "components_the_checklist_only_run_did_not_call": [
+     "claim reader: brief",
+     "claim reader: re-recording after the check",
+     "document_finder",
+     "process_builder",
+     "result_checker",
+     "source checker: fact and document check"
+    ],
+    "full": {
+     "attributed_cost_per_attributed_case_run": 0.029996028989501333,
+     "case_runs": 384,
+     "case_runs_attributed": 381,
+     "components": {
+      "claim reader: brief": {
+       "calls_per_attributed_case_run": 3.7716535433070866,
+       "cost_per_attributed_case_run": 0.001475645564304463,
+       "share_of_attributed_cost": 0.049194697232121685
+      },
+      "claim reader: first reading": {
+       "calls_per_attributed_case_run": 1.0,
+       "cost_per_attributed_case_run": 0.0016638844619422575,
+       "share_of_attributed_cost": 0.055470157817377096
+      },
+      "claim reader: first reading (requote)": {
+       "calls_per_attributed_case_run": 0.2755905511811024,
+       "cost_per_attributed_case_run": 0.0001199639632545932,
+       "share_of_attributed_cost": 0.003999328154289383
+      },
+      "claim reader: re-recording after the check": {
+       "calls_per_attributed_case_run": 3.4986876640419946,
+       "cost_per_attributed_case_run": 0.002551270538057743,
+       "share_of_attributed_cost": 0.085053609561142
+      },
+      "document_finder": {
+       "calls_per_attributed_case_run": 7.076115485564304,
+       "cost_per_attributed_case_run": 0.0072404210892388545,
+       "share_of_attributed_cost": 0.2413793203017978
+      },
+      "process_builder": {
+       "calls_per_attributed_case_run": 5.091863517060368,
+       "cost_per_attributed_case_run": 0.004875188897637801,
+       "share_of_attributed_cost": 0.1625278099092425
+      },
+      "result_checker": {
+       "calls_per_attributed_case_run": 4.5984251968503935,
+       "cost_per_attributed_case_run": 0.00641252442257218,
+       "share_of_attributed_cost": 0.21377911138893002
+      },
+      "router": {
+       "calls_per_attributed_case_run": 1.0,
+       "cost_per_attributed_case_run": 0.00015675721784776917,
+       "share_of_attributed_cost": 0.0052259323359980245
+      },
+      "source checker: confirming readings": {
+       "calls_per_attributed_case_run": 2.5643044619422573,
+       "cost_per_attributed_case_run": 0.003563635826771656,
+       "share_of_attributed_cost": 0.11880358656870665
+      },
+      "source checker: fact and document check": {
+       "calls_per_attributed_case_run": 1.178477690288714,
+       "cost_per_attributed_case_run": 0.0019367370078740144,
+       "share_of_attributed_cost": 0.06456644673039474
+      }
+     },
+     "cost_per_case_run_all": 0.02999036638020834
+    },
+    "registered_can_decide_share_of_attributed": 0.623693078701828,
+    "registered_groups_per_case_run": {
+     "can decide the checklist": 0.01856215695312504,
+     "not attributed (agent list does not line up)": 0.0002286813671875,
+     "the rest": 0.011199528059895832
+    },
+    "share_of_full_cost_in_components_checklist_only_did_not_call": 0.8165009951236287,
+    "shared_components_cost_checklist_only": 0.004901673710937501,
+    "shared_components_cost_full": 0.005504241469816275,
+    "stored_cost_per_case_run": {
+     "checklist_only": 0.004901673710937503,
+     "full": 0.02999036638020837,
+     "ratio": 0.16344160817495978
+    }
+   }
+  },
+  "cost_note": "Components are attributed on the case-runs whose stored agent list lines up with their distinct call keys (as study3.py does); a call is a reading when its cached answer is a 'conditions' object. The registered split books the brief to the claim reader and the confirming readings and the check to the source checker, all in 'can decide the checklist'. The checklist-only run makes the routing, the first reading, the confirming readings and, where the case has documents, the document finder and a documents-only source check; it skips the brief, the process builder and the result checker. On theft (one text, no attached document) it called neither the document finder nor the check.",
+  "identical": {
+   "tenancy": {
+    "all": {
+     "case_runs": 288,
+     "identical": 268,
+     "share": 0.9305555555555556
+    },
+    "denied_event": {
+     "case_runs": 72,
+     "identical": 71,
+     "share": 0.9861111111111112
+    },
+    "open_event": {
+     "case_runs": 27,
+     "identical": 26,
+     "share": 0.9629629629629629
+    },
+    "ordinary": {
+     "case_runs": 189,
+     "identical": 171,
+     "share": 0.9047619047619048
+    }
+   },
+   "theft": {
+    "all": {
+     "case_runs": 384,
+     "identical": 225,
+     "share": 0.5859375
+    },
+    "changed-fact text": {
+     "case_runs": 216,
+     "identical": 118,
+     "share": 0.5462962962962963
+    },
+    "off text": {
+     "case_runs": 24,
+     "identical": 12,
+     "share": 0.5
+    },
+    "unresolved-fact text": {
+     "case_runs": 144,
+     "identical": 95,
+     "share": 0.6597222222222222
+    }
+   }
+  },
+  "stages": {
+   "tenancy": {
+    "differing_case_runs": 20,
+    "examples": [
+     {
+      "case": "f2cl_1e8b1451917edb48",
+      "run": 2,
+      "stages": [
+       "document status"
+      ]
+     },
+     {
+      "case": "f2cl_26cb680af349fd00",
+      "run": 2,
+      "stages": [
+       "fact value"
+      ]
+     },
+     {
+      "case": "f2cl_353cd66635fa6c15",
+      "run": 2,
+      "stages": [
+       "document status"
+      ]
+     },
+     {
+      "case": "f2cl_38438bc732d1a4c3",
+      "run": 0,
+      "stages": [
+       "fact value",
+       "document status"
+      ]
+     },
+     {
+      "case": "f2cl_38438bc732d1a4c3",
+      "run": 2,
+      "stages": [
+       "fact value",
+       "document status"
+      ]
+     }
+    ],
+    "first_differing_stage": {
+     "document status": 9,
+     "fact value": 11
+    },
+    "stage_differs (not exclusive)": {
+     "document status": 14,
+     "fact value": 11
+    }
+   },
+   "theft": {
+    "differing_case_runs": 159,
+    "examples": [
+     {
+      "case": "s10-off",
+      "run": 0,
+      "stages": [
+       "fact value"
+      ]
+     },
+     {
+      "case": "s10-off",
+      "run": 1,
+      "stages": [
+       "fact value"
+      ]
+     },
+     {
+      "case": "s10-off",
+      "run": 2,
+      "stages": [
+       "fact value"
+      ]
+     },
+     {
+      "case": "s10-on-PR_bicycle_claimed",
+      "run": 1,
+      "stages": [
+       "fact value",
+       "document status"
+      ]
+     },
+     {
+      "case": "s10-on-PR_bicycle_claimed",
+      "run": 2,
+      "stages": [
+       "fact value"
+      ]
+     }
+    ],
+    "first_differing_stage": {
+     "fact value": 159
+    },
+    "stage_differs (not exclusive)": {
+     "document status": 4,
+     "fact value": 159
+    }
+   }
+  }
+ },
+ "R8": {
+  "by_design": {
+   "ric": {
+    "claim_runs": 72,
+    "counts": {
+     "acknowledges=no (no question at all), requests=no, holds=no": 2,
+     "acknowledges=no (no question at all), requests=yes, holds=no": 30,
+     "acknowledges=yes, requests=no, holds=yes": 1,
+     "acknowledges=yes, requests=yes, holds=no": 30,
+     "acknowledges=yes, requests=yes, holds=yes": 9,
+     "requests the notice itself": 58
+    },
+    "examples": [
+     {
+      "case": "f2cl_09127308ca120a39",
+      "family": "lease_termination_dispute",
+      "question": "Have you since received a written termination notice? If so, when and how was it delivered?",
+      "requests": 7,
+      "run": 1
+     },
+     {
+      "case": "f2cl_0c4512154d36a3b4",
+      "family": "rent_increase_dispute",
+      "question": "Have you since received the official rent-increase notice? If so, when and how was it delivered?",
+      "requests": 7,
+      "run": 0
+     },
+     {
+      "case": "f2cl_16523b4063cbf4e6",
+      "family": "rent_increase_dispute",
+      "question": "Has the landlord since sent or delivered a formal rent-increase notification? If so, when was it received, and can you provide the notice and any delivery evidence?",
+      "requests": 8,
+      "run": 0
+     }
+    ]
+   },
+   "ric_frontier": {
+    "claim_runs": 72,
+    "counts": {
+     "acknowledges=no (no question at all), requests=no, holds=no": 1,
+     "acknowledges=yes, requests=no, holds=no": 17,
+     "acknowledges=yes, requests=no, holds=yes": 5,
+     "acknowledges=yes, requests=yes, holds=no": 42,
+     "acknowledges=yes, requests=yes, holds=yes": 7,
+     "requests the notice itself": 47
+    },
+    "examples": [
+     {
+      "case": "f2cl_0868f24595f5f79a",
+      "family": "rent_increase_dispute",
+      "question": "Please let us know immediately if an individual rent-increase notice arrives, and record when and how it was delivered.",
+      "requests": 6,
+      "run": 2
+     },
+     {
+      "case": "f2cl_0c4512154d36a3b4",
+      "family": "rent_increase_dispute",
+      "question": "Has the official rent-increase notice arrived since your message? If so, who received it and on what date?",
+      "requests": 7,
+      "run": 0
+     },
+     {
+      "case": "f2cl_16523b4063cbf4e6",
+      "family": "rent_increase_dispute",
+      "question": "Please send any written increase notice and its delivery evidence promptly if received; when and how was it delivered?",
+      "requests": 8,
+      "run": 2
+     }
+    ]
+   }
+  },
+  "rule": "Rule: the plan acknowledges that the defining event has not (yet) occurred when one of its questions mentions the notice in writing (notice, notification, written, form, Kündigung, Mitteilung, schriftlich, Formular, Anzeige) together with its receipt or arrival (received, arrived, delivered, since, yet, still, erhalten, zugestellt, inzwischen ...).",
+  "stored_fields": "The single prompts' stored outputs hold requests, holds, questions, family and 'established'; they hold no reasons, so the classification uses the questions only."
+ },
+ "R9": {
+  "by_model": {
+   "gpt-6-luna": {
+    "by_fact": {
+     "PR_bicycle_claimed": {
+      "change": 0.25,
+      "original": 1.0416666666666667,
+      "reviewed": 1.2916666666666667
+     },
+     "PR_declined": {
+      "change": 0.6666666666666667,
+      "original": 1.4583333333333333,
+      "reviewed": 2.125
+     },
+     "PR_expert_procedure_requested": {
+      "change": 0.04166666666666674,
+      "original": 1.0833333333333333,
+      "reviewed": 1.125
+     },
+     "PR_goods_recovered": {
+      "change": 0.04166666666666674,
+      "original": 1.125,
+      "reviewed": 1.1666666666666667
+     },
+     "PR_nachfrist_set": {
+      "change": 0.5416666666666665,
+      "original": 1.4166666666666667,
+      "reviewed": 1.9583333333333333
+     },
+     "PR_repair_over_500": {
+      "change": 0.5416666666666667,
+      "original": 1.9583333333333333,
+      "reviewed": 2.5
+     },
+     "PR_scheduled_valuable_1000": {
+      "change": -0.29166666666666674,
+      "original": 2.125,
+      "reviewed": 1.8333333333333333
+     },
+     "PR_sim_card_stolen": {
+      "change": 0.08333333333333348,
+      "original": 2.0,
+      "reviewed": 2.0833333333333335
+     },
+     "PR_third_party_causer": {
+      "change": 0.5416666666666667,
+      "original": 1.0,
+      "reviewed": 1.5416666666666667
+     }
+    },
+    "designs": {
+     "original": "ric_original",
+     "reviewed": "ric"
+    },
+    "errors_per_pair": {
+     "original": 1.4675925925925926,
+     "reviewed": 1.7361111111111112
+    },
+    "largest_document_changes": [
+     {
+      "change": "+",
+      "change_in_count": 35,
+      "changed_rules_naming_it": [],
+      "document": "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "error": "wrong",
+      "original": 9,
+      "reviewed": 44
+     },
+     {
+      "change": "-",
+      "change_in_count": -31,
+      "changed_rules_naming_it": [],
+      "document": "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "error": "wrong",
+      "original": 84,
+      "reviewed": 53
+     },
+     {
+      "change": "+",
+      "change_in_count": 17,
+      "changed_rules_naming_it": [],
+      "document": "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "error": "wrong",
+      "original": 0,
+      "reviewed": 17
+     },
+     {
+      "change": "+",
+      "change_in_count": 15,
+      "changed_rules_naming_it": [],
+      "document": "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "error": "wrong",
+      "original": 26,
+      "reviewed": 41
+     },
+     {
+      "change": "-",
+      "change_in_count": 13,
+      "changed_rules_naming_it": [],
+      "document": "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "error": "wrong",
+      "original": 8,
+      "reviewed": 21
+     },
+     {
+      "change": "+",
+      "change_in_count": -11,
+      "changed_rules_naming_it": [],
+      "document": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "error": "wrong",
+      "original": 18,
+      "reviewed": 7
+     },
+     {
+      "change": "+",
+      "change_in_count": -9,
+      "changed_rules_naming_it": [
+       "overlay_rule_049"
+      ],
+      "document": "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "error": "wrong",
+      "original": 9,
+      "reviewed": 0
+     },
+     {
+      "change": "-",
+      "change_in_count": 9,
+      "changed_rules_naming_it": [],
+      "document": "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "error": "wrong",
+      "original": 5,
+      "reviewed": 14
+     },
+     {
+      "change": "-",
+      "change_in_count": 9,
+      "changed_rules_naming_it": [],
+      "document": "Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "error": "wrong",
+      "original": 0,
+      "reviewed": 9
+     },
+     {
+      "change": "+",
+      "change_in_count": 7,
+      "changed_rules_naming_it": [],
+      "document": "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "error": "wrong",
+      "original": 14,
+      "reviewed": 21
+     },
+     {
+      "change": "-",
+      "change_in_count": -6,
+      "changed_rules_naming_it": [],
+      "document": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "error": "wrong",
+      "original": 6,
+      "reviewed": 0
+     },
+     {
+      "change": "-",
+      "change_in_count": 6,
+      "changed_rules_naming_it": [],
+      "document": "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "error": "wrong",
+      "original": 4,
+      "reviewed": 10
+     }
+    ],
+    "missed_atoms": {
+     "original": 81,
+     "reviewed": 85
+    },
+    "prompt_tokens": {
+     "original": {
+      "calls": 384,
+      "mean_prompt_tokens": 19208.1875,
+      "median_prompt_tokens": 19207.5
+     },
+     "reviewed": {
+      "calls": 384,
+      "mean_prompt_tokens": 19348.1875,
+      "median_prompt_tokens": 19347.5
+     }
+    },
+    "share_of_absolute_change_on_documents_named_by_a_changed_rule": 0.11224489795918367,
+    "unresolved_unchanged_by_fact": {
+     "PR_bicycle_claimed": {
+      "original": 0.2916666666666667,
+      "reviewed": 0.3333333333333333
+     },
+     "PR_expert_procedure_requested": {
+      "original": 0.3333333333333333,
+      "reviewed": 0.3333333333333333
+     },
+     "PR_repair_over_500": {
+      "original": 0.25,
+      "reviewed": 0.25
+     },
+     "PR_scheduled_valuable_1000": {
+      "original": 0.3333333333333333,
+      "reviewed": 0.25
+     },
+     "PR_sim_card_stolen": {
+      "original": 0.25,
+      "reviewed": 0.25
+     },
+     "PR_third_party_causer": {
+      "original": 0.375,
+      "reviewed": 0.20833333333333334
+     }
+    },
+    "wrong_atoms": {
+     "original": 236,
+     "reviewed": 290
+    }
+   },
+   "gpt-6.1-terra": {
+    "by_fact": {
+     "PR_bicycle_claimed": {
+      "change": 0.375,
+      "original": 0.08333333333333333,
+      "reviewed": 0.4583333333333333
+     },
+     "PR_declined": {
+      "change": 0.9583333333333334,
+      "original": 0.5416666666666666,
+      "reviewed": 1.5
+     },
+     "PR_expert_procedure_requested": {
+      "change": 0.08333333333333337,
+      "original": 0.625,
+      "reviewed": 0.7083333333333334
+     },
+     "PR_goods_recovered": {
+      "change": 0.4583333333333333,
+      "original": 0.08333333333333333,
+      "reviewed": 0.5416666666666666
+     },
+     "PR_nachfrist_set": {
+      "change": 0.375,
+      "original": 0.20833333333333334,
+      "reviewed": 0.5833333333333334
+     },
+     "PR_repair_over_500": {
+      "change": 0.41666666666666674,
+      "original": 1.0833333333333333,
+      "reviewed": 1.5
+     },
+     "PR_scheduled_valuable_1000": {
+      "change": -0.45833333333333326,
+      "original": 1.0833333333333333,
+      "reviewed": 0.625
+     },
+     "PR_sim_card_stolen": {
+      "change": 0.20833333333333326,
+      "original": 1.125,
+      "reviewed": 1.3333333333333333
+     },
+     "PR_third_party_causer": {
+      "change": 0.08333333333333348,
+      "original": 1.2083333333333333,
+      "reviewed": 1.2916666666666667
+     }
+    },
+    "designs": {
+     "original": "ric_original_frontier",
+     "reviewed": "ric_frontier"
+    },
+    "errors_per_pair": {
+     "original": 0.6712962962962963,
+     "reviewed": 0.9490740740740741
+    },
+    "largest_document_changes": [
+     {
+      "change": "-",
+      "change_in_count": 37,
+      "changed_rules_naming_it": [],
+      "document": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "error": "wrong",
+      "original": 1,
+      "reviewed": 38
+     },
+     {
+      "change": "+",
+      "change_in_count": 29,
+      "changed_rules_naming_it": [],
+      "document": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "error": "wrong",
+      "original": 8,
+      "reviewed": 37
+     },
+     {
+      "change": "+",
+      "change_in_count": -24,
+      "changed_rules_naming_it": [
+       "overlay_rule_016",
+       "overlay_rule_074"
+      ],
+      "document": "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+      "error": "wrong",
+      "original": 24,
+      "reviewed": 0
+     },
+     {
+      "change": "+",
+      "change_in_count": 14,
+      "changed_rules_naming_it": [],
+      "document": "Insurer's declination of the claim for indemnity",
+      "error": "missed",
+      "original": 10,
+      "reviewed": 24
+     },
+     {
+      "change": "+",
+      "change_in_count": 11,
+      "changed_rules_naming_it": [
+       "overlay_rule_042"
+      ],
+      "document": "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "error": "missed",
+      "original": 7,
+      "reviewed": 18
+     },
+     {
+      "change": "+",
+      "change_in_count": -9,
+      "changed_rules_naming_it": [],
+      "document": "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "error": "missed",
+      "original": 21,
+      "reviewed": 12
+     },
+     {
+      "change": "+",
+      "change_in_count": -5,
+      "changed_rules_naming_it": [],
+      "document": "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "error": "wrong",
+      "original": 5,
+      "reviewed": 0
+     },
+     {
+      "change": "+",
+      "change_in_count": 4,
+      "changed_rules_naming_it": [],
+      "document": "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "error": "wrong",
+      "original": 8,
+      "reviewed": 12
+     },
+     {
+      "change": "+",
+      "change_in_count": 3,
+      "changed_rules_naming_it": [
+       "overlay_rule_016",
+       "overlay_rule_074"
+      ],
+      "document": "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "error": "missed",
+      "original": 0,
+      "reviewed": 3
+     },
+     {
+      "change": "-",
+      "change_in_count": -3,
+      "changed_rules_naming_it": [],
+      "document": "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "error": "wrong",
+      "original": 7,
+      "reviewed": 4
+     },
+     {
+      "change": "+",
+      "change_in_count": 1,
+      "changed_rules_naming_it": [],
+      "document": "Report to the insurer that stolen items have been recovered or news of them received",
+      "error": "missed",
+      "original": 0,
+      "reviewed": 1
+     },
+     {
+      "change": "+",
+      "change_in_count": 1,
+      "changed_rules_naming_it": [
+       "overlay_rule_020"
+      ],
+      "document": "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "error": "wrong",
+      "original": 6,
+      "reviewed": 7
+     }
+    ],
+    "missed_atoms": {
+     "original": 62,
+     "reviewed": 82
+    },
+    "prompt_tokens": {
+     "original": {
+      "calls": 384,
+      "mean_prompt_tokens": 19208.1875,
+      "median_prompt_tokens": 19207.5
+     },
+     "reviewed": {
+      "calls": 384,
+      "mean_prompt_tokens": 19348.1875,
+      "median_prompt_tokens": 19347.5
+     }
+    },
+    "share_of_absolute_change_on_documents_named_by_a_changed_rule": 0.2746478873239437,
+    "unresolved_unchanged_by_fact": {
+     "PR_bicycle_claimed": {
+      "original": 1.0,
+      "reviewed": 0.5
+     },
+     "PR_expert_procedure_requested": {
+      "original": 0.875,
+      "reviewed": 0.5
+     },
+     "PR_repair_over_500": {
+      "original": 0.9583333333333334,
+      "reviewed": 0.4166666666666667
+     },
+     "PR_scheduled_valuable_1000": {
+      "original": 0.875,
+      "reviewed": 0.4583333333333333
+     },
+     "PR_sim_card_stolen": {
+      "original": 0.875,
+      "reviewed": 0.4583333333333333
+     },
+     "PR_third_party_causer": {
+      "original": 0.875,
+      "reviewed": 0.375
+     }
+    },
+    "wrong_atoms": {
+     "original": 83,
+     "reviewed": 123
+    }
+   }
+  },
+  "changed_rules": {
+   "overlay_rule_016": 2,
+   "overlay_rule_020": 3,
+   "overlay_rule_020.a": 0,
+   "overlay_rule_023": 2,
+   "overlay_rule_030": 0,
+   "overlay_rule_042": 1,
+   "overlay_rule_049": 1,
+   "overlay_rule_068": 0,
+   "overlay_rule_071": 1,
+   "overlay_rule_074": 2
+  },
+  "note": "Error atoms are the frozen scorer's wrong and missed signed changes (+ added, - withdrawn) per changed-fact pair-run, counted over 216 pair-runs. A document is 'named by a changed rule' when it is in a route of a rule that differs between rule_review/bundle/rules.json and rule_review/final/reviewed_rules.json (RECONCILIATION.md lists the changes). Prompt tokens: ledger prompt_tokens of the distinct calls on the fresh2 theft texts (Rv2p = reviewed rules, R = original rules)."
+ },
+ "added_after_review": true,
+ "cache_missing": 0,
+ "data": "fresh2",
+ "inputs": {
+  "runs/product/ledger_dev_gpt-6-luna.jsonl": "4b900a6de626d4c651ccb52aa1949e6e8ab7974a1dc53bc03527a5cbc3a1360a",
+  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",
+  "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
+  "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
+  "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",
+  "runs/study3/confirm/plans_tenancy_ric_terra.json": "74f8362129b03a9abcb7932886e248f48aa2c479d95f0b1b31d207df176f7a61",
+  "runs/study3/confirm/plans_theft_casepath.json": "08dc0d1d409f4fca03c171fc6073bd224de7cc1cc7c800bed73196b442ceb501",
+  "runs/study3/confirm/plans_theft_casepath_checklist.json": "5306b6252945dca490632f7d304bd30eeda2d2a47bf1c7b3b3fefca082f91e00",
+  "runs/study3/confirm/plans_theft_casepath_checklist_frontier.json": "e405428bd3c8879b5d6508b9fcf00ba6f20aefc9ca0a63333cc7b0370a16ce75",
+  "runs/study3/confirm/plans_theft_core_luna.json": "ad75b769b350d5025df2dd77d1862e21f4285fd83980cb362eaf9ac480391dd4",
+  "runs/study3/confirm/plans_theft_model_executes_rules.json": "bbf6b2e365b675d788cb0177541b4402d5c8287efb5b488047f12fbd4f259605",
+  "runs/study3/confirm/plans_theft_react.json": "f600708bc6ee2e5db84bf05d386da07f8d46fbd5c818288264812f33240aef57",
+  "runs/study3/confirm/plans_theft_ric_luna.json": "2b49762a37bdc9876f020d54cfe29d273fe3877fe240fc008f4a9e58190a3785",
+  "runs/study3/confirm/plans_theft_ric_original_luna.json": "caf37254d9a0813ea02606623d3f5754d2db85660849a6de248f25a8442fe675",
+  "runs/study3/confirm/plans_theft_ric_original_terra.json": "54c943bf564141768283c846d07422d51e31532296b4eb859247ca4f7d4fac5e",
+  "runs/study3/confirm/plans_theft_ric_terra.json": "c5a8cb80d1ab5687ddcf4d88e3247e3e4df50aa4af46fe1d82525acc094d905d",
+  "runs/study3/confirm/samples_tenancy_ric_luna.json": "1016547eced137672b44dfd832843652869a637b461d0cea2253afcbcc2b1fa4",
+  "runs/study3/confirm/samples_theft_ric_luna.json": "ab1dbaf32a84362b551c38ae510ced29d4d5833eee26394fcfc6244e5853f60d",
+  "runs/v2/cp4/ledger_dev_gpt-6-luna.jsonl": "0f697055d6061fe0d05e7b21ff820eca2f3572741bd22b32c6f0644212d0da8e",
+  "runs/v2/cp4/ledger_dev_gpt-6.1-terra.jsonl": "2147a545efafd1559fcb56619dc860cc0a9e43238807bff05ce47e9b62489f8b",
+  "runs/v2/ledger_gpt-6-luna.jsonl": "0f035b14e0e3a951405d22d7a972e8f55fd56f57775771723c516bc28909e9d2",
+  "runs/v2/ledger_gpt-6.1-terra.jsonl": "dd9f9bade7cae1b0638a77ff7358225c0bd09eb3a44c7a21c4c9fbe7b0be8733"
+ },
+ "label": "ADDED AFTER REVIEW: not pre-registered, not part of ANALYSIS_PLAN_STUDY3.md",
+ "preregistered": false,
+ "run_label": "confirm",
+ "statistics": {
+  "bootstrap_resamples": 10000,
+  "r4_draws": 200,
+  "seed": 20261111
+ }
+}
