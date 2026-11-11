@@ -763,7 +763,7 @@ class CaseTeam:
         for agent, instruction in PLAN:
             if agent == "process_builder" and handler_flow:
                 # The handler's own workflow already names each stage's needs and action; its guesses were rarely asked.
-                work.emit("lead", "agent.skipped", agent=agent, reason="the handler's workflow defines this stage")
+                work.emit("lead", "agent.skipped", skipped=agent, reason="the handler's workflow defines this stage")
                 continue
             if agent == "document_finder":
                 confirm_facts(self.model, work, self.effort)

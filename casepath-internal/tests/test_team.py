@@ -320,3 +320,17 @@ class HandlerDeliverableTests(unittest.TestCase):
         result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=files, workflow=workflow)
         self.assertEqual(result["case_summary"], [{"field": "gegenpartei", "label": "Gegenpartei", "text": "Immo Aare AG, Bern"}])
         self.assertEqual(result["deadlines"], [{"fact": "frist", "question": "Welche Frist gilt?", "date": "2025-03-15"}])
+
+
+class HandlerFlowTests(unittest.TestCase):
+    def test_the_builder_is_skipped_when_the_workflow_names_each_stages_action(self):
+        workflow = copy.deepcopy(FIXTURE)
+        workflow["steps"][0]["action"] = {"kind": "A1", "title": "Unterlagen anfordern"}
+        script = [turn for turn in standard_script(finder_calls=[], result_fields={})
+                  if not any(name in {"open_process", "view_knowledge"} or args.get("agent") == "process_builder"
+                             for name, args in turn)]
+        script = [t for t in script if not (len(t) == 1 and t[0][0] == "report" and "questions" in t[0][1])]
+        result = CaseTeam(ScriptedModel(script)).run(case=CASE, files=FILES, workflow=workflow)
+        agents = {e["agent"] for e in result["events"] if e["kind"] == "agent.start"}
+        self.assertNotIn("process_builder", agents)
+        self.assertIn("agent.skipped", {e["kind"] for e in result["events"]})
