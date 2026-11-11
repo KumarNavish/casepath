@@ -67,6 +67,19 @@ def theft_ids(stories=("4", "5", "6", "7"), pick=False):
     return out
 
 
+def tenancy_spread(per_family=8):
+    sys.path.insert(0, str(TMIS / "fresh"))
+    import tenancy_fresh as F
+    by = {}
+    for c in tenancy_ids("all"):
+        by.setdefault(F.reference(c)["family"], []).append(c)
+    out, i = [], 0  # round-robin over the families (sorted claims within each) until 24 claims
+    while len(out) < 3 * per_family and any(i < len(v) for v in by.values()):
+        out += [by[f][i] for f in sorted(by) if i < len(by[f])][: 3 * per_family - len(out)]
+        i += 1
+    return out
+
+
 def probe_ids():
     sys.path.insert(0, str(TMIS / "dev_probe"))
     import tenancy_probe as D
@@ -88,6 +101,12 @@ def tasks(plan):
         cases = [("tenancy", "fresh", c) for c in tenancy_ids("all")] + [("theft", "fresh", c) for c in theft_ids()] + \
                 [("tenancy", "probe", c) for c in probe_ids()]
         return [("short-check", BRANCH, "checklist", run, env, regime, data, case) for run in (50, 51, 52) for regime, data, case in cases]
+    if plan == "compact-theft":  # the compact answer, theft stories 4-5, three runs
+        env = {"CASEPATH_READING_FORM": "compact"}
+        return [("compact-check", BRANCH, "checklist", run, env, "theft", "fresh", c) for run in (60, 61, 62) for c in theft_ids(("4", "5"))]
+    if plan == "compact-tenancy":  # the compact answer, 24 tenancy claims round-robin over the families, one run
+        env = {"CASEPATH_READING_FORM": "compact"}
+        return [("compact-check", BRANCH, "checklist", 60, env, "tenancy", "fresh", c) for c in tenancy_spread()]
     if plan == "probe-base":
         return [("base-check", BASE, "checklist", run, {}, "tenancy", "probe", c) for run in (0, 1, 2) for c in probe_ids()]
     raise SystemExit(plan)
@@ -95,7 +114,7 @@ def tasks(plan):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--plan", required=True, choices=["partb", "partd", "probe-base"])
+    ap.add_argument("--plan", required=True, choices=["partb", "partd", "probe-base", "compact-theft", "compact-tenancy"])
     ap.add_argument("--cap", type=float, required=True, help="no new case-run starts once all SPEED- arms together reach this USD")
     ap.add_argument("--workers", type=int, default=1)
     a = ap.parse_args()
