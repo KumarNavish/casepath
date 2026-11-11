@@ -78,6 +78,14 @@ class HandlerWorkflowTests(unittest.TestCase):
         state = core.evaluate(wf, [], [], {"facts": separate, "documents": [document("mietvertrag")]}, "c")
         self.assertEqual((state["facts"]["a1_versandt"], state["facts"]["anruf_offen"]), (True, True))
         self.assertEqual({i["item_id"]: i for i in build_items(state, {"facts": separate})}["next_action:0"]["action"], "A6")
+        quiet = base + [fact("handlung_a1", "2024-09-11"), fact("handlung_a5", "2024-10-18")]  # an assessment, then silence
+        state = core.evaluate(wf, [], [], {"facts": quiet, "documents": [document("mietvertrag")]}, "c")
+        looked = [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}]
+        nxt = {i["item_id"]: i for i in build_items(state, {"facts": quiet}, looked)}["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["next_in_days"]), ("A7", 7))
+        self.assertIn("keine Antwort seit A5", nxt["reason"])
+        early = [{"extraction": {"cut_of": {"as_of": "2024-11-01"}, "segments": [{"date": "18.10.2024"}]}}]
+        self.assertNotEqual({i["item_id"]: i for i in build_items(state, {"facts": quiet}, early)}["next_action:0"]["action"], "A7")
         newest_first = base + [fact("bisherige_handlungen", "A2 2024-03-18; A1 2024-02-20")]
         self.assertTrue(core.evaluate(wf, [], [], {"facts": newest_first, "documents": []}, "c")["facts"]["anruf_offen"])
         covered = done + [fact("deckung", "bestätigt")]

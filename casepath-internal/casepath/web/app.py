@@ -84,6 +84,7 @@ class EventRequest(BaseModel):
 
 class CutRequest(BaseModel):
     pages: str = Field(min_length=1, max_length=200)  # original page numbers to keep, e.g. "5-10"
+    as_of: str | None = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$")  # the day the case is looked at ("Stand am")
     file: str | None = Field(None, max_length=80)
 
 
@@ -429,9 +430,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             data = cut.extract_pdf(data, keep)  # a new PDF: the later pages are not in it at all
         except (ValueError, PdfError) as error:
             raise HTTPException(422, str(error)) from None
-        case = store.create_case(f"{source['title']} · Auszug S. {body.pages.replace(' ', '')}"[:300], source["intake"], who)
+        stand = f" · Stand am {body.as_of[8:10]}.{body.as_of[5:7]}.{body.as_of[:4]}" if body.as_of else ""
+        case = store.create_case(f"{source['title']} · Auszug S. {body.pages.replace(' ', '')}{stand}"[:300], source["intake"], who)
         store.add_file(case["id"], row["name"], row["media_type"], row["kind"], data,
-                       {**cut.cut_extraction(row["extraction"], keep), "cut_of": {"case": case_id, "file": row["id"]}}, who)
+                       {**cut.cut_extraction(row["extraction"], keep), "cut_of": {"case": case_id, "file": row["id"], "as_of": body.as_of}}, who)
         return case
 
     @app.post("/api/cases/{case_id}/events", status_code=201)

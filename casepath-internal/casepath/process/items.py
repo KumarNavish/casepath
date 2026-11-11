@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 
+from .clock import silence
 from .workflows import evaluate_condition
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
@@ -81,6 +82,9 @@ def _origin(document):
 
 def _evidence(citations):
     return [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for c in citations or ()]
+
+
+FOLLOW_UP_TITLES = {"A6": "Dossier pendent halten mit Frist", "A7": "Statusanfrage mit Abschlussankündigung", "A12": "Dossier abschliessen"}
 
 
 def _in_file(files, kinds):
@@ -166,11 +170,16 @@ def build_items(state, result, files=None):
         variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
         if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
             planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
+        quiet = silence(graph.get("clock"), state.get("facts") or {}, files)  # across stages: nobody answered our last letter
+        if quiet:
+            planned = {"kind": quiet["then"], "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
+                       "follow_up": quiet.get("follow_up"), "skip_if": None,
+                       "reason": f'keine Antwort seit {quiet["last"]} vom {quiet["since"]} ({quiet["silent_days"]} Tage)'}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})
         elif planned:  # this stage's action was already taken: its follow-up comes next
-            title = {"A6": "Dossier pendent halten mit Frist", "A7": "Statusanfrage mit Abschlussankündigung"}.get(planned.get("follow_up"), planned.get("follow_up"))
+            title = FOLLOW_UP_TITLES.get(planned.get("follow_up"), planned.get("follow_up"))
             action = (planned.get("follow_up"), title, {"de": title, "en": title})
         elif ev.get("outcome"):
             title = ev["outcome"].get("title") or ev["outcome"]["id"]
@@ -183,7 +192,8 @@ def build_items(state, result, files=None):
         else:
             action = None
         if action:
-            add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up")} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+            add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
+                                        **({"reason": planned["reason"]} if planned.get("reason") else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}

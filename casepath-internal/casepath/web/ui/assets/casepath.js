@@ -1290,7 +1290,7 @@ function preparedView(ev, draft) {
   const all = docs.concat(qs);
   const missing = docs.filter((d) => d.ask === "now").length;
   const cover = (S.data.evaluation && S.data.evaluation.waiting_for || []).some((w) => w.fact === "deckung");
-  const reason = [T("claim received", "Schadenmeldung eingegangen"), missing ? T(`documents incomplete (${missing} missing)`, `Unterlagen unvollständig (${missing} fehlen)`) : "",
+  const reason = [act.reason || "", T("claim received", "Schadenmeldung eingegangen"), missing ? T(`documents incomplete (${missing} missing)`, `Unterlagen unvollständig (${missing} fehlen)`) : "",
     cover ? T("cover open", "Deckung offen") : ""].filter(Boolean).join(", ");
   const stage = (S.data.process.steps || []).find((x) => x.id === (ev && ev.current && ev.current.step)) || {};
   return `<section class="cp-card cp-prepared" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Prepared", "Vorbereitet")}: ${esc(T(act.label.en, act.label.de))}</h2>

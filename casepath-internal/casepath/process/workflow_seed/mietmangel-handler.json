@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-12.3",
+ "version": "2026-11-12.4",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -856,5 +856,57 @@
  ],
  "notes": [],
  "summary": [],
- "open_questions": []
+ "open_questions": [],
+ "clock": [
+  {
+   "after": [
+    "1",
+    "4"
+   ],
+   "days": 28,
+   "then": "A6",
+   "deadline_days": 25,
+   "follow_up": "A7",
+   "source": "practice#2of7 (3-4 Wochen nach Anforderung)"
+  },
+  {
+   "after": [
+    "2"
+   ],
+   "days": 28,
+   "then": "A6",
+   "deadline_days": 25,
+   "follow_up": "A7",
+   "source": "practice#2of7 (nach Telefonat)"
+  },
+  {
+   "after": [
+    "6"
+   ],
+   "days": 28,
+   "then": "A7",
+   "deadline_days": 7,
+   "follow_up": "A12",
+   "source": "practice#1of7"
+  },
+  {
+   "after": [
+    "5"
+   ],
+   "days": 90,
+   "then": "A7",
+   "deadline_days": 7,
+   "follow_up": "A12",
+   "source": "practice#1of7 (3-4 Monate nach Einschätzung)"
+  },
+  {
+   "after": [
+    "7"
+   ],
+   "days": 14,
+   "then": "A12",
+   "deadline_days": null,
+   "source": "practice#2of7 (Abschluss nach Statusanfrage)"
+  }
+ ]
 }
