@@ -97,3 +97,44 @@ Reading fix (claim first, deadlines as a list) → L1 → L2 → L4's recording 
 2. GitHub, then a quiet GitLab push, then one deploy.
 3. Check the step's "done when" on three real dossiers. Re-score the reference table.
 4. Report in ten lines: what works on real dossiers, the numbers, and what a handler would still stumble over.
+
+## E · Fast and cheap, proven on a fresh case
+
+**Today:** 5 to 9 minutes and about 0.18 M non-cached tokens per case (about 43 k of them output), whatever its size. **Target: a small case prepared in under 2 minutes and under 60 k non-cached tokens, with no scoreboard row worse on any case.** First useful line on screen within 20 seconds.
+
+**Measure before changing anything.** From the stored runs, one table per phase (reading, routing, each agent, second reading, checking, result): model calls, seconds, input, cached, written, output. The largest rows decide the order below; do not guess.
+
+**Where the waste is expected, by cause**
+1. **Turns.** Each turn is a model call that re-sends the transcript. An agent that records one fact or one document per turn takes ten turns where two would do. Record many per turn; give small files to the reader whole, in the prompt, instead of having it list and open them.
+2. **Output.** Output tokens cost most and take longest. Thinking set higher than a mechanical step needs; text the model writes that the product now derives itself (the first request letter comes from the item list); summaries nobody reads.
+3. **Agents with nothing to do.** A documented process with all its needs settled needs no proposal loop; one check call can judge all quotes at once.
+4. **Waiting in a row.** Steps that do not depend on each other run side by side (wall-clock only).
+5. **Shared prefix.** Instructions, process and case text in the same order for every agent, so each reads them from the cache.
+
+**The proof.** A change counts only if it holds under this protocol, run before and after:
+- three cases never run on this deployment in this form (a small, a middle and a large cut, uploaded as new files so reading happens again), started cold (no warm cache);
+- wall-clock from the click to "prepared", time to the first line on screen, calls, tokens (gross, non-cached, output);
+- then the seven development cuts re-scored: no row worse on any case.
+Report the before/after table with the cases' sizes. A gain that appears only on a warm cache or a re-run is not a gain.
+
+## U · The handler's screen
+
+**One screen answers three questions, in this order: What is this case? What needs me? What is CasePath doing?** Everything else is one click away and never in the way.
+
+**Words.** No agent names, no tool names, no model words on any handler screen. The tabs are the handler's things, not our machinery: **Übersicht · Akte · Prozess · Unterlagen · Verlauf.** (What the five agent tabs show today moves under these; "Verlauf" holds the work log for those who want it.)
+
+**A run is the Übersicht filling in, not a different view.**
+- A line of five stages in handler words (Lesen · Prozess · Fakten · Unterlagen · Prüfung) with real elapsed time and the expected rest.
+- One sentence says what is happening now and where ("liest die Schadenmeldung, S. 3"), and opens that page.
+- Der Fall's lines appear as they are established, each with its source; the process shows the step reached; documents tick in; the letter assembles last.
+- Braucht Ihr Urteil receives its points while the run goes on.
+- Nothing moves unless the case's state changed.
+
+**Steering while it runs.** A handler must be able to turn the work before it has gone the wrong way:
+- **The process is shown first,** within the first half-minute, with "anderer Prozess" beside it. No answer means yes; choosing another restarts only what depends on it.
+- **A point answered during the run is taken at once:** the handler's value stands, the agents do not ask again, and what depends on it follows.
+- **Anhalten** stops the run and keeps what is established; **Weiter** continues from there.
+
+**As little as possible asked of the handler.** A point appears under Braucht Ihr Urteil only if a person's answer would change the path, the letter or a deadline. Everything else CasePath settles and shows as settled, with its source. A typical case: three points or fewer.
+
+**Done when** a handler who has never seen CasePath opens a prepared case and, without a word of explanation, says what the case is, decides every point, changes one thing they disagree with, and closes it; and when, watching a run, they can say at any moment what is happening and stop or turn it.
