@@ -317,3 +317,55 @@ passed; the confirmatory run on `fresh2/` started (label `confirm`).
 Decision recorded: the run started before the product session confirmed the
 merge. If they reject a behaviour change, the test must be repeated on new sealed
 data.
+
+## 2026-11-11 — Study 3 result, paper written, two referee rounds
+
+**Run.** Five invocations of `harness/study3/run_all.py` between 10 Nov 22:30
+and 11 Nov 04:17 UTC. Four stopped early: two deliberately (my interrupt of
+the first, to raise parallelism from 6 to 20 workers, whose log line is wrong
+and corrected by a dated note; the wrapper's planned stop of the fourth at 110
+minutes) and two by failures of the environment (the session's two-hour limit
+on background commands; a container restart). Each resumed from the response
+cache with settings unchanged. Spend USD 34.33. 50 failed outputs, none from
+the product, 40 from ReAct.
+
+**Result** (`analysis/study3_results_fresh2_confirm.md`, run once): H1, H2,
+H3 confirmed; H4 not (against Self-consistency p = 0.0625 over nine facts);
+H5 not tested. Theft 0.58 against 1.74 (same model, reviewed rules); tenancy
+0.31 against 2.14 (same model) and 1.86 (frontier model). The tenancy
+difference lies in the 33 claims whose defining event is denied or open.
+Checklist only shows no detectable difference from the full product at 22%
+and 16% of its cost. On the frontier model (one run, no hypothesis) the
+product is not better than the frontier single prompt on theft.
+
+**Decisions and corrections made while writing.**
+- The theft rules were reviewed by two AI editor sessions, not by experts;
+  the paper says so everywhere.
+- The full product and the checklist-only run share cached routing and part
+  of the readings; their comparison is not an independent repetition.
+- Every theft case-run had more than eight open facts and used the product's
+  plain walk, which equals exact deferral on that workflow; exact deferral's
+  benefit is shown on tenancy only.
+- The order of the hypotheses was changed at 21:51 on 10 Nov, 39 minutes
+  before the freeze, on development evidence (the ReAct comparison was the
+  weakest). Under the order of 21:26 the prior-work hypothesis would have
+  failed third and the tenancy contrast against the frontier model would not
+  have been tested. The second referee found that the paper did not disclose
+  this; it now does.
+
+**Review.** An independent referee read (major revision) and a claims audit
+(all 409 macros checked match; about 25 wording and attribution errors) led
+to: three contributions and a design-science framing; scope stated in the
+abstract, introduction and conclusion; Studies 1 and 2 moved to a supplement;
+scope conditions inside the propositions and one admission table; eleven
+analyses added after review from stored outputs (`analysis/study3_review.*`);
+the expert study out of the body (protocol in an appendix). A second referee
+round recommended minor revision; its items are in `FINAL_FIX_BRIEF.md`.
+Both reports and the audit are in `analysis/review/`.
+
+**Release.** `reproduce.sh` reproduces Study 3's tables and macros and
+re-checks Studies 1–2 from stored outputs in about eleven minutes without
+model calls; it passes in a fresh clone. A public release is blocked on the
+owner's decisions listed in `release/SCRUB_REPORT.md` (git history, the
+insurer's name in the tested product, a Knowledge seed derived from its
+letters, internal documents, licences, the cache archive).
