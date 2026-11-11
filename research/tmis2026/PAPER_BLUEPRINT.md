@@ -1,4 +1,4 @@
-# Paper blueprint, version 3 (planner's specification, 2026-11-10)
+# Paper blueprint, version 3.1 (planner's specification, 2026-11-11)
 
 Binding for writers and figure makers. It replaces version 2 (in git history
 at `13dd238d`). The paper is now about the CasePath product: the system that
@@ -10,11 +10,11 @@ leave a clearly marked gap, never a guessed number.
 ## 1. Thesis
 
 **An organisation's rules should be executed by code, over facts that agents
-read from the file twice and can quote. Built this way, a cost-efficient
-model [S3: makes fewer errors than the same model under every single-agent
-strategy we know, and is no worse than a frontier model applying the same
-rules], and it holds exactly the requests that depend on a fact the file
-leaves open.**
+read from the file several times and can quote. Built this way, a
+cost-efficient model makes fewer errors than the same model applying the
+rules itself, and on claims where a rule stops or holds the checklist it makes
+fewer errors than a frontier model applying the same rules. It holds exactly
+the requests that depend on a fact the file leaves open.**
 
 One sentence for a practitioner: the model reads, the organisation's rules
 decide, and what the file does not settle becomes a question.
@@ -22,6 +22,59 @@ decide, and what the file does not settle becomes a question.
 Working title: **CasePath: Agents That Read, Rules That Decide**. Subtitle if
 the venue needs one: *Requesting Evidence for Insurance Claims with
 Executable Workflows*.
+
+### Results of the confirmatory test (Study 3; binding wording)
+
+Source: `analysis/study3_results_fresh2_confirm.md` (first and only run of the
+pre-registered analysis). Five hypotheses in a fixed order; the first three
+were confirmed, the fourth was not, so the fifth was not tested.
+
+- **H1 confirmed.** Theft, same model, same rules: 0.58 against 1.74 wrong +
+  missed changes per pair (difference −1.15, interval −1.65 to −0.64,
+  p = 0.008).
+- **H2 confirmed.** Tenancy, same model: 0.31 against 2.14 strict unsafe
+  errors per claim (p = 0.0002).
+- **H3 confirmed.** Tenancy, frontier model: 0.31 against 1.87 (p = 0.0008).
+- **Where the tenancy difference lies, as predicted in the plan:** on the 33
+  claims whose defining event is denied or left open, 0.47 against 5.69 and
+  5.31. On the 63 ordinary claims, 0.21 against 0.43 (same model) and 0.29
+  (frontier model); against the frontier model that is no difference, and
+  non-inferiority at the 0.10 margin holds as a secondary result.
+- **H4 not confirmed.** Theft against every prior-work strategy: fewer errors
+  than Model executes rules (p = 0.004) and ReAct (p = 0.012), but against
+  Self-consistency the test over nine facts gave p = 0.0625 (0.58 against
+  1.21; interval −1.13 to −0.08). The hypothesis required all three.
+- **H5 not tested** (outside the procedure, reported as such): against the
+  frontier model with the same rules on theft, 0.58 against 0.95; with the
+  original rules, 0.58 against 0.67.
+- **Open facts.** Theft: 94% of unresolved-fact pairs left otherwise
+  unchanged, against 27–47% for every single-prompt design on either model
+  with the reviewed rules. Tenancy: 97% of reference-held documents held,
+  against 48% (same model) and 35% (frontier model). Two-valued execution of
+  the product's own readings fails on open facts by construction.
+- **All deviations per claim** (unsafe errors plus wrong holds): 0.73 against
+  2.33 and 2.09. CasePath holds more than the single prompts (0.33 against
+  0.17–0.18 unneeded holds per claim), most of it on denied-event claims
+  where the readings did not all agree on the denial.
+- **Which agents matter.** Checklist only against the full product: no
+  difference on any measure (0.34 against 0.31; 0.55 against 0.58), at
+  about a fifth of the cost. The full product costs USD 0.013 per tenancy
+  claim and USD 0.030 per theft text; checklist only USD 0.003 and USD 0.005;
+  the frontier single prompt USD 0.006 and USD 0.004.
+- **Model for model (one run, no hypothesis).** On the frontier model the
+  product equals itself on tenancy (0.30) and is not better than the frontier
+  single prompt on theft (0.83 against 0.95, no difference). The gain from
+  executing rules is largest for the cost-efficient model.
+- **Irregularities to report:** three of five invocations of the run ended
+  abnormally (one operator interrupt whose log line is wrong and corrected by
+  a dated note; one time limit; one container restart), each resumed from
+  the cache with settings unchanged; 50 failed outputs, none from the
+  product, 40 from ReAct, counted as empty plans as planned; a post-hoc
+  sensitivity analysis leaves ReAct's failed outputs out.
+
+Never claim: that CasePath beats every prior-work strategy on theft; that it
+beats the frontier model on theft; that the later agents improve the
+checklist; that the result holds for a frontier model inside CasePath.
 
 ## 2. What the paper may claim
 
