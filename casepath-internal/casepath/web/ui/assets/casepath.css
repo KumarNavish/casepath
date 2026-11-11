@@ -295,3 +295,8 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-source-chip.none{cursor:default;font-style:italic}
 @media (max-width:1500px){.cp-tab{padding:0 11px;gap:7px;font-size:15px}}
 .cp-top-right span{white-space:nowrap}
+.cp-reasons{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cp-reasons .cp-chip{cursor:pointer;border:1px solid var(--line);background:none;font:inherit;font-size:13px}
+.cp-reasons .cp-chip:hover{border-color:var(--crimson);color:var(--crimson)}
+.cp-change{margin-top:12px;padding:8px 12px;border-left:3px solid var(--crimson);background:var(--paper-2, #faf7f5)}
+#unaided label{display:block;margin:8px 0}

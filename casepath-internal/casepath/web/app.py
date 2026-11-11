@@ -563,7 +563,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         for row in change["documents_changed"]:
             record(case_id, who, "item.propagated", item_id=f"document:{row['document']}", caused_by=cause["event_id"], change="changed",
                    before=f"{row['before']}/{row['required_before']}", after=f"{row['after']}/{row['required_after']}")
-        if change["current_step"]["before"] != change["current_step"]["after"]:
+        if change["current_step"]["before"] != change["current_step"]["after"] and change["current_step"]["after"]:
             record(case_id, who, "item.propagated", item_id=f"step:{change['current_step']['after']}", caused_by=cause["event_id"], change="changed",
                    before=change["current_step"]["before"], after=change["current_step"]["after"])
         recheck = None

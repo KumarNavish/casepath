@@ -117,7 +117,8 @@ def build_items(state, result):
                 **({"partial": row["partial"]} if row.get("partial") else {}))
         definitions = {f["id"]: f for f in graph["facts"]}
         overrides, set_by_hand = state.get("overrides") or {}, (state.get("facts") or {})
-        rows = {f["fact"]: f for f in result.get("facts", [])}
+        rows = {f["id"]: {"fact": f["id"], "status": "unknown", "value": None, "citations": []} for f in graph["facts"]}  # every fact the process asks about
+        rows.update({f["fact"]: f for f in result.get("facts", [])})
         for key in overrides:  # a fact a case worker set shows the value set, whatever the run read
             rows[key] = {**rows.get(key, {"fact": key, "citations": []}), "status": "established", "value": set_by_hand.get(key),
                          "verdict": "set_by_handler", "by_edit": overrides[key]}
