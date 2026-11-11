@@ -133,15 +133,18 @@ COST_LABEL = {"casepath": "CasePath", "casepath_checklist": "checklist only", "c
               "react": "ReAct", "ric_original": "Rules in context, original rules",
               "ric_frontier": "Rules in context, frontier", "ric_original_frontier": "Rules in context, original rules, frontier",
               "casepath_frontier_checklist": "checklist only, frontier (one run)"}
-# (dx, dy, ha) in points from the point
-NUDGE = {"tenancy": {"casepath": (6, 4, "left"), "casepath_checklist": (-6, 4, "right"),
-                     "ric": (6, 4, "left"), "self_consistency": (6, 4, "left"), "model_executes_rules": (6, 4, "left"),
-                     "react": (6, 4, "left"), "ric_frontier": (6, 4, "left"),
-                     "casepath_frontier_checklist": (-6, 4, "right")},
-         "theft": {"casepath": (6, -2, "left"), "casepath_checklist": (6, -9, "left"), "core": (-6, -2, "right"),
-                   "ric": (6, 4, "left"), "self_consistency": (-6, 4, "right"), "model_executes_rules": (6, 4, "left"),
-                   "react": (6, -3, "left"), "ric_original": (6, -3, "left"), "ric_frontier": (6, 4, "left"),
-                   "ric_original_frontier": (-6, 4, "right"), "casepath_frontier_checklist": (-6, 5, "right")}}
+# Label placement, by hand: (dx, dy, ha) in points from the point, or ("at", x, y, ha, leader) in data coordinates
+# (x in USD, y in errors), with a thin leader line to the point when leader is True.
+NUDGE = {"tenancy": {"casepath": (-7, 0, "right"), "casepath_checklist": (-7, 0, "right"),
+                     "ric": ("at", 0.00072, 3.3, "left", False), "self_consistency": (-7, 0, "right"),
+                     "model_executes_rules": (7, 0, "left"), "react": (7, 0, "left"), "ric_frontier": (7, 0, "left"),
+                     "casepath_frontier_checklist": ("at", 0.0225, 0.95, "right", True)},
+         "theft": {"casepath": (-7, 0, "right"), "casepath_checklist": (6, -9, "left"), "core": (-7, 0, "right"),
+                   "ric": (7, 3, "left"), "self_consistency": (-7, 0, "right"), "model_executes_rules": (7, 2, "left"),
+                   "react": (7, -3, "left"), "ric_original": ("at", 0.00074, 1.02, "left", False),
+                   "ric_frontier": ("at", 0.0047, 1.12, "left", False),
+                   "ric_original_frontier": ("at", 0.0026, 0.28, "right", True),
+                   "casepath_frontier_checklist": ("at", 0.0386, 1.45, "right", False)}}
 
 
 def fig_cost():
@@ -184,11 +187,16 @@ def fig_cost():
             ax.plot([x, x], [lo, hi_], color=col, lw=th.THICK, solid_capstyle="round", zorder=2, alpha=0.9)
             ax.scatter([x], [mean], s=30, marker="o", facecolors="white" if d in FRONTIER else col, edgecolors=col,
                        linewidths=th.THICK, zorder=3)
-            dx, dy, ha = NUDGE[regime][d]
-            ax.annotate(COST_LABEL[d], (x, mean), xytext=(dx, dy), textcoords="offset points", ha=ha, va="center",
-                        fontsize=th.NOTE, color=CP if d == "casepath" else th.INK,
-                        fontweight=th.BOLD if d == "casepath" else "normal", zorder=4,
-                        bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none", alpha=0.85))
+            nd = NUDGE[regime][d]
+            style = dict(fontsize=th.NOTE, color=CP if d == "casepath" else th.INK, zorder=4,
+                         fontweight=th.BOLD if d == "casepath" else "normal", va="center")
+            if nd[0] == "at":
+                _, tx, ty, ha, leader = nd
+                ax.annotate(COST_LABEL[d], (x, mean), xytext=(tx, ty), textcoords="data", ha=ha, **style,
+                            arrowprops=dict(arrowstyle="-", color=LIGHT, lw=th.THIN, shrinkA=1, shrinkB=4) if leader else None)
+            else:
+                dx, dy, ha = nd
+                ax.annotate(COST_LABEL[d], (x, mean), xytext=(dx, dy), textcoords="offset points", ha=ha, **style)
     _save(fig, "fig_cost")
 
 

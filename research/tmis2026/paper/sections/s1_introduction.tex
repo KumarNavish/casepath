@@ -1,3 +1,30 @@
 \section{Introduction}
 \label{sec:intro}
-% Blueprint §3.1 (700 words): the mould claim and its one open fact; why one prompt cannot keep "not stated" apart from "false"; the idea in three sentences; what the test showed [S3]; contributions (i)-(iv).
+
+\begin{figure}[t]
+\centering
+\fig{fig_hero}{\linewidth}
+\Description{Two columns of CasePath screen crops. Left: the claim says the paediatrician suspects a link with the mould, and the next steps end with obtaining the medical confirmation. Right: the claim says it is not known whether the cough has anything to do with the mould, and the next steps begin with the question whether the claim alleges effects on anyone's health; the other five requests are the same in both.}
+\caption{The running example in \casepath: one changed sentence in the claim turns the request for the medical confirmation into a question, and the other five requests are unchanged. Unedited captures of the product at commit 6a72159c on two synthetic claims run with the tenancy defect workflow; cropped.}
+\label{fig:hero}
+\end{figure}
+
+One sentence decides what a case handler should request. A tenant reports mould in the bathroom and in the child's room, and the insurer's rules require a medical confirmation if the mould has affected someone's health. One version of the claim says ``the paediatrician suspects a link with the mould''. Another says ``we do not know whether it has anything to do with the mould''. For the first, the handler should request the medical confirmation. For the second, the handler should hold it and ask whether the mould has affected anyone's health. Every other request is the same in both (Figure~\ref{fig:hero}).
+
+A single prompt that applies the rules returns one answer per document and records no value for the facts behind it. A fact the file does not state, a fact it states false and a fact it leaves open can then lead to the same answer, and Section~\ref{sec:rule} shows what each conflation costs.
+
+\casepath, a product that prepares legal-protection claims for a case handler, separates reading from deciding. Agents read every fact from the file several times, each value with a quotation, and code admits a value only when the readings agree and the quotation is in the file. Code then executes the organisation's rules, written as a workflow, over the admitted facts and the workflow's presumptions, and holds exactly the documents whose need depends on a fact still open.
+
+We tested \casepath at its frozen commit on sealed synthetic data, under a plan with five hypotheses in a fixed order (Section~\ref{sec:test}). With the cost-efficient model, it made fewer errors than Rules in context on the same model, on theft (H1, \sthreeHOneA{} against \sthreeHOneB{} wrong + missed changes per pair) and on tenancy (H2, \sthreeHTwoA{} against \sthreeHTwoB{} strict unsafe errors per claim). It also made fewer tenancy errors than Rules in context on the frontier model (H3, \sthreeHThreeA{} against \sthreeHThreeB). As the plan predicted, the tenancy difference lies in the \sthreeClaimsDeniedOpen{} claims whose defining event is denied or left open. H4 was not confirmed: \casepath made fewer theft errors than Model executes rules and ReAct, but its difference from Self-consistency did not reach significance, so H5 was not tested. The frontier model inside \casepath was not better than the frontier single prompt on theft. The agents after the readings added cost and no accuracy: the checklist-only setting made as few errors at \sthreeCostChecklistShareTen\% (tenancy) and \sthreeCostChecklistShareTh\% (theft) of the full product's cost.
+
+The design was found by testing. Two earlier pre-registered studies found execution no better than Rules in context and traced each shortfall to a cause: faulty extracted rules, silence read as doubt, a checking call that rejected correct values, and an evaluation that held too much (Section~\ref{sec:history}).
+
+A registered study will have five claims experts of a legal-protection insurer work through three real files in \casepath, with their ordinary work in the interface as its only instrument (Section~\ref{sec:experts}).
+
+The article makes four contributions:
+\begin{enumerate}[leftmargin=1.5em]
+\item A decision rule that admits only agreeing, quoted readings and holds exactly what an open fact can change, with proofs (Section~\ref{sec:rule}).
+\item \casepath, released with its workflows, data, analysis code and a parity check of deployed builds (Section~\ref{sec:casepath}, \cite{casepath2026repo}).
+\item A pre-registered test on sealed data against single-prompt and prior-work strategies and a frontier model (Section~\ref{sec:test}).
+\item A registered study in which claims experts review \casepath's checklists on real cases (Section~\ref{sec:experts}).
+\end{enumerate}
