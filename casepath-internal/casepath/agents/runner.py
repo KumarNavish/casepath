@@ -26,10 +26,11 @@ def case_state(store, catalogue, case_id):
     run = store.latest_run(case_id, "completed")
     result = (run or {}).get("result") or {}
     workflow = None
+    # A run names the workflow version it used; when that version is no longer shipped, the latest one of the same workflow governs.
     if case.get("workflow_id"):
-        workflow = catalogue.get(case["workflow_id"], case.get("workflow_version"))
+        workflow = catalogue.get(case["workflow_id"], case.get("workflow_version")) or catalogue.get(case["workflow_id"])
     elif run and run.get("workflow_id"):
-        workflow = catalogue.get(run["workflow_id"], run.get("workflow_version"))
+        workflow = catalogue.get(run["workflow_id"], run.get("workflow_version")) or catalogue.get(run["workflow_id"])
     if workflow is None:
         return {"case": case, "workflow": None, "process": None, "evaluation": None, "run": run}
     knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
