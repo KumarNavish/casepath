@@ -140,68 +140,252 @@
   },
   "tenancy/branch-full": {
    "to_checklist_s": {
-    "n": 11,
-    "median": 118.06,
+    "n": 12,
+    "median": 118.72,
     "min": 96.95,
     "max": 199.34
    },
    "to_result_s": {
-    "n": 11,
-    "median": 139.09,
+    "n": 12,
+    "median": 148.36,
     "min": 118.3,
     "max": 244.37
    },
    "usd": {
-    "n": 11,
-    "median": 0.01157656,
+    "n": 12,
+    "median": 0.01227578,
     "min": 0.00993111,
     "max": 0.021428955
    },
    "calls": {
-    "n": 11,
-    "median": 27,
+    "n": 12,
+    "median": 27.5,
     "min": 23,
     "max": 38
    },
    "output": {
-    "n": 11,
-    "median": 13113,
+    "n": 12,
+    "median": 13528.5,
     "min": 11187,
     "max": 24760
    },
    "input": {
-    "n": 11,
-    "median": 113195,
+    "n": 12,
+    "median": 113762.0,
     "min": 86513,
     "max": 193206
    },
    "cached_input": {
-    "n": 11,
-    "median": 76896,
+    "n": 12,
+    "median": 74565.0,
     "min": 55076,
     "max": 129703
    },
-   "usd_mean": 0.013027520909090907,
+   "usd_mean": 0.013032790416666667,
+   "cached_calls_total": 0
+  },
+  "theft/base-check": {
+   "to_checklist_s": {
+    "n": 8,
+    "median": 70.36500000000001,
+    "min": 67.38,
+    "max": 75.62
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": 70.36500000000001,
+    "min": 67.38,
+    "max": 75.62
+   },
+   "usd": {
+    "n": 8,
+    "median": 0.005009555,
+    "min": 0.00403808,
+    "max": 0.0052507
+   },
+   "calls": {
+    "n": 8,
+    "median": 5.5,
+    "min": 4,
+    "max": 6
+   },
+   "output": {
+    "n": 8,
+    "median": 8163.5,
+    "min": 7728,
+    "max": 8424
+   },
+   "input": {
+    "n": 8,
+    "median": 19552.5,
+    "min": 10565,
+    "max": 22711
+   },
+   "cached_input": {
+    "n": 8,
+    "median": 14122.0,
+    "min": 0,
+    "max": 16354
+   },
+   "usd_mean": 0.0048259225,
+   "cached_calls_total": 0
+  },
+  "theft/base-full": {
+   "to_checklist_s": {
+    "n": 8,
+    "median": 236.405,
+    "min": 186.6,
+    "max": 302.36
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": 236.405,
+    "min": 186.6,
+    "max": 302.36
+   },
+   "usd": {
+    "n": 8,
+    "median": 0.025874625,
+    "min": 0.02160055,
+    "max": 0.03207102
+   },
+   "calls": {
+    "n": 8,
+    "median": 27.5,
+    "min": 22,
+    "max": 33
+   },
+   "output": {
+    "n": 8,
+    "median": 21853.5,
+    "min": 16817,
+    "max": 31091
+   },
+   "input": {
+    "n": 8,
+    "median": 280104.5,
+    "min": 221156,
+    "max": 502219
+   },
+   "cached_input": {
+    "n": 8,
+    "median": 182186.0,
+    "min": 125858,
+    "max": 401282
+   },
+   "usd_mean": 0.025948364375,
+   "cached_calls_total": 0
+  },
+  "theft/branch-check": {
+   "to_checklist_s": {
+    "n": 8,
+    "median": 29.14,
+    "min": 23.85,
+    "max": 33.21
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": 29.14,
+    "min": 23.85,
+    "max": 33.21
+   },
+   "usd": {
+    "n": 8,
+    "median": 0.004690917500000001,
+    "min": 0.00417678,
+    "max": 0.005146145
+   },
+   "calls": {
+    "n": 8,
+    "median": 5.0,
+    "min": 4,
+    "max": 6
+   },
+   "output": {
+    "n": 8,
+    "median": 8285.5,
+    "min": 7650,
+    "max": 8670
+   },
+   "input": {
+    "n": 8,
+    "median": 16561.0,
+    "min": 10557,
+    "max": 22596
+   },
+   "cached_input": {
+    "n": 8,
+    "median": 13061.0,
+    "min": 9206,
+    "max": 16352
+   },
+   "usd_mean": 0.00469857,
+   "cached_calls_total": 0
+  },
+  "theft/branch-full": {
+   "to_checklist_s": {
+    "n": 8,
+    "median": 167.865,
+    "min": 3.91,
+    "max": 217.44
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": 209.965,
+    "min": 3.91,
+    "max": 250.58
+   },
+   "usd": {
+    "n": 8,
+    "median": 0.026739565,
+    "min": 0.0002428,
+    "max": 0.03016681
+   },
+   "calls": {
+    "n": 8,
+    "median": 28.5,
+    "min": 2,
+    "max": 32
+   },
+   "output": {
+    "n": 8,
+    "median": 24624.5,
+    "min": 150,
+    "max": 29624
+   },
+   "input": {
+    "n": 8,
+    "median": 320047.0,
+    "min": 1678,
+    "max": 433216
+   },
+   "cached_input": {
+    "n": 8,
+    "median": 224595.0,
+    "min": 0,
+    "max": 336461
+   },
+   "usd_mean": 0.02326346625,
    "cached_calls_total": 0
   }
  },
  "paired": {
   "tenancy: branch-full - base-full": {
    "to_checklist_s": {
-    "n": 11,
-    "median": -42.04999999999998,
+    "n": 12,
+    "median": -41.85499999999999,
     "min": -76.46,
     "max": -18.019999999999982
    },
    "to_result_s": {
-    "n": 11,
-    "median": -12.860000000000014,
+    "n": 12,
+    "median": -12.78500000000001,
     "min": -46.290000000000006,
     "max": 13.960000000000008
    },
    "usd": {
-    "n": 11,
-    "median": 6.0440000000000146e-05,
+    "n": 12,
+    "median": 0.0003949424999999994,
     "min": -0.0033083599999999998,
     "max": 0.003174699999999999
    }
@@ -228,38 +412,83 @@
   },
   "tenancy: branch-full - base-check": {
    "to_checklist_s": {
-    "n": 11,
-    "median": 83.97,
+    "n": 12,
+    "median": 74.58,
     "min": -6.939999999999998,
     "max": 104.34
    },
    "to_result_s": {
-    "n": 11,
-    "median": 108.07,
+    "n": 12,
+    "median": 105.09,
     "min": 23.36,
     "max": 125.37
    },
    "usd": {
-    "n": 11,
-    "median": 0.009516165,
+    "n": 12,
+    "median": 0.009458895,
     "min": 0.0037988849999999992,
     "max": 0.010688014999999999
    }
   },
   "theft: branch-full - base-full": {
-   "to_checklist_s": null,
-   "to_result_s": null,
-   "usd": null
+   "to_checklist_s": {
+    "n": 8,
+    "median": -64.82,
+    "min": -298.45,
+    "max": -8.219999999999999
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": -36.90499999999999,
+    "min": -298.45,
+    "max": 32.05000000000001
+   },
+   "usd": {
+    "n": 8,
+    "median": -0.00029764249999999874,
+    "min": -0.03182822,
+    "max": 0.005934744999999998
+   }
   },
   "theft: branch-check - base-check": {
-   "to_checklist_s": null,
-   "to_result_s": null,
-   "usd": null
+   "to_checklist_s": {
+    "n": 8,
+    "median": -41.61,
+    "min": -51.77,
+    "max": -36.830000000000005
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": -41.61,
+    "min": -51.77,
+    "max": -36.830000000000005
+   },
+   "usd": {
+    "n": 8,
+    "median": -0.00029852999999999954,
+    "min": -0.0007473200000000001,
+    "max": 0.001095065
+   }
   },
   "theft: branch-full - base-check": {
-   "to_checklist_s": null,
-   "to_result_s": null,
-   "usd": null
+   "to_checklist_s": {
+    "n": 8,
+    "median": 95.215,
+    "min": -66.78,
+    "max": 147.39999999999998
+   },
+   "to_result_s": {
+    "n": 8,
+    "median": 138.14,
+    "min": -66.78,
+    "max": 174.99
+   },
+   "usd": {
+    "n": 8,
+    "median": 0.021683325,
+    "min": -0.00488969,
+    "max": 0.025052994999999998
+   }
   }
  },
  "failed": []

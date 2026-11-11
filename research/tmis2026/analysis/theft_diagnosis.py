@@ -671,6 +671,13 @@ def main():
     R["part3_readings"] = P3
     R["part4_decomposition"] = P4
     R["part5"] = part5(fu, nf)
+    prev = None
+    try:
+        prev = json.loads((HERE / "theft_diagnosis.json").read_text()).get("part6_casetype")
+    except Exception:  # noqa: BLE001
+        pass
+    R["part6_casetype"] = part6(W, texts, pairs, prev)
+    R["part6_casetype"]["harm"] = part6_harm(texts, pairs, W, prev)
     (HERE / "theft_diagnosis.json").write_text(json.dumps(R, indent=1, ensure_ascii=False, default=str) + "\n")
     (HERE / "theft_diagnosis.md").write_text(markdown(R))
     return R
@@ -910,6 +917,7 @@ def markdown(R):
           "applies', 022 'route selected'). These are rule problems; readings cannot fix them without the rules changing.", "",
           "## Conclusion", ""]
     L += [CONCLUSION, ""]
+    L += part6_md(R.get("part6_casetype") or {})
     return "\n".join(L) + "\n"
 
 
@@ -936,6 +944,212 @@ CONCLUSION = (
     "only) and Rules in context with the same new rules and the original rules on gpt-6.1-terra, three runs each, on development stories "
     "4–15, with the floor recomputed model-free first; the claim holds only if the product is lower than both single prompts per changed "
     "fact cluster (sign-flip over the nine facts) and the result is then confirmed on unseen stories.")
+
+
+# ------------------------------------------------------------------------------------------------ Part 6: case-type reading
+SCRATCH = Path("/tmp/claude-0/-home-user-casepath/ef865128-25b1-5a5b-af7f-a334bf6c5b16/scratchpad")
+CASETYPE_WORDING = ("The files are one case of the case type named above. Take as given what every case of that type involves. "
+                    "Answer a condition true only when the files state something beyond what the case type itself involves: the "
+                    "event that defines the case type, and what that event necessarily implies, never make a condition true. A "
+                    "condition is true only if the sentence you quote states it; do not infer it from a neighbouring fact.")
+FOUR = ("g042", "g003", "g074", "g016", "g022", "g020")
+
+
+def compact(entry, fu, nf):
+    rd = readings(entry, nf)
+    facts = (entry.get("product_extra") or {}).get("facts") or {}
+    return {"status": entry.get("status"), "plan": entry.get("plan"),
+            "facts": {f: {k: facts[f].get(k) for k in ("status", "value", "verdict")} for f in fu if f in facts},
+            "readings": {f: [x.get(f) for x in rd] for f in fu if stem(f) in FOUR}}
+
+
+def part6(W, texts, pairs, prev):
+    """Arms A (setting off) and B (setting on) of the case-type reading on the branch head with reading_case_type.patch."""
+    wf = json.loads((TMIS / "harness/product/workflows/theft-reviewed/household_theft.json").read_text())
+    fu, nf, ex = used_facts(wf), len(wf["facts"]), Exec(W, wf)
+    data = {}
+    for arm in ("A", "B"):
+        f = SCRATCH / f"arm_{arm}.json"
+        if f.exists():
+            raw = json.loads(f.read_text())
+            data[arm] = {k.split("|")[1]: compact(v, fu, nf) for k, v in raw.items()}
+        else:
+            data[arm] = ((prev or {}).get("data") or {}).get(arm, {})
+    ledger = TMIS / "runs" / "product" / "ledger_dev_gpt-6.1-terra.jsonl"
+    rows = [json.loads(l) for l in ledger.read_text().splitlines() if l.strip()]
+    spend = {arm: round(sum(r["usd"] for r in rows if r.get("arm") == f"theft-diagnosis-casetype-{arm}"), 4) for arm in ("A", "B")}
+    out = {"wording": CASETYPE_WORDING, "data": data, "spend_usd_terra": spend}
+    stored = json.loads((CONFIRM / "plans_theft_casepath_checklist_frontier.json").read_text())
+    arms = {"stored product (6a72159c)": {t: stored[f"PRODUCT|{t}|0"] for t in texts if t in data["A"] or t in data["B"]}}
+    for arm in ("A", "B"):
+        arms[arm] = {t: {"plan": s3.to_names(v["plan"], INV), "product_extra": {"facts": v["facts"]}} for t, v in data[arm].items()}
+    # admitted values of the four conditions
+    adm = {}
+    for name, ent in arms.items():
+        adm[name] = {}
+        for t in sorted(ent, key=lambda x: (texts[x]["story"], x)):
+            a = admitted(ent[t], fu)
+            adm[name][t] = {f: a[f] for f in fu if stem(f) in FOUR}
+    out["admitted_four"] = adm
+    # scores per story, on the pairs whose two texts arm B ran; every other design scored on the same pairs
+    res, dec, sp_all = {}, {}, []
+    for story in (8, 9):
+        spB = [p for p in pairs if p["story"] == story and p["off"] in data["B"] and p["variant"] in data["B"]]
+        if not spB:
+            continue
+        sp_all += spB
+        tx = {t for p in spB for t in (p["off"], p["variant"])}
+        key = f"story {story}"
+        res[key] = {"pairs": {"on": sum(p["kind"] == "on" for p in spB), "unresolved": sum(p["kind"] == "unresolved" for p in spB)}}
+        for name, ent in arms.items():
+            if not tx <= set(ent):
+                res[key][name] = "not run on these texts"
+                continue
+            on, un = score(spB, {t: [s3.to_names(ent[t]["plan"], INV)] for t in tx}, 1)
+            res[key][name] = {"summary": {k: r3(v) for k, v in summ(on, un or None).items()}, "by_fact": {k: r3(v) for k, v in by_fact(on).items()},
+                              "atoms": {c: {f"{a[0]}{a[1]}": n for a, n in v.items()} for c, v in atoms_by_fact(on).items()}}
+        for k, (fn, key_, model, rules) in SINGLE.items():
+            if model != "gpt-6.1-terra":
+                continue
+            P = stored_plans(fn, key_, 3, {t: texts[t] for t in tx})
+            on, un = score(spB, P, 3)
+            res[key][SINGLE_LABEL[k]] = {"summary": {kk: r3(v) for kk, v in summ(on, un or None).items()}, "by_fact": {kk: r3(v) for kk, v in by_fact(on).items()}}
+        fl = floor(W, wf, {t: texts[t] for t in tx}, spB, EXPERT_VARIANTS[PRIMARY])
+        res[key]["floor (reviewed, primary)"] = {"summary": {k: r3(v) for k, v in summ(fl[1], fl[2] or None).items()}, "by_fact": {k: r3(v) for k, v in by_fact(fl[1]).items()}}
+        for name in ("A", "B", "stored product (6a72159c)"):
+            if not tx <= set(arms[name]):
+                continue
+            ent = {t: [arms[name][t]] for t in tx}
+            for ev in (PRIMARY, "g022 T, g020 F"):
+                d = decompose(ex, spB, texts, ent, fu, 1, EXPERT_VARIANTS[ev])
+                tot = mean_rows(d)
+                tot["stored_measured"] = res[key][name]["summary"]["errors"]
+                dec[f"{key} | {name} | {ev}"] = {k: r3(v) for k, v in tot.items()}
+    out["decomposition"] = dec
+    out["pairs_scored"] = {"on": sum(p["kind"] == "on" for p in sp_all), "unresolved": sum(p["kind"] == "unresolved" for p in sp_all)}
+    out["reproduced"] = {name: f"{sum(sorted(s3.to_names(arms[name][t]['plan'], INV)['requests']) == ex(admitted(arms[name][t], fu))['requests'] for t in arms[name])} of {len(arms[name])}"
+                         for name in ("A", "B")}
+    sp = sp_all
+    out["scores"] = res
+    # unresolved changes
+    out["unresolved_changes"] = {name: unresolved_changes(ex, [p for p in sp if p["off"] in arms[name] and p["variant"] in arms[name]], texts,
+                                                          {t: [arms[name][t]] for t in arms[name]}, fu, 1) for name in arms} if sp else {}
+    return out
+
+
+
+HARM_SPREAD = {  # 2 x standard error of a between-run mean difference over 40 claims, from the stored 3 luna checklist runs (fresh2)
+    "note": "per-claim between-run difference sd over the 96 fresh2 claims x 3 run pairs of runs/study3/confirm/plans_tenancy_casepath_checklist.json",
+    "strict_unsafe": 0.317, "spurious_hold": 0.429, "stated_open": 0.095}
+
+
+def part6_harm(texts, pairs, W, prev):
+    """Harm check on gpt-6-luna (setting on vs off, branch head + patch, checklist only)."""
+    f = SCRATCH / "luna_results.json"
+    if not f.exists():
+        return (prev or {}).get("harm")
+    sys.path.insert(0, str(TMIS / "dev_probe"))
+    import tenancy_probe as TP  # noqa: E402
+    Dt = common.data("tenancy", "fresh")
+    raw = json.loads(f.read_text())
+    ten, theft = {}, {}
+    for job, e in raw.items():
+        regime, c, r, setting = job.split("|")
+        if regime.startswith("tenancy"):
+            ref = (Dt if regime == "tenancy-fresh" else TP).reference(c)
+            row = s2.ten_row(ref, e.get("plan"))
+            fx = (e.get("product_extra") or {}).get("facts") or {}
+            left = [k for k, v in ref["fact_states"].items() if v.startswith(("stated", "denied")) and k in fx and fx[k]["status"] != "established"]
+            ten.setdefault(f"{regime}|{c}", {})[setting] = {"strict_unsafe": row["strict_unsafe"], "spurious_hold": row["spurious_hold"],
+                                                            "held_req": row["held_req"], "stated_open": len(left), "stated_left_open": left,
+                                                            "status": e.get("status")}
+        else:
+            theft.setdefault(setting, {}).setdefault(c, {})[int(r)] = s3.to_names(e.get("plan"), INV)
+    out = {"spread": HARM_SPREAD, "tenancy": {}, "theft": {}}
+    for subset in ("tenancy-fresh", "tenancy-probe", "all"):
+        ks = [k for k in ten if subset == "all" or k.startswith(subset + "|")]
+        if not ks:
+            continue
+        m_ = {}
+        for m in ("strict_unsafe", "spurious_hold", "held_req", "stated_open"):
+            off = sum(ten[k]["false"][m] for k in ks) / len(ks)
+            on = sum(ten[k]["true"][m] for k in ks) / len(ks)
+            m_[m] = {"off": r3(off), "on": r3(on), "on_minus_off": r3(on - off)}
+        out["tenancy"][subset] = {"claims": len(ks), **m_}
+    out["tenancy_stated_left_open_with_setting_on"] = dict(Counter(x for k in ten for x in ten[k]["true"]["stated_left_open"]))
+    out["tenancy_stated_left_open_with_setting_off"] = dict(Counter(x for k in ten for x in ten[k]["false"]["stated_left_open"]))
+    if theft:
+        for setting in ("false", "true"):
+            ent = theft.get(setting, {})
+            runs = min((len(v) for v in ent.values()), default=0)
+            tx = {t for t in ent if len(ent[t]) >= runs}
+            sp = [p for p in pairs if p["off"] in tx and p["variant"] in tx]
+            if not sp or runs == 0:
+                continue
+            P = {t: [ent[t][r] for r in range(runs)] for t in tx}
+            per_run = []
+            for r in range(runs):
+                on, un = score(sp, {t: [P[t][r]] for t in tx}, 1)
+                per_run.append({k: r3(v) for k, v in summ(on, un).items()})
+            on, un = score(sp, P, runs)
+            out["theft"]["on" if setting == "true" else "off"] = {"runs": runs, "summary": {k: r3(v) for k, v in summ(on, un).items()},
+                                                                  "per_run": per_run, "by_fact": {k: r3(v) for k, v in by_fact(on).items()}}
+    out["data_tenancy"] = ten
+    return out
+
+
+
+def part6_md(P):
+    if not P or not P.get("data", {}).get("A"):
+        return []
+    L = ["## Part 6. Follow-up: the case-type reading (decided in advance)", "",
+         "Setting `CASEPATH_READING_CASE_TYPE` (off by default) on the branch head `1b96f82e`, patch "
+         "`analysis/reading_case_type.patch` (with `tests/test_reading_case_type.py`; the product's 242 tests pass with it). With the "
+         "setting off the reading request is the branch's own, byte for byte. With it on, the line 'The case is a <workflow title>.' "
+         "becomes 'Case type: <workflow title> (<description, if the workflow has one>).' followed by this wording, written once and not "
+         "revised after any result:", "", "> " + P["wording"], "",
+         f"Spend on gpt-6.1-terra: arm A USD {P['spend_usd_terra']['A']:.4f}, arm B USD {P['spend_usd_terra']['B']:.4f}. "
+         f"Pairs scored (both texts run in both arms): {P.get('pairs_scored')}.", ""]
+    adm = P["admitted_four"]
+    names = list(adm)
+    texts_ = list(adm.get("A", {}))
+    facts_ = sorted({f for n in adm for t in adm[n] for f in adm[n][t]}, key=lambda f: FOUR.index(stem(f)))
+    def v(x):
+        return "T" if x is True else "F" if x is False else "·"
+    L += ["Admitted values of the four conditions (T true, F false, · no agreed value); columns: " + ", ".join(stem(f) for f in facts_), ""]
+    L.append(tbl(["Text"] + names, [[t] + [" ".join(v(adm[n].get(t, {}).get(f)) for f in facts_) for n in names] for t in texts_]))
+    sc = P.get("scores") or {}
+    for story, r in sc.items():
+        cols = [n for n in r if n != "pairs" and isinstance(r[n], dict)]
+        L += ["", f"**{story}** ({r['pairs']['on']} changed-fact pairs, {r['pairs']['unresolved']} unresolved pairs; one run per arm; single "
+              "prompts: mean of 3 stored runs; not run: " + (", ".join(n for n in r if isinstance(r[n], str)) or "none") + "). Wrong + missed per pair:", ""]
+        L.append(tbl(["Changed fact"] + cols, [[SHORT[c]] + [f3(r[n]["by_fact"].get(c)) for n in cols] for c in COND]
+                     + [["**all**"] + [f3(r[n]["summary"]["errors"]) for n in cols],
+                        ["unresolved unchanged"] + [f3(r[n]["summary"].get("unres_unchanged")) for n in cols]]))
+    if P.get("decomposition"):
+        L += ["", "Decomposition (method of Part 4; F + O + C + S + I = measured):", ""]
+        L.append(tbl(["Story | design | mapping", "Floor F", "Off misreading O", "Changed condition C", "Other conditions S", "Interaction I", "Measured"],
+                     [[k, f3(d["floor"]), f3(d["off"]), f3(d["changed"]), f3(d["other"]), f3(d["remainder"]), f3(d["stored_measured"])]
+                      for k, d in P["decomposition"].items()]))
+    H = P.get("harm")
+    if H:
+        L += ["", "**Harm check on gpt-6-luna** (setting on vs off, branch head with the patch, checklist only). Threshold for harm = the "
+              "stored run-to-run spread: 2 x the standard error of a between-run mean difference over 40 claims ("
+              + ", ".join(f"{k} {v}" for k, v in H["spread"].items() if k != "note") + ").", ""]
+        rows = []
+        for sub, v in H["tenancy"].items():
+            rows.append([sub, v["claims"]] + [f"{f3(v[m]['off'])} / {f3(v[m]['on'])} ({v[m]['on_minus_off']:+.3f})" for m in ("strict_unsafe", "spurious_hold", "held_req", "stated_open")])
+        L.append(tbl(["Tenancy subset", "Claims", "Strict unsafe off / on", "Spurious holds off / on", "Held required-now off / on", "Stated facts left open off / on"], rows))
+        L += ["", "Stated facts left open with the setting on: " + json.dumps(H["tenancy_stated_left_open_with_setting_on"]) + "; off: "
+              + json.dumps(H["tenancy_stated_left_open_with_setting_off"]) + ".", ""]
+        if H.get("theft"):
+            L.append(tbl(["Theft (stories 8-9), gpt-6-luna", "Runs", "Wrong + missed", "Per run", "Unresolved unchanged"],
+                         [[k, v["runs"], f3(v["summary"]["errors"]), ", ".join(f3(x["errors"]) for x in v["per_run"]), f3(v["summary"].get("unres_unchanged"))]
+                          for k, v in H["theft"].items()]))
+            L += ["", "By changed fact (off / on): " + "; ".join(f"{SHORT[c]} {f3(H['theft'].get('off', {}).get('by_fact', {}).get(c))} / "
+                                                                f"{f3(H['theft'].get('on', {}).get('by_fact', {}).get(c))}" for c in COND) + "."]
+    L += ["", P.get("verdict", ""), ""]
+    return L
 
 
 if __name__ == "__main__":

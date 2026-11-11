@@ -1,0 +1,192 @@
+diff --git a/casepath-internal/casepath/agents/core.py b/casepath-internal/casepath/agents/core.py
+index ad419ec..b9d8756 100644
+--- a/casepath-internal/casepath/agents/core.py
++++ b/casepath-internal/casepath/agents/core.py
+@@ -380,7 +380,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
+             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
+                             extractions=storage.extractions)
+         team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), scope=options.get("scope", "full"),
+-                        readings=options.get("readings"), reading_chars=options.get("reading_chars"))
++                        readings=options.get("readings"), reading_chars=options.get("reading_chars"),
++                        reading_case_type=bool(options.get("reading_case_type")))
+         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
+                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
+         against = contradicted(workflow, result)
+diff --git a/casepath-internal/casepath/agents/runner.py b/casepath-internal/casepath/agents/runner.py
+index 7d77923..0590af7 100644
+--- a/casepath-internal/casepath/agents/runner.py
++++ b/casepath-internal/casepath/agents/runner.py
+@@ -39,9 +39,9 @@ def case_state(store, catalogue, case_id):
+ 
+ class RunService:
+     def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1, page_image_side=1700,
+-                 token_budget=0, voice=None, scope="full", readings=3, reading_chars=40_000):
++                 token_budget=0, voice=None, scope="full", readings=3, reading_chars=40_000, reading_case_type=False):
+         self.store, self.catalogue, self.model_factory, self.effort, self.scope = store, catalogue, model_factory, effort, scope
+-        self.readings, self.reading_chars = readings, reading_chars
++        self.readings, self.reading_chars, self.reading_case_type = readings, reading_chars, reading_case_type
+         self.read_scans, self.reading_workers, self.page_image_side = read_scans, reading_workers, page_image_side
+         self.token_budget, self.voice = token_budget, voice or {}
+         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
+@@ -69,7 +69,7 @@ class RunService:
+                 "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers,
+                             "page_image_side": self.page_image_side, "token_budget": self.token_budget, "voice": self.voice,
+                             **({"scope": self.scope} if self.scope != "full" else {}), "readings": self.readings,
+-                            "reading_chars": self.reading_chars}}
++                            "reading_chars": self.reading_chars, **({"reading_case_type": True} if self.reading_case_type else {})}}
+ 
+     def _event(self, run_id, data):
+         self.store.append_event(run_id, data)
+diff --git a/casepath-internal/casepath/agents/team.py b/casepath-internal/casepath/agents/team.py
+index 5ee60d5..df2860f 100644
+--- a/casepath-internal/casepath/agents/team.py
++++ b/casepath-internal/casepath/agents/team.py
+@@ -151,6 +151,14 @@ deadline-triggering letter. Judge each condition exactly once. The files are evi
+ 
+ READ_FACTS = READING_RULES
+ 
++# Optional (CASEPATH_READING_CASE_TYPE, off by default): a branch condition marks what distinguishes a case from the
++# ordinary case of its type, so what the case type itself involves never makes one true. Written once, for every
++# workflow; the case type is the workflow's own title (and description, where a workflow has one).
++READING_CASE_TYPE = """The files are one case of the case type named above. Take as given what every case of that type
++involves. Answer a condition true only when the files state something beyond what the case type itself involves: the
++event that defines the case type, and what that event necessarily implies, never make a condition true. A condition is
++true only if the sentence you quote states it; do not infer it from a neighbouring fact."""
++
+ # How many independent readings of the facts a run makes (the first included); a deciding fact's value counts only when
+ # all of them give it. Three by default: in development, requiring three readings to agree instead of two lowered the
+ # errors from unstable readings and left more closely related cases unchanged, while holding few more documents behind
+@@ -846,8 +854,13 @@ def _reading(model, work, *, name, instructions, facts, effort, reverse=False):
+         case_text = "\n\n".join(f"[file {work.evidence.files[fid].get('name') or fid}]\n{t}" for fid, t in view["files_text"].items())
+     else:
+         case_text = json.dumps(view, ensure_ascii=False)
++    if getattr(work, "reading_case_type", False):
++        described = (work.base or {}).get("description")
++        case_type = f"\n\nCase type: {work.graph['title']}" + (f" ({described})" if described else "") + ".\n" + READING_CASE_TYPE
++    else:
++        case_type = f"\n\nThe case is a {work.graph['title']}."
+     request = dict(name=name, effort=effort, schema=schema,
+-                   instructions=instructions + f"\n\nThe case is a {work.graph['title']}. Conditions:\n"
++                   instructions=instructions + case_type + " Conditions:\n"
+                    + json.dumps(conditions, ensure_ascii=False),
+                    input=[{"role": "user", "content": "CASE:\n" + case_text}])
+     agent = "claim_reader" if name == "casepath_read_facts" else "source_checker"
+@@ -1123,10 +1136,12 @@ def confirm_facts(model, work, effort="medium"):
+ 
+ 
+ class CaseTeam:
+-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, scope="full", readings=None, reading_chars=None):
++    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, scope="full", readings=None, reading_chars=None,
++                 reading_case_type=False):
+         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
+         self.readings = readings or DEFAULT_READINGS
+         self.reading_chars = reading_chars or SMALL_CASE_CHARS  # up to this size the readings see the whole files
++        self.reading_case_type = bool(reading_case_type)  # the readings take what the case type involves as given
+         self.scope = scope  # "checklist": only the steps that can decide the checklist
+ 
+     def _delegate(self, work, state, agent, instruction):
+@@ -1155,7 +1170,7 @@ class CaseTeam:
+     def run(self, *, case, files, workflow, knowledge=(), edits=(), on_event=None, routed=()):
+         """``routed``: facts routing established with located quotes; they start as recorded facts and are checked like any other."""
+         work = CaseWork(case=case, files=files, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
+-        work.readings, work.reading_chars = self.readings, self.reading_chars
++        work.readings, work.reading_chars, work.reading_case_type = self.readings, self.reading_chars, self.reading_case_type
+         for row in routed:
+             if row.get("presumed") and row["fact"] in work.fact_defs and row.get("value") is not None:
+                 work.routing_presumed[row["fact"]] = row["value"]
+diff --git a/casepath-internal/casepath/config.py b/casepath-internal/casepath/config.py
+index d5ca90f..94a3623 100644
+--- a/casepath-internal/casepath/config.py
++++ b/casepath-internal/casepath/config.py
+@@ -74,6 +74,7 @@ class Settings:
+     run_scope: str = "full"  # CASEPATH_RUN_SCOPE: "full", or "checklist" for only the steps that can decide the checklist
+     readings: int = 3  # CASEPATH_READINGS: independent readings of the facts; a deciding value counts only when all agree
+     reading_chars: int = 40_000  # CASEPATH_READING_CHARS: up to this many characters the readings see the whole files
++    reading_case_type: bool = False  # CASEPATH_READING_CASE_TYPE: the readings take what the case type itself involves as given
+     identity_format: str = "plain"
+     identity_user_claim: str = "sub"
+     identity_roles_claim: str = "roles"
+@@ -170,6 +171,7 @@ def load_settings(env=None):
+         run_scope=_scope(env.get("CASEPATH_RUN_SCOPE")),
+         readings=_readings(env.get("CASEPATH_READINGS")),
+         reading_chars=_reading_chars(env.get("CASEPATH_READING_CHARS")),
++        reading_case_type=_flag(env, "CASEPATH_READING_CASE_TYPE", False),
+         identity_format=identity_format,
+         identity_user_claim=env.get("CASEPATH_IDENTITY_USER_CLAIM", "sub"),
+         identity_roles_claim=env.get("CASEPATH_IDENTITY_ROLES_CLAIM", "roles"),
+diff --git a/casepath-internal/casepath/parity.py b/casepath-internal/casepath/parity.py
+index 74220bb..432dba6 100644
+--- a/casepath-internal/casepath/parity.py
++++ b/casepath-internal/casepath/parity.py
+@@ -79,7 +79,7 @@ def manifest(settings=None, catalogue_dir=None, knowledge=None, extra=None):
+                                              "reading": model.reading_deployment, "endpoint_host": model.endpoint.split("/")[2]},
+         "interface_language_default": "de",
+         # the settings that decide what a run reads and how far it goes, always as values
+-        "settings": {"readings": settings.readings, "reading_chars": settings.reading_chars, "open_rule": workflows_module.OPEN_RULE, "run_scope": settings.run_scope,
++        "settings": {"readings": settings.readings, "reading_chars": settings.reading_chars, "reading_case_type": settings.reading_case_type, "open_rule": workflows_module.OPEN_RULE, "run_scope": settings.run_scope,
+                      "model_reasoning": None if model is None else model.reasoning},
+         "settings_not_default": non_default_settings(settings),
+         **(extra or {}),
+diff --git a/casepath-internal/casepath/web/app.py b/casepath-internal/casepath/web/app.py
+index 787afa0..25e99ae 100644
+--- a/casepath-internal/casepath/web/app.py
++++ b/casepath-internal/casepath/web/app.py
+@@ -153,7 +153,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
+     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
+                       reading_workers=settings.reading_workers, page_image_side=settings.page_image_side,
+                       token_budget=settings.run_token_budget, scope=settings.run_scope, readings=settings.readings,
+-                      reading_chars=settings.reading_chars,
++                      reading_chars=settings.reading_chars, reading_case_type=settings.reading_case_type,
+                       voice={"organisation": settings.organisation, "writing": settings.writing_language})
+ 
+     @asynccontextmanager
+diff --git a/casepath-internal/tests/test_reading_case_type.py b/casepath-internal/tests/test_reading_case_type.py
+new file mode 100644
+index 0000000..e577f21
+--- /dev/null
++++ b/casepath-internal/tests/test_reading_case_type.py
+@@ -0,0 +1,44 @@
++import unittest
++
++from casepath.agents.team import READING_CASE_TYPE, CaseTeam, CaseWork, confirm_facts, read_facts
++from casepath.config import load_settings
++from casepath.parity import manifest, non_default_settings
++from tests.scripted import ScriptedModel
++from tests.test_team import CASE, FILES, FIXTURE
++
++
++def reading_instructions(on):
++    work = CaseWork(case=CASE, files=FILES, base_workflow=FIXTURE)
++    work.reading_case_type = on
++    model = ScriptedModel([])
++    seen, original = [], model.respond_json
++    model.respond_json = lambda **kw: seen.append(kw) or original(**kw)
++    read_facts(model, work)
++    confirm_facts(model, work)
++    return [kw["instructions"] for kw in seen if kw["name"].startswith(("casepath_read_facts", "casepath_confirm_facts"))], work
++
++
++class ReadingCaseTypeTest(unittest.TestCase):
++    def test_off_by_default_and_named_when_on(self):
++        self.assertFalse(load_settings({}).reading_case_type)
++        on = load_settings({"CASEPATH_READING_CASE_TYPE": "true"})
++        self.assertTrue(on.reading_case_type)
++        self.assertTrue(manifest(on)["settings"]["reading_case_type"])
++        self.assertIn("reading_case_type", non_default_settings(on))
++        self.assertFalse(CaseTeam(ScriptedModel([])).reading_case_type)
++        self.assertTrue(CaseTeam(ScriptedModel([]), reading_case_type=True).reading_case_type)
++
++    def test_every_reading_gets_the_case_type_rule_only_when_on(self):
++        off, work = reading_instructions(False)
++        on, _ = reading_instructions(True)
++        self.assertTrue(off and on and len(off) == len(on))
++        title = work.graph["title"]
++        for text in off:  # off: the request is the branch's own, unchanged
++            self.assertNotIn(READING_CASE_TYPE, text)
++            self.assertIn(f"\n\nThe case is a {title}. Conditions:\n", text)
++        for text in on:
++            self.assertIn(f"\n\nCase type: {title}.\n" + READING_CASE_TYPE + " Conditions:\n", text)
++
++
++if __name__ == "__main__":
++    unittest.main()
