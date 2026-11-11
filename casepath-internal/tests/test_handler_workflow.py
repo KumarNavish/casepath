@@ -46,7 +46,7 @@ class HandlerWorkflowTests(unittest.TestCase):
         listed = {i["item_id"]: i for i in build_items(state, {"facts": base})}
         self.assertEqual(listed["next_action:0"]["action"], "A1")
         self.assertIn("letter_question:mangel_seit", listed)
-        self.assertNotIn("hint:dokumentieren", listed)  # only when a reduction is wanted
+        self.assertEqual(listed["hint:dokumentieren"]["stated_as"], "put_to_handler")  # offered while a reduction is not established
         self.assertNotIn("hint:ruege_einschreiben", listed)  # a written notice was sent: no hint to send one
         done = base + [fact("bisherige_handlungen", "A1 2024-08-28; A4 2024-09-10")]
         state = core.evaluate(wf, [], [], {"facts": done, "documents": [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]}, "c")
