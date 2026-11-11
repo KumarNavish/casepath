@@ -119,7 +119,7 @@ async function renderCases() {
   const rows = ordered.map((c) => `<tr><td><a href="#/case/${esc(c.id)}/overview">${esc(c.title)}</a>
       ${c.next_action ? `<br><small class="cp-muted">${esc(T(c.next_action.label.en, c.next_action.label.de))}</small>` : ""}
       ${c.intake && c.intake.synthetic ? ` <span class="cp-chip">${T("synthetic", "synthetisch")}</span>` : ""}</td>
-      <td>${esc(titles[c.workflow_id] || c.workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${c.follow_up ? `<span class="cp-chip ${c.follow_up <= today ? "bad" : ""}">${dateText(c.follow_up)}</span>` : "—"}</td></tr>`).join("");
+      <td>${esc(titles[c.workflow_id || c.run_workflow_id] || c.workflow_id || c.run_workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${c.follow_up ? `<span class="cp-chip ${c.follow_up <= today ? "bad" : ""}">${dateText(c.follow_up)}</span>` : "—"}</td></tr>`).join("");
   const catalogue = S.workflows.map((w) => `<tr><td>${esc(w.title)}</td><td><span class="cp-chip ${w.status === "reviewed" ? "good" : "wait"}">${esc(word(w.status))}</span></td>
       <td>${T(`${w.steps} steps · ${w.documents} document needs`, `${w.steps} Schritte · ${w.documents} Dokumente`)}</td><td>${w.open_questions ? T(`${w.open_questions} open questions`, `${w.open_questions} offene Fragen`) : "—"}</td>
       <td class="cp-muted">${w.sources.map((s) => esc(s.title)).join("; ")}</td></tr>`).join("");
@@ -1059,6 +1059,7 @@ function draftFor(ev) {
 }
 function requestDraft(ev) {
   const { now, later } = askNow(ev);
+  const handlerFlow = /^A\d/.test((item("next_action", "0") || {}).action || "");  // offers live in the checklist under the letter
   const lineState = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
   const keep = (i) => lineState[i.item_id] !== false;
   const ask = now.filter((d) => d.status !== "present" && lineState[`document:${d.document}`] !== false)
@@ -1085,7 +1086,7 @@ function requestDraft(ev) {
     T("Until the cover is confirmed, you remain responsible for keeping any running deadlines.",
       "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."), "",
     T("Kind regards", "Freundliche Grüsse"),
-    ...(later.length ? ["", T("(Not in this letter, possibly needed later:", "(Nicht in diesem Schreiben, später evtl. nötig:"), ...later.map((d) => `· ${d.title}`), ")"] : [])].join("\n");
+    ...(later.length && !handlerFlow ? ["", T("(Not in this letter, possibly needed later:", "(Nicht in diesem Schreiben, später evtl. nötig:"), ...later.map((d) => `· ${d.title}`), ")"] : [])].join("\n");
 }
 function judgementPoints(ev, r) {
   const pts = [];

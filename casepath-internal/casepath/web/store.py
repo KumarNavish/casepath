@@ -107,7 +107,8 @@ class CaseStore:
 
     def list_cases(self):
         rows = self._all("select c.*, (select count(*) from files f where f.case_id=c.id) as file_count,"
-                         " (select status from runs r where r.case_id=c.id order by created_at desc, rowid desc limit 1) as run_status"
+                         " (select status from runs r where r.case_id=c.id order by created_at desc, rowid desc limit 1) as run_status,"
+                         " (select workflow_id from runs r where r.case_id=c.id and status='completed' order by created_at desc, rowid desc limit 1) as run_workflow_id"
                          " from cases c order by updated_at desc")
         for row in rows:
             row["intake"] = json.loads(row["intake"])
