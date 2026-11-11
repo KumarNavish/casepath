@@ -96,7 +96,9 @@ the same voice.
 Development history (Studies 1 and 2, pre-registered at the time, now
 context): execution alone did not beat a frontier model; errors traced to a
 few faulty extracted rules and to silence treated as doubt; label-free rule
-repair failed; expert review of the rules, a second reading and exact
+repair failed; a review of every rule against its cited passages (two
+independent AI editors with reconciliation; never call it expert review: no
+jurist has reviewed the rules), readings that must agree and exact
 deferral are what changed the result. One page in the body, full reports in
 the appendix.
 

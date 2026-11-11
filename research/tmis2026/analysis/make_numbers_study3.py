@@ -306,6 +306,19 @@ stopped = [get(e, "stopped") for e in entries]
 m("sthreeRunNotComplete", sum(s != "complete" for s in stopped))
 m("sthreeRunByHand", sum("written by hand" in get(e, "note") for e in notes if "start" in e))
 m("sthreeRunCorrections", sum("start" not in e for e in notes))
+# the fourth invocation's cause, recorded later in a dated note; planned early stops are those a note calls planned
+cause4 = [e for e in notes if "start" not in e and "fourth invocation" in get(e, "text")]
+if len(cause4) != 1:
+    raise Missing("expected one note on the fourth invocation's stop")
+m("sthreeRunCauseFourDate", get(cause4, 0, "time")[:10])
+m("sthreeRunCauseFourTime", get(cause4, 0, "time")[11:16])
+planned = sum("only early stop that was planned" in get(e, "text") for e in cause4)
+m("sthreeRunPlannedStops", planned)
+m("sthreeRunUnplannedStops", sum(get(e, "stopped") != "complete" for e in entries) - planned)
+mo = re.search(r"after (\d+) minutes", get(cause4, 0, "text"))
+if not mo:
+    raise Missing("the note on the fourth stop no longer gives the wrapper's minutes")
+m("sthreeRunWrapperPlannedMinutes", mo.group(1))
 m("sthreeRunFirstStart", get(entries, 0, "start")[11:16])
 m("sthreeRunLastEnd", get(entries, -1, "end")[11:16])
 m("sthreeRunCorrectionTime", get([e for e in notes if "start" not in e], 0, "time")[11:16])
@@ -419,6 +432,34 @@ for regime in ("tenancy", "theft"):
     m(f"sthreeShared{REG[regime]}CallShare", pct(shared / calls))
     m(f"sthreeShared{REG[regime]}USD", f"{usd_shared:.2f}")
     m(f"sthreeShared{REG[regime]}CostShare", pct(usd_shared / usd_all))
+
+# ------------------------------------------------------------------------------- running example (Section 6)
+# rule: the first claim in fresh2/MANIFEST.json's file order whose reference is a defect claim with an open fact
+fm_files = list(get(fm, "files"))
+ex = None
+for k in fm_files:
+    if not k.startswith("tenancy/data/claims/"):
+        continue
+    cid = k.rsplit("/", 1)[1][:-5]
+    ref = json.loads((TMIS / "fresh2" / "tenancy" / "data" / "references" / f"{cid}.json").read_text())
+    if ref.get("family") == "defect_mold_heating" and ref.get("open_fact"):
+        ex = (cid, ref)
+        break
+if ex is None:
+    raise Missing("no open-fact defect claim in fresh2")
+cid, ref = ex
+held = get(ref, "held_set")
+if len(held) != 1:
+    raise Missing(f"example claim {cid} holds {len(held)} documents; the paragraph describes one")
+m("sthreeExampleRequests", len(get(ref, "request_set")))
+m("sthreeExampleOpenTrue", "true" if get(ref, "open_fact", "true_value") else "false")
+for f, pre, name in (("plans_tenancy_casepath.json", "PRODUCT", "CasePath"), ("plans_tenancy_ric_luna.json", "B1v2p", "Ric"),
+                     ("plans_tenancy_ric_terra.json", "B1v2p", "RicFrontier")):
+    d = json.loads((RUN / f).read_text())
+    plans = [get(d, f"{pre}|{cid}|{r}", "plan") for r in range(3)]
+    m(f"sthreeExample{name}Held", sum(held[0] in p.get("holds", []) for p in plans))
+    m(f"sthreeExample{name}Requested", sum(held[0] in p.get("requests", []) for p in plans))
+    m(f"sthreeExample{name}OtherRequestsSame", sum(sorted(p.get("requests", [])) == sorted(get(ref, "request_set")) for p in plans))
 
 # ------------------------------------------------------------------------------- post hoc
 t = get(post, "react_sensitivity", "theft")
