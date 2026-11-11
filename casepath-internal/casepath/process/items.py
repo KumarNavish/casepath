@@ -104,6 +104,8 @@ def build_items(state, result):
             d = docs.get(row["document"], {})
             if ev.get("outcome") or row["status"] == "present":
                 ask = None
+            elif graph.get("action_by_stage") and d.get("edit") and not d.get("knowledge"):
+                ask = "proposed"  # the process builder's own addition: offered in the checklist, unticked, for the handler to tick
             elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (d.get("edit") and not d.get("knowledge"))):
                 ask = "now"  # in the handler's workflow a need whose condition nobody has established waits: it is asked later
             elif row["required"] == "depends":

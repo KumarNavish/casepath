@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-11.2",
+ "version": "2026-11-11.3",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -693,7 +693,10 @@
   },
   {
    "id": "dokumentieren",
-   "when": true,
+   "when": {
+    "fact": "will_reduktion",
+    "is": true
+   },
    "text": "Eine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos).",
    "legal_basis": "Art. 259d OR",
    "source_refs": [

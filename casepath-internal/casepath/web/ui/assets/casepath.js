@@ -1062,14 +1062,15 @@ function requestDraft(ev) {
   const lineState = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
   const keep = (i) => lineState[i.item_id] !== false;
   const ask = now.filter((d) => d.status !== "present" && lineState[`document:${d.document}`] !== false)
-    .concat(later.filter((d) => lineState[`document:${d.document}`] === true));
+    .concat(later.filter((d) => lineState[`document:${d.document}`] === true))
+    .concat(ev.documents.filter((d) => (item("document", d.document) || {}).ask === "proposed" && lineState[`document:${d.document}`] === true));
   if (!ask.length) return "";
   const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
   const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
   const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
   const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
   const questions = (S.data.items || []).filter((i) => i.kind === "letter_question" && keep(i));
-  const hints = (S.data.items || []).filter((i) => i.kind === "hint" && keep(i));
+  const hints = (S.data.items || []).filter((i) => i.kind === "hint" && (i.stated_as === "put_to_handler" ? lineState[i.item_id] === true : keep(i)));
   const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
   return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
     ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
@@ -1266,13 +1267,15 @@ function preparedView(ev, draft) {
   const docs = (S.data.items || []).filter((i) => i.kind === "document" && i.ask);
   const qs = (S.data.items || []).filter((i) => i.kind === "letter_question" || i.kind === "hint");
   const lines = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
-  const off = new Set(docs.concat(qs).filter((i) => i.ask === "later" ? lines[i.item_id] !== true : lines[i.item_id] === false).map((i) => i.item_id));
+  const proposal = (i) => i.ask === "later" || i.ask === "proposed" || (i.kind === "hint" && i.stated_as === "put_to_handler");  // offered, not yet in the letter
+  const off = new Set(docs.concat(qs).filter((i) => proposal(i) ? lines[i.item_id] !== true : lines[i.item_id] === false).map((i) => i.item_id));
   const stage = (S.data.process.steps || []).find((x) => x.id === (ev && ev.current && ev.current.step)) || {};
   const line = (i, text, extra) => `<li><label><input type="checkbox" data-line="${esc(i.item_id)}" ${off.has(i.item_id) ? "" : "checked"} ${i.ask === "later" ? "data-later" : ""}> ${esc(text)}</label>${extra || ""}</li>`;
   const why = [stage.title && T(`Stage: ${stage.title}`, `Stufe: ${stage.title}`), ...(ev ? ev.path.filter((x) => x.via).map((x) => `${x.title} → ${x.via}`) : [])].filter(Boolean);
   return `<section class="cp-card cp-prepared" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("Prepared", "Vorbereitet")}: ${esc(T(act.label.en, act.label.de))}</h2>
     ${docs.length || qs.length ? `<ul class="cp-checklist">${docs.filter((d) => d.ask === "now").map((d) => line(d, d.label.de, d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "")).join("")}
       ${docs.filter((d) => d.ask === "later").map((d) => line(d, `${d.label.de} ${T("(later, if needed)", "(später, falls nötig)")}`)).join("")}
+      ${docs.filter((d) => d.ask === "proposed").map((d) => line(d, `${d.label.de} ${T("(proposed for this case)", "(für diesen Fall vorgeschlagen)")}`)).join("")}
       ${qs.map((q) => line(q, q.kind === "hint" ? `${T("Hint", "Hinweis")}: ${clip(q.value, 140)}` : `${T("Question", "Frage")}: ${q.value}`, q.legal_basis ? ` <span class="cp-muted">· ${esc(q.legal_basis)}</span>` : "")).join("")}</ul>` : ""}
     ${draft ? `<p><button class="cp-button primary" id="show-draft">${S.showDraft ? T("Hide letter", "Brief ausblenden") : T("Show letter", "Brief zeigen")}</button></p>` : ""}
     ${why.length ? `<details class="cp-muted"><summary class="cp-link">${T("Why this step", "Warum dieser Schritt")}</summary><ul>${why.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></details>` : ""}
