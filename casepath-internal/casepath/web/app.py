@@ -649,6 +649,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         except Conflict as error:
             raise HTTPException(409, str(error)) from None
 
+    @app.post("/api/runs/{run_id}/continue", status_code=202)
+    def continue_run(run_id: str, request: Request, who=Depends(user)):
+        """'Weiter': continue a paused run from what it established; finished steps are not done again."""
+        run = found(store.get_run, run_id)
+        latest = store.latest_run(run["case_id"])
+        if run["status"] != "paused" or (latest and latest["id"] != run_id):
+            raise HTTPException(409, "Nur der letzte, angehaltene Lauf kann fortgesetzt werden.")
+        return runs.resume(run, who, model_token(request))
+
     @app.post("/api/runs/{run_id}/stop", status_code=202)
     def stop_run(run_id: str, who=Depends(user)):
         """'Anhalten': the run ends before its next model turn and keeps what is established (status "paused")."""

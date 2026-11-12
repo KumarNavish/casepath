@@ -71,6 +71,14 @@ class RunService:
         self._pool.submit(self._recheck, run["id"], case_id, list(document_ids), token)
         return run
 
+    def resume(self, paused, user, token=None):
+        """'Weiter': a new run that continues a paused one from what it established."""
+        run = self.store.create_run(paused["case_id"], user)
+        job = {**self.job(paused["case_id"]), "resume": {"run": paused["id"], "result": paused["result"],
+                                                         "workflow_id": paused["workflow_id"], "workflow_version": paused.get("workflow_version")}}
+        self._pool.submit(self._execute, run["id"], paused["case_id"], token, job)
+        return run
+
     def stop(self, run_id):
         self._stops.add(run_id)
 
@@ -95,10 +103,10 @@ class RunService:
             self.store.update_run(run_id, deployment=model.settings.deployment)
         return model
 
-    def _execute(self, run_id, case_id, token=None):
+    def _execute(self, run_id, case_id, token=None, job=None):
         try:
             self.store.update_run(run_id, status="running")
-            outcome = core.prepare(self.job(case_id), self._model(run_id, token), core.StoreBlobs(self.store),
+            outcome = core.prepare(job or self.job(case_id), self._model(run_id, token), core.StoreBlobs(self.store),
                                    on_event=lambda e: self._event(run_id, e),
                                    on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction),
                                    should_stop=lambda: run_id in self._stops)

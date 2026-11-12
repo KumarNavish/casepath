@@ -317,13 +317,21 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
                              voice=options.get("voice"),
                              image_side=options.get("page_image_side", 1700))
         files = case_files(storage.rows.values())
-        decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
+        resume = job.get("resume")  # "Weiter": the paused run's workflow governs; nothing is routed again
+        if resume:
+            catalogue = catalogue_of(job)
+            workflow = catalogue.get(resume["workflow_id"], resume.get("workflow_version")) or catalogue.get(resume["workflow_id"])
+            decision = {"status": "resumed", "workflow": resume["workflow_id"], "facts": []}
+            if workflow is None:
+                raise TeamError("resume_workflow_missing", "The paused run's workflow is no longer in the catalogue.")
+        else:
+            decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)
         team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), should_stop=should_stop)
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
-                          edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
+                          edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [], resume=(resume or {}).get("result"))
         result["usage"] = usage + result["usage"]
         if result.get("paused"):
             return _outcome(status="paused", routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions)

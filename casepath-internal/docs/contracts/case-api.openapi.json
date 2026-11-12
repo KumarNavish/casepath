@@ -1660,6 +1660,44 @@
     "summary": "Get Run"
    }
   },
+  "/api/runs/{run_id}/continue": {
+   "post": {
+    "description": "'Weiter': continue a paused run from what it established; finished steps are not done again.",
+    "operationId": "continue_run_api_runs__run_id__continue_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "run_id",
+      "required": true,
+      "schema": {
+       "title": "Run Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Continue Run"
+   }
+  },
   "/api/runs/{run_id}/draft.docx": {
    "get": {
     "operationId": "draft_docx_api_runs__run_id__draft_docx_get",

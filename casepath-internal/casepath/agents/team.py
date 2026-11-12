@@ -804,14 +804,20 @@ class CaseTeam:
             work.result = report
         return report
 
-    def run(self, *, case, files, workflow, knowledge=(), edits=(), on_event=None, routed=()):
-        """``routed``: facts routing established with located quotes; they start as recorded facts and are checked like any other."""
+    def run(self, *, case, files, workflow, knowledge=(), edits=(), on_event=None, routed=(), resume=None):
+        """``routed``: facts routing established with located quotes; they start as recorded facts and are checked like any other.
+        ``resume``: a paused run's result ("Weiter"): its findings stand and the steps it finished are not done again."""
         work = CaseWork(case=case, files=files, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
+        if resume:
+            work.brief = resume.get("brief")
+            work.facts = {f["fact"]: f for f in resume.get("facts") or []}
+            work.documents = {d["document"]: d for d in resume.get("documents") or []}
+            work.usage = list(resume.get("usage") or [])
         for row in routed:
             if row["fact"] in work.fact_defs and row.get("citations") and row.get("value") is not None:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
-        state = {"delegations": 0}
+        state = {"delegations": 0, "done": list((resume or {}).get("done") or [])}
         work.should_stop = self.should_stop
         try:
             return self._run(work, state)
@@ -819,7 +825,15 @@ class CaseTeam:
             work.emit("lead", "run.paused")
             # What is established stays: the reading, the recorded facts and documents with their verdicts, the cost so far.
             return {"paused": True, "brief": work.brief, "facts": list(work.facts.values()), "documents": list(work.documents.values()),
-                    "usage": work.usage, "events": work.events}
+                    "usage": work.usage, "events": work.events, "done": state["done"]}
+
+    def _step(self, work, state, key, do):
+        """One step of the plan, once: a continued run skips what the paused run finished."""
+        if key in state["done"]:
+            work.emit("lead", "step.kept", step=key)
+            return
+        do()
+        state["done"].append(key)
 
     def _run(self, work, state):
         work.emit("lead", "agent.start", instruction="Prepare the case.")
@@ -833,25 +847,27 @@ class CaseTeam:
                     if a == "result_checker" else (a, i) for a, i in plan]
         if handler_flow:  # the reading and the document search do not depend on each other: run them side by side
             reading, finding = plan[0], next(p for p in plan if p[0] == "document_finder")
+            read = lambda: self._step(work, state, "reading", lambda: self._delegate(work, state, *reading))
+            find = lambda: self._step(work, state, "finding", lambda: self._delegate(work, state, *finding))
             if getattr(self.model, "sequential", False):  # a scripted model hands out its turns in order
-                self._delegate(work, state, *reading)
-                self._delegate(work, state, *finding)
+                read()
+                find()
             else:
                 with ThreadPoolExecutor(max_workers=2) as pool:
-                    for future in [pool.submit(self._delegate, work, state, *reading), pool.submit(self._delegate, work, state, *finding)]:
+                    for future in [pool.submit(read), pool.submit(find)]:
                         future.result()
-            confirm_facts(self.model, work, self.effort)
+            self._step(work, state, "confirm", lambda: confirm_facts(self.model, work, self.effort))
             plan = [p for p in plan if p not in (reading, finding)]
-        for agent, instruction in plan:
+        for n, (agent, instruction) in enumerate(plan):
             if agent == "process_builder" and handler_flow:
                 # The handler's own workflow already names each stage's needs and action; its guesses were rarely asked.
                 work.emit("lead", "agent.skipped", skipped=agent, reason="the handler's workflow defines this stage")
                 continue
             if agent == "document_finder":
-                confirm_facts(self.model, work, self.effort)
+                self._step(work, state, "confirm", lambda: confirm_facts(self.model, work, self.effort))
             if agent == "result_checker":
-                self._retry_rejected(work, state)
-            self._delegate(work, state, agent, instruction)
+                self._step(work, state, "retry", lambda: self._retry_rejected(work, state))
+            self._step(work, state, f"{n}:{agent}", lambda: self._delegate(work, state, agent, instruction))
         work.emit("lead", "agent.end", summary="Prepared.")
         return finalize(work)
 

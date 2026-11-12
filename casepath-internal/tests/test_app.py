@@ -397,6 +397,26 @@ class AppTests(unittest.TestCase):
         self.assertTrue(body["items_sha256"])  # built from what exists
         self.assertFalse([i for i in body["items"] if i["kind"] == "answer"])  # no assessment yet
 
+    def test_weiter_continues_a_paused_run_without_redoing_its_finished_steps(self):
+        client = self.client()
+        case, file = self.new_case(client, "Weiter")
+        store = client.app.state.store
+        paused = store.create_run(case["id"], "dev")
+        store.update_run(paused["id"], status="paused", workflow_id="example-defect", workflow_version="2026-01-01",
+                         result={"paused": True, "brief": {"request": "Check the mould defect.", "parties": [], "timeline": [], "summary": "Read.",
+                                                           "not_enclosed": []},
+                                 "facts": [], "documents": [], "usage": [{"agent": "claim_reader", "input_tokens": 10, "output_tokens": 2}],
+                                 "events": [], "done": ["0:claim_reader"]})
+        rest = team_script(file["id"])[2:]  # the brief was made before the stop: no turn for it
+        client.app.state.runs.model_factory = lambda: ScriptedModel(rest)
+        started = client.post(f"/api/runs/{paused['id']}/continue")
+        self.assertEqual(started.status_code, 202)
+        done = self.wait(client, started.json()["id"])
+        self.assertEqual(done["status"], "completed", done.get("error"))
+        self.assertEqual(done["routing"]["status"], "resumed")
+        self.assertEqual(done["result"]["brief"]["request"], "Check the mould defect.")
+        self.assertEqual(client.post(f"/api/runs/{paused['id']}/continue").status_code, 409)  # only the latest paused run
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

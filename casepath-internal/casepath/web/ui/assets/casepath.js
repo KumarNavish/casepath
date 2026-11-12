@@ -273,6 +273,7 @@ function renderRail() {
     <div class="cp-rail-foot">${unaidedPending() ? "" : chooser}
       <button class="cp-button ${run && run.status === "completed" ? "cp-quiet" : "primary"}" id="run" ${unaidedPending() ? "hidden" : ""} ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${run && run.status === "completed" ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>
       ${running() ? `<button class="cp-button cp-quiet" id="stop-run">${T("Stop", "Anhalten")}</button>` : ""}
+      ${run && run.status === "paused" ? `<button class="cp-button primary" id="continue-run">${T("Continue", "Weiter")}</button>` : ""}
       <span class="cp-status ${run && run.status === "failed" ? "failed" : ""}">${esc(status)}</span>
       ${S.file ? `<a class="cp-button" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${T("Open full source", "Original öffnen")} ${icon("external")}</a>` : ""}</div>
   </aside>`;
@@ -286,6 +287,11 @@ function segmentRows(file) {
 }
 
 function bindRail() {
+  const continueRun = $("#continue-run");
+  if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
+    continueRun.disabled = true;
+    await api(`/api/runs/${S.data.run.id}/continue`, { method: "POST" }).then(() => renderCase()).catch(() => { continueRun.disabled = false; });
+  });
   const stopRun = $("#stop-run");
   if (stopRun) stopRun.addEventListener("click", async () => {  // the run ends before its next step and keeps what it has
     stopRun.disabled = true;

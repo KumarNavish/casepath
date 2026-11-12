@@ -418,3 +418,23 @@ class StopTests(unittest.TestCase):
         self.assertTrue(result["paused"])
         self.assertIn("run.paused", {e["kind"] for e in result["events"]})
         self.assertEqual([t["date"] for t in result["brief"]["timeline"]], ["2 March"])  # the brief made before the stop is kept
+
+
+class ContinueTests(unittest.TestCase):
+    def test_a_run_stopped_and_continued_gives_the_same_result_as_one_run_straight_through(self):
+        fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
+        straight = CaseTeam(ScriptedModel(standard_script(finder_calls=[], result_fields=fields))).run(case=CASE, files=FILES, workflow=FIXTURE)
+        script = standard_script(finder_calls=[], result_fields=fields)
+        brief_done = next(i for i, t in enumerate(script) if t and t[0][0] == "report" and "request" in t[0][1])
+        asked = {"n": 0}
+
+        def stop_after_brief():
+            asked["n"] += 1
+            return asked["n"] > 3
+        paused = CaseTeam(ScriptedModel(script[:brief_done + 1]), should_stop=stop_after_brief).run(case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertTrue(paused["paused"])
+        self.assertEqual(paused["done"], ["0:claim_reader"])
+        resumed = CaseTeam(ScriptedModel(script[brief_done + 1:])).run(case=CASE, files=FILES, workflow=FIXTURE, resume=paused)
+        self.assertIn("step.kept", {e["kind"] for e in resumed["events"]})
+        pick = lambda r: ([(f["fact"], f["value"], f["verdict"]) for f in r["facts"]], r["evaluation"]["outcome"], r["brief"]["timeline"])
+        self.assertEqual(pick(resumed), pick(straight))
