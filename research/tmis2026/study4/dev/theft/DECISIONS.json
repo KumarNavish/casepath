@@ -1,0 +1,15 @@
+{
+ "schema": "study4.decisions/1",
+ "regime": "theft",
+ "label": "DEVELOPMENT. Planner decisions after repair round 4 (2026-11-12).",
+ "drop": {
+  "the_dd72ec4e53dd": {
+   "reason": "its designed defect (the missing sum insured) no longer exists under the second reader's ruling (b); no reference is changed",
+   "decided": "planner, 2026-11-12"
+  },
+  "the_c50e0bd7b054": {
+   "reason": "differs from its design at repair round 4 (original_vouchers designed sufficient, read insufficient: no voucher for one item, vouchers name a town but no seller); a development file that differs after first use may be dropped instead of rewritten, and is counted",
+   "decided": "planner, 2026-11-12"
+  }
+ }
+}

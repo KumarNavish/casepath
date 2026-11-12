@@ -7,12 +7,19 @@
       "missing": [
         "the insured location"
       ],
+      "reason": "The policy extract names no insured location.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "I drove to Rapperswil for a dentist's appointment and parked in a side street near the lake, car locked.",
+      "state": "stated_false"
     }
   },
   "facts": {
     "Q1": {
-      "quote": "haven't had anything repaired or cleaned",
+      "quote": "I've kept the car in my garage since then and haven't had anything repaired or cleaned",
       "state": "stated_false"
     },
     "Q2": {
@@ -36,9 +43,13 @@
       "state": "not_mentioned"
     },
     "Q7": {
-      "quote": "the rear side window was smashed in and the bag had gone.",
+      "quote": "the rear side window was smashed in and the bag had gone",
       "state": "stated_true"
     }
   },
-  "file_id": "the_819379d12c03"
+  "file_id": "the_819379d12c03",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "the rear side window was smashed in and the bag had gone"
+  }
 }

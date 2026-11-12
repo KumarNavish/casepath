@@ -72,3 +72,33 @@ python3 -I -B generator/test_generator.py
   (the two round-2 files) or whose rewrite still differs; plus the planner's decision on the_dd72ec4e53dd. At most 58.
 - dismissal: 58, minus any of the six whose round-5 rewrite still differs.
 - References of every kept file stay byte-identical; dropped files' folders move to `dev/<regime>/dropped/`.
+
+## Outcome and planner decisions (2026-11-12)
+
+`compare --round 4`: dismissal 6 of 6 re-checks match; theft 6 of 7 match. No round 5 was run.
+
+Planner decisions, recorded in `dev/theft/DECISIONS.json` (read by `finalize`, which drops each file with
+"planner decision: <reason>" in `final/MANIFEST.json`; the rule for repair rounds is stated in `generator/README.md`):
+
+- **the_dd72ec4e53dd: dropped.** Its designed defect (the missing sum insured) no longer exists under the second
+  reader's ruling (b); no reference is changed.
+- **the_c50e0bd7b054: dropped without a rewrite round.** It differs from its design at round 4 (attachment
+  `original_vouchers`: designed sufficient, read insufficient: no voucher for one item, vouchers name a town but no
+  seller). A development file that differs after first use may be dropped instead of rewritten, and is counted; the
+  sealed set keeps the original rule (one rewrite, then drop).
+- **the_d9579f891719: dropped** by the standing rule (repair round 4 plan: it now misses two items and was already
+  rewritten once).
+
+`finalize` ran for the three regimes; the dropped folders moved to `dev/theft/dropped/`. `lint/verify_rev3.py`: all
+regimes ok (every kept file's reference and design keep their manifest hashes and are recomputed unchanged;
+clean-room 354/450/436). `generator/test_generator.py`: 19 tests OK. `tools/check.py`: all three pass.
+
+### Final development sets
+
+| Regime | Kept | Level 0 | Level 10 | Level 25 | Level 50 | Denied-event files | Dropped (all rounds) |
+|---|---|---|---|---|---|---|---|
+| tenancy | 59 | 15 | 15 | 15 | 14 | 8 | 1 (ten_6c5828c1c68b, differs after rewrite) |
+| theft | 56 | 15 | 14 | 14 | 13 | 8 | 4 (the_683889ad3d85, differs after rewrite; the_d9579f891719, the_dd72ec4e53dd, the_c50e0bd7b054, above) |
+| dismissal | 58 | 15 | 14 | 14 | 15 | 8 | 2 (dis_6093ca79060d, dis_925dc8cee367, differ after rewrite) |
+| all | 173 | 45 | 43 | 43 | 42 | 24 | 7 |
+

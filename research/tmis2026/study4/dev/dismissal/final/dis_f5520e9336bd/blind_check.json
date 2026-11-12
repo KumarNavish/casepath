@@ -4,13 +4,21 @@
       "missing": [
         "start date of employment"
       ],
+      "reason": "The attached first page does not give the start date.",
       "state": "insufficient"
     },
     "A2": {
       "missing": [
         "reasons stated by the employer"
       ],
+      "reason": "The reply confirms the end date but states no reasons.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "My notice period runs until the end of June",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -19,7 +27,7 @@
       "state": "stated_false"
     },
     "Q2": {
-      "quote": "my job hasn't ended yet, let alone six months ago",
+      "quote": "I'm still employed, so obviously my job hasn't ended yet, let alone six months ago.",
       "state": "stated_false"
     },
     "Q3": {
@@ -51,5 +59,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "dis_f5520e9336bd"
+  "file_id": "dis_f5520e9336bd",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

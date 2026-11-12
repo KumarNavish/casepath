@@ -7,10 +7,17 @@
       "missing": [
         "claims asserted under the employment relationship"
       ],
+      "reason": "The correspondence only refers to an earlier letter and does not itself state any claim.",
       "state": "insufficient"
     },
     "A3": {
       "state": "sufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "Die Kündigungsfrist läuft noch",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -51,5 +58,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "dis_408b774aa7db"
+  "file_id": "dis_408b774aa7db",
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Ich bin überzeugt, dass ich die Kündigung bekommen habe, weil ich meinen Lohn eingefordert habe."
+  }
 }

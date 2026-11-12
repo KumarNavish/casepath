@@ -1,5 +1,5 @@
 {
-  "assemble_sha256": "2a4cc0735e55d6d28e9ca9a37daed59dd19d16bf316e0a1f336a4c9520b878e7",
+  "assemble_sha256": "2819c40cfdc49a90916251225628ff07a65c94045eb865ad86d76584dd8b8106",
   "counts": {
     "dropped": 2,
     "kept": 58,
@@ -17,9 +17,10 @@
       "25": 14,
       "50": 15
     },
-    "repair_rechecked": 6,
+    "repair_rechecked": 12,
     "repair_rewritten": 2
   },
+  "decisions_sha256": null,
   "design_manifest_sha256": "1fa8fc8e9c62525e76a0cfc62f1baa8f3681a9efb866aecc86f78846d2db4062",
   "dropped": [
     {
@@ -211,6 +212,14 @@
       "open_facts": [
         "agreed_to_continue"
       ],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "4605c65182ad1542ab539c4f1bbda9f01a57505a4719b2d082349cab1b2ede8a",
+          "reference.json": "753dc8c09915dadf00b39e8b46130f67528f5e4778baf6611271b02660602771"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": true,
       "sha256": {
@@ -220,7 +229,7 @@
         "attachments/termination_letter.txt": "04a2a704039e3bd159cdf77c6694bde03ffae58800a951020cc905d27880955b",
         "attachments/written_objection.clean.txt": "15c418868e3f1226311f719296abf7e74eb299d8bfdcc0bacb2220b1a31fc671",
         "attachments/written_objection.txt": "cd5992dc7f8609748cabb78709d0ffd44149eefb271b631b7b13c414737ffcac",
-        "blind_check.json": "63df48dd904951143e43cad87d3ae9c7f33b3f59f35af2e64cd56c39759d9fa8",
+        "blind_check.json": "e9ae200dad643ebf529ef9ac704388ca3b1603b2c5d3553e0865351aa05c909c",
         "design.json": "4605c65182ad1542ab539c4f1bbda9f01a57505a4719b2d082349cab1b2ede8a",
         "noise.json": "6e987496bccb12be992e66efdee4f9e5f843cbdacac03cb8a725149ff9a5e825",
         "reference.json": "753dc8c09915dadf00b39e8b46130f67528f5e4778baf6611271b02660602771",
@@ -423,6 +432,14 @@
       "language": "de",
       "level": 0,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "7a9098d4bedc6577ecf4e44ee955140fc9cb497b38ea1deee9df955ec69b963b",
+          "reference.json": "2450d2f32e75050eaa80b454a7d09846a5f45c3c8126c0d4c1166b85c4002666"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": true,
       "sha256": {
@@ -432,7 +449,7 @@
         "attachments/employment_contract.txt": "51483e41415d01c3cdcdbbbac962dd15f66bc64e61db71253be0d9e17908e58c",
         "attachments/representative_mandate.clean.txt": "7fd321db4ca50796294e690c898f1b2303cbb67f670d76e3b70e9bc3fe842bd7",
         "attachments/representative_mandate.txt": "ee6732cb2d954ba8b5f9effe7174c1b4e6bb5e9d7e2600bf971317af8eb79c5b",
-        "blind_check.json": "7a8fdb0988f72eb29fca985b7f145e660145b2d78608a22637f80aacbc5c7e4a",
+        "blind_check.json": "65cad6aef304985de085a86815904ff9a76f4522406fd0f910c6e9e74df2524c",
         "design.json": "7a9098d4bedc6577ecf4e44ee955140fc9cb497b38ea1deee9df955ec69b963b",
         "noise.json": "a74954f4be4462fa1d58417898b0d1fa107dcccef4bd363ff8e3179d6c1e946c",
         "reference.json": "2450d2f32e75050eaa80b454a7d09846a5f45c3c8126c0d4c1166b85c4002666",
@@ -1026,12 +1043,20 @@
       "open_facts": [
         "objection_submitted"
       ],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "b641ed5f1e3bef4e638de8004b08abbb8ffccc476cb5dcf1439798d9978fa350",
+          "reference.json": "3ac1cbbf36766aaf2bd02de547736bdff5cd46b3f34456ce0275a902cbb15c7b"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": true,
       "sha256": {
         "attachments/employment_contract.clean.txt": "a48116f79078a4340051e690c4fa1adc1a6b59c2cab15e778cc07b2513fb0185",
         "attachments/employment_contract.txt": "f7ce853e42ebd54501035166dce444155cca048c18db85676a3b144453901dc5",
-        "blind_check.json": "b6ede1400289ea3e4abf2cd922f1060fe8062266b8c52f8c7194b094b47c8b6a",
+        "blind_check.json": "8056e7e3f75782b22c8e8c94a7bc2d0da794430b116c021f1e82f43234505cb3",
         "design.json": "b641ed5f1e3bef4e638de8004b08abbb8ffccc476cb5dcf1439798d9978fa350",
         "noise.json": "0281045bfc2d420022c344ec8436af7a32e802933cd38847e292b99de370c721",
         "reference.json": "3ac1cbbf36766aaf2bd02de547736bdff5cd46b3f34456ce0275a902cbb15c7b",
@@ -1096,6 +1121,14 @@
       "language": "de",
       "level": 0,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "2f1f7e938478d4f12e1c4874ca5c7500cd98bac11e0a8be6f29d5b4ec16d4f52",
+          "reference.json": "d8bf4450aae1a674ddcfd5a56f34c21146be9482a7be3f1cd98e979efb0e0aaf"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": false,
       "sha256": {
@@ -1105,7 +1138,7 @@
         "attachments/termination_letter.txt": "8c499cfdbaf2d1331a6aeafef16b5fb6b9e6b78b54e6ed8871e7fb1803f22b68",
         "attachments/written_objection.clean.txt": "24ee2aec21711e41b84538eb624a5b2b4b217c2d9cd3ff1c299d80d3e5e3e47c",
         "attachments/written_objection.txt": "24ee2aec21711e41b84538eb624a5b2b4b217c2d9cd3ff1c299d80d3e5e3e47c",
-        "blind_check.json": "dad58e3cb3af6b7751196dc0b848a31d0b40dd690469e0e06039d61ec7f79acb",
+        "blind_check.json": "a89e43f6898d3deec0a4d5a54c3041bd70ce87024ab22a73144153048058e607",
         "design.json": "2f1f7e938478d4f12e1c4874ca5c7500cd98bac11e0a8be6f29d5b4ec16d4f52",
         "reference.json": "d8bf4450aae1a674ddcfd5a56f34c21146be9482a7be3f1cd98e979efb0e0aaf",
         "text.clean.txt": "d1a49448eaeb365f03e6cc8aaec5c57d7a188a37a50dfedf5abebe97148bd0f6",
@@ -1182,6 +1215,14 @@
       "language": "en",
       "level": 25,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "dba237a1f2068826317a22dcc0c87b772dfbcef951ebe173f6d748c8263a9553",
+          "reference.json": "360cd2c82a032f2f300afcaf7251278d8a058e53c5934d2e06c86352bd8dea9f"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": false,
       "sha256": {
@@ -1189,7 +1230,7 @@
         "attachments/employment_contract.txt": "33887c8687aad3e0e1336c420f7cd431de1e141a017fa7664a321c9ea6860791",
         "attachments/written_reasons.clean.txt": "be6ee1f8e675404dd103dfa28825528f4c01001ac8027f98da780cdbdf802c2e",
         "attachments/written_reasons.txt": "be6ee1f8e675404dd103dfa28825528f4c01001ac8027f98da780cdbdf802c2e",
-        "blind_check.json": "43ada8864db1de7781911a60845af91e5f528eca1899b86699ec44e943423d98",
+        "blind_check.json": "0db1367fa980d7585ea2be78f9ca9e8716df1bf057382584a37d9340091f5679",
         "design.json": "dba237a1f2068826317a22dcc0c87b772dfbcef951ebe173f6d748c8263a9553",
         "reference.json": "360cd2c82a032f2f300afcaf7251278d8a058e53c5934d2e06c86352bd8dea9f",
         "text.clean.txt": "2af8b7d2bfbbd653dace7c1b0e1a1bd04e51b4ab0f028f07013d9429dfb9d2b9",
@@ -1244,6 +1285,14 @@
       "language": "en",
       "level": 50,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "13b172033835623a452130de077e07d7081f6d6d272a4a53dbc4200fcd642ed8",
+          "reference.json": "c732c78c9a8b54d6b296b539f966789ccba21bbf8b83bf4d174aaece191fec7c"
+        },
+        "result": "rechecked",
+        "round": 4
+      },
       "round": 1,
       "scan_noise": true,
       "sha256": {
@@ -1253,7 +1302,7 @@
         "attachments/employment_contract.txt": "0f331528823b1929a8056dcda175e3c3667721435e90bf8c53f8ef8a3dbd76fa",
         "attachments/salary_evidence.clean.txt": "4425c778afd1d56b6bdeccb731293343e321f1a17cac017f47aa781b3db5f377",
         "attachments/salary_evidence.txt": "074b3005ccb24455825fd72ef4499605f2e030bbaebd4af488b7320a062086d2",
-        "blind_check.json": "a6a2677960994ba6b6e83a3fb4977265aae0d227a9d50885d4594e4efd345d1d",
+        "blind_check.json": "5ac1e62f3c9a2ad99039ad552a8dd90dbf698e40702c9769f0dd849c84c2c6fe",
         "design.json": "13b172033835623a452130de077e07d7081f6d6d272a4a53dbc4200fcd642ed8",
         "noise.json": "429cacdb27de1eae2e7dfa1e017105938b07895bd2ffa7b8852c7cecf109932a",
         "reference.json": "c732c78c9a8b54d6b296b539f966789ccba21bbf8b83bf4d174aaece191fec7c",

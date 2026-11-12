@@ -7,7 +7,14 @@
       "missing": [
         "that the theft was reported to the police and when"
       ],
+      "reason": "The report gives no date on which the theft was reported.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "Am 24. Juni 2026 standen wir auf einem Campingplatz bei Locarno",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -16,7 +23,7 @@
       "state": "not_mentioned"
     },
     "Q2": {
-      "quote": "Quittungen habe ich für nichts davon.",
+      "quote": "Ich habe beim Händler in Konstanz nachgefragt, der kann mir für so alte Käufe nichts mehr ausdrucken.",
       "state": "stated_true"
     },
     "Q3": {
@@ -28,7 +35,7 @@
       "state": "stated_false"
     },
     "Q5": {
-      "quote": "Das Tablet hat eine eigene SIM-Karte, und die habe ich bis heute nicht sperren lassen",
+      "quote": "die habe ich bis heute nicht sperren lassen",
       "state": "stated_true"
     },
     "Q6": {
@@ -36,9 +43,13 @@
       "state": "stated_true"
     },
     "Q7": {
-      "quote": "Als wir um sechs zurückkamen, war das Türschloss aufgebrochen und drinnen alles durchwühlt.",
+      "quote": "war das Türschloss aufgebrochen und drinnen alles durchwühlt",
       "state": "stated_true"
     }
   },
-  "file_id": "the_9355c558630a"
+  "file_id": "the_9355c558630a",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "standen wir auf einem Campingplatz bei Locarno"
+  }
 }

@@ -10,8 +10,14 @@
       "missing": [
         "its value"
       ],
-      "reason": "The list gives no value for any of the items.",
+      "reason": "The list gives no value for any item.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "Passiert ist es am Samstag, 5. Juli 2026, am Openair auf der Allmend in Luzern.",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -28,7 +34,7 @@
       "state": "stated_false"
     },
     "Q4": {
-      "quote": "Kassenzettel habe ich für keine der Sachen. Ich habe bei den Geschäften nachgefragt, aber niemand konnte mir ein Doppel ausstellen",
+      "quote": "Ich habe bei den Geschäften nachgefragt, aber niemand konnte mir ein Doppel ausstellen, die Kamera war zudem ein Geschenk.",
       "state": "stated_true"
     },
     "Q5": {
@@ -44,5 +50,9 @@
       "state": "stated_true"
     }
   },
-  "file_id": "the_1024620d6055"
+  "file_id": "the_1024620d6055",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "am Openair auf der Allmend in Luzern"
+  }
 }

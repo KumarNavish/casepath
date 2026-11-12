@@ -7,7 +7,7 @@
       "missing": [
         "that an official investigation was requested"
       ],
-      "reason": "The report records the complaint but does not say that an official investigation was requested.",
+      "reason": "The report records the complaint but not a request for an investigation.",
       "state": "insufficient"
     },
     "A3": {
@@ -16,6 +16,12 @@
       ],
       "reason": "The list gives no value for any item.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "I took the 17:15 train from Yverdon to Lausanne",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -44,9 +50,13 @@
       "state": "stated_false"
     },
     "Q7": {
-      "quote": "When I got off in Lausanne the bag was open and my wallet, phone, watch and sunglasses were gone. I never felt a thing.",
+      "quote": "When I got off in Lausanne the bag was open and my wallet, phone, watch and sunglasses were gone.",
       "state": "stated_true"
     }
   },
-  "file_id": "the_2774fb90433e"
+  "file_id": "the_2774fb90433e",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "When I got off in Lausanne the bag was open and my wallet, phone, watch and sunglasses were gone."
+  }
 }

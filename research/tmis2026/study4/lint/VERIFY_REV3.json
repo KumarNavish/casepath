@@ -124,7 +124,7 @@
    }
   },
   "theft": {
-   "final_files": 59,
+   "final_files": 56,
    "hash_mismatch": [],
    "final_recomputed_differences": [],
    "cleanroom": [
@@ -411,30 +411,6 @@
      "checkable_as_changed": true
     },
     {
-     "file": "the_c50e0bd7b054",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 1,
-     "designed": "sufficient",
-     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": true,
-     "checkable_as_changed": true
-    },
-    {
-     "file": "the_c50e0bd7b054",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 1,
-     "designed": "sufficient",
-     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": true,
-     "checkable_as_changed": true
-    },
-    {
      "file": "the_c8b40fd1824d",
      "type": "theft_at_home",
      "document": "stolen_items_list",
@@ -483,54 +459,6 @@
      "checkable_as_changed": true
     },
     {
-     "file": "the_d9579f891719",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 2,
-     "designed": "missing: the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
-     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": true,
-     "checkable_as_changed": true
-    },
-    {
-     "file": "the_d9579f891719",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 2,
-     "designed": "missing: the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
-     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": true,
-     "checkable_as_changed": true
-    },
-    {
-     "file": "the_dd72ec4e53dd",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 1,
-     "designed": "missing: Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": true,
-     "checkable_as_changed": true
-    },
-    {
-     "file": "the_dd72ec4e53dd",
-     "type": "simple_theft_away",
-     "document": "insurance_policy",
-     "round": 1,
-     "designed": "missing: Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "wording_changed": true,
-     "applies_before": true,
-     "applies_now": false,
-     "checkable_as_changed": true
-    },
-    {
      "file": "the_eb579978f91b",
      "type": "simple_theft_away",
      "document": "stolen_items_list",
@@ -543,14 +471,7 @@
      "checkable_as_changed": true
     }
    ],
-   "designed_missing_item_no_longer_applies": [
-    {
-     "file": "the_dd72ec4e53dd",
-     "document": "insurance_policy",
-     "designed_missing": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
-     "why": "the designed missing item no longer applies in this file: its designed state (insufficient) and the reference would change; not changed here"
-    }
-   ],
+   "designed_missing_item_no_longer_applies": [],
    "ok": true,
    "sha256_revised": {
     "rules.json": "07bcf54f05a6942e65cd3ffdf9eaaacaa98aca0e0d956268437b7137290850e2",

@@ -201,6 +201,13 @@ states now read its recorded states. Where they equal the designed states the `k
 `facts_designed` copy are dropped (manifest `repair.states: "as designed"`); otherwise the flag stays with the new
 states. The reference file is kept byte-identical; the manifest records the changed facts and the previous hashes.
 
+**Dropping instead of rewriting in repair rounds (development sets only, 2026-11-12).** In a repair round, a
+development file that differs from its design after first use may be dropped instead of rewritten, and is counted.
+The planner records each such drop, with its reason, in `dev/<regime>/DECISIONS.json` (`{"drop": {file_id: {"reason",
+"decided"}}}`); `finalize` drops the file with "planner decision: <reason>" in the manifest and does not wait for a
+rewrite round for it. Planner drops for other stated reasons (a designed defect that a rule-set revision removed) use
+the same file. The sealed set keeps the original rule: one rewrite, then drop.
+
 Both sessions must be of a model family that is **not evaluated** in the study. If an evaluated model wrote the
 texts, its own phrasing habits would be what it later reads, which would favour that model; if it did the blind
 check, the check would certify texts that model happens to read as designed. The writing and the blind check

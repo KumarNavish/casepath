@@ -4,24 +4,33 @@
       "missing": [
         "start date of employment"
       ],
+      "reason": "The attached first page does not give the start date.",
       "state": "insufficient"
     },
     "A2": {
       "missing": [
         "dates before the notice"
       ],
+      "reason": "The e-mails carry no dates.",
       "state": "insufficient"
     },
     "A3": {
       "missing": [
         "monthly salary"
       ],
+      "reason": "The pay slip shows no salary amount.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "My notice period hasn't run out yet: it ends on 31 July",
+      "state": "stated_false"
     }
   },
   "facts": {
     "Q1": {
-      "quote": "I wrote to Eva Vogel, the head of Ahornweid Trading Ltd in Basel, and asked her to give me the reasons for the notice in writing",
+      "quote": "I wrote to Eva Vogel, the head of Ahornweid Trading Ltd in Basel, and asked her to give me the reasons for the notice in writing.",
       "state": "stated_true"
     },
     "Q2": {
@@ -29,7 +38,7 @@
       "state": "not_mentioned"
     },
     "Q3": {
-      "quote": "The notice came on 11 May 2026. Ms Vogel called me into her office and gave me a letter ending my employment.",
+      "quote": "Ms Vogel called me into her office and gave me a letter ending my employment.",
       "state": "stated_true"
     },
     "Q4": {
@@ -37,7 +46,7 @@
       "state": "not_mentioned"
     },
     "Q5": {
-      "quote": "my job hasn't actually ended yet, let alone half a year ago",
+      "quote": "so my job hasn't actually ended yet, let alone half a year ago.",
       "state": "stated_false"
     },
     "Q6": {
@@ -57,5 +66,9 @@
       "state": "stated_false"
     }
   },
-  "file_id": "dis_fb44c47f6ec7"
+  "file_id": "dis_fb44c47f6ec7",
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Why do I think I was let go? Because I asked for what I'm due."
+  }
 }

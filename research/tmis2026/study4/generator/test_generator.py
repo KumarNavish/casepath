@@ -549,6 +549,15 @@ class GeneratorTest(unittest.TestCase):
         for x in man["files"]:
             for name, h in x["sha256"].items():
                 self.assertEqual(G.sha256_file(out / "final" / x["file_id"] / name), h)
+        # a planner decision drops a kept file with its reason, and no reference of another file changes
+        refs = {x["file_id"]: x["sha256"]["reference.json"] for x in man["files"]}
+        G.write_json(out / "DECISIONS.json", {"drop": {keep_fid: {"reason": "test drop", "decided": "test"}}})
+        entries, dropped = A.finalize(reg, out)
+        why = {x["file_id"]: x["why"] for x in dropped}
+        self.assertEqual(why[keep_fid], "planner decision: test drop")
+        self.assertTrue((out / "dropped" / keep_fid).exists())
+        self.assertEqual({x["file_id"]: x["sha256"]["reference.json"] for x in entries},
+                         {k: v for k, v in refs.items() if k != keep_fid})
 
     def test_noise_reversible_and_bounded(self):
         rng = random.Random(1)

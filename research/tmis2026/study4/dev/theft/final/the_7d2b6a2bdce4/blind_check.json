@@ -4,9 +4,15 @@
       "state": "sufficient"
     }
   },
+  "events": {
+    "E1": {
+      "quote": "locked the bike at the stand outside the main library on the other side of the old town, about fifteen minutes from my flat",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "my bicycle was stolen last month",
+      "quote": "a normal pedal bike",
       "state": "stated_true"
     },
     "Q2": {
@@ -34,5 +40,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_7d2b6a2bdce4"
+  "file_id": "the_7d2b6a2bdce4",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "locked the bike at the stand outside the main library"
+  }
 }

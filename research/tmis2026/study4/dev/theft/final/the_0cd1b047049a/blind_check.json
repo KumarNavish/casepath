@@ -4,13 +4,19 @@
       "state": "sufficient"
     }
   },
+  "events": {
+    "E1": {
+      "quote": "I left my car at the car park by the lake, locked, with my rucksack on the back seat",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "I didn't ring CSS first because there was no time",
+      "quote": "I didn't ring CSS first because there was no time: the thief already had everything",
       "state": "stated_true"
     },
     "Q2": {
-      "quote": "the passenger window was smashed and the rucksack was gone",
+      "quote": "When we came back about five hours later the passenger window was smashed and the rucksack was gone.",
       "state": "stated_true"
     },
     "Q3": {
@@ -34,5 +40,9 @@
       "state": "stated_true"
     }
   },
-  "file_id": "the_0cd1b047049a"
+  "file_id": "the_0cd1b047049a",
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "the passenger window was smashed and the rucksack was gone"
+  }
 }

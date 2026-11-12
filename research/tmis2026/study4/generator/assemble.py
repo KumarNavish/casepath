@@ -41,6 +41,10 @@ reference; such a file's recorded states become the states as read (designed sta
 kept_as_read). Every other differing file gets one rewrite, against the designed states except where a
 dependency rule makes a designed "not mentioned" impossible and an implied state leaves the reference unchanged
 (target_round2). A file that still differs after round 2 is dropped and counted.
+Planner decisions (2026-11-12): `DECISIONS.json` in the regime folder lists files the planner drops, each with its
+reason; finalize drops them (manifest `dropped`, "planner decision: ...") and does not wait for a further round for
+them. In a repair round of the development sets, a file that differs from its design may be dropped this way instead
+of rewritten, and is counted; the sealed set keeps the original rule (one rewrite, then drop).
 Keep rule in repair rounds (2026-11-12): a re-checked file (not rewritten) whose reading differs from its recorded
 states only by facts read "not mentioned" where recorded "stated false", or the reverse, and whose engine reference
 from the states now read equals its stored reference, matches; its recorded states become the states now read
@@ -604,7 +608,14 @@ def write_classify_md(regime, p, summary, res):
     (p["bc"] / "CLASSIFY.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
-def repair_outcomes(p, out):
+def load_decisions(out):
+    """Planner decisions (DECISIONS.json in the regime folder): {"drop": {file_id: {"reason", "decided"}}}. A file the
+    planner drops leaves final/ with its reason; it is never pending."""
+    dp = out / "DECISIONS.json"
+    return G.read_json(dp) if dp.exists() else {"drop": {}}
+
+
+def repair_outcomes(p, out, decided=()):
     """Per file, the outcome of the repair rounds (k >= 3) in order: ("text", k) the rewrite of round k matched;
     ("drop", why); ("kept", k) re-checked at round k and matched. A re-checked file that differs at round k with no
     later round rewriting it is pending (finalize refuses until repair-prepare --round k+1 --from-compare k ran)."""
@@ -630,7 +641,7 @@ def repair_outcomes(p, out):
                 res[fid] = ("kept", k, c.get("kept_by_keep_rule"))
             elif nxt["files"].get(fid, {}).get("decision") in ("rewrite", "drop"):
                 pass  # decided by the next round
-            else:
+            elif fid not in decided:
                 pending.append(fid)
         k += 1
     if pending:
@@ -647,7 +658,8 @@ def finalize(regime, out):
     keys = G.read_json(p["keys"])["keys"]
     clp = p["bc"] / "classify_round1.json"
     cl = G.read_json(clp)["files"] if clp.exists() else {}
-    repair = repair_outcomes(p, out)
+    decisions = load_decisions(out)
+    repair = repair_outcomes(p, out, set(decisions["drop"]))
     mp = p["final"] / "MANIFEST.json"
     before = {e["file_id"]: e for e in G.read_json(mp)["files"]} if mp.exists() else {}
     p["final"].mkdir(parents=True, exist_ok=True)
@@ -655,6 +667,10 @@ def finalize(regime, out):
     for fid, d in sorted(designs.items()):
         c = cl.get(fid, {})
         how = None
+        if fid in decisions["drop"]:
+            dropped.append({"file_id": fid, "level": d["level"], "type": d["type"],
+                            "why": "planner decision: " + decisions["drop"][fid]["reason"]})
+            continue
         if c1.get(fid, {}).get("matches"):
             rnd, how = 1, "exact"
         elif c.get("decision") == "kept_as_read":
@@ -756,6 +772,7 @@ def finalize(regime, out):
                    "per_level": {str(k): v for k, v in sorted(per_level.items())},
                    "open_share_per_level": {str(k): round(open_lv[k] / v, 3) for k, v in sorted(per_level.items())}},
         "design_manifest_sha256": G.sha256_file(p["designs"] / "MANIFEST.json"),
+        "decisions_sha256": G.sha256_file(out / "DECISIONS.json") if (out / "DECISIONS.json").exists() else None,
         "assemble_sha256": G.sha256_file(Path(__file__)), "noise_sha256": G.sha256_file(G.GEN / "noise.py")})
     print(f"final: {len(entries)} kept, {len(dropped)} dropped")
     return entries, dropped

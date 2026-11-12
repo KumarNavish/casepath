@@ -4,7 +4,14 @@
       "missing": [
         "parties"
       ],
+      "reason": "The contract extract does not name the parties.",
       "state": "insufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "My notice period with Erlenhof Holdings Ltd in Lausanne ran out at the end of August 2025",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -29,7 +36,7 @@
       "state": "stated_false"
     },
     "Q6": {
-      "quote": "my last working day was 31 August 2025. That is more than eight months ago now.",
+      "quote": "That is more than eight months ago now.",
       "state": "stated_true"
     },
     "Q7": {
@@ -45,5 +52,9 @@
       "state": "stated_true"
     }
   },
-  "file_id": "dis_c5e1bd4a1483"
+  "file_id": "dis_c5e1bd4a1483",
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "a letter I wrote in July 2025 saying that I object to the notice and don't accept it"
+  }
 }

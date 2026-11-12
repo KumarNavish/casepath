@@ -7,10 +7,17 @@
       "missing": [
         "parties"
       ],
+      "reason": "The contract extract does not name the parties.",
       "state": "insufficient"
     },
     "A3": {
       "state": "sufficient"
+    }
+  },
+  "events": {
+    "E1": {
+      "quote": "unter Einhaltung der Kündigungsfrist auf den 31. Mai 2026",
+      "state": "stated_false"
     }
   },
   "facts": {
@@ -35,7 +42,7 @@
       "state": "stated_false"
     },
     "Q6": {
-      "quote": "mein Arbeitsverhältnis ist noch nicht zu Ende",
+      "quote": "mein Arbeitsverhältnis ist noch nicht zu Ende.",
       "state": "stated_false"
     },
     "Q7": {
@@ -51,5 +58,9 @@
       "state": "stated_true"
     }
   },
-  "file_id": "dis_188837a70acc"
+  "file_id": "dis_188837a70acc",
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Ich habe gegen meine Kündigung schriftlich Einsprache gemacht"
+  }
 }
