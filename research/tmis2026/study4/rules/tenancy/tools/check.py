@@ -120,9 +120,10 @@ def main():
     rule_text = (HERE / "rule_text.md").read_text(encoding="utf-8")
 
     # the intake convention (SPEC.md 6a): exactly one, basis convention, fixed words, no passage
-    FIXED = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
-             "were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a "
-             "fact the file raises and leaves unsettled is open.")
+    FIXED = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were "
+             "absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is "
+             "unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A "
+             "fact that the file raises and leaves unsettled is open.")
     conv = rules.get("convention")
     if not isinstance(conv, dict):
         err("rules.json has no single top-level convention entry")
@@ -189,11 +190,17 @@ def main():
         # no "routed"; convention entries carry the fixed words and point to the convention source
         wfp = json.loads((HERE / "workflow" / f"{tid}.json").read_text(encoding="utf-8")).get("presumptions", [])
         conv_ref = conv["source_id"] + "#" + conv["id"]
+        stop_false = set()
+        for st in t["stops"]:
+            stop_false |= {c["fact"] for c in leaves(st["when"]) if c.get("is") is False}
+        always = {f["id"] for f in t["facts"] if f.get("always_stated")}
         for f in facts:
             mine = [p for p in wfp if p["fact"] == f]
-            if f == t["defining_event"]:
+            if f == t["defining_event"] or f in stop_false or f in always:
                 if mine:
-                    err(f"workflow {tid}: the defining event {f} carries a presumption")
+                    why = ("the defining event" if f == t["defining_event"] else
+                           "a fact whose false value triggers a stop" if f in stop_false else "an always_stated fact")
+                    err(f"workflow {tid}: {f} is {why} and must carry no presumption")
             elif len([p for p in mine if p.get("applies") == "unstated"]) != 1 or len(mine) != 1:
                 err(f"workflow {tid}: branch fact {f} has {len(mine)} presumption(s), want exactly one 'unstated'")
         for p in wfp:
@@ -216,18 +223,19 @@ def main():
             continue
         # the convention as the product applies it: defining event stated true, every branch fact unrecorded
         filled = W.presumed(wf, {})
-        if set(filled) != facts - {t["defining_event"]}:
+        if set(filled) != facts - {t["defining_event"]} - stop_false - always:
             err(f"workflow {tid}: product presumed() fills {sorted(filled)}, want every branch fact")
         # the spec's source kind, tried against the product validator (reported, not an error)
         trial = json.loads(json.dumps(wf))
         for s in trial["sources"]:
-            if s.get("convention_kind"):
-                s["kind"] = s["convention_kind"]
+            if s.get("intended_kind"):
+                s["kind"] = s["intended_kind"]
         try:
             W.validate_workflow(trial)
             kind_note.add("product accepts kind benchmark_convention")
         except W.CatalogueError as e:
             kind_note.add(f"product rejects kind benchmark_convention ({e}); workflows use the nearest accepted kind")
+        polarity_checks(t, wf, filled, steps)
         reach = W._Reach(wf)
         fact_ids = [f["id"] for f in t["facts"]]
         changes_docs = set()
@@ -274,6 +282,9 @@ def main():
               f"conditions changing documents {ch}; reconvergence at {mg}")
     print("workflows: validate_workflow passed" if not any("validate_workflow" in e for e in errors)
           else "workflows: validate_workflow FAILED")
+    for tid, n, allow in polarity_stats:
+        print(f"6b {tid}: {n} assignments walked (defining event true; branch facts true/false/unmentioned); "
+              f"needs created by an unmentioned fact, each allowed by a cited rule naming its absence: {allow or 'none'}")
     for k in sorted(kind_note):
         print("note: " + k)
     if errors:
@@ -282,6 +293,71 @@ def main():
             print("  - " + e)
         sys.exit(1)
     print("all checks passed")
+
+
+def leaves(c):
+    if not isinstance(c, dict):
+        return []
+    if "all" in c or "any" in c:
+        return [x for k in ("all", "any") for y in c.get(k, ()) for x in leaves(y)]
+    if "not" in c:
+        return leaves(c["not"])
+    return [c]
+
+
+polarity_stats = []
+
+
+def polarity_checks(t, wf, filled, steps):
+    """SPEC 6b: walk every assignment (each branch fact true, false or unmentioned; defining event stated true)."""
+    tid, ev = t["id"], t["defining_event"]
+    branch = [f["id"] for f in t["facts"] if f["id"] != ev]
+    stop_steps = {s["id"] for s in wf["steps"] if s.get("outcome") == "stopped"}
+    UN = "unmentioned"
+    allowed = {}  # fact -> documents a cited rule makes needed by that fact's absence (fact is false in the condition)
+    for d in t["documents"]:
+        step = next(s for s in t["steps"] if s["id"] == d["step"])
+        for c in leaves(step["reached_when"]) + leaves(d["needed_when"]):
+            if c.get("is") is False:
+                allowed.setdefault(c["fact"], set()).add(d["id"])
+
+    def run(assign):
+        fv = {"dispute_family": tid, ev: True}
+        for f, v in assign.items():
+            if v == UN:
+                if f in filled:
+                    fv[f] = filled[f]["value"]
+            else:
+                fv[f] = v
+        r = W.evaluate(wf, fv)
+        stopped = (r.get("outcome") or {}).get("id") == "stopped" or any(
+            b["step"] in stop_steps for b in r.get("beyond", []))
+        return stopped, {d["document"] for d in r["documents"] if d["required"] == "yes"}
+
+    cache, n, used_allowance = {}, 0, set()
+    for values in itertools.product([True, False, UN], repeat=len(branch)):
+        assign = dict(zip(branch, values))
+        cache[values] = run(assign)
+        n += 1
+    for values, (stopped, needs) in cache.items():
+        assign = dict(zip(branch, values))
+        stated_stop = any(W.evaluate_condition(s["when"], {ev: True, **{f: v for f, v in assign.items() if v != UN}})
+                          is True for s in t["stops"])
+        if stopped and not stated_stop:
+            err(f"6b {tid}: a stop is reached through unmentioned facts at {assign}")
+        for i, f in enumerate(branch):
+            if values[i] != UN:
+                continue
+            with_true = cache[values[:i] + (True,) + values[i + 1:]][1]
+            extra = needs - with_true
+            bad = extra - allowed.get(f, set())
+            if bad:
+                err(f"6b {tid}: {sorted(bad)} needed only because {f} is unmentioned, at {assign}")
+            used_allowance |= {(f, d) for d in extra & allowed.get(f, set())}
+    for f in t["facts"]:
+        if f.get("always_stated") and any(p["fact"] == f["id"] for p in wf.get("presumptions", [])):
+            err(f"6b {tid}: always_stated fact {f['id']} has a presumption")
+    polarity_stats.append((tid, n, sorted(used_allowance)))
 
 
 def wf_outcome(wf, path):

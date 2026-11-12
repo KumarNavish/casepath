@@ -20226,5 +20226,500 @@
    ]
   },
   "usage_cost": 0.0045735
+ },
+ "A|s9-unres-PR_scheduled_valuable_1000|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Receipt for the scheduled valuable (Quittung / Rechnung)"
+   ],
+   "questions": [
+    "Is the stolen watch listed separately in the insurance contract as a valuable or individual object, and if so, is its insured value at least CHF 1,000?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "hold",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "request",
+     "document": "D26"
+    },
+    {
+     "decision": "request",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Is the stolen watch listed separately in the insurance contract as a valuable or individual object, and if so, is its insured value at least CHF 1,000?"
+   ]
+  },
+  "usage_cost": 0.00590225
+ },
+ "A|s9-unres-PR_sim_card_stolen|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+   ],
+   "questions": [
+    "Was a SIM card stolen, and is a financial loss from its misuse being claimed?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "request",
+     "document": "D26"
+    },
+    {
+     "decision": "request",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "hold",
+     "document": "D32"
+    },
+    {
+     "decision": "hold",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Was a SIM card stolen, and is a financial loss from its misuse being claimed?"
+   ]
+  },
+  "usage_cost": 0.004456
+ },
+ "A|s9-unres-PR_third_party_causer|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "questions": [
+    "Has an identifiable third party caused or increased the loss, or has CSS paid benefits for which Ms Rey could pursue a third party?",
+    "Are there crime-scene traces, or has any alteration at the loss location or to damaged property been made or contemplated before the loss is assessed?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "hold",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "hold",
+     "document": "D26"
+    },
+    {
+     "decision": "hold",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Has an identifiable third party caused or increased the loss, or has CSS paid benefits for which Ms Rey could pursue a third party?",
+    "Are there crime-scene traces, or has any alteration at the loss location or to damaged property been made or contemplated before the loss is assessed?"
+   ]
+  },
+  "usage_cost": 0.00524225
  }
 }

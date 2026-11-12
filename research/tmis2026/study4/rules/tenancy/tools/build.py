@@ -23,8 +23,11 @@ def R(locator, passage, basis, inference=None, de=None):
     return rule
 
 
-def F(id, question, not_this, rule):
-    return {"id": id, "question": question, "not_this": not_this, "type": "boolean", "rule": rule}
+def F(id, question, not_this, rule, always_stated=False):
+    f = {"id": id, "question": question, "not_this": not_this, "type": "boolean", "rule": rule}
+    if always_stated:
+        f["always_stated"] = True
+    return f
 
 
 def S(id, title, reached_when, rule):
@@ -120,14 +123,16 @@ defect = {
           R("Art. 259a para. 1", P259A1, "states", de=P259A1_DE,
             inference="The German text is authoritative: 'im vertragsgemässen Gebrauch der Sache gestört' (disturbed in "
                       "the contractual use) is wider than the English 'prevented from using'; the question follows the German.")),
-        F("landlord_informed",
-          "Does the claim state that the tenant has already informed the landlord of the defect?",
-          "A tenant who has noticed the defect and intends to inform the landlord but has not yet done so.",
+        F("landlord_not_informed",
+          "Does the claim state that the tenant has not yet informed the landlord of the defect?",
+          "A tenant who has informed the landlord orally or informally, or through the landlord's property manager or "
+          "caretaker; that tenant has informed the landlord.",
           R("Art. 257g para. 1",
             "On learning of defects which he himself is not obliged to remedy, the tenant or lessee must inform the "
             "landlord or lessor.", "follows",
             "The statute requires the tenant to inform the landlord, and the landlord's awareness starts the reduction "
-            "(art. 259d); whether the landlord has been informed therefore decides whether there is a notice to prove.",
+            "(art. 259d); informing is the ordinary case, and a stated failure to inform means there is no notice to "
+            "prove.",
             de="Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden.")),
         F("damages_claimed",
           "Does the tenant claim compensation from the landlord for damage the defect caused to the tenant (for example "
@@ -159,11 +164,11 @@ defect = {
             de="Der Vermieter ist verpflichtet, die Sache zum vereinbarten Zeitpunkt in einem zum vorausgesetzten Gebrauch "
                "tauglichen Zustand zu übergeben und in demselben zu erhalten.")),
         S("dh_notice", "Establish when the landlord learned of the defect",
-          all_(is_("defect_present"), is_("landlord_informed")),
+          all_(is_("defect_present"), is_("landlord_not_informed", False)),
           R("Art. 259b", "Where the landlord is aware of a defect and fails to remedy it within a reasonable time, the "
             "tenant may:", "follows",
-            "The tenant's remedies depend on the landlord's knowledge of the defect, so where the tenant has informed the "
-            "landlord, that information is established.",
+            "The tenant's remedies depend on the landlord's knowledge of the defect, so unless the claim states that the "
+            "landlord has not been informed, when the landlord learned of it is established.",
             de="Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:")),
         S("dh_damage", "Establish the damage claimed", all_(is_("defect_present"), is_("damages_claimed")),
           R("Art. 259e", P259E, "follows",
@@ -411,8 +416,10 @@ rent = {
           R("Art. 269a let. b",
             "b. they are justified by increases in costs or by additional services provided by the landlord;", "follows",
             "Where the notice relies on cost increases or additional services, whether the increase is justified by them "
-            "decides whether it is unfair.",
-            de="b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;")),
+            "decides whether it is unfair. Always stated: an increase notice must give reasons (art. 269d para. 1), and "
+            "cost reasons and other reasons (such as local customary rents, art. 269a let. a) are both ordinary, so "
+            "neither is a default.",
+            de="b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"), always_stated=True),
         F("termination_threat",
           "Does the claim state that, together with the rent increase, the landlord gave notice of termination or "
           "threatened to terminate the lease?",
@@ -508,9 +515,9 @@ EDGES = {
              "defect_present"),
             ("dh_stop", None, [], [], "stop"),
             ("dh_scope", None, None, [("", "dh_notice_gate", True)], None),
-            ("dh_notice_gate", "Has the landlord been informed?", [],
-             [("landlord informed", "dh_notice", is_("landlord_informed")),
-              ("landlord not yet informed", "dh_damage_gate", is_("landlord_informed", False))], "landlord_informed"),
+            ("dh_notice_gate", "Is it stated that the landlord has not been informed?", [],
+             [("landlord not yet informed", "dh_damage_gate", is_("landlord_not_informed")),
+              ("landlord informed", "dh_notice", is_("landlord_not_informed", False))], "landlord_not_informed"),
             ("dh_notice", None, None, [("", "dh_damage_gate", True)], None),
             ("dh_damage_gate", "Are damages claimed?", [],
              [("damages claimed", "dh_damage", is_("damages_claimed")),
@@ -584,14 +591,16 @@ SOURCES = [
 
 
 # The intake convention of SPEC.md item 6a: one rule, basis "convention", fixed words, no passage.
-CONVENTION_TEXT = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if "
-                   "it were absent; the defining event is never presumed: if the file does not mention it, it is "
-                   "unresolved; a fact the file raises and leaves unsettled is open.")
+CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
+                   "were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact "
+                   "is unresolved. The defining event is never presumed: if the file does not mention it, it is "
+                   "unresolved. A fact that the file raises and leaves unsettled is open.")
 CONVENTION_SOURCE = {"id": "benchmark-convention", "kind": "benchmark_convention",
                      "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"}
 CONVENTION = {"id": "intake-convention", "basis": "convention", "text": CONVENTION_TEXT,
               "source_id": CONVENTION_SOURCE["id"],
-              "applies_to": "every branch fact of every type (value: absent / false); never the defining event",
+              "applies_to": "every branch fact of every type (value: false), except the defining event, a fact whose "
+                            "value false triggers a stop, and a fact marked always_stated",
               "precedence": "a presumption a cited passage supports (under a type's presumptions) takes precedence; "
                             "this rule set has none"}
 # The tested product's validate_workflow accepts only these source kinds: process_diagram, process_guidance,
@@ -599,6 +608,26 @@ CONVENTION = {"id": "intake-convention", "basis": "convention", "text": CONVENTI
 # change in steps 1-2, so the workflow lists the convention's source with the nearest accepted kind and records the
 # intended kind beside it (an extra key the validator ignores). Set to "benchmark_convention" once the product accepts it.
 WORKFLOW_CONVENTION_KIND = "process_guidance"
+
+
+def stop_on_false(t):
+    """Facts whose value false triggers a stop (silence must never end a process)."""
+    out = set()
+    for stop in t["stops"]:
+        def visit(c):
+            if isinstance(c, dict):
+                for k in ("all", "any"):
+                    for x in c.get(k, ()):
+                        visit(x)
+                if c.get("is") is False:
+                    out.add(c["fact"])
+        visit(stop["when"])
+    return out
+
+
+def convention_applies(t, f):
+    return (f["id"] != t["defining_event"] and f["id"] not in stop_on_false(t) and not f.get("always_stated")
+            and f["id"] not in {p["fact"] for p in t["presumptions"]})
 
 
 def ref(rule):
@@ -651,7 +680,7 @@ def workflow(t):
         "applies_when": {"fact": "dispute_family", "is": t["id"]},
         "sources": [{"id": s["id"], "kind": "knowledge", "title": s["title"]} for s in SOURCES]
                    + [{"id": CONVENTION_SOURCE["id"], "kind": WORKFLOW_CONVENTION_KIND,
-                       "convention_kind": CONVENTION_SOURCE["kind"], "title": CONVENTION_SOURCE["title"]}],
+                       "intended_kind": CONVENTION_SOURCE["kind"], "title": CONVENTION_SOURCE["title"]}],
         "facts": [{"id": "dispute_family", "type": "enum", "values": type_ids,
                    "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, "
                                "heating), a termination of the lease by the landlord, or a rent increase?",
@@ -671,11 +700,10 @@ def workflow(t):
                         + [{"fact": f["id"], "value": False, "applies": "unstated",
                             "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT,
                             "source_ref": CONVENTION_SOURCE["id"] + "#" + CONVENTION["id"]}
-                           for f in t["facts"] if f["id"] != t["defining_event"]
-                           and f["id"] not in {p["fact"] for p in t["presumptions"]}],
+                           for f in t["facts"] if convention_applies(t, f)],
         "open_questions": [],
         "notes": [{"text": "Convention of this benchmark (not law): " + CONVENTION_TEXT + " The defining event "
-                           f"({t['defining_event']}) carries no presumption.",
+                           f"({t['defining_event']}) and any always-stated fact carry no presumption.",
                    "source_refs": [CONVENTION_SOURCE["id"] + "#" + CONVENTION["id"]]}],
     }
 
@@ -720,7 +748,8 @@ def rules_md(doc):
             lines.append(f"| {PREFIX[t['id']]}{n:02d} | {kind} | {cell(clause)} | {cell(condition)} | SR 220 {rule['locator']} "
                          f"| {rule['basis']} | {cell(rule['passage'])} | {cell(de)} | {cell(rule.get('inference', ''))} |")
         for f in t["facts"]:
-            row("fact", f"`{f['id']}`: {f['question']} Not this: {f['not_this']}", "", f["rule"])
+            row("fact", f"`{f['id']}`{' (always stated; no presumption)' if f.get('always_stated') else ''}: "
+                f"{f['question']} Not this: {f['not_this']}", "", f["rule"])
         for s in t["steps"]:
             row("step", f"`{s['id']}`: {s['title']}", cond(s["reached_when"]), s["rule"])
         for d in t["documents"]:
@@ -732,6 +761,64 @@ def rules_md(doc):
     return "\n".join(lines) + "\n"
 
 
+def rule_text(doc):
+    """The prose given to every prompt-based design, generated from rules.json so it cannot drift."""
+    L = ["# Tenancy rules: which documents to request", "",
+         "These rules come from the Swiss Code of Obligations (SR 220), Title Eight (Leases), consolidated version of "
+         "1 October 2026. Article numbers refer to that Code. They apply to a residential tenant's dispute of one of "
+         "three types: " + ", ".join(t["title"].lower() for t in doc["types"]) + ".", "",
+         "How to apply them:", "",
+         "- Each type has deciding questions. Answer each from the claim and its attachments: yes, no, open (the claim "
+         "raises the matter and leaves it unsettled), or not mentioned.",
+         "- A step is reached when its condition holds; a document is requested when its step is reached and its own "
+         "condition holds. A step or document whose condition depends on an unresolved or open answer waits for that "
+         "answer.",
+         "- If the claim states that the type's defining event did not happen, the process ends and no document is "
+         "requested.", "",
+         "## Convention of this benchmark (not law)", "",
+         "This is a convention of this benchmark, not a rule of law; it cites no legal text. " + doc["convention"]["text"],
+         "", "Under each question below, \"If not mentioned\" says how the convention applies to it.", ""]
+    for n, t in enumerate(doc["types"], 1):
+        num = {f["id"]: i for i, f in enumerate(t["facts"], 1)}
+
+        def cond(c):
+            if c is True:
+                return "always"
+            if "all" in c:
+                return " and ".join(cond(x) for x in c["all"])
+            if "any" in c:
+                return "either " + " or ".join(cond(x) for x in c["any"])
+            return f"question {num[c['fact']]} is {'yes' if c['is'] else 'no'}"
+
+        def basis(r):
+            return f"art. {r['locator'][5:]}" + (f": {r['inference']}" if r.get("inference") else f": “{r['passage']}”")
+        L += [f"## {n}. {t['title']}", "", "Deciding questions:", ""]
+        for f in t["facts"]:
+            if f["id"] == t["defining_event"]:
+                head, unm = "Defining event", "unresolved (the defining event is never presumed)."
+            elif f.get("always_stated"):
+                head, unm = "Always stated", "unresolved (this fact has no ordinary default)."
+            elif f["id"] in stop_on_false(t):
+                head, unm = "Branch", "unresolved (its absence would end the process)."
+            else:
+                head, unm = "Branch", "taken as no."
+            L += [f"{num[f['id']]}. {head} ({f['rule']['locator'].replace('Art.', 'art.')}): {f['question']}",
+                  f"   Not this: {f['not_this']}", f"   If not mentioned: {unm}"]
+        L.append("")
+        for st in t["stops"]:
+            L += [f"Stop: if {cond(st['when'])}, the process ends ({basis(st['rule'])})", ""]
+        L += ["Steps and documents:", ""]
+        for stp in t["steps"]:
+            L.append(f"- **{stp['title']}**, reached when {cond(stp['reached_when'])} ({basis(stp['rule'])})")
+            for d in t["documents"]:
+                if d["step"] == stp["id"]:
+                    extra = "" if d["needed_when"] is True else f", if {cond(d['needed_when'])}"
+                    L.append(f"  - Request **{d['title']}**{extra}. It must show: {'; '.join(d['must_show'])} "
+                             f"({basis(d['rule'])})")
+        L.append("")
+    return "\n".join(L)
+
+
 def main():
     doc = {"regime": "tenancy", "version": VERSION,
            "sources": [{"id": s["id"], "title": s["title"], "snapshot": f"sources/{s['id']}.txt"} for s in SOURCES],
@@ -739,6 +826,7 @@ def main():
            "types": TYPES}
     (HERE / "rules.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "RULES.md").write_text(rules_md(doc), encoding="utf-8")
+    (HERE / "rule_text.md").write_text(rule_text(doc), encoding="utf-8")
     (HERE / "workflow").mkdir(exist_ok=True)
     for t in TYPES:
         (HERE / "workflow" / f"{t['id']}.json").write_text(

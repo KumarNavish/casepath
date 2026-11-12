@@ -1,6 +1,6 @@
 {
  "regime": "dismissal",
- "version": "2026-11-12.2",
+ "version": "2026-11-12.3",
  "sources": [
   {
    "id": "co-sr220-en",
@@ -24,8 +24,8 @@
  ],
  "convention": {
   "id": "intake_convention",
-  "text": "a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
-  "applies_to": "every fact of every type except the defining event; a statutory presumption under the type's presumptions takes precedence for its fact",
+  "text": "A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+  "applies_to": "every fact of every type except the defining event, a fact whose value false triggers a stop, and a fact marked always_stated; a statutory presumption under the type's presumptions takes precedence",
   "rule": {
    "source_id": "benchmark-convention",
    "locator": "SPEC.md item 6a",
@@ -55,9 +55,9 @@
      }
     },
     {
-     "id": "notice_after_probation",
-     "question": "Was the notice given after the probation period had expired?",
-     "not_this": "Notice given while the probation period was still running, even if the employee was ill, pregnant or in service at the time.",
+     "id": "notice_during_probation",
+     "question": "Was the notice given while the probation period was still running?",
+     "not_this": "Notice given after the probation period had expired, even shortly after it.",
      "type": "boolean",
      "rule": {
       "source_id": "co-sr220-en",
@@ -139,6 +139,7 @@
      "question": "Was the notice given before the protected period began, with the notice period not yet expired when it began?",
      "not_this": "Notice given on a day that already fell inside the protected period (that notice is void, not suspended).",
      "type": "boolean",
+     "always_stated": true,
      "rule": {
       "source_id": "co-sr220-en",
       "locator": "CO art. 336c para. 2",
@@ -212,8 +213,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
        }
       ]
      },
@@ -239,8 +240,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
        },
        {
         "fact": "incapacity_illness_accident",
@@ -269,8 +270,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
        },
        {
         "fact": "compulsory_service",
@@ -299,8 +300,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
        },
        {
         "fact": "pregnancy_or_birth",
@@ -329,8 +330,24 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
+       },
+       {
+        "any": [
+         {
+          "fact": "incapacity_illness_accident",
+          "is": true
+         },
+         {
+          "fact": "compulsory_service",
+          "is": true
+         },
+         {
+          "fact": "pregnancy_or_birth",
+          "is": true
+         }
+        ]
        },
        {
         "fact": "notice_before_protected_period",
@@ -359,8 +376,24 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
+       },
+       {
+        "any": [
+         {
+          "fact": "incapacity_illness_accident",
+          "is": true
+         },
+         {
+          "fact": "compulsory_service",
+          "is": true
+         },
+         {
+          "fact": "pregnancy_or_birth",
+          "is": true
+         }
+        ]
        },
        {
         "fact": "notice_before_protected_period",
@@ -389,8 +422,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": true
+        "fact": "notice_during_probation",
+        "is": false
        }
       ]
      },
@@ -630,8 +663,8 @@
         "is": true
        },
        {
-        "fact": "notice_after_probation",
-        "is": false
+        "fact": "notice_during_probation",
+        "is": true
        }
       ]
      },
@@ -675,6 +708,7 @@
      "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
      "not_this": "The employee's last working day where they were released from work while the notice period was still running.",
      "type": "boolean",
+     "always_stated": true,
      "rule": {
       "source_id": "co-sr220-en",
       "locator": "CO art. 336b para. 1",
@@ -707,6 +741,7 @@
      "question": "Have more than 180 days passed since the employment relationship ended?",
      "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship.",
      "type": "boolean",
+     "always_stated": true,
      "rule": {
       "source_id": "co-sr220-en",
       "locator": "CO art. 336b para. 2",

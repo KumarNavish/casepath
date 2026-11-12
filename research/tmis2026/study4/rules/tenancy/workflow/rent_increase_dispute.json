@@ -144,7 +144,7 @@
    "source_refs": [
     "benchmark-convention#intake-convention"
    ],
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. The defining event (increase_notified) carries no presumption."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (increase_notified) and any always-stated fact carry no presumption."
   }
  ],
  "open_questions": [],
@@ -169,28 +169,21 @@
    "applies": "unstated",
    "fact": "graduated_rent",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   },
   {
    "applies": "unstated",
    "fact": "index_clause",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
-   "value": false
-  },
-  {
-   "applies": "unstated",
-   "fact": "cost_or_services_reason",
-   "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   },
   {
    "applies": "unstated",
    "fact": "termination_threat",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   }
  ],
@@ -206,8 +199,8 @@
    "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
   },
   {
-   "convention_kind": "benchmark_convention",
    "id": "benchmark-convention",
+   "intended_kind": "benchmark_convention",
    "kind": "process_guidance",
    "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
   }

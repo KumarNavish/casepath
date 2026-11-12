@@ -118,8 +118,8 @@
    "type": "boolean"
   },
   {
-   "id": "landlord_informed",
-   "question": "Does the claim state that the tenant has already informed the landlord of the defect?",
+   "id": "landlord_not_informed",
+   "question": "Does the claim state that the tenant has not yet informed the landlord of the defect?",
    "source_refs": [
     "sr220-en#art-257g-p1"
    ],
@@ -157,7 +157,7 @@
    "source_refs": [
     "benchmark-convention#intake-convention"
    ],
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. The defining event (defect_present) carries no presumption."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (defect_present) and any always-stated fact carry no presumption."
   }
  ],
  "open_questions": [],
@@ -180,30 +180,30 @@
  "presumptions": [
   {
    "applies": "unstated",
-   "fact": "landlord_informed",
+   "fact": "landlord_not_informed",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   },
   {
    "applies": "unstated",
    "fact": "damages_claimed",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   },
   {
    "applies": "unstated",
    "fact": "deposit_intended",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   },
   {
    "applies": "unstated",
    "fact": "rent_deposited",
    "source_ref": "benchmark-convention#intake-convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
   }
  ],
@@ -219,8 +219,8 @@
    "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
   },
   {
-   "convention_kind": "benchmark_convention",
    "id": "benchmark-convention",
+   "intended_kind": "benchmark_convention",
    "kind": "process_guidance",
    "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
   }
@@ -285,18 +285,18 @@
    "id": "dh_notice_gate",
    "next": [
     {
-     "label": "landlord informed",
-     "to": "dh_notice",
+     "label": "landlord not yet informed",
+     "to": "dh_damage_gate",
      "when": {
-      "fact": "landlord_informed",
+      "fact": "landlord_not_informed",
       "is": true
      }
     },
     {
-     "label": "landlord not yet informed",
-     "to": "dh_damage_gate",
+     "label": "landlord informed",
+     "to": "dh_notice",
      "when": {
-      "fact": "landlord_informed",
+      "fact": "landlord_not_informed",
       "is": false
      }
     }
@@ -305,7 +305,7 @@
    "source_refs": [
     "sr220-en#art-257g-p1"
    ],
-   "title": "Has the landlord been informed?"
+   "title": "Is it stated that the landlord has not been informed?"
   },
   {
    "documents": [

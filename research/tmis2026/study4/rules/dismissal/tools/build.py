@@ -9,7 +9,7 @@ from pathlib import Path
 
 REGIME_DIR = Path(__file__).resolve().parent.parent
 EN, DE = "co-sr220-en", "co-sr220-de"
-VERSION = "2026-11-12.2"
+VERSION = "2026-11-12.3"
 
 
 def R(locator, passage, basis, inference=None, de=None):
@@ -132,7 +132,8 @@ DOC_NOTICE_PERIOD_TERMS_MUST = ["notice period length", "end-point of the notice
                                 "the written instrument that sets it (individual, standard or collective contract)"]
 
 # ---------------------------------------------------------------- type A: protected period (art. 336c)
-A_GO = ALL(T("employer_gave_notice"), T("notice_after_probation"))
+A_GO = ALL(T("employer_gave_notice"), F("notice_during_probation"))
+A_ANY_PERIOD = {"any": [T("incapacity_illness_accident"), T("compulsory_service"), T("pregnancy_or_birth")]}
 TYPE_A = {
     "id": "protected_period_notice",
     "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
@@ -143,9 +144,9 @@ TYPE_A = {
          "not_this": "A resignation by the employee, or a fixed-term relationship that ended by running out.",
          "type": "boolean",
          "rule": R("CO art. 336c para. 1 (introduction)", P_336C_INTRO, "states", de=D_336C_INTRO)},
-        {"id": "notice_after_probation",
-         "question": "Was the notice given after the probation period had expired?",
-         "not_this": "Notice given while the probation period was still running, even if the employee was ill, pregnant or in service at the time.",
+        {"id": "notice_during_probation",
+         "question": "Was the notice given while the probation period was still running?",
+         "not_this": "Notice given after the probation period had expired, even shortly after it.",
          "type": "boolean",
          "rule": R("CO art. 336c para. 1 (introduction)", P_336C_INTRO, "states", de=D_336C_INTRO)},
         {"id": "probation_varied",
@@ -177,7 +178,7 @@ TYPE_A = {
         {"id": "notice_before_protected_period",
          "question": "Was the notice given before the protected period began, with the notice period not yet expired when it began?",
          "not_this": "Notice given on a day that already fell inside the protected period (that notice is void, not suspended).",
-         "type": "boolean",
+         "type": "boolean", "always_stated": True,
          "rule": R("CO art. 336c para. 2", P_336C_2_SUSP, "states", de=D_336C_2_SUSP)},
         FACT_NOTICE_PERIOD_VARIED,
     ],
@@ -195,19 +196,19 @@ TYPE_A = {
                    "Whether the notice is void or suspended depends on the day it was given and on the protected period, so both are recorded first.",
                    de=D_336C_2_VOID)},
         {"id": "a_incapacity", "title": "Examine the illness or accident protected period",
-         "reached_when": ALL(T("employer_gave_notice"), T("notice_after_probation"), T("incapacity_illness_accident")),
+         "reached_when": ALL(T("employer_gave_notice"), F("notice_during_probation"), T("incapacity_illness_accident")),
          "rule": R("CO art. 336c para. 1 let. b", P_336C_1B, "states", de=D_336C_1B)},
         {"id": "a_service", "title": "Examine the compulsory-service protected period",
-         "reached_when": ALL(T("employer_gave_notice"), T("notice_after_probation"), T("compulsory_service")),
+         "reached_when": ALL(T("employer_gave_notice"), F("notice_during_probation"), T("compulsory_service")),
          "rule": R("CO art. 336c para. 1 let. a", P_336C_1A, "states", de=D_336C_1A)},
         {"id": "a_pregnancy", "title": "Examine the pregnancy and maternity protected period",
-         "reached_when": ALL(T("employer_gave_notice"), T("notice_after_probation"), T("pregnancy_or_birth")),
+         "reached_when": ALL(T("employer_gave_notice"), F("notice_during_probation"), T("pregnancy_or_birth")),
          "rule": R("CO art. 336c para. 1 let. c", P_336C_1C, "states", de=D_336C_1C)},
         {"id": "a_suspension", "title": "Compute the suspended and extended notice period",
-         "reached_when": ALL(T("employer_gave_notice"), T("notice_after_probation"), T("notice_before_protected_period")),
+         "reached_when": ALL(T("employer_gave_notice"), F("notice_during_probation"), A_ANY_PERIOD, T("notice_before_protected_period")),
          "rule": R("CO art. 336c para. 2", P_336C_2_SUSP, "states", de=D_336C_2_SUSP)},
         {"id": "a_void", "title": "Check whether the notice fell inside a protected period and is void",
-         "reached_when": ALL(T("employer_gave_notice"), T("notice_after_probation"), F("notice_before_protected_period")),
+         "reached_when": ALL(T("employer_gave_notice"), F("notice_during_probation"), A_ANY_PERIOD, F("notice_before_protected_period")),
          "rule": R("CO art. 336c para. 2", P_336C_2_VOID, "states", de=D_336C_2_VOID)},
         {"id": "a_assess", "title": "Assess the effect of the notice (void, suspended or valid)",
          "reached_when": A_GO,
@@ -269,7 +270,7 @@ TYPE_A = {
          "rule": R("CO art. 336c para. 1 (introduction)", P_336C_INTRO, "follows",
                    "The provision restrains only a termination by the employer; where the employer gave no notice there is nothing it can make void or suspend, so this process ends.",
                    de=D_336C_INTRO)},
-        {"id": "a_stop_probation", "when": ALL(T("employer_gave_notice"), F("notice_after_probation")),
+        {"id": "a_stop_probation", "when": ALL(T("employer_gave_notice"), T("notice_during_probation")),
          "rule": R("CO art. 336c para. 1 (introduction)", P_336C_INTRO, "follows",
                    "The bar applies only after the probation period has expired; notice given during probation is outside it, so this process ends.",
                    de=D_336C_INTRO)},
@@ -293,7 +294,7 @@ TYPE_B = {
         {"id": "notice_period_ended",
          "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
          "not_this": "The employee's last working day where they were released from work while the notice period was still running.",
-         "type": "boolean",
+         "type": "boolean", "always_stated": True,
          "rule": R("CO art. 336b para. 1", P_336B_1, "states", de=D_336B_1)},
         {"id": "objection_submitted",
          "question": "Did the employee send the employer a written objection to the notice before the notice period ended?",
@@ -303,7 +304,7 @@ TYPE_B = {
         {"id": "more_than_180_days",
          "question": "Have more than 180 days passed since the employment relationship ended?",
          "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship.",
-         "type": "boolean",
+         "type": "boolean", "always_stated": True,
          "rule": R("CO art. 336b para. 2", P_336B_2_180, "states", de=D_336B_2_180)},
         {"id": "action_in_time",
          "question": "Did the employee bring the compensation claim before a court within 180 days of the end of the employment relationship?",
@@ -539,23 +540,56 @@ SOURCES = [
 
 # ---------------------------------------------------------------- the intake convention (SPEC.md item 6a)
 # Exact words of SPEC.md item 6a; tools/check.py confirms they occur there and in rule_text.md.
-CONVENTION_TEXT = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
-                   "were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a "
-                   "fact the file raises and leaves unsettled is open.")
+CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were "
+                   "absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is "
+                   "unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A "
+                   "fact that the file raises and leaves unsettled is open.")
 CONVENTION_SOURCE = {"id": "benchmark-convention", "kind": "benchmark_convention",
                      "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"}
 CONVENTION = {
     "id": "intake_convention",
     "text": CONVENTION_TEXT,
-    "applies_to": "every fact of every type except the defining event; a statutory presumption under the type's "
-                  "presumptions takes precedence for its fact",
+    "applies_to": "every fact of every type except the defining event, a fact whose value false triggers a stop, and "
+                  "a fact marked always_stated; a statutory presumption under the type's presumptions takes precedence",
     "rule": {"source_id": CONVENTION_SOURCE["id"], "locator": "SPEC.md item 6a", "basis": "convention"},
 }
-# The tested product's validate_workflow accepts only the source kinds in its SOURCE_KINDS, which do not include
-# "benchmark_convention" (checked by tools/check.py). The workflow therefore declares the convention's source with a
-# kind the validator accepts and carries the intended kind beside it; set this to "benchmark_convention" once the
-# validator knows it.
+# SPEC.md 6a: the frozen validator knows no convention kind, so the workflow uses process_guidance with intended_kind.
 WF_CONVENTION_KIND = "process_guidance"
+
+
+def stop_on_false(t):
+    """Facts whose value false can trigger a stop: some complete assignment ends in a stop with the fact false
+    and in no stop with only that fact turned true."""
+    import itertools
+    ids = [f["id"] for f in t["facts"]]
+    out = set()
+
+    def ev(c, facts):
+        if c is True:
+            return True
+        if "all" in c:
+            return all(ev(x, facts) for x in c["all"])
+        if "any" in c:
+            return any(ev(x, facts) for x in c["any"])
+        if "not" in c:
+            return not ev(c["not"], facts)
+        return facts[c["fact"]] == c["is"]
+    for values in itertools.product([True, False], repeat=len(ids)):
+        facts = dict(zip(ids, values))
+        for f in ids:
+            if facts[f] is False:
+                flipped = {**facts, f: True}
+                if any(ev(st["when"], facts) for st in t["stops"]) and not any(ev(st["when"], flipped) for st in t["stops"]):
+                    out.add(f)
+    return out
+
+
+def convention_facts(t):
+    """Branch facts the convention fills with 'no' (SPEC.md 6a): not the defining event, not a fact whose false
+    triggers a stop, not an always_stated fact, not a fact with a statutory presumption."""
+    excluded = {t["defining_event"]} | stop_on_false(t) | {f["id"] for f in t["facts"] if f.get("always_stated")} | \
+        {p["fact"] for p in t["presumptions"]}
+    return [f["id"] for f in t["facts"] if f["id"] not in excluded]
 
 # Plain-words summary of each type for rule_text.md (restates the cited articles; every rule itself is generated).
 SUMMARIES = {
@@ -599,12 +633,12 @@ GRAPHS = {
         "edges": {
             "a_intake": [(F("employer_gave_notice"), "a_stop_no_notice", "no notice by the employer"),
                          (T("employer_gave_notice"), "a_probation", "employer gave notice")],
-            "a_probation": [(F("notice_after_probation"), "a_stop_probation", "notice during probation"),
-                            (T("notice_after_probation"), "a_notice", "probation expired")],
+            "a_probation": [(T("notice_during_probation"), "a_stop_probation", "notice during probation"),
+                            (F("notice_during_probation"), "a_notice", "probation expired")],
             "a_notice": [(True, "a_gate_incapacity", None)],
             "a_incapacity": [(True, "a_gate_service", None)],
             "a_service": [(True, "a_gate_pregnancy", None)],
-            "a_pregnancy": [(True, "a_gate_timing", None)],
+            "a_pregnancy": [(True, "a_gate_any_period", None)],
             "a_suspension": [(True, "a_assess", None)],
             "a_void": [(True, "a_assess", None)],
             "a_assess": [(True, "a_close", None)],
@@ -612,7 +646,10 @@ GRAPHS = {
         "gates": {
             "a_gate_incapacity": gate("incapacity_illness_accident", "a_incapacity", "a_gate_service", "Check branch: illness or accident"),
             "a_gate_service": gate("compulsory_service", "a_service", "a_gate_pregnancy", "Check branch: compulsory service"),
-            "a_gate_pregnancy": gate("pregnancy_or_birth", "a_pregnancy", "a_gate_timing", "Check branch: pregnancy or birth"),
+            "a_gate_pregnancy": gate("pregnancy_or_birth", "a_pregnancy", "a_gate_any_period", "Check branch: pregnancy or birth"),
+            "a_gate_any_period": {"kind": "cond", "when": A_ANY_PERIOD, "yes": "a_gate_timing", "no": "a_assess",
+                                  "ref_fact": "notice_before_protected_period",
+                                  "title": "Check branch: a protected period of let. a, b or c is raised"},
             "a_gate_timing": gate("notice_before_protected_period", "a_suspension", "a_void", "Check branch: notice before the protected period"),
         },
     },
@@ -694,6 +731,11 @@ def workflow(t):
             step["next"].append(edge)
         steps.append(step)
     for gid, gt in g["gates"].items():
+        if gt["kind"] == "cond":
+            steps.append({"id": gid, "title": gt["title"], "role": "system", "source_refs": [ref(facts[gt["ref_fact"]]["rule"])],
+                          "next": [{"to": gt["yes"], "when": gt["when"], "label": "protected period raised"},
+                                   {"to": gt["no"], "when": NOT(gt["when"]), "label": "no protected period raised"}]})
+            continue
         fact = facts[gt["fact"]]
         steps.append({"id": gid, "title": gt["title"], "role": "system", "source_refs": [ref(fact["rule"])],
                       "next": [{"to": gt["yes"], "when": T(gt["fact"]), "label": gt["fact"]},
@@ -713,6 +755,8 @@ def workflow(t):
         if f["id"] == t["defining_event"]:
             continue  # the defining event is never presumed
         p = statutory.get(f["id"])
+        if p is None and f["id"] not in convention_facts(t):
+            continue  # silence leaves it unresolved: false would end the process, or it is always stated
         if p is not None:  # a statutory default takes precedence over the convention
             presumptions.append({"fact": p["fact"], "value": p["value"], "applies": p["applies"], "source_ref": ref(p["rule"]),
                                  "text": f"{p['rule']['locator']}: “{p['rule']['passage']}” {p['rule']['inference']}"})
@@ -721,7 +765,9 @@ def workflow(t):
                                  "source_ref": f"{CONVENTION_SOURCE['id']}#intake_convention",
                                  "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT})
     notes = [{"text": "Convention of this benchmark (not law): " + CONVENTION_TEXT + " Statutory defaults under presumptions "
-                      "(CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts.",
+                      "(CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts. No presumption: "
+                      + ", ".join(sorted(stop_on_false(t) - {t["defining_event"]})) + " (false would end the process); "
+                      "always stated: " + ", ".join(f["id"] for f in t["facts"] if f.get("always_stated")) + ".",
               "source_refs": [f"{CONVENTION_SOURCE['id']}#intake_convention"]}]
     return {
         "format": "casepath.workflow/1",
@@ -792,8 +838,12 @@ def rules_md(data):
                 lines.append(f"| `{p['fact']}` | {'yes' if p['value'] else 'no'} | {p['applies']} | {md_rule(p['rule'])} |")
         else:
             lines.append("None from statute.")
-        lines += ["", f"Every other fact except the defining event `{t['defining_event']}` falls under the convention of this "
-                      "benchmark (not law), which is not a passage of law: " + CONVENTION_TEXT]
+        lines += ["", "Convention of this benchmark (not law), not a passage of law: " + CONVENTION_TEXT, "",
+                  "Filled with no under the convention: " + ", ".join(f"`{x}`" for x in convention_facts(t)) + ". "
+                  "No presumption because false would end the process: "
+                  + (", ".join(f"`{x}`" for x in sorted(stop_on_false(t) - {t['defining_event']})) or "none") + ". "
+                  "Always stated: " + (", ".join(f"`{f['id']}`" for f in t["facts"] if f.get("always_stated")) or "none") + ". "
+                  f"Defining event `{t['defining_event']}`: never presumed."]
         lines += ["", "### Stops", "", "| stop | when | citation |", "|---|---|---|"]
         for s in t["stops"]:
             lines.append(f"| `{s['id']}` | {cond_text(s['when'])} | {md_rule(s['rule'])} |")
@@ -838,7 +888,8 @@ def rule_text(data):
         out += [f"## Type {n}: {t['title']}", "", SUMMARIES[t["id"]], "",
                 f"Defining event: `{d_ev['id']}`. It is never presumed.", "", "### Conditions", ""]
         for i, f in enumerate(t["facts"], 1):
-            out.append(f"{i}. `{f['id']}`: {f['question']} Not: {f['not_this']} ({art(f['rule']['locator'])})")
+            always = " Always stated in the file (stated or open, never left unmentioned)." if f.get("always_stated") else ""
+            out.append(f"{i}. `{f['id']}`: {f['question']} Not: {f['not_this']} ({art(f['rule']['locator'])}){always}")
         out += ["", "### Stops", ""]
         for s in t["stops"]:
             why = s["rule"].get("inference") or ("“" + s["rule"]["passage"] + "”")
@@ -855,9 +906,16 @@ def rule_text(data):
             de = p["rule"].get("passage_de", {}).get("passage")
             out.append(f"- `{p['fact']}` not mentioned: taken as {'yes' if p['value'] else 'no'}. {art(p['rule']['locator'])}: "
                        f"“{p['rule']['passage'].rstrip('.')}”" + (f" („{de.rstrip('.')}“)" if de else "") + f". {p['rule']['inference']}")
-        others = [f["id"] for f in t["facts"] if f["id"] != t["defining_event"] and f["id"] not in {p["fact"] for p in t["presumptions"]}]
         out.append("- Under the convention of this benchmark (not law), not mentioned means taken as no: "
-                   + ", ".join(f"`{x}`" for x in others) + ".")
+                   + ", ".join(f"`{x}`" for x in convention_facts(t)) + ".")
+        silent = sorted(stop_on_false(t) - {t["defining_event"]})
+        if silent:
+            out.append("- Not mentioned leaves the fact unresolved, because its absence would end the process: "
+                       + ", ".join(f"`{x}`" for x in silent) + ".")
+        always = [f["id"] for f in t["facts"] if f.get("always_stated")]
+        if always:
+            out.append("- No presumption; always stated in the file: " + ", ".join(f"`{x}`" for x in always) + ".")
+        out.append(f"- The defining event `{t['defining_event']}` is never presumed.")
         out.append("")
     return "\n".join(out)
 

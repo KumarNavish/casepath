@@ -16,9 +16,9 @@
  "convention": {
   "id": "intake-convention",
   "basis": "convention",
-  "text": "a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+  "text": "A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
   "source_id": "benchmark-convention",
-  "applies_to": "every branch fact of every type (value: absent / false); never the defining event",
+  "applies_to": "every branch fact of every type (value: false), except the defining event, a fact whose value false triggers a stop, and a fact marked always_stated",
   "precedence": "a presumption a cited passage supports (under a type's presumptions) takes precedence; this rule set has none",
   "source": {
    "id": "benchmark-convention",
@@ -50,16 +50,16 @@
      }
     },
     {
-     "id": "landlord_informed",
-     "question": "Does the claim state that the tenant has already informed the landlord of the defect?",
-     "not_this": "A tenant who has noticed the defect and intends to inform the landlord but has not yet done so.",
+     "id": "landlord_not_informed",
+     "question": "Does the claim state that the tenant has not yet informed the landlord of the defect?",
+     "not_this": "A tenant who has informed the landlord orally or informally, or through the landlord's property manager or caretaker; that tenant has informed the landlord.",
      "type": "boolean",
      "rule": {
       "source_id": "sr220-en",
       "locator": "Art. 257g para. 1",
       "passage": "On learning of defects which he himself is not obliged to remedy, the tenant or lessee must inform the landlord or lessor.",
       "basis": "follows",
-      "inference": "The statute requires the tenant to inform the landlord, and the landlord's awareness starts the reduction (art. 259d); whether the landlord has been informed therefore decides whether there is a notice to prove.",
+      "inference": "The statute requires the tenant to inform the landlord, and the landlord's awareness starts the reduction (art. 259d); informing is the ordinary case, and a stated failure to inform means there is no notice to prove.",
       "passage_de": {
        "source_id": "sr220-de",
        "passage": "Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden."
@@ -146,8 +146,8 @@
         "is": true
        },
        {
-        "fact": "landlord_informed",
-        "is": true
+        "fact": "landlord_not_informed",
+        "is": false
        }
       ]
      },
@@ -156,7 +156,7 @@
       "locator": "Art. 259b",
       "passage": "Where the landlord is aware of a defect and fails to remedy it within a reasonable time, the tenant may:",
       "basis": "follows",
-      "inference": "The tenant's remedies depend on the landlord's knowledge of the defect, so where the tenant has informed the landlord, that information is established.",
+      "inference": "The tenant's remedies depend on the landlord's knowledge of the defect, so unless the claim states that the landlord has not been informed, when the landlord learned of it is established.",
       "passage_de": {
        "source_id": "sr220-de",
        "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:"
@@ -851,12 +851,13 @@
       "locator": "Art. 269a let. b",
       "passage": "b. they are justified by increases in costs or by additional services provided by the landlord;",
       "basis": "follows",
-      "inference": "Where the notice relies on cost increases or additional services, whether the increase is justified by them decides whether it is unfair.",
+      "inference": "Where the notice relies on cost increases or additional services, whether the increase is justified by them decides whether it is unfair. Always stated: an increase notice must give reasons (art. 269d para. 1), and cost reasons and other reasons (such as local customary rents, art. 269a let. a) are both ordinary, so neither is a default.",
       "passage_de": {
        "source_id": "sr220-de",
        "passage": "b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"
       }
-     }
+     },
+     "always_stated": true
     },
     {
      "id": "termination_threat",

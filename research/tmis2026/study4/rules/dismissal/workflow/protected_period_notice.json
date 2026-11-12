@@ -45,9 +45,9 @@
    ]
   },
   {
-   "id": "notice_after_probation",
+   "id": "notice_during_probation",
    "type": "boolean",
-   "question": "Was the notice given after the probation period had expired?",
+   "question": "Was the notice given while the probation period was still running?",
    "source_refs": [
     "co-sr220#art_336c_para_1_intro"
    ]
@@ -241,16 +241,16 @@
     {
      "to": "a_stop_probation",
      "when": {
-      "fact": "notice_after_probation",
-      "is": false
+      "fact": "notice_during_probation",
+      "is": true
      },
      "label": "notice during probation"
     },
     {
      "to": "a_notice",
      "when": {
-      "fact": "notice_after_probation",
-      "is": true
+      "fact": "notice_during_probation",
+      "is": false
      },
      "label": "probation expired"
     }
@@ -321,7 +321,7 @@
    ],
    "next": [
     {
-     "to": "a_gate_timing",
+     "to": "a_gate_any_period",
      "when": true
     }
    ]
@@ -440,12 +440,64 @@
      "label": "pregnancy_or_birth"
     },
     {
-     "to": "a_gate_timing",
+     "to": "a_gate_any_period",
      "when": {
       "fact": "pregnancy_or_birth",
       "is": false
      },
      "label": "not pregnancy_or_birth"
+    }
+   ]
+  },
+  {
+   "id": "a_gate_any_period",
+   "title": "Check branch: a protected period of let. a, b or c is raised",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_gate_timing",
+     "when": {
+      "any": [
+       {
+        "fact": "incapacity_illness_accident",
+        "is": true
+       },
+       {
+        "fact": "compulsory_service",
+        "is": true
+       },
+       {
+        "fact": "pregnancy_or_birth",
+        "is": true
+       }
+      ]
+     },
+     "label": "protected period raised"
+    },
+    {
+     "to": "a_assess",
+     "when": {
+      "not": {
+       "any": [
+        {
+         "fact": "incapacity_illness_accident",
+         "is": true
+        },
+        {
+         "fact": "compulsory_service",
+         "is": true
+        },
+        {
+         "fact": "pregnancy_or_birth",
+         "is": true
+        }
+       ]
+      }
+     },
+     "label": "no protected period raised"
     }
    ]
   },
@@ -528,11 +580,11 @@
  ],
  "presumptions": [
   {
-   "fact": "notice_after_probation",
+   "fact": "notice_during_probation",
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
    "fact": "probation_varied",
@@ -546,28 +598,21 @@
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
    "fact": "compulsory_service",
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
    "fact": "pregnancy_or_birth",
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
-  },
-  {
-   "fact": "notice_before_protected_period",
-   "value": false,
-   "applies": "unstated",
-   "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
    "fact": "notice_period_varied",
@@ -579,7 +624,7 @@
  ],
  "notes": [
   {
-   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts. No presumption:  (false would end the process); always stated: notice_before_protected_period.",
    "source_refs": [
     "benchmark-convention#intake_convention"
    ]

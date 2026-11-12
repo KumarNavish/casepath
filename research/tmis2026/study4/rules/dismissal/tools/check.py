@@ -9,10 +9,12 @@
 5. every workflow passes the product's own validate_workflow (tested worktree, read-only);
 6. each workflow, walked with the product's own walk under every complete assignment of the
    type's facts, reaches exactly the steps, documents and stops rules.json states;
-7. the intake convention (SPEC.md item 6a): exact wording in rules.json, rule_text.md and SPEC.md; in each
-   workflow exactly one unstated presumption per branch fact (statutory where the rule set has one, otherwise
-   the convention), none on the defining event; with one fact unmentioned the product's presumed() and
-   evaluate() treat it as the rules do; with one fact raised and left open no presumption fills it;
+7. the intake convention and polarity (SPEC.md items 6a, 6b): exact wording in rules.json, rule_text.md and
+   SPEC.md; in each workflow exactly one unstated presumption per branch fact (statutory where the rule set has
+   one, otherwise the convention with value false), none on the defining event, on a fact whose false ends the
+   process, or on an always_stated fact; over every assignment with each branch fact true, false or unmentioned
+   (defining event true): no stop is reached through an unmentioned fact and no document need is created by
+   one; with one fact raised and left open no presumption fills it;
 8. size limits of SPEC.md step 2a item 5; prints the counts.
 Exit status 1 on any failure.
 """
@@ -81,6 +83,22 @@ def parse_locator(loc):
     if not m:
         return None
     return m.groups()
+
+
+def stop_on_false(product, t):
+    """Facts whose value false can end the process: some complete assignment reaches a stop with the fact false
+    and no stop with only that fact turned true."""
+    ids = [f["id"] for f in t["facts"]]
+    out = set()
+    for values in itertools.product([True, False], repeat=len(ids)):
+        facts = dict(zip(ids, values))
+        hit = any(product.evaluate_condition(s["when"], facts) is True for s in t["stops"])
+        if not hit:
+            continue
+        for f in ids:
+            if facts[f] is False and not any(product.evaluate_condition(s["when"], {**facts, f: True}) is True for s in t["stops"]):
+                out.add(f)
+    return out
 
 
 def all_rules(data):
@@ -162,11 +180,12 @@ def main():
 
     # the intake convention (SPEC.md item 6a)
     conv = data.get("convention") or {}
-    spec = re.sub(r"\s+", " ", (REGIME.parent.parent / "SPEC.md").read_text(encoding="utf-8"))
+    spec_raw = (REGIME.parent.parent / "SPEC.md").read_text(encoding="utf-8")
+    spec = re.sub(r"\s+", " ", re.sub(r"(?m)^\s*> ?", "", spec_raw))
     rule_text = (REGIME / "rule_text.md").read_text(encoding="utf-8")
     if conv.get("rule", {}).get("basis") != "convention":
         fail("rules.json: convention entry missing or basis is not 'convention'")
-    if "*" + conv.get("text", "") + "*" not in spec:
+    if not conv.get("text") or conv["text"] not in spec:
         fail("convention text is not the exact wording of SPEC.md item 6a")
     if "## Convention of this benchmark (not law)" not in rule_text or conv.get("text", "") not in rule_text:
         fail("rule_text.md: convention section or exact wording missing")
@@ -236,27 +255,33 @@ def main():
                   and product.evaluate_condition(d["needed_when"], {**base, f: False}) is True}
             if held != yes ^ no:
                 fail(f"{t['id']}: open {f}: product holds {sorted(held)}, rules imply {sorted(yes ^ no)}")
-        # the convention in the workflow: one unstated presumption per branch fact, none for the defining event
+        # the convention in the workflow (SPEC.md 6a, 6b): which facts carry which presumption
         pres = {}
         for p in wf.get("presumptions", []):
             pres.setdefault(p["fact"], []).append(p)
         statutory = {p["fact"]: p for p in t["presumptions"]}
         wf_src = {x["id"]: x for x in wf["sources"]}
+        always = {f["id"] for f in t["facts"] if f.get("always_stated")}
+        false_stops = stop_on_false(product, t)
         for f in fact_ids:
-            got = [p for p in pres.get(f, []) if p["applies"] == "unstated"]
-            if f == t["defining_event"]:
-                if pres.get(f):
-                    fail(f"{t['id']}: defining event {f} carries a presumption")
+            got = pres.get(f, [])
+            if f == t["defining_event"] or f in always or (f in false_stops and f not in statutory):
+                if got:
+                    fail(f"{t['id']}: {f} carries a presumption (defining event, always_stated, or false ends the process)")
                 continue
-            if len(got) != 1 or len(pres.get(f, [])) != 1:
-                fail(f"{t['id']}: branch fact {f} has {len(got)} unstated presumptions (want exactly one)")
+            if len(got) != 1 or got[0]["applies"] != "unstated":
+                fail(f"{t['id']}: branch fact {f} has {len(got)} presumptions (want exactly one, unstated)")
                 continue
             src = got[0]["source_ref"].split("#")[0]
             if f in statutory:
                 if src != "co-sr220" or got[0]["value"] != statutory[f]["value"]:
                     fail(f"{t['id']}: {f} should carry its statutory presumption")
-            elif src != conv_src or got[0]["value"] is not False or wf_src.get(src, {}).get("intended_kind") != "benchmark_convention":
-                fail(f"{t['id']}: {f} should carry the convention (value no, source {conv_src})")
+            elif src != conv_src or got[0]["value"] is not False or wf_src.get(src, {}).get("intended_kind") != "benchmark_convention" \
+                    or wf_src.get(src, {}).get("kind") != "process_guidance":
+                fail(f"{t['id']}: {f} should carry the convention (value no, source {conv_src}, process_guidance/intended_kind)")
+        for f in always:
+            if f in statutory or pres.get(f):
+                fail(f"{t['id']}: always_stated fact {f} has a presumption")
         variant = json.loads(json.dumps(wf))
         for x in variant["sources"]:
             if x["id"] == conv_src:
@@ -266,30 +291,42 @@ def main():
             print(f"note: the validator accepts kind benchmark_convention ({path.name})")
         except product.CatalogueError as e:
             print(f"note: with kind benchmark_convention the product validator rejects {path.name}: {e}")
-        # one fact unmentioned: the product's presumptions fill it, and evaluate treats it as the rules do
-        for f in fact_ids:
-            stated = {x: True for x in fact_ids if x != f}
-            recorded = {x: {"status": "established", "readings": [True]} for x in stated}
+        # SPEC.md 6b: every assignment in which each branch fact is stated true, stated false or unmentioned, with the
+        # defining event stated true. Unmentioned facts get only the presumptions the product applies (presumed()).
+        # (a) no stop is reached through an unmentioned fact: a stop reached must hold with the unmentioned facts unknown;
+        # (b) no document need is created by a fact being unmentioned: every document the product requires ("yes") is
+        #     also required when each unmentioned fact is instead stated with the value of its cited presumption, or
+        #     false where it has none (the ordinary case).
+        UNM = object()
+        branch = [f for f in fact_ids if f != t["defining_event"]]
+        n_assign = 0
+        for values in itertools.product([True, False, UNM], repeat=len(branch)):
+            n_assign += 1
+            stated = {f: v for f, v in zip(branch, values) if v is not UNM}
+            stated[t["defining_event"]] = True
+            unmentioned = [f for f, v in zip(branch, values) if v is UNM]
+            recorded = {f: {"status": "established", "readings": [v]} for f, v in stated.items()}
             applied = product.presumed(wf, recorded)
             facts = {**stated, "dispute_family": t["id"]}
-            if f in applied:
-                facts[f] = applied[f]["value"]
+            for f in unmentioned:
+                if f in applied:
+                    facts[f] = applied[f]["value"]
             ev = product.evaluate(wf, facts)
-            held = {d["document"] for d in ev["documents"] if d["required"] == "depends"}
-            if f == t["defining_event"]:
-                if f in applied or not held:
-                    fail(f"{t['id']}: unmentioned defining event must stay unresolved and hold documents")
-                continue
-            want_val = statutory[f]["value"] if f in statutory else False
-            if f not in applied or applied[f]["value"] != want_val:
-                fail(f"{t['id']}: unmentioned {f} not presumed {want_val}")
-                continue
-            want_steps = {s for s, st in rule_steps.items() if product.evaluate_condition(st["reached_when"], facts) is True}
-            want_docs = {d["id"] for d in t["documents"] if d["step"] in want_steps
-                         and product.evaluate_condition(d["needed_when"], facts) is True}
-            got_docs = {d["document"] for d in ev["documents"]}
-            if held or got_docs != want_docs:
-                fail(f"{t['id']}: unmentioned {f}: product lists {sorted(got_docs)} (held {sorted(held)}), rules imply {sorted(want_docs)}")
+            if ev["outcome"] and ev["outcome"]["id"] in stop_ids:
+                stop = next(x for x in t["stops"] if x["id"] == ev["outcome"]["id"])
+                if product.evaluate_condition(stop["when"], {**stated}) is not True:
+                    fail(f"{t['id']}: stop {stop['id']} reached through unmentioned facts {unmentioned} under {stated}")
+                    break
+            yes = {d["document"] for d in ev["documents"] if d["required"] == "yes"}
+            ordinary = {**stated, "dispute_family": t["id"]}
+            for f in unmentioned:
+                ordinary[f] = statutory[f]["value"] if f in statutory else False
+            yes_ordinary = {d["document"] for d in product.evaluate(wf, ordinary)["documents"] if d["required"] == "yes"}
+            if not yes <= yes_ordinary:
+                fail(f"{t['id']}: unmentioned {unmentioned} create needs {sorted(yes - yes_ordinary)} under {stated}")
+                break
+        print(f"{t['id']}: 6b walk over {n_assign} assignments (each branch fact true, false or unmentioned)")
+
         # one fact raised and left open: no presumption applies to it
         for f in fact_ids:
             recorded = {x: {"status": "established", "readings": [True]} for x in fact_ids if x != f}
