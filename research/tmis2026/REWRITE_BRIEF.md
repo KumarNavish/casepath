@@ -186,3 +186,64 @@ Both PDFs built from clean, zero undefined references, no overfull box over
 in its list; word counts per section; page counts; a list of every limit and
 irregularity of the previous version with the place it now stands (main or
 supplement). The abstract is written by the planner; leave it as found.
+
+## 8. Hand-over notes (results that arrived after §1–7 were written)
+
+**F5b (matched workflow), `\sthreeFFiveB…` macros.** With the workflow
+amended to each reading and the checklist recomputed from the stored
+readings (no model calls; the unamended replay reproduces 285 of 286 stored
+checklists), CasePath keeps a significant lead over both single prompts under
+every reading: H2-style difference −0.66 (A1), −1.43 (A2), −2.54 (A3), −1.87
+(A4), −1.30 (all four); H3-style −1.00, −1.01, −2.27, −1.59, −1.49. Write 6.6
+in this order: (1) clean room, identical; (2) F5, the product's unchanged
+workflow scored against other readings: reverses under A1 — this measures the
+workflow, and shows that a workflow written under the wrong reading is wrong
+in every affected file; (3) F5b: the design follows whatever reading the
+workflow encodes, and the lead holds, smaller under A1 and A2. State the
+caveat in the body: the baselines were not re-run; their prompts carried the
+registered rule text; under A1 this favours them, under A3 and "all four" it
+works against them, so those two rows are upper bounds and only A1, A2 and A4
+are read as evidence. What the lead consists of: under A1 the open-event
+claims; under A2 the denied-event claims.
+
+**Decomposition (`analysis/decomposition.md`).** Every cell of the product
+splits exactly into rule, routing, document judgment, reading and hold
+(interaction remainder 0). Tenancy, strict: cost-efficient 0.31 = routing
+0.05 + document judgment 0.08 + reading 0.17 + hold 0.02; frontier 0.30 =
+0.08 + 0.10 + 0.12 (document, reading, hold). Theft: cost-efficient 0.58 =
+rule 0.33 + reading 0.09 + hold 0.16; frontier 0.83 = rule 0.33 + reading
+0.25 + hold 0.25. Single prompts have no observable stage: report their
+errors by kind (denied-event claims: 4.4 to 5.9 unnecessary requests per
+claim; open-event claims: 4.0 to 6.1 premature requests). One table in 6.3,
+the per-subset tables in the supplement.
+
+**Lint (`analysis/lint_followup.md`).** Say all of this, in this voice:
+- Mutation test (one model, one run, USD 0.15): six over-broad conditions
+  planted, six flagged; three of them were already flagged with their
+  original wording, so the informative count is three of three. Three of
+  five untouched conditions were flagged in both arms. On the Study 3
+  tenancy claims the lint flags eight of ten (cost-efficient) and nine of
+  ten (frontier) conditions without any mutation, because those claims were
+  built with several true branch facts each and are not ordinary cases.
+  Conclusion: the lint detects blunt over-breadth; its false-alarm rate is
+  unknown and needs files in which the condition is known not to apply.
+- "A flagged condition is treated as open", theft, stored readings, the
+  model's own flags (in-sample): frontier 0.83 → 0.53, below both frontier
+  prompts (0.95, 0.67); all unresolved pairs unchanged; cost-efficient
+  0.58 → 0.57. Cost: the rule error rises from 0.33 to 0.44; three to five
+  more documents are held in every case and the handler gets three to six
+  more questions per claim. Out-of-sample flags (from development runs):
+  see the note the lint worker appends below; if it is absent, write only
+  the in-sample result and say that it is in-sample.
+- The lint is presented as a diagnostic with these limits, not as a tested
+  remedy. No new paid run was made for the frontier theft cell: with nine
+  clusters a difference of 0.53 against 0.67 cannot be confirmed.
+
+**Macros.** `paper/results/numbers_study3_feedback.tex` (`\sthreeF…`) must be
+input in both documents and added to `verify_paper.py`'s regeneration list
+(`analysis/make_numbers_study3_feedback.py`). For decomposition and lint
+numbers use the macro file named by the lint worker's note; if none exists,
+write `analysis/make_numbers_decomposition.py` reading the two JSON files,
+with a test, and add it to the same list.
+
+**Abstract.** Rewritten by the planner on 2026-11-12 (uses `\sthreeFOne…`).

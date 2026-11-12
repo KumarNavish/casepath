@@ -482,7 +482,9 @@ def main():
 
 
 def _num(x, nd=3):
-    return f"{x:.{nd}f}"
+    """Rounded half up, as analysis/make_numbers_study3.py does."""
+    from decimal import ROUND_HALF_UP, Decimal
+    return str(Decimal(repr(x)).quantize(Decimal(1).scaleb(-nd), rounding=ROUND_HALF_UP))
 
 
 def macros(lf, dc):
