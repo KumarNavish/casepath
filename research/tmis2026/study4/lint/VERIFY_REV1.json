@@ -1,0 +1,117 @@
+{
+ "label": "DEVELOPMENT, not a result",
+ "regimes": {
+  "tenancy": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 354,
+     "same_state_as_engine_on_revised_workflows": 354
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 354,
+     "same_state_as_engine_on_revised_workflows": 354
+    }
+   ],
+   "rules_logic_equal": true,
+   "workflow_logic_equal": {
+    "defect_mold_heating": true,
+    "lease_termination_dispute": true,
+    "rent_increase_dispute": true
+   },
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "7168b8ccee5a155e7926e9900c17f8ff0d2c70d7d43c0fd8d7ae3d15cddd4440",
+    "rule_text.md": "76d286d6dd0c275cc67a6488e46fb3f94e3f1e8436274a33c2a69dfdc7543faa",
+    "workflow/defect_mold_heating.json": "f8a4acca431b4224ca7a045c08a61e124d6fe9c378a0bceaa3d6a450f3eb66d1",
+    "workflow/lease_termination_dispute.json": "bcb52353f437fecd0f6e7cc7095db14bdeb1de5ab19a30927585f06e80d8a9e0",
+    "workflow/rent_increase_dispute.json": "8a698a764c8035e15e9d67bd9220d244baf861eb00f6852c857eb4123c422eda"
+   },
+   "sha256_rev0": {
+    "rules.json": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+    "rule_text.md": "e644e52675f7e35a1c415f6e219d191de91feb6166f7855a73af313cce501e65",
+    "workflow/defect_mold_heating.json": "13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb",
+    "workflow/lease_termination_dispute.json": "a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd",
+    "workflow/rent_increase_dispute.json": "5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0"
+   }
+  },
+  "theft": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 450,
+     "same_state_as_engine_on_revised_workflows": 450
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 450,
+     "same_state_as_engine_on_revised_workflows": 450
+    }
+   ],
+   "rules_logic_equal": true,
+   "workflow_logic_equal": {
+    "theft_at_home": true,
+    "simple_theft_away": true
+   },
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "f366a1cf4d0bc7d1e43dc665d21531afdb19d9e77410dc169b30b263c4b991b2",
+    "rule_text.md": "4a6fbe444d13deb4498e4806a9e1ad175cfdb467800f753e5c138aa0e872f937",
+    "workflow/theft_at_home.json": "cd19a336c5e8fcd57c3da5e2effd0fff9894bea6fb53b31340eb03dd01976ed2",
+    "workflow/simple_theft_away.json": "320a346001d595ff9c564314ef47fe50c26992071f48c7d60bf15eea1bad21f2"
+   },
+   "sha256_rev0": {
+    "rules.json": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+    "rule_text.md": "99873eb918359b1c87e130d99136a4fc5bf305ab040a427c876ff7c4f6b2e11f",
+    "workflow/theft_at_home.json": "89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b",
+    "workflow/simple_theft_away.json": "7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e"
+   }
+  },
+  "dismissal": {
+   "final_files": 58,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 436,
+     "same_state_as_engine_on_revised_workflows": 436
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 436,
+     "same_state_as_engine_on_revised_workflows": 436
+    }
+   ],
+   "rules_logic_equal": true,
+   "workflow_logic_equal": {
+    "protected_period_notice": true,
+    "wrongful_termination": true,
+    "immediate_dismissal": true
+   },
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "96b89ea6d2aaaf2efe7a0061eec14e7a3cb91ba04a015855e6362515d12081e2",
+    "rule_text.md": "ab1ecb117c7a21feee853a119a7962ff19d8830219fa1a1d9b74f8583996a2d5",
+    "workflow/protected_period_notice.json": "06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5",
+    "workflow/wrongful_termination.json": "ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f",
+    "workflow/immediate_dismissal.json": "2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3"
+   },
+   "sha256_rev0": {
+    "rules.json": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+    "rule_text.md": "174b57f06ee1d5498c54bb670e100a7117da49e246460a8dbf9f0f92528a83a3",
+    "workflow/protected_period_notice.json": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+    "workflow/wrongful_termination.json": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731",
+    "workflow/immediate_dismissal.json": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63"
+   }
+  }
+ },
+ "ok": true
+}

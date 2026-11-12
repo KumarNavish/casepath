@@ -30,7 +30,7 @@
  "types": [
   {
    "id": "defect_mold_heating",
-   "title": "Defect of the rented dwelling (mould, damp, heating)",
+   "title": "Defect of the rented dwelling or disturbance of its use (for example mould, damp, heating)",
    "defining_event": "defect_present",
    "facts": [
     {
@@ -503,7 +503,7 @@
     },
     {
      "id": "asserted_claims",
-     "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)?",
+     "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
      "not_this": "Claims the tenant asserted that the claim does not connect with the notice; a notice the claim attributes to another reason, such as the landlord's own use.",
      "type": "boolean",
      "rule": {

@@ -55,7 +55,7 @@
    "other"
   ],
   "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)?",
-  "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.",
+  "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: a theft from a vehicle broken into, and pickpocketing or trick theft, away from the insured location are simple thefts away (simple_theft_away). Whether the policy includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief who lives in the policyholder's household), is decided within the claim type, not by this question.",
   "rule": {
    "source_id": "css-avb",
    "locator": "Ziff. 23.3 Abs. 1, S. 7",
@@ -71,6 +71,26 @@
      "source_id": "css-avb",
      "locator": "Ziff. 26 lit. b, S. 10",
      "passage": "Auswärts auf der ganzen Welt für Hausrat, der sich während einer Reise, ohne dass sich dabei der gewöhnliche Aufenthaltsort des Versicherungsnehmers in der Schweiz ändert, vorübergehend an beliebigen anderen Orten befindet, im Rahmen der freiwilligen Hausratsversicherung bis CHF 50 000 für Schäden aus Feuer, Elementarschaden, Erdbeben und vulkanischen Eruptionen, Diebstahl (ohne einfachen Diebstahl) und Wasser"
+    },
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 23.3 lit. a, Ausschluss, S. 7",
+     "passage": "Schäden, verursacht durch das Aufbrechen eines Fahrzeuges. Fahrzeuge sind keine Behältnisse."
+    },
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 23.3 lit. b, Ausschluss, S. 7",
+     "passage": "Schäden, verursacht durch Taschen- und Trickdiebstahl."
+    },
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 24, Einleitung, S. 8",
+     "passage": "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:"
+    },
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7",
+     "passage": "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben."
     }
    ]
   }
@@ -129,7 +149,7 @@
     {
      "id": "household_perpetrator",
      "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time?",
-     "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true.",
+     "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true. A thief the file only calls unknown or unidentified, with nothing in the file pointing to a member of the household, does not raise this question.",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7",
@@ -240,7 +260,7 @@
     {
      "id": "measures_pending",
      "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
-     "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
+     "not_this": "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38a Abs. 1",
@@ -878,7 +898,7 @@
     {
      "id": "measures_pending",
      "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
-     "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
+     "not_this": "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38a Abs. 1",

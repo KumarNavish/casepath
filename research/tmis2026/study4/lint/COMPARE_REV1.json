@@ -1,0 +1,1889 @@
+{
+ "label": "DEVELOPMENT, post hoc, in-sample: the wording fixes were designed on these same files. Not a result.",
+ "regimes": {
+  "tenancy": {
+   "files_rerun": 31,
+   "files_in_regime": 59,
+   "table": {
+    "all re-run": {
+     "before": {
+      "files": 31,
+      "unneeded_request": 0.29,
+      "missed_request": 0.161,
+      "unwarranted_hold": 0.226,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.677,
+      "errors": 21,
+      "files_without_error": 17,
+      "routing_failures_denied": 3,
+      "routing_failures_not_denied": 3,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 31,
+      "unneeded_request": 0.323,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.097,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.419,
+      "errors": 13,
+      "files_without_error": 21,
+      "routing_failures_denied": 4,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 0.125,
+      "missed_request": 0.125,
+      "unwarranted_hold": 0.125,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.375,
+      "errors": 3,
+      "files_without_error": 5,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 1,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 0.125,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.125,
+      "errors": 1,
+      "files_without_error": 7,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "before": {
+      "files": 6,
+      "unneeded_request": 0.5,
+      "missed_request": 0.167,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.667,
+      "errors": 4,
+      "files_without_error": 3,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 6,
+      "unneeded_request": 0.5,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.167,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.667,
+      "errors": 4,
+      "files_without_error": 3,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "before": {
+      "files": 7,
+      "unneeded_request": 0.286,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.286,
+      "errors": 2,
+      "files_without_error": 5,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 7,
+      "unneeded_request": 0.286,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.286,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.571,
+      "errors": 4,
+      "files_without_error": 5,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "before": {
+      "files": 10,
+      "unneeded_request": 0.3,
+      "missed_request": 0.3,
+      "unwarranted_hold": 0.6,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.2,
+      "errors": 12,
+      "files_without_error": 4,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 10,
+      "unneeded_request": 0.4,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.4,
+      "errors": 4,
+      "files_without_error": 6,
+      "routing_failures_denied": 1,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 3,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 4,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "not denied": {
+     "before": {
+      "files": 23,
+      "unneeded_request": 0.391,
+      "missed_request": 0.217,
+      "unwarranted_hold": 0.304,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.913,
+      "errors": 21,
+      "files_without_error": 9,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 3,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 23,
+      "unneeded_request": 0.435,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.13,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.565,
+      "errors": 13,
+      "files_without_error": 13,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P1": {
+     "before": {
+      "files": 3,
+      "unneeded_request": 0.0,
+      "missed_request": 1.333,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.333,
+      "errors": 4,
+      "files_without_error": 1,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 3,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 3,
+      "unneeded_request": 0.333,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.333,
+      "errors": 1,
+      "files_without_error": 2,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P2": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 3,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 4,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P3": {
+     "before": {
+      "files": 6,
+      "unneeded_request": 0.167,
+      "missed_request": 0.167,
+      "unwarranted_hold": 0.333,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.667,
+      "errors": 4,
+      "files_without_error": 3,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 6,
+      "unneeded_request": 0.167,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.167,
+      "errors": 1,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P4": {
+     "before": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P5": {
+     "before": {
+      "files": 9,
+      "unneeded_request": 0.889,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.556,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.444,
+      "errors": 13,
+      "files_without_error": 0,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 9,
+      "unneeded_request": 0.889,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.333,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.222,
+      "errors": 11,
+      "files_without_error": 1,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    }
+   },
+   "changed_files": [
+    {
+     "file": "ten_00bf58d82a2b",
+     "group": "P3",
+     "denied_event": false,
+     "level": 0,
+     "type": "lease_termination_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "lease_termination_dispute",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_0c74f4037e13",
+     "group": "P3",
+     "denied_event": false,
+     "level": 50,
+     "type": "lease_termination_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "lease_termination_dispute",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_270f84d8acff",
+     "group": "P5",
+     "denied_event": false,
+     "level": 50,
+     "type": "defect_mold_heating",
+     "before": {
+      "routed": "defect_mold_heating",
+      "errors": 4,
+      "kinds": {
+       "UH": 4
+      }
+     },
+     "after": {
+      "routed": "defect_mold_heating",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_5822f6df0cb7",
+     "group": "P3",
+     "denied_event": false,
+     "level": 10,
+     "type": "lease_termination_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 2,
+      "kinds": {
+       "UR": 1,
+       "MR": 1
+      }
+     },
+     "after": {
+      "routed": "lease_termination_dispute",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "claims_and_reasons",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "ten_5aecbb73131b",
+     "group": "P5",
+     "denied_event": false,
+     "level": 10,
+     "type": "rent_increase_dispute",
+     "before": {
+      "routed": "rent_increase_dispute",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      }
+     },
+     "after": {
+      "routed": "rent_increase_dispute",
+      "errors": 2,
+      "kinds": {
+       "UR": 1,
+       "UH": 1
+      },
+      "detail": [
+       {
+        "document": "cost_breakdown",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "lease_contract",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "ten_8572ddc89110",
+     "group": "P2",
+     "denied_event": true,
+     "level": 10,
+     "type": "rent_increase_dispute",
+     "before": {
+      "routed": "rent_increase_dispute",
+      "errors": 0,
+      "kinds": {}
+     },
+     "after": {
+      "routed": null,
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_a743587360f3",
+     "group": "P5",
+     "denied_event": false,
+     "level": 50,
+     "type": "rent_increase_dispute",
+     "before": {
+      "routed": "rent_increase_dispute",
+      "errors": 2,
+      "kinds": {
+       "UR": 1,
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "rent_increase_dispute",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "lease_contract",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "ten_b4d4cb05336f",
+     "group": "P1",
+     "denied_event": false,
+     "level": 50,
+     "type": "rent_increase_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 0,
+      "kinds": {}
+     },
+     "after": {
+      "routed": "rent_increase_dispute",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "rent_increase_notice",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "ten_c2a72cbf1698",
+     "group": "P1",
+     "denied_event": false,
+     "level": 50,
+     "type": "defect_mold_heating",
+     "before": {
+      "routed": null,
+      "errors": 3,
+      "kinds": {
+       "MR": 3
+      }
+     },
+     "after": {
+      "routed": "defect_mold_heating",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_e4858b3af131",
+     "group": "P1",
+     "denied_event": false,
+     "level": 0,
+     "type": "rent_increase_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 1,
+      "kinds": {
+       "MR": 1
+      }
+     },
+     "after": {
+      "routed": "rent_increase_dispute",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "ten_eec676341229",
+     "group": "P5",
+     "denied_event": false,
+     "level": 25,
+     "type": "lease_termination_dispute",
+     "before": {
+      "routed": "lease_termination_dispute",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      }
+     },
+     "after": {
+      "routed": "lease_termination_dispute",
+      "errors": 3,
+      "kinds": {
+       "UR": 1,
+       "UH": 2
+      },
+      "detail": [
+       {
+        "document": "hardship_evidence",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "payment_demand",
+        "reference": "request",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "termination_notice",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    }
+   ],
+   "fact_admission_before": {
+    "lease_termination_dispute.asserted_claims": {
+     "not_mentioned -> established False": 1,
+     "not_mentioned -> not read": 1,
+     "not_mentioned -> presumed False": 1,
+     "stated_false -> established False": 2,
+     "stated_true -> established true": 4,
+     "stated_true -> unknown None": 2
+    }
+   },
+   "fact_admission_after": {
+    "lease_termination_dispute.asserted_claims": {
+     "not_mentioned -> established False": 1,
+     "not_mentioned -> not read": 1,
+     "not_mentioned -> presumed False": 1,
+     "stated_false -> established False": 2,
+     "stated_true -> established true": 6
+    }
+   }
+  },
+  "theft": {
+   "files_rerun": 42,
+   "files_in_regime": 59,
+   "table": {
+    "all re-run": {
+     "before": {
+      "files": 42,
+      "unneeded_request": 0.333,
+      "missed_request": 0.429,
+      "unwarranted_hold": 0.619,
+      "missed_hold": 0.143,
+      "errors_per_file": 1.524,
+      "errors": 64,
+      "files_without_error": 17,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 11,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 42,
+      "unneeded_request": 0.476,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.643,
+      "missed_hold": 0.119,
+      "errors_per_file": 1.238,
+      "errors": 52,
+      "files_without_error": 18,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "before": {
+      "files": 12,
+      "unneeded_request": 0.417,
+      "missed_request": 0.25,
+      "unwarranted_hold": 0.417,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.083,
+      "errors": 13,
+      "files_without_error": 7,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 12,
+      "unneeded_request": 0.5,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.75,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.25,
+      "errors": 15,
+      "files_without_error": 6,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "before": {
+      "files": 10,
+      "unneeded_request": 0.2,
+      "missed_request": 0.7,
+      "unwarranted_hold": 0.8,
+      "missed_hold": 0.1,
+      "errors_per_file": 1.8,
+      "errors": 18,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 4,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 10,
+      "unneeded_request": 0.4,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.9,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.3,
+      "errors": 13,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "before": {
+      "files": 9,
+      "unneeded_request": 0.111,
+      "missed_request": 0.778,
+      "unwarranted_hold": 0.778,
+      "missed_hold": 0.111,
+      "errors_per_file": 1.778,
+      "errors": 16,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 3,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 9,
+      "unneeded_request": 0.333,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.444,
+      "missed_hold": 0.111,
+      "errors_per_file": 0.889,
+      "errors": 8,
+      "files_without_error": 4,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 1,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "before": {
+      "files": 11,
+      "unneeded_request": 0.545,
+      "missed_request": 0.091,
+      "unwarranted_hold": 0.545,
+      "missed_hold": 0.364,
+      "errors_per_file": 1.545,
+      "errors": 17,
+      "files_without_error": 4,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 11,
+      "unneeded_request": 0.636,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.455,
+      "missed_hold": 0.364,
+      "errors_per_file": 1.455,
+      "errors": 16,
+      "files_without_error": 5,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 1,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 1.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 2.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 3.0,
+      "errors": 24,
+      "files_without_error": 2,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 1.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 2.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 3.0,
+      "errors": 24,
+      "files_without_error": 2,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "not denied": {
+     "before": {
+      "files": 34,
+      "unneeded_request": 0.176,
+      "missed_request": 0.529,
+      "unwarranted_hold": 0.294,
+      "missed_hold": 0.176,
+      "errors_per_file": 1.176,
+      "errors": 40,
+      "files_without_error": 15,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 11,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 34,
+      "unneeded_request": 0.353,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.324,
+      "missed_hold": 0.147,
+      "errors_per_file": 0.824,
+      "errors": 28,
+      "files_without_error": 16,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     }
+    },
+    "group P1": {
+     "before": {
+      "files": 9,
+      "unneeded_request": 0.0,
+      "missed_request": 2.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.111,
+      "errors_per_file": 2.111,
+      "errors": 19,
+      "files_without_error": 2,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 9,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 9,
+      "unneeded_request": 0.444,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.667,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.111,
+      "errors": 10,
+      "files_without_error": 2,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P2": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 1.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 2.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 3.0,
+      "errors": 24,
+      "files_without_error": 2,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 1.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 2.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 3.0,
+      "errors": 24,
+      "files_without_error": 2,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P3": {
+     "before": {
+      "files": 15,
+      "unneeded_request": 0.2,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.533,
+      "missed_hold": 0.333,
+      "errors_per_file": 1.067,
+      "errors": 16,
+      "files_without_error": 8,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 15,
+      "unneeded_request": 0.333,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.333,
+      "missed_hold": 0.333,
+      "errors_per_file": 1.0,
+      "errors": 15,
+      "files_without_error": 7,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     }
+    },
+    "group P4": {
+     "before": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P5": {
+     "before": {
+      "files": 5,
+      "unneeded_request": 0.6,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.4,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.0,
+      "errors": 5,
+      "files_without_error": 0,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 5,
+      "unneeded_request": 0.6,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.6,
+      "errors": 3,
+      "files_without_error": 2,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    }
+   },
+   "changed_files": [
+    {
+     "file": "the_0cd1b047049a",
+     "group": "P1",
+     "denied_event": false,
+     "level": 10,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 0,
+      "kinds": {}
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "insurance_policy",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_12ee892d56f4",
+     "group": "P1",
+     "denied_event": false,
+     "level": 10,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 4,
+      "kinds": {
+       "MR": 3,
+       "MH": 1
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      },
+      "detail": [
+       {
+        "document": "original_vouchers",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_2412f755f636",
+     "group": "P5",
+     "denied_event": false,
+     "level": 0,
+     "type": "theft_at_home",
+     "before": {
+      "routed": "theft_at_home",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "theft_at_home",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "the_248aa95805a8",
+     "group": "P1",
+     "denied_event": false,
+     "level": 0,
+     "type": "theft_at_home",
+     "before": {
+      "routed": null,
+      "errors": 0,
+      "kinds": {}
+     },
+     "after": {
+      "routed": "theft_at_home",
+      "errors": 4,
+      "kinds": {
+       "UH": 4
+      },
+      "detail": [
+       {
+        "document": "insurance_policy",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "notification_record",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "police_consent",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       },
+       {
+        "document": "stolen_items_list",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_506c9909edc4",
+     "group": "P3",
+     "denied_event": false,
+     "level": 25,
+     "type": "theft_at_home",
+     "before": {
+      "routed": "theft_at_home",
+      "errors": 3,
+      "kinds": {
+       "UH": 3
+      }
+     },
+     "after": {
+      "routed": "theft_at_home",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "stolen_items_list",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_7d2b6a2bdce4",
+     "group": "P5",
+     "denied_event": false,
+     "level": 50,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "the_819379d12c03",
+     "group": "P1",
+     "denied_event": false,
+     "level": 25,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 3,
+      "kinds": {
+       "MR": 3
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "notification_record",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_9355c558630a",
+     "group": "P1",
+     "denied_event": false,
+     "level": 0,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 3,
+      "kinds": {
+       "MR": 3
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      },
+      "detail": [
+       {
+        "document": "original_vouchers",
+        "reference": "not_needed",
+        "error": "unwarranted_hold"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_c50e0bd7b054",
+     "group": "P1",
+     "denied_event": false,
+     "level": 50,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 1,
+      "kinds": {
+       "MR": 1
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "original_vouchers",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_d37fc3c54b4b",
+     "group": "P1",
+     "denied_event": false,
+     "level": 10,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 3,
+      "kinds": {
+       "MR": 3
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "original_vouchers",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "the_d9579f891719",
+     "group": "P1",
+     "denied_event": false,
+     "level": 25,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 4,
+      "kinds": {
+       "MR": 4
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "the_dd72ec4e53dd",
+     "group": "P1",
+     "denied_event": false,
+     "level": 10,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": null,
+      "errors": 1,
+      "kinds": {
+       "MR": 1
+      }
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "the_fefc066e8269",
+     "group": "P3",
+     "denied_event": false,
+     "level": 0,
+     "type": "simple_theft_away",
+     "before": {
+      "routed": "simple_theft_away",
+      "errors": 0,
+      "kinds": {}
+     },
+     "after": {
+      "routed": "simple_theft_away",
+      "errors": 1,
+      "kinds": {
+       "UR": 1
+      },
+      "detail": [
+       {
+        "document": "notification_record",
+        "reference": "present_sufficient",
+        "error": "unneeded_request"
+       }
+      ]
+     }
+    }
+   ],
+   "fact_admission_before": {
+    "theft_at_home.household_perpetrator": {
+     "not_mentioned -> not read": 3,
+     "not_mentioned -> presumed False": 5,
+     "not_mentioned -> unknown None": 1,
+     "stated_false -> established False": 5,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 3,
+     "stated_true -> not read": 1,
+     "stated_true -> unknown None": 1
+    },
+    "theft_at_home.measures_pending": {
+     "not_mentioned -> not read": 4,
+     "not_mentioned -> presumed False": 5,
+     "not_mentioned -> unknown None": 1,
+     "stated_false -> established False": 5,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 1,
+     "stated_true -> unknown None": 3
+    },
+    "simple_theft_away.measures_pending": {
+     "not_mentioned -> not read": 8,
+     "not_mentioned -> presumed False": 2,
+     "stated_false -> established False": 1,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 2,
+     "stated_true -> not read": 5,
+     "stated_true -> presumed False": 3
+    }
+   },
+   "fact_admission_after": {
+    "theft_at_home.household_perpetrator": {
+     "not_mentioned -> not read": 3,
+     "not_mentioned -> presumed False": 6,
+     "stated_false -> established False": 5,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 3,
+     "stated_true -> unknown None": 2
+    },
+    "theft_at_home.measures_pending": {
+     "not_mentioned -> not read": 4,
+     "not_mentioned -> presumed False": 5,
+     "not_mentioned -> unknown None": 1,
+     "stated_false -> established False": 6,
+     "stated_true -> established true": 4
+    },
+    "simple_theft_away.measures_pending": {
+     "not_mentioned -> not read": 3,
+     "not_mentioned -> presumed False": 7,
+     "stated_false -> established False": 1,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 8,
+     "stated_true -> not read": 2
+    }
+   }
+  },
+  "dismissal": {
+   "files_rerun": 22,
+   "files_in_regime": 58,
+   "table": {
+    "all re-run": {
+     "before": {
+      "files": 22,
+      "unneeded_request": 0.136,
+      "missed_request": 0.182,
+      "unwarranted_hold": 0.591,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.909,
+      "errors": 20,
+      "files_without_error": 15,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 4,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 22,
+      "unneeded_request": 0.045,
+      "missed_request": 0.045,
+      "unwarranted_hold": 0.136,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.227,
+      "errors": 5,
+      "files_without_error": 20,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "before": {
+      "files": 7,
+      "unneeded_request": 0.429,
+      "missed_request": 0.0,
+      "unwarranted_hold": 1.286,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.714,
+      "errors": 12,
+      "files_without_error": 4,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 1,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 7,
+      "unneeded_request": 0.143,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.429,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.571,
+      "errors": 4,
+      "files_without_error": 6,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "before": {
+      "files": 3,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 3,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "before": {
+      "files": 3,
+      "unneeded_request": 0.0,
+      "missed_request": 0.667,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.667,
+      "errors": 2,
+      "files_without_error": 2,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 1,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 3,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 3,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "before": {
+      "files": 9,
+      "unneeded_request": 0.0,
+      "missed_request": 0.222,
+      "unwarranted_hold": 0.444,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.667,
+      "errors": 6,
+      "files_without_error": 6,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 2,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 9,
+      "unneeded_request": 0.0,
+      "missed_request": 0.111,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.111,
+      "errors": 1,
+      "files_without_error": 8,
+      "routing_failures_denied": 2,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 0.25,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.375,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.625,
+      "errors": 5,
+      "files_without_error": 7,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "not denied": {
+     "before": {
+      "files": 14,
+      "unneeded_request": 0.071,
+      "missed_request": 0.286,
+      "unwarranted_hold": 0.714,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.071,
+      "errors": 15,
+      "files_without_error": 8,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 4,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 14,
+      "unneeded_request": 0.071,
+      "missed_request": 0.071,
+      "unwarranted_hold": 0.214,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.357,
+      "errors": 5,
+      "files_without_error": 12,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P1": {
+     "before": {
+      "files": 4,
+      "unneeded_request": 0.0,
+      "missed_request": 1.0,
+      "unwarranted_hold": 1.5,
+      "missed_hold": 0.0,
+      "errors_per_file": 2.5,
+      "errors": 10,
+      "files_without_error": 0,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 4,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 4,
+      "unneeded_request": 0.0,
+      "missed_request": 0.25,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.25,
+      "errors": 1,
+      "files_without_error": 3,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P2": {
+     "before": {
+      "files": 8,
+      "unneeded_request": 0.25,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.375,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.625,
+      "errors": 5,
+      "files_without_error": 7,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 8,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 8,
+      "routing_failures_denied": 8,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P3": {
+     "before": {
+      "files": 5,
+      "unneeded_request": 0.2,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.8,
+      "missed_hold": 0.0,
+      "errors_per_file": 1.0,
+      "errors": 5,
+      "files_without_error": 3,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 5,
+      "unneeded_request": 0.2,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.6,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.8,
+      "errors": 4,
+      "files_without_error": 4,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    },
+    "group P4": {
+     "before": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     },
+     "after": {
+      "files": 5,
+      "unneeded_request": 0.0,
+      "missed_request": 0.0,
+      "unwarranted_hold": 0.0,
+      "missed_hold": 0.0,
+      "errors_per_file": 0.0,
+      "errors": 0,
+      "files_without_error": 5,
+      "routing_failures_denied": 0,
+      "routing_failures_not_denied": 0,
+      "failed_runs": 0
+     }
+    }
+   },
+   "changed_files": [
+    {
+     "file": "dis_14b7db92a192",
+     "group": "P1",
+     "denied_event": false,
+     "level": 25,
+     "type": "protected_period_notice",
+     "before": {
+      "routed": null,
+      "errors": 2,
+      "kinds": {
+       "MR": 2
+      }
+     },
+     "after": {
+      "routed": "protected_period_notice",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "dis_1bf62841defb",
+     "group": "P1",
+     "denied_event": false,
+     "level": 50,
+     "type": "protected_period_notice",
+     "before": {
+      "routed": null,
+      "errors": 1,
+      "kinds": {
+       "MR": 1
+      }
+     },
+     "after": {
+      "routed": "protected_period_notice",
+      "errors": 1,
+      "kinds": {
+       "MR": 1
+      },
+      "detail": [
+       {
+        "document": "termination_letter",
+        "reference": "present_insufficient",
+        "error": "missed_request"
+       }
+      ]
+     }
+    },
+    {
+     "file": "dis_bf38c7dfb616",
+     "group": "P1",
+     "denied_event": false,
+     "level": 50,
+     "type": "protected_period_notice",
+     "before": {
+      "routed": "wrongful_termination",
+      "errors": 4,
+      "kinds": {
+       "MR": 1,
+       "UH": 3
+      }
+     },
+     "after": {
+      "routed": "protected_period_notice",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "dis_c50430dbdfa1",
+     "group": "P1",
+     "denied_event": false,
+     "level": 0,
+     "type": "protected_period_notice",
+     "before": {
+      "routed": "wrongful_termination",
+      "errors": 3,
+      "kinds": {
+       "UH": 3
+      }
+     },
+     "after": {
+      "routed": "protected_period_notice",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "dis_fb44c47f6ec7",
+     "group": "P3",
+     "denied_event": false,
+     "level": 50,
+     "type": "wrongful_termination",
+     "before": {
+      "routed": "wrongful_termination",
+      "errors": 1,
+      "kinds": {
+       "UH": 1
+      }
+     },
+     "after": {
+      "routed": "wrongful_termination",
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    },
+    {
+     "file": "dis_ff1e9056d2c3",
+     "group": "P2",
+     "denied_event": true,
+     "level": 0,
+     "type": "immediate_dismissal",
+     "before": {
+      "routed": "wrongful_termination",
+      "errors": 5,
+      "kinds": {
+       "UR": 2,
+       "UH": 3
+      }
+     },
+     "after": {
+      "routed": null,
+      "errors": 0,
+      "kinds": {},
+      "detail": []
+     }
+    }
+   ],
+   "fact_admission_before": {
+    "wrongful_termination.retaliation_for_claims": {
+     "not_mentioned -> not read": 1,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 2,
+     "stated_true -> unknown None": 3
+    }
+   },
+   "fact_admission_after": {
+    "wrongful_termination.retaliation_for_claims": {
+     "not_mentioned -> not read": 1,
+     "stated_false -> not read": 1,
+     "stated_true -> established true": 5
+    }
+   }
+  }
+ },
+ "spend": {
+  "by_arm_label": {
+   "LINT-clean_rev1-dismissal": 0.092193,
+   "LINT-clean_rev1-tenancy": 0.132368,
+   "LINT-clean_rev1-theft": 0.200111
+  },
+  "paid_calls": {
+   "LINT-clean_rev1-tenancy": 283,
+   "LINT-clean_rev1-theft": 421,
+   "LINT-clean_rev1-dismissal": 196
+  },
+  "total_usd": 0.424673
+ },
+ "plan_stop_usd": 3.194694,
+ "ledger_total_before_usd": 2.794694,
+ "all_regimes": {
+  "before": {
+   "files": 95,
+   "unneeded_request": 0.274,
+   "missed_request": 0.284,
+   "unwarranted_hold": 0.484,
+   "missed_hold": 0.063,
+   "errors_per_file": 1.105,
+   "errors": 105,
+   "files_without_error": 49,
+   "routing_failures_denied": 19,
+   "routing_failures_not_denied": 18,
+   "failed_runs": 0
+  },
+  "after": {
+   "files": 95,
+   "unneeded_request": 0.326,
+   "missed_request": 0.011,
+   "unwarranted_hold": 0.347,
+   "missed_hold": 0.053,
+   "errors_per_file": 0.737,
+   "errors": 70,
+   "files_without_error": 59,
+   "routing_failures_denied": 20,
+   "routing_failures_not_denied": 2,
+   "failed_runs": 0
+  }
+ },
+ "notes_text": "## Reading the comparison\n\n- Coverage: 95 of 176 files were re-run (tenancy 31 of 59, theft 42 of 59, dismissal 22 of 58), in the order fixed in\n  REV1_PLAN.json: P1 the 16 non-denied routing failures owed to wording, P2 all 24 denied-event files, P3 the files of\n  the changed fact wordings, P4 five seeded error-free control files per regime, P5 the remaining files with errors\n  until the stop line (tenancy 9 of 9, theft 5 of 8, dismissal 0 of 16). The selection is weighted to the files the\n  fixes target, so the after-figures are not regime estimates.\n- Each \"after\" is a new single run: every reading and routing request changed text, so it is a fresh draw. Changes in\n  files the fixes do not touch (for example ten_270f84d8acff from 4 holds to 0, ten_eec676341229 from 1 to 3 errors,\n  the_fefc066e8269 from 0 to 1) show the run-to-run variation of the product; differences of one or two errors are\n  within it.\n- Routing failures, denied-event files: the count rises from 19 to 20 because ten_8572ddc89110 (denied) is now left\n  unrouted, which is the empty plan the rule text gives (0 errors before and after). dis_ff1e9056d2c3 (an immediate\n  dismissal denied by stating an ordinary notice) is now unrouted too, which removes its 5 errors against the stop\n  reference; under the rule text it belongs to type 1 or 2 (benchmark design, DIAGNOSIS.md). The 6 theft denied files\n  routed to the other type stay so (24 errors, benchmark design).\n- the_248aa95805a8 (flatmate theft at home, household_perpetrator stated true) is now routed to theft_at_home, but two\n  readings of three still answer that whether the flatmate did it is open, so the product holds the exclusion's four\n  documents (4 holds; before, the unrouted empty plan coincided with the stop reference: 0 errors). The routing fix\n  exposes the household reading of the_656f9aad39e5's kind (DIAGNOSIS.md, cause 6), not a new defect.\n- Non-denied routing failures left after the revision: the_32a656cb56cf and the_d76f5df60f83, whose defining event is\n  designed open and is itself the routing question (benchmark design).\n"
+}

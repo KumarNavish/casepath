@@ -181,7 +181,7 @@ A_GO = ALL(T("employer_gave_notice"), F("notice_during_probation"))
 A_ANY_PERIOD = ANY(T("incapacity_illness_accident"), T("compulsory_service"), T("pregnancy_or_birth"))
 TYPE_A = {
     "id": "protected_period_notice",
-    "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
+    "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
     "defining_event": "employer_gave_notice",
     "facts": [
         {"id": "employer_gave_notice",
@@ -373,7 +373,10 @@ TYPE_B = {
          "type": "boolean",
          "rule": R("CO art. 335 para. 2", P_335_2, D_335_2, "states")},
         {"id": "retaliation_for_claims",
-         "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship?",
+         "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? "
+                     "The employee's own account of the employer's reason counts as stating it, also where the employee gives it "
+                     "as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or "
+                     "one of several possibilities.",
          "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
          "type": "boolean",
          "rule": R("CO art. 336 para. 1 let. d", P_336_1D, D_336_1D, "states")},
@@ -779,6 +782,19 @@ def ref(rule):
     return f"{WF_SOURCES[prefix][0]}#" + "_".join(rest.replace(".", "").split())
 
 
+# The routing question (workflow fact dispute_family). Revised after first use (RECONCILIATION.md, 2026-11-12): each
+# value is described by the matters its type's conditions decide, not by one outcome; the two notice types share their
+# defining event (employer_gave_notice).
+ROUTING_QUESTION = ("Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice "
+                    "of termination by the employer where the claim concerns whether it is valid or when the employment ends, "
+                    "because of the probation period, an incapacity through illness or accident, compulsory service, "
+                    "pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary "
+                    "notice by the employer that the claim contests as abusive (given for an improper reason, such as "
+                    "retaliation for claims or an employee representative's mandate), or against which the employee objects "
+                    "or claims compensation (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, "
+                    "without a notice period (CO arts. 337-337c).")
+
+
 def workflow(t):
     g = GRAPHS[t["id"]]
     facts = {f["id"]: f for f in t["facts"]}
@@ -786,8 +802,7 @@ def workflow(t):
     stops = {s["id"]: s for s in t["stops"]}
     co = WF_SOURCES["CO"][0]
     wf_facts = [{"id": "dispute_family", "type": "enum",
-                 "question": "Which employment-termination dispute does the claim concern: notice during a protected period, "
-                             "abusive notice, or dismissal with immediate effect?",
+                 "question": ROUTING_QUESTION,
                  "values": [x["id"] for x in TYPES], "source_refs": [f"{co}#arts_335-337c"]}]
     for f in t["facts"]:
         wf_facts.append({"id": f["id"], "type": "boolean", "question": f["question"], "source_refs": [ref(f["rule"])]})

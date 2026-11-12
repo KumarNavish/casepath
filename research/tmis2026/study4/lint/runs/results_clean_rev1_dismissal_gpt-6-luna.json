@@ -1,0 +1,4435 @@
+{
+ "dis_05af0871cd70": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "8ce4bdc25d56b5dc0e4ff8d7f0adbb4f31812ec8b3137ee3f477849a4786b992",
+   "8ce4bdc25d56b5dc0e4ff8d7f0adbb4f31812ec8b3137ee3f477849a4786b992"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_05af0871cd70.json.gz",
+  "seconds": 8.7,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1142,
+   "output": 84
+  }
+ },
+ "dis_0f89215979d2": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "fe5f799f8eaccc415584cb40451524eca5172dc3d370d591db67c1264769a71a",
+   "fe5f799f8eaccc415584cb40451524eca5172dc3d370d591db67c1264769a71a"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_0f89215979d2.json.gz",
+  "seconds": 10.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1152,
+   "output": 72
+  }
+ },
+ "dis_14b7db92a192": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract"
+  },
+  "calls": 22,
+  "keys": [
+   "e97b1921cb793b16becd7ff403b3d6b678959ddb164b575fd2f7a3c272c021fa",
+   "e97b1921cb793b16becd7ff403b3d6b678959ddb164b575fd2f7a3c272c021fa",
+   "588af5b98c3359d34ae0771d0e4fc839acd0cab44fc0bb9d5801eacaa6e9357a",
+   "588af5b98c3359d34ae0771d0e4fc839acd0cab44fc0bb9d5801eacaa6e9357a",
+   "497c5a2785df502beccfa61cf1a85568fb0d1183dff6aa3bcea48e4bdc05e712",
+   "497c5a2785df502beccfa61cf1a85568fb0d1183dff6aa3bcea48e4bdc05e712",
+   "c20200349e379bf0149538832fd5faaa8f119780190b5c89a008caf6ed2899c3",
+   "c20200349e379bf0149538832fd5faaa8f119780190b5c89a008caf6ed2899c3",
+   "8c5a831abcac56a4e038771400150e229514d03a294c4dd1391b7f323b89c949",
+   "8c5a831abcac56a4e038771400150e229514d03a294c4dd1391b7f323b89c949",
+   "cce938aa8f36e8acb1e6b54b0aff04332f4803141b522fe005a6fbe9a95a7b3e",
+   "cce938aa8f36e8acb1e6b54b0aff04332f4803141b522fe005a6fbe9a95a7b3e",
+   "6904110a9b9feee673a0d35049c0f0fe2d411660037879ff9ebdc39ddf46a7af",
+   "6904110a9b9feee673a0d35049c0f0fe2d411660037879ff9ebdc39ddf46a7af",
+   "4949cc3f1dbe51c5a177a009af827f754afefbb33224f6f22e05b6faab71bf35",
+   "4949cc3f1dbe51c5a177a009af827f754afefbb33224f6f22e05b6faab71bf35",
+   "e100f84cd8f74b0a512c8cad184cbc95372a5b3ddf19c410c3c9dcfe114b088e",
+   "e100f84cd8f74b0a512c8cad184cbc95372a5b3ddf19c410c3c9dcfe114b088e",
+   "322dd935350e126f46d7d0e04b09895a23529f924acbee6042f3641813ac83d9",
+   "322dd935350e126f46d7d0e04b09895a23529f924acbee6042f3641813ac83d9",
+   "175c8c98d0cbbf12e007687719f64a38289d0a09ec6e1ac470a8109021ac716a",
+   "175c8c98d0cbbf12e007687719f64a38289d0a09ec6e1ac470a8109021ac716a",
+   "aa43beaaacceb88bda4156edb77ceee794d13ed2a2acf017e943929025abb0ff",
+   "aa43beaaacceb88bda4156edb77ceee794d13ed2a2acf017e943929025abb0ff",
+   "e06446420534a14cb80cb159d1cba86e37f1ce90deb029f4745de8ebab89deeb",
+   "e06446420534a14cb80cb159d1cba86e37f1ce90deb029f4745de8ebab89deeb",
+   "6ebae41bdb0636f796d70b061ee7889611af4183bfaa4ecb61025f1d466f227f",
+   "6ebae41bdb0636f796d70b061ee7889611af4183bfaa4ecb61025f1d466f227f",
+   "2d5b736131a933a340a75d4b514e6c9e22a289c1761710edd827a6c6649aaea1",
+   "2d5b736131a933a340a75d4b514e6c9e22a289c1761710edd827a6c6649aaea1",
+   "43725c0152f5e1061e26a16929e0ee61508e24b6180cf8d1840f7509744f7d87",
+   "43725c0152f5e1061e26a16929e0ee61508e24b6180cf8d1840f7509744f7d87",
+   "b820ac6995787e061c5e83b224d53bc007d110974118671ebdc2af9ef3bb6399",
+   "b820ac6995787e061c5e83b224d53bc007d110974118671ebdc2af9ef3bb6399",
+   "bfedfb9f0beda7d078dad464e1796537017063d6f029e9701332d6424ebd09a8",
+   "bfedfb9f0beda7d078dad464e1796537017063d6f029e9701332d6424ebd09a8",
+   "f2fb09f3a46fb87566a0b6666543fd586e49e6008515f59e096023d4e6f5d7cf",
+   "f2fb09f3a46fb87566a0b6666543fd586e49e6008515f59e096023d4e6f5d7cf",
+   "9dd0536d09fbf723f60db07c9a58b5f45595ee7927585da3c02a1d794e6efa4b",
+   "9dd0536d09fbf723f60db07c9a58b5f45595ee7927585da3c02a1d794e6efa4b",
+   "322dd935350e126f46d7d0e04b09895a23529f924acbee6042f3641813ac83d9",
+   "0e2b7245db425431e055e610800bb393120ff0bdbf4ed0aa338cb15435d5676c",
+   "0e2b7245db425431e055e610800bb393120ff0bdbf4ed0aa338cb15435d5676c"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "notice_before_protected_period"
+    ]
+   },
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 155,
+         "file": "file_0e397712e312e1f9",
+         "page": null,
+         "quote": "Das Arbeitsverhältnis beginnt am 11. Marz 2026 und wird auf unbestimmte Zeit abgeschlossen.",
+         "start": 64
+        }
+       ],
+       "item": "start date of employment"
+      },
+      {
+       "citations": [
+        {
+         "end": 472,
+         "file": "file_0e397712e312e1f9",
+         "page": null,
+         "quote": "Ziff. 8 Kundigung Das Arbeitsverhältnis kann von beiden Partien unter Einhaltung einer Kündigungsfrist von zwei Moaten jeweils auf das Ende eines Kalendermonats gekündigt werden.",
+         "start": 294
+        }
+       ],
+       "item": "notice-period clause, if any"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 412,
+         "file": "file_0e397712e312e1f9",
+         "page": null,
+         "quote": "unter Einhaltung einer Kündigungsfrist von zwei Moaten",
+         "start": 358
+        }
+       ],
+       "item": "notice period length"
+      },
+      {
+       "citations": [
+        {
+         "end": 454,
+         "file": "file_0e397712e312e1f9",
+         "page": null,
+         "quote": "jeweils auf das Ende eines Kalendermonats",
+         "start": 413
+        }
+       ],
+       "item": "end-point of the notice (e.g. end of a month)"
+      },
+      {
+       "citations": [
+        {
+         "end": 23,
+         "file": "file_0e397712e312e1f9",
+         "page": null,
+         "quote": "ARBEITSVERTRAG (Auszug)",
+         "start": 0
+        }
+       ],
+       "item": "the written instrument that sets it (individual, standard or collective contract)"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "pregnancy_certificate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "probation_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "service_confirmation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "notice_during_probation": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "probation_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": "assessed",
+   "reached": [
+    "a_assess",
+    "a_close",
+    "a_gate_any_period",
+    "a_gate_incapacity",
+    "a_gate_pregnancy",
+    "a_gate_service",
+    "a_intake",
+    "a_probation"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_14b7db92a192.json.gz",
+  "seconds": 231.8,
+  "status": "completed",
+  "tokens": {
+   "cached": 67886,
+   "input": 94088,
+   "output": 13919
+  }
+ },
+ "dis_1a145eb920db": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract"
+  },
+  "calls": 18,
+  "keys": [
+   "9a63f150e830f1def90405b625ca0e09ba1214e4746dda3e9a3aff2f9cd3a696",
+   "9a63f150e830f1def90405b625ca0e09ba1214e4746dda3e9a3aff2f9cd3a696",
+   "50d05afb0f39d70aa7da45e5b8b4e0f176acb0949fe548eb2d4eb0319240703c",
+   "50d05afb0f39d70aa7da45e5b8b4e0f176acb0949fe548eb2d4eb0319240703c",
+   "06504a911cf7f197c921ac573a7114511418b42ed2d77664f9ea6a65525451a0",
+   "06504a911cf7f197c921ac573a7114511418b42ed2d77664f9ea6a65525451a0",
+   "e6c7fbbd7bd87fa58584ce623bef49819d589be2ecb87b9a98fa52bb33a3c81f",
+   "e6c7fbbd7bd87fa58584ce623bef49819d589be2ecb87b9a98fa52bb33a3c81f",
+   "543d77c0bb708e69abde9b279c80cd68b0c2c9844dcd250b26235261050386fe",
+   "8e4f50783da43a9727b960628cc91e4701e7f521b992c09504d60f839ac68fc5",
+   "8e4f50783da43a9727b960628cc91e4701e7f521b992c09504d60f839ac68fc5",
+   "520f356c2b680ef9eaeb90893a919469d58c0f56e6515fe98d653e7046cd7dac",
+   "520f356c2b680ef9eaeb90893a919469d58c0f56e6515fe98d653e7046cd7dac",
+   "4bdc8718593b66083d27391a8e3914e32a4d06da1d2d320d43df4d77bbde9627",
+   "4bdc8718593b66083d27391a8e3914e32a4d06da1d2d320d43df4d77bbde9627",
+   "7e1fd21e696f367b8de962971b5573408b0daac627a1b4335a5f97fbff834403",
+   "7e1fd21e696f367b8de962971b5573408b0daac627a1b4335a5f97fbff834403",
+   "5dfe8e62ee65301d35cafee7ad3bfca490d545ae8faf6e9d11ce891bc5f81dd4",
+   "5dfe8e62ee65301d35cafee7ad3bfca490d545ae8faf6e9d11ce891bc5f81dd4",
+   "4bf1f5664a1a00d9a71d041ea5e0fbd5b03d986457e3dcd2d81bb19f002c03e0",
+   "8fd44a66e00745f170b17a8d8839851eb6e97bb61867ef102cc01410298f0923",
+   "8fd44a66e00745f170b17a8d8839851eb6e97bb61867ef102cc01410298f0923",
+   "53a9043dcbfe9cf816bf0e7dda47a77492c3c69a73a937e1a18b7e63abfc58a8",
+   "53a9043dcbfe9cf816bf0e7dda47a77492c3c69a73a937e1a18b7e63abfc58a8",
+   "19bcdf556607c1edf08d388dad3e3915cb85cb7f507e691c0f526f518fc31570",
+   "19bcdf556607c1edf08d388dad3e3915cb85cb7f507e691c0f526f518fc31570",
+   "1d819f8ec4afdeef6b668f9a6937c0295a7abc901e360f6cae16a9bf4296886b",
+   "1d819f8ec4afdeef6b668f9a6937c0295a7abc901e360f6cae16a9bf4296886b",
+   "e5af6905380d9dde933eefd6aba29dd2fcd2b9722a69ede4407a86f5d4dd9e1e",
+   "e5af6905380d9dde933eefd6aba29dd2fcd2b9722a69ede4407a86f5d4dd9e1e",
+   "4bf1f5664a1a00d9a71d041ea5e0fbd5b03d986457e3dcd2d81bb19f002c03e0",
+   "fdea213010b74f30e1a78bef4c5172850c995f698dac44ed35beea801bef4d47",
+   "fdea213010b74f30e1a78bef4c5172850c995f698dac44ed35beea801bef4d47"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 512,
+         "file": "file_71dbd9308230f36c",
+         "page": null,
+         "quote": "Before the end of the fixed term, either party may terminate this contract early with a notice period of three months to the end of a calendar month.",
+         "start": 363
+        }
+       ],
+       "item": "notice period length"
+      },
+      {
+       "citations": [
+        {
+         "end": 512,
+         "file": "file_71dbd9308230f36c",
+         "page": null,
+         "quote": "Before the end of the fixed term, either party may terminate this contract early with a notice period of three months to the end of a calendar month.",
+         "start": 363
+        }
+       ],
+       "item": "end-point of the notice (e.g. end of a month)"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "other_earnings_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dismissed_immediately": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "immediate_dismissal",
+     "verdict": "accepted"
+    },
+    "fixed_term": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_cause": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "other_earnings": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "reasons_requested": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": "assessed",
+   "reached": [
+    "c_cause",
+    "c_close",
+    "c_damages",
+    "c_dismissal",
+    "c_fixed_term",
+    "c_gate_fixed_term",
+    "c_intake"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "immediate_dismissal"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_1a145eb920db.json.gz",
+  "seconds": 131.3,
+  "status": "completed",
+  "tokens": {
+   "cached": 32849,
+   "input": 58168,
+   "output": 8019
+  }
+ },
+ "dis_1bf62841defb": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract",
+   "attachment_2.txt": "termination_letter"
+  },
+  "calls": 11,
+  "keys": [
+   "e4301a24871d86f8d82d9cd1f8a9baa6acefc2cd10aeb68daeba31d8fe9f258f",
+   "e4301a24871d86f8d82d9cd1f8a9baa6acefc2cd10aeb68daeba31d8fe9f258f",
+   "c049e274fd861219f459a3e798256ff60555899298d660e22e7c841a86c1e53b",
+   "c049e274fd861219f459a3e798256ff60555899298d660e22e7c841a86c1e53b",
+   "38482105626eb918b5aab3f0221f45aa0c21593c513378f079acbe70dfa09baa",
+   "38482105626eb918b5aab3f0221f45aa0c21593c513378f079acbe70dfa09baa",
+   "4a6dc1a5ebd44dbd0cc8736720b4057b236d76e29f7663e5410af38b3174bc5c",
+   "4a6dc1a5ebd44dbd0cc8736720b4057b236d76e29f7663e5410af38b3174bc5c",
+   "223728348d90b6ce6610cf9ad97309dc17e1cb3ad633f0a05271fdda4ac52342",
+   "223728348d90b6ce6610cf9ad97309dc17e1cb3ad633f0a05271fdda4ac52342",
+   "69632c19c3e48afd20d3262065933c1569f99328891d6b39e88b9950c72596f9",
+   "69632c19c3e48afd20d3262065933c1569f99328891d6b39e88b9950c72596f9",
+   "7c112206f9b6148cb2166d0b2805b039cf4af1a8fd7be16540bd603992b516c3",
+   "7c112206f9b6148cb2166d0b2805b039cf4af1a8fd7be16540bd603992b516c3",
+   "aa4ce95a5db450dd89501ceb2a9648ffc20ac6688777d3841c8d0cb7706366ee",
+   "aa4ce95a5db450dd89501ceb2a9648ffc20ac6688777d3841c8d0cb7706366ee",
+   "35c12c429ec2209cb09dc63169d94d1cdfb3e706895653abc104c398d2ebf2aa",
+   "35c12c429ec2209cb09dc63169d94d1cdfb3e706895653abc104c398d2ebf2aa",
+   "4faec4b6ce478b889334fb5e1c4b9186fbd2a69f68511bb36b564384a32b445c",
+   "4faec4b6ce478b889334fb5e1c4b9186fbd2a69f68511bb36b564384a32b445c",
+   "a2171940f0e465895e2c614f3c6d73e7bb39bac26c01ec22a6fdb56f1623ff56",
+   "a2171940f0e465895e2c614f3c6d73e7bb39bac26c01ec22a6fdb56f1623ff56"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "notice_before_protected_period"
+    ]
+   },
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 169,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT between Sonnbühl Management Ltd, Schwyz (employer), represented by Tom Tanner, Operations Manager, and Owen Vogel, Wiesenstrasse 27, Schwyz (emplyee)",
+         "start": 0
+        }
+       ],
+       "item": "parties"
+      },
+      {
+       "citations": [
+        {
+         "end": 232,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "1. Start of employment: 2 April 2026, for an unlimited period.",
+         "start": 170
+        }
+       ],
+       "item": "start date of employment"
+      },
+      {
+       "citations": [
+        {
+         "end": 545,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT between Sonnbühl Management Ltd, Schwyz (employer), represented by Tom Tanner, Operations Manager, and Owen Vogel, Wiesenstrasse 27, Schwyz (emplyee) 1. Start of employment: 2 April 2026, for an unlimited period. 2. Psition: building services coordinator, part-time (50%). 3. Salary: CHF 1,670 gross per month. 4. Termination: either party may terminate the employment with two months' notice to the end of a caendar month. Notice must be given in writing. Schwyz, 20 March 2026 The employer: T. Tanner The employee: O. Vogel",
+         "start": 0
+        }
+       ],
+       "item": "probation clause, if any"
+      },
+      {
+       "citations": [
+        {
+         "end": 476,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "4. Termination: either party may terminate the employment with two months' notice to the end of a caendar month. Notice must be given in writing.",
+         "start": 331
+        }
+       ],
+       "item": "notice-period clause, if any"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 412,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "either party may terminate the employment with two months' notice",
+         "start": 347
+        }
+       ],
+       "item": "notice period length"
+      },
+      {
+       "citations": [
+        {
+         "end": 443,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "to the end of a caendar month.",
+         "start": 413
+        }
+       ],
+       "item": "end-point of the notice (e.g. end of a month)"
+      },
+      {
+       "citations": [
+        {
+         "end": 169,
+         "file": "file_60b66ceafa1ee3b9",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT between Sonnbühl Management Ltd, Schwyz (employer), represented by Tom Tanner, Operations Manager, and Owen Vogel, Wiesenstrasse 27, Schwyz (emplyee)",
+         "start": 0
+        }
+       ],
+       "item": "the written instrument that sets it (individual, standard or collective contract)"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "pregnancy_certificate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "probation_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "service_confirmation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 419,
+         "file": "file_eb7608ef5af1aa7c",
+         "page": null,
+         "quote": "Kind regards Tom Tanner Operations Manager onnbühl Management Ltd",
+         "start": 354
+        }
+       ],
+       "item": "issuer"
+      },
+      {
+       "citations": [
+        {
+         "end": 463,
+         "file": "file_eb7608ef5af1aa7c",
+         "page": null,
+         "quote": "Received on 6 June 2026 Signature: O. Vogel",
+         "start": 420
+        }
+       ],
+       "item": "addressee"
+      },
+      {
+       "citations": [
+        {
+         "end": 51,
+         "file": "file_eb7608ef5af1aa7c",
+         "page": null,
+         "quote": "Schwyz, 5 June 2026",
+         "start": 32
+        }
+       ],
+       "item": "date of the notice"
+      },
+      {
+       "citations": [
+        {
+         "end": 443,
+         "file": "file_eb7608ef5af1aa7c",
+         "page": null,
+         "quote": "Received on 6 June 2026",
+         "start": 420
+        }
+       ],
+       "item": "date the employee received it"
+      },
+      {
+       "citations": [
+        {
+         "end": 201,
+         "file": "file_eb7608ef5af1aa7c",
+         "page": null,
+         "quote": "Your employment ill end on 31 August 2026.",
+         "start": 159
+        }
+       ],
+       "item": "stated end of employment"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    }
+   },
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "notice_during_probation": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "probation_varied": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [
+    "termination_letter",
+    "employment_contract"
+   ],
+   "outcome": "assessed",
+   "reached": [
+    "a_assess",
+    "a_close",
+    "a_gate_any_period",
+    "a_gate_incapacity",
+    "a_gate_pregnancy",
+    "a_gate_service",
+    "a_intake",
+    "a_probation"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_1bf62841defb.json.gz",
+  "seconds": 111.1,
+  "status": "completed",
+  "tokens": {
+   "cached": 23604,
+   "input": 41346,
+   "output": 7319
+  }
+ },
+ "dis_250393de2a03": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "termination_letter"
+  },
+  "calls": 12,
+  "keys": [
+   "68ffadf7aec7aa01ef898c6ea431d503beece93443f222e50ef1eb8cf3d18a5d",
+   "68ffadf7aec7aa01ef898c6ea431d503beece93443f222e50ef1eb8cf3d18a5d",
+   "e82d389c8bc26602111a87bae719276d3062deee90eedae5c512b219b7c62e7c",
+   "e82d389c8bc26602111a87bae719276d3062deee90eedae5c512b219b7c62e7c",
+   "fab0b9fb71380a13c1064e0c714aa1897518d6b2b74c41e47526bba5cd62b7f1",
+   "fab0b9fb71380a13c1064e0c714aa1897518d6b2b74c41e47526bba5cd62b7f1",
+   "5fc289bd9fbce5afd0877b70c47969a696cbe9297e96a7aa6135a5040ea8a743",
+   "5fc289bd9fbce5afd0877b70c47969a696cbe9297e96a7aa6135a5040ea8a743",
+   "557a33d74028aa9dbd2118d49f07f6c64a487c35d421db1672a9611f19052aa2",
+   "557a33d74028aa9dbd2118d49f07f6c64a487c35d421db1672a9611f19052aa2",
+   "c4fc0621b5b8252fc698f8d765796f5a2df912d08bd2dba866dd764ac1233033",
+   "482ea8d7fd3872b13c32caa2358415a77d213d84c0a3d0a823140fcc1b9d1da5",
+   "482ea8d7fd3872b13c32caa2358415a77d213d84c0a3d0a823140fcc1b9d1da5",
+   "137d060e8d47b67cda434e05e812dd4f85da75ed466a00d76df718d89f3de7e1",
+   "137d060e8d47b67cda434e05e812dd4f85da75ed466a00d76df718d89f3de7e1",
+   "6efccfc08d63aba7ca33038e38fb2290317eeb243273c775df2e952d8d24d6b2",
+   "6efccfc08d63aba7ca33038e38fb2290317eeb243273c775df2e952d8d24d6b2",
+   "821ba3392e8bbb2f7c5dbafe5ad9f1c57452d90a406feaf65d8feb1f70c67e43",
+   "821ba3392e8bbb2f7c5dbafe5ad9f1c57452d90a406feaf65d8feb1f70c67e43",
+   "d5d1f2df9db05c798ca2e1330643dc1b9a5a5972039f2072c1155378fd345011",
+   "09819ebefec714c21f08b89d50f4ec548c8925ee39806b6c0f308e058a9c1279",
+   "09819ebefec714c21f08b89d50f4ec548c8925ee39806b6c0f308e058a9c1279"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence",
+    "written_objection"
+   ],
+   "questions": [
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence",
+    "written_objection"
+   ],
+   "questions": [
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "b_objection_check",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "objection_submitted"
+    ]
+   },
+   "document_judgments": {
+    "claims_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "court_filing": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "representative_mandate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 20,
+         "file": "file_812cbeda98a0871c",
+         "page": null,
+         "quote": "Ahornweid Handels AG",
+         "start": 0
+        }
+       ],
+       "item": "issuer"
+      },
+      {
+       "citations": [
+        {
+         "end": 98,
+         "file": "file_812cbeda98a0871c",
+         "page": null,
+         "quote": "Frau Lea Müller Brunnenrain 49 5610 Wohlen",
+         "start": 56
+        }
+       ],
+       "item": "addressee"
+      },
+      {
+       "citations": [
+        {
+         "end": 121,
+         "file": "file_812cbeda98a0871c",
+         "page": null,
+         "quote": "Wohlen, 28. April 2025",
+         "start": 99
+        }
+       ],
+       "item": "date of the notice"
+      },
+      {
+       "citations": [
+        {
+         "end": 531,
+         "file": "file_812cbeda98a0871c",
+         "page": null,
+         "quote": "Post CH, Zustellnachweis: an Empfängerin ausgehändigt am 29.04.2025",
+         "start": 464
+        }
+       ],
+       "item": "date the employee received it"
+      },
+      {
+       "citations": [
+        {
+         "end": 275,
+         "file": "file_812cbeda98a0871c",
+         "page": null,
+         "quote": "Wir kündigen das Arbeitsverhältnis mit Ihnen unter Einhaltung der vertraglichen Kündigungsfrist auf den 30. Juni 2025.",
+         "start": 157
+        }
+       ],
+       "item": "stated end of employment"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "written_objection": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "action_in_time": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "agreed_to_continue": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "wrongful_termination",
+     "verdict": "accepted"
+    },
+    "employee_representative": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "more_than_180_days": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_period_ended": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "objection_submitted": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "reasons_requested": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "retaliation_for_claims": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [
+    "termination_letter"
+   ],
+   "outcome": null,
+   "reached": [
+    "b_intake",
+    "b_objection_check"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "objection_submitted"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_250393de2a03.json.gz",
+  "seconds": 76.9,
+  "status": "completed",
+  "tokens": {
+   "cached": 20227,
+   "input": 40343,
+   "output": 5534
+  }
+ },
+ "dis_25e20aeec77d": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "pregnancy_certificate"
+  },
+  "calls": 14,
+  "keys": [
+   "487a83ec1925c93900585cc286a6bf144f568568aa57d6dd5e82cdbac9e9075c",
+   "487a83ec1925c93900585cc286a6bf144f568568aa57d6dd5e82cdbac9e9075c",
+   "d9f6f6142c59b9b49055e1df217aa3abd3074315feea6252a04260f47e78be42",
+   "d9f6f6142c59b9b49055e1df217aa3abd3074315feea6252a04260f47e78be42",
+   "308a98cc704e7acb96400bb5d01814177e73dbe52370cc4a7e3b54413a430716",
+   "308a98cc704e7acb96400bb5d01814177e73dbe52370cc4a7e3b54413a430716",
+   "f7a9f696dbf04bb90369c6636ee0213a5b6ac9d60d11863bb8d4d532c0dc0f03",
+   "f7a9f696dbf04bb90369c6636ee0213a5b6ac9d60d11863bb8d4d532c0dc0f03",
+   "565e80a628e113a0ed3e21d2328a5c15ef0e6884e581df9650d5d87b1516b84c",
+   "565e80a628e113a0ed3e21d2328a5c15ef0e6884e581df9650d5d87b1516b84c",
+   "41bc3671888ef5d9875ad5c71f8828aea1d2b1f69335bf340d1fdc653a7e4c12",
+   "41bc3671888ef5d9875ad5c71f8828aea1d2b1f69335bf340d1fdc653a7e4c12",
+   "b123fc7f59998f4d3e29ac21ce120b376a340059e696d178ffc7f9f392329208",
+   "b123fc7f59998f4d3e29ac21ce120b376a340059e696d178ffc7f9f392329208",
+   "92b40ab9e766d1bfe9eba009d737ab9715a84045a03af4ce3f706652aff53dca",
+   "92b40ab9e766d1bfe9eba009d737ab9715a84045a03af4ce3f706652aff53dca",
+   "16158781114cafc9d96bdc687cfecb6403990927252f1216e6cdb249e79dec10",
+   "16158781114cafc9d96bdc687cfecb6403990927252f1216e6cdb249e79dec10",
+   "00608a7d88ac8ceebc2e4b3dd90066a52a7641b9f0d4c2ae4f7759f741461fca",
+   "c4d2e0e4349ab27436ea4a926a91f875a92e55780ab69ac4f8925e465f0922d8",
+   "c4d2e0e4349ab27436ea4a926a91f875a92e55780ab69ac4f8925e465f0922d8",
+   "c6e49779d72caf2200b6a01052ba529f27a5dc3e58a964eb3e9f53facdfb3341",
+   "c6e49779d72caf2200b6a01052ba529f27a5dc3e58a964eb3e9f53facdfb3341",
+   "9a2289a90cf488b21121f63d74142d5521a7d38d15c083f8aa3a87cc3322a3bf",
+   "9a2289a90cf488b21121f63d74142d5521a7d38d15c083f8aa3a87cc3322a3bf",
+   "00608a7d88ac8ceebc2e4b3dd90066a52a7641b9f0d4c2ae4f7759f741461fca"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "pregnancy_certificate",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "pregnancy_certificate",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "pregnancy_certificate": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "probation_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "service_confirmation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_during_probation": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "probation_varied": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": "assessed",
+   "reached": [
+    "a_assess",
+    "a_close",
+    "a_gate_any_period",
+    "a_gate_incapacity",
+    "a_gate_pregnancy",
+    "a_gate_service",
+    "a_gate_timing",
+    "a_intake",
+    "a_pregnancy",
+    "a_probation",
+    "a_void"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_25e20aeec77d.json.gz",
+  "seconds": 93.0,
+  "status": "completed",
+  "tokens": {
+   "cached": 28590,
+   "input": 44367,
+   "output": 5273
+  }
+ },
+ "dis_408b774aa7db": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "claims_correspondence",
+   "attachment_2.txt": "employment_contract",
+   "attachment_3.txt": "representative_mandate"
+  },
+  "calls": 22,
+  "keys": [
+   "aa0cad8693730a04cbe2d890af01ee34f8f800a80f10ef95b3fd80b2812a6968",
+   "aa0cad8693730a04cbe2d890af01ee34f8f800a80f10ef95b3fd80b2812a6968",
+   "ab1963012fbe481294d6e7e0c16fadd755b6b67e5352ac53a1536a2105d16c76",
+   "ab1963012fbe481294d6e7e0c16fadd755b6b67e5352ac53a1536a2105d16c76",
+   "eafc8d81430e2df23bbe3a396cc8b48c6c8f6fb8c3dd0e2aa3ebbdab44e63a38",
+   "eafc8d81430e2df23bbe3a396cc8b48c6c8f6fb8c3dd0e2aa3ebbdab44e63a38",
+   "bd0f4b7f922eb2ddc40c163fdc41767f9ff5ed1abc566549b901ff96beb5c0c3",
+   "bd0f4b7f922eb2ddc40c163fdc41767f9ff5ed1abc566549b901ff96beb5c0c3",
+   "05e185e8746551e1ff28c0f16eec1dd80452eb362c07215aac337c4110e4915b",
+   "05e185e8746551e1ff28c0f16eec1dd80452eb362c07215aac337c4110e4915b",
+   "0325c361cb2e0ab6cd2ce7b584bef5734e1a1b59e00d29e11d8e449b81221241",
+   "0325c361cb2e0ab6cd2ce7b584bef5734e1a1b59e00d29e11d8e449b81221241",
+   "b4422a9d30ad4277a369b17cf23dd261ce52f9e6055f9dea85460f8d26a7eac8",
+   "b4422a9d30ad4277a369b17cf23dd261ce52f9e6055f9dea85460f8d26a7eac8",
+   "5f521039a091094b2c937920b49d261d53fb341f7af3ffba78c23f51f0ee4a11",
+   "61182a33e313c29629f56e7bca5087f525a4d2f87df50231a1dff0418c3bff9e",
+   "61182a33e313c29629f56e7bca5087f525a4d2f87df50231a1dff0418c3bff9e",
+   "7271e401b4d14c4da71111fee1d79bfb2881a86f573040ea9cc3a8696a9c02ad",
+   "7271e401b4d14c4da71111fee1d79bfb2881a86f573040ea9cc3a8696a9c02ad",
+   "f805af86745b8d6ffdb9e9874cfd747a00742963f8d3fcee450b75603304037d",
+   "f805af86745b8d6ffdb9e9874cfd747a00742963f8d3fcee450b75603304037d",
+   "b6a9496c227bac1ada62e835da98f16cc0bd55f21c94e246c518318e69a8ce57",
+   "b6a9496c227bac1ada62e835da98f16cc0bd55f21c94e246c518318e69a8ce57",
+   "a38588da981b7faa74bce23945b6dc7bd887930a8a46a6e6be4d73506855beb3",
+   "a38588da981b7faa74bce23945b6dc7bd887930a8a46a6e6be4d73506855beb3",
+   "3a542fc8003aa75bf13959a0bb414520d2bd9dce3810c8997824364089da10fb",
+   "3a542fc8003aa75bf13959a0bb414520d2bd9dce3810c8997824364089da10fb",
+   "8eebc688542695950e0b948a229b01b1f735adb655b96b31c2c6ad56292a779e",
+   "f272bebea391dbb7b75bcea81f632cee0d6723dcb57576e29e36b47c5a66b846",
+   "f272bebea391dbb7b75bcea81f632cee0d6723dcb57576e29e36b47c5a66b846",
+   "e4e0419154f50de816805833af9865089e32bcd0c5c81e6715b1a1c276f36639",
+   "e4e0419154f50de816805833af9865089e32bcd0c5c81e6715b1a1c276f36639",
+   "0a3d0d3bdf2b44b3690234548de40825a67d2ce7fc53201821fe958050ae7997",
+   "0a3d0d3bdf2b44b3690234548de40825a67d2ce7fc53201821fe958050ae7997",
+   "9b577f10607473af3f857743a63aaf6f90fb65925a6fdb092532f0327a226226",
+   "9b577f10607473af3f857743a63aaf6f90fb65925a6fdb092532f0327a226226",
+   "b96018daa0e599907b043fd892b7f23bfcf00fb9402f723012487dbc34ef9d5b",
+   "b96018daa0e599907b043fd892b7f23bfcf00fb9402f723012487dbc34ef9d5b",
+   "547a6cb0a1e50abc6f3ed6ccd36ff7bef01db6c762daf087e92f2df73b4fdda2",
+   "547a6cb0a1e50abc6f3ed6ccd36ff7bef01db6c762daf087e92f2df73b4fdda2",
+   "9f0a1d1ac587b3770e39f41fe932d0a9e26b97c47cabacc6de0454d8af2804c8",
+   "9f0a1d1ac587b3770e39f41fe932d0a9e26b97c47cabacc6de0454d8af2804c8"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence",
+    "written_objection"
+   ],
+   "questions": [
+    "action_in_time",
+    "notice_period_ended",
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence",
+    "written_objection"
+   ],
+   "questions": [
+    "action_in_time",
+    "notice_period_ended",
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "b_objection_check",
+   "deferral": {
+    "completions": 8,
+    "mode": "exact",
+    "open_facts": [
+     "action_in_time",
+     "notice_period_ended",
+     "objection_submitted"
+    ]
+   },
+   "document_judgments": {
+    "claims_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "court_filing": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "employment_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 175,
+         "file": "file_a883fbcb29c5666d",
+         "page": null,
+         "quote": "ARBEITSVERTRAG zwischen Rosenau Immobilien AG, Lausanne (Arbeitgeberin), vertreten durch Frau Livia Keller und Herrn Simon Schneider, Ahornweg 68, 1004 Lausanne (Arbeitnehmer)",
+         "start": 0
+        }
+       ],
+       "item": "parties"
+      },
+      {
+       "citations": [
+        {
+         "end": 233,
+         "file": "file_a883fbcb29c5666d",
+         "page": null,
+         "quote": "1. Stellenantritt: 5. Februar 2023, auf unbestimmte Zeit.",
+         "start": 176
+        }
+       ],
+       "item": "start date of employment"
+      },
+      {
+       "citations": [
+        {
+         "end": 524,
+         "file": "file_a883fbcb29c5666d",
+         "page": null,
+         "quote": "ARBEITSVERTRAG zwischen Rosenau Immobilien AG, Lausanne (Arbeitgeberin), vertreten durch Frau Livia Keller und Herrn Simon Schneider, Ahornweg 68, 1004 Lausanne (Arbeitnehmer) 1. Stellenantritt: 5. Februar 2023, auf unbestimmte Zeit. 2. Funktion: Hauswart im Teilzeitpensum für die Liegenschaften der Arbeitgeberin in Lausanne. 3. Arbeitszeit: durchschnittlich 9 Stunden pro Woche gemäss Einsatzplan. 4. Lohn: CHF 950 brutto pro Monat. Lausanne, 20. Januar 2023 Fur die Arbeitgebern: L. Keller Der Arbeitnehmer: S. Schneider",
+         "start": 0
+        }
+       ],
+       "item": "probation clause, if any"
+      },
+      {
+       "citations": [
+        {
+         "end": 524,
+         "file": "file_a883fbcb29c5666d",
+         "page": null,
+         "quote": "ARBEITSVERTRAG zwischen Rosenau Immobilien AG, Lausanne (Arbeitgeberin), vertreten durch Frau Livia Keller und Herrn Simon Schneider, Ahornweg 68, 1004 Lausanne (Arbeitnehmer) 1. Stellenantritt: 5. Februar 2023, auf unbestimmte Zeit. 2. Funktion: Hauswart im Teilzeitpensum für die Liegenschaften der Arbeitgeberin in Lausanne. 3. Arbeitszeit: durchschnittlich 9 Stunden pro Woche gemäss Einsatzplan. 4. Lohn: CHF 950 brutto pro Monat. Lausanne, 20. Januar 2023 Fur die Arbeitgebern: L. Keller Der Arbeitnehmer: S. Schneider",
+         "start": 0
+        }
+       ],
+       "item": "notice-period clause, if any"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "representative_mandate": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 53,
+         "file": "file_42f0b4ed12527994",
+         "page": null,
+         "quote": "Personalkommission der Rosenau Immobilien AG Lausanne",
+         "start": 0
+        }
+       ],
+       "item": "body (staff council or body linked to the business)"
+      },
+      {
+       "citations": [
+        {
+         "end": 208,
+         "file": "file_42f0b4ed12527994",
+         "page": null,
+         "quote": "An der Wahl vom 27. Oktber 2025 wurde Herr Simon Schneider, Hauswartung, von den Mitarbeitenden als Mitglid der Personlkommission gewäh1t.",
+         "start": 70
+        }
+       ],
+       "item": "election"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_objection": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "action_in_time": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "agreed_to_continue": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "wrongful_termination",
+     "verdict": "accepted"
+    },
+    "employee_representative": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "more_than_180_days": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_period_ended": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "objection_submitted": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "reasons_requested": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "retaliation_for_claims": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": null,
+   "reached": [
+    "b_intake",
+    "b_objection_check"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "action_in_time",
+    "notice_period_ended",
+    "objection_submitted"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_408b774aa7db.json.gz",
+  "seconds": 177.7,
+  "status": "completed",
+  "tokens": {
+   "cached": 58969,
+   "input": 92817,
+   "output": 10879
+  }
+ },
+ "dis_465be22068ef": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "termination_letter"
+  },
+  "calls": 14,
+  "keys": [
+   "1ddb6aa9af4865dd3bbe674abb2172be943c6cf9dcc466108fadf3cdfcb6c85b",
+   "1ddb6aa9af4865dd3bbe674abb2172be943c6cf9dcc466108fadf3cdfcb6c85b",
+   "07a0977edde8262e48db3e6b27db23bedcf91ed64104cabcebbb323c59da7757",
+   "07a0977edde8262e48db3e6b27db23bedcf91ed64104cabcebbb323c59da7757",
+   "ab27ad8f2e1b4eb11918641ebb8f8e71d49b3aff8252558d39694604b719ac01",
+   "ab27ad8f2e1b4eb11918641ebb8f8e71d49b3aff8252558d39694604b719ac01",
+   "8813d5dcd98cfdf1a333355ad385f91e8664aeb622da1d73b1906c3f97bf07fb",
+   "8813d5dcd98cfdf1a333355ad385f91e8664aeb622da1d73b1906c3f97bf07fb",
+   "3003a96af442e055bef3f7bc2c2d541585fdea01649241abaef2692654d8aa6c",
+   "665194057952907f2fe452bd45a7553f679cf3948ee146017954995372d11f83",
+   "665194057952907f2fe452bd45a7553f679cf3948ee146017954995372d11f83",
+   "6ff82c67e94108164a1113242a0795ea71fc24c2f073e2d70bf0f27370f08722",
+   "6ff82c67e94108164a1113242a0795ea71fc24c2f073e2d70bf0f27370f08722",
+   "e953552485176bb19b13f65f8a4f956992bb55740849c65f7ea3e67366143db8",
+   "e953552485176bb19b13f65f8a4f956992bb55740849c65f7ea3e67366143db8",
+   "eb9c18f246dba59212754b578623fe69037fdabd9f21b7379daa93116fd989c2",
+   "eb9c18f246dba59212754b578623fe69037fdabd9f21b7379daa93116fd989c2",
+   "6aeb4acb1012296638cb7dccdc8571b44de364dfc41a7266c3a75c31960fe7aa",
+   "6aeb4acb1012296638cb7dccdc8571b44de364dfc41a7266c3a75c31960fe7aa",
+   "453f43eadb97564e7c533452ba4d04e191392221f76c997ea4a41b0143b9b7fc",
+   "453f43eadb97564e7c533452ba4d04e191392221f76c997ea4a41b0143b9b7fc",
+   "345cee668932152e2b709ad63797a2ae065db4ecc8089a42425ca7605830518e",
+   "345cee668932152e2b709ad63797a2ae065db4ecc8089a42425ca7605830518e",
+   "88b0543d6369600710119931097ee31c58260b3195ae49c698a5e9bfe07061a3",
+   "1ef1aee074b2680316d59b6448f2fcc7877855565a70488096a1a47c9dd0dc76",
+   "1ef1aee074b2680316d59b6448f2fcc7877855565a70488096a1a47c9dd0dc76"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "salary_evidence",
+    "written_objection",
+    "written_reasons"
+   ],
+   "questions": [
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "salary_evidence",
+    "written_objection",
+    "written_reasons"
+   ],
+   "questions": [
+    "objection_submitted"
+   ],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "b_objection_check",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "objection_submitted"
+    ]
+   },
+   "document_judgments": {
+    "claims_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "court_filing": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "representative_mandate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 234,
+         "file": "file_b0148e451c38d7e1",
+         "page": null,
+         "quote": "We hereby terminate your employment, observing the notice period, with effect from 31 January 2026.",
+         "start": 135
+        }
+       ],
+       "item": "issuer"
+      },
+      {
+       "citations": [
+        {
+         "end": 50,
+         "file": "file_b0148e451c38d7e1",
+         "page": null,
+         "quote": "Ms Megan Bachmann Feldstrasse 35 8200 Schaffhausen",
+         "start": 0
+        }
+       ],
+       "item": "addressee"
+      },
+      {
+       "citations": [
+        {
+         "end": 81,
+         "file": "file_b0148e451c38d7e1",
+         "page": null,
+         "quote": "Schaffhausen, 24 November 2025",
+         "start": 51
+        }
+       ],
+       "item": "date of the notice"
+      },
+      {
+       "citations": [
+        {
+         "end": 525,
+         "file": "file_b0148e451c38d7e1",
+         "page": null,
+         "quote": "Delivered to the addressee on 26 November 2025.",
+         "start": 478
+        }
+       ],
+       "item": "date the employee received it"
+      },
+      {
+       "citations": [
+        {
+         "end": 234,
+         "file": "file_b0148e451c38d7e1",
+         "page": null,
+         "quote": "We hereby terminate your employment, observing the notice period, with effect from 31 January 2026.",
+         "start": 135
+        }
+       ],
+       "item": "stated end of employment"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "written_objection": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "action_in_time": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "agreed_to_continue": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "wrongful_termination",
+     "verdict": "accepted"
+    },
+    "employee_representative": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "more_than_180_days": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_period_ended": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "objection_submitted": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "reasons_requested": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "retaliation_for_claims": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": null,
+   "reached": [
+    "b_intake",
+    "b_objection_check"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "objection_submitted"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_465be22068ef.json.gz",
+  "seconds": 111.2,
+  "status": "completed",
+  "tokens": {
+   "cached": 19304,
+   "input": 44142,
+   "output": 7473
+  }
+ },
+ "dis_4ee0866843c9": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "fda51de972fbfe45df66e38a2f3434c8e4bba81f8d05e80cadb35a55d9470fff",
+   "fda51de972fbfe45df66e38a2f3434c8e4bba81f8d05e80cadb35a55d9470fff"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_4ee0866843c9.json.gz",
+  "seconds": 6.7,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1182,
+   "output": 125
+  }
+ },
+ "dis_5215d587db4b": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "26c76e437faff6ab3133aeb51d9cb0b5c7e45d984d2694fcc718822da042fd92",
+   "26c76e437faff6ab3133aeb51d9cb0b5c7e45d984d2694fcc718822da042fd92"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_5215d587db4b.json.gz",
+  "seconds": 6.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1161,
+   "output": 94
+  }
+ },
+ "dis_60632f5d2a1c": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract"
+  },
+  "calls": 17,
+  "keys": [
+   "88b86967ee721b6bfc30d5d72974a5f4958d77c470ca780cfbf5e461d4a2c44d",
+   "88b86967ee721b6bfc30d5d72974a5f4958d77c470ca780cfbf5e461d4a2c44d",
+   "476efddd0e91f8d2e2d95682f240b9df14f87089f62d9bf698d4ca042e1ab2f5",
+   "476efddd0e91f8d2e2d95682f240b9df14f87089f62d9bf698d4ca042e1ab2f5",
+   "f09de8d1271f6a033b8feab0c83bf4d1539dfd13067965a03fc06e9a0bdc1be9",
+   "f09de8d1271f6a033b8feab0c83bf4d1539dfd13067965a03fc06e9a0bdc1be9",
+   "672499951af62dbf22c821f1efe88ebbf831f77d705e527b34a7f26a2136f432",
+   "672499951af62dbf22c821f1efe88ebbf831f77d705e527b34a7f26a2136f432",
+   "25073a2c5a5cb6acf8e511356ee53d363d9ac1065458cbc228b1ede6125ab898",
+   "25073a2c5a5cb6acf8e511356ee53d363d9ac1065458cbc228b1ede6125ab898",
+   "dbbbd593c5fac808e12ae7f25a9a0713b52ff96b8ec648c472f31855264726ea",
+   "dbbbd593c5fac808e12ae7f25a9a0713b52ff96b8ec648c472f31855264726ea",
+   "3f93e456599871cc13e724cef26e6e7f408b29d7e10df48e0f406caa57383890",
+   "3f93e456599871cc13e724cef26e6e7f408b29d7e10df48e0f406caa57383890",
+   "aabd646e3d64b4a64f0303a47d9c4f296bffe378c4f6fbff1db5df8c53696c7a",
+   "aabd646e3d64b4a64f0303a47d9c4f296bffe378c4f6fbff1db5df8c53696c7a",
+   "e363cb616c14879c8aeb7572eb565debf9e02693d155a0807fb7f88531faad60",
+   "e363cb616c14879c8aeb7572eb565debf9e02693d155a0807fb7f88531faad60",
+   "18464319fe31585e02721b537e21bf91b7c61d2bd48c6b417214bc6ba60a7448",
+   "18464319fe31585e02721b537e21bf91b7c61d2bd48c6b417214bc6ba60a7448",
+   "8c1c7d20c12259fe8fe5e4b833704fadcd15de84f3d39ca27e81817af071a82c",
+   "8c1c7d20c12259fe8fe5e4b833704fadcd15de84f3d39ca27e81817af071a82c",
+   "ee91d3131509d4649b399d0727ebaecee99bc27d1bd5d50ef279764433edb660",
+   "8e5d75ca03eb5e9cc724506e657063a1f99d6bdb8df18cd3047fc5f098d0c559",
+   "8e5d75ca03eb5e9cc724506e657063a1f99d6bdb8df18cd3047fc5f098d0c559",
+   "f02f242823c1752d48f192912462aee19760ce6bf9ab06740dc66d4212c454c7",
+   "f02f242823c1752d48f192912462aee19760ce6bf9ab06740dc66d4212c454c7",
+   "7b28ab1dd9c8f9d6d6363b01dd8be22aeb316fe934eeaacba148e536ba6ac73e",
+   "7b28ab1dd9c8f9d6d6363b01dd8be22aeb316fe934eeaacba148e536ba6ac73e",
+   "f1a281031bff6b5e90607d9c9d21f40aa92ea8515783521b476837bc0c7a9263",
+   "f1a281031bff6b5e90607d9c9d21f40aa92ea8515783521b476837bc0c7a9263",
+   "725a67e3082b43fa353af791d001660bedf4b17a524e7fcff62549a67043ebdb",
+   "725a67e3082b43fa353af791d001660bedf4b17a524e7fcff62549a67043ebdb"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [
+    "incapacity_proof"
+   ],
+   "questions": [
+    "incapacity_illness_accident"
+   ],
+   "requests": [
+    "employment_contract",
+    "pregnancy_certificate",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [
+    "incapacity_proof"
+   ],
+   "questions": [
+    "incapacity_illness_accident"
+   ],
+   "requests": [
+    "employment_contract",
+    "pregnancy_certificate",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "a_gate_incapacity",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "incapacity_illness_accident"
+    ]
+   },
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 89,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "The employment begins on 8 June 2026",
+         "start": 53
+        },
+        {
+         "end": 29,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT (extract)",
+         "start": 0
+        }
+       ],
+       "item": "start date of employment"
+      },
+      {
+       "citations": [
+        {
+         "end": 439,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "Either party may terminate the employment by giving three months' notice to the end of a calendar month. Notice must be given in writing.",
+         "start": 302
+        }
+       ],
+       "item": "notice-period clause, if any"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 374,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "Either party may terminate the employment by giving three months' notice",
+         "start": 302
+        }
+       ],
+       "item": "notice period length"
+      },
+      {
+       "citations": [
+        {
+         "end": 406,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "to the end of a calendar month.",
+         "start": 375
+        }
+       ],
+       "item": "end-point of the notice (e.g. end of a month)"
+      },
+      {
+       "citations": [
+        {
+         "end": 29,
+         "file": "file_86c2c851c1c467f5",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT (extract)",
+         "start": 0
+        }
+       ],
+       "item": "the written instrument that sets it (individual, standard or collective contract)"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "pregnancy_certificate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "probation_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "service_confirmation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_during_probation": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "probation_varied": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": null,
+   "reached": [
+    "a_assess",
+    "a_close",
+    "a_gate_any_period",
+    "a_gate_incapacity",
+    "a_gate_pregnancy",
+    "a_gate_service",
+    "a_gate_timing",
+    "a_intake",
+    "a_pregnancy",
+    "a_probation",
+    "a_void"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "incapacity_illness_accident"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_60632f5d2a1c.json.gz",
+  "seconds": 157.4,
+  "status": "completed",
+  "tokens": {
+   "cached": 36769,
+   "input": 57839,
+   "output": 10507
+  }
+ },
+ "dis_827bbd04ddc9": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "e73d8805d4ea027a669a7bb574f8ebb6a34427b1e73e07813b2c810a29decd65",
+   "e73d8805d4ea027a669a7bb574f8ebb6a34427b1e73e07813b2c810a29decd65"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_827bbd04ddc9.json.gz",
+  "seconds": 6.7,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1148,
+   "output": 201
+  }
+ },
+ "dis_930a1b5e1bdc": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "1bfcd32a768182ba1c0be0fd9df5bc0f236e46ddbdd7c914ee4ed73522fe8b94",
+   "1bfcd32a768182ba1c0be0fd9df5bc0f236e46ddbdd7c914ee4ed73522fe8b94"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_930a1b5e1bdc.json.gz",
+  "seconds": 6.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1123,
+   "output": 71
+  }
+ },
+ "dis_9991ef82e6f4": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder"
+  ],
+  "attachments": {
+   "attachment_1.txt": "other_earnings_evidence",
+   "attachment_2.txt": "termination_letter"
+  },
+  "calls": 17,
+  "keys": [
+   "e551d32342e92f2017fdd6be63ad26627d6f1994b09d216119030e0ce9d2b92d",
+   "e551d32342e92f2017fdd6be63ad26627d6f1994b09d216119030e0ce9d2b92d",
+   "9bdee6ca2afd06e951ef0b6315d51f8a612db8e51210fda2261287dfcd5fa772",
+   "9bdee6ca2afd06e951ef0b6315d51f8a612db8e51210fda2261287dfcd5fa772",
+   "6f31bc1f2f00b91698ab2f7c37d77389612300344e101a11f47dce57656fc664",
+   "6f31bc1f2f00b91698ab2f7c37d77389612300344e101a11f47dce57656fc664",
+   "781b5a10540be0b23b52a9b1bc3716819c58d41791667d88c35bc043ac9f2359",
+   "781b5a10540be0b23b52a9b1bc3716819c58d41791667d88c35bc043ac9f2359",
+   "4b27b17abf521b38c88798a6209fd9c36000af5f31289b4ed750938324246ab0",
+   "529081cd69f7c76f160a9558b4d107f8dd12485ef820f7df7ca4b68277a7e177",
+   "529081cd69f7c76f160a9558b4d107f8dd12485ef820f7df7ca4b68277a7e177",
+   "591af2508ac29cce27efc49ad43988a5b170e40316df88c13764b8ce6ca89d9b",
+   "591af2508ac29cce27efc49ad43988a5b170e40316df88c13764b8ce6ca89d9b",
+   "daed30b97bbc0fa40b4cddfe5b30494d6f9dc6d6f2754b0f5bb97e1aadd18798",
+   "daed30b97bbc0fa40b4cddfe5b30494d6f9dc6d6f2754b0f5bb97e1aadd18798",
+   "aff9e581c06024f5ccf010eeb49f2057939b524b1ed1e2a222dd5e2ce8be7f49",
+   "aff9e581c06024f5ccf010eeb49f2057939b524b1ed1e2a222dd5e2ce8be7f49",
+   "bacd9db1252d8e95e85e49d27cb81ca2f39c6f3536bef4c6ca4fb89af9c3ea7b",
+   "bacd9db1252d8e95e85e49d27cb81ca2f39c6f3536bef4c6ca4fb89af9c3ea7b",
+   "937d25e509688dcb07198f79374a2b2050f5c14acb730d40d8515dbe27c6c548",
+   "ba58bc5cbed34153767f4e020b29941067633c02d105ea1889760bf944010de7",
+   "c23aa405277c75ebf82ec6fbce611a06d3dc71e3368ef1de864f7e4c69365675",
+   "c23aa405277c75ebf82ec6fbce611a06d3dc71e3368ef1de864f7e4c69365675",
+   "dd4d9afb47ff017dc36e756b56b0611c3335cf08fa11eaa47bc334f96060fe02",
+   "dd4d9afb47ff017dc36e756b56b0611c3335cf08fa11eaa47bc334f96060fe02",
+   "a9d7c04a7613f7fb80de32e606b3be21cf8d0272e2438739bd388f6b6cfbeabf",
+   "a9d7c04a7613f7fb80de32e606b3be21cf8d0272e2438739bd388f6b6cfbeabf",
+   "a874df41225e038ce1e5aab4a08582152e200f1534be27b38df05985600ea5a5",
+   "a874df41225e038ce1e5aab4a08582152e200f1534be27b38df05985600ea5a5",
+   "d9a42c93100a5683d2818ef9a05eda43fd0709dc84d0a9e879f9fda50e2fea75",
+   "d9a42c93100a5683d2818ef9a05eda43fd0709dc84d0a9e879f9fda50e2fea75"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "other_earnings_evidence",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "other_earnings_evidence",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "other_earnings_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dismissed_immediately": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "immediate_dismissal",
+     "verdict": "accepted"
+    },
+    "fixed_term": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "incapacity_cause": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_period_varied": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "other_earnings": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "reasons_requested": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": "assessed",
+   "reached": [
+    "c_cause",
+    "c_close",
+    "c_damages",
+    "c_dismissal",
+    "c_gate_fixed_term",
+    "c_intake",
+    "c_notice_period"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "immediate_dismissal"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_9991ef82e6f4.json.gz",
+  "seconds": 123.2,
+  "status": "completed",
+  "tokens": {
+   "cached": 36773,
+   "input": 58664,
+   "output": 6474
+  }
+ },
+ "dis_bf38c7dfb616": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract"
+  },
+  "calls": 11,
+  "keys": [
+   "901c92e5bc7a337bd34350cd78d9b221d1d098945a879d645d372117debe0930",
+   "901c92e5bc7a337bd34350cd78d9b221d1d098945a879d645d372117debe0930",
+   "fa7e726cbb56a8ca066b2f00e6d3bc15831c154749ffc78cba085d0dbc7f8233",
+   "fa7e726cbb56a8ca066b2f00e6d3bc15831c154749ffc78cba085d0dbc7f8233",
+   "4976b49f7f7dacbf1e839cde6a4b728d0ceb1a22122c0d33efbcef4efecf6a15",
+   "4976b49f7f7dacbf1e839cde6a4b728d0ceb1a22122c0d33efbcef4efecf6a15",
+   "a1a39e4b489500c37869383206243478555bafaf7064f68ec4e2b20f3c6ba546",
+   "a1a39e4b489500c37869383206243478555bafaf7064f68ec4e2b20f3c6ba546",
+   "b18827d9c19be276ab13a4ca7a618ce1784d86e7ab87312243f0c07327312683",
+   "b18827d9c19be276ab13a4ca7a618ce1784d86e7ab87312243f0c07327312683",
+   "0c330be937e23f6d9aaf6e47af365909222a3baef4ca2f2f7442c8cb5838072b",
+   "0c330be937e23f6d9aaf6e47af365909222a3baef4ca2f2f7442c8cb5838072b",
+   "217a9e4252fcd86f1f8c20b36435f931237c9aee408d361eb334132d08521c2d",
+   "217a9e4252fcd86f1f8c20b36435f931237c9aee408d361eb334132d08521c2d",
+   "f7fe7da3b24b3c13ac6af8a83d27ca241a56df611cc866bc93169ef9e456bf7b",
+   "f7fe7da3b24b3c13ac6af8a83d27ca241a56df611cc866bc93169ef9e456bf7b",
+   "eddc1751c39c9047c8c34e0dfdfb745f4d1e5b29194fedb10103da306979c363",
+   "eddc1751c39c9047c8c34e0dfdfb745f4d1e5b29194fedb10103da306979c363",
+   "a1fd2800e212dcebfc1e726efdf70961bea35cfa93fe79040f8213109e515a8c",
+   "a1fd2800e212dcebfc1e726efdf70961bea35cfa93fe79040f8213109e515a8c",
+   "bcd1134bd256b8e77f547bbd7ba92a299680f40538b96ecfe63d8d6a034b58bf",
+   "bcd1134bd256b8e77f547bbd7ba92a299680f40538b96ecfe63d8d6a034b58bf"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "probation_terms",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "probation_terms",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "notice_before_protected_period"
+    ]
+   },
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 193,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "EMPLOYMENT CONTRACT (extract) between Birkenrain Trading Ltd, St. Gallen, represented by Anna Moser, Sales Director (employer) and Peter Baumann, Schulhausstrasse 58, 9000 St. Gallen (employee)",
+         "start": 0
+        }
+       ],
+       "item": "parties"
+      },
+      {
+       "citations": [
+        {
+         "end": 297,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "The employment begins on 23 March 2026 and is concluded for an unlimited period.",
+         "start": 217
+        }
+       ],
+       "item": "start date of employment"
+      },
+      {
+       "citations": [
+        {
+         "end": 521,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "The first two months of employment are a probation period.",
+         "start": 463
+        }
+       ],
+       "item": "probation clause, if any"
+      },
+      {
+       "citations": [
+        {
+         "end": 673,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "After the probation period, the employment may be terminated by either party with three months' notice to the end of a calendar month.",
+         "start": 539
+        }
+       ],
+       "item": "notice-period clause, if any"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 673,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "After the probation period, the employment may be terminated by either party with three months' notice to the end of a calendar month.",
+         "start": 539
+        }
+       ],
+       "item": "notice period length"
+      },
+      {
+       "citations": [
+        {
+         "end": 673,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "After the probation period, the employment may be terminated by either party with three months' notice to the end of a calendar month.",
+         "start": 539
+        }
+       ],
+       "item": "end-point of the notice (e.g. end of a month)"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "pregnancy_certificate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "probation_terms": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 521,
+         "file": "file_44b908a71313a132",
+         "page": null,
+         "quote": "The first two months of employment are a probation period.",
+         "start": 463
+        }
+       ],
+       "item": "length of the probation period"
+      }
+     ],
+     "status": "unusable",
+     "verdict": "accepted"
+    },
+    "service_confirmation": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "notice_during_probation": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "probation_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [
+    "employment_contract"
+   ],
+   "outcome": "assessed",
+   "reached": [
+    "a_assess",
+    "a_close",
+    "a_gate_any_period",
+    "a_gate_incapacity",
+    "a_gate_pregnancy",
+    "a_gate_service",
+    "a_intake",
+    "a_probation"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_bf38c7dfb616.json.gz",
+  "seconds": 87.1,
+  "status": "completed",
+  "tokens": {
+   "cached": 20144,
+   "input": 37701,
+   "output": 4958
+  }
+ },
+ "dis_c50430dbdfa1": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {},
+  "calls": 5,
+  "keys": [
+   "ec188dded8855e1f135dc65d977ddb00b13fe764fbcbfdc437f7eb9958171d27",
+   "ec188dded8855e1f135dc65d977ddb00b13fe764fbcbfdc437f7eb9958171d27",
+   "35bb414615dad7081a157044726a65c2a880d3cbabf39d2ccb619d69e2c40821",
+   "35bb414615dad7081a157044726a65c2a880d3cbabf39d2ccb619d69e2c40821",
+   "163452aea04c8efb61edb1432a6c29ef87b703185122209458da6a96a6f3364a",
+   "163452aea04c8efb61edb1432a6c29ef87b703185122209458da6a96a6f3364a",
+   "ebe2819bc0059dc0f33d77dec903d0b0541f59d97024a33a97f0c5ec9d70bcd5",
+   "ebe2819bc0059dc0f33d77dec903d0b0541f59d97024a33a97f0c5ec9d70bcd5",
+   "c9d8d02b876ce90bcd42289dcfc44000fd694d3fbaa47563f70c1dd0eee93c1a",
+   "c9d8d02b876ce90bcd42289dcfc44000fd694d3fbaa47563f70c1dd0eee93c1a"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "protected_period_notice",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "employment_contract",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": null,
+   "document_judgments": {},
+   "facts": {
+    "compulsory_service": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "protected_period_notice",
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "incapacity_illness_accident": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_before_protected_period": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_during_probation": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "pregnancy_or_birth": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "probation_varied": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": "a_stop_probation",
+   "reached": [
+    "a_intake",
+    "a_probation",
+    "a_stop_probation"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "protected_period_notice"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_c50430dbdfa1.json.gz",
+  "seconds": 38.9,
+  "status": "completed",
+  "tokens": {
+   "cached": 3488,
+   "input": 7234,
+   "output": 2212
+  }
+ },
+ "dis_dd12420e6a78": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "employment_contract",
+   "attachment_2.txt": "termination_letter",
+   "attachment_3.txt": "written_objection"
+  },
+  "calls": 17,
+  "keys": [
+   "4eeff580394a8b5f99e15d0c2b322c5f14170941f64d67c8897d50d0cd7c98c7",
+   "4eeff580394a8b5f99e15d0c2b322c5f14170941f64d67c8897d50d0cd7c98c7",
+   "6e7792dd6827a1ed04fea7513d4f3b1d94b6b89710c7634623e4bc6ac6e51d9c",
+   "6e7792dd6827a1ed04fea7513d4f3b1d94b6b89710c7634623e4bc6ac6e51d9c",
+   "cea024d43db084dc1cbfd9fbd31e5cba4895113ec13cbc11288e40343f997479",
+   "cea024d43db084dc1cbfd9fbd31e5cba4895113ec13cbc11288e40343f997479",
+   "bbef6c7a735469584c66a4286617316db36d39de75f0085748a3314590c2cff5",
+   "bbef6c7a735469584c66a4286617316db36d39de75f0085748a3314590c2cff5",
+   "6a09a6164f72d1b8bde646cce1fb7a24f6c36fb259647866dca6495990e92451",
+   "6a09a6164f72d1b8bde646cce1fb7a24f6c36fb259647866dca6495990e92451",
+   "3fbc4b9a551362fb7bca28a3b675c422783a048e59defca5946b81916021636b",
+   "60d34394ff4350b576574e8cacf0592105dfcedeb52a36db15c2cc9ecae5e155",
+   "60d34394ff4350b576574e8cacf0592105dfcedeb52a36db15c2cc9ecae5e155",
+   "78b7bb2d6aec237a02f198c04079d2c93948e58d642fd0b53896e4bdaf07b5b5",
+   "78b7bb2d6aec237a02f198c04079d2c93948e58d642fd0b53896e4bdaf07b5b5",
+   "bccb1b7748e783dc5564b7b8de1e6da00e91e28ed1009a48e1dd99c9b824b201",
+   "bccb1b7748e783dc5564b7b8de1e6da00e91e28ed1009a48e1dd99c9b824b201",
+   "4ca5fd852c0e7b0108d0211aa24bc46a141a85866eab13b1ce82605e60613823",
+   "a2f922ba7121464300bd831c41357bfa2809bb3b713abc5708bd1e156298cc71",
+   "a2f922ba7121464300bd831c41357bfa2809bb3b713abc5708bd1e156298cc71",
+   "90f46ede6a26f64286d59e7d30a52f1556b84399ad4efdc94504e3da6dbf445b",
+   "90f46ede6a26f64286d59e7d30a52f1556b84399ad4efdc94504e3da6dbf445b",
+   "1150121fb05f33a8479eb72a3ba95b758eec886815aa56afecb3b24fd9d325ff",
+   "1150121fb05f33a8479eb72a3ba95b758eec886815aa56afecb3b24fd9d325ff",
+   "a879a3cc7daafb5b9bf4d22b8964489636e6d8764e583cd1a9648f93f7c094bb",
+   "a879a3cc7daafb5b9bf4d22b8964489636e6d8764e583cd1a9648f93f7c094bb",
+   "cc96ede6ee17d80dfa21ada26f9534f9c77e374e24f804eccbdad8117dcf1f48",
+   "cc96ede6ee17d80dfa21ada26f9534f9c77e374e24f804eccbdad8117dcf1f48",
+   "4ca5fd852c0e7b0108d0211aa24bc46a141a85866eab13b1ce82605e60613823",
+   "922e576f0651f4b8f217d7b394204f13314609619f72c9725ef10f16dda30973",
+   "922e576f0651f4b8f217d7b394204f13314609619f72c9725ef10f16dda30973"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence"
+   ],
+   "questions": [
+    "action_in_time"
+   ],
+   "requests": [
+    "employment_contract"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "claims_correspondence",
+    "court_filing",
+    "representative_mandate",
+    "salary_evidence"
+   ],
+   "questions": [
+    "action_in_time"
+   ],
+   "requests": [
+    "employment_contract"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "b_limit_check",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "action_in_time"
+    ]
+   },
+   "document_judgments": {
+    "claims_correspondence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "court_filing": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "representative_mandate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "termination_letter": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 32,
+         "file": "file_2bb63b3886e91a4a",
+         "page": null,
+         "quote": "Rebhalde Verwaltungs GmbH Zürich",
+         "start": 0
+        }
+       ],
+       "item": "issuer"
+      },
+      {
+       "citations": [
+        {
+         "end": 89,
+         "file": "file_2bb63b3886e91a4a",
+         "page": null,
+         "quote": "Frau Corinne Marti Lindenweg 24 8001 Zürich",
+         "start": 46
+        }
+       ],
+       "item": "addressee"
+      },
+      {
+       "citations": [
+        {
+         "end": 111,
+         "file": "file_2bb63b3886e91a4a",
+         "page": null,
+         "quote": "Zürich, 17. März 2025",
+         "start": 90
+        }
+       ],
+       "item": "date of the notice"
+      },
+      {
+       "citations": [
+        {
+         "end": 456,
+         "file": "file_2bb63b3886e91a4a",
+         "page": null,
+         "quote": "Post CH, Zustellnachweis: der Empfängerin zugestellt am 18.03.2025",
+         "start": 390
+        }
+       ],
+       "item": "date the employee received it"
+      },
+      {
+       "citations": [
+        {
+         "end": 249,
+         "file": "file_2bb63b3886e91a4a",
+         "page": null,
+         "quote": "Wir kündigen das Arbeitsverhältnis mit Ihnen unter Einhaltung der Kündigungsfrist auf den 31. Mai 2025.",
+         "start": 146
+        }
+       ],
+       "item": "stated end of employment"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "written_objection": {
+     "shows": [
+      {
+       "citations": [
+        {
+         "end": 324,
+         "file": "file_944a4fda2bdd6ecf",
+         "page": null,
+         "quote": "Ich bin mit der Kündigung meines Arbeitsverhältnisses nicht einverstanden und erhebe hiermit schriftlich Einsprache dagegen.",
+         "start": 200
+        }
+       ],
+       "item": "objection to the notice"
+      },
+      {
+       "citations": [
+        {
+         "end": 102,
+         "file": "file_944a4fda2bdd6ecf",
+         "page": null,
+         "quote": "Rebhalde Verwaltungs GmbH Herrn Heinz Lüthi Zürich",
+         "start": 52
+        }
+       ],
+       "item": "addressed to the employer"
+      },
+      {
+       "citations": [
+        {
+         "end": 525,
+         "file": "file_944a4fda2bdd6ecf",
+         "page": null,
+         "quote": "Post CH, Sendungsverfolgung Einschreiben Nr. 98.40.556677.11223344 Aufgegeben: 15.04.2025, 8001 Zürich Zugestellt: 16.04.2025, Empfänger: Rebhalde Verwaltungs GmbH",
+         "start": 362
+        }
+       ],
+       "item": "date lodged or received"
+      },
+      {
+       "citations": [
+        {
+         "end": 525,
+         "file": "file_944a4fda2bdd6ecf",
+         "page": null,
+         "quote": "Post CH, Sendungsverfolgung Einschreiben Nr. 98.40.556677.11223344 Aufgegeben: 15.04.2025, 8001 Zürich Zugestellt: 16.04.2025, Empfänger: Rebhalde Verwaltungs GmbH",
+         "start": 362
+        }
+       ],
+       "item": "proof of sending or receipt"
+      }
+     ],
+     "status": "present",
+     "verdict": "accepted"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "action_in_time": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "agreed_to_continue": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "wrongful_termination",
+     "verdict": "accepted"
+    },
+    "employee_representative": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "more_than_180_days": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "notice_period_ended": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "objection_submitted": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "reasons_requested": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "retaliation_for_claims": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [
+    "termination_letter",
+    "written_objection"
+   ],
+   "outcome": null,
+   "reached": [
+    "b_continuation_check",
+    "b_intake",
+    "b_limit_check",
+    "b_objection_check"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "action_in_time"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_dd12420e6a78.json.gz",
+  "seconds": 141.3,
+  "status": "completed",
+  "tokens": {
+   "cached": 31277,
+   "input": 68141,
+   "output": 11087
+  }
+ },
+ "dis_fa096cda3412": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "salary_evidence"
+  },
+  "calls": 17,
+  "keys": [
+   "397babfdfc6cd5202592cb24bb5f752bf8b889b4059ae0e0cf97d89c974c5352",
+   "397babfdfc6cd5202592cb24bb5f752bf8b889b4059ae0e0cf97d89c974c5352",
+   "4f4717273149a8a8f66cfdb2aef4f0d0ba0096289b693045753ad86a7ad91b6b",
+   "4f4717273149a8a8f66cfdb2aef4f0d0ba0096289b693045753ad86a7ad91b6b",
+   "cb3d067a6b0328834006d2a79f23031b795a2100714e087ffc1fd8b5b7d804b6",
+   "cb3d067a6b0328834006d2a79f23031b795a2100714e087ffc1fd8b5b7d804b6",
+   "e5da82dd754b5da9ed2cbce753cb5f58a32bd7bf6c5bfb43dcd3e29a57252cb3",
+   "e5da82dd754b5da9ed2cbce753cb5f58a32bd7bf6c5bfb43dcd3e29a57252cb3",
+   "564b5d3697ab142b387cbd57f8eb792091d011f4fbfc9e3a90e27408270a41ec",
+   "09c92ae92b7fda2c2bf040ff8f0b7065227241500a037a7ec7944f467a0e202e",
+   "09c92ae92b7fda2c2bf040ff8f0b7065227241500a037a7ec7944f467a0e202e",
+   "80a7e9f6b5afdbac5fb710cb4a85ec917b1ca8fea42855dc6faaa272f02d29b2",
+   "80a7e9f6b5afdbac5fb710cb4a85ec917b1ca8fea42855dc6faaa272f02d29b2",
+   "f568562a3b780d24dee37ad19cf6f7f6d9a0aa7e1f05501cc7ad6c408cf217e2",
+   "f568562a3b780d24dee37ad19cf6f7f6d9a0aa7e1f05501cc7ad6c408cf217e2",
+   "632656cd0359cf9a07ea5db4f467bfa195c586659bf14ce150b45a046931fd29",
+   "632656cd0359cf9a07ea5db4f467bfa195c586659bf14ce150b45a046931fd29",
+   "564460dfe8a50a21d6a8bca44567c8f77bdf4e502f0cb8b9987eca4f0fcf217b",
+   "564460dfe8a50a21d6a8bca44567c8f77bdf4e502f0cb8b9987eca4f0fcf217b",
+   "95965a46faec7d7f7fc58c8e653bc6a5712f3ff6b924d985f85e48e059abebbd",
+   "ace73fa2274dcc70cfa81c31c30c34533e942d5ecfe6b5b91a60ce8a3481af14",
+   "47bccbd24441477aad9262b8d29c5c2fa15cf39614cd39442b8ac5aeaa1921c9",
+   "47bccbd24441477aad9262b8d29c5c2fa15cf39614cd39442b8ac5aeaa1921c9",
+   "b61ff80a431e615b231eaeea29eee6f13224bb802c94fd3799a560983b72f8a5",
+   "b61ff80a431e615b231eaeea29eee6f13224bb802c94fd3799a560983b72f8a5",
+   "87510fe61fbae78cb6e06b6d4b01960d841fd51b2ed985b568edd510c4964e32",
+   "87510fe61fbae78cb6e06b6d4b01960d841fd51b2ed985b568edd510c4964e32",
+   "56198f1fbbd0e582f0bc7dd0ff60f7cdff3a92d524162a1af990d61b034b8254",
+   "56198f1fbbd0e582f0bc7dd0ff60f7cdff3a92d524162a1af990d61b034b8254",
+   "95965a46faec7d7f7fc58c8e653bc6a5712f3ff6b924d985f85e48e059abebbd"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [
+    "notice_period_terms"
+   ],
+   "questions": [
+    "fixed_term"
+   ],
+   "requests": [
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "immediate_dismissal",
+   "holds": [
+    "notice_period_terms"
+   ],
+   "questions": [
+    "fixed_term"
+   ],
+   "requests": [
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": "c_gate_fixed_term",
+   "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+     "fixed_term"
+    ]
+   },
+   "document_judgments": {
+    "employment_contract": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "incapacity_proof": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "notice_period_terms": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "other_earnings_evidence": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "dismissed_immediately": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "immediate_dismissal",
+     "verdict": "accepted"
+    },
+    "fixed_term": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "incapacity_cause": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "notice_period_varied": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "other_earnings": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "reasons_requested": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    }
+   },
+   "on_file": [],
+   "outcome": null,
+   "reached": [
+    "c_cause",
+    "c_close",
+    "c_damages",
+    "c_dismissal",
+    "c_gate_fixed_term",
+    "c_intake"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "immediate_dismissal"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "fixed_term"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_fa096cda3412.json.gz",
+  "seconds": 103.2,
+  "status": "completed",
+  "tokens": {
+   "cached": 31373,
+   "input": 53299,
+   "output": 5568
+  }
+ },
+ "dis_fb44c47f6ec7": {
+  "agents": [
+   "router",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker"
+  ],
+  "attachments": {
+   "attachment_1.txt": "claims_correspondence",
+   "attachment_2.txt": "employment_contract",
+   "attachment_3.txt": "salary_evidence"
+  },
+  "calls": 15,
+  "keys": [
+   "cf3803e5220739369edef69ea172c30168f6c303696447533e91ce92dc090110",
+   "cf3803e5220739369edef69ea172c30168f6c303696447533e91ce92dc090110",
+   "66a71ed4115222f3349954d8cc9298be3b239bb95dfda9c0591a3f5e510bb720",
+   "66a71ed4115222f3349954d8cc9298be3b239bb95dfda9c0591a3f5e510bb720",
+   "eacf3791b8feee371b1c6c93df9f967cfb7ea4030daee5ced145ff8ef6bcf8a2",
+   "eacf3791b8feee371b1c6c93df9f967cfb7ea4030daee5ced145ff8ef6bcf8a2",
+   "6c6a239a4c1009a420f9cc7a2f10750890e6fc44aeeec31f713fd584c5f7c505",
+   "6c6a239a4c1009a420f9cc7a2f10750890e6fc44aeeec31f713fd584c5f7c505",
+   "8d73910987d28baffa354bca403d53c1e9e28d207045c54733a1804362610af5",
+   "956fcf7242445f59883ba17f8f234c79b99c5c8afae72425b21102f9a18fba4b",
+   "956fcf7242445f59883ba17f8f234c79b99c5c8afae72425b21102f9a18fba4b",
+   "7c4f2155eb6175cfff91704857e2a9989f732097a6c6e0644df9b13dac0d4eb1",
+   "7c4f2155eb6175cfff91704857e2a9989f732097a6c6e0644df9b13dac0d4eb1",
+   "18890cb08d8d05067fdfd0264d608385e4cc0a29d8c2131eaf2b35ab5a7090b1",
+   "18890cb08d8d05067fdfd0264d608385e4cc0a29d8c2131eaf2b35ab5a7090b1",
+   "b2a13517ddd3c5dd425efab031f3d7546ae1d6427ce15555aaded1fb7e3271a4",
+   "b2a13517ddd3c5dd425efab031f3d7546ae1d6427ce15555aaded1fb7e3271a4",
+   "f3035a508326b76bafb2a508ca6234b3c530e4190f01dc2c52a66ee6070fc057",
+   "f3035a508326b76bafb2a508ca6234b3c530e4190f01dc2c52a66ee6070fc057",
+   "09ea340143ab47b21fc35ab3b55b833caffa089c6a35e6308f4e0b12745c6385",
+   "09ea340143ab47b21fc35ab3b55b833caffa089c6a35e6308f4e0b12745c6385",
+   "ff50cb2fd68db6dd8a7eb3302d2bee61ba805d2f7a51beeb29a633f4a21c4b30",
+   "ff50cb2fd68db6dd8a7eb3302d2bee61ba805d2f7a51beeb29a633f4a21c4b30",
+   "23f14c5cce6fee8642685e3f54e03d53bbd0baf38b0fe01a8b4f8b198065fd5c",
+   "23f14c5cce6fee8642685e3f54e03d53bbd0baf38b0fe01a8b4f8b198065fd5c",
+   "f90e6879a6b589295bd823a137b2ffb4b7194fa430ca464233009f1f79a6849e",
+   "f90e6879a6b589295bd823a137b2ffb4b7194fa430ca464233009f1f79a6849e",
+   "fdae848a2ae1aa50593dbdc5e6c47e9d353e8bc898d110b95c3fe87582a67414",
+   "fdae848a2ae1aa50593dbdc5e6c47e9d353e8bc898d110b95c3fe87582a67414"
+  ],
+  "plan": {
+   "added_holds": [],
+   "added_requests": [],
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "court_filing",
+    "written_objection"
+   ],
+   "questions": [
+    "action_in_time",
+    "objection_submitted"
+   ],
+   "requests": [
+    "claims_correspondence",
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter",
+    "written_reasons"
+   ]
+  },
+  "plan_workflow_only": {
+   "deferred": false,
+   "family": "wrongful_termination",
+   "holds": [
+    "court_filing",
+    "written_objection"
+   ],
+   "questions": [
+    "action_in_time",
+    "objection_submitted"
+   ],
+   "requests": [
+    "claims_correspondence",
+    "employment_contract",
+    "salary_evidence",
+    "termination_letter",
+    "written_reasons"
+   ]
+  },
+  "product_extra": {
+   "agent_added_needs": [],
+   "agent_questions": [],
+   "agent_steps": [],
+   "answer": "Checklist only: see the checklist and the open points.",
+   "conflicting_facts": [],
+   "current_step": null,
+   "deferral": {
+    "completions": 4,
+    "mode": "exact",
+    "open_facts": [
+     "action_in_time",
+     "objection_submitted"
+    ]
+   },
+   "document_judgments": {
+    "claims_correspondence": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "court_filing": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "employment_contract": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "representative_mandate": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "salary_evidence": {
+     "shows": [],
+     "status": "unusable",
+     "verdict": "rejected"
+    },
+    "termination_letter": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_objection": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    },
+    "written_reasons": {
+     "shows": [],
+     "status": "missing",
+     "verdict": "not_checked"
+    }
+   },
+   "facts": {
+    "action_in_time": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "agreed_to_continue": {
+     "by": "presumption",
+     "cited": false,
+     "status": "presumed",
+     "value": false,
+     "verdict": "presumed"
+    },
+    "dispute_family": {
+     "by": "routing",
+     "cited": true,
+     "status": "established",
+     "value": "wrongful_termination",
+     "verdict": "accepted"
+    },
+    "employee_representative": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "employer_gave_notice": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "more_than_180_days": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "notice_period_ended": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": false,
+     "verdict": "accepted"
+    },
+    "objection_submitted": {
+     "by": "claim_reader",
+     "cited": false,
+     "status": "unknown",
+     "value": null,
+     "verdict": "not_checked"
+    },
+    "reasons_requested": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    },
+    "retaliation_for_claims": {
+     "by": "claim_reader",
+     "cited": true,
+     "status": "established",
+     "value": true,
+     "verdict": "accepted"
+    }
+   },
+   "on_file": [],
+   "outcome": "assessed",
+   "reached": [
+    "b_close",
+    "b_compensation",
+    "b_continuation_check",
+    "b_gate_representative",
+    "b_gate_retaliation",
+    "b_grounds",
+    "b_intake",
+    "b_limit_check",
+    "b_objection_check",
+    "b_retaliation"
+   ],
+   "rejected_facts": [],
+   "reply_clauses": 0,
+   "routing": {
+    "facts": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination"
+     }
+    ],
+    "status": "selected"
+   },
+   "waiting_for": [
+    "action_in_time",
+    "objection_submitted"
+   ],
+   "warnings": []
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_fb44c47f6ec7.json.gz",
+  "seconds": 121.3,
+  "status": "completed",
+  "tokens": {
+   "cached": 36439,
+   "input": 62456,
+   "output": 7413
+  }
+ },
+ "dis_fea630e08ab3": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "491bfe23f0692c5d4e12c3d15036a060f1c1f62a1986ee49e362b0145271dd5d",
+   "491bfe23f0692c5d4e12c3d15036a060f1c1f62a1986ee49e362b0145271dd5d"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_fea630e08ab3.json.gz",
+  "seconds": 6.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1157,
+   "output": 157
+  }
+ },
+ "dis_ff1e9056d2c3": {
+  "agents": [
+   "router"
+  ],
+  "attachments": {},
+  "calls": 1,
+  "keys": [
+   "335ae8c52719ad010a8434c0e0e55ef670b99b3c3c23f89b8ce56ef7f61a6fe3",
+   "335ae8c52719ad010a8434c0e0e55ef670b99b3c3c23f89b8ce56ef7f61a6fe3"
+  ],
+  "plan": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "plan_workflow_only": {
+   "deferral_reason": "routing needs_facts",
+   "deferred": true,
+   "family": null,
+   "holds": [],
+   "questions": [],
+   "requests": []
+  },
+  "product_extra": {
+   "routing": {
+    "candidates": [
+     {
+      "id": "immediate_dismissal",
+      "status": "reviewed",
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "protected_period_notice",
+      "status": "reviewed",
+      "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+      "version": "2026-11-12"
+     },
+     {
+      "id": "wrongful_termination",
+      "status": "reviewed",
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "version": "2026-11-12"
+     }
+    ],
+    "needs": [
+     "dispute_family"
+    ],
+    "status": "needs_facts"
+   }
+  },
+  "record": "runs/records/gpt-6-luna/clean_rev1/dismissal/dis_ff1e9056d2c3.json.gz",
+  "seconds": 6.6,
+  "status": "completed",
+  "tokens": {
+   "cached": 0,
+   "input": 1140,
+   "output": 254
+  }
+ }
+}

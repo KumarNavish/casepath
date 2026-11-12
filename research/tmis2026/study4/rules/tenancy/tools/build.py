@@ -147,7 +147,7 @@ def A(locator, passage, de=None):
 # ---------------------------------------------------------------- type 1: defect
 defect = {
     "id": "defect_mold_heating",
-    "title": "Defect of the rented dwelling (mould, damp, heating)",
+    "title": "Defect of the rented dwelling or disturbance of its use (for example mould, damp, heating)",
     "defining_event": "defect_present",
     "facts": [
         F("defect_present",
@@ -317,7 +317,9 @@ termination = {
           R("Art. 257d para. 2", P257D2, "states", de=P257D2_DE)),
         F("asserted_claims",
           "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under "
-          "the lease (for example demanded repair of a defect or contested the rent)?",
+          "the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the "
+          "landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open "
+          "only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
           "Claims the tenant asserted that the claim does not connect with the notice; a notice the claim attributes to "
           "another reason, such as the landlord's own use.",
           R("Art. 271a para. 1 let. a", P271A1A, "states", de=P271A1A_DE)),
@@ -779,8 +781,7 @@ def workflow(t):
                    + [{"id": CONVENTION_SOURCE["id"], "kind": WORKFLOW_CONVENTION_KIND,
                        "intended_kind": CONVENTION_SOURCE["kind"], "title": CONVENTION_SOURCE["title"]}],
         "facts": [{"id": "dispute_family", "type": "enum", "values": type_ids,
-                   "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, "
-                               "heating), a termination of the lease by the landlord, or a rent increase?",
+                   "question": ROUTING_QUESTION,
                    "source_refs": [ref(facts[t["defining_event"]]["rule"])]}]
                  + [{"id": f["id"], "type": "boolean", "question": f["question"], "source_refs": [ref(f["rule"])],
                      **({"always_stated": True} if f.get("always_stated") else {})}
@@ -863,6 +864,17 @@ def rules_md(doc):
             row("stop", "The process ends", cond(s["when"]), s["rule"])
         lines.append("")
     return "\n".join(lines) + "\n"
+
+
+# The routing question (workflow fact dispute_family). Revised after first use (RECONCILIATION.md, 2026-11-12): the
+# defect type is named by its defining event (art. 259a para. 1: a defect or a disturbance of the agreed use), not by a
+# closed list; a rent increase accompanied by a notice of termination is decided inside the rent-increase type
+# (termination_with_increase, art. 269d para. 2 let. c).
+ROUTING_QUESTION = ("Which tenancy dispute does the claim concern: a defect of the dwelling or a disturbance of its agreed use "
+                    "that the tenant did not cause (for example mould, damp, or heating that fails), a termination of the lease "
+                    "by the landlord, or a rent increase? A rent increase that the landlord accompanied with a notice of "
+                    "termination is a rent increase dispute: the rent-increase rules examine that notice (art. 269d para. 2 "
+                    "let. c).")
 
 
 def rule_text(doc):

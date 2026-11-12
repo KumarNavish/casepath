@@ -185,3 +185,100 @@ Clarification after review (2026-11-12): one general paragraph on reading steps 
 - workflow/immediate_dismissal.json 5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63
 - workflow/protected_period_notice.json a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276
 - workflow/wrongful_termination.json 14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731
+
+## Revision after first use (development, 2026-11-12)
+
+DEVELOPMENT material, post hoc. The rule set's first use (the clean arm of the lint test, `lint/REPORT.md`, gpt-6-luna,
+58 dismissal files) was diagnosed from the stored readings in `lint/DIAGNOSIS.md` (written by `lint/diagnose.py`;
+judgments in `lint/diagnosis_review.json`). Only wording that Part A showed to be ours is changed; each change is a
+general rule, written in `tools/build.py` and rebuilt. The fixes were designed on the same 58 files they are checked on
+(in-sample, development). The rule set as the lint runs read it is kept in `rev0/`.
+
+Not changed: no document, `needed_when`, `mandatory` or `must_show` item; no fact id, step, condition, presumption or
+stop; the convention of SPEC 6a; the routing values (type ids). `lint/verify_rev1.py` (`lint/VERIFY_REV1.json`):
+rules' and workflows' logic equal to `rev0/`; every stored final reference keeps its manifest hash; the product's
+evaluator recomputes all 58 final references unchanged; the clean-room comparison on the 60 designs still gives 436 of
+436 document states equal to both evaluators. `tools/check.py`: ALL CHECKS PASSED. `generator/test_generator.py`: 15
+tests OK. (The dismissal workflows give the product the question only, not `not_this`.)
+
+### D1. Routing question (workflow fact `dispute_family`) and type 1's title
+
+- **Old question:** "Which employment-termination dispute does the claim concern: notice during a protected period,
+  abusive notice, or dismissal with immediate effect?"
+- **New question:** "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary
+  notice of termination by the employer where the claim concerns whether it is valid or when the employment ends,
+  because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth,
+  or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the
+  claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee
+  representative's mandate), or against which the employee objects or claims compensation (CO arts. 336-336b).
+  immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c)."
+- **Old title (type 1):** "Notice of termination by the employer during a protected period (CO art. 336c)". **New:**
+  "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)".
+  The router sees the titles beside the values and is told that a value naming a specific matter applies only to it.
+- **Evidence (Part A):** all 4 non-denied routing failures (of 50 non-denied files) are type-1 files, 4 of its 18
+  non-denied files: dis_14b7db92a192 and dis_1bf62841defb (ordinary notice, dispute about the contractual notice
+  period, every protected period denied or absent) got no routing value; dis_bf38c7dfb616 (ordinary notice, written
+  probation clause and notice period) and dis_c50430dbdfa1 (notice by text message while ill and in the probation
+  period) were routed to wrongful_termination. The old value named one outcome of type 1 ("notice during a protected
+  period"), while type 1's own conditions decide probation (art. 335b), the protected periods (art. 336c) and the
+  notice period (art. 335c para. 2) of an ordinary notice. 10 errors (6 holds where the file settles the fact, 4
+  requests missed).
+- **Passages:** CO art. 336c para. 1 (introduction): "After the probation period has expired, the employer may not
+  terminate the employment relationship" (German "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis
+  nicht kündigen"), the passage of type 1's defining event and of `notice_during_probation`; CO art. 335c para. 2:
+  "These notice periods may be varied by written individual, standard or collective employment contract"
+  (`notice_period_varied`); CO art. 336 para. 1 let. d: "because the other party asserts claims under the employment
+  relationship in good faith" (type 2); CO art. 337c para. 1: "Where the employer dismisses the employee with immediate
+  effect without good cause, the employee is entitled to damages" (type 3).
+- **Why no broader and no narrower:** each value is described by the matters its type's own conditions decide, with
+  the articles those conditions cite; no type gains a matter it has no condition for. The routing fact's source
+  reference (arts. 335-337c) is unchanged.
+- **Limit for the planner:** types 1 and 2 share their defining event (`employer_gave_notice`). A file that raises
+  matters of both (for example illness at the time of notice and an objection for abuse) is not separated by any
+  wording; separating them needs a defining event of its own per type, which is a fact and design change this
+  revision may not make.
+
+### D2. `wrongful_termination.retaliation_for_claims` (question)
+
+- **Old:** "Was the notice given because the employee had asserted, in good faith, claims arising from the employment
+  relationship?"
+- **New:** the same, followed by: "The employee's own account of the employer's reason counts as stating it, also where
+  the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown,
+  uncertain or one of several possibilities."
+- **Evidence (Part A):** of the 5 files in which the fact is stated true, 3 had a reading answering "open" on a firm
+  statement of the employee's belief: "Ich bin überzeugt, dass ich die Kündigung bekommen habe, weil ich meinen Lohn
+  eingefordert habe" (one of three), "I'm convinced I lost my job because I stood up for myself" (two of three), "Why do
+  I think I was let go? Because I asked for what I'm due." (one of three). 1 hold where the file settles the fact
+  (dis_fb44c47f6ec7), and it is one of two facts behind a second hold (dis_408b774aa7db). The same gap appears in
+  tenancy (`asserted_claims`).
+- **Passage:** CO art. 336 para. 1 let. d: "because the other party asserts claims under the employment relationship in
+  good faith" (German "weil die andere Partei nach Treu und Glauben Ansprüche aus dem Arbeitsverhältnis geltend macht").
+- **Why no broader and no narrower:** the condition ("because", "in good faith", "claims under the employment
+  relationship") is unchanged; the sentence says only how the employee's statement of the employer's reason is read at
+  intake. A coincidence in time without a stated link stays outside (`not_this`, unchanged).
+
+### Considered and not changed
+
+- The defining events held in dis_32d79153a27f, dis_b7f5c9e07c99, dis_188837a70acc and the held `notice_period_ended` in
+  dis_408b774aa7db (14 holds in all, 3 of them together with a second fact; two more files, 2 holds, the same way): every reading gave the designed value, but a quotation was not found word for
+  word (a capital letter at the start of a quoted part sentence, or scan noise the reading corrected). The product's
+  quotation rule, not the wording.
+- `incapacity_illness_accident` in dis_3f2fbc0b6128 (1 request missed): all three readings answered "not stated" for an
+  illness the file states clearly (six days before the notice). The question asks in the same breath whether the
+  incapacity was "still within its protected length" (30, 90 or 180 days by year of service), which the file does not
+  state; the readings may have stopped there. One file; left as a product reading, flagged for the second reader.
+- Two denied-event files deny the immediate dismissal by stating an ordinary notice (dis_827bbd04ddc9 unrouted,
+  dis_ff1e9056d2c3 routed to wrongful_termination, 5 errors). An ordinary notice is the defining event of types 1 and
+  2, so the rule text gives one of those processes, not the stop the reference records; a benchmark-design point,
+  left for the planner.
+- Needed but not allowed in this revision: `employment_contract.must_show` lists "probation clause, if any;
+  notice-period clause, if any", and the product read the conditional items as required for contracts that have no
+  such clause (6 requests that should not be made). A `must_show` change; left for the planner.
+
+### Hashes after the revision
+
+- rules.json 96b89ea6d2aaaf2efe7a0061eec14e7a3cb91ba04a015855e6362515d12081e2
+- rule_text.md ab1ecb117c7a21feee853a119a7962ff19d8830219fa1a1d9b74f8583996a2d5
+- workflow/protected_period_notice.json 06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5
+- workflow/wrongful_termination.json ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f
+- workflow/immediate_dismissal.json 2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3

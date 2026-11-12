@@ -26,7 +26,7 @@
   {
    "id": "dispute_family",
    "type": "enum",
-   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
+   "question": "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), or against which the employee objects or claims compensation (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).",
    "values": [
     "protected_period_notice",
     "wrongful_termination",

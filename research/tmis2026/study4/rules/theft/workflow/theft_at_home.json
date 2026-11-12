@@ -41,11 +41,15 @@
     "simple_theft_away",
     "other"
    ],
-   "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)? (Not this: A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.)",
+   "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)? (Not this: A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: a theft from a vehicle broken into, and pickpocketing or trick theft, away from the insured location are simple thefts away (simple_theft_away). Whether the policy includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief who lives in the policyholder's household), is decided within the claim type, not by this question.)",
    "source_refs": [
     "css-avb#Ziff. 23.3 Abs. 1, S. 7",
     "css-avb#Ziff. 24.2, S. 8",
-    "css-avb#Ziff. 26 lit. b, S. 10"
+    "css-avb#Ziff. 26 lit. b, S. 10",
+    "css-avb#Ziff. 23.3 lit. a, Ausschluss, S. 7",
+    "css-avb#Ziff. 23.3 lit. b, Ausschluss, S. 7",
+    "css-avb#Ziff. 24, Einleitung, S. 8",
+    "css-avb#Ziff. 23.3, Ausschlüsse, erster Strich, S. 7"
    ]
   },
   {
@@ -64,7 +68,7 @@
   {
    "id": "household_perpetrator",
    "type": "boolean",
-   "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time? (Not this: A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true.)",
+   "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time? (Not this: A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true. A thief the file only calls unknown or unidentified, with nothing in the file pointing to a member of the household, does not raise this question.)",
    "source_refs": [
     "css-avb#Ziff. 23.3, Ausschlüsse, erster Strich, S. 7"
    ]
@@ -118,7 +122,7 @@
   {
    "id": "measures_pending",
    "type": "boolean",
-   "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)? (Not this: Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.)",
+   "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)? (Not this: Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.)",
    "source_refs": [
     "vvg#VVG Art. 38a Abs. 1"
    ]

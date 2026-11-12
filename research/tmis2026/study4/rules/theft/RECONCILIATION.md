@@ -74,3 +74,112 @@ Clarification after review (2026-11-12): one general paragraph on reading steps 
 - rule_text.md 99873eb918359b1c87e130d99136a4fc5bf305ab040a427c876ff7c4f6b2e11f
 - workflow/simple_theft_away.json 7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e
 - workflow/theft_at_home.json 89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b
+
+## Revision after first use (development, 2026-11-12)
+
+DEVELOPMENT material, post hoc. The rule set's first use (the clean arm of the lint test, `lint/REPORT.md`, gpt-6-luna,
+59 theft files) was diagnosed from the stored readings in `lint/DIAGNOSIS.md` (written by `lint/diagnose.py`;
+judgments in `lint/diagnosis_review.json`). Only wording that Part A showed to be ours is changed; each change is a
+general rule, written in `tools/build.py` and rebuilt. The fixes were designed on the same 59 files they are checked on
+(in-sample, development). The rule set as the lint runs read it is kept in `rev0/`.
+
+Not changed: no document, `needed_when`, `mandatory` or `must_show` item; no fact id, step, condition, presumption or
+stop; the convention of SPEC 6a; the routing values. `lint/verify_rev1.py` (`lint/VERIFY_REV1.json`): rules' and
+workflows' logic equal to `rev0/`; every stored final reference keeps its manifest hash; the product's evaluator
+recomputes all 59 final references unchanged; the clean-room comparison on the 60 designs still gives 450 of 450
+document states equal to both evaluators. The source snapshots (`sources/*.txt`, `SOURCES.json`) are byte-identical
+after the rebuild. `tools/check.py`: ALL CHECKS PASSED. `generator/test_generator.py`: 15 tests OK. (The theft
+workflows give the product the question with its `not_this` appended, so `not_this` changes reach the product.)
+
+### H1. Routing fact `claim_type` (`routing.not_this`)
+
+- **Old not_this:** "A burglary or robbery away from the insured location (covered, if at all, by the basic cover
+  during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them."
+- **New not_this:** the same two sentences, followed by: "Breaking into a vehicle is not a burglary (a vehicle is not a
+  container), and pickpocketing or trick theft is not a robbery: a theft from a vehicle broken into, and pickpocketing
+  or trick theft, away from the insured location are simple thefts away (simple_theft_away). Whether the policy
+  includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief
+  who lives in the policyholder's household), is decided within the claim type, not by this question."
+  (The question itself is unchanged. Context passages added: Ziff. 23.3 lit. a Ausschluss, lit. b Ausschluss, Ziff. 24
+  Einleitung, Ziff. 23.3 Ausschlüsse erster Strich.)
+- **Evidence (Part A):** 11 of 51 non-denied theft files failed routing; 10 were answered "other". Seven are thefts from
+  a car or camper van broken into away from home (the_0cd1b047049a, the_12ee892d56f4, the_819379d12c03, the_9355c558630a,
+  the_c50e0bd7b054, the_d37fc3c54b4b, the_d9579f891719): the router quoted the smashed window or the forced lock and,
+  with "a burglary ... away ...: other" in front of it and without the policy's own rule that a vehicle is not a
+  container (stated in `theft_away` and in `outside_both_types`, but not in the routing question the router is
+  given), answered other. One is a handbag taken from a restaurant chair in a file stating that the supplementary
+  cover was not taken (the_dd72ec4e53dd), one a theft at home by a flatmate (the_248aa95805a8, "Es war meine
+  Mitbewohnerin"): in both the question did not say that cover and exclusions are decided inside the type, where the
+  rule set decides them (stop `a_stop_no_cover`, stop `h_stop_excluded`). 19 errors (18 requests missed, 1 hold
+  missed). The two remaining non-denied failures (the_32a656cb56cf,
+  the_d76f5df60f83) have a designed-open defining event that is itself the routing question; not a wording defect, not
+  changed.
+- **Passages:** css-avb Ziff. 23.3 lit. a, Ausschluss: «Schäden, verursacht durch das Aufbrechen eines Fahrzeuges.
+  Fahrzeuge sind keine Behältnisse.»; Ziff. 23.3 lit. b, Ausschluss: «Schäden, verursacht durch Taschen- und
+  Trickdiebstahl.»; Ziff. 24.2: «Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als
+  Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, ...»; Ziff. 24, Einleitung: «Die CSS
+  versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police
+  aufgeführt worden sind:»; Ziff. 23.3, Ausschlüsse, erster Strich: «Schäden, verursacht durch Personen, die mit dem
+  Versicherungsnehmer im gleichen Haushalt leben.»
+- **Why no broader and no narrower:** the added sentences repeat the policy's own definitions (already in `theft_away`,
+  `burglary_or_robbery` and `outside_both_types`) and the rule set's own placement of the cover check and the
+  household exclusion inside the types. A burglary or robbery away from home stays "other"; nothing moves into a type
+  that its defining event does not cover.
+
+### H2. `theft_at_home.household_perpetrator` (not_this)
+
+- **Old:** "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft;
+  a suspicion the file raises but does not settle is open, not true."
+- **New:** the same, followed by: "A thief the file only calls unknown or unidentified, with nothing in the file
+  pointing to a member of the household, does not raise this question."
+- **Evidence (Part A):** the_506c9909edc4 (fact not mentioned): two readings of three answered open, quoting the
+  police record's "Täterschaft unbekannt.", so no presumption filled the fact and the product held three documents
+  (3 holds where the file settles the fact). The not_this's "a suspicion the file raises ... is open" was applied to a
+  thief who is merely unknown. One file; the change is a reading rule for every file with an unknown thief.
+- **Passage:** css-avb Ziff. 23.3, Ausschlüsse, erster Strich: «Schäden, verursacht durch Personen, die mit dem
+  Versicherungsnehmer im gleichen Haushalt leben.»
+- **Why no broader and no narrower:** the condition is unchanged; a file that points to a household member, or raises
+  a suspicion against one, is still open or true as before.
+
+### H3. `measures_pending` (not_this, both types)
+
+- **Old:** "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the
+  items."
+- **New:** "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps
+  still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not
+  excluded."
+- **Evidence (Part A):** the fact is admitted in 3 of the 9 files the runs read where it is stated true. The three
+  admitted measures stop the thief using the item (blocking a phone by IMEI, blocking a credit card, locking a laptop
+  through its account). The six not admitted are steps to get the item back: registering a bicycle's frame number on
+  stolen-bike lists "in case it turns up" (3 files, presumed false), reporting a serial number to the maker so the item
+  is noticed at a repair (2 files, held), going with the police to secure a bicycle offered for sale (1 file, held).
+  The old not_this excluded exactly these. The writer and the blind check saw only the question (bundles carry no
+  not_this), so the designs count them as measures. The fact changes no document (no document hangs on the instruction
+  step and the product defers only on facts that change a document): 0 errors; the change aligns the wording with the
+  passage and the admission rate with the designs.
+- **Passage:** VVG Art. 38a Abs. 1: «Der Anspruchsberechtigte ist verpflichtet, nach Eintritt des befürchteten
+  Ereignisses tunlichst für Minderung des Schadens zu sorgen. Er muss, wenn nicht Gefahr im Verzug liegt, über die zu
+  ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.»
+- **Why no broader and no narrower:** the old exclusion of steps to recover the items had no passage: getting stolen
+  items back, or stopping their use or sale, reduces the loss ("Minderung des Schadens"). Steps that serve only to
+  find the thief stay excluded, as do measures already carried out and the notification itself (unchanged).
+
+### Considered and not changed
+
+- Six denied-event files were routed to the other theft type (the_1dfba8facf5e, the_6634ab23ee99, the_685edf55333b,
+  the_86b4e22a87e7: "not at home, but on holiday / in Bern / in Zürich / in Konstanz"; the_86e739ec9184,
+  the_a529fff2269d: "at home"). Under the rule text these files are claims of the other type, so the product's routing
+  is what the rules give and the reference's stop is right only inside the drawn type: 24 of the 67 errors. That is a
+  benchmark-design point (the two types' defining events are complementary, so denying one usually states the other),
+  not wording; left for the planner.
+- Needed but not allowed in this revision: `stolen_items_list` asks "where and when it was bought" for each item and
+  `original_vouchers` the voucher for each item, which cannot exist for a gift, an heirloom or a spare key bunch; the
+  product read them literally (3 requests that should not be made, and 4 more where the file plausibly is
+  insufficient). A `must_show` change; left for the planner.
+
+### Hashes after the revision
+
+- rules.json f366a1cf4d0bc7d1e43dc665d21531afdb19d9e77410dc169b30b263c4b991b2
+- rule_text.md 4a6fbe444d13deb4498e4806a9e1ad175cfdb467800f753e5c138aa0e872f937
+- workflow/theft_at_home.json cd19a336c5e8fcd57c3da5e2effd0fff9894bea6fb53b31340eb03dd01976ed2
+- workflow/simple_theft_away.json 320a346001d595ff9c564314ef47fe50c26992071f48c7d60bf15eea1bad21f2

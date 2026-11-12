@@ -1,0 +1,6849 @@
+{
+ "label": "DEVELOPMENT, post hoc, not a result",
+ "arm": "clean",
+ "model": "gpt-6-luna",
+ "rules_read": "rev0",
+ "rule": "(one cause per error; an error is a (file, document, kind) of lint/analyse.py's part (d) scoring):\n\n1. Routing. The run was handed over unrouted (deferred) or routed to another type: every error of the file is a routing\n   error, split by whether the file's defining event is stated false (denied-event file).\n2-4. The file was routed to its type. Three replays through the product's evaluator (workflows.evaluate with checked=True,\n   the inputs built as the product builds them: accepted established facts plus applicable presumptions; findings =\n   documents present or unusable with an accepted verdict):\n   D  = designed fact states + designed attachment states (exactly as generator/reference.py builds the reference);\n   PD = the product's fact states + designed attachment states;\n   DP = designed fact states + the product's document findings;\n   PP = the product's facts and findings (must reproduce the stored plan; checked).\n   If D already differs from reference.json for the document: cause 4 (workflow differs from reference).\n   Else if PD shows the error and DP does not: cause 2 (fact reading). Else if DP shows the error and PD does not:\n   cause 3 (document judgment). If both show it: each alone suffices; counted under cause 2 and flagged \"also document\".\n   If neither shows it but PP does: the two together; counted under cause 2 and flagged \"joint\".\n   The fact named for cause 2 is the fact whose correction alone (product state replaced by the designed state, all other\n   product states kept, designed attachments) removes the error; where several do, the first in workflow order is named\n   and the others listed; where none alone does, \"several facts jointly\".\n   What the product did with the fact, from its recorded state and the three stored reading responses:\n   - admitted the wrong value: established (all readings agreed, quotations located) a value other than the designed one;\n   - readings disagreed and it held although the file states the fact: designed stated, product unresolved, and at least\n     one reading gave the designed value or answered open (sub-pattern: the three verdicts);\n   - read a stated fact as not stated: designed stated, and no reading gave a value or answered open (a presumption,\n     where the fact has one, then filled the other value);\n   - read an open fact as settled: designed open, product established a value or a presumption filled it;\n   - read an unmentioned fact as open: designed not mentioned, product unresolved (a reading gave a value or answered\n     open, so no presumption filled it).\n5. Scoring convention: a need outside the type's catalogue (a process-builder addition) or an optional document. (On\n   these runs the process builder added nothing and no optional document produced an error; the class is kept for the\n   rule's completeness and for the revised re-run.)\n6. Text and recorded state plausibly disagree: a cause-2 error is moved here when (a) the file was kept as read and the\n   blind check changed this fact's state (design.json facts_designed) and the product's reading matches the original\n   design, or (b) diagnosis_review.json records, after reading the file text, that the passage the readings quoted\n   plausibly states what the product read (the judgment and its reason are listed).",
+ "replay_checks": {
+  "tenancy": {
+   "replay_reproduces_stored_plan": 53,
+   "designed_replay_equals_reference": 314
+  },
+  "theft": {
+   "replay_reproduces_stored_plan": 40,
+   "designed_replay_equals_reference": 304
+  },
+  "dismissal": {
+   "replay_reproduces_stored_plan": 46,
+   "designed_replay_equals_reference": 336
+  }
+ },
+ "files": {
+  "tenancy": 59,
+  "theft": 59,
+  "dismissal": 58
+ },
+ "counts": {
+  "dismissal": {
+   "document_judgment": {
+    "unneeded_request": 8,
+    "missed_request": 0,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 8
+   },
+   "fact_reading": {
+    "unneeded_request": 0,
+    "missed_request": 1,
+    "unwarranted_hold": 18,
+    "missed_hold": 0,
+    "total": 19
+   },
+   "routing_denied": {
+    "unneeded_request": 2,
+    "missed_request": 0,
+    "unwarranted_hold": 3,
+    "missed_hold": 0,
+    "total": 5
+   },
+   "routing_not_denied": {
+    "unneeded_request": 0,
+    "missed_request": 4,
+    "unwarranted_hold": 6,
+    "missed_hold": 0,
+    "total": 10
+   },
+   "text_state_disagree": {
+    "unneeded_request": 0,
+    "missed_request": 4,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 4
+   }
+  },
+  "tenancy": {
+   "document_judgment": {
+    "unneeded_request": 9,
+    "missed_request": 0,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 9
+   },
+   "fact_reading": {
+    "unneeded_request": 0,
+    "missed_request": 0,
+    "unwarranted_hold": 7,
+    "missed_hold": 0,
+    "total": 7
+   },
+   "routing_not_denied": {
+    "unneeded_request": 0,
+    "missed_request": 4,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 4
+   },
+   "text_state_disagree": {
+    "unneeded_request": 0,
+    "missed_request": 1,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 1
+   }
+  },
+  "theft": {
+   "document_judgment": {
+    "unneeded_request": 5,
+    "missed_request": 0,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 5
+   },
+   "fact_reading": {
+    "unneeded_request": 0,
+    "missed_request": 0,
+    "unwarranted_hold": 5,
+    "missed_hold": 0,
+    "total": 5
+   },
+   "routing_denied": {
+    "unneeded_request": 8,
+    "missed_request": 0,
+    "unwarranted_hold": 16,
+    "missed_hold": 0,
+    "total": 24
+   },
+   "routing_not_denied": {
+    "unneeded_request": 0,
+    "missed_request": 18,
+    "unwarranted_hold": 0,
+    "missed_hold": 6,
+    "total": 24
+   },
+   "text_state_disagree": {
+    "unneeded_request": 4,
+    "missed_request": 0,
+    "unwarranted_hold": 5,
+    "missed_hold": 0,
+    "total": 9
+   }
+  },
+  "all_regimes": {
+   "document_judgment": {
+    "unneeded_request": 22,
+    "missed_request": 0,
+    "unwarranted_hold": 0,
+    "missed_hold": 0,
+    "total": 22
+   },
+   "fact_reading": {
+    "unneeded_request": 0,
+    "missed_request": 1,
+    "unwarranted_hold": 30,
+    "missed_hold": 0,
+    "total": 31
+   },
+   "routing_denied": {
+    "unneeded_request": 10,
+    "missed_request": 0,
+    "unwarranted_hold": 19,
+    "missed_hold": 0,
+    "total": 29
+   },
+   "routing_not_denied": {
+    "unneeded_request": 0,
+    "missed_request": 26,
+    "unwarranted_hold": 6,
+    "missed_hold": 6,
+    "total": 38
+   },
+   "text_state_disagree": {
+    "unneeded_request": 4,
+    "missed_request": 5,
+    "unwarranted_hold": 5,
+    "missed_hold": 0,
+    "total": 14
+   }
+  }
+ },
+ "owners": {
+  "tenancy": {
+   "errors": 21,
+   "rule wording": 6,
+   "must_show wording": 3,
+   "product": 11,
+   "text vs recorded state": 1
+  },
+  "theft": {
+   "errors": 67,
+   "rule wording": 22,
+   "must_show wording": 3,
+   "product": 4,
+   "benchmark design": 29,
+   "text vs recorded state": 9
+  },
+  "dismissal": {
+   "errors": 46,
+   "rule wording": 11,
+   "must_show wording": 6,
+   "product": 20,
+   "benchmark design": 5,
+   "text vs recorded state": 4
+  },
+  "all_regimes": {
+   "errors": 134,
+   "rule wording": 39,
+   "must_show wording": 12,
+   "product": 35,
+   "benchmark design": 34,
+   "text vs recorded state": 14
+  }
+ },
+ "level0_dismissal": {
+  "files": 15,
+  "errors": 24,
+  "by_kind": {
+   "unneeded_request": 5,
+   "missed_request": 1,
+   "unwarranted_hold": 18
+  },
+  "by_cause": {
+   "document_judgment": 3,
+   "text_state_disagree": 1,
+   "fact_reading": 12,
+   "routing_not_denied": 3,
+   "routing_denied": 5
+  },
+  "by_owner": {
+   "product": 13,
+   "text vs recorded state": 1,
+   "must_show wording": 2,
+   "rule wording": 3,
+   "benchmark design": 5
+  },
+  "per_file": [
+   {
+    "file": "dis_32d79153a27f",
+    "errors": 5,
+    "kinds": {
+     "unwarranted_hold": 5
+    },
+    "causes": [
+     "fact_reading",
+     "fact_reading:employer_gave_notice (every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording)))"
+    ]
+   },
+   {
+    "file": "dis_ff1e9056d2c3",
+    "errors": 5,
+    "kinds": {
+     "unneeded_request": 2,
+     "unwarranted_hold": 3
+    },
+    "causes": [
+     "routing_denied"
+    ]
+   },
+   {
+    "file": "dis_408b774aa7db",
+    "errors": 4,
+    "kinds": {
+     "unwarranted_hold": 3,
+     "unneeded_request": 1
+    },
+    "causes": [
+     "document_judgment",
+     "fact_reading",
+     "fact_reading:notice_period_ended (every reading gave the designed value; 3 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise))"
+    ]
+   },
+   {
+    "file": "dis_b7f5c9e07c99",
+    "errors": 3,
+    "kinds": {
+     "unwarranted_hold": 3
+    },
+    "causes": [
+     "fact_reading:dismissed_immediately (every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words)))"
+    ]
+   },
+   {
+    "file": "dis_c50430dbdfa1",
+    "errors": 3,
+    "kinds": {
+     "unwarranted_hold": 3
+    },
+    "causes": [
+     "routing_not_denied"
+    ]
+   },
+   {
+    "file": "dis_07997bac9677",
+    "errors": 1,
+    "kinds": {
+     "unneeded_request": 1
+    },
+    "causes": [
+     "document_judgment"
+    ]
+   },
+   {
+    "file": "dis_0ddd28b452d1",
+    "errors": 1,
+    "kinds": {
+     "missed_request": 1
+    },
+    "causes": [
+     "text_state_disagree"
+    ]
+   },
+   {
+    "file": "dis_373612fa5345",
+    "errors": 1,
+    "kinds": {
+     "unneeded_request": 1
+    },
+    "causes": [
+     "document_judgment"
+    ]
+   },
+   {
+    "file": "dis_fcbd44dfcef3",
+    "errors": 1,
+    "kinds": {
+     "unwarranted_hold": 1
+    },
+    "causes": [
+     "fact_reading:notice_before_protected_period (verdicts false 2, true 1)"
+    ]
+   }
+  ]
+ },
+ "top_pairs": [
+  {
+   "regime": "tenancy",
+   "type": "lease_termination_dispute",
+   "fact": "asserted_claims",
+   "document": "claims_and_reasons",
+   "errors": 2,
+   "files": 2,
+   "kinds": {
+    "unwarranted_hold": 2
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 2
+   },
+   "designed_states": {
+    "stated_true": 2
+   },
+   "quotations": [
+    {
+     "file": "ten_00bf58d82a2b",
+     "designed_state": "stated_true",
+     "reading_verdict": "open",
+     "quote": "Ich bin ziemlich sicher, warurn mir die Hagenbuch Betriebs AG die Wohnung gekundigt hat: weil ich mich gewehrt habe."
+    },
+    {
+     "file": "ten_0c74f4037e13",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "I am convinced the real reason for the notice is my complaint from 15 January 2026."
+    }
+   ]
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "document": "insurance_policy",
+   "errors": 2,
+   "files": 2,
+   "kinds": {
+    "unwarranted_hold": 2
+   },
+   "what_the_product_did": {
+    "read_unmentioned_as_open": 1,
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "not_mentioned": 1,
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "the_506c9909edc4",
+     "designed_state": "not_mentioned",
+     "reading_verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "file": "the_656f9aad39e5",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    }
+   ]
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "document": "notification_record",
+   "errors": 2,
+   "files": 2,
+   "kinds": {
+    "unwarranted_hold": 2
+   },
+   "what_the_product_did": {
+    "read_unmentioned_as_open": 1,
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "not_mentioned": 1,
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "the_506c9909edc4",
+     "designed_state": "not_mentioned",
+     "reading_verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "file": "the_656f9aad39e5",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    }
+   ]
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "document": "stolen_items_list",
+   "errors": 2,
+   "files": 2,
+   "kinds": {
+    "unwarranted_hold": 2
+   },
+   "what_the_product_did": {
+    "read_unmentioned_as_open": 1,
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "not_mentioned": 1,
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "the_506c9909edc4",
+     "designed_state": "not_mentioned",
+     "reading_verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "file": "the_656f9aad39e5",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    }
+   ]
+  },
+  {
+   "regime": "tenancy",
+   "type": "defect_mold_heating",
+   "fact": "defect_present",
+   "document": "damage_evidence",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "ten_270f84d8acff",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ]
+  },
+  {
+   "regime": "tenancy",
+   "type": "defect_mold_heating",
+   "fact": "defect_present",
+   "document": "defect_record",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "ten_270f84d8acff",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ]
+  },
+  {
+   "regime": "tenancy",
+   "type": "defect_mold_heating",
+   "fact": "defect_present",
+   "document": "knowledge_proof",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "ten_270f84d8acff",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ]
+  },
+  {
+   "regime": "tenancy",
+   "type": "defect_mold_heating",
+   "fact": "defect_present",
+   "document": "lease_contract",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "ten_270f84d8acff",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ]
+  },
+  {
+   "regime": "tenancy",
+   "type": "rent_increase_dispute",
+   "fact": "index_clause",
+   "document": "cost_breakdown",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_true": 1
+   },
+   "quotations": [
+    {
+     "file": "ten_a743587360f3",
+     "designed_state": "stated_true",
+     "reading_verdict": "open",
+     "quote": "Soweit ich das verstehe, kommt das von der Klausel in meinem Vertrag"
+    },
+    {
+     "file": "ten_a743587360f3",
+     "designed_state": "stated_true",
+     "reading_verdict": "true",
+     "quote": "kommt das von der Klausel in meinem Vertrag, nach der sich die Miete am Landesindx der Konsumentenpreise ausrichtet."
+    }
+   ]
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "burglary_or_robbery",
+   "document": "lock_change_invoice",
+   "errors": 1,
+   "files": 1,
+   "kinds": {
+    "unwarranted_hold": 1
+   },
+   "what_the_product_did": {
+    "readings_disagreed_held": 1
+   },
+   "designed_states": {
+    "stated_false": 1
+   },
+   "quotations": [
+    {
+     "file": "the_2412f755f636",
+     "designed_state": "stated_false",
+     "reading_verdict": "false",
+     "quote": "Aufgebrochen wurde nichts, der Dieb ist einfach hineingespaziert."
+    }
+   ]
+  }
+ ],
+ "by_fact": [
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 5
+  },
+  {
+   "regime": "tenancy",
+   "type": "defect_mold_heating",
+   "fact": "defect_present",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 4
+  },
+  {
+   "regime": "dismissal",
+   "type": "protected_period_notice",
+   "fact": "employer_gave_notice",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 4
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "what_the_product_did": "read_unmentioned_as_open",
+   "errors": 3
+  },
+  {
+   "regime": "dismissal",
+   "type": "immediate_dismissal",
+   "fact": "dismissed_immediately",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 3
+  },
+  {
+   "regime": "tenancy",
+   "type": "lease_termination_dispute",
+   "fact": "asserted_claims",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 2
+  },
+  {
+   "regime": "dismissal",
+   "type": "wrongful_termination",
+   "fact": "employer_gave_notice",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 2
+  },
+  {
+   "regime": "dismissal",
+   "type": "wrongful_termination",
+   "fact": "notice_period_ended",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 2
+  },
+  {
+   "regime": "tenancy",
+   "type": "rent_increase_dispute",
+   "fact": "index_clause",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "burglary_or_robbery",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "theft",
+   "type": "simple_theft_away",
+   "fact": "theft_away",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "dismissal",
+   "type": "immediate_dismissal",
+   "fact": "reasons_requested",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "dismissal",
+   "type": "protected_period_notice",
+   "fact": "incapacity_illness_accident",
+   "what_the_product_did": "read_stated_as_not_stated",
+   "errors": 1
+  },
+  {
+   "regime": "dismissal",
+   "type": "wrongful_termination",
+   "fact": "more_than_180_days",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "dismissal",
+   "type": "wrongful_termination",
+   "fact": "retaliation_for_claims",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  },
+  {
+   "regime": "dismissal",
+   "type": "protected_period_notice",
+   "fact": "notice_before_protected_period",
+   "what_the_product_did": "readings_disagreed_held",
+   "errors": 1
+  }
+ ],
+ "routing": {
+  "tenancy": [
+   {
+    "file": "ten_429b182434cf",
+    "type": "rent_increase_dispute",
+    "denied_event": true,
+    "level": 25,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "increase_applied",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "cost_or_services_reason": "not_mentioned",
+     "graduated_rent": "not_mentioned",
+     "increase_applied": "stated_false",
+     "index_clause": "not_mentioned",
+     "termination_with_increase": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted (no routing value)",
+     "empty_plan_right": true,
+     "why": "The file states the rent was never raised (wants a reduction of the initial rent). No type's defining event holds; the rule text gives no process, so an empty plan is right."
+    }
+   },
+   {
+    "file": "ten_776e0e61986b",
+    "type": "defect_mold_heating",
+    "denied_event": true,
+    "level": 50,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "defect_present",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "damages_claimed": "not_mentioned",
+     "defect_present": "stated_false",
+     "deposit_intended": "not_mentioned",
+     "landlord_unaware": "not_mentioned",
+     "notice_oral_only": "not_mentioned",
+     "rent_deposited": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "The file states there is no defect; the dispute is a refused sublet, which no type covers. Empty plan right."
+    }
+   },
+   {
+    "file": "ten_b4d4cb05336f",
+    "type": "rent_increase_dispute",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "selected",
+    "routed_to": "lease_termination_dispute",
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute",
+      "quotes": [
+       "Was mich am meisten schockiert hat, steht im Begleitbrief: Herr Daniel Meier kündigt mir darin gleichzeitig die Wohnung an der Hauptstrasse 25 in Bern, auf Ende Juni 2026."
+      ]
+     }
+    ],
+    "other_topic": "rent increase",
+    "defining_event": "increase_applied",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "cost_or_services_reason": "stated_false",
+     "graduated_rent": "not_mentioned",
+     "increase_applied": "stated_true",
+     "index_clause": "stated_true",
+     "termination_with_increase": "stated_true"
+    },
+    "plan": {
+     "requests": [
+      "lease_contract",
+      "proof_of_receipt",
+      "termination_notice"
+     ],
+     "holds": []
+    },
+    "errors": 0,
+    "product_facts": {
+     "dispute_family": [
+      "established",
+      "lease_termination_dispute"
+     ],
+     "notice_received": [
+      "established",
+      true
+     ],
+     "arrears_termination": [
+      "established",
+      false
+     ],
+     "family_residence": [
+      "presumed",
+      false
+     ],
+     "asserted_claims": [
+      "presumed",
+      false
+     ],
+     "extension_requested": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Rent increase accompanied by a notice of termination in the covering letter. The rule set decides that case inside the rent-increase type (fact termination_with_increase, art. 269d para. 2 let. c); the routing question does not say so, and the router took the termination."
+    }
+   },
+   {
+    "file": "ten_c1e4987669e8",
+    "type": "lease_termination_dispute",
+    "denied_event": true,
+    "level": 0,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "notice_received",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "arrears_termination": "stated_false",
+     "asserted_claims": "not_mentioned",
+     "extension_requested": "stated_false",
+     "family_residence": "not_mentioned",
+     "notice_received": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "The file states no notice was given (only a phone remark about a possible sale). No type applies. Empty plan right."
+    }
+   },
+   {
+    "file": "ten_c2a72cbf1698",
+    "type": "defect_mold_heating",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": "Noise and disturbance from a cocktail bar in the building",
+    "defining_event": "defect_present",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "damages_claimed": "not_mentioned",
+     "defect_present": "stated_true",
+     "deposit_intended": "not_mentioned",
+     "landlord_unaware": "not_mentioned",
+     "notice_oral_only": "not_mentioned",
+     "rent_deposited": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 3,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "The routing question names the defect type as 'a defect of the dwelling (mould, damp, heating)'; the file's defect is noise and vibration from a bar in the building, a disturbance of the agreed use that the type's defining event covers (art. 259a para. 1, 'disturbed in using the dwelling as agreed'). The parenthesis reads as a closed list, so the router gave no value."
+    }
+   },
+   {
+    "file": "ten_e4858b3af131",
+    "type": "rent_increase_dispute",
+    "denied_event": false,
+    "level": 0,
+    "routing_status": "selected",
+    "routed_to": "lease_termination_dispute",
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": "lease_termination_dispute",
+      "quotes": [
+       "I'd like to know whether I can fight the termination, and whether I have to pay the higher rent while that's being sorted out."
+      ]
+     }
+    ],
+    "other_topic": "Rent increase",
+    "defining_event": "increase_applied",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "cost_or_services_reason": "not_mentioned",
+     "graduated_rent": "stated_true",
+     "increase_applied": "stated_true",
+     "index_clause": "not_mentioned",
+     "termination_with_increase": "stated_true"
+    },
+    "plan": {
+     "requests": [
+      "lease_contract",
+      "proof_of_receipt",
+      "termination_notice"
+     ],
+     "holds": []
+    },
+    "errors": 1,
+    "product_facts": {
+     "dispute_family": [
+      "established",
+      "lease_termination_dispute"
+     ],
+     "notice_received": [
+      "established",
+      true
+     ],
+     "family_residence": [
+      "presumed",
+      false
+     ],
+     "arrears_termination": [
+      "presumed",
+      false
+     ],
+     "asserted_claims": [
+      "presumed",
+      false
+     ],
+     "extension_requested": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As ten_b4d4cb05336f: a graduated-rent step together with a notice of termination; the router took the termination ('whether I can fight the termination')."
+    }
+   }
+  ],
+  "theft": [
+   {
+    "file": "the_0cd1b047049a",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 10,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "When we came back about five hours later the passenger window was smashed and the rucksack was gone."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_true",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "stated_true",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Theft from a car broken into away from home. The claim_type question's 'Not this' sends 'a burglary or robbery away from the insured location' to other, but the question does not carry the policy's own definition that breaking into a vehicle is not a burglary (Ziff. 23.3 lit. a, Ausschluss: 'Fahrzeuge sind keine Behältnisse'); the router read the smashed window as a burglary away and answered other."
+    }
+   },
+   {
+    "file": "the_12ee892d56f4",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 10,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "war die Scheibe auf der Beifahrerseite eingeschlagen, die Tasche weg und die Skibox aufgedrückt und leer."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "stated_false",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "stated_true",
+     "theft_away": "stated_true",
+     "traces_changed": "open",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 4,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (car window smashed, ski box forced)."
+    }
+   },
+   {
+    "file": "the_1dfba8facf5e",
+    "type": "theft_at_home",
+    "denied_event": true,
+    "level": 25,
+    "routing_status": "selected",
+    "routed_to": "simple_theft_away",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "simple_theft_away",
+      "quotes": [
+       "Das ist am 3. Juli 2026 passiert, und zwar nicht bei mir zu Hause am Birkenweg 73 in Neuchâtel, sondern unterwegs, während meiner Ferien im Tessin."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_at_home",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "bicycle": "stated_false",
+     "burglary_or_robbery": "not_mentioned",
+     "household_perpetrator": "not_mentioned",
+     "imminent_danger": "stated_false",
+     "lock_change": "not_mentioned",
+     "measures_pending": "not_mentioned",
+     "theft_at_home": "stated_false",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ]
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "unknown",
+      null
+     ],
+     "theft_away": [
+      "unknown",
+      null
+     ],
+     "away_cover_missing": [
+      "unknown",
+      null
+     ],
+     "bicycle": [
+      "established",
+      false
+     ],
+     "imminent_danger": [
+      "established",
+      false
+     ],
+     "traces_changed": [
+      "presumed",
+      false
+     ],
+     "vouchers_unobtainable": [
+      "presumed",
+      false
+     ],
+     "measures_pending": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to simple_theft_away and planned it",
+     "empty_plan_right": false,
+     "why": "Designed as theft_at_home with the event denied: the file says the theft happened on holiday, not at home. Under the rule text that is a simple theft away (type 2), so the product's routing is what the rules give; the reference's stop (nothing needed) is right only inside the drawn type. The 4 errors are scored against a reference the rule text does not give."
+    }
+   },
+   {
+    "file": "the_248aa95805a8",
+    "type": "theft_at_home",
+    "denied_event": false,
+    "level": 0,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Das Schlimme ist, wer es war. Es war meine Mitbewohnerin Nicole Wyss.",
+       "Am 15. Mai ist sie ohne ein Wort ausgezogen, und mit ihr sind meine Sachen verschwunden: das Velo, mein Laptop, die Spiegelreflexkamera und mein Schmuck."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_at_home",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "bicycle": "stated_true",
+     "burglary_or_robbery": "not_mentioned",
+     "household_perpetrator": "stated_true",
+     "imminent_danger": "not_mentioned",
+     "lock_change": "not_mentioned",
+     "measures_pending": "stated_false",
+     "theft_at_home": "stated_true",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Theft at home by a flatmate. The rule set decides the household exclusion inside theft_at_home (fact household_perpetrator, stop h_stop_excluded); the claim_type question does not say that an exclusion does not move the claim out of its type, and the router answered other quoting 'Es war meine Mitbewohnerin'."
+    }
+   },
+   {
+    "file": "the_32a656cb56cf",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 25,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "open",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_true",
+     "bicycle": "stated_true",
+     "imminent_danger": "stated_true",
+     "measures_pending": "stated_true",
+     "theft_away": "open",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 1,
+    "judgment": {
+     "owner": "benchmark design",
+     "cause": "The defining event is designed open: the file says the bicycle may have been taken at the station or from the shed at home. That is exactly the routing question (at home or away), so no routing answer can be given from the text; the router gave none. The reference assumes the type the design drew. Not a wording defect."
+    }
+   },
+   {
+    "file": "the_5ee356013cfc",
+    "type": "simple_theft_away",
+    "denied_event": true,
+    "level": 25,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Mir wurde nichts einfach so gestohlen, ich wurde überfallen.",
+       "In einer Unterführung kam ein Mann von hinten, hat mich gegen die Wand gestossen und mir gedroht, er schlage zu, wenn ich mich wehre."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "away_cover_missing": "not_mentioned",
+     "bicycle": "stated_false",
+     "imminent_danger": "stated_false",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_false",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "routed to other",
+     "empty_plan_right": true,
+     "why": "A robbery away from home: outside both types by the rule text ('routing answers other'). Empty plan right."
+    }
+   },
+   {
+    "file": "the_6634ab23ee99",
+    "type": "theft_at_home",
+    "denied_event": true,
+    "level": 10,
+    "routing_status": "selected",
+    "routed_to": "simple_theft_away",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "simple_theft_away",
+      "quotes": [
+       "I was in Bern for the day on Friday 24 July 2026, visiting my riend Laura Widmer, and that's where my camera bag with the camera and two lenses was stolen"
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_at_home",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "bicycle": "not_mentioned",
+     "burglary_or_robbery": "not_mentioned",
+     "household_perpetrator": "stated_false",
+     "imminent_danger": "not_mentioned",
+     "lock_change": "stated_false",
+     "measures_pending": "not_mentioned",
+     "theft_at_home": "stated_false",
+     "traces_changed": "stated_false",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ]
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "unknown",
+      null
+     ],
+     "theft_away": [
+      "unknown",
+      null
+     ],
+     "away_cover_missing": [
+      "unknown",
+      null
+     ],
+     "traces_changed": [
+      "established",
+      false
+     ],
+     "bicycle": [
+      "presumed",
+      false
+     ],
+     "vouchers_unobtainable": [
+      "presumed",
+      false
+     ],
+     "measures_pending": [
+      "presumed",
+      false
+     ],
+     "imminent_danger": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to simple_theft_away",
+     "empty_plan_right": false,
+     "why": "As the_1dfba8facf5e: a camera bag stolen in Bern, not at home."
+    }
+   },
+   {
+    "file": "the_685edf55333b",
+    "type": "theft_at_home",
+    "denied_event": true,
+    "level": 0,
+    "routing_status": "selected",
+    "routed_to": "simple_theft_away",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "simple_theft_away",
+      "quotes": [
+       "my laptop and my e-reader were stolen, together worth about CHF 3,600. This wasn't at home in my flat at Sonnenweg 95 in Chur. I was in Zürich that day for a work meeting, and that's where it happened."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_at_home",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "bicycle": "not_mentioned",
+     "burglary_or_robbery": "not_mentioned",
+     "household_perpetrator": "not_mentioned",
+     "imminent_danger": "stated_false",
+     "lock_change": "not_mentioned",
+     "measures_pending": "not_mentioned",
+     "theft_at_home": "stated_false",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ]
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "unknown",
+      null
+     ],
+     "theft_away": [
+      "unknown",
+      null
+     ],
+     "away_cover_missing": [
+      "unknown",
+      null
+     ],
+     "traces_changed": [
+      "established",
+      false
+     ],
+     "bicycle": [
+      "established",
+      false
+     ],
+     "imminent_danger": [
+      "established",
+      false
+     ],
+     "vouchers_unobtainable": [
+      "presumed",
+      false
+     ],
+     "measures_pending": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to simple_theft_away",
+     "empty_plan_right": false,
+     "why": "As the_1dfba8facf5e: laptop stolen in Zürich at a work meeting."
+    }
+   },
+   {
+    "file": "the_819379d12c03",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 25,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "the rear side window was smashed in and the bag had gone.",
+       "Type of loss: theft of household contents away from home (from a parked car)"
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "stated_false",
+     "imminent_danger": "stated_false",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_false",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 3,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (rear side window smashed; the file's own form says 'theft of household contents away from home (from a parked car)')."
+    }
+   },
+   {
+    "file": "the_86b4e22a87e7",
+    "type": "theft_at_home",
+    "denied_event": true,
+    "level": 10,
+    "routing_status": "selected",
+    "routed_to": "simple_theft_away",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "simple_theft_away",
+      "quotes": [
+       "Ich war am 25. August 2026 mit meiner Freundin Seraina Ellis in Konstanz zum Einkaufen, und dort sind mir die Sachen gestohlen worden."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_at_home",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "bicycle": "not_mentioned",
+     "burglary_or_robbery": "not_mentioned",
+     "household_perpetrator": "not_mentioned",
+     "imminent_danger": "stated_false",
+     "lock_change": "not_mentioned",
+     "measures_pending": "not_mentioned",
+     "theft_at_home": "stated_false",
+     "traces_changed": "stated_false",
+     "vouchers_unobtainable": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ]
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "unknown",
+      null
+     ],
+     "theft_away": [
+      "unknown",
+      null
+     ],
+     "away_cover_missing": [
+      "unknown",
+      null
+     ],
+     "traces_changed": [
+      "established",
+      false
+     ],
+     "vouchers_unobtainable": [
+      "established",
+      false
+     ],
+     "imminent_danger": [
+      "established",
+      false
+     ],
+     "bicycle": [
+      "presumed",
+      false
+     ],
+     "measures_pending": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to simple_theft_away",
+     "empty_plan_right": false,
+     "why": "As the_1dfba8facf5e: items stolen while shopping in Konstanz."
+    }
+   },
+   {
+    "file": "the_86e739ec9184",
+    "type": "simple_theft_away",
+    "denied_event": true,
+    "level": 0,
+    "routing_status": "selected",
+    "routed_to": "theft_at_home",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "theft_at_home",
+      "quotes": [
+       "Die Sachen wurden am Sonntag, 23. August 2026, bei mir zu Hause gestohlen, aus meiner Wohnung an der Bergstrasse 108 in St. Gallen"
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "away_cover_missing": "not_mentioned",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "stated_false",
+     "theft_away": "stated_false",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "stated_false"
+    },
+    "plan": {
+     "requests": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ],
+     "holds": []
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "established",
+      "theft_at_home"
+     ],
+     "theft_at_home": [
+      "established",
+      true
+     ],
+     "burglary_or_robbery": [
+      "unknown",
+      null
+     ],
+     "vouchers_unobtainable": [
+      "established",
+      false
+     ],
+     "measures_pending": [
+      "established",
+      false
+     ],
+     "household_perpetrator": [
+      "presumed",
+      false
+     ],
+     "lock_change": [
+      "presumed",
+      false
+     ],
+     "traces_changed": [
+      "presumed",
+      false
+     ],
+     "bicycle": [
+      "presumed",
+      false
+     ],
+     "imminent_danger": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to theft_at_home",
+     "empty_plan_right": false,
+     "why": "Designed as simple_theft_away with the event denied: the file says the items were stolen at home. Under the rule text that is type 1; the product's routing is what the rules give."
+    }
+   },
+   {
+    "file": "the_9355c558630a",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 0,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Am 24. Juni 2026 standen wir auf einem Campingplatz bei Locarno und sind am Nachmittag ins Städtchen gegangen. Das Wohnmobil war abgeschlossen. Als wir um sechs zurückkamen, war das Türschloss aufgebrochen und drinnen alles durchwühlt.",
+       "Am 24.06.2026 zwischen ca. 14:00 und 18:00 Uhr wurde auf einem Campingplatz bei Locarno das Türschloss des abgestellten und verschlossenen Wohnmobils der Geschädigten aufgebrochen. Aus dem Fahrzeug wurden ein Laptop, ein Tablet, eine Fotokamera sowie Schmuck entwendet."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "stated_false",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "stated_true",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 3,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (camper van door lock broken open on a camp site)."
+    }
+   },
+   {
+    "file": "the_a529fff2269d",
+    "type": "simple_theft_away",
+    "denied_event": true,
+    "level": 50,
+    "routing_status": "selected",
+    "routed_to": "theft_at_home",
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "theft_at_home",
+      "quotes": [
+       "This was a break-in at home, in my own flat at Mühleweg 77 in St. Gallen.",
+       "Someone had climbed up onto the first-floor balcony and levered the door open with a tool, and inside they'd gone through every room."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "away_cover_missing": "not_mentioned",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "stated_false",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_false",
+     "traces_changed": "stated_false",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [
+      "insurance_policy",
+      "notification_record",
+      "original_vouchers",
+      "stolen_items_list"
+     ],
+     "holds": []
+    },
+    "errors": 4,
+    "product_facts": {
+     "claim_type": [
+      "established",
+      "theft_at_home"
+     ],
+     "theft_at_home": [
+      "established",
+      true
+     ],
+     "burglary_or_robbery": [
+      "established",
+      true
+     ],
+     "traces_changed": [
+      "established",
+      false
+     ],
+     "bicycle": [
+      "established",
+      false
+     ],
+     "imminent_danger": [
+      "established",
+      false
+     ],
+     "household_perpetrator": [
+      "presumed",
+      false
+     ],
+     "lock_change": [
+      "presumed",
+      false
+     ],
+     "vouchers_unobtainable": [
+      "presumed",
+      false
+     ],
+     "measures_pending": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to theft_at_home",
+     "empty_plan_right": false,
+     "why": "As the_86e739ec9184: a break-in at the claimant's flat."
+    }
+   },
+   {
+    "file": "the_c50e0bd7b054",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Ich hatte mein Auto am Nachmittag in einer Seitenstrasse beim Bahnhof abgestellt und abgeschlossen und war zwei Stunden an einer Sitzung. Als ich zurückkam, war die hintere Seitenscheibe eingeschlagen und meine Arbeitstasche vom Rücksitz verschwunden: Laptop, Tablet, Kamera und eine Lederjacke, zus…",
+       "Schadenart: Diebstahl auswärts (aus abgeschlossenem Personenwagen)"
+      ]
+     }
+    ],
+    "other_topic": "Disagreement over remotely wiping and locking the stolen laptop",
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "open",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_false",
+     "vouchers_unobtainable": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 1,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (car window smashed; the file's form says 'Diebstahl auswärts (aus abgeschlossenem Personenwagen)')."
+    }
+   },
+   {
+    "file": "the_c7620535798b",
+    "type": "simple_theft_away",
+    "denied_event": true,
+    "level": 50,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "a man stepped out in front of me with a knife. He held it close to my stomach and told me to hand over my bag and my watch, or he'd use it."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "away_cover_missing": "not_mentioned",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_false",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "routed to other",
+     "empty_plan_right": true,
+     "why": "A robbery at knifepoint away from home: outside both types. Empty plan right."
+    }
+   },
+   {
+    "file": "the_d37fc3c54b4b",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 10,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Als ich zurückkam, war die Scheibe der Beifahrertür eingeschlagen und meine Tasche vom Beifahrersitz weg, mit dem Tablet, dem Kopfhörer und meiner Brille."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "stated_false",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 3,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (passenger door window smashed)."
+    }
+   },
+   {
+    "file": "the_d76f5df60f83",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "On Saturday 5 September 2026 I was at the lake festival in Lucerne with my friend Peter Imhof. Around 11 at night, in the crowd near the fireworks, a man barged into me so hard that I fell over.",
+       "Peter is convinced the man knocked me down on purpose to rob me. I'm not sure: it was packed, people were pushing everywhere, and it may just have been a collision that a pickpocket used. I really can't say which it was."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "open",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "stated_false",
+     "imminent_danger": "stated_false",
+     "measures_pending": "stated_true",
+     "theft_away": "open",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 4,
+    "judgment": {
+     "owner": "benchmark design",
+     "cause": "The defining event is designed open: the file says it cannot tell whether the man knocked the claimant down to rob her (robbery away: outside both types, 'other') or a pickpocket used a collision (simple theft away). That is the routing question itself; 'other' is one of the two readings the file leaves open."
+    }
+   },
+   {
+    "file": "the_d9579f891719",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 25,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "I parked in a public car park near the zoo around ten and locked the car.",
+       "When we came back at five, the rear side window was srnashed and the boot had been emptied."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_false",
+     "bicycle": "not_mentioned",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "not_mentioned",
+     "theft_away": "stated_true",
+     "traces_changed": "stated_true",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 4,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As the_0cd1b047049a (car window smashed in a car park)."
+    }
+   },
+   {
+    "file": "the_dd72ec4e53dd",
+    "type": "simple_theft_away",
+    "denied_event": false,
+    "level": 10,
+    "routing_status": "unmapped",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "claim_type",
+      "value": "other",
+      "quotes": [
+       "Wir sassen am Mittag auf einer Restaurantterrasse am Rhein, die Handtasche hing an meiner Stuhllehne. Als ich zahlen wollte, war sie weg."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "theft_away",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "away_cover_missing": "stated_true",
+     "bicycle": "stated_false",
+     "imminent_danger": "not_mentioned",
+     "measures_pending": "stated_true",
+     "theft_away": "stated_true",
+     "traces_changed": "not_mentioned",
+     "vouchers_unobtainable": "stated_true"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 1,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "A handbag taken from a chair on a restaurant terrace, and the file states that the supplementary cover for simple theft away was not taken. The question gives no definition of simple theft (pickpocketing and trick theft are simple thefts, Ziff. 23.3 lit. b, Ausschluss) and does not say that a missing cover is decided inside the type (Ziff. 24 Einleitung, stop away_cover_missing); the router answered other. Which of the two gaps decided it cannot be told from the stored answer."
+    }
+   }
+  ],
+  "dismissal": [
+   {
+    "file": "dis_05af0871cd70",
+    "type": "wrongful_termination",
+    "denied_event": true,
+    "level": 0,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "action_in_time": "not_mentioned",
+     "agreed_to_continue": "not_mentioned",
+     "employee_representative": "not_mentioned",
+     "employer_gave_notice": "stated_false",
+     "more_than_180_days": "stated_false",
+     "notice_period_ended": "not_mentioned",
+     "objection_submitted": "not_mentioned",
+     "reasons_requested": "not_mentioned",
+     "retaliation_for_claims": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice given (hints, reduced hours). No type's defining event holds. Empty plan right."
+    }
+   },
+   {
+    "file": "dis_0f89215979d2",
+    "type": "protected_period_notice",
+    "denied_event": true,
+    "level": 50,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_false",
+     "incapacity_illness_accident": "not_mentioned",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "not_mentioned",
+     "notice_period_varied": "stated_false",
+     "pregnancy_or_birth": "not_mentioned",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice; a proposed termination agreement. No type applies. Empty plan right."
+    }
+   },
+   {
+    "file": "dis_14b7db92a192",
+    "type": "protected_period_notice",
+    "denied_event": false,
+    "level": 25,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_true",
+     "incapacity_illness_accident": "stated_false",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "stated_false",
+     "notice_period_varied": "stated_true",
+     "pregnancy_or_birth": "stated_false",
+     "probation_varied": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 2,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Ordinary notice; the dispute is the contractual notice period (notice_period_varied true), every protected-period fact is denied. The routing value is worded as an outcome ('notice during a protected period'), while the type's own conditions decide whether a protected period, the probation period or the notice period affect an ordinary notice. The router gave no value. The two notice types share their defining event (employer_gave_notice), which no wording can separate in a file that raises matters of both (see the planner note)."
+    }
+   },
+   {
+    "file": "dis_1bf62841defb",
+    "type": "protected_period_notice",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_true",
+     "incapacity_illness_accident": "not_mentioned",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "not_mentioned",
+     "notice_period_varied": "stated_true",
+     "pregnancy_or_birth": "stated_false",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 1,
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "As dis_14b7db92a192 (dispute about the contractual two-month notice period; pregnancy denied)."
+    }
+   },
+   {
+    "file": "dis_4ee0866843c9",
+    "type": "protected_period_notice",
+    "denied_event": true,
+    "level": 50,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "compulsory_service": "stated_false",
+     "employer_gave_notice": "stated_false",
+     "incapacity_illness_accident": "not_mentioned",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "not_mentioned",
+     "notice_period_varied": "not_mentioned",
+     "pregnancy_or_birth": "not_mentioned",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice given. Empty plan right."
+    }
+   },
+   {
+    "file": "dis_5215d587db4b",
+    "type": "wrongful_termination",
+    "denied_event": true,
+    "level": 25,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "action_in_time": "stated_false",
+     "agreed_to_continue": "not_mentioned",
+     "employee_representative": "stated_false",
+     "employer_gave_notice": "stated_false",
+     "more_than_180_days": "stated_false",
+     "notice_period_ended": "not_mentioned",
+     "objection_submitted": "not_mentioned",
+     "reasons_requested": "not_mentioned",
+     "retaliation_for_claims": "stated_false"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice given (shift change). Empty plan right."
+    }
+   },
+   {
+    "file": "dis_827bbd04ddc9",
+    "type": "immediate_dismissal",
+    "denied_event": true,
+    "level": 10,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": "Unpaid accrued vacation days in the final salary settlement",
+    "defining_event": "dismissed_immediately",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "dismissed_immediately": "stated_false",
+     "fixed_term": "not_mentioned",
+     "incapacity_cause": "stated_false",
+     "notice_period_varied": "not_mentioned",
+     "other_earnings": "stated_false",
+     "reasons_requested": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "unrouted",
+     "empty_plan_right": false,
+     "why": "Designed as immediate_dismissal with the event denied by stating an ordinary notice with a notice period. An ordinary notice is the defining event of types 1 and 2 (employer_gave_notice), so the rule text gives one of those processes, not an empty plan. The product's empty plan matches the reference (0 errors) but not the rule text."
+    }
+   },
+   {
+    "file": "dis_930a1b5e1bdc",
+    "type": "protected_period_notice",
+    "denied_event": true,
+    "level": 25,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_false",
+     "incapacity_illness_accident": "stated_false",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "stated_false",
+     "notice_period_varied": "not_mentioned",
+     "pregnancy_or_birth": "not_mentioned",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice given (pressure to change job). Empty plan right."
+    }
+   },
+   {
+    "file": "dis_bf38c7dfb616",
+    "type": "protected_period_notice",
+    "denied_event": false,
+    "level": 50,
+    "routing_status": "selected",
+    "routed_to": "wrongful_termination",
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination",
+      "quotes": [
+       "handed me a letter saying my employment was being terminated."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_true",
+     "incapacity_illness_accident": "not_mentioned",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "stated_false",
+     "notice_period_varied": "stated_true",
+     "pregnancy_or_birth": "not_mentioned",
+     "probation_varied": "stated_true"
+    },
+    "plan": {
+     "requests": [
+      "termination_letter"
+     ],
+     "holds": [
+      "court_filing",
+      "salary_evidence",
+      "written_objection"
+     ]
+    },
+    "errors": 4,
+    "product_facts": {
+     "dispute_family": [
+      "established",
+      "wrongful_termination"
+     ],
+     "employer_gave_notice": [
+      "established",
+      true
+     ],
+     "notice_period_ended": [
+      "unknown",
+      null
+     ],
+     "objection_submitted": [
+      "unknown",
+      null
+     ],
+     "more_than_180_days": [
+      "unknown",
+      null
+     ],
+     "action_in_time": [
+      "unknown",
+      null
+     ],
+     "agreed_to_continue": [
+      "presumed",
+      false
+     ],
+     "reasons_requested": [
+      "presumed",
+      false
+     ],
+     "retaliation_for_claims": [
+      "presumed",
+      false
+     ],
+     "employee_representative": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Ordinary notice with a written probation clause and a contractual notice period; no protected period raised. The router chose abusive notice, the only value naming an ordinary notice without a protected period."
+    }
+   },
+   {
+    "file": "dis_c50430dbdfa1",
+    "type": "protected_period_notice",
+    "denied_event": false,
+    "level": 0,
+    "routing_status": "selected",
+    "routed_to": "wrongful_termination",
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination",
+      "quotes": [
+       "Frau Meier hat mir am 12. Juli 2026 gekündigt, per SMS und am nächsten Tag noch mit einem kurzen Brief. Begründung: Es \"passe einfach nicht\"."
+      ]
+     }
+    ],
+    "other_topic": null,
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_true",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_true",
+     "incapacity_illness_accident": "stated_true",
+     "notice_before_protected_period": "stated_true",
+     "notice_during_probation": "stated_true",
+     "notice_period_varied": "stated_false",
+     "pregnancy_or_birth": "not_mentioned",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [
+      "employment_contract",
+      "termination_letter"
+     ],
+     "holds": [
+      "court_filing",
+      "salary_evidence",
+      "written_objection"
+     ]
+    },
+    "errors": 3,
+    "product_facts": {
+     "dispute_family": [
+      "conflicting",
+      "wrongful_termination"
+     ],
+     "employer_gave_notice": [
+      "established",
+      true
+     ],
+     "notice_period_ended": [
+      "unknown",
+      null
+     ],
+     "objection_submitted": [
+      "unknown",
+      null
+     ],
+     "more_than_180_days": [
+      "unknown",
+      null
+     ],
+     "action_in_time": [
+      "unknown",
+      null
+     ],
+     "agreed_to_continue": [
+      "presumed",
+      false
+     ],
+     "reasons_requested": [
+      "presumed",
+      false
+     ],
+     "retaliation_for_claims": [
+      "presumed",
+      false
+     ],
+     "employee_representative": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "rule wording",
+     "cause": "Notice by text message while the employee was ill and still in the probation period (type 1 stop). The router chose abusive notice, quoting the employer's reason ('passe einfach nicht'); the routing value does not say that illness or probation at the time of notice belongs to type 1."
+    }
+   },
+   {
+    "file": "dis_fea630e08ab3",
+    "type": "protected_period_notice",
+    "denied_event": true,
+    "level": 10,
+    "routing_status": "needs_facts",
+    "routed_to": null,
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": null,
+      "quotes": []
+     }
+    ],
+    "other_topic": "Employer asked about family plans and the employee’s rights regarding that question",
+    "defining_event": "employer_gave_notice",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "compulsory_service": "not_mentioned",
+     "employer_gave_notice": "stated_false",
+     "incapacity_illness_accident": "not_mentioned",
+     "notice_before_protected_period": "not_mentioned",
+     "notice_during_probation": "not_mentioned",
+     "notice_period_varied": "stated_false",
+     "pregnancy_or_birth": "stated_false",
+     "probation_varied": "not_mentioned"
+    },
+    "plan": {
+     "requests": [],
+     "holds": []
+    },
+    "errors": 0,
+    "judgment": {
+     "owner": "none",
+     "product_did": "unrouted",
+     "empty_plan_right": true,
+     "why": "No notice given. Empty plan right."
+    }
+   },
+   {
+    "file": "dis_ff1e9056d2c3",
+    "type": "immediate_dismissal",
+    "denied_event": true,
+    "level": 0,
+    "routing_status": "selected",
+    "routed_to": "wrongful_termination",
+    "routing_answer": [
+     {
+      "fact": "dispute_family",
+      "value": "wrongful_termination",
+      "quotes": [
+       "Frau Hughes hat mir am 17. März 2026 ganz normal mit Frist gekündigt, auf Ende Mai, und ich arbeite bis dahin weiter im Lager in Basel."
+      ]
+     }
+    ],
+    "other_topic": "The employer requires the employee to take all accrued vacation before the end of the notice period, during weeks when the employee has job interviews.",
+    "defining_event": "dismissed_immediately",
+    "defining_event_state": "stated_false",
+    "facts_designed_states": {
+     "dismissed_immediately": "stated_false",
+     "fixed_term": "not_mentioned",
+     "incapacity_cause": "not_mentioned",
+     "notice_period_varied": "stated_false",
+     "other_earnings": "stated_false",
+     "reasons_requested": "stated_false"
+    },
+    "plan": {
+     "requests": [
+      "employment_contract",
+      "termination_letter"
+     ],
+     "holds": [
+      "court_filing",
+      "salary_evidence",
+      "written_objection"
+     ]
+    },
+    "errors": 5,
+    "product_facts": {
+     "dispute_family": [
+      "unknown",
+      null
+     ],
+     "employer_gave_notice": [
+      "established",
+      true
+     ],
+     "notice_period_ended": [
+      "established",
+      false
+     ],
+     "objection_submitted": [
+      "unknown",
+      null
+     ],
+     "more_than_180_days": [
+      "unknown",
+      null
+     ],
+     "action_in_time": [
+      "unknown",
+      null
+     ],
+     "reasons_requested": [
+      "established",
+      false
+     ],
+     "agreed_to_continue": [
+      "presumed",
+      false
+     ],
+     "retaliation_for_claims": [
+      "presumed",
+      false
+     ],
+     "employee_representative": [
+      "presumed",
+      false
+     ]
+    },
+    "judgment": {
+     "owner": "benchmark design",
+     "product_did": "routed to wrongful_termination and planned it",
+     "empty_plan_right": false,
+     "why": "As dis_827bbd04ddc9: the denial is an ordinary notice, which is the defining event of types 1 and 2; routing to wrongful_termination is one of the two readings the rule text allows. The 5 errors are scored against the immediate_dismissal stop."
+    }
+   }
+  ]
+ },
+ "theft_measures_pending": [
+  {
+   "file": "the_003fbcb4d365",
+   "type": "simple_theft_away",
+   "read": true,
+   "status": "established",
+   "value": true,
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "true",
+     "quote": "Das hole ich in den nachsten Tagen nach"
+    },
+    {
+     "verdict": "true",
+     "quote": "Das hole ich in den nachsten Tagen nach"
+    },
+    {
+     "verdict": "true",
+     "quote": "Das hole ich in den nachsten Tagen nach, damit ihn wenigstns niemand problemlos weiterverkaufe kann."
+    }
+   ],
+   "imminent_danger": "not_mentioned",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_1024620d6055",
+   "type": "simple_theft_away",
+   "read": true,
+   "status": "established",
+   "value": true,
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "true",
+     "quote": "Das Handy über die IMEI-Nummer beim Anbieter sperren zu lassen."
+    },
+    {
+     "verdict": "true",
+     "quote": "Das Handy über die IMEI-Nummer beim Anbieter sperren zu lassen."
+    },
+    {
+     "verdict": "true",
+     "quote": "Eines muss ich noch erledigen und bin noch nicht dazu gekommen: Das Handy über die IMEI-Nummer beim Anbieter sperren zu lassen."
+    }
+   ],
+   "imminent_danger": "stated_false",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_12e3d532c09d",
+   "type": "simple_theft_away",
+   "read": true,
+   "status": "presumed",
+   "value": false,
+   "reason_code": null,
+   "open_readings": null,
+   "readings": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "false",
+     "quote": "register the frame number on one of the online stolen-bike lists and send the photo to the second-hand bike shops in town, in case it turns up."
+    },
+    {
+     "verdict": "false",
+     "quote": "in case it turns up."
+    }
+   ],
+   "imminent_danger": "not_mentioned",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "read": false,
+   "routed": null
+  },
+  {
+   "file": "the_27cd334c5026",
+   "type": "simple_theft_away",
+   "read": true,
+   "status": "presumed",
+   "value": false,
+   "reason_code": null,
+   "open_readings": null,
+   "readings": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    }
+   ],
+   "imminent_danger": "not_mentioned",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_32a656cb56cf",
+   "type": "simple_theft_away",
+   "read": false,
+   "routed": null
+  },
+  {
+   "file": "the_57501c7d1230",
+   "type": "theft_at_home",
+   "read": true,
+   "status": "unknown",
+   "value": null,
+   "reason_code": "one_reading_only",
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "true",
+     "quote": "das ist für morgen Nachmittag abgemacht. Passiert ist das also noch nicht."
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "true",
+     "quote": "Passiert ist das also noch nicht."
+    }
+   ],
+   "imminent_danger": "stated_true",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "read": true,
+   "status": "established",
+   "value": true,
+   "reason_code": null,
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "true",
+     "quote": "das habe ich noch nicht gemacht"
+    },
+    {
+     "verdict": "true",
+     "quote": "das habe ich noch nicht gemacht"
+    },
+    {
+     "verdict": "true",
+     "quote": "Die muss ich jetzt sperren lassen, das habe ich noch nicht gemacht"
+    }
+   ],
+   "imminent_danger": "stated_true",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "read": false,
+   "routed": null
+  },
+  {
+   "file": "the_9b58c5abd02f",
+   "type": "theft_at_home",
+   "read": true,
+   "status": "unknown",
+   "value": null,
+   "reason_code": "one_reading_only",
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "true",
+     "quote": "Das habe ich noch nicht gemacht, ich muss zuerst die Nummer heraussuchen."
+    },
+    {
+     "verdict": "true",
+     "quote": "Das habe ich noch nicht gemacht, ich muss zuerst die Nummer heraussuchen."
+    }
+   ],
+   "imminent_danger": "stated_false",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "read": false,
+   "routed": null
+  },
+  {
+   "file": "the_dd72ec4e53dd",
+   "type": "simple_theft_away",
+   "read": false,
+   "routed": null
+  },
+  {
+   "file": "the_e0b1e1d56fb2",
+   "type": "theft_at_home",
+   "read": true,
+   "status": "unknown",
+   "value": null,
+   "reason_code": "one_reading_only",
+   "open_readings": [
+    false,
+    false,
+    false
+   ],
+   "readings": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "true",
+     "quote": "Das habe ich noch nicht gemacht, kommt aber diese Woche."
+    },
+    {
+     "verdict": "true",
+     "quote": "Das habe ich noch nicht gemacht, kommt aber diese Woche."
+    }
+   ],
+   "imminent_danger": "stated_true",
+   "text_excerpt": null
+  },
+  {
+   "file": "the_fefc066e8269",
+   "type": "simple_theft_away",
+   "read": true,
+   "status": "presumed",
+   "value": false,
+   "reason_code": null,
+   "open_readings": null,
+   "readings": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    }
+   ],
+   "imminent_danger": "not_mentioned",
+   "text_excerpt": null
+  }
+ ],
+ "frontier": {
+  "tenancy": {
+   "files_run": 39,
+   "routing": [
+    {
+     "file": "ten_429b182434cf",
+     "type": "rent_increase_dispute",
+     "denied_event": true,
+     "level": 25,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "other_topic": null,
+     "defining_event": "increase_applied",
+     "defining_event_state": "stated_false",
+     "facts_designed_states": {
+      "cost_or_services_reason": "not_mentioned",
+      "graduated_rent": "not_mentioned",
+      "increase_applied": "stated_false",
+      "index_clause": "not_mentioned",
+      "termination_with_increase": "not_mentioned"
+     },
+     "plan": {
+      "requests": [],
+      "holds": []
+     },
+     "errors": 0
+    },
+    {
+     "file": "ten_580485dac025",
+     "type": "rent_increase_dispute",
+     "denied_event": false,
+     "level": 25,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "other_topic": null,
+     "defining_event": "increase_applied",
+     "defining_event_state": "open",
+     "facts_designed_states": {
+      "cost_or_services_reason": "stated_false",
+      "graduated_rent": "stated_false",
+      "increase_applied": "open",
+      "index_clause": "not_mentioned",
+      "termination_with_increase": "not_mentioned"
+     },
+     "plan": {
+      "requests": [],
+      "holds": []
+     },
+     "errors": 3
+    },
+    {
+     "file": "ten_5aecbb73131b",
+     "type": "rent_increase_dispute",
+     "failed_run": true,
+     "error": "schema_mismatch: The model answer did not match its schema: $.facts: array length outside bounds (2 items; allowed 0 to 1)"
+    },
+    {
+     "file": "ten_776e0e61986b",
+     "type": "defect_mold_heating",
+     "denied_event": true,
+     "level": 50,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "other_topic": null,
+     "defining_event": "defect_present",
+     "defining_event_state": "stated_false",
+     "facts_designed_states": {
+      "damages_claimed": "not_mentioned",
+      "defect_present": "stated_false",
+      "deposit_intended": "not_mentioned",
+      "landlord_unaware": "not_mentioned",
+      "notice_oral_only": "not_mentioned",
+      "rent_deposited": "not_mentioned"
+     },
+     "plan": {
+      "requests": [],
+      "holds": []
+     },
+     "errors": 0
+    },
+    {
+     "file": "ten_8572ddc89110",
+     "type": "rent_increase_dispute",
+     "denied_event": true,
+     "level": 10,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "other_topic": null,
+     "defining_event": "increase_applied",
+     "defining_event_state": "stated_false",
+     "facts_designed_states": {
+      "cost_or_services_reason": "not_mentioned",
+      "graduated_rent": "stated_false",
+      "increase_applied": "stated_false",
+      "index_clause": "not_mentioned",
+      "termination_with_increase": "not_mentioned"
+     },
+     "plan": {
+      "requests": [],
+      "holds": []
+     },
+     "errors": 0
+    },
+    {
+     "file": "ten_8c54d4a61b0a",
+     "type": "rent_increase_dispute",
+     "denied_event": true,
+     "level": 25,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "other_topic": null,
+     "defining_event": "increase_applied",
+     "defining_event_state": "stated_false",
+     "facts_designed_states": {
+      "cost_or_services_reason": "not_mentioned",
+      "graduated_rent": "stated_false",
+      "increase_applied": "stated_false",
+      "index_clause": "not_mentioned",
+      "termination_with_increase": "not_mentioned"
+     },
+     "plan": {
+      "requests": [],
+      "holds": []
+     },
+     "errors": 0
+    }
+   ]
+  }
+ },
+ "review_notes": [
+  "Owner classes used for the planner's question: 'rule wording' = a question, not_this or routing wording of ours that this revision may change; 'must_show wording' = a must_show item of ours that this revision may not change; 'product' = the product's reading, quotation, combination or document judgment; 'benchmark design' = the file design or the reference, not the product and not a changeable wording; 'text vs recorded state' = the file text plausibly supports what the product read (cause 6).",
+  "Routing: for a non-denied file the judgment names why the routing reading answered as it did; for a denied-event file it says what the product did and whether an empty plan is what the rule text gives."
+ ],
+ "level0_text": "Why dismissal is worst at share level 0 (no designed open fact): 24 errors in 15 files, 18 of them holds where the file settles the fact, and 16 of the 24 sit in four files. 11 holds come from three files in which every reading gave the designed value but one or more quotations were not found word for word in the uploaded text, so the product left the fact unresolved: dis_32d79153a27f (the defining event employer_gave_notice; one reading began its quotation with a capital 'We are terminating' where the letter has 'we are terminating'), dis_b7f5c9e07c99 (the defining event dismissed_immediately; one reading quoted 'mmediate' for the scan-noised 'irnmediate') and dis_408b774aa7db (notice_period_ended; two readings corrected the scan noise in 'läuft noc'). A held defining event holds every document of the type, which is why two files give 8 holds. 3 holds are the routing of dis_c50430dbdfa1 (rule wording), 3 holds and 2 requests are the denied-event file dis_ff1e9056d2c3 routed to wrongful_termination (benchmark design: its denial is an ordinary notice, the defining event of types 1 and 2), and 1 hold is a misreading (dis_fcbd44dfcef3, one reading of three took 'Ich war schon krank, als die Kündigung kam' as notice before the protected period). Level 0 is not harder by design; the excess is the concentration of these four files (with 15 files in the level, each error adds 0.07 errors per file).",
+ "measures_text": "measures_pending causes none of the 67 theft errors: no document hangs on the instruction step (h_instruction / a_instruction), and the product defers only on facts that change a document, so an unresolved measures_pending holds nothing. Its low admission where stated true (3 of 9 files the runs read: 2 of 5 simple_theft_away, 1 of 4 theft_at_home) comes from what the pending measures are. Admitted: blocking a phone by its IMEI, blocking a credit card, marking a laptop as stolen and locking it through its user account (all three stop the thief using the item). Not admitted: registering a bicycle's frame number on stolen-bike lists 'in case it turns up' (3 files: not stated or false, presumed false), reporting a camera's or laptop's serial number to the maker so that it is noticed at a repair (2 files: one reading of three not stated, held), going with the police to secure a bicycle found for sale (1 file: held). The question's not_this excludes 'steps to find the thief or recover the items', and the theft workflows append the not_this to the question the product reads; the writer and the blind check saw the question only (writer bundles and blind-check inputs carry no not_this), so the designs count recovery steps as measures to reduce the loss and the product, following our not_this, does not. The exclusion of steps to recover the items has no passage: VVG Art. 38a Abs. 1 asks the claimant to reduce the loss ('für Minderung des Schadens zu sorgen'), which getting stolen items back does. That is a defect of our wording (narrower than the passage), fixed in Part B; it changes no document and no reference.",
+ "frontier_text": "Frontier partial run (gpt-6.1-terra, clean, tenancy, the first 39 files in manifest order): 5 routing failures, all unrouted. Four are denied-event files (ten_429b182434cf, ten_776e0e61986b, ten_8572ddc89110, ten_8c54d4a61b0a): no type's defining event holds and the empty plan is what the rule text gives (0 errors each). One is ten_580485dac025, whose defining event increase_applied is designed open (the file leaves open whether a higher rent was announced or demanded), so the routing question has no answer in the text (benchmark design; the cost-efficient model routed it). The failed run, ten_5aecbb73131b, is a product failure: the routing answer gave two facts where its schema allows one, and the run stopped. The three tenancy files that the cost-efficient model routed wrongly for wording reasons (ten_c2a72cbf1698, ten_b4d4cb05336f, ten_e4858b3af131) are outside the 39 files run.",
+ "limits": [
+  "DEVELOPMENT, post hoc, not a result. One run per file on the cost-efficient model; 176 files (59 tenancy, 59 theft, 58 dismissal); small counts per cause.",
+  "The cause attribution is mechanical (replays through the product's evaluator); the owner classification is partly a reading of the files by the same session that proposes the wording fixes (diagnosis_review.json). A second reader should check both.",
+  "A hold or request can have two sufficient causes; such errors are counted once under fact reading and flagged ('also document', 'joint').",
+  "The routing reading's own reasoning is not stored; for 'other' and null answers the cause is inferred from the question wording and the quotation the router gave.",
+  "Reading verdicts come from the cached responses as lint/analyse.py parses them (a requote retry replaces the first answer)."
+ ],
+ "errors": [
+  {
+   "regime": "tenancy",
+   "file": "ten_00bf58d82a2b",
+   "type": "lease_termination_dispute",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "claims_and_reasons",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "verdicts open 1, true 2",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "asserted_claims",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     true,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "open",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Im Mai 2023 habe ich schriftlich verlangt, dass die feuchte, schimmlige Wand im Schlafzimmer end1ich saniert wird, und im August 2023 habe ich die Mieterhohung…"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ich bin ziemlich sicher, warurn mir die Hagenbuch Betriebs AG die Wohnung gekundigt hat: weil ich mich gewehrt habe."
+    },
+    {
+     "verdict": "true",
+     "quote": "weil ich mich gewehrt habe."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "rule wording",
+   "wording_reason": "The question asks whether the claim states that the landlord gave notice because of claims; it does not say how a tenant's own account of the landlord's reason is read. Readings answered open on firm statements of conviction ('I am convinced the real reason for the notice is my complaint', 'Ich bin ziemlich sicher ... weil ich mich gewehrt habe'): 2 of 6 stated-true files had at least one open reading, 2 errors."
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_0c74f4037e13",
+   "type": "lease_termination_dispute",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "claims_and_reasons",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "asserted_claims",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     true,
+     true
+    ]
+   },
+   "verdicts": [
+    "true",
+    "open",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "I am convinced the real reason for the notice is my complaint from 15 January 2026."
+    },
+    {
+     "verdict": "open",
+     "quote": "I am convinced the real reason for the notice is my complaint from 15 January 2026."
+    },
+    {
+     "verdict": "open",
+     "quote": "I am convinced the real reason for the notice is my complaint from 15 January 2026."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "rule wording",
+   "wording_reason": "The question asks whether the claim states that the landlord gave notice because of claims; it does not say how a tenant's own account of the landlord's reason is read. Readings answered open on firm statements of conviction ('I am convinced the real reason for the notice is my complaint', 'Ich bin ziemlich sicher ... weil ich mich gewehrt habe'): 2 of 6 stated-true files had at least one open reading, 2 errors."
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_0d082e78c345",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "deposit_receipt",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_270f84d8acff",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": true,
+   "document": "damage_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "defect_present",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_270f84d8acff",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": true,
+   "document": "defect_record",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "defect_present",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_270f84d8acff",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": true,
+   "document": "knowledge_proof",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "defect_present",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_270f84d8acff",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": true,
+   "document": "lease_contract",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "defect_present",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    },
+    {
+     "verdict": "true",
+     "quote": "Die Wand ist bis heute bis auf Kniehöhe nass, der Verputz brockelt, und es riecht modrig."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_5822f6df0cb7",
+   "type": "lease_termination_dispute",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "claims_and_reasons",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "Product: no conciliation or court documents. must_show says 'conciliation or court documents on those claims, if any'; the conditional item was read as required."
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_5822f6df0cb7",
+   "type": "lease_termination_dispute",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "termination_notice",
+   "kind": "missed_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_sufficient",
+   "reference": "request",
+   "doc_sub": "not supplied judged present",
+   "supplied": "not supplied",
+   "product_document": {
+    "effective": "present",
+    "status": "present",
+    "verdict": "accepted"
+   },
+   "sub": "not supplied judged present",
+   "sub6": "reviewed: The supplied spouse_service attachment is the spouse's copy of the notice of termination; the product counted it as the notice itself. A copy of the notice is plausibly the notice.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_5aecbb73131b",
+   "type": "rent_increase_dispute",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "lease_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_68cb7ef0004f",
+   "type": "lease_termination_dispute",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "termination_notice",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_a743587360f3",
+   "type": "rent_increase_dispute",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "cost_breakdown",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 1, true 2",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "index_clause",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     true,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "open",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "kommt das von der Klausel in meinem Vertrag, nach der sich die Miete am Landesindx der Konsumentenpreise ausrichtet."
+    },
+    {
+     "verdict": "open",
+     "quote": "Soweit ich das verstehe, kommt das von der Klausel in meinem Vertrag"
+    },
+    {
+     "verdict": "true",
+     "quote": "Der Mietzins ist an den Landesindex der Konsumentenpreise gebunden."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_a743587360f3",
+   "type": "rent_increase_dispute",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "lease_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_c2a72cbf1698",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "defect_record",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_c2a72cbf1698",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "knowledge_proof",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_c2a72cbf1698",
+   "type": "defect_mold_heating",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "lease_contract",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_db552dbb3c23",
+   "type": "rent_increase_dispute",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "lease_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "must_show wording",
+   "review": "Product: the extract does not establish whether the lease has a graduated-rent or index clause. must_show 'any graduated-rent or index clause' read as required."
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_e4858b3af131",
+   "type": "rent_increase_dispute",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "rent_increase_notice",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": "lease_termination_dispute",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_e94fb7461784",
+   "type": "defect_mold_heating",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": false,
+   "document": "deposit_receipt",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_eec676341229",
+   "type": "lease_termination_dispute",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "termination_notice",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "tenancy",
+   "file": "ten_efa24ba18ce3",
+   "type": "rent_increase_dispute",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "rent_increase_notice",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "missing",
+    "verdict": "not_checked"
+   },
+   "sub": "present judged missing",
+   "owner": "must_show wording",
+   "review": "Product: not established whether there was a covering letter. The title's '(with any covering letter)' read as required."
+  },
+  {
+   "regime": "theft",
+   "file": "the_003fbcb4d365",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "stolen_items_list",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "theft",
+   "file": "the_0d6569d32db1",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "kept_as_read",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "sub6": "reviewed: Vouchers are attached for some items only and the file does not say the others cannot be obtained; must_show is 'the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost', so 'insufficient' is a defensible reading of the design's 'sufficient'.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "police_consent",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_2412f755f636",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "lock_change_invoice",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    false,
+    true,
+    true
+   ],
+   "fact": "burglary_or_robbery",
+   "also_fixing": [],
+   "designed_state": "stated_false",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "false",
+    "false",
+    "false"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "false",
+     "quote": "Aufgebrochen wurde nichts, der Dieb ist einfach hineingespaziert."
+    },
+    {
+     "verdict": "false",
+     "quote": "Aufgebrochen wurde nichts, der Dieb ist einfach hineinspaziert."
+    },
+    {
+     "verdict": "false",
+     "quote": "Aufgebrochen wurde nichts, der Dieb ist einfach hineinspaziert."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "theft",
+   "file": "the_281214c010bb",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "kept_as_read",
+   "scan_noise": true,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "sub6": "reviewed: As the_0d6569d32db1 (no voucher, and no word on obtaining one, for the jewellery).",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_32a656cb56cf",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_493f21bd27be",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "notification_record",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "product"
+  },
+  {
+   "regime": "theft",
+   "file": "the_506c9909edc4",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "verdicts not_stated 1, open 2",
+   "quotes_located": [
+    true,
+    null,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "not_mentioned",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "not_stated",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    }
+   ],
+   "sub": "read_unmentioned_as_open",
+   "owner": "rule wording",
+   "wording_reason": "The not_this line ends 'a suspicion the file raises but does not settle is open'; two readings took the police report's 'Täterschaft unbekannt' (perpetrator unknown) as raising, and leaving open, whether a household member did it. A thief who is merely unknown does not raise the household question. 1 file, 3 errors."
+  },
+  {
+   "regime": "theft",
+   "file": "the_506c9909edc4",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "verdicts not_stated 1, open 2",
+   "quotes_located": [
+    true,
+    null,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "not_mentioned",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "not_stated",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    }
+   ],
+   "sub": "read_unmentioned_as_open",
+   "owner": "rule wording",
+   "wording_reason": "The not_this line ends 'a suspicion the file raises but does not settle is open'; two readings took the police report's 'Täterschaft unbekannt' (perpetrator unknown) as raising, and leaving open, whether a household member did it. A thief who is merely unknown does not raise the household question. 1 file, 3 errors."
+  },
+  {
+   "regime": "theft",
+   "file": "the_506c9909edc4",
+   "type": "theft_at_home",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": "also document",
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "pattern": "verdicts not_stated 1, open 2",
+   "quotes_located": [
+    true,
+    null,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "not_mentioned",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "not_stated",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "open",
+     "quote": "Täterschaft unbekannt."
+    }
+   ],
+   "sub": "read_unmentioned_as_open",
+   "owner": "rule wording",
+   "wording_reason": "The not_this line ends 'a suspicion the file raises but does not settle is open'; two readings took the police report's 'Täterschaft unbekannt' (perpetrator unknown) as raising, and leaving open, whether a household member did it. A thief who is merely unknown does not raise the household question. 1 file, 3 errors."
+  },
+  {
+   "regime": "theft",
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    },
+    {
+     "verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    },
+    {
+     "verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unwarranted_hold",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    },
+    {
+     "verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "police_consent",
+   "kind": "unwarranted_hold",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    },
+    {
+     "verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts open 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "household_perpetrator",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     true,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "open",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    },
+    {
+     "verdict": "true",
+     "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte"
+    },
+    {
+     "verdict": "open",
+     "quote": "Ende August ist sie ohne Vorwarnung ausgezogen, und am 27. August 2026 habe ich gemerkt, dass mit ihr auch meine Sachen weg sind"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "original_vouchers",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_7d2b6a2bdce4",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    true,
+    false
+   ],
+   "fact": "theft_away",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "When I came out, the bike was gone."
+    },
+    {
+     "verdict": "true",
+     "quote": "I cycled into town and locked the bike at the stand outside the main library"
+    },
+    {
+     "verdict": "true",
+     "quote": "I locked the bike at the stand outside the main library on the other side of the old town, about fifteen minutes from my flat at Kirchgasse 95. I was inside fo…"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "theft",
+   "file": "the_819379d12c03",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_819379d12c03",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_819379d12c03",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "simple_theft_away",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "insurance_policy",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "notification_record",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "stolen_items_list",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "police_consent",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_9b58c5abd02f",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "Product: no place of purchase for an inherited watch. 'where and when it was bought' cannot exist for an heirloom."
+  },
+  {
+   "regime": "theft",
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "theft_at_home",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_c3a5e8c74185",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "missing",
+    "verdict": "not_checked"
+   },
+   "sub": "present judged missing",
+   "sub6": "reviewed: The attachment says it holds copies and that the originals are with another person; the need is for original vouchers, so 'not on file' is a defensible reading.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "theft",
+   "file": "the_c50e0bd7b054",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "kept_as_read",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d37fc3c54b4b",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d37fc3c54b4b",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d37fc3c54b4b",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d70abf016562",
+   "type": "theft_at_home",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "stolen_items_list",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "Product: no place of purchase for a wallet that was a gift; the item cannot exist for a gift."
+  },
+  {
+   "regime": "theft",
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notification_record",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "police_consent",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "stolen_items_list",
+   "kind": "missed_hold",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d9579f891719",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "insurance_policy",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d9579f891719",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "notification_record",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d9579f891719",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "police_consent",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_d9579f891719",
+   "type": "simple_theft_away",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "stolen_items_list",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_dd72ec4e53dd",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "insurance_policy",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "theft",
+   "file": "the_e0b1e1d56fb2",
+   "type": "theft_at_home",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "Product: no voucher for a stolen spare key bunch; a key bunch has no purchase voucher."
+  },
+  {
+   "regime": "theft",
+   "file": "the_eb579978f91b",
+   "type": "simple_theft_away",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "original_vouchers",
+   "kind": "unneeded_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "sub6": "reviewed: As the_0d6569d32db1 (vouchers only for the phone and headphones).",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_064eeecaeb0d",
+   "type": "protected_period_notice",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "must_show wording",
+   "review": "Product: 'Does not show: probation clause, if any; notice-period clause, if any'. Conditional items read as required."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_07997bac9677",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "probation_terms",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "missing",
+    "verdict": "not_checked"
+   },
+   "sub": "present judged missing",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_0ddd28b452d1",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "missed_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_sufficient",
+   "reference": "request",
+   "doc_sub": "not supplied judged present",
+   "supplied": "not supplied",
+   "product_document": {
+    "effective": "present",
+    "status": "present",
+    "verdict": "accepted"
+   },
+   "sub": "not supplied judged present",
+   "sub6": "reviewed: The attachment supplied as probation_terms is an extract of the written employment contract with start date, probation and notice clauses; the product counted it as the employment contract too.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_14b7db92a192",
+   "type": "protected_period_notice",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "employment_contract",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_14b7db92a192",
+   "type": "protected_period_notice",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": true,
+   "document": "termination_letter",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_166a056aad58",
+   "type": "immediate_dismissal",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "termination_letter",
+   "kind": "missed_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_sufficient",
+   "reference": "request",
+   "doc_sub": "not supplied judged present",
+   "supplied": "not supplied",
+   "product_document": {
+    "effective": "present",
+    "status": "present",
+    "verdict": "accepted"
+   },
+   "sub": "not supplied judged present",
+   "sub6": "reviewed: The employer's letter supplied as written_reasons confirms in writing that the employment ended with immediate effect on a stated date; the product counted it as the record of the dismissal.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_166a056aad58",
+   "type": "immediate_dismissal",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "written_reasons",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (1 of them found in the clean text: the reading corrected the scan noise)",
+   "quotes_located": [
+    true,
+    true,
+    false
+   ],
+   "fact": "reasons_requested",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "asked him to give me the reasons for throwing rne out in writing."
+    },
+    {
+     "verdict": "true",
+     "quote": "I wrote to Owen Foster, the manager, by e-mail on 23 February and asked him to give me the reasons for throwing rne out in writing."
+    },
+    {
+     "verdict": "true",
+     "quote": "I wrote to Owen Foster, the manager, by e-mail on 23 February and asked him to give me the reasons for throwing me out in writing."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_188837a70acc",
+   "type": "wrongful_termination",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "employment_contract",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "every reading gave the designed value; 2 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+   "quotes_located": [
+    false,
+    false,
+    true,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Hiermit kündigen wir das mit Ihnen bestehende Arbeitsverhältnis"
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kündigen wir das mit Ihnen bestehende Arbeitsverhältnis unter Einhaltung der Kündigungsfrist auf den 31. Mai 2026."
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_188837a70acc",
+   "type": "wrongful_termination",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "termination_letter",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "pattern": "every reading gave the designed value; 2 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+   "quotes_located": [
+    false,
+    false,
+    true,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Hiermit kündigen wir das mit Ihnen bestehende Arbeitsverhältnis"
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kündigen wir das mit Ihnen bestehende Arbeitsverhältnis unter Einhaltung der Kündigungsfrist auf den 31. Mai 2026."
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+    },
+    {
+     "verdict": "true",
+     "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_188837a70acc",
+   "type": "wrongful_termination",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "written_objection",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": "also document",
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "fact": null,
+   "sub": "several_facts",
+   "differing_facts": [
+    "employer_gave_notice",
+    "notice_period_ended",
+    "objection_submitted"
+   ],
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_1bf62841defb",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "termination_letter",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": null,
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_32d79153a27f",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "we are terminating your employment with Hagenbuch Services Ltd"
+    },
+    {
+     "verdict": "true",
+     "quote": "We are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    },
+    {
+     "verdict": "true",
+     "quote": "We regret to inform you that we are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_32d79153a27f",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "pregnancy_certificate",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "we are terminating your employment with Hagenbuch Services Ltd"
+    },
+    {
+     "verdict": "true",
+     "quote": "We are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    },
+    {
+     "verdict": "true",
+     "quote": "We regret to inform you that we are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_32d79153a27f",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "probation_terms",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "we are terminating your employment with Hagenbuch Services Ltd"
+    },
+    {
+     "verdict": "true",
+     "quote": "We are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    },
+    {
+     "verdict": "true",
+     "quote": "We regret to inform you that we are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_32d79153a27f",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "service_confirmation",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "fact": null,
+   "sub": "several_facts",
+   "differing_facts": [
+    "employer_gave_notice",
+    "compulsory_service"
+   ],
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_32d79153a27f",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "termination_letter",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "employer_gave_notice",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "we are terminating your employment with Hagenbuch Services Ltd"
+    },
+    {
+     "verdict": "true",
+     "quote": "We are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    },
+    {
+     "verdict": "true",
+     "quote": "We regret to inform you that we are terminating your employment with Hagenbuch Services Ltd for organisational reasons."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_373612fa5345",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "As dis_064eeecaeb0d."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_3f2fbc0b6128",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "incapacity_proof",
+   "kind": "missed_request",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "not_needed",
+   "reference": "request",
+   "pattern": "verdicts not_stated 3",
+   "quotes_located": [
+    null,
+    null,
+    null
+   ],
+   "fact": "incapacity_illness_accident",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "presumed",
+    "value": false,
+    "reason_code": null,
+    "open_readings": null
+   },
+   "verdicts": [
+    "not_stated",
+    "not_stated",
+    "not_stated"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    },
+    {
+     "verdict": "not_stated",
+     "quote": ""
+    }
+   ],
+   "sub": "read_stated_as_not_stated",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_408b774aa7db",
+   "type": "wrongful_termination",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "claims_correspondence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "fact": null,
+   "sub": "several_facts",
+   "differing_facts": [
+    "notice_period_ended",
+    "retaliation_for_claims"
+   ],
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_408b774aa7db",
+   "type": "wrongful_termination",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "present_insufficient",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "sub": "sufficient judged insufficient",
+   "owner": "must_show wording",
+   "review": "As dis_064eeecaeb0d."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_408b774aa7db",
+   "type": "wrongful_termination",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "representative_mandate",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": "also document",
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "doc_sub": "sufficient judged insufficient",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "unusable",
+    "status": "unusable",
+    "verdict": "accepted"
+   },
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "notice_period_ended",
+   "also_fixing": [],
+   "designed_state": "stated_false",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "false",
+    "false",
+    "false"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc, ich arbeite weiterhin jeden Tag in den Liegenschaften der Rosenau Immobilien AG in Lausanne"
+    },
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc"
+    },
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_408b774aa7db",
+   "type": "wrongful_termination",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 3 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+   "quotes_located": [
+    false,
+    false,
+    false
+   ],
+   "fact": "notice_period_ended",
+   "also_fixing": [],
+   "designed_state": "stated_false",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": null,
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "false",
+    "false",
+    "false"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc, ich arbeite weiterhin jeden Tag in den Liegenschaften der Rosenau Immobilien AG in Lausanne"
+    },
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc"
+    },
+    {
+     "verdict": "false",
+     "quote": "Die Kündigungsfrist läuft noc"
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_5adf4d2aec3c",
+   "type": "wrongful_termination",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "more_than_180_days",
+   "also_fixing": [],
+   "designed_state": "stated_false",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "false",
+    "false",
+    "false"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "false",
+     "quote": "Ich bin im Moment noch bei der Sonnbühl Handels AG in Zug angestellt, das Arbeitsverhältnis ist also nicht vorbei."
+    },
+    {
+     "verdict": "false",
+     "quote": "Das Arbeitsverhältnis ist also nicht vorbei."
+    },
+    {
+     "verdict": "false",
+     "quote": "das Arbeitsverhältnis ist also nicht vorbei."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_7c10c74bd747",
+   "type": "immediate_dismissal",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "must_show wording",
+   "review": "Fixed-term contract without probation or notice clauses (its other terms refer to staff regulations); the second judgment did not confirm it. Conditional items read as required, as far as the notes show."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_9260317f805d",
+   "type": "protected_period_notice",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notice_period_terms",
+   "kind": "missed_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_sufficient",
+   "reference": "present_insufficient",
+   "doc_sub": "insufficient judged sufficient",
+   "supplied": "insufficient",
+   "product_document": {
+    "effective": "present",
+    "status": "present",
+    "verdict": "accepted"
+   },
+   "sub": "insufficient judged sufficient",
+   "sub6": "reviewed: Designed insufficient for want of 'the written instrument that sets it'; the contract fragment is headed and numbered as the employment contract, which the product took as naming the instrument.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_9260317f805d",
+   "type": "protected_period_notice",
+   "level": 25,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "probation_terms",
+   "kind": "missed_request",
+   "cause": "text_state_disagree",
+   "flag": null,
+   "product_state": "present_sufficient",
+   "reference": "request",
+   "doc_sub": "not supplied judged present",
+   "supplied": "not supplied",
+   "product_document": {
+    "effective": "present",
+    "status": "present",
+    "verdict": "accepted"
+   },
+   "sub": "not supplied judged present",
+   "sub6": "reviewed: The supplied employment_contract contains the written clause 'The first three months of employment are a probation period'; the product counted it as the written probation clause.",
+   "owner": "text vs recorded state"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ac405c63effe",
+   "type": "immediate_dismissal",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "must_show wording",
+   "review": "As dis_064eeecaeb0d."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_b7f5c9e07c99",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "employment_contract",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": "also document",
+   "product_state": "hold",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "dismissed_immediately",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "No notice period, no last day, nothing."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_b7f5c9e07c99",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "request",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "dismissed_immediately",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "No notice period, no last day, nothing."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_b7f5c9e07c99",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "termination_letter",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+   "quotes_located": [
+    true,
+    false,
+    true
+   ],
+   "fact": "dismissed_immediately",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+    },
+    {
+     "verdict": "true",
+     "quote": "No notice period, no last day, nothing."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_bf38c7dfb616",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "probation_terms",
+   "kind": "missed_request",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_bf38c7dfb616",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "court_filing",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_bf38c7dfb616",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_bf38c7dfb616",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "written_objection",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_c50430dbdfa1",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "court_filing",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_c50430dbdfa1",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_c50430dbdfa1",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "rewritten",
+   "scan_noise": false,
+   "document": "written_objection",
+   "kind": "unwarranted_hold",
+   "cause": "routing_not_denied",
+   "routed": "wrongful_termination",
+   "owner": "rule wording"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_d4c7e372c087",
+   "type": "protected_period_notice",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": true,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "pregnancy_certificate",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_f3d056a01f6d",
+   "type": "immediate_dismissal",
+   "level": 10,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "document_judgment",
+   "flag": null,
+   "product_state": "request",
+   "reference": "present_sufficient",
+   "doc_sub": "present judged missing (source checker rejected the finding)",
+   "supplied": "sufficient",
+   "product_document": {
+    "effective": "missing",
+    "status": "unusable",
+    "verdict": "rejected"
+   },
+   "sub": "present judged missing (source checker rejected the finding)",
+   "owner": "must_show wording",
+   "review": "As dis_064eeecaeb0d."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_fb44c47f6ec7",
+   "type": "wrongful_termination",
+   "level": 50,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": true,
+   "document": "claims_correspondence",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "present_insufficient",
+   "pattern": "verdicts open 1, true 2",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "retaliation_for_claims",
+   "also_fixing": [],
+   "designed_state": "stated_true",
+   "product_fact": {
+    "status": "unknown",
+    "value": null,
+    "reason_code": "one_reading_only",
+    "open_readings": [
+     false,
+     false,
+     true
+    ]
+   },
+   "verdicts": [
+    "true",
+    "true",
+    "open"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "true",
+     "quote": "Why do I think I was 1et go? Because I asked for what I'm due."
+    },
+    {
+     "verdict": "true",
+     "quote": "Because I asked for what I'm due."
+    },
+    {
+     "verdict": "open",
+     "quote": "Why do I think I was 1et go? Because I asked for what I'm due."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "rule wording",
+   "wording_reason": "Same wording gap for the employer's reason: 3 of 5 stated-true files had at least one open reading on 'Ich bin überzeugt, dass ...', 'I'm convinced I lost my job because I stood up for myself', 'Because I asked for what I'm due'; 1 error (two files' open readings changed no document)."
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_fcbd44dfcef3",
+   "type": "protected_period_notice",
+   "level": 0,
+   "denied_event": false,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "notice_period_terms",
+   "kind": "unwarranted_hold",
+   "cause": "fact_reading",
+   "flag": null,
+   "product_state": "hold",
+   "reference": "not_needed",
+   "pattern": "verdicts false 2, true 1",
+   "quotes_located": [
+    true,
+    true,
+    true
+   ],
+   "fact": "notice_before_protected_period",
+   "also_fixing": [],
+   "designed_state": "stated_false",
+   "product_fact": {
+    "status": "conflicting",
+    "value": false,
+    "reason_code": "readings_differ",
+    "open_readings": [
+     false,
+     false,
+     false
+    ]
+   },
+   "verdicts": [
+    "false",
+    "false",
+    "true"
+   ],
+   "reading_quotes": [
+    {
+     "verdict": "false",
+     "quote": "Die Krankheit hat also vorher angefangen, nicht erst während der Kündigungsfrist."
+    },
+    {
+     "verdict": "false",
+     "quote": "Ich war schon krank, als die Kündigung kam."
+    },
+    {
+     "verdict": "true",
+     "quote": "Ich war schon krank, als die Kündigung kam. Die Krankheit hat also vorher angefangen, nicht erst während der Kündigungsfrist."
+    }
+   ],
+   "sub": "readings_disagreed_held",
+   "owner": "product"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ff1e9056d2c3",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "employment_contract",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "wrongful_termination",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ff1e9056d2c3",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "salary_evidence",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "wrongful_termination",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ff1e9056d2c3",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "termination_letter",
+   "kind": "unneeded_request",
+   "cause": "routing_denied",
+   "routed": "wrongful_termination",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ff1e9056d2c3",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "court_filing",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "wrongful_termination",
+   "owner": "benchmark design"
+  },
+  {
+   "regime": "dismissal",
+   "file": "dis_ff1e9056d2c3",
+   "type": "immediate_dismissal",
+   "level": 0,
+   "denied_event": true,
+   "open_fact": false,
+   "kept": "exact",
+   "scan_noise": false,
+   "document": "written_objection",
+   "kind": "unwarranted_hold",
+   "cause": "routing_denied",
+   "routed": "wrongful_termination",
+   "owner": "benchmark design"
+  }
+ ]
+}

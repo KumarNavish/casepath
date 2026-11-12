@@ -1,0 +1,477 @@
+{
+ "label": "DEVELOPMENT, post hoc, not a result. Written before any rev1 call.",
+ "ledger_total_before_usd": 2.794694,
+ "budget": "USD 0.50 for part C; no file is launched once the ledger total reaches before + 0.40",
+ "stop_usd": 3.194694,
+ "usd_per_file_clean_arm_all_calls_new": {
+  "tenancy": 0.00451,
+  "theft": 0.00365,
+  "dismissal": 0.00505
+ },
+ "cache_note": "Every reading request and the routing request carry the routing question and, for the changed types, the changed fact wording, so they are new; document-finder conversations open with the workflow reference (id, version, title) and continue on tool results, so only some of their turns can be answered from the cache. The estimate counts every call as new (upper bound); the pilot below measures the real share.",
+ "plan": {
+  "tenancy": [
+   {
+    "group": "P1",
+    "why": "non-denied routing failures attributed to routing wording (the fix's target)",
+    "files": [
+     "ten_b4d4cb05336f",
+     "ten_c2a72cbf1698",
+     "ten_e4858b3af131"
+    ]
+   },
+   {
+    "group": "P2",
+    "why": "every denied-event file (the routing fix must not route a denied file into a plan, and should keep the other-type denials where the rule text puts them)",
+    "files": [
+     "ten_429b182434cf",
+     "ten_58961449957f",
+     "ten_76d8d9821402",
+     "ten_776e0e61986b",
+     "ten_8572ddc89110",
+     "ten_8c54d4a61b0a",
+     "ten_c1e4987669e8",
+     "ten_f1871d924ee4"
+    ]
+   },
+   {
+    "group": "P3",
+    "why": "files of the changed fact wordings: motive facts stated true; theft household_perpetrator stated true, or not mentioned with an open reading in the clean arm; measures_pending stated true",
+    "files": [
+     "ten_00bf58d82a2b",
+     "ten_0c74f4037e13",
+     "ten_5822f6df0cb7",
+     "ten_650fe62e2c09",
+     "ten_886637ed61d4",
+     "ten_9f1d7f1e9554"
+    ]
+   },
+   {
+    "group": "P4",
+    "why": "seeded control sample (seed 20261112-<regime>) of five error-free non-denied files: regressions",
+    "files": [
+     "ten_fb2a18deebee",
+     "ten_73e9202b8898",
+     "ten_81c7af7dbe95",
+     "ten_8c1d86a176c0",
+     "ten_6806063b9fd7"
+    ]
+   },
+   {
+    "group": "P5",
+    "why": "remaining files with clean-arm errors (product-owned causes), if the budget allows",
+    "files": [
+     "ten_0d082e78c345",
+     "ten_270f84d8acff",
+     "ten_5aecbb73131b",
+     "ten_68cb7ef0004f",
+     "ten_a743587360f3",
+     "ten_db552dbb3c23",
+     "ten_e94fb7461784",
+     "ten_eec676341229",
+     "ten_efa24ba18ce3"
+    ]
+   }
+  ],
+  "theft": [
+   {
+    "group": "P1",
+    "why": "non-denied routing failures attributed to routing wording (the fix's target)",
+    "files": [
+     "the_0cd1b047049a",
+     "the_12ee892d56f4",
+     "the_248aa95805a8",
+     "the_819379d12c03",
+     "the_9355c558630a",
+     "the_c50e0bd7b054",
+     "the_d37fc3c54b4b",
+     "the_d9579f891719",
+     "the_dd72ec4e53dd"
+    ]
+   },
+   {
+    "group": "P2",
+    "why": "every denied-event file (the routing fix must not route a denied file into a plan, and should keep the other-type denials where the rule text puts them)",
+    "files": [
+     "the_1dfba8facf5e",
+     "the_5ee356013cfc",
+     "the_6634ab23ee99",
+     "the_685edf55333b",
+     "the_86b4e22a87e7",
+     "the_86e739ec9184",
+     "the_a529fff2269d",
+     "the_c7620535798b"
+    ]
+   },
+   {
+    "group": "P3",
+    "why": "files of the changed fact wordings: motive facts stated true; theft household_perpetrator stated true, or not mentioned with an open reading in the clean arm; measures_pending stated true",
+    "files": [
+     "the_003fbcb4d365",
+     "the_1024620d6055",
+     "the_12e3d532c09d",
+     "the_27cd334c5026",
+     "the_32a656cb56cf",
+     "the_38afd648a68a",
+     "the_4c02d7c9601d",
+     "the_506c9909edc4",
+     "the_57501c7d1230",
+     "the_656f9aad39e5",
+     "the_656f9aad39e5",
+     "the_9b58c5abd02f",
+     "the_bd8ee148bc3a",
+     "the_d76f5df60f83",
+     "the_e0b1e1d56fb2",
+     "the_fefc066e8269"
+    ]
+   },
+   {
+    "group": "P4",
+    "why": "seeded control sample (seed 20261112-<regime>) of five error-free non-denied files: regressions",
+    "files": [
+     "the_488b39c60106",
+     "the_91cf197b270e",
+     "the_1487759fc403",
+     "the_b05370369093",
+     "the_0aad75365ee3"
+    ]
+   },
+   {
+    "group": "P5",
+    "why": "remaining files with clean-arm errors (product-owned causes), if the budget allows",
+    "files": [
+     "the_0d6569d32db1",
+     "the_2412f755f636",
+     "the_281214c010bb",
+     "the_493f21bd27be",
+     "the_7d2b6a2bdce4",
+     "the_c3a5e8c74185",
+     "the_d70abf016562",
+     "the_eb579978f91b"
+    ]
+   }
+  ],
+  "dismissal": [
+   {
+    "group": "P1",
+    "why": "non-denied routing failures attributed to routing wording (the fix's target)",
+    "files": [
+     "dis_14b7db92a192",
+     "dis_1bf62841defb",
+     "dis_bf38c7dfb616",
+     "dis_c50430dbdfa1"
+    ]
+   },
+   {
+    "group": "P2",
+    "why": "every denied-event file (the routing fix must not route a denied file into a plan, and should keep the other-type denials where the rule text puts them)",
+    "files": [
+     "dis_05af0871cd70",
+     "dis_0f89215979d2",
+     "dis_4ee0866843c9",
+     "dis_5215d587db4b",
+     "dis_827bbd04ddc9",
+     "dis_930a1b5e1bdc",
+     "dis_fea630e08ab3",
+     "dis_ff1e9056d2c3"
+    ]
+   },
+   {
+    "group": "P3",
+    "why": "files of the changed fact wordings: motive facts stated true; theft household_perpetrator stated true, or not mentioned with an open reading in the clean arm; measures_pending stated true",
+    "files": [
+     "dis_250393de2a03",
+     "dis_408b774aa7db",
+     "dis_465be22068ef",
+     "dis_dd12420e6a78",
+     "dis_fb44c47f6ec7"
+    ]
+   },
+   {
+    "group": "P4",
+    "why": "seeded control sample (seed 20261112-<regime>) of five error-free non-denied files: regressions",
+    "files": [
+     "dis_25e20aeec77d",
+     "dis_60632f5d2a1c",
+     "dis_fa096cda3412",
+     "dis_1a145eb920db",
+     "dis_9991ef82e6f4"
+    ]
+   },
+   {
+    "group": "P5",
+    "why": "remaining files with clean-arm errors (product-owned causes), if the budget allows",
+    "files": [
+     "dis_064eeecaeb0d",
+     "dis_07997bac9677",
+     "dis_0ddd28b452d1",
+     "dis_166a056aad58",
+     "dis_188837a70acc",
+     "dis_32d79153a27f",
+     "dis_373612fa5345",
+     "dis_3f2fbc0b6128",
+     "dis_5adf4d2aec3c",
+     "dis_7c10c74bd747",
+     "dis_9260317f805d",
+     "dis_ac405c63effe",
+     "dis_b7f5c9e07c99",
+     "dis_d4c7e372c087",
+     "dis_f3d056a01f6d",
+     "dis_fcbd44dfcef3"
+    ]
+   }
+  ]
+ },
+ "order": [
+  {
+   "group": "P1",
+   "regime": "tenancy",
+   "files": [
+    "ten_b4d4cb05336f",
+    "ten_c2a72cbf1698",
+    "ten_e4858b3af131"
+   ],
+   "n": 3,
+   "estimate_usd_all_calls_new": 0.0135,
+   "cumulative_estimate": 0.0135
+  },
+  {
+   "group": "P1",
+   "regime": "theft",
+   "files": [
+    "the_0cd1b047049a",
+    "the_12ee892d56f4",
+    "the_248aa95805a8",
+    "the_819379d12c03",
+    "the_9355c558630a",
+    "the_c50e0bd7b054",
+    "the_d37fc3c54b4b",
+    "the_d9579f891719",
+    "the_dd72ec4e53dd"
+   ],
+   "n": 9,
+   "estimate_usd_all_calls_new": 0.0328,
+   "cumulative_estimate": 0.0463
+  },
+  {
+   "group": "P1",
+   "regime": "dismissal",
+   "files": [
+    "dis_14b7db92a192",
+    "dis_1bf62841defb",
+    "dis_bf38c7dfb616",
+    "dis_c50430dbdfa1"
+   ],
+   "n": 4,
+   "estimate_usd_all_calls_new": 0.0202,
+   "cumulative_estimate": 0.0665
+  },
+  {
+   "group": "P2",
+   "regime": "tenancy",
+   "files": [
+    "ten_429b182434cf",
+    "ten_58961449957f",
+    "ten_76d8d9821402",
+    "ten_776e0e61986b",
+    "ten_8572ddc89110",
+    "ten_8c54d4a61b0a",
+    "ten_c1e4987669e8",
+    "ten_f1871d924ee4"
+   ],
+   "n": 8,
+   "estimate_usd_all_calls_new": 0.0361,
+   "cumulative_estimate": 0.1026
+  },
+  {
+   "group": "P2",
+   "regime": "theft",
+   "files": [
+    "the_1dfba8facf5e",
+    "the_5ee356013cfc",
+    "the_6634ab23ee99",
+    "the_685edf55333b",
+    "the_86b4e22a87e7",
+    "the_86e739ec9184",
+    "the_a529fff2269d",
+    "the_c7620535798b"
+   ],
+   "n": 8,
+   "estimate_usd_all_calls_new": 0.0292,
+   "cumulative_estimate": 0.1318
+  },
+  {
+   "group": "P2",
+   "regime": "dismissal",
+   "files": [
+    "dis_05af0871cd70",
+    "dis_0f89215979d2",
+    "dis_4ee0866843c9",
+    "dis_5215d587db4b",
+    "dis_827bbd04ddc9",
+    "dis_930a1b5e1bdc",
+    "dis_fea630e08ab3",
+    "dis_ff1e9056d2c3"
+   ],
+   "n": 8,
+   "estimate_usd_all_calls_new": 0.0404,
+   "cumulative_estimate": 0.1722
+  },
+  {
+   "group": "P3",
+   "regime": "tenancy",
+   "files": [
+    "ten_00bf58d82a2b",
+    "ten_0c74f4037e13",
+    "ten_5822f6df0cb7",
+    "ten_650fe62e2c09",
+    "ten_886637ed61d4",
+    "ten_9f1d7f1e9554"
+   ],
+   "n": 6,
+   "estimate_usd_all_calls_new": 0.027,
+   "cumulative_estimate": 0.1992
+  },
+  {
+   "group": "P3",
+   "regime": "theft",
+   "files": [
+    "the_003fbcb4d365",
+    "the_1024620d6055",
+    "the_12e3d532c09d",
+    "the_27cd334c5026",
+    "the_32a656cb56cf",
+    "the_38afd648a68a",
+    "the_4c02d7c9601d",
+    "the_506c9909edc4",
+    "the_57501c7d1230",
+    "the_656f9aad39e5",
+    "the_656f9aad39e5",
+    "the_9b58c5abd02f",
+    "the_bd8ee148bc3a",
+    "the_d76f5df60f83",
+    "the_e0b1e1d56fb2",
+    "the_fefc066e8269"
+   ],
+   "n": 16,
+   "estimate_usd_all_calls_new": 0.0583,
+   "cumulative_estimate": 0.2575
+  },
+  {
+   "group": "P3",
+   "regime": "dismissal",
+   "files": [
+    "dis_250393de2a03",
+    "dis_408b774aa7db",
+    "dis_465be22068ef",
+    "dis_dd12420e6a78",
+    "dis_fb44c47f6ec7"
+   ],
+   "n": 5,
+   "estimate_usd_all_calls_new": 0.0253,
+   "cumulative_estimate": 0.2828
+  },
+  {
+   "group": "P4",
+   "regime": "tenancy",
+   "files": [
+    "ten_fb2a18deebee",
+    "ten_73e9202b8898",
+    "ten_81c7af7dbe95",
+    "ten_8c1d86a176c0",
+    "ten_6806063b9fd7"
+   ],
+   "n": 5,
+   "estimate_usd_all_calls_new": 0.0225,
+   "cumulative_estimate": 0.3053
+  },
+  {
+   "group": "P4",
+   "regime": "theft",
+   "files": [
+    "the_488b39c60106",
+    "the_91cf197b270e",
+    "the_1487759fc403",
+    "the_b05370369093",
+    "the_0aad75365ee3"
+   ],
+   "n": 5,
+   "estimate_usd_all_calls_new": 0.0182,
+   "cumulative_estimate": 0.3235
+  },
+  {
+   "group": "P4",
+   "regime": "dismissal",
+   "files": [
+    "dis_25e20aeec77d",
+    "dis_60632f5d2a1c",
+    "dis_fa096cda3412",
+    "dis_1a145eb920db",
+    "dis_9991ef82e6f4"
+   ],
+   "n": 5,
+   "estimate_usd_all_calls_new": 0.0253,
+   "cumulative_estimate": 0.3488
+  },
+  {
+   "group": "P5",
+   "regime": "tenancy",
+   "files": [
+    "ten_0d082e78c345",
+    "ten_270f84d8acff",
+    "ten_5aecbb73131b",
+    "ten_68cb7ef0004f",
+    "ten_a743587360f3",
+    "ten_db552dbb3c23",
+    "ten_e94fb7461784",
+    "ten_eec676341229",
+    "ten_efa24ba18ce3"
+   ],
+   "n": 9,
+   "estimate_usd_all_calls_new": 0.0406,
+   "cumulative_estimate": 0.3894
+  },
+  {
+   "group": "P5",
+   "regime": "theft",
+   "files": [
+    "the_0d6569d32db1",
+    "the_2412f755f636",
+    "the_281214c010bb",
+    "the_493f21bd27be",
+    "the_7d2b6a2bdce4",
+    "the_c3a5e8c74185",
+    "the_d70abf016562",
+    "the_eb579978f91b"
+   ],
+   "n": 8,
+   "estimate_usd_all_calls_new": 0.0292,
+   "cumulative_estimate": 0.4186
+  },
+  {
+   "group": "P5",
+   "regime": "dismissal",
+   "files": [
+    "dis_064eeecaeb0d",
+    "dis_07997bac9677",
+    "dis_0ddd28b452d1",
+    "dis_166a056aad58",
+    "dis_188837a70acc",
+    "dis_32d79153a27f",
+    "dis_373612fa5345",
+    "dis_3f2fbc0b6128",
+    "dis_5adf4d2aec3c",
+    "dis_7c10c74bd747",
+    "dis_9260317f805d",
+    "dis_ac405c63effe",
+    "dis_b7f5c9e07c99",
+    "dis_d4c7e372c087",
+    "dis_f3d056a01f6d",
+    "dis_fcbd44dfcef3"
+   ],
+   "n": 16,
+   "estimate_usd_all_calls_new": 0.0809,
+   "cumulative_estimate": 0.4995
+  }
+ ]
+}

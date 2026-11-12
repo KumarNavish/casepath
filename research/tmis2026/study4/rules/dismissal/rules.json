@@ -80,7 +80,7 @@
  "types": [
   {
    "id": "protected_period_notice",
-   "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
+   "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
    "defining_event": "employer_gave_notice",
    "facts": [
     {
@@ -896,7 +896,7 @@
     },
     {
      "id": "retaliation_for_claims",
-     "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship?",
+     "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
      "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
      "type": "boolean",
      "rule": {

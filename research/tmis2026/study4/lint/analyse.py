@@ -53,7 +53,9 @@ def files(regime):
 
 
 def workflows(regime, arm):
-    d = S4 / "rules" / regime / "workflow" if arm == "clean" else HERE / "widened" / regime / arm
+    # the clean arm read the rule sets kept in rules/<regime>/rev0/ (revision after first use, 2026-11-12)
+    d = (S4 / "rules" / regime / "rev0" / "workflow" if arm == "clean" else S4 / "rules" / regime / "workflow" if arm == "clean_rev1"
+         else HERE / "widened" / regime / arm)
     return {p.stem: jl(p) for p in sorted(d.glob("*.json"))}
 
 

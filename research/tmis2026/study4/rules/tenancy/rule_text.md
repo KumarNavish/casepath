@@ -1,6 +1,6 @@
 # Tenancy rules: which documents to request
 
-These rules come from the Swiss Code of Obligations (SR 220), Title Eight (Leases), consolidated version of 1 October 2026. Article numbers refer to that Code. They apply to a residential tenant's dispute of one of three types: defect of the rented dwelling (mould, damp, heating), termination of the lease by the landlord, rent increase.
+These rules come from the Swiss Code of Obligations (SR 220), Title Eight (Leases), consolidated version of 1 October 2026. Article numbers refer to that Code. They apply to a residential tenant's dispute of one of three types: defect of the rented dwelling or disturbance of its use (for example mould, damp, heating), termination of the lease by the landlord, rent increase.
 
 How to apply them:
 
@@ -18,7 +18,7 @@ This is a convention of this benchmark, not a rule of law; it cites no legal tex
 
 Under each question below, "If not mentioned" says how the convention applies to it.
 
-## 1. Defect of the rented dwelling (mould, damp, heating)
+## 1. Defect of the rented dwelling or disturbance of its use (for example mould, damp, heating)
 
 Deciding questions:
 
@@ -69,7 +69,7 @@ Deciding questions:
 3. Branch (art. 257d para. 2): Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?
    Not this: Arrears that the claim mentions while the notice is given for another reason (for example the landlord's own use); a dispute about a rent increase.
    If not mentioned: taken as no.
-4. Branch (art. 271a para. 1 let. a): Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)?
+4. Branch (art. 271a para. 1 let. a): Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.
    Not this: Claims the tenant asserted that the claim does not connect with the notice; a notice the claim attributes to another reason, such as the landlord's own use.
    If not mentioned: taken as no.
 5. Branch (art. 272 para. 1): Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?

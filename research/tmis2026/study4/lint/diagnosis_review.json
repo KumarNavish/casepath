@@ -1,0 +1,331 @@
+{
+ "label": "DEVELOPMENT, post hoc, not a result. Judgments made by reading each file's text (text.clean.txt, attachments), its design.json, the stored routing answer and the product's notes, after diagnose.py had attributed the errors. Written by the session that also proposes the wording fixes; a second reader should check them.",
+ "notes": [
+  "Owner classes used for the planner's question: 'rule wording' = a question, not_this or routing wording of ours that this revision may change; 'must_show wording' = a must_show item of ours that this revision may not change; 'product' = the product's reading, quotation, combination or document judgment; 'benchmark design' = the file design or the reference, not the product and not a changeable wording; 'text vs recorded state' = the file text plausibly supports what the product read (cause 6).",
+  "Routing: for a non-denied file the judgment names why the routing reading answered as it did; for a denied-event file it says what the product did and whether an empty plan is what the rule text gives."
+ ],
+ "routing": {
+  "tenancy/ten_c2a72cbf1698": {
+   "owner": "rule wording",
+   "cause": "The routing question names the defect type as 'a defect of the dwelling (mould, damp, heating)'; the file's defect is noise and vibration from a bar in the building, a disturbance of the agreed use that the type's defining event covers (art. 259a para. 1, 'disturbed in using the dwelling as agreed'). The parenthesis reads as a closed list, so the router gave no value."
+  },
+  "tenancy/ten_b4d4cb05336f": {
+   "owner": "rule wording",
+   "cause": "Rent increase accompanied by a notice of termination in the covering letter. The rule set decides that case inside the rent-increase type (fact termination_with_increase, art. 269d para. 2 let. c); the routing question does not say so, and the router took the termination."
+  },
+  "tenancy/ten_e4858b3af131": {
+   "owner": "rule wording",
+   "cause": "As ten_b4d4cb05336f: a graduated-rent step together with a notice of termination; the router took the termination ('whether I can fight the termination')."
+  },
+  "theft/the_0cd1b047049a": {
+   "owner": "rule wording",
+   "cause": "Theft from a car broken into away from home. The claim_type question's 'Not this' sends 'a burglary or robbery away from the insured location' to other, but the question does not carry the policy's own definition that breaking into a vehicle is not a burglary (Ziff. 23.3 lit. a, Ausschluss: 'Fahrzeuge sind keine Behältnisse'); the router read the smashed window as a burglary away and answered other."
+  },
+  "theft/the_12ee892d56f4": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (car window smashed, ski box forced)."
+  },
+  "theft/the_819379d12c03": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (rear side window smashed; the file's own form says 'theft of household contents away from home (from a parked car)')."
+  },
+  "theft/the_9355c558630a": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (camper van door lock broken open on a camp site)."
+  },
+  "theft/the_c50e0bd7b054": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (car window smashed; the file's form says 'Diebstahl auswärts (aus abgeschlossenem Personenwagen)')."
+  },
+  "theft/the_d37fc3c54b4b": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (passenger door window smashed)."
+  },
+  "theft/the_d9579f891719": {
+   "owner": "rule wording",
+   "cause": "As the_0cd1b047049a (car window smashed in a car park)."
+  },
+  "theft/the_dd72ec4e53dd": {
+   "owner": "rule wording",
+   "cause": "A handbag taken from a chair on a restaurant terrace, and the file states that the supplementary cover for simple theft away was not taken. The question gives no definition of simple theft (pickpocketing and trick theft are simple thefts, Ziff. 23.3 lit. b, Ausschluss) and does not say that a missing cover is decided inside the type (Ziff. 24 Einleitung, stop away_cover_missing); the router answered other. Which of the two gaps decided it cannot be told from the stored answer."
+  },
+  "theft/the_248aa95805a8": {
+   "owner": "rule wording",
+   "cause": "Theft at home by a flatmate. The rule set decides the household exclusion inside theft_at_home (fact household_perpetrator, stop h_stop_excluded); the claim_type question does not say that an exclusion does not move the claim out of its type, and the router answered other quoting 'Es war meine Mitbewohnerin'."
+  },
+  "theft/the_32a656cb56cf": {
+   "owner": "benchmark design",
+   "cause": "The defining event is designed open: the file says the bicycle may have been taken at the station or from the shed at home. That is exactly the routing question (at home or away), so no routing answer can be given from the text; the router gave none. The reference assumes the type the design drew. Not a wording defect."
+  },
+  "theft/the_d76f5df60f83": {
+   "owner": "benchmark design",
+   "cause": "The defining event is designed open: the file says it cannot tell whether the man knocked the claimant down to rob her (robbery away: outside both types, 'other') or a pickpocket used a collision (simple theft away). That is the routing question itself; 'other' is one of the two readings the file leaves open."
+  },
+  "dismissal/dis_14b7db92a192": {
+   "owner": "rule wording",
+   "cause": "Ordinary notice; the dispute is the contractual notice period (notice_period_varied true), every protected-period fact is denied. The routing value is worded as an outcome ('notice during a protected period'), while the type's own conditions decide whether a protected period, the probation period or the notice period affect an ordinary notice. The router gave no value. The two notice types share their defining event (employer_gave_notice), which no wording can separate in a file that raises matters of both (see the planner note)."
+  },
+  "dismissal/dis_1bf62841defb": {
+   "owner": "rule wording",
+   "cause": "As dis_14b7db92a192 (dispute about the contractual two-month notice period; pregnancy denied)."
+  },
+  "dismissal/dis_bf38c7dfb616": {
+   "owner": "rule wording",
+   "cause": "Ordinary notice with a written probation clause and a contractual notice period; no protected period raised. The router chose abusive notice, the only value naming an ordinary notice without a protected period."
+  },
+  "dismissal/dis_c50430dbdfa1": {
+   "owner": "rule wording",
+   "cause": "Notice by text message while the employee was ill and still in the probation period (type 1 stop). The router chose abusive notice, quoting the employer's reason ('passe einfach nicht'); the routing value does not say that illness or probation at the time of notice belongs to type 1."
+  },
+  "tenancy/ten_429b182434cf": {
+   "owner": "none",
+   "product_did": "unrouted (no routing value)",
+   "empty_plan_right": true,
+   "why": "The file states the rent was never raised (wants a reduction of the initial rent). No type's defining event holds; the rule text gives no process, so an empty plan is right."
+  },
+  "tenancy/ten_776e0e61986b": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "The file states there is no defect; the dispute is a refused sublet, which no type covers. Empty plan right."
+  },
+  "tenancy/ten_c1e4987669e8": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "The file states no notice was given (only a phone remark about a possible sale). No type applies. Empty plan right."
+  },
+  "theft/the_5ee356013cfc": {
+   "owner": "none",
+   "product_did": "routed to other",
+   "empty_plan_right": true,
+   "why": "A robbery away from home: outside both types by the rule text ('routing answers other'). Empty plan right."
+  },
+  "theft/the_c7620535798b": {
+   "owner": "none",
+   "product_did": "routed to other",
+   "empty_plan_right": true,
+   "why": "A robbery at knifepoint away from home: outside both types. Empty plan right."
+  },
+  "theft/the_1dfba8facf5e": {
+   "owner": "benchmark design",
+   "product_did": "routed to simple_theft_away and planned it",
+   "empty_plan_right": false,
+   "why": "Designed as theft_at_home with the event denied: the file says the theft happened on holiday, not at home. Under the rule text that is a simple theft away (type 2), so the product's routing is what the rules give; the reference's stop (nothing needed) is right only inside the drawn type. The 4 errors are scored against a reference the rule text does not give."
+  },
+  "theft/the_6634ab23ee99": {
+   "owner": "benchmark design",
+   "product_did": "routed to simple_theft_away",
+   "empty_plan_right": false,
+   "why": "As the_1dfba8facf5e: a camera bag stolen in Bern, not at home."
+  },
+  "theft/the_685edf55333b": {
+   "owner": "benchmark design",
+   "product_did": "routed to simple_theft_away",
+   "empty_plan_right": false,
+   "why": "As the_1dfba8facf5e: laptop stolen in Zürich at a work meeting."
+  },
+  "theft/the_86b4e22a87e7": {
+   "owner": "benchmark design",
+   "product_did": "routed to simple_theft_away",
+   "empty_plan_right": false,
+   "why": "As the_1dfba8facf5e: items stolen while shopping in Konstanz."
+  },
+  "theft/the_86e739ec9184": {
+   "owner": "benchmark design",
+   "product_did": "routed to theft_at_home",
+   "empty_plan_right": false,
+   "why": "Designed as simple_theft_away with the event denied: the file says the items were stolen at home. Under the rule text that is type 1; the product's routing is what the rules give."
+  },
+  "theft/the_a529fff2269d": {
+   "owner": "benchmark design",
+   "product_did": "routed to theft_at_home",
+   "empty_plan_right": false,
+   "why": "As the_86e739ec9184: a break-in at the claimant's flat."
+  },
+  "dismissal/dis_05af0871cd70": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice given (hints, reduced hours). No type's defining event holds. Empty plan right."
+  },
+  "dismissal/dis_0f89215979d2": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice; a proposed termination agreement. No type applies. Empty plan right."
+  },
+  "dismissal/dis_4ee0866843c9": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice given. Empty plan right."
+  },
+  "dismissal/dis_5215d587db4b": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice given (shift change). Empty plan right."
+  },
+  "dismissal/dis_930a1b5e1bdc": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice given (pressure to change job). Empty plan right."
+  },
+  "dismissal/dis_fea630e08ab3": {
+   "owner": "none",
+   "product_did": "unrouted",
+   "empty_plan_right": true,
+   "why": "No notice given. Empty plan right."
+  },
+  "dismissal/dis_827bbd04ddc9": {
+   "owner": "benchmark design",
+   "product_did": "unrouted",
+   "empty_plan_right": false,
+   "why": "Designed as immediate_dismissal with the event denied by stating an ordinary notice with a notice period. An ordinary notice is the defining event of types 1 and 2 (employer_gave_notice), so the rule text gives one of those processes, not an empty plan. The product's empty plan matches the reference (0 errors) but not the rule text."
+  },
+  "dismissal/dis_ff1e9056d2c3": {
+   "owner": "benchmark design",
+   "product_did": "routed to wrongful_termination and planned it",
+   "empty_plan_right": false,
+   "why": "As dis_827bbd04ddc9: the denial is an ordinary notice, which is the defining event of types 1 and 2; routing to wrongful_termination is one of the two readings the rule text allows. The 5 errors are scored against the immediate_dismissal stop."
+  }
+ },
+ "fact_wording": [
+  {
+   "regime": "tenancy",
+   "type": "lease_termination_dispute",
+   "fact": "asserted_claims",
+   "verdict": "open",
+   "reason": "The question asks whether the claim states that the landlord gave notice because of claims; it does not say how a tenant's own account of the landlord's reason is read. Readings answered open on firm statements of conviction ('I am convinced the real reason for the notice is my complaint', 'Ich bin ziemlich sicher ... weil ich mich gewehrt habe'): 2 of 6 stated-true files had at least one open reading, 2 errors."
+  },
+  {
+   "regime": "dismissal",
+   "type": "wrongful_termination",
+   "fact": "retaliation_for_claims",
+   "verdict": "open",
+   "reason": "Same wording gap for the employer's reason: 3 of 5 stated-true files had at least one open reading on 'Ich bin überzeugt, dass ...', 'I'm convinced I lost my job because I stood up for myself', 'Because I asked for what I'm due'; 1 error (two files' open readings changed no document)."
+  },
+  {
+   "regime": "theft",
+   "type": "theft_at_home",
+   "fact": "household_perpetrator",
+   "verdict": "open",
+   "designed_state": "not_mentioned",
+   "reason": "The not_this line ends 'a suspicion the file raises but does not settle is open'; two readings took the police report's 'Täterschaft unbekannt' (perpetrator unknown) as raising, and leaving open, whether a household member did it. A thief who is merely unknown does not raise the household question. 1 file, 3 errors."
+  }
+ ],
+ "facts": {
+  "theft/the_656f9aad39e5/household_perpetrator": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+  }
+ },
+ "documents": {
+  "tenancy/ten_5822f6df0cb7/termination_notice": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The supplied spouse_service attachment is the spouse's copy of the notice of termination; the product counted it as the notice itself. A copy of the notice is plausibly the notice."
+  },
+  "dismissal/dis_0ddd28b452d1/employment_contract": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The attachment supplied as probation_terms is an extract of the written employment contract with start date, probation and notice clauses; the product counted it as the employment contract too."
+  },
+  "dismissal/dis_166a056aad58/termination_letter": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The employer's letter supplied as written_reasons confirms in writing that the employment ended with immediate effect on a stated date; the product counted it as the record of the dismissal."
+  },
+  "dismissal/dis_9260317f805d/probation_terms": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The supplied employment_contract contains the written clause 'The first three months of employment are a probation period'; the product counted it as the written probation clause."
+  },
+  "dismissal/dis_9260317f805d/notice_period_terms": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "Designed insufficient for want of 'the written instrument that sets it'; the contract fragment is headed and numbered as the employment contract, which the product took as naming the instrument."
+  },
+  "theft/the_c3a5e8c74185/original_vouchers": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The attachment says it holds copies and that the originals are with another person; the need is for original vouchers, so 'not on file' is a defensible reading."
+  },
+  "theft/the_0d6569d32db1/original_vouchers": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "Vouchers are attached for some items only and the file does not say the others cannot be obtained; must_show is 'the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost', so 'insufficient' is a defensible reading of the design's 'sufficient'."
+  },
+  "theft/the_281214c010bb/original_vouchers": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "As the_0d6569d32db1 (no voucher, and no word on obtaining one, for the jewellery)."
+  },
+  "theft/the_eb579978f91b/original_vouchers": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "As the_0d6569d32db1 (vouchers only for the phone and headphones)."
+  },
+  "theft/the_506c9909edc4/stolen_items_list": {
+   "judgment": "text_plausibly_states_product_reading",
+   "reason": "The list gives no place of purchase for the bicycle; must_show asks 'where and when it was bought' for each item."
+  },
+  "tenancy/ten_5822f6df0cb7/claims_and_reasons": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: no conciliation or court documents. must_show says 'conciliation or court documents on those claims, if any'; the conditional item was read as required."
+  },
+  "tenancy/ten_db552dbb3c23/lease_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: the extract does not establish whether the lease has a graduated-rent or index clause. must_show 'any graduated-rent or index clause' read as required."
+  },
+  "tenancy/ten_efa24ba18ce3/rent_increase_notice": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: not established whether there was a covering letter. The title's '(with any covering letter)' read as required."
+  },
+  "theft/the_9b58c5abd02f/stolen_items_list": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: no place of purchase for an inherited watch. 'where and when it was bought' cannot exist for an heirloom."
+  },
+  "theft/the_d70abf016562/stolen_items_list": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: no place of purchase for a wallet that was a gift; the item cannot exist for a gift."
+  },
+  "theft/the_e0b1e1d56fb2/original_vouchers": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: no voucher for a stolen spare key bunch; a key bunch has no purchase voucher."
+  },
+  "dismissal/dis_064eeecaeb0d/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Product: 'Does not show: probation clause, if any; notice-period clause, if any'. Conditional items read as required."
+  },
+  "dismissal/dis_373612fa5345/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "As dis_064eeecaeb0d."
+  },
+  "dismissal/dis_408b774aa7db/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "As dis_064eeecaeb0d."
+  },
+  "dismissal/dis_ac405c63effe/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "As dis_064eeecaeb0d."
+  },
+  "dismissal/dis_f3d056a01f6d/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "As dis_064eeecaeb0d."
+  },
+  "dismissal/dis_b7f5c9e07c99/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "The finder's note: the contract's complete text includes no probation or notice-period clause; the second judgment did not confirm it. Conditional items read as required."
+  },
+  "dismissal/dis_7c10c74bd747/employment_contract": {
+   "judgment": "must_show_read_strictly",
+   "reason": "Fixed-term contract without probation or notice clauses (its other terms refer to staff regulations); the second judgment did not confirm it. Conditional items read as required, as far as the notes show."
+  }
+ },
+ "explanations": {
+  "level0_text": "Why dismissal is worst at share level 0 (no designed open fact): 24 errors in 15 files, 18 of them holds where the file settles the fact, and 16 of the 24 sit in four files. 11 holds come from three files in which every reading gave the designed value but one or more quotations were not found word for word in the uploaded text, so the product left the fact unresolved: dis_32d79153a27f (the defining event employer_gave_notice; one reading began its quotation with a capital 'We are terminating' where the letter has 'we are terminating'), dis_b7f5c9e07c99 (the defining event dismissed_immediately; one reading quoted 'mmediate' for the scan-noised 'irnmediate') and dis_408b774aa7db (notice_period_ended; two readings corrected the scan noise in 'läuft noc'). A held defining event holds every document of the type, which is why two files give 8 holds. 3 holds are the routing of dis_c50430dbdfa1 (rule wording), 3 holds and 2 requests are the denied-event file dis_ff1e9056d2c3 routed to wrongful_termination (benchmark design: its denial is an ordinary notice, the defining event of types 1 and 2), and 1 hold is a misreading (dis_fcbd44dfcef3, one reading of three took 'Ich war schon krank, als die Kündigung kam' as notice before the protected period). Level 0 is not harder by design; the excess is the concentration of these four files (with 15 files in the level, each error adds 0.07 errors per file).",
+  "measures_text": "measures_pending causes none of the 67 theft errors: no document hangs on the instruction step (h_instruction / a_instruction), and the product defers only on facts that change a document, so an unresolved measures_pending holds nothing. Its low admission where stated true (3 of 9 files the runs read: 2 of 5 simple_theft_away, 1 of 4 theft_at_home) comes from what the pending measures are. Admitted: blocking a phone by its IMEI, blocking a credit card, marking a laptop as stolen and locking it through its user account (all three stop the thief using the item). Not admitted: registering a bicycle's frame number on stolen-bike lists 'in case it turns up' (3 files: not stated or false, presumed false), reporting a camera's or laptop's serial number to the maker so that it is noticed at a repair (2 files: one reading of three not stated, held), going with the police to secure a bicycle found for sale (1 file: held). The question's not_this excludes 'steps to find the thief or recover the items', and the theft workflows append the not_this to the question the product reads; the writer and the blind check saw the question only (writer bundles and blind-check inputs carry no not_this), so the designs count recovery steps as measures to reduce the loss and the product, following our not_this, does not. The exclusion of steps to recover the items has no passage: VVG Art. 38a Abs. 1 asks the claimant to reduce the loss ('für Minderung des Schadens zu sorgen'), which getting stolen items back does. That is a defect of our wording (narrower than the passage), fixed in Part B; it changes no document and no reference.",
+  "frontier_text": "Frontier partial run (gpt-6.1-terra, clean, tenancy, the first 39 files in manifest order): 5 routing failures, all unrouted. Four are denied-event files (ten_429b182434cf, ten_776e0e61986b, ten_8572ddc89110, ten_8c54d4a61b0a): no type's defining event holds and the empty plan is what the rule text gives (0 errors each). One is ten_580485dac025, whose defining event increase_applied is designed open (the file leaves open whether a higher rent was announced or demanded), so the routing question has no answer in the text (benchmark design; the cost-efficient model routed it). The failed run, ten_5aecbb73131b, is a product failure: the routing answer gave two facts where its schema allows one, and the run stopped. The three tenancy files that the cost-efficient model routed wrongly for wording reasons (ten_c2a72cbf1698, ten_b4d4cb05336f, ten_e4858b3af131) are outside the 39 files run.",
+  "limits": [
+   "DEVELOPMENT, post hoc, not a result. One run per file on the cost-efficient model; 176 files (59 tenancy, 59 theft, 58 dismissal); small counts per cause.",
+   "The cause attribution is mechanical (replays through the product's evaluator); the owner classification is partly a reading of the files by the same session that proposes the wording fixes (diagnosis_review.json). A second reader should check both.",
+   "A hold or request can have two sufficient causes; such errors are counted once under fact reading and flagged ('also document', 'joint').",
+   "The routing reading's own reasoning is not stored; for 'other' and null answers the cause is inferred from the question wording and the quotation the router gave.",
+   "Reading verdicts come from the cached responses as lint/analyse.py parses them (a requote retry replaces the first answer)."
+  ]
+ }
+}

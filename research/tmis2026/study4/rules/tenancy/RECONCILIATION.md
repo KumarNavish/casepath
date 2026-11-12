@@ -75,3 +75,91 @@ Clarification after review (2026-11-12): one general paragraph on reading steps 
 - workflow/defect_mold_heating.json 13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb
 - workflow/lease_termination_dispute.json a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd
 - workflow/rent_increase_dispute.json 5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0
+
+## Revision after first use (development, 2026-11-12)
+
+DEVELOPMENT material, post hoc. The rule set's first use (the clean arm of the lint test, `lint/REPORT.md`, gpt-6-luna,
+59 tenancy files) was diagnosed from the stored readings in `lint/DIAGNOSIS.md` (written by `lint/diagnose.py`;
+judgments in `lint/diagnosis_review.json`). Only wording that Part A showed to be ours is changed; each change is a
+general rule, written in `tools/build.py` (the authoring source of `rules.json`, `RULES.md`, `rule_text.md` and
+`workflow/*.json`) and rebuilt. The fixes were designed on the same 59 files they are checked on (in-sample,
+development). The rule set as the lint runs read it is kept in `rev0/` (`rules.json`, `rule_text.md`, `workflow/`).
+
+Not changed: no document, `needed_when`, `mandatory` or `must_show` item; no fact id, step, condition, presumption or
+stop; the convention of SPEC 6a; the routing values (the type ids). `lint/verify_rev1.py` (`lint/VERIFY_REV1.json`)
+confirms that the rules' and workflows' logic is equal to `rev0/`, that every stored `dev/tenancy/final/*/reference.json`
+still has its manifest hash, that the product's evaluator recomputes all 59 final references unchanged with the revised
+workflows, and that the clean-room comparison on the 60 designs still gives 354 of 354 document states equal to both
+evaluators. `tools/check.py`: all checks passed. `generator/test_generator.py`: 15 tests OK.
+
+### T1. Routing question (workflow fact `dispute_family`) and the defect type's title
+
+- **Old question:** "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, heating), a
+  termination of the lease by the landlord, or a rent increase?"
+- **New question:** "Which tenancy dispute does the claim concern: a defect of the dwelling or a disturbance of its
+  agreed use that the tenant did not cause (for example mould, damp, or heating that fails), a termination of the lease
+  by the landlord, or a rent increase? A rent increase that the landlord accompanied with a notice of termination is a
+  rent increase dispute: the rent-increase rules examine that notice (art. 269d para. 2 let. c)."
+- **Old title:** "Defect of the rented dwelling (mould, damp, heating)". **New title:** "Defect of the rented dwelling
+  or disturbance of its use (for example mould, damp, heating)". The router is shown the workflow titles beside the
+  routing values and is told that a value naming a specific matter applies only to that matter.
+- **Evidence (Part A):** 3 of 51 non-denied tenancy files failed routing on the cost-efficient model, all three on this
+  wording. ten_c2a72cbf1698 (designed type defect, defect stated: night-time noise and vibration from a bar in the
+  building) got no routing value: the parenthesis "(mould, damp, heating)" reads as a closed list, narrower than the
+  type's defining event, which covers any defect not caused by the tenant and any disturbance of the agreed use
+  (`defect_present`); 3 errors. ten_b4d4cb05336f and ten_e4858b3af131 (designed rent increase with
+  `termination_with_increase` stated true) were routed to lease_termination_dispute, quoting the termination ("I'd like
+  to know whether I can fight the termination, and whether I have to pay the higher rent ..."); the rule set already
+  decides that case inside the rent-increase type, the routing question did not say so; 1 error (the two types share
+  some document ids, so ten_b4d4cb05336f scored 0).
+- **Passages:** art. 259a para. 1 ("Where defects arise in the object which are not attributable to the tenant or
+  lessee and which he is not obliged to remedy at his own expense, or where he is prevented from using the object as
+  contractually agreed, ..."; German "oder wird der Mieter im vertragsgemässen Gebrauch der Sache gestört"), the
+  passage of `defect_present`; art. 269d para. 2 let. c ("c. notice of the increase is accompanied by notice to
+  terminate or a threat of termination."), the passage of `termination_with_increase`.
+- **Why no broader and no narrower:** the defect value now names exactly what the defining event's passage names
+  (defect not caused by the tenant, or disturbed agreed use), with the earlier examples kept as examples. The
+  precedence sentence covers only an increase notice accompanied by a notice of termination, the condition of art. 269d
+  para. 2 let. c; a notice of termination given separately stays a termination dispute.
+
+### T2. `lease_termination_dispute.asserted_claims` (question)
+
+- **Old:** "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims
+  under the lease (for example demanded repair of a defect or contested the rent)?"
+- **New:** the same, followed by: "The tenant's own account of the landlord's reason counts as stating it, also where
+  the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown,
+  uncertain or one of several possibilities."
+- **Evidence (Part A):** of the 6 files in which the fact is stated true, 2 had a reading answering "open" on a firm
+  statement of the tenant's belief about the landlord's motive ("I am convinced the real reason for the notice is my
+  complaint from 15 January 2026", two readings of three; "Ich bin ziemlich sicher, warum mir die ... AG die Wohnung
+  gekündigt hat: weil ich mich gewehrt habe", one of three). The product held the fact and the correspondence
+  document: 2 holds where the file settles the fact. The same gap appears in dismissal (`retaliation_for_claims`, 3 of
+  5 stated-true files). The tenancy workflows pass only the question to the product (not `not_this`), so the
+  clarification is in the question.
+- **Passage:** art. 271a para. 1 let. a ("Notice of termination served by the landlord may be challenged in particular
+  where it is given: a. because the tenant is asserting claims arising under the lease in good faith;").
+- **Why no broader and no narrower:** the condition ("because ... claims ... in good faith") is unchanged; the sentence
+  says only how a tenant's statement of the landlord's reason is read at intake, where the reason can only be the
+  tenant's own account. A claim that leaves the reason in doubt stays open, as the convention's "raises and leaves
+  unsettled" says.
+
+### Considered and not changed
+
+- `rent_increase_dispute.index_clause` (ten_a743587360f3, 1 hold): one reading answered open on "Soweit ich das
+  verstehe, kommt das von der Klausel in meinem Vertrag"; a hedged account of a lease clause is a defensible "open",
+  so this is the product's reading of a hedge, not our wording.
+- `defect_present` held in ten_270f84d8acff (4 holds): all three readings answered true, but their quotations were not
+  found word for word in the scan-noised text; the product's quotation rule, not the wording.
+- Needed but not allowed in this revision: three `must_show` items are conditional and the product read them as
+  required ("any graduated-rent or index clause" of `lease_contract`, "conciliation or court documents on those claims,
+  if any" of `claims_and_reasons`, and "(with any covering letter)" in the title of `rent_increase_notice`): 3 requests
+  that should not be made. Saying in each item that it is due only where the thing exists would be a `must_show`
+  change; left for the planner.
+
+### Hashes after the revision
+
+- rules.json 7168b8ccee5a155e7926e9900c17f8ff0d2c70d7d43c0fd8d7ae3d15cddd4440
+- rule_text.md 76d286d6dd0c275cc67a6488e46fb3f94e3f1e8436274a33c2a69dfdc7543faa
+- workflow/defect_mold_heating.json f8a4acca431b4224ca7a045c08a61e124d6fe9c378a0bceaa3d6a450f3eb66d1
+- workflow/lease_termination_dispute.json bcb52353f437fecd0f6e7cc7095db14bdeb1de5ab19a30927585f06e80d8a9e0
+- workflow/rent_increase_dispute.json 8a698a764c8035e15e9d67bd9220d244baf861eb00f6852c857eb4123c422eda

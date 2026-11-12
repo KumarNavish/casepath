@@ -175,7 +175,7 @@ def shared_facts():
                       "The contract may require only vouchers whose procurement is possible without considerable cost; where no voucher can be obtained without considerable cost, none may be required. The limit applies voucher by voucher, so where only some are unobtainable the document is still needed for the others (see original_vouchers, must_show).")},
         {"id": "measures_pending",
          "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
-         "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
+         "not_this": "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.",
          "rule": rule(V38A, "states")},
         {"id": "imminent_danger",
          "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?",
@@ -270,7 +270,7 @@ home = {
          "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 23.3, Ausschlüsse, zweiter")] + DEFS)},
         {"id": "household_perpetrator",
          "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time?",
-         "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true.",
+         "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true. A thief the file only calls unknown or unidentified, with nothing in the file pointing to a member of the household, does not raise this question.",
          "rule": rule(Q("Ziff. 23.3, Ausschlüsse, erster"), "states")},
         {"id": "burglary_or_robbery",
          "question": f"Was the theft {BURGLARY_WORDS}, and so not a simple theft?",
@@ -359,8 +359,8 @@ away["documents"] = shared_documents(
 ROUTING = {
     "fact": "claim_type", "type": "enum", "values": ["theft_at_home", "simple_theft_away", "other"],
     "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)?",
-    "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.",
-    "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 24.2"), Q("Ziff. 26 lit. b")]),
+    "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them. " + NOT_BURGLARY.replace("both are simple thefts.", "a theft from a vehicle broken into, and pickpocketing or trick theft, away from the insured location are simple thefts away (simple_theft_away).") + " Whether the policy includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief who lives in the policyholder's household), is decided within the claim type, not by this question.",
+    "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 24.2"), Q("Ziff. 26 lit. b"), Q("Ziff. 23.3 lit. a, Ausschluss"), Q("Ziff. 23.3 lit. b, Ausschluss"), Q("Ziff. 24, Einleitung"), Q("Ziff. 23.3, Ausschlüsse, erster")]),
 }
 # How to read steps and stops: one general paragraph, the same words in all three regimes (rule_text.md and rules.json).
 STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
