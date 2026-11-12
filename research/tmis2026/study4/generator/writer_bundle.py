@@ -5,10 +5,13 @@ Writes study4/dev/<regime>/writer_bundles/<file_id>.json and, for the operator o
 (label -> fact / document per file; never given to a writer or a blind checker) and MANIFEST.json.
 
 A bundle holds: the designed answers phrased as the condition questions (verbatim questions, neutral labels Q1..Qn
-in a per-file shuffled order) with an instruction per answer; any `generator_note` the rule set attaches to a
-fact; the story seed; the language; the attachments to write with what each must show, must leave out and must not
-show; the topic order; the style sheet (STYLE.md, verbatim). It holds no fact or step ids, no rule text beyond the
-questions and the catalogue's titles and must_show items, no not_this lines, no passages, no workflow, no
+in a per-file shuffled order) with an instruction per answer and each condition's `not_this` line beside its question
+(from 2026-11-12, revision 2: a writer who does not see what a question excludes writes wordings that fall under it);
+any `generator_note` the rule set attaches to a fact; in a file whose central event is designed "no", the other
+types' central-event questions (with their not_this lines), none of which the file may state (STYLE.md, message
+item 14); the story seed; the language; the attachments to write with what each must show, must leave out and must
+not show; the topic order; the style sheet (STYLE.md, verbatim). It holds no fact or step ids, no rule text beyond the
+questions, their not_this lines and the catalogue's titles and must_show items, no passages, no workflow, no
 reference, no product code, no prompt of any design, no level.
 """
 import argparse
@@ -33,6 +36,11 @@ INSTRUCTION = {
                      "reader answer this question yes, no or open, and no statement that it is not the case "
                      "(style sheet, message item 7).",
 }
+DENIED = ("This question's designed answer is \"no\" and it asks about the central event of the claim: the claimant says that "
+          "this event did not take place at all. The message and the attachments state none of the events asked about "
+          "under `must_not_state` either (not as what happened instead, not as a correction, not as a possibility): the "
+          "claim is not \"not this, but that\". What the claimant does write about is free, as long as it is none of "
+          "those events (style sheet, message item 14).")
 LANG = {"de": "German (Swiss Standard German: write ss, never the sharp s)", "en": "English"}
 
 
@@ -47,8 +55,9 @@ def labels(design):
     return q, att
 
 
-def build_one(regime, design, style_text, notes=None, facts=None):
-    """`facts` overrides the design's fact states (a rewrite target); `notes` are the item notes."""
+def build_one(regime, design, style_text, notes=None, facts=None, rnd=1):
+    """`facts` overrides the design's fact states (a rewrite target); `notes` are the item notes; `rnd` the writing
+    round the bundle is for (it names the output file)."""
     notes = notes or G.ItemNotes(regime.name)
     if facts is not None:
         design = dict(design, facts=facts)
@@ -63,7 +72,8 @@ def build_one(regime, design, style_text, notes=None, facts=None):
     for lab, f in qmap.items():
         st = design["facts"][f]
         fdef = regime.fact(tid, f)
-        e = {"label": lab, "question": fdef["question"], "designed_answer": ANSWER[st], "instruction": INSTRUCTION[st]}
+        e = {"label": lab, "question": fdef["question"], "not_this": fdef.get("not_this", ""),
+             "designed_answer": ANSWER[st], "instruction": INSTRUCTION[st]}
         if fdef.get("generator_note"):
             e["note"] = fdef["generator_note"]
         if f in spans and st != "not_mentioned":
@@ -76,6 +86,7 @@ def build_one(regime, design, style_text, notes=None, facts=None):
     not_touch = [lab for lab, f in qmap.items() if design["facts"][f] == "not_mentioned"]
     open_l = [lab for lab, f in qmap.items() if design["facts"][f] == "open"]
     stated = [lab for lab, f in qmap.items() if design["facts"][f] in ("stated_true", "stated_false")]
+    denied = G.denied_event(regime, design)
     attachments = []
     by_doc = {a["document"]: a for a in design["attachments"]}
     for lab, did in amap.items():
@@ -85,22 +96,24 @@ def build_one(regime, design, style_text, notes=None, facts=None):
         applies = {i: notes.applies(tid, did, i, states) for i in d["must_show"]}
         glosses = [{"item": i, "checkable_as": notes.gloss(tid, did, i)} for i in d["must_show"]
                    if notes.gloss(tid, did, i) and applies[i] is not False]
+        missing = regime.current_item(tid, did, a.get("missing"))  # a design may name the item by an earlier wording
         attachments.append({
             "label": lab, "document_title": d["title"],
-            "must_show": [i for i in d["must_show"] if applies[i] is True and i != a.get("missing")],
+            "must_show": [i for i in d["must_show"] if applies[i] is True and i != missing],
             "show_only_if_it_applies": [i for i in d["must_show"] if applies[i] is None],
             "does_not_apply_leave_out": [i for i in d["must_show"] if applies[i] is False],
             "checkable_as": glosses,
-            "leave_out": a.get("missing"),
+            "leave_out": missing,
             "must_not_show": ([f"anything that would answer {x}" for x in not_touch] +
                               [f"anything that would settle {x}" for x in open_l] +
-                              [f"anything that contradicts the designed answer to {x}" for x in stated]),
+                              [f"anything that contradicts the designed answer to {x}" for x in stated] +
+                              (["any event asked about under central_event_denied.must_not_state"] if denied else [])),
         })
     # topics: every question that is answered or open, and each attachment; shuffled per file
     topics = [lab for lab in qmap if design["facts"][qmap[lab]] != "not_mentioned"] + \
              [f"mention of attachment {lab}" for lab in amap]
     random.Random(design["story"]["topic_order_seed"]).shuffle(topics)
-    return {
+    bundle = {
         "schema": "study4.writer-bundle/1",
         "file_id": design["file_id"],
         "language": LANG[design["language"]],
@@ -109,10 +122,15 @@ def build_one(regime, design, style_text, notes=None, facts=None):
         "questions": questions,
         "topics_in_order": topics,
         "attachments": attachments,
-        "output": {"path": f"written/{design['file_id']}.json",
-                   "format": "see WRITER_TASK.md: {file_id, language, text, attachments: [{label, text}]}"},
+        "output": {"path": f"written/{design['file_id']}.json" if rnd == 1 else f"written/{design['file_id']}.r{rnd}.json",
+                   "format": "see WRITER_TASK.md: {file_id, round, language, text, attachments: [{label, text}]}"},
         "style_sheet": style_text,
-    }, {"questions": qmap, "attachments": amap}
+    }
+    if denied:
+        bundle["central_event_denied"] = {
+            "label": inv[denied], "instruction": DENIED,
+            "must_not_state": [{"question": q, "not_this": nt} for _, _, q, nt in G.other_events(regime, design)]}
+    return bundle, {"questions": qmap, "attachments": amap}
 
 
 def build(regime_name, rules_dir=None, out=None, force=False):

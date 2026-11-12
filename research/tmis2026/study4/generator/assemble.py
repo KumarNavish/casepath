@@ -19,6 +19,19 @@ Steps:
   python3 -I -B assemble.py compare   --regime R --round 2
   python3 -I -B assemble.py finalize  --regime R
 
+Repair rounds (k >= 3; after the final set exists, for a criterion added later, e.g. the denied-event rule of
+2026-11-12): files are never rewritten twice; stored rounds are never overwritten.
+  python3 -I -B assemble.py repair-prepare --regime R --round 3 --list LIST.json --check denied
+        -> rewrite_r3/PLAN.json (every file of the check set: rewrite / drop / recheck, target states, text to read)
+           and rewrite_r3/bundles/<id>.json (rewrite requests in the WRITER_TASK.md format, output written/<id>.r3.json)
+  (writing session: written/<id>.r3.json)
+  python3 -I -B assemble.py blind-in --regime R --round 3        (every file of the plan's check set)
+  (blind-check session: blindcheck/out/round3/)
+  python3 -I -B assemble.py compare  --regime R --round 3
+  python3 -I -B assemble.py repair-prepare --regime R --round 4 --from-compare 3   (only if a re-checked file that
+        was never rewritten differs at round 3: its one rewrite; rewritten files that differ are dropped)
+  python3 -I -B assemble.py finalize --regime R
+
 Comparison rule: a file matches when every deciding fact's recovered state equals the designed state and every
 attachment's recovered sufficiency equals the design (an insufficient attachment must be read as missing exactly
 the designed item, and nothing else), and the message has the designed length.
@@ -28,8 +41,12 @@ reference; such a file's recorded states become the states as read (designed sta
 kept_as_read). Every other differing file gets one rewrite, against the designed states except where a
 dependency rule makes a designed "not mentioned" impossible and an implied state leaves the reference unchanged
 (target_round2). A file that still differs after round 2 is dropped and counted.
+Denied central event (from 2026-11-12): blind-check inputs carry the routing question and the central-event
+questions of the regime's other types; in a file whose design states its central event false, a text that states
+(or leaves open) another type's central event, or whose routing answer is another type, differs from its design.
 """
 import argparse
+import shutil
 import sys
 from collections import Counter
 from pathlib import Path
@@ -54,6 +71,45 @@ def written_path(p, fid, rnd):
     return p["written"] / (f"{fid}.json" if rnd == 1 else f"{fid}.r{rnd}.json")
 
 
+def plan_path(out, rnd):
+    return out / f"rewrite_r{rnd}" / "PLAN.json"
+
+
+def load_plan(out, rnd):
+    pp = plan_path(out, rnd)
+    if not pp.exists():
+        raise SystemExit(f"{pp} missing: run repair-prepare --round {rnd} first")
+    return G.read_json(pp)
+
+
+def repair_text_path(p, out, plan, fid):
+    """The text a repair round reads for a file: its rewrite if the plan rewrites it, else the text kept in final/."""
+    row = plan["files"][fid]
+    return written_path(p, fid, plan["round"]) if row["decision"] == "rewrite" else out / row["text"]
+
+
+def blind_input(regime, d, key, w, notes):
+    """One blind-check input: the text, the attachments with their items, every question with its not_this line, the
+    routing question and the other types' central-event questions (labels E1..)."""
+    texts = {a["label"]: a["text"] for a in w["attachments"]}
+    item = {"file_id": d["file_id"], "text": w["text"],
+            "attachments": [{"label": lab, "document_title": regime.doc(d["type"], did)["title"],
+                             "must_show": regime.doc(d["type"], did)["must_show"],
+                             "checkable_as": [{"item": i, "checkable_as": notes.gloss(d["type"], did, i)}
+                                              for i in regime.doc(d["type"], did)["must_show"]
+                                              if notes.gloss(d["type"], did, i)],
+                             "text": texts[lab]}
+                            for lab, did in key["attachments"].items()],
+            "questions": [{"label": lab, "question": regime.fact(d["type"], f)["question"],
+                           "not_this": regime.fact(d["type"], f).get("not_this", "")}
+                          for lab, f in key["questions"].items()]}
+    rq = regime.routing_question()
+    if rq:
+        item["routing"] = {"question": rq["question"], "values": rq["values"]}
+    item["event_questions"] = [{"label": lab, "question": q, "not_this": nt} for lab, _, q, nt in G.other_events(regime, d)]
+    return item
+
+
 def check_written(w, fid, key):
     errs = []
     if w.get("file_id") != fid:
@@ -66,19 +122,26 @@ def check_written(w, fid, key):
     return errs
 
 
-def blind_in(regime, out, rnd):
+def blind_in(regime, out, rnd, force=False):
     p = paths(out)
     designs, keys = load_designs(p), G.read_json(p["keys"])["keys"]
     notes = G.ItemNotes(regime.name)
     todo = sorted(designs)
-    if rnd > 1:
+    plan = None
+    if rnd == 2:
         cl = G.read_json(p["bc"] / "classify_round1.json")
         todo = sorted(fid for fid, c in cl["files"].items() if c["decision"] == "rewrite")
+    elif rnd >= 3:
+        plan = load_plan(out, rnd)
+        todo = list(plan["check"])
     dest = p["bin"] / f"round{rnd}"
+    if dest.exists() and any(dest.glob("*.json")) and not force:
+        raise SystemExit(f"{dest} already holds blind-check inputs; stored rounds are never overwritten (--force to "
+                         "rebuild a round that has not been read yet)")
     dest.mkdir(parents=True, exist_ok=True)
     made, missing = [], []
     for fid in todo:
-        wp = written_path(p, fid, rnd)
+        wp = repair_text_path(p, out, plan, fid) if plan else written_path(p, fid, rnd)
         if not wp.exists():
             missing.append(fid)
             continue
@@ -86,25 +149,18 @@ def blind_in(regime, out, rnd):
         errs = check_written(w, fid, key)
         if errs:
             raise SystemExit(f"{wp}: {errs}")
-        texts = {a["label"]: a["text"] for a in w["attachments"]}
-        item = {"file_id": fid, "text": w["text"],
-                "attachments": [{"label": lab, "document_title": regime.doc(d["type"], did)["title"],
-                                 "must_show": regime.doc(d["type"], did)["must_show"],
-                                 "checkable_as": [{"item": i, "checkable_as": notes.gloss(d["type"], did, i)}
-                                                  for i in regime.doc(d["type"], did)["must_show"]
-                                                  if notes.gloss(d["type"], did, i)],
-                                 "text": texts[lab]}
-                                for lab, did in key["attachments"].items()],
-                "questions": [{"label": lab, "question": regime.fact(d["type"], f)["question"]}
-                              for lab, f in key["questions"].items()]}
-        G.write_json(dest / f"{fid}.json", item)
+        G.write_json(dest / f"{fid}.json", blind_input(regime, d, key, w, notes))
         made.append(fid)
-    print(f"round {rnd}: {len(made)} blind-check inputs written to {dest}; no written file for {len(missing)}")
+    print(f"round {rnd}: {len(made)} blind-check inputs written to {dest}; no written file for {len(missing)}"
+          + (f": {missing}" if missing else ""))
     return made, missing
 
 
-def compare_one(d, key, w, b, target=None):
-    """Mismatches between design (or a round-2 target of fact states) and blind reading; empty when it matches."""
+def compare_one(d, key, w, b, target=None, regime=None, inp=None):
+    """Mismatches between design (or a target of fact states) and blind reading; empty when it matches.
+    With `regime`, an attachment's designed missing item is read in the current wording; with `inp` (the blind-check
+    input) carrying `event_questions`, a denied-event design differs where another type's central event is read as
+    stated or open, or the routing answer names another type."""
     mm = []
     facts = target or d["facts"]
     for lab, f in key["questions"].items():
@@ -115,7 +171,8 @@ def compare_one(d, key, w, b, target=None):
     for lab, did in key["attachments"].items():
         a = att[did]
         got = b.get("attachments", {}).get(lab) or {}
-        want = {"state": "sufficient"} if a["sufficient"] else {"state": "insufficient", "missing": [a["missing"]]}
+        missing = regime.current_item(d["type"], did, a["missing"]) if regime else a["missing"]
+        want = {"state": "sufficient"} if a["sufficient"] else {"state": "insufficient", "missing": [missing]}
         ok = got.get("state") == want["state"] and (want["state"] == "sufficient" or got.get("missing") == want["missing"])
         if not ok:
             mm.append({"label": lab, "kind": "attachment", "document": did, "designed": want, "read_as": got})
@@ -123,30 +180,172 @@ def compare_one(d, key, w, b, target=None):
     lo, hi = d["words"]
     if not lo <= words <= hi:
         mm.append({"label": "text", "kind": "length", "designed": [lo, hi], "read_as": words})
+    if regime is not None and inp is not None and "event_questions" in inp:
+        events = b.get("events") or {}
+        for e in inp["event_questions"]:
+            if e["label"] not in events:
+                mm.append({"label": e["label"], "kind": "other_event", "designed": "recorded", "read_as": None})
+        if facts.get(regime.defining_event(d["type"])) == "stated_false":
+            other = {lab: fid for lab, fid, _, _ in G.other_events(regime, d)}
+            for lab, fid in other.items():
+                st = (events.get(lab) or {}).get("state")
+                if st in ("stated_true", "open"):
+                    mm.append({"label": lab, "kind": "other_event", "fact": fid,
+                               "designed": "not stated (the central event is denied)", "read_as": st,
+                               "quote": (events.get(lab) or {}).get("quote")})
+            ans = (b.get("routing") or {}).get("answer")
+            if ans in regime.type_ids and ans != d["type"]:
+                mm.append({"label": "routing", "kind": "routing", "designed": f"{d['type']} or no type",
+                           "read_as": ans, "quote": (b.get("routing") or {}).get("quote")})
     return mm
 
 
 def compare(regime, out, rnd):
     p = paths(out)
     designs, keys = load_designs(p), G.read_json(p["keys"])["keys"]
-    targets = {}
+    targets, plan = {}, None
     if rnd == 2:
         cl = G.read_json(p["bc"] / "classify_round1.json")["files"]
         targets = {fid: c["target_round2"] for fid, c in cl.items() if c.get("target_round2")}
+    elif rnd >= 3:
+        plan = load_plan(out, rnd)
+        targets = {fid: row["target_facts"] for fid, row in plan["files"].items()}
     src = p["bout"] / f"round{rnd}"
     res = {}
     for bp in sorted(src.glob("*.json")):
         fid = bp.stem
         b = G.read_json(bp)
-        w = G.read_json(written_path(p, fid, rnd))
-        mm = compare_one(designs[fid], keys[fid], w, b, targets.get(fid))
+        wp = repair_text_path(p, out, plan, fid) if plan else written_path(p, fid, rnd)
+        w = G.read_json(wp)
+        ip = p["bin"] / f"round{rnd}" / f"{fid}.json"
+        inp = G.read_json(ip) if ip.exists() else None
+        mm = compare_one(designs[fid], keys[fid], w, b, targets.get(fid), regime=regime, inp=inp)
         res[fid] = {"matches": not mm, "mismatches": mm, "blind_sha256": G.sha256_file(bp),
-                    "written_sha256": G.sha256_file(written_path(p, fid, rnd))}
+                    "written_sha256": G.sha256_file(wp)}
+        if b.get("routing") is not None:
+            res[fid]["routing_read"] = b["routing"]
     G.write_json(p["bc"] / f"compare_round{rnd}.json", res)
     n_ok = sum(r["matches"] for r in res.values())
     print(f"round {rnd}: {len(res)} compared, {n_ok} match, {len(res) - n_ok} differ"
           + (" (next: classify --round 1)" if rnd == 1 else ""))
     return res
+
+
+# ----------------------------------------------------------------- repair rounds (k >= 3)
+REPAIR_RULE = ("A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or "
+               "rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is "
+               "dropped. Files of the check set that are not rewritten are blind-checked again as they are.")
+
+
+def writer_mismatches(regime, d, key, rec, evidence):
+    """What the writer is told about a repair rewrite: labels, the designed and the read answer in the bundle's words,
+    and the quote; never a fact, document or type id, nor the diagnosis's reasoning (kept in PLAN.json)."""
+    ev = G.denied_event(regime, dict(d, facts=rec["facts"]))
+    lab = {f: l for l, f in key["questions"].items()}.get(ev)
+    deny = "no, and none of the events under central_event_denied.must_not_state"
+    if not evidence.get("mismatches"):
+        return [{"label": lab, "kind": "question", "designed": deny,
+                 "read_as": "the claimant denies it, but the text states an event asked about under "
+                            "central_event_denied.must_not_state", "quote": evidence.get("quote")}]
+    told = []
+    for m in evidence["mismatches"]:
+        if m["kind"] == "question":
+            told.append({"label": m["label"], "kind": "question", "designed": ANS[m["designed"]],
+                         "read_as": ANS.get(m["read_as"], m["read_as"])})
+        elif m["kind"] in ("other_event", "routing"):
+            told.append({"label": lab, "kind": "question", "designed": deny,
+                         "read_as": "the text states (or leaves possible) an event asked about under "
+                                    "central_event_denied.must_not_state", "quote": m.get("quote")})
+        elif m["kind"] == "attachment":
+            told.append({"label": m["label"], "kind": "attachment", "designed": m["designed"], "read_as": m["read_as"]})
+        else:
+            told.append({k: m[k] for k in ("label", "kind", "designed", "read_as")})
+    return told
+
+
+def rewritten_before(out, entry, rnd):
+    if entry["round"] >= 2:
+        return True
+    for k in range(3, rnd):
+        pp = plan_path(out, k)
+        if pp.exists() and G.read_json(pp)["files"].get(entry["file_id"], {}).get("decision") == "rewrite":
+            return True
+    return False
+
+
+def repair_prepare(regime, out, rnd, listed=None, from_compare=None, check="listed", force=False):
+    """Plan repair round `rnd`: which files are rewritten (never rewritten before), dropped (rewritten before) or
+    re-checked as they are, with the target states (the final record's states) and the text each is read from; write
+    the rewrite requests. `listed`: {file_id: evidence} (why the text differs from its design); `from_compare`: the
+    files of an earlier repair round's comparison that differ and were not rewritten in it."""
+    assert rnd >= 3
+    p = paths(out)
+    rdir = out / f"rewrite_r{rnd}"
+    if plan_path(out, rnd).exists() and not force:
+        raise SystemExit(f"{plan_path(out, rnd)} exists; a stored repair round is never overwritten (--force before any "
+                         "writing has started)")
+    man = G.read_json(p["final"] / "MANIFEST.json")
+    entries = {e["file_id"]: e for e in man["files"]}
+    designs, keys = load_designs(p), G.read_json(p["keys"])["keys"]
+    listed = dict(listed or {})
+    if from_compare is not None:
+        prev = load_plan(out, from_compare)
+        cmpr = G.read_json(p["bc"] / f"compare_round{from_compare}.json")
+        for fid, r in cmpr.items():
+            if not r["matches"] and prev["files"][fid]["decision"] == "recheck":
+                listed[fid] = {"source": f"compare_round{from_compare}.json", "mismatches": r["mismatches"]}
+    unknown = sorted(set(listed) - set(entries))
+    if unknown:
+        raise SystemExit(f"not in final/MANIFEST.json: {unknown}")
+    if check == "denied":
+        check_set = sorted(fid for fid, e in entries.items() if e["denied_event"])
+    else:
+        check_set = sorted(listed)
+    missing_from_check = sorted(set(listed) - set(check_set))
+    if missing_from_check:
+        raise SystemExit(f"listed files outside the check set: {missing_from_check}")
+    style = (G.GEN / "STYLE.md").read_text(encoding="utf-8")
+    notes = G.ItemNotes(regime.name)
+    import writer_bundle as WB
+    files, bundles = {}, {}
+    for fid in check_set:
+        e = entries[fid]
+        rec = G.read_json(p["final"] / fid / "design.json")
+        text = written_path(p, fid, e["round"]).relative_to(out)
+        row = {"kept": e["kept"], "kept_round": e["round"], "text": str(text), "target_facts": rec["facts"],
+               "denied_event": e["denied_event"]}
+        if fid in listed:
+            row["evidence"] = listed[fid]
+            if rewritten_before(out, e, rnd):
+                row["decision"] = "drop"
+                row["reason"] = "the text differs from its design and the file was already rewritten once"
+            else:
+                row["decision"] = "rewrite"
+                row["reason"] = "the text differs from its design; its one rewrite"
+                d = designs[fid]
+                bundle, key2 = WB.build_one(regime, d, style, notes, facts=rec["facts"], rnd=rnd)
+                assert key2 == keys[fid], f"{fid}: labels changed"
+                bundles[fid] = {"file_id": fid, "round": rnd, "mismatches": writer_mismatches(regime, d, key2, rec, listed[fid]),
+                                "answers_changed": [], "bundle": bundle, "previous": str(text)}
+        else:
+            row["decision"] = "recheck"
+            row["reason"] = "not found to differ; blind-checked again as it is"
+        files[fid] = row
+    rdir.mkdir(parents=True, exist_ok=True)
+    if (rdir / "bundles").exists():
+        shutil.rmtree(rdir / "bundles")
+    for fid, req in bundles.items():
+        G.write_json(rdir / "bundles" / f"{fid}.json", req)
+    plan = {"schema": "study4.repair-plan/1", "regime": regime.name, "round": rnd, "rule": REPAIR_RULE,
+            "check": [fid for fid in check_set if files[fid]["decision"] != "drop"],
+            "counts": {k: sum(r["decision"] == k for r in files.values()) for k in ("rewrite", "drop", "recheck")},
+            "item_notes_sha256": notes.sha256, "style_sha256": G.sha256_file(G.GEN / "STYLE.md"),
+            "writer_bundle_sha256": G.sha256_file(G.GEN / "writer_bundle.py"),
+            "bundles_sha256": {fid: G.sha256_file(rdir / "bundles" / f"{fid}.json") for fid in sorted(bundles)},
+            "files": files}
+    G.write_json(plan_path(out, rnd), plan)
+    print(f"repair round {rnd} ({regime.name}): {plan['counts']}; check set {len(plan['check'])}; plan {plan_path(out, rnd)}")
+    return plan
 
 
 # ----------------------------------------------------------------- classification and the keep / rewrite rule
@@ -192,7 +391,8 @@ def implications(regime, d, fact, constraints, notes):
                 if not a["supplied"] or a["document"] != c["document"]:
                     continue
                 item = c.get("item")
-                if item and (a.get("missing") == item or item not in regime.doc(tid, a["document"])["must_show"]):
+                if item and (regime.current_item(tid, a["document"], a.get("missing")) == item
+                             or item not in regime.doc(tid, a["document"])["must_show"]):
                     continue
                 sets = c.get("set", "drawn")
                 if sets == "drawn":
@@ -321,7 +521,7 @@ def classify(regime, out, product=None):
         if row["decision"] != "rewrite":
             continue
         d = designs[fid]
-        bundle, key2 = WB.build_one(regime, d, style, notes, facts=row["target_round2"])
+        bundle, key2 = WB.build_one(regime, d, style, notes, facts=row["target_round2"], rnd=2)
         assert key2 == keys[fid], f"{fid}: labels changed"
         told = [{"label": q["label"], "kind": "question", "designed": ANS[q["designed"]], "read_as": ANS.get(q["read_as"], q["read_as"])}
                 for q in row["questions"]]
@@ -369,6 +569,41 @@ def write_classify_md(regime, p, summary, res):
     (p["bc"] / "CLASSIFY.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
+def repair_outcomes(p, out):
+    """Per file, the outcome of the repair rounds (k >= 3) in order: ("text", k) the rewrite of round k matched;
+    ("drop", why); ("kept", k) re-checked at round k and matched. A re-checked file that differs at round k with no
+    later round rewriting it is pending (finalize refuses until repair-prepare --round k+1 --from-compare k ran)."""
+    res, pending = {}, []
+    k = 3
+    while plan_path(out, k).exists():
+        plan = G.read_json(plan_path(out, k))
+        cp = p["bc"] / f"compare_round{k}.json"
+        cmpr = G.read_json(cp) if cp.exists() else None
+        nxt = G.read_json(plan_path(out, k + 1)) if plan_path(out, k + 1).exists() else {"files": {}}
+        for fid, row in plan["files"].items():
+            if row["decision"] == "drop":
+                res[fid] = ("drop", f"repair round {k}: text differs from its design; already rewritten once")
+                continue
+            if cmpr is None:
+                raise SystemExit(f"repair round {k}: {cp} missing (blind-in, blind check and compare --round {k} first)")
+            c = cmpr.get(fid)
+            if c is None:
+                raise SystemExit(f"repair round {k}: {fid} not compared")
+            if row["decision"] == "rewrite":
+                res[fid] = ("text", k) if c["matches"] else ("drop", f"differs after rewrite (repair round {k})")
+            elif c["matches"]:
+                res[fid] = ("kept", k)
+            elif nxt["files"].get(fid, {}).get("decision") in ("rewrite", "drop"):
+                pass  # decided by the next round
+            else:
+                pending.append(fid)
+        k += 1
+    if pending:
+        raise SystemExit(f"repair round {k - 1}: {pending} differ and were never rewritten: run repair-prepare --round "
+                         f"{k} --from-compare {k - 1} and that round first")
+    return res
+
+
 def finalize(regime, out):
     p = paths(out)
     designs = load_designs(p)
@@ -377,6 +612,7 @@ def finalize(regime, out):
     keys = G.read_json(p["keys"])["keys"]
     clp = p["bc"] / "classify_round1.json"
     cl = G.read_json(clp)["files"] if clp.exists() else {}
+    repair = repair_outcomes(p, out)
     p["final"].mkdir(parents=True, exist_ok=True)
     entries, dropped = [], []
     for fid, d in sorted(designs.items()):
@@ -392,8 +628,14 @@ def finalize(regime, out):
             why = "not written" if fid not in c1 else "differs after rewrite" if fid in c2 else "no rewrite checked"
             dropped.append({"file_id": fid, "level": d["level"], "type": d["type"], "why": why})
             continue
-        w = G.read_json(written_path(p, fid, rnd))
-        b = p["bout"] / f"round{rnd}" / f"{fid}.json"
+        rep = repair.get(fid)
+        if rep and rep[0] == "drop":
+            dropped.append({"file_id": fid, "level": d["level"], "type": d["type"], "why": rep[1]})
+            continue
+        text_rnd = rep[1] if rep and rep[0] == "text" else rnd
+        blind_rnd = rep[1] if rep else rnd
+        w = G.read_json(written_path(p, fid, text_rnd))
+        b = p["bout"] / f"round{blind_rnd}" / f"{fid}.json"
         fdir = p["final"] / fid
         fdir.mkdir(parents=True, exist_ok=True)
         rec = dict(d)
@@ -430,16 +672,33 @@ def finalize(regime, out):
             hashes[name + ".txt"] = G.sha256_file(fdir / (name + ".txt"))
         if noise_log:
             hashes["noise.json"] = G.write_json(fdir / "noise.json", noise_log)
-        entries.append({"file_id": fid, "level": d["level"], "type": d["type"], "round": rnd, "kept": how,
-                        "scan_noise": d["scan_noise"], "denied_event": d["denied_event"],
-                        "open_facts": d["open_facts"], "language": d["language"], "sha256": hashes})
+        elif (fdir / "noise.json").exists():
+            (fdir / "noise.json").unlink()
+        e = {"file_id": fid, "level": d["level"], "type": d["type"], "round": text_rnd, "kept": how,
+             "scan_noise": d["scan_noise"], "denied_event": d["denied_event"],
+             "open_facts": d["open_facts"], "language": d["language"], "sha256": hashes}
+        if rep:
+            e["repair"] = {"round": rep[1], "result": "rewritten" if rep[0] == "text" else "rechecked"}
+        entries.append(e)
+    # a file dropped now that has a folder from an earlier finalize: moved out of final/ (kept for the record)
+    for x in dropped:
+        stale = p["final"] / x["file_id"]
+        if stale.exists():
+            dest = out / "dropped" / x["file_id"]
+            if dest.exists():
+                shutil.rmtree(dest)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(stale), str(dest))
+            x["moved_to"] = str(dest.relative_to(out))
     per_level = Counter(e["level"] for e in entries)
     open_lv = Counter(e["level"] for e in entries if e["open_facts"])
     G.write_json(p["final"] / "MANIFEST.json", {
         "schema": "study4.final-manifest/1", "regime": regime.name, "files": entries, "dropped": dropped,
         "counts": {"kept": len(entries), "dropped": len(dropped),
-                   "kept_after_rewrite": sum(e["round"] == 2 for e in entries),
+                   "kept_after_rewrite": sum(e["round"] >= 2 for e in entries),
                    "kept_as_read": sum(e["kept"] == "kept_as_read" for e in entries),
+                   "repair_rewritten": sum(e.get("repair", {}).get("result") == "rewritten" for e in entries),
+                   "repair_rechecked": sum(e.get("repair", {}).get("result") == "rechecked" for e in entries),
                    "per_level": {str(k): v for k, v in sorted(per_level.items())},
                    "open_share_per_level": {str(k): round(open_lv[k] / v, 3) for k, v in sorted(per_level.items())}},
         "design_manifest_sha256": G.sha256_file(p["designs"] / "MANIFEST.json"),
@@ -450,21 +709,32 @@ def finalize(regime, out):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("step", choices=["blind-in", "compare", "classify", "finalize"])
+    ap.add_argument("step", choices=["blind-in", "compare", "classify", "finalize", "repair-prepare"])
     ap.add_argument("--product", help="the product's casepath-internal folder (classify)")
     ap.add_argument("--regime", required=True)
     ap.add_argument("--rules-dir")
     ap.add_argument("--out")
-    ap.add_argument("--round", type=int, default=1, choices=[1, 2])
+    ap.add_argument("--round", type=int, default=1, help="1, 2, or a repair round (3 and later)")
+    ap.add_argument("--list", help="repair-prepare: JSON {regime: {file_id: evidence}} of files whose text differs")
+    ap.add_argument("--from-compare", type=int, help="repair-prepare: the earlier repair round whose differing "
+                                                      "re-checked files are to be rewritten")
+    ap.add_argument("--check", choices=["listed", "denied"], default="listed",
+                    help="repair-prepare: the files the round's blind check reads (listed only, or every denied-event file)")
+    ap.add_argument("--force", action="store_true")
     a = ap.parse_args(argv)
     regime = G.Regime(a.regime, a.rules_dir)
     out = Path(a.out) if a.out else G.DEV / a.regime
     if a.step == "blind-in":
-        blind_in(regime, out, a.round)
+        blind_in(regime, out, a.round, a.force)
     elif a.step == "compare":
         compare(regime, out, a.round)
     elif a.step == "classify":
         classify(regime, out, a.product)
+    elif a.step == "repair-prepare":
+        if a.round < 3:
+            raise SystemExit("repair rounds are 3 and later")
+        listed = G.read_json(a.list).get(a.regime, {}) if a.list else {}
+        repair_prepare(regime, out, a.round, listed, a.from_compare, a.check, a.force)
     else:
         finalize(regime, out)
 

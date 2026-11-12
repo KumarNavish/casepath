@@ -497,7 +497,7 @@
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "that and when CSS was notified of the theft"
+      "the date (day, month and year) on which the theft was notified to CSS"
      ],
      "rule": {
       "source_id": "vvg",
@@ -603,7 +603,7 @@
      "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
-      "where and when it was bought",
+      "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
       "its value"
      ],
      "rule": {
@@ -636,7 +636,7 @@
      },
      "mandatory": true,
      "must_show": [
-      "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+      "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
       "where and when the item was bought",
       "the price paid"
      ],
@@ -683,7 +683,7 @@
      },
      "mandatory": true,
      "must_show": [
-      "the bicycle, if its voucher can be obtained without considerable cost",
+      "the bicycle it is for (make, model or type)",
       "where and when it was bought",
       "the price paid"
      ],
@@ -1142,7 +1142,7 @@
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "that and when CSS was notified of the theft"
+      "the date (day, month and year) on which the theft was notified to CSS"
      ],
      "rule": {
       "source_id": "vvg",
@@ -1176,7 +1176,7 @@
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+      "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
       "its sum insured",
       "the insured location"
      ],
@@ -1256,7 +1256,7 @@
      "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
-      "where and when it was bought",
+      "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
       "its value"
      ],
      "rule": {
@@ -1289,7 +1289,7 @@
      },
      "mandatory": true,
      "must_show": [
-      "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+      "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
       "where and when the item was bought",
       "the price paid"
      ],
@@ -1336,7 +1336,7 @@
      },
      "mandatory": true,
      "must_show": [
-      "the bicycle, if its voucher can be obtained without considerable cost",
+      "the bicycle it is for (make, model or type)",
       "where and when it was bought",
       "the price paid"
      ],

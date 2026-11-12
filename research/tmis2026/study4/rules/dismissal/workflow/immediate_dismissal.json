@@ -106,9 +106,9 @@
    "must_show": [
     "parties",
     "start date of employment",
-    "agreed end date, if fixed-term",
-    "probation clause, if any",
-    "notice-period clause, if any"
+    "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply.",
+    "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+    "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
    ],
    "source_refs": [
     "co-sr220#art_337c_para_1"

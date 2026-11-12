@@ -163,3 +163,113 @@ evaluators. `tools/check.py`: all checks passed. `generator/test_generator.py`: 
 - workflow/defect_mold_heating.json f8a4acca431b4224ca7a045c08a61e124d6fe9c378a0bceaa3d6a450f3eb66d1
 - workflow/lease_termination_dispute.json bcb52353f437fecd0f6e7cc7095db14bdeb1de5ab19a30927585f06e80d8a9e0
 - workflow/rent_increase_dispute.json 8a698a764c8035e15e9d67bd9220d244baf861eb00f6852c857eb4123c422eda
+
+## Revision 2 after first use (development, 2026-11-12): must_show items
+
+DEVELOPMENT material, post hoc. The diagnosis of the first use (`lint/DIAGNOSIS.md`, `lint/diagnosis_review.json`)
+attributes 12 clean-arm errors over the three regimes to conditional or per-item `must_show` wordings. Revision 2
+applies one rule-writing guideline, SPEC.md item 6c, to every `must_show` item of this rule set:
+
+> A `must_show` item names one thing that is visible on the document. An item that applies only under a condition
+> starts with that condition in the fixed form "Only if the file states that <condition>: <thing>." and ends "Otherwise
+> this item does not apply."; the condition is the one the generator applies (`generator/items/<regime>.json`,
+> `applies_when`) or, where the generator leaves it to the story, the circumstance itself. No item asks "whether"; no
+> item is satisfied by an absence (where a document may show either of two things, the item names the statement that
+> must be visible). A need condition belongs in `needed_when`, not in an item.
+
+The product's workflow format (`casepath.workflow/1`, `validate_workflow` at the tested commit) takes `must_show` only
+as a list of distinct non-empty strings, with no condition per item, so the fixed wording carries the condition.
+
+Edited in `tools/build.py` (table `MUST_SHOW_REV2`, which also writes `MUST_SHOW_WORDING.json`: old wording -> new, read
+by the generator for designs that name an item by its earlier wording) and rebuilt. The state the `_rev1` runs read is
+kept in `rev1/` (`rules.json`, `rule_text.md`, `workflow/`); the generator's item notes of that state in
+`generator/items/rev1/tenancy.json`.
+
+Not changed: no document, title, step, `needed_when`, `mandatory`; no fact, question, `not_this`, presumption or stop;
+which items are conditional and when they apply (`generator/items/tenancy.json`: only `item` keys renamed, and the entry of the removed item dropped).
+`lint/verify_rev2.py` (`lint/VERIFY_REV2.json`) confirms: rules.json and every workflow equal `rev1/` except the
+must_show wording, read through `MUST_SHOW_WORDING.json`; every stored `dev/tenancy/final/*/reference.json` and `design.json`
+still has its manifest hash; the product's evaluator recomputes every final reference unchanged with the revised
+workflows; the clean-room comparison on the 60 designs gives the same document states as both evaluators for all
+documents; for every design and item the notes give the same conditional / applies / checkable_as as before; every
+writer bundle is the same once item texts are mapped. `tools/check.py` passes and now enforces the fixed form, no
+"whether" and no absence wording (it reports the old wording in `rev1/` as failing). `generator/test_generator.py`:
+all tests pass.
+
+Changed items (9 rows (9 item instances): 8 reworded, 1 removed):
+
+1. **termination_notice** (lease_termination_dispute)
+   - Old: "whether the form approved by the canton is used"
+   - New: "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+   - Cited passage (the document's rule, basis evidence): Art. 266l para. 2: "The landlord must give notice of termination using a form approved by the canton which informs the tenant how he must proceed if he wishes to contest the termination or apply for an extension of the lease." (German: "Der Vermieter muss mit einem Formular kündigen, das vom Kanton genehmigt ist und das angibt, wie der Mieter vorzugehen hat, wenn er die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen will.")
+   - Why: Asked 'whether'; every notice shows a 'whether' (silence reads as 'no'), so a sufficient and an insufficient copy cannot be told apart. Now names the statement that must be visible.
+2. **spouse_service** (lease_termination_dispute)
+   - Old: "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit"
+   - New: "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered partner. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): Art. 266n: "Notice of termination given by the landlord and any notification of a time limit for payment accompanied by a warning of termination in the event of non-payment (Art. 257d) must be served separately on the tenant and on his spouse or registered partner." (German: "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen.")
+   - Condition: fact `arrears_termination` ("Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?"), Art. 257d para. 2: "In the event of non-payment within the time limit the landlord or lessor may terminate the contract with immediate effect or, for leases of residential and commercial premises, subject to at least 30 days’ notice ending on the last day of a calendar month." (German: "Bezahlt der Mieter innert der gesetzten Frist nicht, so kann der Vermieter fristlos, bei Wohn- und Geschäftsräumen mit einer Frist von mindestens 30 Tagen auf Ende eines Monats kündigen.")
+   - Why: Condition at the start in a loose form ('where ...:'); now the fixed form. The condition is the generator's (`arrears_termination` stated true) and the file fact's wording.
+3. **claims_and_reasons** (lease_termination_dispute)
+   - Old: "conciliation or court documents on those claims, if any"
+   - New: "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the conciliation or court documents on those claims. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): Art. 271a para. 1 let. a: "Notice of termination served by the landlord may be challenged in particular where it is given: a. because the tenant is asserting claims arising under the lease in good faith;" (German: "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird: a. weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;")
+   - Why: 'if any' lets an absence satisfy the item, and the product read it as required (ten_5822f6df0cb7). Now the fixed form; the generator leaves this condition to the story (conditional, no applies_when), and so does the wording: no fact of the rule set records a filing.
+4. **deposit_receipt** (defect_mold_heating)
+   - Old: "date the claims were brought before the conciliation authority (or that they have not yet been)"
+   - New: "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet been brought"
+   - Cited passage (the document's rule, basis evidence): Art. 259h para. 1: "The landlord becomes entitled to the rent paid on deposit if the tenant or lessee does not bring claims against him before the conciliation authority within 30 days of the due date for the first rent payment paid into deposit." (German: "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat.")
+   - Why: '(or that they have not yet been)' reads as satisfied by silence; the generator already requires an explicit sentence (checkable_as). Now names the sentence that must be visible.
+5. **lease_contract** (rent_increase_dispute)
+   - Old: "any graduated-rent or index clause"
+   - New: "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): Art. 269d para. 1: "The landlord may at any time increase the rent with effect from the next termination date." (German: "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen.")
+   - Condition: fact `graduated_rent` ("Does the claim state that the increase is a step fixed in advance in the lease, by which the rent rises periodically by fixed amounts (graduated rent)?"), Art. 270d: "Without prejudice to the right to challenge the initial rent, the tenant may not challenge periodical rent increases." (German: "Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann der Mieter gestaffelte Mietzinse nicht anfechten.")
+   - Condition: fact `index_clause` ("Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the Swiss consumer price index)?"), Art. 270c: "Without prejudice to the right to challenge the initial rent, a party may argue before the conciliation authority only that the rent increase or reduction requested by the other party is not justified by a corresponding change in the index." (German: "Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann eine Partei vor der Schlichtungsbehörde nur geltend machen, dass die von der andern Partei verlangte Erhöhung oder Herabsetzung des Mietzinses durch keine entsprechende Änderung des Indexes gerechtfertigt sei.")
+   - Why: 'any ... clause' is satisfied by an absence and the product read it as required (ten_db552dbb3c23). Now the fixed form with the generator's condition (graduated_rent or index_clause stated true).
+6. **rent_increase_notice** (rent_increase_dispute)
+   - Old: "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)"
+   - New: "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+   - Cited passage (the document's rule, basis evidence): Art. 269d para. 2 let. a–b: "The rent increase is void where: a. it is not communicated using the prescribed form; b. no reasons are given;" (German: "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet;")
+   - Why: Asked 'whether' (ten_db552dbb3c23 round 1: designed missing, read sufficient). Now names the statement that must be visible, as the generator's checkable_as already did. The parenthesis on graduated-rent steps is dropped from the item: art. 269d para. 5 stays cited on this document (`also`) and on step ri_form, and a graduated-step notice shows the item by saying which form it uses.
+7. **rent_increase_notice** (rent_increase_dispute)
+   - Old: "any threat of termination in it or in the covering letter"
+   - New: "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): Art. 269d para. 2 let. a–b: "The rent increase is void where: a. it is not communicated using the prescribed form; b. no reasons are given;" (German: "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet;")
+   - Condition: fact `termination_with_increase` ("Does the claim state that, together with the rent increase, the landlord gave notice of termination?"), Art. 269d para. 2 let. c: "c. notice of the increase is accompanied by notice to terminate or a threat of termination." (German: "c. mit der Mitteilung die Kündigung androht oder ausspricht.")
+   - Why: 'any ...' is satisfied by an absence. Now the fixed form with the generator's condition (termination_with_increase stated true). A threat without a notice of termination still shows on the increase notice, which is requested anyway (termination_with_increase not_this); the item no longer makes its absence a content requirement.
+8. **rent_increase_notice** (rent_increase_dispute)
+   - Old: "for an index-linked increase: the old and new index values"
+   - New: "Only if the file states that the increase applies an index clause: the old and the new index value. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): Art. 269d para. 2 let. a–b: "The rent increase is void where: a. it is not communicated using the prescribed form; b. no reasons are given;" (German: "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet;")
+   - Condition: fact `index_clause` ("Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the Swiss consumer price index)?"), Art. 270c: "Without prejudice to the right to challenge the initial rent, a party may argue before the conciliation authority only that the rent increase or reduction requested by the other party is not justified by a corresponding change in the index." (German: "Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann eine Partei vor der Schlichtungsbehörde nur geltend machen, dass die von der andern Partei verlangte Erhöhung oder Herabsetzung des Mietzinses durch keine entsprechende Änderung des Indexes gerechtfertigt sei.")
+   - Why: Condition at the start in a loose form ('for an ...:'); the round-1 blind check read it as required in ten_efa24ba18ce3 (the generator had treated it as optional). Now the fixed form with the generator's condition (index_clause stated true).
+9. **rent_increase_notice** (rent_increase_dispute)
+   - Old: "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"
+   - New: removed
+   - Cited passage (the document's rule, basis evidence): Art. 269d para. 2 let. a–b: "The rent increase is void where: a. it is not communicated using the prescribed form; b. no reasons are given;" (German: "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet;")
+   - Condition: fact `increase_applied` ("Does the claim state that the landlord has announced, demanded or charged a higher rent for the dwelling, by a notice, a letter, an invoice or otherwise (whether or not on an official form)?"), Art. 269d para. 2 let. a: "The rent increase is void where: a. it is not communicated using the prescribed form;" (German: "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt;")
+   - Why: Removed. It names nothing visible on a document (an absent notice cannot show its own absence) and is satisfied only by an absence. The generator applied it only where increase_applied is stated false, where the type stops before the document is needed, so no file ever attached a notice it applied to (lint/VERIFY_REV2.json: 5 designs, all with the document not needed and not attached). The document's rule keeps the passage and its inference.
+
+### Considered and not changed
+
+- The title "Landlord's rent increase notice (with any covering letter)" keeps its "any": titles are not must_show items and 6c does not cover them (the diagnosis counts one request on it, ten_efa24ba18ce3). For the planner.
+- `payment_demand` "payments made within the time limit (bank or postal records)": names a visible record; where nothing was paid the record shows no payment, which is the finding. Kept.
+- `spouse_service`'s other items, and pairs such as "old and new rent", "sender and addressee", "date and addressee": one entry of the document each. Kept.
+- The rule inference of `rent_increase_notice` still says that where no notice exists its absence is the point to establish: that is the rule's reasoning (art. 269d para. 2 let. a), not a content item.
+
+### Hashes after revision 2
+
+- rules.json b0ff1f07f988430a11ae9ab73e5d45e01dc29d4c5ecd63226fd63aa664902b79
+- rule_text.md c2fe733c43d95c0acc880ecfb7f41051ae5a061c4e4297849df48d5d8e561e7a
+- MUST_SHOW_WORDING.json 477d7626ec5b43ce4099b79b4aec5cdeade0c68154f5ee07af39d78dd28b26a5
+- workflow/defect_mold_heating.json 4bfd015a354991c7cb77531a354c66ea6d79251b4ec991b7434065f3f12cfd1d
+- workflow/lease_termination_dispute.json 9bdcaf5bfc0c3e2af96216a8dd2fb3a283d88eaee1c29a7023d53cfa2009101c
+- workflow/rent_increase_dispute.json dfffd717e21c4e21091cd64d5195e104b40c8709c004f6d9948ec1b8e69a4416
+
+State before revision 2 (`rev1/`, equal to the hashes after revision 1 above):
+
+- rev1/rules.json 7168b8ccee5a155e7926e9900c17f8ff0d2c70d7d43c0fd8d7ae3d15cddd4440
+- rev1/rule_text.md 76d286d6dd0c275cc67a6488e46fb3f94e3f1e8436274a33c2a69dfdc7543faa
+- rev1/workflow/defect_mold_heating.json f8a4acca431b4224ca7a045c08a61e124d6fe9c378a0bceaa3d6a450f3eb66d1
+- rev1/workflow/lease_termination_dispute.json bcb52353f437fecd0f6e7cc7095db14bdeb1de5ab19a30927585f06e80d8a9e0
+- rev1/workflow/rent_increase_dispute.json 8a698a764c8035e15e9d67bd9220d244baf861eb00f6852c857eb4123c422eda

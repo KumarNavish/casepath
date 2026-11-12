@@ -183,3 +183,87 @@ workflows give the product the question with its `not_this` appended, so `not_th
 - rule_text.md 4a6fbe444d13deb4498e4806a9e1ad175cfdb467800f753e5c138aa0e872f937
 - workflow/theft_at_home.json cd19a336c5e8fcd57c3da5e2effd0fff9894bea6fb53b31340eb03dd01976ed2
 - workflow/simple_theft_away.json 320a346001d595ff9c564314ef47fe50c26992071f48c7d60bf15eea1bad21f2
+
+## Revision 2 after first use (development, 2026-11-12): must_show items
+
+DEVELOPMENT material, post hoc. The diagnosis of the first use (`lint/DIAGNOSIS.md`, `lint/diagnosis_review.json`)
+attributes 12 clean-arm errors over the three regimes to conditional or per-item `must_show` wordings. Revision 2
+applies one rule-writing guideline, SPEC.md item 6c, to every `must_show` item of this rule set:
+
+> A `must_show` item names one thing that is visible on the document. An item that applies only under a condition
+> starts with that condition in the fixed form "Only if the file states that <condition>: <thing>." and ends "Otherwise
+> this item does not apply."; the condition is the one the generator applies (`generator/items/<regime>.json`,
+> `applies_when`) or, where the generator leaves it to the story, the circumstance itself. No item asks "whether"; no
+> item is satisfied by an absence (where a document may show either of two things, the item names the statement that
+> must be visible). A need condition belongs in `needed_when`, not in an item.
+
+The product's workflow format (`casepath.workflow/1`, `validate_workflow` at the tested commit) takes `must_show` only
+as a list of distinct non-empty strings, with no condition per item, so the fixed wording carries the condition.
+
+Edited in `tools/build.py` (table `MUST_SHOW_REV2`, which also writes `MUST_SHOW_WORDING.json`: old wording -> new, read
+by the generator for designs that name an item by its earlier wording) and rebuilt. The state the `_rev1` runs read is
+kept in `rev1/` (`rules.json`, `rule_text.md`, `workflow/`); the generator's item notes of that state in
+`generator/items/rev1/theft.json`.
+
+Not changed: no document, title, step, `needed_when`, `mandatory`; no fact, question, `not_this`, presumption or stop;
+which items are conditional and when they apply (`generator/items/theft.json`: only `item` keys renamed).
+`lint/verify_rev2.py` (`lint/VERIFY_REV2.json`) confirms: rules.json and every workflow equal `rev1/` except the
+must_show wording, read through `MUST_SHOW_WORDING.json`; every stored `dev/theft/final/*/reference.json` and `design.json`
+still has its manifest hash; the product's evaluator recomputes every final reference unchanged with the revised
+workflows; the clean-room comparison on the 60 designs gives the same document states as both evaluators for all
+documents; for every design and item the notes give the same conditional / applies / checkable_as as before; every
+writer bundle is the same once item texts are mapped. `tools/check.py` passes and now enforces the fixed form, no
+"whether" and no absence wording (it reports the old wording in `rev1/` as failing). `generator/test_generator.py`:
+all tests pass.
+
+Changed items (5 rows (9 item instances: four documents are in both claim types)):
+
+1. **notification_record** (theft_at_home, simple_theft_away)
+   - Old: "that and when CSS was notified of the theft"
+   - New: "the date (day, month and year) on which the theft was notified to CSS"
+   - Cited passage (the document's rule, basis evidence): VVG Art. 38 Abs. 1: "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen."
+   - Why: 'that and when' makes the document's only item hard to leave out and to see missing (6 round-1 files designed missing, read sufficient). Now names the one thing the generator's checkable_as requires: the calendar date of the notification to CSS.
+2. **insurance_policy** (simple_theft_away)
+   - Old: "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence"
+   - New: "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included"
+   - Cited passage (the document's rule, basis evidence): Ziff. 24, Einleitung, S. 8: "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:"
+   - Why: 'or its absence' lets a silent policy count as showing the item. Now names the listing that must be visible, as the generator's checkable_as already did.
+3. **stolen_items_list** (theft_at_home, simple_theft_away)
+   - Old: "where and when it was bought"
+   - New: "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when"
+   - Cited passage (the document's rule, basis follows): Ziff. 8 lit. c, S. 3: "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;"
+   - Also cited on the document: Abschnitt 3.7, Spalten, S. 2: "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste"
+   - Why: Cannot be shown for an item that was not bought (the_9b58c5abd02f, an inherited watch; the_d70abf016562, a gift). Now says what the list shows for such an item, as the generator's checkable_as already did ('gift' or 'inherited', with the occasion). The form's columns 'Gekauft bei / Kaufdatum' are the passage.
+4. **original_vouchers** (theft_at_home, simple_theft_away)
+   - Old: "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost"
+   - New: "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost"
+   - Cited passage (the document's rule, basis follows): Ziff. 8 lit. c, S. 3: "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;"
+   - Also cited on the document: VVG Art. 39 Abs. 2 Ziff. 1: "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat;"
+   - Why: 'whose voucher can be obtained without considerable cost' is not visible on a voucher; readers judged it differently (the_0d6569d32db1, the_281214c010bb, the_eb579978f91b, the_e0b1e1d56fb2). Now: one voucher per item, except items the file states cannot be documented without considerable cost, the voucher-by-voucher limit of VVG Art. 39 Abs. 2 Ziff. 1 stated as what the reader checks.
+5. **bicycle_voucher** (theft_at_home, simple_theft_away)
+   - Old: "the bicycle, if its voucher can be obtained without considerable cost"
+   - New: "the bicycle it is for (make, model or type)"
+   - Cited passage (the document's rule, basis follows): Ziff. 8 lit. c, S. 3: "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;"
+   - Also cited on the document: Abschnitt 3.9, S. 3: "Fahrrad (bitte Originalkaufbelege beilegen)"
+   - Why: The 'if' clause is a need condition (needed_when: bicycle and not vouchers_unobtainable), not content. Now names what the voucher shows, as the generator's checkable_as already did.
+
+### Considered and not changed
+
+- `insurance_policy` (away) "its sum insured": names one visible amount and is kept. Note for the planner: the generator's checkable_as asks for the sum insured for household contents, while Ziff. 24.2 caps simple theft away at "der in der Police vereinbarten Versicherungssumme" for that cover; the two readings differ and neither is changed here (item notes stay as they are).
+- `police_report` "that the theft was reported to the police and when", `police_consent` "that the police consented": statements visible on the police document. Kept.
+- `bicycle_voucher` and `original_vouchers` "where and when ... was bought": a voucher always records a purchase. Kept.
+
+### Hashes after revision 2
+
+- rules.json af60c0b4bae1887f0d21b9aabbb138c9c36a95c97a8a2bca9d7ef517ada34782
+- rule_text.md a04dff19fab3ca196854935e08e9680e692813fd573ce001a13cc9ef2199288a
+- MUST_SHOW_WORDING.json 960a06f46f1da5e7e12f97c324c26f4778df35c9da682b6738171cb8196aa064
+- workflow/simple_theft_away.json fe5d1bce4f79559e204da9522345eae867cab115e57c67504220db4fccd5476a
+- workflow/theft_at_home.json 767d0e17a42d52935e4ec5a9ba1f2c22070f10f8c7ac3ebf8d8453832f00ea30
+
+State before revision 2 (`rev1/`, equal to the hashes after revision 1 above):
+
+- rev1/rules.json f366a1cf4d0bc7d1e43dc665d21531afdb19d9e77410dc169b30b263c4b991b2
+- rev1/rule_text.md 4a6fbe444d13deb4498e4806a9e1ad175cfdb467800f753e5c138aa0e872f937
+- rev1/workflow/simple_theft_away.json 320a346001d595ff9c564314ef47fe50c26992071f48c7d60bf15eea1bad21f2
+- rev1/workflow/theft_at_home.json cd19a336c5e8fcd57c3da5e2effd0fff9894bea6fb53b31340eb03dd01976ed2

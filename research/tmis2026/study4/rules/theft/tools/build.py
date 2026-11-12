@@ -228,7 +228,7 @@ def shared_documents(p, policy_step, policy_rule, policy_shows):
     return [
         {"id": "notification_record", "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
          "step": f"{p}_notify", "needed_when": True, "mandatory": True,
-         "must_show": ["that and when CSS was notified of the theft"],
+         "must_show": ["the date (day, month and year) on which the theft was notified to CSS"],
          "rule": rule(V38, "evidence", "The passage makes notifying the insurer a duty; CSS requires no form for it (oral notice suffices, Ziff. 4; its form offers online notification), so any record of the notification, the claim form or CSS's own record of an online, written or oral notice, ordinarily shows that and when the insurer was notified.",
                       context=[Q("Ziff. 8 lit. a"), Q("Ziff. 4"), Q("Seite 1", source="css-form")])},
         {"id": "insurance_policy", "title": "The insurance policy (Police)", "step": policy_step, "needed_when": True, "mandatory": True,
@@ -243,15 +243,17 @@ def shared_documents(p, policy_step, policy_rule, policy_shows):
                       "The passage makes the police's consent the condition for removing or altering traces; the police report, the document the same clause names and CSS may request, or a written confirmation by the police is the document that can show the consent. Either one satisfies this need.")},
         {"id": "stolen_items_list", "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
          "step": f"{p}_loss", "needed_when": True, "mandatory": True,
-         "must_show": ["each stolen or damaged item", "where and when it was bought", "its value"],
+         "must_show": ["each stolen or damaged item",
+                       "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+                       "its value"],
          "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", INTAKE_REQUEST, context=FORM_ITEMS)},
         {"id": "original_vouchers", "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
          "step": f"{p}_loss", "needed_when": T("vouchers_unobtainable", False), "mandatory": True,
-         "must_show": ["the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost", "where and when the item was bought", "the price paid"],
+         "must_show": ["an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost", "where and when the item was bought", "the price paid"],
          "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", INTAKE_REQUEST + " The limit of VVG Art. 39 Abs. 2 Ziff. 1 applies voucher by voucher.", context=FORM_ITEMS + [V39])},
         {"id": "bicycle_voucher", "title": "Original purchase voucher for the bicycle",
          "step": f"{p}_loss", "needed_when": ALL(T("bicycle"), T("vouchers_unobtainable", False)), "mandatory": True,
-         "must_show": ["the bicycle, if its voucher can be obtained without considerable cost", "where and when it was bought", "the price paid"],
+         "must_show": ["the bicycle it is for (make, model or type)", "where and when it was bought", "the price paid"],
          "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", "As for original_vouchers: the contract makes original vouchers due on CSS's request, and CSS's claim form asks for the bicycle's voucher in its own section ('Fahrrad (bitte Originalkaufbelege beilegen)').",
                       context=[Q("Abschnitt 3.9", source="css-form"), V39])},
     ]
@@ -354,7 +356,7 @@ away["documents"] = shared_documents(
     "a", "a_cover",
     rule(Q("Ziff. 24, Einleitung"), "evidence", "Supplementary covers apply only where they are listed in the policy; the policy is the document that shows whether the supplementary insurance for simple theft away was agreed, for which sum, and which location is insured (so that 'outside the insured location' can be checked).",
          context=[Q("Ziff. 24.2")]),
-    ["the supplementary insurance for simple theft away (Ziff. 24.2), or its absence", "its sum insured", "the insured location"])
+    ["the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included", "its sum insured", "the insured location"])
 
 ROUTING = {
     "fact": "claim_type", "type": "enum", "values": ["theft_at_home", "simple_theft_away", "other"],
@@ -382,6 +384,44 @@ OUTSIDE = ("A burglary or robbery away from the insured location (for example a 
            "theft away (a vehicle is not a container), so it belongs to type 2.")
 
 TYPES = [home, away]
+
+# ---------------------------------------------------------------- revision 2 after first use: must_show wording
+# SPEC.md item 6c. Each row: the types whose document carries the item, the document, the wording of revision 1 (as
+# the _rev1 runs read it, rev1/), the wording now (None: the item is removed). main() checks every row against the
+# built types and writes MUST_SHOW_WORDING.json, which the generator uses to read designs that name an item by its
+# earlier wording. RECONCILIATION.md, "Revision 2 after first use", gives the cited passage of every row.
+MUST_SHOW_REV2 = [
+    (("theft_at_home", "simple_theft_away"), "notification_record", "that and when CSS was notified of the theft",
+     "the date (day, month and year) on which the theft was notified to CSS"),
+    (("simple_theft_away",), "insurance_policy", "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+     "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included"),
+    (("theft_at_home", "simple_theft_away"), "stolen_items_list", "where and when it was bought",
+     "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when"),
+    (("theft_at_home", "simple_theft_away"), "original_vouchers",
+     "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+     "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost"),
+    (("theft_at_home", "simple_theft_away"), "bicycle_voucher", "the bicycle, if its voucher can be obtained without considerable cost",
+     "the bicycle it is for (make, model or type)"),
+]
+
+
+def must_show_wording(types, rows, regime):
+    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+    by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
+    out = []
+    for tids, did, old, new in rows:
+        for tid in tids:
+            shows = by[(tid, did)]
+            assert old not in shows, (tid, did, old)
+            assert new is None or new in shows, (tid, did, new)
+        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
+    return {"regime": regime, "revision": 2, "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
+                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
+                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
+                    "items by their rev1 wording; the generator maps them through this file.",
+            "items": out}
+
 
 CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. "
                    "Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. "
@@ -710,6 +750,8 @@ def main():
     (ROOT / "rules.json").write_text(json.dumps(rules_json(), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     rules_md()
     rule_text_md()
+    (ROOT / "MUST_SHOW_WORDING.json").write_text(
+        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "theft"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (ROOT / "workflow").mkdir(exist_ok=True)
     for t in TYPES:
         (ROOT / "workflow" / f"{t['id']}.json").write_text(json.dumps(workflow(t), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

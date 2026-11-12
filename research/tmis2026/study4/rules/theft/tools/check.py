@@ -22,6 +22,7 @@ import hashlib
 import importlib.util
 import itertools
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -275,8 +276,47 @@ def main():
           f"presumptions {sum(len(t['presumptions']) for t in T)} (plus {counts['convention_presumptions']} convention presumptions in the workflows); "
           f"stops {sum(len(t['stops']) for t in T)}; convention rules 1")
     print("rules by basis: " + ", ".join(f"{k} {v}" for k, v in sorted(by_basis.items())) + f" (total {sum(by_basis.values())}), plus convention 1")
+    n_ms, n_ms_cond = check_must_show(ROOT, fail)
+    print(f"6c must_show: {n_ms} items, {n_ms_cond} conditional in the fixed form")
     print("FAILED: %d" % len(FAIL) if FAIL else "ALL CHECKS PASSED")
     sys.exit(1 if FAIL else 0)
+
+
+# ------------------------------------------------------------------ SPEC.md item 6c: must_show items every reader can check
+MS_FORM = re.compile(r"^Only if the file states that (?P<cond>[^:]+): (?P<thing>.+)\. Otherwise this item does not apply\.$")
+MS_WHETHER = re.compile(r"\bwhether\b", re.I)
+MS_ABSENCE = re.compile(r"\bif any\b|\bits absence\b|\bthat absence\b|^any\b", re.I)
+MS_LOOSE_CONDITION = re.compile(r"\bif\b|^(where|when|for an?|for the)\b[^:]*:", re.I)
+
+
+def check_must_show(base, report):
+    """Every must_show item names one thing visible on the document; a conditional item uses the fixed form
+    'Only if the file states that <condition>: <thing>. Otherwise this item does not apply.'; no item asks 'whether';
+    no item is satisfied by an absence ('if any', 'or its absence', a leading 'any'); the workflows carry the same
+    items as rules.json. Returns the number of items and of conditional items."""
+    data = json.loads((base / "rules.json").read_text(encoding="utf-8"))
+    n = n_cond = 0
+    for t in data["types"]:
+        wf = json.loads((base / "workflow" / f"{t['id']}.json").read_text(encoding="utf-8"))
+        wdocs = {d["id"]: d for d in wf["documents"]}
+        for d in t["documents"]:
+            where = f"6c {t['id']}.{d['id']}"
+            if wdocs.get(d["id"], {}).get("must_show", []) != d["must_show"]:
+                report(f"{where}: workflow must_show differs from rules.json")
+            for item in d["must_show"]:
+                n += 1
+                m = MS_FORM.match(item)
+                if item.startswith("Only if") and not m:
+                    report(f"{where}: conditional item not in the fixed form: {item!r}")
+                n_cond += bool(m)
+                body = m.group("thing") if m else item
+                if MS_WHETHER.search(item):
+                    report(f"{where}: item asks 'whether': {item!r}")
+                if MS_ABSENCE.search(item):
+                    report(f"{where}: item satisfied by an absence: {item!r}")
+                if MS_LOOSE_CONDITION.search(body):
+                    report(f"{where}: condition outside the fixed form: {item!r}")
+    return n, n_cond
 
 
 if __name__ == "__main__":

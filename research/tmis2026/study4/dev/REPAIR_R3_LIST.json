@@ -1,0 +1,64 @@
+{
+ "label": "DEVELOPMENT. Denied-event development files whose denial states another claim type's defining event, listed from lint/DIAGNOSIS.json and lint/diagnosis_review.json only (no new reading of the texts). Criterion (generator/BLIND_CHECK_TASK.md, STYLE.md message item 14): where a design's defining event is stated false, the text states no defining event of any type of the regime. Input of `assemble.py repair-prepare --list`.",
+ "tenancy": {},
+ "theft": {
+  "the_1dfba8facf5e": {
+   "designed_type": "theft_at_home",
+   "other_type_event": "simple_theft_away",
+   "read_as": "the denial states another claim type's defining event: Designed as theft_at_home with the event denied: the file says the theft happened on holiday, not at home. Under the rule text that is a simple theft away (type 2), so the product's routing is what the rules give; the reference's stop (nothing needed) is right only inside the drawn type. The 4 errors are scored against a reference the rule text does not give.",
+   "quote": "Das ist am 3. Juli 2026 passiert, und zwar nicht bei mir zu Hause am Birkenweg 73 in Neuchâtel, sondern unterwegs, während meiner Ferien im Tessin.",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "the_6634ab23ee99": {
+   "designed_type": "theft_at_home",
+   "other_type_event": "simple_theft_away",
+   "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: a camera bag stolen in Bern, not at home.",
+   "quote": "I was in Bern for the day on Friday 24 July 2026, visiting my riend Laura Widmer, and that's where my camera bag with the camera and two lenses was stolen",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "the_685edf55333b": {
+   "designed_type": "theft_at_home",
+   "other_type_event": "simple_theft_away",
+   "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: laptop stolen in Zürich at a work meeting.",
+   "quote": "my laptop and my e-reader were stolen, together worth about CHF 3,600. This wasn't at home in my flat at Sonnenweg 95 in Chur. I was in Zürich that day for a work meeting, and that's where it happened.",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "the_86b4e22a87e7": {
+   "designed_type": "theft_at_home",
+   "other_type_event": "simple_theft_away",
+   "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: items stolen while shopping in Konstanz.",
+   "quote": "Ich war am 25. August 2026 mit meiner Freundin Seraina Ellis in Konstanz zum Einkaufen, und dort sind mir die Sachen gestohlen worden.",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "the_86e739ec9184": {
+   "designed_type": "simple_theft_away",
+   "other_type_event": "theft_at_home",
+   "read_as": "the denial states another claim type's defining event: Designed as simple_theft_away with the event denied: the file says the items were stolen at home. Under the rule text that is type 1; the product's routing is what the rules give.",
+   "quote": "Die Sachen wurden am Sonntag, 23. August 2026, bei mir zu Hause gestohlen, aus meiner Wohnung an der Bergstrasse 108 in St. Gallen",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "the_a529fff2269d": {
+   "designed_type": "simple_theft_away",
+   "other_type_event": "theft_at_home",
+   "read_as": "the denial states another claim type's defining event: As the_86e739ec9184: a break-in at the claimant's flat.",
+   "quote": "This was a break-in at home, in my own flat at Mühleweg 77 in St. Gallen.",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  }
+ },
+ "dismissal": {
+  "dis_827bbd04ddc9": {
+   "designed_type": "immediate_dismissal",
+   "other_type_event": "employer_gave_notice (types protected_period_notice and wrongful_termination)",
+   "read_as": "the denial states another claim type's defining event: Designed as immediate_dismissal with the event denied by stating an ordinary notice with a notice period. An ordinary notice is the defining event of types 1 and 2 (employer_gave_notice), so the rule text gives one of those processes, not an empty plan. The product's empty plan matches the reference (0 errors) but not the rule text.",
+   "quote": null,
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  },
+  "dis_ff1e9056d2c3": {
+   "designed_type": "immediate_dismissal",
+   "other_type_event": "wrongful_termination",
+   "read_as": "the denial states another claim type's defining event: As dis_827bbd04ddc9: the denial is an ordinary notice, which is the defining event of types 1 and 2; routing to wrongful_termination is one of the two readings the rule text allows. The 5 errors are scored against the immediate_dismissal stop.",
+   "quote": "Frau Hughes hat mir am 17. März 2026 ganz normal mit Frist gekündigt, auf Ende Mai, und ich arbeite bis dahin weiter im Lager in Basel.",
+   "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+  }
+ }
+}

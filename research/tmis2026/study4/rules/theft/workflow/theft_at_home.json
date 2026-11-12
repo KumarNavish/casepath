@@ -355,7 +355,7 @@
    "id": "notification_record",
    "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
    "must_show": [
-    "that and when CSS was notified of the theft"
+    "the date (day, month and year) on which the theft was notified to CSS"
    ],
    "source_refs": [
     "vvg#VVG Art. 38 Abs. 1",
@@ -411,7 +411,7 @@
    "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
    "must_show": [
     "each stolen or damaged item",
-    "where and when it was bought",
+    "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
     "its value"
    ],
    "source_refs": [
@@ -425,7 +425,7 @@
    "id": "original_vouchers",
    "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
    "must_show": [
-    "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+    "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
     "where and when the item was bought",
     "the price paid"
    ],
@@ -445,7 +445,7 @@
    "id": "bicycle_voucher",
    "title": "Original purchase voucher for the bicycle",
    "must_show": [
-    "the bicycle, if its voucher can be obtained without considerable cost",
+    "the bicycle it is for (make, model or type)",
     "where and when it was bought",
     "the price paid"
    ],

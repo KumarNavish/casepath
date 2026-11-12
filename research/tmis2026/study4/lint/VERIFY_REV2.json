@@ -1,0 +1,185 @@
+{
+ "label": "DEVELOPMENT, not a result",
+ "regimes": {
+  "tenancy": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 354,
+     "same_state_as_engine_on_revised_workflows": 354
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 354,
+     "same_state_as_engine_on_revised_workflows": 354
+    }
+   ],
+   "cleanroom_documents_expected": 354,
+   "rules_equal_except_must_show_wording": true,
+   "workflows_equal_except_must_show_wording": {
+    "defect_mold_heating": true,
+    "lease_termination_dispute": true,
+    "rent_increase_dispute": true
+   },
+   "must_show_rows": 9,
+   "must_show_instances": 9,
+   "must_show_removed": [
+    "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"
+   ],
+   "item_notes_equal_after_renaming": true,
+   "item_notes_checked": 1279,
+   "item_notes_differences": [],
+   "removed_item_applied_only_where_not_attached": [
+    {
+     "file": "ten_429b182434cf",
+     "document": "rent_increase_notice",
+     "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+     "supplied": false,
+     "document_state_in_reference": "not_needed"
+    },
+    {
+     "file": "ten_76d8d9821402",
+     "document": "rent_increase_notice",
+     "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+     "supplied": false,
+     "document_state_in_reference": "not_needed"
+    },
+    {
+     "file": "ten_8572ddc89110",
+     "document": "rent_increase_notice",
+     "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+     "supplied": false,
+     "document_state_in_reference": "not_needed"
+    },
+    {
+     "file": "ten_8c54d4a61b0a",
+     "document": "rent_increase_notice",
+     "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+     "supplied": false,
+     "document_state_in_reference": "not_needed"
+    },
+    {
+     "file": "ten_f1871d924ee4",
+     "document": "rent_increase_notice",
+     "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+     "supplied": false,
+     "document_state_in_reference": "not_needed"
+    }
+   ],
+   "writer_bundle_differences": [],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "b0ff1f07f988430a11ae9ab73e5d45e01dc29d4c5ecd63226fd63aa664902b79",
+    "rule_text.md": "c2fe733c43d95c0acc880ecfb7f41051ae5a061c4e4297849df48d5d8e561e7a",
+    "MUST_SHOW_WORDING.json": "477d7626ec5b43ce4099b79b4aec5cdeade0c68154f5ee07af39d78dd28b26a5",
+    "workflow/defect_mold_heating.json": "4bfd015a354991c7cb77531a354c66ea6d79251b4ec991b7434065f3f12cfd1d",
+    "workflow/lease_termination_dispute.json": "9bdcaf5bfc0c3e2af96216a8dd2fb3a283d88eaee1c29a7023d53cfa2009101c",
+    "workflow/rent_increase_dispute.json": "dfffd717e21c4e21091cd64d5195e104b40c8709c004f6d9948ec1b8e69a4416"
+   },
+   "sha256_rev1": {
+    "rules.json": "7168b8ccee5a155e7926e9900c17f8ff0d2c70d7d43c0fd8d7ae3d15cddd4440",
+    "rule_text.md": "76d286d6dd0c275cc67a6488e46fb3f94e3f1e8436274a33c2a69dfdc7543faa",
+    "workflow/defect_mold_heating.json": "f8a4acca431b4224ca7a045c08a61e124d6fe9c378a0bceaa3d6a450f3eb66d1",
+    "workflow/lease_termination_dispute.json": "bcb52353f437fecd0f6e7cc7095db14bdeb1de5ab19a30927585f06e80d8a9e0",
+    "workflow/rent_increase_dispute.json": "8a698a764c8035e15e9d67bd9220d244baf861eb00f6852c857eb4123c422eda"
+   }
+  },
+  "theft": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 450,
+     "same_state_as_engine_on_revised_workflows": 450
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 450,
+     "same_state_as_engine_on_revised_workflows": 450
+    }
+   ],
+   "cleanroom_documents_expected": 450,
+   "rules_equal_except_must_show_wording": true,
+   "workflows_equal_except_must_show_wording": {
+    "theft_at_home": true,
+    "simple_theft_away": true
+   },
+   "must_show_rows": 5,
+   "must_show_instances": 9,
+   "must_show_removed": [],
+   "item_notes_equal_after_renaming": true,
+   "item_notes_checked": 1110,
+   "item_notes_differences": [],
+   "removed_item_applied_only_where_not_attached": [],
+   "writer_bundle_differences": [],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "af60c0b4bae1887f0d21b9aabbb138c9c36a95c97a8a2bca9d7ef517ada34782",
+    "rule_text.md": "a04dff19fab3ca196854935e08e9680e692813fd573ce001a13cc9ef2199288a",
+    "MUST_SHOW_WORDING.json": "960a06f46f1da5e7e12f97c324c26f4778df35c9da682b6738171cb8196aa064",
+    "workflow/theft_at_home.json": "767d0e17a42d52935e4ec5a9ba1f2c22070f10f8c7ac3ebf8d8453832f00ea30",
+    "workflow/simple_theft_away.json": "fe5d1bce4f79559e204da9522345eae867cab115e57c67504220db4fccd5476a"
+   },
+   "sha256_rev1": {
+    "rules.json": "f366a1cf4d0bc7d1e43dc665d21531afdb19d9e77410dc169b30b263c4b991b2",
+    "rule_text.md": "4a6fbe444d13deb4498e4806a9e1ad175cfdb467800f753e5c138aa0e872f937",
+    "workflow/theft_at_home.json": "cd19a336c5e8fcd57c3da5e2effd0fff9894bea6fb53b31340eb03dd01976ed2",
+    "workflow/simple_theft_away.json": "320a346001d595ff9c564314ef47fe50c26992071f48c7d60bf15eea1bad21f2"
+   }
+  },
+  "dismissal": {
+   "final_files": 58,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 436,
+     "same_state_as_engine_on_revised_workflows": 436
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 436,
+     "same_state_as_engine_on_revised_workflows": 436
+    }
+   ],
+   "cleanroom_documents_expected": 436,
+   "rules_equal_except_must_show_wording": true,
+   "workflows_equal_except_must_show_wording": {
+    "protected_period_notice": true,
+    "wrongful_termination": true,
+    "immediate_dismissal": true
+   },
+   "must_show_rows": 4,
+   "must_show_instances": 8,
+   "must_show_removed": [],
+   "item_notes_equal_after_renaming": true,
+   "item_notes_checked": 1400,
+   "item_notes_differences": [],
+   "removed_item_applied_only_where_not_attached": [],
+   "writer_bundle_differences": [],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "cf853c508fc6000517b4bc2c9005bd9c263c3d916aa34aff0594af29875a69f3",
+    "rule_text.md": "2dd108a0c558dacf801313b4b1d68ea94b7147dd7e48d265e93f65a88ca9fa99",
+    "MUST_SHOW_WORDING.json": "c6c4b03604ad50b0c9c7ecb2e096eaace93b772dc69ef6e96b8ff1195affd265",
+    "workflow/protected_period_notice.json": "bcb3b315b0e41750260b9f2db545f28167dd7a1480b528c67843246b919eac69",
+    "workflow/wrongful_termination.json": "42fb560393be78ae735520fce6cae19ca76e0ddf8781b4b4c348dc6265ae70c7",
+    "workflow/immediate_dismissal.json": "68d30cacaf306f131fcd7067bd096ee85dec09a2ac74177e3c1e1f01e0fe4495"
+   },
+   "sha256_rev1": {
+    "rules.json": "96b89ea6d2aaaf2efe7a0061eec14e7a3cb91ba04a015855e6362515d12081e2",
+    "rule_text.md": "ab1ecb117c7a21feee853a119a7962ff19d8830219fa1a1d9b74f8583996a2d5",
+    "workflow/protected_period_notice.json": "06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5",
+    "workflow/wrongful_termination.json": "ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f",
+    "workflow/immediate_dismissal.json": "2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3"
+   }
+  }
+ },
+ "ok": true
+}

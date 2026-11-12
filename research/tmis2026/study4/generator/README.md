@@ -18,6 +18,7 @@ script calls a model or the network. Standard library only (Python 3.11+).
 | 4 compare | `assemble.py compare` | blind-check output, design (or round-2 target), keys | `blindcheck/compare_round<k>.json` |
 | 4 classify / rewrite | `assemble.py classify` (round 1; uses the product's evaluator) | compare output, blind quotes, designs, references, dependency rules, item notes | `blindcheck/classify_round1.json`, `blindcheck/CLASSIFY.md`, `rewrite/<id>.json` (files to rewrite only) |
 | 5-7 finalise | `assemble.py finalize` (uses `noise.py`) | all of the above | `final/<id>/`, `final/MANIFEST.json` |
+| repair round k >= 3 | `assemble.py repair-prepare`, then `blind-in` / `compare --round k`, then `finalize` | final manifest and records, a list of files whose text differs (or an earlier repair comparison) | `rewrite_r<k>/PLAN.json`, `rewrite_r<k>/bundles/<id>.json`, `blindcheck/in|out/round<k>/`, `compare_round<k>.json`; `finalize` moves dropped files' folders to `dropped/` |
 
 ```
 cd research/tmis2026/study4
@@ -83,12 +84,21 @@ start date answers the probation question; a pregnancy makes the claimant female
 
 ### Item notes (`generator/items/<regime>.json`, generator data, not part of the rule set)
 
-Per must_show item (matched by type or "*", document, exact item text): `conditional` (overrides the wording
+Per must_show item (matched by type or "*", document, exact item text; when a rule-set revision rewords an item,
+the entry's `item` is renamed to the new wording and nothing else changes): `conditional` (overrides the wording
 heuristic), `applies_when` (a condition over designed states; when it holds a conditional item must be shown and
 can be the missing item, when it does not the item is left out), `checkable_as` (what a document must literally
 contain for the item to count as shown; passed into the writer bundle and the blind-check input), `observed` (the
 round-1 mismatch behind the entry) and `rule_set_wording` (why the item's own wording is a problem, for the
-planner). The missing item of an insufficient attachment is drawn only from items that must be shown in that file.
+planner; kept as the record after revision 2 addressed it). The missing item of an insufficient attachment is drawn
+only from items that must be shown in that file.
+
+**Earlier wordings (`rules/<regime>/MUST_SHOW_WORDING.json`).** Revision 2 of the rule sets (SPEC.md item 6c,
+2026-11-12) reworded must_show items; designs, keys and stored blind-check records name an item by the wording of
+their time. `Regime.current_item` maps an earlier wording to the current one (written by the rule set's
+`tools/build.py`), and the writer bundle, `compare` and `classify` use it, so a design's missing item is the same item
+under either wording. Since revision 2 a conditional item uses the fixed form "Only if the file states that
+<condition>: <thing>. Otherwise this item does not apply.", which the wording heuristic also recognises.
 
 ## Parameters (`design.py`; every one is a command-line option)
 
@@ -144,15 +154,26 @@ assignment of every type's facts.
 ## The writing session and the blind check, and why another model family
 
 The **writing session** turns one bundle into a message and its attachments (`WRITER_TASK.md`, `STYLE.md`). The
-bundle holds the questions with their designed answers under neutral labels in a shuffled order, the story seed,
-the language and the attachments to write; it holds no fact or document ids, no rule text beyond the questions,
-the documents' titles and must_show items and any `generator_note`, no workflow, no reference, no product code and
-no prompt of any design (checked by the tests).
+bundle holds the questions with their designed answers under neutral labels in a shuffled order, each with its
+`not_this` line, the story seed, the language and the attachments to write; in a denied-event file it also holds
+the other types' central-event questions under `central_event_denied.must_not_state`. It holds no fact or document
+ids, no rule text beyond the questions, their `not_this` lines, the documents' titles and must_show items and any
+`generator_note`, no workflow, no reference, no product code and no prompt of any design (checked by the tests).
 
 The **blind-check session** sees only a text, its attachments (with each document's title, must_show list and the
-`checkable_as` notes) and the questions, and states each fact as stated true / stated false / open / not mentioned
-and each attachment as sufficient or which item is missing (`BLIND_CHECK_TASK.md`). `assemble.py compare` checks
-for an exact match on every fact and attachment (and the designed length).
+`checkable_as` notes), the questions with their `not_this` lines, the routing question and the other types'
+central-event questions; it states each fact and each other-type event as stated true / stated false / open / not
+mentioned, gives the routing value the text supports (or none) and says of each attachment whether it is
+sufficient or which item is missing (`BLIND_CHECK_TASK.md`). `assemble.py compare` checks for an exact match on
+every fact and attachment (and the designed length), and, in a file whose design denies its central event, that no
+other type's central event is read as stated or open and that the routing answer names no other type.
+
+**Why (2026-11-12, `lint/DIAGNOSIS.md`).** In 6 theft and 2 dismissal development files the denial of the designed
+type's event stated another type's event ("it was not stolen at home, it was taken at the gym"), so the reference
+(the designed type's stop) was wrong for the text; the round-1 blind check could not see it because it was asked
+only the designed type's questions. And 14 errors came from texts whose wording fell under a `not_this` line the
+writer and the blind check never saw. Inputs and bundles made before that date (rounds 1 and 2 of the development
+sets) carry neither.
 
 ### Blind check, classification and the keep rule (the pipeline's rule from 2026-11-12)
 
@@ -199,8 +220,10 @@ exactly (tested).
 - The reachability rule leaves theft's `burglary_or_robbery` unmentioned in every at-home file where no lock change
   is stated true or open (its only use is the lock-change invoice): the writer must tell a theft at home without
   saying whether anyone broke in.
-- The writer bundle contains the questions and must_show items verbatim; some name article numbers (dismissal) or
-  conditions ("Ziff."). The tests allow these strings and nothing else of the rule text.
+- The writer bundle contains the questions, their not_this lines and must_show items verbatim; some name article
+  numbers (dismissal) or conditions ("Ziff."). The tests allow these strings and nothing else of the rule text.
+- Repair rounds reuse the round-1 labels (KEYS.json); a rewrite bundle is built from the final record's states (the
+  states as read for a file kept as read).
 - Seed-specific marginals: at seed 20261112 dismissal type 2's three combined stops are never reached, only
   pending (expected per 60 files: `b_stop_no_objection` 1.7, `b_stop_continued` 3.7, `b_stop_time_limit` 0.2; the
   dependency file removes only the incoherent route to the last). See `MARGINALS_*.json`.

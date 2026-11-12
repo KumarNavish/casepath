@@ -3,7 +3,7 @@
   "items": [
     {
       "document": "notification_record",
-      "item": "that and when CSS was notified of the theft",
+      "item": "the date (day, month and year) on which the theft was notified to CSS",
       "conditional": false,
       "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
       "observed": "6 files designed missing, read sufficient (the_12ee892d56f4, the_1487759fc403, the_506c9909edc4, the_93929f818110, the_a86e098e517e, the_e0b1e1d56fb2)",
@@ -11,7 +11,7 @@
     },
     {
       "document": "stolen_items_list",
-      "item": "where and when it was bought",
+      "item": "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
       "conditional": false,
       "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
       "observed": "6 files designed sufficient read missing, 6 files read missing it in addition to the designed item (the generator had treated the item as conditional because it begins with 'where')"
@@ -30,7 +30,7 @@
     },
     {
       "document": "bicycle_voucher",
-      "item": "the bicycle, if its voucher can be obtained without considerable cost",
+      "item": "the bicycle it is for (make, model or type)",
       "conditional": false,
       "checkable_as": "The voucher names the bicycle (make, model or type).",
       "rule_set_wording": "The 'if' clause is a need condition (already in needed_when), not a content item."
@@ -46,7 +46,7 @@
     {
       "type": "simple_theft_away",
       "document": "insurance_policy",
-      "item": "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+      "item": "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
       "conditional": false,
       "checkable_as": "The list of covers names simple theft away from home (einfacher Diebstahl auswärts) either as included or as not included. A cover list that is silent about it does not show this item.",
       "rule_set_wording": "'or its absence' lets a silent policy count as showing the item; better: 'whether the supplementary cover for simple theft away is listed as included or excluded'."

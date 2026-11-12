@@ -266,7 +266,8 @@ defect = {
           "Receipt of the deposit office for the deposited rent and the tenant's application to the conciliation authority",
           "dh_deposit", is_("rent_deposited"),
           ["amount deposited", "due date of the first deposited rent",
-           "date the claims were brought before the conciliation authority (or that they have not yet been)"],
+           "the date on which the claims were brought before the conciliation authority, or a sentence that they have not "
+           "yet been brought"],
           R("Art. 259h para. 1", P259H1, "evidence",
             "The deposited rent passes to the landlord unless claims are brought before the conciliation authority within "
             "30 days of the due date of the first deposited rent; the deposit office's receipt shows that due date and the "
@@ -380,7 +381,8 @@ termination = {
                "kündigen, sofern sie keine längere Frist oder keinen anderen Termin vereinbart haben.")),
         D("termination_notice", "Landlord's notice of termination", "lt_form", True,
           ["sender and addressee", "date", "termination date", "given in writing",
-           "whether the form approved by the canton is used"],
+           "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the "
+           "notice that it is or is not given on that form"],
           R("Art. 266l para. 2",
             "The landlord must give notice of termination using a form approved by the canton which informs the tenant how "
             "he must proceed if he wishes to contest the termination or apply for an extension of the lease.", "evidence",
@@ -398,7 +400,9 @@ termination = {
           "Proof of separate service on the spouse or registered partner (the spouse's own copy with envelope or tracking), "
           "or the spouse's statement that no separate copy was received", "lt_family", True,
           ["addressed to the spouse or registered partner", "served separately from the tenant's copy", "date",
-           "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit"],
+           "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a "
+           "payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or "
+           "registered partner. Otherwise this item does not apply."],
           R("Art. 266n", P266N, "evidence",
             "Separate service on the spouse or registered partner is required (a notice that does not conform is void, "
             "art. 266o); the spouse's own copy ordinarily proves it was made, and the spouse's statement records that it "
@@ -423,7 +427,8 @@ termination = {
           "lt_good_faith", is_("asserted_claims"),
           ["claims the tenant asserted (for example a repair demand or a rent challenge), with dates",
            "the reasons the landlord gave for the notice (on the notice, or given on request)",
-           "conciliation or court documents on those claims, if any"],
+           "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the "
+           "conciliation or court documents on those claims. Otherwise this item does not apply."],
           R("Art. 271a para. 1 let. a", P271A1A, "evidence",
             "The notice may be challenged where it was given because the tenant asserted claims; the tenant's dated "
             "letters show which claims were asserted and when, and the landlord's stated reasons (which must be given on "
@@ -546,7 +551,9 @@ rent = {
     ],
     "documents": [
         D("lease_contract", "Lease contract", "ri_form", True,
-          ["parties", "rented dwelling", "termination dates", "any graduated-rent or index clause"],
+          ["parties", "rented dwelling", "termination dates",
+           "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause "
+           "that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply."],
           R("Art. 269d para. 1",
             "The landlord may at any time increase the rent with effect from the next termination date.", "evidence",
             "The increase can take effect only from the next termination date; the lease records the termination dates "
@@ -554,11 +561,13 @@ rent = {
             de="Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen.")),
         D("rent_increase_notice", "Landlord's rent increase notice (with any covering letter)", "ri_form", True,
           ["old and new rent", "date from which the increase applies", "reasons given",
-           "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: "
-           "art. 269d para. 5)",
-           "any threat of termination in it or in the covering letter",
-           "for an index-linked increase: the old and new index values",
-           "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"],
+           "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the "
+           "notice that it is or is not given on that form",
+           "Only if the file states that the landlord gave notice of termination together with the rent increase: the "
+           "notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not "
+           "apply.",
+           "Only if the file states that the increase applies an index clause: the old and the new index value. "
+           "Otherwise this item does not apply."],
           R("Art. 269d para. 2 let. a–b",
             "The rent increase is void where:\na. it is not communicated using the prescribed form;\nb. no reasons are "
             "given;", "evidence",
@@ -675,6 +684,63 @@ EDGES = {
 }
 
 TYPES = [defect, termination, rent]
+
+# ---------------------------------------------------------------- revision 2 after first use: must_show wording
+# SPEC.md item 6c. Each row: the types whose document carries the item, the document, the wording of revision 1 (as
+# the _rev1 runs read it, rev1/), the wording now (None: the item is removed). main() checks every row against the
+# built types and writes MUST_SHOW_WORDING.json, which the generator uses to read designs that name an item by its
+# earlier wording. RECONCILIATION.md, "Revision 2 after first use", gives the cited passage of every row.
+MUST_SHOW_REV2 = [
+    (("lease_termination_dispute",), "termination_notice", "whether the form approved by the canton is used",
+     "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice "
+     "that it is or is not given on that form"),
+    (("lease_termination_dispute",), "spouse_service",
+     "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit",
+     "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a "
+     "payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered "
+     "partner. Otherwise this item does not apply."),
+    (("lease_termination_dispute",), "claims_and_reasons", "conciliation or court documents on those claims, if any",
+     "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the "
+     "conciliation or court documents on those claims. Otherwise this item does not apply."),
+    (("defect_mold_heating",), "deposit_receipt",
+     "date the claims were brought before the conciliation authority (or that they have not yet been)",
+     "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet "
+     "been brought"),
+    (("rent_increase_dispute",), "lease_contract", "any graduated-rent or index clause",
+     "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause "
+     "that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply."),
+    (("rent_increase_dispute",), "rent_increase_notice",
+     "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d "
+     "para. 5)",
+     "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice "
+     "that it is or is not given on that form"),
+    (("rent_increase_dispute",), "rent_increase_notice", "any threat of termination in it or in the covering letter",
+     "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice "
+     "or threat of termination in the increase notice or its covering letter. Otherwise this item does not apply."),
+    (("rent_increase_dispute",), "rent_increase_notice", "for an index-linked increase: the old and new index values",
+     "Only if the file states that the increase applies an index clause: the old and the new index value. Otherwise "
+     "this item does not apply."),
+    (("rent_increase_dispute",), "rent_increase_notice",
+     "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)", None),
+]
+
+
+def must_show_wording(types, rows, regime):
+    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+    by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
+    out = []
+    for tids, did, old, new in rows:
+        for tid in tids:
+            shows = by[(tid, did)]
+            assert old not in shows, (tid, did, old)
+            assert new is None or new in shows, (tid, did, new)
+        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
+    return {"regime": regime, "revision": 2, "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
+                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
+                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
+                    "items by their rev1 wording; the generator maps them through this file.",
+            "items": out}
 SOURCES = [
     {"id": EN, "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, "
                         "consolidated version of 1 October 2026 (Fedlex); not authoritative"},
@@ -946,6 +1012,8 @@ def main():
     (HERE / "rules.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "RULES.md").write_text(rules_md(doc), encoding="utf-8")
     (HERE / "rule_text.md").write_text(rule_text(doc), encoding="utf-8")
+    (HERE / "MUST_SHOW_WORDING.json").write_text(
+        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "tenancy"), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "workflow").mkdir(exist_ok=True)
     for t in TYPES:
         (HERE / "workflow" / f"{t['id']}.json").write_text(

@@ -4,7 +4,7 @@
     {
       "type": "immediate_dismissal",
       "document": "employment_contract",
-      "item": "agreed end date, if fixed-term",
+      "item": "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply.",
       "conditional": true,
       "applies_when": {
         "fact": "fixed_term",
@@ -16,7 +16,7 @@
     },
     {
       "document": "employment_contract",
-      "item": "probation clause, if any",
+      "item": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
       "conditional": true,
       "applies_when": {
         "fact": "probation_varied",
@@ -27,7 +27,7 @@
     },
     {
       "document": "employment_contract",
-      "item": "notice-period clause, if any",
+      "item": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
       "conditional": true,
       "applies_when": {
         "fact": "notice_period_varied",
@@ -43,7 +43,7 @@
     },
     {
       "document": "claims_correspondence",
-      "item": "employer's response, if any",
+      "item": "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply.",
       "conditional": true
     }
   ]

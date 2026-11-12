@@ -7,18 +7,21 @@ attached documents, written from a bundle that says exactly what the file must a
 
 - this instruction;
 - the bundles you are given (`writer_bundles/<file_id>.json`), each with the style sheet inside it (`style_sheet`);
-- in a rewrite round, the rewrite request for the file (`rewrite/<file_id>.json`) and your own earlier output for
-  that file.
+- in a rewrite round, the rewrite request for the file (`rewrite/<file_id>.json`, or in a repair round k
+  `rewrite_r<k>/bundles/<file_id>.json`) and the earlier output for that file that it names under `previous`.
 
 Nothing else: no other file of the repository, no rule text, no program, no other session's output. Do not look
 anything up. Do not call any other model or service.
 
 ## What you do, per bundle
 
-1. Read `questions`. Each has a `designed_answer` (yes, no, open, not mentioned) and an `instruction`. The file
-   (message and attachments together) must give every question exactly its designed answer to a careful reader
-   who sees only the file and the questions. A `note` on a question is binding. A `time_span` gives dates on both
-   sides of a span: follow its `use`.
+1. Read `questions`. Each has a `designed_answer` (yes, no, open, not mentioned), an `instruction` and a `not_this`
+   line naming the nearest thing the question does not cover (style sheet, message item 15). The file (message and
+   attachments together) must give every question exactly its designed answer to a careful reader who sees only the
+   file, the questions and their `not_this` lines. A `note` on a question is binding. A `time_span` gives dates on
+   both sides of a span: follow its `use`. Where the bundle has `central_event_denied`, follow it: the claimant says
+   the central event did not take place at all, and the file states none of the events under `must_not_state`
+   (style sheet, message item 14).
 2. Write the message in `language`, `length_words` long, following `style_sheet`, bringing up the topics in
    `topics_in_order` (labels refer to `questions` and `attachments`; a question marked "not mentioned" is not a
    topic and is never touched).
@@ -33,16 +36,18 @@ anything up. Do not call any other model or service.
    `must_not_show`. Where `checkable_as` describes an item, the document must contain literally what it says for
    the item to count as shown (and, for the `leave_out` item, must not contain it).
 5. Check before you finish: word count within range; every question gets its designed answer and nothing more;
+   in a file with `central_event_denied`, no event under `must_not_state` is stated, hinted at or left possible;
    no sentence states that something is not the case unless the designed answer is "no"; no legal term or article
    number in the message; no label (Q1, A1) and no word about questions, designs or rules in the text.
 
 ## Output, per file
 
-One UTF-8 JSON file, `written/<file_id>.json` (first round) or `written/<file_id>.r2.json` (rewrite round):
+One UTF-8 JSON file at the path the bundle names under `output.path`: `written/<file_id>.json` (first round),
+`written/<file_id>.r2.json` (rewrite round) or `written/<file_id>.r<k>.json` (repair round k):
 
 ```
 {"file_id": "<file_id>",
- "round": 1,
+ "round": 1,  (the round of the request: 1, 2, or k)
  "language": "de" | "en",
  "text": "<the message, plain text, paragraphs separated by a blank line>",
  "attachments": [{"label": "A1", "text": "<the attachment, plain text>"}]}
@@ -60,3 +65,8 @@ of the file already answers it, so the bundle's designed answer for it has chang
 answer named; give it that answer. Rewrite the whole file once so that every question and attachment gets its
 designed answer, keeping everything else as it was where possible, and write `written/<file_id>.r2.json` with
 `"round": 2`. Only one rewrite is made; a file that still differs is dropped.
+
+A repair round k (3 and later) works the same way from `rewrite_r<k>/bundles/<file_id>.json`, a request in the same
+format whose `round` is k and whose `previous` names the text to start from; write `written/<file_id>.r<k>.json` with
+`"round": k`. A repair rewrite is the file's one rewrite: a file already rewritten once is never sent to a repair
+round.

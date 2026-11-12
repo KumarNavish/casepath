@@ -1,0 +1,186 @@
+{
+  "bundles_sha256": {
+    "dis_827bbd04ddc9": "f46692e04cc2f58c6dfdd099b13d56aba2af75d6b8fa2f4235d1c101c397ccda",
+    "dis_ff1e9056d2c3": "3ee24a84e0ab5d868e8aab435cb4ae54fca15e98bd9fbbb0178ad7fdac97d130"
+  },
+  "check": [
+    "dis_05af0871cd70",
+    "dis_0f89215979d2",
+    "dis_4ee0866843c9",
+    "dis_5215d587db4b",
+    "dis_827bbd04ddc9",
+    "dis_930a1b5e1bdc",
+    "dis_fea630e08ab3",
+    "dis_ff1e9056d2c3"
+  ],
+  "counts": {
+    "drop": 0,
+    "recheck": 6,
+    "rewrite": 2
+  },
+  "files": {
+    "dis_05af0871cd70": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "kept_as_read",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "not_mentioned"
+      },
+      "text": "written/dis_05af0871cd70.json"
+    },
+    "dis_0f89215979d2": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "incapacity_illness_accident": "not_mentioned",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "not_mentioned",
+        "notice_period_varied": "stated_false",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "not_mentioned"
+      },
+      "text": "written/dis_0f89215979d2.json"
+    },
+    "dis_4ee0866843c9": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "compulsory_service": "stated_false",
+        "employer_gave_notice": "stated_false",
+        "incapacity_illness_accident": "not_mentioned",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "not_mentioned",
+        "notice_period_varied": "not_mentioned",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "not_mentioned"
+      },
+      "text": "written/dis_4ee0866843c9.json"
+    },
+    "dis_5215d587db4b": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "kept_as_read",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "action_in_time": "stated_false",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_false",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "stated_false"
+      },
+      "text": "written/dis_5215d587db4b.json"
+    },
+    "dis_827bbd04ddc9": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "immediate_dismissal",
+        "other_type_event": "employer_gave_notice (types protected_period_notice and wrongful_termination)",
+        "quote": null,
+        "read_as": "the denial states another claim type's defining event: Designed as immediate_dismissal with the event denied by stating an ordinary notice with a notice period. An ordinary notice is the defining event of types 1 and 2 (employer_gave_notice), so the rule text gives one of those processes, not an empty plan. The product's empty plan matches the reference (0 errors) but not the rule text.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "dismissed_immediately": "stated_false",
+        "fixed_term": "not_mentioned",
+        "incapacity_cause": "stated_false",
+        "notice_period_varied": "not_mentioned",
+        "other_earnings": "stated_false",
+        "reasons_requested": "not_mentioned"
+      },
+      "text": "written/dis_827bbd04ddc9.json"
+    },
+    "dis_930a1b5e1bdc": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "incapacity_illness_accident": "stated_false",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "stated_false",
+        "notice_period_varied": "not_mentioned",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "not_mentioned"
+      },
+      "text": "written/dis_930a1b5e1bdc.json"
+    },
+    "dis_fea630e08ab3": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "incapacity_illness_accident": "not_mentioned",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "not_mentioned",
+        "notice_period_varied": "stated_false",
+        "pregnancy_or_birth": "stated_false",
+        "probation_varied": "not_mentioned"
+      },
+      "text": "written/dis_fea630e08ab3.json"
+    },
+    "dis_ff1e9056d2c3": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "immediate_dismissal",
+        "other_type_event": "wrongful_termination",
+        "quote": "Frau Hughes hat mir am 17. März 2026 ganz normal mit Frist gekündigt, auf Ende Mai, und ich arbeite bis dahin weiter im Lager in Basel.",
+        "read_as": "the denial states another claim type's defining event: As dis_827bbd04ddc9: the denial is an ordinary notice, which is the defining event of types 1 and 2; routing to wrongful_termination is one of the two readings the rule text allows. The 5 errors are scored against the immediate_dismissal stop.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "dismissed_immediately": "stated_false",
+        "fixed_term": "not_mentioned",
+        "incapacity_cause": "not_mentioned",
+        "notice_period_varied": "stated_false",
+        "other_earnings": "stated_false",
+        "reasons_requested": "stated_false"
+      },
+      "text": "written/dis_ff1e9056d2c3.json"
+    }
+  },
+  "item_notes_sha256": "0cf4551b29fa7ee0f52224b9ee98c994fc0d88ceb4ee2e2d2bfee7580ffee4e1",
+  "regime": "dismissal",
+  "round": 3,
+  "rule": "A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is dropped. Files of the check set that are not rewritten are blind-checked again as they are.",
+  "schema": "study4.repair-plan/1",
+  "style_sha256": "837e714d17c77057e92422aa5b5d0032ffa62d9d84da56c257760bb03c055d2e",
+  "writer_bundle_sha256": "84a6e76f7cfd84917d2d414b38c71d91c96910ea273be8a043ff2341d3f49488"
+}

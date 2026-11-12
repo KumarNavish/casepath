@@ -177,6 +177,16 @@ DOC_NOTICE_PERIOD_TERMS_MUST = ["notice period length", "end-point of the notice
                                 "the written instrument that sets it (individual, standard or collective contract)"]
 
 # ---------------------------------------------------------------- type A: protected period (art. 336c)
+# must_show items that apply only under a condition (SPEC.md item 6c: the fixed form "Only if the file states that ...:
+# .... Otherwise this item does not apply."); revision 2 after first use, see MUST_SHOW_REV2 below
+EC_PROBATION = ("Only if the file states that a written agreement or contract sets a probation period other than the first "
+                "month of employment: the probation clause. Otherwise this item does not apply.")
+EC_NOTICE = ("Only if the file states that a written contract sets notice periods different from the statutory ones: the "
+             "notice-period clause. Otherwise this item does not apply.")
+EC_FIXED_TERM = ("Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this "
+                 "item does not apply.")
+CC_RESPONSE = ("Only if the file states that the employer responded to those claims: the employer's response. Otherwise this "
+               "item does not apply.")
 A_GO = ALL(T("employer_gave_notice"), F("notice_during_probation"))
 A_ANY_PERIOD = ANY(T("incapacity_illness_accident"), T("compulsory_service"), T("pregnancy_or_birth"))
 TYPE_A = {
@@ -274,7 +284,7 @@ TYPE_A = {
                    "(the cited text sets no written form, so a message or other record serves).")},
         {"id": "employment_contract", "title": "Employment contract or other record of the start of employment", "step": "a_probation",
          "needed_when": True, "mandatory": True,
-         "must_show": ["parties", "start date of employment", "probation clause, if any", "notice-period clause, if any"],
+         "must_show": ["parties", "start date of employment", EC_PROBATION, EC_NOTICE],
          "rule": R("CO art. 335b para. 1", P_335B_1, D_335B_1, "evidence",
                    "The probation period runs from the start of employment, and the year of service sets the 30, 90 or 180 days "
                    "of art. 336c para. 1 let. b; the contract or another record of the start date ordinarily shows it.")},
@@ -424,7 +434,7 @@ TYPE_B = {
                    "The objection must be lodged before the end of the notice period; the notice and its date of receipt ordinarily show when the period began and when the employment ends, which fixes that window and the start of the 180 days.")},
         {"id": "employment_contract", "title": "Employment contract or other record of the start of employment",
          "step": "b_objection_check", "needed_when": True, "mandatory": True,
-         "must_show": ["parties", "start date of employment", "probation clause, if any", "notice-period clause, if any"],
+         "must_show": ["parties", "start date of employment", EC_PROBATION, EC_NOTICE],
          "rule": R("CO art. 335c para. 1", P_335C_1, D_335C_1, "evidence",
                    "The end of the notice period, which closes the objection window, depends on the years of service and on any written variation; the contract ordinarily shows the start date and any such clause.")},
         {"id": "written_objection", "title": "Copy of the written objection with proof of when the employer received it",
@@ -446,7 +456,7 @@ TYPE_B = {
                    "Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the reason on which art. 336 makes abuse depend.")},
         {"id": "claims_correspondence", "title": "Correspondence in which the employee asserted claims before the notice",
          "step": "b_retaliation", "needed_when": True, "mandatory": True,
-         "must_show": ["claims asserted under the employment relationship", "dates before the notice", "employer's response, if any"],
+         "must_show": ["claims asserted under the employment relationship", "dates before the notice", CC_RESPONSE],
          "rule": R("CO art. 336 para. 1 let. d", P_336_1D, D_336_1D, "evidence",
                    "This ground turns on claims asserted before the notice; the correspondence in which the employee raised them is the ordinary record of what was claimed and when.")},
         {"id": "representative_mandate", "title": "Proof of election as employee representative", "step": "b_representative",
@@ -539,8 +549,7 @@ TYPE_C = {
                    "The entitlement arises from a dismissal with immediate effect; the dismissal letter or message is the ordinary record that it was immediate and of its date.")},
         {"id": "employment_contract", "title": "Employment contract or other record of its terms", "step": "c_dismissal",
          "needed_when": True, "mandatory": True,
-         "must_show": ["parties", "start date of employment", "agreed end date, if fixed-term", "probation clause, if any",
-                       "notice-period clause, if any"],
+         "must_show": ["parties", "start date of employment", EC_FIXED_TERM, EC_PROBATION, EC_NOTICE],
          "rule": R("CO art. 337c para. 1", P_337C_1_MEASURE, D_337C_1_MEASURE, "evidence",
                    "Damages run to the end of the required notice period or of the agreed term; the contract ordinarily shows the start date, any agreed end date, any probation clause and any notice clause.")},
         {"id": "salary_evidence", "title": "Salary statements (pay slips)", "step": "c_dismissal", "needed_when": True,
@@ -577,6 +586,38 @@ TYPE_C = {
 }
 
 TYPES = [TYPE_A, TYPE_B, TYPE_C]
+
+# ---------------------------------------------------------------- revision 2 after first use: must_show wording
+# SPEC.md item 6c. Each row: the types whose document carries the item, the document, the wording of revision 1 (as
+# the _rev1 runs read it, rev1/), the wording now (None: the item is removed). main() checks every row against the
+# built types and writes MUST_SHOW_WORDING.json, which the generator uses to read designs that name an item by its
+# earlier wording. RECONCILIATION.md, "Revision 2 after first use", gives the cited passage of every row.
+MUST_SHOW_REV2 = [
+    (("protected_period_notice", "wrongful_termination", "immediate_dismissal"), "employment_contract",
+     "probation clause, if any", EC_PROBATION),
+    (("protected_period_notice", "wrongful_termination", "immediate_dismissal"), "employment_contract",
+     "notice-period clause, if any", EC_NOTICE),
+    (("immediate_dismissal",), "employment_contract", "agreed end date, if fixed-term", EC_FIXED_TERM),
+    (("wrongful_termination",), "claims_correspondence", "employer's response, if any", CC_RESPONSE),
+]
+
+
+def must_show_wording(types, rows, regime):
+    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+    by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
+    out = []
+    for tids, did, old, new in rows:
+        for tid in tids:
+            shows = by[(tid, did)]
+            assert old not in shows, (tid, did, old)
+            assert new is None or new in shows, (tid, did, new)
+        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
+    return {"regime": regime, "revision": 2, "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
+                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
+                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
+                    "items by their rev1 wording; the generator maps them through this file.",
+            "items": out}
 
 SOURCES = [
     {"id": "co-sr220-en", "title": "Swiss Code of Obligations (SR 220), consolidated version applicable from 2026-10-01, official English translation",
@@ -1060,6 +1101,8 @@ def main():
     (REGIME_DIR / "rule_text.md").write_text(rule_text(data), encoding="utf-8")
     (REGIME_DIR / "rules.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (REGIME_DIR / "RULES.md").write_text(rules_md(data), encoding="utf-8")
+    (REGIME_DIR / "MUST_SHOW_WORDING.json").write_text(
+        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "dismissal"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     for t in TYPES:
         (REGIME_DIR / "workflow" / f"{t['id']}.json").write_text(
             json.dumps(workflow(t), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

@@ -115,6 +115,15 @@ class Regime:
             if p.exists():
                 self.workflows[tid] = read_json(p)
                 self.workflow_sha256[tid] = sha256_file(p)
+        # earlier wordings of must_show items (MUST_SHOW_WORDING.json, written by the rule set's build script when a
+        # revision rewords items): designs and blind-check records made before the revision name an item by its
+        # earlier wording; current_item() maps it to the wording now (None: the item was removed)
+        self.item_wording = {}
+        wp = self.dir / "MUST_SHOW_WORDING.json"
+        if wp.exists():
+            for row in read_json(wp)["items"]:
+                for tid in row["types"]:
+                    self.item_wording[(tid, row["document"], row["rev1"])] = row["now"]
 
     # facts ------------------------------------------------------------------------------------
     def facts(self, tid):
@@ -186,6 +195,40 @@ class Regime:
             if len(rest) == 1 and not negated and "is" in rest[0]:
                 out[rest[0]["fact"]] = rest[0]["is"]
         return out
+
+    def current_item(self, tid, did, item):
+        """The must_show item's wording now, for an item named by an earlier wording (unchanged otherwise)."""
+        if item is None:
+            return None
+        return self.item_wording.get((tid, did, item), item)
+
+    # routing and the defining events of all types (blind check of a denied event) -----------------
+    def routing_question(self):
+        """The routing fact as the workflows carry it (the fact named in `applies_when`): its question and the values
+        of all types' workflows, merged. None without workflows."""
+        out = None
+        for tid in self.type_ids:
+            wf = self.workflows.get(tid)
+            fid, _ = self.routing_fact(tid)
+            if not wf or not fid:
+                continue
+            f = next(x for x in wf["facts"] if x["id"] == fid)
+            if out is None:
+                out = {"question": f["question"], "values": list(f.get("values", []))}
+            out["values"] += [v for v in f.get("values", []) if v not in out["values"]]
+        return out
+
+    def event_questions(self):
+        """Every type's defining event, once per fact: [(fact id, question, not_this, type ids)]."""
+        out = {}
+        for tid in self.type_ids:
+            ev = self.defining_event(tid)
+            f = self.fact(tid, ev)
+            if ev in out:
+                out[ev][3].append(tid)
+            else:
+                out[ev] = (ev, f["question"], f.get("not_this", ""), [tid])
+        return list(out.values())
 
     def catalogue(self):
         """Every document id in the regime with its title (first type that lists it)."""
@@ -333,12 +376,30 @@ def fact_step_reachable(regime, tid, values, fact):
     return False
 
 
+# ----------------------------------------------------------------- a denied defining event (STYLE.md, BLIND_CHECK_TASK.md)
+def denied_event(regime, design):
+    """The design's defining event when the design states it false (a denied-event file), else None."""
+    ev = regime.defining_event(design["type"])
+    return ev if design["facts"].get(ev) == "stated_false" else None
+
+
+def other_events(regime, design):
+    """The defining events of the regime's other types that are not among the design's own facts, in type order:
+    [(label E1.., fact id, question, not_this)]. A writer of a denied-event file states none of them; the blind check
+    answers each."""
+    rows = [e for e in regime.event_questions() if e[0] not in design["facts"]]
+    return [(f"E{i + 1}", fid, q, nt) for i, (fid, q, nt, _) in enumerate(rows)]
+
+
 # ----------------------------------------------------------------- must_show items
-# Default reading of a must_show item's wording, used only where items/<regime>.json says nothing: "any ...",
+# Default reading of a must_show item's wording, used only where items/<regime>.json says nothing: the fixed form of
+# SPEC.md item 6c ("Only if the file states that ...: .... Otherwise this item does not apply."), and, for wordings
+# from before revision 2, "any ...",
 # "..., if any", "if ...", and a leading "where/for/when ...:" clause ending in a colon mark an item that applies in
 # some files only. (Before 2026-11-12 a bare leading "where" also counted, which wrongly made theft's "where and
 # when it was bought" conditional.)
-CONDITIONAL_ITEM = re.compile(r"^any\b|\bif any\b|^if\b|^(where|for an?|for the|when)\b[^:]*:", re.I)
+CONDITIONAL_ITEM = re.compile(r"^only if the file states that\b|^any\b|\bif any\b|^if\b|^(where|for an?|for the|when)\b[^:]*:",
+                              re.I)
 
 
 def conditional_item(item):

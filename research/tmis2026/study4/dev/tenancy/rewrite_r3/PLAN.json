@@ -1,0 +1,148 @@
+{
+  "bundles_sha256": {},
+  "check": [
+    "ten_429b182434cf",
+    "ten_58961449957f",
+    "ten_76d8d9821402",
+    "ten_776e0e61986b",
+    "ten_8572ddc89110",
+    "ten_8c54d4a61b0a",
+    "ten_c1e4987669e8",
+    "ten_f1871d924ee4"
+  ],
+  "counts": {
+    "drop": 0,
+    "recheck": 8,
+    "rewrite": 0
+  },
+  "files": {
+    "ten_429b182434cf": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "cost_or_services_reason": "not_mentioned",
+        "graduated_rent": "not_mentioned",
+        "increase_applied": "stated_false",
+        "index_clause": "not_mentioned",
+        "termination_with_increase": "not_mentioned"
+      },
+      "text": "written/ten_429b182434cf.json"
+    },
+    "ten_58961449957f": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "arrears_termination": "stated_false",
+        "asserted_claims": "stated_false",
+        "extension_requested": "not_mentioned",
+        "family_residence": "not_mentioned",
+        "notice_received": "stated_false"
+      },
+      "text": "written/ten_58961449957f.json"
+    },
+    "ten_76d8d9821402": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "cost_or_services_reason": "not_mentioned",
+        "graduated_rent": "not_mentioned",
+        "increase_applied": "stated_false",
+        "index_clause": "not_mentioned",
+        "termination_with_increase": "not_mentioned"
+      },
+      "text": "written/ten_76d8d9821402.json"
+    },
+    "ten_776e0e61986b": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "damages_claimed": "not_mentioned",
+        "defect_present": "stated_false",
+        "deposit_intended": "not_mentioned",
+        "landlord_unaware": "not_mentioned",
+        "notice_oral_only": "not_mentioned",
+        "rent_deposited": "not_mentioned"
+      },
+      "text": "written/ten_776e0e61986b.json"
+    },
+    "ten_8572ddc89110": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "cost_or_services_reason": "not_mentioned",
+        "graduated_rent": "stated_false",
+        "increase_applied": "stated_false",
+        "index_clause": "not_mentioned",
+        "termination_with_increase": "not_mentioned"
+      },
+      "text": "written/ten_8572ddc89110.json"
+    },
+    "ten_8c54d4a61b0a": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "cost_or_services_reason": "not_mentioned",
+        "graduated_rent": "stated_false",
+        "increase_applied": "stated_false",
+        "index_clause": "not_mentioned",
+        "termination_with_increase": "not_mentioned"
+      },
+      "text": "written/ten_8c54d4a61b0a.json"
+    },
+    "ten_c1e4987669e8": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "arrears_termination": "stated_false",
+        "asserted_claims": "not_mentioned",
+        "extension_requested": "stated_false",
+        "family_residence": "not_mentioned",
+        "notice_received": "stated_false"
+      },
+      "text": "written/ten_c1e4987669e8.json"
+    },
+    "ten_f1871d924ee4": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "cost_or_services_reason": "not_mentioned",
+        "graduated_rent": "not_mentioned",
+        "increase_applied": "stated_false",
+        "index_clause": "stated_false",
+        "termination_with_increase": "not_mentioned"
+      },
+      "text": "written/ten_f1871d924ee4.json"
+    }
+  },
+  "item_notes_sha256": "3733ebe2f6b449a7189cb0bd87917b1bff84708fd9109c6429402504ea718ba2",
+  "regime": "tenancy",
+  "round": 3,
+  "rule": "A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is dropped. Files of the check set that are not rewritten are blind-checked again as they are.",
+  "schema": "study4.repair-plan/1",
+  "style_sha256": "837e714d17c77057e92422aa5b5d0032ffa62d9d84da56c257760bb03c055d2e",
+  "writer_bundle_sha256": "84a6e76f7cfd84917d2d414b38c71d91c96910ea273be8a043ff2341d3f49488"
+}

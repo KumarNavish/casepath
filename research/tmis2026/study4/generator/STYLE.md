@@ -47,6 +47,17 @@ message), plus the short documents attached to it. Follow this sheet for every f
 12. **Attachments in the message.** The claimant may say that they attach a document the bundle lists. Never
     mention a document that is not attached, never promise one, never list what the organisation might need.
 13. **No meta-text.** No word about questions, designs, tests, benchmarks or rules. No placeholders.
+14. **A denied central event.** Where the bundle has `central_event_denied`, the question it names asks about the
+    central event of the claim and its answer is "no": the claimant says that this event did not take place at all
+    (nothing was stolen, no notice was given, the rent was never raised). The message and the attachments state none
+    of the events asked about under `must_not_state`, neither as what happened instead nor as a correction nor as a
+    possibility: never "not this, but that" ("it was not stolen at home, it was taken at the gym"; "I was not
+    dismissed on the spot, I was given notice with the usual period"). What the claimant does write about (what they
+    want, what worries them, what did happen) is free as long as it is none of those events.
+15. **What a question does not cover.** Each question carries a `not_this` line naming the nearest thing it does not
+    cover. Read it with the question: an answer must hold under the question's words as the `not_this` line limits
+    them. Never give a "yes" through something the `not_this` line names, and never use such a thing to make a
+    "not mentioned" question answerable or an "open" one settled.
 
 ## The attachments
 

@@ -1,0 +1,52 @@
+{
+ "regime": "theft",
+ "revision": 2,
+ "date": "2026-11-12",
+ "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item removed). Designs and blind-check records written before revision 2 name items by their rev1 wording; the generator maps them through this file.",
+ "items": [
+  {
+   "types": [
+    "theft_at_home",
+    "simple_theft_away"
+   ],
+   "document": "notification_record",
+   "rev1": "that and when CSS was notified of the theft",
+   "now": "the date (day, month and year) on which the theft was notified to CSS"
+  },
+  {
+   "types": [
+    "simple_theft_away"
+   ],
+   "document": "insurance_policy",
+   "rev1": "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+   "now": "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included"
+  },
+  {
+   "types": [
+    "theft_at_home",
+    "simple_theft_away"
+   ],
+   "document": "stolen_items_list",
+   "rev1": "where and when it was bought",
+   "now": "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when"
+  },
+  {
+   "types": [
+    "theft_at_home",
+    "simple_theft_away"
+   ],
+   "document": "original_vouchers",
+   "rev1": "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+   "now": "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost"
+  },
+  {
+   "types": [
+    "theft_at_home",
+    "simple_theft_away"
+   ],
+   "document": "bicycle_voucher",
+   "rev1": "the bicycle, if its voucher can be obtained without considerable cost",
+   "now": "the bicycle it is for (make, model or type)"
+  }
+ ]
+}

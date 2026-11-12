@@ -31,6 +31,13 @@ def run_design(regime, out, seed=20261112, extra=()):
     return D.main(["--regime", regime, "--out", str(out), "--seed", str(seed), "--quiet", *extra])
 
 
+def recorded_events(out, rnd, fid, state="not_mentioned"):
+    """The routing and event answers a blind check records (BLIND_CHECK_TASK.md), all in one state."""
+    inp = G.read_json(out / "blindcheck" / "in" / f"round{rnd}" / f"{fid}.json")
+    return {"routing": {"answer": None, "quote": ""},
+            "events": {e["label"]: {"state": state, "quote": ""} for e in inp.get("event_questions", [])}}
+
+
 def designs(out):
     return [G.read_json(p) for p in sorted((out / "designs").glob("*.json")) if p.name != "MANIFEST.json"]
 
@@ -156,10 +163,6 @@ class GeneratorTest(unittest.TestCase):
                     rule = x.get("rule") or {}
                     if rule.get("passage"):
                         passages.append(rule["passage"])
-            for t in reg.rules["types"]:
-                for f in t["facts"]:
-                    if f.get("not_this"):
-                        passages.append(f["not_this"])
             ids = set()
             for t in reg.rules["types"]:
                 ids |= {s["id"] for s in t["steps"]} | {f["id"] for f in t["facts"]} | {d["id"] for d in t["documents"]}
@@ -172,6 +175,9 @@ class GeneratorTest(unittest.TestCase):
                 b = G.read_json(p)
                 t = reg.types[G.read_json(self.out[r] / "designs" / p.name)["type"]]
                 allowed = [f["question"] for f in t["facts"]] + [f.get("generator_note", "") for f in t["facts"]]
+                # since 2026-11-12: each question's not_this line, and the other types' central-event questions
+                allowed += [f.get("not_this", "") for f in t["facts"]]
+                allowed += [x for _, q, nt, _ in reg.event_questions() for x in (q, nt)]
                 allowed += [d["title"] for d in t["documents"]] + [i for d in t["documents"] for i in d["must_show"]]
                 notes = G.ItemNotes(r)
                 allowed += [e.get("checkable_as", "") for e in notes.entries]
@@ -307,6 +313,209 @@ class GeneratorTest(unittest.TestCase):
                         if notes.applies(d["type"], a["document"], i, d["facts"]) is False:
                             self.assertIn(i, att["does_not_apply_leave_out"])
 
+    # ---------------------------------------------------------------- revision 2 (2026-11-12): not_this, denied events
+    def test_must_show_fixed_form_and_earlier_wordings(self):
+        self.assertTrue(G.conditional_item("Only if the file states that the lease has an index clause: that clause. "
+                                           "Otherwise this item does not apply."))
+        self.assertFalse(G.conditional_item("for each item, where and when it was bought"))
+        for r in REGIMES:
+            reg, notes = G.Regime(r), G.ItemNotes(r)
+            wp = reg.dir / "MUST_SHOW_WORDING.json"
+            if not wp.exists():
+                continue
+            for row in G.read_json(wp)["items"]:
+                for tid in row["types"]:
+                    self.assertEqual(reg.current_item(tid, row["document"], row["rev1"]), row["now"])
+                    shows = reg.doc(tid, row["document"])["must_show"]
+                    self.assertNotIn(row["rev1"], shows)
+                    if row["now"] is not None:
+                        self.assertIn(row["now"], shows)
+                        # a fixed-form item is conditional, and so is every item the notes call conditional
+                        if row["now"].startswith("Only if"):
+                            self.assertTrue(notes.conditional(tid, row["document"], row["now"]), row["now"])
+            # the stored development designs name items by their earlier wording: each maps to a current item that
+            # the notes still require in that file
+            man = G.DEV / r / "final" / "MANIFEST.json"
+            kept = {e["file_id"] for e in G.read_json(man)["files"]} if man.exists() else set()
+            for p in sorted((G.DEV / r / "designs").glob("*_*.json")):
+                if p.stem not in kept:
+                    continue
+                d = G.read_json(p)
+                for a in d["attachments"]:
+                    if a.get("supplied") and a.get("missing"):
+                        now = reg.current_item(d["type"], a["document"], a["missing"])
+                        req = notes.required_items(d["type"], a["document"], reg.doc(d["type"], a["document"])["must_show"],
+                                                   d["facts"])
+                        self.assertIn(now, req, (r, d["file_id"]))
+
+    def test_writer_bundle_not_this_and_denied_event(self):
+        style = (G.GEN / "STYLE.md").read_text(encoding="utf-8")
+        for r in REGIMES:
+            reg, notes = G.Regime(r), G.ItemNotes(r)
+            seen = 0
+            for d in designs(self.out[r]):
+                b, key = WB.build_one(reg, d, style, notes)
+                for q in b["questions"]:
+                    f = reg.fact(d["type"], key["questions"][q["label"]])
+                    self.assertEqual(q["not_this"], f.get("not_this", ""))
+                ev = reg.defining_event(d["type"])
+                if d["facts"][ev] == "stated_false":
+                    seen += 1
+                    block = b["central_event_denied"]
+                    self.assertEqual(key["questions"][block["label"]], ev)
+                    others = [e for e in reg.event_questions() if e[0] not in d["facts"]]
+                    self.assertEqual([x["question"] for x in block["must_not_state"]], [e[1] for e in others])
+                    self.assertTrue(others, (r, d["file_id"]))
+                    self.assertIn("message item 14", block["instruction"])
+                else:
+                    self.assertNotIn("central_event_denied", b)
+                self.assertEqual(b["output"]["path"], f"written/{d['file_id']}.json")
+                self.assertEqual(WB.build_one(reg, d, style, notes, rnd=3)[0]["output"]["path"],
+                                 f"written/{d['file_id']}.r3.json")
+            self.assertGreater(seen, 0, r)
+        self.assertIn("14. **A denied central event.**", style)
+        self.assertIn("15. **What a question does not cover.**", style)
+
+    def test_blind_input_and_denied_event_comparison(self):
+        for r in REGIMES:
+            reg, notes = G.Regime(r), G.ItemNotes(r)
+            ds = designs(self.out[r])
+            den = next(d for d in ds if d["denied_event"])
+            other = next(d for d in ds if not d["denied_event"] and not d["open_facts"])
+            for d in (den, other):
+                key = {"questions": {f"Q{i + 1}": f for i, f in enumerate(d["facts"])},
+                       "attachments": {f"A{i + 1}": a["document"] for i, a in enumerate(x for x in d["attachments"] if x["supplied"])}}
+                w = {"file_id": d["file_id"], "text": "wort " * 200,
+                     "attachments": [{"label": lab, "text": "x"} for lab in key["attachments"]]}
+                inp = A.blind_input(reg, d, key, w, notes)
+                self.assertTrue(all(q["not_this"] == reg.fact(d["type"], key["questions"][q["label"]]).get("not_this", "")
+                                    for q in inp["questions"]))
+                self.assertEqual(inp["routing"]["values"][:len(reg.type_ids)], reg.type_ids)
+                labs = [e["label"] for e in inp["event_questions"]]
+                self.assertEqual(labs, [x[0] for x in G.other_events(reg, d)])
+                for e in inp["event_questions"]:
+                    self.assertNotIn(e["question"], [q["question"] for q in inp["questions"]])
+                att = {a["document"]: a for a in d["attachments"]}
+                base = {"facts": {lab: {"state": d["facts"][f]} for lab, f in key["questions"].items()},
+                        "attachments": {lab: ({"state": "sufficient"} if att[did]["sufficient"] else
+                                              {"state": "insufficient", "missing": [reg.current_item(d["type"], did, att[did]["missing"])]})
+                                        for lab, did in key["attachments"].items()},
+                        "routing": {"answer": None, "quote": ""},
+                        "events": {lab: {"state": "stated_false", "quote": "q"} for lab in labs}}
+                self.assertEqual(A.compare_one(d, key, w, base, regime=reg, inp=inp), [], (r, d["file_id"]))
+                if not labs:
+                    continue
+                stated = dict(base, events=dict(base["events"], **{labs[0]: {"state": "stated_true", "quote": "q"}}))
+                routed = dict(base, routing={"answer": next(t for t in reg.type_ids if t != d["type"]), "quote": "q"})
+                unrecorded = dict(base, events={})
+                mm_stated = A.compare_one(d, key, w, stated, regime=reg, inp=inp)
+                mm_routed = A.compare_one(d, key, w, routed, regime=reg, inp=inp)
+                if d is den:
+                    self.assertEqual([m["kind"] for m in mm_stated], ["other_event"], r)
+                    self.assertEqual([m["kind"] for m in mm_routed], ["routing"], r)
+                else:  # another type's event may be stated in a file whose own event holds
+                    self.assertEqual(mm_stated, [])
+                    self.assertEqual(mm_routed, [])
+                self.assertTrue(A.compare_one(d, key, w, unrecorded, regime=reg, inp=inp))
+
+    @unittest.skipUnless(PRODUCT.exists(), "product worktree not available")
+    def test_repair_round_rewrites_once_and_drops_the_rewritten(self):
+        r = REGIMES[-1]
+        out = self.tmp / f"{r}_repair"
+        run_design(r, out)
+        R.main(["--regime", r, "--out", str(out), "--quiet"])
+        WB.build(r, out=out, force=True)
+        reg = G.Regime(r)
+        keys = G.read_json(out / "writer_bundles" / "KEYS.json")["keys"]
+        ds = {d["file_id"]: d for d in designs(out)}
+        den = sorted(fid for fid, d in ds.items() if d["denied_event"])
+        once, twice = den[0], den[1]
+
+        def blind(d, key, rnd=1):
+            att = {a["document"]: a for a in d["attachments"]}
+            return {"file_id": d["file_id"], "facts": {lab: {"state": d["facts"][f], "quote": ""} for lab, f in key["questions"].items()},
+                    "attachments": {lab: ({"state": "sufficient"} if att[did]["sufficient"] else
+                                          {"state": "insufficient", "missing": [att[did]["missing"]]})
+                                    for lab, did in key["attachments"].items()},
+                    **recorded_events(out, rnd, d["file_id"])}
+        for fid, d in ds.items():
+            w = {"file_id": fid, "round": 1, "language": d["language"], "text": "wort " * 200,
+                 "attachments": [{"label": lab, "text": "x"} for lab in keys[fid]["attachments"]]}
+            G.write_json(out / "written" / f"{fid}.json", w)
+        A.blind_in(reg, out, 1)
+        with self.assertRaises(SystemExit):  # a stored round is never overwritten
+            A.blind_in(reg, out, 1)
+        for fid, d in ds.items():
+            b = blind(d, keys[fid])
+            if fid == twice:
+                b["facts"][next(iter(keys[fid]["questions"]))]["state"] = "open"
+            G.write_json(out / "blindcheck" / "out" / "round1" / f"{fid}.json", b)
+        A.compare(reg, out, 1)
+        A.classify(reg, out)
+        G.write_json(out / "written" / f"{twice}.r2.json", dict(G.read_json(out / "written" / f"{twice}.json"), round=2))
+        A.blind_in(reg, out, 2)
+        G.write_json(out / "blindcheck" / "out" / "round2" / f"{twice}.json", blind(ds[twice], keys[twice], 2))
+        A.compare(reg, out, 2)
+        A.finalize(reg, out)
+        listed = {once: {"read_as": "states another type's event", "quote": "q"},
+                  twice: {"read_as": "states another type's event", "quote": "q"}}
+        plan = A.repair_prepare(reg, out, 3, listed, check="denied")
+        self.assertEqual(plan["files"][once]["decision"], "rewrite")
+        self.assertEqual(plan["files"][twice]["decision"], "drop")
+        self.assertNotIn(twice, plan["check"])
+        self.assertEqual(sorted(plan["check"]), sorted(set(den) - {twice}))
+        req = G.read_json(out / "rewrite_r3" / "bundles" / f"{once}.json")
+        self.assertEqual(req["round"], 3)
+        self.assertEqual(req["bundle"]["output"]["path"], f"written/{once}.r3.json")
+        self.assertIn("central_event_denied", req["bundle"])
+        told = G.canon(req["mismatches"])  # the writer is told labels, answers and a quote, never an id
+        for i in set(reg.type_ids) | set(reg.facts(ds[once]["type"])) | {d["id"] for d in reg.documents(ds[once]["type"])}:
+            self.assertNotRegex(told, r"(?<![A-Za-z0-9_])" + i + r"(?![A-Za-z0-9_])")
+        self.assertNotIn("product", told)
+        self.assertFalse((out / "rewrite_r3" / "bundles" / f"{twice}.json").exists())
+        with self.assertRaises(SystemExit):
+            A.repair_prepare(reg, out, 3, listed, check="denied")
+        G.write_json(out / "written" / f"{once}.r3.json", dict(G.read_json(out / "written" / f"{once}.json"), round=3,
+                                                              text="neu " * 200))
+        made, missing = A.blind_in(reg, out, 3)
+        self.assertEqual(sorted(made), sorted(plan["check"]))
+        recheck_bad = next(fid for fid in plan["check"] if fid != once)
+        for fid in made:
+            inp = G.read_json(out / "blindcheck" / "in" / "round3" / f"{fid}.json")
+            self.assertIn("event_questions", inp)
+            b = blind(ds[fid], keys[fid], 3)
+            if fid == recheck_bad and inp["event_questions"]:
+                b["events"][inp["event_questions"][0]["label"]] = {"state": "stated_true", "quote": "q"}
+            G.write_json(out / "blindcheck" / "out" / "round3" / f"{fid}.json", b)
+        res = A.compare(reg, out, 3)
+        self.assertTrue(res[once]["matches"])
+        if not res[recheck_bad]["matches"]:
+            with self.assertRaises(SystemExit):  # a re-checked file that differs needs its rewrite first
+                A.finalize(reg, out)
+            plan4 = A.repair_prepare(reg, out, 4, from_compare=3)
+            self.assertEqual(plan4["files"][recheck_bad]["decision"], "rewrite")
+            G.write_json(out / "written" / f"{recheck_bad}.r4.json",
+                         dict(G.read_json(out / "written" / f"{recheck_bad}.json"), round=4))
+            A.blind_in(reg, out, 4)
+            G.write_json(out / "blindcheck" / "out" / "round4" / f"{recheck_bad}.json",
+                         dict(blind(ds[recheck_bad], keys[recheck_bad], 4), **recorded_events(out, 4, recheck_bad, "stated_true")))
+            A.compare(reg, out, 4)
+        entries, dropped = A.finalize(reg, out)
+        why = {x["file_id"]: x["why"] for x in dropped}
+        self.assertIn("already rewritten once", why[twice])
+        self.assertFalse((out / "final" / twice).exists())
+        self.assertTrue((out / "dropped" / twice / "design.json").exists())
+        e = {x["file_id"]: x for x in entries}
+        self.assertEqual(e[once]["round"], 3)
+        self.assertEqual(e[once]["repair"], {"round": 3, "result": "rewritten"})
+        self.assertEqual((out / "final" / once / "text.clean.txt").read_text(encoding="utf-8"), "neu " * 200)
+        if recheck_bad in why:
+            self.assertIn("differs after rewrite (repair round 4)", why[recheck_bad])
+        man = G.read_json(out / "final" / "MANIFEST.json")
+        for x in man["files"]:
+            for name, h in x["sha256"].items():
+                self.assertEqual(G.sha256_file(out / "final" / x["file_id"] / name), h)
+
     def test_noise_reversible_and_bounded(self):
         rng = random.Random(1)
         words = ["Kündigung", "Vermieterin", "Wohnung", "Mietzinserhöhung", "Lohn", "formell", "Olten", "2026", "10",
@@ -358,7 +567,8 @@ class GeneratorTest(unittest.TestCase):
                  "facts": {lab: {"state": d["facts"][f], "quote": ""} for lab, f in key["questions"].items()},
                  "attachments": {lab: ({"state": "sufficient"} if att[did]["sufficient"] else
                                        {"state": "insufficient", "missing": [att[did]["missing"]]})
-                                 for lab, did in key["attachments"].items()}}
+                                 for lab, did in key["attachments"].items()},
+                 **recorded_events(out, 1, fid)}
             if fid in (bad_once, bad_twice):
                 q = next(iter(key["questions"]))
                 b["facts"][q]["state"] = "open" if d["facts"][key["questions"][q]] != "open" else "not_mentioned"

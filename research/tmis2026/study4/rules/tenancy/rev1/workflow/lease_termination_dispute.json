@@ -1,0 +1,450 @@
+{
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "lease_termination_dispute"
+ },
+ "documents": [
+  {
+   "id": "lease_contract",
+   "legal_basis": "SR 220 Art. 266a para. 1",
+   "must_show": [
+    "parties",
+    "rented dwelling",
+    "duration (limited or indefinite)",
+    "agreed notice periods and termination dates"
+   ],
+   "source_refs": [
+    "sr220-en#art-266a-p1"
+   ],
+   "title": "Lease contract",
+   "why": "Whether the notice respects the notice period and termination date depends on what the parties agreed; the lease records the duration and any agreed periods and dates."
+  },
+  {
+   "id": "termination_notice",
+   "legal_basis": "SR 220 Art. 266l para. 2",
+   "must_show": [
+    "sender and addressee",
+    "date",
+    "termination date",
+    "given in writing",
+    "whether the form approved by the canton is used"
+   ],
+   "source_refs": [
+    "sr220-en#art-266l-p2"
+   ],
+   "title": "Landlord's notice of termination",
+   "why": "The landlord's notice must be given on a form approved by the canton (and in writing, art. 266l para. 1); only the notice itself shows whether it was."
+  },
+  {
+   "id": "proof_of_receipt",
+   "legal_basis": "SR 220 Art. 273 para. 1",
+   "must_show": [
+    "date of receipt",
+    "how it was delivered (registered-mail tracking, envelope or acknowledgement)"
+   ],
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Proof of the date the notice was received",
+   "why": "The challenge must be brought within 30 days of receiving the notice; proof of the date of receipt is needed to check that period."
+  },
+  {
+   "id": "spouse_service",
+   "legal_basis": "SR 220 Art. 266n",
+   "must_show": [
+    "addressed to the spouse or registered partner",
+    "served separately from the tenant's copy",
+    "date",
+    "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit"
+   ],
+   "source_refs": [
+    "sr220-en#art-266n"
+   ],
+   "title": "Proof of separate service on the spouse or registered partner (the spouse's own copy with envelope or tracking), or the spouse's statement that no separate copy was received",
+   "why": "Separate service on the spouse or registered partner is required (a notice that does not conform is void, art. 266o); the spouse's own copy ordinarily proves it was made, and the spouse's statement records that it was not."
+  },
+  {
+   "id": "payment_demand",
+   "legal_basis": "SR 220 Art. 257d para. 2",
+   "must_show": [
+    "amount in arrears",
+    "time limit set and date it was received",
+    "warning that the lease will be terminated",
+    "payments made within the time limit (bank or postal records)"
+   ],
+   "source_refs": [
+    "sr220-en#art-257d-p2"
+   ],
+   "title": "Landlord's written payment time limit with warning of termination, and the tenant's record of payments made within it",
+   "why": "Termination is open to the landlord only after non-payment within the time limit; the landlord's written time limit shows the limit and the warning, and the tenant's payment records show whether payment was made within it."
+  },
+  {
+   "id": "claims_and_reasons",
+   "legal_basis": "SR 220 Art. 271a para. 1 let. a",
+   "must_show": [
+    "claims the tenant asserted (for example a repair demand or a rent challenge), with dates",
+    "the reasons the landlord gave for the notice (on the notice, or given on request)",
+    "conciliation or court documents on those claims, if any"
+   ],
+   "required_when": {
+    "fact": "asserted_claims",
+    "is": true
+   },
+   "source_refs": [
+    "sr220-en#art-271a-p1-a"
+   ],
+   "title": "Correspondence on the tenant's claims and the landlord's reasons for the notice",
+   "why": "The notice may be challenged where it was given because the tenant asserted claims; the tenant's dated letters show which claims were asserted and when, and the landlord's stated reasons (which must be given on request, art. 271 para. 2) show the ground he relies on."
+  },
+  {
+   "id": "hardship_evidence",
+   "legal_basis": "SR 220 Art. 272 para. 2 let. c",
+   "must_show": [
+    "household members",
+    "financial circumstances",
+    "personal or health circumstances"
+   ],
+   "required_when": {
+    "fact": "extension_requested",
+    "is": true
+   },
+   "source_refs": [
+    "sr220-en#art-272-p2-c"
+   ],
+   "title": "Evidence of the tenant's personal, family and financial circumstances",
+   "why": "In weighing an extension the authority has particular regard to the parties' personal, family and financial circumstances; documents of the tenant's circumstances ordinarily prove them. They are requested where the tenant seeks an extension. Not requesting them when the authority would examine an extension only ex officio (art. 273 para. 5) is this rule set's choice; that paragraph does not say so."
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "dispute_family",
+   "question": "Which tenancy dispute does the claim concern: a defect of the dwelling or a disturbance of its agreed use that the tenant did not cause (for example mould, damp, or heating that fails), a termination of the lease by the landlord, or a rent increase? A rent increase that the landlord accompanied with a notice of termination is a rent increase dispute: the rent-increase rules examine that notice (art. 269d para. 2 let. c).",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "type": "enum",
+   "values": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+   ]
+  },
+  {
+   "id": "notice_received",
+   "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "family_residence",
+   "question": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?",
+   "source_refs": [
+    "sr220-en#art-266m-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "arrears_termination",
+   "question": "Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?",
+   "source_refs": [
+    "sr220-en#art-257d-p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "asserted_claims",
+   "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
+   "source_refs": [
+    "sr220-en#art-271a-p1-a"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "extension_requested",
+   "question": "Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?",
+   "source_refs": [
+    "sr220-en#art-272-p1"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "lease_termination_dispute",
+ "notes": [
+  {
+   "source_refs": [
+    "benchmark-convention#intake-convention"
+   ],
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (notice_received) and any always-stated fact carry no presumption."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Document requests complete"
+  },
+  {
+   "id": "stopped",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Process ended: the defining event is denied"
+  }
+ ],
+ "presumptions": [
+  {
+   "applies": "unstated",
+   "fact": "family_residence",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "arrears_termination",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "asserted_claims",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "extension_requested",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  }
+ ],
+ "sources": [
+  {
+   "id": "sr220-en",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, consolidated version of 1 October 2026 (Fedlex); not authoritative"
+  },
+  {
+   "id": "sr220-de",
+   "kind": "knowledge",
+   "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
+  },
+  {
+   "id": "benchmark-convention",
+   "intended_kind": "benchmark_convention",
+   "kind": "process_guidance",
+   "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
+  }
+ ],
+ "start": "lt_intake",
+ "status": "reviewed",
+ "steps": [
+  {
+   "id": "lt_intake",
+   "next": [
+    {
+     "label": "notice received",
+     "to": "lt_form",
+     "when": {
+      "fact": "notice_received",
+      "is": true
+     }
+    },
+    {
+     "label": "no notice given",
+     "to": "lt_stop",
+     "when": {
+      "fact": "notice_received",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Was a notice of termination given and received?"
+  },
+  {
+   "id": "lt_stop",
+   "outcome": "stopped",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Stop: the defining event is denied"
+  },
+  {
+   "documents": [
+    "lease_contract",
+    "termination_notice",
+    "proof_of_receipt"
+   ],
+   "id": "lt_form",
+   "next": [
+    {
+     "to": "lt_family_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-266o"
+   ],
+   "title": "Check the form of the notice, the notice period and the challenge deadline"
+  },
+  {
+   "id": "lt_family_gate",
+   "next": [
+    {
+     "label": "family home",
+     "to": "lt_family",
+     "when": {
+      "fact": "family_residence",
+      "is": true
+     }
+    },
+    {
+     "label": "not a family home",
+     "to": "lt_arrears_gate",
+     "when": {
+      "fact": "family_residence",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-266m-p1"
+   ],
+   "title": "Is the dwelling the family home of spouses or registered partners?"
+  },
+  {
+   "documents": [
+    "spouse_service"
+   ],
+   "id": "lt_family",
+   "next": [
+    {
+     "to": "lt_arrears_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-266n"
+   ],
+   "title": "Check separate service on the spouse or registered partner"
+  },
+  {
+   "id": "lt_arrears_gate",
+   "next": [
+    {
+     "label": "arrears",
+     "to": "lt_arrears",
+     "when": {
+      "fact": "arrears_termination",
+      "is": true
+     }
+    },
+    {
+     "label": "not arrears",
+     "to": "lt_good_faith",
+     "when": {
+      "fact": "arrears_termination",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-257d-p2"
+   ],
+   "title": "Was notice given for arrears?"
+  },
+  {
+   "documents": [
+    "payment_demand"
+   ],
+   "id": "lt_arrears",
+   "next": [
+    {
+     "to": "lt_good_faith",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-257d-p1"
+   ],
+   "title": "Check the payment time limit that preceded the notice and the payments made within it"
+  },
+  {
+   "documents": [
+    "claims_and_reasons"
+   ],
+   "id": "lt_good_faith",
+   "next": [
+    {
+     "label": "notice not for arrears: extension can be at issue",
+     "to": "lt_extension",
+     "when": {
+      "fact": "arrears_termination",
+      "is": false
+     }
+    },
+    {
+     "label": "notice for arrears: no extension",
+     "to": "lt_end",
+     "when": {
+      "fact": "arrears_termination",
+      "is": true
+     }
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-271-p1"
+   ],
+   "title": "Check whether the notice can be challenged as contrary to good faith"
+  },
+  {
+   "documents": [
+    "hardship_evidence"
+   ],
+   "id": "lt_extension",
+   "next": [
+    {
+     "to": "lt_end",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-272a-p1-a"
+   ],
+   "title": "Assess an extension of the lease"
+  },
+  {
+   "id": "lt_end",
+   "outcome": "closed",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-273-p1"
+   ],
+   "title": "Document requests complete"
+  }
+ ],
+ "title": "Termination of the lease by the landlord (rules from SR 220)",
+ "version": "2026-11-12"
+}

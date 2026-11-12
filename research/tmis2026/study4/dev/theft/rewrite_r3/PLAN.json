@@ -1,0 +1,220 @@
+{
+  "bundles_sha256": {
+    "the_1dfba8facf5e": "1c7eced8972aa8abefa42a9c48937836a89df80f471af09019a20eb5b626ce35",
+    "the_6634ab23ee99": "d4927b8f5609b6c160a25308cd053b38e34ba68ced0e3bffe193c2b1c9b235ce",
+    "the_685edf55333b": "c1d2b464f6eb600e4a7202ddb984deb6bac6f277ec379082bd9f5b2c747f2e47",
+    "the_86b4e22a87e7": "820c8d1b0c8fe0d079a094a7376a9d126a30204296893d34ee524cdcc7ddeefd",
+    "the_86e739ec9184": "9eae0f60e1bc9609258dfc044be55dc19625ca7a9dcd65b8b9831976ca26f365",
+    "the_a529fff2269d": "cef9f11c38c95e8fa80fd7842789fd133d550a482b190d226ff13680f6344e94"
+  },
+  "check": [
+    "the_1dfba8facf5e",
+    "the_5ee356013cfc",
+    "the_6634ab23ee99",
+    "the_685edf55333b",
+    "the_86b4e22a87e7",
+    "the_86e739ec9184",
+    "the_a529fff2269d",
+    "the_c7620535798b"
+  ],
+  "counts": {
+    "drop": 0,
+    "recheck": 2,
+    "rewrite": 6
+  },
+  "files": {
+    "the_1dfba8facf5e": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "theft_at_home",
+        "other_type_event": "simple_theft_away",
+        "quote": "Das ist am 3. Juli 2026 passiert, und zwar nicht bei mir zu Hause am Birkenweg 73 in Neuchâtel, sondern unterwegs, während meiner Ferien im Tessin.",
+        "read_as": "the denial states another claim type's defining event: Designed as theft_at_home with the event denied: the file says the theft happened on holiday, not at home. Under the rule text that is a simple theft away (type 2), so the product's routing is what the rules give; the reference's stop (nothing needed) is right only inside the drawn type. The 4 errors are scored against a reference the rule text does not give.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "bicycle": "stated_false",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "stated_false",
+        "lock_change": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_false",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_1dfba8facf5e.json"
+    },
+    "the_5ee356013cfc": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "stated_false",
+        "imminent_danger": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_false",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "text": "written/the_5ee356013cfc.json"
+    },
+    "the_6634ab23ee99": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "theft_at_home",
+        "other_type_event": "simple_theft_away",
+        "quote": "I was in Bern for the day on Friday 24 July 2026, visiting my riend Laura Widmer, and that's where my camera bag with the camera and two lenses was stolen",
+        "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: a camera bag stolen in Bern, not at home.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_false",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_6634ab23ee99.json"
+    },
+    "the_685edf55333b": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "theft_at_home",
+        "other_type_event": "simple_theft_away",
+        "quote": "my laptop and my e-reader were stolen, together worth about CHF 3,600. This wasn't at home in my flat at Sonnenweg 95 in Chur. I was in Zürich that day for a work meeting, and that's where it happened.",
+        "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: laptop stolen in Zürich at a work meeting.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "stated_false",
+        "lock_change": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_false",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_685edf55333b.json"
+    },
+    "the_86b4e22a87e7": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "theft_at_home",
+        "other_type_event": "simple_theft_away",
+        "quote": "Ich war am 25. August 2026 mit meiner Freundin Seraina Ellis in Konstanz zum Einkaufen, und dort sind mir die Sachen gestohlen worden.",
+        "read_as": "the denial states another claim type's defining event: As the_1dfba8facf5e: items stolen while shopping in Konstanz.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "stated_false",
+        "lock_change": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_false",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "text": "written/the_86b4e22a87e7.json"
+    },
+    "the_86e739ec9184": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "simple_theft_away",
+        "other_type_event": "theft_at_home",
+        "quote": "Die Sachen wurden am Sonntag, 23. August 2026, bei mir zu Hause gestohlen, aus meiner Wohnung an der Bergstrasse 108 in St. Gallen",
+        "read_as": "the denial states another claim type's defining event: Designed as simple_theft_away with the event denied: the file says the items were stolen at home. Under the rule text that is type 1; the product's routing is what the rules give.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "stated_false",
+        "theft_away": "stated_false",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "text": "written/the_86e739ec9184.json"
+    },
+    "the_a529fff2269d": {
+      "decision": "rewrite",
+      "denied_event": true,
+      "evidence": {
+        "designed_type": "simple_theft_away",
+        "other_type_event": "theft_at_home",
+        "quote": "This was a break-in at home, in my own flat at Mühleweg 77 in St. Gallen.",
+        "read_as": "the denial states another claim type's defining event: As the_86e739ec9184: a break-in at the claimant's flat.",
+        "source": "lint/DIAGNOSIS.json routing (product routing answer and quotation); lint/diagnosis_review.json routing judgment"
+      },
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "the text differs from its design; its one rewrite",
+      "target_facts": {
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_false",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_a529fff2269d.json"
+    },
+    "the_c7620535798b": {
+      "decision": "recheck",
+      "denied_event": true,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "not found to differ; blind-checked again as it is",
+      "target_facts": {
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_false",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_c7620535798b.json"
+    }
+  },
+  "item_notes_sha256": "3a5013ce910e21baa5f46b2c45b7812fb2e200a5501ac67178097d3874c05c25",
+  "regime": "theft",
+  "round": 3,
+  "rule": "A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is dropped. Files of the check set that are not rewritten are blind-checked again as they are.",
+  "schema": "study4.repair-plan/1",
+  "style_sha256": "837e714d17c77057e92422aa5b5d0032ffa62d9d84da56c257760bb03c055d2e",
+  "writer_bundle_sha256": "84a6e76f7cfd84917d2d414b38c71d91c96910ea273be8a043ff2341d3f49488"
+}

@@ -142,6 +142,20 @@ check without a jurist.
    check script verifies: no unmentioned-fact assignment ends a process; no
    document need is created by a fact being unmentioned unless a cited rule
    says so; each `always_stated` fact has no presumption.
+6c. **must_show items every reader can check (added 2026-11-12, revision 2 after
+   first use).** A `must_show` item names one thing that is visible on the
+   document. An item that applies only under a condition starts with that
+   condition in the fixed form "Only if the file states that <condition>:
+   <thing>." and ends "Otherwise this item does not apply."; the condition is
+   the one the generator applies (`generator/items/<regime>.json`,
+   `applies_when`) or, where the generator leaves it to the story, the
+   circumstance itself. No item asks "whether"; no item is satisfied by an
+   absence (where a document may show either of two things, the item names the
+   statement that must be visible). A need condition belongs in `needed_when`,
+   not in an item. The product's workflow format takes `must_show` only as a
+   list of distinct non-empty strings (`validate_workflow`), so the fixed
+   wording, not a structure, carries the condition. The check script enforces
+   the fixed form and the two prohibitions.
 7. **Four-eyes.** A second session, which did not write the rule set, checks
    every rule: passage verbatim in the snapshot; locator right; the rule no
    broader and no narrower than the passage allows under its `basis`;

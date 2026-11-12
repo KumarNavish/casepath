@@ -282,3 +282,83 @@ tests OK. (The dismissal workflows give the product the question only, not `not_
 - workflow/protected_period_notice.json 06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5
 - workflow/wrongful_termination.json ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f
 - workflow/immediate_dismissal.json 2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3
+
+## Revision 2 after first use (development, 2026-11-12): must_show items
+
+DEVELOPMENT material, post hoc. The diagnosis of the first use (`lint/DIAGNOSIS.md`, `lint/diagnosis_review.json`)
+attributes 12 clean-arm errors over the three regimes to conditional or per-item `must_show` wordings. Revision 2
+applies one rule-writing guideline, SPEC.md item 6c, to every `must_show` item of this rule set:
+
+> A `must_show` item names one thing that is visible on the document. An item that applies only under a condition
+> starts with that condition in the fixed form "Only if the file states that <condition>: <thing>." and ends "Otherwise
+> this item does not apply."; the condition is the one the generator applies (`generator/items/<regime>.json`,
+> `applies_when`) or, where the generator leaves it to the story, the circumstance itself. No item asks "whether"; no
+> item is satisfied by an absence (where a document may show either of two things, the item names the statement that
+> must be visible). A need condition belongs in `needed_when`, not in an item.
+
+The product's workflow format (`casepath.workflow/1`, `validate_workflow` at the tested commit) takes `must_show` only
+as a list of distinct non-empty strings, with no condition per item, so the fixed wording carries the condition.
+
+Edited in `tools/build.py` (table `MUST_SHOW_REV2`, which also writes `MUST_SHOW_WORDING.json`: old wording -> new, read
+by the generator for designs that name an item by its earlier wording) and rebuilt. The state the `_rev1` runs read is
+kept in `rev1/` (`rules.json`, `rule_text.md`, `workflow/`); the generator's item notes of that state in
+`generator/items/rev1/dismissal.json`.
+
+Not changed: no document, title, step, `needed_when`, `mandatory`; no fact, question, `not_this`, presumption or stop;
+which items are conditional and when they apply (`generator/items/dismissal.json`: only `item` keys renamed).
+`lint/verify_rev2.py` (`lint/VERIFY_REV2.json`) confirms: rules.json and every workflow equal `rev1/` except the
+must_show wording, read through `MUST_SHOW_WORDING.json`; every stored `dev/dismissal/final/*/reference.json` and `design.json`
+still has its manifest hash; the product's evaluator recomputes every final reference unchanged with the revised
+workflows; the clean-room comparison on the 60 designs gives the same document states as both evaluators for all
+documents; for every design and item the notes give the same conditional / applies / checkable_as as before; every
+writer bundle is the same once item texts are mapped. `tools/check.py` passes and now enforces the fixed form, no
+"whether" and no absence wording (it reports the old wording in `rev1/` as failing). `generator/test_generator.py`:
+all tests pass.
+
+Changed items (4 rows (8 item instances: the contract's probation and notice-period items are in all three types)):
+
+1. **employment_contract** (protected_period_notice, wrongful_termination, immediate_dismissal)
+   - Old: "probation clause, if any"
+   - New: "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): CO art. 335b para. 1: "the probation period is considered to be the first month of an employment relationship" (German: "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses")
+   - Condition: fact `probation_varied` ("Does the file say that a written individual agreement, a standard employment contract or a collective employment contract set a probation period other than the first month of employment?"), CO art. 335b para. 2: "Different terms may be envisaged by an individual written agreement, a standard employment contract or a collective employment contract; however, the probation period may not exceed three months." (German: "Durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag können abweichende Vereinbarungen getroffen werden; die Probezeit darf jedoch auf höchstens drei Monate verlängert werden.")
+   - Why: 'if any' lets an absence satisfy the item; the product read it as required in 7 files (dis_064eeecaeb0d and others). Now the fixed form with the generator's condition (probation_varied stated true). In wrongful_termination and immediate_dismissal the type has no such fact, so the condition never holds there, as in the generator.
+2. **employment_contract** (protected_period_notice, wrongful_termination, immediate_dismissal)
+   - Old: "notice-period clause, if any"
+   - New: "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): CO art. 335b para. 1: "the probation period is considered to be the first month of an employment relationship" (German: "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses")
+   - Condition: fact `notice_period_varied` ("Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?"), CO art. 335c para. 2: "These notice periods may be varied by written individual, standard or collective employment contract" (German: "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden")
+   - Why: As the probation clause; the generator's condition is notice_period_varied stated true (no such fact in wrongful_termination).
+3. **employment_contract** (immediate_dismissal)
+   - Old: "agreed end date, if fixed-term"
+   - New: "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): CO art. 337c para. 1: "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration" (German: "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre")
+   - Condition: fact `fixed_term` ("Was the employment relationship agreed for a fixed term, with an agreed end date, rather than for an unlimited period?"), CO art. 337c para. 1: "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration" (German: "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre")
+   - Why: Condition at the end ('if fixed-term'); round 1 drew it as the missing item in files that are not fixed-term (dis_6093ca79060d, dis_925dc8cee367, both dropped). Now the fixed form with the generator's condition (fixed_term stated true).
+4. **claims_correspondence** (wrongful_termination)
+   - Old: "employer's response, if any"
+   - New: "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply."
+   - Cited passage (the document's rule, basis evidence): CO art. 336 para. 1 let. d: "because the other party asserts claims under the employment relationship in good faith" (German: "weil die andere Partei nach Treu und Glauben Ansprüche aus dem Arbeitsverhältnis geltend macht")
+   - Why: 'if any' lets an absence satisfy the item. Now the fixed form; the generator leaves the condition to the story (conditional, no applies_when), and no fact records a response.
+
+### Considered and not changed
+
+- `pregnancy_certificate` "pregnancy confirmed and its dates, or the date of birth": one record (a confirmation or a birth record), always applies. Kept.
+- `termination_letter` (immediate) "that employment ends with immediate effect": a statement visible on the letter. Kept.
+
+### Hashes after revision 2
+
+- rules.json cf853c508fc6000517b4bc2c9005bd9c263c3d916aa34aff0594af29875a69f3
+- rule_text.md 2dd108a0c558dacf801313b4b1d68ea94b7147dd7e48d265e93f65a88ca9fa99
+- MUST_SHOW_WORDING.json c6c4b03604ad50b0c9c7ecb2e096eaace93b772dc69ef6e96b8ff1195affd265
+- workflow/immediate_dismissal.json 68d30cacaf306f131fcd7067bd096ee85dec09a2ac74177e3c1e1f01e0fe4495
+- workflow/protected_period_notice.json bcb3b315b0e41750260b9f2db545f28167dd7a1480b528c67843246b919eac69
+- workflow/wrongful_termination.json 42fb560393be78ae735520fce6cae19ca76e0ddf8781b4b4c348dc6265ae70c7
+
+State before revision 2 (`rev1/`, equal to the hashes after revision 1 above):
+
+- rev1/rules.json 96b89ea6d2aaaf2efe7a0061eec14e7a3cb91ba04a015855e6362515d12081e2
+- rev1/rule_text.md ab1ecb117c7a21feee853a119a7962ff19d8830219fa1a1d9b74f8583996a2d5
+- rev1/workflow/immediate_dismissal.json 2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3
+- rev1/workflow/protected_period_notice.json 06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5
+- rev1/workflow/wrongful_termination.json ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f
