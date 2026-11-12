@@ -208,3 +208,126 @@ They also could not verify:
 - how the 30/90/180-day limit and the probation extension are counted in practice.
 
 These points need either a short gloss quoted from the German text in `rule_text.md` or a cited passage from another public act (for example, the Civil Procedure Code for pendency).
+
+## Second look (2026-11-12, rule set version 2026-11-12.4)
+
+I read `RECONCILIATION.md`, the rebuilt `rules.json`, `RULES.md`, `rule_text.md`, the workflows and the new CPC snapshots (`cpc-sr272-en.txt`, `cpc-sr272-de.txt`, art. 62). I made no network calls and no commits. I edited only this file.
+
+What ran:
+
+- **`python3 -I tools/check.py`** passes (ALL CHECKS PASSED). It reports 3 types, 23 facts, 22 steps, 22 document needs, 0 statutory presumptions, 14 convention presumptions and 7 stops.
+- **Product probes.** I used the product evaluator through `check.py`'s loader, from scripts in my scratch folder, to see what the reference does on a few paths. The results are quoted where they matter below.
+
+### 1. The 29 earlier points
+
+| # | Rule (type) | Status | Note |
+|---|---|---|---|
+| 1 | employer_gave_notice (1) | resolved | not_this names art. 337. |
+| 2 | notice_during_probation (1) | resolved | Basis `follows`; 335b(3) is in the question and cited as `also`, with DE. |
+| 3 | incapacity_illness_accident (1) | resolved | Passage is the whole of let. b with the cap; locator "let. b; para. 2". See section 2 on answerability. |
+| 4 | compulsory_service (1) | resolved | Locator includes para. 2; not_this names let. d. |
+| 5 | pregnancy_or_birth (1) | resolved | |
+| 6 | notice_before_protected_period (1) | resolved | |
+| 7 | a_notice (1) | resolved | Step removed; documents at `a_probation`. |
+| 8 | termination_letter (1) | resolved | |
+| 9 | notice_period_terms (1) | resolved | 335c(2) with DE; 336c(3) as `also`. |
+| 10 | P probation_varied (1) | resolved | Now under the convention, declared as such. |
+| 11 | P notice_period_varied (1) | resolved | |
+| 12 | a_stop_probation (1) | resolved | |
+| 13 | employer_gave_notice (2) | resolved | |
+| 14 | objection_submitted (2) | resolved | |
+| 15 | action_in_time (2) | resolved | The question follows the German; the passage stays English with DE beside it, which is acceptable. |
+| 16 | retaliation_for_claims (2) | resolved | |
+| 17 | b_notice (2) | resolved | Placement is fixed. The new need condition raises a separate problem; see section 2. |
+| 18 | b_representative (2) | resolved | |
+| 19 | termination_letter (2) | resolved | |
+| 20 | employment_contract (2) | resolved | |
+| 21 | court_filing (2) | resolved | CPC art. 62 cited. The need condition raises a separate problem; see section 2. |
+| 22 | b_stop_no_objection (2) | resolved | Cites 336b(2) s. 1; the inference names "gültig". |
+| 23 | b_stop_time_limit (2) | resolved | |
+| 24 | incapacity_cause (3) | resolved | |
+| 25 | fixed_term (3) | resolved | `always_stated`, no presumption. |
+| 26 | other_earnings (3) | resolved | |
+| 27 | employment_contract (3) | resolved | |
+| 28 | medical_certificate → incapacity_proof (3) | resolved | Minor note on the shared id in section 2. |
+| 29 | P notice_period_varied (3) | resolved | |
+
+**29 of 29 resolved.** Section 2 raises new issues on rules 17 and 21 and on the new rules.
+
+### 2. What I had not seen
+
+- **Documents moved to the gate steps (items 7 and 17).** This is sound. Every document that settles a gate fact now sits at the gate step. `check.py` confirms that an open `notice_during_probation`, `objection_submitted` or `action_in_time` produces a request for its document.
+
+- **The extra need conditions on `written_objection` ("objection_submitted is yes OR notice_period_ended is yes") and `court_filing` ("action_in_time is yes OR more_than_180_days is yes").** These are an encoding device, not something the cited text supports.
+  - The text supports the objection (or the filing) deciding the claim once the period has ended (or the 180 days have passed). It does not support requesting a document the file says does not exist.
+  - The probe shows the device does exactly that. Take a file that states "notice period ended, no objection was made". It requests `written_objection` and then ends at `b_stop_no_objection`. Likewise, "180 days passed, no claim made pending" requests `court_filing` and then ends at `b_stop_time_limit`.
+  - Both inferences say the document is requested "even where the file leaves the objection [filing] open". That is true but incomplete, so the label is **not honest as it stands**.
+  - Proposed fix: either narrow the condition so that a stated "no" does not request the document, if the product's condition language can do that without turning "open" into a hold; or add to each inference: "It is also requested where the file states that no objection was lodged [no claim was made pending]; this is a device of the encoding so that an open fact yields a request, and the process then ends at b_stop_no_objection [b_stop_time_limit]."
+  - With the added sentence I agree.
+
+- **The two statutory presumptions removed, both facts under the convention (items 10, 11 and 29).** I agree. This is the honest form. The statutory default (first month; 335c(1) periods) still sits correctly in the inferences of `employment_contract`, and none of these facts triggers a stop.
+
+- **`incapacity_proof` shared by two types (item 28).** Acceptable.
+  - In type 1 the title is "Medical certificate of incapacity for work", which is right, because only illness or accident counts under let. b.
+  - In type 3 the title and `must_show` are broader. One catalogue id therefore has two definitions, and an evaluator reading "the catalogue" may treat it as one document.
+  - Recommendation, not a disagreement: give the catalogue entry the general type 3 title in both types and keep the type-specific `must_show`.
+
+- **The illness fact kept as one question with the 30/90/180-day limit.** It is faithful to let. b, and the passage is now the whole of let. b. On whether a model can answer it from a lay claim:
+  - It can only when the claim gives the start of employment, the start of the illness and the notice date. Many lay claims give these loosely ("I had worked there two years, I was off sick from March").
+  - Where they don't, the fact becomes **open**. The probe shows that with it open, `incapacity_proof` is "depends" (held), not requested. So the certificate that would settle the cap is held exactly where it is needed. Decision 4 already applies to the probation, objection and filing facts but does not reach this gate fact.
+  - Where a claimant states the illness had run past the cap, the fact is false and the certificate is never requested, so the claimant's own count cannot be checked.
+  - A split ("illness raised" opening the step and requesting the certificate, then "within the protected length" decided from it) would avoid both. The cost is one fact over the size limit, and I accept the writer's reasons.
+  - Verdict: agree. This is a recorded limit, not an error: the illness branch will show more holds than the other two period facts.
+
+- **New fact `agreed_to_continue`, step `b_continuation_check`, stop `b_stop_continued` (art. 336b(2) s. 1).** Agree with all three.
+  - The passage is verbatim, with DE. "einigen sich die Parteien nicht über die Fortsetzung" is a condition of the claim, so an agreement to continue defeats it in one step. The stop is sound on the cited text alone.
+  - Polarity is right: true is what the employer would raise, and false is ordinary. The convention presumption (false) is allowed, because false does not by itself end the process.
+  - `not_this` ("talks that ended without agreement; an agreement only about a payment or the end date") draws the right line.
+
+- **"anhängig gemacht" linked to CPC art. 62(1) "Rechtshängigkeit".** The inference is sound. It is the one general provision on when a case becomes pending, and the words share the root ("hängig"). In `court_filing` it is labelled as an inference (basis `evidence`, with the link spelled out in `inference`). Two things fall short:
+  - `rule_text.md` (type 2 summary and "Where the translation was not followed") states it as fact: "which under CPC art. 62 para. 1 happens when …".
+  - It should read "read with CPC art. 62 para. 1 (an inference across the two acts: the CO says 'anhängig gemacht', the CPC defines 'Rechtshängigkeit')". This is minor, but a lay verifier cannot see the two terms are linked unless told it is a link.
+
+- **`incapacity_cause` widened.** Agree. The question, `not_this` and `incapacity_proof` (type 3) now match "unverschuldete Verhinderung".
+
+- **Art. 335b(3) on the probation fact and stop.** Agree. It is in the question and in the stop's inference, and cited as `also` with DE.
+
+- **Section "Where the translation was not followed".** Accurate on all four points, and the questions do follow the German. It is complete for the points that change a rule, with two small omissions:
+  - 336c(1) "terminate" vs "kündigen" is not listed, although `not_this` now handles it.
+  - 335c(3) "paternity leave" vs "Urlaub des andern Elternteils" is not listed, but nothing cites that paragraph.
+
+  The only accuracy point is the CPC link stated as fact (see above).
+
+- **The changed 6b stop check.** The new rule: a stop counts as reached through silence only if some true/false answer to the unmentioned facts would avoid every stop. That is the right test of "silence never ends a process". If every answer still ends the process, silence did not end it.
+  - It does let silence choose **which** stop is reached. Take "180 days passed, no claim pending" with `agreed_to_continue` unmentioned: the convention's false gives `b_stop_time_limit`, while true would give `b_stop_continued`.
+  - That is harmless for "never ends a process". But if the study scores the stop's identity or its documents (`court_filing` is requested on the time-limit path, not on the continuation path), the convention decides it. That follows from 6a and should be stated, not counted as a defect.
+  - The test enumerates only true and false. Open values are handled by the product's hold, which the separate open-fact check covers. I see no stop that silence alone causes.
+
+### 3. Completeness points 4–10, left out
+
+The writer says each is "named in the relevant `not_this` or summary where it touches a rule". I checked: that is true for 4, 5 and 10, not for 6 to 9.
+
+| # | Point | Says nothing wrong without it? |
+|---|---|---|
+| 4 | 336c let. cbis–cquinquies, d | **Yes.** Named in `pregnancy_or_birth` and `compulsory_service`; the type 1 summary says only let. a–c are covered. |
+| 5 | Other grounds of art. 336 | **Yes.** The type 2 summary says only let. d and para. 2 let. b are covered; `employee_representative` names para. 2 let. a. |
+| 6 | Seven-day probation notice in types 2 and 3 | **Mostly.** The probation clause is now requested (`must_show`), so the documents are right. But both `notice_period_varied` questions define "the statutory ones" as the 335c(1) periods only, which is incomplete during probation. Recommended: add "(seven days during probation, art. 335b para. 1)". Not blocking. |
+| 7 | 336c(2) suspension inside type 2 | **No, it can mislead into a stop.** `notice_period_ended` and `more_than_180_days` drive two stops. A notice period suspended by illness, service or pregnancy ends later than the date on the letter, and nothing tells the reader so. A model reading the letter's end date answers "ended", and the file can wrongly end at `b_stop_no_objection`. 336c(2) is already cited in this rule set, so no new law is needed. Proposed `not_this` for `notice_period_ended`: "… ; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave has extended it (art. 335c para. 3); the period then ends later." Add the matching clause to `more_than_180_days` ("the end of the employment relationship as moved by such a suspension"). |
+| 8 | 335c(3) | Folded into 7. Rare on its own; acceptable once 7's `not_this` names it. |
+| 9 | 336(3) | **Mostly.** `employee_representative` ("when notice was given, an elected … representative") is answered no for a representative whose mandate ended by a transfer (art. 333) but whose protection continues. That is narrower than the text, though rare and not stated wrongly. Recommended `not_this` addition: "a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here)". Not blocking. |
+| 10 | 335c(2), second half | **Yes.** The document is needed either way, and its validity is assessment, not a document need. |
+
+### 4. Still not agreed
+
+1. **`written_objection` and `court_filing` (type 2), their need conditions.** These request a document that the file says does not exist on the path to a stop (probe confirmed), while the inference says only "where the file leaves it open". I agree once the inference names this as an encoding device and states the stop-path request, or once the condition is narrowed.
+2. **`notice_period_ended` (and, with it, `more_than_180_days`), type 2.** Without a `not_this` naming the 336c(2) suspension (and 335c(3)), the question invites the letter's end date. That can produce a wrong `b_stop_no_objection` or `b_stop_time_limit`. I agree with the wording above.
+
+Recommended but not blocking:
+
+- label the CPC link as an inference in `rule_text.md`;
+- one catalogue title for `incapacity_proof`;
+- the seven-day parenthetical (point 6);
+- the 336(3) `not_this` (point 9);
+- record that the illness fact will be held more often than the other period facts, and that silence can choose between two type 2 stops.
+
+**Ready to be marked reviewed?** Not yet. It is ready as soon as the two wording changes above are made. Neither needs a new source or a structural change.
