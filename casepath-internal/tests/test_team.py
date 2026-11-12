@@ -469,3 +469,57 @@ class ContinueTests(unittest.TestCase):
             case=CASE, files=FILES, workflow=FIXTURE)
         self.assertNotIn("landlord_notified", [f["fact"] for f in result["facts"]])  # the reader's later "ja" was refused
         self.assertEqual(result["evaluation"]["outcome"]["id"], "advice")  # the handler's "nein" decides the path
+
+
+class SpeedTrialTests(unittest.TestCase):
+    """Each trial is off by default (today's behaviour, which every other test pins) and does exactly what it says when on."""
+
+    def run_with(self, trials, finder_calls=()):
+        class Watching(ScriptedModel):
+            def respond_json(self, *, name, **kw):
+                self.json_names = getattr(self, "json_names", []) + [name]
+                return super().respond_json(name=name, **kw)
+        fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
+        model = Watching(standard_script(finder_calls=list(finder_calls), result_fields=fields))
+        result = CaseTeam(model, speed_trials=trials).run(case=CASE, files=FILES, workflow=FIXTURE)
+        return model, result
+
+    def openings(self, model):
+        return [json.loads(i[0]["content"]) for i in model.inputs if i and isinstance(i[0].get("content"), str) and i[0]["content"].startswith("{")]
+
+    def test_result_checker_without_files_only_when_asked(self):
+        off, _ = self.run_with(())
+        on, _ = self.run_with({"result_without_files"})
+        checker = lambda m: [o for o in self.openings(m) if "evaluate" in o or o.get("instruction", "").startswith("Evaluate")][-1]
+        self.assertIn("files_text", checker(off))
+        self.assertNotIn("files_text", checker(on))
+
+    def test_second_reading_skips_a_value_its_quote_states_only_when_asked(self):
+        from casepath.agents.team import _quote_states_value
+        self.assertTrue(_quote_states_value({"status": "established", "value": "2. März", "citations": [{"quote": "am 2. März informiert"}]}))
+        self.assertFalse(_quote_states_value({"status": "established", "value": True, "citations": [{"quote": "ja"}]}))  # booleans read twice
+        off, _ = self.run_with(())
+        on, _ = self.run_with({"second_reading_unquoted"})
+        self.assertEqual(off.json_names.count("casepath_confirm_facts"), on.json_names.count("casepath_confirm_facts"))  # a boolean: still read
+
+    def test_the_finder_sees_only_the_current_stage_only_when_asked(self):
+        from unittest import mock
+        import casepath.agents.team as team_module
+        seen, real = {}, team_module._dispatch
+        for label, trials in (("off", ()), ("on", {"finder_stage_only"})):
+            def spy(work, agent, name, args, label=label):
+                out = real(work, agent, name, args)
+                if agent == "document_finder" and name == "open_process":
+                    seen[label] = len(out["process"]["documents"])
+                return out
+            with mock.patch.object(team_module, "_dispatch", spy):
+                self.run_with(trials, finder_calls=[("open_process", {})])
+        self.assertLess(seen["on"], seen["off"])
+
+    def test_unknown_trials_are_ignored_and_none_is_the_default(self):
+        from casepath.config import load_settings
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            env = {"CASEPATH_DATA_DIR": tmp, "CASEPATH_DEV_USER": "u"}
+            self.assertEqual(load_settings(env).speed_trials, ())
+            self.assertEqual(load_settings({**env, "CASEPATH_SPEED_TRIALS": "finder_stage_only, made_up"}).speed_trials, ("finder_stage_only",))

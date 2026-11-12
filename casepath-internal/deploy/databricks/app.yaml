@@ -39,6 +39,9 @@ env:
   # model above. Which model reads a case is the owner's decision; a change here is an experiment until he decides.
   - name: CASEPATH_AGENT_MODELS
     value: ""
+  # Speed changes under trial, e.g. "second_reading_unquoted,result_without_files,finder_stage_only". Empty: today's behaviour.
+  - name: CASEPATH_SPEED_TRIALS
+    value: ""
   # Cases live on a Unity Catalog volume; the app's own disk is only a working copy. Case files placed in the volume's
   # incoming/ folder (Catalog Explorer takes large uploads) are listed on the Cases page for one-click import.
   - name: CASEPATH_DATA_DIR

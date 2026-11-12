@@ -20,6 +20,10 @@ class SettingsError(ValueError):
     pass
 
 
+# Speed changes that alter what a model is asked: each is tried on the development cuts and kept only if no scoreboard
+# line gets worse. Off by default.
+SPEED_TRIALS = {"second_reading_unquoted", "result_without_files", "finder_stage_only"}
+
 @dataclass(frozen=True)
 class ModelSettings:
     endpoint: str
@@ -78,6 +82,7 @@ class Settings:
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
     volume: str | None = None
+    speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
 
 
 def _flag(env, name, default):
@@ -129,6 +134,7 @@ def load_settings(env=None):
         identity_header=env.get("CASEPATH_IDENTITY_HEADER") or None,
         dev_user=env.get("CASEPATH_DEV_USER") or None,
         max_upload_bytes=int(env.get("CASEPATH_MAX_UPLOAD_BYTES", str(100 * 1024 * 1024))),
+        speed_trials=tuple(sorted({t.strip() for t in env.get("CASEPATH_SPEED_TRIALS", "").split(",") if t.strip()} & SPEED_TRIALS)),
         max_text_chars=int(env.get("CASEPATH_MAX_TEXT_CHARS", "4000000")),
         reading_workers=int(env.get("CASEPATH_READING_WORKERS", "6")),
         run_workers=int(env.get("CASEPATH_RUN_WORKERS", "2")),

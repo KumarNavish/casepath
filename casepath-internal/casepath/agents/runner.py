@@ -52,10 +52,10 @@ def case_state(store, catalogue, case_id, knowledge=None):
 
 class RunService:
     def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1, page_image_side=1700,
-                 token_budget=0, voice=None):
+                 token_budget=0, voice=None, speed_trials=()):
         self.store, self.catalogue, self.model_factory, self.effort = store, catalogue, model_factory, effort
         self.read_scans, self.reading_workers, self.page_image_side = read_scans, reading_workers, page_image_side
-        self.token_budget, self.voice = token_budget, voice or {}
+        self.token_budget, self.voice, self.speed_trials = token_budget, voice or {}, tuple(speed_trials)
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self._stops = set()  # runs a person asked to stop ("Anhalten"); checked between turns
         self.store.interrupt_unfinished()
@@ -99,7 +99,8 @@ class RunService:
                 "workflows": list(self.catalogue.workflows), "knowledge": self.store.list_knowledge(None, {"active"}),
                 "edits": self.store.list_edits(case_id),
                 "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers,
-                            "page_image_side": self.page_image_side, "token_budget": self.token_budget, "voice": self.voice}}
+                            "page_image_side": self.page_image_side, "token_budget": self.token_budget, "voice": self.voice,
+                            **({"speed_trials": list(self.speed_trials)} if self.speed_trials else {})}}
 
     def _event(self, run_id, data):
         self.store.append_event(run_id, data)

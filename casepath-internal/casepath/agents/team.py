@@ -523,7 +523,14 @@ def _dispatch(work, agent, name, args):
     if name == "search":
         return {"passages": work.evidence.search(args["query"])}
     if name == "open_process":
-        return {"process": _process_view(work)}
+        view = _process_view(work)
+        if agent == "document_finder" and "finder_stage_only" in getattr(work, "trials", ()):  # trial: the current stage's needs only
+            here = next((s for s in work.graph["steps"] if s["title"] == view["current_step"]), None)
+            if here:
+                keep = set(here.get("documents", []))
+                view = {**view, "documents": [d for d in view["documents"] if d["id"] in keep],
+                        "checklist": [c for c in view["checklist"] if c["document"] in keep]}
+        return {"process": view}
     if name == "view_knowledge":
         applied = {a["item"]: a for a in work.provenance["knowledge"]}
         return {"knowledge": [{"id": k["id"], "kind": k["kind"], "status": k["status"], "version": k["version"],
@@ -609,7 +616,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
     for name in given:
         with TOOL_LOCK:
             opening[name] = _dispatch(work, agent, name, {})
-    if work.total_chars <= SMALL_CASE_CHARS and "read_file" in spec["tools"]:
+    if work.total_chars <= SMALL_CASE_CHARS and "read_file" in spec["tools"] and not (
+            agent == "result_checker" and "result_without_files" in getattr(work, "trials", ())):  # trial: it may still open a file
         opening["files_text"] = {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}
     conversation = [{"role": "user", "content": json.dumps(opening, ensure_ascii=False)}]
     nudged = False
@@ -710,6 +718,14 @@ def run_source_checker(model, work, effort="medium"):
 
 # -- the lead -----------------------------------------------------------------
 
+def _quote_states_value(row):
+    """Whether a recorded fact's own quotes contain its value as written (a date, a name, an amount); booleans never do."""
+    if not row or row.get("status") != "established" or isinstance(row.get("value"), bool) or row.get("value") in (None, ""):
+        return False
+    value = str(row["value"]).strip().lower()
+    return len(value) >= 3 and any(value in (c.get("quote") or "").lower() for c in row.get("citations") or [])
+
+
 def gating_facts(work):
     """The facts that decide the path: those named in transitions and in when documents are required."""
     used = set()
@@ -748,6 +764,8 @@ def confirm_facts(model, work, effort="medium"):
     conflicting for a person to settle; where only the second reading finds a quoted value, it is recorded for the
     source checker. Nothing is decided silently."""
     facts = [f for f in gating_facts(work) if f["id"] not in work.set_by_hand()]  # the case worker's answers are not read again
+    if "second_reading_unquoted" in getattr(work, "trials", ()):  # trial: a value its own quote states is not read twice
+        facts = [f for f in facts if not _quote_states_value(work.facts.get(f["id"]))]
     if not facts:
         return {"checked": 0}
     if work.total_chars <= SMALL_CASE_CHARS:
@@ -791,10 +809,11 @@ def confirm_facts(model, work, effort="medium"):
 
 
 class CaseTeam:
-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None, edits_now=None):
+    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None, edits_now=None, speed_trials=()):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
         self.should_stop = should_stop or (lambda: False)  # checked before every model turn and every delegation
         self.edits_now = edits_now  # the case's edits as they are now (answers given during the run)
+        self.speed_trials = frozenset(speed_trials)  # speed changes under trial; empty = today's behaviour
 
     def model_for(self, agent):
         """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
@@ -835,7 +854,7 @@ class CaseTeam:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0, "done": list((resume or {}).get("done") or [])}
-        work.should_stop, work.edits_now = self.should_stop, self.edits_now
+        work.should_stop, work.edits_now, work.trials = self.should_stop, self.edits_now, self.speed_trials
         try:
             return self._run(work, state)
         except TeamStopped:
