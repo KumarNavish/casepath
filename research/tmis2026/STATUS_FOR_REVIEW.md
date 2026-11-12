@@ -137,3 +137,23 @@ Details: `analysis/study3_feedback.md`, `analysis/decomposition.md`,
   The paper now leads with the registered tenancy result (0.31 against 2.14
   and 1.86), claims "holds" for tenancy only, and gives cost as 20 to 42
   times the same-model prompt.
+
+## Added on 2026-11-12, later: a benchmark from public rules (development)
+
+- Paper: new Section 7 (about 1.3 pages) and Supplement S16. Main paper 29 pages, supplement 74.
+- Three rule sets (tenancy, theft, dismissal) with 177 rules, each citing a
+  verbatim public passage, checked by a second reader; one stated convention
+  for unmentioned facts; references on which the engine and two blind
+  evaluators agree in 1,240 of 1,240 decisions; 173 generated development
+  files (180 designed, 7 dropped).
+- Lint with planted defects: 0 of 47 untouched conditions flagged, 10 of 19
+  blunt widenings detected (2 not assessable), 0 of 3 subtle ones.
+- First use: 134 product errors assigned one cause each; repairs were general
+  rules checked by the second reader, with no reference changed. The product's
+  errors per file on the repaired benchmark are in the supplement only
+  (development, in-sample; tenancy incomplete). No baseline ran on the
+  benchmark, so the paper makes no comparison from it.
+- Steps 3 to 5 (not approved) would add a second design cycle with baselines
+  on development files, a timestamped freeze, and one sealed run on new files:
+  the first fair comparison on this benchmark.
+- Details: `study4/`, `deliverables/EVIDENCE_AND_REMAINING_REQUIREMENTS.md`.

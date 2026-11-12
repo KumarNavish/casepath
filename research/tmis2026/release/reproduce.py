@@ -230,6 +230,10 @@ def child(task, out):
         exec_redirected(AN / "make_numbers_baseline_check.py",
                         'OUT = TMIS / "paper" / "results" / "numbers_baseline_check.tex"',
                         f"OUT = Path({str(out / 'numbers_baseline_check.tex')!r})")
+    elif task == "numbers_study4_dev":
+        exec_redirected(AN / "make_numbers_study4_dev.py",
+                        'OUT = TMIS / "paper" / "results" / "numbers_study4_dev.tex"',
+                        f"OUT = Path({str(out / 'numbers_study4_dev.tex')!r})")
     elif task == "dev_probe":
         sys.path.insert(0, str(TMIS / "dev_probe"))
         m = load(TMIS / "dev_probe" / "build.py", "dev_probe_build")
@@ -474,6 +478,21 @@ def baseline_check_steps(tmp):
     script_step("tests: analysis/test_baseline_check.py", [sys.executable, "test_baseline_check.py"], cwd=AN)
 
 
+def study4_dev_steps(tmp):
+    """The benchmark from cited public text (Study 4, step 2; development material): the macros are regenerated from
+    the stored records under study4/ (rule sets, development manifests, clean-room comparison, blind-check rounds, lint
+    report, diagnosis and revision records) and compared byte for byte; then their test runs. No model call and no
+    response cache: the runs behind these records are stored results, not re-run here."""
+    out = tmp / "study4_dev"
+    out.mkdir()
+    r = child_step("study 4 step 2: analysis/make_numbers_study4_dev.py (from the stored study4/ records)",
+                   "numbers_study4_dev", out)
+    if r.returncode == 0:
+        ok, why = same(out / "numbers_study4_dev.tex", TMIS / "paper" / "results" / "numbers_study4_dev.tex")
+        report("study 4 step 2: numbers_study4_dev.tex equals the stored file", "PASS" if ok else "FAIL", why)
+    script_step("tests: analysis/test_study4_dev.py", [sys.executable, "test_study4_dev.py"], cwd=AN)
+
+
 def test_steps():
     for t in ("test_study3.py", "test_study3_review.py", "test_study2.py"):
         script_step(f"tests: analysis/{t}", [sys.executable, t], cwd=AN)
@@ -577,6 +596,7 @@ def main():
             review_steps(tmp)
             feedback_steps(tmp)
             baseline_check_steps(tmp)
+            study4_dev_steps(tmp)
             test_steps()
             study12_steps(tmp, a.skip_latex)
     finally:

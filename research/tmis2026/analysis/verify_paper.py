@@ -5,9 +5,10 @@
    number macros; they must equal the saved files and paper/results/numbers.tex
    byte for byte.
 2. Every citation key resolves to references.bib.
-3. The Study 3, ShARC, review, feedback and post-hoc macros regenerate from their result files byte for byte
-   (make_numbers_study3.py, make_numbers_sharc.py, make_numbers_followup.py, make_numbers_study3_review.py,
-   make_numbers_study3_feedback.py; lint_followup.py writes analysis/posthoc_numbers.tex, copied to
+3. The Study 3, ShARC, review, feedback, fair-baseline, benchmark and post-hoc macros regenerate from their result
+   files byte for byte (make_numbers_study3.py, make_numbers_sharc.py, make_numbers_followup.py,
+   make_numbers_study3_review.py, make_numbers_study3_feedback.py, make_numbers_baseline_check.py,
+   make_numbers_study4_dev.py; lint_followup.py writes analysis/posthoc_numbers.tex, copied to
    paper/results/numbers_posthoc.tex; the saved files are restored afterwards).
 4. Structure of the included sections: no removed figure in the body, no "expert review" wording,
    model names in Sections 1-9 only once, in Section 6.
@@ -61,7 +62,8 @@ if not PAPER_ONLY:
 for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex"),
                      ("make_numbers_followup.py", "numbers_followup.tex"), ("make_numbers_study3_review.py", "numbers_study3_review.tex"),
                      ("make_numbers_study3_feedback.py", "numbers_study3_feedback.tex"),
-                     ("make_numbers_baseline_check.py", "numbers_baseline_check.tex")):
+                     ("make_numbers_baseline_check.py", "numbers_baseline_check.tex"),
+                     ("make_numbers_study4_dev.py", "numbers_study4_dev.tex")):
     target = PAPER / "results" / name
     saved = target.read_bytes()
     try:

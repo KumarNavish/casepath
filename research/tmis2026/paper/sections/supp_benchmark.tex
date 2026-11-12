@@ -1,0 +1,183 @@
+\clearpage
+\section{The benchmark from public rules: details}
+\label{supp:benchmark}
+
+This section gives the details of the article's Section~\ref{M-sec:benchmark}. Everything in it is development material and none of it is registered; no baseline ran on these files, and no number here compares \casepath with another design. Paths are relative to \texttt{research/\allowbreak{}tmis2026/\allowbreak{}study4/}. Every number comes from \texttt{analysis/\allowbreak{}make\_numbers\_\allowbreak{}study4\_\allowbreak{}dev.py}, which reads the stored JSON records named below.
+
+\subsection{Rule schema and rule sets}
+\label{supp:bench-rules}
+
+A rule set (\texttt{rules/\allowbreak{}<regime>/\allowbreak{}rules.json}) lists its public sources, each with title, publisher, URL, retrieval time and the SHA-256 of the stored snapshot; the convention; and, per type, its id, title and defining event and five lists. A \emph{fact} has an id, a question asked of the file, a ``not this'' line, the type boolean and, where neither value is the ordinary case, the mark \texttt{always\_stated}, which removes its presumption. A \emph{step} has a condition under which it is reached; a \emph{document} has a step, a need condition, a mandatory flag and the items it must show; a \emph{presumption} says what an unstated fact is taken to be; a \emph{stop} gives the condition that ends the process. Every entry carries a rule: \texttt{source\_id}, \texttt{locator}, \texttt{passage} (verbatim from the snapshot, with the German text beside the English for statutes), \texttt{basis} (\texttt{states}, \texttt{follows} or \texttt{evidence}) and, for the last two, a one-sentence \texttt{inference}; further passages may be cited as \texttt{also} or \texttt{context}. Conditions use the condition language of the product's workflow format, and each set is compiled to workflows that pass the product's validator at the tested commit. Each branch fact is worded so that true is the circumstance a party would raise. Since revision~2, a document item names one thing visible on the document, and an item that applies only under a condition states it in a fixed form (``Only if the file states that \ldots: \ldots. Otherwise this item does not apply.''). A check script verifies every passage character for character in its snapshot, the polarity rules and the fixed item form. Table~\ref{tab:bench-rules} gives the counts. The second reader's first verdicts are counted from \texttt{CITATION\_\allowbreak{}CHECK.md}; the writer's answer to every line that was not ``agree'' is in \texttt{RECONCILIATION.md}, and the reader's later looks closed every point.
+
+\begin{table}[h]
+\caption{The rule sets (development material). Rules: entries with a cited passage, by basis. Facts: the conditions, with the branch facts (all but the defining events) in parentheses. Second reader: lines of the first check that agreed, and lines changed until both agreed.}
+\label{tab:bench-rules}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}l r rrrr r rr rr@{}}
+\toprule
+& & \multicolumn{4}{c}{Cited rules} & & & & \multicolumn{2}{c}{Second reader} \\
+\cmidrule(lr){3-6}\cmidrule(l){10-11}
+Regime & Types & all & states & follows & evidence & Facts (branch) & Steps & Documents & agreed & changed \\
+\midrule
+Tenancy & \sfourdevTenTypes & \sfourdevTenRules & \sfourdevTenBasisStates & \sfourdevTenBasisFollows & \sfourdevTenBasisEvidence & \sfourdevTenConditions{} (\sfourdevTenBranchConditions) & \sfourdevTenSteps & \sfourdevTenDocuments & \sfourdevTenCheckAgree & \sfourdevTenCheckNotAgree \\
+Theft & \sfourdevThTypes & \sfourdevThRules & \sfourdevThBasisStates & \sfourdevThBasisFollows & \sfourdevThBasisEvidence & \sfourdevThConditions{} (\sfourdevThBranchConditions) & \sfourdevThSteps & \sfourdevThDocuments & \sfourdevThCheckAgree & \sfourdevThCheckNotAgree \\
+Dismissal & \sfourdevDisTypes & \sfourdevDisRules & \sfourdevDisBasisStates & \sfourdevDisBasisFollows & \sfourdevDisBasisEvidence & \sfourdevDisConditions{} (\sfourdevDisBranchConditions) & \sfourdevDisSteps & \sfourdevDisDocuments & \sfourdevDisCheckAgree & \sfourdevDisCheckNotAgree \\
+\midrule
+All & \sfourdevAllTypes & \sfourdevAllRules & \sfourdevAllBasisStates & \sfourdevAllBasisFollows & \sfourdevAllBasisEvidence & \sfourdevAllConditions{} (\sfourdevAllBranchConditions) & \sfourdevAllSteps & \sfourdevAllDocuments & \sfourdevAllCheckAgree & \sfourdevAllCheckNotAgree \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The generator's stated distributions}
+\label{supp:bench-generator}
+
+The parameters are the same in every regime (\texttt{dev/\allowbreak{}<regime>/\allowbreak{}designs/\allowbreak{}MANIFEST.json}; seed \sfourdevSeed). Each file has its own random generator, seeded from the master seed, the regime, the level and its index. Per regime there are \sfourdevPerLevel{} designs at each level. At the levels of \sfourdevLevelA, \sfourdevLevelB, \sfourdevLevelC{} and \sfourdevLevelD\% of files with an open fact, \sfourdevLevelAOpenFiles, \sfourdevLevelBOpenFiles, \sfourdevLevelCOpenFiles{} and \sfourdevLevelDOpenFiles{} of the \sfourdevPerLevel{} designs have one (rounded half up: \sfourdevLevelAOpenShare, \sfourdevLevelBOpenShare, \sfourdevLevelCOpenShare{} and \sfourdevLevelDOpenShare); an open file has \sfourdevOpenFactsPerFile{} open fact, drawn uniformly over the type's deciding facts, the defining event included. In \sfourdevDeniedPerLevel{} other designs of every level the defining event is stated false; their branch facts are stated false or not mentioned. A branch fact that is not open is stated true with probability \sfourdevPTrue, stated false with \sfourdevPFalse{} and not mentioned with \sfourdevPNotMentioned; an \texttt{always\_stated} fact is true with \sfourdevPAlwaysStatedTrue{} and is stated only where its step can be reached. A value that alone ends the process has its weight multiplied by \sfourdevStopLean. A mandatory document that the design definitely needs is attached with probability \sfourdevPSupply{} (an optional one with \sfourdevPSupplyOptional); an attached document is sufficient with probability \sfourdevPSufficient, and otherwise lacks exactly one item. No other document is attached. Per level, \sfourdevGermanPerLevel{} texts are German and \sfourdevNoisePerLevel{} get scan noise (character confusions, lost diacritics, broken lines, dropped letters), with the clean text kept beside them. Texts have \sfourdevWordsMin{} to \sfourdevWordsMax{} words. Dependency rules in \texttt{dev/\allowbreak{}<regime>/\allowbreak{}constraints.json} keep designs coherent where one stated answer implies another.
+
+The writing session receives a bundle with the questions and their designed answers under neutral labels, each with its ``not this'' line (from round~3 on, after first use), a story seed (names, places, dates, amounts) and the attachments to write; it sees no fact or document ids, no workflow, no reference, no product code and no prompt of any design. The blind-check session sees the text, the attachments with their items, the questions with their ``not this'' lines, and, from the third round on, the routing question and every other type's defining-event question. Table~\ref{tab:bench-sets} gives the development sets.
+
+\begin{table}[h]
+\caption{The development sets (development material): files kept per level of the share of files with an open fact, files that deny their defining event, files with an open fact, files with scan noise and German files.}
+\label{tab:bench-sets}
+\footnotesize
+\begin{tabular}{@{}l rrrr r rrrr@{}}
+\toprule
+& \multicolumn{4}{c}{Level (\%)} & & & & & \\
+\cmidrule(lr){2-5}
+Regime & \sfourdevLevelA & \sfourdevLevelB & \sfourdevLevelC & \sfourdevLevelD & Files & Denied event & Open fact & Scan noise & German \\
+\midrule
+Tenancy & \sfourdevTenLevelAFiles & \sfourdevTenLevelBFiles & \sfourdevTenLevelCFiles & \sfourdevTenLevelDFiles & \sfourdevTenFiles & \sfourdevTenDeniedFiles & \sfourdevTenOpenFiles & \sfourdevTenNoiseFiles & \sfourdevTenGermanFiles \\
+Theft & \sfourdevThLevelAFiles & \sfourdevThLevelBFiles & \sfourdevThLevelCFiles & \sfourdevThLevelDFiles & \sfourdevThFiles & \sfourdevThDeniedFiles & \sfourdevThOpenFiles & \sfourdevThNoiseFiles & \sfourdevThGermanFiles \\
+Dismissal & \sfourdevDisLevelAFiles & \sfourdevDisLevelBFiles & \sfourdevDisLevelCFiles & \sfourdevDisLevelDFiles & \sfourdevDisFiles & \sfourdevDisDeniedFiles & \sfourdevDisOpenFiles & \sfourdevDisNoiseFiles & \sfourdevDisGermanFiles \\
+\midrule
+All & \sfourdevAllLevelAFiles & \sfourdevAllLevelBFiles & \sfourdevAllLevelCFiles & \sfourdevAllLevelDFiles & \sfourdevAllFiles & \sfourdevAllDeniedFiles & \sfourdevAllOpenFiles & \sfourdevAllNoiseFiles & \sfourdevAllGermanFiles \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Blind-check outcomes per round}
+\label{supp:bench-blind}
+
+Rounds 1 and 2 made the sets; rounds 3 and 4 are the repair after first use (Table~\ref{tab:bench-blind}). In round~1 a file was kept without a rewrite if it matched its design exactly, or if every difference was a designed ``not mentioned'' read as ``stated false'' and the reference computed from the states as read equalled the design's; it then keeps the states as read (\emph{kept as read}). Every other differing file was rewritten once and dropped if it still differed. Round~3 re-checked all \sfourdevAllThreeChecked{} files that deny their defining event, under the new rule that such a text states no other type's event; \sfourdevAllRepairRewritten{} were rewritten first, and the keep rule was applied in both directions (\sfourdevAllThreeKeepRule{} files). Round~4 re-checked the \sfourdevAllFourChecked{} files whose attachments revision~3 touched. Of the \sfourdevAllDroppedAfterUse{} files dropped after first use, one differed after it had already been rewritten (the standing rule) and \sfourdevAllDroppedPlanner{} were dropped by recorded decisions of the planner: one whose designed defect revision~3 removed, and one that differed at round~4, which a development set may drop instead of rewriting (the sealed set keeps the rule of one rewrite, then drop). No reference of a kept file changed.
+
+\begin{table}[h]
+\caption{Blind-check outcomes per round (development material). Round 1: every design; round 2: the rewrites of round 1; rounds 3 and 4: the repair after first use.}
+\label{tab:bench-blind}
+\footnotesize
+\begin{tabular}{@{}l l rrrr@{}}
+\toprule
+Round & Outcome & Tenancy & Theft & Dismissal & All \\
+\midrule
+1 & designs checked & \sfourdevTenOneChecked & \sfourdevThOneChecked & \sfourdevDisOneChecked & \sfourdevAllOneChecked \\
+& matched exactly & \sfourdevTenOneExact & \sfourdevThOneExact & \sfourdevDisOneExact & \sfourdevAllOneExact \\
+& kept as read & \sfourdevTenOneAsRead & \sfourdevThOneAsRead & \sfourdevDisOneAsRead & \sfourdevAllOneAsRead \\
+& rewritten & \sfourdevTenOneRewrite & \sfourdevThOneRewrite & \sfourdevDisOneRewrite & \sfourdevAllOneRewrite \\
+2 & rewrites matched & \sfourdevTenTwoMatch & \sfourdevThTwoMatch & \sfourdevDisTwoMatch & \sfourdevAllTwoMatch \\
+& dropped & \sfourdevTenTwoDiffer & \sfourdevThTwoDiffer & \sfourdevDisTwoDiffer & \sfourdevAllTwoDiffer \\
+3 & denied-event files checked & \sfourdevTenThreeChecked & \sfourdevThThreeChecked & \sfourdevDisThreeChecked & \sfourdevAllThreeChecked \\
+& of which rewritten first & \sfourdevTenRepairRewritten & \sfourdevThRepairRewritten & \sfourdevDisRepairRewritten & \sfourdevAllRepairRewritten \\
+& matched (keep rule) & \sfourdevTenThreeMatch{} (\sfourdevTenThreeKeepRule) & \sfourdevThThreeMatch{} (\sfourdevThThreeKeepRule) & \sfourdevDisThreeMatch{} (\sfourdevDisThreeKeepRule) & \sfourdevAllThreeMatch{} (\sfourdevAllThreeKeepRule) \\
+4 & files re-checked & \sfourdevTenFourChecked & \sfourdevThFourChecked & \sfourdevDisFourChecked & \sfourdevAllFourChecked \\
+& matched & \sfourdevTenFourMatch & \sfourdevThFourMatch & \sfourdevDisFourMatch & \sfourdevAllFourMatch \\
+\midrule
+& dropped after first use & \sfourdevTenDroppedAfterUse & \sfourdevThDroppedAfterUse & \sfourdevDisDroppedAfterUse & \sfourdevAllDroppedAfterUse \\
+& kept (dropped in all) & \sfourdevTenFiles{} (\sfourdevTenDropped) & \sfourdevThFiles{} (\sfourdevThDropped) & \sfourdevDisFiles{} (\sfourdevDisDropped) & \sfourdevAllFiles{} (\sfourdevAllDropped) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Planted defects}
+\label{supp:bench-lint}
+
+The design of the test (\texttt{lint/\allowbreak{}DESIGN.json}) was hashed before any call on the development files: the seeded draw of conditions to widen, the arms, the lint rule, the detection rule and the stop line. The widened wordings were written after the seeded draw and before any run, by the session that knows the lint and wrote the analysis. A planted condition is detected when it is flagged in its arm and not in the clean arm; a false alarm is a flagged untouched branch condition. Because the cost estimate exceeded the stop line, the sealed fallback applied: clean and blunt arms on every regime, the subtle arm on tenancy only. Files not routed to their own type are left out of the denominators. Each arm used the cost-efficient model, one run per file, on the \sfourdevLintFiles{} files of the sets before repair; a clean arm on the frontier model, tenancy only, stopped at its budget line after \sfourdevLintFrontierFiles{} files and flagged nothing. The lint test cost USD~\sfourdevLintSpend{}. Table~\ref{tab:bench-lint} gives the outcome per regime; \texttt{lint/\allowbreak{}REPORT.md} gives every planted wording and every condition's rate.
+
+\begin{table}[h]
+\caption{Planted-defect test of the lint, per regime (development material). Untouched: branch conditions of the clean arm, and those flagged. Blunt and subtle: conditions planted, detected, missed while assessable, and not assessable (fewer than \sfourdevLintMinFiles{} files whose design says false or not mentioned). No untouched condition and no defining event was flagged in any arm. --: not planted.}
+\label{tab:bench-lint}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l rr rrrr rrr@{}}
+\toprule
+& \multicolumn{2}{c}{Untouched} & \multicolumn{4}{c}{Blunt widening} & \multicolumn{3}{c}{Subtle widening} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-7}\cmidrule(l){8-10}
+Regime & conditions & flagged & planted & detected & missed & not assessable & planted & detected & not assessable \\
+\midrule
+Tenancy & \sfourdevLintTenUntouched & \sfourdevLintTenUntouchedFlagged & \sfourdevLintTenBluntPlanted & \sfourdevLintTenBluntDetected & \sfourdevLintTenBluntMissed & \sfourdevLintTenBluntNotAssessable & \sfourdevLintTenSubtlePlanted & \sfourdevLintTenSubtleDetected & \sfourdevLintTenSubtleNotAssessable \\
+Theft & \sfourdevLintThUntouched & \sfourdevLintThUntouchedFlagged & \sfourdevLintThBluntPlanted & \sfourdevLintThBluntDetected & \sfourdevLintThBluntMissed & \sfourdevLintThBluntNotAssessable & -- & -- & -- \\
+Dismissal & \sfourdevLintDisUntouched & \sfourdevLintDisUntouchedFlagged & \sfourdevLintDisBluntPlanted & \sfourdevLintDisBluntDetected & \sfourdevLintDisBluntMissed & \sfourdevLintDisBluntNotAssessable & -- & -- & -- \\
+\midrule
+All & \sfourdevLintUntouched & \sfourdevLintUntouchedFlagged & \sfourdevLintBluntPlanted & \sfourdevLintBluntDetected & \sfourdevLintBluntMissed & \sfourdevLintBluntNotAssessable & \sfourdevLintSubtlePlanted & \sfourdevLintSubtleDetected & \sfourdevLintSubtleNotAssessable \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{First use, by cause}
+\label{supp:bench-diagnosis}
+
+The diagnosis (\texttt{lint/\allowbreak{}DIAGNOSIS.md}) used the clean-arm runs and made no model call. A run handed over unrouted or routed to another type makes every error of its file a routing error. For a file routed to its type, the product's evaluator was replayed with the designed fact states and the designed attachments, with the product's facts and the designed attachments, and with the designed facts and the product's document findings; the replay that removes the error names its cause. Fed the stored facts and findings, the evaluator reproduced all \sfourdevDiagReplayPlans{} stored plans of the correctly routed files, and fed the designed states, all \sfourdevDiagReplayReferences{} of their reference document states. An error whose quoted passage plausibly states what the product read, judged after reading the text, is counted as text against recorded state. Table~\ref{tab:bench-diag} gives both splits. The owner classes were assigned partly by reading the files, by the session that proposed the wording repairs.
+
+\begin{table}[h]
+\caption{The product's errors on first use, by cause and by owner (development material; cost-efficient model, one run per file, the \sfourdevFirstAllFiles{} files before repair). No error came from a workflow that differed from its reference.}
+\label{tab:bench-diag}
+\footnotesize
+\begin{tabular}{@{}l rrrr@{}}
+\toprule
+& Tenancy & Theft & Dismissal & All \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{By cause}} \\
+Routing, file denies its defining event & \sfourdevCauseTenRoutingDenied & \sfourdevCauseThRoutingDenied & \sfourdevCauseDisRoutingDenied & \sfourdevCauseAllRoutingDenied \\
+Routing, other file & \sfourdevCauseTenRoutingOther & \sfourdevCauseThRoutingOther & \sfourdevCauseDisRoutingOther & \sfourdevCauseAllRoutingOther \\
+Fact reading & \sfourdevCauseTenFactReading & \sfourdevCauseThFactReading & \sfourdevCauseDisFactReading & \sfourdevCauseAllFactReading \\
+Supplied-document judgment & \sfourdevCauseTenDocJudgment & \sfourdevCauseThDocJudgment & \sfourdevCauseDisDocJudgment & \sfourdevCauseAllDocJudgment \\
+Text against recorded state & \sfourdevCauseTenTextState & \sfourdevCauseThTextState & \sfourdevCauseDisTextState & \sfourdevCauseAllTextState \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{By owner}} \\
+Wording of our rules & \sfourdevDiagTenRuleWording & \sfourdevDiagThRuleWording & \sfourdevDiagDisRuleWording & \sfourdevDiagAllRuleWording \\
+Wording of document requirements & \sfourdevDiagTenMustShow & \sfourdevDiagThMustShow & \sfourdevDiagDisMustShow & \sfourdevDiagAllMustShow \\
+Benchmark design & \sfourdevDiagTenBenchmark & \sfourdevDiagThBenchmark & \sfourdevDiagDisBenchmark & \sfourdevDiagAllBenchmark \\
+Text against recorded state & \sfourdevDiagTenTextState & \sfourdevDiagThTextState & \sfourdevDiagDisTextState & \sfourdevDiagAllTextState \\
+The product (readings, quotations, document judgments) & \sfourdevDiagTenProduct & \sfourdevDiagThProduct & \sfourdevDiagDisProduct & \sfourdevDiagAllProduct \\
+\midrule
+Errors & \sfourdevDiagTenErrors & \sfourdevDiagThErrors & \sfourdevDiagDisErrors & \sfourdevDiagAllErrors \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Revisions 1 to 3}
+\label{supp:bench-revisions}
+
+\paragraph{Revision 1}
+It reworded the routing question of each regime (\sfourdevAllRevOneRouting) and \sfourdevAllRevOneConditions{} condition wordings: the tenant's and the employee's motive facts, the theft by a household member, and pending measures to reduce the loss. Facts, steps, conditions, presumptions and stops stayed as they were, and the clean-room agreement was unchanged. A re-run of \sfourdevRevOneFiles{} of the \sfourdevFirstAllFiles{} files, chosen towards the files the changes target, went from \sfourdevRevOneErrorsBefore{} to \sfourdevRevOneErrorsAfter{} errors per file, and routing failures in files that do not deny their event from \sfourdevRevOneRoutingOtherBefore{} to \sfourdevRevOneRoutingOtherAfter{} (development, in-sample; USD~\sfourdevRevOneSpend).
+
+\paragraph{Revision 2}
+It applied one rule to every document item (\texttt{SPEC.md}, item 6c): an item names one thing visible on the document, a conditional item states its condition in a fixed form, no item asks ``whether'' and none is satisfied by an absence. It reworded \sfourdevAllRevTwoItems{} items in \sfourdevAllRevTwoPlaces{} places (tenancy \sfourdevTenRevTwoItems, theft \sfourdevThRevTwoItems, dismissal \sfourdevDisRevTwoItems) and removed \sfourdevAllRevTwoRemoved; this answers the \sfourdevDiagAllMustShow{} errors owned by document requirements. No need condition and no reference changed.
+
+\paragraph{Revision 3}
+It applied the second reader's look at revisions 1 and 2 as the reader worded it: \sfourdevAllRevThreeItems{} document items, \sfourdevAllRevThreeTitles{} document title and \sfourdevAllRevThreeRouting{} clause of a routing question, and it wrote each routing question into the rule text that every design reads. With it came the two generator rules (a denial of the defining event states no other type's event; writer and blind reader see each condition's ``not this'' line) and repair rounds 3 and 4 (Table~\ref{tab:bench-blind}). Every kept file's reference and design kept their recorded hashes, and the clean room still agreed on \sfourdevCleanroomSame{} of \sfourdevCleanroomDocuments{} decisions.
+
+\subsection{The product on the benchmark, before and after the repairs}
+\label{supp:bench-product}
+
+Table~\ref{tab:bench-product} gives the tested product's errors per file (requests that should not be made, requests missed, holds where the file settles the fact, and holds missed). These numbers are development and in-sample: the rule wording and the files were repaired on the same files, no baseline ran, and no comparison with another design can be made from them. The run after revision~3 stopped at its budget line; tenancy ran \sfourdevRevThreeTenFilesRun{} of \sfourdevRevThreeTenFilesInSet{} files and is not a regime figure. Model credits for building and first use: USD~\sfourdevStepTwoSpend{} in all, of which USD~\sfourdevRevThreeSpend{} for the run after revision~3.
+
+\begin{table}[h]
+\caption{The tested product's errors per file on the benchmark (development, in-sample; cost-efficient model, checklist only, one run per file; no baseline). First use: the \sfourdevFirstAllFiles{} files before repair. After revision 3: the files run, and first use on the same files (rewritten texts read in their old form then). Routing failures: files not routed to their own type, including unrouted files that deny their defining event.}
+\label{tab:bench-product}
+\footnotesize
+\begin{tabular}{@{}l rrr rrrrr@{}}
+\toprule
+& \multicolumn{3}{c}{First use} & \multicolumn{5}{c}{After revision 3} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-9}
+Regime & files & errors & routing failures & files run & errors & before & routing failures & before \\
+\midrule
+Tenancy & \sfourdevFirstTenFiles & \sfourdevFirstTenErrors & \sfourdevFirstTenRoutingFailures & \sfourdevRevThreeTenFilesRun{} (\sfourdevRevThreeTenComplete) & \sfourdevRevThreeTenErrors & \sfourdevRevThreeTenErrorsBefore & \sfourdevRevThreeTenRoutingFailures & \sfourdevRevThreeTenRoutingFailuresBefore \\
+Theft & \sfourdevFirstThFiles & \sfourdevFirstThErrors & \sfourdevFirstThRoutingFailures & \sfourdevRevThreeThFilesRun & \sfourdevRevThreeThErrors & \sfourdevRevThreeThErrorsBefore & \sfourdevRevThreeThRoutingFailures & \sfourdevRevThreeThRoutingFailuresBefore \\
+Dismissal & \sfourdevFirstDisFiles & \sfourdevFirstDisErrors & \sfourdevFirstDisRoutingFailures & \sfourdevRevThreeDisFilesRun & \sfourdevRevThreeDisErrors & \sfourdevRevThreeDisErrorsBefore & \sfourdevRevThreeDisRoutingFailures & \sfourdevRevThreeDisRoutingFailuresBefore \\
+\midrule
+All (first use) & \sfourdevFirstAllFiles & \sfourdevFirstAllErrors & \sfourdevFirstRoutingFailures & & & & & \\
+Theft and dismissal & & & & \sfourdevRevThreeCompleteFiles & \sfourdevRevThreeCompleteErrors & \sfourdevRevThreeCompleteErrorsBefore & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+What remains after revision~3 lies mainly with the product: supplied-document judgments, stated facts held because one reading's quotation was not found word for word in scanned text, stated facts held because one of three readings answered otherwise, and routing (\texttt{lint/\allowbreak{}REV3.md}).

@@ -1,7 +1,7 @@
 # Evidence and remaining requirements
 
 Paper: *CasePath: Agents That Read, Rules That Decide* (ACM TMIS draft), folder `research/tmis2026/` on the paper branch.
-Pointers refer to `CasePath_TMIS.pdf` (27 pages) and, with "Supp.", to `CasePath_TMIS_supplement.pdf` (68 pages), built at commit `17497000` on 12 November 2026. Numbers are quoted from the text of these PDFs or from the files cited. File paths are relative to `research/tmis2026/`.
+Pointers refer to `CasePath_TMIS.pdf` (29 pages) and, with "Supp.", to `CasePath_TMIS_supplement.pdf` (74 pages), built on 12 November 2026 from the working tree after the benchmark section was added (uncommitted at the time of building; the planner commits). Since then the Discussion is §8 and Scope §8.1; page pointers up to §6 are unchanged. Numbers are quoted from the text of these PDFs or from the files cited. File paths are relative to `research/tmis2026/`.
 
 ## State of things
 
@@ -9,7 +9,7 @@ Pointers refer to `CasePath_TMIS.pdf` (27 pages) and, with "Supp.", to `CasePath
 - **What a fair baseline changed.** After the test, a single prompt told the same stop and hold rules matched CasePath on tenancy overall (0.35 on the same model; 0.19 on the frontier model). It did better where a claim denies its defining event. The paper now says: "The registered tenancy result therefore measures mostly what the prompt was told."
 - **Where a lead remains.** Where a fact is tentatively worded, where a supplied document is insufficient, and on theft (0.58 against 1.68). These are added after the test and not registered.
 - **What is not in the paper.** No result from real files, from experts or from a jurist. The deployment study and the dossiers were taken out of the paper by the owner's direction and are separate follow-up work (`expert_study/`). A replication study is planned (`STUDY4_COSTED_PLAN.md`); steps 0 to 2 are approved and largely done; steps 3 to 5 are not approved.
-- **What only others can supply.** Nine `%% AUTHORS:` facts in the files the two documents input, three legal questions on the theft rules and one on the tenancy rules, a DOI for the tested commit, the release decisions of `release/SCRUB_REPORT.md`, and two new owner's decisions (naming an insurer's published conditions as a rule source; three insurer PDFs in the branch's history).
+- **What only others can supply.** Ten `%% AUTHORS:` facts in the files the two documents input, three legal questions on the theft rules and one on the tenancy rules, a DOI for the tested commit, the release decisions of `release/SCRUB_REPORT.md`, and two new owner's decisions (naming an insurer's published conditions as a rule source; three insurer PDFs in the branch's history).
 
 Labels: **registered** (pre-registered hypothesis, fixed order); **registered secondary** (in the plan, descriptive); **added after the test** (not registered; marked † in the paper; p values descriptive and not corrected for multiplicity); **formal** (proved); **development** (Studies 1 and 2, or exact computations).
 
@@ -32,14 +32,14 @@ Registered secondary results:
 | What the paper says | Numbers | Where |
 |---|---|---|
 | CasePath held most documents the reference holds | 97% against 48% and 35% | §6.4, Table 6 (p. 13) |
-| Theft, unresolved-fact pairs | No premature request; 94% otherwise unchanged, against 27–47% for every single-prompt and prior-work design given the reviewed rules (91% for the frontier prompt with the original rules). Two-valued "unresolved = false" also scores 94%; this measure "cannot tell a hold from reading the open fact as false" (§7.1) | §6.4, Table 6 |
+| Theft, unresolved-fact pairs | No premature request; 94% otherwise unchanged, against 27–47% for every single-prompt and prior-work design given the reviewed rules (91% for the frontier prompt with the original rules). Two-valued "unresolved = false" also scores 94%; this measure "cannot tell a hold from reading the open fact as false" (§8.1) | §6.4, Table 6 |
 | Theft, against the original (unreviewed) rules | Same model 0.58 against 1.47 (p = 0.0117). Frontier 0.58 against 0.67: bootstrap share 0.0035, "not a calibrated p"; exact superiority p = 0.6367 (added after the test) | §6.2 |
 | Tenancy subsets | 33 denied- and open-event claims: 0.47 against 5.69 and 5.31. 63 ordinary claims: 0.20 against 0.44 (p = 0.0417; the plan predicted no difference) and 0.28 (p = 0.409) | §6.2 (p. 12) |
 | Frontier model, CasePath checklist only, one run | Tenancy 0.30 against 1.86 (p = 0.0012). Theft 0.83 against 0.95 (p = 0.672) and 0.67 with the original rules; more theft errors than the product on the cost-efficient model, 0.83 against 0.58 (p = 0.0781) | §6.3, Table 6, Fig. 3 (p. 14) |
-| The full product and the core alone did not differ detectably | 0.34 against 0.31 (p = 0.5); 0.55 against 0.58 (p = 0.594); at 22% and 16% of the full product's cost. They shared cached responses | §6.3 (p. 13), §7.1 |
+| The full product and the core alone did not differ detectably | 0.34 against 0.31 (p = 0.5); 0.55 against 0.58 (p = 0.594); at 22% and 16% of the full product's cost. They shared cached responses | §6.3 (p. 13), §8.1 |
 | All deviations (holds counted) | 0.73 per claim against 2.33 (p = 0.001) and 2.09 (p = 0.0023); unneeded holds 0.33 against 0.17 and 0.18 | §6.4, Table 6 |
-| Two-valued execution of CasePath's own readings | 1.27 (unresolved as false) and 1.51 (as true) strict unsafe errors per claim, against 0.31 | §6.4, §7 Principle 2 |
-| Cost and time | USD 0.013 per tenancy claim and 0.030 per theft text: 19.8 and 41.8 times the same-model prompt, 2.1 and 7.4 times the frontier prompt; checklist only 4.4 and 6.8 times. Median case-run 204 and 287 s (full product), 33 and 87 s (checklist only), 14 and 10 s (frontier prompt); "times are lower bounds" and handler time was not measured (§7.1) | §6.5 (p. 15), Table 4 (p. 11) |
+| Two-valued execution of CasePath's own readings | 1.27 (unresolved as false) and 1.51 (as true) strict unsafe errors per claim, against 0.31 | §6.4, §8 Principle 2 |
+| Cost and time | USD 0.013 per tenancy claim and 0.030 per theft text: 19.8 and 41.8 times the same-model prompt, 2.1 and 7.4 times the frontier prompt; checklist only 4.4 and 6.8 times. Median case-run 204 and 287 s (full product), 33 and 87 s (checklist only), 14 and 10 s (frontier prompt); "times are lower bounds" and handler time was not measured (§8.1) | §6.5 (p. 15), Table 4 (p. 11) |
 
 ### The fair-baseline check (added after the test; `study4/baseline_check/REPORT.md`)
 
@@ -49,10 +49,26 @@ A single prompt "with hold option": Rules in context's prompt with its task repl
 |---|---|---|
 | The tenancy gap closes | Prompt with hold option 0.35 against CasePath 0.31 on the same model (−0.03, p = 0.7379 over claims). Frontier: 0.19 and 0.19 against 0.30 for CasePath, checklist only (+0.11, p = 0.3857) | §6.6, Table 8 (p. 17) |
 | On denied defining events CasePath is worse | CasePath 0.61 / 1.78; the prompt 0.21 / 1.10 on the same model and 0.00 / 0.00 on the frontier model (p = 0.1250 and 0.1250 over families). "Its readings disagreed on the denial, and it held." | §6.6 |
-| A lead remains on open branch facts | All deviations 0.52 against 1.25, 1.26 and 1.30 (p = 0.0127, 0.0156 and 0.0068 over families). The prompts held documents required now when the wording was tentative (0.65 to 0.70 per claim, against 0.19) and accepted an insufficient original as on file (0.30 to 0.36 missed documents per claim, against 0.16) | §6.6, §7 Principle 1 |
+| A lead remains on open branch facts | All deviations 0.52 against 1.25, 1.26 and 1.30 (p = 0.0127, 0.0156 and 0.0068 over families). The prompts held documents required now when the wording was tentative (0.65 to 0.70 per claim, against 0.19) and accepted an insufficient original as on file (0.30 to 0.36 missed documents per claim, against 0.16) | §6.6, §8 Principle 1 |
 | A lead remains on files that state every fact, frontier model | CasePath, checklist only 0.05 deviations per claim against 0.68 for the frontier prompt with hold option (p = 0.0176 over families) | §6.6 |
 | On theft the hold option does not help the prompt | 1.68 against 0.58 on the same model (p = 0.0078 over the nine clusters). Frontier: 1.18 and 1.24 against 0.83 (p = 0.0422 and 0.0196 over pairs; 0.1016 and 0.1484 over clusters). The best frontier single prompt on theft remains Rules in context with the original rules (0.67) | §6.6, Table 8 |
-| What the paper concludes | "The registered tenancy result therefore measures mostly what the prompt was told. What the design adds is fewer wrong holds, checks of supplied documents, and requests that stay stable when one sentence changes." Principle 1: stating the stop and hold rules "closed the defining-event gap, in a prompt as well as in code" | Abstract, §7 (p. 18–19) |
+| What the paper concludes | "The registered tenancy result therefore measures mostly what the prompt was told" (abstract). Principle 1: stating the stop and hold rules "closed the defining-event gap, in a prompt as well as in code" | Abstract, §8 (p. 20) |
+
+### The benchmark from public rules (development material; §7, Supp. S16)
+
+Built and used once in step 2 of `STUDY4_COSTED_PLAN.md` (model credits USD 3.82). Not registered; no baseline ran on it, and the paper makes no claim about CasePath against any other design from it. Numbers from `paper/results/numbers_study4_dev.tex` (`analysis/make_numbers_study4_dev.py`, test `analysis/test_study4_dev.py`).
+
+| What | Numbers | Where |
+|---|---|---|
+| Rules with a citation for every clause | 177 cited rules (tenancy 51, theft 52, dismissal 74), each with source, locator, verbatim passage (at most 55 words) and basis; one convention for unmentioned facts, quoted in the paper; a second reader changed 71 of 180 first-check lines until both agreed | §7, Table 10, Listing 2; Supp. S16.1 |
+| References from a clean room | Engine and two blind evaluators agree on 1,240 of 1,240 document decisions over 180 designs; all 79 holds wait for the same fact | §7; `study4/dev/CLEANROOM.md` |
+| Generated files | 180 seeded designs (15 per level of 0, 10, 25, 50% files with an open fact; 2 per level deny the defining event; 3 per level with scan noise); 152 passed the first blind check, 28 rewritten, 4 dropped; after first use 8 more rewritten and 3 dropped: 173 files | §7; Supp. S16.2–S16.3 |
+| Lint, planted defects (design hashed before any call) | 0 of 47 untouched conditions flagged; 10 of 19 blunt widenings detected (2 more not assessable); 0 of 3 subtle widenings (dropped qualifier, tenancy only) | §7; Supp. S16.4 |
+| First use, by cause | 134 errors: rule wording 39, document-requirement wording 12, benchmark design 34, text against recorded state 14, product 35; none from a workflow differing from its reference | §7; Supp. S16.5 |
+| Repairs | Three wording revisions and two generator rules, each checked by the second reader; no reference changed | §7; Supp. S16.6 |
+| The product on the repaired benchmark | Supplement only, labelled development and in-sample: dismissal 0.79 → 0.57 errors per file, theft 1.09 → 0.61; tenancy ran 28 of 59 files (incomplete) | Supp. S16.7 |
+
+What steps 3 to 5 of the costed plan would add (not approved): step 3, a second design cycle on generated development files with the baselines given every improvement (development evidence and a cost curve); step 4, a freeze of artefact, plan, hypothesis order and generator seed with an outside timestamp; step 5, one sealed run on newly generated files (240 per regime, three regimes, both models, five designs per model), the first comparison of CasePath with fair alternatives on this benchmark and the only one that could be registered.
 
 ### Other analyses added after the test
 
@@ -67,7 +83,7 @@ A single prompt "with hold option": Rules in context's prompt with its task repl
 | Readings of the rule text | Denied-event claims carry about two thirds of the registered tenancy lead (69% and 62%); amending the workflow to the other reading removes 64% and 36%. Clean room: two AI evaluators agree with the reference on 1,024 of 1,024 decisions, which "confirms the implementation of the catalogue". Workflow unchanged, reading A1: +0.55 (p = 0.1348) and +0.21 (p = 0.5134); all four readings: 6 of 10 contrasts reverse. Amended under A1: −0.66 (p = 0.0002), −1.00 (p = 0.0014), resting on the 9 open-event claims | §6.7, Table 9 (p. 17–18) |
 | Theft on the frontier model | Extra errors are in readings and holds; the stored readings trace them to two broadly worded conditions. Third party admitted true in 8 of its 8 ordinary runs (cost-efficient model 0 of its 50) | §6.8 (p. 18) |
 | Lint (proposed diagnostic) | 14 and 12 flags on the theft texts; 8 and 9 of 10 tenancy conditions flagged; mutation test 6 of 6 widened conditions flagged, 3 already flagged, 3 of 5 untouched flagged. Flagged-as-open: 0.833 → 0.528 in sample, 0.778 out of sample; no paired difference significant | §6.8; Supp. Table S44 |
-| Principles 2 and 3 | Exact deferral 0.25 against 0.23 strict errors for strong Kleene, 0.65 against 1.31 deviations (277 of 286 claim-runs). 9 of 1,344 fact values admitted wrong, all with agreeing readings; reading errors on denied-event claims are about half (49%) of CasePath's strict unsafe tenancy errors. One reading instead of three: 0.34 → 0.52 and 0.55 → 1.22 | §3.5 (p. 8), §7 |
+| Principles 2 and 3 | Exact deferral 0.25 against 0.23 strict errors for strong Kleene, 0.65 against 1.31 deviations (277 of 286 claim-runs). 9 of 1,344 fact values admitted wrong, all with agreeing readings; reading errors on denied-event claims are about half (49%) of CasePath's strict unsafe tenancy errors. One reading instead of three: 0.34 → 0.52 and 0.55 → 1.22 | §3.5 (p. 8), §8 |
 
 ### Formal results and design history
 
@@ -81,12 +97,13 @@ A single prompt "with hold option": Rules in context's prompt with its task repl
 
 - **A tenancy advantage over a prompt told the stop and hold rules.** Overall it is level; on denied events the prompt is better (§6.6).
 - **That the registered tenancy lead comes from executing rules in code.** The paper says it "measures mostly what the prompt was told" (abstract).
-- **Holding on theft.** The theft measure cannot tell a hold from reading the open fact as false; exact deferral never ran on theft (§3.4, §7.1).
+- **Holding on theft.** The theft measure cannot tell a hold from reading the open fact as false; exact deferral never ran on theft (§3.4, §8.1).
 - **An advantage over self-consistency on theft** (H4 failed) **or on the frontier model on theft** (no advantage, one run).
-- **Independence from the reading of the rule text.** References follow the engine and a silence clause the authors wrote; 69% and 62% of the registered tenancy lead rest on reading a denied defining event as ending the process, on which no lawyer has ruled (§7.1).
-- **Registered status for the fair-baseline check.** It is post hoc, on the data the product was tested on; its frontier designs ran once (§7.1).
-- **A validated lint.** Tested only against blunt widening; false-alarm rate unknown; remedy failed out of sample.
-- **New theft rules, legal correctness, real or long files, handler time, or the value of the agents outside the core.** None was tested (§7.1).
+- **Independence from the reading of the rule text.** References follow the engine and a silence clause the authors wrote; 69% and 62% of the registered tenancy lead rest on reading a denied defining event as ending the process, on which no lawyer has ruled (§8.1).
+- **Registered status for the fair-baseline check.** It is post hoc, on the data the product was tested on; its frontier designs ran once (§8.1).
+- **A validated lint.** On Study 3's rules it was tested only against blunt widening and its remedy failed out of sample. On the benchmark's rules (development) it flagged 0 of 47 conditions as written and 10 of 19 blunt widenings, and none of 3 subtle ones (§7).
+- **Any comparison of CasePath with another design on the benchmark.** No baseline ran on it; the product's errors per file there are development and in-sample, in the supplement only (Supp. S16.7).
+- **New theft rules, legal correctness, real or long files, handler time, or the value of the agents outside the core.** None was tested (§8.1).
 - **Any result on real files or with experts.** That study is not part of this paper.
 - **That the tested commit is the product.** Its merge has not been confirmed (App. B).
 
@@ -94,14 +111,13 @@ A single prompt "with hold option": Rules in context's prompt with its task repl
 
 | Item | Who must act | What exactly is needed | What it unblocks |
 |---|---|---|---|
-| `%% AUTHORS:` facts (9; listed below) | authors | Write each fact into the source, or delete the sentence that waits for it | Submission; first-page footnote; App. C |
+| `%% AUTHORS:` facts (10; listed below) | authors | Write each fact into the source, or delete the sentence that waits for it | Submission; first-page footnote; App. C |
 | Legal questions on the theft rules (3 decisive of 8; listed below) | jurist | Rulings on the scope of the traces condition, on when the insurer's instruction is due, and on whether an unidentified thief is a third party | The frontier theft cell; the Study 3 theft rule base |
 | Denied defining event (tenancy) | jurist | A ruling on whether a denied defining event ends the process | Whether the 69% and 62% of the registered tenancy lead stand; which row of Table 9 is the result |
 | DOI archive of the tested commit | authors | Deposit commit `6a72159c` (source-tree hash `030480203f…`) and cite the DOI in §4 | The artefact statement of §4 |
 | Merge state of the tested commit | product's owners, authors | Decide on the offered branch; report the state in App. B and Supp. S11 | The two merge-status `%% AUTHORS:` lines |
 | Release blockers (10; listed below) | product's owners, insurer, authors | The decisions of `release/SCRUB_REPORT.md` §2 and §7 | "will be released" (§1); App. C |
-| Response-cache archive | authors | Publish the Study 3 response cache (about 23,000 files; 730 MB per Supp. S17) with a DOI or URL, or delete the offer in App. C | Byte-for-byte re-check of the cache-dependent analyses from a clone |
-| Replication, step 2d | planner | Lint with planted defects in the three public rule sets (`study4/SPEC.md`); not done | A measured detection and false-alarm rate for the lint |
+| Response-cache archive | authors | Publish the Study 3 response cache (about 23,000 files; 730 MB per Supp. S18) with a DOI or URL, or delete the offer in App. C | Byte-for-byte re-check of the cache-dependent analyses from a clone |
 | Replication, step 3 (not approved) | owner | Approve about USD 45 for a second design cycle on generated development files (re-read only unsettled facts; tie-break reading instead of a hold; lint at rule-writing time; baselines given every improvement) | An improved artefact and a cost curve, as development evidence |
 | Replication, step 4 (not approved) | owner, planner | Freeze artefact, plan, hypothesis order and generator seed, with an outside timestamp, at least three days before step 5 (no credits) | A registered replication |
 | Replication, step 5 (not approved) | owner | Approve about USD 55 (68 with three runs on the cost-efficient model) for one sealed run: 240 files per regime, three regimes, both models, five designs per model | A registered test of every cell; "every cell" is claimed only if every cell passes |
@@ -124,6 +140,7 @@ Found by `grep -rn "%% AUTHORS" paper/` at commit `17497000`: 20 lines. 16 are i
 | 7. Licences of `fresh/`, `dev_probe/`, `fresh2/`, `rule_review/` and `runs/` | `sections/app_d_repro.tex:10`; `sections/app_g_repro.tex:21` |
 | 8. Record of the rule editors' model and sessions in `rule_review/` | `sections/app_d_repro.tex:17`; `sections/app_g_repro.tex:53` |
 | 9. Names and versions of the AI coding and writing assistants | `sections/app_d_repro.tex:18`; `sections/app_g_repro.tex:60` |
+| 10. Whether to name the insurer whose published household conditions and claim form the theft rules of the benchmark quote; the text says "one insurer's published household conditions" | `sections/s7_benchmark.tex:8` |
 
 No longer in the paper's input files: the dossiers' provenance, the insurer's development counts, the insurer's share of files with an open fact, and the ethics statement for the expert study.
 
@@ -137,7 +154,7 @@ From `rule_review/lint/final/RECONCILIATION.md` (8 points for a jurist); Supp. S
 | 004 / 004.a (insurer's instruction) | Is the duty to obtain the insurer's instruction triggered in every claim, or only where measures were to be taken? |
 | 042 (third party) | Is an unidentified thief "ein Dritter" whose fault caused the loss? The two editors disagreed; the rule is unchanged |
 
-Tenancy: whether a denied defining event ends the process. §7.1: "69% and 62% of the tenancy lead rest on reading a denied defining event as ending the process, on which no lawyer has ruled."
+Tenancy: whether a denied defining event ends the process. §8.1: "69% and 62% of the tenancy lead rest on reading a denied defining event as ending the process, on which no lawyer has ruled."
 
 The three new rule sets in `study4/rules/` were written from public text with a second reader's check (AI sessions); no jurist has reviewed them either.
 
@@ -158,10 +175,10 @@ The three new rule sets in `study4/rules/` were written from public text with a 
 
 ## (d) How to reproduce
 
-One command, no model calls (`RELEASE.md` §3; App. C): clone, fetch the product branch named in `RELEASE.md` §3, install `requirements-reproduce.txt` (it pins `pypdf==5.9.0`), and run `research/tmis2026/reproduce.sh`. Recorded runs (`RELEASE.md` §8): fresh clone without the cache, 59 steps passed and 2 skipped (11 November); working repository with the cache, 83 passed (12 November, before the fair-baseline check). Whether `reproduce.sh` covers the fair-baseline check is not recorded there.
+One command, no model calls (`RELEASE.md` §3; App. C): clone, fetch the product branch named in `RELEASE.md` §3, install `requirements-reproduce.txt` (it pins `pypdf==5.9.0`), and run `research/tmis2026/reproduce.sh`. Recorded runs (`RELEASE.md` §8): fresh clone without the cache, 59 steps passed and 2 skipped (11 November); working repository with the cache, 83 passed (12 November, before the fair-baseline check). Whether `reproduce.sh` covers the fair-baseline check is not recorded there. On 12 November, after the benchmark was added, `reproduce.sh` in the working repository with the cache: 93 steps passed, 0 failed, 0 skipped (it now regenerates `numbers_study4_dev.tex` and runs `analysis/test_study4_dev.py`).
 
 `analysis/verify_paper.py --paper-only` passed at commit `17497000`: every macro file reproduces byte for byte, and both documents build from clean with no undefined reference, no multiply defined label and no overfull box over 5 pt.
 
 ## The LaTeX package
 
-`CasePath_TMIS_overleaf.zip`: 55 files. `main.tex`, `supplement.tex`, `macros.tex`, `references.bib`, 8 macro files (including `results/numbers_baseline_check.tex`), the 28 section files the two documents input (followed recursively; no unused section ships), 13 figures, `README.txt`, and a `latexmkrc`. The `latexmkrc` builds both documents under their own names first, because Overleaf compiles under the job name "output" and the documents read each other's `.aux` files by name. Tested from the unpacked zip: the paper's build order gives 27 and 68 pages with no error, no undefined reference and text identical to the delivered PDFs; a local latexmk run with Overleaf's job name and options gives the same page counts with no undefined reference. Not tested on Overleaf itself.
+`CasePath_TMIS_overleaf.zip`: 58 files. `main.tex`, `supplement.tex`, `macros.tex`, `references.bib`, 9 macro files (including `results/numbers_study4_dev.tex`), the 30 section files the two documents input (followed recursively; no unused section ships), 13 figures, `README.txt`, and a `latexmkrc` that builds both documents under their own names first, because Overleaf compiles under the job name "output" and the documents read each other's `.aux` files by name. Tested from the unpacked zip with the paper's build order: 29 and 74 pages, no error, no undefined reference, text identical to the delivered PDFs. Not tested on Overleaf itself.

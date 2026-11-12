@@ -1,0 +1,56 @@
+\section{A benchmark from public rules}
+\label{sec:benchmark}
+
+Study~3's references rest on rules we wrote, so we built a benchmark in which every rule cites public text that a reader can check without a jurist, and used it once. It is development material: no baseline ran on it, and it supports no claim about \casepath against any other design.
+
+\paragraph{Rules with a citation for every clause}
+Three rule sets with \sfourdevAllRules{} cited rules (Table~\ref{tab:bench}) cover tenancy and dismissal under the Swiss Code of Obligations and theft of household contents under the Insurance Contract Act and one insurer's published household conditions and claim form.
+%% AUTHORS: the theft rules quote one insurer's published household-contents conditions and claim form (named in
+%% study4/rules/theft/sources/SOURCES.json). The owner has yet to decide whether to name the insurer in the paper.
+Every rule carries its source, a locator, a passage of at most \sfourdevPassageMaxWords{} words copied verbatim from a stored snapshot, and a basis: the passage states the rule, the rule follows from it by one named step, or the passage creates a condition and the rule names the document that ordinarily proves it. Each condition is a question with a ``not this'' line that names the nearest case it does not cover (Listing~\ref{lst:rule}). A second session that had not written a set checked every rule; \sfourdevAllCheckNotAgree{} of its \sfourdevAllCheckLines{} lines led to changes until both agreed.
+
+\begin{lstlisting}[float=t,caption={A condition of the dismissal rule set as stored in \texttt{rules.json} (keys reordered; the German passage left out).},label=lst:rule]
+{"id": "reasons_requested", "type": "boolean",
+ "question": "Did the employee ask the employer to state the reasons for the notice in writing?",
+ "not_this": "Reasons the employer gave without being asked, or a request made only orally to a colleague rather than to the employer.",
+ "rule": {"source_id": "co-sr220-en", "locator": "CO art. 335 para. 2", "basis": "states",
+          "passage": "The party giving notice of termination must state his reasons in writing if the other party so requests."}}
+\end{lstlisting}
+
+\paragraph{One convention for what the file does not say}
+No statute says what an unmentioned fact is. Every regime carries one convention, declared as such and not as law:
+\begin{quote}\footnotesize
+A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.
+\end{quote}
+
+\paragraph{References from a clean room}
+The engine computes each reference from the designed fact states. Per regime, two blind evaluator sessions each wrote an evaluator from the prose rule text, the document catalogue and the designed states alone; on \sfourdevCleanroomFiles{} designed files, all three agreed on \sfourdevCleanroomSame{} of \sfourdevCleanroomDocuments{} document decisions, and each of the \sfourdevCleanroomHolds{} holds waited for the same fact.
+
+\paragraph{How files are made}
+A seeded script draws each design: the type, each deciding fact's state (stated true or false, open, not mentioned) and the attachments. Files come at four levels of the share of files with an open fact (nominal \sfourdevLevels\%, \sfourdevPerLevel{} per level and regime); per level, \sfourdevDeniedPerLevel{} files deny their defining event and \sfourdevNoisePerLevel{} get scan noise. A session of a model family that is not evaluated writes each text from the design alone, without product code, prompts or rule text beyond the condition questions. A blind reader checks it; a text that differs from its design is rewritten once, then dropped. Of \sfourdevAllDesigned{} designs, \sfourdevAllOneKept{} passed the first blind check and \sfourdevAllOneRewrite{} were rewritten, of which \sfourdevAllTwoDiffer{} were dropped; after first use, \sfourdevAllRepairRewritten{} more texts were rewritten and \sfourdevAllDroppedAfterUse{} files dropped, leaving \sfourdevAllFiles.
+
+\begin{table}[t]
+\caption{The benchmark per regime (development material): rules citing a passage, public sources, decisions agreed by engine and both evaluators, files kept (dropped), and lint flags or detections, of all.}
+\label{tab:bench}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}l rrrrr r r rrr@{}}
+\toprule
+& & & & & & & & \multicolumn{3}{c}{Lint} \\
+\cmidrule(l){9-11}
+Regime & Types & Rules & Sources & Conditions & Documents & Decisions & Files & Untouched & Blunt & Subtle \\
+\midrule
+Tenancy & \sfourdevTenTypes & \sfourdevTenRules & \sfourdevTenSources & \sfourdevTenConditions & \sfourdevTenDocuments & \sfourdevCleanroomTenSame/\sfourdevCleanroomTenDocuments & \sfourdevTenFiles{} (\sfourdevTenDropped) & \sfourdevLintTenUntouchedFlagged/\sfourdevLintTenUntouched & \sfourdevLintTenBluntDetected/\sfourdevLintTenBluntPlanted & \sfourdevLintTenSubtleDetected/\sfourdevLintTenSubtlePlanted \\
+Theft & \sfourdevThTypes & \sfourdevThRules & \sfourdevThSources & \sfourdevThConditions & \sfourdevThDocuments & \sfourdevCleanroomThSame/\sfourdevCleanroomThDocuments & \sfourdevThFiles{} (\sfourdevThDropped) & \sfourdevLintThUntouchedFlagged/\sfourdevLintThUntouched & \sfourdevLintThBluntDetected/\sfourdevLintThBluntPlanted & -- \\
+Dismissal & \sfourdevDisTypes & \sfourdevDisRules & \sfourdevDisSources & \sfourdevDisConditions & \sfourdevDisDocuments & \sfourdevCleanroomDisSame/\sfourdevCleanroomDisDocuments & \sfourdevDisFiles{} (\sfourdevDisDropped) & \sfourdevLintDisUntouchedFlagged/\sfourdevLintDisUntouched & \sfourdevLintDisBluntDetected/\sfourdevLintDisBluntPlanted & -- \\
+\midrule
+All & \sfourdevAllTypes & \sfourdevAllRules & \sfourdevAllSources & \sfourdevAllConditions & \sfourdevAllDocuments & \sfourdevCleanroomSame/\sfourdevCleanroomDocuments & \sfourdevAllFiles{} (\sfourdevAllDropped) & \sfourdevLintUntouchedFlagged/\sfourdevLintUntouched & \sfourdevLintBluntDetected/\sfourdevLintBluntPlanted & \sfourdevLintSubtleDetected/\sfourdevLintSubtlePlanted \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The lint, tested with planted defects}
+The lint (Section~\ref{sec:test-lint}) here flags a condition that the product admits as true in at least half, and at least \sfourdevLintMinFiles, of the files whose design says false or not mentioned. The widenings were fixed and hashed before any model call; the product (cost-efficient model) read the \sfourdevLintFiles{} files then in the sets once per arm. The lint flagged none of the \sfourdevLintUntouched{} branch conditions as written, and detected \sfourdevLintBluntDetected{} of \sfourdevLintBluntPlanted{} conditions widened bluntly to a general circumstance; \sfourdevLintBluntNotAssessable{} more had too few files to assess. A blunt widening was missed when the texts did not make the wider wording true: an unmentioned condition usually leaves its topic out and a false one denies the original wording, so the readings answered ``not stated'' or ``false'' to the wider question too; detection measures lint and wording together. It detected none of \sfourdevLintSubtlePlanted{} subtle widenings that dropped one qualifier, such as ``already'' (tenancy only; at most \sfourdevLintSubtleBestAdmitted{} of \sfourdevLintSubtleBestAssessed{} files admitted).
+
+\paragraph{What first use found}
+Replayed through the product's evaluator with designed and read states exchanged, each of the run's \sfourdevDiagAllErrors{} errors got one cause: the wording of our rules (\sfourdevDiagAllRuleWording) or of document requirements (\sfourdevDiagAllMustShow), the benchmark's design (\sfourdevDiagAllBenchmark), texts that plausibly state what the product read (\sfourdevDiagAllTextState), or the product's readings and document judgments (\sfourdevDiagAllProduct); none came from a workflow that differed from its reference. The repairs, three revisions of wording and two generator rules, were general rules checked by the second reader, and none changed a reference. Supplement, Section~\ref{S-supp:benchmark}, gives the revisions and the product's errors per file, development and in-sample.
