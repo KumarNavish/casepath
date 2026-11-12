@@ -184,6 +184,28 @@ for lab, nm in READINGS.items():
         contrast(f"sthreeFFive{nm}{cid}", get(c, "alternative"))
         m(f"sthreeFFive{nm}{cid}Verdict", get(c, "verdict"))
 
+# F5b
+RB = {"registered": "Registered", "A1": "AOne", "A2": "ATwo", "A3": "AThree", "A4": "AFour", "all": "AAll"}
+for rk, v in get(res, "F5b", "readings").items():
+    if "designs" not in v:
+        continue
+    pre = f"sthreeFFiveB{RB[rk]}"
+    for d in ("casepath", "casepath_checklist", "casepath_frontier_checklist"):
+        m(f"{pre}{DESIGNS[d]}Strict", num(get(v, "designs", d, "strict_unsafe|all claims")))
+        for sub, sn in list(SUBS.items())[1:]:
+            m(f"{pre}{DESIGNS[d]}Strict{sn}", num(get(v, "designs", d, f"strict_unsafe|{sub}")))
+    m(f"{pre}CasePathStrictUnmatched", num(get(v, "designs", "casepath", "strict_unsafe|all claims, registered workflow (F5)")))
+    for b, x in get(v, "baselines").items():
+        m(f"{pre}{DESIGNS[b]}Strict", num(get(x, "strict_unsafe|all claims")))
+    for cid, c in get(v, "contrasts").items():
+        cn = {"H2": "HTwo", "H3": "HThree", "S2a": "STwoA", "S2b": "STwoB", "S2c": "STwoC"}[cid]
+        contrast(f"{pre}{cn}", c)
+        m(f"{pre}{cn}Verdict", get(c, "verdict"))
+for d, cnt in get(res, "F5b", "checks").items():
+    if isinstance(cnt, dict):
+        m(f"sthreeFFiveBReproduces{DESIGNS[d]}", get(cnt, "replay reproduces the stored scored checklist"))
+        m(f"sthreeFFiveBReplayed{DESIGNS[d]}", get(cnt, "replayed"))
+
 OUT.parent.mkdir(parents=True, exist_ok=True)
 OUT.write_text("\n".join(lines) + "\n")
 print(f"wrote {len(lines) - 1} macros to {OUT}")

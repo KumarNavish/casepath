@@ -262,6 +262,123 @@ Budget of the checklist only (USD 0.00490): Self-consistency with m = 7 (USD 0.0
 
 Budget of the full product (USD 0.02999): not reached by 15 samples (USD 0.01053); no contrast.
 
+## F5b. CasePath replayed with a workflow amended to each reading (post hoc, descriptive)
+
+This replays the product from its stored readings with the workflow changed to each rejected reading of the rule text and scores it against the reference written under that reading, beside the baselines' stored plans scored against the same reference.
+
+Each product design's stored tenancy case-runs are replayed from their stored readings (k = 3, the first three readings in the response cache, admitted with the product's own quotation check), with routing and document findings as stored, by the product's evaluator at the tested commit, with the workflow (A3, A4) or the facts given to the evaluator (A1, A2) amended to the reading; needs added by an agent are kept as stored (none entered a checklist). Unamended, the replay reproduces the stored scored checklist in 285 of 286 evaluated case-runs of the full product and of checklist only, and in 95 of 96 of the frontier one-run row; the two failed case-runs keep their stored (empty) plans. Routing is kept as stored: every denied-event claim-run was routed to its dispute's workflow in the stored runs, so no claim changes routing under a reading. Each replay is scored against the reference written under the same reading (cleanroom/evaluator_b/reference_alt_*.json); subset membership is the registered reference's. The baselines are not re-run: their stored plans are scored against the same alternative reference. Their prompts carried the registered rule text, so wherever they ignored the registered stop (and requested documents on a denied event) the alternative reference favours them. The reverse also holds: where a reading changes what the registered rule text told every design (A2, A3, A4), a baseline that followed the registered text is scored against a reading it was never given, while the matched CasePath was given it; those contrasts therefore compare a design told the reading with designs that were not, and A3 in particular widens the gap for that reason (every design was told not to request optional documents). Contrasts: CasePath (matched workflow, full product) minus each baseline over the 24 families, 95% cluster bootstrap with the registered resamples, exact sign-flip p; post hoc and descriptive.
+
+Amendments made:
+
+- A1: a denied defining event does not stop the process: where the defining-event fact (termination_received, claim_received) is admitted false, the evaluator is given it as true (as if the event had occurred). A fact left open keeps the gate open (held), as in the A1 reference. Not done at workflow level: a gate that passes on true or false would also stop holding an open event, which the A1 reference does not do.
+- A2: an open defining event is presumed to have occurred: the routed presumption (true) also applies when the readings raise the event and leave it open; it still does not apply when a reading found a value other than true, or when the readings conflict (workflows.reading_gave_value; status 'conflicting').
+- A3: optional documents are requested like mandatory ones: the 'optional' mark is removed from the workflow's optional documents (defect: caretaker_correspondence; termination and rent: landlord_correspondence); the evaluator then requests them where their step is reached and holds them where it depends on an open fact.
+- A4: the family-home branch needs family_home and not arrears: in lease_termination_dispute the edge lt_type__gate_family_home -> lt_family becomes {all: [family_home is true, arrears is false]} and the edge -> lt_abuse becomes {any: [family_home is false, arrears is true]}; spouse_notice_copy's own condition (family_home) is left as it is, since its step is now reached only through the amended edge.
+
+Checks: CasePath: {'replayed': 286, 'replay reproduces the stored scored checklist': 285, 'stored plan kept (failed, handed over or not routed)': 2}; CasePath, checklist only: {'replayed': 286, 'replay reproduces the stored scored checklist': 285, 'stored plan kept (failed, handed over or not routed)': 2}; CasePath on the frontier model, checklist only (one run): {'replayed': 96, 'replay reproduces the stored scored checklist': 95}; empty amendment leaves every workflow unchanged: True.
+
+**Reading x design: strict unsafe errors per claim** (family means over the 24 families).
+
+| Reading | CasePath, matched workflow | CasePath, registered workflow (F5) | Checklist only, matched | Frontier checklist only (one run), matched | Rules in context | Rules in context, frontier | Self-consistency | Model executes rules | ReAct | H2: diff [interval] p | H3: diff [interval] p | H2 / H3 against the registered result |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| registered | 0.312 | 0.312 | 0.344 | 0.302 | 2.139 | 1.865 | 2.101 | 0.830 | 1.837 | -1.826 [-2.719, -0.989] 0.0002 | -1.552 [-2.444, -0.767] 0.0008 | holds / holds |
+| A1 | 0.163 | 1.372 | 0.167 | 0.240 | 0.823 | 1.160 | 0.635 | 1.007 | 1.944 | -0.660 [-0.990, -0.361] 0.0002 | -0.997 [-1.684, -0.431] 0.0014 | holds, shrinks / holds, shrinks |
+| A2 | 0.288 | 0.288 | 0.344 | 0.240 | 1.719 | 1.295 | 1.729 | 0.740 | 1.517 | -1.431 [-2.163, -0.750] 0.0002 | -1.007 [-1.701, -0.417] 0.0020 | holds, shrinks / holds, shrinks |
+| A3 | 0.344 | 1.062 | 0.378 | 0.333 | 2.882 | 2.615 | 2.851 | 1.580 | 2.566 | -2.538 [-3.288, -1.837] < 0.0001 | -2.271 [-3.031, -1.608] < 0.0001 | holds, grows / holds, grows |
+| A4 | 0.306 | 0.344 | 0.337 | 0.292 | 2.170 | 1.896 | 2.132 | 0.844 | 1.865 | -1.865 [-2.757, -1.021] 0.0001 | -1.590 [-2.483, -0.799] 0.0007 | holds / holds |
+| all | 0.139 | 2.378 | 0.170 | 0.177 | 1.438 | 1.632 | 1.306 | 1.924 | 2.642 | -1.299 [-1.479, -1.125] < 0.0001 | -1.493 [-1.983, -1.122] < 0.0001 | holds, shrinks / holds |
+
+**Subset rows** (strict unsafe errors per claim, family means; registered subset membership).
+
+| Reading | Design | ordinary | denied event | open event | All deviations: all |
+|---|---|---|---|---|---|
+| registered | CasePath, matched | 0.203 | 0.611 | 0.259 | 0.733 |
+| registered | CasePath, checklist only, matched | 0.245 | 0.722 | 0.000 | 0.736 |
+| registered | Rules in context | 0.438 | 5.681 | 4.630 | 2.330 |
+| registered | Rules in context, frontier | 0.281 | 4.431 | 6.074 | 2.087 |
+| registered | Self-consistency | 0.378 | 5.917 | 3.963 | 2.312 |
+| registered | Model executes rules | 0.373 | 1.944 | 1.037 | 1.493 |
+| registered | ReAct | 1.094 | 3.000 | 3.889 | 2.003 |
+| A1 | CasePath, matched | 0.203 | 0.014 | 0.259 | 0.608 |
+| A1 | CasePath, checklist only, matched | 0.245 | 0.014 | 0.000 | 0.583 |
+| A1 | Rules in context | 0.438 | 0.417 | 4.630 | 1.014 |
+| A1 | Rules in context, frontier | 0.281 | 1.611 | 6.074 | 1.382 |
+| A1 | Self-consistency | 0.378 | 0.056 | 3.963 | 0.847 |
+| A1 | Model executes rules | 0.373 | 2.653 | 1.037 | 1.670 |
+| A1 | ReAct | 1.094 | 3.431 | 3.889 | 2.111 |
+| A2 | CasePath, matched | 0.203 | 0.611 | 0.000 | 0.701 |
+| A2 | CasePath, checklist only, matched | 0.245 | 0.722 | 0.000 | 0.729 |
+| A2 | Rules in context | 0.438 | 5.681 | 0.148 | 2.132 |
+| A2 | Rules in context, frontier | 0.281 | 4.431 | 0.000 | 1.604 |
+| A2 | Self-consistency | 0.378 | 5.917 | 0.000 | 2.226 |
+| A2 | Model executes rules | 0.373 | 1.944 | 0.074 | 1.962 |
+| A2 | ReAct | 1.094 | 3.000 | 0.481 | 1.976 |
+| A3 | CasePath, matched | 0.214 | 0.694 | 0.296 | 0.809 |
+| A3 | CasePath, checklist only, matched | 0.260 | 0.819 | 0.000 | 0.812 |
+| A3 | Rules in context | 1.427 | 5.681 | 5.630 | 3.073 |
+| A3 | Rules in context, frontier | 1.281 | 4.431 | 7.074 | 2.837 |
+| A3 | Self-consistency | 1.378 | 5.917 | 4.963 | 3.062 |
+| A3 | Model executes rules | 1.373 | 1.944 | 2.037 | 2.243 |
+| A3 | ReAct | 2.062 | 3.000 | 4.889 | 2.733 |
+| A4 | CasePath, matched | 0.193 | 0.611 | 0.259 | 0.736 |
+| A4 | CasePath, checklist only, matched | 0.234 | 0.722 | 0.000 | 0.736 |
+| A4 | Rules in context | 0.500 | 5.681 | 4.630 | 2.372 |
+| A4 | Rules in context, frontier | 0.344 | 4.431 | 6.074 | 2.128 |
+| A4 | Self-consistency | 0.441 | 5.917 | 3.963 | 2.354 |
+| A4 | Model executes rules | 0.401 | 1.944 | 1.037 | 1.528 |
+| A4 | ReAct | 1.151 | 3.000 | 3.889 | 2.038 |
+| all | CasePath, matched | 0.203 | 0.014 | 0.000 | 0.628 |
+| all | CasePath, checklist only, matched | 0.250 | 0.014 | 0.000 | 0.625 |
+| all | Rules in context | 1.490 | 1.417 | 1.259 | 1.861 |
+| all | Rules in context, frontier | 1.344 | 2.611 | 1.111 | 1.951 |
+| all | Self-consistency | 1.441 | 1.056 | 1.111 | 1.812 |
+| all | Model executes rules | 1.401 | 3.625 | 1.074 | 3.156 |
+| all | ReAct | 2.120 | 4.431 | 1.593 | 3.108 |
+
+**Reading x contrast** (CasePath, matched workflow, minus comparator; checklist-only difference beside it).
+
+| Reading | Contrast | Comparator | Difference | 95% interval | p | Against the registered result | Checklist only: difference, p |
+|---|---|---|---|---|---|---|---|
+| registered | H2 | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds | -1.795, 0.0004 |
+| registered | H3 | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds | -1.521, 0.0015 |
+| registered | S2a | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds | -1.757, 0.0006 |
+| registered | S2b | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds | -0.486, 0.0035 |
+| registered | S2c | ReAct | -1.524 | [-2.069, -1.056] | < 0.0001 | holds | -1.493, < 0.0001 |
+| A1 | H2 | Rules in context | -0.660 | [-0.990, -0.361] | 0.0002 | holds, shrinks | -0.656, 0.0005 |
+| A1 | H3 | Rules in context, frontier | -0.997 | [-1.684, -0.431] | 0.0014 | holds, shrinks | -0.993, 0.0019 |
+| A1 | S2a | Self-consistency | -0.472 | [-0.726, -0.240] | 0.0005 | holds, shrinks | -0.469, 0.0017 |
+| A1 | S2b | Model executes rules | -0.844 | [-1.431, -0.351] | 0.0003 | holds, grows | -0.840, 0.0015 |
+| A1 | S2c | ReAct | -1.781 | [-2.413, -1.219] | < 0.0001 | holds, grows | -1.778, < 0.0001 |
+| A2 | H2 | Rules in context | -1.431 | [-2.163, -0.750] | 0.0002 | holds, shrinks | -1.375, 0.0005 |
+| A2 | H3 | Rules in context, frontier | -1.007 | [-1.701, -0.417] | 0.0020 | holds, shrinks | -0.951, 0.0045 |
+| A2 | S2a | Self-consistency | -1.441 | [-2.236, -0.719] | 0.0004 | holds, shrinks | -1.385, 0.0009 |
+| A2 | S2b | Model executes rules | -0.451 | [-0.812, -0.170] | 0.0012 | holds, shrinks | -0.396, 0.0060 |
+| A2 | S2c | ReAct | -1.229 | [-1.701, -0.816] | < 0.0001 | holds, shrinks | -1.174, < 0.0001 |
+| A3 | H2 | Rules in context | -2.538 | [-3.288, -1.837] | < 0.0001 | holds, grows | -2.503, < 0.0001 |
+| A3 | H3 | Rules in context, frontier | -2.271 | [-3.031, -1.608] | < 0.0001 | holds, grows | -2.236, < 0.0001 |
+| A3 | S2a | Self-consistency | -2.507 | [-3.323, -1.767] | < 0.0001 | holds, grows | -2.472, < 0.0001 |
+| A3 | S2b | Model executes rules | -1.236 | [-1.542, -0.979] | < 0.0001 | holds, grows | -1.201, < 0.0001 |
+| A3 | S2c | ReAct | -2.222 | [-2.695, -1.809] | < 0.0001 | holds, grows | -2.188, < 0.0001 |
+| A4 | H2 | Rules in context | -1.865 | [-2.757, -1.021] | 0.0001 | holds | -1.833, 0.0003 |
+| A4 | H3 | Rules in context, frontier | -1.590 | [-2.483, -0.799] | 0.0007 | holds | -1.559, 0.0014 |
+| A4 | S2a | Self-consistency | -1.826 | [-2.792, -0.951] | 0.0002 | holds | -1.795, 0.0005 |
+| A4 | S2b | Model executes rules | -0.538 | [-0.924, -0.229] | 0.0005 | holds | -0.507, 0.0022 |
+| A4 | S2c | ReAct | -1.559 | [-2.118, -1.066] | < 0.0001 | holds | -1.528, < 0.0001 |
+| all | H2 | Rules in context | -1.299 | [-1.479, -1.125] | < 0.0001 | holds, shrinks | -1.267, < 0.0001 |
+| all | H3 | Rules in context, frontier | -1.493 | [-1.983, -1.122] | < 0.0001 | holds | -1.462, < 0.0001 |
+| all | S2a | Self-consistency | -1.167 | [-1.326, -1.017] | < 0.0001 | holds, shrinks | -1.135, < 0.0001 |
+| all | S2b | Model executes rules | -1.785 | [-2.347, -1.319] | < 0.0001 | holds, grows | -1.753, < 0.0001 |
+| all | S2c | ReAct | -2.503 | [-3.010, -2.056] | < 0.0001 | holds, grows | -2.472, < 0.0001 |
+
+**What the lead consists of** (CasePath, matched workflow, minus each single prompt on each subset; family means).
+
+- registered: against Rules in context ordinary -0.234, denied event -5.069, open event -4.370; against Rules in context, frontier ordinary -0.078, denied event -3.819, open event -5.815.
+- A1: against Rules in context ordinary -0.234, denied event -0.403, open event -4.370; against Rules in context, frontier ordinary -0.078, denied event -1.597, open event -5.815.
+- A2: against Rules in context ordinary -0.234, denied event -5.069, open event -0.148; against Rules in context, frontier ordinary -0.078, denied event -3.819, open event 0.000.
+- A3: against Rules in context ordinary -1.214, denied event -4.986, open event -5.333; against Rules in context, frontier ordinary -1.068, denied event -3.736, open event -6.778.
+- A4: against Rules in context ordinary -0.307, denied event -5.069, open event -4.370; against Rules in context, frontier ordinary -0.151, denied event -3.819, open event -5.815.
+- all: against Rules in context ordinary -1.286, denied event -1.403, open event -1.259; against Rules in context, frontier ordinary -1.141, denied event -2.597, open event -1.111.
+
 ## F5. Re-scoring against other tenancy references (sensitivity to the reading of the rule text)
 
 This scores every design against the clean-room references and against references written under the readings of the rule text that the evaluators rejected, and shows whether the tenancy result holds, shrinks or reverses. Post hoc; sensitivity to the reading of the rule text.

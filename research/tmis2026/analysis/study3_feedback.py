@@ -702,7 +702,11 @@ def f5b(study, cache, res3):
         "against the reference written under the same reading (cleanroom/evaluator_b/reference_alt_*.json); subset "
         "membership is the registered reference's. The baselines are not re-run: their stored plans are scored against "
         "the same alternative reference. Their prompts carried the registered rule text, so wherever they ignored the "
-        "registered stop (and requested documents on a denied event) the alternative reference favours them. "
+        "registered stop (and requested documents on a denied event) the alternative reference favours them. The "
+        "reverse also holds: where a reading changes what the registered rule text told every design (A2, A3, A4), a "
+        "baseline that followed the registered text is scored against a reading it was never given, while the matched "
+        "CasePath was given it; those contrasts therefore compare a design told the reading with designs that were not, "
+        "and A3 in particular widens the gap for that reason (every design was told not to request optional documents). "
         "Contrasts: CasePath (matched workflow, full product) minus each baseline over the 24 families, 95% cluster "
         "bootstrap with the registered resamples, exact sign-flip p; post hoc and descriptive.")
     return out
@@ -1048,6 +1052,52 @@ def markdown(res):
                                                 f"[{fmt(v['contrast_full_product']['diff_ci'][0])}, {fmt(v['contrast_full_product']['diff_ci'][1])}], "
                                                 f"p {pv(v['contrast_full_product']['p'])}" if "contrast_full_product" in v else "") + ". Descriptive.", ""]
     # F5
+    x = res["F5b"]
+    md += ["## F5b. CasePath replayed with a workflow amended to each reading (post hoc, descriptive)", "",
+           "This replays the product from its stored readings with the workflow changed to each rejected reading of the rule "
+           "text and scores it against the reference written under that reading, beside the baselines' stored plans scored "
+           "against the same reference.", "", x["method"], "", "Amendments made:", ""]
+    md += [f"- {k}: {v}" for k, v in x["amendments"].items()] + [""]
+    md += ["Checks: " + "; ".join(f"{L.get(d, d)}: {v}" for d, v in x["checks"].items()) + ".", ""]
+    rd = [(k, v) for k, v in x["readings"].items() if "designs" in v]
+    md += ["**Reading x design: strict unsafe errors per claim** (family means over the 24 families).", ""]
+    md += [table(["Reading", "CasePath, matched workflow", "CasePath, registered workflow (F5)", "Checklist only, matched",
+                  "Frontier checklist only (one run), matched"] + [L[b] for b in F5B_BASELINES] +
+                 ["H2: diff [interval] p", "H3: diff [interval] p", "H2 / H3 against the registered result"],
+                 [[k, fmt(v["designs"]["casepath"]["strict_unsafe|all claims"]),
+                   fmt(v["designs"]["casepath"]["strict_unsafe|all claims, registered workflow (F5)"]),
+                   fmt(v["designs"]["casepath_checklist"]["strict_unsafe|all claims"]),
+                   fmt(v["designs"]["casepath_frontier_checklist"]["strict_unsafe|all claims"])]
+                  + [fmt(v["baselines"][b]["strict_unsafe|all claims"]) for b in F5B_BASELINES]
+                  + [f"{fmt(v['contrasts'][h]['diff'])} [{fmt(v['contrasts'][h]['diff_ci'][0])}, {fmt(v['contrasts'][h]['diff_ci'][1])}] {pv(v['contrasts'][h]['p'])}"
+                     for h in ("H2", "H3")]
+                  + [f"{v['contrasts']['H2']['verdict']} / {v['contrasts']['H3']['verdict']}"] for k, v in rd]), ""]
+    md += ["**Subset rows** (strict unsafe errors per claim, family means; registered subset membership).", ""]
+    rows = []
+    for k, v in rd:
+        for d in ("casepath", "casepath_checklist"):
+            rows.append([k, L[d] + ", matched"] + [fmt(v["designs"][d][f"strict_unsafe|{sub}"]) for sub in R.SUBSETS]
+                        + [fmt(v["designs"][d]["all_dev|all claims"])])
+        for b in F5B_BASELINES:
+            rows.append([k, L[b]] + [fmt(v["baselines"][b][f"strict_unsafe|{sub}"]) for sub in R.SUBSETS]
+                        + [fmt(v["baselines"][b]["all_dev|all claims"])])
+    md += [table(["Reading", "Design", "ordinary", "denied event", "open event", "All deviations: all"], rows), ""]
+    md += ["**Reading x contrast** (CasePath, matched workflow, minus comparator; checklist-only difference beside it).", ""]
+    md += [table(["Reading", "Contrast", "Comparator", "Difference", "95% interval", "p", "Against the registered result", "Checklist only: difference, p"],
+                 [[k, cid, L[c["b"]], fmt(c["diff"]), f"[{fmt(c['diff_ci'][0])}, {fmt(c['diff_ci'][1])}]", pv(c["p"]), c["verdict"],
+                   f"{fmt(c['checklist_only']['diff'])}, {pv(c['checklist_only']['p'])}"] for k, v in rd for cid, c in v["contrasts"].items()]), ""]
+    md += ["**What the lead consists of** (CasePath, matched workflow, minus each single prompt on each subset; family means).", ""]
+    for k, v in rd:
+        parts = []
+        for b in ("ric", "ric_frontier"):
+            parts.append(f"against {L[b]} " + ", ".join(
+                f"{sub.replace('_', ' ')} {fmt(v['designs']['casepath'][f'strict_unsafe|{sub}'] - v['baselines'][b][f'strict_unsafe|{sub}'])}"
+                for sub in R.SUBSETS))
+        md.append(f"- {k}: " + "; ".join(parts) + ".")
+    md += [""]
+    for k, v in x["readings"].items():
+        if "designs" not in v:
+            md += [f"- {k}: {v['status']} (not scored).", ""]
     x = res["F5"]
     md += ["## F5. Re-scoring against other tenancy references (sensitivity to the reading of the rule text)", "",
            "This scores every design against the clean-room references and against references written under the readings of "

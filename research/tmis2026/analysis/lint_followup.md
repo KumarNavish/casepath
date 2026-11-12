@@ -13,6 +13,8 @@ Each model's own flags (`analysis/rule_lint.json`). The lint was computed on the
 | tested | 0.579 | 0.944 | 0.333 | 0.088 | 0.157 | 0.000 | D01, D03, D04, D05, D07, D14, D17, D25 | D10, D16, D18, D22, D28, D29 | 11.875 |
 | a | 0.574 | 0.951 | 0.333 | 0.093 | 0.148 | 0.000 | D01, D03, D04, D05, D14, D17 | D07, D10, D16, D18, D22, D25, D28, D29 | 15.875 |
 | b | 0.574 | 0.951 | 0.333 | 0.093 | 0.148 | 0.000 | D01, D03, D04, D05, D07, D14, D17 | D10, D16, D18, D22, D25, D28, D29 | 12.875 |
+| c_a | 0.574 | 0.951 | 0.333 | 0.093 | 0.148 | 0.000 | D01, D03, D04, D05, D14, D17 | D07, D10, D16, D18, D22, D25, D28, D29 | 15.875 |
+| c_b | 0.574 | 0.951 | 0.333 | 0.093 | 0.148 | 0.000 | D01, D03, D04, D05, D07, D14, D17 | D10, D16, D18, D22, D25, D28, D29 | 12.875 |
 
 By changed fact:
 
@@ -21,8 +23,10 @@ By changed fact:
 | tested | 0.875 | 0.167 | 1.167 | 1.792 | 0.792 | 0.083 | 0.167 | 0.083 | 0.083 |
 | a | 0.792 | 0.167 | 1.167 | 1.792 | 0.792 | 0.125 | 0.167 | 0.083 | 0.083 |
 | b | 0.792 | 0.167 | 1.167 | 1.792 | 0.792 | 0.125 | 0.167 | 0.083 | 0.083 |
+| c_a | 0.792 | 0.167 | 1.167 | 1.792 | 0.792 | 0.125 | 0.167 | 0.083 | 0.083 |
+| c_b | 0.792 | 0.167 | 1.167 | 1.792 | 0.792 | 0.125 | 0.167 | 0.083 | 0.083 |
 
-Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the fact is open): a: {"g002": 24, "g004": 24, "g005": 24, "g006": 24}; b: {"g002": 0, "g004": 24, "g005": 0, "g006": 0}
+Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the fact is open): a: {"g002": 24, "g004": 24, "g005": 24, "g006": 24}; b: {"g002": 0, "g004": 24, "g005": 0, "g006": 0}; c_a: {"g002": 24, "g004": 24, "g005": 24, "g006": 24}; c_b: {"g002": 0, "g004": 24, "g005": 0, "g006": 0}
 
 **gpt-6.1-terra** (flags: g001, g002, g003, g004, g005, g006, g008, g014, g026, g042_rev_92ab8925, g044, g057, g061, g073)
 
@@ -31,6 +35,8 @@ Questions a handler would get in the off texts from the forced-open facts that d
 | tested | 0.833 | 0.750 | 0.333 | 0.250 | 0.250 | 0.000 | D01, D03, D04, D05, D07, D14, D15, D17, D25 | D10, D16, D18, D20, D21, D22, D23, D28, D29 | 13.625 |
 | a | 0.528 | 1.000 | 0.444 | 0.083 | 0.000 | 0.000 | D01, D03, D04, D05, D14, D17 | D07, D10, D15, D16, D18, D20, D21, D22, D23, D25, D26, D27, D28, D29 | 19.000 |
 | b | 0.528 | 1.000 | 0.444 | 0.083 | 0.000 | 0.000 | D01, D03, D04, D05, D07, D14, D17 | D10, D15, D16, D18, D20, D21, D22, D23, D25, D26, D27, D28, D29 | 16.000 |
+| c_a | 0.778 | 0.917 | 0.444 | 0.083 | 0.250 | 0.000 | D01, D03, D04, D05, D14, D17 | D07, D10, D15, D16, D18, D20, D21, D22, D23, D25, D28, D29 | 18.625 |
+| c_b | 0.778 | 0.917 | 0.444 | 0.083 | 0.250 | 0.000 | D01, D03, D04, D05, D07, D14, D17 | D10, D15, D16, D18, D20, D21, D22, D23, D25, D28, D29 | 15.625 |
 
 By changed fact:
 
@@ -39,8 +45,40 @@ By changed fact:
 | tested | 0.875 | 0.625 | 1.250 | 2.375 | 1.250 | 0.875 | 0.000 | 0.250 | 0.000 |
 | a | 0.750 | 0.000 | 1.000 | 2.000 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 |
 | b | 0.750 | 0.000 | 1.000 | 2.000 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+| c_a | 0.750 | 0.500 | 1.250 | 2.250 | 1.250 | 0.750 | 0.000 | 0.250 | 0.000 |
+| c_b | 0.750 | 0.500 | 1.250 | 2.250 | 1.250 | 0.750 | 0.000 | 0.250 | 0.000 |
 
-Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the fact is open): a: {"g002": 8, "g003": 8, "g004": 8, "g005": 8, "g006": 8, "g042_rev_92ab8925": 8}; b: {"g002": 0, "g003": 8, "g004": 8, "g005": 0, "g006": 0, "g042_rev_92ab8925": 8}
+Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the fact is open): a: {"g002": 8, "g003": 8, "g004": 8, "g005": 8, "g006": 8, "g042_rev_92ab8925": 8}; b: {"g002": 0, "g003": 8, "g004": 8, "g005": 0, "g006": 0, "g042_rev_92ab8925": 8}; c_a: {"g002": 8, "g004": 8, "g005": 8, "g006": 8, "g042_rev_92ab8925": 8}; c_b: {"g002": 0, "g004": 8, "g005": 0, "g006": 0, "g042_rev_92ab8925": 8}
+
+### Variant (c): flags computed out of sample, from development runs only
+
+gpt-6-luna: e-check, e-full-s4, e67-check, all produced by the tested commit 6a72159c (manifest source tree 0304802...) with the same workflow file. gpt-6.1-terra: t1-check, produced by commit 1ee2c8b (source tree f748205...), checklist only, reasoning on, same workflow file; its reading requests were verified to be byte-identical to the tested commit's by re-running the tested commit cache-only on s4-off, s5-off, s6-off, s7-off and s5-on-PR_bicycle_claimed (every request found in the cache under the same key, identical checklists, no call).
+
+Variants c_a and c_b apply these flags exactly as (a) and (b). Rows c_a / c_b in the tables above.
+
+| Model | Development off runs (texts) | Development flags | Shared with in-sample | Only development | Only in-sample |
+|---|---|---|---|---|---|
+| gpt-6-luna | 13 (s4-off, s5-off, s6-off, s7-off) | g001, g002, g004, g005, g006, g008, g014, g026, g044, g057, g073, g094 | g001, g002, g004, g005, g006, g008, g014, g026, g044, g057, g073, g094 | – | – |
+| gpt-6.1-terra | 4 (s4-off, s5-off, s6-off, s7-off) | g001, g002, g004, g005, g006, g008, g014, g026, g042_rev_92ab8925, g044, g057, g073 | g001, g002, g004, g005, g006, g008, g014, g026, g042_rev_92ab8925, g044, g057, g073 | – | g003, g061 |
+
+Note: the in-sample lint of gpt-6-luna (`rule_lint.py`) already pooled these development runs with the Study 3 runs.
+
+### Frontier model: paired comparison with the frontier single prompts (descriptive)
+
+Nine changed-fact clusters; cluster value = mean over the cluster's pair-runs (product variant: 1 run; single prompt: 3 stored runs); exact two-sided sign-flip p over 2^9 sign patterns (study2.signflip_p). Descriptive: post hoc, one product run, flags in-sample for (a)/(b).
+
+| Variant | Single prompt | Variant value | Single-prompt value | Mean difference | Clusters favouring product / single prompt | Sign-flip p |
+|---|---|---|---|---|---|---|
+| tested | ric_frontier | 0.833 | 0.949 | -0.116 | 5 / 4 | 0.6719 |
+| tested | ric_original_frontier | 0.833 | 0.671 | +0.162 | 4 / 5 | 0.4297 |
+| a | ric_frontier | 0.528 | 0.949 | -0.421 | 6 / 3 | 0.1406 |
+| a | ric_original_frontier | 0.528 | 0.671 | -0.144 | 7 / 2 | 0.4531 |
+| b | ric_frontier | 0.528 | 0.949 | -0.421 | 6 / 3 | 0.1406 |
+| b | ric_original_frontier | 0.528 | 0.671 | -0.144 | 7 / 2 | 0.4531 |
+| c_a | ric_frontier | 0.778 | 0.949 | -0.171 | 5 / 4 | 0.5234 |
+| c_a | ric_original_frontier | 0.778 | 0.671 | +0.106 | 4 / 5 | 0.5742 |
+| c_b | ric_frontier | 0.778 | 0.949 | -0.171 | 5 / 4 | 0.5234 |
+| c_b | ric_original_frontier | 0.778 | 0.671 | +0.106 | 4 / 5 | 0.5742 |
 
 ## Tenancy lint baseline (stored readings, ordinary claims of Study 3)
 

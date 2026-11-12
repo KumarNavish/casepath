@@ -188,6 +188,48 @@ class AltReference(unittest.TestCase):
         self.assertEqual(F.verdict(reg, {"diff": 0.5, "p": 0.3}), "reverses (not significant)")
 
 
+class Amendments(unittest.TestCase):
+    WF = Path(__file__).resolve().parent.parent / "harness" / "product" / "workflows" / "fresh-serial-sync"
+
+    def wf(self, name):
+        return json.loads((self.WF / f"{name}.json").read_text())
+
+    def test_empty_amendment_is_a_copy(self):
+        w = self.wf("lease_termination_dispute")
+        a = F.amend_workflow(w, frozenset())
+        self.assertEqual(a, w)
+        self.assertIsNot(a, w)
+
+    def test_a3_removes_optional(self):
+        w = self.wf("defect_mold_heating")
+        self.assertTrue(any(d.get("optional") for d in w["documents"]))
+        a = F.amend_workflow(w, {"A3"})
+        self.assertFalse(any(d.get("optional") for d in a["documents"]))
+        self.assertTrue(any(d.get("optional") for d in w["documents"]))  # the original is untouched
+
+    def test_a4_gate(self):
+        a = F.amend_workflow(self.wf("lease_termination_dispute"), {"A4"})
+        gate = next(st for st in a["steps"] if st["id"] == "lt_type__gate_family_home")
+        when = {e["to"]: e["when"] for e in gate["next"]}
+        self.assertEqual(when["lt_family"], {"all": [{"fact": "family_home", "is": True}, {"fact": "arrears", "is": False}]})
+        self.assertEqual(F.amend_workflow(self.wf("rent_increase_dispute"), {"A4"}), self.wf("rent_increase_dispute"))
+
+    def test_amend_facts(self):
+        class W:
+            @staticmethod
+            def reading_gave_value(row, presumed=None):
+                return any(v is not None and v != presumed for v in (row or {}).get("readings") or [])
+        wf = {"id": "lease_termination_dispute"}
+        ev = "termination_received"
+        self.assertEqual(F.amend_facts({ev: False}, {}, wf, {"A1"}, W)[ev], True)
+        self.assertIsNone(F.amend_facts({ev: None}, {ev: {"status": "unknown"}}, wf, {"A1"}, W)[ev])
+        self.assertEqual(F.amend_facts({ev: None}, {ev: {"status": "unknown", "open_readings": [True]}}, wf, {"A2"}, W)[ev], True)
+        self.assertIsNone(F.amend_facts({ev: None}, {ev: {"status": "conflicting"}}, wf, {"A2"}, W)[ev])
+        self.assertIsNone(F.amend_facts({ev: None}, {ev: {"status": "unknown", "readings": [False, None]}}, wf, {"A2"}, W)[ev])
+        self.assertEqual(F.amend_facts({ev: False}, {}, wf, {"A2"}, W)[ev], False)  # A2 alone leaves a denial
+        self.assertEqual(F.amend_facts({"x": False}, {}, {"id": "defect_mold_heating"}, {"A1", "A2"}, W), {"x": False})
+
+
 class F5Hook(unittest.TestCase):
     """Integration: the hook on the stored Study 3 outputs."""
 
@@ -216,6 +258,14 @@ class F5Hook(unittest.TestCase):
         self.assertFalse(r["identical_to_registered"])
         h2 = next(c for c in r["contrasts"] if c["id"] == "H2")
         self.assertNotAlmostEqual(h2["alternative"]["diff"], h2["registered"]["diff"])
+
+    def test_unamended_replay_reproduces_stored_checklists(self):
+        import study3_review as R
+        for d in ("casepath", "casepath_checklist"):
+            self.study.load(d, "tenancy")
+            plans, cnt = F.replay_tenancy(self.study, d, R.Cache())
+            self.assertEqual(cnt["replayed"], 286)
+            self.assertGreaterEqual(cnt["replay reproduces the stored scored checklist"], 285)
 
     def test_one_document_changed_by_hand(self):
         cid = self.study.cases["tenancy"][0]

@@ -211,22 +211,22 @@ def case_type_ids(wf_facts):
     return {f for f in wf_facts if TD.stem(f) in {"g" + r for r in CASE_TYPE_RULES}}
 
 
-def theft_variant(design, model, variant):
+def theft_variant(design, model, variant, flagset=None):
     st, Dm = DC.study()
     W = TD.evaluator()
     wf = json.loads((TMIS / "harness/product/workflows/theft-reviewed/household_theft.json").read_text())
     fu = TD.used_facts(wf)
     allf = [f["id"] for f in wf["facts"] if f["id"] != "claim_type"]
-    fl = flags()[model]
+    fl = set(flagset) if flagset is not None else flags()[model]
     ex = TD.Exec(W, wf)
     st.load(design, "theft")
     ent = st.entries[(design, "theft")]
     runs = st.runs(design, "theft")
     T = Dm["theft"].texts()
     forced = {}
-    if variant == "a":
+    if variant in ("a", "c_a"):
         forced = {f: None for f in fl}
-    elif variant == "b":
+    elif variant in ("b", "c_b"):
         ct_ = case_type_ids(fl)
         forced = {f: (True if f in ct_ else None) for f in fl}
 
@@ -238,6 +238,7 @@ def theft_variant(design, model, variant):
     pairs = st.pairs
     on, un = TD.score(pairs, plans, runs)
     res = {"summary": {k: TD.r3(v) for k, v in TD.summ(on, un).items()}, "by_fact": {k: TD.r3(v) for k, v in TD.by_fact(on).items()},
+           "by_fact_raw": TD.by_fact(on),
            "forced": {f: v for f, v in sorted(forced.items())}, "forced_need_bearing": sorted(f for f in forced if f in fu)}
     offs = [plans[t][r] for t in T if T[t]["kind"] == "off" for r in range(runs)]
     res["off_requested_in_every_run"] = sorted(TD.IDS[d] for d in set.intersection(*[set(p["requests"]) for p in offs]))
@@ -296,6 +297,64 @@ def theft_variant(design, model, variant):
     n = len(rows)
     res["decomposition"] = {k: TD.r3(sum(r[k] for r in rows) / n) for k in ("rule", "reading", "hold", "measured", "interaction")}
     return res
+
+
+# ------------------------------------------------------------------------------------------------ Part 2 (c): out-of-sample flags
+DEV_SOURCES = {  # stored development theft runs (stories 4-7 of fresh/) whose reading requests equal the tested commit's
+    "gpt-6-luna": [("runs/product/plans_theft_gpt-6-luna_fresh_e-check.json", "runs/product/manifest_theft_gpt-6-luna_fresh_e-check.json"),
+                   ("runs/product/plans_theft_gpt-6-luna_fresh_e-full-s4.json", "runs/product/manifest_theft_gpt-6-luna_fresh_e-full-s4.json"),
+                   ("runs/product/plans_theft_gpt-6-luna_fresh_e67-check.json", "runs/product/manifest_theft_gpt-6-luna_fresh_e67-check.json")],
+    "gpt-6.1-terra": [("runs/product/plans_theft_gpt-6.1-terra_fresh_t1-check.json", "runs/product/manifest_theft_gpt-6.1-terra_fresh_t1-check.json")],
+}
+DEV_NOTE = ("gpt-6-luna: e-check, e-full-s4, e67-check, all produced by the tested commit 6a72159c (manifest source tree "
+            "0304802...) with the same workflow file. gpt-6.1-terra: t1-check, produced by commit 1ee2c8b (source tree f748205...), "
+            "checklist only, reasoning on, same workflow file; its reading requests were verified to be byte-identical to the tested "
+            "commit's by re-running the tested commit cache-only on s4-off, s5-off, s6-off, s7-off and s5-on-PR_bicycle_claimed (every "
+            "request found in the cache under the same key, identical checklists, no call).")
+
+
+def dev_flags(model):
+    import rule_lint as RL  # noqa: E402
+    T = RL.texts()
+    wf = json.loads(RL.WORKFLOW.read_text())
+    facts = [f["id"] for f in wf["facts"] if f["id"] != "claim_type"]
+    seen, stat, used = set(), {c: {"off_runs": 0, "admitted_true": 0, "some_reading_true": 0} for c in facts}, []
+    for path, manifest in DEV_SOURCES[model]:
+        m = json.loads((TMIS / manifest).read_text())
+        used.append({"file": path, "commit": (m.get("git") or {}).get("commit"), "source_tree_sha256": m.get("source_tree_sha256"),
+                     "workflow_sha256": (m.get("workflows") or {}).get("household_theft.json")})
+        for k, e in json.loads((TMIS / path).read_text()).items():
+            _, t, r = k.split("|")
+            if T[t]["kind"] != "off":
+                continue
+            rds = RL.readings(e, len(wf["facts"]))
+            keys = tuple(x for x, _ in rds)
+            if len(rds) != 3 or keys in seen:
+                continue
+            seen.add(keys)
+            for c in facts:
+                s_ = stat[c]
+                s_["off_runs"] += 1
+                if RL.value(rds, c, T[t]["text"]) == "true":
+                    s_["admitted_true"] += 1
+                if any(a.get(c) and a[c][0] == "true" for _, a in rds):
+                    s_["some_reading_true"] += 1
+    n = max(s_["off_runs"] for s_ in stat.values())
+    fl = sorted(c for c, s_ in stat.items() if s_["off_runs"] and (s_["admitted_true"] >= s_["off_runs"] / 2 or s_["some_reading_true"] >= 0.75 * s_["off_runs"]))
+    texts = sorted({t for path, _ in DEV_SOURCES[model] for k in json.loads((TMIS / path).read_text()) for t in [k.split("|")[1]] if T[t]["kind"] == "off"})
+    return {"flags": fl, "off_runs": n, "off_texts": texts, "sources": used, "counts": {c: stat[c] for c in fl}}
+
+
+def paired(model_design_rows, single, model):
+    """Paired comparison over the nine changed-fact clusters (descriptive): variant cluster values (its own runs) against a
+    single prompt's (3 stored runs); exact two-sided sign-flip p (study2.signflip_p)."""
+    st, Dm = DC.study()
+    on, _ = st.theft_rows(single)
+    sv = TD.by_fact(on)
+    diffs = [model_design_rows[c] - sv[c] for c in TD.COND]
+    return {"single": single, "single_value": TD.r3(sum(sv.values()) / len(sv)), "variant_value": TD.r3(sum(model_design_rows.values()) / 9),
+            "mean_difference": TD.r3(sum(diffs) / 9), "differences": {TD.SHORT[c]: TD.r3(d) for c, d in zip(TD.COND, diffs)},
+            "favouring_product": sum(d < 0 for d in diffs), "favouring_single": sum(d > 0 for d in diffs), "p_signflip": s2.signflip_p(diffs)}
 
 
 # ------------------------------------------------------------------------------------------------ Part 3 analysis
@@ -399,16 +458,89 @@ def main():
     out = {"label": "POST HOC: not part of ANALYSIS_PLAN_STUDY3.md", "note": __doc__}
     fl = flags()
     out["flags"] = {m: sorted(v) for m, v in fl.items()}
-    p2 = {}
+    p2, devf, cmp_ = {}, {}, {}
     for design, model in (("casepath", "gpt-6-luna"), ("casepath_frontier_checklist", "gpt-6.1-terra")):
+        devf[model] = dev_flags(model)
         p2[model] = {v: theft_variant(design, model, v) for v in ("tested", "a", "b")}
+        p2[model].update({v: theft_variant(design, model, v, devf[model]["flags"]) for v in ("c_a", "c_b")})
+        ins, dev = set(fl[model]), set(devf[model]["flags"])
+        devf[model]["shared_with_in_sample"] = sorted(ins & dev)
+        devf[model]["only_development"] = sorted(dev - ins)
+        devf[model]["only_in_sample"] = sorted(ins - dev)
     out["part2_theft"] = p2
+    out["development_flags"] = {"note": DEV_NOTE, **devf}
+    for v in ("tested", "a", "b", "c_a", "c_b"):
+        cmp_[v] = [paired(p2["gpt-6.1-terra"][v]["by_fact_raw"], sg, "gpt-6.1-terra") for sg in ("ric_frontier", "ric_original_frontier")]
+    out["paired_frontier"] = cmp_
     out["tenancy_lint_stored"] = tenancy_lint_stored()
     out["part3"] = part3()
     out["criterion2_theft"] = criterion2_theft()
     (HERE / "lint_followup.json").write_text(json.dumps(out, indent=1, ensure_ascii=False, default=str) + "\n")
     (HERE / "lint_followup.md").write_text(markdown(out))
+    (HERE / "posthoc_numbers.tex").write_text(macros(out, json.loads((HERE / "decomposition.json").read_text())))
     return out
+
+
+def _num(x, nd=3):
+    return f"{x:.{nd}f}"
+
+
+def macros(lf, dc):
+    """POST HOC numbers as LaTeX macros (prefix \\spost), from lint_followup.json and decomposition.json. Never edit by hand."""
+    M = {}
+    MOD = {"casepath": "Luna", "casepath_frontier_checklist": "Terra", "gpt-6-luna": "Luna", "gpt-6.1-terra": "Terra"}
+    PART = {"rule": "Rule", "routing": "Routing", "document": "Doc", "reading": "Reading", "hold": "Hold", "measured": "Measured",
+            "product_steps": "ProductSteps", "interaction": "Interaction"}
+    MEASW = {"strict_unsafe": "Strict", "all_dev": "AllDev"}
+    SUBW = {"all": "All", "ordinary": "Ordinary", "denied_event": "Denied", "open_event": "OpenEvent"}
+    for d, v in dc["tenancy_product"].items():
+        for m in ("strict_unsafe", "all_dev"):
+            for sub, s_ in v[m].items():
+                for k, w in PART.items():
+                    M[f"spostDecTen{MOD[d]}{MEASW[m]}{SUBW[sub]}{w}"] = _num(s_[k])
+    for d, v in dc["theft_product"].items():
+        for k in ("rule", "reading", "hold", "measured", "product_steps", "interaction"):
+            M[f"spostDecTh{MOD[d]}{PART[k]}"] = _num(v["all"][k])
+    SG = {"ric": "Ric", "ric_frontier": "RicFrontier", "ric_original": "RicOrig", "ric_original_frontier": "RicOrigFrontier",
+          "self_consistency": "SelfCons", "model_executes_rules": "Mer", "react": "React"}
+    for d, v in dc["theft_single"].items():
+        M[f"spostDecTh{SG[d]}SameAsFloor"] = _num(v["same_as_rule_floor"])
+        M[f"spostDecTh{SG[d]}Other"] = _num(v["other"])
+    VW = {"tested": "Tested", "a": "FlagOpen", "b": "FlagCaseType", "c_a": "DevFlagOpen", "c_b": "DevFlagCaseType"}
+    for m, v in lf["part2_theft"].items():
+        for var, r in v.items():
+            M[f"spostHeld{MOD[m]}{VW[var]}Errors"] = _num(r["summary"]["errors"])
+            M[f"spostHeld{MOD[m]}{VW[var]}Unchanged"] = _num(r["summary"]["unres_unchanged"])
+            M[f"spostHeld{MOD[m]}{VW[var]}OpenFacts"] = _num(r["off_open_need_bearing_facts_per_run"], 2)
+            M[f"spostHeld{MOD[m]}{VW[var]}HeldEveryOff"] = str(len(r["off_held_in_every_run"]))
+            for k in ("rule", "reading", "hold"):
+                M[f"spostHeld{MOD[m]}{VW[var]}{PART[k]}"] = _num(r["decomposition"][k])
+    for m in ("gpt-6-luna", "gpt-6.1-terra"):
+        d = lf["development_flags"][m]
+        M[f"spostDevFlags{MOD[m]}N"] = str(len(d["flags"]))
+        M[f"spostDevFlags{MOD[m]}OffRuns"] = str(d["off_runs"])
+        M[f"spostInSampleFlags{MOD[m]}N"] = str(len(lf["flags"][m]))
+    SGW = {"ric_frontier": "RicFrontier", "ric_original_frontier": "RicOrigFrontier"}
+    for var, cs in lf["paired_frontier"].items():
+        for c in cs:
+            M[f"spostPaired{VW[var]}{SGW[c['single']]}Diff"] = _num(c["mean_difference"])
+            M[f"spostPaired{VW[var]}{SGW[c['single']]}P"] = _num(c["p_signflip"], 4)
+    p3 = lf.get("part3")
+    if p3:
+        for k, w in (("planted", "Planted"), ("planted_flagged", "PlantedFlagged"), ("planted_already_flagged_unmutated", "PlantedAlready"),
+                     ("planted_newly_flagged", "PlantedNew"), ("unmutated", "Unmutated"), ("unmutated_flagged_mutated_run", "FalseAlarmMutated"),
+                     ("unmutated_flagged_baseline_run", "FalseAlarmBaseline")):
+            M[f"spostMut{w}"] = str(p3["totals"][k])
+        M["spostMutSpendUSD"] = _num(sum(p3["spend_usd"].values()), 2)
+    for m, v in lf["tenancy_lint_stored"].items():
+        n = sum(len(st) for st in v.values())
+        M[f"spostTenLint{MOD[m]}Flagged"] = str(sum(s_["flagged"] for st in v.values() for s_ in st.values()))
+        M[f"spostTenLint{MOD[m]}Conditions"] = str(n)
+    assert all(re.fullmatch(r"[A-Za-z]+", k) for k in M), [k for k in M if not re.fullmatch(r"[A-Za-z]+", k)]
+    lines = ["% POST HOC numbers (not part of ANALYSIS_PLAN_STUDY3.md). Written by analysis/lint_followup.py from",
+             "% analysis/lint_followup.json and analysis/decomposition.json. Never edit by hand."]
+    lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in sorted(M.items())]
+    return "\n".join(lines) + "\n"
 
 
 def f3(x):
@@ -436,6 +568,28 @@ def markdown(o):
             L.append(f"| {var} | " + " | ".join(f3(r["by_fact"].get(c)) for c in TD.COND) + " |")
         L += ["", "Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the "
               "fact is open): " + "; ".join(f"{var}: " + json.dumps(r["off_questions_from_forced_facts"]) for var, r in v.items() if var != "tested"), ""]
+    df = o.get("development_flags") or {}
+    if df:
+        L += ["### Variant (c): flags computed out of sample, from development runs only", "", df["note"], "",
+              "Variants c_a and c_b apply these flags exactly as (a) and (b). Rows c_a / c_b in the tables above.", "",
+              "| Model | Development off runs (texts) | Development flags | Shared with in-sample | Only development | Only in-sample |", "|---|---|---|---|---|---|"]
+        for m in ("gpt-6-luna", "gpt-6.1-terra"):
+            d = df[m]
+            L.append(f"| {m} | {d['off_runs']} ({', '.join(d['off_texts'])}) | {', '.join(d['flags'])} | {', '.join(d['shared_with_in_sample'])} | "
+                     f"{', '.join(d['only_development']) or '–'} | {', '.join(d['only_in_sample']) or '–'} |")
+        L += ["", "Note: the in-sample lint of gpt-6-luna (`rule_lint.py`) already pooled these development runs with the Study 3 runs.", ""]
+    pf = o.get("paired_frontier") or {}
+    if pf:
+        L += ["### Frontier model: paired comparison with the frontier single prompts (descriptive)", "",
+              "Nine changed-fact clusters; cluster value = mean over the cluster's pair-runs (product variant: 1 run; single prompt: 3 stored runs); "
+              "exact two-sided sign-flip p over 2^9 sign patterns (study2.signflip_p). Descriptive: post hoc, one product run, flags in-sample for (a)/(b).", "",
+              "| Variant | Single prompt | Variant value | Single-prompt value | Mean difference | Clusters favouring product / single prompt | Sign-flip p |",
+              "|---|---|---|---|---|---|---|"]
+        for var, cs in pf.items():
+            for c in cs:
+                L.append(f"| {var} | {c['single']} | {f3(c['variant_value'])} | {f3(c['single_value'])} | {c['mean_difference']:+.3f} | "
+                         f"{c['favouring_product']} / {c['favouring_single']} | {c['p_signflip']:.4f} |")
+        L.append("")
     L += ["## Tenancy lint baseline (stored readings, ordinary claims of Study 3)", "",
           "| Model | Workflow | Condition | Ordinary runs | Admitted true | Some reading true | Flagged |", "|---|---|---|---|---|---|---|"]
     for model, v in o["tenancy_lint_stored"].items():
