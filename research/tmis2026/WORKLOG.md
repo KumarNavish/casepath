@@ -521,8 +521,8 @@ errors and theft unchanged. `study4/design_estimate/ESTIMATE.md`.
 
 **Step 2a, rules from public text.** Three rule sets, every rule with source,
 locator, verbatim passage and basis, each checked by a second reader until
-both agreed: tenancy 52 rules (Code of Obligations), dismissal 74 rules (Code
-of Obligations, Civil Procedure Code), theft 51 rules (Insurance Contract Act
+both agreed: tenancy 51 rules (Code of Obligations), dismissal 74 rules (Code
+of Obligations, Civil Procedure Code), theft 52 rules (Insurance Contract Act
 and one insurer's published household conditions and claim form). One
 convention of the benchmark, the same words in every regime, says what an
 unmentioned fact is taken to be (`SPEC.md` 6a, 6b). Raw downloads stay out of

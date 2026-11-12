@@ -183,7 +183,9 @@ the file design is dropped by a stated rule.
    with at least one open fact: 0, 10, 25 and 50%. Which fact is open is
    drawn uniformly over the type's deciding facts, the defining event
    included. Files whose defining event is stated false are a fixed 10% of
-   every level, flagged, and analysed in their own row.
+   every level, flagged, and analysed in their own row. (The development
+   sets have 15 files per level and regime, so 2 of 15, 13%; the sealed
+   set's 60 per level give 6.)
 3. **Writing.** Each design becomes a claim text (150 to 400 words; German
    or English by a stated share; a lay claimant's voice; no legal terms from
    the rule text where a lay person would not use them) written by a session
