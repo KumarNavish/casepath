@@ -21,7 +21,7 @@ A job (``casepath.agent-job/1``)::
 
 An outcome (``casepath.agent-outcome/1``)::
 
-    {"format": "casepath.agent-outcome/1", "status": "completed" | "failed", "error": None | "reason: message",
+    {"format": "casepath.agent-outcome/1", "status": "completed" | "failed" | "paused", "error": None | "reason: message",
      "routing": the routing decision, "workflow": {"id", "version", ...} | None, "result": the team's result | None,
      "extractions": {file id: extraction updated by reading},
      "knowledge_outcomes": [{"item", "document_status", "contradicted", "reason"}],
@@ -298,7 +298,7 @@ def _outcome(**fields):
             "extractions": {}, "knowledge_outcomes": [], "knowledge_proposals": [], **fields}
 
 
-def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
+def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, should_stop=None):
     """Run the job; ``on_extraction(file_id, extraction)`` lets the caller save each file's reading as soon as it is done."""
     check_job(job)
     options = job.get("options") or {}
@@ -321,10 +321,12 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None):
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)
-        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"))
+        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), should_stop=should_stop)
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [])
         result["usage"] = usage + result["usage"]
+        if result.get("paused"):
+            return _outcome(status="paused", routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions)
         outcomes, proposals = lessons(workflow, job["case"]["id"], result)
         return _outcome(routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions,
                         knowledge_outcomes=outcomes, knowledge_proposals=proposals)

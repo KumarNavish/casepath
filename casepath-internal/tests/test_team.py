@@ -404,3 +404,17 @@ class FitReportTests(unittest.TestCase):
                                                               ("$.points", "items cut"), ("$.points[0]", "text cut"),
                                                               ("$.reply.needed", "filled"), ("$.reply.subject", "filled")})
         self.assertEqual(fitted, {"summary": "a long sum", "points": ["abcde", "b"], "reply": {"needed": False, "subject": ""}})
+
+
+class StopTests(unittest.TestCase):
+    def test_anhalten_ends_the_run_before_the_next_turn_and_keeps_what_is_established(self):
+        asked = {"n": 0}
+
+        def stop_after_reading():  # the reader's turns pass; the stop is pressed before the third model turn
+            asked["n"] += 1
+            return asked["n"] > 3
+        script = standard_script(finder_calls=[], result_fields={})
+        result = CaseTeam(ScriptedModel(script), should_stop=stop_after_reading).run(case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertTrue(result["paused"])
+        self.assertIn("run.paused", {e["kind"] for e in result["events"]})
+        self.assertEqual([t["date"] for t in result["brief"]["timeline"]], ["2 March"])  # the brief made before the stop is kept

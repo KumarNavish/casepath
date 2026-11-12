@@ -1744,6 +1744,44 @@
     "summary": "Feedback"
    }
   },
+  "/api/runs/{run_id}/stop": {
+   "post": {
+    "description": "'Anhalten': the run ends before its next model turn and keeps what is established (status \"paused\").",
+    "operationId": "stop_run_api_runs__run_id__stop_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "run_id",
+      "required": true,
+      "schema": {
+       "title": "Run Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Stop Run"
+   }
+  },
   "/api/study/plan": {
    "get": {
     "description": "One expert's session: the practice case, then the frozen study cases in an order rotated by the expert's position,\nthe own answer first on the first of them (FEEDBACK_DESIGN, review point 5). Built, not used until the study opens.",

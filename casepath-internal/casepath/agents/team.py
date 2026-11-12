@@ -572,6 +572,10 @@ SMALL_CASE_CHARS = 40000
 
 
 TOOL_LOCK = threading.RLock()  # ponytail: one lock for all cases; per-case locks if runs ever overlap heavily
+class TeamStopped(Exception):
+    """A person pressed "Anhalten": the run ends here and keeps what is established."""
+
+
 SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
 
 
@@ -595,6 +599,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
     conversation = [{"role": "user", "content": json.dumps(opening, ensure_ascii=False)}]
     nudged = False
     for number in range(max_turns):
+        if getattr(work, "should_stop", lambda: False)():
+            raise TeamStopped()
         last = number == max_turns - 1
         choice_ = {"type": "function", "name": "report"} if last else "required"
         try:
@@ -769,14 +775,17 @@ def confirm_facts(model, work, effort="medium"):
 
 
 class CaseTeam:
-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None):
+    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
+        self.should_stop = should_stop or (lambda: False)  # checked before every model turn and every delegation
 
     def model_for(self, agent):
         """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
         return (getattr(self.model, "agents", None) or {}).get(agent, self.model)
 
     def _delegate(self, work, state, agent, instruction):
+        if self.should_stop():
+            raise TeamStopped()
         if state["delegations"] >= self.max_delegations:
             raise TeamError("delegation_limit", "The case needed more steps than allowed.")
         state["delegations"] += 1
@@ -803,6 +812,16 @@ class CaseTeam:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0}
+        work.should_stop = self.should_stop
+        try:
+            return self._run(work, state)
+        except TeamStopped:
+            work.emit("lead", "run.paused")
+            # What is established stays: the reading, the recorded facts and documents with their verdicts, the cost so far.
+            return {"paused": True, "brief": work.brief, "facts": list(work.facts.values()), "documents": list(work.documents.values()),
+                    "usage": work.usage, "events": work.events}
+
+    def _run(self, work, state):
         work.emit("lead", "agent.start", instruction="Prepare the case.")
         handler_flow = self.handler_flow = any(s.get("action") for s in work.graph["steps"])
         plan = PLAN

@@ -53,6 +53,7 @@ class RunService:
         self.read_scans, self.reading_workers, self.page_image_side = read_scans, reading_workers, page_image_side
         self.token_budget, self.voice = token_budget, voice or {}
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
+        self._stops = set()  # runs a person asked to stop ("Anhalten"); checked between turns
         self.store.interrupt_unfinished()
 
     def start(self, case_id, user, token=None):
@@ -65,6 +66,9 @@ class RunService:
         run = self.store.create_run(case_id, user)
         self._pool.submit(self._recheck, run["id"], case_id, list(document_ids), token)
         return run
+
+    def stop(self, run_id):
+        self._stops.add(run_id)
 
     def shutdown(self):
         self._pool.shutdown(wait=False, cancel_futures=True)
@@ -92,7 +96,8 @@ class RunService:
             self.store.update_run(run_id, status="running")
             outcome = core.prepare(self.job(case_id), self._model(run_id, token), core.StoreBlobs(self.store),
                                    on_event=lambda e: self._event(run_id, e),
-                                   on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction))
+                                   on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction),
+                                   should_stop=lambda: run_id in self._stops)
             self.save(run_id, case_id, outcome)
         except ModelError as error:
             self.store.update_run(run_id, status="failed", error=f"{error.reason}: {error}", finished_at=now())
@@ -103,6 +108,11 @@ class RunService:
         """Persist an agent outcome: readings, routing, result, Knowledge statistics and proposals."""
         for file_id, extraction in outcome["extractions"].items():
             self.store.update_extraction(file_id, extraction)
+        if outcome["status"] == "paused":  # stopped by a person: the partial result is kept for "Weiter"
+            self.store.update_run(run_id, status="paused", result=outcome["result"], finished_at=now(),
+                                  **({"workflow_id": outcome["workflow"]["id"], "workflow_version": outcome["workflow"]["version"]} if outcome.get("workflow") else {}))
+            self._stops.discard(run_id)
+            return
         if outcome["status"] != "completed":
             self.store.update_run(run_id, status="failed", error=outcome["error"], finished_at=now())
             return

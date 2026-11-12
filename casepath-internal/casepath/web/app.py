@@ -649,6 +649,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         except Conflict as error:
             raise HTTPException(409, str(error)) from None
 
+    @app.post("/api/runs/{run_id}/stop", status_code=202)
+    def stop_run(run_id: str, who=Depends(user)):
+        """'Anhalten': the run ends before its next model turn and keeps what is established (status "paused")."""
+        run = found(store.get_run, run_id)
+        if run["status"] not in ("queued", "running"):
+            raise HTTPException(409, "Der Lauf läuft nicht.")
+        runs.stop(run_id)
+        return {"id": run_id, "stopping": True}
+
     @app.get("/api/runs/{run_id}")
     def get_run(run_id: str, after: int = 0, who=Depends(user)):
         return found(store.get_run, run_id, after)

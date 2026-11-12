@@ -13,7 +13,7 @@ const LANG = (() => {
 const T = (en, de) => (LANG === "de" ? de : en);
 document.documentElement.lang = LANG;
 const WORDS = {
-  completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen",
+  completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen", paused: "angehalten",
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
   not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", presumed: "vermutet", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
   reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", step: "Schritt", note: "Hinweis",
@@ -272,6 +272,7 @@ function renderRail() {
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
     <div class="cp-rail-foot">${unaidedPending() ? "" : chooser}
       <button class="cp-button ${run && run.status === "completed" ? "cp-quiet" : "primary"}" id="run" ${unaidedPending() ? "hidden" : ""} ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${run && run.status === "completed" ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>
+      ${running() ? `<button class="cp-button cp-quiet" id="stop-run">${T("Stop", "Anhalten")}</button>` : ""}
       <span class="cp-status ${run && run.status === "failed" ? "failed" : ""}">${esc(status)}</span>
       ${S.file ? `<a class="cp-button" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${T("Open full source", "Original öffnen")} ${icon("external")}</a>` : ""}</div>
   </aside>`;
@@ -285,6 +286,11 @@ function segmentRows(file) {
 }
 
 function bindRail() {
+  const stopRun = $("#stop-run");
+  if (stopRun) stopRun.addEventListener("click", async () => {  // the run ends before its next step and keeps what it has
+    stopRun.disabled = true;
+    await api(`/api/runs/${S.data.run.id}/stop`, { method: "POST" }).catch(() => {});
+  });
   for (const button of document.querySelectorAll("[data-file]")) button.addEventListener("click", () => { S.file = button.dataset.file; S.page = Number(button.dataset.page) || null; S.follow = !running(); renderCase(); });
   const upload = $("#upload");
   if (upload) upload.addEventListener("change", () => uploadFiles(upload.files));

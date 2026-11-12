@@ -372,6 +372,12 @@ class AppTests(unittest.TestCase):
         self.assertEqual([(s["case"], s["own_answer_first"]) for s in plan["steps"]], [(case["id"], True)])  # one frozen case here
         self.assertFalse(plan["ready"])  # no practice case and not three cases: the study cannot open
 
+    def test_a_finished_run_cannot_be_stopped(self):
+        client = self.client()
+        case, file = self.new_case(client, "Anhalten")
+        run = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        self.assertEqual(client.post(f"/api/runs/{run['id']}/stop").status_code, 409)
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):
