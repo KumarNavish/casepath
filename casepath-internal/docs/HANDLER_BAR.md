@@ -25,6 +25,13 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 | Corrections needed (one per wrong or missing item) | 32 | ≈ 14 | halve each round |
 | Cost: non-cached tokens, all 7 runs | 1.31 M | 1.29 M | no rise |
 
+**Handler workflow, night of 2026-11-11/12 (round 3, a5247e55, live from 19ba29bc).** First request, named rule (a document named as its own line or inside a ticked line counts as asked): 20/22; strict own-line count 17/22 (D1's expert report now offered with "erwähnt, lag nicht bei"). Extras 3 after the disputed-finding rule (D3 Mietzinszahlungen, D8 correspondence exception, D9 Kaufbelege). Cold, new upload: D11 160 s, D3 245 s, D10 154 s, D1 cut 200 s; re-run median 154 s, 18 calls, 79k non-cached, 20k output (target for a small case: under 120 s and 60k). Next action against Protekta's at its decision point: A2 (D3, phone note read as evidence) pass; A6 (D3) pass, date 12.04.2024 = Protekta's; A7 (D11) pass on kind and reason, date 14.02.2025 = Protekta's after the as_of fix.
+
+**Steering: what it does, and what has only been run against the scripted team (never against the real model).**
+- Live: the run line on the Übersicht (stages, time, current file and page), historic cases marked "Stand am".
+- Scripted only: Anhalten (stop before the next turn, keep brief, facts, documents, usage); Weiter (continue, finished steps skipped, same result as straight through); Verwerfen (back to the last finished result); a case worker's answer during a run or a pause, honoured from the next turn and never overwritten; anderer Prozess while paused or from the run line (Anhalten, choose, Weiter); the chosen process announced before any agent reads. A continued run carries the paused run's usage and is counted once, outside the timing profile.
+- First real check, when tokens are allowed: one gate run with Anhalten after the reading, then Weiter.
+
 **Named in the scores.**
 - D8: 1 extra from the all-of rule ("Sämtliche Korrespondenz"), accepted: Protekta asked for it in 6 of 7 letters.
 - D6: the round-1 run judged five undated photos from one moment "unbrauchbar" (the need asks for photos over the whole period); the baseline run had them "vorhanden". Judged against the need, round 1 is right and the baseline status is the one wrong document status; Protekta did not ask for photos in D6, so the letter asks one document more than Protekta did.
