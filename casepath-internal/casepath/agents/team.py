@@ -636,7 +636,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
                         report = call["arguments"]
                         continue
                     args = call["arguments"]
-                    work.emit(agent, "tool", tool=call["name"], file=args.get("file"), query=args.get("query"),
+                    work.emit(agent, "tool", tool=call["name"], file=args.get("file"), page=args.get("from_page"), query=args.get("query"),
                               target=args.get("fact") or args.get("document"))
                     with TOOL_LOCK:  # the reading and the document search may run side by side on one case
                         result = _dispatch(work, agent, call["name"], call["arguments"])

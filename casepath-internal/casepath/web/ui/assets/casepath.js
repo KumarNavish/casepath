@@ -157,6 +157,14 @@ async function renderCases() {
   });
 }
 
+// A historic file cut at a decision point is looked at as of a past day: the case says so wherever it is shown.
+function standAm(d) {
+  const cut = (d.files || []).map((f) => (f.extraction || {}).cut_of).find(Boolean);
+  if (!cut) return "";
+  const day = cut.as_of || (d.follow_up || {}).reference;
+  return ` <span class="cp-chip wait" title="${T("A historic file, looked at as of this day", "Eine historische Akte, betrachtet am Stand dieses Tages")}">${T("Historic", "Historisch")}${day ? ` · ${T("as of", "Stand am")} ${dateText(day)}` : ""}</span>`;
+}
+
 function statusChip(status) {
   if (!status) return `<span class="cp-muted">${T("not run", "nicht vorbereitet")}</span>`;
   const kind = status === "completed" ? "good" : status === "failed" || status === "interrupted" ? "bad" : "wait";
@@ -257,7 +265,7 @@ function renderRail() {
   const status = run ? (running() ? T(`${AGENT_TITLE[activeAgent()] || "Agents"} working…`, `${AGENT_TITLE[activeAgent()] || "Agenten"} arbeitet…`) : run.status === "failed" ? `${T("Failed", "Fehlgeschlagen")}: ${esc(runError(run.error))}`
     : run.status === "completed" ? `${T("Prepared", "Vorbereitet am")} ${dateText(run.finished_at)}` : word(run.status)) : T("Not prepared yet", "Noch nicht vorbereitet");
   return `<aside class="cp-rail" aria-label="${T("Sources", "Quellen")}">
-    <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small></div>
+    <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small>${standAm(d)}</div>
     <div class="cp-rail-head">${T("Sources", "Quellen")}<span>${files.length}</span>${S.canUpload === false ? "" : `<label class="cp-link">${icon("plus")}${T("Add source", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case documents here", "Falldokumente hierher ziehen")}</div>`}
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
@@ -1134,9 +1142,39 @@ function judgementPoints(ev, r) {
   return pts.sort((a, b) => a.urgency - b.urgency);
 }
 const doneRows = () => (S.data.feedback || []).filter((f) => f.target.startsWith("point:") && f.verdict === "done");
+// The run as the handler sees it: five stages in their words, real elapsed time, the expected rest, and one sentence on
+// what is happening now. ponytail: expected seconds are fixed from the night's medians; learn them per case size later.
+const RUN_STAGES = [
+  { id: "lesen", de: "Lesen", en: "Reading", agents: ["reader"], expect: 20 },
+  { id: "prozess", de: "Prozess", en: "Process", agents: ["router", "process_builder"], expect: 10 },
+  { id: "fakten", de: "Fakten", en: "Facts", agents: ["claim_reader"], expect: 70 },
+  { id: "unterlagen", de: "Unterlagen", en: "Documents", agents: ["document_finder"], expect: 55 },
+  { id: "pruefung", de: "Prüfung", en: "Check", agents: ["source_checker", "result_checker"], expect: 70 },
+];
+function runLine() {
+  if (!running() || !S.events.length) return "";
+  const at = (e) => Date.parse(e.at || "") || Date.now();
+  const t0 = at(S.events[0]), now = Date.now();
+  const span = (stage) => {
+    const mine = S.events.filter((e) => stage.agents.includes(e.agent));
+    if (!mine.length) return null;
+    const open = mine.filter((e) => e.kind === "agent.start").length > mine.filter((e) => e.kind === "agent.end").length;
+    return { start: at(mine[0]), end: open ? now : at(mine[mine.length - 1]), open };
+  };
+  const rows = RUN_STAGES.map((stage) => ({ stage, span: span(stage) }));
+  const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
+  const cells = rows.map(({ stage, span }) => `<span class="cp-chip ${span ? (span.open ? "wait" : "good") : ""}">${T(stage.en, stage.de)}${span ? ` · ${Math.round((span.end - span.start) / 1000)} s` : ""}</span>`).join(" ");
+  const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead") || {};
+  const doing = { reader: T("reads", "liest"), claim_reader: T("reads", "liest"), document_finder: T("looks for documents in", "sucht Unterlagen in"),
+    source_checker: T("checks the sources in", "prüft die Belege in"), result_checker: T("checks the result against", "prüft das Ergebnis an") }[last.agent] || T("works on", "arbeitet an");
+  const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : "";
+  return `<section class="cp-card" style="padding:12px 18px;margin-bottom:14px" aria-live="polite"><div>${cells}</div>
+    <p class="cp-muted" style="margin:8px 0 0">${T("Now", "Jetzt")}: CasePath ${doing} ${where || T("the case", "dem Fall")} · ${Math.round((now - t0) / 1000)} s ${T("so far", "bisher")}, ${T("about", "etwa")} ${Math.max(5, Math.round(left / 5) * 5)} s ${T("to go", "noch")}</p></section>`;
+}
+
 function overviewView() {
   const r = result(), ev = S.data.evaluation;
-  if (!r) return `<p class="cp-empty">${T("The overview appears once the case is prepared.", "Die Übersicht erscheint, sobald der Fall vorbereitet ist.")}</p>`;
+  if (!r) return `${runLine()}<p class="cp-empty">${running() ? T("The overview fills in while the case is prepared.", "Die Übersicht füllt sich, während der Fall vorbereitet wird.") : T("The overview appears once the case is prepared.", "Die Übersicht erscheint, sobald der Fall vorbereitet ist.")}</p>`;
   const brief = r.brief || {};
   const cite = (c) => (c ? ` <button class="cp-source-chip" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(clip(fileName(c.file), 22))}${c.page ? `, ${T("p.", "S.")} ${c.page}` : ""}</button>`
     : ` <span class="cp-source-chip none">${T("no source", "ohne Beleg")}</span>`);
@@ -1179,7 +1217,7 @@ function overviewView() {
     ratedRun() && !(p.fact && (item("fact", p.fact) || {}).values) ? `<button class="cp-button" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
   const setByYou = (S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").length;
   const checked = `${Object.values(recorded("fact")).filter((f) => f.status !== "unknown").length} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by a person)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
-  return `<div class="cp-overview"><div>
+  return `${runLine()}<div class="cp-overview"><div>
     ${preparedView(ev, draft)}
     <section class="cp-card" style="padding:18px 22px;margin-top:18px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">
