@@ -1,0 +1,101 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": "date of receipt",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "not_mentioned",
+    "asserted_claims": "open",
+    "extension_requested": "not_mentioned",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_ed10120c904e",
+  "index": 4,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "asserted_claims"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8300,
+      "monthly": 1320,
+      "small": 2235
+    },
+    "canton": "AG",
+    "claimant": "Felix Walsh",
+    "date_main_event": "2026-04-13",
+    "date_written": "2026-06-12",
+    "earlier_dates": [
+      "2024-03-06",
+      "2024-09-12",
+      "2026-01-31"
+    ],
+    "other_party_organisation": "Hagenbuch Trading Ltd",
+    "other_party_person": "Ruth Fankhauser",
+    "place": "Aarau",
+    "street": "Schulhausstrasse 6",
+    "third_person": "Mark Huber",
+    "time_spans": [],
+    "topic_order_seed": 938984361
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

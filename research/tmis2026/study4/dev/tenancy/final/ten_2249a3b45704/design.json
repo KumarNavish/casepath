@@ -1,0 +1,104 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "missing": "who was informed",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "open",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "stated_false",
+    "notice_oral_only": "stated_false",
+    "rent_deposited": "stated_false"
+  },
+  "facts_designed": {
+    "damages_claimed": "open",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "not_mentioned",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "stated_false"
+  },
+  "file_id": "ten_2249a3b45704",
+  "index": 4,
+  "kept_as_read": true,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "damages_claimed"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 9950,
+      "monthly": 2570,
+      "small": 2300
+    },
+    "canton": "AG",
+    "claimant": "Martina Ellis",
+    "date_main_event": "2026-08-04",
+    "date_written": "2026-09-04",
+    "earlier_dates": [
+      "2023-06-08",
+      "2024-04-21",
+      "2025-08-06"
+    ],
+    "other_party_organisation": "Moosacker Immobilien AG",
+    "other_party_person": "Stefan Müller",
+    "place": "Wohlen",
+    "street": "Birkenweg 82",
+    "third_person": "Urs Zimmermann",
+    "time_spans": [],
+    "topic_order_seed": 1733387812
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

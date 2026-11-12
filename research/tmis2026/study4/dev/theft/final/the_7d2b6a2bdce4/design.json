@@ -1,0 +1,98 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_true",
+    "bicycle": "stated_true",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_7d2b6a2bdce4",
+  "index": 10,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6800,
+      "monthly": 1770,
+      "small": 1185
+    },
+    "canton": "SG",
+    "claimant": "Clara Vogel",
+    "date_main_event": "2026-01-14",
+    "date_written": "2026-02-08",
+    "earlier_dates": [
+      "2021-12-15",
+      "2024-05-14",
+      "2025-11-26"
+    ],
+    "other_party_organisation": "Moosacker Services Ltd",
+    "other_party_person": "David Widmer",
+    "place": "St. Gallen",
+    "street": "Kirchgasse 95",
+    "third_person": "Eva Hughes",
+    "time_spans": [],
+    "topic_order_seed": 1140993588
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "open",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_true",
+    "termination_with_increase": "not_mentioned"
+  },
+  "facts_designed": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "open",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_true",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_efa24ba18ce3",
+  "index": 1,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "graduated_rent"
+  ],
+  "regime": "tenancy",
+  "revised_by_implication": true,
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4900,
+      "monthly": 3270,
+      "small": 1450
+    },
+    "canton": "AG",
+    "claimant": "Emma Brunner",
+    "date_main_event": "2026-06-29",
+    "date_written": "2026-07-20",
+    "earlier_dates": [
+      "2022-12-24",
+      "2024-02-18",
+      "2024-10-09"
+    ],
+    "other_party_organisation": "Rebhalde Cooperative",
+    "other_party_person": "Felix Frei",
+    "place": "Wohlen",
+    "street": "Rosenweg 54",
+    "third_person": "Nina Fankhauser",
+    "time_spans": [],
+    "topic_order_seed": 360299606
+  },
+  "target_revisions": [
+    {
+      "because": "attachment rent_increase_notice, item 'reasons given'",
+      "fact": "cost_or_services_reason",
+      "from": "not_mentioned",
+      "label": "Q1",
+      "to": "stated_false"
+    }
+  ],
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

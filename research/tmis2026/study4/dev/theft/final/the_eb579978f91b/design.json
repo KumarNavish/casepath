@@ -1,0 +1,104 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "missing": null,
+      "optional": true,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "open",
+    "imminent_danger": "stated_true",
+    "measures_pending": "stated_false",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_eb579978f91b",
+  "index": 3,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "bicycle"
+  ],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3050,
+      "monthly": 3230,
+      "small": 970
+    },
+    "canton": "BS",
+    "claimant": "Claudia Walsh",
+    "date_main_event": "2026-06-18",
+    "date_written": "2026-08-12",
+    "earlier_dates": [
+      "2025-03-24",
+      "2025-05-21",
+      "2025-07-28"
+    ],
+    "other_party_organisation": "Moosacker Immobilien AG",
+    "other_party_person": "Urs Tanner",
+    "place": "Basel",
+    "street": "Kirchgasse 69",
+    "third_person": "Gabriela Zimmermann",
+    "time_spans": [],
+    "topic_order_seed": 1821930511
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

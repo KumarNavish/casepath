@@ -1,0 +1,48 @@
+{
+  "attachments": {
+    "A1": {
+      "missing": [
+        "length of the probation period"
+      ],
+      "state": "insufficient"
+    },
+    "A2": {
+      "state": "sufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "Mein Vertrag hat keine eigenen Kündigungsfristen, es gelten die normalen gesetzlichen.",
+      "state": "stated_false"
+    },
+    "Q2": {
+      "quote": "Die Probezeit war bei mir drei Monate lang, so steht es im Vertrag",
+      "state": "stated_true"
+    },
+    "Q3": {
+      "quote": "Zuerst kam die Kündigung am 29. Januar. Schwanger wurde ich erst danach, als meine Kündigungsfrist schon lief.",
+      "state": "stated_true"
+    },
+    "Q4": {
+      "quote": "Ob das irgendwie mit meiner Kündigungsfrist zusammenfällt, kann ich deshalb noch nicht sagen.",
+      "state": "open"
+    },
+    "Q5": {
+      "quote": "Am 29. Januar 2026 hat mir Frau Irene Frei, die Leiterin Finanzen, die Kündigung übergeben, auf Ende März.",
+      "state": "stated_true"
+    },
+    "Q6": {
+      "quote": "Schwanger wurde ich erst danach, als meine Kündigungsfrist schon lief.",
+      "state": "stated_true"
+    },
+    "Q7": {
+      "quote": "Krank oder verunfallt war ich in dieser ganzen Zeit nicht",
+      "state": "stated_false"
+    },
+    "Q8": {
+      "quote": "In der Probezeit war ich bei der Kündigung sicher nicht mehr.",
+      "state": "stated_false"
+    }
+  },
+  "file_id": "dis_d4c7e372c087"
+}

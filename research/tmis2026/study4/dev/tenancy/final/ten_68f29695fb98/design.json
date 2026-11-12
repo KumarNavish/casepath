@@ -1,0 +1,91 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "stated_false",
+    "defect_present": "stated_true",
+    "deposit_intended": "not_mentioned",
+    "landlord_unaware": "stated_false",
+    "notice_oral_only": "stated_false",
+    "rent_deposited": "not_mentioned"
+  },
+  "file_id": "ten_68f29695fb98",
+  "index": 6,
+  "language": "en",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10000,
+      "monthly": 2950,
+      "small": 1425
+    },
+    "canton": "VD",
+    "claimant": "Owen Hughes",
+    "date_main_event": "2026-01-20",
+    "date_written": "2026-03-28",
+    "earlier_dates": [
+      "2024-01-25",
+      "2024-05-07",
+      "2024-08-03"
+    ],
+    "other_party_organisation": "Birkenrain Property Ltd",
+    "other_party_person": "Henry Palmer",
+    "place": "Lausanne",
+    "street": "Hofackerstrasse 59",
+    "third_person": "Olivia Bachmann",
+    "time_spans": [],
+    "topic_order_seed": 341126895
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

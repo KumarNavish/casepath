@@ -1,0 +1,102 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "not_mentioned",
+    "defect_present": "stated_true",
+    "deposit_intended": "open",
+    "landlord_unaware": "stated_false",
+    "notice_oral_only": "stated_true",
+    "rent_deposited": "stated_false"
+  },
+  "facts_designed": {
+    "damages_claimed": "not_mentioned",
+    "defect_present": "stated_true",
+    "deposit_intended": "open",
+    "landlord_unaware": "not_mentioned",
+    "notice_oral_only": "stated_true",
+    "rent_deposited": "not_mentioned"
+  },
+  "file_id": "ten_404e03b3e37f",
+  "index": 4,
+  "kept_as_read": true,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "deposit_intended"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 9000,
+      "monthly": 1050,
+      "small": 2320
+    },
+    "canton": "LU",
+    "claimant": "Paul Steiner",
+    "date_main_event": "2026-09-25",
+    "date_written": "2026-10-17",
+    "earlier_dates": [
+      "2025-02-02",
+      "2025-08-04",
+      "2025-08-08"
+    ],
+    "other_party_organisation": "Bachtel Trading Ltd",
+    "other_party_person": "Tara Palmer",
+    "place": "Luzern",
+    "street": "Dorfstrasse 31",
+    "third_person": "Henry Schmid",
+    "time_spans": [],
+    "topic_order_seed": 1604329180
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

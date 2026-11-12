@@ -1,0 +1,87 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "stated_false",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_false"
+  },
+  "file_id": "ten_49dab8d40787",
+  "index": 6,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3900,
+      "monthly": 3050,
+      "small": 2065
+    },
+    "canton": "NE",
+    "claimant": "Rachel Wälti",
+    "date_main_event": "2026-09-18",
+    "date_written": "2026-10-08",
+    "earlier_dates": [
+      "2023-11-26",
+      "2024-04-23",
+      "2024-08-19"
+    ],
+    "other_party_organisation": "Steinbruch Cooperative",
+    "other_party_person": "Clara Ammann",
+    "place": "Neuchâtel",
+    "street": "Bergstrasse 129",
+    "third_person": "Megan Müller",
+    "time_spans": [],
+    "topic_order_seed": 32006100
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

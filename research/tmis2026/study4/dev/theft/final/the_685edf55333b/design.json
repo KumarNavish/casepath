@@ -1,0 +1,108 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "burglary_or_robbery"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": true,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "not_mentioned",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_false",
+    "lock_change": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_false",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_685edf55333b",
+  "index": 10,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3600,
+      "monthly": 1780,
+      "small": 745
+    },
+    "canton": "GR",
+    "claimant": "Hannah Shaw",
+    "date_main_event": "2026-07-20",
+    "date_written": "2026-09-25",
+    "earlier_dates": [
+      "2023-05-09",
+      "2023-09-02",
+      "2025-07-16"
+    ],
+    "other_party_organisation": "Rebhalde Cooperative",
+    "other_party_person": "Nina Steiner",
+    "place": "Chur",
+    "street": "Sonnenweg 95",
+    "third_person": "Mark Brunner",
+    "time_spans": [],
+    "topic_order_seed": 215259042
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

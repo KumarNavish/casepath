@@ -1,0 +1,102 @@
+{
+  "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+      "away_cover_missing"
+    ]
+  },
+  "design_sha256": "5f93d3093db004ed8371c7746cdf2d474a2b57e0aa3d259d0c315670df4ec529",
+  "documents": {
+    "bicycle_voucher": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "police_report": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "request": false,
+      "state": "not_needed"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+    "workflow_sha256": {
+      "simple_theft_away": "7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e",
+      "theft_at_home": "89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "bicycle": false,
+    "claim_type": "simple_theft_away",
+    "imminent_danger": false,
+    "measures_pending": false,
+    "theft_away": false,
+    "traces_changed": false,
+    "vouchers_unobtainable": false
+  },
+  "file_id": "the_5ee356013cfc",
+  "level": 25,
+  "outcome": "a_stop_no_event",
+  "path": [
+    "a_event",
+    "a_stop_no_event"
+  ],
+  "presumed": {
+    "measures_pending": false,
+    "traces_changed": false
+  },
+  "regime": "theft",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "stopped",
+      "stops": [
+        "a_stop_no_event"
+      ]
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "outcome": "a_stop_no_event",
+    "state": "stopped",
+    "step": "a_stop_no_event"
+  },
+  "type": "simple_theft_away",
+  "unreached_always_stated_check": {
+    "differences": [],
+    "facts": [
+      {
+        "drawn": "stated_false",
+        "fact": "away_cover_missing"
+      }
+    ],
+    "same": true
+  },
+  "unresolved": [
+    "away_cover_missing"
+  ],
+  "waiting_for": []
+}

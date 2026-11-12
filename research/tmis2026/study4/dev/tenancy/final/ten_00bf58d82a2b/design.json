@@ -1,0 +1,101 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "missing": "the reasons the landlord gave for the notice (on the notice, or given on request)",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "hardship_evidence",
+      "missing": "household members",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "not_mentioned",
+    "asserted_claims": "stated_true",
+    "extension_requested": "stated_true",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_00bf58d82a2b",
+  "index": 13,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6950,
+      "monthly": 1100,
+      "small": 2130
+    },
+    "canton": "VD",
+    "claimant": "Stefan Wälti",
+    "date_main_event": "2026-03-09",
+    "date_written": "2026-03-21",
+    "earlier_dates": [
+      "2023-05-02",
+      "2023-08-18",
+      "2023-11-26"
+    ],
+    "other_party_organisation": "Hagenbuch Betriebs AG",
+    "other_party_person": "Nadine Palmer",
+    "place": "Lausanne",
+    "street": "Brunnenrain 43",
+    "third_person": "Seraina Kaufmann",
+    "time_spans": [],
+    "topic_order_seed": 1133035721
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

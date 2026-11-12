@@ -1,0 +1,99 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "open",
+    "asserted_claims": "stated_false",
+    "extension_requested": "not_mentioned",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_857d108a2bbc",
+  "index": 6,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "arrears_termination"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4550,
+      "monthly": 3180,
+      "small": 1835
+    },
+    "canton": "ZH",
+    "claimant": "Grace Wälti",
+    "date_main_event": "2026-07-29",
+    "date_written": "2026-09-14",
+    "earlier_dates": [
+      "2022-07-23",
+      "2024-09-13",
+      "2024-11-13"
+    ],
+    "other_party_organisation": "Hagenbuch Cooperative",
+    "other_party_person": "Ben Morgan",
+    "place": "Uster",
+    "street": "Brunnenrain 71",
+    "third_person": "Felix Widmer",
+    "time_spans": [],
+    "topic_order_seed": 384929043
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

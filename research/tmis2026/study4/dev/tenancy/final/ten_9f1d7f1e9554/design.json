@@ -1,0 +1,97 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "not_mentioned",
+    "asserted_claims": "stated_true",
+    "extension_requested": "not_mentioned",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_9f1d7f1e9554",
+  "index": 1,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6300,
+      "monthly": 1800,
+      "small": 1925
+    },
+    "canton": "BL",
+    "claimant": "Jonas Gisler",
+    "date_main_event": "2026-02-26",
+    "date_written": "2026-04-12",
+    "earlier_dates": [
+      "2023-01-16",
+      "2023-09-17",
+      "2024-05-07"
+    ],
+    "other_party_organisation": "Kirschbaum Immobilien AG",
+    "other_party_person": "Marco Imhof",
+    "place": "Liestal",
+    "street": "Schulhausstrasse 52",
+    "third_person": "Daniel Tanner",
+    "time_spans": [],
+    "topic_order_seed": 11580306
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

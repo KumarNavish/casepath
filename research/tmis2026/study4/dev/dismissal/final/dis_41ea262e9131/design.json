@@ -1,0 +1,121 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "stated_true"
+  },
+  "file_id": "dis_41ea262e9131",
+  "index": 4,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5850,
+      "monthly": 2710,
+      "small": 1030
+    },
+    "canton": "UR",
+    "claimant": "Dominik Egli",
+    "date_main_event": "2026-07-07",
+    "date_written": "2026-07-16",
+    "earlier_dates": [
+      "2025-03-16",
+      "2025-07-16",
+      "2026-02-01"
+    ],
+    "other_party_organisation": "Rosenau Verwaltungs GmbH",
+    "other_party_person": "Beat Keller",
+    "place": "Altdorf",
+    "street": "Mühleweg 95",
+    "third_person": "Seraina Hughes",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-07-04",
+        "date_if_span_not_run": "2026-07-13",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-05-28",
+        "date_if_span_not_run": "2026-07-04",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-10",
+        "date_if_span_not_run": "2026-06-22",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-21",
+        "date_if_span_not_run": "2026-06-10",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 62573560
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

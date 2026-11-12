@@ -1,0 +1,95 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "stated_true",
+    "asserted_claims": "not_mentioned",
+    "extension_requested": "stated_true",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_65213c168ab3",
+  "index": 7,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2750,
+      "monthly": 1010,
+      "small": 1880
+    },
+    "canton": "BL",
+    "claimant": "Claudia Hürlimann",
+    "date_main_event": "2026-03-24",
+    "date_written": "2026-05-03",
+    "earlier_dates": [
+      "2022-05-19",
+      "2024-08-19",
+      "2025-06-16"
+    ],
+    "other_party_organisation": "Lindenmatt Genossenschaft",
+    "other_party_person": "Reto Shaw",
+    "place": "Liestal",
+    "street": "Schulhausstrasse 95",
+    "third_person": "Thomas Lehmann",
+    "time_spans": [],
+    "topic_order_seed": 2081653583
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

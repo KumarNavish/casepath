@@ -1,0 +1,94 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "missing": "reasons given",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "missing": "sender and addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "stated_true",
+    "increase_applied": "stated_true",
+    "index_clause": "not_mentioned",
+    "termination_with_increase": "stated_true"
+  },
+  "file_id": "ten_e4858b3af131",
+  "index": 0,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5600,
+      "monthly": 2370,
+      "small": 1755
+    },
+    "canton": "GR",
+    "claimant": "Nina Wyss",
+    "date_main_event": "2026-03-02",
+    "date_written": "2026-03-25",
+    "earlier_dates": [
+      "2022-09-29",
+      "2022-10-27",
+      "2023-05-23"
+    ],
+    "other_party_organisation": "Sonnbühl Property Ltd",
+    "other_party_person": "Ian Egli",
+    "place": "Chur",
+    "street": "Wiesenstrasse 94",
+    "third_person": "Anna Wälti",
+    "time_spans": [],
+    "topic_order_seed": 417975757
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

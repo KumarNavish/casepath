@@ -1,0 +1,92 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "not_mentioned",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_true",
+    "termination_with_increase": "stated_false"
+  },
+  "file_id": "ten_a743587360f3",
+  "index": 14,
+  "language": "de",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10700,
+      "monthly": 1560,
+      "small": 1825
+    },
+    "canton": "FR",
+    "claimant": "Fabian Bucher",
+    "date_main_event": "2026-08-22",
+    "date_written": "2026-09-12",
+    "earlier_dates": [
+      "2023-03-02",
+      "2024-07-16",
+      "2024-09-06"
+    ],
+    "other_party_organisation": "Erlenhof Genossenschaft",
+    "other_party_person": "Fabian Schmid",
+    "place": "Fribourg",
+    "street": "Mattenweg 81",
+    "third_person": "Daniel Morgan",
+    "time_spans": [],
+    "topic_order_seed": 1319724515
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": "monthly salary",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_false",
+    "incapacity_cause": "open",
+    "notice_period_varied": "stated_false",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "not_mentioned"
+  },
+  "file_id": "dis_dd5c84a7084d",
+  "index": 2,
+  "language": "de",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "incapacity_cause"
+  ],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4350,
+      "monthly": 2600,
+      "small": 790
+    },
+    "canton": "ZH",
+    "claimant": "Thomas Reid",
+    "date_main_event": "2026-03-01",
+    "date_written": "2026-03-27",
+    "earlier_dates": [
+      "2024-03-09",
+      "2024-10-27",
+      "2025-06-08"
+    ],
+    "other_party_organisation": "Kirschbaum Verwaltungs GmbH",
+    "other_party_person": "Nicole Gisler",
+    "place": "Winterthur",
+    "street": "Sonnenweg 104",
+    "third_person": "Daniel Foster",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-03-15",
+        "date_if_span_not_run": "2026-03-24",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-06",
+        "date_if_span_not_run": "2026-03-15",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-20",
+        "date_if_span_not_run": "2026-03-03",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-11-02",
+        "date_if_span_not_run": "2026-02-19",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1439193907
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

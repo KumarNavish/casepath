@@ -1,0 +1,1261 @@
+{
+  "assemble_sha256": "045d03c3f2cee2b6af3e9d96a99f54ee97871e1d8a97a8db5c376608886d694d",
+  "counts": {
+    "dropped": 2,
+    "kept": 58,
+    "kept_after_rewrite": 5,
+    "kept_as_read": 2,
+    "open_share_per_level": {
+      "0": 0.0,
+      "10": 0.143,
+      "25": 0.286,
+      "50": 0.533
+    },
+    "per_level": {
+      "0": 15,
+      "10": 14,
+      "25": 14,
+      "50": 15
+    }
+  },
+  "design_manifest_sha256": "1fa8fc8e9c62525e76a0cfc62f1baa8f3681a9efb866aecc86f78846d2db4062",
+  "dropped": [
+    {
+      "file_id": "dis_6093ca79060d",
+      "level": 25,
+      "type": "immediate_dismissal",
+      "why": "differs after rewrite"
+    },
+    {
+      "file_id": "dis_925dc8cee367",
+      "level": 10,
+      "type": "immediate_dismissal",
+      "why": "differs after rewrite"
+    }
+  ],
+  "files": [
+    {
+      "denied_event": true,
+      "file_id": "dis_05af0871cd70",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "6ab7237a82248b6b0e9e0a19a0eeef2fcf6f10b247bfc08a9476aee4fa1c216f",
+        "design.json": "697be26b9c2d71c064109038ddc0cb60c141c076081850a47eb6a550f0506390",
+        "reference.json": "9cd94b1a7f8cc1c8f5519c553c1b71c2cd94514c21a6f9901817ca8672e28103",
+        "text.clean.txt": "439e9a756f53011d0b29357c9a007e4442774b8134d5ffb66c70a223a00bdfb3",
+        "text.txt": "439e9a756f53011d0b29357c9a007e4442774b8134d5ffb66c70a223a00bdfb3"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_064eeecaeb0d",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "75a7aa1447e7ccb731c4922379c638fdd25f6c475ced0662627f470a69b5f125",
+        "attachments/employment_contract.txt": "75a7aa1447e7ccb731c4922379c638fdd25f6c475ced0662627f470a69b5f125",
+        "blind_check.json": "5eb7bc56554a1479c1d0ddffd4dc17ac2598f2a4f39aa45b3e25e3490ea9e5cc",
+        "design.json": "c92ebd8a433956ff663b751b021705132bf8ff10d059138633a5e65d17a3667c",
+        "reference.json": "5764dca613a784984c2d251639cd08aa2d61e407bd4cea3eadc19914257bc40b",
+        "text.clean.txt": "9879ceb87baa66989f6c77f924be8de58dc45895377a2a0b14134e5bc8f2bd2c",
+        "text.txt": "9879ceb87baa66989f6c77f924be8de58dc45895377a2a0b14134e5bc8f2bd2c"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_07997bac9677",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/probation_terms.clean.txt": "4adba55947bbe8be386db5f4bc1d671edefd169f9f71a32d636326c077906c12",
+        "attachments/probation_terms.txt": "84556330338c87cf50047ec8e0c96ecce25b30a0e1cee05465db553b36291931",
+        "blind_check.json": "fd0e270b358a9467cbb61874ba89ffd75efca82bfab7abf38484c07e647fa0fe",
+        "design.json": "f42dc4f4dba67798a37b09b5e2d9d9f5d69ebbb42c5d68ab04de477cc73bc288",
+        "noise.json": "c28d4325e6c380aef15e1e5151fd6a6b13690e1b818cf30646da1d4353a097b4",
+        "reference.json": "9b0d6c5499bb53b37ee26551d97674d4f0b32fd2ddc9fa8863e967b7396761eb",
+        "text.clean.txt": "b2d0fa4c7d7dc8d1eb14f2b9228a000dccd6fee113a37e36eec2b098ccf438a7",
+        "text.txt": "ee06c99e82cc97ce3ed38620d3ec4bccf59d615aca656a01c54418b742c82b74"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_0ddd28b452d1",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/probation_terms.clean.txt": "4402adc6a578ee537fdc71de550c7d622d02ec38b0a950e56a76afd3fa36a59a",
+        "attachments/probation_terms.txt": "4402adc6a578ee537fdc71de550c7d622d02ec38b0a950e56a76afd3fa36a59a",
+        "attachments/service_confirmation.clean.txt": "5234d8c541d94910d1d722888df944cda81cab45241cac9a8a311ddd3fadd781",
+        "attachments/service_confirmation.txt": "5234d8c541d94910d1d722888df944cda81cab45241cac9a8a311ddd3fadd781",
+        "blind_check.json": "94e38711bb02e956746e55256eb6e9439116ad95b7133bcb71b469a055a37514",
+        "design.json": "dd89936e741bfa7da6c73c38d23863da3261b52f029e98cde0989d081d880aa6",
+        "reference.json": "9369704804307bc0f533514b15a138e66417fe8bf4b6f402e08dea720253d480",
+        "text.clean.txt": "1617982539dd1aa7f34e8d4285917686c556a9499be90139380e397b1d180a07",
+        "text.txt": "1617982539dd1aa7f34e8d4285917686c556a9499be90139380e397b1d180a07"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_0f89215979d2",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "f00a9e56ed62a2a3e38eac4a54f81f74e885648c29f69290d24c96c7b98f67e7",
+        "design.json": "336a5c45c5b71ea74d67d8a933c4e6c193fa83ac9b5bce71b1b4751902c344b6",
+        "reference.json": "10e581603b91cacccb2f5f0583f4adbb96d50fc24cbe23be5981951d12077162",
+        "text.clean.txt": "1747e0646f966fd9c74175a8ea5e8f3e35af6b3b727d91603acf0f329ed33b71",
+        "text.txt": "1747e0646f966fd9c74175a8ea5e8f3e35af6b3b727d91603acf0f329ed33b71"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_14b7db92a192",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "701433c7af0f406fd331615d509def8bb043b2aa75b20aa7b7f21a6b76cd119d",
+        "attachments/employment_contract.txt": "40cba9ea977f2e8442be63879de390a7374d207c067a564e5053e37e20f33e7a",
+        "blind_check.json": "3b51fb5f93c4bc4e299a1f6a3191260091bcaba94357fdc501da3a9e2ceaa6de",
+        "design.json": "10534737851886b8f82740ae05f16e4693f3c4b67869aeead80d772749860bf4",
+        "noise.json": "265ed799a07d7b80878f2ff0a160b9c420c4d20046de8e7ff4297561aa592af4",
+        "reference.json": "a4da23d69d048f925ea9dcae3285780e4135158f658d547a93d13db54ec2892b",
+        "text.clean.txt": "36506d333d6ab3fc7baf5c8aad16503a1e6620e338250a46d80be8276034261e",
+        "text.txt": "92718b7c0450eb0e225d44abefaa72f0fe3739bdc96bdf12f80b3c1df25a3b7a"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_166a056aad58",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/salary_evidence.clean.txt": "4cc4ab2fd4147f4872857072e9ffabc60dd782f13c25ba7946c526d9d7468029",
+        "attachments/salary_evidence.txt": "832363f36dd94bd1879b2b165a4fda1cb6f3f7c9aa6060152881939c75b1eaf9",
+        "attachments/written_reasons.clean.txt": "41e7a7fc6da53ebab8e090c0c8a0114c552915b8af71ac312fa1d75c56c8f16a",
+        "attachments/written_reasons.txt": "5f584933481abeaeea7b5c18ff5775a62f9cf09b353bd962fc0f6c8f839f97bc",
+        "blind_check.json": "c4145d4a90391ac479008b7ddc570d2488a2d47098874c6b59b294ff9df4b85a",
+        "design.json": "513dd6f49be9b5645498357bcd68416e967f0c8adefb1f37f3386adca66bd2d3",
+        "noise.json": "0782cdfd01feb0e6a6f58f45c0833e0174d7883a260af691ad8d3c68b7fc12fd",
+        "reference.json": "22ef5df197a2320217cd817d8f6efde4a1ab7788da80468c2557610af9e119c2",
+        "text.clean.txt": "b04236a327313c5f48f40386f8c586f8a82db3c2ef8a051da2ee09ef1c8e3a6f",
+        "text.txt": "e44f9d5f3c372c82a1286d0029c567809aa7feb6a6266d762769cba28980697c"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_188837a70acc",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [
+        "agreed_to_continue"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "bd7f63f0a6e16a7e2b1678f8fce2b35243ea2b24e6c867502e856f18d44506f9",
+        "attachments/employment_contract.txt": "5941875c2f258e338561339e28dd2e65ce4fdf0607cb563d7f7ab9f15b5ad7be",
+        "attachments/termination_letter.clean.txt": "a3dda55d7688f677f4c67b2cdbb41f740af0887af8a2e5db30847d469a2b0490",
+        "attachments/termination_letter.txt": "04a2a704039e3bd159cdf77c6694bde03ffae58800a951020cc905d27880955b",
+        "attachments/written_objection.clean.txt": "15c418868e3f1226311f719296abf7e74eb299d8bfdcc0bacb2220b1a31fc671",
+        "attachments/written_objection.txt": "cd5992dc7f8609748cabb78709d0ffd44149eefb271b631b7b13c414737ffcac",
+        "blind_check.json": "63df48dd904951143e43cad87d3ae9c7f33b3f59f35af2e64cd56c39759d9fa8",
+        "design.json": "4605c65182ad1542ab539c4f1bbda9f01a57505a4719b2d082349cab1b2ede8a",
+        "noise.json": "6e987496bccb12be992e66efdee4f9e5f843cbdacac03cb8a725149ff9a5e825",
+        "reference.json": "753dc8c09915dadf00b39e8b46130f67528f5e4778baf6611271b02660602771",
+        "text.clean.txt": "b13a420fc055cd4bb4169da8df5511f115d663a60485881121965b9a250f1e4d",
+        "text.txt": "e52a96c33bec311cc1467b07152f3fb7d144f29a9cc86f1cd5850295dccedfca"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_1a145eb920db",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "619f8b2117c58dc8708763d4fb2f029c0bdc631f8b594edb3919e9d4f15803d8",
+        "attachments/employment_contract.txt": "619f8b2117c58dc8708763d4fb2f029c0bdc631f8b594edb3919e9d4f15803d8",
+        "blind_check.json": "b8ad0f4e35ee7fd65f09353838b98232cb906e51d6d77c2ed3724bb05144133f",
+        "design.json": "28a0a41cf5652bf5f387ee0a8e91ab7aebd44ebbe206ecce97633f6d03c4da57",
+        "reference.json": "b74cc56920045e6410119afaa5b46070ce34e16e3b1247fd9bc2c20eecd81936",
+        "text.clean.txt": "9b7e68831754fb4a905ff264fd13d6c08085e2c7a83c38efcc2afd557cb7f8e6",
+        "text.txt": "9b7e68831754fb4a905ff264fd13d6c08085e2c7a83c38efcc2afd557cb7f8e6"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_1bf62841defb",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "9054708a625983891441748aa6059537803a4013243930641ec8b392853c55a0",
+        "attachments/employment_contract.txt": "eb06e8e3acbbebdc5c48259ff6993580b207a4a2c442c11e70f72b5e7ddfb236",
+        "attachments/termination_letter.clean.txt": "68d712c6e947bbdffed312d44562c110b9e9857303c052d754624e87e788b7d1",
+        "attachments/termination_letter.txt": "365baafa1c000ee833bd40337f13dfb5bc564c4f64cefa50b94febda9c3a38f3",
+        "blind_check.json": "565a1ca2669ac0a5967962a784f007a1c0ee4b5e9cd19e367e4c1fc718dc477b",
+        "design.json": "055b721125d3a6add7a3ddc7d4dbb83495c59654ee398c3c5d91f8625ae26b23",
+        "noise.json": "317d700523a1d639661a6de8b73eede864e4f1ab76190ceb50d2e3c1d5159401",
+        "reference.json": "2f5f2423cf56737a84a820fc77ef036b5b26020c5b7949315c6fbca7e907815a",
+        "text.clean.txt": "c9b070b7adee94b4df88535f212bf0157cd02268219ea12b6bf74d8e1cec7463",
+        "text.txt": "66cbb513cfd977501620b2576551ebf85a29fd2fea66886fc4b8d4f21217092f"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_1f3d840408c2",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/other_earnings_evidence.clean.txt": "d46b7535f829a75a305de93d1f4502578496f13121c1537f2017d2bd6bab988b",
+        "attachments/other_earnings_evidence.txt": "d46b7535f829a75a305de93d1f4502578496f13121c1537f2017d2bd6bab988b",
+        "attachments/salary_evidence.clean.txt": "c637f0c9f29cb25794029ad1dfe006b20b9bb438f373865a4791891470fa0b66",
+        "attachments/salary_evidence.txt": "c637f0c9f29cb25794029ad1dfe006b20b9bb438f373865a4791891470fa0b66",
+        "blind_check.json": "870a1e7ef37b9e3bf3e3aa070371d26f6ecdb0bb04d9b19203266fd1dca4ee3a",
+        "design.json": "6da7f7fd9fac8c3879388df1f008ea6768a8f13da60ea680e4fc6d275ca73146",
+        "reference.json": "f64484dbf5456d166015e7a262dc0376bc32dc0b0b62d6fa480638ad862fe295",
+        "text.clean.txt": "94b7364429ce4484d20434a5e5c029d4c7a1b8b20ee0354aea8dca3cd9fd04f7",
+        "text.txt": "94b7364429ce4484d20434a5e5c029d4c7a1b8b20ee0354aea8dca3cd9fd04f7"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_250393de2a03",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/termination_letter.clean.txt": "7cb04be85ca60f1f64bf7223643fdf44b148f3f4ba6bd7db1f94efc12d957cc0",
+        "attachments/termination_letter.txt": "7cb04be85ca60f1f64bf7223643fdf44b148f3f4ba6bd7db1f94efc12d957cc0",
+        "blind_check.json": "bd6a0183f823d34a8bbe112547d18776b9d4c05ce2ca9b9144554b7d06657cd8",
+        "design.json": "f409e4f7fb9ae3dcf083c647e3ee59380651961ab4e95d0aba5d4cdc78ae2922",
+        "reference.json": "85bdb71987a5df0badea36cfd9c651deb7c2f5706f030a01101d707ef715b0ba",
+        "text.clean.txt": "b0b6e7f583fee150322bccdebc3cc137b22a1e7e38ea16bb51a2dcceabbf1120",
+        "text.txt": "b0b6e7f583fee150322bccdebc3cc137b22a1e7e38ea16bb51a2dcceabbf1120"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_25e20aeec77d",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/pregnancy_certificate.clean.txt": "3e6c46a40a0c317a79699c4d028fd7f9661b342728f2b4d90ea0a11349a92336",
+        "attachments/pregnancy_certificate.txt": "3e6c46a40a0c317a79699c4d028fd7f9661b342728f2b4d90ea0a11349a92336",
+        "blind_check.json": "a7f20c495a9d7bed08f9fcaf4492dd9a64171f77e856b9cab6dd3e3a772557c7",
+        "design.json": "ace2238f2ecb151d5c3bac74899d5082c51c2282a6dd83117206fc4f39f25c66",
+        "reference.json": "24c59a977d811c31e3eb33cb5743058343cec88a0b824ef60923f0481bc78c0a",
+        "text.clean.txt": "c3a7de81c40386f337c595a617b84f0aa0cc069d1e95b58989b4c952d605cdfe",
+        "text.txt": "c3a7de81c40386f337c595a617b84f0aa0cc069d1e95b58989b4c952d605cdfe"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_32d79153a27f",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/probation_terms.clean.txt": "cb346e8353864def423c8d20d403f0b3e38e3fa56a008c6972878796784ed113",
+        "attachments/probation_terms.txt": "cb346e8353864def423c8d20d403f0b3e38e3fa56a008c6972878796784ed113",
+        "attachments/termination_letter.clean.txt": "f5aa66bb371ad4f36aed3a09f0d6c8a0884257c9e66d94647dd5791099697b38",
+        "attachments/termination_letter.txt": "f5aa66bb371ad4f36aed3a09f0d6c8a0884257c9e66d94647dd5791099697b38",
+        "blind_check.json": "9ec47604597297fe1b4417fbabb5367cbf05f3d0b3c74c59f6ae433fbc6fb306",
+        "design.json": "1d17dbdb199ccb2eefd1fb29469fd47053abfde7c6e81398e0c4fca196d3425c",
+        "reference.json": "c671967cbb0ba67f6fe0c73e338a570a1424f2ee0ec9dfc099e002613c6383e6",
+        "text.clean.txt": "e921ebb9f0f8e2137cfb3bd8613b0bea089a19b61b77780f56827b47467809fa",
+        "text.txt": "e921ebb9f0f8e2137cfb3bd8613b0bea089a19b61b77780f56827b47467809fa"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_373612fa5345",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "0a359c89f503ea0516b24c9f2a3ebb90833f5bf3272b802eaa2b9200bfbb2384",
+        "attachments/employment_contract.txt": "0a359c89f503ea0516b24c9f2a3ebb90833f5bf3272b802eaa2b9200bfbb2384",
+        "blind_check.json": "eb6448d2c896c34738c98a3830a98fd24dca5530e192cfc5a4314f153ff53f29",
+        "design.json": "9c0a7bf968a23285ddac26126ef1a3f8182596ce33c70d45e5f2cc0be9c61419",
+        "reference.json": "4fc6110c0ec76298d33b4621e8696dc548d1232fc765838bcf916506de837c1b",
+        "text.clean.txt": "7b63d3d0684595b09de1246cc1bdbfd3bd94d3c75847f0fe0292855e64b2fb88",
+        "text.txt": "7b63d3d0684595b09de1246cc1bdbfd3bd94d3c75847f0fe0292855e64b2fb88"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_3a4e06ed3132",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "objection_submitted"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "877bb1a98b87646880bf599d8e20a57b1f7f8b87530450c12b596474432c9d2b",
+        "design.json": "257fa353ede5805d7225415241843270d386a18709f9d50ec8c14aad6ada694b",
+        "reference.json": "78e1d189fb25abf8f99bcf4616dd2bc6107da9cd4edd7288f65bb20cbb1b73a5",
+        "text.clean.txt": "b76e575142d4e8958f7bc53f06e9641ab682c5d0166b1f9e8c03f1bc77c49927",
+        "text.txt": "b76e575142d4e8958f7bc53f06e9641ab682c5d0166b1f9e8c03f1bc77c49927"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_3f2fbc0b6128",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "pregnancy_or_birth"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "c911a5f616cf97d759fc3d36637271db8ac3a86c6cfc123cfe8cdeeea0a8fce7",
+        "design.json": "7494df583d21e28f706a92c8be4b4b4744ba9c484f0978cdb180c2ae39b2fc36",
+        "reference.json": "30571357e3b4b235d4ab0c7aaf7d01a1a1b06f24d370c052e0d4e25d06be5f9b",
+        "text.clean.txt": "aee0f91b8a1fc36b4834e6701fca2aedc4a068721f76a5cb2e2cdde9518c82ae",
+        "text.txt": "aee0f91b8a1fc36b4834e6701fca2aedc4a068721f76a5cb2e2cdde9518c82ae"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_408b774aa7db",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/claims_correspondence.clean.txt": "3dc4c6727414cfbd240e6a7ac1af731b5183d0a19b2b679df754061e049b86f4",
+        "attachments/claims_correspondence.txt": "42cca50e00b1b5f24b888ce39c437ded9ec97ecf8cef03840c46cd806c05b94f",
+        "attachments/employment_contract.clean.txt": "132215443cc6683cb055436b79286565b4af49d2ee2ca3659adde1bf3485b6f1",
+        "attachments/employment_contract.txt": "51483e41415d01c3cdcdbbbac962dd15f66bc64e61db71253be0d9e17908e58c",
+        "attachments/representative_mandate.clean.txt": "7fd321db4ca50796294e690c898f1b2303cbb67f670d76e3b70e9bc3fe842bd7",
+        "attachments/representative_mandate.txt": "ee6732cb2d954ba8b5f9effe7174c1b4e6bb5e9d7e2600bf971317af8eb79c5b",
+        "blind_check.json": "7a8fdb0988f72eb29fca985b7f145e660145b2d78608a22637f80aacbc5c7e4a",
+        "design.json": "7a9098d4bedc6577ecf4e44ee955140fc9cb497b38ea1deee9df955ec69b963b",
+        "noise.json": "a74954f4be4462fa1d58417898b0d1fa107dcccef4bd363ff8e3179d6c1e946c",
+        "reference.json": "2450d2f32e75050eaa80b454a7d09846a5f45c3c8126c0d4c1166b85c4002666",
+        "text.clean.txt": "7057f318034d9fa9f8d4936fc95939a1cfd779e8ae3ffe930901e76a6a2a8268",
+        "text.txt": "f34f82c72c204feed1a18fb07eb5481c892ee829f78a6a2dda0ec88e7ce9a8b1"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_41ea262e9131",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "b4bd5df474af8fa3c70702bc281bc7b85b010da999ad71fabe28b828b3301532",
+        "design.json": "202e3ee0da4619239e9718ab596b84113e42c894b61ff262519a4a2601d386a8",
+        "reference.json": "e30291e974947a4560a3705f2e2d595d267a3d4052e866ea81cdde101c5173fc",
+        "text.clean.txt": "39855ffa4d4628d3948945afe464df5d00baba9217e56703c2fb3cfdb07858e0",
+        "text.txt": "39855ffa4d4628d3948945afe464df5d00baba9217e56703c2fb3cfdb07858e0"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_45aed10bfb69",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "820316b0b5cf0c8807fe0c3d8d237a3c79bf2a6cd6816b497e90edb89984e7ad",
+        "attachments/employment_contract.txt": "820316b0b5cf0c8807fe0c3d8d237a3c79bf2a6cd6816b497e90edb89984e7ad",
+        "blind_check.json": "a087eef7ecdbe444d5c3331cfaf217f36ad230dfe4006efe6e8f904a54b33878",
+        "design.json": "c80d474474c7e714f014fde8d02e66709a9a0333bec6c6edf363876ec07b5c0b",
+        "reference.json": "9ade6e7595f88f5a0e7f62c6638d63185b026a35605bbef6696362722b914cfa",
+        "text.clean.txt": "d02613f098777a7f07af5e155235acf29b95117cc7132812ae29a464d4efbb01",
+        "text.txt": "d02613f098777a7f07af5e155235acf29b95117cc7132812ae29a464d4efbb01"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_465be22068ef",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/termination_letter.clean.txt": "d67ef1ad8c77323e16288b24255a0f8ed5ac2d8b849ea3b5ed2a913372573d0f",
+        "attachments/termination_letter.txt": "d67ef1ad8c77323e16288b24255a0f8ed5ac2d8b849ea3b5ed2a913372573d0f",
+        "blind_check.json": "71faee23232af952720829197dd23508e4d35022d9e9acb7617691b71a21b748",
+        "design.json": "0efe8bc64089c7c90ff4d0d8d52aafe91e2166afe8a590275453ff3d05131b28",
+        "reference.json": "81d904513dfca35c909bcd83ecf830dbdc548ea4ef991459cc690719a7450ba0",
+        "text.clean.txt": "2715f9b1b1ed5d702d0cc4f6e04ea886d1005b3f4c574f94eeb819d5dd4e2239",
+        "text.txt": "2715f9b1b1ed5d702d0cc4f6e04ea886d1005b3f4c574f94eeb819d5dd4e2239"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_4c827570a0b2",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "932fe823b4541e10000ac6528ad41fbb8bb8cdf0f073a9299a696a099c258449",
+        "design.json": "32545792d655559aedacf0da8dc94da436f37975a053f332fb86657c84b1935d",
+        "reference.json": "1201c7cc4fdb1c9c9b79e23222e1f989231d38d8787b2ac985b75b3b710004a8",
+        "text.clean.txt": "d9730baafebedb338bcf8d0ce46eedaf33761e740eb66e11c3448ac0425b4944",
+        "text.txt": "d9730baafebedb338bcf8d0ce46eedaf33761e740eb66e11c3448ac0425b4944"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_4d5e1451544b",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "97413fda3d1ef802604f807da860ed8abeee62e0d18f77bdaec101853990408f",
+        "design.json": "7a260c0fd28576cb056c50106de3b04e6036c9beaf8e1a2a97bbd02cb11e50e7",
+        "reference.json": "e1da4c109069e0686d457af8afbd33c6ebfa8001844ce85f5ace591058bf31a6",
+        "text.clean.txt": "3e66d75b22c173f8a44ea9602d8a2a0a1f0d8bfae420a227339de8203d89fcdb",
+        "text.txt": "3e66d75b22c173f8a44ea9602d8a2a0a1f0d8bfae420a227339de8203d89fcdb"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_4ee0866843c9",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "c6b04bbc4ce35a6d974f0b0e4b0b9492028b2b215fe97cb32adc798f03dcc1ad",
+        "design.json": "12ee8d1ad867330065762bea6f61d1360a634f10d22a33cbb21622ff88c8c290",
+        "reference.json": "75ea39fcd97fcdd3632799c02853e562562147a70fd6ece054b446c03028b801",
+        "text.clean.txt": "996afbc444a5561997093bca131df0aeb7f5610e4d93a8fa8872d182081e06e7",
+        "text.txt": "996afbc444a5561997093bca131df0aeb7f5610e4d93a8fa8872d182081e06e7"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_5215d587db4b",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "cb123595bbf5522ab29877e021b3227a81e1471f745ccfbb6c981550f3477621",
+        "design.json": "4e4424a84a3b9b0a581580b505cdf46432b5030813b865c0ee6de208bfd538f4",
+        "reference.json": "08da39bcc8f61720007a8e75244e37c6cbfb48caca2ed8492739a811c53c008d",
+        "text.clean.txt": "8b119677b4f1dac596d1fa99e0dd312b07f5552967877d2dad33a6af16d5b04c",
+        "text.txt": "8b119677b4f1dac596d1fa99e0dd312b07f5552967877d2dad33a6af16d5b04c"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_5adf4d2aec3c",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/salary_evidence.clean.txt": "e35740323d865328b224867544f98abc12ffbeb09f053b4493be2dc44f4dd0fd",
+        "attachments/salary_evidence.txt": "e35740323d865328b224867544f98abc12ffbeb09f053b4493be2dc44f4dd0fd",
+        "blind_check.json": "7fe1455956ac0dbc370e1b9200b9aaddc1d29f76a730442289098ebd341e7959",
+        "design.json": "dc158d76a24a380e0a60bb845f308edb5b799af9fb2da5d0d53475978120318e",
+        "reference.json": "e8a402881e85acc7d0111a12e90610038b560bdfbbba3e72f2818da721de96e2",
+        "text.clean.txt": "10f13aafd5ade2f4a353423de82a78a6062dea4517a520e9d2498c85d54789c3",
+        "text.txt": "10f13aafd5ade2f4a353423de82a78a6062dea4517a520e9d2498c85d54789c3"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_5fa2acf39bac",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/pregnancy_certificate.clean.txt": "5e1d3d3a6cbc1ed7f0a74060de9871614bfceb3e39edb2ddcc4695cdc2e68602",
+        "attachments/pregnancy_certificate.txt": "5e1d3d3a6cbc1ed7f0a74060de9871614bfceb3e39edb2ddcc4695cdc2e68602",
+        "attachments/service_confirmation.clean.txt": "63cab3cd5c7967277639b3f233f3ebea144a65d0f9dbd6c501f61936c7513f2c",
+        "attachments/service_confirmation.txt": "63cab3cd5c7967277639b3f233f3ebea144a65d0f9dbd6c501f61936c7513f2c",
+        "blind_check.json": "a18da04c2db79cb99288ffc6547fbab5e7f94ff3fde41bba05f00fe10d332bc2",
+        "design.json": "fa6267c28f6669f070010fbcc7c0fa8b6af0308dd7441e1f7baa670a8c30cbf8",
+        "reference.json": "3b4bef64027f5e8878a7f85b7cf9877231943968b902e8a9ca77ea16e2956d17",
+        "text.clean.txt": "eee0610bba84c862ac0a2bf61cc3cb672c536d7bea7140ad6b15471e8dc54853",
+        "text.txt": "eee0610bba84c862ac0a2bf61cc3cb672c536d7bea7140ad6b15471e8dc54853"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_60632f5d2a1c",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "incapacity_illness_accident"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "f5a53987554c45e0d441bdb57cc43749bebc5a974ddb25be7f9770d207368938",
+        "attachments/employment_contract.txt": "f5a53987554c45e0d441bdb57cc43749bebc5a974ddb25be7f9770d207368938",
+        "blind_check.json": "579ae75e8e2c897223ab621dff0e0ebcdaa70daba202ee37cae42763c35e1c08",
+        "design.json": "16daeb38526c45d38c021924d2169861d2c389d27d2ea1db67eee2de0f0c35f0",
+        "reference.json": "9972aa9f5c3e5f22273559344904d97c8d9f7e1bc256b22aab5401e0382c8cf7",
+        "text.clean.txt": "f57f3b70221242bd2c693457962f3dbd0cf46c3ee23dea0037294026d3787949",
+        "text.txt": "f57f3b70221242bd2c693457962f3dbd0cf46c3ee23dea0037294026d3787949"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_739543d032db",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [
+        "notice_before_protected_period"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/service_confirmation.clean.txt": "c212751465119b938f07a7dff402d99bae94a6239ab25ccaa42cc53f6fae6d21",
+        "attachments/service_confirmation.txt": "c212751465119b938f07a7dff402d99bae94a6239ab25ccaa42cc53f6fae6d21",
+        "attachments/termination_letter.clean.txt": "9f50cdd7c6b84e0599fbbdbf822679eeee77eb532e1d6fe9f557a928ed46723a",
+        "attachments/termination_letter.txt": "9f50cdd7c6b84e0599fbbdbf822679eeee77eb532e1d6fe9f557a928ed46723a",
+        "blind_check.json": "620a17c2e77fc0862f4c04f9248cbe3a625b4941fb3ad60aa30e85c8247cebb6",
+        "design.json": "b271f8c42224209d05b164481a68203951e4f9fb5fe069fd452343520f2fa97e",
+        "reference.json": "9213c7585e64f2cf12b034c25623e356efa148a3da48b3f676fb23cdec575a25",
+        "text.clean.txt": "72a080d01002c9dcb9c0c6f2dc1513723c116ce9ea05f4e58ff4947b326badf8",
+        "text.txt": "72a080d01002c9dcb9c0c6f2dc1513723c116ce9ea05f4e58ff4947b326badf8"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_7c10c74bd747",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "notice_period_varied"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "3eb8b80632def540884a47d47230cbbbabbb46b367bae4295607425275159bfe",
+        "attachments/employment_contract.txt": "3eb8b80632def540884a47d47230cbbbabbb46b367bae4295607425275159bfe",
+        "blind_check.json": "f0549a97c1e356b5fdb8d2f5243c8eb9cbc29b76cf72bf0d828ea6f2ed401439",
+        "design.json": "8dfc9e75eb19b5697025fde2014cbce2b2542d3f1485f0b55da6b17ca02c6c29",
+        "reference.json": "5ba472a992efa4d08e6d35c55f9c00e3035b95ac45ede91b6d34fee19ebf163b",
+        "text.clean.txt": "23293342dcaeb0b57d07c350429aeacdc0d0ff199d3024346b6a16a89c7d760a",
+        "text.txt": "23293342dcaeb0b57d07c350429aeacdc0d0ff199d3024346b6a16a89c7d760a"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_7e42a5b5bd9f",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "3849c964feb9230c88477542647579d46d9fd828c445721725e7b73c4dcaa154",
+        "attachments/employment_contract.txt": "3849c964feb9230c88477542647579d46d9fd828c445721725e7b73c4dcaa154",
+        "blind_check.json": "edec478257cd451f01f3fed73c50e4ac3139fa73876d2b43f850696e769969fe",
+        "design.json": "f0d25d9d6aac96f77a54d97176b0f1efa5555f8abb111cafac8c80174ca76d4e",
+        "reference.json": "293a098fba2d191d176cf366cad7f3a38ea4cd04e2421b90d736f06389e1faf0",
+        "text.clean.txt": "9cbf528b77c11a68ff5fadaa474e638bccc9f91585eb557e04174a7e061dd0ad",
+        "text.txt": "9cbf528b77c11a68ff5fadaa474e638bccc9f91585eb557e04174a7e061dd0ad"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_827bbd04ddc9",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "575367da7e38ca09eac361b6fc4b5fab141a358fb4c86b6b52a354428653d1ce",
+        "design.json": "eb06dcd4bcec659eb8e1cd8f3a2f9d97b02fad5546f01b8398bbdd9b65e57796",
+        "reference.json": "3eea1a590b42bc1dbc8494ded06966acb03c5f83ece9db9a01e13b4df37f3da5",
+        "text.clean.txt": "3efa7829ecabd844be93a95aea268ff7f3b3a2956faee547f3da58203748f718",
+        "text.txt": "3efa7829ecabd844be93a95aea268ff7f3b3a2956faee547f3da58203748f718"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_82d1908071ae",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [
+        "fixed_term"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/salary_evidence.clean.txt": "0b4e148c1ffcec86d06f7ee6800d4840a0c3eea53c2c7f07960ccdacfd8a12ae",
+        "attachments/salary_evidence.txt": "0b4e148c1ffcec86d06f7ee6800d4840a0c3eea53c2c7f07960ccdacfd8a12ae",
+        "attachments/termination_letter.clean.txt": "bda5709249b77c3b69560fb997a0e803245fef334b38e54c7db53ecd4694a05d",
+        "attachments/termination_letter.txt": "bda5709249b77c3b69560fb997a0e803245fef334b38e54c7db53ecd4694a05d",
+        "blind_check.json": "237b26ff331b9fbfbdf38b30aa5860ef49cf7448a756557c5269d5e5785c16e7",
+        "design.json": "d095696aa9b84e8bdabef5c1d73e27d8f3175536e0d5ebcf162025f5f3142636",
+        "reference.json": "d04aa96cabee7307dcfc6b54c56d28f010aa02f5a1df622232fa73162ecf0ccd",
+        "text.clean.txt": "486ffe74ab2cf1858f10f9017f7f2fb8524b1355b87c2e5b7d5755bca03b3f8c",
+        "text.txt": "486ffe74ab2cf1858f10f9017f7f2fb8524b1355b87c2e5b7d5755bca03b3f8c"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_837cc4abb499",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "other_earnings"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/incapacity_proof.clean.txt": "dbba667263012fba505a867ab6355158c2fc4adb2198cf165e60984ef2af780b",
+        "attachments/incapacity_proof.txt": "f657b5b5d3ef27cdcc17212f7fd5407d1033231e21fe69806086779c5915ac37",
+        "attachments/termination_letter.clean.txt": "1efd35e77a533989babd120b3b2a796a1ca67aea54b6b010cad5950611f21c43",
+        "attachments/termination_letter.txt": "00f29297f3241adb82acfe1ca9883a4044c3f8d0340bceef481976f8a92011f5",
+        "blind_check.json": "554d8f5573cbd5b2ef98ea20d739ee323967030200ef77d2fcad9bc300f8dc56",
+        "design.json": "4648c25ac0781ff7e1726a254e0179be77028a9694e460924fbce104ca0bc4cc",
+        "noise.json": "2b54ea3d5d331e511ef8ba84735a2ee97346ebe2188a403caf322d40dc353fd2",
+        "reference.json": "d423c5f663b32e59baed7ff9427cfd3859194a3c1f4342da38dbbe11bb9ceb0b",
+        "text.clean.txt": "a62a6ef5c37282c768f8c880fd61fcfb3b35dd053b75c2e61d9521e3d356617a",
+        "text.txt": "f7b5899019f30285afe2f24a504a98012390d853c83dfcb0591877c705f6f2bf"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_894859471634",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "5ac6e977900d2ce8a6fd81333aa2d44871dced4564bf3cbbec0ee3edcb4305d8",
+        "design.json": "0819cf6a8f98b83a7d72d70255b590ba5429de8665be2b740a704e0c82fe9867",
+        "noise.json": "00ed599c7a2158f49177e7a70d344b11c01e602a6f0fcfbbc1e13159998f2c95",
+        "reference.json": "b1a409c21e38b0abd75901d96d97f14bc95afe3f2a217d71d171ed2a3d3677cc",
+        "text.clean.txt": "1c160fa63f84dca6bec133859785874ad1e25f48c5a9a3217fce2e6b45972ca1",
+        "text.txt": "c7e12ec772dbe9c5807a50c7355c30c8e8d3c4d70316b6ed23c13ab9e39eb6f5"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_8adfce6b0c8d",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "other_earnings"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "460de242064093b559e3540164b9c98018a29223d494784e4325597c12f8b7bc",
+        "design.json": "8078b4e2c0efe980903b8a1d7a444e5f32fb7125ad92a89a0b37dc4a439521a7",
+        "reference.json": "4eaabc7802d9159536ba3ba0aad924f7551e34f05e33e8a0349f8d7c32464e81",
+        "text.clean.txt": "af02f410b056d1b0099aabe99ee84a8686546e69be45e6010027ffbbd483bde5",
+        "text.txt": "af02f410b056d1b0099aabe99ee84a8686546e69be45e6010027ffbbd483bde5"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_9260317f805d",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "96660c330419e0f2d4367a7efd57422722370bdad65fb6e1a9bf49243750d751",
+        "attachments/employment_contract.txt": "96660c330419e0f2d4367a7efd57422722370bdad65fb6e1a9bf49243750d751",
+        "attachments/notice_period_terms.clean.txt": "80da1ef2a897eefe154a3da009736b940c35826257966d67f809fbf6939e9861",
+        "attachments/notice_period_terms.txt": "80da1ef2a897eefe154a3da009736b940c35826257966d67f809fbf6939e9861",
+        "attachments/termination_letter.clean.txt": "16e139f94b7aa20acb640083074bf3d711fb848251bfe3c6a60e7359618e6ef4",
+        "attachments/termination_letter.txt": "16e139f94b7aa20acb640083074bf3d711fb848251bfe3c6a60e7359618e6ef4",
+        "blind_check.json": "b89f1f2e45e35bffd8aba886342b273acb9524d357717436aa7585cc27a97e59",
+        "design.json": "4233cafddbf449868c306c40df395a38c728481ee98f4f96c6bd4bc73d5c1cae",
+        "reference.json": "a1748ea34cb94da1267b6d95f14f4d001fd12acd800479a8ec7ddb635e565c86",
+        "text.clean.txt": "1cc42db5d74ca3a2faa80fe813bb8ba9a03ce437f21d541065eb20a94efac1b6",
+        "text.txt": "1cc42db5d74ca3a2faa80fe813bb8ba9a03ce437f21d541065eb20a94efac1b6"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_930a1b5e1bdc",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "2811ded918cf07abff37d24eef8c1877e9f6250b0ebe9e07935482e6cb23a036",
+        "design.json": "8ea2a417820761f227855efe44f8d439779bd1a6e4ca6e603df85fbdc7eed615",
+        "reference.json": "128813158e2ceeaad10862f6f02ae113fb3edb869632a00e4091080cbd7c985d",
+        "text.clean.txt": "f9f15c2b2fdff2b9155f6c76e839d8c4146a46182507d9644f61846e7389dcc2",
+        "text.txt": "f9f15c2b2fdff2b9155f6c76e839d8c4146a46182507d9644f61846e7389dcc2"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_9991ef82e6f4",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/other_earnings_evidence.clean.txt": "0acff525851fad78b7d293410592a41a2bd6d518f9221ec5801524bc8ebd6890",
+        "attachments/other_earnings_evidence.txt": "0acff525851fad78b7d293410592a41a2bd6d518f9221ec5801524bc8ebd6890",
+        "attachments/termination_letter.clean.txt": "d41bfe38506214f85cccf21f4e6f7954aa9f127d36853d78020dbbc97c9fbd70",
+        "attachments/termination_letter.txt": "d41bfe38506214f85cccf21f4e6f7954aa9f127d36853d78020dbbc97c9fbd70",
+        "blind_check.json": "24527c8c93f6cb03386b641234f20b81c6b2cef06c2c2bf928df7afbdd5536fd",
+        "design.json": "528979c1b730a6c708e2a8c43855f270ad5d639e76518b2019d5d92ab8971efb",
+        "reference.json": "c2c535d57f1ea2176a372b5f6788d79206236f116c0a6dc5e69ba3d473ee548f",
+        "text.clean.txt": "ea3897e631cc202c8030eaa157fc57dc6fda707f436939affde1aabf6132b773",
+        "text.txt": "ea3897e631cc202c8030eaa157fc57dc6fda707f436939affde1aabf6132b773"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_aa3d765b074e",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/pregnancy_certificate.clean.txt": "b6850d46a282e841dc8e8c3ce175f8e57c84df39606b8a5bb03312c21198d40b",
+        "attachments/pregnancy_certificate.txt": "b6850d46a282e841dc8e8c3ce175f8e57c84df39606b8a5bb03312c21198d40b",
+        "attachments/service_confirmation.clean.txt": "b177d33367d3870733d5fa11aa5d2debc4f8eba6b1972a4c121ac74d4aec71bf",
+        "attachments/service_confirmation.txt": "b177d33367d3870733d5fa11aa5d2debc4f8eba6b1972a4c121ac74d4aec71bf",
+        "blind_check.json": "47645893316d7383a24fab27ecb99b20a06f9b09f79ac86b7f47eb0bb98211d0",
+        "design.json": "6c82fbc69322c57b4f4a3b0bf4fa41558e85e7a7d2e34f61d2e4f5c07af67e3d",
+        "reference.json": "9658a2ea7ed2cdb639cb60bf4bff74fd19a0c1686f15e03a346a7c3f69697820",
+        "text.clean.txt": "fd772be6bc93a39bf348021031056246b93bc915d3254f21a9d742b1c49a78cc",
+        "text.txt": "fd772be6bc93a39bf348021031056246b93bc915d3254f21a9d742b1c49a78cc"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_ac405c63effe",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [
+        "other_earnings"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "3552af9509461ece6ee779fc774b46883e1a05096af9e916a7082279fcda97a1",
+        "attachments/employment_contract.txt": "3552af9509461ece6ee779fc774b46883e1a05096af9e916a7082279fcda97a1",
+        "attachments/salary_evidence.clean.txt": "c9364a31309c2f1fefb693681c3a45ca098bd6e4023f3bc59ee6268095d5c968",
+        "attachments/salary_evidence.txt": "c9364a31309c2f1fefb693681c3a45ca098bd6e4023f3bc59ee6268095d5c968",
+        "blind_check.json": "548dbc3136d7df2f8c1e9f986df61dcae2162c4efa43cb19a097d1e82001c582",
+        "design.json": "19b4e91040d02434433b242923976a76480e115fb062f47480134e9b45e67b92",
+        "reference.json": "8dd763c7ca7a46aa40af03e3aedfbe25b45a19797be65b46249d3e5d868025bc",
+        "text.clean.txt": "9476c5f9d22ae6b31020dea21e6955ed6f35c39993daa5c6580c7956ae74d91b",
+        "text.txt": "9476c5f9d22ae6b31020dea21e6955ed6f35c39993daa5c6580c7956ae74d91b"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_b7f5c9e07c99",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "19b55c28ed76303582016c97e7c5d6171b7e0733ed604400ff985403021bae82",
+        "attachments/employment_contract.txt": "0e15db10cebfdabfbf4565a1dc090353476c8fd550938cde58ade666acfb9dd0",
+        "attachments/termination_letter.clean.txt": "5b4ac688562144a11e73d3bbf6d8aebbd0231e8fb025dab796c76ce16c4c75fd",
+        "attachments/termination_letter.txt": "debb315050f565c0d9a32f8a16f964430cc91f6940d7d24b597d85bab5ad4fdf",
+        "blind_check.json": "7abd06266a9a6fb8a6f0f0762e5fde534feec3e1ea5861272a1f531502a495bf",
+        "design.json": "254c37a0d67c0eaa06ad78edd142606009aee4c4aa9bfd4deadba4642af09e58",
+        "noise.json": "277b70544f1f3dbf97c92d88d4869603de27be2cf7e372ef485a232cf002c1db",
+        "reference.json": "d7d230c34231418a468a0e16c59a68c4191bde645bfa038deedd49a448c360f1",
+        "text.clean.txt": "ba72d9b892483127b2674d57ab0edf72b2d1825621ebe57075819f087c73bdff",
+        "text.txt": "3190d27c647bad1cd8c3e43b44a568a72a11f589dbf5ce84dd177a17808c5263"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_bf38c7dfb616",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "904f781541630761411cdf4436c4dcf9cc660a77e3663c158c5aedc0b70d3192",
+        "attachments/employment_contract.txt": "904f781541630761411cdf4436c4dcf9cc660a77e3663c158c5aedc0b70d3192",
+        "blind_check.json": "126b0c6bc50bce89f60a4c21ae17f34660eae6853e08dd6a24527e0ed4cbad9d",
+        "design.json": "cd80e1484efe6a9bbb5d53889775911c25dbb6d8a7a5118767123a72cd9ee878",
+        "reference.json": "a4d695804760fa6796123fb483fc107977775c43b49e89dd7b6c090c7de15531",
+        "text.clean.txt": "7b075fca78661166dff7a2c22d338c30c7ea1bea9bd9be8614cd1b7e57940bae",
+        "text.txt": "7b075fca78661166dff7a2c22d338c30c7ea1bea9bd9be8614cd1b7e57940bae"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_c50430dbdfa1",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "6a82c0e793a6bc36473d16907d724c79304d8f2c1dd395014e09cfcd8f4fd9ff",
+        "design.json": "f8f3443ad263d0db1b8aa78f8905f1b18d4c4de9017923faac18a588bd651f38",
+        "reference.json": "2687b7f2e468fc0f99ead48580816d3412b3ff6afe173775cb65b22152586269",
+        "text.clean.txt": "413cc4f3ed6bdfff1328992434a9c55398f96dbfa8486af679c9d101c482fe9f",
+        "text.txt": "413cc4f3ed6bdfff1328992434a9c55398f96dbfa8486af679c9d101c482fe9f"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_c5e1bd4a1483",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [
+        "objection_submitted"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "a48116f79078a4340051e690c4fa1adc1a6b59c2cab15e778cc07b2513fb0185",
+        "attachments/employment_contract.txt": "f7ce853e42ebd54501035166dce444155cca048c18db85676a3b144453901dc5",
+        "blind_check.json": "b6ede1400289ea3e4abf2cd922f1060fe8062266b8c52f8c7194b094b47c8b6a",
+        "design.json": "b641ed5f1e3bef4e638de8004b08abbb8ffccc476cb5dcf1439798d9978fa350",
+        "noise.json": "0281045bfc2d420022c344ec8436af7a32e802933cd38847e292b99de370c721",
+        "reference.json": "3ac1cbbf36766aaf2bd02de547736bdff5cd46b3f34456ce0275a902cbb15c7b",
+        "text.clean.txt": "e401c8c7e683fee929b35e5a2f2bff166115fb6d4c55699c4a03c739cf7fb346",
+        "text.txt": "73c60e4b57d604258510d213a292a3d856487bbd506078e60cc1f32b0b44beb5"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_d3bae3094a5d",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/other_earnings_evidence.clean.txt": "0e193ab2944836f4f1b25e3ceaa9d30e63cb4a963242561a0d4a4731cc6d9afb",
+        "attachments/other_earnings_evidence.txt": "e903b175a93faf46fea2ac13cb6afe21fec775243e6689700673357427424c16",
+        "attachments/salary_evidence.clean.txt": "442a75474c83f93e464041353ab16aabb4d1a96cdf16eae13a1e1f0e40a6d328",
+        "attachments/salary_evidence.txt": "0005d6a18d6275782af5e4e086c5af97b8e1fe166448aaacc227df1098a67a80",
+        "attachments/termination_letter.clean.txt": "bccac91a282aa77a8f77b669266dad86d739bf3c28fdb80fea166b687c9d715d",
+        "attachments/termination_letter.txt": "5615661a68507e257d3dbda55f95665b78e2162b548b530c1b18d8e6c5435f75",
+        "blind_check.json": "6cff08bedb2339a0dfa9a15a8a0d358880000577adf54ba426c6d5903983f4a9",
+        "design.json": "79fa402c35d2fc13b86d9ac9b38e3b7eb9dba69a916d418f84dc62ca0b78cd2f",
+        "noise.json": "b30d04900f82d9b5a53eacacbdd3d3829107348b5d692b03ccf7f0342fd8532c",
+        "reference.json": "b191c675d5e8f4bceb4f15694990be8786e19391ed1c582f66c398bf33b60190",
+        "text.clean.txt": "6958d9f85629870c50fc4f915a82bd4c5b5d9b101322d81f43dae11812ef39ab",
+        "text.txt": "82a64869de1e7cbfd8ec924e2156050bbcd5e19613d74132933c786f5b5ffbdd"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_d4c7e372c087",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "compulsory_service"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/pregnancy_certificate.clean.txt": "3f14fba11b43c6d9ad97da2572a367d825941459b58ffdcccba855ffde5cf975",
+        "attachments/pregnancy_certificate.txt": "3f14fba11b43c6d9ad97da2572a367d825941459b58ffdcccba855ffde5cf975",
+        "attachments/probation_terms.clean.txt": "881ddd3134cb9f5d3a2ae2be21e40f3faa8c54ebec7be3a3fe6e8c6c8ad94a76",
+        "attachments/probation_terms.txt": "881ddd3134cb9f5d3a2ae2be21e40f3faa8c54ebec7be3a3fe6e8c6c8ad94a76",
+        "blind_check.json": "09958f71e1558ca648790a60da7aee8d8a620c13fc3464267967e19fd38195cd",
+        "design.json": "99fc6b4ed0f0323d9b72e4c2b2883aff28682a6d3cd22ca9e70b1cb7f38e0e39",
+        "reference.json": "a3e629439c902ccee60a966e4b0ac35af654c111348a46711b30e98f232a3a89",
+        "text.clean.txt": "d6db183129c994e371f0bdcf73c6f9b3bd75e08bbe34eb0de9446444f88a788e",
+        "text.txt": "d6db183129c994e371f0bdcf73c6f9b3bd75e08bbe34eb0de9446444f88a788e"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_dd12420e6a78",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "e7307f3d4b3e1cf1f35708f4f7cb53a2d2a90e2afcf6d006932d8c12764cd82d",
+        "attachments/employment_contract.txt": "e7307f3d4b3e1cf1f35708f4f7cb53a2d2a90e2afcf6d006932d8c12764cd82d",
+        "attachments/termination_letter.clean.txt": "8c499cfdbaf2d1331a6aeafef16b5fb6b9e6b78b54e6ed8871e7fb1803f22b68",
+        "attachments/termination_letter.txt": "8c499cfdbaf2d1331a6aeafef16b5fb6b9e6b78b54e6ed8871e7fb1803f22b68",
+        "attachments/written_objection.clean.txt": "24ee2aec21711e41b84538eb624a5b2b4b217c2d9cd3ff1c299d80d3e5e3e47c",
+        "attachments/written_objection.txt": "24ee2aec21711e41b84538eb624a5b2b4b217c2d9cd3ff1c299d80d3e5e3e47c",
+        "blind_check.json": "dad58e3cb3af6b7751196dc0b848a31d0b40dd690469e0e06039d61ec7f79acb",
+        "design.json": "2f1f7e938478d4f12e1c4874ca5c7500cd98bac11e0a8be6f29d5b4ec16d4f52",
+        "reference.json": "d8bf4450aae1a674ddcfd5a56f34c21146be9482a7be3f1cd98e979efb0e0aaf",
+        "text.clean.txt": "d1a49448eaeb365f03e6cc8aaec5c57d7a188a37a50dfedf5abebe97148bd0f6",
+        "text.txt": "d1a49448eaeb365f03e6cc8aaec5c57d7a188a37a50dfedf5abebe97148bd0f6"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_dd5c84a7084d",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "incapacity_cause"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/salary_evidence.clean.txt": "007cae475dfaf5effd91853a80cd3a113c64b691a32dd5e3c74450fdcee05cf1",
+        "attachments/salary_evidence.txt": "007cae475dfaf5effd91853a80cd3a113c64b691a32dd5e3c74450fdcee05cf1",
+        "blind_check.json": "9322ff51b81f4f8f62fbc41959b98b2bfd835f0ab598ee96889e02632a12b7db",
+        "design.json": "85c7c76ff1d60b9c5ce2766741e9670d2745a0879ea3499b9dc8f8a9d6a3577a",
+        "reference.json": "d60e7080bbe92dfc953b34ffdbb2f9e3c2fcce6ac98cff51fe753654071cd1d7",
+        "text.clean.txt": "de13eacb0e631cf86f475d6a5b261739f349ba669eed659908ad5bb7f75d7a19",
+        "text.txt": "de13eacb0e631cf86f475d6a5b261739f349ba669eed659908ad5bb7f75d7a19"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_e1b3af99deab",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "94642c51cf79da99330baf36ada0d0559b31d74890c0489c7c4a386387e863ad",
+        "design.json": "9b17d63c44e940fe047d165a557a546eebe1ff95598b2c74f2408aab77218975",
+        "reference.json": "91c9382e46ec43b6dc33db8d125cbb1cf21909e71405f65822b63367a8b7e8fa",
+        "text.clean.txt": "21df5254bfde13648778ec888963d071c4d4901aeda4f0b616f52ca1b16826e0",
+        "text.txt": "21df5254bfde13648778ec888963d071c4d4901aeda4f0b616f52ca1b16826e0"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_f3d056a01f6d",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "52f8369fb6735ba2da01f4cf42fd97a10b6257f0319da22b8bf5042c3a1a84ed",
+        "attachments/employment_contract.txt": "52f8369fb6735ba2da01f4cf42fd97a10b6257f0319da22b8bf5042c3a1a84ed",
+        "attachments/salary_evidence.clean.txt": "1fede0e0c620ac0bd9fb81d67b26b3f4148e7ab28481fe676338397d1ca10c7e",
+        "attachments/salary_evidence.txt": "1fede0e0c620ac0bd9fb81d67b26b3f4148e7ab28481fe676338397d1ca10c7e",
+        "blind_check.json": "c50ac2810385edcf665a4199e5e8cc51ab0bb1b84b4d2083735960069c1bdfe9",
+        "design.json": "0a269c34e4fccb94da7a7c6646d47c34383236446c1a714623b144e7c062e7db",
+        "reference.json": "d7505e470008a37f6e27e71073e1e49237f8d02ba1a8b061e26f240458e91337",
+        "text.clean.txt": "95b38c3b8470b53762e6afc8865beb082ab1cb14db640512eff8f4fb24fb276e",
+        "text.txt": "95b38c3b8470b53762e6afc8865beb082ab1cb14db640512eff8f4fb24fb276e"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_f5520e9336bd",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/employment_contract.clean.txt": "33887c8687aad3e0e1336c420f7cd431de1e141a017fa7664a321c9ea6860791",
+        "attachments/employment_contract.txt": "33887c8687aad3e0e1336c420f7cd431de1e141a017fa7664a321c9ea6860791",
+        "attachments/written_reasons.clean.txt": "be6ee1f8e675404dd103dfa28825528f4c01001ac8027f98da780cdbdf802c2e",
+        "attachments/written_reasons.txt": "be6ee1f8e675404dd103dfa28825528f4c01001ac8027f98da780cdbdf802c2e",
+        "blind_check.json": "43ada8864db1de7781911a60845af91e5f528eca1899b86699ec44e943423d98",
+        "design.json": "dba237a1f2068826317a22dcc0c87b772dfbcef951ebe173f6d748c8263a9553",
+        "reference.json": "360cd2c82a032f2f300afcaf7251278d8a058e53c5934d2e06c86352bd8dea9f",
+        "text.clean.txt": "2af8b7d2bfbbd653dace7c1b0e1a1bd04e51b4ab0f028f07013d9429dfb9d2b9",
+        "text.txt": "2af8b7d2bfbbd653dace7c1b0e1a1bd04e51b4ab0f028f07013d9429dfb9d2b9"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_f8a12a35738c",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "7d1068a28a79af6b229a04df1f641df175e4853a227c65a9f6c9bbc5fb893fb2",
+        "design.json": "1bd6585c00eb5b99d7f92d0a7e1ddff768afa6774f29db01a117e02931ed03a8",
+        "reference.json": "6e1ac5e9a69623394665eb0be86d5a4b70dee81643b9cb1a203889f64f94b85b",
+        "text.clean.txt": "c6ac2441db07e2c00efb779aab1891350fd26ac10586edc6bdac956d42c3ede6",
+        "text.txt": "c6ac2441db07e2c00efb779aab1891350fd26ac10586edc6bdac956d42c3ede6"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_fa096cda3412",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "fixed_term"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/salary_evidence.clean.txt": "26566dd1f6692b4cecb112cc20f176b3330d0c714b3cf5921f7fa392c1e874cb",
+        "attachments/salary_evidence.txt": "26566dd1f6692b4cecb112cc20f176b3330d0c714b3cf5921f7fa392c1e874cb",
+        "blind_check.json": "a1d518efa89171bedceb7b0daa472aee1d2c52e9256e0609f496bf9c219bda26",
+        "design.json": "895c45d58d56d6e83245fbc3e8774140f55cd07d24279e8974fddeb70664083d",
+        "reference.json": "357b945844b7d81ba10f07401d1123d676a35151c51b8320a66895a21931a9b3",
+        "text.clean.txt": "26f208ef7c0ab9f004ce3fb34ff7e890e310342fa66882a52c026eb9e99a6320",
+        "text.txt": "26f208ef7c0ab9f004ce3fb34ff7e890e310342fa66882a52c026eb9e99a6320"
+      },
+      "type": "immediate_dismissal"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_fb44c47f6ec7",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/claims_correspondence.clean.txt": "90c4a4f0d7a46a318851f6fc6d33d2621f5bad978636d4e63b121c4dd7d816b8",
+        "attachments/claims_correspondence.txt": "9c94c4c18c6dd48c7bd19397f16f29fea7e73dc49a7a65838e8917665c88b1fe",
+        "attachments/employment_contract.clean.txt": "5b0c02be522ef3d079acf0343788dd02ce5924be6e59da775a99ec021a1f7c2d",
+        "attachments/employment_contract.txt": "0f331528823b1929a8056dcda175e3c3667721435e90bf8c53f8ef8a3dbd76fa",
+        "attachments/salary_evidence.clean.txt": "4425c778afd1d56b6bdeccb731293343e321f1a17cac017f47aa781b3db5f377",
+        "attachments/salary_evidence.txt": "074b3005ccb24455825fd72ef4499605f2e030bbaebd4af488b7320a062086d2",
+        "blind_check.json": "a6a2677960994ba6b6e83a3fb4977265aae0d227a9d50885d4594e4efd345d1d",
+        "design.json": "13b172033835623a452130de077e07d7081f6d6d272a4a53dbc4200fcd642ed8",
+        "noise.json": "429cacdb27de1eae2e7dfa1e017105938b07895bd2ffa7b8852c7cecf109932a",
+        "reference.json": "c732c78c9a8b54d6b296b539f966789ccba21bbf8b83bf4d174aaece191fec7c",
+        "text.clean.txt": "8a8e92f4162a3c82a1292de9e84dc32f3d5c804474331cc43c5b455d77da8a83",
+        "text.txt": "17a5687eb564342398099a6bdd850941a536ae4c7506f2e7b328b64c46aa5f29"
+      },
+      "type": "wrongful_termination"
+    },
+    {
+      "denied_event": false,
+      "file_id": "dis_fcbd44dfcef3",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/probation_terms.clean.txt": "42bbf0227a6f7bef8d9cfe840dcc072acaee16f40dfd65b4373906e5029144f7",
+        "attachments/probation_terms.txt": "42bbf0227a6f7bef8d9cfe840dcc072acaee16f40dfd65b4373906e5029144f7",
+        "blind_check.json": "a925b22698ae7488da008fa08fc56c5a059b6fb28a70d8e266ad21a8f83098d2",
+        "design.json": "437a9a88472bd1b7d09241f5fe03f39bae5b7e689b8682c386f799280b4c8226",
+        "reference.json": "1c26f59d1186a0d2efb60214063cfef4dd8d50075ee744a807c412dd08cd041e",
+        "text.clean.txt": "ebf58ff6b24e3ba458d94a4ddfee61476109bacb5b9476d35b223c808be43196",
+        "text.txt": "ebf58ff6b24e3ba458d94a4ddfee61476109bacb5b9476d35b223c808be43196"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_fea630e08ab3",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "9699ee8e9f48301501ac1b1aa8e6b2973dd95ec29512f55db463fcb6a5b92aca",
+        "design.json": "39aca30fd40f1ce56dfbc327c10a82f389f483d24e0fa138d81c279a2c2473c9",
+        "reference.json": "1de53373fab54f6b82853ab44ffa104f0311db69e160c75aa10c59dd6b68b8de",
+        "text.clean.txt": "d43f17f0c541273603fed1a6eb968805c42ff0c7d990a10dd2c3279c48b5dc01",
+        "text.txt": "d43f17f0c541273603fed1a6eb968805c42ff0c7d990a10dd2c3279c48b5dc01"
+      },
+      "type": "protected_period_notice"
+    },
+    {
+      "denied_event": true,
+      "file_id": "dis_ff1e9056d2c3",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "31824bb9c83a693d0f036a81dd79c3bbc900dc367b2353cab46ff423b92b7071",
+        "design.json": "2c82ae48d1c97f9b1b1f8f0ca470f82499b4e8de41bfb77b4409c39754ae8a2c",
+        "reference.json": "8715526fd041b00ebbaf316096463759631058c444378464907eed2943c0a23f",
+        "text.clean.txt": "5c5d5c09aa027ad4b509c424aed7788774379668eb05b23c57aa62eaba7d504d",
+        "text.txt": "5c5d5c09aa027ad4b509c424aed7788774379668eb05b23c57aa62eaba7d504d"
+      },
+      "type": "immediate_dismissal"
+    }
+  ],
+  "noise_sha256": "01084f363b29b770f396b6013ee3446185e32a1a7eded473f1b031b8ca5e6e4a",
+  "regime": "dismissal",
+  "schema": "study4.final-manifest/1"
+}

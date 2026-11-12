@@ -1,0 +1,126 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "action_in_time",
+      "constraint": "if the notice period has not ended (or that is open), a claim made pending within 180 days of the end of employment cannot be stated either way",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "stated_false",
+    "employee_representative": "stated_false",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "stated_false",
+    "objection_submitted": "stated_false",
+    "reasons_requested": "not_mentioned",
+    "retaliation_for_claims": "stated_false"
+  },
+  "file_id": "dis_5adf4d2aec3c",
+  "index": 14,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4650,
+      "monthly": 1440,
+      "small": 2080
+    },
+    "canton": "ZG",
+    "claimant": "Dominik Hürlimann",
+    "date_main_event": "2026-06-22",
+    "date_written": "2026-08-05",
+    "earlier_dates": [
+      "2022-06-23",
+      "2024-03-01",
+      "2024-03-14"
+    ],
+    "other_party_organisation": "Sonnbühl Handels AG",
+    "other_party_person": "Nadine Morgan",
+    "place": "Zug",
+    "street": "Mühleweg 115",
+    "third_person": "Urs Vogel",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-10-20",
+        "date_if_span_not_run": "2026-05-25",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-10-20",
+        "date_if_span_not_run": "2026-05-25",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 891595589
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

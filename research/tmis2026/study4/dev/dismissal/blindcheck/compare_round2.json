@@ -1,0 +1,74 @@
+{
+  "dis_064eeecaeb0d": {
+    "blind_sha256": "cfb54db67a6a6f2b33bf3b1464bdbf321fbeaddce1f1cee42dd3437984a13a5a",
+    "matches": true,
+    "mismatches": [],
+    "written_sha256": "1af563ac631b3a76c2b533ac0db91f494075b171d2525e9e1e05b5c1770c48e7"
+  },
+  "dis_14b7db92a192": {
+    "blind_sha256": "005c696acf1ae0a0eac5c9dc5a6f59fd0efab09b51834aa2c84aa94062c87213",
+    "matches": true,
+    "mismatches": [],
+    "written_sha256": "1f32ad45a8e857b96bc82a44044c8865225097335ac17a8409b170fbfa43047c"
+  },
+  "dis_6093ca79060d": {
+    "blind_sha256": "8788ad36bfd76d6c57d469349d7a12043d6b6afaebd6eca612a1a7530dfe3f2f",
+    "matches": false,
+    "mismatches": [
+      {
+        "designed": {
+          "missing": [
+            "agreed end date, if fixed-term"
+          ],
+          "state": "insufficient"
+        },
+        "document": "employment_contract",
+        "kind": "attachment",
+        "label": "A1",
+        "read_as": {
+          "state": "sufficient"
+        }
+      }
+    ],
+    "written_sha256": "45b7577291de006c054a442db87b255bb6e4f71e652b5eb9442e801ad7b8e045"
+  },
+  "dis_7e42a5b5bd9f": {
+    "blind_sha256": "f6cbefb9753dfd67f1050d4880077b973c7e53455c92649a383e548c76cbe8e5",
+    "matches": true,
+    "mismatches": [],
+    "written_sha256": "bf8732fa4d900675176121f132c2fb8a9e88246be7482d4882e4fa3de64385c5"
+  },
+  "dis_925dc8cee367": {
+    "blind_sha256": "0315f32a0a6f418e0d7fa0e72caa642cbc1991aa5ea942ff9667937601a1e841",
+    "matches": false,
+    "mismatches": [
+      {
+        "designed": {
+          "missing": [
+            "agreed end date, if fixed-term"
+          ],
+          "state": "insufficient"
+        },
+        "document": "employment_contract",
+        "kind": "attachment",
+        "label": "A2",
+        "read_as": {
+          "state": "sufficient"
+        }
+      }
+    ],
+    "written_sha256": "695f3e23caa13e940e5d229c05fd021a90d44cd9f8b2a0276a17c9235fa31e70"
+  },
+  "dis_bf38c7dfb616": {
+    "blind_sha256": "da0ba080740e687c52aa5033183ff6309c0e47906cc9185b547415a0b9fac8f5",
+    "matches": true,
+    "mismatches": [],
+    "written_sha256": "37f97c864242bd2fc66cb5e3b4c9504c6630b653f01ccaa044a572f5a38dd450"
+  },
+  "dis_c50430dbdfa1": {
+    "blind_sha256": "f79b9d040bcc7103227038b7a0a327cbed77d17af0b2a6150fe2cf6388274fa5",
+    "matches": true,
+    "mismatches": [],
+    "written_sha256": "24067213e40df8a59a570d529aa0b9672989b977b2c33dab10f232fdd8e83ad1"
+  }
+}

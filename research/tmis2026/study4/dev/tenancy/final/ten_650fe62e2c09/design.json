@@ -1,0 +1,99 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "missing": "sender and addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": "date of receipt",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "not_mentioned",
+    "asserted_claims": "stated_true",
+    "extension_requested": "not_mentioned",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_650fe62e2c09",
+  "index": 8,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10300,
+      "monthly": 1000,
+      "small": 1745
+    },
+    "canton": "VD",
+    "claimant": "Simon Foster",
+    "date_main_event": "2025-12-18",
+    "date_written": "2026-03-02",
+    "earlier_dates": [
+      "2023-04-01",
+      "2024-05-01",
+      "2025-11-23"
+    ],
+    "other_party_organisation": "Erlenhof Handels AG",
+    "other_party_person": "Samuel Meier",
+    "place": "Yverdon-les-Bains",
+    "street": "Hauptstrasse 119",
+    "third_person": "Marco Schneider",
+    "time_spans": [],
+    "topic_order_seed": 342544443
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

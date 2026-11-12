@@ -1,0 +1,44 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "the insured location"
+      ],
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "haven't had anything repaired or cleaned",
+      "state": "stated_false"
+    },
+    "Q2": {
+      "quote": "There was no danger that would have made me act before getting your instructions",
+      "state": "stated_false"
+    },
+    "Q3": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q4": {
+      "quote": "There's no bike involved.",
+      "state": "stated_false"
+    },
+    "Q5": {
+      "quote": "Ziff. 24.2 Simple theft away from home (einfacher Diebstahl auswärts): included since 05.01.2024",
+      "state": "stated_false"
+    },
+    "Q6": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q7": {
+      "quote": "the rear side window was smashed in and the bag had gone.",
+      "state": "stated_true"
+    }
+  },
+  "file_id": "the_819379d12c03"
+}

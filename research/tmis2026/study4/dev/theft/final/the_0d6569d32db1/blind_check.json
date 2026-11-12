@@ -1,0 +1,61 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "the insured location"
+      ],
+      "state": "insufficient"
+    },
+    "A3": {
+      "missing": [
+        "the police station"
+      ],
+      "state": "insufficient"
+    },
+    "A4": {
+      "state": "sufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "my laptop, my camera, some jewellery and the wallet were stolen from my flat at Mühleweg 78 in Stans",
+      "state": "stated_true"
+    },
+    "Q2": {
+      "quote": "so there are no lock costs in this claim.",
+      "state": "stated_false"
+    },
+    "Q3": {
+      "quote": "I didn't wait to speak to CSS first, and I don't think I could have: the card company told me someone had already tried to pay with it twice",
+      "state": "stated_true"
+    },
+    "Q4": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q5": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q6": {
+      "quote": "so it can't have been anyone from my household.",
+      "state": "stated_false"
+    },
+    "Q7": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q8": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q9": {
+      "quote": "the original receipts for the laptop and the camera with the prices I paid.",
+      "state": "stated_false"
+    }
+  },
+  "file_id": "the_0d6569d32db1"
+}

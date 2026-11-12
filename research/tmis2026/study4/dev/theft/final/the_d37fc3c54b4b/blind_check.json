@@ -1,0 +1,48 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "its value"
+      ],
+      "reason": "The list gives no value for any item.",
+      "state": "insufficient"
+    },
+    "A3": {
+      "state": "sufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "In meiner Police ist die Zusatzversicherung für einfachen Diebstahl auswärts enthalten",
+      "state": "stated_false"
+    },
+    "Q2": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q3": {
+      "quote": "Als ich zurückkam, war die Scheibe der Beifahrertür eingeschlagen und meine Tasche vom Beifahrersitz weg",
+      "state": "stated_true"
+    },
+    "Q4": {
+      "quote": "Für das Tablet, den Kopfhörer und die Brille habe ich die Originalquittungen",
+      "state": "stated_false"
+    },
+    "Q5": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q6": {
+      "quote": "Am 18. März hat die Garage in Wohlen die neue Scheibe eingesetzt und die Glassplitter aus dem Innenraum entfernt.",
+      "state": "stated_true"
+    },
+    "Q7": {
+      "quote": "dass es dabei keine Gefahr gab, die nicht auf Ihre Anweisung hätte warten können.",
+      "state": "stated_false"
+    }
+  },
+  "file_id": "the_d37fc3c54b4b"
+}

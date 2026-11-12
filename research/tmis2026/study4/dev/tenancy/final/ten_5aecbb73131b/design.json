@@ -1,0 +1,92 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "stated_true",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_true"
+  },
+  "file_id": "ten_5aecbb73131b",
+  "index": 10,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2700,
+      "monthly": 1560,
+      "small": 720
+    },
+    "canton": "VD",
+    "claimant": "Daniel Wyss",
+    "date_main_event": "2026-02-02",
+    "date_written": "2026-03-12",
+    "earlier_dates": [
+      "2023-06-03",
+      "2023-06-21",
+      "2024-06-23"
+    ],
+    "other_party_organisation": "Seematt Dienste GmbH",
+    "other_party_person": "Stefan Frei",
+    "place": "Lausanne",
+    "street": "Hauptstrasse 108",
+    "third_person": "Martina Näf",
+    "time_spans": [],
+    "topic_order_seed": 1005845198
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

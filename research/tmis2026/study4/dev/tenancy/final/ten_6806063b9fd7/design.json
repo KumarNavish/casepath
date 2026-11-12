@@ -1,0 +1,90 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "stated_false",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_true",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_6806063b9fd7",
+  "index": 9,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10750,
+      "monthly": 1640,
+      "small": 175
+    },
+    "canton": "SG",
+    "claimant": "Alice Bachmann",
+    "date_main_event": "2026-03-01",
+    "date_written": "2026-04-10",
+    "earlier_dates": [
+      "2022-06-11",
+      "2023-12-01",
+      "2025-03-17"
+    ],
+    "other_party_organisation": "Rebhalde Cooperative",
+    "other_party_person": "Tom Frei",
+    "place": "St. Gallen",
+    "street": "Schulhausstrasse 8",
+    "third_person": "Sam Bucher",
+    "time_spans": [],
+    "topic_order_seed": 582373887
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

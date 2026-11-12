@@ -1,0 +1,94 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "cost_or_services_reason",
+      "constraint": "with the increase open, an increase notice giving cost reasons cannot be stated to exist",
+      "from": "stated_true",
+      "to": "stated_false"
+    }
+  ],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "stated_false",
+    "increase_applied": "open",
+    "index_clause": "not_mentioned",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_580485dac025",
+  "index": 2,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "increase_applied"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3400,
+      "monthly": 1290,
+      "small": 1900
+    },
+    "canton": "ZH",
+    "claimant": "Tamara Moser",
+    "date_main_event": "2026-01-02",
+    "date_written": "2026-02-09",
+    "earlier_dates": [
+      "2023-03-02",
+      "2024-04-29",
+      "2025-10-06"
+    ],
+    "other_party_organisation": "Lindenmatt Genossenschaft",
+    "other_party_person": "Daniel Carter",
+    "place": "Uster",
+    "street": "Gartenstrasse 124",
+    "third_person": "Lea Hürlimann",
+    "time_spans": [],
+    "topic_order_seed": 975195031
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

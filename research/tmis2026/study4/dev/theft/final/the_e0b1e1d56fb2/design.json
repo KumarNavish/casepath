@@ -1,0 +1,109 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": "that and when CSS was notified of the theft",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "missing": "theft (Ziff. 23.3) among the insured perils",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "stated_false",
+    "imminent_danger": "stated_true",
+    "lock_change": "stated_true",
+    "measures_pending": "stated_true",
+    "theft_at_home": "stated_true",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_e0b1e1d56fb2",
+  "index": 12,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10100,
+      "monthly": 1730,
+      "small": 975
+    },
+    "canton": "GL",
+    "claimant": "Karin Bieri",
+    "date_main_event": "2026-08-06",
+    "date_written": "2026-08-31",
+    "earlier_dates": [
+      "2022-09-28",
+      "2025-09-27",
+      "2026-05-10"
+    ],
+    "other_party_organisation": "Kirschbaum Handels AG",
+    "other_party_person": "Monika Tanner",
+    "place": "Glarus",
+    "street": "Seestrasse 106",
+    "third_person": "Urs Rüegg",
+    "time_spans": [],
+    "topic_order_seed": 300839692
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

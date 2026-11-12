@@ -1,0 +1,138 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "more_than_180_days"
+    },
+    {
+      "drawn": "stated_true",
+      "fact": "notice_period_ended"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": true,
+  "facts": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "not_mentioned",
+    "employee_representative": "not_mentioned",
+    "employer_gave_notice": "stated_false",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "not_mentioned",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "not_mentioned",
+    "retaliation_for_claims": "not_mentioned"
+  },
+  "facts_designed": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "not_mentioned",
+    "employee_representative": "not_mentioned",
+    "employer_gave_notice": "stated_false",
+    "more_than_180_days": "not_mentioned",
+    "notice_period_ended": "not_mentioned",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "not_mentioned",
+    "retaliation_for_claims": "not_mentioned"
+  },
+  "file_id": "dis_05af0871cd70",
+  "index": 8,
+  "kept_as_read": true,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7400,
+      "monthly": 2120,
+      "small": 420
+    },
+    "canton": "TG",
+    "claimant": "Alice Widmer",
+    "date_main_event": "2026-03-12",
+    "date_written": "2026-04-13",
+    "earlier_dates": [
+      "2022-03-16",
+      "2022-08-23",
+      "2025-05-11"
+    ],
+    "other_party_organisation": "Steinbruch Trading Ltd",
+    "other_party_person": "Isla Schmid",
+    "place": "Kreuzlingen",
+    "street": "Wiesenstrasse 2",
+    "third_person": "Ben Weber",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-06-28",
+        "date_if_span_not_run": "2026-01-31",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-06-28",
+        "date_if_span_not_run": "2026-01-31",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 458999977
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

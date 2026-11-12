@@ -1,0 +1,110 @@
+{
+  "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+      "notice_before_protected_period"
+    ]
+  },
+  "design_sha256": "055b721125d3a6add7a3ddc7d4dbb83495c59654ee398c3c5d91f8625ae26b23",
+  "documents": {
+    "employment_contract": {
+      "request": false,
+      "state": "present_sufficient",
+      "supplied": "sufficient"
+    },
+    "incapacity_proof": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+    "workflow_sha256": {
+      "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+      "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+      "wrongful_termination": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "compulsory_service": false,
+    "dispute_family": "protected_period_notice",
+    "employer_gave_notice": true,
+    "incapacity_illness_accident": false,
+    "notice_during_probation": false,
+    "notice_period_varied": true,
+    "pregnancy_or_birth": false,
+    "probation_varied": false
+  },
+  "file_id": "dis_1bf62841defb",
+  "level": 50,
+  "outcome": "assessed",
+  "path": [
+    "a_intake",
+    "a_probation",
+    "a_gate_incapacity",
+    "a_gate_service",
+    "a_gate_pregnancy",
+    "a_gate_any_period",
+    "a_assess",
+    "a_close"
+  ],
+  "presumed": {
+    "compulsory_service": false,
+    "incapacity_illness_accident": false,
+    "notice_during_probation": false,
+    "probation_varied": false
+  },
+  "regime": "dismissal",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "none",
+      "stops": []
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "state": "none"
+  },
+  "type": "protected_period_notice",
+  "unreached_always_stated_check": {
+    "differences": [],
+    "facts": [
+      {
+        "drawn": "not_mentioned",
+        "fact": "notice_before_protected_period"
+      }
+    ],
+    "same": true
+  },
+  "unresolved": [
+    "notice_before_protected_period"
+  ],
+  "waiting_for": []
+}

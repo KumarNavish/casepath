@@ -1,0 +1,48 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "sufficient"
+    },
+    "A3": {
+      "missing": [
+        "its value"
+      ],
+      "reason": "The list gives no value for any of the items.",
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "Ziff. 24.2 Einfacher Diebstahl auswärts – eingeschlossen",
+      "state": "stated_false"
+    },
+    "Q2": {
+      "quote": "Jemand hatte ihn unten mit einem Messer aufgeschnitten und das Handy, das Portemonnaie, die Kamera und meine Sonnenbrille herausgenommen.",
+      "state": "stated_true"
+    },
+    "Q3": {
+      "quote": "Es gab nichts, was so dringend war, dass es nicht auf Ihre Anweisung hätte warten können.",
+      "state": "stated_false"
+    },
+    "Q4": {
+      "quote": "Kassenzettel habe ich für keine der Sachen. Ich habe bei den Geschäften nachgefragt, aber niemand konnte mir ein Doppel ausstellen",
+      "state": "stated_true"
+    },
+    "Q5": {
+      "quote": "Eines muss ich noch erledigen und bin noch nicht dazu gekommen: Das Handy über die IMEI-Nummer beim Anbieter sperren zu lassen.",
+      "state": "stated_true"
+    },
+    "Q6": {
+      "quote": "Mein Velo stand an dem Tag zu Hause im Keller, gestohlen wurde es nicht.",
+      "state": "stated_false"
+    },
+    "Q7": {
+      "quote": "Den aufgeschlitzten Rucksack habe ich vor zwei Wochen beim Sattler in Emmenbrücke flicken lassen",
+      "state": "stated_true"
+    }
+  },
+  "file_id": "the_1024620d6055"
+}

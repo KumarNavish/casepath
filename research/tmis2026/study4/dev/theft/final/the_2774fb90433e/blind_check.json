@@ -1,0 +1,52 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "that an official investigation was requested"
+      ],
+      "reason": "The report records the complaint but does not say that an official investigation was requested.",
+      "state": "insufficient"
+    },
+    "A3": {
+      "missing": [
+        "its value"
+      ],
+      "reason": "The list gives no value for any item.",
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "I haven't decided yet which advice to follow, and the phone is still unblocked for the moment.",
+      "state": "open"
+    },
+    "Q2": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q3": {
+      "quote": "Ziff. 24.2 Simple theft away from home (einfacher Diebstahl auswärts): included",
+      "state": "stated_false"
+    },
+    "Q4": {
+      "quote": "I don't have a single one.",
+      "state": "stated_true"
+    },
+    "Q5": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q6": {
+      "quote": "No bike is involved in this, by the way.",
+      "state": "stated_false"
+    },
+    "Q7": {
+      "quote": "When I got off in Lausanne the bag was open and my wallet, phone, watch and sunglasses were gone. I never felt a thing.",
+      "state": "stated_true"
+    }
+  },
+  "file_id": "the_2774fb90433e"
+}

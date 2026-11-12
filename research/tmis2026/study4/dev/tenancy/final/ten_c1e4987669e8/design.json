@@ -1,0 +1,95 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": true,
+  "facts": {
+    "arrears_termination": "stated_false",
+    "asserted_claims": "not_mentioned",
+    "extension_requested": "stated_false",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_false"
+  },
+  "file_id": "ten_c1e4987669e8",
+  "index": 10,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 11250,
+      "monthly": 1120,
+      "small": 275
+    },
+    "canton": "FR",
+    "claimant": "Peter Schmid",
+    "date_main_event": "2026-09-03",
+    "date_written": "2026-09-27",
+    "earlier_dates": [
+      "2022-08-02",
+      "2022-10-17",
+      "2023-09-16"
+    ],
+    "other_party_organisation": "Sonnbühl Management Ltd",
+    "other_party_person": "Alice Steiner",
+    "place": "Fribourg",
+    "street": "Feldstrasse 58",
+    "third_person": "Eva Lehmann",
+    "time_spans": [],
+    "topic_order_seed": 2001860939
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

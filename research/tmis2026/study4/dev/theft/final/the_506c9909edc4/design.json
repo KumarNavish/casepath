@@ -1,0 +1,116 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "burglary_or_robbery"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": "that and when CSS was notified of the theft",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "missing": "the insured location",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "missing": "the police station",
+      "optional": true,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_true",
+    "burglary_or_robbery": "not_mentioned",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_506c9909edc4",
+  "index": 8,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2400,
+      "monthly": 2150,
+      "small": 220
+    },
+    "canton": "GL",
+    "claimant": "Henry Bieri",
+    "date_main_event": "2026-07-25",
+    "date_written": "2026-08-03",
+    "earlier_dates": [
+      "2024-03-25",
+      "2024-04-04",
+      "2026-05-22"
+    ],
+    "other_party_organisation": "Hagenbuch Services Ltd",
+    "other_party_person": "Mark Wälti",
+    "place": "Glarus",
+    "street": "Bergstrasse 37",
+    "third_person": "Leo Bachmann",
+    "time_spans": [],
+    "topic_order_seed": 1911735836
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

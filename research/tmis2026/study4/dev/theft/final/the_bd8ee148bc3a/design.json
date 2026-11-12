@@ -1,0 +1,110 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "burglary_or_robbery"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_true",
+    "burglary_or_robbery": "not_mentioned",
+    "household_perpetrator": "stated_true",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "open"
+  },
+  "file_id": "the_bd8ee148bc3a",
+  "index": 11,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "vouchers_unobtainable"
+  ],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 9950,
+      "monthly": 1290,
+      "small": 1360
+    },
+    "canton": "BE",
+    "claimant": "Ian Gisler",
+    "date_main_event": "2026-08-13",
+    "date_written": "2026-09-13",
+    "earlier_dates": [
+      "2024-06-30",
+      "2025-04-05",
+      "2025-07-08"
+    ],
+    "other_party_organisation": "Moosacker Cooperative",
+    "other_party_person": "David Hürlimann",
+    "place": "Bern",
+    "street": "Hauptstrasse 28",
+    "third_person": "Victor Lüthi",
+    "time_spans": [],
+    "topic_order_seed": 497105408
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

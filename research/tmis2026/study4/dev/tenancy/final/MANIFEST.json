@@ -1,0 +1,1249 @@
+{
+  "assemble_sha256": "045d03c3f2cee2b6af3e9d96a99f54ee97871e1d8a97a8db5c376608886d694d",
+  "counts": {
+    "dropped": 1,
+    "kept": 59,
+    "kept_after_rewrite": 2,
+    "kept_as_read": 9,
+    "open_share_per_level": {
+      "0": 0.0,
+      "10": 0.133,
+      "25": 0.267,
+      "50": 0.5
+    },
+    "per_level": {
+      "0": 15,
+      "10": 15,
+      "25": 15,
+      "50": 14
+    }
+  },
+  "design_manifest_sha256": "cd4d5dd164820ec2d1da9e7c126a3e8534641cb760072c6ac59fa932ec78c649",
+  "dropped": [
+    {
+      "file_id": "ten_6c5828c1c68b",
+      "level": 50,
+      "type": "defect_mold_heating",
+      "why": "differs after rewrite"
+    }
+  ],
+  "files": [
+    {
+      "denied_event": false,
+      "file_id": "ten_00bf58d82a2b",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/claims_and_reasons.clean.txt": "1561c54ad9abdd8b932aa91f440857e820cb473fd2e7df0de4d0ffb1105944ea",
+        "attachments/claims_and_reasons.txt": "4826da75d927768293d43ffef33f442d90a69fc51279b3ef757057d2b9cee70b",
+        "attachments/hardship_evidence.clean.txt": "a450c3e53c02a9afb216b72ee697900847a3c748e4394960a6cee67d62c8f5ba",
+        "attachments/hardship_evidence.txt": "963bf36080b93297a5ac2ec639dd21c9e186aaecc73533dc6d62e61412e33554",
+        "attachments/termination_notice.clean.txt": "ff3b60bafc1e16123c8c9ad0b5cb75c5c1b4b94f4d3b87b1333494c700eb3665",
+        "attachments/termination_notice.txt": "d4acdb390701a01ecb2fdbbb8e403f71407e3e7975ee104bb70cb208112bd829",
+        "blind_check.json": "b17ca116ed761bb4d0c71c6d05ad0c929d359bfb5b5b8597378d29f9c4494334",
+        "design.json": "2f860908a15a5a95a715eef1d5830e6487d1b9331183c77ee0eb4db8ca5b5641",
+        "noise.json": "57f4229493ed5bbf5aebbddb5192c35d110682cc0c2e66e60fc24cd81372c25b",
+        "reference.json": "a34e4448ff5464dd117e0c4d18a28444d61841108ad22eb75a4b3235fc486819",
+        "text.clean.txt": "63519e57018beab5ddb8cf54eb07f7322fcd555cc9226b70529f7d9e8a2e91ea",
+        "text.txt": "e26efcfcf785b25bd231697aa4768f6d255b5dc8a9ff3de91cd092d281dc6f01"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_060ca05c5691",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "ff36a548bf57a4f56b4aca900361d027d21b6bca2cc2187070a20fc1a4efc083",
+        "attachments/lease_contract.txt": "ff36a548bf57a4f56b4aca900361d027d21b6bca2cc2187070a20fc1a4efc083",
+        "attachments/proof_of_receipt.clean.txt": "80c8594903387513855d00ea8b4ce21a3f8f53c735d8ac755833258bfa6de9bc",
+        "attachments/proof_of_receipt.txt": "80c8594903387513855d00ea8b4ce21a3f8f53c735d8ac755833258bfa6de9bc",
+        "blind_check.json": "32294b1bc4601e210d61880c9f5ff23f8248d3982ebe0baaa3f0ea6cb0d2fd87",
+        "design.json": "83066ddc2721cc9f381bd7b7f146bc8c63c16f311863b9ff7a5a60781ebfc61d",
+        "reference.json": "ee86c45d124230fc100330e2c3d7ec41a05abac2c0cddec5394c69ae1c56b9ff",
+        "text.clean.txt": "de5edc5cc989a137babfbc8995ab6a86f09e478cfe513fbb29076916b0acc9f9",
+        "text.txt": "de5edc5cc989a137babfbc8995ab6a86f09e478cfe513fbb29076916b0acc9f9"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_094dc11f4ef9",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "asserted_claims"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "c59bd8ad6d78da42c57ac52c74e37acd00c6f5b3ab92d58698f041bfdb53f0be",
+        "attachments/lease_contract.txt": "c59bd8ad6d78da42c57ac52c74e37acd00c6f5b3ab92d58698f041bfdb53f0be",
+        "blind_check.json": "cade5ca8ed87cd4c97f6bf259e628e51c3314ad3924a2dfa6a8090b48b48ffbb",
+        "design.json": "76cc3f235b60f74cccc3302afc327bf0295738011e78b38e3009177d2808447e",
+        "reference.json": "8adc070f9c5880a9819e657883ab844ce6d7a92365c1fb58563a9fe692d497a0",
+        "text.clean.txt": "2c232bc9b42a879fc29bc818070515cade840bc0ab726c2c77e60c6c4be2c036",
+        "text.txt": "2c232bc9b42a879fc29bc818070515cade840bc0ab726c2c77e60c6c4be2c036"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_0c74f4037e13",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "arrears_termination"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/termination_notice.clean.txt": "a2d1241f82f9518f02fa330d06d8f7b49e278728720af06383147ef53d5ded89",
+        "attachments/termination_notice.txt": "a2d1241f82f9518f02fa330d06d8f7b49e278728720af06383147ef53d5ded89",
+        "blind_check.json": "f174841d9815337d68acc35890ec90780074cb6289e12f1195572c2da88b38df",
+        "design.json": "2e2e9857b2e01b498c3ff5973c16804f2eccdd592a01a4d3be81cc8214d4522e",
+        "reference.json": "3b49a081ceca56a6da29c0b8cf64b04927c6a7f5d1c2146f3f9f3e6c7bb24e71",
+        "text.clean.txt": "4e57f3d46dd9752a02ee5f1b7b507755649eb3bfbc6167f74f4066c76918e6e1",
+        "text.txt": "4e57f3d46dd9752a02ee5f1b7b507755649eb3bfbc6167f74f4066c76918e6e1"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_0d082e78c345",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "landlord_unaware"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/defect_record.clean.txt": "839749817d432410de2ecac4e57d5d0e3efad149212b0789abd4cfc5d03dbb61",
+        "attachments/defect_record.txt": "2d2f7c54c63ffe6c77ca7c9cd3386e4a062eb2893b1d78ff6adda09ac59f7081",
+        "attachments/deposit_receipt.clean.txt": "fdfc9ce9c89107f22e0433cf7ebb9eb17a4a799c627d2acf248e0e8d017cf628",
+        "attachments/deposit_receipt.txt": "67ef2f55ce2bb8a9cdaccf479f873d36c107a444e5cbd3949d451ae9526b3d4e",
+        "blind_check.json": "95018429ba8075b3663f1441d7495cf4d214ad228eb0081e740dc04775cfcc18",
+        "design.json": "b82e7c1904ff758d2e9417f88b742d18f4579d347ad4d1f49e3fbaa3ec5144f5",
+        "noise.json": "7e1aac55087c786a230ba5da1a88208ac831d385c46b06d1bc539e3044a5a6a1",
+        "reference.json": "9df0624e649f9e9bf09ae0895c72415f1d49e87b0fd8ae319563de8721cd7a51",
+        "text.clean.txt": "327acae9deb6b348c86923e6fd2695575d15e6a0ee18bb4d6294e4a62dd12055",
+        "text.txt": "d7a189971aae0806fbad2f924842d770d4992caf89c053fbedc5ea7bddcd3061"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_2249a3b45704",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 10,
+      "open_facts": [
+        "damages_claimed"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/knowledge_proof.clean.txt": "222f034513eb3984dbf4d82b3a1550bd51c9746699b1083b34fb9b88724f47ae",
+        "attachments/knowledge_proof.txt": "222f034513eb3984dbf4d82b3a1550bd51c9746699b1083b34fb9b88724f47ae",
+        "blind_check.json": "b660b2bf2cf5ba815ec269a9db4509d3704226ff9ee6553dc3784b6a23b1a7d5",
+        "design.json": "73902c9d69f1576d3a2656e3fe1521081cc6b8de46267abcac8f036b10b864b9",
+        "reference.json": "db04a83c3fd3f4e81503284b6922699fae033a5a97d2caefdbe758bcc9c394e1",
+        "text.clean.txt": "7e32de99484227f4dc98520b97100762879cee73706b4db08773c150d27b8146",
+        "text.txt": "7e32de99484227f4dc98520b97100762879cee73706b4db08773c150d27b8146"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_270f84d8acff",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "7d9638e8fc5b3934f74153d5e68ae40e05aa12f68bf22b3313ea83a2a60255c1",
+        "design.json": "12f63e0ec348720db2d85a3a4927afc07bc7d3f4353689bddef67214ef5a1ef8",
+        "noise.json": "4a9a059d4630e1633c2601e97e60ed68c9ccadfa399d1829625a51daf73a649f",
+        "reference.json": "19d96ab87961454fac7dadba3e0d911cebe3748dfdb257583cb341084ce9a560",
+        "text.clean.txt": "2c688cec2ae58cfa16d900b3fceb3a54ca26734f9d9e936eb48e20faaf072534",
+        "text.txt": "efd11985a1dd0f15801b91713251c8eba7d71b8e2e955d4f171d61132e128411"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_2dff5fa7a980",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "ce9ac00f1bc2ec2df990ce01f9b7367fdec319d1831633b881d928e2ffd96e16",
+        "design.json": "9972430be2d60db748ffb09592365992c5fd6a8094c1a4bbd09aeb9c8b97e3b7",
+        "reference.json": "e6991b1c3634f63ae4bc5841fb4137c2af96f98fcc7fdbebc71600a64c04f56a",
+        "text.clean.txt": "d05ea2e4096a14883670831fb528d3f9bf1d2494403a90f4165af0c104003b5f",
+        "text.txt": "d05ea2e4096a14883670831fb528d3f9bf1d2494403a90f4165af0c104003b5f"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_404e03b3e37f",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "deposit_intended"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "0e6a301af625760ecc93e1065eee4c4a74acd518e0363bf8b7b5613a9a7be8de",
+        "design.json": "8cd25a0d909e68524d6c526e60ff05ca5ab0d30a440c55027f862528ccd0439e",
+        "reference.json": "b39d512d939f8da3922a598c5f3bebb97ce7ade810039377ff787d16ee62fd87",
+        "text.clean.txt": "d05426750e299e700778fdecdbf8a48ecbeee28fc4d9c8a5a8c695ad14ed6837",
+        "text.txt": "d05426750e299e700778fdecdbf8a48ecbeee28fc4d9c8a5a8c695ad14ed6837"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_429b182434cf",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "2af42237ce8c8b33cc9b6548c348cf2f14c83e65049d6d45d7e4e97d48ab92c5",
+        "design.json": "ae3db1aa2783ae66d61498509b7bc51fcb9773da37f45bf4d53ed92c9468c0f1",
+        "noise.json": "c9a08977aab11255828190bdadb6342b76eedc05f5190e3d3f679813e93e9ef2",
+        "reference.json": "05fc03b6a71edea165fd9d67373e895d1e93331af61c9331d0dd8717277febd4",
+        "text.clean.txt": "1a1851e328396f4db561465733607576ccd45d553febfd7ad63c1f8117695c6d",
+        "text.txt": "77a78f48c53c5315668e93d8475093bb1f97a3c21d20bc6671e6636d521be88d"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_49dab8d40787",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "79cd552f3d6369efe5853b8477b44ed543bd9ff272187062e3753bd813038b91",
+        "attachments/proof_of_receipt.txt": "79cd552f3d6369efe5853b8477b44ed543bd9ff272187062e3753bd813038b91",
+        "blind_check.json": "c437e1ad7a13e751617a0cb973674f22dd3c3571ccf3d89d9f284eb190326103",
+        "design.json": "94ee7a4d1845ab755c2b9fc5a7b3ddcee78d0e983a858e9cbf5abc8ebda27432",
+        "reference.json": "378222ee622ca9ea63a3ca39fd470d41aa36ddd9a08a150cc18492d58939d5a2",
+        "text.clean.txt": "7349aed9b2cbc4510c0ecaae536a0c2a772098db5bd296c7ae19606e7c2ed708",
+        "text.txt": "7349aed9b2cbc4510c0ecaae536a0c2a772098db5bd296c7ae19606e7c2ed708"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_536a2e7f64de",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "94341941f31b95212370d9a7bcd165afbe3273aaff723f89465feea59877c516",
+        "attachments/lease_contract.txt": "94341941f31b95212370d9a7bcd165afbe3273aaff723f89465feea59877c516",
+        "attachments/proof_of_receipt.clean.txt": "57aa8a2a9544bf3731be406f82e2f792d27e77d2d43b0a84ef5de281742653a6",
+        "attachments/proof_of_receipt.txt": "57aa8a2a9544bf3731be406f82e2f792d27e77d2d43b0a84ef5de281742653a6",
+        "blind_check.json": "0ed74c88b57c78cb005ad97df0033506a0608e274ef9c828c708afd4b4ad39b5",
+        "design.json": "5b09c05c6a412b6586af1b572344368b04b8c29be0da73a1673ab396cc9afb0e",
+        "reference.json": "edd4c4ba5f39f2c6c21857ecc40a2d010b2273519c0740ba483abbe431b8295b",
+        "text.clean.txt": "2c9c4afef0471ef392c3fd5c701a82fc404186da15fdd736371cce3707dda519",
+        "text.txt": "2c9c4afef0471ef392c3fd5c701a82fc404186da15fdd736371cce3707dda519"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_580485dac025",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [
+        "increase_applied"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "2a12f9b187977b70d19e3e1da503a958ef76598bad362c0e7733c44cde12a598",
+        "design.json": "d4f40cb7aab0de641164e3fe9df0e8f8aaee738dcc45483af817260e93c51906",
+        "reference.json": "b13536541cb97036818c74fea2f7ac54b3e3084d3b447238c1858e484c5ccb41",
+        "text.clean.txt": "3dfd178da7dbc411d76ece7dd9d46f135f80d55814105d901888018ce7b01ab3",
+        "text.txt": "3dfd178da7dbc411d76ece7dd9d46f135f80d55814105d901888018ce7b01ab3"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_5822f6df0cb7",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/claims_and_reasons.clean.txt": "e37db252f1b495321bdc2879356b967a758c255c9ce05499eebce0a5c13776e5",
+        "attachments/claims_and_reasons.txt": "e37db252f1b495321bdc2879356b967a758c255c9ce05499eebce0a5c13776e5",
+        "attachments/spouse_service.clean.txt": "4820faab392507fed75fbfb4004019b948ecac63e7fba69349260180a8f8bd14",
+        "attachments/spouse_service.txt": "4820faab392507fed75fbfb4004019b948ecac63e7fba69349260180a8f8bd14",
+        "blind_check.json": "02e54a3430389393c2d2767d2b36006121aa089735a4a216c61b8b3da1ae4ae0",
+        "design.json": "8d264255e7be31c52a2ad176ee83c7096290c0cf92a706a6604e8c23493a9504",
+        "reference.json": "9d3e34282eb5b6108e88f79b5035da58db275d8081d25dbfeecd11defc9de5f9",
+        "text.clean.txt": "beca90dd97383cdca0cfc4e3299798f78f74481ab863ebb781e9b3b61fb04a5e",
+        "text.txt": "beca90dd97383cdca0cfc4e3299798f78f74481ab863ebb781e9b3b61fb04a5e"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_58961449957f",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "3363248d8f8e4d3ce02ec2e1a420f92b3ffb34bf40ec49bf49862255abc6166f",
+        "design.json": "a0f2fb844e81d45e7d6bd8d002fef638f43fc555ae0fe480b6c97edf7bd7e92c",
+        "noise.json": "0e07f926aa6edcda9a193728392a65f2d2f82fcc888431c79d0d61bb802235df",
+        "reference.json": "9c4f092e776ce684482c977ed4877408f4e2abf5fe1527e7837a76787b99f100",
+        "text.clean.txt": "1aa5877a944674d2c8f80a23c1474d4cd2ba08ab49a8250063b25ffb51c9dd15",
+        "text.txt": "b3353565426909ae9ff8384964bcbf9ac2953c7a40c8380e597602e69af4ce5a"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_5aecbb73131b",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "c189415b49cb36e5bae3e555d0b78a4e4698ada20c46e809b92ae2799f285b71",
+        "attachments/lease_contract.txt": "becfc632bbfc365259ce050401f38c8a5b4c3c9511115181ef3571825eac332b",
+        "blind_check.json": "ca9efcb07f4552ce25870610e7a09e29a6c0ee721deeca7be658e07b76d210b9",
+        "design.json": "f9510f2b0c207631278fd5b897d42e6c6e96e80926a7b79e76424e86120762fd",
+        "noise.json": "e6696d185323d4b37071e0eef775b04b7f2fb0913e8d299dd003e1ba25f21c47",
+        "reference.json": "7e22cfd895d3ba5a6cd9180c4959795b6b573663d3a5223a1fdb54f36c7f5cfc",
+        "text.clean.txt": "43828a44836e8080f5c3bd825e2fe93c8249f9aca1169a58d9467f48df7189f7",
+        "text.txt": "62b304905e411df65944202f1bf66a40b48a75871c1dab6146ed243865fb5007"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_62956adff3f7",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "fe916dc10df46b58fc1026d577335a6bd77ea13643e0b66d9ace41630acf1aa4",
+        "attachments/proof_of_receipt.txt": "fe916dc10df46b58fc1026d577335a6bd77ea13643e0b66d9ace41630acf1aa4",
+        "attachments/rent_increase_notice.clean.txt": "dde7c257ca771ce439bc45071384cafeef5ca6f810cf3c5feacc762e32831184",
+        "attachments/rent_increase_notice.txt": "dde7c257ca771ce439bc45071384cafeef5ca6f810cf3c5feacc762e32831184",
+        "blind_check.json": "ccb4d52112d2eea9391474fb8efe3e32a982ca8e521c9672b2bfe897e9db09b7",
+        "design.json": "6d8460170bac8b7c77e868967f1f31f7c75292976a77397ec9b40206e046bb0d",
+        "reference.json": "a327cf711741a6f9d46072b41a4c7fa1c382a1e7a57106ee7b17855e89d98d7f",
+        "text.clean.txt": "91eb128da417f7c3eb178d2a37f044f2f396d04733942a183a8b99052eb8bda4",
+        "text.txt": "91eb128da417f7c3eb178d2a37f044f2f396d04733942a183a8b99052eb8bda4"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_650fe62e2c09",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "9ac4cf59b846595558eb56ddfe39503ae980b504e4eb777b9ce08853bcbd1090",
+        "attachments/proof_of_receipt.txt": "9ac4cf59b846595558eb56ddfe39503ae980b504e4eb777b9ce08853bcbd1090",
+        "attachments/termination_notice.clean.txt": "47738d5f330470901af490029476527e1239600891ed7f30de33aeb69f0dce78",
+        "attachments/termination_notice.txt": "47738d5f330470901af490029476527e1239600891ed7f30de33aeb69f0dce78",
+        "blind_check.json": "73c47c3b5836ffd4605a075e26088d5cfbdc41fcad4e22afd849b1f8df82dbc6",
+        "design.json": "758e17f7464a2a1658a02b1da60e511d518e401fd5384378dd409e44ef9572e7",
+        "reference.json": "68d536d1dcd17bd6b380975125f64c9f5856e7e4e320440977fd0ccd447e5023",
+        "text.clean.txt": "dd7e21b0c741a43d459a8fa0363ab3568034757d041373f3a9f3fd5589c24b02",
+        "text.txt": "dd7e21b0c741a43d459a8fa0363ab3568034757d041373f3a9f3fd5589c24b02"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_65213c168ab3",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "e49a26166ea554782ee496c0c176ba645a5b49fe9b091087b2026025f213e70c",
+        "design.json": "ba7201dd5e3266f39b9895b9505402937ec9d967dc9ffd282513f97867f19d9c",
+        "reference.json": "a68f8cdcf2436d128f611a1a7feea199ddb26b957703ac7710b6eb3c750af2e9",
+        "text.clean.txt": "8dad9ed86fbb36483bbc5d5ef94b81cf21483afe6beb9c19fb3b0569b535ff42",
+        "text.txt": "8dad9ed86fbb36483bbc5d5ef94b81cf21483afe6beb9c19fb3b0569b535ff42"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_6806063b9fd7",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "83b6e886ac9afb9b127329cbea5c80ac35735b727b5ffe4cb1f9efe2c8c54b96",
+        "design.json": "82f30265f2aaf2c225b6ac9803671d2198eae8f9113349955787ff52e2f47be0",
+        "reference.json": "f62aa29f3825dca223ddef44e8484afc8c6861ef8519cb43c63e8d9b8a9ceb84",
+        "text.clean.txt": "d30ebe0a557f489aef09d7e43518a7170f6e21e537c4037ba44cfe296b8035c0",
+        "text.txt": "d30ebe0a557f489aef09d7e43518a7170f6e21e537c4037ba44cfe296b8035c0"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_68cb7ef0004f",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "671a917676fabd2a3b2280998381572106af547344742cc7b1fb8a3ea7fe2eaf",
+        "attachments/lease_contract.txt": "671a917676fabd2a3b2280998381572106af547344742cc7b1fb8a3ea7fe2eaf",
+        "attachments/termination_notice.clean.txt": "b9095ed48ab39663927643c9895216ec1dc92dbf802ceddca32d09beea91fa92",
+        "attachments/termination_notice.txt": "b9095ed48ab39663927643c9895216ec1dc92dbf802ceddca32d09beea91fa92",
+        "blind_check.json": "375bdd184e9f1fcf49cfd5994f664e6d3bd6d8b53196b8b8385fb481a71bd138",
+        "design.json": "86fbc78ed558891300ca585980e73893da075f28719ba892de1cf533d82ab3c1",
+        "reference.json": "7864e766e9fe7529b479847ed3e5f6295749cb5d12c0815c97fe4eaa070e18ec",
+        "text.clean.txt": "f55fca03233caa4a21eed1c9e4e0bac44aa6177d6ccd68ed7475b1848494f59a",
+        "text.txt": "f55fca03233caa4a21eed1c9e4e0bac44aa6177d6ccd68ed7475b1848494f59a"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_68f29695fb98",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "f57c23cd4328c256466f786e315ac1e27f90d4fd3bce0eee69820da12d321b1a",
+        "design.json": "30936e5fbf95671de36ddfc37ba4c8ba04309f2a6641082df2e0056c3d6cda97",
+        "reference.json": "afef140209b82cb71fe273b47292900e0056976c6d749df3a5c24ef619004430",
+        "text.clean.txt": "195f9c0365fc0fde884e9025dcc6d19084e605fc3c179ca4ad9d9059c8513cd0",
+        "text.txt": "195f9c0365fc0fde884e9025dcc6d19084e605fc3c179ca4ad9d9059c8513cd0"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_6d6fcb65d5b6",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "fdece1df3097acb12f61532f46e19267b0bd4b3b9a25748867c5d2365d52b02d",
+        "attachments/lease_contract.txt": "54f6c636f9a62c74ea3b7cbe89ecc7af5f2a213eaab8de8140363b87869c9fb3",
+        "blind_check.json": "ce967f60b9d6c1c61b6a7c58a48e5a8d71ea636e01baaaa69f44bc36f079af20",
+        "design.json": "5c7f59cfa5a1d43a16db885ea4c5f971fb046698882631fc625250c775737a25",
+        "noise.json": "36c144b6cf4c9043c6064de933f2df768410c5763a232ab77a1937181c6b2710",
+        "reference.json": "47d6b665745b4a9ef87521fe773cdd68ac85e7c5421953d0a643d349077f672a",
+        "text.clean.txt": "b223a95f79f57ddc1ae79caca83c48e297a3324c30bb37b0aebcf3eefae5d540",
+        "text.txt": "759ede94fd413011557893b33fce900396396ad0c3273e1d20bcbf53c2172bd7"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_73e9202b8898",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "fcc674c3cac94818894b851322887de05a4033bae616b3308d695dc0d1318b36",
+        "attachments/proof_of_receipt.txt": "fcc674c3cac94818894b851322887de05a4033bae616b3308d695dc0d1318b36",
+        "attachments/rent_increase_notice.clean.txt": "1acd9a24044cf9651aa7c53058d5c1cacc65c1dc32b3c2412e904c649339daec",
+        "attachments/rent_increase_notice.txt": "1acd9a24044cf9651aa7c53058d5c1cacc65c1dc32b3c2412e904c649339daec",
+        "blind_check.json": "384f838d56ff247378bd229c4bf0cf629d5a689c595a921ccf83bc769054d434",
+        "design.json": "bbdfc5fceba1dde43c46af54e7692447acdbbe8594af5c419cb58466931940f8",
+        "reference.json": "c052e07ab581deeba692ba947ad05f58e0cad8f2287eab7d9eb31a5ec4accc08",
+        "text.clean.txt": "23264ec0a93c2ce16845f00001647a87faee1c34654909f32d222cf91e8e717c",
+        "text.txt": "23264ec0a93c2ce16845f00001647a87faee1c34654909f32d222cf91e8e717c"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_76d8d9821402",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "463a64eb7c2f39642e12cdf216baab62ec1c3898a8ffee236a7dc13141fde273",
+        "design.json": "2d8a1efa1c257a0c00497cab532e3f5584a44c70ce33a7e3dbb73629b1c981d3",
+        "noise.json": "22bda6a02d9125cd59d00408019348dfe181b6586511d5b5ecaf54c94f53b599",
+        "reference.json": "9c8547212b6682575c832cb75fd9314ac1850351e88e6b08bf7f7ab0100a448f",
+        "text.clean.txt": "23bed32498f47e4954a77360e4975cc541ec18ea57e222bf20ef57fb66537825",
+        "text.txt": "2b1acac9584d3e1ebeee30c047285db3ba25a06e00ba51fbad89ae92960abdce"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_776e0e61986b",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "59bf09201350bc00adc7930a374aacacea1c14ac5e74a9961c25d64e8b5ea573",
+        "design.json": "01b46fc12f2302621ed650e623b69514e3c12e279e36bbf94701f04af0f450af",
+        "reference.json": "5a6b6c2167a1fe38f84f05618f9bb99707eb77cdd4f565e7816f8f6d5cb8a8c2",
+        "text.clean.txt": "44fe12af6eaccd659a1871803441c843eb768952a0a5f5aabd1de3562052eb18",
+        "text.txt": "44fe12af6eaccd659a1871803441c843eb768952a0a5f5aabd1de3562052eb18"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_7bdc8d77b443",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "c238ac60e810832c8338772a2f4a7a6b6dd85d1ed9acf8bff4508f1bb2e7339f",
+        "attachments/proof_of_receipt.txt": "c238ac60e810832c8338772a2f4a7a6b6dd85d1ed9acf8bff4508f1bb2e7339f",
+        "blind_check.json": "28d469659d259fa22e1a275330c5ffb63429f97e6f4b809bbe1a2e4b6e350d75",
+        "design.json": "46cd94467065dfe93147e023d6f9cf0696bd85cbf2495ad52d6614eaea0921ec",
+        "reference.json": "ae652db75c9dd4aaa045a5cf537b0c53b06a168c376e4fe8e555a843715e1b9e",
+        "text.clean.txt": "5891231cf4f739d9d699578626bd82dbd6391ea886e6a0a628b870a8465f05de",
+        "text.txt": "5891231cf4f739d9d699578626bd82dbd6391ea886e6a0a628b870a8465f05de"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_81c7af7dbe95",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "f5dcbff056f6aad7cc24cd9d6f8ebb29c54c3983b89f4664bd75f98c8a97f039",
+        "attachments/lease_contract.txt": "f5dcbff056f6aad7cc24cd9d6f8ebb29c54c3983b89f4664bd75f98c8a97f039",
+        "blind_check.json": "63f93d294cd7101681accc3698eb49e7746b22fee1bec373c429b80f1c5894fa",
+        "design.json": "3cc6880d64e26fa53234dcb97fe21d628a5fa7f6dc1f5d294bd41c28fa742cc3",
+        "reference.json": "a01748db451cfd49152940cc8a02331b394c9ef59da8762d724b53b71073dcd4",
+        "text.clean.txt": "6b12964c1beddf3484911aa09bf8614dd8e105375080d30cb1137eb5938458ba",
+        "text.txt": "6b12964c1beddf3484911aa09bf8614dd8e105375080d30cb1137eb5938458ba"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_8572ddc89110",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "716829118ca0064ffab63f1ae00d7829592db5c902475e827e2989e54328203e",
+        "design.json": "515322a90ef1b0c66cd7d8feb6f14a45ec48f7018479eaf94206eaa741a3d7e2",
+        "reference.json": "458a7da904201a14dff9f8b48610fe72929591ce76149382b1cfce5aba1eab4b",
+        "text.clean.txt": "13604d620c587fa7a0b3f05f2a082833a5d891e2ed27b2efa951bf232d217db2",
+        "text.txt": "13604d620c587fa7a0b3f05f2a082833a5d891e2ed27b2efa951bf232d217db2"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_857d108a2bbc",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "arrears_termination"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "08005088f34af795b74d3afecc767174c0dd8c5ec59867fec3528685e8839819",
+        "attachments/lease_contract.txt": "542c1ddfafdeb879a1495852f0a3343cc1036a5dce0d5989e29728fa417e397e",
+        "blind_check.json": "ca83965fc3b4fe11600da53c39497b95413b909c7923c61799187fc57d06857f",
+        "design.json": "4988423264c74e5c79cef03d1153715b6ad11a4674ab9177cec4f55981d4aead",
+        "noise.json": "ffd955ab199e6bf145a0dd04f8639ebc43e755d3299948ea5ef6bc1d4aa7387e",
+        "reference.json": "432496ed69076a2fb23b28fa22ece27c59f02743c7c054a9578f9f3f266b1d00",
+        "text.clean.txt": "8892b65e66aa97b4cdf6ec71c656f8ac980caa038d6580f9a40b96b57e4ee143",
+        "text.txt": "164d9688535d3a4fff1f2618f52ee60730ff9aa483d3287dccd881e518e3f685"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_886637ed61d4",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/termination_notice.clean.txt": "194a49f820c894cd4f30a5c69859a085ac63839cc8dbb1d2acc5ad391aa69788",
+        "attachments/termination_notice.txt": "194a49f820c894cd4f30a5c69859a085ac63839cc8dbb1d2acc5ad391aa69788",
+        "blind_check.json": "a576e33e9d421db955c752e6c4bb0a2033aff4b8a64e4b0793f3134cefb5ed84",
+        "design.json": "4d21601d3eebb75f35446ee6a093fe0bb3d23eb600aa555e80ce6a78db440985",
+        "reference.json": "d8f373268f5d0ce709266e1d007a591a003b2adcd9ad4185743eb25c571d4ded",
+        "text.clean.txt": "2dc85c20e68a01e12a58b6af2d5e56e9b740cc086c6eb14d789a15000228ce3f",
+        "text.txt": "2dc85c20e68a01e12a58b6af2d5e56e9b740cc086c6eb14d789a15000228ce3f"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_8c1d86a176c0",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/deposit_deadline_notice.clean.txt": "c6a636b8bf10551fc41ba992908e2f940ec5dab2977c6840d2482a44eac3331e",
+        "attachments/deposit_deadline_notice.txt": "693bdd5c4b5d2eb07cdce1c49eff75107d36e869606662ef08aef1306586733a",
+        "attachments/lease_contract.clean.txt": "2a0323a107bdf1812ea3525117c5603d5bea03b3db2c8a7d54c2a32239f8fd1b",
+        "attachments/lease_contract.txt": "91fc2fc73dd0690fe57ddc546a69f71d2ea6a4e39747b92c3bd07884197133a9",
+        "blind_check.json": "3cb5e9b92a4acc1a7609de23972832556d39ffe869f92287386d6501f90fa6ad",
+        "design.json": "666c4416848dd46f03548c505bae1d4841b96c09e003cbca36c4ef3516b9a1a3",
+        "noise.json": "69b7e07cc1709462dbeb0fb1a3b2674c87d82f24fa0e357d4836db2131ec8ee5",
+        "reference.json": "cb78e8bb32700f3eb6a88a34d3aaedb39ab61027033e545db7a1eea58b04638b",
+        "text.clean.txt": "585701d8fb32501bcdb79f76c21debd7356803f38f1265edaa850dc8174be4d4",
+        "text.txt": "eae12fd35eeb735b9917445ef3bedaa796e913b6f0157baa9d1bc416a7c3af20"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_8c54d4a61b0a",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "70cc62f0f2cc0bc5735e91c51b8cabe36a507b52ecb9cd26aca8b73c8215a6a8",
+        "design.json": "8189717362640970b3e1faf052021558bd062298cf123a5909af7d961b098769",
+        "reference.json": "4c0deaa194ba6404c5b6916f6432993a42f2ae0ad4f5e2062896060a2dc6541f",
+        "text.clean.txt": "020604998822e5283f8327b0e10211538f5a8da4bb7bdd036b443e98f0ca6f26",
+        "text.txt": "020604998822e5283f8327b0e10211538f5a8da4bb7bdd036b443e98f0ca6f26"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_96f9b0ab4078",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "a7d682f027589555e2c7121eb72bc509406fe9516ce4233a8bfdc7144627df07",
+        "attachments/proof_of_receipt.txt": "a7d682f027589555e2c7121eb72bc509406fe9516ce4233a8bfdc7144627df07",
+        "blind_check.json": "df7a1dcf7550d053fff1398cd81df2cb930309a9bc7fbb76c9dac6615dcc99b7",
+        "design.json": "1903731ff750983e115e1e2de4c745f94649c8808bd008ff614508a706e0bf20",
+        "reference.json": "e8a1abdaad27bd067914423e4ba80961293e6c49207a2bbc10e58393c5740908",
+        "text.clean.txt": "e7bf02b9993ae63286068f1c45298cb20708818d8f89073cb420b1919816db74",
+        "text.txt": "e7bf02b9993ae63286068f1c45298cb20708818d8f89073cb420b1919816db74"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_99a09ab93688",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [
+        "landlord_unaware"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/defect_record.clean.txt": "416d949f304bf1970e89259a5289df4b1ea75b46ae0dffa2b50334306aa3a80f",
+        "attachments/defect_record.txt": "416d949f304bf1970e89259a5289df4b1ea75b46ae0dffa2b50334306aa3a80f",
+        "blind_check.json": "dadcd8ccfe5fab6048d3f349e24ffe9d0eece29e21f7ac0d55446cafb9fdcac0",
+        "design.json": "7cb8411a9e453bc74ccd437b27178721739a6909b79ed454c2549847ed7e443b",
+        "reference.json": "50b9742862edaca060eac96b16083cea673cc01e5bfb33295f833a82df72840a",
+        "text.clean.txt": "0914a42966ee58d2b32831300a480eae3f5d754a67b11062e83af9f2dd49eefc",
+        "text.txt": "0914a42966ee58d2b32831300a480eae3f5d754a67b11062e83af9f2dd49eefc"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_99fa2131c25f",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "9f35909880c8ff1ce8b6a34ddf8781a487316cf830d81335122a77021e3397ad",
+        "design.json": "88dba0d15d9b08da077d685f1713412b01f5d0e0c2b0fbe1f5dda5add673aaad",
+        "reference.json": "f943a86d9df46de43c9f80576e9bb4e03fe435270607e53f0ee720d9a5c2033f",
+        "text.clean.txt": "01d8247405dfc900713542b6559dc3cbb6e12265b3b2659820e55e75f605fdd9",
+        "text.txt": "01d8247405dfc900713542b6559dc3cbb6e12265b3b2659820e55e75f605fdd9"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_9cee49140df5",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "597c35a987fea4fd0c0fcc2cb728812f29185437a3e150a69b3074c9d9dc71ba",
+        "attachments/lease_contract.txt": "597c35a987fea4fd0c0fcc2cb728812f29185437a3e150a69b3074c9d9dc71ba",
+        "blind_check.json": "c0c7ee1de97a8672ec64151c75e9129057984f437a36a18a972628980ae559f7",
+        "design.json": "e79e86ea818fc5926930499858030f200d9ecf53d763294d9c234e08466adc4d",
+        "reference.json": "efce33d395c0e67c0b008e21fccb9416ef1d81a9e42a05ccd86c64aa18ab3a67",
+        "text.clean.txt": "7fada8b17f47dfa1889388744ff22b745739bf4b75903628c1eeed355de41229",
+        "text.txt": "7fada8b17f47dfa1889388744ff22b745739bf4b75903628c1eeed355de41229"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_9ef3562d0d18",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "5dee0c18ffa7b803d39da4a92943ac3fdf8e3015048911525ad26b9d0515fe69",
+        "attachments/lease_contract.txt": "5dee0c18ffa7b803d39da4a92943ac3fdf8e3015048911525ad26b9d0515fe69",
+        "blind_check.json": "7f2ebc88f6371c113f207375a1cab619070d14e25757c886617cd0a6c0df6ac8",
+        "design.json": "2e84b520a3305593c12ff22bf8241498f4f1a0db20dd2a555132df11460974b2",
+        "reference.json": "3e3f2d7b243159d5d577d0596c00f5477228792100d697470b56a2dfe70542b3",
+        "text.clean.txt": "b8728fd8192144c22bdbbbab93bf4b651ce69d1aa67c89e6822b833647864e71",
+        "text.txt": "b8728fd8192144c22bdbbbab93bf4b651ce69d1aa67c89e6822b833647864e71"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_9f1d7f1e9554",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "8e12dc1a28edb9dcec0a742ccaef891ce8f8bcfea5ec988c7293007a54bad306",
+        "attachments/proof_of_receipt.txt": "8e12dc1a28edb9dcec0a742ccaef891ce8f8bcfea5ec988c7293007a54bad306",
+        "blind_check.json": "1e3a9642ba501b9b29f28157b4bcf8ab556408ccc23239c06546a20f7d84e983",
+        "design.json": "f073243e3946321f36a2dcf7cf338a67e3e28f0f93c0999649af574941852e31",
+        "reference.json": "6c064b4491c82d4dd66f90518ff394ed42bb1f33be1285ae3323af9b856d837a",
+        "text.clean.txt": "b60865b032187f38e332124db76afaa56f426353206fdae7823e4ec7de9468e2",
+        "text.txt": "b60865b032187f38e332124db76afaa56f426353206fdae7823e4ec7de9468e2"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_a743587360f3",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "df4e53a5999112a2c9c4b054745ec19ed8040d537bbf6658b7471d6440ac1d4e",
+        "attachments/lease_contract.txt": "fd5fb2b4966ef6f10e8a4a584259e867679b4170bbe97d792d8eee43d91a2237",
+        "blind_check.json": "846b07bfdcae07921fb2446ce13ca5b69a9a109ae493d09f93a4f82d7fcad0c4",
+        "design.json": "ab511e175b753e255fe230d323b1a09b562b08cbd85247019861e4d55a0a31be",
+        "noise.json": "8dfe8d6038664ee821c811f49a12ca78f79e1b45bc9e21bc73465811059a4089",
+        "reference.json": "f3d32ceb77cdb2088caa6e0a4af36c45186d7c7ed31813d17befb0c123e054f6",
+        "text.clean.txt": "dad3f2cb729c8123b4ab831c4bd83bdd8cb03a1a0b77fef7625e75d140d431c9",
+        "text.txt": "f80419fd6855c59addce49c0b06562dc538165bd6495fda9abf787ccf2a35fe6"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_aba30f049af3",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "rent_deposited"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "4a40de8328d22082497902d214d0cf7922a0e9d9bdc307c3e712a82523b3b390",
+        "attachments/lease_contract.txt": "4a40de8328d22082497902d214d0cf7922a0e9d9bdc307c3e712a82523b3b390",
+        "blind_check.json": "fa0022e543bf98fb98fd5242247b12559306070ae8f840ad25faeb3746cfc1fd",
+        "design.json": "29ad9c91906dc41952cac4b2ea822d5556c29ed8ed24d1b5e982d881779740d8",
+        "reference.json": "326d4ce9b22717359f47fd27b3e7195c6d4d1037fc075b6526d027ea5965cd3f",
+        "text.clean.txt": "a99a5d2acb8ef1d0c44ba39202a0b9a1d21541281df88f04de32e8f1a49e7d3e",
+        "text.txt": "a99a5d2acb8ef1d0c44ba39202a0b9a1d21541281df88f04de32e8f1a49e7d3e"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_b2a5ace905ae",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "99bf2b9222667610b88d5ef2e760cc21ef388ab9fed54d8c63d72445b4bb8184",
+        "attachments/lease_contract.txt": "99bf2b9222667610b88d5ef2e760cc21ef388ab9fed54d8c63d72445b4bb8184",
+        "attachments/payment_demand.clean.txt": "6fd596326a97ddcb7ca26b93f1d41c7b9baeba66ffa41fd3fb2ae23a1ea02c97",
+        "attachments/payment_demand.txt": "6fd596326a97ddcb7ca26b93f1d41c7b9baeba66ffa41fd3fb2ae23a1ea02c97",
+        "attachments/proof_of_receipt.clean.txt": "5ee7732041c2d8c0719e825565451a924a5009fa784ed5effaf3f64c6a1e4a4c",
+        "attachments/proof_of_receipt.txt": "5ee7732041c2d8c0719e825565451a924a5009fa784ed5effaf3f64c6a1e4a4c",
+        "blind_check.json": "9658ee1bb69a4903eb53eab4b51cbc540198326afa21fd723c57386278ea7cd3",
+        "design.json": "67c49f7a77a30dbf688e55379f35c9afdd42deccd829563be93f94b41de506de",
+        "reference.json": "56fc945afe2afe1fe0a4dec6cf31115667e7b510c81b30c720894b3ef1367dc2",
+        "text.clean.txt": "abba2c1246b844c12dd79a2b87bebc4f634560df6bb54cc1dcdd8d582113d0c6",
+        "text.txt": "abba2c1246b844c12dd79a2b87bebc4f634560df6bb54cc1dcdd8d582113d0c6"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_b4d4cb05336f",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/rent_increase_notice.clean.txt": "44300119b4e690414b0616b125fe8598aee480f7acac02c9bc2fda00f05dd557",
+        "attachments/rent_increase_notice.txt": "44300119b4e690414b0616b125fe8598aee480f7acac02c9bc2fda00f05dd557",
+        "blind_check.json": "644e3f5f4edeb8824eca24ed78c14cca4e11ec1ec604b1efd2f2c9efbc6ae2d6",
+        "design.json": "3ab1327249d85231f21aabf656c66a853f35c1517cfdd9872c7f27024f577cd5",
+        "reference.json": "e3068070d0ac1036b5c6bb92dcd29fb7f5dc45c4c57761c11a013e2a6466b3d3",
+        "text.clean.txt": "0cf50da5ef3554b6d11c49508bf5855e16be56b3138c57b19b0efc486a7a048e",
+        "text.txt": "0cf50da5ef3554b6d11c49508bf5855e16be56b3138c57b19b0efc486a7a048e"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_ba90f9b8b195",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "increase_applied"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "dac739ea4e90d550e7dd9bb29e13150dc04ac3eb21222faaa79fe73a8c0385ec",
+        "design.json": "acfcc4ea7ac1f32c1a1a9f0754afe0239c15a404aa33d03c05162e6e9e064e59",
+        "reference.json": "b5eaa87e6a47db9c5216c9ae0af91f299364d1a933f7ffe81677be8b8e78bfed",
+        "text.clean.txt": "695d2a371cb9b65f2e78bbc847cb167269c59a9bcd1c62a91387e271a34f6a8f",
+        "text.txt": "695d2a371cb9b65f2e78bbc847cb167269c59a9bcd1c62a91387e271a34f6a8f"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_c1e4987669e8",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "012275c5e4857faa285216465964fcc31fcbf01a47a3fa69dc08e9781bf51219",
+        "design.json": "1d4807fa44c6d12e764fe47cc0dbc5b17a9dd15608ca301445f76349f7477663",
+        "reference.json": "c13b2ad77792e7aee15a2e6f1d587c0f9c5afd2c280363b6312afed79dcbd8cf",
+        "text.clean.txt": "aaa82cfa3a463c3072b84ba718bc92ec8ece0c3b0996a2a8510cd4186f531df5",
+        "text.txt": "aaa82cfa3a463c3072b84ba718bc92ec8ece0c3b0996a2a8510cd4186f531df5"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_c2a72cbf1698",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "ca2ce4ac60e3958bc62c9ca8d06423dc2cabadd3882abc322245092b383b4da3",
+        "design.json": "042d3e67212f070b7f6fd815ba5987cbd27f2b7a15f4f56d08b0112513663cd3",
+        "reference.json": "96953c36b041ea614154f5919ee7c538497339d9c2ac37e92b8310c3da2e2dea",
+        "text.clean.txt": "026db6f727371ac8a11f1cbb97211c73ea41d82aa41452153d9d24bcd2dd9dd4",
+        "text.txt": "026db6f727371ac8a11f1cbb97211c73ea41d82aa41452153d9d24bcd2dd9dd4"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_c4ccb65aff87",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "50e6cd096e61008cc23c919c22539eb070bcea90ecb110c5107f557b895855df",
+        "design.json": "4f62d282f4ebad6d0dd4da2c12fd4ed126f1a807d84263061ac89c08ce271a5a",
+        "reference.json": "42d605f8f8c2de5bdfea7141941d4e00dfbd93cce5f48c0d41ef9199665ae083",
+        "text.clean.txt": "0370076e60bce1ff1e4286f9370954b87d57d218f29b5a8acf9e208f51307804",
+        "text.txt": "0370076e60bce1ff1e4286f9370954b87d57d218f29b5a8acf9e208f51307804"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_c934efc0b1bc",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "c059b3e5c75e02a38f8f7cde47750526e828d2951cced0ff3ebb37f0a6fa78f8",
+        "attachments/proof_of_receipt.txt": "c059b3e5c75e02a38f8f7cde47750526e828d2951cced0ff3ebb37f0a6fa78f8",
+        "blind_check.json": "fb0d0c9011d616a7d404fc7fc24a3957885ace991cc211f6e9e571aeb30a1cbb",
+        "design.json": "213c1ec204eb0dc84c1fae4fcbc0f210de30aed489830b1ab7b529cd4d54e24a",
+        "reference.json": "f8c9a6cae225405f64a0093ffa8304b7426c501ba59328737f3e3ba410fba298",
+        "text.clean.txt": "ddc289eb154f308eb327089e312eda55421fabda2c526bded9ca4e695d4e5105",
+        "text.txt": "ddc289eb154f308eb327089e312eda55421fabda2c526bded9ca4e695d4e5105"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_c95735ae0bf4",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/rent_increase_notice.clean.txt": "5a9897e2a8dc68b22645c89a746ac9789f7979e2a50d5a985506debcffd0e922",
+        "attachments/rent_increase_notice.txt": "5a9897e2a8dc68b22645c89a746ac9789f7979e2a50d5a985506debcffd0e922",
+        "blind_check.json": "acfe3995f1445ff657d90d722f3ac65dbaf75e14143e3c90633d3f0599cb030c",
+        "design.json": "2e91458d5243a6132ab222ab7e66abedaccd8b14e9019cadf178f34bc6138b61",
+        "reference.json": "ca1ee098132d7c2bb2e5d321a392691d74bfb449596c8bc9ac71e66cf93016f4",
+        "text.clean.txt": "5b32760b9de516a8a03c0d64928aacd007b379d58b255e56e1c8a2fa8f58e4c0",
+        "text.txt": "5b32760b9de516a8a03c0d64928aacd007b379d58b255e56e1c8a2fa8f58e4c0"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_cf02cc821948",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "06fbc8bd7d65a67da27f377aad48e71423e8086042a188df6881dadbc2278301",
+        "attachments/lease_contract.txt": "06fbc8bd7d65a67da27f377aad48e71423e8086042a188df6881dadbc2278301",
+        "blind_check.json": "33394cabd7354b0e7ef801ee34559e52892aaaa38513f52e6ccdf62917b292ee",
+        "design.json": "cd5a7b7de30954cc2073f4183ba189eda04df884b29e736dd1eabe53f25ec24d",
+        "reference.json": "63010c82ae6e68f509de6a787302a4ba4ce95e8736a703d8e9d009ed046b23b1",
+        "text.clean.txt": "51713cac775945789ab02016b2f5d4b0326501d6ca51dca763caa1dd46845220",
+        "text.txt": "51713cac775945789ab02016b2f5d4b0326501d6ca51dca763caa1dd46845220"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_db552dbb3c23",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "b2cffa3316e4f42b81c03afe011090a10d4d658ab851ff33b27485967d7bf90f",
+        "attachments/lease_contract.txt": "b2cffa3316e4f42b81c03afe011090a10d4d658ab851ff33b27485967d7bf90f",
+        "attachments/rent_increase_notice.clean.txt": "2cd48f8e976bc42119050b859831ea0007ec900de4b1cc7a4570f70319fb1d00",
+        "attachments/rent_increase_notice.txt": "2cd48f8e976bc42119050b859831ea0007ec900de4b1cc7a4570f70319fb1d00",
+        "blind_check.json": "3425379937c84b8da7307ad49b367fff165daa1dabb49836108370a0639e8209",
+        "design.json": "719f9b12fc89e921977f1b87b3b457299afc28143395f6e196c50a5b03bedb12",
+        "reference.json": "5b4342ffdb19ef55eddbd7a9766ee10ff188dace82187fbeea4ea25e920278cc",
+        "text.clean.txt": "ffea626e90fb30f06b64bccd382c62ae40efa1b5a7369df95e01d102f91a0e2e",
+        "text.txt": "ffea626e90fb30f06b64bccd382c62ae40efa1b5a7369df95e01d102f91a0e2e"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_e4858b3af131",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/rent_increase_notice.clean.txt": "5013b9d31a6ee396fa6c1ef89f98e868cd4b26b0d3d8ba1c4ac5b46967f6e1cd",
+        "attachments/rent_increase_notice.txt": "5013b9d31a6ee396fa6c1ef89f98e868cd4b26b0d3d8ba1c4ac5b46967f6e1cd",
+        "attachments/termination_notice.clean.txt": "8a3e5bffbcefba58cbea920df1b6fe5a7219754db19115b2a0d1a47d1f68e32f",
+        "attachments/termination_notice.txt": "8a3e5bffbcefba58cbea920df1b6fe5a7219754db19115b2a0d1a47d1f68e32f",
+        "blind_check.json": "3665c0984da63933d052281ec54b65d2f091420bf03b18e77224cccd065d8325",
+        "design.json": "bd052c0188fd57b0194899c0c6ea0344b6b8befcc130abd8bb4c53773bd7bfe3",
+        "reference.json": "917ea16977b440af37b4d4c227272c4f3fc25a063088715527268764096a5cba",
+        "text.clean.txt": "1b8374e6cda89b92716f82a7b96dafd67bd81bb9fc880ec9c6bbe9af32327f55",
+        "text.txt": "1b8374e6cda89b92716f82a7b96dafd67bd81bb9fc880ec9c6bbe9af32327f55"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_e6d795ab2a91",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "34632f6286a07dd7afbc4f2fde2a07c47e122e2a662c2a8265e38d2c197fa294",
+        "attachments/proof_of_receipt.txt": "b84c9cb05c6c0611f86aa7659f1d4096f6c88e684f1828615b39038d577bdbfd",
+        "blind_check.json": "a012aa5326d7ac4f2eac4956555d158281d9b061c1dfe0d8a23e852394334498",
+        "design.json": "edd27c5edf0349da04c5a2b6a44445d9984128994598a8df6d7b0f3dcf42ca94",
+        "noise.json": "20c512063299c65b18215886991de08a57483effd0da0cc07042365ed9c84bef",
+        "reference.json": "62f1aca77886992b8bc1340903e506d6b48b89185bdc88e3e95bc16795de0d0e",
+        "text.clean.txt": "4e02cb02a1c2461dbe39da8715a2ddc4947fc8a43ee74416a0092d41d60ebdd1",
+        "text.txt": "f80fea2e4878f68aea98d817dd6e53d6554eea896cb1f31a188c1c8b45f37134"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_e94fb7461784",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/deposit_receipt.clean.txt": "d20563ae8cbe85f1cd1eed8491d223aad74daeffdbced127e785c78668ce0a96",
+        "attachments/deposit_receipt.txt": "d20563ae8cbe85f1cd1eed8491d223aad74daeffdbced127e785c78668ce0a96",
+        "attachments/lease_contract.clean.txt": "0fc6d57498ad7dfdda8b7afa8248cbd10676dc460ad2344a9cb1521f7efd33ce",
+        "attachments/lease_contract.txt": "0fc6d57498ad7dfdda8b7afa8248cbd10676dc460ad2344a9cb1521f7efd33ce",
+        "blind_check.json": "4304ad1c2b83dab54f912a098861317aac98210d395aedb9b31320094d307b74",
+        "design.json": "29781dec39722337f5276e05ae58b7ac9e8c6088d4913fb7a7cc1ed05f5b5bbb",
+        "reference.json": "7a5170ff8842b488694d5fcd54be904d9bf3d104e7b17ba07ecbcc7c964a8885",
+        "text.clean.txt": "c82af541b0b775494ecae0cba83f0d3028f7787dbe311567663c43b323beb397",
+        "text.txt": "c82af541b0b775494ecae0cba83f0d3028f7787dbe311567663c43b323beb397"
+      },
+      "type": "defect_mold_heating"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_ed10120c904e",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "asserted_claims"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/lease_contract.clean.txt": "c7a39aaeed246f81f648dc99a296c875b57ea9a17df994e3eaddac9b95884db5",
+        "attachments/lease_contract.txt": "c7a39aaeed246f81f648dc99a296c875b57ea9a17df994e3eaddac9b95884db5",
+        "attachments/proof_of_receipt.clean.txt": "60c772f8f0c529d4433ecbc530d55344076b2a8ece3537b4aa40fb3cfe88609a",
+        "attachments/proof_of_receipt.txt": "60c772f8f0c529d4433ecbc530d55344076b2a8ece3537b4aa40fb3cfe88609a",
+        "blind_check.json": "fba0cf8a1ba147e605a5f8eaab43b0020c70a65d2a009c8723482a955f4dfb2b",
+        "design.json": "49c5348099e09d44a662371c507e907a1e922c5ea58385116604c3ff29c45c90",
+        "reference.json": "60ab171f5fc3a8af9f9900fdeb3848576fd3fed379231190c46ba09efc9b0181",
+        "text.clean.txt": "51a50182ec405299679b3735e7655540bc030e7363a8d842ee8b61654654b56e",
+        "text.txt": "51a50182ec405299679b3735e7655540bc030e7363a8d842ee8b61654654b56e"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_eec676341229",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/termination_notice.clean.txt": "97c79dd12d5b059728c5aae571ab49ee0ddf8323f05766cc7a229ab3b7de0a55",
+        "attachments/termination_notice.txt": "97c79dd12d5b059728c5aae571ab49ee0ddf8323f05766cc7a229ab3b7de0a55",
+        "blind_check.json": "80fa834616fb5c500d473834e67be006320d8485a3d6a8bae15292e7797c4060",
+        "design.json": "5d0971029591252740d47d0f3bbdbc281c1f0aac2f8294450762a2df2dc248f2",
+        "reference.json": "2e088c09f9c970f9d525e49024261cf7b7b57de5e3f05abffbccdb5eb23caada",
+        "text.clean.txt": "8c9fb2e99ff4f8d579d3672f439104475ff3406f11fc2e46154569583df37708",
+        "text.txt": "8c9fb2e99ff4f8d579d3672f439104475ff3406f11fc2e46154569583df37708"
+      },
+      "type": "lease_termination_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_efa24ba18ce3",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "graduated_rent"
+      ],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/rent_increase_notice.clean.txt": "62d7ffa0f8448586037c891236b7b7388058b48a3a2d385e0421588082324d46",
+        "attachments/rent_increase_notice.txt": "62d7ffa0f8448586037c891236b7b7388058b48a3a2d385e0421588082324d46",
+        "blind_check.json": "b1abed8b89a014651a13ad59130539107e9d80c69045a1e2a3d310220561f0a3",
+        "design.json": "5cad7aea317fd48882c7162d16632610857beb32bfba313850a4bc8df390690c",
+        "reference.json": "4d2dd1b4aa8d1b4e32f4605d132d11cbdf057819af696d1cd1e8273e215e1879",
+        "text.clean.txt": "a4dc4a09dca761cb811dd2aac98d3357b4940be5906b86533a9ec95830f8fc51",
+        "text.txt": "a4dc4a09dca761cb811dd2aac98d3357b4940be5906b86533a9ec95830f8fc51"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": true,
+      "file_id": "ten_f1871d924ee4",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "ae4a53914d13ad3273ae72ffd3a5e8714e1b61a1532f8ff43f26afa517f159a6",
+        "design.json": "33ac0ed7f3715728b165305df84580d6db38d9e804f28940910eb12e19f8570b",
+        "reference.json": "8faee9aa6e5747754803a0ff327d1e2277d377fa53bead9c55fcd73d5274e514",
+        "text.clean.txt": "4f730983682a409ac83fd6c5777d0c6304d7fb37e47e6285a954c1150cf1a1c3",
+        "text.txt": "4f730983682a409ac83fd6c5777d0c6304d7fb37e47e6285a954c1150cf1a1c3"
+      },
+      "type": "rent_increase_dispute"
+    },
+    {
+      "denied_event": false,
+      "file_id": "ten_fb2a18deebee",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "graduated_rent"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/proof_of_receipt.clean.txt": "119802e5e39845d05856b8aec50a7455e4616b41605b3cdaa40c8e74d74e0c6a",
+        "attachments/proof_of_receipt.txt": "119802e5e39845d05856b8aec50a7455e4616b41605b3cdaa40c8e74d74e0c6a",
+        "blind_check.json": "68d046ee32d6d69e0301a01659c4d7cb307d38af894ac3722d50af50f829cb3f",
+        "design.json": "f06570dc4fb39cc4a84ba44ae4454b9d35b2e600a3504fa8faab9c5beb7599f8",
+        "reference.json": "e0ddf337b91f6cf3c5975a7264d7d6ee0de00df0344b84c1cbaf958020b263aa",
+        "text.clean.txt": "d1686a9a9437e6135da1935edfa52de796e15c11f64a1b1c8d98a08693279e54",
+        "text.txt": "d1686a9a9437e6135da1935edfa52de796e15c11f64a1b1c8d98a08693279e54"
+      },
+      "type": "rent_increase_dispute"
+    }
+  ],
+  "noise_sha256": "01084f363b29b770f396b6013ee3446185e32a1a7eded473f1b031b8ca5e6e4a",
+  "regime": "tenancy",
+  "schema": "study4.final-manifest/1"
+}

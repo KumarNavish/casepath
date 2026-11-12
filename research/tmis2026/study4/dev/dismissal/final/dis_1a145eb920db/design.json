@@ -1,0 +1,123 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": "parties",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "not_mentioned"
+  },
+  "file_id": "dis_1a145eb920db",
+  "index": 0,
+  "language": "en",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6500,
+      "monthly": 2390,
+      "small": 305
+    },
+    "canton": "LU",
+    "claimant": "Megan Morgan",
+    "date_main_event": "2026-01-18",
+    "date_written": "2026-03-27",
+    "earlier_dates": [
+      "2022-12-29",
+      "2025-06-18",
+      "2025-08-08"
+    ],
+    "other_party_organisation": "Seematt Property Ltd",
+    "other_party_person": "Anna Palmer",
+    "place": "Kriens",
+    "street": "Mattenweg 137",
+    "third_person": "Paul Frei",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-03-15",
+        "date_if_span_not_run": "2026-03-24",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-06",
+        "date_if_span_not_run": "2026-03-15",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-20",
+        "date_if_span_not_run": "2026-03-03",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-11-02",
+        "date_if_span_not_run": "2026-02-19",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 70523664
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

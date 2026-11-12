@@ -1,0 +1,1269 @@
+{
+  "assemble_sha256": "045d03c3f2cee2b6af3e9d96a99f54ee97871e1d8a97a8db5c376608886d694d",
+  "counts": {
+    "dropped": 1,
+    "kept": 59,
+    "kept_after_rewrite": 17,
+    "kept_as_read": 3,
+    "open_share_per_level": {
+      "0": 0.0,
+      "10": 0.133,
+      "25": 0.267,
+      "50": 0.571
+    },
+    "per_level": {
+      "0": 15,
+      "10": 15,
+      "25": 15,
+      "50": 14
+    }
+  },
+  "design_manifest_sha256": "4c210f2ce1d8f223eac9fe5784ed594a1155b7b6dbed6ed9f49d53e299f49308",
+  "dropped": [
+    {
+      "file_id": "the_683889ad3d85",
+      "level": 50,
+      "type": "theft_at_home",
+      "why": "differs after rewrite"
+    }
+  ],
+  "files": [
+    {
+      "denied_event": false,
+      "file_id": "the_003fbcb4d365",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/stolen_items_list.clean.txt": "e9822139aaa0b6523b0a0fe6dfc10d2620ccd04a811436f5a1359993833c4491",
+        "attachments/stolen_items_list.txt": "e7fec747962a6959345cc30cde9dfaf2e07c592c37a938074f468c7bfa2829c9",
+        "blind_check.json": "b13051c12a7912cb284af3d671ea8a06e2549f7a1ca2db40406364f51c86cd83",
+        "design.json": "ada4bba4079f7a3e6d8e86dd8400176d54add5c75229dc2b147ad7c138efec50",
+        "noise.json": "a1bd003286f02730ca15b30bde86021404c9975f98aaefc4fd8163230b19c7a0",
+        "reference.json": "9ba336c5bf247035fcd196d47a999263c7f59e35c0b75a3c50dd1ad73b9c3b9f",
+        "text.clean.txt": "194b2b40ff06bd395ea7965ebb18fc3599e8948a0bf271b3207f4487c385f826",
+        "text.txt": "696f66af3982f61edf8d96ccd1483a5a0aad0870a95d6c9dc2c505a626dccf9d"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_06baabbe2a0d",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [
+        "lock_change"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "b33e672e27545d82a29d67a655f260549c351454cadb45ec51e02b743c8d67a1",
+        "design.json": "3340fa8efcfc35a560aa04f2029c8fea36f795b6e4e240a45073ad57f49d85cb",
+        "reference.json": "6a9379bb528959c230df3a8554c8a0ae84f95dce6fb5f098661362a3e2201886",
+        "text.clean.txt": "23282508be1bb30ae62479c54619dc3a54b913f7e268c4e893a058b5747753d4",
+        "text.txt": "23282508be1bb30ae62479c54619dc3a54b913f7e268c4e893a058b5747753d4"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_0aad75365ee3",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "edd1e0ed90f398391eb2daefcc9f7245b89b51bd0f9dcb9ca4e9a26e415a4986",
+        "attachments/notification_record.txt": "edd1e0ed90f398391eb2daefcc9f7245b89b51bd0f9dcb9ca4e9a26e415a4986",
+        "blind_check.json": "e06648e732fa01ea10c4756772a1b014a5b2b64407339a002da793adbe39aad1",
+        "design.json": "2f2634737ce86e6cfbcc4baad9e40bf3cd40ca03290f43a552fa490d60d905dd",
+        "reference.json": "8606517b69c2d83be5acf38d23e5a0172068a9f671698af9e933f06bdbb39a1d",
+        "text.clean.txt": "7174855ad0174eaf49390f6365f5454600f21f394ffe1b0514b4d2ecc041ff49",
+        "text.txt": "7174855ad0174eaf49390f6365f5454600f21f394ffe1b0514b4d2ecc041ff49"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_0cd1b047049a",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "931d7d8a1b0146ece1bd7d84568b0bb2dd247784f3bd0ade6c1925ae060d2854",
+        "attachments/insurance_policy.txt": "931d7d8a1b0146ece1bd7d84568b0bb2dd247784f3bd0ade6c1925ae060d2854",
+        "blind_check.json": "efb53b61ac96332f86c699855f9e533285bb721cf16dc2bbff66a93d655635ae",
+        "design.json": "8a34567fdd5f4b7b6bf77cae6557a1f19f8dc3f9694c2e152a5b4fd620000b24",
+        "reference.json": "e704282287740261204cd310c53c9f6d3c45893fceaea4a5e434df1ed6705c5c",
+        "text.clean.txt": "f404e052f09614cd0797c002d7df573d5f61546f950a77d7596d23dada5171d3",
+        "text.txt": "f404e052f09614cd0797c002d7df573d5f61546f950a77d7596d23dada5171d3"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_0d6569d32db1",
+      "kept": "kept_as_read",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "2692f2b68f9307b34cd7e8346ac6b13f02b99670009ef5ae6a57b8cc9a245635",
+        "attachments/insurance_policy.txt": "2692f2b68f9307b34cd7e8346ac6b13f02b99670009ef5ae6a57b8cc9a245635",
+        "attachments/notification_record.clean.txt": "ab727015dc8ee8b86b9b9b431c13c7bbedf19fe2f378624fcd023a6c5f2a2ec2",
+        "attachments/notification_record.txt": "ab727015dc8ee8b86b9b9b431c13c7bbedf19fe2f378624fcd023a6c5f2a2ec2",
+        "attachments/original_vouchers.clean.txt": "ccb1fce8e285507d397bcfff726c8c9a359ef9602b3e68eec699dc4e54afe2f8",
+        "attachments/original_vouchers.txt": "ccb1fce8e285507d397bcfff726c8c9a359ef9602b3e68eec699dc4e54afe2f8",
+        "attachments/police_report.clean.txt": "2a33de215b401cf01fc1a05379792f9abb5cefb40b48f93805b9e2fdb65ff39d",
+        "attachments/police_report.txt": "2a33de215b401cf01fc1a05379792f9abb5cefb40b48f93805b9e2fdb65ff39d",
+        "blind_check.json": "eca7fd46102538977b896649667b5bcc46eeeaddb49aca8066417b387475ea14",
+        "design.json": "d25463b507c51f956deee6be69288b583d4e4c3359047d722980630e39b1225b",
+        "reference.json": "f83340f7b47dde824a2bc8d61bf1510c04fba9cfde9e7aa8c0b78487be396440",
+        "text.clean.txt": "32ade6f6fab43adbdd6f52ba7dd8f0faa6b5156ec23fb96787adf929cd431a59",
+        "text.txt": "32ade6f6fab43adbdd6f52ba7dd8f0faa6b5156ec23fb96787adf929cd431a59"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_1024620d6055",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "61b2f47e1427394540f3aacc4511c8e42c7aed28eced9d28c0e8bf8fcf719aae",
+        "attachments/insurance_policy.txt": "61b2f47e1427394540f3aacc4511c8e42c7aed28eced9d28c0e8bf8fcf719aae",
+        "attachments/police_report.clean.txt": "e1649ee64a1bf8dc75fe235e4121bab15bfdfb1e335c2f17562caa6c84861027",
+        "attachments/police_report.txt": "e1649ee64a1bf8dc75fe235e4121bab15bfdfb1e335c2f17562caa6c84861027",
+        "attachments/stolen_items_list.clean.txt": "92276d7d195964a95ee19e2605eef7ca28646cd372c8607bdb47d2c71bec23da",
+        "attachments/stolen_items_list.txt": "92276d7d195964a95ee19e2605eef7ca28646cd372c8607bdb47d2c71bec23da",
+        "blind_check.json": "dde1ca6a5c7c3dcb9bb44f65990d217fd0bb63679686241cde371bdb115a5286",
+        "design.json": "b649724327eb1f2d1873d628ab61b966e0a06e2966a287379d80f64336c410b0",
+        "reference.json": "92cc26a78b7186ab2b543d65dc17a32e50cfa85254e5b0f43d9c7528b504f341",
+        "text.clean.txt": "6ed59ae249d18a31f335612dafd3abe51ceaf23393478b182c4299ef88a992dc",
+        "text.txt": "6ed59ae249d18a31f335612dafd3abe51ceaf23393478b182c4299ef88a992dc"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_12e3d532c09d",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "3d35ae496a2ee513446486a810ddf6861766bdb53a0b5258d8144e04807b651a",
+        "design.json": "87c40fbf6acfcd24a03dc881fcba4584c4ed4013dd46b3220adadb69d4da72a6",
+        "reference.json": "abb09743de74046f374c80e41941bec376bd3e9b163965f49d2b51a16b8fc71b",
+        "text.clean.txt": "ceea6e71d27323487079c0fa85acea184b06e2d6b3c67ff027242d84e41ec7a5",
+        "text.txt": "ceea6e71d27323487079c0fa85acea184b06e2d6b3c67ff027242d84e41ec7a5"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_12ee892d56f4",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 10,
+      "open_facts": [
+        "traces_changed"
+      ],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "1bae724177fac0e71172745a1ae241e3df982b3776688aee3bd29979d2788bcb",
+        "attachments/notification_record.txt": "1bae724177fac0e71172745a1ae241e3df982b3776688aee3bd29979d2788bcb",
+        "blind_check.json": "f78c293ae61f6a746e33f8e1bf0ffd86c540e7e90e21514a69957f0f5784c2c4",
+        "design.json": "739858fc4dec92412594f0a2b5129ba30cfc9caff847099b9e39bb99ad3b4fc0",
+        "reference.json": "f8954eee3169be8b80f321bc4463c6eef3aa570dfd089794c93fab730f705e83",
+        "text.clean.txt": "49d9da4a654ce7cfc82ce11d981069a560bc41f80c22fdf1317985189df8ff59",
+        "text.txt": "49d9da4a654ce7cfc82ce11d981069a560bc41f80c22fdf1317985189df8ff59"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_1487759fc403",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "67a4b66759dcd55ea08227a04cdd8dbb8cb966bec74900c5bd4a98bc2a8c0a06",
+        "attachments/notification_record.txt": "67a4b66759dcd55ea08227a04cdd8dbb8cb966bec74900c5bd4a98bc2a8c0a06",
+        "blind_check.json": "4a5cfcd48e7e0e0d55ac1949d68cec43891069cb9d690661750c6a5ded2b9450",
+        "design.json": "056d91bf8fd08f7f500cb0d13c68954a02759f13614704073e377d7ad61e33ab",
+        "reference.json": "92232585e85c76b2839c5e4ee212de406090ae52e5163341731606f6a07c990f",
+        "text.clean.txt": "a6a4510ab94a446d449996a9beea57619c5b9c3e101ab9091906ee79e68d09c4",
+        "text.txt": "a6a4510ab94a446d449996a9beea57619c5b9c3e101ab9091906ee79e68d09c4"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_1595e412e131",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/police_report.clean.txt": "46534f58e45587a688ce79c653e4917e55992a03b0e6d22899dfea34c382d2d2",
+        "attachments/police_report.txt": "46534f58e45587a688ce79c653e4917e55992a03b0e6d22899dfea34c382d2d2",
+        "blind_check.json": "6b334c9db1ebaacf6bf0b272c915a1cef3e48c697b1085ca5c7b3ad4517dbdd1",
+        "design.json": "78ce83ef9d9037817db2b65698bd4d3f0941290958a318c7b6ff78e857183f28",
+        "reference.json": "a9aad8a6fa69d2125683557d8bba9fb9a59bd6aa7df58a87bb0b705115850ab5",
+        "text.clean.txt": "3880b6bcba5ddfd1e4ef99ddeff03c25f249a1d565a02bacaedf87d02e095852",
+        "text.txt": "3880b6bcba5ddfd1e4ef99ddeff03c25f249a1d565a02bacaedf87d02e095852"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_1dfba8facf5e",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "118f817accaa2ca0730627a49a603048c1cf86bdb47d198c87a9c04e42aacd86",
+        "design.json": "336995cb170f6d0022f1bbc63b6e8d441920cd35fcac80adfeb6885413b8516e",
+        "reference.json": "387657e38b6506b796759687561fca1a59c468f0ed72d55a3c6915ba3d07d8a5",
+        "text.clean.txt": "97bf9e9b352e0f743f1ab5bb831e71023264eb390eee60d83eed4471ac19811c",
+        "text.txt": "97bf9e9b352e0f743f1ab5bb831e71023264eb390eee60d83eed4471ac19811c"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_2412f755f636",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "0a02fffcab7cd8eacdfb5102c95444185c26e2b9d7cbf77634e26087b5c63e84",
+        "design.json": "a2a7491b4fd1d9b6b73fbd55bcc0364979e658292e6c698b86c15eb214fdd6a4",
+        "noise.json": "a6b398bcd3e83417e32668c5bc02c8cc34c160cedf97bbaf4d0d41e9f4c56df9",
+        "reference.json": "d4a0444a33edde523672bda3715360b1b9aa1264c381002532ba502aa9e0c60a",
+        "text.clean.txt": "1d787c1e85e9a6acd004d0191122634ea2a6d4fa36251bdf1837b1b6614e13b7",
+        "text.txt": "995b1903a3629eecb961f88842e163b40540f3eb03c2179c79a53d7d94478c72"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_248aa95805a8",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "fea27f9940fb903d68f926058d9feceac077165461276465a0f6b8c531082bbe",
+        "design.json": "98bd8bfefe6cfd833cecdf6416972d7c966c867911a5322ed386866d5a831ff4",
+        "reference.json": "23f9dab7460742179cad5ed3d2066ad1bb888d7d51cd6edd7585727b213b74c2",
+        "text.clean.txt": "f5df7ea27626def1b603597b1e55c8c481f9e31b3b7dc2460366ce4d853906c1",
+        "text.txt": "f5df7ea27626def1b603597b1e55c8c481f9e31b3b7dc2460366ce4d853906c1"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_2774fb90433e",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "measures_pending"
+      ],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "24914468a81d3f61cc4f30dde8c938925d2dbe8a66872d2245200189db607d41",
+        "attachments/insurance_policy.txt": "24914468a81d3f61cc4f30dde8c938925d2dbe8a66872d2245200189db607d41",
+        "attachments/police_report.clean.txt": "a06a042ed1964070a9ab33663adbaf6c50b3e9355fee59112b09c68a3043a256",
+        "attachments/police_report.txt": "a06a042ed1964070a9ab33663adbaf6c50b3e9355fee59112b09c68a3043a256",
+        "attachments/stolen_items_list.clean.txt": "5536529842a2858b64aca8cd3ae199c47c946f0de6d5ea6334c3b4fc27fce086",
+        "attachments/stolen_items_list.txt": "5536529842a2858b64aca8cd3ae199c47c946f0de6d5ea6334c3b4fc27fce086",
+        "blind_check.json": "0514e586cc75e7751522f31d37c56f36884a14e4d9796d58ab374c4002a1dc0f",
+        "design.json": "f1dd5b5106436511226029ba2567d7236598b7d81f424b36273f06f9f6264b83",
+        "reference.json": "014e67c0ec225b8b352c5af610121cc9531fc400646365ebd5af564aed38dc3a",
+        "text.clean.txt": "e6b2faf7071928e8dac3ade2e5ca73f8fd8b646a2d86f1457620b25276797234",
+        "text.txt": "e6b2faf7071928e8dac3ade2e5ca73f8fd8b646a2d86f1457620b25276797234"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_27cd334c5026",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/police_report.clean.txt": "bfd345b0b811d3860c33fba79ab53ebba34acc904425dfea8381633ffdd9dda9",
+        "attachments/police_report.txt": "bfd345b0b811d3860c33fba79ab53ebba34acc904425dfea8381633ffdd9dda9",
+        "blind_check.json": "45751306a00dbe2dc57259ead2866d3d46abe2313a4ff7153c446e0eceb45409",
+        "design.json": "f088d82f21ca60af5eadce125c895bf4ded631d6a4667268cdebb1e41428ee14",
+        "reference.json": "044bb5340b07b31a3842a42e2de3fdb97413909a77351667087c9de6efddcad6",
+        "text.clean.txt": "4227999c07cde9ed6c5a4794018b9733b61a1c00129eced5cd00b35e599575be",
+        "text.txt": "4227999c07cde9ed6c5a4794018b9733b61a1c00129eced5cd00b35e599575be"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_281214c010bb",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "imminent_danger"
+      ],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "af2d1b66bb49a796942939c12f090f05b1915a7cf8bca7f11e6eaeefb345eba4",
+        "attachments/insurance_policy.txt": "ebb0d744d53f30f18b8083bdc5934c35f80dcdcc9935b3e327238f581805f422",
+        "attachments/original_vouchers.clean.txt": "98d33ac7509aeb88faa5ddf414898a4bcf117a372fdb0402944551bc1f5aa9e7",
+        "attachments/original_vouchers.txt": "1bcd23d54714d7947736c1c16862a77d1b98a282bd1bd64c78053f7e6b0f53b6",
+        "blind_check.json": "8ef0168f4973617b48eaf631d9c6dbb525dab8eac5d7bc974443ca3938002e98",
+        "design.json": "586ab0ffe6558053be2ac42d1fa675b77ca2ea5f659407cb159ce7429fe76f89",
+        "noise.json": "f3724662fffbc5af05d7a309ad8bd660bffd8aaaecb686905818cd1a23fa5857",
+        "reference.json": "10b547bc83d94ed418e155de63e0f8fea3c4cf87fe95e2ec33b060a9e9570a4e",
+        "text.clean.txt": "1df771af846e6c65677e12a91f26d3516dc42376d4255ea14d77d40f2034f8d4",
+        "text.txt": "ba8b188e3cb5b9575bc3ce6d13728b3d0c4cf07218ddd27bb7f756f04dcdacfb"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_314b305efe2d",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "lock_change"
+      ],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/stolen_items_list.clean.txt": "6bd27ee8e8ef62b2b5f9cc8109df7c18c708dcf547b3a88434fd7e1a4b80b0b8",
+        "attachments/stolen_items_list.txt": "6bd27ee8e8ef62b2b5f9cc8109df7c18c708dcf547b3a88434fd7e1a4b80b0b8",
+        "blind_check.json": "1a873308f6026bf548863e56d1cf852a3d56df02bd85ea310488433712dddf92",
+        "design.json": "835588fd631338f65678b65bc9929307b73502c9246bacaa54fb50cfe6afe043",
+        "reference.json": "00d7178787af30fe6c0361e1decc4484986b47388d323add05ff0c078d19c56e",
+        "text.clean.txt": "8a7c5cdd71a321dc6aa1821c68e4e89b75fbe69d4ea2bfac7f571cf0e8d76a7c",
+        "text.txt": "8a7c5cdd71a321dc6aa1821c68e4e89b75fbe69d4ea2bfac7f571cf0e8d76a7c"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_32a656cb56cf",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "theft_away"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "9207badac9a577c8b41fb75ec39c85e14fd01a218414d8ba97d634ef00104fb2",
+        "design.json": "5604453e6b44e6af67a0d734e2223ccda57e6d25694c15b150c7629e0b41c422",
+        "reference.json": "e60fdb6616618791ad7d04718a54832ce76ab8d8353d7425e857f98b82ea2afd",
+        "text.clean.txt": "4bf3958a9c7cd837df3b58b8e9ff4b504444f310262608b892e2a175cb05a7a8",
+        "text.txt": "4bf3958a9c7cd837df3b58b8e9ff4b504444f310262608b892e2a175cb05a7a8"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_38afd648a68a",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [
+        "lock_change"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "caa53f94ffcf904864ea211389a9530f28342d02ce645e43e7cff84386ab76de",
+        "design.json": "b3023f8cf9caf23c3ab8032895385c845b53cebb52445f6d634a585531aff677",
+        "reference.json": "c4b4712ee73031783f2d4e508f86fd1a33b5cdc3c972dc98c8679b0398486a0d",
+        "text.clean.txt": "1eb9d24cd5d3da63dcda34ef642a212f4bc63184c9f77835fe8cd6fadf161634",
+        "text.txt": "1eb9d24cd5d3da63dcda34ef642a212f4bc63184c9f77835fe8cd6fadf161634"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_488b39c60106",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/lock_change_invoice.clean.txt": "0e7418cf52920138cfb22ce713efc3d3742c4b97a6ab201c39840cff22494e74",
+        "attachments/lock_change_invoice.txt": "08acb3ff33f7448b3d9435634e1b0272372cd395cd53e83e869a4bb7c254dfd7",
+        "blind_check.json": "a222c8013354124b213e194c913e75001622724fc01638728c4b17ee010421b2",
+        "design.json": "cdada6b1a14ca24bffb1be385d3ad1ec82d67e8b2a66e3984923906c6ed6d0cb",
+        "noise.json": "2d70604611cc95acce6c16f7818844c572262c5ca7211b64368620a544569a18",
+        "reference.json": "d0f2072583a61225c441aed005d0a00651342cd373a0c33864088f0ff1f69f80",
+        "text.clean.txt": "f1e2aa579d47ea332d84fd4de78ceb6e41cb1ab0d20d68fb9e69a71460682edb",
+        "text.txt": "99aadd590cb3cf828aac2aadea8a83d22dfd3dd9722a45c986ac45d51f6296aa"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_493f21bd27be",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "c265676789bc7678806e575c077fffe62fb14fd1cbb1dc43a0c33d6128dfd98a",
+        "attachments/notification_record.txt": "1ca7442b04bbabf841c2e8714152812cec8c46ee8cbdc45d4ca4ba54130c7bfb",
+        "blind_check.json": "927659d16c6fa95264835c11a5b658ab4c8dc5787ced807cb4b77b38c020ed36",
+        "design.json": "1dd25c8569a0a16fef5036ff6413965836c8e6fc6046ffa2407e4405bfdd2ecb",
+        "noise.json": "fcbad6dfd61feb2b99ae969121161aae2ba6b64061c787a0f2f089a38036e62c",
+        "reference.json": "92906be296a2cbf148a82c59a1460b10e32d1ffdc1721ee04a7b965310c5d982",
+        "text.clean.txt": "2ea1745fe83ca81e41b8c4ccdbf3016e8115dbdb543c953c5494b260da6000e0",
+        "text.txt": "6562728c06823e8b9dc8fb339fb124ba9d6426743f474f79c0ed3f26fcf71bba"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_4c02d7c9601d",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "a4a21fbce6edb73b09d2c0efcc319740a96c8eeead6a716e596b55808f60f53d",
+        "design.json": "ae4784a3d74eda2f185d436e291efcb81b7892f349b0e2d6ee0d2cb705f5191b",
+        "reference.json": "f06039fdf5938dc96521694ab0d57cb3a382c0757d09e0c27e3938ea8ae346ea",
+        "text.clean.txt": "cd22bac13e3e22c3a861d5beaf2c833ad4898e5ca41224d7306e03c20e2d6eaf",
+        "text.txt": "cd22bac13e3e22c3a861d5beaf2c833ad4898e5ca41224d7306e03c20e2d6eaf"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_506c9909edc4",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "743b05700889962eb494cfbe568aa959db5c9c4c4a83d3eb355715954329bf93",
+        "attachments/insurance_policy.txt": "743b05700889962eb494cfbe568aa959db5c9c4c4a83d3eb355715954329bf93",
+        "attachments/notification_record.clean.txt": "2543b074f1cfb1e72d830e1bf603e599e61b2109fe27dfb68fbca0dd6ca1f0fc",
+        "attachments/notification_record.txt": "2543b074f1cfb1e72d830e1bf603e599e61b2109fe27dfb68fbca0dd6ca1f0fc",
+        "attachments/police_report.clean.txt": "9c41d29c9b9f31fd8b2b66f6fc4fa41194bb680a4c3f1e707ffed03c51073d22",
+        "attachments/police_report.txt": "9c41d29c9b9f31fd8b2b66f6fc4fa41194bb680a4c3f1e707ffed03c51073d22",
+        "attachments/stolen_items_list.clean.txt": "00f0440f6175368bb3d6f9eaad3fe0d1137a5ce7d80aa20c388600b98bfa01a4",
+        "attachments/stolen_items_list.txt": "00f0440f6175368bb3d6f9eaad3fe0d1137a5ce7d80aa20c388600b98bfa01a4",
+        "blind_check.json": "6f5301f83ba4ac450a78ad02c3c3466e3871154c24cc150866aa90d8c622ccfb",
+        "design.json": "33542621ec4b54fbdb798f03f741ba820f715ef4d1c9d2230602e5a596eadafc",
+        "reference.json": "3fe8d5e422e788c93adceebc9757144ef57946cf9ba91f55088644d444e851b7",
+        "text.clean.txt": "0e722b9513ca78640979e933d9eaba35ab0e1e341e9d4cdb93336de0d5a056f5",
+        "text.txt": "0e722b9513ca78640979e933d9eaba35ab0e1e341e9d4cdb93336de0d5a056f5"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_57501c7d1230",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "traces_changed"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "3813b38b3cf5666aee6e7e9db9b96ece9225a1fe874732871f57944bf662e8a0",
+        "attachments/insurance_policy.txt": "3813b38b3cf5666aee6e7e9db9b96ece9225a1fe874732871f57944bf662e8a0",
+        "attachments/stolen_items_list.clean.txt": "81160b848022540a2dcf5d2e3288ef4e5a8a2738c333ecac41d8750a9200fa40",
+        "attachments/stolen_items_list.txt": "81160b848022540a2dcf5d2e3288ef4e5a8a2738c333ecac41d8750a9200fa40",
+        "blind_check.json": "e85e99cca11f83124ae5ce12f0c706ab7f9ae32dc387281814d40b9f85ddfbab",
+        "design.json": "3ca8896ca0aa5af47829be6bbe62eb3387a171466f10496dedc2c284ce009c6b",
+        "reference.json": "c9c950ebdfcfef979d2e776e1281539ce8d1c2d252f4c25bd1082060a2b950a5",
+        "text.clean.txt": "2dd56729e2d1080ab927a4e96c49ad532024a300c33a547f5cb312f45e88547a",
+        "text.txt": "2dd56729e2d1080ab927a4e96c49ad532024a300c33a547f5cb312f45e88547a"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_5ee356013cfc",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "2933fbd530635a386af8a9b7fc0e198b4c0906fcc372c139b09a6cf074cead4c",
+        "design.json": "5f93d3093db004ed8371c7746cdf2d474a2b57e0aa3d259d0c315670df4ec529",
+        "reference.json": "edc3dc554ef8932d4272d55e1e4a474b2378d44514779a9e3982c405c1c1f2eb",
+        "text.clean.txt": "3d3865ba6deaa08cf758dc04ea489ea71841026046b7fa142f418984d9636a9f",
+        "text.txt": "3d3865ba6deaa08cf758dc04ea489ea71841026046b7fa142f418984d9636a9f"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_656f9aad39e5",
+      "kept": "exact",
+      "language": "de",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "e9ef1e3cc0056d3208a79b3943799d4fb532c24873253ce4a733231f4d86fd0b",
+        "design.json": "4dd44576765389f07cd55f1d4c9a8e59ddc3db1bed012f2e3d2fca405d5d991b",
+        "reference.json": "5eb08aad602feaccfc2ab4bd64ba09135bb7075fb72566936cb0c805d682d9ff",
+        "text.clean.txt": "08dfa048d0a2c3c40ed64eee15a9cb1e2c67842ad8e38a878ba210c2298851a5",
+        "text.txt": "08dfa048d0a2c3c40ed64eee15a9cb1e2c67842ad8e38a878ba210c2298851a5"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_6634ab23ee99",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "d4028406587d541f5641815fed993e700297f5d8b06800c2ec500336f09871c3",
+        "design.json": "334078099a997d2d525526fb3d2aa967a13dea87860039cfaf0ad41b5c26d058",
+        "noise.json": "453b0329e08469fe8ef82f2a14425b776ea7e820808fbbe9d6abe0483c21f10c",
+        "reference.json": "b5a7d7ce0aa78c13efcf8fcf1f81851fc15dc044f1195321ef70e1c03a7ddc52",
+        "text.clean.txt": "e5fb8012a5e1f3889d4184b563c5ade7aa8943a4a88ed4c5403fbaecb689f88b",
+        "text.txt": "0fde1a4a8f6dd46f9805423ede47d5c0d5c3a7352cc70def3fb4cbb1809f5a4f"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_685edf55333b",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "46340adf5da4e5773ea329bbfd3a7bcf7034f9f56e542a89d27fad33d02d28c0",
+        "design.json": "bba4a1b6d90b55d2cda97e89932cb9fddb336823f85e3d2feb1e022121ab2b57",
+        "reference.json": "804e798de8c42232a004286f53606ed50943a9791de9586dabaf1af1ae37818a",
+        "text.clean.txt": "ba751634be3cac0f618e3d21080b85a8e6170823a63a1f4248c47526104140b6",
+        "text.txt": "ba751634be3cac0f618e3d21080b85a8e6170823a63a1f4248c47526104140b6"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_7d2b6a2bdce4",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "7827c771c0cbc55b4378856bb2a0253968989d0484622abb2c397d539e7dc3ec",
+        "attachments/insurance_policy.txt": "7827c771c0cbc55b4378856bb2a0253968989d0484622abb2c397d539e7dc3ec",
+        "blind_check.json": "7df311e3e73c4fab6fbfb2013a3ca2dcf90ac811103a19673320e4c0d479545b",
+        "design.json": "46779466b79b491004a67274a5991185781716852c33ba13993085bd8ce51cb5",
+        "reference.json": "94e4268c5e00eb5e48c92c781582a1adae4618737ff789854f16619175dd3781",
+        "text.clean.txt": "4805b60b4d86d96678bb7a405642699a8fc477f44f32cf688e9364326e5731fb",
+        "text.txt": "4805b60b4d86d96678bb7a405642699a8fc477f44f32cf688e9364326e5731fb"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_7f7ad7ab95d0",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/original_vouchers.clean.txt": "20d44dfd99a5172b3a3cca606b4e032ff9c249a3bcf7b939f482d1776c88863a",
+        "attachments/original_vouchers.txt": "20d44dfd99a5172b3a3cca606b4e032ff9c249a3bcf7b939f482d1776c88863a",
+        "attachments/police_report.clean.txt": "bad8fae2b108dd029d4b48606176eac6fe909d062f67f90eed1214d525a174c2",
+        "attachments/police_report.txt": "bad8fae2b108dd029d4b48606176eac6fe909d062f67f90eed1214d525a174c2",
+        "blind_check.json": "84325a436a2bdcf2b087fda835adb844286dd364b357f499adb069b1aa6b4ff8",
+        "design.json": "4dd6e353c3b4badd95e810d2507cec648fc97ff4ddafa383189fcc78c24359b5",
+        "reference.json": "dd2a24f2a4dee4deb4eea2db2843919a3d843e248d0c28c1499ee3721066a300",
+        "text.clean.txt": "615c2237a896a7b61354d195c717ecf70f63233c4b830407beff8284bfe42111",
+        "text.txt": "615c2237a896a7b61354d195c717ecf70f63233c4b830407beff8284bfe42111"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_819379d12c03",
+      "kept": "exact",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "e906ce0ca763e3b0d4b1f96a9c4ecfbd828a84fc55c9b49064582da979b92ae3",
+        "attachments/insurance_policy.txt": "e906ce0ca763e3b0d4b1f96a9c4ecfbd828a84fc55c9b49064582da979b92ae3",
+        "attachments/notification_record.clean.txt": "299e741907376b5062df1e0030387e451a5b13b4cdf53387d65f66a9f7d865ca",
+        "attachments/notification_record.txt": "299e741907376b5062df1e0030387e451a5b13b4cdf53387d65f66a9f7d865ca",
+        "blind_check.json": "879ae49bd787b56f555380504adbafd52e62ec078de22920d271503e8bd3ab8d",
+        "design.json": "0784fd70ef226ce2737e3827ac6af04e9c138179e4572a4df54523220ac155f0",
+        "reference.json": "59faedc5dbfcc4f49bcb87395c3f9b903195b4e95b45bb6d1a27a319f7640c2a",
+        "text.clean.txt": "ba16a5b3df83d32c6f23b7cfa91abfe1b6c0374e62c486a08cdfa24fb03692d3",
+        "text.txt": "ba16a5b3df83d32c6f23b7cfa91abfe1b6c0374e62c486a08cdfa24fb03692d3"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_86b4e22a87e7",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "531e23287ebab9d7b409e3f13a63d907aecc75e1f9624952d9f1def27dccdaaf",
+        "design.json": "ca016c9fc5b395d78d641f6731cdd2353cd841dbc012640d8ed8b0f4a76c1997",
+        "reference.json": "201aaf308ebab7c095bd8deee06031a50183c508e2afe3643e490e4b850c0f07",
+        "text.clean.txt": "8dd77fd0feac4e1243a9bbd64e74f9216c60179aad2b5cff15a522a39cb2ae5d",
+        "text.txt": "8dd77fd0feac4e1243a9bbd64e74f9216c60179aad2b5cff15a522a39cb2ae5d"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_86e739ec9184",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "blind_check.json": "2c1121fcb776cde4a3f8ab7a354c9228bf23c67bbcea0a3dbf525384f5b50d35",
+        "design.json": "2c4c3b791db56371edd98e0b8ec1595b4d0e1d24f253473112eec834bd63c67d",
+        "noise.json": "b563b4550ec9139963d4f7fd3b84a5bb16f7f6dbfc18597ec43a93343fb9dfff",
+        "reference.json": "a9fa4bd5efd345746067583afb87a9428eaffbda9ad5a023f77e88f825b5dd3e",
+        "text.clean.txt": "d583f99a80a2fc6bd038d0c76ab9a639449a57ec252f21c4cb61bb0e65fb5ced",
+        "text.txt": "8f71a45bb58bee44834637b37ec7f7f98c1842ecb84fd8a1f66a48a22cf90679"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_875040108b5b",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "7ab4dd86e4211fb7a499dad0952f5c809f489420120fa864cb5f9ec49552e260",
+        "design.json": "1a541051380ac55d3fa01f08d3e603fb6f0846cfc37b5778f4e8887fc47e724d",
+        "reference.json": "9dcfb3b4027f49f32068df1a97c6ec9681b0a976f4930f2c6e070eb1c8964f90",
+        "text.clean.txt": "921ee3a529537af4d17d4715f389ddd98870ec4c08c723fabbfa3c1214faf332",
+        "text.txt": "921ee3a529537af4d17d4715f389ddd98870ec4c08c723fabbfa3c1214faf332"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_8a719e0bd89a",
+      "kept": "exact",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "8f98c29ea3e0b76b976d22b425ef5b8a0cbbcd7f33459df9508177fee0df7d41",
+        "design.json": "8036e4fa3f709fc3acc63afd4934e40d75d131a3912795b154a33ce21500fcb6",
+        "reference.json": "396425407524cfb863540a6fa1ccd4ce190ca22b07b21deb63aa55f1433b0c4a",
+        "text.clean.txt": "b0be3f8109ce30ca60fac7a7c8163370f61228c3816113aaaea212c813d67d2e",
+        "text.txt": "b0be3f8109ce30ca60fac7a7c8163370f61228c3816113aaaea212c813d67d2e"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_91cf197b270e",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/stolen_items_list.clean.txt": "e6b46334275c200227adb9acb3e6210313a56bd5174b505f7247ecc7dd69c8db",
+        "attachments/stolen_items_list.txt": "e6b46334275c200227adb9acb3e6210313a56bd5174b505f7247ecc7dd69c8db",
+        "blind_check.json": "43b5d534bd52fd379945b8386fab4f7425b4e66809873d1ecb5c9315accc105b",
+        "design.json": "379265cec8b908a917ef7984034a6afcc91b93bd3f313ec4a035c8e06e1161ee",
+        "reference.json": "065951d19befaa158351ecee4b1b6f4ef5703d212b18c3c4f88d792567111593",
+        "text.clean.txt": "5250ff3b864ec1943abafed3b23c3da37fb2ebb9ddd6cf849b4da9b62c101884",
+        "text.txt": "5250ff3b864ec1943abafed3b23c3da37fb2ebb9ddd6cf849b4da9b62c101884"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_9355c558630a",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "47c671c1baa0c2cea385186e2a7c928894772144cba89482b6a02417de0d3ae4",
+        "attachments/insurance_policy.txt": "47c671c1baa0c2cea385186e2a7c928894772144cba89482b6a02417de0d3ae4",
+        "attachments/police_report.clean.txt": "654e13887e88d82846e342a81b1c2c7d32d9061b8fc89ce27cb3e141db0cb813",
+        "attachments/police_report.txt": "654e13887e88d82846e342a81b1c2c7d32d9061b8fc89ce27cb3e141db0cb813",
+        "blind_check.json": "05432c4a9f478182eb16ad1239165c2c5b26d6eecfb69d9525f94f02115d4abb",
+        "design.json": "02a2dc9fb85db7dcc70e80056d2fd4b1cd1e79bc0f4fa1e611491079b05b5b6d",
+        "reference.json": "bc3bc9d5ae3ab9a617b43b095753e3e754f919f362d98e184f61d6bfd5d769c7",
+        "text.clean.txt": "7007ca6ac611fabc4fec0a01017f9521d7fce487972f57566994ed621d65861b",
+        "text.txt": "7007ca6ac611fabc4fec0a01017f9521d7fce487972f57566994ed621d65861b"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_93929f818110",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "08bf37d32e3247aa59dfba28318e850165eea4f51f83a7f85792a42c53aadd36",
+        "attachments/notification_record.txt": "9fd3adbeefa58cc9c5b1effd673d0603875640236f9ec6cfe2a5133c82675669",
+        "blind_check.json": "1889a0dab0535afb62924822e4c969cf8db0af794da8361ed9aeb5b606d169f1",
+        "design.json": "381f8c81d8454ceab5a8ce0243bd83656b96a48778078663d76b1ff827a6d4da",
+        "noise.json": "b43c8bab2472c7f7b756e91fc981d3e61c7e73b324d0cf6e3dbca42489cde6d0",
+        "reference.json": "1031d3e3bf1424bad55804181a7adc4d6e3fac23aaa2a35dfaf0f7a9b6c06903",
+        "text.clean.txt": "5df998ddb882066eabe04340bfed7f22407c6adca71e2662c5ad50d9d6bfd2c6",
+        "text.txt": "6270a676f347d6d278bb2ceef834684d2b44d8c9f31756a35b90f0012c8735bb"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_9b58c5abd02f",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/stolen_items_list.clean.txt": "0d2b38a821060a7d9c2805555ac8ba5aca30e1d62ecd648609ada44a4c4a0cc9",
+        "attachments/stolen_items_list.txt": "0d2b38a821060a7d9c2805555ac8ba5aca30e1d62ecd648609ada44a4c4a0cc9",
+        "blind_check.json": "a73995ed4f2fc6fa9fbffe20b2e2a5bd5341d5a33548a1ebd57d746dcdd7a72c",
+        "design.json": "446a18b606151818710c025455750544c83d3d9b77576a69e1f09a1ac3a3f160",
+        "reference.json": "1200d2166c0ed2b89c8c9176726ac149b15e150ce95f3183a761c874b253c5f5",
+        "text.clean.txt": "2a223fa42df37a389dfe1c5fb139f911260313738819d06e25515d241fdd9f9c",
+        "text.txt": "2a223fa42df37a389dfe1c5fb139f911260313738819d06e25515d241fdd9f9c"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_a529fff2269d",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "50f7b0ec253fecb1b1dca6b23fbe445c97e50e682315f7c14f488a55ea3c8a11",
+        "design.json": "93bcbbed00d66ac8c8a00db2190c325ec35c1ce4a6792770893f7b098cf3018c",
+        "reference.json": "ed9c7d6b378e685a21eb3d5f8b96a81bd26c94bfaf11b9d7ea621055f2ef84fe",
+        "text.clean.txt": "1df93c4f24666357eb1b1313c72f6302902c9bca8a2fd341d581c84f45bfa9bf",
+        "text.txt": "1df93c4f24666357eb1b1313c72f6302902c9bca8a2fd341d581c84f45bfa9bf"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_a86e098e517e",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "bicycle"
+      ],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "2ed89de23c5cda724fb31c5d40e5d3890f81a95c532e92e1e317a6200aea79ad",
+        "attachments/notification_record.txt": "1f5c3482f23492bb8081017024962a292d186921cddd07acdc25f570162066f1",
+        "attachments/stolen_items_list.clean.txt": "04d23176e8a96fa47e08b306f1f9b96309a4f17b859e893239224e6a60bb5f69",
+        "attachments/stolen_items_list.txt": "03cc396c36bafac65c57c6c4eb8fe2e50a9bcc2dd8272424e752b62a4451f694",
+        "blind_check.json": "8e771f1d57655c39d94ba083b000a66c77a7f0b612f5d46bac1d5acac6c0f61a",
+        "design.json": "7e8a41267911ff8292e26d555eb53e282ffbc4aa275045f869365e48dcf3b9cc",
+        "noise.json": "56594727532137b2b6502151b0b994cd6138f25dfefc80a024a763b49a69c65f",
+        "reference.json": "b188ea2deb957cec1e4ea44f28ec5b9832e25ad198e5b62eda1b6ee17f8b8950",
+        "text.clean.txt": "98fbaa24c9458864d3a9384530344500342e8c7e6812d7c7bd00fc8ad201ce09",
+        "text.txt": "dc88987e7c8b67a9de82e85bac1b4f3ee21af638606d0392dcdf7bfa87e15f64"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_b05370369093",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "495cd58f0d80631bb73fb2f4cea27fcf9ca55b3e065538ad80b60999a8730ae3",
+        "design.json": "e4eb7a3581941c31abf509c5c92790059e223b10aa14fb4cc72171a987876f5f",
+        "reference.json": "c1411abafde2d4da3c28bcfed9e0af9ad7b20e3811c7d24bfe0209b7d617d51b",
+        "text.clean.txt": "47d1083138953c099a92480110cfe1fcff83282a21f9fb2bd2108978deafdc65",
+        "text.txt": "47d1083138953c099a92480110cfe1fcff83282a21f9fb2bd2108978deafdc65"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_b68c834f7972",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "vouchers_unobtainable"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "a161f9e7e9e583c23356cb49842a05058bbce38e776f9aab8e59b253be0c6104",
+        "design.json": "23de7b113e73a4ed87cf3035e92137d410abc1f8d127a61ce0d71bc3e3f75536",
+        "reference.json": "6cde4b133ed311df86e8b53d5f3388af3babdd7c6ebb799c08c798af5aca52da",
+        "text.clean.txt": "d2d5243e197ef96ddeeaedd37d6fcf602f9d3440f94a870f2c9f1e8a11ca4c68",
+        "text.txt": "d2d5243e197ef96ddeeaedd37d6fcf602f9d3440f94a870f2c9f1e8a11ca4c68"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_bd8ee148bc3a",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "vouchers_unobtainable"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "ac12785f76aa4b57413d1e53634cebb4f75f11bcc2bf48280e6e4d9414576e98",
+        "design.json": "25ded3d79e099c1c6665f106ee9ac680a16e31fb7f7e513d39a899773487c2cd",
+        "reference.json": "afd685ff40436ff94481a5a10e41d9374b90e36433d629551675ce94f4d19854",
+        "text.clean.txt": "50079d260178b067a9a3cee83d4f9c70838a7ca7a13edcc90beddf32f1f1ac87",
+        "text.txt": "50079d260178b067a9a3cee83d4f9c70838a7ca7a13edcc90beddf32f1f1ac87"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_c0b61a3ae7cb",
+      "kept": "exact",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "602aa45944966123bb8144ae32d01510d528f6b9afb856df09628f0bc9312005",
+        "design.json": "9db0951696559ef468941de5c4703667512fe4bc0a370a27b685add19944f9e9",
+        "reference.json": "f8b3680691313229fb0253bc2a6a91b14a575d444113520c05a10c148cd13c0c",
+        "text.clean.txt": "1a47c8ecef9915238dbac9b8d1da8b8c3c03f6e436e1912c74bb448dc8c0fe51",
+        "text.txt": "1a47c8ecef9915238dbac9b8d1da8b8c3c03f6e436e1912c74bb448dc8c0fe51"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_c3a5e8c74185",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 25,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/original_vouchers.clean.txt": "399582e63cf4ed460920d054c76b92aae8c2e4665711a4f15fd41de26c158b4b",
+        "attachments/original_vouchers.txt": "399582e63cf4ed460920d054c76b92aae8c2e4665711a4f15fd41de26c158b4b",
+        "attachments/stolen_items_list.clean.txt": "e05ca817d185f379a20fee8501cc5a4d8bb34b2e31dddba25006d28801057064",
+        "attachments/stolen_items_list.txt": "e05ca817d185f379a20fee8501cc5a4d8bb34b2e31dddba25006d28801057064",
+        "blind_check.json": "9ef70f586fa488714d68dfdcc8fe78dab6a47330fa5579576f04ccd1b6e312d5",
+        "design.json": "c81dc5ca0dbc3c2d22a25fa24ab60c7ae00f445dfe4303ac30972752794bceb8",
+        "reference.json": "560a32dee70409dc535668ade2c9f42a31e2e93f3934f3296ad5554ca8be16e0",
+        "text.clean.txt": "e6de2ae93382a9ffb3e12e11eb93fe821631986fd023d680c42a98ae67dcf2a7",
+        "text.txt": "e6de2ae93382a9ffb3e12e11eb93fe821631986fd023d680c42a98ae67dcf2a7"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_c50e0bd7b054",
+      "kept": "kept_as_read",
+      "language": "de",
+      "level": 50,
+      "open_facts": [
+        "imminent_danger"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "3f235935a4d61d4e09bc690e6f1eb843576deccd32450d9f4ee15bfc9780023f",
+        "attachments/insurance_policy.txt": "3f235935a4d61d4e09bc690e6f1eb843576deccd32450d9f4ee15bfc9780023f",
+        "attachments/notification_record.clean.txt": "5da09bd4cfe7fb3619a366d199f40fa8ade317dee7858fa80305e19cbb50afa0",
+        "attachments/notification_record.txt": "5da09bd4cfe7fb3619a366d199f40fa8ade317dee7858fa80305e19cbb50afa0",
+        "attachments/original_vouchers.clean.txt": "46bffbb1a7d5cf689b907bfae3c597434a3cdaef6ae2f898c3018eed7239bfc7",
+        "attachments/original_vouchers.txt": "46bffbb1a7d5cf689b907bfae3c597434a3cdaef6ae2f898c3018eed7239bfc7",
+        "blind_check.json": "8901efba2dedb3f6841eb283c2bc3e8a594ebd1fa98e9a461955d8b9a71bd602",
+        "design.json": "dd1f4e398395e8434d3f7314e714b0efa11f88da9ea6b1b4a75cf48869cf582b",
+        "reference.json": "fdac60ff69e00aa7809db1278dc8e94794dc0befd0749981140171c4799e7f50",
+        "text.clean.txt": "9aeee0231bf28fdc50a44f80bea295a688966bd1a9b2c557541f7c1d131c2295",
+        "text.txt": "9aeee0231bf28fdc50a44f80bea295a688966bd1a9b2c557541f7c1d131c2295"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": true,
+      "file_id": "the_c7620535798b",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "15f7698b6a6b5317a6b469725d17e8d1791418cb6e49c2552f14b929bb516328",
+        "design.json": "e3a6292fb2c350177aafde3f37ad61fbb876b2cbabd12f6583d99dc689c29af0",
+        "reference.json": "80288d7e9dbc673e28b90c9065c310f7e04bfaa370cfbedd711bb0b0e15080ab",
+        "text.clean.txt": "e68cff592a86327975da5433d7d9c485fbc0589a16210614f5f8c97ac516717f",
+        "text.txt": "e68cff592a86327975da5433d7d9c485fbc0589a16210614f5f8c97ac516717f"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_c8b40fd1824d",
+      "kept": "exact",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "bbbfbb89f4be32794e2baf25e2b67860399657b6832c41074e94952b06ec589c",
+        "attachments/insurance_policy.txt": "bbbfbb89f4be32794e2baf25e2b67860399657b6832c41074e94952b06ec589c",
+        "attachments/notification_record.clean.txt": "a6dd7c8db062489db5cebd0187525221d95f463bd080070e7b466b266680b875",
+        "attachments/notification_record.txt": "a6dd7c8db062489db5cebd0187525221d95f463bd080070e7b466b266680b875",
+        "attachments/stolen_items_list.clean.txt": "6c77d93bc6c6c82dcf0a3ca23e2b9148b41cbe86f46841a9e84f28841d736b34",
+        "attachments/stolen_items_list.txt": "6c77d93bc6c6c82dcf0a3ca23e2b9148b41cbe86f46841a9e84f28841d736b34",
+        "blind_check.json": "1addf3e5c33f17ada51ee23332f7842e498d7b2f1c832ec440d5fe9f2c0055de",
+        "design.json": "ba4430f4a6a69e9c7cb7134d04a93fd2cffbce14f94db3ee27e3c66b94ac8094",
+        "reference.json": "2cc12111d47b86a3410af5d1f720c2592745d8713132d695eeb8e2477ee6e1c7",
+        "text.clean.txt": "861471434fbbc4a030ada2584f1f2dd3ae79a1718d50d29cfb4bde4a1ea39936",
+        "text.txt": "861471434fbbc4a030ada2584f1f2dd3ae79a1718d50d29cfb4bde4a1ea39936"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_cd857962dd2a",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "eaffccd4057cc2f44ba44d779723194ee3b8e12aba77dcb2806f96dfb0ee862f",
+        "attachments/notification_record.txt": "eaffccd4057cc2f44ba44d779723194ee3b8e12aba77dcb2806f96dfb0ee862f",
+        "attachments/police_report.clean.txt": "be2ced462317518b17f63958cd19d49859ec506b8ee59bd6f182ca5286f87b40",
+        "attachments/police_report.txt": "be2ced462317518b17f63958cd19d49859ec506b8ee59bd6f182ca5286f87b40",
+        "attachments/stolen_items_list.clean.txt": "e2ade80d1b0f7d095eebaf4d054c4fe5b38aa41d4ab9e6255b3e5d5591f3a630",
+        "attachments/stolen_items_list.txt": "e2ade80d1b0f7d095eebaf4d054c4fe5b38aa41d4ab9e6255b3e5d5591f3a630",
+        "blind_check.json": "33a5b4343bd119bf86466cc2cae4df54bb4d811166f680edbc8d4e6ea26adb8e",
+        "design.json": "c30ce7fb83eb29ba85cbdf91fd6dbf5a8377fe8cdd67aaf27eecde7ef1f88509",
+        "reference.json": "4b2c485d4f1df1b019acbeb315655ebf9610dfa7aab029fd2527bb80bf1a52cd",
+        "text.clean.txt": "36431da69a63651f6fa3e729f085fe5284304e6ad322a61ab2a3d659167e3016",
+        "text.txt": "36431da69a63651f6fa3e729f085fe5284304e6ad322a61ab2a3d659167e3016"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_d37fc3c54b4b",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/original_vouchers.clean.txt": "de4653a742b4e063c61591db2aa108f9a36d64da097a832fb46c966180a4aebe",
+        "attachments/original_vouchers.txt": "de4653a742b4e063c61591db2aa108f9a36d64da097a832fb46c966180a4aebe",
+        "attachments/police_consent.clean.txt": "168c94ec9dd81d90f2704d324ace81299e1c972014768c369dc6b34690945516",
+        "attachments/police_consent.txt": "168c94ec9dd81d90f2704d324ace81299e1c972014768c369dc6b34690945516",
+        "attachments/stolen_items_list.clean.txt": "6ab0d41da8f3966237195ac5db436d94cf041d857e305609c04a51d1c1832500",
+        "attachments/stolen_items_list.txt": "6ab0d41da8f3966237195ac5db436d94cf041d857e305609c04a51d1c1832500",
+        "blind_check.json": "a775bcf74c629a06d2363bdaf5e659febec94dbf9b2c8393be031837a406ac70",
+        "design.json": "4529f6279e6e794a6ad6b9d6019ac9e53ab6e24faaf4ddc1dbf622127793aa99",
+        "reference.json": "e77f26db1a3727367f19fd6427202f49bdac61995d2e574720df65d986fe385c",
+        "text.clean.txt": "8e3c964f5720ea840bd1ff2fdce769bc9c6ac95c83403338697a77354ef19ae6",
+        "text.txt": "8e3c964f5720ea840bd1ff2fdce769bc9c6ac95c83403338697a77354ef19ae6"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_d70abf016562",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 10,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/original_vouchers.clean.txt": "9d0875cc17fdfb7755802f6864d4f77952d90c2f1b40905632ad0b8545c10b00",
+        "attachments/original_vouchers.txt": "f1291ea7586a9e858deaa2e2f31e4e80c8906b54724e691e6ca6131b43f1e360",
+        "attachments/stolen_items_list.clean.txt": "79ef22569ff573497ea2f292ac64ce256a70fde24d154430638fbf7679f0ced4",
+        "attachments/stolen_items_list.txt": "b56cdd2dce5ea3564a2a69eb3354914062d302382d9fb98f1c7536c6edfda64a",
+        "blind_check.json": "e6ba865e881168c0df5949b36198ea6f0af068dc269e968329922d72983783c2",
+        "design.json": "cbf13d71598f37b1e462e70cb3ee470dd34ed990bd0bb922a491b1b75047772b",
+        "noise.json": "b8848b7d71b92c56d619c8b73783728b72926d154a6b06e379b8bbc1ec14d63b",
+        "reference.json": "129e02951a7188a0c024bc13c303ab4d11b4e647659ab174fbb797aee706d960",
+        "text.clean.txt": "54b80416b4e085efa63498f51e6e90d54e1ee9cdc32244855c33eed5e9f40fbb",
+        "text.txt": "ae1044b7d71d78c7b1914e6607ab381ca38858b26f8ff967d6913671ecada706"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_d76f5df60f83",
+      "kept": "exact",
+      "language": "en",
+      "level": 50,
+      "open_facts": [
+        "theft_away"
+      ],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "ad4eb6661703202718ec4ae5da1e126b51a505c02868f43ac5156fdd3973a4ec",
+        "design.json": "899acdc41ccadcbf2cd67a5fbc419cecc783182fe03de082455b24774a2cf8a1",
+        "reference.json": "abd6e785548ebf595faff5e76d0e1d4739e9a8f1fa49f8c57bad0abbba2e1fb2",
+        "text.clean.txt": "17c22fb9f13bb245909e60a63df3cc0195a98746f02fdf21e3cdf435fb1ee993",
+        "text.txt": "17c22fb9f13bb245909e60a63df3cc0195a98746f02fdf21e3cdf435fb1ee993"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_d9579f891719",
+      "kept": "rewritten",
+      "language": "en",
+      "level": 25,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "9a3940232056696697f4cf329325926f48f1c0108beebb44073760b715a305d3",
+        "attachments/insurance_policy.txt": "446379383a6bcb68a49029946aba0f3402649c2638bf1f0d72067d884fefd174",
+        "blind_check.json": "0945792e33ff0377648886e4e5e58ab1aacc95f7b5da372a20f1425bd707311a",
+        "design.json": "fcd234569448cca466b6c531793e2f912c9c7d2189fad7ac0442121feef1038e",
+        "noise.json": "f4c7f6b8dc6754f3696225b90d90e9e6cc93e007b579ccab178ebff909b32bfa",
+        "reference.json": "c597d0e503c56ac765798650f16f4c37169523c84decf841ae5c8d495ba8eb7d",
+        "text.clean.txt": "cc7b1730e1c946f167965b3d2a7ceb2dca4b96247e734a7f0300332dbb0d7aaa",
+        "text.txt": "4cad23192585ae40f6cfd2afe0875a4798b753ec83becbbb8452e8f002c624e6"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_dd72ec4e53dd",
+      "kept": "exact",
+      "language": "de",
+      "level": 10,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "17558b2e16870180888b6bcf7e4161300522b2c3b841650fbada0baf57711296",
+        "attachments/insurance_policy.txt": "17558b2e16870180888b6bcf7e4161300522b2c3b841650fbada0baf57711296",
+        "blind_check.json": "e83450bed30332ea2ef1579426f56b62b16d26b484b8ce077ff65143e93fe0c3",
+        "design.json": "cc83334e258129a2ed3f4938c0d95c84e1f3b5cbd507bb67cb39d9ffa8d91bd5",
+        "reference.json": "be0bdfe97f2f81a8203c5361258a15947a779a66690f976eb9db9892d8f1265e",
+        "text.clean.txt": "d7470999f4becaf022a85bf972c15fa6b1b53c62f179791616f1c9d5408f321d",
+        "text.txt": "d7470999f4becaf022a85bf972c15fa6b1b53c62f179791616f1c9d5408f321d"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_e0b1e1d56fb2",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 0,
+      "open_facts": [],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/insurance_policy.clean.txt": "e88525688a0da6aca4e531b61e31e51f1e885be6816f01d115a9f496dbae0a38",
+        "attachments/insurance_policy.txt": "e88525688a0da6aca4e531b61e31e51f1e885be6816f01d115a9f496dbae0a38",
+        "attachments/notification_record.clean.txt": "85b2b8f41be78848349e3dda8192792201998b258675dff155d8e9f08d05beda",
+        "attachments/notification_record.txt": "85b2b8f41be78848349e3dda8192792201998b258675dff155d8e9f08d05beda",
+        "attachments/original_vouchers.clean.txt": "bd24b1192df9ce4192a8b2b364f134356246e9a7bd6ec38451b7285aad2adf83",
+        "attachments/original_vouchers.txt": "bd24b1192df9ce4192a8b2b364f134356246e9a7bd6ec38451b7285aad2adf83",
+        "blind_check.json": "87c94ce1fc9c8f25bf0e8e77dddce861f96b6ac38dbe0b1eee9aea2c1ab764e5",
+        "design.json": "111883169f1ee3454129b3a1859dc2c9587bfcedbd274da8bdf86cadabd8d8b9",
+        "reference.json": "603fe73cfc86766e584dc38dac20017b83ed1fc3c8b7660a79259d4c4dc192ef",
+        "text.clean.txt": "b1ffd23100894db128f2df01801a582e09a745ca6cde81662f6494fd96f5945d",
+        "text.txt": "b1ffd23100894db128f2df01801a582e09a745ca6cde81662f6494fd96f5945d"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_eb579978f91b",
+      "kept": "rewritten",
+      "language": "de",
+      "level": 10,
+      "open_facts": [
+        "bicycle"
+      ],
+      "round": 2,
+      "scan_noise": false,
+      "sha256": {
+        "attachments/original_vouchers.clean.txt": "b701e2468df48c7179868b1627eb0eb23ba372b7bf8d849c210d1c48b3df3eb3",
+        "attachments/original_vouchers.txt": "b701e2468df48c7179868b1627eb0eb23ba372b7bf8d849c210d1c48b3df3eb3",
+        "attachments/police_report.clean.txt": "ea586985867b797d6c9655e334098b9c317cc1ad234903cd1ef90b7bda36b0b9",
+        "attachments/police_report.txt": "ea586985867b797d6c9655e334098b9c317cc1ad234903cd1ef90b7bda36b0b9",
+        "attachments/stolen_items_list.clean.txt": "948c7dcce0d2d1fb80ce7af77b1b9b6c5e36206098cd9ab5ffe23834df255f20",
+        "attachments/stolen_items_list.txt": "948c7dcce0d2d1fb80ce7af77b1b9b6c5e36206098cd9ab5ffe23834df255f20",
+        "blind_check.json": "cf02da48ecaf39464dfddd4f95e236982fe4be5266b0ac3b8091da18eed7fb91",
+        "design.json": "51b57b6b9ac6b365fd620b93c1ee840b9685286533ad9afc7a3a724554562699",
+        "reference.json": "9b6b0dca3647d3d20c4f5b55b40ab617eea3a33b94ccdc2d1891d1c6ade88a75",
+        "text.clean.txt": "126dbf3e09a355640747898c2d8e9e0dc5d609b86c3f12f69dffc795a8cf4780",
+        "text.txt": "126dbf3e09a355640747898c2d8e9e0dc5d609b86c3f12f69dffc795a8cf4780"
+      },
+      "type": "simple_theft_away"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_efac75d20bd0",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": false,
+      "sha256": {
+        "blind_check.json": "f98a983143d841732acab561d8fc08b3e794cc61e748e51fbc68627cf2d8df80",
+        "design.json": "b8c8f93fe0b22634b048752e6e6cb21f9da1a83a86909ebe42edbf1034f12a00",
+        "reference.json": "f3fe32b021580b146dd124799e818e689205f383f4d40cd682bbde11693b6779",
+        "text.clean.txt": "6f01b1e5f66e8af2c214175a4e56d47f4f7c30892ebae06424bf5a69b02f0e65",
+        "text.txt": "6f01b1e5f66e8af2c214175a4e56d47f4f7c30892ebae06424bf5a69b02f0e65"
+      },
+      "type": "theft_at_home"
+    },
+    {
+      "denied_event": false,
+      "file_id": "the_fefc066e8269",
+      "kept": "exact",
+      "language": "en",
+      "level": 0,
+      "open_facts": [],
+      "round": 1,
+      "scan_noise": true,
+      "sha256": {
+        "attachments/notification_record.clean.txt": "51fe728194a6d6d0573f10f687346b8f2c939edf03334d9d1dc6ac955b188f8c",
+        "attachments/notification_record.txt": "cfde004e7f3a576cbee2b4c947b67d620b73dbdb4c6b56eb1d1582bf72ca7814",
+        "attachments/police_report.clean.txt": "9f0efc9bc1827c8f2acac30543f15cb3b6b707de1aa525215873f331bf43ede7",
+        "attachments/police_report.txt": "bca0a3e41d0fc5ab1b91e3fb440fb5203d5f26eda9236096d2302e8056bc4d18",
+        "blind_check.json": "7a7bf9437c08cd85230ddc0dce7974a5d62f0fc4f80d09565fa29c51f5e7720d",
+        "design.json": "455c92bddf85ee595bd106ccdd07e4906b9e271a5d4c91d46865a4e75921606e",
+        "noise.json": "3cee187832ba354cb6d47bcf9fcb446da17c2ef432182b651e097579af60b0f4",
+        "reference.json": "d0d8619f801dfce354524a60f6d9cdf29daeb04e7233fe0bc90ad9673a38eae1",
+        "text.clean.txt": "09c975e824d9fa1a79ad8fb3a759ff34f1f3ee3156c54f23640de86fd27070a9",
+        "text.txt": "d05b8a97f47d235a1eecc36604d91b59d0881dbdcb91f27f6c107aecd48a51fd"
+      },
+      "type": "simple_theft_away"
+    }
+  ],
+  "noise_sha256": "01084f363b29b770f396b6013ee3446185e32a1a7eded473f1b031b8ca5e6e4a",
+  "regime": "theft",
+  "schema": "study4.final-manifest/1"
+}

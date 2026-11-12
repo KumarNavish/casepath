@@ -1,0 +1,95 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": true,
+  "facts": {
+    "arrears_termination": "stated_false",
+    "asserted_claims": "stated_false",
+    "extension_requested": "not_mentioned",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_false"
+  },
+  "file_id": "ten_58961449957f",
+  "index": 4,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6550,
+      "monthly": 1290,
+      "small": 190
+    },
+    "canton": "BE",
+    "claimant": "Seraina Bachmann",
+    "date_main_event": "2026-05-18",
+    "date_written": "2026-06-09",
+    "earlier_dates": [
+      "2023-03-14",
+      "2023-10-30",
+      "2025-04-15"
+    ],
+    "other_party_organisation": "Birkenrain Genossenschaft",
+    "other_party_person": "Urs Morgan",
+    "place": "Bern",
+    "street": "Schulhausstrasse 28",
+    "third_person": "Sabine Kuhn",
+    "time_spans": [],
+    "topic_order_seed": 1147387467
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

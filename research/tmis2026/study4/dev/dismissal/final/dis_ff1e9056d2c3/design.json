@@ -1,0 +1,126 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "fixed_term"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": true,
+  "facts": {
+    "dismissed_immediately": "stated_false",
+    "fixed_term": "not_mentioned",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "stated_false",
+    "other_earnings": "stated_false",
+    "reasons_requested": "stated_false"
+  },
+  "file_id": "dis_ff1e9056d2c3",
+  "index": 12,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7600,
+      "monthly": 2060,
+      "small": 1450
+    },
+    "canton": "BS",
+    "claimant": "Samuel Egli",
+    "date_main_event": "2026-03-17",
+    "date_written": "2026-05-15",
+    "earlier_dates": [
+      "2022-11-12",
+      "2024-06-07",
+      "2025-04-15"
+    ],
+    "other_party_organisation": "Ahornweid Handels AG",
+    "other_party_person": "Martina Hughes",
+    "place": "Basel",
+    "street": "Schulhausstrasse 123",
+    "third_person": "Gabriela Bachmann",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-05-03",
+        "date_if_span_not_run": "2026-05-12",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-27",
+        "date_if_span_not_run": "2026-05-03",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-07",
+        "date_if_span_not_run": "2026-04-21",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-21",
+        "date_if_span_not_run": "2026-04-09",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1609173248
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

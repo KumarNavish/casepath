@@ -1,0 +1,128 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "missing": "the price paid",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "stated_true",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "facts_designed": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "stated_true",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_d70abf016562",
+  "index": 5,
+  "language": "en",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "revised_by_implication": true,
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4750,
+      "monthly": 2710,
+      "small": 525
+    },
+    "canton": "TG",
+    "claimant": "Eva Ellis",
+    "date_main_event": "2026-08-19",
+    "date_written": "2026-09-19",
+    "earlier_dates": [
+      "2023-11-24",
+      "2025-10-25",
+      "2026-03-31"
+    ],
+    "other_party_organisation": "Rosenau Cooperative",
+    "other_party_person": "Ben Zimmermann",
+    "place": "Kreuzlingen",
+    "street": "Sonnenweg 77",
+    "third_person": "Maya Fankhauser",
+    "time_spans": [],
+    "topic_order_seed": 467640934
+  },
+  "target_revisions": [
+    {
+      "because": "attachment original_vouchers (the document itself)",
+      "fact": "vouchers_unobtainable",
+      "from": "not_mentioned",
+      "label": "Q4",
+      "to": "stated_false"
+    }
+  ],
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

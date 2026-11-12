@@ -1,0 +1,193 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "not_mentioned",
+      "fact": "notice_before_protected_period"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": "parties",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "notice_before_protected_period",
+      "constraint": "notice_before_protected_period is asked only where a protected period is raised: stated only when at least one of the three protected-period facts is stated true or open, otherwise not mentioned (an instance of the general rule: an always-stated fact is stated only where its step can be reached)",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_false",
+    "notice_before_protected_period": "not_mentioned",
+    "notice_during_probation": "stated_false",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "stated_false",
+    "probation_varied": "stated_false"
+  },
+  "facts_designed": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_false",
+    "notice_before_protected_period": "not_mentioned",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "stated_false",
+    "probation_varied": "stated_false"
+  },
+  "file_id": "dis_14b7db92a192",
+  "index": 11,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "revised_by_implication": true,
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8900,
+      "monthly": 1970,
+      "small": 1265
+    },
+    "canton": "LU",
+    "claimant": "Livia Reid",
+    "date_main_event": "2026-04-26",
+    "date_written": "2026-06-23",
+    "earlier_dates": [
+      "2024-12-02",
+      "2025-09-11",
+      "2026-03-11"
+    ],
+    "other_party_organisation": "Seematt Dienste GmbH",
+    "other_party_person": "Monika Marti",
+    "place": "Luzern",
+    "street": "Mattenweg 94",
+    "third_person": "Seraina Tanner",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-05-05",
+        "date_if_span_not_run": "2026-06-11",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-01-29",
+        "date_if_span_not_run": "2026-05-18",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-09-07",
+        "date_if_span_not_run": "2026-04-12",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-06-04",
+        "date_if_span_not_run": "2026-06-19",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-05-08",
+        "date_if_span_not_run": "2026-06-12",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2025-12-25",
+        "date_if_span_not_run": "2026-05-09",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-06-11",
+        "date_if_span_not_run": "2026-06-20",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-05-05",
+        "date_if_span_not_run": "2026-06-11",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-18",
+        "date_if_span_not_run": "2026-05-30",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-29",
+        "date_if_span_not_run": "2026-05-18",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 743007862
+  },
+  "target_revisions": [
+    {
+      "because": "attachment employment_contract, item 'start date of employment'",
+      "fact": "notice_during_probation",
+      "from": "not_mentioned",
+      "label": "Q5",
+      "to": "stated_false"
+    }
+  ],
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

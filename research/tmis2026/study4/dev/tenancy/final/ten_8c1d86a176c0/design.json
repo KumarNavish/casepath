@@ -1,0 +1,111 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": "parties",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "notice_oral_only",
+      "constraint": "a landlord who does not know of the defect cannot have learned of it orally or in writing",
+      "from": "stated_true",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "stated_false",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "stated_true",
+    "notice_oral_only": "stated_false",
+    "rent_deposited": "stated_true"
+  },
+  "facts_designed": {
+    "damages_claimed": "stated_false",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "stated_true",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "stated_true"
+  },
+  "file_id": "ten_8c1d86a176c0",
+  "index": 7,
+  "kept_as_read": true,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3000,
+      "monthly": 2260,
+      "small": 615
+    },
+    "canton": "SG",
+    "claimant": "Matthias Weber",
+    "date_main_event": "2026-05-24",
+    "date_written": "2026-06-16",
+    "earlier_dates": [
+      "2023-07-15",
+      "2024-07-06",
+      "2025-01-22"
+    ],
+    "other_party_organisation": "Rosenau Immobilien AG",
+    "other_party_person": "Irene Müller",
+    "place": "Rapperswil-Jona",
+    "street": "Bergstrasse 36",
+    "third_person": "Sabine Imhof",
+    "time_spans": [],
+    "topic_order_seed": 1981949576
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

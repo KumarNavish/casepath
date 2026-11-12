@@ -1,0 +1,127 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": "addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": "period covered",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "missing": "employer or client",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "other_earnings": "stated_true",
+    "reasons_requested": "not_mentioned"
+  },
+  "file_id": "dis_d3bae3094a5d",
+  "index": 5,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6100,
+      "monthly": 2090,
+      "small": 665
+    },
+    "canton": "LU",
+    "claimant": "Adrian Zimmermann",
+    "date_main_event": "2026-01-22",
+    "date_written": "2026-03-03",
+    "earlier_dates": [
+      "2022-05-03",
+      "2022-07-12",
+      "2023-12-09"
+    ],
+    "other_party_organisation": "Kirschbaum Handels AG",
+    "other_party_person": "Ursula Weber",
+    "place": "Kriens",
+    "street": "Hauptstrasse 8",
+    "third_person": "Lea Kaufmann",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-02-19",
+        "date_if_span_not_run": "2026-02-28",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-13",
+        "date_if_span_not_run": "2026-02-19",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-11-26",
+        "date_if_span_not_run": "2026-02-07",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-10-09",
+        "date_if_span_not_run": "2026-01-26",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 69670628
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": "issuer",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "stated_true",
+    "agreed_to_continue": "stated_false",
+    "employee_representative": "stated_false",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_true",
+    "notice_period_ended": "stated_true",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "stated_true",
+    "retaliation_for_claims": "stated_true"
+  },
+  "file_id": "dis_465be22068ef",
+  "index": 11,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5800,
+      "monthly": 2720,
+      "small": 1210
+    },
+    "canton": "SH",
+    "claimant": "Megan Bachmann",
+    "date_main_event": "2026-08-17",
+    "date_written": "2026-10-30",
+    "earlier_dates": [
+      "2023-03-24",
+      "2025-07-31",
+      "2026-01-07"
+    ],
+    "other_party_organisation": "Talgrund Trading Ltd",
+    "other_party_person": "Grace Keller",
+    "place": "Schaffhausen",
+    "street": "Feldstrasse 35",
+    "third_person": "Isla Suter",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-01-14",
+        "date_if_span_not_run": "2026-08-19",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2026-01-14",
+        "date_if_span_not_run": "2026-08-19",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 933972837
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

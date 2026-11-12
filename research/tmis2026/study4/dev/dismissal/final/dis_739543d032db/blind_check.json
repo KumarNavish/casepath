@@ -1,0 +1,48 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "first and last day of service"
+      ],
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "Dort steht schriftlich, dass beide Seiten vier Monate auf Ende Monat einhalten müssen.",
+      "state": "stated_true"
+    },
+    "Q2": {
+      "quote": "Wer recht hat, ist offen.",
+      "state": "open"
+    },
+    "Q3": {
+      "quote": "Zur Probezeit steht darin nichts Spezielles, da ist nichts Eigenes abgemacht.",
+      "state": "stated_false"
+    },
+    "Q4": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q5": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q6": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q7": {
+      "quote": "Ich bin am 17. August 2026 in den Wiederholungskurs eingerückt, der Dienst dauert bis zum 4. September, also fast drei Wochen.",
+      "state": "stated_true"
+    },
+    "Q8": {
+      "quote": "Die Kirschbaum Dienste GmbH in Burgdorf hat mir gekündigt.",
+      "state": "stated_true"
+    }
+  },
+  "file_id": "dis_739543d032db"
+}

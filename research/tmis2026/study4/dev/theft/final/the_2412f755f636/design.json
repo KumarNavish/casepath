@@ -1,0 +1,103 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_true",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_true",
+    "lock_change": "stated_true",
+    "measures_pending": "stated_false",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_2412f755f636",
+  "index": 13,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2950,
+      "monthly": 2150,
+      "small": 825
+    },
+    "canton": "GL",
+    "claimant": "Yvonne Bieri",
+    "date_main_event": "2026-02-03",
+    "date_written": "2026-04-06",
+    "earlier_dates": [
+      "2023-04-24",
+      "2023-09-19",
+      "2024-05-08"
+    ],
+    "other_party_organisation": "Sonnbühl Handels AG",
+    "other_party_person": "Monika Schmid",
+    "place": "Glarus",
+    "street": "Bergstrasse 46",
+    "third_person": "Marco Baumann",
+    "time_spans": [],
+    "topic_order_seed": 247382149
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

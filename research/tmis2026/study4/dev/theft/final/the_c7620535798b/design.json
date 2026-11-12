@@ -1,0 +1,101 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "away_cover_missing"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": true,
+  "facts": {
+    "away_cover_missing": "not_mentioned",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_false",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_c7620535798b",
+  "index": 13,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6100,
+      "monthly": 2220,
+      "small": 305
+    },
+    "canton": "BE",
+    "claimant": "Alice Morgan",
+    "date_main_event": "2026-07-01",
+    "date_written": "2026-08-24",
+    "earlier_dates": [
+      "2023-01-17",
+      "2023-06-11",
+      "2023-12-27"
+    ],
+    "other_party_organisation": "Steinbruch Holdings Ltd",
+    "other_party_person": "Liam Turner",
+    "place": "Burgdorf",
+    "street": "Birkenweg 59",
+    "third_person": "Julia Foster",
+    "time_spans": [],
+    "topic_order_seed": 1576602922
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

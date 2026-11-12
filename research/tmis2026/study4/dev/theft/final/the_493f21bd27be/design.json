@@ -1,0 +1,105 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_true",
+    "burglary_or_robbery": "stated_true",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_true",
+    "lock_change": "stated_true",
+    "measures_pending": "stated_false",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_493f21bd27be",
+  "index": 4,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3250,
+      "monthly": 2540,
+      "small": 1790
+    },
+    "canton": "ZH",
+    "claimant": "Gabriela Keller",
+    "date_main_event": "2025-12-14",
+    "date_written": "2026-02-25",
+    "earlier_dates": [
+      "2022-09-28",
+      "2023-03-06",
+      "2024-06-21"
+    ],
+    "other_party_organisation": "Feldegg Genossenschaft",
+    "other_party_person": "Dominik Widmer",
+    "place": "Zürich",
+    "street": "Sonnenweg 81",
+    "third_person": "Seraina Bucher",
+    "time_spans": [],
+    "topic_order_seed": 721770917
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

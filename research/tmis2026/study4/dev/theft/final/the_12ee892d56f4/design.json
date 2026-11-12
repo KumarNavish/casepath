@@ -1,0 +1,100 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": "that and when CSS was notified of the theft",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "stated_false",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "stated_true",
+    "theft_away": "stated_true",
+    "traces_changed": "open",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_12ee892d56f4",
+  "index": 10,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "traces_changed"
+  ],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10750,
+      "monthly": 1100,
+      "small": 415
+    },
+    "canton": "AG",
+    "claimant": "Daniel Huber",
+    "date_main_event": "2026-01-07",
+    "date_written": "2026-03-04",
+    "earlier_dates": [
+      "2023-09-09",
+      "2023-12-16",
+      "2024-03-08"
+    ],
+    "other_party_organisation": "Rebhalde Genossenschaft",
+    "other_party_person": "Livia Shaw",
+    "place": "Aarau",
+    "street": "Mühleweg 54",
+    "third_person": "Jonas Müller",
+    "time_spans": [],
+    "topic_order_seed": 1690125423
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "attachments": {
+    "A1": {
+      "missing": [
+        "rented dwelling"
+      ],
+      "state": "insufficient"
+    },
+    "A2": {
+      "state": "sufficient"
+    },
+    "A3": {
+      "missing": [
+        "warning that the lease will be terminated"
+      ],
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "Die Kündigung kam als Einschreiben, ich habe sie am 2. Juni 2026 entgegengenommen, mit meiner Unterschrift beim Pöstler.",
+      "state": "stated_true"
+    },
+    "Q2": {
+      "quote": "Ich bin nicht verheiratet und lebe allein in der Wohnung.",
+      "state": "stated_false"
+    },
+    "Q3": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q4": {
+      "quote": "Darin schreibt Herr Daniel Gerber, er kündige, weil ich den Rückstand von CHF 3100 nicht innert der 30 Tage bezahlt habe, die er mir im April gesetzt hatte.",
+      "state": "stated_true"
+    },
+    "Q5": {
+      "quote": "Dass mir die Moosacker kündigt, weil ich irgendwelche Forderungen gestellt hätte, kann also nicht sein.",
+      "state": "stated_false"
+    }
+  },
+  "file_id": "ten_b2a5ace905ae"
+}

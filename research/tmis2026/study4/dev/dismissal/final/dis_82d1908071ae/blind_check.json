@@ -1,0 +1,40 @@
+{
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "missing": [
+        "monthly salary"
+      ],
+      "state": "insufficient"
+    }
+  },
+  "facts": {
+    "Q1": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "Q2": {
+      "quote": "In meinem schriftlichen Arbeitsvertrag mit der Feldegg Verwaltungs GmbH in Wil steht eine Kündigungsfrist von drei Monaten auf Ende Monat",
+      "state": "stated_true"
+    },
+    "Q3": {
+      "quote": "Am 27. März 2026 hat mich Herr Reid dann fristlos entlassen.",
+      "state": "stated_true"
+    },
+    "Q4": {
+      "quote": "Bis Ende April habe ich dort CHF 1580 verdient.",
+      "state": "stated_true"
+    },
+    "Q5": {
+      "quote": "Ich sehe das anders, aber was nun stimmt, konnte mir bisher niemand sagen.",
+      "state": "open"
+    },
+    "Q6": {
+      "quote": "",
+      "state": "not_mentioned"
+    }
+  },
+  "file_id": "dis_82d1908071ae"
+}

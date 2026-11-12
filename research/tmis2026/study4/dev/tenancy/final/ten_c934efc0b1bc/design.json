@@ -1,0 +1,97 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "stated_true",
+    "asserted_claims": "not_mentioned",
+    "extension_requested": "not_mentioned",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_c934efc0b1bc",
+  "index": 14,
+  "language": "de",
+  "level": 0,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6850,
+      "monthly": 1350,
+      "small": 240
+    },
+    "canton": "BL",
+    "claimant": "Matthias Keller",
+    "date_main_event": "2026-01-27",
+    "date_written": "2026-03-18",
+    "earlier_dates": [
+      "2022-02-17",
+      "2024-11-04",
+      "2024-11-27"
+    ],
+    "other_party_organisation": "Steinbruch Verwaltungs GmbH",
+    "other_party_person": "Martina Moser",
+    "place": "Allschwil",
+    "street": "Rosenweg 22",
+    "third_person": "Yvonne Fankhauser",
+    "time_spans": [],
+    "topic_order_seed": 1931335787
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

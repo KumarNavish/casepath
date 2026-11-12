@@ -1,0 +1,125 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": "period covered",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_reasons",
+      "missing": "reasons stated by the employer",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "stated_true",
+    "notice_period_varied": "stated_false",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "stated_true"
+  },
+  "file_id": "dis_166a056aad58",
+  "index": 13,
+  "language": "en",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6550,
+      "monthly": 1140,
+      "small": 355
+    },
+    "canton": "LU",
+    "claimant": "Eva Hofer",
+    "date_main_event": "2026-02-21",
+    "date_written": "2026-03-21",
+    "earlier_dates": [
+      "2022-12-24",
+      "2023-12-15",
+      "2024-05-01"
+    ],
+    "other_party_organisation": "Talgrund Cooperative",
+    "other_party_person": "Owen Foster",
+    "place": "Emmen",
+    "street": "Talstrasse 118",
+    "third_person": "Tom Graf",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-03-09",
+        "date_if_span_not_run": "2026-03-18",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-31",
+        "date_if_span_not_run": "2026-03-09",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-14",
+        "date_if_span_not_run": "2026-02-25",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-10-27",
+        "date_if_span_not_run": "2026-02-13",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 953437007
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

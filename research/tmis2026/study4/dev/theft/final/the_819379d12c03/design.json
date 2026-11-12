@@ -1,0 +1,100 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "missing": "the insured location",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "stated_false",
+    "imminent_danger": "stated_false",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_819379d12c03",
+  "index": 11,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 9050,
+      "monthly": 1790,
+      "small": 910
+    },
+    "canton": "ZH",
+    "claimant": "Paul Wyss",
+    "date_main_event": "2026-06-16",
+    "date_written": "2026-08-03",
+    "earlier_dates": [
+      "2023-08-16",
+      "2024-01-05",
+      "2025-04-30"
+    ],
+    "other_party_organisation": "Birkenrain Holdings Ltd",
+    "other_party_person": "Megan Wälti",
+    "place": "Uster",
+    "street": "Mattenweg 8",
+    "third_person": "Isla Ellis",
+    "time_spans": [],
+    "topic_order_seed": 1245145597
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

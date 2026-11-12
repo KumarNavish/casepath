@@ -1,0 +1,97 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "stated_true",
+    "asserted_claims": "not_mentioned",
+    "extension_requested": "stated_true",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_eec676341229",
+  "index": 7,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10650,
+      "monthly": 1250,
+      "small": 2365
+    },
+    "canton": "LU",
+    "claimant": "Anna Lehmann",
+    "date_main_event": "2026-04-21",
+    "date_written": "2026-07-02",
+    "earlier_dates": [
+      "2024-07-29",
+      "2025-04-13",
+      "2025-06-10"
+    ],
+    "other_party_organisation": "Erlenhof Cooperative",
+    "other_party_person": "Owen Zimmermann",
+    "place": "Luzern",
+    "street": "Dorfstrasse 108",
+    "third_person": "Ben Frei",
+    "time_spans": [],
+    "topic_order_seed": 71451456
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

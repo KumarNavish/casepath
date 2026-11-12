@@ -1,0 +1,90 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": true,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "not_mentioned",
+    "increase_applied": "stated_false",
+    "index_clause": "not_mentioned",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_76d8d9821402",
+  "index": 3,
+  "language": "en",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6750,
+      "monthly": 3190,
+      "small": 1705
+    },
+    "canton": "AG",
+    "claimant": "Felix Huber",
+    "date_main_event": "2026-03-06",
+    "date_written": "2026-04-05",
+    "earlier_dates": [
+      "2022-09-02",
+      "2023-03-16",
+      "2025-06-24"
+    ],
+    "other_party_organisation": "Moosacker Trading Ltd",
+    "other_party_person": "Leo Graf",
+    "place": "Wohlen",
+    "street": "Hauptstrasse 104",
+    "third_person": "Leo Morgan",
+    "time_spans": [],
+    "topic_order_seed": 51233015
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

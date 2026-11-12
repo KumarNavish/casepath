@@ -1,0 +1,108 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "burglary_or_robbery"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": true,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "not_mentioned",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_false",
+    "lock_change": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_false",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_86b4e22a87e7",
+  "index": 12,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6400,
+      "monthly": 1500,
+      "small": 1560
+    },
+    "canton": "SG",
+    "claimant": "Martina Hürlimann",
+    "date_main_event": "2026-08-25",
+    "date_written": "2026-10-20",
+    "earlier_dates": [
+      "2024-03-25",
+      "2024-06-06",
+      "2026-02-14"
+    ],
+    "other_party_organisation": "Hagenbuch Betriebs AG",
+    "other_party_person": "Matthias Ammann",
+    "place": "St. Gallen",
+    "street": "Mattenweg 100",
+    "third_person": "Seraina Ellis",
+    "time_spans": [],
+    "topic_order_seed": 1534856746
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

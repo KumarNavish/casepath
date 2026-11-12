@@ -1,0 +1,104 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "missing": "that an official investigation was requested",
+      "optional": true,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": "its value",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "stated_false",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "open",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_2774fb90433e",
+  "index": 6,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "measures_pending"
+  ],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7100,
+      "monthly": 2000,
+      "small": 2055
+    },
+    "canton": "VD",
+    "claimant": "Clara Keller",
+    "date_main_event": "2026-10-21",
+    "date_written": "2026-10-27",
+    "earlier_dates": [
+      "2023-07-24",
+      "2023-10-04",
+      "2026-02-13"
+    ],
+    "other_party_organisation": "Seematt Cooperative",
+    "other_party_person": "Chris Schneider",
+    "place": "Yverdon-les-Bains",
+    "street": "Wiesenstrasse 45",
+    "third_person": "Olivia Tanner",
+    "time_spans": [],
+    "topic_order_seed": 269298161
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

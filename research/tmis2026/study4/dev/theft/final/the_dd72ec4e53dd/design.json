@@ -1,0 +1,98 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "missing": "its sum insured",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_true",
+    "bicycle": "stated_false",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "stated_true",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_dd72ec4e53dd",
+  "index": 1,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7200,
+      "monthly": 2030,
+      "small": 1275
+    },
+    "canton": "SO",
+    "claimant": "Gabriela Müller",
+    "date_main_event": "2026-09-13",
+    "date_written": "2026-10-12",
+    "earlier_dates": [
+      "2023-10-07",
+      "2024-08-01",
+      "2025-11-09"
+    ],
+    "other_party_organisation": "Lindenmatt Immobilien AG",
+    "other_party_person": "Rahel Odermatt",
+    "place": "Olten",
+    "street": "Lindenweg 99",
+    "third_person": "Matthias Imhof",
+    "time_spans": [],
+    "topic_order_seed": 1533097747
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

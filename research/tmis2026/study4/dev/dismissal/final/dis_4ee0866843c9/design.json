@@ -1,0 +1,171 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "not_mentioned",
+      "fact": "notice_before_protected_period"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "notice_before_protected_period",
+      "constraint": "notice_before_protected_period is asked only where a protected period is raised: stated only when at least one of the three protected-period facts is stated true or open, otherwise not mentioned (an instance of the general rule: an always-stated fact is stated only where its step can be reached)",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "employer_gave_notice",
+  "denied_event": true,
+  "facts": {
+    "compulsory_service": "stated_false",
+    "employer_gave_notice": "stated_false",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "not_mentioned",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "not_mentioned",
+    "pregnancy_or_birth": "not_mentioned",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_4ee0866843c9",
+  "index": 12,
+  "language": "de",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10500,
+      "monthly": 3320,
+      "small": 1815
+    },
+    "canton": "TG",
+    "claimant": "Adrian Gerber",
+    "date_main_event": "2026-06-30",
+    "date_written": "2026-08-12",
+    "earlier_dates": [
+      "2023-11-30",
+      "2024-03-11",
+      "2025-09-13"
+    ],
+    "other_party_organisation": "Steinbruch Genossenschaft",
+    "other_party_person": "Martina Kaufmann",
+    "place": "Kreuzlingen",
+    "street": "Wiesenstrasse 93",
+    "third_person": "Rahel Imhof",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-06-24",
+        "date_if_span_not_run": "2026-07-31",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-03-20",
+        "date_if_span_not_run": "2026-07-07",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-10-27",
+        "date_if_span_not_run": "2026-06-01",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-07-24",
+        "date_if_span_not_run": "2026-08-08",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-06-27",
+        "date_if_span_not_run": "2026-08-01",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-02-13",
+        "date_if_span_not_run": "2026-06-28",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-07-31",
+        "date_if_span_not_run": "2026-08-09",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-24",
+        "date_if_span_not_run": "2026-07-31",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-05-07",
+        "date_if_span_not_run": "2026-07-19",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-20",
+        "date_if_span_not_run": "2026-07-07",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1526831155
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

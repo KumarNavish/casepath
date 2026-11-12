@@ -1,0 +1,87 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": "how it was delivered (registered-mail tracking, envelope or acknowledgement)",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "not_mentioned",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_true"
+  },
+  "file_id": "ten_96f9b0ab4078",
+  "index": 0,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5200,
+      "monthly": 2380,
+      "small": 1130
+    },
+    "canton": "ZG",
+    "claimant": "Heinz Keller",
+    "date_main_event": "2026-09-10",
+    "date_written": "2026-10-12",
+    "earlier_dates": [
+      "2023-02-14",
+      "2025-10-20",
+      "2025-11-11"
+    ],
+    "other_party_organisation": "Rosenau Betriebs AG",
+    "other_party_person": "Lukas Foster",
+    "place": "Baar",
+    "street": "Sonnenweg 75",
+    "third_person": "Lea Schneider",
+    "time_spans": [],
+    "topic_order_seed": 661689487
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

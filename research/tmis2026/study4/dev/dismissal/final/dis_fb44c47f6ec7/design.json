@@ -1,0 +1,123 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": "start date of employment",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "missing": "dates before the notice",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": "monthly salary",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "not_mentioned",
+    "employee_representative": "stated_false",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "stated_false",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "stated_true",
+    "retaliation_for_claims": "stated_true"
+  },
+  "file_id": "dis_fb44c47f6ec7",
+  "index": 8,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8250,
+      "monthly": 2380,
+      "small": 575
+    },
+    "canton": "BS",
+    "claimant": "Jack Foster",
+    "date_main_event": "2026-05-11",
+    "date_written": "2026-07-19",
+    "earlier_dates": [
+      "2023-01-31",
+      "2024-02-09",
+      "2025-07-06"
+    ],
+    "other_party_organisation": "Ahornweid Trading Ltd",
+    "other_party_person": "Eva Vogel",
+    "place": "Basel",
+    "street": "Kirchgasse 77",
+    "third_person": "Tara Bucher",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-10-03",
+        "date_if_span_not_run": "2026-05-08",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-10-03",
+        "date_if_span_not_run": "2026-05-08",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 831555950
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

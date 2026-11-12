@@ -1,0 +1,101 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "away_cover_missing"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": true,
+  "facts": {
+    "away_cover_missing": "not_mentioned",
+    "bicycle": "stated_false",
+    "imminent_danger": "stated_false",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_false",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_5ee356013cfc",
+  "index": 14,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8150,
+      "monthly": 1240,
+      "small": 985
+    },
+    "canton": "AR",
+    "claimant": "Walter Bachmann",
+    "date_main_event": "2026-07-10",
+    "date_written": "2026-08-29",
+    "earlier_dates": [
+      "2023-03-27",
+      "2023-11-16",
+      "2024-11-27"
+    ],
+    "other_party_organisation": "Erlenhof Immobilien AG",
+    "other_party_person": "Corinne Bucher",
+    "place": "Herisau",
+    "street": "Talstrasse 93",
+    "third_person": "Thomas Lüthi",
+    "time_spans": [],
+    "topic_order_seed": 2062421405
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

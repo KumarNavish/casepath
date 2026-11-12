@@ -1,0 +1,85 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "stated_false",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_false"
+  },
+  "file_id": "ten_99fa2131c25f",
+  "index": 12,
+  "language": "de",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 9550,
+      "monthly": 1430,
+      "small": 2000
+    },
+    "canton": "NW",
+    "claimant": "Esther Graf",
+    "date_main_event": "2026-02-04",
+    "date_written": "2026-03-08",
+    "earlier_dates": [
+      "2022-11-13",
+      "2023-11-03",
+      "2025-07-29"
+    ],
+    "other_party_organisation": "Talgrund Handels AG",
+    "other_party_person": "Nadine Foster",
+    "place": "Stans",
+    "street": "Sonnenweg 71",
+    "third_person": "Lea Widmer",
+    "time_spans": [],
+    "topic_order_seed": 2076554470
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

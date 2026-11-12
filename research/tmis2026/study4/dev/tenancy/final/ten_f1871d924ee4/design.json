@@ -1,0 +1,90 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": true,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "not_mentioned",
+    "increase_applied": "stated_false",
+    "index_clause": "stated_false",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_f1871d924ee4",
+  "index": 10,
+  "language": "en",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3900,
+      "monthly": 1340,
+      "small": 1450
+    },
+    "canton": "BE",
+    "claimant": "Alice Reid",
+    "date_main_event": "2026-05-05",
+    "date_written": "2026-06-01",
+    "earlier_dates": [
+      "2022-04-09",
+      "2022-12-01",
+      "2025-04-27"
+    ],
+    "other_party_organisation": "Feldegg Trading Ltd",
+    "other_party_person": "Paul Fankhauser",
+    "place": "Thun",
+    "street": "Dorfstrasse 55",
+    "third_person": "Rachel Zimmermann",
+    "time_spans": [],
+    "topic_order_seed": 451292639
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

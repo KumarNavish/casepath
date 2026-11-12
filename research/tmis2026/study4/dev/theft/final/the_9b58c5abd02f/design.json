@@ -1,0 +1,105 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_true",
+    "household_perpetrator": "stated_false",
+    "imminent_danger": "stated_false",
+    "lock_change": "stated_true",
+    "measures_pending": "stated_true",
+    "theft_at_home": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_9b58c5abd02f",
+  "index": 8,
+  "language": "de",
+  "level": 10,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5100,
+      "monthly": 1140,
+      "small": 1995
+    },
+    "canton": "UR",
+    "claimant": "Simon Lüthi",
+    "date_main_event": "2026-08-07",
+    "date_written": "2026-09-09",
+    "earlier_dates": [
+      "2024-06-01",
+      "2025-03-14",
+      "2025-07-25"
+    ],
+    "other_party_organisation": "Talgrund Dienste GmbH",
+    "other_party_person": "Esther Steiner",
+    "place": "Altdorf",
+    "street": "Mühleweg 64",
+    "third_person": "Matthias Huber",
+    "time_spans": [],
+    "topic_order_seed": 879623997
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

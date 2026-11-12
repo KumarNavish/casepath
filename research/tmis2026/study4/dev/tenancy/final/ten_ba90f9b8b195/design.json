@@ -1,0 +1,92 @@
+{
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "not_mentioned",
+    "graduated_rent": "stated_true",
+    "increase_applied": "open",
+    "index_clause": "not_mentioned",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_ba90f9b8b195",
+  "index": 13,
+  "language": "de",
+  "level": 50,
+  "open_fact_step_unreachable": false,
+  "open_facts": [
+    "increase_applied"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4900,
+      "monthly": 1260,
+      "small": 2325
+    },
+    "canton": "LU",
+    "claimant": "Jonas Tanner",
+    "date_main_event": "2026-05-28",
+    "date_written": "2026-08-06",
+    "earlier_dates": [
+      "2024-03-19",
+      "2025-01-06",
+      "2025-03-20"
+    ],
+    "other_party_organisation": "Erlenhof Handels AG",
+    "other_party_person": "Jonas Schneider",
+    "place": "Kriens",
+    "street": "Birkenweg 40",
+    "third_person": "Daniel Huber",
+    "time_spans": [],
+    "topic_order_seed": 2055865773
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

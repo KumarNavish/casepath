@@ -1,0 +1,165 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": "issuer",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "missing": "parties",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "missing": "the written instrument that sets it (individual, standard or collective contract)",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_true",
+    "notice_before_protected_period": "stated_true",
+    "notice_during_probation": "stated_false",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "not_mentioned",
+    "probation_varied": "stated_true"
+  },
+  "file_id": "dis_9260317f805d",
+  "index": 13,
+  "language": "en",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5150,
+      "monthly": 1010,
+      "small": 145
+    },
+    "canton": "LU",
+    "claimant": "Paul Turner",
+    "date_main_event": "2026-10-11",
+    "date_written": "2026-10-29",
+    "earlier_dates": [
+      "2023-03-05",
+      "2023-11-06",
+      "2025-01-07"
+    ],
+    "other_party_organisation": "Moosacker Services Ltd",
+    "other_party_person": "Alice Hürlimann",
+    "place": "Kriens",
+    "street": "Mattenweg 119",
+    "third_person": "Mark Gisler",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-09-10",
+        "date_if_span_not_run": "2026-10-17",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-06-06",
+        "date_if_span_not_run": "2026-09-23",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-01-13",
+        "date_if_span_not_run": "2026-08-18",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-10-10",
+        "date_if_span_not_run": "2026-10-25",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-09-13",
+        "date_if_span_not_run": "2026-10-18",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-05-02",
+        "date_if_span_not_run": "2026-09-14",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-10-17",
+        "date_if_span_not_run": "2026-10-26",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-09-10",
+        "date_if_span_not_run": "2026-10-17",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-07-24",
+        "date_if_span_not_run": "2026-10-05",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-06",
+        "date_if_span_not_run": "2026-09-23",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 101937535
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

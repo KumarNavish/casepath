@@ -1,0 +1,105 @@
+{
+  "always_stated_not_mentioned": [],
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "missing": "the police station",
+      "optional": true,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_false",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "stated_false",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "stated_true",
+    "measures_pending": "stated_false",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_1595e412e131",
+  "index": 0,
+  "language": "de",
+  "level": 25,
+  "open_fact_step_unreachable": false,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10200,
+      "monthly": 2660,
+      "small": 1530
+    },
+    "canton": "SO",
+    "claimant": "Irene Weber",
+    "date_main_event": "2026-04-27",
+    "date_written": "2026-07-07",
+    "earlier_dates": [
+      "2022-05-29",
+      "2023-01-21",
+      "2024-01-19"
+    ],
+    "other_party_organisation": "Ahornweid Betriebs AG",
+    "other_party_person": "Nadine Rüegg",
+    "place": "Olten",
+    "street": "Dorfstrasse 75",
+    "third_person": "Reto Wälti",
+    "time_spans": [],
+    "topic_order_seed": 942432745
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}
