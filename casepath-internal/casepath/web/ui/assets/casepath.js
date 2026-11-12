@@ -263,7 +263,7 @@ function renderRail() {
         ${S.workflows.map((w) => `<option value="${esc(w.id)}">${esc(w.title)}</option>`).join("")}</select></label>`
     : d.workflow ? `<span class="cp-status">${T("Process", "Prozess")}: ${esc(d.workflow.title)}</span>` : "";
   const run = d.run;
-  const status = run ? (running() ? T(`${AGENT_TITLE[activeAgent()] || "Agents"} working…`, `${AGENT_TITLE[activeAgent()] || "Agenten"} arbeitet…`) : run.status === "failed" ? `${T("Failed", "Fehlgeschlagen")}: ${esc(runError(run.error))}`
+  const status = run ? (running() ? T("CasePath is working…", "CasePath arbeitet…")  // no agent names on a handler's screen (section U) : run.status === "failed" ? `${T("Failed", "Fehlgeschlagen")}: ${esc(runError(run.error))}`
     : run.status === "completed" ? `${T("Prepared", "Vorbereitet am")} ${dateText(run.finished_at)}` : word(run.status)) : T("Not prepared yet", "Noch nicht vorbereitet");
   return `<aside class="cp-rail" aria-label="${T("Sources", "Quellen")}">
     <div class="cp-caseline">${esc(d.case.title)}<small>${esc(d.case.id.slice(-8).toUpperCase())}</small>${standAm(d)}</div>
@@ -271,7 +271,7 @@ function renderRail() {
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case documents here", "Falldokumente hierher ziehen")}</div>`}
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
     <div class="cp-rail-foot">${unaidedPending() ? "" : chooser}
-      <button class="cp-button ${run && run.status === "completed" ? "cp-quiet" : "primary"}" id="run" ${unaidedPending() ? "hidden" : ""} ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${run && run.status === "completed" ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>
+      <button class="cp-button ${run && ["completed", "paused"].includes(run.status) ? "cp-quiet" : "primary"}" id="run" ${unaidedPending() ? "hidden" : ""} ${running() || !files.length ? "disabled" : ""}>${running() ? '<span class="cp-spinner"></span>' : icon("nodes")}${run && run.status === "completed" ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>
       ${running() ? `<button class="cp-button cp-quiet" id="stop-run">${T("Stop", "Anhalten")}</button>` : ""}
       ${run && run.status === "paused" ? `<button class="cp-button primary" id="continue-run">${T("Continue", "Weiter")}</button>
         <button class="cp-button cp-quiet" id="discard-run">${T("Discard", "Verwerfen")}</button>` : ""}
@@ -1246,9 +1246,9 @@ function overviewView() {
   const nowText = !(ev && ev.current) ? "" : CHAT_ROLE.test(curStep.role || "") ? T("waiting for the customer's details (online form)", "wartet auf Angaben der Kundschaft (Online-Formular)") : label(ev.current);
   const stand = !ev ? T("no process yet", "noch kein Prozess")
     : ev.outcome ? `${T("The process has reached its end", "Der Prozess ist abgeschlossen mit")}: <b>${esc(ev.outcome.title || stepLabel(ev.outcome))}</b>.`
-    : ev.current ? `${T("Now", "Stand")}: <b>${esc(nowText)}</b>.${next ? ` ${T("Next", "Als Nächstes")}: <b>${esc(label(next))}</b>${why ? `, ${esc(why)}` : ""}.` : why ? ` ${esc(why[0].toUpperCase() + why.slice(1))}.` : ""}` : "—";
+    : ev.current ? `${T("Now", "Stand")}: <b>${esc(nowText)}</b>.${next ? ` ${T("Next", "Als Nächstes")}: <b>${esc(label(next))}</b>.` : ""}` : "—";  // the why is under "Vorher zu klären"
   const today = new Date();
-  const fristen = !DEADLINES_RELIABLE ? `<span class="cp-muted">${T("not yet read reliably — check the files", "werden noch nicht zuverlässig gelesen – bitte in den Akten prüfen")}</span>` : (r.deadlines || []).length ? r.deadlines.map((d) => { const n = Math.round((new Date(d.date) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
+  const fristen = !DEADLINES_RELIABLE ? `<span class="cp-muted">${T("not checked — see the files", "nicht geprüft – bitte in den Akten")}</span>` : (r.deadlines || []).length ? r.deadlines.map((d) => { const n = Math.round((new Date(d.date) - new Date(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000);
     return `${dateText(d.date)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : n < 0 ? T(`expired ${-n} d ago`, `abgelaufen seit ${-n} T.`) : T(`${n} d`, `${n} T.`)}</span> ${esc(d.question)}${cite((d.citations || [])[0])}`; }).join("<br>")
     : T("none established in the files", "in den Akten keine festgestellt");
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional", "depends"].includes(d.required)) : [];
@@ -1256,6 +1256,7 @@ function overviewView() {
   const open = S.data.items ? S.data.items.filter((i) => i.kind === "document" && i.ask === "now").length  // the same list the letter asks from
     : docs.filter((d) => ["missing", "unusable"].includes(d.status)).length;
   const draft = ev ? draftFor(ev) : "";
+  const aboveShows = Boolean(item("next_action", "0"));  // the prepared card above shows the next step and its checklist
   const done = doneRows(), doneKeys = new Set(done.map((f) => f.target.slice(6)));
   const all = judgementPoints(ev, r).filter((p) => !p.request && !String(p.key).startsWith("chat.")), pts = all.filter((p) => !doneKeys.has(p.key));
   const settled = all.filter((p) => doneKeys.has(p.key));
@@ -1271,7 +1272,9 @@ function overviewView() {
     `<button class="cp-link" data-note="${esc(p.fact ? `fact:${p.fact}` : `point:${p.key}`)}">${T("note", "Anmerkung")}</button>`,
     ratedRun() && !(p.fact && (item("fact", p.fact) || {}).values) ? `<button class="cp-button" data-point-done="${esc(p.key)}">${T("Done", "Erledigt")}</button>` : ""].join("");
   const setByYou = (S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").length;
-  const checked = `${Object.values(recorded("fact")).filter((f) => f.status !== "unknown").length} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by a person)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
+  const setKeys = new Set((S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").map((e) => e.args.fact));
+  const readKeys = Object.values(recorded("fact")).filter((f) => f.status !== "unknown").map((f) => f.fact);
+  const checked = `${new Set([...readKeys, ...setKeys]).size} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by you)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
   return `${runLine()}<div class="cp-overview"><div>
     ${preparedView(ev, draft)}
     <section class="cp-card" style="padding:18px 22px;margin-top:18px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
@@ -1280,8 +1283,8 @@ function overviewView() {
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${factCite("gegenpartei") ? cite(factCite("gegenpartei")) : ""}</dd>
         <dt>${T("Process", "Prozessstand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${S.data.run && S.data.run.status === "paused" ? `${T("provisional", "vorläufig")}: ` : ""}${stand} <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("open", "öffnen")}</a></dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
-        <dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>
-        <dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${S.data.run && S.data.run.status === "paused" ? T("not proposed yet (stopped)", "noch nicht vorgeschlagen (angehalten)") : draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} <span class="cp-muted">· ${T("prepared above", "oben vorbereitet")}</span>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>
+        ${aboveShows ? "" : `<dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>`}
+        ${aboveShows ? "" : `<dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${S.data.run && S.data.run.status === "paused" ? T("not proposed yet (stopped)", "noch nicht vorgeschlagen (angehalten)") : draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} <span class="cp-muted">· ${T("prepared above", "oben vorbereitet")}</span>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>`}
       </dl>
       </section></div>
     <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("To settle first", "Vorher zu klären")} <span class="cp-muted">· ${pts.length}</span></h2>
@@ -1389,18 +1392,19 @@ function preparedView(ev, draft) {
   const reason = [act.reason || "", T("claim received", "Schadenmeldung eingegangen"), missing ? T(`documents incomplete (${missing} missing)`, `Unterlagen unvollständig (${missing} fehlen)`) : "",
     cover ? T("cover open", "Deckung offen") : ""].filter(Boolean).join(", ");
   const stage = (S.data.process.steps || []).find((x) => x.id === (ev && ev.current && ev.current.step)) || {};
-  const paused = S.data.run && S.data.run.status === "paused";
+  const paused = S.data.run && S.data.run.status === "paused", isClosed = closed();
   return `<section class="cp-card cp-prepared" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${paused
       ? T("Stopped: what is established so far", "Angehalten: was bisher feststeht")
+      : isClosed ? `${T("Closed", "Erledigt")}: ${esc(T(act.label.en, act.label.de))}`
       : `${T("Prepared", "Vorbereitet")}: ${esc(T(act.label.en, act.label.de))}`}</h2>
     ${paused ? `<p class="cp-muted" style="margin:0 0 10px">${T("The preparation was stopped. Documents and checks may be incomplete; the next step is not proposed yet.", "Die Vorbereitung wurde angehalten. Unterlagen und Prüfung können unvollständig sein; ein nächster Schritt wird noch nicht vorgeschlagen.")}</p>` : ""}
-    <p class="cp-muted" style="margin:0 0 10px">${T("Because", "Weil")}: ${esc(reason)}.${stage.title ? ` <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("Stage", "Stufe")}: ${esc(stage.title)}</a>` : ""}</p>
+    ${isClosed ? "" : `<p class="cp-muted" style="margin:0 0 10px">${T("Because", "Weil")}: ${esc(reason)}.${stage.title ? ` <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("Stage", "Stufe")}: ${esc(stage.title)}</a>` : ""}</p>`}
     ${draft ? `<pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>` : ""}
     ${all.length ? `<p class="cp-muted" style="margin:12px 0 4px">${T("The letter's list: untick what is not needed, tick what an offer should add.", "Liste des Briefs: Nicht Nötiges abwählen, Angebotenes anwählen.")}</p>
       <ul class="cp-checklist">${all.filter(on).map((i) => line(i, textOf(i))).join("")}${all.filter((i) => !on(i)).map((i) => line(i, textOf(i))).join("")}</ul>` : ""}
       ${S.addDoc ? `<p class="cp-reasons"><span class="cp-muted">${T(`Add “${esc(S.addDoc)}” because:`, `«${esc(S.addDoc)}» verlangen, weil:`)}</span>
           ${["2", "4", "5"].map((code) => `<button class="cp-chip" data-add-doc-reason="${code}">${esc(T(REASONS_EN[code], REASONS[code]))}</button>`).join("")}</p>`
-        : `<p><input id="add-doc" class="cp-input" maxlength="200" placeholder="${T("Add a document … (Enter)", "Unterlage hinzufügen … (Enter)")}" aria-label="${T("Add a document", "Unterlage hinzufügen")}"></p>`}
+        : !docs.length ? "" : `<p><input id="add-doc" class="cp-input" maxlength="200" placeholder="${T("Add a document … (Enter)", "Unterlage hinzufügen … (Enter)")}" aria-label="${T("Add a document", "Unterlage hinzufügen")}"></p>`}
     ${draft ? `<p><button class="cp-button primary" id="copy-draft">${T("Copy letter", "Brief kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></p>` : ""}
     <p class="cp-tools">${followUpLine()}${followUpLine() ? " · " : ""}<button class="cp-link" id="phone-note">${T("Record phone note", "Telefonnotiz erfassen")}</button> · <button class="cp-link" data-note="case:0">${T("Note", "Anmerkung")}</button></p>
   </section>`;
