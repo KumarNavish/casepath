@@ -1,0 +1,802 @@
+{
+  "dispute_types": [
+    {
+      "dispute_type": "defect_mold_heating",
+      "template_id": "policy-defect_mold_heating-v1",
+      "title": "Generic defect, moisture, mould, and heating workflow",
+      "content": "Preserve urgent safety needs first. Then establish scope and dates, notice to the landlord, the still-open technical cause, objective condition evidence, and the response or access history. Request only missing material that can resolve an active decision. Treat medical, inspection, heating, moisture-log, and deposit evidence as conditional; do not assume a cause or remedy before its branch is supported. Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+      "condition_catalog": [
+        "health_effects",
+        "mold",
+        "heating",
+        "specialist_needed",
+        "deposit_considered"
+      ],
+      "process_catalog": {
+        "nodes": [
+          {
+            "label": "Capture defect and affected rooms",
+            "node_id": "dh_intake",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Escalate immediate health or safety risk",
+            "node_id": "dh_safety",
+            "responsibility": "external_specialist",
+            "terminal": false
+          },
+          {
+            "label": "Build the dated defect timeline",
+            "node_id": "dh_scope",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Establish landlord notice",
+            "node_id": "dh_notice",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Keep causation open until supported",
+            "node_id": "dh_cause",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Collect objective defect evidence",
+            "node_id": "dh_evidence",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Review landlord response and access",
+            "node_id": "dh_response",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Obtain technical inspection",
+            "node_id": "dh_specialist",
+            "responsibility": "external_specialist",
+            "terminal": false
+          },
+          {
+            "label": "Check safeguards for official rent deposit",
+            "node_id": "dh_deposit",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Record repair or referral outcome",
+            "node_id": "dh_resolution",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Close or hand off the file",
+            "node_id": "dh_close",
+            "responsibility": "claim_handler",
+            "terminal": true
+          }
+        ],
+        "transitions": [
+          {
+            "condition": "health effects alleged",
+            "edge_id": "dh_e01",
+            "optional_path": true,
+            "source_node_id": "dh_intake",
+            "target_node_id": "dh_safety"
+          },
+          {
+            "condition": "no immediate health escalation",
+            "edge_id": "dh_e02",
+            "optional_path": true,
+            "source_node_id": "dh_intake",
+            "target_node_id": "dh_scope"
+          },
+          {
+            "condition": "safety advice recorded",
+            "edge_id": "dh_e03",
+            "optional_path": false,
+            "source_node_id": "dh_safety",
+            "target_node_id": "dh_scope"
+          },
+          {
+            "condition": "timeline drafted",
+            "edge_id": "dh_e04",
+            "optional_path": false,
+            "source_node_id": "dh_scope",
+            "target_node_id": "dh_notice"
+          },
+          {
+            "condition": "notice position recorded",
+            "edge_id": "dh_e05",
+            "optional_path": false,
+            "source_node_id": "dh_notice",
+            "target_node_id": "dh_cause"
+          },
+          {
+            "condition": "causation status recorded",
+            "edge_id": "dh_e06",
+            "optional_path": false,
+            "source_node_id": "dh_cause",
+            "target_node_id": "dh_evidence"
+          },
+          {
+            "condition": "evidence gaps identified",
+            "edge_id": "dh_e07",
+            "optional_path": false,
+            "source_node_id": "dh_evidence",
+            "target_node_id": "dh_response"
+          },
+          {
+            "condition": "technical inspection needed",
+            "edge_id": "dh_e08",
+            "optional_path": true,
+            "source_node_id": "dh_response",
+            "target_node_id": "dh_specialist"
+          },
+          {
+            "condition": "deposit route considered without specialist",
+            "edge_id": "dh_e09",
+            "optional_path": true,
+            "source_node_id": "dh_response",
+            "target_node_id": "dh_deposit"
+          },
+          {
+            "condition": "no further specialist or deposit branch",
+            "edge_id": "dh_e10",
+            "optional_path": true,
+            "source_node_id": "dh_response",
+            "target_node_id": "dh_resolution"
+          },
+          {
+            "condition": "deposit route remains relevant",
+            "edge_id": "dh_e11",
+            "optional_path": true,
+            "source_node_id": "dh_specialist",
+            "target_node_id": "dh_deposit"
+          },
+          {
+            "condition": "inspection result available",
+            "edge_id": "dh_e12",
+            "optional_path": true,
+            "source_node_id": "dh_specialist",
+            "target_node_id": "dh_resolution"
+          },
+          {
+            "condition": "deposit safeguards assessed",
+            "edge_id": "dh_e13",
+            "optional_path": false,
+            "source_node_id": "dh_deposit",
+            "target_node_id": "dh_resolution"
+          },
+          {
+            "condition": "outcome recorded",
+            "edge_id": "dh_e14",
+            "optional_path": false,
+            "source_node_id": "dh_resolution",
+            "target_node_id": "dh_close"
+          }
+        ],
+        "documents": [
+          {
+            "condition": null,
+            "document_type": "lease_contract",
+            "label": "Lease contract",
+            "required_at_node_ids": [
+              "dh_scope"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "defect_notification",
+            "label": "Defect notice",
+            "required_at_node_ids": [
+              "dh_notice"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "proof_of_notification",
+            "label": "Proof of notification",
+            "required_at_node_ids": [
+              "dh_notice"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "dated_photos",
+            "label": "Dated photographs",
+            "required_at_node_ids": [
+              "dh_evidence"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "landlord_response_history",
+            "label": "Landlord response history",
+            "required_at_node_ids": [
+              "dh_response"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": "scenario flag 'mold' is active",
+            "document_type": "humidity_temperature_log",
+            "label": "Humidity and temperature log",
+            "required_at_node_ids": [
+              "dh_evidence"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'heating' is active",
+            "document_type": "heating_service_report",
+            "label": "Heating service report",
+            "required_at_node_ids": [
+              "dh_evidence"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'health_effects' is active",
+            "document_type": "medical_confirmation",
+            "label": "Medical confirmation",
+            "required_at_node_ids": [
+              "dh_safety"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'specialist_needed' is active",
+            "document_type": "technical_inspection",
+            "label": "Technical inspection",
+            "required_at_node_ids": [
+              "dh_specialist"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'deposit_considered' is active",
+            "document_type": "written_repair_deadline",
+            "label": "Written repair deadline",
+            "required_at_node_ids": [
+              "dh_deposit"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": null,
+            "document_type": "caretaker_correspondence",
+            "label": "Caretaker correspondence",
+            "required_at_node_ids": [
+              "dh_cause"
+            ],
+            "requirement_class": "optional"
+          }
+        ]
+      }
+    },
+    {
+      "dispute_type": "lease_termination_dispute",
+      "template_id": "policy-lease_termination_dispute-v1",
+      "title": "Generic lease-termination dispute workflow",
+      "content": "Preserve the challenge deadline first. Then verify the notice, receipt, form, service, end date, and stated termination type. Apply arrears, family-home, retaliation, and hardship evidence only when that branch is active. Separate formal validity, factual grounds, extension, and settlement questions. Request only missing evidence that changes one of those decisions. Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+      "condition_catalog": [
+        "termination_received",
+        "family_home",
+        "arrears",
+        "retaliation_screen",
+        "extension_relevant"
+      ],
+      "process_catalog": {
+        "nodes": [
+          {
+            "label": "Capture issuer, receipt and end date",
+            "node_id": "lt_intake",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Preserve challenge or extension deadline",
+            "node_id": "lt_deadline",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Check form and service",
+            "node_id": "lt_form",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Classify termination type",
+            "node_id": "lt_type",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Check arrears cure preconditions",
+            "node_id": "lt_arrears",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Check separate family-home service",
+            "node_id": "lt_family",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Screen stated reason and good-faith concerns",
+            "node_id": "lt_abuse",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Assess extension evidence",
+            "node_id": "lt_extension",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Collect type-specific evidence",
+            "node_id": "lt_evidence",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Prepare challenge, extension or settlement",
+            "node_id": "lt_resolution",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Record termination outcome",
+            "node_id": "lt_close",
+            "responsibility": "claim_handler",
+            "terminal": true
+          }
+        ],
+        "transitions": [
+          {
+            "condition": "termination received",
+            "edge_id": "lt_e01",
+            "optional_path": false,
+            "source_node_id": "lt_intake",
+            "target_node_id": "lt_deadline"
+          },
+          {
+            "condition": "deadline position recorded",
+            "edge_id": "lt_e02",
+            "optional_path": false,
+            "source_node_id": "lt_deadline",
+            "target_node_id": "lt_form"
+          },
+          {
+            "condition": "formal review complete",
+            "edge_id": "lt_e03",
+            "optional_path": false,
+            "source_node_id": "lt_form",
+            "target_node_id": "lt_type"
+          },
+          {
+            "condition": "arrears termination",
+            "edge_id": "lt_e04",
+            "optional_path": true,
+            "source_node_id": "lt_type",
+            "target_node_id": "lt_arrears"
+          },
+          {
+            "condition": "family-home ordinary termination",
+            "edge_id": "lt_e05",
+            "optional_path": true,
+            "source_node_id": "lt_type",
+            "target_node_id": "lt_family"
+          },
+          {
+            "condition": "no special precondition branch",
+            "edge_id": "lt_e06",
+            "optional_path": true,
+            "source_node_id": "lt_type",
+            "target_node_id": "lt_abuse"
+          },
+          {
+            "condition": "arrears preconditions assessed",
+            "edge_id": "lt_e07",
+            "optional_path": false,
+            "source_node_id": "lt_arrears",
+            "target_node_id": "lt_abuse"
+          },
+          {
+            "condition": "family service assessed",
+            "edge_id": "lt_e08",
+            "optional_path": false,
+            "source_node_id": "lt_family",
+            "target_node_id": "lt_abuse"
+          },
+          {
+            "condition": "extension relevant",
+            "edge_id": "lt_e09",
+            "optional_path": true,
+            "source_node_id": "lt_abuse",
+            "target_node_id": "lt_extension"
+          },
+          {
+            "condition": "no extension branch",
+            "edge_id": "lt_e10",
+            "optional_path": true,
+            "source_node_id": "lt_abuse",
+            "target_node_id": "lt_evidence"
+          },
+          {
+            "condition": "hardship factors recorded",
+            "edge_id": "lt_e11",
+            "optional_path": false,
+            "source_node_id": "lt_extension",
+            "target_node_id": "lt_evidence"
+          },
+          {
+            "condition": "evidence collection closed",
+            "edge_id": "lt_e12",
+            "optional_path": false,
+            "source_node_id": "lt_evidence",
+            "target_node_id": "lt_resolution"
+          },
+          {
+            "condition": "outcome recorded",
+            "edge_id": "lt_e13",
+            "optional_path": false,
+            "source_node_id": "lt_resolution",
+            "target_node_id": "lt_close"
+          }
+        ],
+        "documents": [
+          {
+            "condition": null,
+            "document_type": "lease_contract",
+            "label": "Lease contract",
+            "required_at_node_ids": [
+              "lt_form"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "termination_notice",
+            "label": "Termination notice",
+            "required_at_node_ids": [
+              "lt_form"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "proof_of_receipt",
+            "label": "Proof of receipt",
+            "required_at_node_ids": [
+              "lt_deadline"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "notice_period_evidence",
+            "label": "Notice period evidence",
+            "required_at_node_ids": [
+              "lt_deadline"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "stated_reason",
+            "label": "Stated termination reason",
+            "required_at_node_ids": [
+              "lt_abuse"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": "scenario flag 'family_home' is active",
+            "document_type": "spouse_notice_copy",
+            "label": "Separate spouse notice",
+            "required_at_node_ids": [
+              "lt_family"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'arrears' is active",
+            "document_type": "payment_deadline_letter",
+            "label": "Cure notice with termination warning",
+            "required_at_node_ids": [
+              "lt_arrears"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'arrears' is active",
+            "document_type": "rent_ledger_payment_evidence",
+            "label": "Rent ledger and payment evidence",
+            "required_at_node_ids": [
+              "lt_arrears"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'retaliation_screen' is active",
+            "document_type": "prior_rights_correspondence",
+            "label": "Prior rights correspondence",
+            "required_at_node_ids": [
+              "lt_abuse"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'extension_relevant' is active",
+            "document_type": "housing_search_log",
+            "label": "Housing search log",
+            "required_at_node_ids": [
+              "lt_extension"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": null,
+            "document_type": "landlord_correspondence",
+            "label": "Landlord correspondence",
+            "required_at_node_ids": [
+              "lt_evidence"
+            ],
+            "requirement_class": "optional"
+          }
+        ]
+      }
+    },
+    {
+      "dispute_type": "rent_increase_dispute",
+      "template_id": "policy-rent_increase_dispute-v1",
+      "title": "Generic rent-increase dispute workflow",
+      "content": "Preserve the challenge deadline first. Then verify receipt, official form, timing, current rent, stated reason, and calculation basis. Reconstruct reference-rate calculations or renovation costs only when that branch is active. Separate supported figures from unresolved inputs and request only missing evidence that can change validity, calculation, or resolution. Silence policy: a branch fact that the claim never mentions is presumed absent; the dispute's defining event (for a termination dispute, that a termination notice was received; for a rent dispute, that a rent-increase notification was received) is presumed to have occurred; a fact that the claim raises but leaves open is unresolved, and the documents that depend on it are held behind a question.",
+      "condition_catalog": [
+        "claim_received",
+        "reference_rate",
+        "renovation"
+      ],
+      "process_catalog": {
+        "nodes": [
+          {
+            "label": "Capture increase and receipt facts",
+            "node_id": "ri_intake",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Preserve the challenge deadline",
+            "node_id": "ri_deadline",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Check notice form and timing",
+            "node_id": "ri_form",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Classify the stated reason",
+            "node_id": "ri_reason",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Reconstruct reference-rate calculation",
+            "node_id": "ri_reference",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Assess renovation-cost evidence",
+            "node_id": "ri_renovation",
+            "responsibility": "external_specialist",
+            "terminal": false
+          },
+          {
+            "label": "Collect missing calculation evidence",
+            "node_id": "ri_evidence",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Separate supported facts from open issues",
+            "node_id": "ri_assessment",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Prepare challenge or negotiated resolution",
+            "node_id": "ri_resolution",
+            "responsibility": "claim_handler",
+            "terminal": false
+          },
+          {
+            "label": "Record outcome",
+            "node_id": "ri_close",
+            "responsibility": "claim_handler",
+            "terminal": true
+          }
+        ],
+        "transitions": [
+          {
+            "condition": "claim received",
+            "edge_id": "ri_e01",
+            "optional_path": false,
+            "source_node_id": "ri_intake",
+            "target_node_id": "ri_deadline"
+          },
+          {
+            "condition": "deadline position recorded",
+            "edge_id": "ri_e02",
+            "optional_path": false,
+            "source_node_id": "ri_deadline",
+            "target_node_id": "ri_form"
+          },
+          {
+            "condition": "formal review complete",
+            "edge_id": "ri_e03",
+            "optional_path": false,
+            "source_node_id": "ri_form",
+            "target_node_id": "ri_reason"
+          },
+          {
+            "condition": "reference-rate reason selected",
+            "edge_id": "ri_e04",
+            "optional_path": true,
+            "source_node_id": "ri_reason",
+            "target_node_id": "ri_reference"
+          },
+          {
+            "condition": "renovation reason selected",
+            "edge_id": "ri_e05",
+            "optional_path": true,
+            "source_node_id": "ri_reason",
+            "target_node_id": "ri_renovation"
+          },
+          {
+            "condition": "no specialist calculation branch",
+            "edge_id": "ri_e06",
+            "optional_path": true,
+            "source_node_id": "ri_reason",
+            "target_node_id": "ri_evidence"
+          },
+          {
+            "condition": "baseline reconstructed",
+            "edge_id": "ri_e07",
+            "optional_path": false,
+            "source_node_id": "ri_reference",
+            "target_node_id": "ri_evidence"
+          },
+          {
+            "condition": "cost evidence screened",
+            "edge_id": "ri_e08",
+            "optional_path": false,
+            "source_node_id": "ri_renovation",
+            "target_node_id": "ri_evidence"
+          },
+          {
+            "condition": "evidence collection closed",
+            "edge_id": "ri_e09",
+            "optional_path": false,
+            "source_node_id": "ri_evidence",
+            "target_node_id": "ri_assessment"
+          },
+          {
+            "condition": "assessment recorded",
+            "edge_id": "ri_e10",
+            "optional_path": false,
+            "source_node_id": "ri_assessment",
+            "target_node_id": "ri_resolution"
+          },
+          {
+            "condition": "resolution recorded",
+            "edge_id": "ri_e11",
+            "optional_path": false,
+            "source_node_id": "ri_resolution",
+            "target_node_id": "ri_close"
+          }
+        ],
+        "documents": [
+          {
+            "condition": null,
+            "document_type": "lease_contract",
+            "label": "Lease contract",
+            "required_at_node_ids": [
+              "ri_form"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "rent_increase_notice",
+            "label": "Rent increase notice",
+            "required_at_node_ids": [
+              "ri_form"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "proof_of_receipt",
+            "label": "Proof of receipt",
+            "required_at_node_ids": [
+              "ri_deadline"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "current_rent_evidence",
+            "label": "Current rent evidence",
+            "required_at_node_ids": [
+              "ri_evidence"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "prior_rent_adjustment",
+            "label": "Prior rent adjustment",
+            "required_at_node_ids": [
+              "ri_evidence"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": null,
+            "document_type": "stated_calculation",
+            "label": "Stated reasons and calculation",
+            "required_at_node_ids": [
+              "ri_reason"
+            ],
+            "requirement_class": "mandatory"
+          },
+          {
+            "condition": "scenario flag 'reference_rate' is active",
+            "document_type": "reference_rate_basis",
+            "label": "Reference-rate basis",
+            "required_at_node_ids": [
+              "ri_reference"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": "scenario flag 'renovation' is active",
+            "document_type": "renovation_cost_breakdown",
+            "label": "Renovation cost breakdown",
+            "required_at_node_ids": [
+              "ri_renovation"
+            ],
+            "requirement_class": "conditional"
+          },
+          {
+            "condition": null,
+            "document_type": "landlord_correspondence",
+            "label": "Landlord correspondence",
+            "required_at_node_ids": [
+              "ri_assessment"
+            ],
+            "requirement_class": "optional"
+          }
+        ]
+      }
+    }
+  ]
+}

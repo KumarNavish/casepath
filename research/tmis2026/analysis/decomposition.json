@@ -1,0 +1,859 @@
+{
+ "label": "POST HOC: not part of ANALYSIS_PLAN_STUDY3.md",
+ "method": "POST HOC. Error decomposition of the finished Study 3 runs (data fresh2, label confirm), every model x regime cell.\nNo model calls. Not part of ANALYSIS_PLAN_STUDY3.md.\n\n    python3 decomposition.py [--tenancy-reference module.path:function]   # writes decomposition.json and .md\n\nProduct designs (stored runs, the product's evaluator at 6a72159c on the stored facts and findings):\n  casepath                     gpt-6-luna, full product, 3 runs\n  casepath_frontier_checklist  gpt-6.1-terra, checklist only, 1 run\n\nMethod (path method). For one claim-run (tenancy) or one changed-fact pair-run (theft), the stored state of the run is\nreplaced, stage by stage in a fixed order, by its designed value; the error that disappears at a stage is that stage's\npart; what remains when every stage carries its designed value is the rule error. The parts add up exactly to the error\nrecomputed from the stored facts and findings; 'product steps' is the stored error minus that recomputed error (needs\nthe product's agents added, and the like). Order: routing, document judgment, reading, hold (theft: reading, hold).\nInteraction remainder = (recomputed - rule error) - sum of each stage's effect when it alone is replaced; it says how much\nthe attribution depends on the order (0 = additive).\n\nFamilies:\n- rule error: errors left with every stage at its designed value (theft: the converted rules executed on designed facts;\n  tenancy: zero by construction, because the reference comes from the engine the workflows were converted from; a\n  non-zero value would be a mismatch between that engine and the product's evaluator).\n- routing (tenancy): the claim handed over, or routed to another workflow.\n- document judgment (tenancy): a supplied document judged present though insufficient, or judged absent / unusable\n  though sufficient (designed finding: present if the reference marks the attachment sufficient, unusable if not).\n- reading: a fact admitted with a value other than its designed value (tenancy: including a denied defining event\n  admitted as received, and a stated fact presumed with the wrong value); theft also: the changed fact not admitted.\n- hold: a fact left without a value although it has a designed value (a stated fact left unresolved; an unstated fact\n  raised instead of presumed), or a fact given a value although it is open by design (an open fact given a value or\n  presumed).\nDesigned values: tenancy, the reference's policy verdicts under the silence policy (true / false / unresolved) and the\nreference family; theft, the mapping of analysis/theft_diagnosis.py (primary), which is post hoc and partly uncertain.\n",
+ "tenancy_reference": "fresh2 reference (the engine the workflows were converted from)",
+ "tenancy_product": {
+  "casepath": {
+   "strict_unsafe": {
+    "all": {
+     "claim_runs": 288,
+     "measured": 0.3125,
+     "rule": 0.0,
+     "routing": 0.04513888888888889,
+     "document": 0.0763888888888889,
+     "reading": 0.16666666666666666,
+     "hold": 0.024305555555555556,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "ordinary": {
+     "claim_runs": 189,
+     "measured": 0.20634920634920634,
+     "rule": 0.0,
+     "routing": 0.06878306878306878,
+     "document": 0.1164021164021164,
+     "reading": 0.021164021164021163,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "denied_event": {
+     "claim_runs": 72,
+     "measured": 0.6111111111111112,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.6111111111111112,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "open_event": {
+     "claim_runs": 27,
+     "measured": 0.25925925925925924,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.0,
+     "hold": 0.25925925925925924,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    }
+   },
+   "all_dev": {
+    "all": {
+     "claim_runs": 288,
+     "measured": 0.7291666666666666,
+     "rule": 0.0,
+     "routing": 0.04513888888888889,
+     "document": 0.0763888888888889,
+     "reading": 0.16666666666666666,
+     "hold": 0.4409722222222222,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "ordinary": {
+     "claim_runs": 189,
+     "measured": 0.3968253968253968,
+     "rule": 0.0,
+     "routing": 0.06878306878306878,
+     "document": 0.1164021164021164,
+     "reading": 0.021164021164021163,
+     "hold": 0.19047619047619047,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "denied_event": {
+     "claim_runs": 72,
+     "measured": 1.7777777777777777,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.6111111111111112,
+     "hold": 1.1666666666666667,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "open_event": {
+     "claim_runs": 27,
+     "measured": 0.25925925925925924,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.0,
+     "hold": 0.25925925925925924,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    }
+   },
+   "kinds": {
+    "all": {
+     "unnecessary": 0.2048611111111111,
+     "missed": 0.03819444444444445,
+     "handed": 0.04513888888888889,
+     "premature": 0.024305555555555556,
+     "silent_skip": 0.0,
+     "held_req": 0.09027777777777778,
+     "spurious_hold": 0.3263888888888889
+    },
+    "ordinary": {
+     "unnecessary": 0.07936507936507936,
+     "missed": 0.0582010582010582,
+     "handed": 0.06878306878306878,
+     "premature": 0.0,
+     "silent_skip": 0.0,
+     "held_req": 0.13756613756613756,
+     "spurious_hold": 0.05291005291005291
+    },
+    "denied_event": {
+     "unnecessary": 0.6111111111111112,
+     "missed": 0.0,
+     "handed": 0.0,
+     "premature": 0.0,
+     "silent_skip": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 1.1666666666666667
+    },
+    "open_event": {
+     "unnecessary": 0.0,
+     "missed": 0.0,
+     "handed": 0.0,
+     "premature": 0.25925925925925924,
+     "silent_skip": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.0
+    }
+   }
+  },
+  "casepath_frontier_checklist": {
+   "strict_unsafe": {
+    "all": {
+     "claim_runs": 96,
+     "measured": 0.3020833333333333,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.08333333333333333,
+     "reading": 0.10416666666666667,
+     "hold": 0.11458333333333333,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "ordinary": {
+     "claim_runs": 63,
+     "measured": 0.25396825396825395,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.12698412698412698,
+     "reading": 0.047619047619047616,
+     "hold": 0.07936507936507936,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "denied_event": {
+     "claim_runs": 24,
+     "measured": 0.2916666666666667,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.2916666666666667,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "open_event": {
+     "claim_runs": 9,
+     "measured": 0.6666666666666666,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.0,
+     "hold": 0.6666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    }
+   },
+   "all_dev": {
+    "all": {
+     "claim_runs": 96,
+     "measured": 0.6979166666666666,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.08333333333333333,
+     "reading": 0.10416666666666667,
+     "hold": 0.5104166666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "ordinary": {
+     "claim_runs": 63,
+     "measured": 0.2698412698412698,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.12698412698412698,
+     "reading": 0.047619047619047616,
+     "hold": 0.09523809523809523,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "denied_event": {
+     "claim_runs": 24,
+     "measured": 1.7916666666666667,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.2916666666666667,
+     "hold": 1.5,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    },
+    "open_event": {
+     "claim_runs": 9,
+     "measured": 0.7777777777777778,
+     "rule": 0.0,
+     "routing": 0.0,
+     "document": 0.0,
+     "reading": 0.0,
+     "hold": 0.7777777777777778,
+     "product_steps": 0.0,
+     "interaction": 0.0
+    }
+   },
+   "kinds": {
+    "all": {
+     "unnecessary": 0.09375,
+     "missed": 0.09375,
+     "handed": 0.0,
+     "premature": 0.10416666666666667,
+     "silent_skip": 0.010416666666666666,
+     "held_req": 0.010416666666666666,
+     "spurious_hold": 0.3854166666666667
+    },
+    "ordinary": {
+     "unnecessary": 0.031746031746031744,
+     "missed": 0.14285714285714285,
+     "handed": 0.0,
+     "premature": 0.06349206349206349,
+     "silent_skip": 0.015873015873015872,
+     "held_req": 0.015873015873015872,
+     "spurious_hold": 0.0
+    },
+    "denied_event": {
+     "unnecessary": 0.2916666666666667,
+     "missed": 0.0,
+     "handed": 0.0,
+     "premature": 0.0,
+     "silent_skip": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 1.5
+    },
+    "open_event": {
+     "unnecessary": 0.0,
+     "missed": 0.0,
+     "handed": 0.0,
+     "premature": 0.6666666666666666,
+     "silent_skip": 0.0,
+     "held_req": 0.0,
+     "spurious_hold": 0.1111111111111111
+    }
+   }
+  }
+ },
+ "tenancy_single": {
+  "ric": {
+   "all": {
+    "claim_runs": 288,
+    "unnecessary": 1.4826388888888888,
+    "missed": 0.19444444444444445,
+    "handed": 0.0,
+    "premature": 0.4444444444444444,
+    "silent_skip": 0.017361111111111112,
+    "held_req": 0.024305555555555556,
+    "spurious_hold": 0.16666666666666666,
+    "strict_unsafe": 2.138888888888889,
+    "all_dev": 2.329861111111111
+   },
+   "ordinary": {
+    "claim_runs": 189,
+    "unnecessary": 0.09523809523809523,
+    "missed": 0.2962962962962963,
+    "handed": 0.0,
+    "premature": 0.037037037037037035,
+    "silent_skip": 0.005291005291005291,
+    "held_req": 0.037037037037037035,
+    "spurious_hold": 0.042328042328042326,
+    "strict_unsafe": 0.43386243386243384,
+    "all_dev": 0.5132275132275133
+   },
+   "denied_event": {
+    "claim_runs": 72,
+    "unnecessary": 5.680555555555555,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.5555555555555556,
+    "strict_unsafe": 5.680555555555555,
+    "all_dev": 6.236111111111111
+   },
+   "open_event": {
+    "claim_runs": 27,
+    "unnecessary": 0.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 4.481481481481482,
+    "silent_skip": 0.14814814814814814,
+    "held_req": 0.0,
+    "spurious_hold": 0.0,
+    "strict_unsafe": 4.62962962962963,
+    "all_dev": 4.62962962962963
+   }
+  },
+  "ric_frontier": {
+   "all": {
+    "claim_runs": 288,
+    "unnecessary": 1.1527777777777777,
+    "missed": 0.1284722222222222,
+    "handed": 0.0,
+    "premature": 0.5833333333333334,
+    "silent_skip": 0.0,
+    "held_req": 0.03819444444444445,
+    "spurious_hold": 0.1840277777777778,
+    "strict_unsafe": 1.8645833333333333,
+    "all_dev": 2.0868055555555554
+   },
+   "ordinary": {
+    "claim_runs": 189,
+    "unnecessary": 0.06878306878306878,
+    "missed": 0.19576719576719576,
+    "handed": 0.0,
+    "premature": 0.021164021164021163,
+    "silent_skip": 0.0,
+    "held_req": 0.0582010582010582,
+    "spurious_hold": 0.037037037037037035,
+    "strict_unsafe": 0.2857142857142857,
+    "all_dev": 0.38095238095238093
+   },
+   "denied_event": {
+    "claim_runs": 72,
+    "unnecessary": 4.430555555555555,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.625,
+    "strict_unsafe": 4.430555555555555,
+    "all_dev": 5.055555555555555
+   },
+   "open_event": {
+    "claim_runs": 27,
+    "unnecessary": 0.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 6.074074074074074,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.037037037037037035,
+    "strict_unsafe": 6.074074074074074,
+    "all_dev": 6.111111111111111
+   }
+  },
+  "self_consistency": {
+   "all": {
+    "claim_runs": 288,
+    "unnecessary": 1.5173611111111112,
+    "missed": 0.1840277777777778,
+    "handed": 0.0,
+    "premature": 0.3993055555555556,
+    "silent_skip": 0.0,
+    "held_req": 0.03125,
+    "spurious_hold": 0.18055555555555555,
+    "strict_unsafe": 2.1006944444444446,
+    "all_dev": 2.3125
+   },
+   "ordinary": {
+    "claim_runs": 189,
+    "unnecessary": 0.0582010582010582,
+    "missed": 0.2804232804232804,
+    "handed": 0.0,
+    "premature": 0.042328042328042326,
+    "silent_skip": 0.0,
+    "held_req": 0.047619047619047616,
+    "spurious_hold": 0.021164021164021163,
+    "strict_unsafe": 0.38095238095238093,
+    "all_dev": 0.4497354497354497
+   },
+   "denied_event": {
+    "claim_runs": 72,
+    "unnecessary": 5.916666666666667,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.6666666666666666,
+    "strict_unsafe": 5.916666666666667,
+    "all_dev": 6.583333333333333
+   },
+   "open_event": {
+    "claim_runs": 27,
+    "unnecessary": 0.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 3.962962962962963,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.0,
+    "strict_unsafe": 3.962962962962963,
+    "all_dev": 3.962962962962963
+   }
+  },
+  "model_executes_rules": {
+   "all": {
+    "claim_runs": 288,
+    "unnecessary": 0.5277777777777778,
+    "missed": 0.1736111111111111,
+    "handed": 0.0,
+    "premature": 0.12152777777777778,
+    "silent_skip": 0.006944444444444444,
+    "held_req": 0.08333333333333333,
+    "spurious_hold": 0.5798611111111112,
+    "strict_unsafe": 0.8298611111111112,
+    "all_dev": 1.4930555555555556
+   },
+   "ordinary": {
+    "claim_runs": 189,
+    "unnecessary": 0.06349206349206349,
+    "missed": 0.26455026455026454,
+    "handed": 0.0,
+    "premature": 0.047619047619047616,
+    "silent_skip": 0.0,
+    "held_req": 0.12698412698412698,
+    "spurious_hold": 0.07407407407407407,
+    "strict_unsafe": 0.37566137566137564,
+    "all_dev": 0.5767195767195767
+   },
+   "denied_event": {
+    "claim_runs": 72,
+    "unnecessary": 1.9444444444444444,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 2.125,
+    "strict_unsafe": 1.9444444444444444,
+    "all_dev": 4.069444444444445
+   },
+   "open_event": {
+    "claim_runs": 27,
+    "unnecessary": 0.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.9629629629629629,
+    "silent_skip": 0.07407407407407407,
+    "held_req": 0.0,
+    "spurious_hold": 0.0,
+    "strict_unsafe": 1.037037037037037,
+    "all_dev": 1.037037037037037
+   }
+  },
+  "react": {
+   "all": {
+    "claim_runs": 288,
+    "unnecessary": 0.7777777777777778,
+    "missed": 0.6527777777777778,
+    "handed": 0.0,
+    "premature": 0.3263888888888889,
+    "silent_skip": 0.0798611111111111,
+    "held_req": 0.0798611111111111,
+    "spurious_hold": 0.08680555555555555,
+    "strict_unsafe": 1.8368055555555556,
+    "all_dev": 2.0034722222222223
+   },
+   "ordinary": {
+    "claim_runs": 189,
+    "unnecessary": 0.042328042328042326,
+    "missed": 0.9947089947089947,
+    "handed": 0.0,
+    "premature": 0.010582010582010581,
+    "silent_skip": 0.05291005291005291,
+    "held_req": 0.12169312169312169,
+    "spurious_hold": 0.042328042328042326,
+    "strict_unsafe": 1.1005291005291005,
+    "all_dev": 1.2645502645502646
+   },
+   "denied_event": {
+    "claim_runs": 72,
+    "unnecessary": 3.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 0.0,
+    "silent_skip": 0.0,
+    "held_req": 0.0,
+    "spurious_hold": 0.2361111111111111,
+    "strict_unsafe": 3.0,
+    "all_dev": 3.236111111111111
+   },
+   "open_event": {
+    "claim_runs": 27,
+    "unnecessary": 0.0,
+    "missed": 0.0,
+    "handed": 0.0,
+    "premature": 3.4074074074074074,
+    "silent_skip": 0.48148148148148145,
+    "held_req": 0.0,
+    "spurious_hold": 0.0,
+    "strict_unsafe": 3.888888888888889,
+    "all_dev": 3.888888888888889
+   }
+  }
+ },
+ "theft_product": {
+  "casepath": {
+   "all": {
+    "pair_runs": 216,
+    "measured": 0.5833333333333334,
+    "rule": 0.3333333333333333,
+    "reading": 0.08796296296296297,
+    "hold": 0.1574074074074074,
+    "product_steps": 0.004629629629629629,
+    "interaction": 0.0,
+    "reading_shared": 0.0,
+    "reading_base": 0.0,
+    "reading_variant": 0.08796296296296297,
+    "hold_shared": 0.0,
+    "hold_base": 0.046296296296296294,
+    "hold_variant": 0.1111111111111111
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": {
+     "measured": 0.875,
+     "rule": 0.0,
+     "reading": 0.7083333333333334,
+     "hold": 0.16666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.7083333333333334,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.16666666666666666
+    },
+    "PR_bicycle_claimed": {
+     "measured": 0.16666666666666666,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.16666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.16666666666666666
+    },
+    "PR_sim_card_stolen": {
+     "measured": 1.1666666666666667,
+     "rule": 1.0,
+     "reading": 0.0,
+     "hold": 0.16666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.08333333333333333,
+     "hold_variant": 0.08333333333333333
+    },
+    "PR_third_party_causer": {
+     "measured": 1.7916666666666667,
+     "rule": 1.0,
+     "reading": 0.4583333333333333,
+     "hold": 0.3333333333333333,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.4583333333333333,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.3333333333333333
+    },
+    "PR_expert_procedure_requested": {
+     "measured": 0.7916666666666666,
+     "rule": 1.0,
+     "reading": -0.375,
+     "hold": 0.16666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": -0.375,
+     "hold_shared": 0.0,
+     "hold_base": 0.08333333333333333,
+     "hold_variant": 0.08333333333333333
+    },
+    "PR_repair_over_500": {
+     "measured": 0.08333333333333333,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.08333333333333333,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.08333333333333333,
+     "hold_variant": 0.0
+    },
+    "PR_nachfrist_set": {
+     "measured": 0.16666666666666666,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.16666666666666666,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.08333333333333333,
+     "hold_variant": 0.08333333333333333
+    },
+    "PR_goods_recovered": {
+     "measured": 0.125,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.08333333333333333,
+     "product_steps": 0.041666666666666664,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.08333333333333333,
+     "hold_variant": 0.0
+    },
+    "PR_declined": {
+     "measured": 0.08333333333333333,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.08333333333333333,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.08333333333333333
+    }
+   }
+  },
+  "casepath_frontier_checklist": {
+   "all": {
+    "pair_runs": 72,
+    "measured": 0.8333333333333334,
+    "rule": 0.3333333333333333,
+    "reading": 0.25,
+    "hold": 0.25,
+    "product_steps": 0.0,
+    "interaction": 0.0,
+    "reading_shared": 0.0,
+    "reading_base": 0.1527777777777778,
+    "reading_variant": 0.09722222222222222,
+    "hold_shared": 0.0,
+    "hold_base": 0.2222222222222222,
+    "hold_variant": 0.027777777777777776
+   },
+   "by_fact": {
+    "PR_scheduled_valuable_1000": {
+     "measured": 0.875,
+     "rule": 0.0,
+     "reading": 0.875,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.125,
+     "reading_variant": 0.75,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.0
+    },
+    "PR_bicycle_claimed": {
+     "measured": 0.625,
+     "rule": 0.0,
+     "reading": 0.125,
+     "hold": 0.5,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.125,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.25,
+     "hold_variant": 0.25
+    },
+    "PR_sim_card_stolen": {
+     "measured": 1.25,
+     "rule": 1.0,
+     "reading": 0.0,
+     "hold": 0.25,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.25,
+     "hold_variant": 0.0
+    },
+    "PR_third_party_causer": {
+     "measured": 2.375,
+     "rule": 1.0,
+     "reading": 1.125,
+     "hold": 0.25,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 1.0,
+     "reading_variant": 0.125,
+     "hold_shared": 0.0,
+     "hold_base": 0.25,
+     "hold_variant": 0.0
+    },
+    "PR_expert_procedure_requested": {
+     "measured": 1.25,
+     "rule": 1.0,
+     "reading": 0.0,
+     "hold": 0.25,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.25,
+     "hold_variant": 0.0
+    },
+    "PR_repair_over_500": {
+     "measured": 0.875,
+     "rule": 0.0,
+     "reading": 0.125,
+     "hold": 0.75,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.125,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.75,
+     "hold_variant": 0.0
+    },
+    "PR_nachfrist_set": {
+     "measured": 0.0,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.0
+    },
+    "PR_goods_recovered": {
+     "measured": 0.25,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.25,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.25,
+     "hold_variant": 0.0
+    },
+    "PR_declined": {
+     "measured": 0.0,
+     "rule": 0.0,
+     "reading": 0.0,
+     "hold": 0.0,
+     "product_steps": 0.0,
+     "interaction": 0.0,
+     "reading_shared": 0.0,
+     "reading_base": 0.0,
+     "reading_variant": 0.0,
+     "hold_shared": 0.0,
+     "hold_base": 0.0,
+     "hold_variant": 0.0
+    }
+   }
+  }
+ },
+ "theft_single": {
+  "ric": {
+   "pair_runs": 216,
+   "errors": 1.7361111111111112,
+   "same_as_rule_floor": 0.09722222222222222,
+   "other": 1.6388888888888888
+  },
+  "ric_frontier": {
+   "pair_runs": 216,
+   "errors": 0.9490740740740741,
+   "same_as_rule_floor": 0.16666666666666666,
+   "other": 0.7824074074074074
+  },
+  "ric_original": {
+   "pair_runs": 216,
+   "errors": 1.4675925925925926,
+   "same_as_rule_floor": 0.125,
+   "other": 1.3425925925925926
+  },
+  "ric_original_frontier": {
+   "pair_runs": 216,
+   "errors": 0.6712962962962963,
+   "same_as_rule_floor": 0.3194444444444444,
+   "other": 0.35185185185185186
+  },
+  "self_consistency": {
+   "pair_runs": 216,
+   "errors": 1.2083333333333333,
+   "same_as_rule_floor": 0.1111111111111111,
+   "other": 1.0972222222222223
+  },
+  "model_executes_rules": {
+   "pair_runs": 216,
+   "errors": 1.9444444444444444,
+   "same_as_rule_floor": 0.18518518518518517,
+   "other": 1.7592592592592593
+  },
+  "react": {
+   "pair_runs": 216,
+   "errors": 1.6851851851851851,
+   "same_as_rule_floor": 0.25925925925925924,
+   "other": 1.4259259259259258
+  }
+ }
+}
