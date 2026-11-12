@@ -611,6 +611,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
             if nudged:
                 raise TeamError("no_report", f"The {spec['title'].lower()} stopped without reporting.")
             nudged = True
+            work.emit(agent, "turn.no_call", text_chars=len(turn.text or ""))  # a turn of plain text: output spent, nothing done
             conversation.append({"role": "user", "content": "Continue with your tools, then call report."})
             continue
         report = None
@@ -623,6 +624,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
                     validate_result(call["arguments"], definition["parameters"])
                 except ValueError as error:
                     result = {"error": f"arguments do not match the tool: {error}"}
+                    work.emit(agent, "tool.invalid", tool=call["name"], error=str(error)[:300])  # a turn spent on a malformed call
                 else:
                     if call["name"] == "report":
                         report = call["arguments"]
