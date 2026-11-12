@@ -1,0 +1,67 @@
+{
+  "attachments": [],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "Ordinary notice with a notice period, however short, or release from work while a notice period runs.",
+      "question": "Did the employer end the employment relationship with immediate effect, without a notice period?"
+    }
+  ],
+  "file_id": "dis_05af0871cd70",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent (art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
+      "question": "Have more than 180 days passed since the employment relationship ended?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal with immediate effect (art. 337, a separate type).",
+      "question": "Did the employer give the employee notice of termination of the employment relationship?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "The employee's last working day where they were released from work while the notice period was still running; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if the file raises either, the fact is open.",
+      "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "A demand letter to the employer; a claim made pending only after the 180 days.",
+      "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here); a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here).",
+      "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?"
+    },
+    {
+      "label": "Q6",
+      "not_this": "Reasons the employer gave without being asked, or a request made only orally to a colleague rather than to the employer.",
+      "question": "Did the employee ask the employer to state the reasons for the notice in writing?"
+    },
+    {
+      "label": "Q7",
+      "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
+      "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities."
+    },
+    {
+      "label": "Q8",
+      "not_this": "Talks about continuing that ended without agreement; an agreement only about a payment or about the end date.",
+      "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?"
+    },
+    {
+      "label": "Q9",
+      "not_this": "An oral protest; an objection addressed to someone other than the employer; a written objection lodged only after the notice period had ended.",
+      "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?"
+    }
+  ],
+  "routing": {
+    "question": "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), or against which the employee objects or claims compensation (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).",
+    "values": [
+      "protected_period_notice",
+      "wrongful_termination",
+      "immediate_dismissal"
+    ]
+  },
+  "text": "Hello,\n\nI work part-time in the office of Steinbruch Trading Ltd in Kreuzlingen and I'm writing because I honestly don't know where I stand any more.\n\nOn 12 March 2026 my manager, Isla Schmid, called me into her room and told me the company was 'reorganising' the admin side. She said my hours would probably go down and that I should 'think about my future'. I earn CHF 2,120 a month as it is, and if my hours are cut I'd be losing around CHF 420 a month, which I really can't manage with my rent.\n\nSince that talk a colleague, Ben Weber, told me that Ms Schmid said in a team meeting that I 'won't be around much longer'. When I asked her about it she just smiled and said we would talk another time.\n\nI want to be clear about one thing: nobody has given me notice. There has been no letter, and Ms Schmid has never said to my face that I'm being let go either. It's all hints and rumours.\n\nI've been with the company since August 2022 and my reviews have always been good. It feels like they are trying to push me into leaving by myself so they don't have to do anything. Is that allowed? Can they just cut my hours because they feel like it? I'd like to know what I can do and whether it makes sense to talk to someone from your side.\n\nThank you for reading this.\n\nAlice Widmer\nWiesenstrasse 2, Kreuzlingen"
+}

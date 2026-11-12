@@ -1,0 +1,52 @@
+{
+  "attachments": [],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "A defect the claim itself attributes wholly to the tenant, or says he must remedy at his own expense, is no. A cause the claim calls shared or disputed is open, not no; a landlord's allegation that the tenant caused it, which the claim disputes, does not make this no.",
+      "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant alone caused the defect or must remedy it at his own expense?"
+    },
+    {
+      "label": "E2",
+      "not_this": "A landlord's plan to raise the rent that has not been announced, demanded or charged; the initial rent agreed for a new lease; new accessory charges or reduced services without a higher rent.",
+      "question": "Does the claim state that the landlord has announced, demanded or charged a higher rent for the dwelling, by a notice, a letter, an invoice or otherwise (whether or not on an official form)?"
+    }
+  ],
+  "file_id": "ten_c1e4987669e8",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "Arrears that the claim mentions while the notice is given for another reason (for example the landlord's own use); a dispute about a rent increase.",
+      "question": "Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "Claims the tenant asserted that the claim does not connect with the notice; a notice the claim attributes to another reason, such as the landlord's own use.",
+      "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities."
+    },
+    {
+      "label": "Q3",
+      "not_this": "A tenant who only contests the validity of the notice and does not ask for more time; a request for more time that the claim does not base on hardship.",
+      "question": "Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "A tenant living with a partner who is neither spouse nor registered partner; spouses who do not use the dwelling as their family home.",
+      "question": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "No: only a file stating that no notice of termination has been given at all (also a lease of limited duration that simply ends on its agreed date, a termination only announced or threatened, a notice given by the tenant). A notice the landlord says was sent and the tenant says never reached him is open, not no.",
+      "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?"
+    }
+  ],
+  "routing": {
+    "question": "Which tenancy dispute does the claim concern: a defect of the dwelling or a disturbance of its agreed use that the tenant did not cause (for example mould, damp, or heating that fails), a termination of the lease by the landlord, or a rent increase? A rent increase that the landlord accompanied with a notice of termination is a rent increase dispute: the rent-increase rules examine that notice (art. 269d para. 2 let. c).",
+    "values": [
+      "defect_mold_heating",
+      "lease_termination_dispute",
+      "rent_increase_dispute"
+    ]
+  },
+  "text": "Hello,\n\nA quick question about timing, if you don't mind.\n\nI rent a studio from Sonnbühl Management Ltd at Feldstrasse 58 in Fribourg, CHF 1120 a month, and have done since August 2022. Money has never been an issue between us. I've always paid on time, Sonnbühl has never sent me a reminder or set me any deadline to pay arrears, and there's no talk of anything like that now.\n\nOn 3 September 2026 Ms Alice Steiner from Sonnbühl rang me and mentioned, almost in passing, that the owner is thinking of selling the building and that the tenants \"might be getting letters\" at some point. That's all. I'm not trying to hang on to the flat or get more time there. Quite the opposite: my girlfriend Eva Lehmann and I have found a bigger place in Marly and would like to move in December.\n\nSo far, though, Sonnbühl has not terminated my lease. I haven't received any notice, no letter, no form, nothing by e-mail; there was only that phone call, and Ms Steiner made clear nothing had been decided.\n\nMy question is practical. If I give notice myself now, I'd be stuck paying until the next official date in my lease, which is the end of March. Would it be smarter to wait and see whether Sonnbühl terminates first, or to look for a replacement tenant so I can leave earlier? I don't want to end up paying rent on two flats for three months.\n\nThanks for your help,\nPeter Schmid"
+}

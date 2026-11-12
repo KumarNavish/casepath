@@ -1,0 +1,52 @@
+{
+  "attachments": [],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "A defect the claim itself attributes wholly to the tenant, or says he must remedy at his own expense, is no. A cause the claim calls shared or disputed is open, not no; a landlord's allegation that the tenant caused it, which the claim disputes, does not make this no.",
+      "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant alone caused the defect or must remedy it at his own expense?"
+    },
+    {
+      "label": "E2",
+      "not_this": "No: only a file stating that no notice of termination has been given at all (also a lease of limited duration that simply ends on its agreed date, a termination only announced or threatened, a notice given by the tenant). A notice the landlord says was sent and the tenant says never reached him is open, not no.",
+      "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?"
+    }
+  ],
+  "file_id": "ten_429b182434cf",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "An increase under an index clause; an increase the lease does not fix in advance.",
+      "question": "Does the claim state that the increase is a step fixed in advance in the lease, by which the rent rises periodically by fixed amounts (graduated rent)?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "A threat of termination without a notice of termination (it shows on the increase notice or its covering letter, which is requested anyway); a notice of termination given separately at another time.",
+      "question": "Does the claim state that, together with the rent increase, the landlord gave notice of termination?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "An increase justified only by rents customary in the locality (art. 269a let. a) or by inflation on the risk capital (art. 269a let. e).",
+      "question": "Does the increase notice give, as its reason, higher costs for the landlord (for example higher mortgage interest or operating costs) or additional services or works by the landlord (for example a renovation)?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "An increase the landlord justifies by general inflation or by cost increases without an index clause in the lease.",
+      "question": "Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the Swiss consumer price index)?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "A landlord's plan to raise the rent that has not been announced, demanded or charged; the initial rent agreed for a new lease; new accessory charges or reduced services without a higher rent.",
+      "question": "Does the claim state that the landlord has announced, demanded or charged a higher rent for the dwelling, by a notice, a letter, an invoice or otherwise (whether or not on an official form)?"
+    }
+  ],
+  "routing": {
+    "question": "Which tenancy dispute does the claim concern: a defect of the dwelling or a disturbance of its agreed use that the tenant did not cause (for example mould, damp, or heating that fails), a termination of the lease by the landlord, or a rent increase? A rent increase that the landlord accompanied with a notice of termination is a rent increase dispute: the rent-increase rules examine that notice (art. 269d para. 2 let. c).",
+    "values": [
+      "defect_mold_heating",
+      "lease_termination_dispute",
+      "rent_increase_dispute"
+    ]
+  },
+  "text": "Good afternoon,\n\nI moved into a 3.5-room flat at Mühleweg 11 in Neuchâtel in January 2022. The landlord is Rebhalde Holdings Ltd and my contact there is Ms Sophie Frei. I pay CHF 2860 a month, which has always felt steep.\n\nOn 23 January 2026 I got talking to my neighbour Tom Näf, who has the same layout two floors down, and found out he pays several hundred francs less than I do. That really got to me. I want to understand whether I can ask Rebhalde to lower my rent, and how I would go about it.\n\nJust so there is no confusion: my rent has never gone up. In four years Rebhalde has not sent me any letter or form saying the rent would rise, nobody has asked me for more money, and every bill and standing order is still for exactly CHF 2860. My problem is that I think I have been paying too much from the start, not that they want more.\n\nI'd be grateful for a short reply on whether it is worth pursuing.\n\nKind regards,\nAlice Huber"
+}
