@@ -1434,6 +1434,11 @@ function bindOverview() {
   const copy = $("#copy-draft");
   if (copy) copy.addEventListener("click", () => {
     const text = $("pre[data-item='letter:0']").innerText, draft = draftFor(S.data.evaluation);
+    const gaps = text.match(/\[bitte ergänzen: [^\]]*\]/g);
+    if (gaps) {  // a part only the handler can write is still open: the letter is not copied until it is filled or removed
+      S.message = T(`Please fill in first: ${gaps.join(", ")}`, `Bitte zuerst ergänzen: ${gaps.join(", ")}`); S.messageOk = false; renderCase();
+      return;
+    }
     if (navigator.clipboard) navigator.clipboard.writeText(text);
     S.letterText = text;
     caseEvent("letter.copied", null, { edited: text.trim() !== draft.trim(), change_ratio: Math.round(100 * Math.abs(text.length - draft.length) / Math.max(1, draft.length)) / 100 });

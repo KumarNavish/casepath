@@ -21,6 +21,17 @@ def _day(value):
     return d.strftime("%d.%m.%Y") if d else None
 
 
+GAP = "[bitte ergänzen: "
+
+
+def gap(what):
+    return f"{GAP}{what}]"
+
+
+def has_gap(text):
+    return GAP in (text or "")
+
+
 def line_state(events):
     """The handler's last word on each letter line: True ticked, False unticked."""
     state = {}
@@ -100,9 +111,10 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "hinweise": "\n".join(["Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:"]
                               + [f"{i['value']}" + (f" ({i['legal_basis']})" if i.get("legal_basis") else "") for i in hints]) if hints else "",
         "frist": _day((follow_up or {}).get("due")) or "…",
-        "anliegen": summary or "Ihr Anliegen betreffend den Mangel an der Mietsache.",
-        "empfehlung": "uns die noch fehlenden Unterlagen zuzustellen, damit wir das weitere Vorgehen festlegen können." if missing
-                      else "das weitere Vorgehen mit uns zu besprechen.",
+        # What only the reading or the handler can say: the stored text when there is one, otherwise a marked gap that
+        # blocks copying the letter until it is filled or removed; never an invented sentence.
+        "anliegen": summary or gap("was in diesem Fall vorliegt"),
+        "empfehlung": gap("die Empfehlung an die Kundschaft"),
         "anlass": "das Telefongespräch" if (facts.get("anruf_offen") or {}).get("value") is True else "Ihre Nachricht",
         "erwartet": ("die noch fehlenden Unterlagen: " + ", ".join(label(i) for i in docs)) if docs else "Ihre Rückmeldung",
         "letzter_kontakt": max(sent).strftime("%d.%m.%Y") if sent else "…",

@@ -39,6 +39,7 @@ class LetterTests(unittest.TestCase):
                 continue
             self.assertNotIn("{", text, kind)
             self.assertNotIn("…", text, kind)
+            self.assertNotIn("\n\n\n", text, kind)  # no empty line where a part was
             self.assertIn("Unsere Referenz: 1234.5678.9012", text)
             self.assertIn("Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens.", text)
             for part in form["parts"]:
@@ -74,3 +75,18 @@ class LetterTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GapTests(unittest.TestCase):
+    def test_what_only_the_reading_or_the_handler_can_say_is_a_marked_gap_never_an_invented_sentence(self):
+        state, items = prepared()
+        with_summary = letters.context(CASE, items, [], {"due": "2024-04-12"})
+        bare = letters.context(CASE, [i for i in items if i["kind"] != "summary"], [], {"due": "2024-04-12"})
+        a5, _ = letters.render("A5", WF["forms"], with_summary)
+        self.assertIn("In Ihrem Fall: Schimmel im Badezimmer seit dem Winter.", a5)  # the stored request
+        self.assertIn("[bitte ergänzen: die Empfehlung an die Kundschaft]", a5)  # the recommendation is the handler's
+        self.assertTrue(letters.has_gap(a5))
+        a8, _ = letters.render("A8", WF["forms"], bare)
+        self.assertIn("[bitte ergänzen: was in diesem Fall vorliegt]", a8)  # no stored text: a gap, not a made-up paragraph
+        for kind in ("A1", "A4", "A6", "A7", "A10", "A12"):  # filled from what the case asserts: no gap
+            self.assertFalse(letters.has_gap(letters.render(kind, WF["forms"], with_summary)[0]), kind)
