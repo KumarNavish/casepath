@@ -312,6 +312,11 @@ function bindRail() {
       reason: "", reason_code: code, recheck: false }) }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  const copyNote = $("#copy-note");  // the file note writes itself; copying it is logged like the letter
+  if (copyNote) copyNote.addEventListener("click", () => {
+    if (navigator.clipboard) navigator.clipboard.writeText(S.data.file_note);
+    caseEvent("filenote.copied", null, { chars: S.data.file_note.length }).catch(() => {});
+  });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
     continueRun.disabled = true;
@@ -1103,6 +1108,7 @@ function draftFor(ev) {
   const act = item("next_action", "0");
   const kind = act && act.action;
   if (!kind || kind === "A1" || kind === "request") return requestDraft(ev);
+  if (S.data.draft && S.data.draft.kind === kind) return S.data.draft.text || `${T("No draft", "Kein Entwurf")}: ${S.data.draft.none}`;  // written on the server from the workflow's form
   const due = (S.data.follow_up || {}).due;
   const by = due ? dateText(due) : "…";
   const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
@@ -1286,6 +1292,9 @@ function overviewView() {
         ${aboveShows ? "" : `<dt>${T("Documents", "Dokumente")}</dt><dd>${ev ? `<a href="#/case/${esc(S.route.id)}/document_finder">${T(`${present} present · ${open} missing or unusable`, `${present} vorhanden · ${open} fehlen oder unbrauchbar`)}</a>` : `<span class="cp-muted">${T("no checklist without a process", "ohne Prozess keine Checkliste")}</span>`}</dd>`}
         ${aboveShows ? "" : `<dt>${T("Next action", "Nächster Schritt")}</dt><dd data-item="next_action:0">${S.data.run && S.data.run.status === "paused" ? T("not proposed yet (stopped)", "noch nicht vorgeschlagen (angehalten)") : draft ? `${T("Ask the customer for the documents", "Unterlagen beim Kunden anfordern")} <span class="cp-muted">· ${T("prepared above", "oben vorbereitet")}</span>` : ev && ev.outcome ? esc(T(`Close the case: ${ev.outcome.title}`, `Fall abschliessen: ${ev.outcome.title}`)) : item("next_action", "0") ? esc(T(item("next_action", "0").label.en, item("next_action", "0").label.de)) : ev && ev.next_actions.length ? esc(statement(ev.next_actions[0].text)) : "—"}</dd>`}
       </dl>
+      ${S.data.file_note ? `<details style="margin-top:10px"><summary class="cp-link">${T("File note", "Aktennotiz")}</summary>
+        <p id="file-note" style="margin:8px 0">${esc(S.data.file_note)}</p>
+        <button class="cp-button" id="copy-note">${T("Copy for the case system", "Für das Fallsystem kopieren")}</button></details>` : ""}
       </section></div>
     <section class="cp-card cp-judgement" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${T("To settle first", "Vorher zu klären")} <span class="cp-muted">· ${pts.length}</span></h2>
       ${pts.length ? `<ol class="cp-points">${shown.map((p, i) => `<li data-item="${esc(p.fact ? `fact:${p.fact}` : p.request ? "next_action:0" : `point:${p.key}`)}"><span>${esc(p.text)}${p.cite ? cite(p.cite) : ""}</span><span class="cp-point-actions">${p.info ? "" : button(p, i)}</span></li>`).join("")}</ol>

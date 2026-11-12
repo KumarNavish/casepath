@@ -908,5 +908,112 @@
    "deadline_days": null,
    "source": "practice#2of7 (Abschluss nach Statusanfrage)"
   }
- ]
+ ],
+ "forms": {
+  "A1": {
+   "title": "Unterlagen und Angaben anfordern",
+   "to": "Kundschaft",
+   "parts": [
+    "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.",
+    "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.",
+    "{fragen}",
+    "{hinweise}",
+    "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."
+   ]
+  },
+  "A4": {
+   "title": "Rückfrage zu einem Punkt",
+   "to": "Kundschaft",
+   "parts": [
+    "Vielen Dank für Ihre Unterlagen.",
+    "Damit wir weiterfahren können, bitten wir Sie um Auskunft zu folgendem Punkt:\n{fragen_oder_offen}",
+    "Wir danken Ihnen für Ihre Antwort bis {frist}."
+   ]
+  },
+  "A5": {
+   "title": "Rechtliche Einschätzung",
+   "to": "Kundschaft",
+   "parts": [
+    "Vielen Dank für Ihre Unterlagen.",
+    "Grundsätzlich hat die Mieterschaft bei einem Mangel an der Mietsache Anspruch auf Beseitigung des Mangels, auf eine verhältnismässige Herabsetzung des Mietzinses und unter Umständen auf Schadenersatz (Art. 259a OR).",
+    "Voraussetzung ist, dass der Mangel der Vermieterschaft nachweislich gemeldet wurde (Art. 257g OR) und während der ganzen Dauer belegt werden kann.",
+    "In Ihrem Fall: {anliegen}",
+    "Wir empfehlen Ihnen, {empfehlung}"
+   ]
+  },
+  "A6": {
+   "title": "Dossier pendent halten mit Frist",
+   "to": "Kundschaft",
+   "parts": [
+    "Vielen Dank für {anlass}.",
+    "Wir halten Ihr Dossier vorerst noch pendent und erwarten {erwartet}.",
+    "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."
+   ]
+  },
+  "A7": {
+   "title": "Statusanfrage mit Abschlussankündigung",
+   "to": "Kundschaft",
+   "parts": [
+    "Nachdem seit unserem letzten Kontakt vom {letzter_kontakt} einige Zeit vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen.",
+    "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."
+   ]
+  },
+  "A8": {
+   "title": "Schreiben an die Gegenpartei (Entwurf an die Kundschaft)",
+   "to": "Gegenpartei, als Entwurf zuerst an die Kundschaft",
+   "parts": [
+    "Wir zeigen Ihnen an, dass wir die Interessen unserer Versicherten in dieser Angelegenheit vertreten.",
+    "Unpräjudiziell und ohne Anerkennung einer Rechtspflicht halten wir Folgendes fest: {anliegen}",
+    "Wir fordern Sie auf, den Mangel bis {frist} zu beheben, und behalten uns alle weiteren Rechte, insbesondere die Herabsetzung des Mietzinses (Art. 259d OR), ausdrücklich vor."
+   ]
+  },
+  "A10": {
+   "title": "Mandat und Kostengutsprache",
+   "to": "Anwaltskanzlei, Kopie an die Kundschaft",
+   "parts": [
+    "Vielen Dank für die Übernahme des Mandats in dieser Angelegenheit.",
+    "Wir erteilen Ihnen Kostengutsprache nach den bekannten Modalitäten wie folgt: Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen.",
+    "Für eine allfällige Erweiterung der Kostengutsprache bitten wir Sie um vorgängige Kontaktaufnahme.",
+    "In der Beilage erhalten Sie Kopien der wichtigsten Unterlagen: {vorhanden}"
+   ]
+  },
+  "A12": {
+   "title": "Dossier abschliessen",
+   "to": "Kundschaft",
+   "parts": [
+    "Mit Schreiben vom {letzter_kontakt} haben wir Sie um folgende Unterlagen gebeten:\n{verlangt}",
+    "Da wir diese bis heute nicht erhalten haben, können wir Ihren Fall nicht weiter bearbeiten und schliessen Ihr Dossier. Die Leistungen aus diesem Fall enden damit."
+   ]
+  },
+  "A2": {
+   "title": "Telefonnotiz",
+   "none": "die Notiz schreibt die Fallbearbeitung mit «Telefonnotiz erfassen»; sie wird als Akte gespeichert und als Beleg gelesen"
+  },
+  "A3": {
+   "title": "Upload-Link",
+   "none": "der Link entsteht im Upload-System von Protekta"
+  },
+  "A9": {
+   "title": "Antwort in der Verhandlung",
+   "none": "die Stellungnahme zu einem Angebot entscheidet die Fallbearbeitung"
+  },
+  "A11": {
+   "title": "Zahlung bestätigen",
+   "none": "Betrag und Datum kommen aus dem Zahlungssystem"
+  },
+  "_frame": {
+   "head": [
+    "Unsere Referenz: {referenz}",
+    "",
+    "{anrede}",
+    ""
+   ],
+   "tail": [
+    "",
+    "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.",
+    "",
+    "Freundliche Grüsse"
+   ]
+  }
+ }
 }

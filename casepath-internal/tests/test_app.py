@@ -494,6 +494,25 @@ class AppTests(unittest.TestCase):
         self.assertTrue(plain.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])
         self.assertFalse(trial.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])  # a deployment with a trial the freeze did not name
 
+    def test_a_case_on_the_handler_workflow_carries_its_draft_and_its_file_note(self):
+        from tests.test_handler_workflow import intake
+        catalogue = Path(self.directory.name) / "catalogue"
+        catalogue.mkdir()
+        (catalogue / "osm-mold.json").write_text(json.dumps(intake()))  # the handler's workflow joins when it supersedes the intake
+        client = self.client(CASEPATH_WORKFLOW_CATALOGUE=str(catalogue))
+        case = client.post("/api/cases", json={"title": "Schimmel"}).json()
+        client.post(f"/api/cases/{case['id']}/files", files={"file": ("message.eml", EMAIL, "message/rfc822")})
+        store = client.app.state.store
+        run = store.create_run(case["id"], "dev")
+        fact = lambda f, v: {"fact": f, "status": "established", "verdict": "accepted", "value": v, "citations": []}
+        store.update_run(run["id"], status="completed", workflow_id="mietmangel-handler", workflow_version=None, finished_at="2026-11-12T10:00:00+00:00",
+                         result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja")], "documents": [],
+                                 "brief": {"request": "Schimmel im Bad.", "parties": [], "timeline": []}})
+        shown = client.get(f"/api/cases/{case['id']}").json()
+        self.assertEqual(shown["draft"]["kind"], "A1")
+        self.assertIn("Um die Versicherungsdeckung prüfen", shown["draft"]["text"])
+        self.assertTrue(shown["file_note"].startswith("Eingegangen: message.eml."))
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

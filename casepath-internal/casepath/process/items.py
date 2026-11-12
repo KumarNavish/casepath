@@ -179,7 +179,7 @@ def build_items(state, result, files=None):
         if quiet:
             planned = {"kind": quiet["then"], "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
-                       "reason": f'keine Antwort seit {quiet["last"]} vom {quiet["since"]} ({quiet["silent_days"]} Tage)'}
+                       "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})

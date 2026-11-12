@@ -27,6 +27,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import follow_up
+from ..process import letters
 from ..process.items import build_items, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -62,7 +63,7 @@ class NewCase(BaseModel):
     intake: dict = {}
 
 
-EVENT_KINDS = {"session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
+EVENT_KINDS = {"filenote.copied", "session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
                "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line"}
@@ -413,7 +414,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id))  # everything the case's screens and exports assert
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
-        return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock,
+        events, files = store.list_case_events(case_id), store.list_files(case_id)
+        forms = (current.get("process") or {}).get("forms") or (catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
+        draft = None
+        if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
+            text, none = letters.render(action.get("action"), forms, letters.context(current["case"], listed, events, clock, files))
+            draft = {"kind": action.get("action"), "title": (forms.get(action.get("action")) or {}).get("title"), "text": text, "none": none}
+        return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft,
+                "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": current["case"], "files": store.list_files(case_id),
                 "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),

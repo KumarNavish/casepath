@@ -12,6 +12,7 @@ import shutil
 USERS, MODEL, VOLUME = "FILL-IN: pilot e-mail addresses", "FILL-IN: the gateway model's exact name", "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
 assert not any(v.startswith("FILL-IN") for v in (USERS, MODEL, VOLUME)), "fill in USERS, MODEL and VOLUME in this cell first"
 SALT = ""  # for a study only: a fixed secret typed here (never in Git); it keeps the pseudonyms stable across restarts
+assert re.fullmatch(r"[A-Za-z0-9_-]*", SALT), "SALT may hold only letters, digits, - and _"
 confirm = dbutils.widgets.get("confirm").strip()  # noqa: F821  (Databricks provides dbutils)
 # An optional " agents=<agent>=<model>,…" sets CASEPATH_AGENT_MODELS for an experiment; without it every agent uses MODEL.
 match = re.fullmatch(r"deploy ([0-9a-f]{7,40}) (\d+) ([0-9a-f]{12})(?: agents=([a-z_]+=[A-Za-z0-9_.-]+(?:,[a-z_]+=[A-Za-z0-9_.-]+)*))?"
