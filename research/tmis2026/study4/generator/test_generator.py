@@ -526,7 +526,8 @@ class GeneratorTest(unittest.TestCase):
         self.assertTrue((out / "dropped" / twice / "design.json").exists())
         e = {x["file_id"]: x for x in entries}
         self.assertEqual(e[once]["round"], 3)
-        self.assertEqual({k: v for k, v in e[once]["repair"].items() if k != "previous_sha256"}, {"round": 3, "result": "rewritten"})
+        self.assertEqual({k: v for k, v in e[once]["repair"].items() if k != "previous_sha256"},
+                         {"round": 3, "result": "rewritten", "kept_before": {"kept": "exact", "round": 1}})
         self.assertEqual((out / "final" / once / "text.clean.txt").read_text(encoding="utf-8"), "neu " * 200)
         if recheck_bad in why:
             self.assertIn("differs after rewrite (repair round 4)", why[recheck_bad])
@@ -549,6 +550,17 @@ class GeneratorTest(unittest.TestCase):
         for x in man["files"]:
             for name, h in x["sha256"].items():
                 self.assertEqual(G.sha256_file(out / "final" / x["file_id"] / name), h)
+        # the per-file entries say how each file is kept now, and sum to the counts
+        self.assertEqual(e[once]["kept"], "rewritten")
+        self.assertEqual(e[once]["kept_round"], 3)
+        self.assertEqual(e[keep_fid]["kept"], "kept_as_read")
+        self.assertEqual(e[keep_fid]["kept_round"], 3)
+        c = man["counts"]
+        self.assertEqual(c["kept"], len(man["files"]))
+        self.assertEqual(c["kept_exact"] + c["kept_as_read"] + c["kept_after_rewrite"], c["kept"])
+        for k, v in (("kept_exact", "exact"), ("kept_as_read", "kept_as_read"), ("kept_after_rewrite", "rewritten")):
+            self.assertEqual(c[k], sum(x["kept"] == v for x in man["files"]), k)
+        self.assertEqual(sum(c["per_level"].values()), c["kept"])
         # a planner decision drops a kept file with its reason, and no reference of another file changes
         refs = {x["file_id"]: x["sha256"]["reference.json"] for x in man["files"]}
         G.write_json(out / "DECISIONS.json", {"drop": {keep_fid: {"reason": "test drop", "decided": "test"}}})

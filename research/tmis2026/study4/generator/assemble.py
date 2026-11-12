@@ -738,8 +738,16 @@ def finalize(regime, out):
             hashes["noise.json"] = G.write_json(fdir / "noise.json", noise_log)
         elif (fdir / "noise.json").exists():
             (fdir / "noise.json").unlink()
-        e = {"file_id": fid, "level": d["level"], "type": d["type"], "round": text_rnd, "kept": how,
-             "scan_noise": d["scan_noise"], "denied_event": d["denied_event"],
+        # how the file is kept now, and the blind-check round that established it: a repair rewrite that matched is
+        # "rewritten" at its round; the keep rule makes it "exact" (states now the designed ones) or "kept_as_read"
+        # at its round; a plain re-check that matched leaves it as it was
+        kept_now, kept_round = how, rnd
+        if rep and rep[0] == "text":
+            kept_now, kept_round = "rewritten", rep[1]
+        elif keep:
+            kept_now, kept_round = ("exact" if keep["states"] == "as designed" else "kept_as_read"), rep[1]
+        e = {"file_id": fid, "level": d["level"], "type": d["type"], "round": text_rnd, "kept": kept_now,
+             "kept_round": kept_round, "scan_noise": d["scan_noise"], "denied_event": d["denied_event"],
              "open_facts": d["open_facts"], "language": d["language"], "sha256": hashes}
         if rep:
             e["repair"] = {"round": rep[1], "result": "rewritten" if rep[0] == "text" else "rechecked"}
@@ -748,6 +756,8 @@ def finalize(regime, out):
                 n: prev.get("sha256", {}).get(n) for n in ("design.json", "reference.json")}
             if keep:
                 e["repair"].update(states=keep["states"], changed_facts=changed)
+            if kept_now != how:
+                e["repair"]["kept_before"] = {"kept": how, "round": rnd}
         entries.append(e)
     # a file dropped now that has a folder from an earlier finalize: moved out of final/ (kept for the record)
     for x in dropped:
@@ -759,14 +769,15 @@ def finalize(regime, out):
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(str(stale), str(dest))
             x["moved_to"] = str(dest.relative_to(out))
+    assert sum(e["kept"] == "rewritten" for e in entries) == sum(e["round"] >= 2 for e in entries)
     per_level = Counter(e["level"] for e in entries)
     open_lv = Counter(e["level"] for e in entries if e["open_facts"])
     G.write_json(p["final"] / "MANIFEST.json", {
         "schema": "study4.final-manifest/1", "regime": regime.name, "files": entries, "dropped": dropped,
         "counts": {"kept": len(entries), "dropped": len(dropped),
-                   "kept_after_rewrite": sum(e["round"] >= 2 for e in entries),
-                   "kept_as_read": sum(e["kept"] == "kept_as_read" and e.get("repair", {}).get("states") != "as designed"
-                                       for e in entries),
+                   "kept_exact": sum(e["kept"] == "exact" for e in entries),
+                   "kept_as_read": sum(e["kept"] == "kept_as_read" for e in entries),
+                   "kept_after_rewrite": sum(e["kept"] == "rewritten" for e in entries),
                    "repair_rewritten": sum(e.get("repair", {}).get("result") == "rewritten" for e in entries),
                    "repair_rechecked": sum(e.get("repair", {}).get("result") == "rechecked" for e in entries),
                    "per_level": {str(k): v for k, v in sorted(per_level.items())},

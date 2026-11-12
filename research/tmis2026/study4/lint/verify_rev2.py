@@ -137,7 +137,7 @@ def main():
             # rebuild the record as it was before the repair and check it is the stored one
             dsg = jl(S4 / "dev" / r / "designs" / f"{f['file_id']}.json")
             prev = dict(dsg)
-            if f["kept"] == "kept_as_read":
+            if cl.get(f["file_id"], {}).get("decision") == "kept_as_read":
                 prev.update(facts=cl[f["file_id"]]["facts_as_read"], facts_designed=dsg["facts"], kept_as_read=True)
             prev_ok = G.sha256_bytes(G.canon(prev).encode("utf-8")) == rp["previous_sha256"]["design.json"]
             now = jl(fdir / "design.json")

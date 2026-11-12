@@ -1,10 +1,11 @@
 {
-  "assemble_sha256": "2819c40cfdc49a90916251225628ff07a65c94045eb865ad86d76584dd8b8106",
+  "assemble_sha256": "95bc624f003a52ad046ecee0d44ff1c013b5e28e2d3be91f9e4e739ce76fc72f",
   "counts": {
     "dropped": 4,
     "kept": 56,
     "kept_after_rewrite": 22,
     "kept_as_read": 2,
+    "kept_exact": 32,
     "open_share_per_level": {
       "0": 0.0,
       "10": 0.143,
@@ -32,21 +33,18 @@
     {
       "file_id": "the_c50e0bd7b054",
       "level": 50,
-      "moved_to": "dropped/the_c50e0bd7b054",
       "type": "simple_theft_away",
       "why": "planner decision: differs from its design at repair round 4 (original_vouchers designed sufficient, read insufficient: no voucher for one item, vouchers name a town but no seller); a development file that differs after first use may be dropped instead of rewritten, and is counted"
     },
     {
       "file_id": "the_d9579f891719",
       "level": 25,
-      "moved_to": "dropped/the_d9579f891719",
       "type": "simple_theft_away",
       "why": "repair round 4: text differs from its design; already rewritten once"
     },
     {
       "file_id": "the_dd72ec4e53dd",
       "level": 10,
-      "moved_to": "dropped/the_dd72ec4e53dd",
       "type": "simple_theft_away",
       "why": "planner decision: its designed defect (the missing sum insured) no longer exists under the second reader's ruling (b); no reference is changed"
     }
@@ -56,6 +54,7 @@
       "denied_event": false,
       "file_id": "the_003fbcb4d365",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 50,
       "open_facts": [],
@@ -77,6 +76,7 @@
       "denied_event": false,
       "file_id": "the_06baabbe2a0d",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [
@@ -97,6 +97,7 @@
       "denied_event": false,
       "file_id": "the_0aad75365ee3",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 10,
       "open_facts": [],
@@ -117,6 +118,7 @@
       "denied_event": false,
       "file_id": "the_0cd1b047049a",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -145,6 +147,7 @@
       "denied_event": false,
       "file_id": "the_0d6569d32db1",
       "kept": "kept_as_read",
+      "kept_round": 1,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -171,6 +174,7 @@
       "denied_event": false,
       "file_id": "the_1024620d6055",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -203,6 +207,7 @@
       "denied_event": false,
       "file_id": "the_12e3d532c09d",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 0,
       "open_facts": [],
@@ -221,6 +226,7 @@
       "denied_event": false,
       "file_id": "the_12ee892d56f4",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 10,
       "open_facts": [
@@ -243,6 +249,7 @@
       "denied_event": false,
       "file_id": "the_1487759fc403",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 0,
       "open_facts": [],
@@ -263,6 +270,7 @@
       "denied_event": false,
       "file_id": "the_1595e412e131",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -282,11 +290,16 @@
     {
       "denied_event": true,
       "file_id": "the_1dfba8facf5e",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "de",
       "level": 25,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "336995cb170f6d0022f1bbc63b6e8d441920cd35fcac80adfeb6885413b8516e",
           "reference.json": "387657e38b6506b796759687561fca1a59c468f0ed72d55a3c6915ba3d07d8a5"
@@ -309,6 +322,7 @@
       "denied_event": false,
       "file_id": "the_2412f755f636",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -328,6 +342,7 @@
       "denied_event": false,
       "file_id": "the_248aa95805a8",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -346,6 +361,7 @@
       "denied_event": false,
       "file_id": "the_2774fb90433e",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 25,
       "open_facts": [
@@ -380,6 +396,7 @@
       "denied_event": false,
       "file_id": "the_27cd334c5026",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -400,6 +417,7 @@
       "denied_event": false,
       "file_id": "the_281214c010bb",
       "kept": "kept_as_read",
+      "kept_round": 1,
       "language": "de",
       "level": 50,
       "open_facts": [
@@ -425,6 +443,7 @@
       "denied_event": false,
       "file_id": "the_314b305efe2d",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 50,
       "open_facts": [
@@ -447,6 +466,7 @@
       "denied_event": false,
       "file_id": "the_32a656cb56cf",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 25,
       "open_facts": [
@@ -467,6 +487,7 @@
       "denied_event": false,
       "file_id": "the_38afd648a68a",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 25,
       "open_facts": [
@@ -487,6 +508,7 @@
       "denied_event": false,
       "file_id": "the_488b39c60106",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -508,6 +530,7 @@
       "denied_event": false,
       "file_id": "the_493f21bd27be",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -529,6 +552,7 @@
       "denied_event": false,
       "file_id": "the_4c02d7c9601d",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 50,
       "open_facts": [],
@@ -547,6 +571,7 @@
       "denied_event": false,
       "file_id": "the_506c9909edc4",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 25,
       "open_facts": [],
@@ -573,6 +598,7 @@
       "denied_event": false,
       "file_id": "the_57501c7d1230",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 50,
       "open_facts": [
@@ -597,6 +623,7 @@
       "denied_event": true,
       "file_id": "the_5ee356013cfc",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -623,6 +650,7 @@
       "denied_event": false,
       "file_id": "the_656f9aad39e5",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 50,
       "open_facts": [],
@@ -640,11 +668,16 @@
     {
       "denied_event": true,
       "file_id": "the_6634ab23ee99",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "en",
       "level": 10,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "334078099a997d2d525526fb3d2aa967a13dea87860039cfaf0ad41b5c26d058",
           "reference.json": "b5a7d7ce0aa78c13efcf8fcf1f81851fc15dc044f1195321ef70e1c03a7ddc52"
@@ -667,11 +700,16 @@
     {
       "denied_event": true,
       "file_id": "the_685edf55333b",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "en",
       "level": 0,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "bba4a1b6d90b55d2cda97e89932cb9fddb336823f85e3d2feb1e022121ab2b57",
           "reference.json": "804e798de8c42232a004286f53606ed50943a9791de9586dabaf1af1ae37818a"
@@ -694,6 +732,7 @@
       "denied_event": false,
       "file_id": "the_7d2b6a2bdce4",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 50,
       "open_facts": [],
@@ -722,6 +761,7 @@
       "denied_event": false,
       "file_id": "the_7f7ad7ab95d0",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 25,
       "open_facts": [],
@@ -744,6 +784,7 @@
       "denied_event": false,
       "file_id": "the_819379d12c03",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 25,
       "open_facts": [],
@@ -773,11 +814,16 @@
     {
       "denied_event": true,
       "file_id": "the_86b4e22a87e7",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "de",
       "level": 10,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "ca016c9fc5b395d78d641f6731cdd2353cd841dbc012640d8ed8b0f4a76c1997",
           "reference.json": "201aaf308ebab7c095bd8deee06031a50183c508e2afe3643e490e4b850c0f07"
@@ -799,11 +845,16 @@
     {
       "denied_event": true,
       "file_id": "the_86e739ec9184",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "de",
       "level": 0,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "2c4c3b791db56371edd98e0b8ec1595b4d0e1d24f253473112eec834bd63c67d",
           "reference.json": "a9fa4bd5efd345746067583afb87a9428eaffbda9ad5a023f77e88f825b5dd3e"
@@ -827,6 +878,7 @@
       "denied_event": false,
       "file_id": "the_875040108b5b",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 10,
       "open_facts": [],
@@ -845,6 +897,7 @@
       "denied_event": false,
       "file_id": "the_8a719e0bd89a",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -863,6 +916,7 @@
       "denied_event": false,
       "file_id": "the_91cf197b270e",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 0,
       "open_facts": [],
@@ -883,6 +937,7 @@
       "denied_event": false,
       "file_id": "the_9355c558630a",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -913,6 +968,7 @@
       "denied_event": false,
       "file_id": "the_93929f818110",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -934,6 +990,7 @@
       "denied_event": false,
       "file_id": "the_9b58c5abd02f",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 10,
       "open_facts": [],
@@ -953,11 +1010,16 @@
     {
       "denied_event": true,
       "file_id": "the_a529fff2269d",
-      "kept": "exact",
+      "kept": "rewritten",
+      "kept_round": 3,
       "language": "en",
       "level": 50,
       "open_facts": [],
       "repair": {
+        "kept_before": {
+          "kept": "exact",
+          "round": 1
+        },
         "previous_sha256": {
           "design.json": "93bcbbed00d66ac8c8a00db2190c325ec35c1ce4a6792770893f7b098cf3018c",
           "reference.json": "ed9c7d6b378e685a21eb3d5f8b96a81bd26c94bfaf11b9d7ea621055f2ef84fe"
@@ -980,6 +1042,7 @@
       "denied_event": false,
       "file_id": "the_a86e098e517e",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 50,
       "open_facts": [
@@ -1005,6 +1068,7 @@
       "denied_event": false,
       "file_id": "the_b05370369093",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -1023,6 +1087,7 @@
       "denied_event": false,
       "file_id": "the_b68c834f7972",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 50,
       "open_facts": [
@@ -1043,6 +1108,7 @@
       "denied_event": false,
       "file_id": "the_bd8ee148bc3a",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 50,
       "open_facts": [
@@ -1063,6 +1129,7 @@
       "denied_event": false,
       "file_id": "the_c0b61a3ae7cb",
       "kept": "exact",
+      "kept_round": 1,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -1081,6 +1148,7 @@
       "denied_event": false,
       "file_id": "the_c3a5e8c74185",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 25,
       "open_facts": [],
@@ -1103,6 +1171,7 @@
       "denied_event": true,
       "file_id": "the_c7620535798b",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 50,
       "open_facts": [],
@@ -1129,6 +1198,7 @@
       "denied_event": false,
       "file_id": "the_c8b40fd1824d",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -1153,6 +1223,7 @@
       "denied_event": false,
       "file_id": "the_cd857962dd2a",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 0,
       "open_facts": [],
@@ -1177,6 +1248,7 @@
       "denied_event": false,
       "file_id": "the_d37fc3c54b4b",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 10,
       "open_facts": [],
@@ -1201,6 +1273,7 @@
       "denied_event": false,
       "file_id": "the_d70abf016562",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "en",
       "level": 10,
       "open_facts": [],
@@ -1224,6 +1297,7 @@
       "denied_event": false,
       "file_id": "the_d76f5df60f83",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 50,
       "open_facts": [
@@ -1244,6 +1318,7 @@
       "denied_event": false,
       "file_id": "the_e0b1e1d56fb2",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 0,
       "open_facts": [],
@@ -1268,6 +1343,7 @@
       "denied_event": false,
       "file_id": "the_eb579978f91b",
       "kept": "rewritten",
+      "kept_round": 2,
       "language": "de",
       "level": 10,
       "open_facts": [
@@ -1294,6 +1370,7 @@
       "denied_event": false,
       "file_id": "the_efac75d20bd0",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 0,
       "open_facts": [],
@@ -1312,6 +1389,7 @@
       "denied_event": false,
       "file_id": "the_fefc066e8269",
       "kept": "exact",
+      "kept_round": 1,
       "language": "en",
       "level": 0,
       "open_facts": [],
