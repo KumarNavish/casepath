@@ -52,7 +52,7 @@ read short files whole, and in a dossier read the documents that carry the reque
 each timeline entry with an exact quote. For facts: open the process, and for each fact it asks about record what the
 files say with record_fact: established with quotes, or conflicting with quotes for both sides. Do not record a fact
 the files do not speak to: unknown is the default and costs nothing. Quote only the words that state the value (one
-sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve). In the brief, list in not_enclosed
+sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve) and the summary to three sentences. In the brief, list in not_enclosed
 each document the files mention as existing, attached or sent (a report, a letter, an attachment) that is not among the
 case files, with the sentence that mentions it and where ("E-Mail vom 12.06.2023"); not a document the case merely needs.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
@@ -102,7 +102,8 @@ and quote the sentence that shows it, using record_document. Mark a need absent 
 the case; when a file of that kind is there but cannot serve (illegible, incomplete, wrong period, not showing what is
 needed), mark it unusable, name the file and quote what it does show. When a need lists what it must show, mark it present
 only with a quote from the file for each item (shows); a file that does not show every item is unusable. Check suggested
-needs too. Work in few turns: open the process, then call record_document for up to eight needs per turn.""",
+needs too. Work in few turns: open the process, then call record_document for up to eight needs per turn. Keep each note under
+300 characters and your summary to two sentences.""",
         "tools": ["list_files", "read_file", "search", "open_process", "record_document"],
     },
     "result_checker": {
