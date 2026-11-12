@@ -486,3 +486,72 @@ ends the process) that carries about two thirds of the tenancy lead. `reproduce.
 covers the new analyses (83 steps, about ten minutes, no model calls).
 Deliverables refreshed: both PDFs, the Overleaf ZIP (55 files, test-built), the
 review checklist and the evidence-and-requirements document.
+
+## 2026-11-12: the owner's new direction; steps 0 to 2 of the costed plan
+
+**Direction.** The paper is to show that the artefact beats every fair
+alternative on the same model in every cell, by removing weaknesses and not by
+describing them; no claim rests on the hackathon dossiers or the expert study;
+one sealed run after a freeze with an external timestamp. Costed plan:
+`STUDY4_COSTED_PLAN.md` (seven steps, about USD 110). Approved: steps 0 to 2.
+Specification for steps 1 and 2: `study4/SPEC.md`.
+
+**Step 0, paper (USD 0).** Dossiers and expert study removed from every claim,
+table and section (one sentence of future work). The artefact is the minimal
+core. Limits are stated once, in Section 7.1 "Scope". Main paper 27 pages,
+supplement 68.
+
+**Step 1, fair-baseline check (USD 4.45 of 5.00; post hoc; Study 3's data are
+development data from now on).** A single prompt told the same stop and hold
+rules in plain words matches CasePath on tenancy (0.35 against 0.31 strict
+unsafe errors per claim on the same model; 0.19 against 0.30 on the frontier
+model) and makes no error on the frontier model where a claim denies its
+defining event, where CasePath holds needlessly (0.61 strict, 1.78 all
+deviations). CasePath keeps a lead on tentatively worded facts (0.52 against
+1.25 to 1.30 deviations), on insufficient supplied documents and on theft (0.58
+against 1.68). The registered tenancy result therefore measures mostly what
+the prompt was told; the paper says so (Section 6.6, Table 8, abstract).
+`study4/baseline_check/REPORT.md`.
+
+**Design estimate (USD 0, in-sample upper bound).** "A quoted denial of the
+defining event counts as a denial; the event is true only when all three
+readings say true" would take tenancy from 0.74 to 0.45 deviations per claim on
+the cost-efficient model and from 0.71 to 0.33 on the frontier model, strict
+errors and theft unchanged. `study4/design_estimate/ESTIMATE.md`.
+
+**Step 2a, rules from public text.** Three rule sets, every rule with source,
+locator, verbatim passage and basis, each checked by a second reader until
+both agreed: tenancy 52 rules (Code of Obligations), dismissal 74 rules (Code
+of Obligations, Civil Procedure Code), theft 51 rules (Insurance Contract Act
+and one insurer's published household conditions and claim form). One
+convention of the benchmark, the same words in every regime, says what an
+unmentioned fact is taken to be (`SPEC.md` 6a, 6b). Raw downloads stay out of
+the repository; an early work-in-progress commit (`b70195ee`) contains three
+public insurer PDFs and statute files, removed from tracking since; history
+was not rewritten.
+
+**Step 2b, references.** Per regime two blind evaluators wrote an evaluator
+from the prose rule text only. Engine, evaluator A and evaluator B agree on
+1,240 of 1,240 document decisions on the development designs, and holds wait
+for the same fact. `study4/dev/CLEANROOM.md`.
+
+**Step 2c, generator.** Seeded designs (share of files with an open fact 0, 10,
+25, 50%; denied defining event a fixed tenth; German and English), texts by a
+session of a model family that is not evaluated, working without product code,
+prompts or rule text beyond the condition questions; blind check; one rewrite
+round; scan noise on a fifth. Development sets: 176 of 180 files kept (tenancy
+59, theft 59, dismissal 58); 4 dropped after the rewrite and counted.
+
+**Step 2d, lint with planted defects (USD 2.79 of 3.50; design hashed before
+any call).** On the cited rule sets the lint flags none of 47 untouched branch
+conditions (on Study 3's tenancy rules it flagged 8 or 9 of 10). It detects 10
+of 19 bluntly widened conditions (two more have too few files to assess) and 0
+of 3 subtly widened ones (tenancy only). A blunt widening is missed when the
+generated text does not make the widened wording true, so detection measures
+lint and wording together. `study4/lint/REPORT.md`.
+
+**First look at the tested core on the new regimes (same runs; no baseline, no
+comparison).** Errors per file against the references: tenancy 0.36, theft
+1.14, dismissal 0.79. The product failed to route 37 of 176 files to a type
+(19 of them files that deny their defining event); in theft the routing
+question reads ten ordinary thefts as "other".
