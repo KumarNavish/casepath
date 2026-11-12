@@ -80,17 +80,17 @@ QUOTES = [
     ("css-avb", "Ziff. 15, S. 3", "Sofern die CSS aus diesem Vertrag Leistungen erbracht hat, für welche der Versicherungsnehmer gegenüber Dritten Ansprüche geltend machen könnte, hat der Versicherungsnehmer diese Ansprüche bis zur Höhe der erbrachten Leistungen an die CSS abzutreten.", "theft-source-0055"),
     ("css-avb", "Ziff. 20 lit. d, S. 5", "Mitversichert sind die effektiven Kosten für das Ändern oder Ersetzen von Schlüsseln, Magnetkarten oder von Schlössern an dem in der Police bezeichneten Standort und an den vom Versicherungsnehmer gemieteten Banksafes und dazugehörenden Schlüsseln.", None),
     ("css-avb", "Ziff. 20 lit. d, Ausschluss, S. 5", "Kosten bei einfachem Diebstahl (zu Hause oder auswärts).", "theft-source-0062"),
-    ("css-avb", "Ziff. 23, Einleitung, S. 6", "Die CSS versichert die nachfolgend beschriebenen Gefahren und Schäden, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:", "theft-source-0160"),
+    ("css-avb", "Ziff. 23, Einleitung, S. 5", "Die CSS versichert die nachfolgend beschriebenen Gefahren und Schäden, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:", "theft-source-0160"),
     ("css-avb", "Ziff. 23.3 Abs. 1, S. 7", "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.", "theft-source-0025"),
     ("css-avb", "Ziff. 23.3, Ausschlüsse, S. 7", "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.", "theft-source-0014"),
     ("css-avb", "Ziff. 23.3 lit. a, S. 7", "Einbruchdiebstahl ist Diebstahl durch Täter, die gewaltsam in ein Gebäude oder in den Raum eines Gebäudes eindringen und/oder darin ein Behältnis aufbrechen sowie Diebstahl durch Aufschliessen mit den richtigen Schlüsseln oder Codes, sofern sich der Täter diese durch Einbruchdiebstahl oder Beraubung angeeignet hat.", "theft-source-0022"),
     ("css-avb", "Ziff. 23.3 lit. b, S. 7", "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod.", "theft-source-0138"),
     ("css-avb", "Ziff. 23.3 lit. c, S. 7", "Einfacher Diebstahl am Versicherungsort ist Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt. Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.", "theft-source-0054 + theft-source-0024"),
-    ("css-avb", "Ziff. 24.2, S. 7", "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.", "theft-source-0162"),
+    ("css-avb", "Ziff. 24.2, S. 8", "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.", "theft-source-0162"),
     ("css-avb", "Ziff. 29 lit. a, S. 11", "Der Versicherungsnehmer muss die Schadenhöhe beweisen.", "theft-source-0140"),
     ("css-form", "Abschnitt 3.5, S. 2", "Wer hat den Schaden verursacht?", "theft-source-0114"),
     ("css-form", "Abschnitt 3.7 Gegenstände, S. 2", "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)", "theft-source-0176"),
-    ("css-form", "Abschnitt 3.9, S. 2", "Fahrrad (bitte Originalkaufbelege beilegen)", "theft-source-0071"),
+    ("css-form", "Abschnitt 3.9, S. 3", "Fahrrad (bitte Originalkaufbelege beilegen)", "theft-source-0071"),
     ("css-form", "Abschnitt 6, Unterschrift, S. 4", "Die unterzeichnende Person erklärt, alle Fragen auf allen Seiten wahrheitsgetreu und vollständig beantwortet zu haben.", "theft-source-0035"),
 ]
 
@@ -244,6 +244,7 @@ home = {
         {"id": "burglary_or_robbery",
          "question": f"Was the theft {BURGLARY_WORDS}, and so not a simple theft?",
          "not_this": "A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft.",
+         "always_stated": True,
          "rule": rule(Q("Ziff. 23.3 lit. c", SIMPLE), "states", context=DEFS)},
         {"id": "lock_change",
          "question": "Does the claim include costs of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?",
@@ -323,11 +324,12 @@ away["documents"] = shared_documents(
 
 TYPES = [home, away]
 
-CONVENTION_TEXT = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; "
-                   "the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and "
-                   "leaves unsettled is open.")
+CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. "
+                   "Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. "
+                   "The defining event is never presumed: if the file does not mention it, it is unresolved. "
+                   "A fact that the file raises and leaves unsettled is open.")
 CONVENTION = {"id": "intake_convention", "text": CONVENTION_TEXT,
-              "applies_to": "every fact of every type except the defining event; a presumption a passage supports would take precedence (this rule set has none)",
+              "applies_to": "every branch fact (value false, applies unstated) except the defining event, a fact whose value false triggers a stop (none in this set) and a fact marked always_stated; a presumption a passage supports would take precedence (this rule set has none)",
               "rule": {"source_id": "benchmark-convention", "locator": "SPEC.md item 6a", "basis": "convention"}}
 
 # --------------------------------------------------------------------------------------- settled points, left out
@@ -498,7 +500,7 @@ def rules_md():
         L.append(f"| {s['id']} | {esc(s['publisher'])}: {esc(s['title'])} | {esc(s['version'])} | {s['url']} | {esc(s['public_today'])} |")
     L += ["", "Considered and not used: " + "; ".join(f"{c['title']} ({c['status']})" for c in CONSIDERED), "",
           "## Convention of this benchmark (not law)", "", f"> {CONVENTION_TEXT}", "",
-          "Rule `intake_convention`, basis `convention`, source `benchmark-convention` (SPEC.md item 6a). No passage supports a presumption in this rule set, so there are no presumptions under `presumptions`; the convention is encoded in the workflows as an 'unstated' presumption (value false) on every branch fact and on no defining event.", ""]
+          "Rule `intake_convention`, basis `convention`, source `benchmark-convention` (SPEC.md items 6a, 6b). No passage supports a presumption in this rule set, so `presumptions` is empty in both types. The workflows encode the convention as an 'unstated' presumption (value false) on every branch fact except the defining event and `burglary_or_robbery` (marked `always_stated`: within a theft at home, burglary or robbery and simple theft are both ordinary). No fact's value false triggers a stop; the two stops on a branch fact (household member, missing supplementary cover) are reached only when the fact is true. Polarity (6b): every branch fact is worded so that true is the circumstance a party would raise.", ""]
     for t in TYPES:
         L += [f"## Type `{t['id']}`: {t['title']}", "", f"Defining event: `{t['defining_event']}`.", "",
               "| kind | id | clause | basis | citation and verbatim passage | inference |", "|---|---|---|---|---|---|"]
@@ -535,7 +537,7 @@ def rule_text_md():
     for n, t in enumerate(TYPES, 1):
         L += [f"## Type {n}: {t['title']}", "", f"Defining event: {next(f['question'] for f in t['facts'] if f['id'] == t['defining_event'])}", "", "### Facts", ""]
         for f in t["facts"]:
-            L.append(f"- **{f['id']}**: {f['question']} Not this: {f['not_this']} Source: {f['rule']['source_id']} {f['rule']['locator']}: «{f['rule']['passage']}»")
+            L.append(f"- **{f['id']}**" + (" (always stated or open in a file)" if f.get("always_stated") else "") + f": {f['question']} Not this: {f['not_this']} Source: {f['rule']['source_id']} {f['rule']['locator']}: «{f['rule']['passage']}»")
         L += ["", "### Stops", ""]
         for s in t["stops"]:
             L.append(f"- {s['title']}: when {cond_md(s['when'])}. Source: {s['rule']['locator']}: «{s['rule']['passage']}»" + (f" ({s['rule']['inference']})" if s['rule'].get('inference') else ""))
@@ -550,6 +552,26 @@ def rule_text_md():
     (ROOT / "rule_text.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
+def stop_on_false(t):
+    """Facts whose value false appears in a stop condition."""
+    found = set()
+
+    def visit(c):
+        if isinstance(c, dict):
+            for k in ("all", "any"):
+                for x in c.get(k, ()):
+                    visit(x)
+            if c.get("is") is False:
+                found.add(c["fact"])
+    for st in t["stops"]:
+        visit(st["when"])
+    return found
+
+
+def no_presumption(t):
+    return {t["defining_event"]} | stop_on_false(t) | {f["id"] for f in t["facts"] if f.get("always_stated")}
+
+
 def refs(r):
     out = [f"{r['source_id']}#{r['locator']}"]
     out += [f"{c['source_id']}#{c['locator']}" for c in r.get("context", [])]
@@ -560,7 +582,7 @@ def workflow(t):
     fact_ids = [f["id"] for f in t["facts"]]
     facts = [{"id": "claim_type", "type": "enum", "values": [x["id"] for x in TYPES] + ["other"],
               "question": "Which theft claim is this: theft at the insured location (theft_at_home), simple theft away from it (simple_theft_away), or something else (other)?",
-              "source_refs": ["css-avb#Ziff. 23.3 Abs. 1, S. 7", "css-avb#Ziff. 24.2, S. 7"]}]
+              "source_refs": ["css-avb#Ziff. 23.3 Abs. 1, S. 7", "css-avb#Ziff. 24.2, S. 8"]}]
     facts += [{"id": f["id"], "type": "boolean", "question": f"{f['question']} (Not this: {f['not_this']})", "source_refs": refs(f["rule"])} for f in t["facts"]]
     steps = []
     for s in t["steps"]:
@@ -587,7 +609,7 @@ def workflow(t):
             row["optional"] = True
         docs.append(row)
     presumptions = [{"fact": f, "value": False, "applies": "unstated", "source_ref": "benchmark-convention#intake_convention",
-                     "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT} for f in fact_ids if f != t["defining_event"]]
+                     "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT} for f in fact_ids if f not in no_presumption(t)]
     sources = [{"id": s["id"], "kind": "knowledge", "title": f"{s['publisher']}: {s['title']}, {s['version']}"} for s in SOURCES]
     sources.append({"id": "benchmark-convention", "kind": "process_guidance", "intended_kind": "benchmark_convention",
                     "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"})

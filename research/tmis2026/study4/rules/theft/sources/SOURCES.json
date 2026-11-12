@@ -1,0 +1,94 @@
+{
+ "regime": "theft",
+ "built": "2026-11-12",
+ "sources": [
+  {
+   "id": "vvg",
+   "title": "Bundesgesetz über den Versicherungsvertrag (Versicherungsvertragsgesetz, VVG) vom 2. April 1908, SR 221.229.1",
+   "publisher": "Swiss Federal Chancellery, Fedlex",
+   "version": "consolidated version in force since 1 January 2024 (Stand am 1. Januar 2024); the latest consolidation Fedlex lists on 2026-11-12",
+   "language": "de",
+   "authoritative": true,
+   "url": "https://www.fedlex.admin.ch/eli/cc/24/719_735_717/20240101/de",
+   "download_url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-14.xml",
+   "retrieved": "2026-11-12T11:46:16Z",
+   "raw_file": "vvg-20240101-de.xml",
+   "raw_sha256": "8b98e586f17c8ddb5eb01e71e0ad5217fdc9c15b0c0b1c0decb04eeb93fa219a",
+   "snapshot": "vvg.txt",
+   "snapshot_kind": "cited articles (Art. 38, 38a, 39), re-flowed by tools/statute.py",
+   "licence": "Federal enactments are not protected by copyright (Art. 5 para. 1 lit. a URG, SR 231.1).",
+   "repository_provenance": "Study 1 source fedlex2024vvg (data/casepath-theft-pairs/SOURCES.md), same consolidated version.",
+   "public_today": "yes: the passages quoted here occur in the Fedlex XML of the version in force, retrieved 2026-11-12.",
+   "snapshot_sha256": "92e9eb27f9dbd9b167ad66571f9f2383dc8cf7b1e3d85d2cb4d2eb3aa9c04623"
+  },
+  {
+   "id": "css-avb",
+   "title": "Hausratversicherung, Allgemeine Versicherungsbedingungen (AVB), Form. 519d-01.24-eff",
+   "publisher": "CSS Versicherung AG",
+   "version": "Ausgabe 02.2024",
+   "language": "de",
+   "authoritative": true,
+   "url": "https://www.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/avb/519_d_avb_hausratversicherung.pdf",
+   "retrieved": "2026-11-12T11:46:18Z",
+   "raw_file": "css-avb-hausrat.pdf",
+   "raw_sha256": "cce8948157d794094847da343b09b9bdce1e4789e4bcd8d3511c06f952426c1d",
+   "snapshot": "css-avb.txt",
+   "snapshot_kind": "quoted passages only",
+   "licence": "Copyright CSS Versicherung AG. Only short attributed quotations are kept (Art. 25 URG); the document itself is not in the repository.",
+   "repository_provenance": "Study 1 source css2024hausratavb (data/casepath-theft-pairs/SOURCES.md, sources/sources.bib); the file served on 2026-11-12 has the SHA-256 recorded there (byte-identical).",
+   "public_today": "yes: byte-identical to the copy recorded for Study 1; every quoted passage occurs in it (tools/verify_sources.py).",
+   "snapshot_sha256": "70d463d541855b4f62af86548507c9b42067ac8e6a4a2a357786774298028f7a"
+  },
+  {
+   "id": "css-form",
+   "title": "Schadenanzeige Hausrat / Gebäude (claim notification form), Form. 15d-09.26-pdf",
+   "publisher": "CSS Versicherung AG",
+   "version": "Form. 15d-09.26 (PDF modified 2026-10-16); Study 1 used the earlier edition 15d-08.26 from the same URL",
+   "language": "de",
+   "authoritative": true,
+   "url": "https://www.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/formulare/15_d_formular_schadenanzeige_hausrat.pdf",
+   "retrieved": "2026-11-12T11:46:19Z",
+   "raw_file": "css-schadenanzeige.pdf",
+   "raw_sha256": "adde3d2a9b6c6e050b3d8733c572d518b935195cf84a112f6364251cc453295a",
+   "snapshot": "css-form.txt",
+   "snapshot_kind": "quoted passages only",
+   "licence": "Copyright CSS Versicherung AG. Only short attributed quotations are kept (Art. 25 URG); the document itself is not in the repository.",
+   "repository_provenance": "Study 1 source css2026schadenanzeige (edition 15d-08.26, SHA-256 262da3f4...). The URL now serves edition 15d-09.26; all 17 Study 1 passages of the form occur in it word for word.",
+   "public_today": "yes for the current edition 15d-09.26, which is the one cited; the Study 1 edition 15d-08.26 is no longer served at the URL.",
+   "snapshot_sha256": "8cccb93a9408faf3b593ca59aa82f770d2fd994c18808708a54e0a853b64f31f"
+  }
+ ],
+ "considered_not_used": [
+  {
+   "id": "svv2022hausratavb",
+   "title": "SVV, Allgemeine Bedingungen (AVB) für die Hausratversicherung, Version 01.04.2022 (non-binding model)",
+   "status": "fetched 2026-11-12 from the Study 1 URL; byte-identical to the recorded copy (SHA-256 6d5e431b...). Not used: the rule set applies one insurer's conditions so that no clause is applied outside its own contract."
+  },
+  {
+   "id": "generali2026haushaltavb",
+   "title": "Generali, AVB Haushaltversicherung, Ausgabe 2026",
+   "status": "not fetched, not used (one insurer only). Its public URL is recorded in data/casepath-theft-pairs/sources/sources.bib."
+  },
+  {
+   "id": "axa2021haushaltavb",
+   "title": "AXA, AVB Haushaltversicherung, Ausgabe 10.2021",
+   "status": "not fetched, not used (one insurer only). URL recorded in sources.bib."
+  },
+  {
+   "id": "simpego2024homeavb",
+   "title": "Simpego, Haushaltversicherung Home AVB, Ausgabe Dezember 2024",
+   "status": "not fetched, not used (one insurer only). URL recorded in sources.bib."
+  },
+  {
+   "id": "zgb-art-8",
+   "title": "Swiss Civil Code (SR 210) Art. 8, burden of proof",
+   "status": "considered for presumptions and not used: it allocates the burden of proving an alleged fact, and says nothing about what a fact the file does not mention is taken to be."
+  }
+ ],
+ "convention_source": {
+  "id": "benchmark-convention",
+  "kind": "benchmark_convention",
+  "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
+ },
+ "raw_downloads": "sources/raw/ (git-ignored; full documents are not tracked)"
+}
