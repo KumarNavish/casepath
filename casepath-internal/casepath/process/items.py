@@ -202,6 +202,12 @@ def build_items(state, result, files=None):
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}
+        if planned and planned.get("kind") == "A4" and action and action[0] == "A4":  # the one open point is the letter's one question
+            from .casegraph import open_stage_facts
+            for fid in open_stage_facts(graph, state.get("facts") or {}, ev)[:1]:
+                f = next(x for x in graph["facts"] if x["id"] == fid)
+                add("letter_question", fid, value=f.get("customer_question") or f["question"], stated_as="put_to_handler", verdict=None,
+                    evidence=[], node=here.get("id"), origin="workflow", chain=True, label=f.get("customer_question") or f["question"], ask="now")
         if planned and planned.get("kind") == "A1" and action and action[0] == "A1":
             for f in graph["facts"]:
                 if f.get("ask_customer") and known.get(f["id"]) is None:

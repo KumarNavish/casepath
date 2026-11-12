@@ -96,6 +96,19 @@ class HandlerWorkflowTests(unittest.TestCase):
         self.assertIn("keine Antwort seit A5", nxt["reason"])
         early = [{"extraction": {"cut_of": {"as_of": "2024-11-01"}, "segments": [{"date": "18.10.2024"}]}}]
         self.assertNotEqual({i["item_id"]: i for i in build_items(state, {"facts": quiet}, early)}["next_action:0"]["action"], "A7")
+        arrived = [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]
+        one_open = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja"), fact("will_schadenersatz", "nein"),
+                    fact("handlung_a1", "2024-03-12")]  # streit_mietzins is the stage's one open point
+        state = core.evaluate(wf, [], [], {"facts": one_open, "documents": arrived}, "c")
+        self.assertTrue(state["facts"]["ein_punkt_offen"])
+        looked = [{"extraction": {"cut_of": {"as_of": "2024-03-25"}, "segments": [{"date": "22.03.2024"}]}}]  # documents came on 22.03
+        listed = {i["item_id"]: i for i in build_items(state, {"facts": one_open}, looked)}
+        self.assertEqual(listed["next_action:0"]["action"], "A4")
+        self.assertEqual([i["key"] for i in listed.values() if i["kind"] == "letter_question" and i.get("ask") == "now"], ["streit_mietzins"])
+        two_open = [f for f in one_open if f["fact"] != "will_schadenersatz"]
+        state = core.evaluate(wf, [], [], {"facts": two_open, "documents": arrived}, "c")
+        self.assertFalse(state["facts"]["ein_punkt_offen"])
+        self.assertNotEqual({i["item_id"]: i for i in build_items(state, {"facts": two_open}, looked)}["next_action:0"]["action"], "A4")
         newest_first = base + [fact("bisherige_handlungen", "A2 2024-03-18; A1 2024-02-20")]
         self.assertTrue(core.evaluate(wf, [], [], {"facts": newest_first, "documents": []}, "c")["facts"]["anruf_offen"])
         covered = done + [fact("deckung", "bestätigt")]

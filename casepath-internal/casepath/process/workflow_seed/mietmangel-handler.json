@@ -1,7 +1,7 @@
 {
  "format": "casepath.workflow/1",
  "id": "mietmangel-handler",
- "version": "2026-11-12.4",
+ "version": "2026-11-12.5",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
  "status": "draft",
  "supersedes": [
@@ -342,6 +342,15 @@
    "source_refs": [
     "law#257g"
    ]
+  },
+  {
+   "id": "ein_punkt_offen",
+   "type": "boolean",
+   "derived": "one_stage_fact_open",
+   "question": "Ist in dieser Stufe genau ein Punkt noch offen, den nur die Kundschaft beantworten kann?",
+   "source_refs": [
+    "practice#2of7"
+   ]
   }
  ],
  "start": "eingang",
@@ -404,6 +413,32 @@
       "source_refs": [
        "practice#2of7"
       ]
+     },
+     {
+      "when": {
+       "all": [
+        {
+         "fact": "a1_versandt",
+         "is": true
+        },
+        {
+         "fact": "unterlagen_vollstaendig",
+         "is": true
+        },
+        {
+         "fact": "ein_punkt_offen",
+         "is": true
+        }
+       ]
+      },
+      "kind": "A4",
+      "title": "Rückfrage zu einem Punkt",
+      "next_in_days": 14,
+      "follow_up": "A6",
+      "source_refs": [
+       "practice#2of7"
+      ],
+      "note": "aus dem Prozess, in 2 von 7 Dossiers beobachtet"
      }
     ]
    },

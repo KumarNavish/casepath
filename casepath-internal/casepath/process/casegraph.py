@@ -11,7 +11,7 @@ Every addition names its origin, and the result is validated like any workflow.
 import re
 from copy import deepcopy
 
-from .workflows import CatalogueError, evaluate, evaluate_condition, validate_workflow
+from .workflows import CatalogueError, condition_facts, evaluate, evaluate_condition, validate_workflow
 
 EXTRA_SOURCES = [{"id": "knowledge", "kind": "knowledge", "title": "CasePath Knowledge learned from earlier cases"},
                  {"id": "edit", "kind": "case_edit", "title": "Changes made to this case's process"}]
@@ -355,7 +355,26 @@ def derive_facts(graph, facts, findings, evaluate):
             out[fact] = complete
         elif kind == "missing_after_two_requests":
             out[fact] = requests >= 2 and not complete
+        elif kind == "one_stage_fact_open":
+            out[fact] = len(open_stage_facts(graph, out, evaluation)) == 1
     return out
+
+
+def open_stage_facts(graph, facts, evaluation):
+    """The facts of the current stage that only the customer can settle and that are still open: those its documents and
+    transitions depend on and the process marks as asked of the customer, neither the handler's decisions nor computed."""
+    step = next((s for s in graph["steps"] if s["id"] == ((evaluation or {}).get("current") or {}).get("step")), None)
+    if not step:
+        return []
+    used = set()
+    for edge in step.get("next", []):
+        used |= condition_facts(edge.get("when", True))
+    for document in graph["documents"]:
+        if document["id"] in step.get("documents", []):
+            used |= condition_facts(document.get("required_when", True))
+    definitions = {f["id"]: f for f in graph["facts"]}
+    return sorted(f for f in used if f in definitions and definitions[f].get("ask_customer") and not definitions[f].get("handler_only")
+                  and not definitions[f].get("derived") and facts.get(f) is None)
 
 
 def check_edit(base_graph, edit):
