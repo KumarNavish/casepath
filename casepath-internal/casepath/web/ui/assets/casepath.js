@@ -1110,56 +1110,10 @@ function askNow(ev) {
   return { now, later };
 }
 function draftFor(ev) {
-  // The letter the prepared action needs, in the form Protekta's handlers use (from the development dossiers).
-  const act = item("next_action", "0");
-  const kind = act && act.action;
-  if (!kind || kind === "A1" || kind === "request") return requestDraft(ev);
-  if (S.data.draft && S.data.draft.kind === kind) return S.data.draft.text || `${T("No draft", "Kein Entwurf")}: ${S.data.draft.none}`;  // written on the server from the workflow's form
-  const due = (S.data.follow_up || {}).due;
-  const by = due ? dateText(due) : "…";
-  const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
-  const head = [...(ref ? [`Unsere Referenz: ${ref[0]}`, ""] : []), "Sehr geehrte/r …", ""];
-  const tail = ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"];
-  const close = `Ohne Ihre Rückmeldung bis ${by} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können.`;
-  if (kind === "A6") return [...head, "Vielen Dank für Ihre Nachricht. Wir halten Ihr Dossier vorerst noch pendent und erwarten die angeforderten Unterlagen und Angaben.", "", close, ...tail].join("\n");
-  if (kind === "A7") return [...head, "Nachdem bereits einige Zeit seit unserem letzten Kontakt vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen oder ob die Angelegenheit zwischenzeitlich erledigt werden konnte.", "", close, ...tail].join("\n");
-  if (kind === "A12") return [...head, (S.data.evaluation && S.data.evaluation.outcome && S.data.evaluation.outcome.id === "mitwirkung")
-    ? "Wir haben Sie mehrfach um die für die Prüfung notwendigen Unterlagen gebeten. Da uns diese bis heute nicht vorliegen, stellen wir unsere Leistungen in dieser Angelegenheit ein und schliessen Ihr Dossier."
-    : "Wir schliessen Ihr Dossier in dieser Angelegenheit. Sollte sich die Situation ändern, können Sie sich jederzeit wieder an uns wenden.", ...tail].join("\n");
-  return "";
-}
-function requestDraft(ev) {
-  const { now, later } = askNow(ev);
-  const handlerFlow = /^A\d/.test((item("next_action", "0") || {}).action || "");  // offers live in the checklist under the letter
-  const lineState = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
-  const keep = (i) => lineState[i.item_id] !== false;
-  const ask = now.filter((d) => d.status !== "present" && lineState[`document:${d.document}`] !== false)
-    .concat(later.filter((d) => lineState[`document:${d.document}`] === true))
-    .concat(ev.documents.filter((d) => (item("document", d.document) || {}).ask === "proposed" && lineState[`document:${d.document}`] === true))
-    .concat((S.data.items || []).filter((i) => i.kind === "document" && /^mention-/.test(i.key) && (i.ask === "proposed" ? lineState[i.item_id] === true : lineState[i.item_id] !== false))
-      .map((i) => ({ document: i.key, title: `${i.label.de} (${i.reason})` })));  // mentioned in the file, not in it
-  if (!ask.length) return "";
-  const ref = (String(S.data.case.title || "") + " " + JSON.stringify(S.data.case.intake || {})).match(/\d{4}\.\d{4}\.\d{4}/);
-  const procDocs = Object.fromEntries((S.data.process.documents || []).map((x) => [x.id, x]));
-  const partOf = (id) => ask.find((w) => (procDocs[w.document] || {}).includes && procDocs[w.document].includes.includes(id));
-  const parts = (w) => ask.filter((d) => ((procDocs[w.document] || {}).includes || []).includes(d.document));
-  const questions = (S.data.items || []).filter((i) => i.kind === "letter_question" && (i.ask === "proposed" ? lineState[i.item_id] === true : keep(i)));
-  const hints = (S.data.items || []).filter((i) => i.kind === "hint" && (i.stated_as === "put_to_handler" ? lineState[i.item_id] === true : keep(i)));
-  const lines = ask.filter((d) => !partOf(d.document)).map((d) => `– ${d.title}${parts(d).length ? T(`, in particular ${parts(d).map((x) => x.title).join(", ")}`, `, insbesondere ${parts(d).map((x) => x.title).join(", ")}`) : ""}${d.required === "depends" && (d.questions || []).length ? ` (falls ${d.questions.map((q) => q.question.replace(/\?$/, "")).join(" / ")})` : ""}`);
-  return [...(ref ? [T(`Our reference: ${ref[0]}`, `Unsere Referenz: ${ref[0]}`), ""] : []), T("Dear …", "Sehr geehrte/r …"), "",
-    ref ? T(`Thank you for registering your matter. It is provisionally registered under reference ${ref[0]}; please quote it in every message.`,
-            `Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz ${ref[0]} provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an.`)
-        : T("Thank you for registering your matter. It is provisionally registered with us.", "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert."), "",
-    T("To check the insurance cover and assess the facts and the law, we need in particular:", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:"),
-    ...lines, T("– any further relevant documents and information.", "– allfällige weitere relevante Unterlagen und Informationen."), "",
-    ...(questions.length ? [T("Please also answer the following questions:", "Weiter bitten wir Sie um die Beantwortung folgender Fragen:"), ...questions.map((q) => `– ${q.value}`), ""] : []),
-    ...(hints.length ? [T("On the situation you describe, we can already say:", "Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:"), ...hints.map((h) => `${h.value}${h.legal_basis ? ` (${h.legal_basis})` : ""}`), ""] : []),
-    T("Please send copies or scans, not originals. We will then inform you about the next steps and the legal position.",
-      "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage."), "",
-    T("Until the cover is confirmed, you remain responsible for keeping any running deadlines.",
-      "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."), "",
-    T("Kind regards", "Freundliche Grüsse"),
-    ...(later.length && !handlerFlow ? ["", T("(Not in this letter, possibly needed later:", "(Nicht in diesem Schreiben, später evtl. nötig:"), ...later.map((d) => `· ${d.title}`), ")"] : [])].join("\n");
+  // One mechanism: the letter is written on the server from the workflow's form (casepath/process/letters.py).
+  const d = S.data.draft;
+  if (!d) return "";
+  return d.text || (d.none ? `${T("No draft", "Kein Entwurf")}: ${d.none}` : "");
 }
 function judgementPoints(ev, r) {
   const pts = [];
