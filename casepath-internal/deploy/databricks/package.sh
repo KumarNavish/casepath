@@ -49,3 +49,13 @@ fi
 find "$out" -name __pycache__ -type d -prune -exec rm -rf {} +
 find "$out" -name "*.pyc" -delete
 echo "$out: $(find "$out" -type f | wc -l) files"
+# The build's identity for the guarded swap: every packaged file's path and bytes (app.yaml excluded, it is filled on swap).
+"${PYTHON:-python3}" - "$out" <<'PY'
+import hashlib, os, sys
+root = sys.argv[1]
+h = hashlib.sha256()
+for rel in sorted(os.path.relpath(os.path.join(a, f), root) for a, _, fs in os.walk(root) for f in fs):
+    if rel != "app.yaml":
+        h.update(rel.encode() + b"\0" + open(os.path.join(root, rel), "rb").read())
+print("tree", h.hexdigest()[:12])
+PY

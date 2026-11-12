@@ -1,6 +1,6 @@
 # The one cell of the "casepath deploy" notebook: copy a packaged build from the volume into the app's workspace folder.
 # It reads one notebook parameter, "confirm" (made with Edit > Add parameter), which must read
-# "deploy <build> <files> <hash>" for the build uploaded to the volume. Empty or malformed: nothing happens. Already
+# "deploy <build> <files> <tree hash>" for the build uploaded to the volume (package.sh prints the tree hash). Empty or malformed: nothing happens. Already
 # deployed: nothing happens, so "Run all" or a repeated run is harmless. Afterwards press Deploy on the app's page.
 # Keep this as the notebook's only cell.
 import hashlib
@@ -20,7 +20,13 @@ V = f"{w['volume']}/casepath-app-{w['build']}/casepath-app"
 D = f"/Workspace/Users/{w['users'].split(',')[0].strip()}/casepath-app"
 N, O = D + "-new", D + "-previous"
 listing = lambda root: sorted(os.path.relpath(os.path.join(a, f), root) for a, _, fs in os.walk(root) for f in fs)
-js = lambda root: hashlib.sha256(open(root + "/casepath/web/ui/assets/casepath.js", "rb").read()).hexdigest()[:12]
+def js(root):
+    """The build's identity: every file's path and bytes, app.yaml excluded (it is filled here); as package.sh prints it."""
+    h = hashlib.sha256()
+    for rel in listing(root):
+        if rel != "app.yaml":
+            h.update(rel.encode() + b"\0" + open(os.path.join(root, rel), "rb").read())
+    return h.hexdigest()[:12]
 
 if os.path.exists(D + "/casepath/web/ui/assets/casepath.js") and js(D) == w["hash"]:
     print("already deployed:", w["build"], js(D), "- nothing changed")
