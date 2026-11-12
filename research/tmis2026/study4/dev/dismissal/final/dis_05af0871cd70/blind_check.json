@@ -1,9 +1,15 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "nobody has given me notice",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "I work part-time in the office of Steinbruch Trading Ltd in Kreuzlingen",
-      "state": "stated_false"
+      "quote": "",
+      "state": "not_mentioned"
     },
     "Q2": {
       "quote": "nobody has given me notice",
@@ -38,5 +44,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "dis_05af0871cd70"
+  "file_id": "dis_05af0871cd70",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

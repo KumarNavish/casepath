@@ -331,3 +331,42 @@ Recommended but not blocking:
 - record that the illness fact will be held more often than the other period facts, and that silence can choose between two type 2 stops.
 
 **Ready to be marked reviewed?** Not yet. It is ready as soon as the two wording changes above are made. Neither needs a new source or a structural change.
+
+## Second look, revisions 1 and 2 (2026-11-12)
+
+Second reader; I did not write either revision. Read: SPEC.md items 1 to 7 (with 6a, 6b, 6c), the two revision sections of
+`RECONCILIATION.md`, `generator/items/dismissal.json`, and the snapshots `sources/co-sr220-en.txt` and
+`sources/co-sr220-de.txt` (not `sources/raw/`). Checks run:
+
+- Field-by-field diff of `rev0/rules.json` -> `rev1/rules.json` -> `rules.json`, of all three workflows at the same
+  three states, and word-level diffs of `rule_text.md`. Every change found is listed. No unlisted change.
+- With question, title and `must_show` masked, `rules.json` and all workflows are equal to `rev0/`. No fact id, step,
+  `needed_when`, `mandatory`, presumption, stop, `source_id`, locator, passage, basis or inference changed. The
+  convention text is SPEC 6a's, character for character. All hashes match the recorded ones.
+- Every quoted passage (English and German) is in the snapshot, character for character, at the stated article
+  (arts. 335b paras. 1-2, 335c para. 2, 336 para. 1 let. d, 336b, 336c para. 1, 337c para. 1). One locator point: for the
+  notice-period item (R2-2), RECONCILIATION.md gives "the document's rule" as art. 335b para. 1. That is the rule of
+  `employment_contract` only in `protected_period_notice`. In `wrongful_termination` the rule is art. 335c para. 1, and
+  in `immediate_dismissal` it is art. 337c para. 1. Both of those support the item better. The rule set itself is
+  right; only the listing is incomplete.
+- `python3 -I -B rules/dismissal/tools/check.py`: ALL CHECKS PASSED (6c: 71 items, 8 conditional in the fixed form);
+  the tree was unchanged.
+- `lint/verify_rev2.py` was **not run**: it writes `lint/VERIFY_REV2.json`. I read the stored report only.
+
+### Revision 1
+
+- R1-1 `dispute_family` question (workflow only): **disagree in one clause**. The `protected_period_notice` and `immediate_dismissal` descriptions match the matters their types' conditions decide (arts. 335b, 335c, 336c; arts. 337-337c). The `wrongful_termination` clause "or against which the employee objects or claims compensation (CO arts. 336-336b)" is wider than its passage. The objection of art. 336b para. 1 is the objection of "a party seeking compensation pursuant to Articles 336 and 336a", that is, against an abusive notice. A bare "objects" also covers an employee who protests a notice given during sick leave or pregnancy, which is a type 1 matter. So the new wording creates an overlap beyond the shared defining event that the reviser already noted. I would accept: "wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), including the written objection to such a notice and the compensation claim for it (CO arts. 336-336b)." Note: as in tenancy, the routing question is not in `rule_text.md`, so prompt-based designs see only the new title.
+- R1-2 type 1 title "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)": **agree**. It names exactly what the type's facts decide (`notice_during_probation`, `probation_varied`, the three art. 336c periods, `notice_before_protected_period`, `notice_period_varied`).
+- R1-3 `retaliation_for_claims` question, added sentence ("The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities."): **agree**. Art. 336 para. 1 let. d needs the employer's reason. At intake, a reason the other party holds can reach the file only as the employee's account, and "stated" under 6a means alleged in the file, as for every other fact of the set. So a firm account is the statement the passage requires; it is not turned into proof. Its only effect is that `claims_correspondence` is requested, the document that would prove it. "Because", "in good faith" and "claims under the employment relationship" are unchanged; a coincidence in time stays outside (`not_this`), and a hedge stays open. The same words reach every design: `rule_text.md` (type 2, question on this fact) and the workflow. Small point, no change needed: the question is worded "Was the notice given because ...", so "counts as stating it" refers back to a "does the file state" that the sentence does not contain.
+
+### Revision 2 (must_show)
+
+- R2-1 `employment_contract` (all three types) "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.": **agree**. Art. 335b para. 2; the fact's wording; fixed form; "if any" gone. Note for the planner: RECONCILIATION.md says that in `wrongful_termination` and `immediate_dismissal` "the condition never holds there". That is not so. The wording turns on what the file states, and a file of those types may state a written probation clause. The reader would then apply the item, while the generator (whose `applies_when` uses a fact those types lack) never does. The item is still right on the text, because probation sets the notice period, which matters to the objection deadline (art. 336b para. 1) and to damages (art. 337c para. 1). The generator note should apply it on the stated circumstance in those types.
+- R2-2 `employment_contract` (all three types) "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.": **agree**. Art. 335c para. 2 (the condition fact's passage); fixed form. The same note as R2-1 applies to `wrongful_termination`, which has no `notice_period_varied` fact.
+- R2-3 `employment_contract` (immediate) "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply.": **agree**. Art. 337c para. 1 ("on expiry of its agreed duration"); condition `fixed_term` as in the generator; fixed form.
+- R2-4 `claims_correspondence` "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply.": **agree**. The generator leaves the condition to the story, so the circumstance is the condition (6c). The core of art. 336 para. 1 let. d (claims asserted, dated before the notice) stays unconditional.
+
+### Considered and not changed
+
+- `pregnancy_certificate` "pregnancy confirmed and its dates, or the date of birth" and `termination_letter` "that employment ends with immediate effect": agree to keep. Each names a visible record.
+- `incapacity_illness_accident` (flagged for this reader): I agree it was not changed in these revisions. But the question joins two things: the incapacity, and whether it was "still within its protected length". A file that states an illness clearly but not the year of service can then be read as "not stated" when it should be read as open. Splitting the question is a fact change, so it is for a later revision.

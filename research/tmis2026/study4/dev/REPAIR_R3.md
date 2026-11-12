@@ -84,6 +84,13 @@ python3 -I -B generator/test_generator.py
 `finalize` refuses to run while a re-checked file differs at round 3 and no round 4 decides it. A rewritten file
 that differs at round 3 (or 4) is dropped without a further round.
 
+**Keep rule for re-checked files** (added after the round-3 reading, `assemble.py` docstring and README): a
+re-checked file whose reading differs from its recorded states only by facts read "not mentioned" where recorded
+"stated false", or the reverse, and whose engine reference from the states now read equals its stored reference,
+matches; its recorded states become the states now read (the round-1 keep rule in both directions). Where they now
+equal the designed states, the `kept_as_read` flag is dropped (`repair.states: "as designed"`); the reference file is
+kept byte-identical.
+
 ## What `final/` will then contain
 
 - Every file kept before stays, except files dropped by this round. Their `reference.json` and `design.json` are
@@ -105,3 +112,28 @@ that differs at round 3 (or 4) is dropped without a further round.
   The round-3 blind check of all 24 files, with the new criterion, is what decides; step 5 handles what it finds.
 - dis_827bbd04ddc9 has no stored routing quotation (the router gave no value); the diagnosis's reason is that it
   states an ordinary notice with a notice period.
+
+## Outcome (2026-11-12)
+
+The writer and the blind reader returned; `compare --round 3` ran for the three regimes (dismissal recomputed after
+the keep rule was added; the blind outputs are untouched), then `finalize` for all three, `lint/verify_rev2.py` and
+the test suite (19 tests OK).
+
+| Regime | Checked | Rewritten (match) | Re-checked (match) | Kept by the keep rule | Dropped now | Final set |
+|---|---|---|---|---|---|---|
+| tenancy | 8 | 0 | 8 | 0 | 0 | 59 (1 dropped earlier) |
+| theft | 8 | 6 (6) | 2 (2) | 0 | 0 | 59 (1 dropped earlier) |
+| dismissal | 8 | 2 (2) | 6 (4 exact, 2 by the keep rule) | 2 | 0 | 58 (2 dropped earlier) |
+
+- Rewritten and kept at round 3: the_1dfba8facf5e, the_6634ab23ee99, the_685edf55333b, the_86b4e22a87e7,
+  the_86e739ec9184, the_a529fff2269d, dis_827bbd04ddc9, dis_ff1e9056d2c3.
+- Kept by the keep rule: dis_05af0871cd70 and dis_5215d587db4b. Their only difference was `more_than_180_days`,
+  recorded "stated false" (as read at round 1) and read now "not mentioned", which is the designed state; the engine
+  reference is unchanged. Their records now equal their designs (the `kept_as_read` flag dropped); dismissal's
+  kept-as-read count goes from 2 to 0.
+- No round 4 was needed; nothing was dropped; no folder moved to `dropped/`.
+- `lint/verify_rev2.py`: all regimes ok. Every reference byte-identical to before the repair; the two dismissal
+  design records differ from before only in `more_than_180_days` and the dropped flag (the earlier record rebuilt
+  and matched by hash); recomputed from the new records their document states and stop are equal (only `unresolved`
+  differs in the stored reference, which is kept). Final sets: 59 + 59 + 58 = 176 files.
+

@@ -193,6 +193,14 @@ rewrite request says so (`answers_changed`), and the final record is flagged `re
 request carries the file's bundle rebuilt with the current item notes. A file that still differs after round 2 is
 dropped and counted.
 
+**Keep rule in repair rounds (2026-11-12).** The same rule applies, in both directions, to a file re-checked (not
+rewritten) in a repair round: if its reading differs from its recorded states only by facts read "not mentioned"
+where recorded "stated false", or the reverse, and the engine reference from the states now read equals its stored
+reference, `compare` counts it as matching (`kept_by_keep_rule` in `compare_round<k>.json`) and `finalize` makes the
+states now read its recorded states. Where they equal the designed states the `kept_as_read` flag and the
+`facts_designed` copy are dropped (manifest `repair.states: "as designed"`); otherwise the flag stays with the new
+states. The reference file is kept byte-identical; the manifest records the changed facts and the previous hashes.
+
 Both sessions must be of a model family that is **not evaluated** in the study. If an evaluated model wrote the
 texts, its own phrasing habits would be what it later reads, which would favour that model; if it did the blind
 check, the check would certify texts that model happens to read as designed. The writing and the blind check

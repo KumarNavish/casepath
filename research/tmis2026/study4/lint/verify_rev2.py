@@ -5,6 +5,10 @@ DEVELOPMENT material, not a result. No model calls; writes nothing outside lint/
     python3 -I -B study4/lint/verify_rev2.py      # writes lint/VERIFY_REV2.json
 
 1. Every stored final reference.json and design.json still has the SHA-256 that dev/<regime>/final/MANIFEST.json records.
+   For files touched by a repair round (manifest `repair`), reference.json is byte-identical to before the repair; a
+   design record differs from before only where the round's keep rule changed recorded states, exactly in those facts
+   (and the kept_as_read flag dropped where the states are now the designed ones); the record before is rebuilt from
+   the design and classify_round1.json and must hash to the recorded previous SHA-256.
 2. The product's evaluator (generator/reference.py's engine_reference) recomputes every final file's reference with the
    revised workflows: document states, waited-for facts, stop, path, presumed facts equal the stored reference.
 3. The clean-room comparison on the round-1 designs, re-run on the revised workflows: the engine's document states
@@ -113,13 +117,59 @@ def main():
         x["final_files"] = len(man["files"])
         x["hash_mismatch"] = [f["file_id"] for f in man["files"] for n in ("reference.json", "design.json")
                               if sha(S4 / "dev" / r / "final" / f["file_id"] / n) != f["sha256"][n]]
-        diffs = []
+        # repair round 3 and later: every reference byte-identical to before the repair; a design record changes only
+        # where the repair's keep rule changed recorded states, and then exactly in those facts (and, where the
+        # states are now the designed ones, by dropping the kept_as_read flag and the facts_designed copy)
+        cl_p = S4 / "dev" / r / "blindcheck" / "classify_round1.json"
+        cl = jl(cl_p)["files"] if cl_p.exists() else {}
+        ref_changed, design_changed, design_unexplained = [], [], []
+        for f in man["files"]:
+            rp = f.get("repair")
+            if not rp:
+                continue
+            fdir = S4 / "dev" / r / "final" / f["file_id"]
+            if sha(fdir / "reference.json") != rp["previous_sha256"]["reference.json"]:
+                ref_changed.append(f["file_id"])
+            if sha(fdir / "design.json") == rp["previous_sha256"]["design.json"]:
+                if rp.get("changed_facts"):
+                    design_unexplained.append(f["file_id"])
+                continue
+            # rebuild the record as it was before the repair and check it is the stored one
+            dsg = jl(S4 / "dev" / r / "designs" / f"{f['file_id']}.json")
+            prev = dict(dsg)
+            if f["kept"] == "kept_as_read":
+                prev.update(facts=cl[f["file_id"]]["facts_as_read"], facts_designed=dsg["facts"], kept_as_read=True)
+            prev_ok = G.sha256_bytes(G.canon(prev).encode("utf-8")) == rp["previous_sha256"]["design.json"]
+            now = jl(fdir / "design.json")
+            expect = dict(prev, facts=dict(prev["facts"], **{k: v["now"] for k, v in (rp.get("changed_facts") or {}).items()}))
+            if rp.get("states") == "as designed":
+                expect.pop("kept_as_read", None)
+                expect.pop("facts_designed", None)
+            row = {"file": f["file_id"], "changed_facts": rp.get("changed_facts"), "states": rp.get("states"),
+                   "previous_record_rebuilt": prev_ok, "record_is_previous_plus_changed_facts": now == expect,
+                   "record_equals_design": now == dsg}
+            (design_changed if prev_ok and now == expect and rp.get("changed_facts") else design_unexplained).append(row)
+        x["repair_reference_changed"] = ref_changed
+        x["repair_design_records_changed_by_keep_rule"] = design_changed
+        x["repair_design_records_unexplained"] = design_unexplained
+        keep_rule = {row["file"] for row in design_changed}
+        diffs, keep_rule_ref = [], []
         for f in man["files"]:
             d = S4 / "dev" / r / "final" / f["file_id"]
-            dd = same_ref(REF.engine_reference(W, new, jl(d / "design.json")), jl(d / "reference.json"))
-            if dd:
+            eng, stored = REF.engine_reference(W, new, jl(d / "design.json")), jl(d / "reference.json")
+            dd = same_ref(eng, stored)
+            if f["file_id"] in keep_rule:
+                # the stored reference is kept from before the keep rule: document states and stop must still hold;
+                # presumed / unresolved follow the fact moved between stated false and not mentioned
+                core = {k: v for k, v in dd.items() if k in ("documents", "stop", "outcome", "waiting_for")}
+                keep_rule_ref.append({"file": f["file_id"], "documents_and_stop_equal": not core,
+                                      "other_fields_differing": sorted(set(dd) - set(core))})
+                if core:
+                    diffs.append({"file": f["file_id"], "differences": core})
+            elif dd:
                 diffs.append({"file": f["file_id"], "differences": dd})
         x["final_recomputed_differences"] = diffs
+        x["keep_rule_files_recomputed"] = keep_rule_ref
         # 3 clean room
         designs = [jl(p) for p in sorted((S4 / "dev" / r / "designs").glob("*.json")) if p.name != "MANIFEST.json"]
         cr = []
@@ -197,7 +247,7 @@ def main():
             if k_old != k_new or map_bundle_items(strip_new(b_old), new, dsg["type"], k_old["attachments"]) != strip_new(b_new):
                 bdiff.append(dsg["file_id"])
         x["writer_bundle_differences"] = bdiff
-        ok = (not x["hash_mismatch"] and not diffs
+        ok = (not x["hash_mismatch"] and not diffs and not ref_changed and not design_unexplained
               and all(c["documents"] == c["same_state_as_engine_on_revised_workflows"] == EXPECTED_CLEANROOM[r] for c in cr)
               and x["rules_equal_except_must_show_wording"] and all(x["workflows_equal_except_must_show_wording"].values())
               and x["item_notes_equal_after_renaming"] and not note_diffs and not bdiff)

@@ -1,12 +1,22 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "E2": {
+      "quote": "",
+      "state": "not_mentioned"
+    }
+  },
   "facts": {
     "Q1": {
       "quote": "There is no clause tying the rent to the consumer price index or any other index.",
       "state": "stated_false"
     },
     "Q2": {
-      "quote": "Feldegg has not asked me for a higher rent. There has been no letter, no form and no new bill with a different amount.",
+      "quote": "Feldegg has not asked me for a higher rent.",
       "state": "stated_false"
     },
     "Q3": {
@@ -22,5 +32,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "ten_f1871d924ee4"
+  "file_id": "ten_f1871d924ee4",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

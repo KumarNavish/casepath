@@ -1,8 +1,18 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "E2": {
+      "quote": "",
+      "state": "not_mentioned"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "Die Verwaltung hat mir nie eine höhere Miete angekündigt, weder mit einem Brief noch mit einem Formular noch mit einer Rechnung",
+      "quote": "Die Verwaltung hat mir nie eine höhere Miete angekündigt",
       "state": "stated_false"
     },
     "Q2": {
@@ -22,5 +32,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "ten_8572ddc89110"
+  "file_id": "ten_8572ddc89110",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

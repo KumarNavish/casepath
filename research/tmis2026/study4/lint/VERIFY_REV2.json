@@ -4,7 +4,11 @@
   "tenancy": {
    "final_files": 59,
    "hash_mismatch": [],
+   "repair_reference_changed": [],
+   "repair_design_records_changed_by_keep_rule": [],
+   "repair_design_records_unexplained": [],
    "final_recomputed_differences": [],
+   "keep_rule_files_recomputed": [],
    "cleanroom": [
     {
      "evaluator": "evaluator_a",
@@ -90,7 +94,11 @@
   "theft": {
    "final_files": 59,
    "hash_mismatch": [],
+   "repair_reference_changed": [],
+   "repair_design_records_changed_by_keep_rule": [],
+   "repair_design_records_unexplained": [],
    "final_recomputed_differences": [],
+   "keep_rule_files_recomputed": [],
    "cleanroom": [
     {
      "evaluator": "evaluator_a",
@@ -135,7 +143,53 @@
   "dismissal": {
    "final_files": 58,
    "hash_mismatch": [],
+   "repair_reference_changed": [],
+   "repair_design_records_changed_by_keep_rule": [
+    {
+     "file": "dis_05af0871cd70",
+     "changed_facts": {
+      "more_than_180_days": {
+       "now": "not_mentioned",
+       "recorded": "stated_false"
+      }
+     },
+     "states": "as designed",
+     "previous_record_rebuilt": true,
+     "record_is_previous_plus_changed_facts": true,
+     "record_equals_design": true
+    },
+    {
+     "file": "dis_5215d587db4b",
+     "changed_facts": {
+      "more_than_180_days": {
+       "now": "not_mentioned",
+       "recorded": "stated_false"
+      }
+     },
+     "states": "as designed",
+     "previous_record_rebuilt": true,
+     "record_is_previous_plus_changed_facts": true,
+     "record_equals_design": true
+    }
+   ],
+   "repair_design_records_unexplained": [],
    "final_recomputed_differences": [],
+   "keep_rule_files_recomputed": [
+    {
+     "file": "dis_05af0871cd70",
+     "documents_and_stop_equal": true,
+     "other_fields_differing": [
+      "unresolved"
+     ]
+    },
+    {
+     "file": "dis_5215d587db4b",
+     "documents_and_stop_equal": true,
+     "other_fields_differing": [
+      "unresolved"
+     ]
+    }
+   ],
    "cleanroom": [
     {
      "evaluator": "evaluator_a",

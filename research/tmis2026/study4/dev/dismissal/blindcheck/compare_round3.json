@@ -1,16 +1,32 @@
 {
   "dis_05af0871cd70": {
     "blind_sha256": "c145b22e030df302d17d4b94f1dabcde4ddd7d1857a3762c58d143fc43df5dcc",
-    "matches": false,
-    "mismatches": [
-      {
-        "designed": "stated_false",
-        "fact": "more_than_180_days",
-        "kind": "question",
-        "label": "Q1",
-        "read_as": "not_mentioned"
-      }
-    ],
+    "kept_by_keep_rule": {
+      "differences": [
+        {
+          "designed": "stated_false",
+          "fact": "more_than_180_days",
+          "kind": "question",
+          "label": "Q1",
+          "read_as": "not_mentioned"
+        }
+      ],
+      "facts_now": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "not_mentioned",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "not_mentioned"
+      },
+      "rule": "every difference is 'not mentioned' <-> 'stated false' and the engine reference from the states now read equals the stored reference",
+      "states": "as designed"
+    },
+    "matches": true,
+    "mismatches": [],
     "routing_read": {
       "answer": null,
       "quote": ""
@@ -39,16 +55,32 @@
   },
   "dis_5215d587db4b": {
     "blind_sha256": "d94ce0162dc82cb1627e7ab6d320c785cbcce1003da7f560c6d5364ebd0456a2",
-    "matches": false,
-    "mismatches": [
-      {
-        "designed": "stated_false",
-        "fact": "more_than_180_days",
-        "kind": "question",
-        "label": "Q1",
-        "read_as": "not_mentioned"
-      }
-    ],
+    "kept_by_keep_rule": {
+      "differences": [
+        {
+          "designed": "stated_false",
+          "fact": "more_than_180_days",
+          "kind": "question",
+          "label": "Q1",
+          "read_as": "not_mentioned"
+        }
+      ],
+      "facts_now": {
+        "action_in_time": "stated_false",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_false",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "not_mentioned",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "stated_false"
+      },
+      "rule": "every difference is 'not mentioned' <-> 'stated false' and the engine reference from the states now read equals the stored reference",
+      "states": "as designed"
+    },
+    "matches": true,
+    "mismatches": [],
     "routing_read": {
       "answer": null,
       "quote": ""

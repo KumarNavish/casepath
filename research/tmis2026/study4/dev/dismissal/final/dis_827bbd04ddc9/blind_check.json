@@ -1,12 +1,18 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "Ich bin nicht entlassen worden.",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "Mit Absenzen hatte das überhaupt nichts zu tun",
+      "quote": "Frau Carter hat mir auch nie einen Grund genannt, weshalb ich gehen müsste, auch keine Fehlzeiten.",
       "state": "stated_false"
     },
     "Q2": {
-      "quote": "Ich bekam die Kündigung im Herbst, mit einer ordentlichen Frist",
+      "quote": "Frau Petra Carter hat mir nie gekündigt, weder fristlos noch sonst irgendwie.",
       "state": "stated_false"
     },
     "Q3": {
@@ -22,9 +28,13 @@
       "state": "not_mentioned"
     },
     "Q6": {
-      "quote": "Ich habe in dieser Zeit nirgends gearbeitet und keinen Franken verdient",
+      "quote": "ich habe in dieser Zeit auch nirgends sonst etwas verdient",
       "state": "stated_false"
     }
   },
-  "file_id": "dis_827bbd04ddc9"
+  "file_id": "dis_827bbd04ddc9",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

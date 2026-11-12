@@ -1,8 +1,14 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "Nothing of mine has been stolen at all, anywhere.",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "This wasn't at home in my flat at Sonnenweg 95 in Chur.",
+      "quote": "nothing was stolen from my flat at Sonnenweg 95 in Chur and nothing there was damaged",
       "state": "stated_false"
     },
     "Q2": {
@@ -22,7 +28,7 @@
       "state": "not_mentioned"
     },
     "Q6": {
-      "quote": "Nothing happened that forced me to act before I could hear from you, there was no danger of anything getting worse",
+      "quote": "There was no danger of any kind, nothing urgent happened",
       "state": "stated_false"
     },
     "Q7": {
@@ -38,5 +44,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_685edf55333b"
+  "file_id": "the_685edf55333b",
+  "routing": {
+    "answer": "other",
+    "quote": "Nothing of mine has been stolen at all, anywhere."
+  }
 }

@@ -480,15 +480,24 @@ class GeneratorTest(unittest.TestCase):
         made, missing = A.blind_in(reg, out, 3)
         self.assertEqual(sorted(made), sorted(plan["check"]))
         recheck_bad = next(fid for fid in plan["check"] if fid != once)
+        # keep rule: a re-checked file read "stated false" where it records a presumed-false "not mentioned"
+        keep_fid, keep_fact = next((fid, f) for fid in plan["check"] if fid not in (once, recheck_bad)
+                                   for f, st in ds[fid]["facts"].items()
+                                   if st == "not_mentioned" and reg.presumptions(ds[fid]["type"]).get(f) is False)
         for fid in made:
             inp = G.read_json(out / "blindcheck" / "in" / "round3" / f"{fid}.json")
             self.assertIn("event_questions", inp)
             b = blind(ds[fid], keys[fid], 3)
+            if fid == keep_fid:
+                lab = next(l for l, f in keys[fid]["questions"].items() if f == keep_fact)
+                b["facts"][lab]["state"] = "stated_false"
             if fid == recheck_bad and inp["event_questions"]:
                 b["events"][inp["event_questions"][0]["label"]] = {"state": "stated_true", "quote": "q"}
             G.write_json(out / "blindcheck" / "out" / "round3" / f"{fid}.json", b)
         res = A.compare(reg, out, 3)
         self.assertTrue(res[once]["matches"])
+        self.assertTrue(res[keep_fid]["matches"])
+        self.assertEqual(res[keep_fid]["kept_by_keep_rule"]["states"], "as read")
         if not res[recheck_bad]["matches"]:
             with self.assertRaises(SystemExit):  # a re-checked file that differs needs its rewrite first
                 A.finalize(reg, out)
@@ -507,10 +516,25 @@ class GeneratorTest(unittest.TestCase):
         self.assertTrue((out / "dropped" / twice / "design.json").exists())
         e = {x["file_id"]: x for x in entries}
         self.assertEqual(e[once]["round"], 3)
-        self.assertEqual(e[once]["repair"], {"round": 3, "result": "rewritten"})
+        self.assertEqual({k: v for k, v in e[once]["repair"].items() if k != "previous_sha256"}, {"round": 3, "result": "rewritten"})
         self.assertEqual((out / "final" / once / "text.clean.txt").read_text(encoding="utf-8"), "neu " * 200)
         if recheck_bad in why:
             self.assertIn("differs after rewrite (repair round 4)", why[recheck_bad])
+        rec = G.read_json(out / "final" / keep_fid / "design.json")
+        self.assertEqual(rec["facts"][keep_fact], "stated_false")
+        self.assertTrue(rec["kept_as_read"])
+        self.assertEqual(rec["facts_designed"], ds[keep_fid]["facts"])
+        self.assertEqual(e[keep_fid]["repair"]["changed_facts"],
+                         {keep_fact: {"recorded": "not_mentioned", "now": "stated_false"}})
+        self.assertEqual(e[keep_fid]["sha256"]["reference.json"], e[keep_fid]["repair"]["previous_sha256"]["reference.json"])
+        # the reverse direction recovers the design; any other difference is not kept
+        d = ds[keep_fid]
+        rev = A.repair_keep_rule(reg, out, d, rec["facts"], [{"kind": "question", "fact": keep_fact, "designed": "stated_false",
+                                                              "read_as": "not_mentioned"}])
+        self.assertEqual(rev["states"], "as designed")
+        self.assertEqual(rev["facts_now"], d["facts"])
+        self.assertIsNone(A.repair_keep_rule(reg, out, d, rec["facts"], [{"kind": "question", "fact": keep_fact,
+                                                                         "designed": "stated_false", "read_as": "open"}]))
         man = G.read_json(out / "final" / "MANIFEST.json")
         for x in man["files"]:
             for name, h in x["sha256"].items():

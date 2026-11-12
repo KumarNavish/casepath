@@ -1,8 +1,14 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "Es ist mir überhaupt nichts gestohlen worden, nirgends.",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "dass der Diebstahl nicht bei mir zu Hause am Mattenweg 100 passiert ist.",
+      "quote": "In meiner Wohnung am Mattenweg 100 in St. Gallen ist am 25. August 2026 nichts gestohlen und nichts beschädigt worden",
       "state": "stated_false"
     },
     "Q2": {
@@ -10,7 +16,7 @@
       "state": "not_mentioned"
     },
     "Q3": {
-      "quote": "Für die Kamera, das Objektiv und die Smartwatch habe ich die Originalbelege gefunden",
+      "quote": "für meine Sachen könnte ich Ihnen jeden Beleg ohne Mühe zeigen. Es fehlt keiner.",
       "state": "stated_false"
     },
     "Q4": {
@@ -18,7 +24,7 @@
       "state": "not_mentioned"
     },
     "Q5": {
-      "quote": "ich habe sie weder geflickt noch gewaschen noch weggeworfen.",
+      "quote": "Ich habe nichts dergleichen machen lassen und auch selber nichts gemacht.",
       "state": "stated_false"
     },
     "Q6": {
@@ -26,7 +32,7 @@
       "state": "not_mentioned"
     },
     "Q7": {
-      "quote": "Nein, es gab keine Gefahr, die nicht hätte warten können",
+      "quote": "Es gab keine Gefahr und nichts Dringendes.",
       "state": "stated_false"
     },
     "Q8": {
@@ -38,5 +44,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_86b4e22a87e7"
+  "file_id": "the_86b4e22a87e7",
+  "routing": {
+    "answer": "other",
+    "quote": "Es ist mir überhaupt nichts gestohlen worden, nirgends."
+  }
 }

@@ -1,9 +1,9 @@
 {
-  "assemble_sha256": "045d03c3f2cee2b6af3e9d96a99f54ee97871e1d8a97a8db5c376608886d694d",
+  "assemble_sha256": "2a4cc0735e55d6d28e9ca9a37daed59dd19d16bf316e0a1f336a4c9520b878e7",
   "counts": {
     "dropped": 1,
     "kept": 59,
-    "kept_after_rewrite": 17,
+    "kept_after_rewrite": 23,
     "kept_as_read": 3,
     "open_share_per_level": {
       "0": 0.0,
@@ -16,7 +16,9 @@
       "10": 15,
       "25": 15,
       "50": 14
-    }
+    },
+    "repair_rechecked": 2,
+    "repair_rewritten": 6
   },
   "design_manifest_sha256": "4c210f2ce1d8f223eac9fe5784ed594a1155b7b6dbed6ed9f49d53e299f49308",
   "dropped": [
@@ -246,14 +248,22 @@
       "language": "de",
       "level": 25,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "336995cb170f6d0022f1bbc63b6e8d441920cd35fcac80adfeb6885413b8516e",
+          "reference.json": "387657e38b6506b796759687561fca1a59c468f0ed72d55a3c6915ba3d07d8a5"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "118f817accaa2ca0730627a49a603048c1cf86bdb47d198c87a9c04e42aacd86",
+        "blind_check.json": "fa56bfe3a0bf45a661c24c52a8dc92a263cf987ce0852db399d02ed873a8c7aa",
         "design.json": "336995cb170f6d0022f1bbc63b6e8d441920cd35fcac80adfeb6885413b8516e",
         "reference.json": "387657e38b6506b796759687561fca1a59c468f0ed72d55a3c6915ba3d07d8a5",
-        "text.clean.txt": "97bf9e9b352e0f743f1ab5bb831e71023264eb390eee60d83eed4471ac19811c",
-        "text.txt": "97bf9e9b352e0f743f1ab5bb831e71023264eb390eee60d83eed4471ac19811c"
+        "text.clean.txt": "05f1c1ef56ee733428a9e89f9c815d8b655fea7b6da92ada1a921175d8473546",
+        "text.txt": "05f1c1ef56ee733428a9e89f9c815d8b655fea7b6da92ada1a921175d8473546"
       },
       "type": "theft_at_home"
     },
@@ -544,10 +554,18 @@
       "language": "de",
       "level": 25,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "5f93d3093db004ed8371c7746cdf2d474a2b57e0aa3d259d0c315670df4ec529",
+          "reference.json": "edc3dc554ef8932d4272d55e1e4a474b2378d44514779a9e3982c405c1c1f2eb"
+        },
+        "result": "rechecked",
+        "round": 3
+      },
       "round": 1,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "2933fbd530635a386af8a9b7fc0e198b4c0906fcc372c139b09a6cf074cead4c",
+        "blind_check.json": "9e19f7f2ef5ece362900b739bc872e778fc5f688e997be73632d8bf50d89fd99",
         "design.json": "5f93d3093db004ed8371c7746cdf2d474a2b57e0aa3d259d0c315670df4ec529",
         "reference.json": "edc3dc554ef8932d4272d55e1e4a474b2378d44514779a9e3982c405c1c1f2eb",
         "text.clean.txt": "3d3865ba6deaa08cf758dc04ea489ea71841026046b7fa142f418984d9636a9f",
@@ -580,15 +598,23 @@
       "language": "en",
       "level": 10,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "334078099a997d2d525526fb3d2aa967a13dea87860039cfaf0ad41b5c26d058",
+          "reference.json": "b5a7d7ce0aa78c13efcf8fcf1f81851fc15dc044f1195321ef70e1c03a7ddc52"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": true,
       "sha256": {
-        "blind_check.json": "d4028406587d541f5641815fed993e700297f5d8b06800c2ec500336f09871c3",
+        "blind_check.json": "32500f7869f7a302d92ac47f6e58766f7c3a6db4ad8eb40bd2227c530b0d06f3",
         "design.json": "334078099a997d2d525526fb3d2aa967a13dea87860039cfaf0ad41b5c26d058",
-        "noise.json": "453b0329e08469fe8ef82f2a14425b776ea7e820808fbbe9d6abe0483c21f10c",
+        "noise.json": "0f7569cacdf5f17515c3d9589f5a8e7d9710881e2178d73b2795f45d3947253e",
         "reference.json": "b5a7d7ce0aa78c13efcf8fcf1f81851fc15dc044f1195321ef70e1c03a7ddc52",
-        "text.clean.txt": "e5fb8012a5e1f3889d4184b563c5ade7aa8943a4a88ed4c5403fbaecb689f88b",
-        "text.txt": "0fde1a4a8f6dd46f9805423ede47d5c0d5c3a7352cc70def3fb4cbb1809f5a4f"
+        "text.clean.txt": "f5223b69d28c7086cd8727ed6fdd9e9bba5072f29d0647d70134ade9653e6254",
+        "text.txt": "ded8a206dce1715440cba6b315b18a2ca3ede146162b5ea95d50dea99dd3273f"
       },
       "type": "theft_at_home"
     },
@@ -599,14 +625,22 @@
       "language": "en",
       "level": 0,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "bba4a1b6d90b55d2cda97e89932cb9fddb336823f85e3d2feb1e022121ab2b57",
+          "reference.json": "804e798de8c42232a004286f53606ed50943a9791de9586dabaf1af1ae37818a"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "46340adf5da4e5773ea329bbfd3a7bcf7034f9f56e542a89d27fad33d02d28c0",
+        "blind_check.json": "56421169489be5f4ab1d24f51102d9fc876d457746261abaaa70aab67b57930c",
         "design.json": "bba4a1b6d90b55d2cda97e89932cb9fddb336823f85e3d2feb1e022121ab2b57",
         "reference.json": "804e798de8c42232a004286f53606ed50943a9791de9586dabaf1af1ae37818a",
-        "text.clean.txt": "ba751634be3cac0f618e3d21080b85a8e6170823a63a1f4248c47526104140b6",
-        "text.txt": "ba751634be3cac0f618e3d21080b85a8e6170823a63a1f4248c47526104140b6"
+        "text.clean.txt": "9c12daa5186798064af7c8f977afd2ca1368f1ca353fbe909cd6a19c881b6cb5",
+        "text.txt": "9c12daa5186798064af7c8f977afd2ca1368f1ca353fbe909cd6a19c881b6cb5"
       },
       "type": "theft_at_home"
     },
@@ -681,14 +715,22 @@
       "language": "de",
       "level": 10,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "ca016c9fc5b395d78d641f6731cdd2353cd841dbc012640d8ed8b0f4a76c1997",
+          "reference.json": "201aaf308ebab7c095bd8deee06031a50183c508e2afe3643e490e4b850c0f07"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "531e23287ebab9d7b409e3f13a63d907aecc75e1f9624952d9f1def27dccdaaf",
+        "blind_check.json": "18a80ef927193b03c53908dab832e4f37e29fbfc61fb4c2ce05f17164bb50dde",
         "design.json": "ca016c9fc5b395d78d641f6731cdd2353cd841dbc012640d8ed8b0f4a76c1997",
         "reference.json": "201aaf308ebab7c095bd8deee06031a50183c508e2afe3643e490e4b850c0f07",
-        "text.clean.txt": "8dd77fd0feac4e1243a9bbd64e74f9216c60179aad2b5cff15a522a39cb2ae5d",
-        "text.txt": "8dd77fd0feac4e1243a9bbd64e74f9216c60179aad2b5cff15a522a39cb2ae5d"
+        "text.clean.txt": "3d59ae64ba1c9cbf25d2d9f8e6f817664c352ffa0c895992082a816535b473e6",
+        "text.txt": "3d59ae64ba1c9cbf25d2d9f8e6f817664c352ffa0c895992082a816535b473e6"
       },
       "type": "theft_at_home"
     },
@@ -699,15 +741,23 @@
       "language": "de",
       "level": 0,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "2c4c3b791db56371edd98e0b8ec1595b4d0e1d24f253473112eec834bd63c67d",
+          "reference.json": "a9fa4bd5efd345746067583afb87a9428eaffbda9ad5a023f77e88f825b5dd3e"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": true,
       "sha256": {
-        "blind_check.json": "2c1121fcb776cde4a3f8ab7a354c9228bf23c67bbcea0a3dbf525384f5b50d35",
+        "blind_check.json": "439d094342719f550002924dfe40001ccfef4c329dd9b6184ea8f4610520c29e",
         "design.json": "2c4c3b791db56371edd98e0b8ec1595b4d0e1d24f253473112eec834bd63c67d",
-        "noise.json": "b563b4550ec9139963d4f7fd3b84a5bb16f7f6dbfc18597ec43a93343fb9dfff",
+        "noise.json": "d9d8f4ff09ff725f2cbdfee0dab9ab12521baecd57f105b26388c173d4405840",
         "reference.json": "a9fa4bd5efd345746067583afb87a9428eaffbda9ad5a023f77e88f825b5dd3e",
-        "text.clean.txt": "d583f99a80a2fc6bd038d0c76ab9a639449a57ec252f21c4cb61bb0e65fb5ced",
-        "text.txt": "8f71a45bb58bee44834637b37ec7f7f98c1842ecb84fd8a1f66a48a22cf90679"
+        "text.clean.txt": "ce8ab72f4e683efc7c1416f5df2f12a5e137a8c6e88dcd9f48a99f21917daa9b",
+        "text.txt": "95d768c23033c5f26e9fbb7a202bc6cef36f622d510dbfae2c6d968365fe4193"
       },
       "type": "simple_theft_away"
     },
@@ -837,14 +887,22 @@
       "language": "en",
       "level": 50,
       "open_facts": [],
-      "round": 1,
+      "repair": {
+        "previous_sha256": {
+          "design.json": "93bcbbed00d66ac8c8a00db2190c325ec35c1ce4a6792770893f7b098cf3018c",
+          "reference.json": "ed9c7d6b378e685a21eb3d5f8b96a81bd26c94bfaf11b9d7ea621055f2ef84fe"
+        },
+        "result": "rewritten",
+        "round": 3
+      },
+      "round": 3,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "50f7b0ec253fecb1b1dca6b23fbe445c97e50e682315f7c14f488a55ea3c8a11",
+        "blind_check.json": "ca928a53f48cda8372a819ae3704426c127066df9958b13bc7663094f4ac157b",
         "design.json": "93bcbbed00d66ac8c8a00db2190c325ec35c1ce4a6792770893f7b098cf3018c",
         "reference.json": "ed9c7d6b378e685a21eb3d5f8b96a81bd26c94bfaf11b9d7ea621055f2ef84fe",
-        "text.clean.txt": "1df93c4f24666357eb1b1313c72f6302902c9bca8a2fd341d581c84f45bfa9bf",
-        "text.txt": "1df93c4f24666357eb1b1313c72f6302902c9bca8a2fd341d581c84f45bfa9bf"
+        "text.clean.txt": "2cc63025624e46f8a21da3d97708867121be8a9ad52fdbb197058f661d38961c",
+        "text.txt": "2cc63025624e46f8a21da3d97708867121be8a9ad52fdbb197058f661d38961c"
       },
       "type": "simple_theft_away"
     },
@@ -1004,10 +1062,18 @@
       "language": "en",
       "level": 50,
       "open_facts": [],
+      "repair": {
+        "previous_sha256": {
+          "design.json": "e3a6292fb2c350177aafde3f37ad61fbb876b2cbabd12f6583d99dc689c29af0",
+          "reference.json": "80288d7e9dbc673e28b90c9065c310f7e04bfaa370cfbedd711bb0b0e15080ab"
+        },
+        "result": "rechecked",
+        "round": 3
+      },
       "round": 1,
       "scan_noise": false,
       "sha256": {
-        "blind_check.json": "15f7698b6a6b5317a6b469725d17e8d1791418cb6e49c2552f14b929bb516328",
+        "blind_check.json": "cb042b1ae86f5a481d0a690ab7983557defff6e77e0d636def4b5d436fcc3956",
         "design.json": "e3a6292fb2c350177aafde3f37ad61fbb876b2cbabd12f6583d99dc689c29af0",
         "reference.json": "80288d7e9dbc673e28b90c9065c310f7e04bfaa370cfbedd711bb0b0e15080ab",
         "text.clean.txt": "e68cff592a86327975da5433d7d9c485fbc0589a16210614f5f8c97ac516717f",

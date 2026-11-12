@@ -1,12 +1,22 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "",
+      "state": "not_mentioned"
+    },
+    "E2": {
+      "quote": "",
+      "state": "not_mentioned"
+    }
+  },
   "facts": {
     "Q1": {
       "quote": "",
       "state": "not_mentioned"
     },
     "Q2": {
-      "quote": "Es ist nichts kaputt, es gibt keinen Schimmel, keinen Lärm, die Heizung läuft, und nichts hindert mich daran, so zu wohnen, wie es abgemacht ist.",
+      "quote": "Es ist nichts kaputt, es gibt keinen Schimmel, keinen Lärm, die Heizung läuft",
       "state": "stated_false"
     },
     "Q3": {
@@ -26,5 +36,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "ten_776e0e61986b"
+  "file_id": "ten_776e0e61986b",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

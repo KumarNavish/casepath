@@ -1,12 +1,18 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "nobody has said I'm dismissed",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "I'm a technician with Erlenhof in Biel/Bienne.",
-      "state": "stated_false"
+      "quote": "",
+      "state": "not_mentioned"
     },
     "Q2": {
-      "quote": "I've also never made any demands on them.",
+      "quote": "So whatever is going on, it isn't because I made a fuss about money.",
       "state": "stated_false"
     },
     "Q3": {
@@ -38,5 +44,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "dis_5215d587db4b"
+  "file_id": "dis_5215d587db4b",
+  "routing": {
+    "answer": null,
+    "quote": ""
+  }
 }

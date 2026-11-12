@@ -1,8 +1,14 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "I was walking from the cinema in Bern towards the station. In the underpass near the university",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "a man stepped out in front of me with a knife.",
+      "quote": "a man stepped out in front of me with a knife. He held it close to my stomach and told me to hand over my bag and my watch",
       "state": "stated_false"
     },
     "Q2": {
@@ -30,5 +36,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_c7620535798b"
+  "file_id": "the_c7620535798b",
+  "routing": {
+    "answer": "other",
+    "quote": "a man stepped out in front of me with a knife"
+  }
 }

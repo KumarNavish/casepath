@@ -41,6 +41,11 @@ reference; such a file's recorded states become the states as read (designed sta
 kept_as_read). Every other differing file gets one rewrite, against the designed states except where a
 dependency rule makes a designed "not mentioned" impossible and an implied state leaves the reference unchanged
 (target_round2). A file that still differs after round 2 is dropped and counted.
+Keep rule in repair rounds (2026-11-12): a re-checked file (not rewritten) whose reading differs from its recorded
+states only by facts read "not mentioned" where recorded "stated false", or the reverse, and whose engine reference
+from the states now read equals its stored reference, matches; its recorded states become the states now read
+(the round-1 keep rule in both directions). Where they equal the designed states the `kept_as_read` flag is dropped
+(manifest `repair.states: "as designed"`); otherwise the flag stays with the new states. The reference is kept.
 Denied central event (from 2026-11-12): blind-check inputs carry the routing question and the central-event
 questions of the regime's other types; in a file whose design states its central event false, a text that states
 (or leaves open) another type's central event, or whose routing answer is another type, differs from its design.
@@ -200,7 +205,29 @@ def compare_one(d, key, w, b, target=None, regime=None, inp=None):
     return mm
 
 
-def compare(regime, out, rnd):
+NM_FALSE = {("not_mentioned", "stated_false"), ("stated_false", "not_mentioned")}
+
+
+def repair_keep_rule(regime, out, d, recorded, mm, product=None):
+    """The round-1 keep rule, applied in both directions to a file re-checked in a repair round: if every difference
+    is a fact recorded "stated_false" read "not_mentioned" or the reverse, and the engine reference from the states
+    now read equals the file's stored reference (documents, waited-for facts, stop), the file matches and its recorded
+    states become the states now read. Returns {facts_now, states: "as designed" | "as read"} or None."""
+    if not all(m["kind"] == "question" and (m["designed"], m["read_as"]) in NM_FALSE for m in mm):
+        return None
+    sys.dont_write_bytecode = True
+    import reference as R
+    W = R.load_product(product or R.PRODUCT_DEFAULT)
+    now = dict(recorded, **{m["fact"]: m["read_as"] for m in mm})
+    stored = G.read_json(out / "final" / d["file_id"] / "reference.json")
+    if _ref_diff(stored, R.engine_reference(W, regime, dict(d, facts=now))):
+        return None
+    return {"facts_now": now, "states": "as designed" if now == d["facts"] else "as read",
+            "rule": "every difference is 'not mentioned' <-> 'stated false' and the engine reference from the states "
+                    "now read equals the stored reference"}
+
+
+def compare(regime, out, rnd, product=None):
     p = paths(out)
     designs, keys = load_designs(p), G.read_json(p["keys"])["keys"]
     targets, plan = {}, None
@@ -222,6 +249,10 @@ def compare(regime, out, rnd):
         mm = compare_one(designs[fid], keys[fid], w, b, targets.get(fid), regime=regime, inp=inp)
         res[fid] = {"matches": not mm, "mismatches": mm, "blind_sha256": G.sha256_file(bp),
                     "written_sha256": G.sha256_file(wp)}
+        if mm and plan and plan["files"][fid]["decision"] == "recheck":
+            kept = repair_keep_rule(regime, out, designs[fid], targets[fid], mm, product)
+            if kept:
+                res[fid].update(matches=True, mismatches=[], kept_by_keep_rule=dict(kept, differences=mm))
         if b.get("routing") is not None:
             res[fid]["routing_read"] = b["routing"]
     G.write_json(p["bc"] / f"compare_round{rnd}.json", res)
@@ -592,7 +623,7 @@ def repair_outcomes(p, out):
             if row["decision"] == "rewrite":
                 res[fid] = ("text", k) if c["matches"] else ("drop", f"differs after rewrite (repair round {k})")
             elif c["matches"]:
-                res[fid] = ("kept", k)
+                res[fid] = ("kept", k, c.get("kept_by_keep_rule"))
             elif nxt["files"].get(fid, {}).get("decision") in ("rewrite", "drop"):
                 pass  # decided by the next round
             else:
@@ -613,6 +644,8 @@ def finalize(regime, out):
     clp = p["bc"] / "classify_round1.json"
     cl = G.read_json(clp)["files"] if clp.exists() else {}
     repair = repair_outcomes(p, out)
+    mp = p["final"] / "MANIFEST.json"
+    before = {e["file_id"]: e for e in G.read_json(mp)["files"]} if mp.exists() else {}
     p["final"].mkdir(parents=True, exist_ok=True)
     entries, dropped = [], []
     for fid, d in sorted(designs.items()):
@@ -650,6 +683,17 @@ def finalize(regime, out):
                        target_revisions=c["target_revisions"])
             ref = dict(ref, **c["reference_target"], note="recomputed from the round-2 target states; "
                                                           "reference-equivalent to the design's")
+        keep = rep[2] if rep and rep[0] == "kept" and len(rep) > 2 else None
+        if keep:
+            # the repair round's keep rule: the recorded states become the states now read; the reference is kept
+            changed = {f: {"recorded": rec["facts"][f], "now": v} for f, v in keep["facts_now"].items()
+                       if rec["facts"][f] != v}
+            rec["facts"] = keep["facts_now"]
+            if keep["states"] == "as designed":
+                for k_ in ("kept_as_read", "facts_designed"):
+                    rec.pop(k_, None)
+            else:
+                rec.update(facts_designed=d["facts"], kept_as_read=True)
         hashes = {"design.json": G.write_json(fdir / "design.json", rec)}
         if ref is not None:
             hashes["reference.json"] = G.write_json(fdir / "reference.json", ref)
@@ -679,6 +723,11 @@ def finalize(regime, out):
              "open_facts": d["open_facts"], "language": d["language"], "sha256": hashes}
         if rep:
             e["repair"] = {"round": rep[1], "result": "rewritten" if rep[0] == "text" else "rechecked"}
+            prev = before.get(fid, {})
+            e["repair"]["previous_sha256"] = prev.get("repair", {}).get("previous_sha256") or {
+                n: prev.get("sha256", {}).get(n) for n in ("design.json", "reference.json")}
+            if keep:
+                e["repair"].update(states=keep["states"], changed_facts=changed)
         entries.append(e)
     # a file dropped now that has a folder from an earlier finalize: moved out of final/ (kept for the record)
     for x in dropped:
@@ -696,7 +745,8 @@ def finalize(regime, out):
         "schema": "study4.final-manifest/1", "regime": regime.name, "files": entries, "dropped": dropped,
         "counts": {"kept": len(entries), "dropped": len(dropped),
                    "kept_after_rewrite": sum(e["round"] >= 2 for e in entries),
-                   "kept_as_read": sum(e["kept"] == "kept_as_read" for e in entries),
+                   "kept_as_read": sum(e["kept"] == "kept_as_read" and e.get("repair", {}).get("states") != "as designed"
+                                       for e in entries),
                    "repair_rewritten": sum(e.get("repair", {}).get("result") == "rewritten" for e in entries),
                    "repair_rechecked": sum(e.get("repair", {}).get("result") == "rechecked" for e in entries),
                    "per_level": {str(k): v for k, v in sorted(per_level.items())},
@@ -727,7 +777,7 @@ def main(argv=None):
     if a.step == "blind-in":
         blind_in(regime, out, a.round, a.force)
     elif a.step == "compare":
-        compare(regime, out, a.round)
+        compare(regime, out, a.round, a.product)
     elif a.step == "classify":
         classify(regime, out, a.product)
     elif a.step == "repair-prepare":

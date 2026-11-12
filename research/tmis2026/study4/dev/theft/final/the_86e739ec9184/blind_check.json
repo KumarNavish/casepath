@@ -1,12 +1,18 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "weder unterwegs noch zu Hause in meiner Wohnung an der Bergstrasse 108 in St. Gallen",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
-      "quote": "Die Sachen wurden am Sonntag, 23. August 2026, bei mir zu Hause gestohlen",
+      "quote": "Mir ist am 23. August 2026 nichts gestohlen worden, und auch an keinem anderen Tag, weder unterwegs noch zu Hause",
       "state": "stated_false"
     },
     "Q2": {
-      "quote": "Da ist nichts mehr offen.",
+      "quote": "Nein, da ist nichts mehr zu tun und nichts geplant.",
       "state": "stated_false"
     },
     "Q3": {
@@ -18,7 +24,7 @@
       "state": "not_mentioned"
     },
     "Q5": {
-      "quote": "Für den Laptop und die Uhr habe ich beide Kaufquittungen im Original",
+      "quote": "ich bewahre die Quittungen für meine Sachen alle auf und könnte jede einzelne ohne weiteres vorlegen",
       "state": "stated_false"
     },
     "Q6": {
@@ -30,5 +36,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_86e739ec9184"
+  "file_id": "the_86e739ec9184",
+  "routing": {
+    "answer": "other",
+    "quote": "Es fehlt mir nichts, und es ist nichts kaputt."
+  }
 }

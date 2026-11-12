@@ -238,3 +238,49 @@ Resolved 18, not resolved 0.
 - **hardship_evidence (inference).** "An ex officio examination … does not by itself call for them" states a design choice as if it were law; reword as proposed above.
 
 Neither change alters the workflow, the documents or any condition. The set is ready to be marked reviewed once these two wording changes are made and `check.py` passes again.
+
+## Second look, revisions 1 and 2 (2026-11-12)
+
+Second reader; I did not write either revision. Read: SPEC.md items 1 to 7 (with 6a, 6b, 6c), the two revision sections of
+`RECONCILIATION.md`, `generator/items/tenancy.json`, and the snapshots `sources/sr220-en.txt` and `sources/sr220-de.txt`
+(not `sources/raw/`). Checks run:
+
+- Field-by-field diff of `rev0/rules.json` -> `rev1/rules.json` -> `rules.json`, of every `workflow/*.json` at the same
+  three states, and word-level diffs of `rule_text.md`. Every change found is listed in RECONCILIATION.md. The only text
+  not listed separately is the type list in the opening sentence of `rule_text.md`, which repeats the new title of type 1.
+  No unlisted change.
+- With question, `not_this`, title and `must_show` masked, `rules.json` and all three workflows are equal to `rev0/`.
+  No fact id, step, `needed_when`, `mandatory`, presumption, stop, `source_id`, locator, passage, basis or inference
+  changed. The convention text in `rules.json` and `rule_text.md` is the text of SPEC 6a, character for character.
+  `rent_increase_notice` goes from 7 to 6 items, which is the one removal. All file hashes match the recorded ones.
+- Every passage quoted in the two sections is in `sr220-en.txt` or `sr220-de.txt`, at the stated article. The quotes
+  join line breaks into spaces; `rules.json` keeps the breaks. Locators are right.
+- `python3 -I -B rules/tenancy/tools/check.py`: all checks passed (6c: 64 items, 5 conditional in the fixed form);
+  the git status was the same before and after.
+- `lint/verify_rev2.py` was **not run**: it writes `lint/VERIFY_REV2.json`. I read the stored report instead
+  (`ok: true`; 354 of 354 clean-room states; no hash mismatch) and did not reproduce it.
+
+### Revision 1
+
+- R1-1 `dispute_family` question, defect value ("a defect of the dwelling or a disturbance of its agreed use that the tenant did not cause (for example mould, damp, or heating that fails)"): **agree**. It names the two limbs of art. 259a para. 1 (German "im vertragsgemässen Gebrauch der Sache gestört"); the old examples stay as examples. It leaves out "not obliged to remedy at his own expense" (small repairs), but that only lets routing reach a type whose defining event `defect_present` still decides. So routing is not wider than the type.
+- R1-2 `dispute_family` question, precedence sentence ("A rent increase that the landlord accompanied with a notice of termination is a rent increase dispute ..."): **agree**. It follows the fact `termination_with_increase` exactly (a notice, not a threat) and art. 269d para. 2 let. c, which the rent-increase type already decides; a notice given separately stays a termination dispute. Note for the planner: in that type, the termination is examined only as a ground that makes the increase void. Its own validity (form, art. 266l; spouse service, art. 266n) and art. 271a para. 1 let. b are not examined. That is a scope limit of the rule set, not a fault of the wording. Note: the routing question exists only in `workflow/*.json`. `rule_text.md` carries only the titles, so prompt-based designs do not get this sentence.
+- R1-3 type 1 title "Defect of the rented dwelling or disturbance of its use (for example mould, damp, heating)": **agree**. It matches art. 259a para. 1 and the defining event, and "for example" removes the closed list.
+- R1-4 `asserted_claims` question, added sentence ("The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where ..."): **agree**. The question already asks "Does the claim state that ...". At intake, "stated" means alleged in the file (convention 6a: "not alleged"), and the landlord's motive under art. 271a para. 1 let. a can reach a file only as the tenant's account. So a firm account is the statement the passage needs. It is not proof, and the rule does not treat it as proof: its only effect is to request `claims_and_reasons`, the document that would prove it. "Because" and "in good faith" are unchanged, and a claim that hedges stays open. The sentence is in `rule_text.md` question 4 and in the workflow, so every design gets the same words.
+
+### Revision 2 (must_show)
+
+- R2-1 `termination_notice` "a statement of the form used: ...": **agree**. Art. 266l para. 2 requires the approved form. The item names a visible statement in place of "whether"; no "whether", no absence (6c).
+- R2-2 `spouse_service` "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered partner. ...": **agree**. Art. 266n requires separate service of the art. 257d time limit. The condition is the generator's (`arrears_termination` stated true) and repeats the fact's wording. Fixed form.
+- R2-3 `claims_and_reasons` "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the conciliation or court documents on those claims. ...": **agree**. The generator leaves the condition to the story, so the circumstance itself is the condition (6c). "If any" is gone. The item asks nothing beyond the record of the claims asserted (art. 271a para. 1 let. a).
+- R2-4 `deposit_receipt` "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet been brought": **agree**. Art. 259h para. 1 turns on that date. Both alternatives are visible statements, as 6c's either-of-two rule asks.
+- R2-5 `lease_contract` (rent increase) "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause that fixes the graduated steps or links the rent to an index. ...": **agree**. The condition matches the generator (`graduated_rent` or `index_clause` stated true) and arts. 270c and 270d, and the clause is what arts. 269b and 269c make decisive.
+- R2-6 `rent_increase_notice` "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form": **disagree**. The item now applies to every increase, including a graduated-rent step. For that case art. 269d para. 5 ("In the case of a rent increase in accordance with an agreement under Article 269c, it is sufficient that notice be given in writing"), which is cited on this document (`also`) and in the inference of step `ri_form`, needs only writing, not the form. A plain letter announcing an agreed step is a lawful notice, yet it would fail this item. The reason given ("a graduated-step notice shows the item by saying which form it uses") is not in the passage, so the item asks more than art. 269d paras. 2 and 5 allow. I would accept: "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)". The generator note (`checkable_as`, not conditional) would need the same exception.
+- R2-7 `rent_increase_notice` "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice or threat of termination in the increase notice or its covering letter. ...": **agree**. Art. 269d para. 2 let. c; the condition is the generator's (`termination_with_increase`). A threat without a notice still appears on the requested notice but is no longer a content requirement, so the item is not satisfied by an absence.
+- R2-8 `rent_increase_notice` "Only if the file states that the increase applies an index clause: the old and the new index value. ...": **agree**. Art. 270c makes the index change the only ground; the condition is the generator's (`index_clause`).
+- R2-9 `rent_increase_notice` item "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)", removed: **agree**. It names nothing visible on a document and can be satisfied only by an absence (6c). The case it named (no increase announced) is the stop `increase_applied` = false, where the document is not needed. Where a higher rent is charged without any notice, the document is still requested and the form item (R2-6) cannot be shown, which is the right outcome under let. a. The point stays in the rule's inference.
+
+### Considered and not changed
+
+- (a) Title "Landlord's rent increase notice (with any covering letter)". Ruling: **change it** to "Landlord's rent increase notice"; the id, need and mandatory flag stay as they are. 6c does not cover titles, but its reason does: "any" lets a reader treat a letter that may not exist as part of the document and request it, which the diagnosis observed once (ten_efa24ba18ce3). Under the cited text the covering letter matters only as the carrier of a notice or threat of termination (art. 269d para. 2 let. c), and R2-7 already names it for that case. Art. 269d para. 1 puts the notice and its reasons on the form itself, so no other item needs the letter.
+- `payment_demand` "payments made within the time limit (bank or postal records)": agree to keep. A record with no payment in the period is a visible record.
+- The inference of `rent_increase_notice` keeps "where no notice exists its absence is the point to establish". Agree: that is reasoning under let. a, not a content item.

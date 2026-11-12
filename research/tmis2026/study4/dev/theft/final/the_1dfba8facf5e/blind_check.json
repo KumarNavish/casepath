@@ -1,12 +1,18 @@
 {
   "attachments": {},
+  "events": {
+    "E1": {
+      "quote": "Es ist mir überhaupt nichts gestohlen worden, nirgends.",
+      "state": "stated_false"
+    }
+  },
   "facts": {
     "Q1": {
       "quote": "",
       "state": "not_mentioned"
     },
     "Q2": {
-      "quote": "nicht bei mir zu Hause am Birkenweg 73 in Neuchâtel, sondern unterwegs, während meiner Ferien im Tessin",
+      "quote": "In meiner Wohnung am Birkenweg 73 in Neuchâtel ist nichts gestohlen und nichts beschädigt worden",
       "state": "stated_false"
     },
     "Q3": {
@@ -14,7 +20,7 @@
       "state": "not_mentioned"
     },
     "Q4": {
-      "quote": "Es gab keine Gefahr, wegen der ich sofort und ohne Rücksprache mit Ihnen hätte handeln müssen.",
+      "quote": "Es gab an diesem Tag keine Gefahr und nichts, was dringend erledigt werden musste.",
       "state": "stated_false"
     },
     "Q5": {
@@ -30,7 +36,7 @@
       "state": "not_mentioned"
     },
     "Q8": {
-      "quote": "Um ein Velo geht es nicht",
+      "quote": "Mein Velo ist weder gestohlen noch beschädigt worden.",
       "state": "stated_false"
     },
     "Q9": {
@@ -38,5 +44,9 @@
       "state": "not_mentioned"
     }
   },
-  "file_id": "the_1dfba8facf5e"
+  "file_id": "the_1dfba8facf5e",
+  "routing": {
+    "answer": "other",
+    "quote": "Es ist mir überhaupt nichts gestohlen worden, nirgends."
+  }
 }
