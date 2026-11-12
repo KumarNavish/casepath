@@ -8,6 +8,8 @@ The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
 import hashlib
+import os
+import secrets
 import html
 import json
 import importlib.util
@@ -28,11 +30,13 @@ from ..process.items import build_items, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
+from .. import parity
 from ..parity import source_tree
 from ..read import cut
 from ..read.evidence import Evidence
 from ..read.pdfread import PdfError
 from ..quality.replay import replay
+from ..quality.auswertung import auswertung
 
 SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
@@ -229,6 +233,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(404, "Not found.") from None
 
     parity_sha = source_tree()[0]
+    # The Auswertung's pseudonyms: a salt kept inside Mobiliar, or a random one per start (unlinkable, not stable).
+    auswertung_salt = os.environ.get("CASEPATH_SCORECARD_SALT") or secrets.token_hex(16)
 
     def record(case_id, who, kind, item_id=None, **fields):
         """One event in the case's append-only log (casepath.study.event/1). Outside a study session the session fields stay empty."""
@@ -681,6 +687,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
 
     # Knowledge
+    @app.get("/api/manifest")
+    def running_manifest(who=Depends(user)):
+        """What this running app is: code tree, workflows and Knowledge, each hashed by content."""
+        return parity.manifest(settings, knowledge=store.list_knowledge())
+
+    @app.get("/api/auswertung")
+    def evaluation_page(who=Depends(user)):
+        """Content-free and pseudonymous: counts, ratios and durations from the event log, tied to the manifest."""
+        man = parity.manifest(settings, knowledge=store.list_knowledge())
+        return auswertung(store, auswertung_salt, hashlib.sha256(json.dumps(man, sort_keys=True).encode()).hexdigest())
+
     @app.get("/api/knowledge")
     def list_knowledge(family: str | None = None, status: str | None = None, who=Depends(user)):
         items = store.list_knowledge(family, {status} if status else None)

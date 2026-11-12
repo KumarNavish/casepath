@@ -78,6 +78,7 @@ function parseRoute() {
   const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
   if (parts[0] === "case" && parts[1]) return { view: "case", id: parts[1], tab: parts[2] || "overview" };
   if (parts[0] === "knowledge") return { view: "knowledge" };
+  if (parts[0] === "auswertung") return { view: "auswertung" };
   return { view: "cases" };
 }
 
@@ -99,7 +100,7 @@ function renderTop() {
             ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab ${work[working] === id ? "working" : ""}" href="#/case/${esc(route.id)}/${id}"
       ${route.tab === id ? 'aria-current="page"' : ""} data-tab="${id}">${icon(ic)}${title}<span class="cp-pulse" aria-hidden="true"></span></a>`).join("");
   } else {
-    tabs = [["cases", T("Cases", "Fälle"), "folder"], ["knowledge", T("Knowledge", "Wissen"), "memory"]].map(([id, title, ic]) =>
+    tabs = [["cases", T("Cases", "Fälle"), "folder"], ["knowledge", T("Knowledge", "Wissen"), "memory"], ["auswertung", T("Evaluation", "Auswertung"), "nodes"]].map(([id, title, ic]) =>
       `<a class="cp-tab" href="#/${id}" ${route.view === id ? 'aria-current="page"' : ""}>${icon(ic)}${title}</a>`).join("");
   }
   const other = LANG === "de" ? "en" : "de";
@@ -1580,6 +1581,23 @@ async function renderCase() {
 }
 
 // ---------- knowledge ----------
+// What ordinary use shows, content-free (L4): per case and in total; the export is the same JSON.
+async function renderAuswertung() {
+  const a = await api("/api/auswertung");
+  const n = (v) => (v === null || v === undefined ? "—" : esc(String(v)));
+  const kv = (o) => Object.entries(o || {}).map(([k, v]) => `${esc(k)} ${v}`).join(" · ") || "—";
+  const rows = a.cases.map((c) => `<tr><td><code>${esc(c.case)}</code></td><td>${kv(c.accepted_unchanged)}</td><td>${c.interventions}</td>
+    <td>${kv(c.interventions_by_reason)}</td><td>${n(c.letter_changed_ratio)}</td><td>${c.handling_seconds == null ? "—" : Math.round(c.handling_seconds / 60) + " min"}</td>
+    <td>${c.sources_opened}</td><td>${c.same_correction_again}</td><td>${c.run_seconds == null ? "—" : c.run_seconds + " s"}</td><td>${c.tokens_noncached == null ? "—" : Math.round(c.tokens_noncached / 1000) + "k"}</td></tr>`).join("");
+  $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Evaluation", "Auswertung")}</h1>
+    <p class="cp-muted">${T("From ordinary use, without questionnaires. Content-free: cases appear only as pseudonyms.", "Aus der normalen Arbeit, ohne Fragebogen. Ohne Inhalte: Fälle erscheinen nur als Pseudonyme.")}
+      <a class="cp-link" href="/api/auswertung" download="auswertung.json">${T("Export", "Export")}</a> · <a class="cp-link" href="/api/manifest" download="manifest.json">${T("Manifest", "Manifest")}</a></p>
+    <p>${T("Cases", "Fälle")} ${a.total.cases} · ${T("in use", "genutzt")} ${a.total.cases_used} · ${T("interventions per case", "Eingriffe pro Fall")} ${n(a.total.interventions_per_used_case)} · ${T("same correction again", "gleiche Korrektur erneut")} ${a.total.same_correction_again}</p>
+    <table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Accepted unchanged", "Unverändert übernommen")}</th><th>${T("Interventions", "Eingriffe")}</th><th>${T("Reasons", "Gründe")}</th>
+      <th>${T("Letter changed", "Brief geändert")}</th><th>${T("Handling", "Bearbeitung")}</th><th>${T("Sources opened", "Quellen geöffnet")}</th><th>${T("Same again", "Erneut gleich")}</th><th>${T("Run", "Lauf")}</th><th>Tokens</th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="10" class="cp-muted">${T("No use recorded yet.", "Noch keine Nutzung erfasst.")}</td></tr>`}</tbody></table></main>`;
+}
+
 async function renderKnowledge() {
   const [data, cases] = await Promise.all([api("/api/knowledge"), api("/api/cases")]);
   const titles = Object.fromEntries(cases.cases.map((c) => [c.id, c.title]));
@@ -1621,6 +1639,7 @@ async function route() {
   try {
     if (next.view === "case") { if (S.data) await renderCase(); else await loadCase(); }
     else if (next.view === "knowledge") await renderKnowledge();
+    else if (next.view === "auswertung") await renderAuswertung();
     else await renderCases();
   } catch (error) {
     $("#app").innerHTML = `<main class="cp-main"><p class="cp-error">${esc(error.message)}</p></main>`;

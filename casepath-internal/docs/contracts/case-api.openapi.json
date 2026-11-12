@@ -426,6 +426,23 @@
     "summary": "Index"
    }
   },
+  "/api/auswertung": {
+   "get": {
+    "description": "Content-free and pseudonymous: counts, ratios and durations from the event log, tied to the manifest.",
+    "operationId": "evaluation_page_api_auswertung_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Evaluation Page"
+   }
+  },
   "/api/cases": {
    "get": {
     "operationId": "list_cases_api_cases_get",
@@ -1374,6 +1391,23 @@
      }
     },
     "summary": "Retire"
+   }
+  },
+  "/api/manifest": {
+   "get": {
+    "description": "What this running app is: code tree, workflows and Knowledge, each hashed by content.",
+    "operationId": "running_manifest_api_manifest_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Running Manifest"
    }
   },
   "/api/me": {

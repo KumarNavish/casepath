@@ -328,6 +328,21 @@ class AppTests(unittest.TestCase):
         plain = client.post(f"/api/cases/{case['id']}/edits", json={**body, "reason_code": "3", "args": {**body["args"], "title": "Anderes"}}).json()
         self.assertIsNone(plain["knowledge"])  # a correction for this case only stays in the case
 
+    def test_the_auswertung_is_content_free_and_the_app_reports_its_manifest(self):
+        client = self.client()
+        case, file = self.new_case(client, "Auswertung Fall mit Namen")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        client.post(f"/api/cases/{case['id']}/events", json={"kind": "case.opened"})
+        client.post(f"/api/cases/{case['id']}/events", json={"kind": "item.exposed", "item_id": "document:notice_letter"})
+        client.post(f"/api/cases/{case['id']}/events", json={"kind": "source.opened", "item_id": "document:notice_letter"})
+        page = client.get("/api/auswertung").json()
+        card, = page["cases"]
+        self.assertEqual((card["accepted_unchanged"], card["sources_opened"], card["interventions"]), ({"document": 1}, 1, 0))
+        self.assertTrue(card["case"].startswith("h_") and case["id"] not in json.dumps(page) and "Namen" not in json.dumps(page))
+        manifest = client.get("/api/manifest").json()
+        self.assertEqual(manifest["format"], "casepath.parity/1")
+        self.assertIn("source_tree_sha256", manifest)
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):
