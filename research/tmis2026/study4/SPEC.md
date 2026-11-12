@@ -190,9 +190,14 @@ the file design is dropped by a stated rule.
    of a model family that is not evaluated, working from a bundle that
    contains only the design, a style sheet and the catalogue: no product
    code, no prompts of any design, no rule text beyond the condition
-   questions. Attachments are short synthetic documents.
+   questions, each with its `not_this` line (added after first use,
+   2026-11-12). Attachments are short synthetic documents. Where the
+   design's defining event is stated false, the text states no defining
+   event of any type of the regime (added after first use).
 4. **Blind check.** A separate session, given only the text and the
-   condition questions, states each fact's state. A text whose recovered
+   condition questions (each with its `not_this` line, and, added after
+   first use, the routing question and every type's defining-event
+   question), states each fact's state. A text whose recovered
    states differ from the design is rewritten once; if it still differs it
    is dropped and counted.
 5. **Scan noise.** A seeded script degrades a fixed 20% of files as a scan
