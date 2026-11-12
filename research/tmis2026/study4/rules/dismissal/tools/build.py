@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 
 REGIME_DIR = Path(__file__).resolve().parent.parent
-VERSION = "2026-11-12.4"
+VERSION = "2026-11-12.5"
 SRC_IDS = {"CO": ("co-sr220-en", "co-sr220-de"), "CPC": ("cpc-sr272-en", "cpc-sr272-de")}
 
 
@@ -162,14 +162,16 @@ ALSO_336B_2_180 = P("CO art. 336b para. 2", P_336B_2_180, D_336B_2_180)
 FACT_NOTICE_PERIOD_VARIED = {
     "id": "notice_period_varied",
     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective "
-                "employment contract sets notice periods different from the statutory ones (one month in the first year of service, "
-                "two months in the second to ninth years, three months thereafter)?",
+                "employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b "
+                "para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
     "not_this": "A notice period that only the termination letter states, with no written contract term behind it.",
     "type": "boolean",
     "rule": R("CO art. 335c para. 2", P_335C_2, D_335C_2, "states"),
 }
 NOT_THIS_EMPLOYER_NOTICE = ("A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal "
                             "with immediate effect (art. 337, a separate type).")
+INCAPACITY_PROOF_TITLE = ("Proof of the hindrance from working (medical certificate, or official order or summons for a "
+                          "non-voluntary legal obligation)")
 TERMINATION_LETTER_TITLE = "Notice of termination (letter, message or other record of the notice and its receipt)"
 DOC_NOTICE_PERIOD_TERMS_MUST = ["notice period length", "end-point of the notice (e.g. end of a month)",
                                 "the written instrument that sets it (individual, standard or collective contract)"]
@@ -281,9 +283,10 @@ TYPE_A = {
          "must_show": ["length of the probation period", "the written instrument that sets it"],
          "rule": R("CO art. 335b para. 2", P_335B_2, D_335B_2, "evidence",
                    "A probation period other than the first month exists only under a written agreement or a standard or collective contract; that written clause proves its length and so whether notice came during it.")},
-        {"id": "incapacity_proof", "title": "Medical certificate of incapacity for work", "step": "a_incapacity",
+        {"id": "incapacity_proof", "title": INCAPACITY_PROOF_TITLE, "step": "a_incapacity",
          "needed_when": True, "mandatory": True,
-         "must_show": ["cause (illness or accident)", "full or partial incapacity", "first and last day of incapacity", "date issued"],
+         "must_show": ["medical certificate", "cause (illness or accident)", "full or partial incapacity",
+                       "first and last day of incapacity", "date issued"],
          "rule": R("CO art. 336c para. 1 let. b", P_336C_1B, D_336C_1B, "evidence",
                    "The bar applies only while the employee is prevented from working by illness or accident, for at most 30, 90 or 180 days; a medical certificate is the ordinary proof of the incapacity and its dates, which with the start date of employment fix that period.")},
         {"id": "service_confirmation", "title": "Official confirmation of compulsory service", "step": "a_service",
@@ -334,7 +337,10 @@ TYPE_B = {
                    "The claim belongs to the party on whom notice was served; in this employee-side regime that is the employee, so the notice is the employer's.")},
         {"id": "notice_period_ended",
          "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
-         "not_this": "The employee's last working day where they were released from work while the notice period was still running.",
+         "not_this": "The employee's last working day where they were released from work while the notice period was still running; "
+                     "the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) "
+                     "or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if "
+                     "the file raises either, the fact is open.",
          "type": "boolean", "always_stated": True,
          "rule": R("CO art. 336b para. 1", P_336B_1, D_336B_1, "states")},
         {"id": "objection_submitted",
@@ -350,7 +356,9 @@ TYPE_B = {
          "rule": R("CO art. 336b para. 2", P_336B_2_S1, D_336B_2_S1, "states")},
         {"id": "more_than_180_days",
          "question": "Have more than 180 days passed since the employment relationship ended?",
-         "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship.",
+         "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment "
+                     "relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent "
+                     "(art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
          "type": "boolean", "always_stated": True,
          "rule": R("CO art. 336b para. 2", P_336B_2_180, D_336B_2_180, "states")},
         {"id": "action_in_time",
@@ -371,7 +379,9 @@ TYPE_B = {
          "rule": R("CO art. 336 para. 1 let. d", P_336_1D, D_336_1D, "states")},
         {"id": "employee_representative",
          "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?",
-         "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here).",
+         "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered "
+                     "here); a representative whose mandate ended through a transfer of the employment relationship, whose "
+                     "protection continues (art. 336 para. 3, not covered here).",
          "type": "boolean",
          "rule": R("CO art. 336 para. 2 let. b", P_336_2B, D_336_2B, "states")},
     ],
@@ -415,16 +425,16 @@ TYPE_B = {
          "rule": R("CO art. 335c para. 1", P_335C_1, D_335C_1, "evidence",
                    "The end of the notice period, which closes the objection window, depends on the years of service and on any written variation; the contract ordinarily shows the start date and any such clause.")},
         {"id": "written_objection", "title": "Copy of the written objection with proof of when the employer received it",
-         "step": "b_objection_check", "needed_when": ANY(T("objection_submitted"), T("notice_period_ended")), "mandatory": True,
+         "step": "b_objection_check", "needed_when": T("objection_submitted"), "mandatory": True,
          "must_show": ["objection to the notice", "addressed to the employer", "date lodged or received", "proof of sending or receipt"],
          "rule": R("CO art. 336b para. 1", P_336B_1, D_336B_1, "evidence",
-                   "The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both, and once the period has ended it decides the claim, so it is requested then even where the file leaves the objection open.")},
+                   "The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both.")},
         {"id": "court_filing", "title": "Proof that the claim was made pending: the conciliation request or statement of claim, "
                                         "with the confirmation of receipt",
-         "step": "b_limit_check", "needed_when": ANY(T("action_in_time"), T("more_than_180_days")), "mandatory": True,
+         "step": "b_limit_check", "needed_when": T("action_in_time"), "mandatory": True,
          "must_show": ["authority (conciliation authority or court)", "compensation claim", "filing date", "confirmation of receipt"],
          "rule": R("CPC art. 62 para. 1", P_CPC_62_1, D_CPC_62_1, "evidence",
-                   "Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it; once the 180 days have passed it decides the claim, so it is requested then even where the file leaves the filing open.",
+                   "Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it (the link from the CO's \"anhängig gemacht\" to the CPC's \"Rechtshängigkeit\" is an inference across the two acts).",
                    also=[ALSO_CPC_62_2, ALSO_336B_2_180])},
         {"id": "written_reasons", "title": "Employer's written statement of reasons", "step": "b_grounds",
          "needed_when": T("reasons_requested"), "mandatory": True,
@@ -539,8 +549,7 @@ TYPE_C = {
          "must_show": ["reasons stated by the employer", "date"],
          "rule": R("CO art. 337 para. 1", P_337_1_REASONS, D_337_1_REASONS, "evidence",
                    "Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the cause it relies on.")},
-        {"id": "incapacity_proof", "title": "Proof of the hindrance from working (medical certificate, or official order or "
-                                            "summons for a non-voluntary legal obligation)", "step": "c_cause",
+        {"id": "incapacity_proof", "title": INCAPACITY_PROOF_TITLE, "step": "c_cause",
          "needed_when": T("incapacity_cause"), "mandatory": True,
          "must_show": ["cause of the hindrance", "first and last day", "date issued"],
          "rule": R("CO art. 337 para. 3", P_337_3, D_337_3, "evidence",
@@ -583,7 +592,8 @@ TRANSLATION_NOTES = [
      "de": "eine Klage anhängig gemacht ... ist der Anspruch verwirkt",
      "followed": "forfeited (\"verwirkt\"), which applies by itself, not \"prescribes\" (a time bar that must be pleaded); "
                  "the claim must be made pending (\"anhängig gemacht\"), which under CPC art. 62 para. 1 happens when a "
-                 "conciliation request or an action is filed, not only \"brought before the courts\"",
+                 "conciliation request or an action is filed, read with CPC art. 62 para. 1 (an inference across the two acts: the CO "
+                 "says \"anhängig gemacht\", the CPC defines \"Rechtshängigkeit\"), not only \"brought before the courts\"",
      "rules": "action_in_time, b_stop_time_limit, court_filing"},
     {"locator": "CO art. 336 para. 2 let. b", "en": "the employer cannot cite just cause",
      "de": "der Arbeitgeber nicht beweisen kann, dass er einen begründeten Anlass zur Kündigung hatte",
@@ -672,8 +682,9 @@ SUMMARIES = {
         "(art. 336b para. 1); the claim exists only where the objection was validly made and the parties did not agree to "
         "continue the relationship (art. 336b para. 2), and it is forfeited (\"verwirkt\"; the English says \"prescribes\") "
         "unless an action is made pending (\"anhängig gemacht\") within 180 days of the end of the employment relationship "
-        "(art. 336b para. 2). A case becomes pending when a conciliation request or an action is filed (Civil Procedure "
-        "Code, CPC, art. 62 para. 1). The party giving notice must state the reasons in writing if the other party asks "
+        "(art. 336b para. 2). Read with the Civil Procedure Code (CPC) art. 62 para. 1, a case becomes pending when a "
+        "conciliation request or an action is filed (an inference across the two acts: the CO says \"anhängig gemacht\", the "
+        "CPC defines \"Rechtshängigkeit\"). The party giving notice must state the reasons in writing if the other party asks "
         "(art. 335 para. 2).",
     "immediate_dismissal":
         "Either party may end the employment relationship with immediate effect at any time for good cause "
@@ -847,7 +858,7 @@ def workflow(t):
         "id": t["id"],
         "version": "2026-11-12",
         "title": t["title"],
-        "status": "draft",
+        "status": "reviewed",
         "example": False,
         "applies_when": {"fact": "dispute_family", "is": t["id"]},
         "sources": sources,
@@ -908,6 +919,17 @@ def rules_md(data):
              "which is authoritative, beside it (`sources/*.txt`). A document is needed when its step is reached and its "
              "condition holds. Reconciliation with the second reader: `RECONCILIATION.md`.", ""]
     lines += translation_section(2)
+    lines += ["## Known behaviour", "",
+              "- When the illness fact (`incapacity_illness_accident`, type 1) is open, the proof of incapacity "
+              "(`incapacity_proof`) is held behind the question, not requested: the fact carries the 30, 90 or 180-day limit "
+              "of art. 336c para. 1 let. b, which a lay claim often leaves unsettled, so the illness branch shows more holds "
+              "than the other two protected periods (second reader, 2026-11-12).",
+              "- In type 2, `written_objection` and `court_filing` are needed only when their own fact is yes; when that fact "
+              "is unmentioned or open they are held behind the question (the claimant knows whether they objected or filed), "
+              "and when it is stated no nothing is requested and the stop applies.",
+              "- Silence never ends a process, but it can choose which stop ends it: with 180 days passed, no claim made "
+              "pending and `agreed_to_continue` unmentioned, the convention's no leads to `b_stop_time_limit`, where yes "
+              "would lead to `b_stop_continued`. This follows from the convention (SPEC.md 6a).", ""]
     for t in data["types"]:
         lines += [f"## {t['title']}", "", f"Type id `{t['id']}`; defining event `{t['defining_event']}`.", "",
                   "### Deciding conditions", "", "| fact | question | not this | citation |", "|---|---|---|---|"]

@@ -3,7 +3,7 @@
  "id": "protected_period_notice",
  "version": "2026-11-12",
  "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
- "status": "draft",
+ "status": "reviewed",
  "example": false,
  "applies_when": {
   "fact": "dispute_family",
@@ -95,7 +95,7 @@
   {
    "id": "notice_period_varied",
    "type": "boolean",
-   "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+   "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
    "source_refs": [
     "co-sr220#art_335c_para_2"
    ]
@@ -149,8 +149,9 @@
   },
   {
    "id": "incapacity_proof",
-   "title": "Medical certificate of incapacity for work",
+   "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
    "must_show": [
+    "medical certificate",
     "cause (illness or accident)",
     "full or partial incapacity",
     "first and last day of incapacity",

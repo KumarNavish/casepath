@@ -1,6 +1,6 @@
 {
  "regime": "dismissal",
- "version": "2026-11-12.4",
+ "version": "2026-11-12.5",
  "sources": [
   {
    "id": "co-sr220-en",
@@ -51,7 +51,7 @@
    "locator": "CO art. 336b para. 2",
    "en": "The claim prescribes if not brought before the courts",
    "de": "eine Klage anhängig gemacht ... ist der Anspruch verwirkt",
-   "followed": "forfeited (\"verwirkt\"), which applies by itself, not \"prescribes\" (a time bar that must be pleaded); the claim must be made pending (\"anhängig gemacht\"), which under CPC art. 62 para. 1 happens when a conciliation request or an action is filed, not only \"brought before the courts\"",
+   "followed": "forfeited (\"verwirkt\"), which applies by itself, not \"prescribes\" (a time bar that must be pleaded); the claim must be made pending (\"anhängig gemacht\"), which under CPC art. 62 para. 1 happens when a conciliation request or an action is filed, read with CPC art. 62 para. 1 (an inference across the two acts: the CO says \"anhängig gemacht\", the CPC defines \"Rechtshängigkeit\"), not only \"brought before the courts\"",
    "rules": "action_in_time, b_stop_time_limit, court_filing"
   },
   {
@@ -242,7 +242,7 @@
     },
     {
      "id": "notice_period_varied",
-     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
      "not_this": "A notice period that only the termination letter states, with no written contract term behind it.",
      "type": "boolean",
      "rule": {
@@ -610,11 +610,12 @@
     },
     {
      "id": "incapacity_proof",
-     "title": "Medical certificate of incapacity for work",
+     "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
      "step": "a_incapacity",
      "needed_when": true,
      "mandatory": true,
      "must_show": [
+      "medical certificate",
       "cause (illness or accident)",
       "full or partial incapacity",
       "first and last day of incapacity",
@@ -797,7 +798,7 @@
     {
      "id": "notice_period_ended",
      "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
-     "not_this": "The employee's last working day where they were released from work while the notice period was still running.",
+     "not_this": "The employee's last working day where they were released from work while the notice period was still running; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if the file raises either, the fact is open.",
      "type": "boolean",
      "always_stated": true,
      "rule": {
@@ -846,7 +847,7 @@
     {
      "id": "more_than_180_days",
      "question": "Have more than 180 days passed since the employment relationship ended?",
-     "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship.",
+     "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent (art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
      "type": "boolean",
      "always_stated": true,
      "rule": {
@@ -911,7 +912,7 @@
     {
      "id": "employee_representative",
      "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?",
-     "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here).",
+     "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here); a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here).",
      "type": "boolean",
      "rule": {
       "source_id": "co-sr220-en",
@@ -1325,16 +1326,8 @@
      "title": "Copy of the written objection with proof of when the employer received it",
      "step": "b_objection_check",
      "needed_when": {
-      "any": [
-       {
-        "fact": "objection_submitted",
-        "is": true
-       },
-       {
-        "fact": "notice_period_ended",
-        "is": true
-       }
-      ]
+      "fact": "objection_submitted",
+      "is": true
      },
      "mandatory": true,
      "must_show": [
@@ -1352,7 +1345,7 @@
        "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
       },
       "basis": "evidence",
-      "inference": "The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both, and once the period has ended it decides the claim, so it is requested then even where the file leaves the objection open."
+      "inference": "The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both."
      }
     },
     {
@@ -1360,16 +1353,8 @@
      "title": "Proof that the claim was made pending: the conciliation request or statement of claim, with the confirmation of receipt",
      "step": "b_limit_check",
      "needed_when": {
-      "any": [
-       {
-        "fact": "action_in_time",
-        "is": true
-       },
-       {
-        "fact": "more_than_180_days",
-        "is": true
-       }
-      ]
+      "fact": "action_in_time",
+      "is": true
      },
      "mandatory": true,
      "must_show": [
@@ -1387,7 +1372,7 @@
        "passage": "Die Einreichung eines Schlichtungsgesuches, einer Klage, eines Gesuches oder eines gemeinsamen Scheidungsbegehrens begründet Rechtshängigkeit."
       },
       "basis": "evidence",
-      "inference": "Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it; once the 180 days have passed it decides the claim, so it is requested then even where the file leaves the filing open.",
+      "inference": "Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it (the link from the CO's \"anhängig gemacht\" to the CPC's \"Rechtshängigkeit\" is an inference across the two acts).",
       "also": [
        {
         "source_id": "cpc-sr272-en",
@@ -1728,7 +1713,7 @@
     },
     {
      "id": "notice_period_varied",
-     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
      "not_this": "A notice period that only the termination letter states, with no written contract term behind it.",
      "type": "boolean",
      "rule": {

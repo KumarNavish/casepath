@@ -14,8 +14,9 @@
    one, otherwise the convention with value false), none on the defining event, on a fact whose false ends the
    process, or on an always_stated fact; over every assignment with each branch fact true, false or unmentioned
    (defining event true): no stop is reached through an unmentioned fact and no document need is created by
-   one; with one fact raised and left open no presumption fills it; an open gate or stop fact produces a request
-   for the documents that settle it (GATE_DOCS); every rule and every `also` passage carries its German text;
+   one; with one fact raised and left open no presumption fills it; with a gate or stop fact open, the documents
+   that settle it and do not depend on the claimant's own knowledge (contract, notice, probation terms) are requested
+   (GATE_DOCS), while a document whose need is the claimant's own fact (objection, filing) is held behind the question; every rule and every `also` passage carries its German text;
 8. size limits of SPEC.md step 2a item 5; prints the counts.
 Exit status 1 on any failure.
 """
@@ -92,13 +93,15 @@ def parse_locator(loc):
 
 
 GATE_DOCS = [
+    # Documents whose need does not depend on the claimant's own knowledge: with the gate fact open they are requested.
+    # (written_objection and court_filing are not here: the claimant knows whether they objected or filed, so on an open
+    # fact the question comes first and the copy is held behind it; that is the product's ordinary behaviour.)
     ("protected_period_notice", "notice_during_probation", {"employer_gave_notice": True},
      ["termination_letter", "employment_contract"]),
+    ("protected_period_notice", "notice_during_probation", {"employer_gave_notice": True, "probation_varied": True},
+     ["termination_letter", "employment_contract", "probation_terms"]),
     ("wrongful_termination", "objection_submitted", {"employer_gave_notice": True, "notice_period_ended": True},
-     ["termination_letter", "employment_contract", "written_objection"]),
-    ("wrongful_termination", "action_in_time",
-     {"employer_gave_notice": True, "notice_period_ended": False, "objection_submitted": True, "agreed_to_continue": False,
-      "more_than_180_days": True}, ["court_filing"]),
+     ["termination_letter", "employment_contract"]),
 ]
 
 
@@ -367,7 +370,7 @@ def main():
             recorded[f] = {"status": "unknown", "readings": [None], "open_readings": [True], "citations": ["quoted doubt"]}
             if f in product.presumed(wf, recorded):
                 fail(f"{t['id']}: a presumption fills {f} although the file raises it and leaves it open")
-        # reconciliation decision 4: an open gate or stop fact produces a request ("yes") for the documents that settle it
+        # gate documents (reconciliation, as narrowed after the reader's second look): requested with the gate fact open
         for tid, open_fact, stated, want in GATE_DOCS:
             if tid != t["id"]:
                 continue

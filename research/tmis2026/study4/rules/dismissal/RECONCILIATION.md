@@ -139,3 +139,41 @@ Not taken up, to keep the size limits; each is out of scope and named in the rel
 - the size limits.
 
 Counts: 3 types, 23 facts (8 + 9 + 6), 22 steps, 22 document needs from a 14-document catalogue, 0 statutory presumptions, 14 convention presumptions, 7 stops. That is 74 cited rules (37 `states`, 15 `follows`, 22 `evidence`) and 1 convention rule.
+
+## After the reader's second look (version 2026-11-12.5)
+
+The reader's second look is appended to `CITATION_CHECK.md`. It resolves all 29 points, agrees with the new rules and with the revised silence test, and leaves two items open. Both were applied in the reader's own proposed wording, together with the reader's small recommendations.
+
+1. **`written_objection` and `court_filing` (type 2): need condition narrowed.**
+   - Each document is now needed only when its own fact is yes (`objection_submitted`, `action_in_time`).
+   - When that fact is unmentioned or open, the document is held behind the question, which is the product's ordinary behaviour. When it is stated no, nothing is requested and the stop applies.
+   - The disjuncts "or the notice period has ended" and "or 180 days have passed" are removed, together with the sentences that explained them.
+   - **This reverses part of the planner's decision 4,** after the reader's run of the product showed that the disjunct requested a document the file says does not exist on the path to a stop. A claimant knows whether they objected or filed, so the first act on an unsettled fact is the question.
+   - The gate-document request check in `check.py` now covers only documents whose need does not depend on the claimant's own knowledge: the notice, the contract and the probation terms. Its description says so.
+2. **`notice_period_ended` and `more_than_180_days`: `not_this` extended.**
+   - A protected period under art. 336c para. 2, or untaken leave of the other parent under art. 335c para. 3, pushes the end of the notice period past the date on the letter. If the file raises either, the fact is open.
+   - Art. 335c is already stored in full in the snapshot (para. 3 included), so the snapshot needed no change.
+   - **Correction of my earlier statement:** completeness points 6, 8 and 9 were *not* named in a `not_this` or summary line, as the reader found. They now are:
+     - 6: seven days during probation (art. 335b para. 1), added to the "statutory ones" wording of `notice_period_varied`;
+     - 8: art. 335c para. 3, in the two `not_this` lines above;
+     - 9: art. 336 para. 3, in `employee_representative`'s `not_this`.
+3. **Small recommendations:**
+   - `incapacity_proof` has one catalogue title in both types, "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)". Type 1's `must_show` stays specific: medical certificate, illness or accident.
+   - The seven-day probation notice is in the statutory-periods wording.
+   - The art. 336 para. 3 `not_this` is added.
+   - In `rule_text.md`, the link from "anhängig gemacht" to CPC art. 62 para. 1 is labelled as an inference across the two acts, in both the type 2 summary and "Where the translation was not followed". `court_filing`'s inference in `rules.json` says the same.
+4. **"Known behaviour" section added to `RULES.md`.** It records:
+   - the reader's stated limit: with the illness fact open, the proof of incapacity is held, not requested;
+   - the narrowed type 2 document needs;
+   - that silence, while never ending a process, can choose which type 2 stop ends it.
+5. **Workflows set to status "reviewed".** Rebuilt, and `python3 -I tools/check.py` passes with the full walks: 2^8, 2^9 and 2^6 complete assignments, plus 6b walks over 2187, 6561 and 243 assignments.
+   - A product probe on type 2, with the notice period ended: objection unmentioned → `written_objection` held ("depends"); stated no → not requested, stop `b_stop_no_objection`; stated yes → requested.
+
+Counts are unchanged: 3 types, 23 facts, 22 steps, 22 document needs from 14 catalogue documents, 0 statutory presumptions, 14 convention presumptions, 7 stops, 74 cited rules plus 1 convention rule.
+
+Closing line: reader's second look of 2026-11-12 recorded in `CITATION_CHECK.md`; the edits in this section were made after it, in the reader's own proposed wording. SHA-256 at the time of marking reviewed:
+- rules.json 75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8
+- rule_text.md 421a24b7b0750fdd799fbe2ac198366a71e089391f6a7bb167a029437dbe80a9
+- workflow/protected_period_notice.json a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276
+- workflow/wrongful_termination.json 14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731
+- workflow/immediate_dismissal.json 5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63

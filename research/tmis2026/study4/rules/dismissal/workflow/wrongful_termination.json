@@ -3,7 +3,7 @@
  "id": "wrongful_termination",
  "version": "2026-11-12",
  "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
- "status": "draft",
+ "status": "reviewed",
  "example": false,
  "applies_when": {
   "fact": "dispute_family",
@@ -156,18 +156,10 @@
    "source_refs": [
     "co-sr220#art_336b_para_1"
    ],
-   "why": "CO art. 336b para. 1: The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both, and once the period has ended it decides the claim, so it is requested then even where the file leaves the objection open.",
+   "why": "CO art. 336b para. 1: The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both.",
    "required_when": {
-    "any": [
-     {
-      "fact": "objection_submitted",
-      "is": true
-     },
-     {
-      "fact": "notice_period_ended",
-      "is": true
-     }
-    ]
+    "fact": "objection_submitted",
+    "is": true
    }
   },
   {
@@ -182,18 +174,10 @@
    "source_refs": [
     "cpc-sr272#art_62_para_1"
    ],
-   "why": "CPC art. 62 para. 1: Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it; once the 180 days have passed it decides the claim, so it is requested then even where the file leaves the filing open.",
+   "why": "CPC art. 62 para. 1: Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it (the link from the CO's \"anhängig gemacht\" to the CPC's \"Rechtshängigkeit\" is an inference across the two acts).",
    "required_when": {
-    "any": [
-     {
-      "fact": "action_in_time",
-      "is": true
-     },
-     {
-      "fact": "more_than_180_days",
-      "is": true
-     }
-    ]
+    "fact": "action_in_time",
+    "is": true
    }
   },
   {
