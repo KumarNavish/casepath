@@ -1,7 +1,8 @@
 // Browser check on the local preview (make preview): "Unterlage hinzufügen" takes at most two actions and the line is ticked
 // at once. Run with the ego-browser runtime against a prepared synthetic case; replace CASE_ID with its id.
 const t = await taskSpace(0); const p = await t.newPage(); const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-await p.goto("http://127.0.0.1:8790/?lang=de#/case/${process.argv[2] || "CASE_ID"}/overview"); await sleep(3500);
+const CASE_ID = "CASE_ID";  // the prepared synthetic case's id in the preview
+await p.goto(`http://127.0.0.1:8790/?lang=de#/case/${CASE_ID}/overview`); await sleep(3500);
 const box = async (sel) => p.evaluate((s) => { const e = document.querySelector(s); if (!e) return null; e.scrollIntoView({block: "center"}); const r = e.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }, sel);
 let actions = 0;
 const field = await box("#add-doc"); if (!field) { console.log("no add-doc field"); process.exit(0); }
