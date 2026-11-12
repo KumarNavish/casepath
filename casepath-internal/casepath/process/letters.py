@@ -84,6 +84,22 @@ def request_list(items, events, evaluation, process):
     return out
 
 
+INSURED = ("versichert", "vn", "kund", "mieter", "tenant", "customer", "insured")
+
+
+def greeting(parties):
+    """The greeting Protekta's letters use ("Sehr geehrte Frau …" / "Sehr geehrter Herr …"), only when the file states the
+    insured person's salutation and name; otherwise the generic one. A salutation is never guessed from a first name."""
+    for p in parties or ():
+        role, name = str(p.get("label") or "").lower(), str(p.get("value") or "").strip()
+        if not any(word in role for word in INSURED) or "vermiet" in role:
+            continue
+        m = re.fullmatch(r"(Frau|Herr)\s+(?:[A-ZÄÖÜ][\w.-]*\s+)*([A-ZÄÖÜ][\w-]+)", name)
+        if m:
+            return f"Sehr geehrte Frau {m.group(2)}" if m.group(1) == "Frau" else f"Sehr geehrter Herr {m.group(2)}"
+    return "Sehr geehrte Damen und Herren"
+
+
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
     label = lambda i: (i.get("label") or {}).get("de") or i.get("value") or i["key"]
     facts = {i["key"]: i for i in items if i["kind"] == "fact"}
@@ -104,7 +120,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "registrierung": (f"Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz {ref.group(0)} provisorisch "
                           "registriert; bitte geben Sie diese bei jeder Mitteilung an.") if ref
                          else "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.",
-        "anrede": "Sehr geehrte Damen und Herren",  # the name and form of address are the handler's to add
+        "anrede": greeting(parties),
         "liste": "\n".join(listed),
         "fragen": "\n".join(["Weiter bitten wir Sie um die Beantwortung folgender Fragen:"] + [f"– {i['value']}" for i in questions]) if questions else "",
         "fragen_oder_offen": "\n".join(f"– {i['value']}" for i in asked(items, events, "letter_question")) or "\n".join(f"– {label(i)}" for i in missing) or "– (offener Punkt)",
@@ -188,7 +204,7 @@ def action_options(graph, evaluation, forms):
         action = (steps.get(sid) or {}).get("action") or {}
         for kind, days in [(action.get("kind"), action.get("next_in_days")), (action.get("follow_up"), None)] + \
                           [(v.get("kind"), v.get("next_in_days")) for v in action.get("instead", [])]:
-            if kind and kind not in out:
+            if kind and kind not in out and kind != "A0":  # the receipt is sent by Protekta's online form, not chosen
                 form = (forms or {}).get(kind) or {}
                 out[kind] = {"kind": kind, "title": form.get("title") or kind, "next_in_days": days, "has_draft": bool(form) and not form.get("none")}
     for rule in graph.get("clock", []):  # a follow-up's days come from the clock when no stage names them

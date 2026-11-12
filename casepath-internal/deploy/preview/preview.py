@@ -9,6 +9,7 @@ data or a real model run.
 """
 from pathlib import Path
 import io
+import json
 import sys
 import tempfile
 import threading
@@ -92,8 +93,12 @@ def script(email, letter, knowledge_id=None):
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     data = tempfile.mkdtemp(prefix="cp-preview-")
-    settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(ROOT / "tests" / "fixtures"),
-                              "CASEPATH_DEV_USER": "N. Kumar"})
+    # The fixture's workflow plus a synthetic intake, so the handler's own workflow (which supersedes the intake) joins too.
+    catalogue = Path(tempfile.mkdtemp(prefix="cp-preview-catalogue-"))
+    (catalogue / "example-defect.json").write_text((ROOT / "tests" / "fixtures" / "example-defect.json").read_text())
+    from tests.test_handler_workflow import intake
+    (catalogue / "osm-mold.json").write_text(json.dumps(intake()))
+    settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue), "CASEPATH_DEV_USER": "N. Kumar"})
     app = create_app(settings, model_factory=lambda: None)
     store, runs = app.state.store, app.state.runs
 
@@ -132,7 +137,20 @@ def main():
                       [("record_document", lambda: {"document": need(), "status": "absent", "files": [], "citations": [],
                                                     "note": "No lease is among the files."}), report("document_finder", summary="No lease among the files.")]], pause)
     runs.model_factory = factory
-    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}", flush=True)
+    # Case C: a synthetic case on the handler's workflow with a stored result (no model), so its stage actions,
+    # its letter and "andere Handlung" can be tried in the browser.
+    case_c = store.create_case("Schimmel im Bad, Handler-Prozess (synthetisch)", {"synthetic": True}, "N. Kumar")
+    from casepath.read.extract import extract
+    row = extract("Meldung Lea Brunner.eml", "message/rfc822", EMAIL)
+    email_c = store.add_file(case_c["id"], "Meldung Lea Brunner.eml", row["media_type"], row["kind"], EMAIL, row, "N. Kumar")["id"]
+    fact = lambda f, v, quote=None: {"fact": f, "status": "established", "verdict": "accepted", "value": v,
+                                      "citations": [{"file": email_c, "quote": quote}] if quote else []}
+    run_c = store.create_run(case_c["id"], "N. Kumar")
+    store.update_run(run_c["id"], status="completed", workflow_id="mietmangel-handler", finished_at="2026-11-12T10:00:00+00:00",
+                     result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja", TOLD)], "documents": [],
+                             "brief": {"request": "Lea Brunner möchte Hilfe, weil im Badezimmer immer wieder Schimmel auftritt.",
+                                       "parties": [{"role": "Mieterin (VN)", "name": "Frau Lea Brunner"}], "timeline": []}})
+    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

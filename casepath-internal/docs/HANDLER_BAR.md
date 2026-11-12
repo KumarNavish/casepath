@@ -38,7 +38,7 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 |---|---|---|---|
 | 1 Centre is the prepared action | yes | `deploy/preview/check_fold.mjs` (first card, title 120–144 px; measured at one window size, 1428×811, the runtime ignores other sizes); `test_a_case_on_the_handler_workflow_carries_its_draft_and_its_file_note` | a run at 1280×720 in a browser that can set it |
 | 2 Reasons as a chain | yes | `deploy/preview/check_sources.mjs` (every checklist line opens its source or rule, every "weil" fact opens its source: 4 of 4 on the synthetic case); `test_edits_change_the_checklist_and_can_be_undone` | the same check on a handler-workflow case (more lines, "Deckung offen") |
-| 3 Feedback is finishing the work | partly | `test_andere_handlung_changes_the_draft_and_the_date_and_is_logged_with_its_reason` (another action: draft, date, item.corrected with reason); local walk 8/8; `check_add_document.mjs` (2 actions) | a browser count for "andere Handlung" (the preview's synthetic workflow has no stage actions) |
+| 3 Feedback is finishing the work | yes | `test_andere_handlung_changes_the_draft_and_the_date_and_is_logged_with_its_reason`; `deploy/preview/check_other_action.mjs` (2 actions; draft and follow-up date change; the option is set in the page, not by mouse); local walk 8/8; `check_add_document.mjs` (2 actions) | — |
 | 4 A case has a next date | yes | `python -m casepath.process.clock` self-test; `test_a_case_on_the_handler_workflow_carries_its_draft_and_its_file_note` (next date: deadline before follow-up); A6/A7 letters use the same date (`test_every_action_kind_renders_its_form_with_every_part_and_no_empty_placeholder`) | — |
 | 5 Arrival | partly | `test_a_new_file_is_announced_and_a_second_preparation_shows_what_changed` | the run starts only when a person asks (deliberately: it spends tokens); a re-run reads all files, not only the new ones |
 | 6 The file note writes itself | yes | `test_the_file_note_is_the_same_paragraph_every_time` (text pinned); `test_a_document_the_handler_unticked_is_neither_asked_nor_awaited` | — |
@@ -55,6 +55,13 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 | A10 Mandate | partly | form: `test_every_action_kind_renders_…`; stage "mandat" | decision-point test (D9, planned) |
 | A11 Payment | partly | stage "abwicklung" carries A11 | kein Entwurf: amount and date come from the payment system; decision-point tests (D1, planned) |
 | A12 Closing | partly | form: `test_every_action_kind_renders_…`; clock: A7 then 14 days → A12 (`casepath.process.clock` self-test covers the rule's shape) | decision-point test (D9, planned) |
+
+**Deploy-day order** (each step counts only if its line passes; stop and report otherwise):
+1. Letter comparison on the seven cuts, model-free, before and after the swap: 7 of 7 identical apart from greeting and closing sentence.
+2. Smoke and one gate run on a small cut: every case shows process, items, next action and draft; the run completes.
+3. Steering check, about 0.1M: Anhalten, one answer while paused, Weiter; same next action and ticked lines, the answer stands.
+4. Action tests, about 1.95M (A5, A12, A11 ×2, A10, A8, A9): right kind; date equal to Protekta's where it set one.
+5. Speed round, about 0.6M, then the model experiment, about 1.05M, only on Navish's yes: no scoreboard line worse.
 
 **Action tests start from the handler's decisions.** Stages after "Deckung" and "Vorgehen" are reached only through the handler's own decisions (handler_only facts the agents never set). A test of A5, A8/A9, A10, A11 or A12 therefore sets those decisions on the cut first, as set_fact edits, as the handler had decided by then; the test then measures the next action from there.
 

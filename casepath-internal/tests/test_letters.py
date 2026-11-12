@@ -90,3 +90,13 @@ class GapTests(unittest.TestCase):
         self.assertIn("[bitte ergänzen: was in diesem Fall vorliegt]", a8)  # no stored text: a gap, not a made-up paragraph
         for kind in ("A1", "A4", "A6", "A7", "A10", "A12"):  # filled from what the case asserts: no gap
             self.assertFalse(letters.has_gap(letters.render(kind, WF["forms"], with_summary)[0]), kind)
+
+
+class GreetingTests(unittest.TestCase):
+    def test_the_dossiers_greeting_only_when_the_file_states_salutation_and_name(self):
+        party = lambda role, name: {"kind": "party", "label": role, "value": name}
+        self.assertEqual(letters.greeting([party("Mieterin (VN)", "Frau Lea Brunner")]), "Sehr geehrte Frau Brunner")
+        self.assertEqual(letters.greeting([party("Versicherter", "Herr Beat Beispiel")]), "Sehr geehrter Herr Beispiel")
+        self.assertEqual(letters.greeting([party("Mieterin", "Lea Brunner")]), "Sehr geehrte Damen und Herren")  # no salutation stated
+        self.assertEqual(letters.greeting([party("Vermieterin", "Frau Anna Muster")]), "Sehr geehrte Damen und Herren")  # not the insured
+        self.assertEqual(letters.greeting([]), "Sehr geehrte Damen und Herren")
