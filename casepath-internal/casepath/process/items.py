@@ -84,6 +84,7 @@ def _evidence(citations):
     return [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for c in citations or ()]
 
 
+GENERIC_TITLES = {"bericht", "schreiben", "brief", "e", "email", "protokoll", "unterlagen", "dokument", "foto", "fotos", "rechnung", "beleg"}
 FOLLOW_UP_TITLES = {"A6": "Dossier pendent halten mit Frist", "A7": "Statusanfrage mit Abschlussankündigung", "A12": "Dossier abschliessen"}
 
 
@@ -215,10 +216,15 @@ def build_items(state, result, files=None):
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
     brief = result.get("brief") or {}
-    for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: asked as such
+    needs = {re.split(r"\W+", str((i.get("label") or {}).get("de") or "").lower())[0] for i in items if i["kind"] == "document"}
+    for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: offered as such
+        head = re.split(r"\W+", doc["title"].lower())[0]
+        if head in needs and head not in GENERIC_TITLES:
+            continue  # the same document is already a need of the process
+        # practice: of ten such mentions in the development cuts Protekta asked one, so the default is offered, not ticked
         add("document", f"mention-{i}", value="missing", stated_as="established", verdict="accepted", evidence=_evidence(doc.get("citations")),
             node=None, origin="claim_reader", chain=True, label=doc["title"], status="missing", legal_basis=None, required="yes",
-            ask="now", part_of=None, reason=f'{"in " + doc["mentioned"] + " " if doc.get("mentioned") else ""}erwähnt, lag nicht bei')
+            ask="proposed", part_of=None, reason=f'{"in " + doc["mentioned"] + " " if doc.get("mentioned") else ""}erwähnt, lag nicht bei')
     for i, party in enumerate(brief.get("parties") or []):
         add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None, origin="claim_reader",
             chain=False, label=party.get("role"))
