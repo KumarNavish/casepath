@@ -194,6 +194,10 @@ class CaseWork:
         self.on_event = on_event or (lambda event: None)
         self.rebuild()
 
+
+    def set_by_hand(self):
+        """Facts a case worker set in this case (a set_fact edit): no agent records or re-reads them."""
+        return {e["args"].get("fact") for e in self.employee_edits if e.get("op") == "set_fact"}
     def emit(self, agent, kind, **data):
         event = {"agent": agent, "kind": kind, **data}
         self.events.append(event)
@@ -413,6 +417,8 @@ def _record_fact(work, agent, args):
     definition = work.fact_defs[args["fact"]]
     if definition.get("handler_only") or definition.get("derived"):  # cover, the way to proceed, computed facts: not the agents'
         return {"accepted": False, "reason": "a case worker decides this fact, or it is computed; do not record it"}
+    if args["fact"] in work.set_by_hand():  # the case worker's answer stands, also when given while the run was paused
+        return {"accepted": False, "reason": "the case worker has answered this fact; do not record it"}
     known = work.facts.get(args["fact"])
     if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
         return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}
@@ -731,7 +737,7 @@ def confirm_facts(model, work, effort="medium"):
     """A second, independent reading of the deciding facts. Where the two readings differ, the fact is marked as
     conflicting for a person to settle; where only the second reading finds a quoted value, it is recorded for the
     source checker. Nothing is decided silently."""
-    facts = gating_facts(work)
+    facts = [f for f in gating_facts(work) if f["id"] not in work.set_by_hand()]  # the case worker's answers are not read again
     if not facts:
         return {"checked": 0}
     if work.total_chars <= SMALL_CASE_CHARS:
@@ -810,7 +816,7 @@ class CaseTeam:
         work = CaseWork(case=case, files=files, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
         if resume:
             work.brief = resume.get("brief")
-            work.facts = {f["fact"]: f for f in resume.get("facts") or []}
+            work.facts = {f["fact"]: f for f in resume.get("facts") or [] if f["fact"] not in work.set_by_hand()}
             work.documents = {d["document"]: d for d in resume.get("documents") or []}
             work.usage = list(resume.get("usage") or [])
         for row in routed:

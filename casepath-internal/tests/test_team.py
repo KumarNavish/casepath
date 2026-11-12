@@ -438,3 +438,20 @@ class ContinueTests(unittest.TestCase):
         self.assertIn("step.kept", {e["kind"] for e in resumed["events"]})
         pick = lambda r: ([(f["fact"], f["value"], f["verdict"]) for f in r["facts"]], r["evaluation"]["outcome"], r["brief"]["timeline"])
         self.assertEqual(pick(resumed), pick(straight))
+
+
+    def test_an_answer_given_while_paused_stands_on_weiter_and_is_never_overwritten(self):
+        fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
+        script = standard_script(finder_calls=[], result_fields=fields)
+        brief_done = next(i for i, t in enumerate(script) if t and t[0][0] == "report" and "request" in t[0][1])
+        asked = {"n": 0}
+
+        def stop_after_brief():
+            asked["n"] += 1
+            return asked["n"] > 3
+        paused = CaseTeam(ScriptedModel(script[:brief_done + 1]), should_stop=stop_after_brief).run(case=CASE, files=FILES, workflow=FIXTURE)
+        answered = [{"id": "e1", "op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"}}]
+        resumed = CaseTeam(ScriptedModel(script[brief_done + 1:])).run(case=CASE, files=FILES, workflow=FIXTURE, edits=answered, resume=paused)
+        self.assertNotIn("landlord_notified", [f["fact"] for f in resumed["facts"]])  # the reader's "ja" was refused
+        refused = [e for e in resumed["events"] if e.get("tool") == "record_fact"]
+        self.assertTrue(refused)
