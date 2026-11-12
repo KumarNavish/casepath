@@ -1,0 +1,37 @@
+{
+ "label": "DEVELOPMENT, written before any rev3 call",
+ "ledger_total_before_usd": 3.219367,
+ "budget_usd": 0.7,
+ "stop_launch_at_run_usd": 0.6,
+ "stop_usd_ledger_total": 3.819367,
+ "cache_estimate": "Every workflow differs from rev1 (the routing question is in every workflow and every reading request), so the routing and reading calls are all new; only document-finder turns that open with an unchanged process reference and identical tool results can come from the cache. Estimate: every call new, at the higher of the per-file cost of the clean arm and of the rev1 re-run per regime (upper bound).",
+ "estimate_usd_total": 0.8258,
+ "exceeds_stop": true,
+ "decision": "Estimate exceeds USD 0.60: whole regimes in the order dismissal, theft, tenancy; launching stops when the ledger total reaches before + 0.60; only complete regimes are reported as such.",
+ "order": [
+  {
+   "regime": "dismissal",
+   "files": 58,
+   "usd_per_file": 0.00505,
+   "estimate_usd": 0.2931,
+   "cumulative": 0.2931
+  },
+  {
+   "regime": "theft",
+   "files": 56,
+   "usd_per_file": 0.00476,
+   "estimate_usd": 0.2668,
+   "cumulative": 0.5599
+  },
+  {
+   "regime": "tenancy",
+   "files": 59,
+   "usd_per_file": 0.00451,
+   "estimate_usd": 0.2659,
+   "cumulative": 0.8258
+  }
+ ],
+ "workers": 4,
+ "arm": "clean_rev3",
+ "model": "gpt-6-luna"
+}

@@ -1,0 +1,4174 @@
+{
+ "label": "DEVELOPMENT, post hoc, in-sample: rule wording and files were repaired on these same files. No baseline, no comparison between designs. Not a result.",
+ "regimes": {
+  "tenancy": {
+   "files_in_final": 59,
+   "files_run": 28,
+   "complete": false,
+   "files_with_rev0_run": 28,
+   "rewritten_texts_in_set": [],
+   "table": {
+    "overall": {
+     "rev3": {
+      "files": 28,
+      "UR": 0.143,
+      "MR": 0.071,
+      "UH": 0.036,
+      "MH": 0.0,
+      "E": 0.25,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 28,
+      "UR": 0.143,
+      "MR": 0.071,
+      "UH": 0.036,
+      "MH": 0.0,
+      "E": 0.25,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 28,
+      "UR": 0.143,
+      "MR": 0.036,
+      "UH": 0.214,
+      "MH": 0.0,
+      "E": 0.393,
+      "errors": 11,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "rev3": {
+      "files": 6,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 6,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 6,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.167,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "rev3": {
+      "files": 10,
+      "UR": 0.2,
+      "MR": 0.2,
+      "UH": 0.1,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 5,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 10,
+      "UR": 0.2,
+      "MR": 0.2,
+      "UH": 0.1,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 5,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 10,
+      "UR": 0.2,
+      "MR": 0.1,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.3,
+      "errors": 3,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "rev3": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "rev3": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.167,
+      "errors": 1,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.833,
+      "MH": 0.0,
+      "E": 1.0,
+      "errors": 6,
+      "RF_denied": 1,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "rev3": {
+      "files": 4,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 4,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 4,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "open_fact": {
+     "rev3": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.167,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.333,
+      "errors": 2,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.167,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.333,
+      "errors": 2,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 6,
+      "UR": 0.167,
+      "MR": 0.0,
+      "UH": 0.167,
+      "MH": 0.0,
+      "E": 0.333,
+      "errors": 2,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "other": {
+     "rev3": {
+      "files": 18,
+      "UR": 0.167,
+      "MR": 0.056,
+      "UH": 0.056,
+      "MH": 0.0,
+      "E": 0.278,
+      "errors": 5,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 18,
+      "UR": 0.167,
+      "MR": 0.056,
+      "UH": 0.056,
+      "MH": 0.0,
+      "E": 0.278,
+      "errors": 5,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 18,
+      "UR": 0.167,
+      "MR": 0.056,
+      "UH": 0.278,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 9,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    }
+   },
+   "causes_rev3": {
+    "document judgment: sufficient judged insufficient": 3,
+    "document judgment: insufficient judged sufficient": 1,
+    "document judgment: not supplied judged present": 1,
+    "fact reading: readings disagreed and it held although the file states the fact": 1,
+    "document judgment: present judged missing (source checker rejected the finding)": 1
+   },
+   "causes_rev0_same_files": {
+    "fact reading: readings disagreed and it held although the file states the fact": 6,
+    "document judgment: present judged missing (source checker rejected the finding)": 2,
+    "document judgment: sufficient judged insufficient": 2,
+    "text against recorded state": 1
+   },
+   "replay_checks": {
+    "replay_reproduces_stored_plan": 26,
+    "designed_replay_equals_reference": 158
+   },
+   "routing_failures": [
+    {
+     "file": "ten_429b182434cf",
+     "type": "rent_increase_dispute",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "ten_776e0e61986b",
+     "type": "defect_mold_heating",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    }
+   ],
+   "errors": [
+    {
+     "regime": "tenancy",
+     "file": "ten_0d082e78c345",
+     "type": "defect_mold_heating",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "deposit_receipt",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_2249a3b45704",
+     "type": "defect_mold_heating",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "kept_as_read",
+     "scan_noise": false,
+     "document": "knowledge_proof",
+     "kind": "missed_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_sufficient",
+     "reference": "present_insufficient",
+     "doc_sub": "insufficient judged sufficient",
+     "supplied": "insufficient",
+     "product_document": {
+      "effective": "present",
+      "status": "present",
+      "verdict": "accepted"
+     },
+     "sub": "insufficient judged sufficient"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_5822f6df0cb7",
+     "type": "lease_termination_dispute",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "claims_and_reasons",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_5822f6df0cb7",
+     "type": "lease_termination_dispute",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "termination_notice",
+     "kind": "missed_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_sufficient",
+     "reference": "request",
+     "doc_sub": "not supplied judged present",
+     "supplied": "not supplied",
+     "product_document": {
+      "effective": "present",
+      "status": "present",
+      "verdict": "accepted"
+     },
+     "sub": "not supplied judged present"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_5aecbb73131b",
+     "type": "rent_increase_dispute",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "cost_breakdown",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "graduated_rent",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Er erhoht sich jeweils auf den 1. Juli um CHF 60"
+      },
+      {
+       "verdict": "true",
+       "quote": "Erhoht sich jeweils auf den 1. Juli um CHF 60"
+      },
+      {
+       "verdict": "true",
+       "quote": "Das steht so im Vertrag, mit al1en Beträgen bis 2026."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_5aecbb73131b",
+     "type": "rent_increase_dispute",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "lease_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "tenancy",
+     "file": "ten_68cb7ef0004f",
+     "type": "lease_termination_dispute",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "termination_notice",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    }
+   ]
+  },
+  "theft": {
+   "files_in_final": 56,
+   "files_run": 56,
+   "complete": true,
+   "files_with_rev0_run": 56,
+   "rewritten_texts_in_set": [
+    "the_0cd1b047049a",
+    "the_1024620d6055",
+    "the_1dfba8facf5e",
+    "the_2774fb90433e",
+    "the_6634ab23ee99",
+    "the_685edf55333b",
+    "the_7d2b6a2bdce4",
+    "the_819379d12c03",
+    "the_86b4e22a87e7",
+    "the_86e739ec9184",
+    "the_9355c558630a",
+    "the_a529fff2269d"
+   ],
+   "table": {
+    "overall": {
+     "rev3": {
+      "files": 56,
+      "UR": 0.25,
+      "MR": 0.0,
+      "UH": 0.268,
+      "MH": 0.089,
+      "E": 0.607,
+      "errors": 34,
+      "RF_denied": 8,
+      "RF_other": 2,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 56,
+      "UR": 0.25,
+      "MR": 0.0,
+      "UH": 0.268,
+      "MH": 0.089,
+      "E": 0.607,
+      "errors": 34,
+      "RF_denied": 8,
+      "RF_other": 2,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 56,
+      "UR": 0.304,
+      "MR": 0.214,
+      "UH": 0.464,
+      "MH": 0.107,
+      "E": 1.089,
+      "errors": 61,
+      "RF_denied": 8,
+      "RF_other": 8,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "rev3": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.0,
+      "UH": 0.333,
+      "MH": 0.0,
+      "E": 0.467,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.0,
+      "UH": 0.333,
+      "MH": 0.0,
+      "E": 0.467,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 15,
+      "UR": 0.333,
+      "MR": 0.2,
+      "UH": 0.333,
+      "MH": 0.0,
+      "E": 0.867,
+      "errors": 13,
+      "RF_denied": 2,
+      "RF_other": 2,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "rev3": {
+      "files": 14,
+      "UR": 0.429,
+      "MR": 0.0,
+      "UH": 0.071,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 14,
+      "UR": 0.429,
+      "MR": 0.0,
+      "UH": 0.071,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 7,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 14,
+      "UR": 0.286,
+      "MR": 0.429,
+      "UH": 0.571,
+      "MH": 0.071,
+      "E": 1.357,
+      "errors": 19,
+      "RF_denied": 2,
+      "RF_other": 3,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "rev3": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.0,
+      "UH": 0.286,
+      "MH": 0.071,
+      "E": 0.571,
+      "errors": 8,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.0,
+      "UH": 0.286,
+      "MH": 0.071,
+      "E": 0.571,
+      "errors": 8,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 14,
+      "UR": 0.143,
+      "MR": 0.214,
+      "UH": 0.5,
+      "MH": 0.071,
+      "E": 0.929,
+      "errors": 13,
+      "RF_denied": 2,
+      "RF_other": 2,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "rev3": {
+      "files": 13,
+      "UR": 0.231,
+      "MR": 0.0,
+      "UH": 0.385,
+      "MH": 0.308,
+      "E": 0.923,
+      "errors": 12,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 13,
+      "UR": 0.231,
+      "MR": 0.0,
+      "UH": 0.385,
+      "MH": 0.308,
+      "E": 0.923,
+      "errors": 12,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 13,
+      "UR": 0.462,
+      "MR": 0.0,
+      "UH": 0.462,
+      "MH": 0.308,
+      "E": 1.231,
+      "errors": 16,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "rev3": {
+      "files": 8,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 8,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 8,
+      "UR": 1.0,
+      "MR": 0.0,
+      "UH": 2.0,
+      "MH": 0.0,
+      "E": 3.0,
+      "errors": 24,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "open_fact": {
+     "rev3": {
+      "files": 13,
+      "UR": 0.308,
+      "MR": 0.0,
+      "UH": 0.077,
+      "MH": 0.385,
+      "E": 0.769,
+      "errors": 10,
+      "RF_denied": 0,
+      "RF_other": 2,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 13,
+      "UR": 0.308,
+      "MR": 0.0,
+      "UH": 0.077,
+      "MH": 0.385,
+      "E": 0.769,
+      "errors": 10,
+      "RF_denied": 0,
+      "RF_other": 2,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 13,
+      "UR": 0.154,
+      "MR": 0.231,
+      "UH": 0.0,
+      "MH": 0.462,
+      "E": 0.846,
+      "errors": 11,
+      "RF_denied": 0,
+      "RF_other": 3,
+      "failed_runs": 0
+     }
+    },
+    "other": {
+     "rev3": {
+      "files": 35,
+      "UR": 0.286,
+      "MR": 0.0,
+      "UH": 0.4,
+      "MH": 0.0,
+      "E": 0.686,
+      "errors": 24,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 35,
+      "UR": 0.286,
+      "MR": 0.0,
+      "UH": 0.4,
+      "MH": 0.0,
+      "E": 0.686,
+      "errors": 24,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 35,
+      "UR": 0.2,
+      "MR": 0.257,
+      "UH": 0.286,
+      "MH": 0.0,
+      "E": 0.743,
+      "errors": 26,
+      "RF_denied": 0,
+      "RF_other": 5,
+      "failed_runs": 0
+     }
+    }
+   },
+   "causes_rev3": {
+    "fact reading: readings disagreed and it held although the file states the fact": 10,
+    "document judgment: present judged missing (source checker rejected the finding)": 5,
+    "document judgment: sufficient judged insufficient": 5,
+    "routing, other file": 5,
+    "text against recorded state: readings disagreed and it held although the file states the fact": 5,
+    "document judgment: present judged missing": 4
+   },
+   "causes_rev0_same_files": {
+    "routing, denied-event file": 24,
+    "routing, other file": 18,
+    "text against recorded state: readings disagreed and it held although the file states the fact": 5,
+    "text against recorded state": 4,
+    "document judgment: sufficient judged insufficient": 4,
+    "fact reading: read an unmentioned fact as open": 3,
+    "fact reading: readings disagreed and it held although the file states the fact": 2,
+    "document judgment: present judged missing (source checker rejected the finding)": 1
+   },
+   "replay_checks": {
+    "replay_reproduces_stored_plan": 46,
+    "designed_replay_equals_reference": 347
+   },
+   "routing_failures": [
+    {
+     "file": "the_1dfba8facf5e",
+     "type": "theft_at_home",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Es ist mir überhaupt nichts gestohlen worden, nirgends.",
+        "Ich habe auch nie einen Schaden gemeldet."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_32a656cb56cf",
+     "type": "simple_theft_away",
+     "denied_event": false,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 1
+    },
+    {
+     "file": "the_5ee356013cfc",
+     "type": "simple_theft_away",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Mir wurde nichts einfach so gestohlen, ich wurde überfallen.",
+        "In einer Unterführung kam ein Mann von hinten, hat mich gegen die Wand gestossen und mir gedroht, er schlage zu, wenn ich mich wehre. Dann hat er mir die Umhängetasche vom Arm gerissen und ist davongerannt."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_6634ab23ee99",
+     "type": "theft_at_home",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "In fact nothing of rnine has been stolen anywhere at all. Everything I own is where it should be."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_685edf55333b",
+     "type": "theft_at_home",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Nothing of mine has been stolen at all, anywhere."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_86b4e22a87e7",
+     "type": "theft_at_home",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Es ist mir überhaupt nichts gestohlen worden, nirgends."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_86e739ec9184",
+     "type": "simple_theft_away",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Mir ist arn 23. August 2026 nichts gestohlen worden, und ach an keinem anderen Tag, weder unterwegs noch zu Hause in meiner Wohnung an der Bergstrasse 108 in St. Gallen. Es fehlt mir nichts, und es ist nichts kaputt."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_a529fff2269d",
+     "type": "simple_theft_away",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "Nothing of mine was stolen on 11 August 2026, or on any other day. Nothing was taken from me while I was out and about, nothing was taken from me anywhere, and nothing I own was damaged."
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_c7620535798b",
+     "type": "simple_theft_away",
+     "denied_event": true,
+     "routing_status": "unmapped",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": "other",
+       "quotes": [
+        "On Wednesday 1 July 2026, at about half past ten at night, I was walking from the cinema in Bern towards the station. In the underpass near the university a man stepped out in front of me with a knife. He held it close to my stomach and told me to hand over my bag and my watch, or he'd use it. I wa…"
+       ]
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "the_d76f5df60f83",
+     "type": "simple_theft_away",
+     "denied_event": false,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "claim_type",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 4
+    }
+   ],
+   "errors": [
+    {
+     "regime": "theft",
+     "file": "the_003fbcb4d365",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": true,
+     "document": "stolen_items_list",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "theft",
+     "file": "the_0cd1b047049a",
+     "type": "simple_theft_away",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "theft",
+     "file": "the_0d6569d32db1",
+     "type": "theft_at_home",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "kept_as_read",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "theft",
+     "file": "the_12ee892d56f4",
+     "type": "simple_theft_away",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 2, true 1",
+     "quotes_located": [
+      null,
+      true,
+      null
+     ],
+     "fact": "vouchers_unobtainable",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "not_stated"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Quittungen habe ich keine mehr, für gar nichts davon."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_1595e412e131",
+     "type": "theft_at_home",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+     "quotes_located": [
+      true,
+      true,
+      false
+     ],
+     "fact": "theft_at_home",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "jemand ist hereinspaziert."
+      },
+      {
+       "verdict": "true",
+       "quote": "Entwendet wurden ein Laptop, eine Handtasche, ein Schmuckkästchen mit zwei Ringen und einer Halskette sowie ein Schlüsselbund."
+      },
+      {
+       "verdict": "true",
+       "quote": "bet rat"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_1595e412e131",
+     "type": "theft_at_home",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notification_record",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+     "quotes_located": [
+      true,
+      true,
+      false
+     ],
+     "fact": "theft_at_home",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "jemand ist hereinspaziert."
+      },
+      {
+       "verdict": "true",
+       "quote": "Entwendet wurden ein Laptop, eine Handtasche, ein Schmuckkästchen mit zwei Ringen und einer Halskette sowie ein Schlüsselbund."
+      },
+      {
+       "verdict": "true",
+       "quote": "bet rat"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_1595e412e131",
+     "type": "theft_at_home",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+     "quotes_located": [
+      true,
+      true,
+      false
+     ],
+     "fact": "theft_at_home",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "jemand ist hereinspaziert."
+      },
+      {
+       "verdict": "true",
+       "quote": "Entwendet wurden ein Laptop, eine Handtasche, ein Schmuckkästchen mit zwei Ringen und einer Halskette sowie ein Schlüsselbund."
+      },
+      {
+       "verdict": "true",
+       "quote": "bet rat"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_1595e412e131",
+     "type": "theft_at_home",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "stolen_items_list",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+     "quotes_located": [
+      true,
+      true,
+      false
+     ],
+     "fact": "theft_at_home",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "jemand ist hereinspaziert."
+      },
+      {
+       "verdict": "true",
+       "quote": "Entwendet wurden ein Laptop, eine Handtasche, ein Schmuckkästchen mit zwei Ringen und einer Halskette sowie ein Schlüsselbund."
+      },
+      {
+       "verdict": "true",
+       "quote": "bet rat"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_248aa95805a8",
+     "type": "theft_at_home",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_248aa95805a8",
+     "type": "theft_at_home",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notification_record",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_248aa95805a8",
+     "type": "theft_at_home",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "police_consent",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_248aa95805a8",
+     "type": "theft_at_home",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "stolen_items_list",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Wir haben seit 2022 zusammen in der WG gewohnt, sie hatte bis zu diesem Tag ihr Zimmer bei uns."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_2774fb90433e",
+     "type": "simple_theft_away",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "theft",
+     "file": "the_281214c010bb",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "kept_as_read",
+     "scan_noise": true,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "theft",
+     "file": "the_32a656cb56cf",
+     "type": "simple_theft_away",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "theft",
+     "file": "the_656f9aad39e5",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unwarranted_hold",
+     "cause": "text_state_disagree",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      }
+     ],
+     "sub": "readings_disagreed_held",
+     "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+    },
+    {
+     "regime": "theft",
+     "file": "the_656f9aad39e5",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notification_record",
+     "kind": "unwarranted_hold",
+     "cause": "text_state_disagree",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      }
+     ],
+     "sub": "readings_disagreed_held",
+     "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+    },
+    {
+     "regime": "theft",
+     "file": "the_656f9aad39e5",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unwarranted_hold",
+     "cause": "text_state_disagree",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      }
+     ],
+     "sub": "readings_disagreed_held",
+     "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+    },
+    {
+     "regime": "theft",
+     "file": "the_656f9aad39e5",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "police_consent",
+     "kind": "unwarranted_hold",
+     "cause": "text_state_disagree",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      }
+     ],
+     "sub": "readings_disagreed_held",
+     "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+    },
+    {
+     "regime": "theft",
+     "file": "the_656f9aad39e5",
+     "type": "theft_at_home",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "stolen_items_list",
+     "kind": "unwarranted_hold",
+     "cause": "text_state_disagree",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "household_perpetrator",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      },
+      {
+       "verdict": "true",
+       "quote": "die seit dem Frühling 2025 bei mir zur Untermiete wohnte und mit mir die Wohnung teilte."
+      }
+     ],
+     "sub": "readings_disagreed_held",
+     "sub6": "reviewed: The file names the sub-tenant who shared the flat and says she moved out without warning and the claimant then noticed the things were gone with her. The question asks whether she lived in the household at the time of the theft, and its not_this excludes a person who had moved out before the theft; two readings answered open quoting the moving-out sentence. Whether she took the items before or on moving out is not stated, so 'open' is a defensible reading of the text."
+    },
+    {
+     "regime": "theft",
+     "file": "the_7d2b6a2bdce4",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "theft",
+     "file": "the_819379d12c03",
+     "type": "simple_theft_away",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notification_record",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "present",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "theft",
+     "file": "the_9355c558630a",
+     "type": "simple_theft_away",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "theft",
+     "file": "the_9355c558630a",
+     "type": "simple_theft_away",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts not_stated 2, true 1",
+     "quotes_located": [
+      true,
+      null,
+      null
+     ],
+     "fact": "vouchers_unobtainable",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "not_stated"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "der kann mir für so alte Käufe nichts mehr ausdrucken."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "theft",
+     "file": "the_c3a5e8c74185",
+     "type": "simple_theft_away",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "missing",
+      "verdict": "not_checked"
+     },
+     "sub": "present judged missing"
+    },
+    {
+     "regime": "theft",
+     "file": "the_d37fc3c54b4b",
+     "type": "simple_theft_away",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "missing",
+      "verdict": "not_checked"
+     },
+     "sub": "present judged missing"
+    },
+    {
+     "regime": "theft",
+     "file": "the_d70abf016562",
+     "type": "theft_at_home",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": true,
+     "document": "stolen_items_list",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "theft",
+     "file": "the_d76f5df60f83",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "insurance_policy",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "theft",
+     "file": "the_d76f5df60f83",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notification_record",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "theft",
+     "file": "the_d76f5df60f83",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "police_consent",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "theft",
+     "file": "the_d76f5df60f83",
+     "type": "simple_theft_away",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "stolen_items_list",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "theft",
+     "file": "the_e0b1e1d56fb2",
+     "type": "theft_at_home",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "missing",
+      "verdict": "not_checked"
+     },
+     "sub": "present judged missing"
+    },
+    {
+     "regime": "theft",
+     "file": "the_eb579978f91b",
+     "type": "simple_theft_away",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "original_vouchers",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "missing",
+      "verdict": "not_checked"
+     },
+     "sub": "present judged missing"
+    },
+    {
+     "regime": "theft",
+     "file": "the_eb579978f91b",
+     "type": "simple_theft_away",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "stolen_items_list",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    }
+   ]
+  },
+  "dismissal": {
+   "files_in_final": 58,
+   "files_run": 58,
+   "complete": true,
+   "files_with_rev0_run": 58,
+   "rewritten_texts_in_set": [
+    "dis_188837a70acc",
+    "dis_408b774aa7db",
+    "dis_827bbd04ddc9",
+    "dis_c5e1bd4a1483",
+    "dis_dd12420e6a78",
+    "dis_f5520e9336bd",
+    "dis_fb44c47f6ec7",
+    "dis_ff1e9056d2c3"
+   ],
+   "table": {
+    "overall": {
+     "rev3": {
+      "files": 58,
+      "UR": 0.121,
+      "MR": 0.121,
+      "UH": 0.276,
+      "MH": 0.052,
+      "E": 0.569,
+      "errors": 33,
+      "RF_denied": 8,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 58,
+      "UR": 0.121,
+      "MR": 0.121,
+      "UH": 0.276,
+      "MH": 0.052,
+      "E": 0.569,
+      "errors": 33,
+      "RF_denied": 8,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 58,
+      "UR": 0.172,
+      "MR": 0.155,
+      "UH": 0.466,
+      "MH": 0.0,
+      "E": 0.793,
+      "errors": 46,
+      "RF_denied": 8,
+      "RF_other": 4,
+      "failed_runs": 0
+     }
+    },
+    "level_0": {
+     "rev3": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.0,
+      "UH": 0.533,
+      "MH": 0.0,
+      "E": 0.667,
+      "errors": 10,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.0,
+      "UH": 0.533,
+      "MH": 0.0,
+      "E": 0.667,
+      "errors": 10,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 15,
+      "UR": 0.333,
+      "MR": 0.067,
+      "UH": 1.2,
+      "MH": 0.0,
+      "E": 1.6,
+      "errors": 24,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     }
+    },
+    "level_10": {
+     "rev3": {
+      "files": 14,
+      "UR": 0.143,
+      "MR": 0.071,
+      "UH": 0.071,
+      "MH": 0.0,
+      "E": 0.286,
+      "errors": 4,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 14,
+      "UR": 0.143,
+      "MR": 0.071,
+      "UH": 0.071,
+      "MH": 0.0,
+      "E": 0.286,
+      "errors": 4,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.071,
+      "UH": 0.071,
+      "MH": 0.0,
+      "E": 0.357,
+      "errors": 5,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "level_25": {
+     "rev3": {
+      "files": 14,
+      "UR": 0.071,
+      "MR": 0.357,
+      "UH": 0.429,
+      "MH": 0.214,
+      "E": 1.071,
+      "errors": 15,
+      "RF_denied": 2,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 14,
+      "UR": 0.071,
+      "MR": 0.357,
+      "UH": 0.429,
+      "MH": 0.214,
+      "E": 1.071,
+      "errors": 15,
+      "RF_denied": 2,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 14,
+      "UR": 0.071,
+      "MR": 0.286,
+      "UH": 0.286,
+      "MH": 0.0,
+      "E": 0.643,
+      "errors": 9,
+      "RF_denied": 2,
+      "RF_other": 1,
+      "failed_runs": 0
+     }
+    },
+    "level_50": {
+     "rev3": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.067,
+      "UH": 0.067,
+      "MH": 0.0,
+      "E": 0.267,
+      "errors": 4,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 15,
+      "UR": 0.133,
+      "MR": 0.067,
+      "UH": 0.067,
+      "MH": 0.0,
+      "E": 0.267,
+      "errors": 4,
+      "RF_denied": 2,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 15,
+      "UR": 0.067,
+      "MR": 0.2,
+      "UH": 0.267,
+      "MH": 0.0,
+      "E": 0.533,
+      "errors": 8,
+      "RF_denied": 2,
+      "RF_other": 2,
+      "failed_runs": 0
+     }
+    },
+    "denied_event": {
+     "rev3": {
+      "files": 8,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 8,
+      "UR": 0.0,
+      "MR": 0.0,
+      "UH": 0.0,
+      "MH": 0.0,
+      "E": 0.0,
+      "errors": 0,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 8,
+      "UR": 0.25,
+      "MR": 0.0,
+      "UH": 0.375,
+      "MH": 0.0,
+      "E": 0.625,
+      "errors": 5,
+      "RF_denied": 8,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "open_fact": {
+     "rev3": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.0,
+      "UH": 0.357,
+      "MH": 0.0,
+      "E": 0.571,
+      "errors": 8,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.0,
+      "UH": 0.357,
+      "MH": 0.0,
+      "E": 0.571,
+      "errors": 8,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 14,
+      "UR": 0.214,
+      "MR": 0.071,
+      "UH": 0.214,
+      "MH": 0.0,
+      "E": 0.5,
+      "errors": 7,
+      "RF_denied": 0,
+      "RF_other": 0,
+      "failed_runs": 0
+     }
+    },
+    "other": {
+     "rev3": {
+      "files": 36,
+      "UR": 0.111,
+      "MR": 0.194,
+      "UH": 0.306,
+      "MH": 0.083,
+      "E": 0.694,
+      "errors": 25,
+      "RF_denied": 0,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev3_on_files_with_rev0": {
+      "files": 36,
+      "UR": 0.111,
+      "MR": 0.194,
+      "UH": 0.306,
+      "MH": 0.083,
+      "E": 0.694,
+      "errors": 25,
+      "RF_denied": 0,
+      "RF_other": 3,
+      "failed_runs": 0
+     },
+     "rev0_same_files": {
+      "files": 36,
+      "UR": 0.139,
+      "MR": 0.222,
+      "UH": 0.583,
+      "MH": 0.0,
+      "E": 0.944,
+      "errors": 34,
+      "RF_denied": 0,
+      "RF_other": 4,
+      "failed_runs": 0
+     }
+    }
+   },
+   "causes_rev3": {
+    "fact reading: readings disagreed and it held although the file states the fact": 14,
+    "routing, other file": 7,
+    "document judgment: sufficient judged insufficient": 4,
+    "document judgment: present judged missing (source checker rejected the finding)": 3,
+    "document judgment: not supplied judged present": 2,
+    "document judgment: insufficient judged sufficient": 1,
+    "fact reading: read an unmentioned fact as open": 1,
+    "fact reading: several facts jointly": 1
+   },
+   "causes_rev0_same_files": {
+    "fact reading: readings disagreed and it held although the file states the fact": 15,
+    "routing, other file": 10,
+    "document judgment: present judged missing (source checker rejected the finding)": 5,
+    "routing, denied-event file": 5,
+    "text against recorded state": 4,
+    "fact reading: several facts jointly": 3,
+    "document judgment: sufficient judged insufficient": 2,
+    "document judgment: present judged missing": 1,
+    "fact reading: read a stated fact as not stated": 1
+   },
+   "replay_checks": {
+    "replay_reproduces_stored_plan": 47,
+    "designed_replay_equals_reference": 340
+   },
+   "routing_failures": [
+    {
+     "file": "dis_05af0871cd70",
+     "type": "wrongful_termination",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_0f89215979d2",
+     "type": "protected_period_notice",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_4ee0866843c9",
+     "type": "protected_period_notice",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_5215d587db4b",
+     "type": "wrongful_termination",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_5adf4d2aec3c",
+     "type": "wrongful_termination",
+     "denied_event": false,
+     "routing_status": "selected",
+     "routed_to": "protected_period_notice",
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": "protected_period_notice",
+       "quotes": [
+        "Die Kündigungsfrist läuft noch bis Ende August, bis dahin stehe ich jeden Tag im Laden.",
+        "Was mich beschäftigt: Wie finde ich so schnell eine neue Stelle, und was steht mir bis Ende August noch zu, zum Beispiel bei den Ferien?"
+       ]
+      }
+     ],
+     "errors": 1
+    },
+    {
+     "file": "dis_827bbd04ddc9",
+     "type": "immediate_dismissal",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_930a1b5e1bdc",
+     "type": "protected_period_notice",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "denied_event": false,
+     "routing_status": "selected",
+     "routed_to": "protected_period_notice",
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": "protected_period_notice",
+       "quotes": [
+        "My notice period runs until the end of June, so I still have a few weeks to go.",
+        "We confirm that your employment will end on 30 June 2026 as set out in our letter of 22 April 2026."
+       ]
+      }
+     ],
+     "errors": 3
+    },
+    {
+     "file": "dis_f8a12a35738c",
+     "type": "wrongful_termination",
+     "denied_event": false,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 3
+    },
+    {
+     "file": "dis_fea630e08ab3",
+     "type": "protected_period_notice",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    },
+    {
+     "file": "dis_ff1e9056d2c3",
+     "type": "immediate_dismissal",
+     "denied_event": true,
+     "routing_status": "needs_facts",
+     "routed_to": null,
+     "routing_answer": [
+      {
+       "fact": "dispute_family",
+       "value": null,
+       "quotes": []
+      }
+     ],
+     "errors": 0
+    }
+   ],
+   "errors": [
+    {
+     "regime": "dismissal",
+     "file": "dis_064eeecaeb0d",
+     "type": "protected_period_notice",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "rewritten",
+     "scan_noise": false,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_166a056aad58",
+     "type": "immediate_dismissal",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "termination_letter",
+     "kind": "missed_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_sufficient",
+     "reference": "request",
+     "doc_sub": "not supplied judged present",
+     "supplied": "not supplied",
+     "product_document": {
+      "effective": "present",
+      "status": "present",
+      "verdict": "accepted"
+     },
+     "sub": "not supplied judged present"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_188837a70acc",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "employment_contract",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_insufficient",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "employer_gave_notice",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Am 8. März 2026 hat mir Frau Verena Huber, die Geschäftsfuhrerin, die Kundigung gegeben."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhaltnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_188837a70acc",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "termination_letter",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_sufficient",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "employer_gave_notice",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Am 8. März 2026 hat mir Frau Verena Huber, die Geschäftsfuhrerin, die Kundigung gegeben."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhaltnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_188837a70acc",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "written_objection",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_sufficient",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "employer_gave_notice",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Am 8. März 2026 hat mir Frau Verena Huber, die Geschäftsfuhrerin, die Kundigung gegeben."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhaltnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      },
+      {
+       "verdict": "true",
+       "quote": "Hiermit kundigen wir das mit Ihnen bestehende Arbeitsverhä1tnis unter Einhaltung der Kundigungsfrist auf den 31. Mai 2026."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_1bf62841defb",
+     "type": "protected_period_notice",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_1bf62841defb",
+     "type": "protected_period_notice",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "termination_letter",
+     "kind": "missed_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_sufficient",
+     "reference": "present_insufficient",
+     "doc_sub": "insufficient judged sufficient",
+     "supplied": "insufficient",
+     "product_document": {
+      "effective": "present",
+      "status": "present",
+      "verdict": "accepted"
+     },
+     "sub": "insufficient judged sufficient"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_373612fa5345",
+     "type": "immediate_dismissal",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_3f2fbc0b6128",
+     "type": "protected_period_notice",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "incapacity_proof",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      null,
+      true,
+      true
+     ],
+     "fact": "incapacity_illness_accident",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Die Ärztin hat einen Bandscheibenvorfall festgestellt und mich zu 100 Prozent krankgeschrieben, vorerst bis Mitte August."
+      },
+      {
+       "verdict": "true",
+       "quote": "Am 10. Juli 2026 hatte ich beim Heben einer Kiste plötzlich so starke Rückenschmerzen, dass ich kaum mehr gehen konnte."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "claims_correspondence",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_insufficient",
+     "pattern": "every reading gave the designed value; 2 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+     "quotes_located": [
+      false,
+      false,
+      true
+     ],
+     "fact": "notice_period_ended",
+     "also_fixing": [],
+     "designed_state": "stated_false",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "false",
+      "false",
+      "false"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kundigungsfrist läuft noc"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "representative_mandate",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": "also document",
+     "product_state": "hold",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "pattern": "every reading gave the designed value; 2 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+     "quotes_located": [
+      false,
+      false,
+      true
+     ],
+     "fact": "notice_period_ended",
+     "also_fixing": [],
+     "designed_state": "stated_false",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "false",
+      "false",
+      "false"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kundigungsfrist läuft noc"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "salary_evidence",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 2 quotation(s) not found word for word (2 of them found in the clean text: the reading corrected the scan noise)",
+     "quotes_located": [
+      false,
+      false,
+      true
+     ],
+     "fact": "notice_period_ended",
+     "also_fixing": [],
+     "designed_state": "stated_false",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "false",
+      "false",
+      "false"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kündigungsfrist läuft noc"
+      },
+      {
+       "verdict": "false",
+       "quote": "Die Kundigungsfrist läuft noc"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_41ea262e9131",
+     "type": "immediate_dismissal",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "written_reasons",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "reasons_requested",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "ihn ausdrücklich gebeten, mir schriftlich zu begründen, warum er mich am Vortag hinausgeworfen hat."
+      },
+      {
+       "verdict": "true",
+       "quote": "ich ausdrücklich gebeten, mir schriftlich zu begründen, warum er mich am Vortag hinausgeworfen hat."
+      },
+      {
+       "verdict": "true",
+       "quote": "ausdrücklich gebeten, mir schriftlich zu begründen"
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_5adf4d2aec3c",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "court_filing",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": "protected_period_notice"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_739543d032db",
+     "type": "protected_period_notice",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "service_confirmation",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_insufficient",
+     "pattern": "verdicts not_stated 2, open 1",
+     "quotes_located": [
+      null,
+      null,
+      true
+     ],
+     "fact": "notice_during_probation",
+     "also_fixing": [],
+     "designed_state": "not_mentioned",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": null,
+      "open_readings": [
+       false,
+       false,
+       true
+      ]
+     },
+     "verdicts": [
+      "not_stated",
+      "not_stated",
+      "open"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "open",
+       "quote": "Wer recht hat, ist offen."
+      }
+     ],
+     "sub": "read_unmentioned_as_open"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_7c10c74bd747",
+     "type": "immediate_dismissal",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_9260317f805d",
+     "type": "protected_period_notice",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "incapacity_proof",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "incapacity_illness_accident",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Since the accident I've been completely unable to work."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Since the accident I've been completely unable to work."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_9260317f805d",
+     "type": "protected_period_notice",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notice_period_terms",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_insufficient",
+     "fact": null,
+     "sub": "several_facts",
+     "differing_facts": [
+      "incapacity_illness_accident",
+      "notice_before_protected_period"
+     ]
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_9260317f805d",
+     "type": "protected_period_notice",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "probation_terms",
+     "kind": "missed_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_sufficient",
+     "reference": "request",
+     "doc_sub": "not supplied judged present",
+     "supplied": "not supplied",
+     "product_document": {
+      "effective": "present",
+      "status": "present",
+      "verdict": "accepted"
+     },
+     "sub": "not supplied judged present"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_ac405c63effe",
+     "type": "immediate_dismissal",
+     "level": 10,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "employment_contract",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "request",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "sub": "present judged missing (source checker rejected the finding)"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_b7f5c9e07c99",
+     "type": "immediate_dismissal",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "employment_contract",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": "also document",
+     "product_state": "hold",
+     "reference": "present_sufficient",
+     "doc_sub": "present judged missing (source checker rejected the finding)",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "missing",
+      "status": "unusable",
+      "verdict": "rejected"
+     },
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "dismissed_immediately",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "No notice period, no last day, nothing."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_b7f5c9e07c99",
+     "type": "immediate_dismissal",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "salary_evidence",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "dismissed_immediately",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "No notice period, no last day, nothing."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_b7f5c9e07c99",
+     "type": "immediate_dismissal",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": true,
+     "document": "termination_letter",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "present_insufficient",
+     "pattern": "every reading gave the designed value; 1 quotation(s) not found word for word (found in neither the uploaded nor the clean text: the reading altered the words (a corrected noisy character, a capital letter, joined words))",
+     "quotes_located": [
+      true,
+      false,
+      true
+     ],
+     "fact": "dismissed_immediately",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "true",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "No notice period, no last day, nothing."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with mmediate effect as of today."
+      },
+      {
+       "verdict": "true",
+       "quote": "We hereby terminate the employment relationship with irnmediate effect as of today."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_d4c7e372c087",
+     "type": "protected_period_notice",
+     "level": 50,
+     "denied_event": false,
+     "open_fact": true,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "pregnancy_certificate",
+     "kind": "unneeded_request",
+     "cause": "document_judgment",
+     "flag": null,
+     "product_state": "present_insufficient",
+     "reference": "present_sufficient",
+     "doc_sub": "sufficient judged insufficient",
+     "supplied": "sufficient",
+     "product_document": {
+      "effective": "unusable",
+      "status": "unusable",
+      "verdict": "accepted"
+     },
+     "sub": "sufficient judged insufficient"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "court_filing",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": "protected_period_notice"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "salary_evidence",
+     "kind": "missed_request",
+     "cause": "routing_not_denied",
+     "routed": "protected_period_notice"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "written_reasons",
+     "kind": "missed_request",
+     "cause": "routing_not_denied",
+     "routed": "protected_period_notice"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f8a12a35738c",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "employment_contract",
+     "kind": "missed_request",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f8a12a35738c",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "termination_letter",
+     "kind": "missed_request",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_f8a12a35738c",
+     "type": "wrongful_termination",
+     "level": 25,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "written_objection",
+     "kind": "missed_hold",
+     "cause": "routing_not_denied",
+     "routed": null
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_fcbd44dfcef3",
+     "type": "protected_period_notice",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "incapacity_proof",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "request",
+     "pattern": "verdicts not_stated 1, true 2",
+     "quotes_located": [
+      true,
+      null,
+      true
+     ],
+     "fact": "incapacity_illness_accident",
+     "also_fixing": [],
+     "designed_state": "stated_true",
+     "product_fact": {
+      "status": "unknown",
+      "value": null,
+      "reason_code": "one_reading_only",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "true",
+      "not_stated",
+      "true"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "true",
+       "quote": "Ich wurde operiert und bin seither zu 100 Prozent arbeitsunfähig, das Arztzeugnis geht vorerst bis Ende Oktober."
+      },
+      {
+       "verdict": "not_stated",
+       "quote": ""
+      },
+      {
+       "verdict": "true",
+       "quote": "Ich wurde operiert und bin seither zu 100 Prozent arbeitsunfähig, das Arztzeugnis geht vorerst bis Ende Oktober."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    },
+    {
+     "regime": "dismissal",
+     "file": "dis_fcbd44dfcef3",
+     "type": "protected_period_notice",
+     "level": 0,
+     "denied_event": false,
+     "open_fact": false,
+     "kept": "exact",
+     "scan_noise": false,
+     "document": "notice_period_terms",
+     "kind": "unwarranted_hold",
+     "cause": "fact_reading",
+     "flag": null,
+     "product_state": "hold",
+     "reference": "not_needed",
+     "pattern": "verdicts false 2, true 1",
+     "quotes_located": [
+      true,
+      true,
+      true
+     ],
+     "fact": "notice_before_protected_period",
+     "also_fixing": [],
+     "designed_state": "stated_false",
+     "product_fact": {
+      "status": "conflicting",
+      "value": false,
+      "reason_code": "readings_differ",
+      "open_readings": [
+       false,
+       false,
+       false
+      ]
+     },
+     "verdicts": [
+      "false",
+      "true",
+      "false"
+     ],
+     "reading_quotes": [
+      {
+       "verdict": "false",
+       "quote": "Ich war schon krank, als die Kündigung kam."
+      },
+      {
+       "verdict": "true",
+       "quote": "Ich war schon krank, als die Kündigung kam. Die Krankheit hat also vorher angefangen, nicht erst während der Kündigungsfrist."
+      },
+      {
+       "verdict": "false",
+       "quote": "Ich war schon krank, als die Kündigung kam. Die Krankheit hat also vorher angefangen, nicht erst während der Kündigungsfrist."
+      }
+     ],
+     "sub": "readings_disagreed_held"
+    }
+   ]
+  }
+ },
+ "plan": {
+  "label": "DEVELOPMENT, written before any rev3 call",
+  "ledger_total_before_usd": 3.219367,
+  "budget_usd": 0.7,
+  "stop_launch_at_run_usd": 0.6,
+  "stop_usd_ledger_total": 3.819367,
+  "cache_estimate": "Every workflow differs from rev1 (the routing question is in every workflow and every reading request), so the routing and reading calls are all new; only document-finder turns that open with an unchanged process reference and identical tool results can come from the cache. Estimate: every call new, at the higher of the per-file cost of the clean arm and of the rev1 re-run per regime (upper bound).",
+  "estimate_usd_total": 0.8258,
+  "exceeds_stop": true,
+  "decision": "Estimate exceeds USD 0.60: whole regimes in the order dismissal, theft, tenancy; launching stops when the ledger total reaches before + 0.60; only complete regimes are reported as such.",
+  "order": [
+   {
+    "regime": "dismissal",
+    "files": 58,
+    "usd_per_file": 0.00505,
+    "estimate_usd": 0.2931,
+    "cumulative": 0.2931
+   },
+   {
+    "regime": "theft",
+    "files": 56,
+    "usd_per_file": 0.00476,
+    "estimate_usd": 0.2668,
+    "cumulative": 0.5599
+   },
+   {
+    "regime": "tenancy",
+    "files": 59,
+    "usd_per_file": 0.00451,
+    "estimate_usd": 0.2659,
+    "cumulative": 0.8258
+   }
+  ],
+  "workers": 4,
+  "arm": "clean_rev3",
+  "model": "gpt-6-luna"
+ },
+ "overall_complete_regimes": {
+  "regimes": [
+   "theft",
+   "dismissal"
+  ],
+  "rev3": {
+   "files": 114,
+   "UR": 0.184,
+   "MR": 0.061,
+   "UH": 0.272,
+   "MH": 0.07,
+   "E": 0.588,
+   "errors": 67,
+   "RF_denied": 16,
+   "RF_other": 5,
+   "failed_runs": 0
+  },
+  "rev0_same_files": {
+   "files": 114,
+   "UR": 0.237,
+   "MR": 0.184,
+   "UH": 0.465,
+   "MH": 0.053,
+   "E": 0.939,
+   "errors": 107,
+   "RF_denied": 16,
+   "RF_other": 12,
+   "failed_runs": 0
+  },
+  "causes_rev3": {
+   "fact reading: readings disagreed and it held although the file states the fact": 24,
+   "routing, other file": 12,
+   "document judgment: sufficient judged insufficient": 9,
+   "document judgment: present judged missing (source checker rejected the finding)": 8,
+   "text against recorded state: readings disagreed and it held although the file states the fact": 5,
+   "document judgment: present judged missing": 4,
+   "document judgment: not supplied judged present": 2,
+   "document judgment: insufficient judged sufficient": 1,
+   "fact reading: read an unmentioned fact as open": 1,
+   "fact reading: several facts jointly": 1
+  }
+ },
+ "quotations": [
+  {
+   "cause": "fact reading: readings disagreed and it held although the file states the fact",
+   "errors": 24,
+   "quotations": [
+    {
+     "regime": "theft",
+     "file": "the_12ee892d56f4",
+     "quote": "vouchers_unobtainable (designed stated_true), a reading answered true: \"Quittungen habe ich keine mehr, für gar nichts davon.\" [verdicts not_stated 2, true 1]"
+    },
+    {
+     "regime": "theft",
+     "file": "the_1595e412e131",
+     "quote": "theft_at_home (designed stated_true), a reading answered true: \"jemand ist hereinspaziert.\" [every reading gave the designed value; 1 quotation(s) not found word for word (the reading altered the words (a capital letter at the start of a quoted part sentence, or other wording))]"
+    }
+   ]
+  },
+  {
+   "cause": "routing, other file",
+   "errors": 12,
+   "quotations": [
+    {
+     "regime": "theft",
+     "file": "the_32a656cb56cf",
+     "quote": "routing answer None: \"(no quotation)\""
+    },
+    {
+     "regime": "theft",
+     "file": "the_d76f5df60f83",
+     "quote": "routing answer None: \"(no quotation)\""
+    }
+   ]
+  }
+ ],
+ "spend": {
+  "rev3_usd": 0.603975,
+  "by_arm_label": {
+   "LINT-clean_rev3-dismissal": 0.287217,
+   "LINT-clean_rev3-tenancy": 0.10731,
+   "LINT-clean_rev3-theft": 0.209448
+  },
+  "paid_calls": {
+   "LINT-clean_rev3-dismissal": 635,
+   "LINT-clean_rev3-theft": 432,
+   "LINT-clean_rev3-tenancy": 240
+  },
+  "ledger_total_usd": 3.823342,
+  "ledger_total_before_usd": 3.219367
+ },
+ "closing": "Product behaviour that remains, by size, in errors per file over the two complete regimes (theft and dismissal, 114 files; tenancy ran 28 of 59 files and is not a regime figure): (1) supplied-document judgments, 24 errors, 0.21 per file: sufficient documents judged insufficient (9), findings the second judgment or the source checker did not confirm (8), present documents judged missing (4), and three the other way; not re-reviewed against the rewritten must_show items, so some may be text against recorded state; (2) stated facts held because one reading's quotation was not found word for word (a capital letter, scan noise corrected), 14 errors, 0.12 per file, most of them on defining events that hold a whole type; (3) stated facts held because one reading of three answered otherwise (household member, vouchers, incapacity, probation, order of notice and protected period), about 12 errors, 0.11 per file, of which the_248aa95805a8's household reading (4) is the open reading also seen in rev0 and 5 more are carried over as text against recorded state; (4) routing, 12 errors, 0.11 per file: 5 in two theft files whose defining event is designed open (benchmark design) and 7 in three dismissal wrongful_termination files routed to protected_period_notice or left unrouted under the revised routing question, which the next design cycle should read before any further wording change. No run failed."
+}

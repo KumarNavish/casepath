@@ -1,0 +1,49 @@
+{
+ "format": "casepath.parity/1",
+ "package": "casepath",
+ "source_tree_sha256": "030480203f7d10b364e4ecc34e0c0b544c4038e107f489bc2080aba6b349ab4d",
+ "source_files": 48,
+ "git": {
+  "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+  "package_modified": false
+ },
+ "workflows": {
+  "immediate_dismissal.json": "fa5a15fa83d657f6a0e978cb99ce46d34687069fdcbcef1ab30defb86c6c6270",
+  "protected_period_notice.json": "9ff4108e65756ccbb7da65ea14065968d815942e08b5672fe7d6bf5697d05e83",
+  "wrongful_termination.json": "f618a0441992a67db3be5595b312e8629180ff10d2bef57c3993ab46d3d3dde1"
+ },
+ "knowledge": {},
+ "model": {
+  "provider": "databricks",
+  "name": "gpt-6-luna",
+  "api": "chat",
+  "reading": null,
+  "endpoint_host": "openrouter.ai"
+ },
+ "interface_language_default": "de",
+ "settings": {
+  "readings": 3,
+  "open_rule": "any",
+  "run_scope": "checklist",
+  "model_reasoning": true
+ },
+ "settings_not_default": {
+  "dev_user": "Case handler (research)",
+  "organisation": "the legal-expenses insurer's",
+  "writing_language": "in the language of the case files",
+  "run_scope": "checklist",
+  "model.reasoning": true,
+  "model.timeout_seconds": 120.0,
+  "model.max_output_tokens": 16000,
+  "model.ca_bundle": "/root/.ccr/ca-bundle.crt",
+  "model.trust_env": true,
+  "model.api_version": null,
+  "model.gateway_hosts": [
+   "openrouter.ai"
+  ],
+  "model.chat_path": "/api/v1/chat/completions",
+  "model.auth": "app",
+  "model.api": "chat",
+  "model.forced_tools": true
+ }
+}

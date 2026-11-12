@@ -52,7 +52,9 @@ def catalogue(arm, regime):
     after first use, 2026-11-12, changed rules/<regime>/workflow/); arm clean_rev1 reads the revised workflows."""
     if arm == "clean":
         return S4 / "rules" / regime / "rev0" / "workflow"
-    if arm == "clean_rev1":
+    if arm == "clean_rev1":  # the first revision, now kept in rules/<regime>/rev1/
+        return S4 / "rules" / regime / "rev1" / "workflow"
+    if arm == "clean_rev3":  # the current rule sets (revision 3)
         return S4 / "rules" / regime / "workflow"
     return HERE / "widened" / regime / arm
 
@@ -101,7 +103,7 @@ def first_per_type(regime):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--arm", required=True, choices=["clean", "blunt", "subtle", "clean_rev1"])
+    ap.add_argument("--arm", required=True, choices=["clean", "blunt", "subtle", "clean_rev1", "clean_rev3"])
     ap.add_argument("--regime", required=True, choices=["tenancy", "theft", "dismissal"])
     ap.add_argument("--model", default="gpt-6-luna")
     ap.add_argument("--files", default=None)
