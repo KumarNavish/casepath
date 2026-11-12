@@ -9,7 +9,11 @@
 5. every workflow passes the product's own validate_workflow (tested worktree, read-only);
 6. each workflow, walked with the product's own walk under every complete assignment of the
    type's facts, reaches exactly the steps, documents and stops rules.json states;
-7. size limits of SPEC.md step 2a item 5; prints the counts.
+7. the intake convention (SPEC.md item 6a): exact wording in rules.json, rule_text.md and SPEC.md; in each
+   workflow exactly one unstated presumption per branch fact (statutory where the rule set has one, otherwise
+   the convention), none on the defining event; with one fact unmentioned the product's presumed() and
+   evaluate() treat it as the rules do; with one fact raised and left open no presumption fills it;
+8. size limits of SPEC.md step 2a item 5; prints the counts.
 Exit status 1 on any failure.
 """
 import hashlib
@@ -156,6 +160,23 @@ def main():
         if facts - used:
             fail(f"{t['id']}: facts that decide nothing: {sorted(facts - used)}")
 
+    # the intake convention (SPEC.md item 6a)
+    conv = data.get("convention") or {}
+    spec = re.sub(r"\s+", " ", (REGIME.parent.parent / "SPEC.md").read_text(encoding="utf-8"))
+    rule_text = (REGIME / "rule_text.md").read_text(encoding="utf-8")
+    if conv.get("rule", {}).get("basis") != "convention":
+        fail("rules.json: convention entry missing or basis is not 'convention'")
+    if "*" + conv.get("text", "") + "*" not in spec:
+        fail("convention text is not the exact wording of SPEC.md item 6a")
+    if "## Convention of this benchmark (not law)" not in rule_text or conv.get("text", "") not in rule_text:
+        fail("rule_text.md: convention section or exact wording missing")
+    conv_src = conv.get("rule", {}).get("source_id")
+    if not any(x["id"] == conv_src and x.get("kind") == "benchmark_convention" for x in data["sources"]):
+        fail("rules.json: convention source entry of kind benchmark_convention missing")
+    for tid, kind, iid, rule in all_rules(data):
+        if rule["basis"] == "convention":
+            fail(f"{tid}/{kind}/{iid}: convention basis outside the top-level convention entry")
+
     # sources
     meta = json.loads((REGIME / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
     for s in meta["sources"]:
@@ -167,7 +188,7 @@ def main():
             fail(f"SOURCES.json: raw hash mismatch for {s['id']}")
 
     # workflows: product validator and exhaustive equivalence with rules.json
-    counts = {"types": 0, "facts": 0, "steps": 0, "documents": 0, "presumptions": 0, "stops": 0}
+    counts = {"types": 0, "facts": 0, "steps": 0, "documents": 0, "presumptions": 0, "convention_presumptions": 0, "stops": 0}
     catalogue = set()
     for t in data["types"]:
         path = REGIME / "workflow" / f"{t['id']}.json"
@@ -215,6 +236,66 @@ def main():
                   and product.evaluate_condition(d["needed_when"], {**base, f: False}) is True}
             if held != yes ^ no:
                 fail(f"{t['id']}: open {f}: product holds {sorted(held)}, rules imply {sorted(yes ^ no)}")
+        # the convention in the workflow: one unstated presumption per branch fact, none for the defining event
+        pres = {}
+        for p in wf.get("presumptions", []):
+            pres.setdefault(p["fact"], []).append(p)
+        statutory = {p["fact"]: p for p in t["presumptions"]}
+        wf_src = {x["id"]: x for x in wf["sources"]}
+        for f in fact_ids:
+            got = [p for p in pres.get(f, []) if p["applies"] == "unstated"]
+            if f == t["defining_event"]:
+                if pres.get(f):
+                    fail(f"{t['id']}: defining event {f} carries a presumption")
+                continue
+            if len(got) != 1 or len(pres.get(f, [])) != 1:
+                fail(f"{t['id']}: branch fact {f} has {len(got)} unstated presumptions (want exactly one)")
+                continue
+            src = got[0]["source_ref"].split("#")[0]
+            if f in statutory:
+                if src != "co-sr220" or got[0]["value"] != statutory[f]["value"]:
+                    fail(f"{t['id']}: {f} should carry its statutory presumption")
+            elif src != conv_src or got[0]["value"] is not False or wf_src.get(src, {}).get("intended_kind") != "benchmark_convention":
+                fail(f"{t['id']}: {f} should carry the convention (value no, source {conv_src})")
+        variant = json.loads(json.dumps(wf))
+        for x in variant["sources"]:
+            if x["id"] == conv_src:
+                x["kind"] = "benchmark_convention"
+        try:
+            product.validate_workflow(variant)
+            print(f"note: the validator accepts kind benchmark_convention ({path.name})")
+        except product.CatalogueError as e:
+            print(f"note: with kind benchmark_convention the product validator rejects {path.name}: {e}")
+        # one fact unmentioned: the product's presumptions fill it, and evaluate treats it as the rules do
+        for f in fact_ids:
+            stated = {x: True for x in fact_ids if x != f}
+            recorded = {x: {"status": "established", "readings": [True]} for x in stated}
+            applied = product.presumed(wf, recorded)
+            facts = {**stated, "dispute_family": t["id"]}
+            if f in applied:
+                facts[f] = applied[f]["value"]
+            ev = product.evaluate(wf, facts)
+            held = {d["document"] for d in ev["documents"] if d["required"] == "depends"}
+            if f == t["defining_event"]:
+                if f in applied or not held:
+                    fail(f"{t['id']}: unmentioned defining event must stay unresolved and hold documents")
+                continue
+            want_val = statutory[f]["value"] if f in statutory else False
+            if f not in applied or applied[f]["value"] != want_val:
+                fail(f"{t['id']}: unmentioned {f} not presumed {want_val}")
+                continue
+            want_steps = {s for s, st in rule_steps.items() if product.evaluate_condition(st["reached_when"], facts) is True}
+            want_docs = {d["id"] for d in t["documents"] if d["step"] in want_steps
+                         and product.evaluate_condition(d["needed_when"], facts) is True}
+            got_docs = {d["document"] for d in ev["documents"]}
+            if held or got_docs != want_docs:
+                fail(f"{t['id']}: unmentioned {f}: product lists {sorted(got_docs)} (held {sorted(held)}), rules imply {sorted(want_docs)}")
+        # one fact raised and left open: no presumption applies to it
+        for f in fact_ids:
+            recorded = {x: {"status": "established", "readings": [True]} for x in fact_ids if x != f}
+            recorded[f] = {"status": "unknown", "readings": [None], "open_readings": [True], "citations": ["quoted doubt"]}
+            if f in product.presumed(wf, recorded):
+                fail(f"{t['id']}: a presumption fills {f} although the file raises it and leaves it open")
         # size limits per type
         n_facts = len(t["facts"])
         if not 5 <= n_facts <= 10:
@@ -245,6 +326,7 @@ def main():
         counts["steps"] += len(t["steps"])
         counts["documents"] += len(t["documents"])
         counts["presumptions"] += len(t["presumptions"])
+        counts["convention_presumptions"] += sum(1 for p in wf["presumptions"] if p["source_ref"].startswith(conv_src + "#"))
         counts["stops"] += len(t["stops"])
         catalogue |= {d["id"] for d in t["documents"]}
     if not 8 <= len(catalogue) <= 14:

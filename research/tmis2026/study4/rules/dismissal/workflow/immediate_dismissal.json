@@ -14,6 +14,12 @@
    "id": "co-sr220",
    "kind": "knowledge",
    "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "intended_kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
   }
  ],
  "facts": [
@@ -365,18 +371,46 @@
  ],
  "presumptions": [
   {
+   "fact": "reasons_requested",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "incapacity_cause",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "fixed_term",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
    "fact": "notice_period_varied",
    "value": false,
    "applies": "unstated",
    "source_ref": "co-sr220#art_335c_para_1",
    "text": "CO art. 335c para. 1: “The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.” Paragraph 1 fixes the notice periods by law and paragraph 2 lets them differ only by a written individual, standard or collective contract, so where the file states no such written term the statutory periods apply."
+  },
+  {
+   "fact": "other_earnings",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
   }
  ],
  "notes": [
   {
-   "text": "No public text in this rule set supports presuming an unmentioned branch fact absent or the defining event present; such a fact stays unresolved and documents that depend on it are held behind its question. Only the statutory defaults listed under presumptions apply.",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts.",
    "source_refs": [
-    "co-sr220#arts_335-337c"
+    "benchmark-convention#intake_convention"
    ]
   }
  ],

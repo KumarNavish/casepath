@@ -155,9 +155,9 @@
  "notes": [
   {
    "source_refs": [
-    "sr220-en#art-259a-p1"
+    "benchmark-convention#intake-convention"
    ],
-   "text": "No presumption: a fact the claim does not state stays unresolved. No public text cited in this rule set supports presuming an unstated fact absent or a defining event present."
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. The defining event (defect_present) carries no presumption."
   }
  ],
  "open_questions": [],
@@ -177,7 +177,36 @@
    "title": "Process ended: the defining event is denied"
   }
  ],
- "presumptions": [],
+ "presumptions": [
+  {
+   "applies": "unstated",
+   "fact": "landlord_informed",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "damages_claimed",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "deposit_intended",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "rent_deposited",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+   "value": false
+  }
+ ],
  "sources": [
   {
    "id": "sr220-en",
@@ -188,6 +217,12 @@
    "id": "sr220-de",
    "kind": "knowledge",
    "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
+  },
+  {
+   "convention_kind": "benchmark_convention",
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
   }
  ],
  "start": "dh_intake",

@@ -37,7 +37,8 @@ def xml_text(path):
 
 
 def normalise(text):
-    text = unicodedata.normalize("NFC", text).replace("­", "").replace(" ", " ").replace(" ", " ")
+    text = unicodedata.normalize("NFC", text)
+    text = re.sub(r"­\s*", "", text).replace(" ", " ").replace(" ", " ")  # soft hyphens
     text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)  # hyphenation across a line break
     return re.sub(r"\s+", " ", text).strip()
 

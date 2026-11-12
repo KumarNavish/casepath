@@ -583,6 +583,24 @@ SOURCES = [
 ]
 
 
+# The intake convention of SPEC.md item 6a: one rule, basis "convention", fixed words, no passage.
+CONVENTION_TEXT = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if "
+                   "it were absent; the defining event is never presumed: if the file does not mention it, it is "
+                   "unresolved; a fact the file raises and leaves unsettled is open.")
+CONVENTION_SOURCE = {"id": "benchmark-convention", "kind": "benchmark_convention",
+                     "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"}
+CONVENTION = {"id": "intake-convention", "basis": "convention", "text": CONVENTION_TEXT,
+              "source_id": CONVENTION_SOURCE["id"],
+              "applies_to": "every branch fact of every type (value: absent / false); never the defining event",
+              "precedence": "a presumption a cited passage supports (under a type's presumptions) takes precedence; "
+                            "this rule set has none"}
+# The tested product's validate_workflow accepts only these source kinds: process_diagram, process_guidance,
+# case_example, expert_review, knowledge, case_edit. "benchmark_convention" is not among them and the product may not
+# change in steps 1-2, so the workflow lists the convention's source with the nearest accepted kind and records the
+# intended kind beside it (an extra key the validator ignores). Set to "benchmark_convention" once the product accepts it.
+WORKFLOW_CONVENTION_KIND = "process_guidance"
+
+
 def ref(rule):
     """A workflow source reference for a rule: source#locator."""
     loc = rule["locator"].replace("Art. ", "art-").replace(" para. ", "-p").replace(" let. ", "-").replace(" ", "")
@@ -631,7 +649,9 @@ def workflow(t):
         "status": "draft",
         "example": False,
         "applies_when": {"fact": "dispute_family", "is": t["id"]},
-        "sources": [{"id": s["id"], "kind": "knowledge", "title": s["title"]} for s in SOURCES],
+        "sources": [{"id": s["id"], "kind": "knowledge", "title": s["title"]} for s in SOURCES]
+                   + [{"id": CONVENTION_SOURCE["id"], "kind": WORKFLOW_CONVENTION_KIND,
+                       "convention_kind": CONVENTION_SOURCE["kind"], "title": CONVENTION_SOURCE["title"]}],
         "facts": [{"id": "dispute_family", "type": "enum", "values": type_ids,
                    "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, "
                                "heating), a termination of the lease by the landlord, or a rent increase?",
@@ -645,11 +665,18 @@ def workflow(t):
                       "source_refs": [ref(facts[t["defining_event"]]["rule"])]},
                      {"id": "stopped", "title": "Process ended: the defining event is denied",
                       "source_refs": [ref(stop_rule)]}],
-        "presumptions": [],
+        # statutory presumptions (none here) first; then the convention on every branch fact without one
+        "presumptions": [{"fact": p["fact"], "value": p["value"], "applies": p["applies"], "text": p["rule"]["passage"],
+                          "source_ref": ref(p["rule"])} for p in t["presumptions"]]
+                        + [{"fact": f["id"], "value": False, "applies": "unstated",
+                            "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT,
+                            "source_ref": CONVENTION_SOURCE["id"] + "#" + CONVENTION["id"]}
+                           for f in t["facts"] if f["id"] != t["defining_event"]
+                           and f["id"] not in {p["fact"] for p in t["presumptions"]}],
         "open_questions": [],
-        "notes": [{"text": "No presumption: a fact the claim does not state stays unresolved. No public text cited in "
-                           "this rule set supports presuming an unstated fact absent or a defining event present.",
-                   "source_refs": [ref(facts[t["defining_event"]]["rule"])]}],
+        "notes": [{"text": "Convention of this benchmark (not law): " + CONVENTION_TEXT + " The defining event "
+                           f"({t['defining_event']}) carries no presumption.",
+                   "source_refs": [CONVENTION_SOURCE["id"] + "#" + CONVENTION["id"]]}],
     }
 
 
@@ -675,7 +702,11 @@ def rules_md(doc):
              "inside a passage are shown as ` / `. Development material; nothing here is a result.", "",
              "Basis: `states` = the passage states the rule; `follows` = it follows by the named step; `evidence` = the "
              "passage creates a condition and the document ordinarily proves it.", "",
-             "Presumptions: none. Unstated facts are unresolved (see 'How to apply them' in `rule_text.md`).", ""]
+             "Presumptions supported by a passage: none.", "",
+             "## Convention of this benchmark (not law)", "",
+             "| # | Kind | Clause | Basis | Passage |", "|---|---|---|---|---|",
+             f"| C01 | convention (`{doc['convention']['id']}`) | {doc['convention']['text']} Applies to: "
+             f"{doc['convention']['applies_to']}. | convention | none (cites no passage) |", ""]
     for t in doc["types"]:
         lines += [f"## {t['title']} (`{t['id']}`)", "", f"Defining event: `{t['defining_event']}`.", "",
                   "| # | Kind | Clause | Condition | Citation | Basis | Passage (EN) | Passage (DE) | Inference |",
@@ -704,6 +735,7 @@ def rules_md(doc):
 def main():
     doc = {"regime": "tenancy", "version": VERSION,
            "sources": [{"id": s["id"], "title": s["title"], "snapshot": f"sources/{s['id']}.txt"} for s in SOURCES],
+           "convention": {**CONVENTION, "source": CONVENTION_SOURCE},
            "types": TYPES}
     (HERE / "rules.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "RULES.md").write_text(rules_md(doc), encoding="utf-8")

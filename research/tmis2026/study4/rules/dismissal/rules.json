@@ -1,6 +1,6 @@
 {
  "regime": "dismissal",
- "version": "2026-11-12.1",
+ "version": "2026-11-12.2",
  "sources": [
   {
    "id": "co-sr220-en",
@@ -15,8 +15,23 @@
    "publisher": "Swiss Federal Chancellery, Fedlex",
    "language": "de",
    "authoritative": true
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
   }
  ],
+ "convention": {
+  "id": "intake_convention",
+  "text": "a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+  "applies_to": "every fact of every type except the defining event; a statutory presumption under the type's presumptions takes precedence for its fact",
+  "rule": {
+   "source_id": "benchmark-convention",
+   "locator": "SPEC.md item 6a",
+   "basis": "convention"
+  }
+ },
  "types": [
   {
    "id": "protected_period_notice",

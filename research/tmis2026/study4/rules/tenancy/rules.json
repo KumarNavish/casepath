@@ -13,6 +13,19 @@
    "snapshot": "sources/sr220-de.txt"
   }
  ],
+ "convention": {
+  "id": "intake-convention",
+  "basis": "convention",
+  "text": "a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.",
+  "source_id": "benchmark-convention",
+  "applies_to": "every branch fact of every type (value: absent / false); never the defining event",
+  "precedence": "a presumption a cited passage supports (under a type's presumptions) takes precedence; this rule set has none",
+  "source": {
+   "id": "benchmark-convention",
+   "kind": "benchmark_convention",
+   "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
+  }
+ },
  "types": [
   {
    "id": "defect_mold_heating",

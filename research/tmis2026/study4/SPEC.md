@@ -100,27 +100,48 @@ check without a jurist.
    condition language of `casepath.workflow/1` (read
    `/home/user/work/casepath-sync-e` for the format and its validator, and
    `harness/product/workflows/fresh-serial-sync/` for examples).
-6a. **The intake convention (added 2026-11-12, after the first rule set
+6a. **The intake convention (added 2026-11-12, after the first rule sets
    showed that no statute text supports presuming an unmentioned fact
-   absent).** Without any presumption every unmentioned fact would be
-   unresolved and a handler would be asked about military service and
-   pregnancy in every file. That is not how intake works and it would itself
-   shape the result. So each regime carries exactly one rule with
-   `basis: "convention"`, the same in every regime and given to every design
-   in `rule_text.md` in the same words: *a branch fact that the file does not
-   mention is taken as not alleged, and the rules are applied as if it were
-   absent; the defining event is never presumed: if the file does not mention
-   it, it is unresolved; a fact the file raises and leaves unsettled is
-   open.* It is declared as a convention of the benchmark, not as law, cites
-   no passage, and is listed in `rules.json` under `convention` (not under
+   absent; revised the same day after its first application).** Without any
+   presumption every unmentioned fact would be unresolved and a handler
+   would be asked about military service and pregnancy in every file. That
+   is not how intake works and it would itself shape the result. So each
+   regime carries exactly one rule with `basis: "convention"`, the same in
+   every regime and given to every design in `rule_text.md` in the same
+   words:
+
+   > A fact that the file does not mention is taken as not alleged, and the
+   > rules are applied as if it were absent. Silence never ends a process:
+   > where a fact's absence would end it, the unmentioned fact is unresolved.
+   > The defining event is never presumed: if the file does not mention it,
+   > it is unresolved. A fact that the file raises and leaves unsettled is
+   > open.
+
+   It is declared as a convention of the benchmark, not as law, cites no
+   passage, and is listed in `rules.json` under `convention` (not under
    `presumptions`). Presumptions that a passage does support (statutory
    defaults such as the one-month probation period) stay under
    `presumptions` and take precedence. The workflow encodes the convention
-   as presumptions with `applies: "unstated"` on every branch fact, each
-   pointing to the convention's source entry (`kind: "benchmark_convention"`).
-   The study reports results under this convention as primary and, from the
-   same stored readings without new model calls where possible, under the
-   reading "an unmentioned fact is unresolved" as a sensitivity analysis.
+   as presumptions with `applies: "unstated"` and value false on every
+   branch fact except (i) the defining event, (ii) a fact whose value false
+   triggers a stop, (iii) a fact marked `always_stated` (6b). The frozen
+   product's validator knows no source kind for a convention, so the
+   workflow's source entry uses `kind: "process_guidance"` with
+   `intended_kind: "benchmark_convention"`; `rules.json` uses
+   `kind: "benchmark_convention"`. The study reports results under this
+   convention as primary and, from the same stored readings without new
+   model calls where possible, under the reading "an unmentioned fact is
+   unresolved" as a sensitivity analysis.
+6b. **Polarity (added with the revision of 6a).** Every branch fact is
+   worded so that true is the circumstance a party would raise to obtain a
+   consequence and false is the ordinary case (for instance "notice was
+   given during the probation period", not "after it"). A fact with two
+   ordinary alternatives, neither of which is the default, is marked
+   `always_stated: true`: it has no presumption, and the generator states it
+   or leaves it open in every file but never leaves it unmentioned. The
+   check script verifies: no unmentioned-fact assignment ends a process; no
+   document need is created by a fact being unmentioned unless a cited rule
+   says so; each `always_stated` fact has no presumption.
 7. **Four-eyes.** A second session, which did not write the rule set, checks
    every rule: passage verbatim in the snapshot; locator right; the rule no
    broader and no narrower than the passage allows under its `basis`;

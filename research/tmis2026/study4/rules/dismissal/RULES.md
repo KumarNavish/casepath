@@ -1,4 +1,4 @@
-# Rule set: dismissal (version 2026-11-12.1)
+# Rule set: dismissal (version 2026-11-12.2)
 
 Development material for Study 4, step 2a. Every clause cites the Swiss Code of Obligations (SR 220) in the consolidated version applicable from 2026-10-01 (Fedlex). The English translation is quoted; the German text, which is authoritative, is quoted beside it. Passages are verbatim from `sources/co-sr220-en.txt` and `sources/co-sr220-de.txt`. A document is needed when its step is reached and its condition holds.
 
@@ -52,6 +52,8 @@ Type id `protected_period_notice`; defining event `employer_gave_notice`.
 | `probation_varied` | no | unstated | CO art. 335b para. 1 [follows]: “the probation period is considered to be the first month of an employment relationship” (DE: „als Probezeit gilt der erste Monat eines Arbeitsverhältnisses“) Inference: The statute deems the probation period to be the first month and paragraph 2 allows other terms only in writing, so where the file states no such written term the first month applies. |
 | `notice_period_varied` | no | unstated | CO art. 335c para. 1 [follows]: “The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.” Inference: Paragraph 1 fixes the notice periods by law and paragraph 2 lets them differ only by a written individual, standard or collective contract, so where the file states no such written term the statutory periods apply. |
 
+Every other fact except the defining event `employer_gave_notice` falls under the convention of this benchmark (not law), which is not a passage of law: a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.
+
 ### Stops
 
 | stop | when | citation |
@@ -104,7 +106,9 @@ Type id `wrongful_termination`; defining event `employer_gave_notice`.
 
 ### Presumptions
 
-None. No passage supports presuming any of this type's facts; an unstated fact is unresolved.
+None from statute.
+
+Every other fact except the defining event `employer_gave_notice` falls under the convention of this benchmark (not law), which is not a passage of law: a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.
 
 ### Stops
 
@@ -157,6 +161,8 @@ Type id `immediate_dismissal`; defining event `dismissed_immediately`.
 | fact | value | applies | citation |
 |---|---|---|---|
 | `notice_period_varied` | no | unstated | CO art. 335c para. 1 [follows]: “The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.” Inference: Paragraph 1 fixes the notice periods by law and paragraph 2 lets them differ only by a written individual, standard or collective contract, so where the file states no such written term the statutory periods apply. |
+
+Every other fact except the defining event `dismissed_immediately` falls under the convention of this benchmark (not law), which is not a passage of law: a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.
 
 ### Stops
 

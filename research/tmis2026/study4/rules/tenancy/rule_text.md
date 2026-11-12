@@ -12,10 +12,17 @@ How to apply them:
   attachments: yes, no, open (the claim raises the matter and leaves it
   unsettled), or not stated.
 - A document is requested when its step is reached and its condition holds.
-- No answer is assumed. A question the claim does not answer stays unresolved,
-  and so does every step or document that depends on it.
+- An answer that is not stated is handled by the convention below.
 - If the claim states that the type's defining event did not happen, the
   process ends and no document is requested.
+
+## Convention of this benchmark (not law)
+
+This is a convention of this benchmark, not a rule of law, and it cites no
+legal text: a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open.
+
+In each type below, question 1 is the defining event; questions 2 onward are
+branch facts.
 
 ## 1. Defect of the rented dwelling (mould, damp, heating)
 

@@ -9,7 +9,7 @@ from pathlib import Path
 
 REGIME_DIR = Path(__file__).resolve().parent.parent
 EN, DE = "co-sr220-en", "co-sr220-de"
-VERSION = "2026-11-12.1"
+VERSION = "2026-11-12.2"
 
 
 def R(locator, passage, basis, inference=None, de=None):
@@ -537,6 +537,53 @@ SOURCES = [
      "publisher": "Swiss Federal Chancellery, Fedlex", "language": "de", "authoritative": True},
 ]
 
+# ---------------------------------------------------------------- the intake convention (SPEC.md item 6a)
+# Exact words of SPEC.md item 6a; tools/check.py confirms they occur there and in rule_text.md.
+CONVENTION_TEXT = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
+                   "were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a "
+                   "fact the file raises and leaves unsettled is open.")
+CONVENTION_SOURCE = {"id": "benchmark-convention", "kind": "benchmark_convention",
+                     "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"}
+CONVENTION = {
+    "id": "intake_convention",
+    "text": CONVENTION_TEXT,
+    "applies_to": "every fact of every type except the defining event; a statutory presumption under the type's "
+                  "presumptions takes precedence for its fact",
+    "rule": {"source_id": CONVENTION_SOURCE["id"], "locator": "SPEC.md item 6a", "basis": "convention"},
+}
+# The tested product's validate_workflow accepts only the source kinds in its SOURCE_KINDS, which do not include
+# "benchmark_convention" (checked by tools/check.py). The workflow therefore declares the convention's source with a
+# kind the validator accepts and carries the intended kind beside it; set this to "benchmark_convention" once the
+# validator knows it.
+WF_CONVENTION_KIND = "process_guidance"
+
+# Plain-words summary of each type for rule_text.md (restates the cited articles; every rule itself is generated).
+SUMMARIES = {
+    "protected_period_notice":
+        "After the probation period has expired, the employer may not give notice during the protected periods of "
+        "art. 336c para. 1 (\"Sperrfristen\"). Notice given during such a period is void (\"nichtig\", art. 336c para. 2). "
+        "Notice given before such a period began, with the notice period still running when it began, is suspended and "
+        "resumes only after the period ends (art. 336c para. 2); if a specific end-point applies, such as the end of a "
+        "month, the resumed notice period is extended to the next end-point (art. 336c para. 3).",
+    "wrongful_termination":
+        "Notice is wrongful (\"missbräuchlich\"; the English translation says \"unlawful\") when given for one of the "
+        "reasons in art. 336. The party who gave wrongful notice owes compensation, set by the court and capped at six "
+        "months' salary (art. 336a para. 2). To claim it, the employee must object to the notice in writing to the "
+        "employer no later than the end of the notice period (art. 336b para. 1), and must bring the claim before a court "
+        "within 180 days of the end of the employment relationship; otherwise the claim is lost (\"verwirkt\", forfeited; "
+        "the English translation says \"prescribes\", art. 336b para. 2). The party giving notice must state the reasons "
+        "in writing if the other party asks (art. 335 para. 2).",
+    "immediate_dismissal":
+        "Either party may end the employment relationship with immediate effect at any time for good cause "
+        "(\"wichtige Gründe\") and must give the reasons in writing if the other party asks (art. 337 para. 1). Good cause "
+        "is any circumstance that makes continuing the relationship in good faith unconscionable for the party giving "
+        "notice (art. 337 para. 2). Being prevented from working through no fault of one's own is never good cause "
+        "(art. 337 para. 3). Where the employer dismisses with immediate effect without good cause, the employee is "
+        "entitled to what they would have earned had the relationship ended after the required notice period or at the "
+        "end of its agreed term (art. 337c para. 1), reduced by what they saved or earned from other work (art. 337c "
+        "para. 2); the court may add compensation of up to six months' salary (art. 337c para. 3).",
+}
+
 # ---------------------------------------------------------------- workflow graphs (casepath.workflow/1)
 # Each type's graph: the rule steps above plus system gates, stop steps and a close step.
 # tools/check.py walks every complete fact assignment and confirms the graph reaches exactly
@@ -660,13 +707,22 @@ def workflow(t):
     close = g["start"].split("_")[0] + "_close"
     steps.append({"id": close, "title": "Record the document state for assessment", "role": "claim_handler",
                   "outcome": "assessed", "source_refs": [f"{SRC}#arts_335-337c"]})
-    presumptions = [{"fact": p["fact"], "value": p["value"], "applies": p["applies"], "source_ref": ref(p["rule"]),
-                     "text": f"{p['rule']['locator']}: “{p['rule']['passage']}” {p['rule']['inference']}"}
-                    for p in t["presumptions"]]
-    notes = [{"text": "No public text in this rule set supports presuming an unmentioned branch fact absent or the defining event "
-                      "present; such a fact stays unresolved and documents that depend on it are held behind its question. "
-                      "Only the statutory defaults listed under presumptions apply.",
-              "source_refs": [f"{SRC}#arts_335-337c"]}]
+    statutory = {p["fact"]: p for p in t["presumptions"]}
+    presumptions = []
+    for f in t["facts"]:
+        if f["id"] == t["defining_event"]:
+            continue  # the defining event is never presumed
+        p = statutory.get(f["id"])
+        if p is not None:  # a statutory default takes precedence over the convention
+            presumptions.append({"fact": p["fact"], "value": p["value"], "applies": p["applies"], "source_ref": ref(p["rule"]),
+                                 "text": f"{p['rule']['locator']}: “{p['rule']['passage']}” {p['rule']['inference']}"})
+        else:
+            presumptions.append({"fact": f["id"], "value": False, "applies": "unstated",
+                                 "source_ref": f"{CONVENTION_SOURCE['id']}#intake_convention",
+                                 "text": "Convention of this benchmark (not law): " + CONVENTION_TEXT})
+    notes = [{"text": "Convention of this benchmark (not law): " + CONVENTION_TEXT + " Statutory defaults under presumptions "
+                      "(CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts.",
+              "source_refs": [f"{CONVENTION_SOURCE['id']}#intake_convention"]}]
     return {
         "format": "casepath.workflow/1",
         "id": t["id"],
@@ -676,7 +732,9 @@ def workflow(t):
         "example": False,
         "applies_when": {"fact": "dispute_family", "is": t["id"]},
         "sources": [{"id": SRC, "kind": "knowledge",
-                     "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"}],
+                     "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"},
+                    {"id": CONVENTION_SOURCE["id"], "kind": WF_CONVENTION_KIND, "intended_kind": CONVENTION_SOURCE["kind"],
+                     "title": CONVENTION_SOURCE["title"]}],
         "facts": wf_facts,
         "documents": docs,
         "start": g["start"],
@@ -733,7 +791,9 @@ def rules_md(data):
             for p in t["presumptions"]:
                 lines.append(f"| `{p['fact']}` | {'yes' if p['value'] else 'no'} | {p['applies']} | {md_rule(p['rule'])} |")
         else:
-            lines.append("None. No passage supports presuming any of this type's facts; an unstated fact is unresolved.")
+            lines.append("None from statute.")
+        lines += ["", f"Every other fact except the defining event `{t['defining_event']}` falls under the convention of this "
+                      "benchmark (not law), which is not a passage of law: " + CONVENTION_TEXT]
         lines += ["", "### Stops", "", "| stop | when | citation |", "|---|---|---|"]
         for s in t["stops"]:
             lines.append(f"| `{s['id']}` | {cond_text(s['when'])} | {md_rule(s['rule'])} |")
@@ -741,8 +801,71 @@ def rules_md(data):
     return "\n".join(lines)
 
 
+def words(c):
+    """A condition in plain words for rule_text.md."""
+    if c is True:
+        return "always"
+    if "all" in c:
+        return " and ".join(f"({words(x)})" if isinstance(x, dict) and ("all" in x or "any" in x) else words(x) for x in c["all"])
+    if "any" in c:
+        return " or ".join(words(x) for x in c["any"])
+    if "not" in c:
+        return f"not ({words(c['not'])})"
+    return f"`{c['fact']}` is {'yes' if c['is'] else 'no'}"
+
+
+def art(locator):
+    return locator.replace("CO ", "").replace(" (introduction)", ", introduction")
+
+
+def rule_text(data):
+    out = ["# Rules: end of an employment relationship in Switzerland (dismissal)", "",
+           "These rules say which documents a legal-protection insurer requests before it assesses an employee's dispute "
+           "about the end of an employment relationship. They come from the Swiss Code of Obligations (CO, SR 220), "
+           "consolidated version of 1 October 2026. The German text of the CO is authoritative; German terms are given in "
+           "brackets where the English translation is unclear.", "",
+           "There are three dispute types. Each type has a defining event, conditions to decide, steps, documents, "
+           "presumptions and stops. A step is taken when its condition holds. A document is needed when its step is taken "
+           "and its own condition holds; every needed document is mandatory. When a stop applies, the process ends and no "
+           "further step of that type is taken. A presumption fills a fact the file does not mention; a statutory "
+           "presumption listed under a type comes before the convention below.", "",
+           "## Convention of this benchmark (not law)", "",
+           "The following rule is a convention of this benchmark, not of the law; no article states it:", "",
+           "> " + data["convention"]["text"], ""]
+    for n, t in enumerate(data["types"], 1):
+        facts = {f["id"]: f for f in t["facts"]}
+        d_ev = facts[t["defining_event"]]
+        out += [f"## Type {n}: {t['title']}", "", SUMMARIES[t["id"]], "",
+                f"Defining event: `{d_ev['id']}`. It is never presumed.", "", "### Conditions", ""]
+        for i, f in enumerate(t["facts"], 1):
+            out.append(f"{i}. `{f['id']}`: {f['question']} Not: {f['not_this']} ({art(f['rule']['locator'])})")
+        out += ["", "### Stops", ""]
+        for s in t["stops"]:
+            why = s["rule"].get("inference") or ("“" + s["rule"]["passage"] + "”")
+            out.append(f"- If {words(s['when'])}, the process ends. {why} ({art(s['rule']['locator'])})")
+        out += ["", "### Steps and documents", ""]
+        for i, s in enumerate(t["steps"], 1):
+            out.append(f"{i}. {s['title']}. Taken when: {words(s['reached_when'])}. ({art(s['rule']['locator'])})")
+            for d in (d for d in t["documents"] if d["step"] == s["id"]):
+                need = "always" if d["needed_when"] is True else "only when " + words(d["needed_when"])
+                out.append(f"   - {d['title']}, showing: {'; '.join(d['must_show'])}. Needed {need}. "
+                           f"({art(d['rule']['locator'])}: {d['rule']['inference']})")
+        out += ["", "### Presumptions", ""]
+        for p in t["presumptions"]:
+            de = p["rule"].get("passage_de", {}).get("passage")
+            out.append(f"- `{p['fact']}` not mentioned: taken as {'yes' if p['value'] else 'no'}. {art(p['rule']['locator'])}: "
+                       f"“{p['rule']['passage'].rstrip('.')}”" + (f" („{de.rstrip('.')}“)" if de else "") + f". {p['rule']['inference']}")
+        others = [f["id"] for f in t["facts"] if f["id"] != t["defining_event"] and f["id"] not in {p["fact"] for p in t["presumptions"]}]
+        out.append("- Under the convention of this benchmark (not law), not mentioned means taken as no: "
+                   + ", ".join(f"`{x}`" for x in others) + ".")
+        out.append("")
+    return "\n".join(out)
+
+
 def main():
-    data = {"regime": "dismissal", "version": VERSION, "sources": SOURCES, "types": TYPES}
+    data = {"regime": "dismissal", "version": VERSION, "sources": SOURCES + [CONVENTION_SOURCE], "convention": CONVENTION,
+            "types": TYPES}
+    (REGIME_DIR / "rule_text.md").write_text(rule_text(data), encoding="utf-8")
     (REGIME_DIR / "rules.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (REGIME_DIR / "RULES.md").write_text(rules_md(data), encoding="utf-8")
     for t in TYPES:

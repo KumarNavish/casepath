@@ -25,6 +25,7 @@ sys.path.insert(0, str(PRODUCT))
 from casepath.process import workflows as W  # noqa: E402  (product code, read-only)
 
 errors = []
+kind_note = set()
 
 
 def err(msg):
@@ -118,6 +119,27 @@ def main():
     per_type = []
     rule_text = (HERE / "rule_text.md").read_text(encoding="utf-8")
 
+    # the intake convention (SPEC.md 6a): exactly one, basis convention, fixed words, no passage
+    FIXED = ("a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
+             "were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a "
+             "fact the file raises and leaves unsettled is open.")
+    conv = rules.get("convention")
+    if not isinstance(conv, dict):
+        err("rules.json has no single top-level convention entry")
+        conv = {"id": "", "source_id": "", "text": ""}
+    else:
+        if conv.get("basis") != "convention" or conv.get("text") != FIXED or "passage" in conv:
+            err("convention: basis, fixed words or absence of a passage wrong")
+        if (conv.get("source") or {}).get("kind") != "benchmark_convention":
+            err("convention: source kind must be benchmark_convention")
+        basis["convention"] += 1
+    if "## Convention of this benchmark (not law)" not in rule_text or FIXED not in rule_text:
+        err("rule_text.md lacks the convention section or its fixed words")
+    for t in rules["types"]:
+        for p in t["presumptions"]:
+            if p["rule"].get("basis") == "convention":
+                err(f"{t['id']}: the convention must not be listed under presumptions")
+
     # sources
     meta = json.loads((HERE / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
     listed = {s["id"]: s for s in meta["sources"]}
@@ -163,6 +185,23 @@ def main():
             if facts_in(s["when"]) - facts:
                 err(f"{tid} stop: unknown fact")
             check_rule(f"{tid} stop", s["rule"], basis)
+        # presumptions in the workflow: exactly one "unstated" per branch fact, none on the defining event,
+        # no "routed"; convention entries carry the fixed words and point to the convention source
+        wfp = json.loads((HERE / "workflow" / f"{tid}.json").read_text(encoding="utf-8")).get("presumptions", [])
+        conv_ref = conv["source_id"] + "#" + conv["id"]
+        for f in facts:
+            mine = [p for p in wfp if p["fact"] == f]
+            if f == t["defining_event"]:
+                if mine:
+                    err(f"workflow {tid}: the defining event {f} carries a presumption")
+            elif len([p for p in mine if p.get("applies") == "unstated"]) != 1 or len(mine) != 1:
+                err(f"workflow {tid}: branch fact {f} has {len(mine)} presumption(s), want exactly one 'unstated'")
+        for p in wfp:
+            if p.get("applies") == "routed":
+                err(f"workflow {tid}: a 'routed' presumption is present ({p['fact']})")
+            statutory = p["fact"] in {q["fact"] for q in t["presumptions"]}
+            if not statutory and (p["source_ref"] != conv_ref or conv["text"] not in p["text"] or p["value"] is not False):
+                err(f"workflow {tid}: presumption for {p['fact']} is not the convention as fixed")
         n_facts += len(facts)
         n_steps += len(steps)
         n_pres += len(t["presumptions"])
@@ -175,6 +214,20 @@ def main():
         except W.CatalogueError as e:
             err(f"workflow {tid}: validate_workflow failed: {e}")
             continue
+        # the convention as the product applies it: defining event stated true, every branch fact unrecorded
+        filled = W.presumed(wf, {})
+        if set(filled) != facts - {t["defining_event"]}:
+            err(f"workflow {tid}: product presumed() fills {sorted(filled)}, want every branch fact")
+        # the spec's source kind, tried against the product validator (reported, not an error)
+        trial = json.loads(json.dumps(wf))
+        for s in trial["sources"]:
+            if s.get("convention_kind"):
+                s["kind"] = s["convention_kind"]
+        try:
+            W.validate_workflow(trial)
+            kind_note.add("product accepts kind benchmark_convention")
+        except W.CatalogueError as e:
+            kind_note.add(f"product rejects kind benchmark_convention ({e}); workflows use the nearest accepted kind")
         reach = W._Reach(wf)
         fact_ids = [f["id"] for f in t["facts"]]
         changes_docs = set()
@@ -221,6 +274,8 @@ def main():
               f"conditions changing documents {ch}; reconvergence at {mg}")
     print("workflows: validate_workflow passed" if not any("validate_workflow" in e for e in errors)
           else "workflows: validate_workflow FAILED")
+    for k in sorted(kind_note):
+        print("note: " + k)
     if errors:
         print(f"\n{len(errors)} error(s):")
         for e in errors:

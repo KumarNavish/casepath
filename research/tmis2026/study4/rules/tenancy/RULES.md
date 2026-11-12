@@ -4,7 +4,13 @@ Generated from `rules.json` by `tools/build.py`. One clause per row. Passages ar
 
 Basis: `states` = the passage states the rule; `follows` = it follows by the named step; `evidence` = the passage creates a condition and the document ordinarily proves it.
 
-Presumptions: none. Unstated facts are unresolved (see 'How to apply them' in `rule_text.md`).
+Presumptions supported by a passage: none.
+
+## Convention of this benchmark (not law)
+
+| # | Kind | Clause | Basis | Passage |
+|---|---|---|---|---|
+| C01 | convention (`intake-convention`) | a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. Applies to: every branch fact of every type (value: absent / false); never the defining event. | convention | none (cites no passage) |
 
 ## Defect of the rented dwelling (mould, damp, heating) (`defect_mold_heating`)
 

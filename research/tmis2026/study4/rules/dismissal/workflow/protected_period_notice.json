@@ -14,6 +14,12 @@
    "id": "co-sr220",
    "kind": "knowledge",
    "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "intended_kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
   }
  ],
  "facts": [
@@ -522,11 +528,46 @@
  ],
  "presumptions": [
   {
+   "fact": "notice_after_probation",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
    "fact": "probation_varied",
    "value": false,
    "applies": "unstated",
    "source_ref": "co-sr220#art_335b_para_1",
    "text": "CO art. 335b para. 1: “the probation period is considered to be the first month of an employment relationship” The statute deems the probation period to be the first month and paragraph 2 allows other terms only in writing, so where the file states no such written term the first month applies."
+  },
+  {
+   "fact": "incapacity_illness_accident",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "compulsory_service",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "pregnancy_or_birth",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "notice_before_protected_period",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open."
   },
   {
    "fact": "notice_period_varied",
@@ -538,9 +579,9 @@
  ],
  "notes": [
   {
-   "text": "No public text in this rule set supports presuming an unmentioned branch fact absent or the defining event present; such a fact stays unresolved and documents that depend on it are held behind its question. Only the statutory defaults listed under presumptions apply.",
+   "text": "Convention of this benchmark (not law): a branch fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent; the defining event is never presumed: if the file does not mention it, it is unresolved; a fact the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts.",
    "source_refs": [
-    "co-sr220#arts_335-337c"
+    "benchmark-convention#intake_convention"
    ]
   }
  ],
