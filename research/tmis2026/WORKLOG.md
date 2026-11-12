@@ -555,3 +555,26 @@ comparison).** Errors per file against the references: tenancy 0.36, theft
 1.14, dismissal 0.79. The product failed to route 37 of 176 files to a type
 (19 of them files that deny their defining event); in theft the routing
 question reads ten ordinary thefts as "other".
+
+**Step 2, after first use (USD 1.03 more; step total USD 3.82 of 4.00).** A
+replay of all 134 first-look errors through the product's own evaluator
+assigned each to one cause (`study4/lint/DIAGNOSIS.md`): rule wording 39,
+product reading or document judgment 35, benchmark design 34, text against
+recorded state 14, wording of document requirements 12; none from a workflow
+differing from its reference. Repairs, all by general rules and none changing
+a reference: routing questions and three fact questions reworded (revision 1);
+document requirements made checkable (revision 2, `SPEC.md` 6c); four wordings
+narrowed and two rulings applied after the second reader's look, and the
+routing questions put into the rule text every design reads (revision 3); the
+generator forbids a denial that states another type's event and shows writer
+and blind reader each condition's "not this" line. Eight denied-event texts
+were rewritten and all 24 re-checked blind; three theft files were dropped.
+Development sets now: 173 files (tenancy 59, theft 56, dismissal 58). The
+tested product, once, on the repaired benchmark (in-sample; no baseline):
+dismissal 0.79 → 0.57 errors per file, theft 1.09 → 0.61; tenancy stopped at
+the budget line after 28 of 59 files (0.39 → 0.25 on those) and is not a
+regime figure. What remains is the product's: supplied-document judgments
+(0.21 per file), holds because a quotation was not found word for word in
+scanned text (0.12), holds because one of three readings disagreed (0.11),
+routing (0.11; the dismissal routing question needs another look).
+`study4/lint/REV3.md`.
