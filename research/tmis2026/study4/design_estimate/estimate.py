@@ -518,6 +518,18 @@ def main():
                     out["theft"][v] = theft_summary(study, key)
             if reg == "tenancy":
                 used_all = used
+                ch = {}
+                for v in allv:
+                    cnt_ = Counter()
+                    for c in study.cases["tenancy"]:
+                        sub = P.subset_of(study, c)[1] or "S"
+                        for pa, pb in zip(plans[v][c], plans["V0"][c]):
+                            cnt_[sub] += not R.same_checklist(pa, pb)
+                    ch[v] = dict(sorted(cnt_.items()))
+                out["tenancy_claim_runs_changed_vs_V0"] = ch
+            else:
+                out["theft_text_runs_changed_vs_V0"] = {v: sum(not R.same_checklist(pa, pb) for c in study.cases["theft"]
+                                                               for pa, pb in zip(plans[v][c], plans["V0"][c])) for v in allv}
         out["stored_tested"] = {"tenancy": ten_summary(study, d)["all"], "theft": theft_summary(study, d)}
         if d == "casepath_checklist":
             r3 = (stored_r3.get("R3") or {}).get(d) or {}
@@ -533,6 +545,14 @@ def main():
             for b in COMPARATORS[d]:
                 cs[b] = contrasts(study, key, b)
             out["contrasts"][v] = cs
+        ok = [v for v in allv if v != "V0"
+              and out["tenancy"][v]["all"]["strict_unsafe"] <= out["tenancy"]["V0"]["all"]["strict_unsafe"] + 1e-12
+              and out["theft"][v]["errors_per_pair"] <= out["theft"]["V0"]["errors_per_pair"] + 1e-12
+              and out["fact_values"][v].get("admitted wrong", 0) <= out["fact_values"]["V0"].get("admitted wrong", 0) + 2]
+        out["best_variant"] = min(ok, key=lambda v: out["tenancy"][v]["all"]["all_dev"]) if ok else None
+        out["best_variant_rule"] = ("lowest tenancy all deviations per claim among the variants whose tenancy strict unsafe "
+                                    "errors and theft errors are not above V0's and that admit at most two more wrong "
+                                    "values than V0 (chosen in-sample)")
         out["comparators"] = {b: {"tenancy": ten_summary(study, b), "theft": theft_summary(study, b)} for b in COMPARATORS[d]}
         res["designs"][d] = out
     res["inputs"] = dict(sorted(study.inputs.hashes.items()))
@@ -604,12 +624,26 @@ def markdown(res):
         md += table(["variant"] + [SUBSET_SHORT[s] for s in REPORT_SUBSETS] +
                     ["spurious holds", "held required now", "correct-hold share", "theft errors (wrong + missed)",
                      "unresolved: unchanged / premature", "admitted / presumed wrong values"], rows)
+        md += ["", "Claim-runs (tenancy) whose checklist differs from V0, by subset; text-runs (theft):", ""]
+        md += table(["variant", "S", "open branch fact only", "denied event", "open event", "theft"],
+                    [[v] + [out["tenancy_claim_runs_changed_vs_V0"][v].get(k, 0) for k in ("S", "O: open branch fact only", "O: denied defining event", "O: open defining event")]
+                     + [out["theft_text_runs_changed_vs_V0"][v]] for v in res["variants"]])
+        bv = out["best_variant"]
+        md += ["", f"### Best variant: {bv} ({out['best_variant_rule']})", ""]
+        brow = []
+        for b, lst in out["contrasts"][bv].items():
+            for c in lst:
+                if (c["regime"] == "tenancy" and c["subset"] in ("all", "O: denied defining event", "O: open branch fact only", "S")) or c["measure"] == "errors":
+                    brow.append(["V0 (tested)" if b == "V0" else CMP_LABEL[b], SUBSET_SHORT.get(c["subset"], c["subset"]), c["measure"],
+                                 f"{c['a_value']:.2f} vs {c['b_value']:.2f}", f"{c['diff_case_mean']:+.2f}",
+                                 f"{c['a_lower_cases']}/{c['a_higher_cases']}", pv(c["p_cases"]), pv(c["p_clusters"])])
+        md += table(["against", "subset", "measure", "values", "difference", "cases lower/higher", "p cases", "p clusters"], brow)
         md += ["", "### Paired contrasts (variant minus comparator; difference of per-case means; p: sign-flip over cases / over registered clusters)", ""]
         crow = []
         for v, cs in out["contrasts"].items():
             for b, lst in cs.items():
                 for c in lst:
-                    if c["regime"] == "tenancy" and c["subset"] not in ("all", "O: denied defining event", "O: open branch fact only", "S"):
+                    if c["regime"] == "tenancy" and c["subset"] not in ("all", "O: denied defining event", "O: open branch fact only"):
                         continue
                     if c["regime"] == "theft" and c["measure"] != "errors":
                         continue

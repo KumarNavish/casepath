@@ -28,6 +28,8 @@
  },
  "designs": {
   "casepath_checklist": {
+   "best_variant": "V7",
+   "best_variant_rule": "lowest tenancy all deviations per claim among the variants whose tenancy strict unsafe errors and theft errors are not above V0's and that admit at most two more wrong values than V0 (chosen in-sample)",
    "comparators": {
     "hold_prompt": {
      "tenancy": {
@@ -3353,23 +3355,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 1,
-       "a_value": 0.7152777777777778,
+       "a_lower_cases": 11,
+       "a_value": 0.5416666666666666,
        "b_value": 0.7361111111111112,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": -0.02083333333333333,
+       "diff_case_mean": -0.19444444444444445,
        "diff_cluster_ci95": [
-        -0.06250000000000001,
-        0.0
+        -0.3958333333333334,
+        -0.045138888888888895
        ],
-       "diff_cluster_mean": -0.02083333333333334,
+       "diff_cluster_mean": -0.1944444444444445,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 1,
-       "p_cases": 1.0,
+       "nonzero_cases": 11,
+       "p_cases": 0.0009765625,
        "p_cases_method": "exact",
-       "p_clusters": 1.0,
+       "p_clusters": 0.00390625,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -3397,23 +3399,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 0.3416666666666667,
+       "a_lower_cases": 4,
+       "a_value": 0.3,
        "b_value": 0.3416666666666667,
        "cases": 40,
        "clusters": 16,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -0.041666666666666664,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -0.07638888888888888,
+        -0.006944444444444444
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -0.03819444444444444,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
-       "nonzero_cases": 0,
-       "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
-       "p_clusters": 1.0,
+       "nonzero_cases": 4,
+       "p_cases": 0.125,
+       "p_cases_method": "exact",
+       "p_clusters": 0.125,
        "regime": "tenancy",
        "subset": "S"
       },
@@ -3442,16 +3444,16 @@
       {
        "a_higher_cases": 0,
        "a_lower_cases": 1,
-       "a_value": 0.5362318840579711,
+       "a_value": 0.6086956521739131,
        "b_value": 0.6231884057971014,
        "cases": 23,
        "clusters": 16,
-       "diff_case_mean": -0.08695652173913042,
+       "diff_case_mean": -0.014492753623188392,
        "diff_cluster_ci95": [
-        -0.18749999999999994,
+        -0.031249999999999972,
         0.0
        ],
-       "diff_cluster_mean": -0.062499999999999986,
+       "diff_cluster_mean": -0.010416666666666657,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
        "nonzero_cases": 1,
@@ -3485,23 +3487,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 1.7777777777777777,
+       "a_lower_cases": 6,
+       "a_value": 1.0833333333333333,
        "b_value": 1.7777777777777777,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -0.6944444444444445,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -1.3611111111111112,
+        -0.16666666666666669
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -0.6944444444444445,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 0,
-       "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
-       "p_clusters": 1.0,
+       "nonzero_cases": 6,
+       "p_cases": 0.03125,
+       "p_cases_method": "exact",
+       "p_clusters": 0.125,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -3550,23 +3552,23 @@
        "subset": "O: open defining event"
       },
       {
-       "a_higher_cases": 0,
-       "a_lower_cases": 0,
+       "a_higher_cases": 3,
+       "a_lower_cases": 2,
        "a_value": 0.5509259259259259,
        "b_value": 0.5509259259259259,
        "cases": 72,
        "clusters": 9,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -5.396917480816733e-18,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -0.027777777777777752,
+        0.02777777777777779
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": 1.2335811384723961e-17,
        "measure": "errors",
        "min_p_clusters": 0.00390625,
-       "nonzero_cases": 0,
+       "nonzero_cases": 5,
        "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
+       "p_cases_method": "exact",
        "p_clusters": 1.0,
        "regime": "theft",
        "subset": "changed-fact pairs"
@@ -3640,24 +3642,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 18,
-       "a_lower_cases": 34,
-       "a_value": 0.7152777777777778,
+       "a_higher_cases": 16,
+       "a_lower_cases": 37,
+       "a_value": 0.5416666666666666,
        "b_value": 0.8888888888888888,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": -0.17361111111111113,
+       "diff_case_mean": -0.34722222222222227,
        "diff_cluster_ci95": [
-        -0.5590277777777778,
-        0.19791666666666666
+        -0.6597222222222222,
+        -0.0590277777777778
        ],
-       "diff_cluster_mean": -0.17361111111111108,
+       "diff_cluster_mean": -0.34722222222222227,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 52,
-       "p_cases": 0.35485322573387135,
+       "nonzero_cases": 53,
+       "p_cases": 0.04012479937600312,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.39899635314941406,
+       "p_clusters": 0.03857994079589844,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -3684,24 +3686,24 @@
        "subset": "S"
       },
       {
-       "a_higher_cases": 8,
-       "a_lower_cases": 16,
-       "a_value": 0.3416666666666667,
+       "a_higher_cases": 6,
+       "a_lower_cases": 17,
+       "a_value": 0.3,
        "b_value": 0.7333333333333333,
        "cases": 40,
        "clusters": 16,
-       "diff_case_mean": -0.39166666666666666,
+       "diff_case_mean": -0.4333333333333333,
        "diff_cluster_ci95": [
-        -0.9409722222222222,
-        0.05555555555555558
+        -0.9791666666666667,
+        0.024305555555555594
        ],
-       "diff_cluster_mean": -0.40625,
+       "diff_cluster_mean": -0.4444444444444444,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
-       "nonzero_cases": 24,
-       "p_cases": 0.07330963345183274,
+       "nonzero_cases": 23,
+       "p_cases": 0.045369773151134246,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.140106201171875,
+       "p_clusters": 0.103759765625,
        "regime": "tenancy",
        "subset": "S"
       },
@@ -3730,20 +3732,20 @@
       {
        "a_higher_cases": 5,
        "a_lower_cases": 13,
-       "a_value": 0.5362318840579711,
+       "a_value": 0.6086956521739131,
        "b_value": 1.2463768115942029,
        "cases": 23,
        "clusters": 16,
-       "diff_case_mean": -0.7101449275362318,
+       "diff_case_mean": -0.6376811594202898,
        "diff_cluster_ci95": [
-        -1.6354166666666665,
-        -0.06249999999999998
+        -1.53125,
+        -0.06249999999999997
        ],
-       "diff_cluster_mean": -0.7604166666666666,
+       "diff_cluster_mean": -0.7083333333333333,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
        "nonzero_cases": 18,
-       "p_cases": 0.0574188232421875,
+       "p_cases": 0.0697479248046875,
        "p_cases_method": "exact",
        "p_clusters": 0.066162109375,
        "regime": "tenancy",
@@ -3773,23 +3775,23 @@
       },
       {
        "a_higher_cases": 5,
-       "a_lower_cases": 3,
-       "a_value": 1.7777777777777777,
+       "a_lower_cases": 5,
+       "a_value": 1.0833333333333333,
        "b_value": 1.097222222222222,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.6805555555555555,
+       "diff_case_mean": -0.013888888888888914,
        "diff_cluster_ci95": [
-        -0.06944444444444443,
-        1.4444444444444444
+        -0.4722222222222223,
+        0.45833333333333337
        ],
-       "diff_cluster_mean": 0.6805555555555556,
+       "diff_cluster_mean": -0.013888888888888909,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 8,
-       "p_cases": 0.1953125,
+       "nonzero_cases": 10,
+       "p_cases": 1.0,
        "p_cases_method": "exact",
-       "p_clusters": 0.125,
+       "p_clusters": 1.0,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -3839,7 +3841,7 @@
       },
       {
        "a_higher_cases": 5,
-       "a_lower_cases": 62,
+       "a_lower_cases": 64,
        "a_value": 0.5509259259259259,
        "b_value": 1.675925925925926,
        "cases": 72,
@@ -3847,12 +3849,12 @@
        "diff_case_mean": -1.125,
        "diff_cluster_ci95": [
         -1.412037037037037,
-        -0.7916666666666666
+        -0.8101851851851851
        ],
        "diff_cluster_mean": -1.125,
        "measure": "errors",
        "min_p_clusters": 0.00390625,
-       "nonzero_cases": 67,
+       "nonzero_cases": 69,
        "p_cases": 4.9999750001249995e-06,
        "p_cases_method": "Monte Carlo 200000",
        "p_clusters": 0.00390625,
@@ -3931,23 +3933,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 5,
-       "a_value": 0.6944444444444445,
+       "a_lower_cases": 11,
+       "a_value": 0.4513888888888889,
        "b_value": 0.7361111111111112,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": -0.041666666666666664,
+       "diff_case_mean": -0.2847222222222222,
        "diff_cluster_ci95": [
-        -0.09722222222222222,
-        -0.006944444444444443
+        -0.5972222222222222,
+        -0.048611111111111126
        ],
-       "diff_cluster_mean": -0.041666666666666664,
+       "diff_cluster_mean": -0.28472222222222227,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 5,
-       "p_cases": 0.0625,
+       "nonzero_cases": 11,
+       "p_cases": 0.0009765625,
        "p_cases_method": "exact",
-       "p_clusters": 0.0625,
+       "p_clusters": 0.00390625,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -4020,16 +4022,16 @@
       {
        "a_higher_cases": 0,
        "a_lower_cases": 1,
-       "a_value": 0.5217391304347826,
+       "a_value": 0.6086956521739131,
        "b_value": 0.6231884057971014,
        "cases": 23,
        "clusters": 16,
-       "diff_case_mean": -0.10144927536231883,
+       "diff_case_mean": -0.014492753623188392,
        "diff_cluster_ci95": [
-        -0.21874999999999997,
+        -0.031249999999999972,
         0.0
        ],
-       "diff_cluster_mean": -0.07291666666666666,
+       "diff_cluster_mean": -0.010416666666666657,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
        "nonzero_cases": 1,
@@ -4063,23 +4065,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 1.7777777777777777,
+       "a_lower_cases": 6,
+       "a_value": 0.7222222222222222,
        "b_value": 1.7777777777777777,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -1.0555555555555556,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -2.138888888888889,
+        -0.19444444444444442
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -1.0555555555555556,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 0,
-       "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
-       "p_clusters": 1.0,
+       "nonzero_cases": 6,
+       "p_cases": 0.03125,
+       "p_cases_method": "exact",
+       "p_clusters": 0.125,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -4218,24 +4220,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 16,
-       "a_lower_cases": 35,
-       "a_value": 0.6944444444444445,
+       "a_higher_cases": 13,
+       "a_lower_cases": 37,
+       "a_value": 0.4513888888888889,
        "b_value": 0.8888888888888888,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": -0.19444444444444442,
+       "diff_case_mean": -0.4375,
        "diff_cluster_ci95": [
-        -0.59375,
-        0.18750000000000003
+        -0.7638888888888888,
+        -0.1388888888888889
        ],
-       "diff_cluster_mean": -0.19444444444444442,
+       "diff_cluster_mean": -0.4375,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 51,
-       "p_cases": 0.30157849210753945,
+       "nonzero_cases": 50,
+       "p_cases": 0.0045799771001145,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.3529176712036133,
+       "p_clusters": 0.012137413024902344,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -4308,20 +4310,20 @@
       {
        "a_higher_cases": 5,
        "a_lower_cases": 13,
-       "a_value": 0.5217391304347826,
+       "a_value": 0.6086956521739131,
        "b_value": 1.2463768115942029,
        "cases": 23,
        "clusters": 16,
-       "diff_case_mean": -0.7246376811594202,
+       "diff_case_mean": -0.6376811594202898,
        "diff_cluster_ci95": [
-        -1.6458333333333333,
-        -0.0833333333333333
+        -1.5208333333333333,
+        -0.07291666666666666
        ],
-       "diff_cluster_mean": -0.7708333333333333,
+       "diff_cluster_mean": -0.7083333333333333,
        "measure": "all_dev",
        "min_p_clusters": 3.0517578125e-05,
        "nonzero_cases": 18,
-       "p_cases": 0.05712890625,
+       "p_cases": 0.0697479248046875,
        "p_cases_method": "exact",
        "p_clusters": 0.066162109375,
        "regime": "tenancy",
@@ -4350,24 +4352,24 @@
        "subset": "O: denied defining event"
       },
       {
-       "a_higher_cases": 5,
-       "a_lower_cases": 3,
-       "a_value": 1.7777777777777777,
+       "a_higher_cases": 2,
+       "a_lower_cases": 5,
+       "a_value": 0.7222222222222222,
        "b_value": 1.097222222222222,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.6805555555555555,
+       "diff_case_mean": -0.375,
        "diff_cluster_ci95": [
-        -0.06944444444444443,
-        1.4166666666666667
+        -0.9722222222222223,
+        0.20833333333333337
        ],
-       "diff_cluster_mean": 0.6805555555555556,
+       "diff_cluster_mean": -0.375,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 8,
-       "p_cases": 0.1953125,
+       "nonzero_cases": 7,
+       "p_cases": 0.40625,
        "p_cases_method": "exact",
-       "p_clusters": 0.125,
+       "p_clusters": 0.375,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -4493,7 +4495,7 @@
     },
     "claim_runs": 72,
     "examples": {
-     "false, quotation not found": [
+     "false, quotation found": [
       {
        "claim": "f2cl_0868f24595f5f79a",
        "quote": "I have not received any individual notification of a rent increase, either by post or by email.",
@@ -4513,7 +4515,7 @@
        "run": 0
       }
      ],
-     "true, quotation not found": [
+     "true, quotation found": [
       {
        "claim": "f2cl_0868f24595f5f79a",
        "quote": "Last week a notice from Hausverwaltung Pilatus appeared on the board in our entrance hall: \"Rents in this building will be adjusted from 1 April 2027. Tenants will be informed individually.\"",
@@ -4535,14 +4537,14 @@
      ]
     },
     "patterns": {
-     "false, quotation not found | false, quotation not found | false, quotation not found": 54,
-     "false, quotation not found | false, quotation not found | true, quotation not found": 7,
-     "false, quotation not found | true, quotation not found | true, quotation not found": 4,
-     "true, quotation not found | true, quotation not found | true, quotation not found": 7
+     "false, quotation found | false, quotation found | false, quotation found": 54,
+     "false, quotation found | false, quotation found | true, quotation found": 7,
+     "false, quotation found | true, quotation found | true, quotation found": 4,
+     "true, quotation found | true, quotation found | true, quotation found": 7
     },
     "readings": {
-     "false, quotation not found": 180,
-     "true, quotation not found": 36
+     "false, quotation found": 180,
+     "true, quotation found": 36
     }
    },
    "fact_values": {
@@ -4784,7 +4786,7 @@
     },
     "V6": {
      "absent": 10,
-     "admitted right": 777,
+     "admitted right": 784,
      "admitted wrong": 9,
      "by_designed_state": {
       "absent": {
@@ -4800,49 +4802,10 @@
       },
       "stated_false": {
        "absent": 3,
-       "admitted right": 125,
+       "admitted right": 132,
        "admitted wrong": 7,
        "presumed right": 3,
-       "unresolved": 12
-      },
-      "stated_true": {
-       "absent": 4,
-       "admitted right": 637,
-       "presumed wrong": 2,
-       "unresolved": 23
-      },
-      "unmentioned": {
-       "admitted right": 11,
-       "presumed right": 4
-      }
-     },
-     "fact_claim_runs": 1344,
-     "presumed right": 401,
-     "presumed wrong": 3,
-     "unresolved": 144
-    },
-    "V7": {
-     "absent": 10,
-     "admitted right": 783,
-     "admitted wrong": 9,
-     "by_designed_state": {
-      "absent": {
-       "absent": 3,
-       "admitted right": 4,
-       "admitted wrong": 2,
-       "presumed right": 394,
-       "unresolved": 14
-      },
-      "open": {
-       "presumed wrong": 1,
-       "unresolved": 95
-      },
-      "stated_false": {
-       "absent": 3,
-       "admitted right": 125,
-       "admitted wrong": 7,
-       "presumed right": 3,
-       "unresolved": 12
+       "unresolved": 5
       },
       "stated_true": {
        "absent": 4,
@@ -4851,14 +4814,55 @@
        "unresolved": 17
       },
       "unmentioned": {
-       "admitted right": 11,
-       "presumed right": 4
+       "admitted right": 5,
+       "presumed right": 9,
+       "unresolved": 1
       }
      },
      "fact_claim_runs": 1344,
-     "presumed right": 401,
+     "presumed right": 406,
      "presumed wrong": 3,
-     "unresolved": 138
+     "unresolved": 132
+    },
+    "V7": {
+     "absent": 10,
+     "admitted right": 788,
+     "admitted wrong": 9,
+     "by_designed_state": {
+      "absent": {
+       "absent": 3,
+       "admitted right": 4,
+       "admitted wrong": 2,
+       "presumed right": 394,
+       "unresolved": 14
+      },
+      "open": {
+       "presumed wrong": 1,
+       "unresolved": 95
+      },
+      "stated_false": {
+       "absent": 3,
+       "admitted right": 136,
+       "admitted wrong": 7,
+       "presumed right": 3,
+       "unresolved": 1
+      },
+      "stated_true": {
+       "absent": 4,
+       "admitted right": 643,
+       "presumed wrong": 2,
+       "unresolved": 17
+      },
+      "unmentioned": {
+       "admitted right": 5,
+       "presumed right": 9,
+       "unresolved": 1
+      }
+     },
+     "fact_claim_runs": 1344,
+     "presumed right": 406,
+     "presumed wrong": 3,
+     "unresolved": 128
     }
    },
    "label": "CasePath, checklist only, cost-efficient (three runs)",
@@ -5567,7 +5571,7 @@
     },
     "V6": {
      "O: denied defining event": {
-      "all_dev": 1.7777777777777777,
+      "all_dev": 1.0833333333333333,
       "claim_runs": 72,
       "claims": 24,
       "correct_hold": 0,
@@ -5579,128 +5583,24 @@
       "ref_held": 0,
       "requested_share": null,
       "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 1.0555555555555556,
+      "spurious_hold_per_claim": 0.3611111111111111,
       "strict_unsafe": 0.7222222222222222,
       "unnecessary_per_claim": 0.7222222222222222
      },
      "O: open branch fact only": {
-      "all_dev": 0.5362318840579711,
+      "all_dev": 0.6086956521739131,
       "claim_runs": 69,
       "claims": 23,
       "correct_hold": 68,
       "correct_hold_share": 0.9855072463768116,
       "handed_per_claim": 0.0,
-      "held_req_per_claim": 0.13043478260869565,
+      "held_req_per_claim": 0.18840579710144928,
       "missed_per_claim": 0.2028985507246377,
       "premature_per_claim": 0.0,
       "ref_held": 69,
-      "requested_share": 0.9511677282377919,
+      "requested_share": 0.9426751592356688,
       "silent_skip_per_claim": 0.014492753623188406,
-      "spurious_hold_per_claim": 0.08695652173913043,
-      "strict_unsafe": 0.3188405797101449,
-      "unnecessary_per_claim": 0.10144927536231885
-     },
-     "O: open defining event": {
-      "all_dev": 0.0,
-      "claim_runs": 27,
-      "claims": 9,
-      "correct_hold": 189,
-      "correct_hold_share": 1.0,
-      "handed_per_claim": 0.0,
-      "held_req_per_claim": 0.0,
-      "missed_per_claim": 0.0,
-      "premature_per_claim": 0.0,
-      "ref_held": 189,
-      "requested_share": null,
-      "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 0.0,
-      "strict_unsafe": 0.0,
-      "unnecessary_per_claim": 0.0
-     },
-     "S": {
-      "all_dev": 0.3416666666666667,
-      "claim_runs": 120,
-      "claims": 40,
-      "correct_hold": 0,
-      "correct_hold_share": null,
-      "handed_per_claim": 0.10833333333333334,
-      "held_req_per_claim": 0.1,
-      "missed_per_claim": 0.008333333333333333,
-      "premature_per_claim": 0.0,
-      "ref_held": 0,
-      "requested_share": 0.9732510288065843,
-      "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 0.03333333333333333,
-      "strict_unsafe": 0.20833333333333334,
-      "unnecessary_per_claim": 0.09166666666666666
-     },
-     "all": {
-      "all_dev": 0.7152777777777778,
-      "claim_runs": 288,
-      "claims": 96,
-      "correct_hold": 257,
-      "correct_hold_share": 0.9961240310077519,
-      "handed_per_claim": 0.04513888888888889,
-      "held_req_per_claim": 0.07291666666666667,
-      "missed_per_claim": 0.052083333333333336,
-      "premature_per_claim": 0.0,
-      "ref_held": 258,
-      "requested_share": 0.966042966042966,
-      "silent_skip_per_claim": 0.003472222222222222,
-      "spurious_hold_per_claim": 0.2986111111111111,
-      "strict_unsafe": 0.34375,
-      "unnecessary_per_claim": 0.24305555555555555
-     },
-     "ordinary": {
-      "all_dev": 0.4126984126984127,
-      "claim_runs": 189,
-      "claims": 63,
-      "correct_hold": 68,
-      "correct_hold_share": 0.9855072463768116,
-      "handed_per_claim": 0.06878306878306878,
-      "held_req_per_claim": 0.1111111111111111,
-      "missed_per_claim": 0.07936507936507936,
-      "premature_per_claim": 0.0,
-      "ref_held": 69,
-      "requested_share": 0.966042966042966,
-      "silent_skip_per_claim": 0.005291005291005291,
-      "spurious_hold_per_claim": 0.05291005291005291,
-      "strict_unsafe": 0.24867724867724866,
-      "unnecessary_per_claim": 0.09523809523809523
-     }
-    },
-    "V7": {
-     "O: denied defining event": {
-      "all_dev": 1.7777777777777777,
-      "claim_runs": 72,
-      "claims": 24,
-      "correct_hold": 0,
-      "correct_hold_share": null,
-      "handed_per_claim": 0.0,
-      "held_req_per_claim": 0.0,
-      "missed_per_claim": 0.0,
-      "premature_per_claim": 0.0,
-      "ref_held": 0,
-      "requested_share": null,
-      "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 1.0555555555555556,
-      "strict_unsafe": 0.7222222222222222,
-      "unnecessary_per_claim": 0.7222222222222222
-     },
-     "O: open branch fact only": {
-      "all_dev": 0.5217391304347826,
-      "claim_runs": 69,
-      "claims": 23,
-      "correct_hold": 68,
-      "correct_hold_share": 0.9855072463768116,
-      "handed_per_claim": 0.0,
-      "held_req_per_claim": 0.11594202898550725,
-      "missed_per_claim": 0.2028985507246377,
-      "premature_per_claim": 0.0,
-      "ref_held": 69,
-      "requested_share": 0.9532908704883227,
-      "silent_skip_per_claim": 0.014492753623188406,
-      "spurious_hold_per_claim": 0.08695652173913043,
+      "spurious_hold_per_claim": 0.10144927536231885,
       "strict_unsafe": 0.3188405797101449,
       "unnecessary_per_claim": 0.10144927536231885
      },
@@ -5739,39 +5639,193 @@
       "unnecessary_per_claim": 0.09166666666666666
      },
      "all": {
-      "all_dev": 0.6944444444444444,
+      "all_dev": 0.5416666666666666,
       "claim_runs": 288,
       "claims": 96,
       "correct_hold": 257,
       "correct_hold_share": 0.9961240310077519,
       "handed_per_claim": 0.04513888888888889,
-      "held_req_per_claim": 0.052083333333333336,
+      "held_req_per_claim": 0.06944444444444445,
       "missed_per_claim": 0.052083333333333336,
       "premature_per_claim": 0.0,
       "ref_held": 258,
-      "requested_share": 0.9702009702009702,
+      "requested_share": 0.9667359667359667,
       "silent_skip_per_claim": 0.003472222222222222,
-      "spurious_hold_per_claim": 0.2986111111111111,
+      "spurious_hold_per_claim": 0.1284722222222222,
       "strict_unsafe": 0.34375,
       "unnecessary_per_claim": 0.24305555555555555
      },
      "ordinary": {
-      "all_dev": 0.38095238095238093,
+      "all_dev": 0.4126984126984127,
       "claim_runs": 189,
       "claims": 63,
       "correct_hold": 68,
       "correct_hold_share": 0.9855072463768116,
       "handed_per_claim": 0.06878306878306878,
-      "held_req_per_claim": 0.07936507936507936,
+      "held_req_per_claim": 0.10582010582010581,
       "missed_per_claim": 0.07936507936507936,
       "premature_per_claim": 0.0,
       "ref_held": 69,
-      "requested_share": 0.9702009702009702,
+      "requested_share": 0.9667359667359667,
       "silent_skip_per_claim": 0.005291005291005291,
-      "spurious_hold_per_claim": 0.05291005291005291,
+      "spurious_hold_per_claim": 0.0582010582010582,
       "strict_unsafe": 0.24867724867724866,
       "unnecessary_per_claim": 0.09523809523809523
      }
+    },
+    "V7": {
+     "O: denied defining event": {
+      "all_dev": 0.7222222222222222,
+      "claim_runs": 72,
+      "claims": 24,
+      "correct_hold": 0,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.0,
+      "held_req_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "ref_held": 0,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold_per_claim": 0.0,
+      "strict_unsafe": 0.7222222222222222,
+      "unnecessary_per_claim": 0.7222222222222222
+     },
+     "O: open branch fact only": {
+      "all_dev": 0.6086956521739131,
+      "claim_runs": 69,
+      "claims": 23,
+      "correct_hold": 68,
+      "correct_hold_share": 0.9855072463768116,
+      "handed_per_claim": 0.0,
+      "held_req_per_claim": 0.18840579710144928,
+      "missed_per_claim": 0.2028985507246377,
+      "premature_per_claim": 0.0,
+      "ref_held": 69,
+      "requested_share": 0.9426751592356688,
+      "silent_skip_per_claim": 0.014492753623188406,
+      "spurious_hold_per_claim": 0.10144927536231885,
+      "strict_unsafe": 0.3188405797101449,
+      "unnecessary_per_claim": 0.10144927536231885
+     },
+     "O: open defining event": {
+      "all_dev": 0.0,
+      "claim_runs": 27,
+      "claims": 9,
+      "correct_hold": 189,
+      "correct_hold_share": 1.0,
+      "handed_per_claim": 0.0,
+      "held_req_per_claim": 0.0,
+      "missed_per_claim": 0.0,
+      "premature_per_claim": 0.0,
+      "ref_held": 189,
+      "requested_share": null,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold_per_claim": 0.0,
+      "strict_unsafe": 0.0,
+      "unnecessary_per_claim": 0.0
+     },
+     "S": {
+      "all_dev": 0.3,
+      "claim_runs": 120,
+      "claims": 40,
+      "correct_hold": 0,
+      "correct_hold_share": null,
+      "handed_per_claim": 0.10833333333333334,
+      "held_req_per_claim": 0.058333333333333334,
+      "missed_per_claim": 0.008333333333333333,
+      "premature_per_claim": 0.0,
+      "ref_held": 0,
+      "requested_share": 0.9783950617283951,
+      "silent_skip_per_claim": 0.0,
+      "spurious_hold_per_claim": 0.03333333333333333,
+      "strict_unsafe": 0.20833333333333334,
+      "unnecessary_per_claim": 0.09166666666666666
+     },
+     "all": {
+      "all_dev": 0.4513888888888889,
+      "claim_runs": 288,
+      "claims": 96,
+      "correct_hold": 257,
+      "correct_hold_share": 0.9961240310077519,
+      "handed_per_claim": 0.04513888888888889,
+      "held_req_per_claim": 0.06944444444444445,
+      "missed_per_claim": 0.052083333333333336,
+      "premature_per_claim": 0.0,
+      "ref_held": 258,
+      "requested_share": 0.9667359667359667,
+      "silent_skip_per_claim": 0.003472222222222222,
+      "spurious_hold_per_claim": 0.03819444444444445,
+      "strict_unsafe": 0.34375,
+      "unnecessary_per_claim": 0.24305555555555555
+     },
+     "ordinary": {
+      "all_dev": 0.4126984126984127,
+      "claim_runs": 189,
+      "claims": 63,
+      "correct_hold": 68,
+      "correct_hold_share": 0.9855072463768116,
+      "handed_per_claim": 0.06878306878306878,
+      "held_req_per_claim": 0.10582010582010581,
+      "missed_per_claim": 0.07936507936507936,
+      "premature_per_claim": 0.0,
+      "ref_held": 69,
+      "requested_share": 0.9667359667359667,
+      "silent_skip_per_claim": 0.005291005291005291,
+      "spurious_hold_per_claim": 0.0582010582010582,
+      "strict_unsafe": 0.24867724867724866,
+      "unnecessary_per_claim": 0.09523809523809523
+     }
+    }
+   },
+   "tenancy_claim_runs_changed_vs_V0": {
+    "V0": {
+     "O: denied defining event": 0,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V1": {
+     "O: denied defining event": 11,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V2": {
+     "O: denied defining event": 11,
+     "O: open branch fact only": 2,
+     "O: open defining event": 0,
+     "S": 9
+    },
+    "V3": {
+     "O: denied defining event": 0,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V4": {
+     "O: denied defining event": 11,
+     "O: open branch fact only": 1,
+     "O: open defining event": 0,
+     "S": 5
+    },
+    "V5": {
+     "O: denied defining event": 11,
+     "O: open branch fact only": 9,
+     "O: open defining event": 0,
+     "S": 13
+    },
+    "V6": {
+     "O: denied defining event": 7,
+     "O: open branch fact only": 1,
+     "O: open defining event": 0,
+     "S": 5
+    },
+    "V7": {
+     "O: denied defining event": 11,
+     "O: open branch fact only": 1,
+     "O: open defining event": 0,
+     "S": 5
     }
    },
    "theft": {
@@ -5838,12 +5892,12 @@
     "V6": {
      "errors_per_pair": 0.5509259259259259,
      "held_share": 0.8333333333333334,
-     "missed_per_pair": 0.23148148148148148,
+     "missed_per_pair": 0.22685185185185186,
      "pair_runs": 216,
      "premature_share": 0.0,
      "unchanged_share": 0.9513888888888888,
      "unresolved_pair_runs": 144,
-     "wrong_per_pair": 0.3194444444444444
+     "wrong_per_pair": 0.32407407407407407
     },
     "V7": {
      "errors_per_pair": 0.5509259259259259,
@@ -5855,9 +5909,21 @@
      "unresolved_pair_runs": 144,
      "wrong_per_pair": 0.32407407407407407
     }
+   },
+   "theft_text_runs_changed_vs_V0": {
+    "V0": 0,
+    "V1": 0,
+    "V2": 308,
+    "V3": 0,
+    "V4": 8,
+    "V5": 302,
+    "V6": 8,
+    "V7": 8
    }
   },
   "casepath_frontier_checklist": {
+   "best_variant": "V7",
+   "best_variant_rule": "lowest tenancy all deviations per claim among the variants whose tenancy strict unsafe errors and theft errors are not above V0's and that admit at most two more wrong values than V0 (chosen in-sample)",
    "comparators": {
     "hold_prompt_frontier": {
      "tenancy": {
@@ -11027,22 +11093,22 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 0.7083333333333334,
+       "a_lower_cases": 1,
+       "a_value": 0.625,
        "b_value": 0.7083333333333334,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -0.08333333333333333,
        "diff_cluster_ci95": [
-        0.0,
+        -0.25,
         0.0
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -0.08333333333333333,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 0,
+       "nonzero_cases": 1,
        "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
+       "p_cases_method": "exact",
        "p_clusters": 1.0,
        "regime": "tenancy",
        "subset": "all"
@@ -11159,22 +11225,22 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 1.7916666666666667,
+       "a_lower_cases": 1,
+       "a_value": 1.4583333333333333,
        "b_value": 1.7916666666666667,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -0.3333333333333333,
        "diff_cluster_ci95": [
-        0.0,
+        -1.0,
         0.0
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -0.3333333333333333,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 0,
+       "nonzero_cases": 1,
        "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
+       "p_cases_method": "exact",
        "p_clusters": 1.0,
        "regime": "tenancy",
        "subset": "O: denied defining event"
@@ -11314,24 +11380,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 15,
+       "a_higher_cases": 14,
        "a_lower_cases": 15,
-       "a_value": 0.7083333333333334,
+       "a_value": 0.625,
        "b_value": 0.5833333333333334,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.125,
+       "diff_case_mean": 0.041666666666666664,
        "diff_cluster_ci95": [
-        -0.5416666666666666,
-        0.7916666666666666
+        -0.5729166666666666,
+        0.6458333333333334
        ],
-       "diff_cluster_mean": 0.125,
+       "diff_cluster_mean": 0.041666666666666664,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 30,
-       "p_cases": 0.6728716356418218,
+       "nonzero_cases": 29,
+       "p_cases": 0.9027254863725681,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.750701904296875,
+       "p_clusters": 0.92449951171875,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -11446,22 +11512,22 @@
        "subset": "O: denied defining event"
       },
       {
-       "a_higher_cases": 6,
+       "a_higher_cases": 5,
        "a_lower_cases": 0,
-       "a_value": 1.7916666666666667,
+       "a_value": 1.4583333333333333,
        "b_value": 0.0,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 1.7916666666666667,
+       "diff_case_mean": 1.4583333333333333,
        "diff_cluster_ci95": [
-        0.5,
-        3.291666666666667
+        0.3333333333333333,
+        2.6666666666666665
        ],
-       "diff_cluster_mean": 1.7916666666666667,
+       "diff_cluster_mean": 1.4583333333333335,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 6,
-       "p_cases": 0.03125,
+       "nonzero_cases": 5,
+       "p_cases": 0.0625,
        "p_cases_method": "exact",
        "p_clusters": 0.125,
        "regime": "tenancy",
@@ -11602,24 +11668,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 13,
+       "a_higher_cases": 12,
        "a_lower_cases": 12,
-       "a_value": 0.7083333333333334,
+       "a_value": 0.625,
        "b_value": 0.5416666666666666,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.16666666666666666,
+       "diff_case_mean": 0.08333333333333333,
        "diff_cluster_ci95": [
-        -0.40625,
-        0.7708333333333334
+        -0.4375,
+        0.6145833333333334
        ],
-       "diff_cluster_mean": 0.16666666666666666,
+       "diff_cluster_mean": 0.08333333333333333,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 25,
-       "p_cases": 0.5500222498887506,
+       "nonzero_cases": 24,
+       "p_cases": 0.7685261573692131,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.627838134765625,
+       "p_clusters": 0.7979736328125,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -11734,22 +11800,22 @@
        "subset": "O: denied defining event"
       },
       {
-       "a_higher_cases": 6,
+       "a_higher_cases": 5,
        "a_lower_cases": 1,
-       "a_value": 1.7916666666666667,
+       "a_value": 1.4583333333333333,
        "b_value": 0.25,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 1.5416666666666667,
+       "diff_case_mean": 1.2083333333333333,
        "diff_cluster_ci95": [
         0.0,
-        3.1666666666666665
+        2.416666666666667
        ],
-       "diff_cluster_mean": 1.5416666666666667,
+       "diff_cluster_mean": 1.2083333333333335,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 7,
-       "p_cases": 0.046875,
+       "nonzero_cases": 6,
+       "p_cases": 0.09375,
        "p_cases_method": "exact",
        "p_clusters": 0.25,
        "regime": "tenancy",
@@ -11893,23 +11959,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 0.7083333333333334,
+       "a_lower_cases": 5,
+       "a_value": 0.3333333333333333,
        "b_value": 0.7083333333333334,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -0.375,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -0.8020833333333334,
+        -0.0625
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -0.375,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 0,
-       "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
-       "p_clusters": 1.0,
+       "nonzero_cases": 5,
+       "p_cases": 0.0625,
+       "p_cases_method": "exact",
+       "p_clusters": 0.125,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -12025,23 +12091,23 @@
       },
       {
        "a_higher_cases": 0,
-       "a_lower_cases": 0,
-       "a_value": 1.7916666666666667,
+       "a_lower_cases": 5,
+       "a_value": 0.2916666666666667,
        "b_value": 1.7916666666666667,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 0.0,
+       "diff_case_mean": -1.5,
        "diff_cluster_ci95": [
-        0.0,
-        0.0
+        -2.833333333333333,
+        -0.5
        ],
-       "diff_cluster_mean": 0.0,
+       "diff_cluster_mean": -1.5,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 0,
-       "p_cases": 1.0,
-       "p_cases_method": "no non-zero difference",
-       "p_clusters": 1.0,
+       "nonzero_cases": 5,
+       "p_cases": 0.0625,
+       "p_cases_method": "exact",
+       "p_clusters": 0.125,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -12180,24 +12246,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 15,
+       "a_higher_cases": 10,
        "a_lower_cases": 15,
-       "a_value": 0.7083333333333334,
+       "a_value": 0.3333333333333333,
        "b_value": 0.5833333333333334,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.125,
+       "diff_case_mean": -0.25,
        "diff_cluster_ci95": [
-        -0.5523437499999998,
-        0.7916666666666666
+        -0.75,
+        0.16666666666666666
        ],
-       "diff_cluster_mean": 0.125,
+       "diff_cluster_mean": -0.25,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 30,
-       "p_cases": 0.6728716356418218,
+       "nonzero_cases": 25,
+       "p_cases": 0.25565372173139134,
        "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.750701904296875,
+       "p_clusters": 0.3590087890625,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -12312,24 +12378,24 @@
        "subset": "O: denied defining event"
       },
       {
-       "a_higher_cases": 6,
+       "a_higher_cases": 1,
        "a_lower_cases": 0,
-       "a_value": 1.7916666666666667,
+       "a_value": 0.2916666666666667,
        "b_value": 0.0,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 1.7916666666666667,
+       "diff_case_mean": 0.2916666666666667,
        "diff_cluster_ci95": [
-        0.5,
-        3.291666666666667
+        0.0,
+        0.875
        ],
-       "diff_cluster_mean": 1.7916666666666667,
+       "diff_cluster_mean": 0.2916666666666667,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 6,
-       "p_cases": 0.03125,
+       "nonzero_cases": 1,
+       "p_cases": 1.0,
        "p_cases_method": "exact",
-       "p_clusters": 0.125,
+       "p_clusters": 1.0,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -12468,24 +12534,24 @@
        "subset": "all"
       },
       {
-       "a_higher_cases": 13,
+       "a_higher_cases": 8,
        "a_lower_cases": 12,
-       "a_value": 0.7083333333333334,
+       "a_value": 0.3333333333333333,
        "b_value": 0.5416666666666666,
        "cases": 96,
        "clusters": 24,
-       "diff_case_mean": 0.16666666666666666,
+       "diff_case_mean": -0.20833333333333334,
        "diff_cluster_ci95": [
-        -0.4270833333333333,
-        0.7916666666666666
+        -0.6354166666666666,
+        0.15625
        ],
-       "diff_cluster_mean": 0.16666666666666666,
+       "diff_cluster_mean": -0.20833333333333334,
        "measure": "all_dev",
        "min_p_clusters": 1.1920928955078125e-07,
-       "nonzero_cases": 25,
-       "p_cases": 0.5500222498887506,
-       "p_cases_method": "Monte Carlo 200000",
-       "p_clusters": 0.627838134765625,
+       "nonzero_cases": 20,
+       "p_cases": 0.3167285919189453,
+       "p_cases_method": "exact",
+       "p_clusters": 0.36181640625,
        "regime": "tenancy",
        "subset": "all"
       },
@@ -12600,24 +12666,24 @@
        "subset": "O: denied defining event"
       },
       {
-       "a_higher_cases": 6,
+       "a_higher_cases": 1,
        "a_lower_cases": 1,
-       "a_value": 1.7916666666666667,
+       "a_value": 0.2916666666666667,
        "b_value": 0.25,
        "cases": 24,
        "clusters": 8,
-       "diff_case_mean": 1.5416666666666667,
+       "diff_case_mean": 0.041666666666666664,
        "diff_cluster_ci95": [
-        0.2916666666666667,
-        3.1666666666666665
+        -0.75,
+        0.875
        ],
-       "diff_cluster_mean": 1.5416666666666667,
+       "diff_cluster_mean": 0.041666666666666685,
        "measure": "all_dev",
        "min_p_clusters": 0.0078125,
-       "nonzero_cases": 7,
-       "p_cases": 0.046875,
+       "nonzero_cases": 2,
+       "p_cases": 1.0,
        "p_cases_method": "exact",
-       "p_clusters": 0.25,
+       "p_clusters": 1.0,
        "regime": "tenancy",
        "subset": "O: denied defining event"
       },
@@ -12743,7 +12809,7 @@
     },
     "claim_runs": 24,
     "examples": {
-     "false, quotation not found": [
+     "false, quotation found": [
       {
        "claim": "f2cl_0868f24595f5f79a",
        "quote": "I have not received any individual notification of a rent increase, either by post or by email.",
@@ -12763,7 +12829,7 @@
        "run": 0
       }
      ],
-     "true, quotation not found": [
+     "true, quotation found": [
       {
        "claim": "f2cl_0868f24595f5f79a",
        "quote": "All we have is that notice in the hallway.",
@@ -12785,14 +12851,14 @@
      ]
     },
     "patterns": {
-     "false, quotation not found | false, quotation not found | false, quotation not found": 18,
-     "false, quotation not found | false, quotation not found | true, quotation not found": 1,
-     "false, quotation not found | true, quotation not found | true, quotation not found": 4,
-     "true, quotation not found | true, quotation not found | true, quotation not found": 1
+     "false, quotation found | false, quotation found | false, quotation found": 18,
+     "false, quotation found | false, quotation found | true, quotation found": 1,
+     "false, quotation found | true, quotation found | true, quotation found": 4,
+     "true, quotation found | true, quotation found | true, quotation found": 1
     },
     "readings": {
-     "false, quotation not found": 60,
-     "true, quotation not found": 12
+     "false, quotation found": 60,
+     "true, quotation found": 12
     }
    },
    "fact_values": {
@@ -12999,7 +13065,7 @@
      "unresolved": 27
     },
     "V6": {
-     "admitted right": 264,
+     "admitted right": 266,
      "admitted wrong": 5,
      "by_designed_state": {
       "absent": {
@@ -13015,43 +13081,9 @@
        "unresolved": 26
       },
       "stated_false": {
-       "admitted right": 44,
+       "admitted right": 45,
        "admitted wrong": 1,
-       "unresolved": 5
-      },
-      "stated_true": {
-       "admitted right": 217,
-       "presumed wrong": 2,
-       "unresolved": 3
-      },
-      "unmentioned": {
-       "presumed right": 5
-      }
-     },
-     "fact_claim_runs": 448,
-     "presumed right": 138,
-     "presumed wrong": 3,
-     "unresolved": 38
-    },
-    "V7": {
-     "admitted right": 265,
-     "admitted wrong": 6,
-     "by_designed_state": {
-      "absent": {
-       "admitted right": 1,
-       "admitted wrong": 1,
-       "presumed right": 133,
        "unresolved": 4
-      },
-      "open": {
-       "admitted right": 2,
-       "admitted wrong": 4,
-       "unresolved": 26
-      },
-      "stated_false": {
-       "admitted right": 44,
-       "admitted wrong": 1,
-       "unresolved": 5
       },
       "stated_true": {
        "admitted right": 218,
@@ -13064,8 +13096,42 @@
      },
      "fact_claim_runs": 448,
      "presumed right": 138,
-     "presumed wrong": 2,
-     "unresolved": 37
+     "presumed wrong": 3,
+     "unresolved": 36
+    },
+    "V7": {
+     "admitted right": 270,
+     "admitted wrong": 5,
+     "by_designed_state": {
+      "absent": {
+       "admitted right": 1,
+       "admitted wrong": 1,
+       "presumed right": 133,
+       "unresolved": 4
+      },
+      "open": {
+       "admitted right": 2,
+       "admitted wrong": 3,
+       "presumed wrong": 1,
+       "unresolved": 26
+      },
+      "stated_false": {
+       "admitted right": 49,
+       "admitted wrong": 1
+      },
+      "stated_true": {
+       "admitted right": 218,
+       "presumed wrong": 2,
+       "unresolved": 2
+      },
+      "unmentioned": {
+       "presumed right": 5
+      }
+     },
+     "fact_claim_runs": 448,
+     "presumed right": 138,
+     "presumed wrong": 3,
+     "unresolved": 32
     }
    },
    "label": "CasePath, checklist only, frontier (one run)",
@@ -13772,7 +13838,7 @@
     },
     "V6": {
      "O: denied defining event": {
-      "all_dev": 1.7916666666666667,
+      "all_dev": 1.4583333333333333,
       "claim_runs": 24,
       "claims": 24,
       "correct_hold": 0,
@@ -13784,7 +13850,7 @@
       "ref_held": 0,
       "requested_share": null,
       "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 1.5,
+      "spurious_hold_per_claim": 1.1666666666666667,
       "strict_unsafe": 0.2916666666666667,
       "unnecessary_per_claim": 0.2916666666666667
      },
@@ -13840,7 +13906,7 @@
       "unnecessary_per_claim": 0.05
      },
      "all": {
-      "all_dev": 0.7083333333333334,
+      "all_dev": 0.625,
       "claim_runs": 96,
       "claims": 96,
       "correct_hold": 75,
@@ -13852,7 +13918,7 @@
       "ref_held": 86,
       "requested_share": 0.9771309771309772,
       "silent_skip_per_claim": 0.010416666666666666,
-      "spurious_hold_per_claim": 0.3854166666666667,
+      "spurious_hold_per_claim": 0.3020833333333333,
       "strict_unsafe": 0.3020833333333333,
       "unnecessary_per_claim": 0.09375
      },
@@ -13876,7 +13942,7 @@
     },
     "V7": {
      "O: denied defining event": {
-      "all_dev": 1.7916666666666667,
+      "all_dev": 0.2916666666666667,
       "claim_runs": 24,
       "claims": 24,
       "correct_hold": 0,
@@ -13888,7 +13954,7 @@
       "ref_held": 0,
       "requested_share": null,
       "silent_skip_per_claim": 0.0,
-      "spurious_hold_per_claim": 1.5,
+      "spurious_hold_per_claim": 0.0,
       "strict_unsafe": 0.2916666666666667,
       "unnecessary_per_claim": 0.2916666666666667
      },
@@ -13944,7 +14010,7 @@
       "unnecessary_per_claim": 0.05
      },
      "all": {
-      "all_dev": 0.7083333333333334,
+      "all_dev": 0.3333333333333333,
       "claim_runs": 96,
       "claims": 96,
       "correct_hold": 75,
@@ -13956,7 +14022,7 @@
       "ref_held": 86,
       "requested_share": 0.9771309771309772,
       "silent_skip_per_claim": 0.010416666666666666,
-      "spurious_hold_per_claim": 0.3854166666666667,
+      "spurious_hold_per_claim": 0.010416666666666666,
       "strict_unsafe": 0.3020833333333333,
       "unnecessary_per_claim": 0.09375
      },
@@ -13977,6 +14043,56 @@
       "strict_unsafe": 0.25396825396825395,
       "unnecessary_per_claim": 0.031746031746031744
      }
+    }
+   },
+   "tenancy_claim_runs_changed_vs_V0": {
+    "V0": {
+     "O: denied defining event": 0,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V1": {
+     "O: denied defining event": 5,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V2": {
+     "O: denied defining event": 5,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 1
+    },
+    "V3": {
+     "O: denied defining event": 0,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V4": {
+     "O: denied defining event": 5,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V5": {
+     "O: denied defining event": 5,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 1
+    },
+    "V6": {
+     "O: denied defining event": 1,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
+    },
+    "V7": {
+     "O: denied defining event": 5,
+     "O: open branch fact only": 0,
+     "O: open defining event": 0,
+     "S": 0
     }
    },
    "theft": {
@@ -14060,6 +14176,16 @@
      "unresolved_pair_runs": 48,
      "wrong_per_pair": 0.4166666666666667
     }
+   },
+   "theft_text_runs_changed_vs_V0": {
+    "V0": 0,
+    "V1": 0,
+    "V2": 47,
+    "V3": 0,
+    "V4": 0,
+    "V5": 47,
+    "V6": 0,
+    "V7": 0
    }
   }
  },
@@ -14105,12 +14231,12 @@
    "rule": "study3_feedback.combine_k with k = 1: the first reading's admitted values; presumptions by the same rule from the first reading's 'open' answer. For reference (one reading's cost)."
   },
   "V6": {
-   "name": "a quoted denial counts unless contradicted; an 'open' needs two readings on the defining event",
-   "rule": "For the defining event: admitted false when at least one reading admits false and no reading admits true (V3); admitted true when at least two readings admit true and none admits false (V1's majority without an override of a quoted false); when no reading admits a value, the event is held (left open) only when at least two readings answered 'open' with words found, otherwise the routed presumption (true) applies. Every other fact as V0."
+   "name": "a denial by two readings counts; every other fact as V4",
+   "rule": "Chosen after the denied-event reading table (the readings never answered 'open' or 'not stated' on a denied event; they disagreed only true against false). For the defining event: admitted false when at least two readings admit false (whatever the third admits); admitted true only when all three admit true (as V0); otherwise as V0 (conflicting values are held). Asymmetric: a majority for the event's occurrence does not override a quoted denial. Every other fact: two quoted values outweigh one 'open' (V4's rule)."
   },
   "V7": {
-   "name": "V6 on the defining event, V4 on every other fact",
-   "rule": "V6's rule for the defining event; for every other fact, two quoted values outweigh one 'open' (V4)."
+   "name": "any quoted denial counts; every other fact as V4",
+   "rule": "For the defining event: admitted false when at least one reading admits false, even if other readings admit true (a quoted denial outweighs a quoted occurrence); admitted true only when all three admit true; otherwise as V0. Every other fact as V4."
   }
  }
 }
