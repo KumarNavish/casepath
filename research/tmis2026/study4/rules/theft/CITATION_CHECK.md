@@ -197,3 +197,139 @@ They could not settle, from the text alone:
 
 Those are the places where the rule set's wording should carry the decision (as proposed above) rather than leave it
 to the reader.
+
+## Second look (2026-11-12)
+
+I read `RECONCILIATION.md` and the rebuilt `rules.json`, `RULES.md` (the sections on what was settled and what was left
+out), `rule_text.md`, the snapshots and the workflows. Same rules as the first check: no model calls, no network, and
+only this file edited.
+
+What I ran:
+
+- `python3 -I tools/check.py`: **ALL CHECKS PASSED** (exit 0). It reports: facts 16 (9 + 7); steps 16; documents
+  8 in the catalogue; stops 4; 12 convention presumptions (none on `theft_at_home`, `theft_away`,
+  `burglary_or_robbery` or `away_cover_missing`); rules by basis evidence 7, follows 11, states 33, plus convention 1.
+  It also notes that theft_at_home now has 9 facts, one more than the product's limit of 8 open facts for exact
+  deferral.
+- My own scripts re-checked all 114 quotations, including context passages and the routing entry. Every one is found
+  in its snapshot character for character and in the raw PDF or Fedlex XML. None is longer than 60 words.
+- The new locators are right against the page layout: Ziff. 4 on S. 2, Ziff. 20 Einleitung on S. 4, Ziff. 24
+  Einleitung on S. 8, Ziff. 26 lit. b on S. 10. The form's online sentence is on S. 1, section 3.7 on S. 2 and
+  section 4 on S. 3.
+- A script comparison shows that every question, `not_this`, title, `must_show` item, passage, inference, context
+  passage, note, `reading_of_optional` and `outside_both_types` text in `rules.json` occurs verbatim in
+  `rule_text.md`, with no misses. `reading_of_optional` is word for word the same in both files.
+
+### 1. My earlier points
+
+| earlier point | status | remaining wording, if any |
+|---|---|---|
+| `theft_at_home` defining event (passage cut before "nachgewiesene") | resolved | The full sentence is quoted; "merely missing" is answered open. |
+| `household_perpetrator` (the moment that counts) | resolved | — |
+| `burglary_or_robbery` (vehicle is not a container) | resolved | — (lit. b's pickpocket exclusion is also added; see note A) |
+| `lock_change` (caused by the theft) | resolved | — |
+| `traces_changed` ×2 (the policyholder's duty) | resolved | — |
+| `vouchers_unobtainable` ×2 (limit per voucher) | resolved | "for all of the items", and the per-voucher limit moved into `original_vouchers.must_show`. |
+| `instruction_due` ×2 (disagree) | resolved | Split into `measures_pending` and `imminent_danger` (see 2a). |
+| `h_instruction`, `a_instruction` | resolved | — |
+| `claim_form` ×2 | resolved | Now `notification_record`; the signature item is gone. |
+| `police_consent` ×2 | resolved | — |
+| `stolen_items_list` ×2 | resolved | Now on lit. c, requested at intake (see 2c). |
+| `original_vouchers` ×2 | resolved | Now on lit. c, with the form as the request and the limit per voucher. |
+| `theft_away` (damaged items; vehicle and pickpocket) | resolved | — |
+| `away_cover_missing` (polarity) | resolved | Now `always_stated`, on Ziff. 24 Einleitung. |
+| `insurance_policy` (type 2) | resolved | Ziff. 24 Einleitung, the insured location, and moved to `a_cover`. |
+| workflow-only `claim_type` | resolved | Now a `routing` entry, printed in `rule_text.md`. |
+| notes: convention `applies_to`, `h_police` vandalism, `a_cover`/`a_stop_no_cover` passage, form section 4, the four `rule_text.md` omissions | resolved | — |
+| optional note: e-bike | not taken by the writer | I accept that (see 3). |
+
+**Totals:** of the 24 non-agree items (21 agree with change, 2 disagree, 1 workflow-only), 24 are resolved and 0 are
+not. All the notes are resolved too, except the optional e-bike note, which I withdraw.
+
+### 2. The new rules under the nine tests
+
+**a. `measures_pending` and `imminent_danger` (both types): agree.** The verdicts stand on these points:
+
+- Art. 38a Abs. 1 Satz 2 is now two facts with the right polarity. True for `imminent_danger` is the exception the
+  claimant raises.
+- When the file says nothing about danger, the convention takes it as absent. That matches the article's own
+  structure: there is a duty "wenn nicht Gefahr im Verzug liegt".
+- No stop and no document hangs on either fact. The check confirms that an unmentioned value creates no document need.
+
+Note B: `measures_pending` covers only measures still to be taken. Measures already taken without an instruction raise
+a question of breach under Abs. 2, not an intake step. The step "obtain and follow the instruction" can only concern
+pending measures, so I do not count this narrowing as a defect.
+
+**b. `notification_record` (both types): agree.** The record covers any notice: the form, or CSS's record of an
+online, written or oral notification. The citations are art. 38 Abs. 1, Ziff. 8 lit. a and Ziff. 4 ("kann diese auch
+mündlich erfolgen"), and the form's "Alternativ … online … melden". `must_show` asks only that and when CSS was
+notified. The evidence inference no longer imports anything from outside the text.
+
+**c. Vouchers, the valued list and the police report: agree, and the reading is sound on the texts.**
+
+- *Vouchers and list.* Both are due "auf Verlangen" (Ziff. 8 lit. c), and the handler is CSS. CSS's own claim form
+  makes the request for every item:
+  - section 3.7 says "bitte Originalkaufbelege beilegen";
+  - its columns Gegenstand / Gekauft bei / Kaufdatum / Ersatzwert, or "Gemäss separater Liste", are the valued list.
+
+  So treating both as requested at intake is one valid step from the passages, and lit. c now governs them equally.
+  The list's `must_show` item "where and when it was bought" comes from the form's columns, which are cited as context,
+  so it is grounded.
+- *Police report.* "Kann durch die CSS einverlangt werden" leaves the request to CSS, and no CSS document makes it at
+  intake: form section 4 asks only for the report's particulars (Anzeigedatum, Polizeiposten). So the report is "not
+  needed unless the file contains it" ("optional"), and its absence is never a gap. That is a faithful reading.
+- *Remaining dependency.* `police_consent` stays mandatory when traces are changed, and the police report is one of its
+  two acceptable forms. That is consistent: the clause names the report, and either form satisfies the need.
+- *Consistency between files.* `reading_of_optional` is stated identically in `rules.json` and in `rule_text.md`
+  ("Documents requested at intake and documents only on request"), and every document line in the prose says "not
+  requested at intake; only if CSS asks for it later (optional)".
+
+**d. Full defining events with the exclusions: agree.**
+
+- Ziff. 23.3 Abs. 1 is quoted whole. "Merely missing" is answered open, consistent with the exclusion "Verlieren,
+  Verlegen … Veruntreuung", which is now cited as context.
+- "Fahrzeuge sind keine Behältnisse" is stated by the text itself.
+- `theft_away` now reads "stolen or damaged".
+
+Note A: rendering lit. b's exclusion "Schäden, verursacht durch Taschen- und Trickdiebstahl" as "pickpocketing and
+trick theft are not robbery, so they are simple thefts" is an inference, not a sentence of the text. The exclusion
+sits under the robbery definition and has no defining sentence of its own. I accept it as the natural one-step reading:
+it denies robbery status, and lit. c defines simple theft as whatever is neither burglary nor robbery. Ziff. 24.2 does
+not repeat that exclusion, so a pickpocket theft away from home falls under type 2. This is the one place where a lay
+reader has to accept the step rather than read it off the page.
+
+**e. `away_cover_missing` as `always_stated` on the Ziff. 24 Einleitung, with the policy at `a_cover`: agree.**
+
+- The fact has no presumption. When it is unmentioned it is unresolved, and the policy, requested as soon as a simple
+  theft away is stated, settles it.
+- The stop needs the value true. Silence does not end the process.
+- Ziff. 24 Einleitung states the condition directly, and 23.3 lit. c is kept as context.
+
+**f. `claim_type` routing and "outside both types": agree.**
+
+- The passages (Ziff. 23.3 Abs. 1, 24.2, and 26 lit. b, which covers "Diebstahl (ohne einfachen Diebstahl)" only
+  during travel and only "vorübergehend") support the statement that burglary or robbery away from home is outside
+  both types and is covered, "if at all", under the basic cover.
+- The vehicle example placed in type 2 follows from lit. a.
+- Note C (wording only): the "holiday flat" example in `outside_both_types` sits close to Ziff. 26 lit. b's own
+  exclusion of contents kept permanently in a holiday flat or second home. "If at all" covers it, but "a hotel room or
+  a rented holiday flat during a trip" would be the cleaner example. This is not a disagreement.
+
+Tests 1 (verbatim and locator), 6 (convention), 8 (one insurer, no mixing) and 9 (prose equals rules) pass for every
+new or changed rule. Art. 39 Abs. 2 Ziff. 1 is now attached to the contract clause lit. c, not to the form, which
+removes the mix I raised earlier.
+
+### 3. The e-bike note
+
+I agree with leaving it undecided. The fact's source is the form heading "Fahrrad", and the form offers only
+"Herren-/Damenfahrrad" and "Kinderfahrrad". Ziff. 18 lit. g ("Fahrräder und E-Bikes …") defines insured items, not
+the form's request, so any decision either way would be imported. To keep the reference unambiguous, I recommend that
+the generator not draw e-bikes, or treat a stated e-bike as making `bicycle` open. This is a recommendation for the
+generator, not a defect in the rules.
+
+### 4. Still not agreed
+
+None. All rules of the rebuilt set are agree. Notes A to C are observations and need no change.
+
+The theft rule set is ready to be marked reviewed. The 4-eyes record is `CITATION_CHECK.md` (first check and this
+second look) together with `RECONCILIATION.md`.
