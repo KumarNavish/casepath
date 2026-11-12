@@ -232,18 +232,23 @@ the per-subset tables in the supplement.
   prompts (0.95, 0.67); all unresolved pairs unchanged; cost-efficient
   0.58 → 0.57. Cost: the rule error rises from 0.33 to 0.44; three to five
   more documents are held in every case and the handler gets three to six
-  more questions per claim. Out-of-sample flags (from development runs):
-  see the note the lint worker appends below; if it is absent, write only
-  the in-sample result and say that it is in-sample.
+  more questions per claim.
+- The same with flags computed out of sample (development runs only; the
+  frontier flags come from four off texts at an earlier commit whose reading
+  form was checked identical): frontier 0.83 → 0.78, still above the
+  frontier prompt with the original rules (0.67); the development flags
+  miss the traces condition, which carried most of the in-sample gain. No
+  paired difference is significant (p 0.14 to 0.67 over nine clusters). So
+  the remedy does not survive out of sample; say so in one sentence.
 - The lint is presented as a diagnostic with these limits, not as a tested
   remedy. No new paid run was made for the frontier theft cell: with nine
   clusters a difference of 0.53 against 0.67 cannot be confirmed.
 
 **Macros.** `paper/results/numbers_study3_feedback.tex` (`\sthreeF…`) must be
 input in both documents and added to `verify_paper.py`'s regeneration list
-(`analysis/make_numbers_study3_feedback.py`). For decomposition and lint
-numbers use the macro file named by the lint worker's note; if none exists,
-write `analysis/make_numbers_decomposition.py` reading the two JSON files,
-with a test, and add it to the same list.
+(`analysis/make_numbers_study3_feedback.py`). Decomposition and lint numbers: `analysis/posthoc_numbers.tex` (`\spost…`,
+written by `analysis/lint_followup.py`, tests in `analysis/test_posthoc.py`);
+copy it to `paper/results/numbers_posthoc.tex` by a step added to
+`verify_paper.py`'s regeneration list, and input it in both documents.
 
 **Abstract.** Rewritten by the planner on 2026-11-12 (uses `\sthreeFOne…`).
