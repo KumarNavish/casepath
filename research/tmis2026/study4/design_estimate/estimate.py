@@ -81,14 +81,16 @@ VARIANTS = {
            "the first reading's 'open' answer. For reference (one reading's cost)."),
 }
 EXTRA = {
-    "V6": ("a quoted denial counts unless contradicted; an 'open' needs two readings on the defining event",
-           "For the defining event: admitted false when at least one reading admits false and no reading admits true "
-           "(V3); admitted true when at least two readings admit true and none admits false (V1's majority without "
-           "an override of a quoted false); when no reading admits a value, the event is held (left open) only when at "
-           "least two readings answered 'open' with words found, otherwise the routed presumption (true) applies. "
-           "Every other fact as V0."),
-    "V7": ("V6 on the defining event, V4 on every other fact",
-           "V6's rule for the defining event; for every other fact, two quoted values outweigh one 'open' (V4)."),
+    "V6": ("a denial by two readings counts; every other fact as V4",
+           "Chosen after the denied-event reading table (the readings never answered 'open' or 'not stated' on a denied "
+           "event; they disagreed only true against false). For the defining event: admitted false when at least two "
+           "readings admit false (whatever the third admits); admitted true only when all three admit true (as V0); "
+           "otherwise as V0 (conflicting values are held). Asymmetric: a majority for the event's occurrence does not "
+           "override a quoted denial. Every other fact: two quoted values outweigh one 'open' (V4's rule)."),
+    "V7": ("any quoted denial counts; every other fact as V4",
+           "For the defining event: admitted false when at least one reading admits false, even if other readings admit "
+           "true (a quoted denial outweighs a quoted occurrence); admitted true only when all three admit true; "
+           "otherwise as V0. Every other fact as V4."),
 }
 
 
@@ -130,18 +132,10 @@ def two_over_open(adm):
     return vals[0] if rest and all(o in (True, None) for o in rest) else None
 
 
-def v6_event(base, adm):
+def denial_event(base, adm, need):
     vals = [v for v, _ in adm if v is not None]
-    if False in vals and True not in vals:
+    if vals.count(False) >= need:
         return established(base, False)
-    if True in vals and False not in vals and vals.count(True) >= 2:
-        return established(base, True)
-    if not vals:
-        opens = sum(o is True for _, o in adm)
-        if opens < 2:
-            # fewer than two located 'open' answers: no reading raises it as the rule now requires, so the routed
-            # presumption may apply (open_readings without a True entry)
-            return {"status": "unknown", "value": None, "open_readings": [False] * len(adm)}
     return base
 
 
@@ -166,8 +160,8 @@ def make_combine(variant, defining):
             vals = [v for v, _ in adm if v is not None]
             return established(base, False) if False in vals and True not in vals else base
         if variant in ("V6", "V7") and ev:
-            return v6_event(base, adm)
-        if variant in ("V4", "V7") and not ev:
+            return denial_event(base, adm, 2 if variant == "V6" else 1)
+        if variant in ("V4", "V6", "V7") and not ev:
             m = two_over_open(adm)
             return established(base, m) if m is not None else base
         return base
@@ -284,8 +278,10 @@ def replay(study, design, regime, cache, variants, collect):
             if "V0" in variants:
                 cnt["V0 reproduces the stored scored checklist"] += R.same_checklist(plans["V0"][c][-1], stored)
             if collect is not None and regime == "tenancy" and defining:
-                collect.append({"case": c, "run": r, "defining": defining, "groups": groups, "locate": locate,
-                                "rd": rd, "family": fam})
+                raw = []
+                for g, _ in groups[:3]:
+                    raw.append(raw_kind([a for a in g if a["id"] == defining], locate))
+                collect.append({"case": c, "run": r, "defining": defining, "raw": raw, "rd": rd, "family": fam})
     return plans, facts_used, dict(cnt)
 
 
@@ -472,9 +468,7 @@ def denied_table(study, items):
             continue
         n += 1
         kinds = []
-        for gi, (g, _) in enumerate(it["groups"][:3]):
-            ans = [a for a in g if a["id"] == it["defining"]]
-            k, q = raw_kind(ans, it["locate"])
+        for gi, (k, q) in enumerate(it["raw"]):
             kinds.append(k)
             per[k] += 1
             if q and len(examples[k]) < 3 and q not in [x["quote"] for x in examples[k]]:
