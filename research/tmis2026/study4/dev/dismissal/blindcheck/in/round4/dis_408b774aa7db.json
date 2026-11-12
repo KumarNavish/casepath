@@ -1,0 +1,115 @@
+{
+  "attachments": [
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "The date on which employment began.",
+          "item": "start date of employment"
+        },
+        {
+          "checkable_as": "A clause naming the length of the probation period.",
+          "item": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply."
+        },
+        {
+          "checkable_as": "A clause naming the notice period.",
+          "item": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+        }
+      ],
+      "document_title": "Employment contract or other record of the start of employment",
+      "label": "A1",
+      "must_show": [
+        "parties",
+        "start date of employment",
+        "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+        "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+      ],
+      "text": "ARBEITSVERTRAG\n\nzwischen\nRosenau Immobilien AG, Lausanne (Arbeitgeberin), vertreten durch Frau Livia Keller\nund\nHerrn Simon Schneider, Ahornweg 68, 1004 Lausanne (Arbeitnehmer)\n\n1. Stellenantritt: 5. Februar 2023, auf unbestimmte Zeit.\n\n2. Funktion: Hauswart im Teilzeitpensum für die Liegenschaften der Arbeitgeberin in Lausanne.\n\n3. Arbeitszeit: durchschnittlich 9 Stunden pro Woche gemäss Einsatzplan.\n\n4. Lohn: CHF 950 brutto pro Monat.\n\nLausanne, 20. Januar 2023\n\nFür die Arbeitgeberin: L. Keller\nDer Arbeitnehmer: S. Schneider"
+    },
+    {
+      "checkable_as": [],
+      "document_title": "Correspondence in which the employee asserted claims before the notice",
+      "label": "A2",
+      "must_show": [
+        "claims asserted under the employment relationship",
+        "dates before the notice",
+        "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply."
+      ],
+      "text": "Von: Simon Schneider\nAn: Livia Keller, Rosenau Immobilien AG\nDatum: 18. Mai 2026\nBetreff: Mein Schreiben vom 18. April 2026\n\nGuten Tag Frau Keller\n\nIch erinnere Sie an mein Schreiben vom 18. April 2026 und bitte Sie um eine Antwort bis Ende Juni.\n\nFreundliche Grüsse\nSimon Schneider\n\n---\n\nVon: Livia Keller, Rosenau Immobilien AG\nAn: Simon Schneider\nDatum: 3. Juli 2026\nBetreff: AW: Mein Schreiben vom 18. April 2026\n\nGuten Tag Herr Schneider\n\nWir haben Ihre Schreiben erhalten. Die Geschäftsleitung sieht keinen Anlass, darauf weiter einzugehen.\n\nFreundliche Grüsse\nLivia Keller"
+    },
+    {
+      "checkable_as": [],
+      "document_title": "Proof of election as employee representative",
+      "label": "A3",
+      "must_show": [
+        "body (staff council or body linked to the business)",
+        "election",
+        "term of the mandate covering the notice date"
+      ],
+      "text": "Personalkommission der Rosenau Immobilien AG\nLausanne\n\nWAHLBESTÄTIGUNG\n\nAn der Wahl vom 27. Oktober 2025 wurde\nHerr Simon Schneider, Hauswartung,\nvon den Mitarbeitenden als Mitglied der Personalkommission gewählt.\n\nAmtsdauer: 1. November 2025 bis 31. Oktober 2028\n\nDie Personalkommission vertritt die Anliegen der Mitarbeitenden gegenüber der Geschäftsleitung. Die konstituierende Sitzung findet im November 2025 statt.\n\nLausanne, 28. Oktober 2025\n\nFür das Wahlbüro der Personalkommission\n(Unterschrift)"
+    }
+  ],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "Ordinary notice with a notice period, however short, or release from work while a notice period runs.",
+      "question": "Did the employer end the employment relationship with immediate effect, without a notice period?"
+    }
+  ],
+  "file_id": "dis_408b774aa7db",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here); a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here).",
+      "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent (art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
+      "question": "Have more than 180 days passed since the employment relationship ended?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "A demand letter to the employer; a claim made pending only after the 180 days.",
+      "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "Talks about continuing that ended without agreement; an agreement only about a payment or about the end date.",
+      "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "The employee's last working day where they were released from work while the notice period was still running; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if the file raises either, the fact is open.",
+      "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?"
+    },
+    {
+      "label": "Q6",
+      "not_this": "A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal with immediate effect (art. 337, a separate type).",
+      "question": "Did the employer give the employee notice of termination of the employment relationship?"
+    },
+    {
+      "label": "Q7",
+      "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
+      "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities."
+    },
+    {
+      "label": "Q8",
+      "not_this": "An oral protest; an objection addressed to someone other than the employer; a written objection lodged only after the notice period had ended.",
+      "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?"
+    },
+    {
+      "label": "Q9",
+      "not_this": "Reasons the employer gave without being asked, or a request made only orally to a colleague rather than to the employer.",
+      "question": "Did the employee ask the employer to state the reasons for the notice in writing?"
+    }
+  ],
+  "routing": {
+    "question": "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), including the written objection to such a notice and the compensation claim for it (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).",
+    "values": [
+      "protected_period_notice",
+      "wrongful_termination",
+      "immediate_dismissal"
+    ]
+  },
+  "text": "Sehr geehrte Damen und Herren\n\nEines vorweg, weil mich ein Kollege danach gefragt hat: Nach der Kündigung haben Frau Livia Keller und ich nichts darüber abgemacht, dass ich doch bleiben kann. Sie redet seither nur noch das Nötigste mit mir.\n\nDie Kündigungsfrist läuft noch, ich arbeite weiterhin jeden Tag in den Liegenschaften der Rosenau Immobilien AG in Lausanne und bin bis Ende November angestellt.\n\nIch bin überzeugt, dass ich die Kündigung bekommen habe, weil ich meinen Lohn eingefordert habe. Seit Jahren mache ich als Teilzeit-Hauswart viel mehr Stunden als im Vertrag stehen. Im April 2026 habe ich Frau Keller schriftlich gebeten, mir diese Überstunden zu bezahlen, nach meiner Aufstellung rund CHF 4050. Ich habe jede Stunde aufgeschrieben und bin sicher, dass mir das Geld zusteht. Bezahlt wurde nichts, und ab da war die Stimmung eisig. Mein Kollege Walter Carter hat gehört, wie sie im Büro sagte, \"der Schneider mit seinen Forderungen\" müsse weg.\n\nIch lege Ihnen meinen Arbeitsvertrag bei und die Mails, die ich wegen dieser Sache vor der Kündigung geschrieben habe, mit der Antwort der Firma.\n\nDazu kommt: Ich bin von meinen Kolleginnen und Kollegen in die Personalkommission der Firma gewählt worden und war das auch an dem Tag, als die Kündigung kam. Die Bestätigung über die Wahl lege ich ebenfalls bei.\n\nMein Arbeitsverhältnis ist also noch nicht zu Ende, ich bin nach wie vor angestellt.\n\nDie Kündigung selbst hat mir Frau Keller am 29. September 2026 im Büro übergeben, ohne viele Worte.\n\nIch verdiene CHF 950 im Monat. Was kann ich jetzt tun?\n\nFreundliche Grüsse\nSimon Schneider\nAhornweg 68, 1004 Lausanne"
+}

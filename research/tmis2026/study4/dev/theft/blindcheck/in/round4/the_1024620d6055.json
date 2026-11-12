@@ -1,0 +1,105 @@
+{
+  "attachments": [
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "The policy's complete list of the covers included (basic cover and every supplementary insurance taken out). Simple theft away from home (einfacher Diebstahl auswärts) is insured only if it is on that list; no 'not included' entry is required. An extract that shows only some covers, or no list of covers, does not show this item.",
+          "item": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)"
+        },
+        {
+          "checkable_as": "An amount in CHF labelled as the sum insured for the supplementary insurance for simple theft away (Ziff. 24.2), not the sum insured for household contents.",
+          "item": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply."
+        }
+      ],
+      "document_title": "The insurance policy (Police)",
+      "label": "A1",
+      "must_show": [
+        "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+        "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+        "the insured location"
+      ],
+      "text": "CSS Versicherung AG\nPolice Hausratversicherung\n\nPolice-Nr.: 5.630.017-2\nVersicherungsnehmerin: Ursula Müller\nVersicherungsort: Seestrasse 24, 6020 Emmen\nVertragsbeginn: 15.01.2025\n\nGrunddeckung\nZiff. 23 Feuer, Elementar, Wasser, Diebstahl zu Hause\nVersicherungssumme Hausrat: CHF 80'000\n\nZusatzversicherungen\nZiff. 24.2 Einfacher Diebstahl auswärts – eingeschlossen\nVersicherungssumme: CHF 8'000 (erstes Risiko)\n\nSelbstbehalt: CHF 200 pro Schadenfall\nJahresprämie: CHF 263.80\n\nEs gelten die Allgemeinen Versicherungsbedingungen Hausrat, Ausgabe 2024, sowie die Zusatzbedingungen zu Ziff. 24.\n\nLuzern, 15.01.2025\nCSS Versicherung AG"
+    },
+    {
+      "checkable_as": [],
+      "document_title": "Police report on the theft (Polizeirapport)",
+      "label": "A2",
+      "must_show": [
+        "that the theft was reported to the police and when",
+        "the police station",
+        "that an official investigation was requested"
+      ],
+      "text": "Luzerner Polizei – Polizeiposten Emmen\nRapport über eine Anzeige\n\nRapport-Nr.: LUPO-26-07-1188\nAnzeige erstattet am: 06.07.2026, 10:20 Uhr, am Schalter des Polizeipostens Emmen\nAnzeigerin: Ursula Müller, Seestrasse 24, Emmen\n\nSachverhalt: Die Anzeigerin gibt an, am 05.07.2026 zwischen ca. 21:30 und 22:15 Uhr an einer Musikveranstaltung auf der Allmend Luzern bestohlen worden zu sein. Ihr Rucksack sei von unbekannter Täterschaft aufgeschnitten worden. Entwendet: Mobiltelefon, Portemonnaie, Fotokamera, Sonnenbrille.\n\nDie Anzeigerin verlangt eine Strafuntersuchung und stellt Strafantrag. Der Fall wurde zur Ermittlung weitergeleitet.\n\nPolizeiposten Emmen"
+    },
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "For every listed item, the shop or seller and at least month and year of purchase, or, for an item that was not bought, how it was acquired (for example 'gift' or 'inherited', with the occasion) and when.",
+          "item": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)"
+        }
+      ],
+      "document_title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
+      "label": "A3",
+      "must_show": [
+        "each stolen or damaged item",
+        "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+        "its value"
+      ],
+      "text": "Liste der gestohlenen Gegenstände\nSchadenfall vom 5. Juli 2026, Luzern\nUrsula Müller, Seestrasse 24, Emmen\n\n1. Mobiltelefon, 128 GB, schwarz\n   gekauft im März 2026 im Mobilfunkgeschäft im Einkaufszentrum Emmen\n\n2. Portemonnaie aus Leder, braun\n   gekauft im Dezember 2024 im Lederwarengeschäft an der Weggisgasse in Luzern\n\n3. Kompaktkamera mit Etui\n   Geschenk von meiner Schwester zum Geburtstag, erhalten im August 2025\n\n4. Sonnenbrille mit Korrekturgläsern\n   gekauft im Januar 2025 beim Optiker am Schwanenplatz in Luzern\n\nUnterschrieben in Emmen, 29. August 2026\nUrsula Müller"
+    }
+  ],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "Items merely missing where no trace, witness or circumstance points to a theft (that is open, not true); items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2, or outside both types).",
+      "question": "Does the file state that household contents at the insured location (the Versicherungsort of the policy) were stolen or damaged by a burglary, a robbery or a simple theft (including vandalism), even if nothing was taken?"
+    }
+  ],
+  "file_id": "the_1024620d6055",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "Another supplementary cover being missing. The claimant's narrative will rarely settle this; the policy does (insurance_policy).",
+      "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); a burglary or robbery away from home (outside both types); items lost, left behind or misplaced. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.",
+      "question": "Does the file state that household contents were stolen or damaged by a theft outside the insured location that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery)?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.",
+      "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
+      "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.",
+      "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?"
+    },
+    {
+      "label": "Q6",
+      "not_this": "A motor scooter or motorcycle; bicycle parts or accessories alone. A stated e-bike leaves the fact open: the form's word 'Fahrrad' does not decide it.",
+      "question": "Is a bicycle among the stolen or damaged items?"
+    },
+    {
+      "label": "Q7",
+      "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.",
+      "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?"
+    }
+  ],
+  "routing": {
+    "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)? (Not this: A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: a theft from a vehicle broken into, and pickpocketing or trick theft, away from the insured location are simple thefts away (simple_theft_away). Whether the policy includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief who lives in the policyholder's household), is decided within the claim type, not by this question.)",
+    "values": [
+      "theft_at_home",
+      "simple_theft_away",
+      "other"
+    ]
+  },
+  "text": "Sehr geehrte Frau Egli\n\nZuerst meine Police, die ich Ihnen beilege, damit Sie gleich sehen, was ich bei Ihnen versichert habe.\n\nMein Velo stand an dem Tag zu Hause im Keller, gestohlen wurde es nicht. Es geht nur um Sachen, die ich auf mir trug.\n\nEines muss ich noch erledigen und bin noch nicht dazu gekommen: Das Handy über die IMEI-Nummer beim Anbieter sperren zu lassen. Die Nummer steht auf der Originalschachtel, und die muss ich im Estrich erst wieder finden. Sobald ich sie habe, rufe ich dort an.\n\nIch habe seit Januar 2025 die Zusatzversicherung für einfachen Diebstahl auswärts, sie steht auch in der Police. Die Liste der gestohlenen Sachen, mit Angabe, wo und wann ich sie gekauft oder bekommen habe, lege ich ebenfalls bei. Insgesamt komme ich auf CHF 6'600.\n\nDen aufgeschlitzten Rucksack habe ich vor zwei Wochen beim Sattler in Emmenbrücke flicken lassen, er ist jetzt wieder dicht, und vom Schnitt sieht man nur noch eine neue Naht.\n\nPassiert ist es am Samstag, 5. Juli 2026, am Openair auf der Allmend in Luzern. Ich stand mit meinem Bekannten Beat Steiner mitten im Gedränge vor der Bühne. Irgendwann merkte ich, dass der Rucksack am Rücken leichter war: Jemand hatte ihn unten mit einem Messer aufgeschnitten und das Handy, das Portemonnaie, die Kamera und meine Sonnenbrille herausgenommen. Das muss im dichten Gedränge ganz unbemerkt passiert sein.\n\nAm nächsten Morgen war ich auf der Polizei, den Rapport lege ich auch bei.\n\nKassenzettel habe ich für keine der Sachen. Ich habe bei den Geschäften nachgefragt, aber niemand konnte mir ein Doppel ausstellen, die Kamera war zudem ein Geschenk.\n\nMit allem anderen habe ich ruhig gewartet, bis ich von Ihnen höre. Es gab nichts, was so dringend war, dass es nicht auf Ihre Anweisung hätte warten können.\n\nFreundliche Grüsse\nUrsula Müller\nSeestrasse 24, Emmen"
+}

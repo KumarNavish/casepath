@@ -1,0 +1,93 @@
+{
+  "attachments": [
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "The date on which employment began.",
+          "item": "start date of employment"
+        },
+        {
+          "checkable_as": "A clause naming the length of the probation period.",
+          "item": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply."
+        },
+        {
+          "checkable_as": "A clause naming the notice period.",
+          "item": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+        }
+      ],
+      "document_title": "Employment contract or other record of the start of employment",
+      "label": "A1",
+      "must_show": [
+        "parties",
+        "start date of employment",
+        "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+        "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+      ],
+      "text": "EMPLOYMENT CONTRACT (extract)\n\n1. Start of employment\nThe employment begins on 13 October 2022 and is concluded for an unlimited period.\n\n2. Position\nAccounts clerk, part-time (50%).\n\n3. Place of work\nThe employer's office in Lausanne.\n\n4. Working hours\n21 hours per week, as a rule Monday to Wednesday.\n\n5. Salary\nCHF 1,910 gross per month, paid twelve times a year.\n\nLausanne, 30 September 2022"
+    }
+  ],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "Ordinary notice with a notice period, however short, or release from work while a notice period runs.",
+      "question": "Did the employer end the employment relationship with immediate effect, without a notice period?"
+    }
+  ],
+  "file_id": "dis_c5e1bd4a1483",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "The employee's last working day where they were released from work while the notice period was still running; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if the file raises either, the fact is open.",
+      "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "A demand letter to the employer; a claim made pending only after the 180 days.",
+      "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "An oral protest; an objection addressed to someone other than the employer; a written objection lodged only after the notice period had ended.",
+      "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
+      "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities."
+    },
+    {
+      "label": "Q5",
+      "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here); a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here).",
+      "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?"
+    },
+    {
+      "label": "Q6",
+      "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent (art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
+      "question": "Have more than 180 days passed since the employment relationship ended?"
+    },
+    {
+      "label": "Q7",
+      "not_this": "Reasons the employer gave without being asked, or a request made only orally to a colleague rather than to the employer.",
+      "question": "Did the employee ask the employer to state the reasons for the notice in writing?"
+    },
+    {
+      "label": "Q8",
+      "not_this": "Talks about continuing that ended without agreement; an agreement only about a payment or about the end date.",
+      "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?"
+    },
+    {
+      "label": "Q9",
+      "not_this": "A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal with immediate effect (art. 337, a separate type).",
+      "question": "Did the employer give the employee notice of termination of the employment relationship?"
+    }
+  ],
+  "routing": {
+    "question": "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), including the written objection to such a notice and the compensation claim for it (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).",
+    "values": [
+      "protected_period_notice",
+      "wrongful_termination",
+      "immediate_dismissal"
+    ]
+  },
+  "text": "Dear Sir or Madam,\n\nThis is about a job I lost last year, and I'm afraid I've left it rather late. My notice period with Erlenhof Holdings Ltd in Lausanne ran out at the end of August 2025, and my last working day was 31 August 2025. That is more than eight months ago now.\n\nI should mention that I was never on the staff council or any committee there. I worked in accounts and kept my head down.\n\nIn June 2025, a few days after I'd been told I was being let go, I wrote to Sophie Lüthi in HR and asked her to put the reasons for the notice in writing. I sent that by e-mail and also on paper.\n\nThe notice itself was given to me by Ms Lüthi at the beginning of June 2025, in a meeting with just the two of us. I remember she said the decision 'came from above'.\n\nI've attached my contract, which shows that I started there in October 2022.\n\nNow the reason I'm writing. On 29 April 2026, while clearing out a drawer, I found a letter I wrote in July 2025 saying that I object to the notice and don't accept it. It's signed and dated. What I can't work out is whether I ever actually sent it. It might be my copy of a letter I posted, or it might be the only version and I simply forgot to send it. My friend Clara Moser thinks she remembers me mentioning that I'd posted it, but I have no receipt and I genuinely don't know.\n\nI earned CHF 1,910 a month. Is there anything I can still do after all this time?\n\nWith thanks,\nAlice Gisler\nBrunnenrain 87, Lausanne"
+}

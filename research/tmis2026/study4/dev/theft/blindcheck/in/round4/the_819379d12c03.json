@@ -1,0 +1,92 @@
+{
+  "attachments": [
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+          "item": "the date (day, month and year) on which the theft was notified to CSS"
+        }
+      ],
+      "document_title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
+      "label": "A1",
+      "must_show": [
+        "the date (day, month and year) on which the theft was notified to CSS"
+      ],
+      "text": "CSS Versicherung\nConfirmation of claim notification (Schadenanzeige Hausrat / Gebäude)\n\nClaim no.: 26-HR-052981\nPolicyholder: Paul Wyss\nPolicy no.: 2.588.031-7\n\nNotification received: 17.06.2026, 08:30, by telephone\nRecorded by: Megan Wälti, claims service\n\nType of loss: theft of household contents away from home (from a parked car)\nDate of loss: 16.06.2026\nPlace of loss: Rapperswil, side street near the lake\nEstimated loss: CHF 9,050\n\nWe confirm receipt of your claim notification and will contact you regarding the next steps.\n\nCSS Versicherung, 17.06.2026"
+    },
+    {
+      "checkable_as": [
+        {
+          "checkable_as": "The policy's complete list of the covers included (basic cover and every supplementary insurance taken out). Simple theft away from home (einfacher Diebstahl auswärts) is insured only if it is on that list; no 'not included' entry is required. An extract that shows only some covers, or no list of covers, does not show this item.",
+          "item": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)"
+        },
+        {
+          "checkable_as": "An amount in CHF labelled as the sum insured for the supplementary insurance for simple theft away (Ziff. 24.2), not the sum insured for household contents.",
+          "item": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply."
+        }
+      ],
+      "document_title": "The insurance policy (Police)",
+      "label": "A2",
+      "must_show": [
+        "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+        "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+        "the insured location"
+      ],
+      "text": "CSS Versicherung AG\nHousehold contents policy (Police Hausratversicherung) – extract\n\nPolicy no.: 2.588.031-7\nPolicyholder: Paul Wyss\nIn force since: 16.08.2023\nAmended: 05.01.2024 (supplementary insurance added)\n\nBasic cover: fire, natural hazards, water, theft at home\nSum insured, household contents: CHF 85,000\n\nSupplementary insurance\nZiff. 24.2 Simple theft away from home (einfacher Diebstahl auswärts): included since 05.01.2024\nSum insured: CHF 10,000\n\nDeductible: CHF 200\nAnnual premium: CHF 289.60"
+    }
+  ],
+  "event_questions": [
+    {
+      "label": "E1",
+      "not_this": "Items merely missing where no trace, witness or circumstance points to a theft (that is open, not true); items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2, or outside both types).",
+      "question": "Does the file state that household contents at the insured location (the Versicherungsort of the policy) were stolen or damaged by a burglary, a robbery or a simple theft (including vandalism), even if nothing was taken?"
+    }
+  ],
+  "file_id": "the_819379d12c03",
+  "questions": [
+    {
+      "label": "Q1",
+      "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.",
+      "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?"
+    },
+    {
+      "label": "Q2",
+      "not_this": "The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.",
+      "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?"
+    },
+    {
+      "label": "Q3",
+      "not_this": "Measures already carried out; the notification of the claim itself; steps only to find the thief. Steps still to be taken to get the stolen items back or to stop them being used or sold do reduce the loss and are not excluded.",
+      "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?"
+    },
+    {
+      "label": "Q4",
+      "not_this": "A motor scooter or motorcycle; bicycle parts or accessories alone. A stated e-bike leaves the fact open: the form's word 'Fahrrad' does not decide it.",
+      "question": "Is a bicycle among the stolen or damaged items?"
+    },
+    {
+      "label": "Q5",
+      "not_this": "Another supplementary cover being missing. The claimant's narrative will rarely settle this; the policy does (insurance_policy).",
+      "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?"
+    },
+    {
+      "label": "Q6",
+      "not_this": "Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
+      "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?"
+    },
+    {
+      "label": "Q7",
+      "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); a burglary or robbery away from home (outside both types); items lost, left behind or misplaced. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.",
+      "question": "Does the file state that household contents were stolen or damaged by a theft outside the insured location that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery)?"
+    }
+  ],
+  "routing": {
+    "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)? (Not this: A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: a theft from a vehicle broken into, and pickpocketing or trick theft, away from the insured location are simple thefts away (simple_theft_away). Whether the policy includes the supplementary insurance for simple theft away, and whether an exclusion applies (for example a thief who lives in the policyholder's household), is decided within the claim type, not by this question.)",
+    "values": [
+      "theft_at_home",
+      "simple_theft_away",
+      "other"
+    ]
+  },
+  "text": "Hello Ms Wälti,\n\nI'm getting in touch about my claim from June, because I haven't heard anything since I reported it and I'd like to move it along.\n\nThere's no bike involved. The rack on the back of the car was empty that day, and my bike was at home the whole time.\n\nNothing about this needed doing in a hurry, either. There was no danger that would have made me act before getting your instructions, so I've simply been waiting.\n\nI do have the extra cover for simple theft away from home. I added it in January 2024, when I started commuting by car, and I've paid for it ever since.\n\nOn Tuesday 16 June 2026 I drove to Rapperswil for a dentist's appointment and parked in a side street near the lake, car locked. My work bag was on the back seat with my laptop, my tablet and a pair of noise-cancelling headphones. When I came back after about an hour and a half, the rear side window was smashed in and the bag had gone. Altogether it's about CHF 9,050.\n\nThe smashed window is still exactly as the thief left it, splinters on the seat and all. I've kept the car in my garage since then and haven't had anything repaired or cleaned, so if you or anyone else would like to see it, it's all still there.\n\nI've attached my policy, which shows the extra theft cover, and the confirmation CSS sent me when I reported the claim.\n\nThanks and best regards,\nPaul Wyss\nMattenweg 8, Uster"
+}
