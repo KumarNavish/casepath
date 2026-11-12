@@ -1,0 +1,721 @@
+{
+  "keys": {
+    "ten_00bf58d82a2b": {
+      "attachments": {
+        "A1": "termination_notice",
+        "A2": "claims_and_reasons",
+        "A3": "hardship_evidence"
+      },
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "asserted_claims",
+        "Q3": "extension_requested",
+        "Q4": "notice_received",
+        "Q5": "family_residence"
+      }
+    },
+    "ten_060ca05c5691": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "family_residence",
+        "Q3": "extension_requested",
+        "Q4": "asserted_claims",
+        "Q5": "arrears_termination"
+      }
+    },
+    "ten_094dc11f4ef9": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "family_residence",
+        "Q2": "asserted_claims",
+        "Q3": "notice_received",
+        "Q4": "extension_requested",
+        "Q5": "arrears_termination"
+      }
+    },
+    "ten_0c74f4037e13": {
+      "attachments": {
+        "A1": "termination_notice"
+      },
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "family_residence",
+        "Q3": "extension_requested",
+        "Q4": "notice_received",
+        "Q5": "asserted_claims"
+      }
+    },
+    "ten_0d082e78c345": {
+      "attachments": {
+        "A1": "defect_record",
+        "A2": "deposit_receipt"
+      },
+      "questions": {
+        "Q1": "defect_present",
+        "Q2": "deposit_intended",
+        "Q3": "landlord_unaware",
+        "Q4": "rent_deposited",
+        "Q5": "damages_claimed",
+        "Q6": "notice_oral_only"
+      }
+    },
+    "ten_2249a3b45704": {
+      "attachments": {
+        "A1": "knowledge_proof"
+      },
+      "questions": {
+        "Q1": "defect_present",
+        "Q2": "deposit_intended",
+        "Q3": "landlord_unaware",
+        "Q4": "damages_claimed",
+        "Q5": "rent_deposited",
+        "Q6": "notice_oral_only"
+      }
+    },
+    "ten_270f84d8acff": {
+      "attachments": {},
+      "questions": {
+        "Q1": "notice_oral_only",
+        "Q2": "damages_claimed",
+        "Q3": "rent_deposited",
+        "Q4": "deposit_intended",
+        "Q5": "defect_present",
+        "Q6": "landlord_unaware"
+      }
+    },
+    "ten_2dff5fa7a980": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "index_clause",
+        "Q3": "increase_applied",
+        "Q4": "termination_with_increase",
+        "Q5": "graduated_rent"
+      }
+    },
+    "ten_404e03b3e37f": {
+      "attachments": {},
+      "questions": {
+        "Q1": "landlord_unaware",
+        "Q2": "deposit_intended",
+        "Q3": "rent_deposited",
+        "Q4": "damages_claimed",
+        "Q5": "notice_oral_only",
+        "Q6": "defect_present"
+      }
+    },
+    "ten_429b182434cf": {
+      "attachments": {},
+      "questions": {
+        "Q1": "graduated_rent",
+        "Q2": "termination_with_increase",
+        "Q3": "cost_or_services_reason",
+        "Q4": "index_clause",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_49dab8d40787": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "index_clause",
+        "Q2": "cost_or_services_reason",
+        "Q3": "graduated_rent",
+        "Q4": "increase_applied",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_536a2e7f64de": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "index_clause",
+        "Q2": "increase_applied",
+        "Q3": "termination_with_increase",
+        "Q4": "graduated_rent",
+        "Q5": "cost_or_services_reason"
+      }
+    },
+    "ten_580485dac025": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "termination_with_increase",
+        "Q3": "increase_applied",
+        "Q4": "index_clause",
+        "Q5": "graduated_rent"
+      }
+    },
+    "ten_5822f6df0cb7": {
+      "attachments": {
+        "A1": "spouse_service",
+        "A2": "claims_and_reasons"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "family_residence",
+        "Q3": "arrears_termination",
+        "Q4": "extension_requested",
+        "Q5": "asserted_claims"
+      }
+    },
+    "ten_58961449957f": {
+      "attachments": {},
+      "questions": {
+        "Q1": "extension_requested",
+        "Q2": "notice_received",
+        "Q3": "family_residence",
+        "Q4": "asserted_claims",
+        "Q5": "arrears_termination"
+      }
+    },
+    "ten_5aecbb73131b": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "termination_with_increase",
+        "Q2": "graduated_rent",
+        "Q3": "cost_or_services_reason",
+        "Q4": "increase_applied",
+        "Q5": "index_clause"
+      }
+    },
+    "ten_62956adff3f7": {
+      "attachments": {
+        "A1": "rent_increase_notice",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "graduated_rent",
+        "Q2": "index_clause",
+        "Q3": "cost_or_services_reason",
+        "Q4": "increase_applied",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_650fe62e2c09": {
+      "attachments": {
+        "A1": "termination_notice",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "asserted_claims",
+        "Q3": "family_residence",
+        "Q4": "arrears_termination",
+        "Q5": "extension_requested"
+      }
+    },
+    "ten_65213c168ab3": {
+      "attachments": {},
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "extension_requested",
+        "Q3": "asserted_claims",
+        "Q4": "family_residence",
+        "Q5": "notice_received"
+      }
+    },
+    "ten_6806063b9fd7": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "termination_with_increase",
+        "Q3": "graduated_rent",
+        "Q4": "index_clause",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_68cb7ef0004f": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "termination_notice"
+      },
+      "questions": {
+        "Q1": "extension_requested",
+        "Q2": "arrears_termination",
+        "Q3": "notice_received",
+        "Q4": "asserted_claims",
+        "Q5": "family_residence"
+      }
+    },
+    "ten_68f29695fb98": {
+      "attachments": {},
+      "questions": {
+        "Q1": "landlord_unaware",
+        "Q2": "notice_oral_only",
+        "Q3": "damages_claimed",
+        "Q4": "rent_deposited",
+        "Q5": "deposit_intended",
+        "Q6": "defect_present"
+      }
+    },
+    "ten_6c5828c1c68b": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "knowledge_proof"
+      },
+      "questions": {
+        "Q1": "landlord_unaware",
+        "Q2": "rent_deposited",
+        "Q3": "deposit_intended",
+        "Q4": "notice_oral_only",
+        "Q5": "damages_claimed",
+        "Q6": "defect_present"
+      }
+    },
+    "ten_6d6fcb65d5b6": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "deposit_intended",
+        "Q2": "defect_present",
+        "Q3": "landlord_unaware",
+        "Q4": "notice_oral_only",
+        "Q5": "damages_claimed",
+        "Q6": "rent_deposited"
+      }
+    },
+    "ten_73e9202b8898": {
+      "attachments": {
+        "A1": "rent_increase_notice",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "increase_applied",
+        "Q2": "termination_with_increase",
+        "Q3": "index_clause",
+        "Q4": "graduated_rent",
+        "Q5": "cost_or_services_reason"
+      }
+    },
+    "ten_76d8d9821402": {
+      "attachments": {},
+      "questions": {
+        "Q1": "graduated_rent",
+        "Q2": "cost_or_services_reason",
+        "Q3": "index_clause",
+        "Q4": "increase_applied",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_776e0e61986b": {
+      "attachments": {},
+      "questions": {
+        "Q1": "landlord_unaware",
+        "Q2": "defect_present",
+        "Q3": "rent_deposited",
+        "Q4": "deposit_intended",
+        "Q5": "damages_claimed",
+        "Q6": "notice_oral_only"
+      }
+    },
+    "ten_7bdc8d77b443": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "family_residence",
+        "Q2": "extension_requested",
+        "Q3": "arrears_termination",
+        "Q4": "notice_received",
+        "Q5": "asserted_claims"
+      }
+    },
+    "ten_81c7af7dbe95": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "asserted_claims",
+        "Q3": "family_residence",
+        "Q4": "extension_requested",
+        "Q5": "notice_received"
+      }
+    },
+    "ten_8572ddc89110": {
+      "attachments": {},
+      "questions": {
+        "Q1": "increase_applied",
+        "Q2": "cost_or_services_reason",
+        "Q3": "index_clause",
+        "Q4": "graduated_rent",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_857d108a2bbc": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "extension_requested",
+        "Q3": "asserted_claims",
+        "Q4": "family_residence",
+        "Q5": "arrears_termination"
+      }
+    },
+    "ten_886637ed61d4": {
+      "attachments": {
+        "A1": "termination_notice"
+      },
+      "questions": {
+        "Q1": "extension_requested",
+        "Q2": "notice_received",
+        "Q3": "arrears_termination",
+        "Q4": "asserted_claims",
+        "Q5": "family_residence"
+      }
+    },
+    "ten_8c1d86a176c0": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "deposit_deadline_notice"
+      },
+      "questions": {
+        "Q1": "damages_claimed",
+        "Q2": "landlord_unaware",
+        "Q3": "notice_oral_only",
+        "Q4": "rent_deposited",
+        "Q5": "deposit_intended",
+        "Q6": "defect_present"
+      }
+    },
+    "ten_8c54d4a61b0a": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "termination_with_increase",
+        "Q3": "graduated_rent",
+        "Q4": "increase_applied",
+        "Q5": "index_clause"
+      }
+    },
+    "ten_96f9b0ab4078": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "increase_applied",
+        "Q2": "graduated_rent",
+        "Q3": "index_clause",
+        "Q4": "termination_with_increase",
+        "Q5": "cost_or_services_reason"
+      }
+    },
+    "ten_99a09ab93688": {
+      "attachments": {
+        "A1": "defect_record"
+      },
+      "questions": {
+        "Q1": "defect_present",
+        "Q2": "damages_claimed",
+        "Q3": "rent_deposited",
+        "Q4": "deposit_intended",
+        "Q5": "notice_oral_only",
+        "Q6": "landlord_unaware"
+      }
+    },
+    "ten_99fa2131c25f": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "graduated_rent",
+        "Q3": "index_clause",
+        "Q4": "termination_with_increase",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_9cee49140df5": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "defect_present",
+        "Q2": "deposit_intended",
+        "Q3": "notice_oral_only",
+        "Q4": "rent_deposited",
+        "Q5": "landlord_unaware",
+        "Q6": "damages_claimed"
+      }
+    },
+    "ten_9ef3562d0d18": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "index_clause",
+        "Q2": "termination_with_increase",
+        "Q3": "cost_or_services_reason",
+        "Q4": "graduated_rent",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_9f1d7f1e9554": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "asserted_claims",
+        "Q2": "extension_requested",
+        "Q3": "arrears_termination",
+        "Q4": "family_residence",
+        "Q5": "notice_received"
+      }
+    },
+    "ten_a743587360f3": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "index_clause",
+        "Q3": "termination_with_increase",
+        "Q4": "increase_applied",
+        "Q5": "graduated_rent"
+      }
+    },
+    "ten_aba30f049af3": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "damages_claimed",
+        "Q2": "landlord_unaware",
+        "Q3": "notice_oral_only",
+        "Q4": "deposit_intended",
+        "Q5": "rent_deposited",
+        "Q6": "defect_present"
+      }
+    },
+    "ten_b2a5ace905ae": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "proof_of_receipt",
+        "A3": "payment_demand"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "family_residence",
+        "Q3": "extension_requested",
+        "Q4": "arrears_termination",
+        "Q5": "asserted_claims"
+      }
+    },
+    "ten_b4d4cb05336f": {
+      "attachments": {
+        "A1": "rent_increase_notice"
+      },
+      "questions": {
+        "Q1": "termination_with_increase",
+        "Q2": "cost_or_services_reason",
+        "Q3": "increase_applied",
+        "Q4": "index_clause",
+        "Q5": "graduated_rent"
+      }
+    },
+    "ten_ba90f9b8b195": {
+      "attachments": {},
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "termination_with_increase",
+        "Q3": "increase_applied",
+        "Q4": "graduated_rent",
+        "Q5": "index_clause"
+      }
+    },
+    "ten_c1e4987669e8": {
+      "attachments": {},
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "asserted_claims",
+        "Q3": "extension_requested",
+        "Q4": "family_residence",
+        "Q5": "notice_received"
+      }
+    },
+    "ten_c2a72cbf1698": {
+      "attachments": {},
+      "questions": {
+        "Q1": "defect_present",
+        "Q2": "rent_deposited",
+        "Q3": "landlord_unaware",
+        "Q4": "deposit_intended",
+        "Q5": "notice_oral_only",
+        "Q6": "damages_claimed"
+      }
+    },
+    "ten_c4ccb65aff87": {
+      "attachments": {},
+      "questions": {
+        "Q1": "rent_deposited",
+        "Q2": "damages_claimed",
+        "Q3": "notice_oral_only",
+        "Q4": "deposit_intended",
+        "Q5": "defect_present",
+        "Q6": "landlord_unaware"
+      }
+    },
+    "ten_c934efc0b1bc": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "notice_received",
+        "Q2": "arrears_termination",
+        "Q3": "family_residence",
+        "Q4": "asserted_claims",
+        "Q5": "extension_requested"
+      }
+    },
+    "ten_c95735ae0bf4": {
+      "attachments": {
+        "A1": "rent_increase_notice"
+      },
+      "questions": {
+        "Q1": "index_clause",
+        "Q2": "cost_or_services_reason",
+        "Q3": "termination_with_increase",
+        "Q4": "graduated_rent",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_cf02cc821948": {
+      "attachments": {
+        "A1": "lease_contract"
+      },
+      "questions": {
+        "Q1": "deposit_intended",
+        "Q2": "notice_oral_only",
+        "Q3": "rent_deposited",
+        "Q4": "defect_present",
+        "Q5": "landlord_unaware",
+        "Q6": "damages_claimed"
+      }
+    },
+    "ten_db552dbb3c23": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "rent_increase_notice"
+      },
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "termination_with_increase",
+        "Q3": "index_clause",
+        "Q4": "graduated_rent",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_e4858b3af131": {
+      "attachments": {
+        "A1": "rent_increase_notice",
+        "A2": "termination_notice"
+      },
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "index_clause",
+        "Q3": "graduated_rent",
+        "Q4": "termination_with_increase",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_e6d795ab2a91": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "termination_with_increase",
+        "Q2": "index_clause",
+        "Q3": "graduated_rent",
+        "Q4": "cost_or_services_reason",
+        "Q5": "increase_applied"
+      }
+    },
+    "ten_e94fb7461784": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "deposit_receipt"
+      },
+      "questions": {
+        "Q1": "notice_oral_only",
+        "Q2": "rent_deposited",
+        "Q3": "deposit_intended",
+        "Q4": "landlord_unaware",
+        "Q5": "defect_present",
+        "Q6": "damages_claimed"
+      }
+    },
+    "ten_ed10120c904e": {
+      "attachments": {
+        "A1": "lease_contract",
+        "A2": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "arrears_termination",
+        "Q2": "family_residence",
+        "Q3": "notice_received",
+        "Q4": "asserted_claims",
+        "Q5": "extension_requested"
+      }
+    },
+    "ten_eec676341229": {
+      "attachments": {
+        "A1": "termination_notice"
+      },
+      "questions": {
+        "Q1": "family_residence",
+        "Q2": "notice_received",
+        "Q3": "asserted_claims",
+        "Q4": "extension_requested",
+        "Q5": "arrears_termination"
+      }
+    },
+    "ten_efa24ba18ce3": {
+      "attachments": {
+        "A1": "rent_increase_notice"
+      },
+      "questions": {
+        "Q1": "cost_or_services_reason",
+        "Q2": "graduated_rent",
+        "Q3": "increase_applied",
+        "Q4": "index_clause",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_f1871d924ee4": {
+      "attachments": {},
+      "questions": {
+        "Q1": "index_clause",
+        "Q2": "increase_applied",
+        "Q3": "graduated_rent",
+        "Q4": "cost_or_services_reason",
+        "Q5": "termination_with_increase"
+      }
+    },
+    "ten_fb2a18deebee": {
+      "attachments": {
+        "A1": "proof_of_receipt"
+      },
+      "questions": {
+        "Q1": "increase_applied",
+        "Q2": "index_clause",
+        "Q3": "cost_or_services_reason",
+        "Q4": "termination_with_increase",
+        "Q5": "graduated_rent"
+      }
+    }
+  },
+  "note": "operator only: never give this file to a writer or a blind checker"
+}

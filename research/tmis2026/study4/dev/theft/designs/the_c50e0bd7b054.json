@@ -1,0 +1,102 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "open",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_c50e0bd7b054",
+  "index": 6,
+  "language": "de",
+  "level": 50,
+  "open_facts": [
+    "imminent_danger"
+  ],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10800,
+      "monthly": 2230,
+      "small": 1150
+    },
+    "canton": "NE",
+    "claimant": "Gabriela Marti",
+    "date_main_event": "2026-06-12",
+    "date_written": "2026-06-21",
+    "earlier_dates": [
+      "2023-08-22",
+      "2023-09-27",
+      "2024-12-01"
+    ],
+    "other_party_organisation": "Ahornweid Handels AG",
+    "other_party_person": "Monika Turner",
+    "place": "Neuchâtel",
+    "street": "Feldstrasse 59",
+    "third_person": "Rahel Müller",
+    "time_spans": [],
+    "topic_order_seed": 624388129
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "about": "Logical dependencies between tenancy facts that rules.json does not encode but a coherent file must respect. Read by generator/design.py; each adjustment is logged in the design (constraint_adjustments). Data, not code: a reader's own rule set supplies its own file or none.",
+  "constraints": [
+    {"note": "rent already paid into deposit implies the tenant has begun to pay on deposit",
+     "if": {"fact": "rent_deposited", "state": "stated_true"},
+     "then": {"fact": "deposit_intended", "in": ["stated_true"], "set": "stated_true"}},
+    {"note": "no deposit intended or begun, or that question open: rent cannot be stated as already deposited",
+     "if": {"fact": "deposit_intended", "in": ["stated_false", "open"]},
+     "then": {"fact": "rent_deposited", "in": ["stated_false", "not_mentioned"], "set": "not_mentioned"}},
+    {"note": "a landlord who does not know of the defect cannot have learned of it orally or in writing",
+     "if": {"fact": "landlord_unaware", "in": ["stated_true", "open"]},
+     "then": {"fact": "notice_oral_only", "in": ["not_mentioned"], "set": "not_mentioned"}},
+    {"note": "a landlord who learned of the defect (orally or in writing) is not unaware of it",
+     "if": {"fact": "notice_oral_only", "in": ["stated_true", "stated_false", "open"]},
+     "then": {"fact": "landlord_unaware", "in": ["stated_false", "not_mentioned"], "set": "not_mentioned"}},
+    {"note": "with the increase open, an increase notice giving cost reasons cannot be stated to exist",
+     "if": {"fact": "increase_applied", "state": "open"},
+     "then": {"fact": "cost_or_services_reason", "in": ["stated_false"], "set": "stated_false"}}
+  ]
+}

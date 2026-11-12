@@ -1,0 +1,101 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "stated_true",
+    "imminent_danger": "stated_false",
+    "lock_change": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_c8b40fd1824d",
+  "index": 4,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6050,
+      "monthly": 3340,
+      "small": 370
+    },
+    "canton": "ZH",
+    "claimant": "Maya Widmer",
+    "date_main_event": "2026-06-23",
+    "date_written": "2026-07-22",
+    "earlier_dates": [
+      "2023-02-12",
+      "2024-09-12",
+      "2025-10-25"
+    ],
+    "other_party_organisation": "Lindenmatt Property Ltd",
+    "other_party_person": "Henry Näf",
+    "place": "Wädenswil",
+    "street": "Seestrasse 46",
+    "third_person": "Ben Egli",
+    "time_spans": [],
+    "topic_order_seed": 10010674
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

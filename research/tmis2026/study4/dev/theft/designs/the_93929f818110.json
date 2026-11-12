@@ -1,0 +1,96 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "missing": "that and when CSS was notified of the theft",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_93929f818110",
+  "index": 9,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6550,
+      "monthly": 3170,
+      "small": 785
+    },
+    "canton": "BE",
+    "claimant": "Paul Odermatt",
+    "date_main_event": "2026-08-09",
+    "date_written": "2026-10-23",
+    "earlier_dates": [
+      "2023-04-18",
+      "2024-06-22",
+      "2025-09-25"
+    ],
+    "other_party_organisation": "Weidgrund Property Ltd",
+    "other_party_person": "Laura Imhof",
+    "place": "Thun",
+    "street": "Hauptstrasse 59",
+    "third_person": "Tom Kaufmann",
+    "time_spans": [],
+    "topic_order_seed": 502313626
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

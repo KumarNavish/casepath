@@ -1,0 +1,89 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "stated_true",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_false",
+    "landlord_unaware": "not_mentioned",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "not_mentioned"
+  },
+  "file_id": "ten_270f84d8acff",
+  "index": 0,
+  "language": "de",
+  "level": 50,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7000,
+      "monthly": 2150,
+      "small": 590
+    },
+    "canton": "ZH",
+    "claimant": "Esther Fankhauser",
+    "date_main_event": "2026-07-21",
+    "date_written": "2026-08-15",
+    "earlier_dates": [
+      "2023-08-03",
+      "2024-07-20",
+      "2025-02-02"
+    ],
+    "other_party_organisation": "Birkenrain Immobilien AG",
+    "other_party_person": "Beat Steiner",
+    "place": "Winterthur",
+    "street": "Bergstrasse 54",
+    "third_person": "Gabriela Kuhn",
+    "time_spans": [],
+    "topic_order_seed": 2088145684
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

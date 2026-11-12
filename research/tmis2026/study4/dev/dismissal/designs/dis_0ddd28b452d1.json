@@ -1,0 +1,161 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "missing": "length of the probation period",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "stated_false",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "stated_true",
+    "probation_varied": "stated_true"
+  },
+  "file_id": "dis_0ddd28b452d1",
+  "index": 9,
+  "language": "de",
+  "level": 0,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5450,
+      "monthly": 2140,
+      "small": 1410
+    },
+    "canton": "AR",
+    "claimant": "Irene Lüthi",
+    "date_main_event": "2026-07-08",
+    "date_written": "2026-09-21",
+    "earlier_dates": [
+      "2022-06-10",
+      "2024-09-16",
+      "2025-12-31"
+    ],
+    "other_party_organisation": "Hagenbuch Immobilien AG",
+    "other_party_person": "Tamara Gerber",
+    "place": "Herisau",
+    "street": "Lindenweg 126",
+    "third_person": "Urs Huber",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-08-03",
+        "date_if_span_not_run": "2026-09-09",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-04-29",
+        "date_if_span_not_run": "2026-08-16",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-12-06",
+        "date_if_span_not_run": "2026-07-11",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-09-02",
+        "date_if_span_not_run": "2026-09-17",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-08-06",
+        "date_if_span_not_run": "2026-09-10",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-03-25",
+        "date_if_span_not_run": "2026-08-07",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-09-09",
+        "date_if_span_not_run": "2026-09-18",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-08-03",
+        "date_if_span_not_run": "2026-09-09",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-16",
+        "date_if_span_not_run": "2026-08-28",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-29",
+        "date_if_span_not_run": "2026-08-16",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1138963142
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": true,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "not_mentioned",
+    "increase_applied": "stated_false",
+    "index_clause": "not_mentioned",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_429b182434cf",
+  "index": 11,
+  "language": "en",
+  "level": 25,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 11650,
+      "monthly": 2860,
+      "small": 120
+    },
+    "canton": "NE",
+    "claimant": "Alice Huber",
+    "date_main_event": "2026-01-23",
+    "date_written": "2026-03-11",
+    "earlier_dates": [
+      "2022-01-22",
+      "2023-02-16",
+      "2023-08-10"
+    ],
+    "other_party_organisation": "Rebhalde Holdings Ltd",
+    "other_party_person": "Sophie Frei",
+    "place": "Neuchâtel",
+    "street": "Mühleweg 11",
+    "third_person": "Tom Näf",
+    "time_spans": [],
+    "topic_order_seed": 1254004265
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

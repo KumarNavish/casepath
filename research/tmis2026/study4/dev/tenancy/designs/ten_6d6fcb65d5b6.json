@@ -1,0 +1,98 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": "agreed use of the dwelling",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "deposit_intended",
+      "constraint": "rent already paid into deposit implies the tenant has begun to pay on deposit",
+      "from": "stated_false",
+      "to": "stated_true"
+    }
+  ],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "not_mentioned",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "not_mentioned",
+    "notice_oral_only": "stated_true",
+    "rent_deposited": "stated_true"
+  },
+  "file_id": "ten_6d6fcb65d5b6",
+  "index": 5,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4400,
+      "monthly": 3060,
+      "small": 1910
+    },
+    "canton": "NE",
+    "claimant": "Andrea Egli",
+    "date_main_event": "2026-08-14",
+    "date_written": "2026-09-28",
+    "earlier_dates": [
+      "2022-08-07",
+      "2022-08-27",
+      "2023-01-26"
+    ],
+    "other_party_organisation": "Weidgrund Immobilien AG",
+    "other_party_person": "Fabian Näf",
+    "place": "Neuchâtel",
+    "street": "Mattenweg 4",
+    "third_person": "Martina Hürlimann",
+    "time_spans": [],
+    "topic_order_seed": 149420886
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

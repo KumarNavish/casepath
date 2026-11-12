@@ -1,0 +1,94 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_true",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "stated_false",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_c0b61a3ae7cb",
+  "index": 5,
+  "language": "de",
+  "level": 0,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6450,
+      "monthly": 1500,
+      "small": 340
+    },
+    "canton": "AG",
+    "claimant": "Heinz Hofer",
+    "date_main_event": "2026-08-19",
+    "date_written": "2026-10-19",
+    "earlier_dates": [
+      "2023-09-01",
+      "2023-12-17",
+      "2024-05-19"
+    ],
+    "other_party_organisation": "Seematt Dienste GmbH",
+    "other_party_person": "Simon Ellis",
+    "place": "Baden",
+    "street": "Feldstrasse 45",
+    "third_person": "Oliver Ammann",
+    "time_spans": [],
+    "topic_order_seed": 714226179
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

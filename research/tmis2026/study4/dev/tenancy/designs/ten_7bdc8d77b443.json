@@ -1,0 +1,95 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "not_mentioned",
+    "asserted_claims": "stated_false",
+    "extension_requested": "stated_true",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_7bdc8d77b443",
+  "index": 1,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10200,
+      "monthly": 2380,
+      "small": 585
+    },
+    "canton": "LU",
+    "claimant": "Laura Moser",
+    "date_main_event": "2026-05-16",
+    "date_written": "2026-05-25",
+    "earlier_dates": [
+      "2023-02-07",
+      "2025-01-11",
+      "2025-05-28"
+    ],
+    "other_party_organisation": "Sonnbühl Services Ltd",
+    "other_party_person": "Alice Marti",
+    "place": "Emmen",
+    "street": "Schulhausstrasse 94",
+    "third_person": "Megan Imhof",
+    "time_spans": [],
+    "topic_order_seed": 1505693520
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

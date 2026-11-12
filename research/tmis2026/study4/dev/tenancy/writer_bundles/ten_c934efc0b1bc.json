@@ -1,0 +1,92 @@
+{
+  "attachments": [
+    {
+      "document_title": "Proof of the date the notice was received",
+      "label": "A1",
+      "leave_out": null,
+      "must_not_show": [
+        "anything that would answer Q4",
+        "anything that would answer Q5",
+        "anything that contradicts the designed answer to Q1",
+        "anything that contradicts the designed answer to Q2",
+        "anything that contradicts the designed answer to Q3"
+      ],
+      "must_show": [
+        "date of receipt",
+        "how it was delivered (registered-mail tracking, envelope or acknowledgement)"
+      ],
+      "show_only_if_it_applies": []
+    }
+  ],
+  "file_id": "ten_c934efc0b1bc",
+  "language": "German (Swiss Standard German: write ss, never the sharp s)",
+  "length_words": [
+    150,
+    400
+  ],
+  "output": {
+    "format": "see WRITER_TASK.md: {file_id, language, text, attachments: [{label, text}]}",
+    "path": "written/ten_c934efc0b1bc.json"
+  },
+  "questions": [
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q1",
+      "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q2",
+      "question": "Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q3",
+      "question": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?"
+    },
+    {
+      "designed_answer": "not mentioned",
+      "instruction": "Do not touch this topic at all: no sentence, aside or attachment content that would let a reader answer this question yes, no or open, and no statement that it is not the case (style sheet, message item 7).",
+      "label": "Q4",
+      "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)?"
+    },
+    {
+      "designed_answer": "not mentioned",
+      "instruction": "Do not touch this topic at all: no sentence, aside or attachment content that would let a reader answer this question yes, no or open, and no statement that it is not the case (style sheet, message item 7).",
+      "label": "Q5",
+      "question": "Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?"
+    }
+  ],
+  "schema": "study4.writer-bundle/1",
+  "story": {
+    "amounts_chf": {
+      "large": 6850,
+      "monthly": 1350,
+      "small": 240
+    },
+    "canton": "BL",
+    "claimant": "Matthias Keller",
+    "date_main_event": "2026-01-27",
+    "date_written": "2026-03-18",
+    "earlier_dates": [
+      "2022-02-17",
+      "2024-11-04",
+      "2024-11-27"
+    ],
+    "other_party_organisation": "Steinbruch Verwaltungs GmbH",
+    "other_party_person": "Martina Moser",
+    "place": "Allschwil",
+    "street": "Rosenweg 22",
+    "third_person": "Yvonne Fankhauser"
+  },
+  "style_sheet": "# Style sheet for the writing session\n\nEvery file is a message a claimant sends to the organisation that handles the claim (an e-mail or a web-form\nmessage), plus the short documents attached to it. Follow this sheet for every file.\n\n## The message\n\n1. **Voice.** A lay claimant writing about their own situation, in the first person, as people write when they\n   are worried or annoyed: concrete events, dates, names, amounts, what they want to happen. Not a lawyer, not a\n   clerk, not a form.\n2. **Length.** 150 to 400 words for the message body (attachments not counted). Vary the length across files.\n3. **Language.** The language the bundle names. German means Swiss Standard German (write \"ss\", never \"ß\"; Swiss\n   usage such as \"Vermieterin\", \"Hauswart\", \"Lohn\"). English means plain international English.\n4. **Words.** No legal terms a lay person would not use. Never quote or name an article, paragraph, section or\n   statute, and never use a term that appears in a question only because the question is precise (for example\n   \"designated by the canton\", \"registered partnership\", \"non-voluntary legal obligation\") unless an ordinary\n   person in this situation would say it. Say what happened, not what it is called in law.\n5. **No mirroring.** No headings, bullet lists or paragraph breaks that follow the questions. One paragraph may\n   carry several topics; one topic may be spread over two paragraphs. Never number the topics.\n6. **Order.** Bring up the topics in the order the bundle lists under `topics_in_order` (it is shuffled per\n   file). Greeting and closing are free.\n7. **Absence.** No sentence says that something is not the case unless the bundle's designed answer for that\n   question is \"no\". A question marked \"not mentioned\" is not touched at all: not denied, not hinted at, not\n   answered by an attachment, not raised as a worry.\n8. **Questions marked \"no\".** Say it in the claimant's words, once, plainly enough that a careful reader answers\n   \"no\" without guessing (\"He never wrote to me about it, I only told him on the phone\" is a clear no to \"Did the\n   landlord learn of it in writing?\").\n9. **Questions marked \"yes\".** Make it clear; it may be plain (\"I paid the October rent into the deposit account\")\n   or follow unmistakably from what is told (\"the letter says the rent goes up because the mortgage rate rose\").\n   Do not rely on a hint a careful reader could read two ways.\n10. **Open questions.** The claimant raises the matter and leaves it unsettled. Vary how (never the same phrase in\n    two files):\n    - not knowing: \"I'm not sure whether the letter ever reached my wife separately.\" / \"Ob die Hausverwaltung\n      davon weiss, kann ich nicht sagen.\"\n    - undecided: \"I haven't decided yet whether to ask for more time in the flat.\" / \"Ich überlege noch, ob ich\n      Schadenersatz verlange.\"\n    - disputed: \"She says she sent it in March; I never got anything.\" / \"Er behauptet, ich hätte das selbst\n      verursacht, das stimmt so nicht, aber geklärt ist es nicht.\"\n    - pending: \"The caretaker said someone would find out; I've heard nothing since.\"\n    What is **not** open: a plain yes or no said with hesitation (\"I think I told him in writing, yes, the e-mail\n    of 3 May\" is a yes); a matter the claimant asks the reader to decide when the facts themselves are stated (the\n    facts decide); silence (that is \"not mentioned\").\n11. **Dates and amounts.** Use the story seed's names, places, dates and amounts; invent nothing that contradicts\n    them. Where a question depends on a time span, the bundle gives dates on both sides of the span: use the one\n    that makes the designed answer true. Dates must make every designed answer true and none of the\n    \"not mentioned\" questions answerable.\n12. **Attachments in the message.** The claimant may say that they attach a document the bundle lists. Never\n    mention a document that is not attached, never promise one, never list what the organisation might need.\n13. **No meta-text.** No word about questions, designs, tests, benchmarks or rules. No placeholders.\n\n## The attachments\n\n1. Each attachment is a short synthetic document (60 to 200 words, plain text) written in the voice of its author:\n   a contract excerpt, a letter, a receipt, a notice, a form, a record. Use the story seed's names, dates and\n   amounts; give it a date and a sender where a real one would have them.\n2. It shows every item listed under `must_show`, except the item named under `leave_out` (if any), which it\n   leaves out entirely without remarking on the gap. Items under `show_only_if_it_applies` appear only where the\n   story makes them apply and nothing under `must_not_show` forbids them.\n3. It contains nothing listed under `must_not_show`: in particular it never answers a question marked \"not\n   mentioned\", never settles an open question, never contradicts a designed answer.\n4. Language: the file's language, unless an English-speaking claimant in Switzerland would plausibly receive a\n   German document (then German is allowed for that attachment).\n",
+  "topics_in_order": [
+    "Q3",
+    "mention of attachment A1",
+    "Q1",
+    "Q2"
+  ]
+}

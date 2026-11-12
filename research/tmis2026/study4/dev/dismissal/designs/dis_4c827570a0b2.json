@@ -1,0 +1,115 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "stated_true",
+    "agreed_to_continue": "not_mentioned",
+    "employee_representative": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "stated_true",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "stated_true",
+    "retaliation_for_claims": "not_mentioned"
+  },
+  "file_id": "dis_4c827570a0b2",
+  "index": 6,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8600,
+      "monthly": 1210,
+      "small": 530
+    },
+    "canton": "VD",
+    "claimant": "Tara Morgan",
+    "date_main_event": "2026-01-10",
+    "date_written": "2026-02-18",
+    "earlier_dates": [
+      "2022-08-01",
+      "2023-04-30",
+      "2025-07-08"
+    ],
+    "other_party_organisation": "Rosenau Holdings Ltd",
+    "other_party_person": "Ruth Widmer",
+    "place": "Lausanne",
+    "street": "Hauptstrasse 4",
+    "third_person": "Alice Hürlimann",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-05-05",
+        "date_if_span_not_run": "2025-12-08",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-05-05",
+        "date_if_span_not_run": "2025-12-08",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 547962270
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

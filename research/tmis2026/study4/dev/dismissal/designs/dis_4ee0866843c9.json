@@ -1,0 +1,157 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": true,
+  "facts": {
+    "compulsory_service": "stated_false",
+    "employer_gave_notice": "stated_false",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "not_mentioned",
+    "pregnancy_or_birth": "not_mentioned",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_4ee0866843c9",
+  "index": 12,
+  "language": "de",
+  "level": 50,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8950,
+      "monthly": 3090,
+      "small": 1610
+    },
+    "canton": "SO",
+    "claimant": "Irene Schmid",
+    "date_main_event": "2026-02-19",
+    "date_written": "2026-04-11",
+    "earlier_dates": [
+      "2022-11-21",
+      "2023-12-22",
+      "2024-06-04"
+    ],
+    "other_party_organisation": "Weidgrund Dienste GmbH",
+    "other_party_person": "Nicole Suter",
+    "place": "Solothurn",
+    "street": "Mühleweg 86",
+    "third_person": "Martina Gerber",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-02-21",
+        "date_if_span_not_run": "2026-03-30",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-11-17",
+        "date_if_span_not_run": "2026-03-06",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-06-26",
+        "date_if_span_not_run": "2026-01-29",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-03-23",
+        "date_if_span_not_run": "2026-04-07",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-02-24",
+        "date_if_span_not_run": "2026-03-31",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2025-10-13",
+        "date_if_span_not_run": "2026-02-25",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-03-30",
+        "date_if_span_not_run": "2026-04-08",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-21",
+        "date_if_span_not_run": "2026-03-30",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-04",
+        "date_if_span_not_run": "2026-03-18",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-11-17",
+        "date_if_span_not_run": "2026-03-06",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 993848740
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "pregnancy_certificate",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_true",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "stated_false",
+    "pregnancy_or_birth": "stated_true",
+    "probation_varied": "stated_false"
+  },
+  "file_id": "dis_aa3d765b074e",
+  "index": 9,
+  "language": "en",
+  "level": 25,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3100,
+      "monthly": 2950,
+      "small": 955
+    },
+    "canton": "SG",
+    "claimant": "Maya Widmer",
+    "date_main_event": "2026-03-18",
+    "date_written": "2026-05-01",
+    "earlier_dates": [
+      "2022-05-08",
+      "2022-11-21",
+      "2023-09-04"
+    ],
+    "other_party_organisation": "Erlenhof Cooperative",
+    "other_party_person": "Sam Hughes",
+    "place": "Wil",
+    "street": "Birkenweg 9",
+    "third_person": "Paul Wälti",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-03-13",
+        "date_if_span_not_run": "2026-04-19",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-12-07",
+        "date_if_span_not_run": "2026-03-26",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-07-16",
+        "date_if_span_not_run": "2026-02-18",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-04-12",
+        "date_if_span_not_run": "2026-04-27",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-03-16",
+        "date_if_span_not_run": "2026-04-20",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2025-11-02",
+        "date_if_span_not_run": "2026-03-17",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-04-19",
+        "date_if_span_not_run": "2026-04-28",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-13",
+        "date_if_span_not_run": "2026-04-19",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-24",
+        "date_if_span_not_run": "2026-04-07",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-07",
+        "date_if_span_not_run": "2026-03-26",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1617475878
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "salary_evidence",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "not_mentioned",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "stated_false"
+  },
+  "file_id": "dis_f3d056a01f6d",
+  "index": 9,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 11200,
+      "monthly": 2550,
+      "small": 2015
+    },
+    "canton": "GR",
+    "claimant": "Sabine Huber",
+    "date_main_event": "2026-05-26",
+    "date_written": "2026-06-03",
+    "earlier_dates": [
+      "2022-05-04",
+      "2022-08-07",
+      "2023-08-14"
+    ],
+    "other_party_organisation": "Bachtel Handels AG",
+    "other_party_person": "Petra Foster",
+    "place": "Chur",
+    "street": "Mühleweg 89",
+    "third_person": "Beat Reid",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-05-22",
+        "date_if_span_not_run": "2026-05-31",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-15",
+        "date_if_span_not_run": "2026-05-22",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-26",
+        "date_if_span_not_run": "2026-05-10",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-09",
+        "date_if_span_not_run": "2026-04-28",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 500973984
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

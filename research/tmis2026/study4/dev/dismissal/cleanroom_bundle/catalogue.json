@@ -1,0 +1,324 @@
+{
+  "regime": "dismissal",
+  "types": [
+    {
+      "documents": [
+        {
+          "document": "termination_letter",
+          "must_show": [
+            "issuer",
+            "addressee",
+            "date of the notice",
+            "date the employee received it",
+            "stated end of employment"
+          ],
+          "title": "Notice of termination (letter, message or other record of the notice and its receipt)"
+        },
+        {
+          "document": "employment_contract",
+          "must_show": [
+            "parties",
+            "start date of employment",
+            "probation clause, if any",
+            "notice-period clause, if any"
+          ],
+          "title": "Employment contract or other record of the start of employment"
+        },
+        {
+          "document": "probation_terms",
+          "must_show": [
+            "length of the probation period",
+            "the written instrument that sets it"
+          ],
+          "title": "Written probation clause (individual agreement, standard or collective contract)"
+        },
+        {
+          "document": "incapacity_proof",
+          "must_show": [
+            "medical certificate",
+            "cause (illness or accident)",
+            "full or partial incapacity",
+            "first and last day of incapacity",
+            "date issued"
+          ],
+          "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)"
+        },
+        {
+          "document": "service_confirmation",
+          "must_show": [
+            "kind of service (military, civil defence, alternative civilian)",
+            "first and last day of service"
+          ],
+          "title": "Official confirmation of compulsory service"
+        },
+        {
+          "document": "pregnancy_certificate",
+          "must_show": [
+            "pregnancy confirmed and its dates, or the date of birth"
+          ],
+          "title": "Medical confirmation of pregnancy or record of the birth"
+        },
+        {
+          "document": "notice_period_terms",
+          "must_show": [
+            "notice period length",
+            "end-point of the notice (e.g. end of a month)",
+            "the written instrument that sets it (individual, standard or collective contract)"
+          ],
+          "title": "Written notice-period clause (individual, standard or collective contract)"
+        }
+      ],
+      "facts": [
+        {
+          "fact": "employer_gave_notice",
+          "question": "Did the employer give the employee notice of termination of the employment relationship?"
+        },
+        {
+          "fact": "notice_during_probation",
+          "question": "Was the notice given while the probation period was still running, counting any extension of the probation period under art. 335b para. 3 (a probation period interrupted by illness, accident or a non-voluntary legal obligation is extended accordingly)?"
+        },
+        {
+          "fact": "probation_varied",
+          "question": "Does the file say that a written individual agreement, a standard employment contract or a collective employment contract set a probation period other than the first month of employment?"
+        },
+        {
+          "fact": "incapacity_illness_accident",
+          "question": "Was the employee, through no fault of their own, wholly or partly prevented from working by illness or accident on the day notice was given or at some time while the notice period was running, and was the incapacity at that point still within its protected length: up to 30 days in the first year of service, 90 days in the second to fifth years, 180 days from the sixth year?"
+        },
+        {
+          "fact": "compulsory_service",
+          "question": "Was the employee performing Swiss compulsory military service, civil defence service or alternative civilian service on the day notice was given or while the notice period was running, or, for such a service lasting more than eleven days, did either of those fall within the four weeks before or after it?"
+        },
+        {
+          "fact": "pregnancy_or_birth",
+          "question": "Was the employee pregnant, or within sixteen weeks after giving birth, on the day notice was given or while the notice period was running?"
+        },
+        {
+          "fact": "notice_before_protected_period",
+          "question": "Where a protected period (illness or accident, compulsory service, pregnancy or birth, as above) is raised: was the notice given before that period began, with the notice period not yet expired when it began?"
+        },
+        {
+          "fact": "notice_period_varied",
+          "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?"
+        }
+      ],
+      "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
+      "type": "protected_period_notice"
+    },
+    {
+      "documents": [
+        {
+          "document": "termination_letter",
+          "must_show": [
+            "issuer",
+            "addressee",
+            "date of the notice",
+            "date the employee received it",
+            "stated end of employment"
+          ],
+          "title": "Notice of termination (letter, message or other record of the notice and its receipt)"
+        },
+        {
+          "document": "employment_contract",
+          "must_show": [
+            "parties",
+            "start date of employment",
+            "probation clause, if any",
+            "notice-period clause, if any"
+          ],
+          "title": "Employment contract or other record of the start of employment"
+        },
+        {
+          "document": "written_objection",
+          "must_show": [
+            "objection to the notice",
+            "addressed to the employer",
+            "date lodged or received",
+            "proof of sending or receipt"
+          ],
+          "title": "Copy of the written objection with proof of when the employer received it"
+        },
+        {
+          "document": "court_filing",
+          "must_show": [
+            "authority (conciliation authority or court)",
+            "compensation claim",
+            "filing date",
+            "confirmation of receipt"
+          ],
+          "title": "Proof that the claim was made pending: the conciliation request or statement of claim, with the confirmation of receipt"
+        },
+        {
+          "document": "written_reasons",
+          "must_show": [
+            "reasons stated by the employer",
+            "date"
+          ],
+          "title": "Employer's written statement of reasons"
+        },
+        {
+          "document": "claims_correspondence",
+          "must_show": [
+            "claims asserted under the employment relationship",
+            "dates before the notice",
+            "employer's response, if any"
+          ],
+          "title": "Correspondence in which the employee asserted claims before the notice"
+        },
+        {
+          "document": "representative_mandate",
+          "must_show": [
+            "body (staff council or body linked to the business)",
+            "election",
+            "term of the mandate covering the notice date"
+          ],
+          "title": "Proof of election as employee representative"
+        },
+        {
+          "document": "salary_evidence",
+          "must_show": [
+            "monthly salary",
+            "period covered"
+          ],
+          "title": "Salary statements (pay slips)"
+        }
+      ],
+      "facts": [
+        {
+          "fact": "employer_gave_notice",
+          "question": "Did the employer give the employee notice of termination of the employment relationship?"
+        },
+        {
+          "fact": "notice_period_ended",
+          "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?"
+        },
+        {
+          "fact": "objection_submitted",
+          "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?"
+        },
+        {
+          "fact": "agreed_to_continue",
+          "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?"
+        },
+        {
+          "fact": "more_than_180_days",
+          "question": "Have more than 180 days passed since the employment relationship ended?"
+        },
+        {
+          "fact": "action_in_time",
+          "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?"
+        },
+        {
+          "fact": "reasons_requested",
+          "question": "Did the employee ask the employer to state the reasons for the notice in writing?"
+        },
+        {
+          "fact": "retaliation_for_claims",
+          "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship?"
+        },
+        {
+          "fact": "employee_representative",
+          "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?"
+        }
+      ],
+      "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+      "type": "wrongful_termination"
+    },
+    {
+      "documents": [
+        {
+          "document": "termination_letter",
+          "must_show": [
+            "issuer",
+            "addressee",
+            "date",
+            "that employment ends with immediate effect"
+          ],
+          "title": "Letter or message dismissing with immediate effect"
+        },
+        {
+          "document": "employment_contract",
+          "must_show": [
+            "parties",
+            "start date of employment",
+            "agreed end date, if fixed-term",
+            "probation clause, if any",
+            "notice-period clause, if any"
+          ],
+          "title": "Employment contract or other record of its terms"
+        },
+        {
+          "document": "salary_evidence",
+          "must_show": [
+            "monthly salary",
+            "period covered"
+          ],
+          "title": "Salary statements (pay slips)"
+        },
+        {
+          "document": "written_reasons",
+          "must_show": [
+            "reasons stated by the employer",
+            "date"
+          ],
+          "title": "Employer's written statement of reasons"
+        },
+        {
+          "document": "incapacity_proof",
+          "must_show": [
+            "cause of the hindrance",
+            "first and last day",
+            "date issued"
+          ],
+          "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)"
+        },
+        {
+          "document": "notice_period_terms",
+          "must_show": [
+            "notice period length",
+            "end-point of the notice (e.g. end of a month)",
+            "the written instrument that sets it (individual, standard or collective contract)"
+          ],
+          "title": "Written notice-period clause (individual, standard or collective contract)"
+        },
+        {
+          "document": "other_earnings_evidence",
+          "must_show": [
+            "employer or client",
+            "period",
+            "amounts earned"
+          ],
+          "title": "Proof of earnings from other work since the dismissal"
+        }
+      ],
+      "facts": [
+        {
+          "fact": "dismissed_immediately",
+          "question": "Did the employer end the employment relationship with immediate effect, without a notice period?"
+        },
+        {
+          "fact": "reasons_requested",
+          "question": "Did the employee ask the employer to state the reasons for the immediate dismissal in writing?"
+        },
+        {
+          "fact": "incapacity_cause",
+          "question": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee say they were prevented from working through no fault of their own (for instance illness, accident or a non-voluntary legal obligation)?"
+        },
+        {
+          "fact": "fixed_term",
+          "question": "Was the employment relationship agreed for a fixed term, with an agreed end date, rather than for an unlimited period?"
+        },
+        {
+          "fact": "notice_period_varied",
+          "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?"
+        },
+        {
+          "fact": "other_earnings",
+          "question": "Has the employee earned income from other work during the time the notice period or the agreed term would still have run?"
+        }
+      ],
+      "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+      "type": "immediate_dismissal"
+    }
+  ]
+}

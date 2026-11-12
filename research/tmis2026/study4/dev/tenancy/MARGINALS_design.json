@@ -1,0 +1,255 @@
+{
+  "constraint_adjustments": 11,
+  "denied_per_level": {
+    "0": 2,
+    "10": 2,
+    "25": 2,
+    "50": 2
+  },
+  "documents": {
+    "defect_mold_heating.damage_evidence": {
+      "hold": 1,
+      "not_needed": 13,
+      "request": 2
+    },
+    "defect_mold_heating.defect_record": {
+      "not_needed": 1,
+      "present_insufficient": 1,
+      "present_sufficient": 1,
+      "request": 13
+    },
+    "defect_mold_heating.deposit_deadline_notice": {
+      "hold": 1,
+      "not_needed": 6,
+      "present_sufficient": 1,
+      "request": 8
+    },
+    "defect_mold_heating.deposit_receipt": {
+      "hold": 1,
+      "not_needed": 9,
+      "present_sufficient": 2,
+      "request": 4
+    },
+    "defect_mold_heating.knowledge_proof": {
+      "hold": 2,
+      "not_needed": 7,
+      "present_insufficient": 1,
+      "present_sufficient": 1,
+      "request": 5
+    },
+    "defect_mold_heating.lease_contract": {
+      "not_needed": 1,
+      "present_insufficient": 3,
+      "present_sufficient": 4,
+      "request": 8
+    },
+    "lease_termination_dispute.claims_and_reasons": {
+      "hold": 2,
+      "not_needed": 11,
+      "present_insufficient": 1,
+      "present_sufficient": 1,
+      "request": 4
+    },
+    "lease_termination_dispute.hardship_evidence": {
+      "hold": 1,
+      "not_needed": 14,
+      "present_insufficient": 1,
+      "request": 3
+    },
+    "lease_termination_dispute.lease_contract": {
+      "not_needed": 2,
+      "present_insufficient": 5,
+      "present_sufficient": 2,
+      "request": 10
+    },
+    "lease_termination_dispute.payment_demand": {
+      "hold": 2,
+      "not_needed": 11,
+      "present_insufficient": 1,
+      "request": 5
+    },
+    "lease_termination_dispute.proof_of_receipt": {
+      "not_needed": 2,
+      "present_insufficient": 2,
+      "present_sufficient": 5,
+      "request": 10
+    },
+    "lease_termination_dispute.spouse_service": {
+      "not_needed": 9,
+      "present_insufficient": 1,
+      "request": 9
+    },
+    "lease_termination_dispute.termination_notice": {
+      "not_needed": 2,
+      "present_insufficient": 3,
+      "present_sufficient": 3,
+      "request": 11
+    },
+    "rent_increase_dispute.cost_breakdown": {
+      "hold": 1,
+      "not_needed": 21,
+      "request": 3
+    },
+    "rent_increase_dispute.lease_contract": {
+      "hold": 2,
+      "not_needed": 5,
+      "present_insufficient": 1,
+      "present_sufficient": 4,
+      "request": 13
+    },
+    "rent_increase_dispute.proof_of_receipt": {
+      "hold": 2,
+      "not_needed": 5,
+      "present_insufficient": 5,
+      "present_sufficient": 2,
+      "request": 11
+    },
+    "rent_increase_dispute.rent_increase_notice": {
+      "hold": 2,
+      "not_needed": 5,
+      "present_insufficient": 5,
+      "present_sufficient": 2,
+      "request": 11
+    },
+    "rent_increase_dispute.termination_notice": {
+      "not_needed": 20,
+      "present_insufficient": 1,
+      "request": 4
+    }
+  },
+  "facts": {
+    "defect_mold_heating.damages_claimed": {
+      "not_mentioned": 7,
+      "open": 1,
+      "stated_false": 6,
+      "stated_true": 2
+    },
+    "defect_mold_heating.defect_present": {
+      "stated_false": 1,
+      "stated_true": 15
+    },
+    "defect_mold_heating.deposit_intended": {
+      "not_mentioned": 5,
+      "open": 1,
+      "stated_false": 1,
+      "stated_true": 9
+    },
+    "defect_mold_heating.landlord_unaware": {
+      "not_mentioned": 8,
+      "open": 2,
+      "stated_false": 2,
+      "stated_true": 4
+    },
+    "defect_mold_heating.notice_oral_only": {
+      "not_mentioned": 12,
+      "stated_false": 2,
+      "stated_true": 2
+    },
+    "defect_mold_heating.rent_deposited": {
+      "not_mentioned": 6,
+      "open": 2,
+      "stated_false": 2,
+      "stated_true": 6
+    },
+    "lease_termination_dispute.arrears_termination": {
+      "not_mentioned": 5,
+      "open": 2,
+      "stated_false": 6,
+      "stated_true": 6
+    },
+    "lease_termination_dispute.asserted_claims": {
+      "not_mentioned": 6,
+      "open": 2,
+      "stated_false": 5,
+      "stated_true": 6
+    },
+    "lease_termination_dispute.extension_requested": {
+      "not_mentioned": 9,
+      "stated_false": 1,
+      "stated_true": 9
+    },
+    "lease_termination_dispute.family_residence": {
+      "not_mentioned": 8,
+      "stated_false": 1,
+      "stated_true": 10
+    },
+    "lease_termination_dispute.notice_received": {
+      "stated_false": 2,
+      "stated_true": 17
+    },
+    "rent_increase_dispute.cost_or_services_reason": {
+      "stated_false": 16,
+      "stated_true": 9
+    },
+    "rent_increase_dispute.graduated_rent": {
+      "not_mentioned": 9,
+      "open": 2,
+      "stated_false": 8,
+      "stated_true": 6
+    },
+    "rent_increase_dispute.increase_applied": {
+      "open": 2,
+      "stated_false": 5,
+      "stated_true": 18
+    },
+    "rent_increase_dispute.index_clause": {
+      "not_mentioned": 10,
+      "stated_false": 10,
+      "stated_true": 5
+    },
+    "rent_increase_dispute.termination_with_increase": {
+      "not_mentioned": 15,
+      "stated_false": 5,
+      "stated_true": 5
+    }
+  },
+  "files": 60,
+  "languages": {
+    "de": 32,
+    "en": 28
+  },
+  "noise": {
+    "False": 48,
+    "True": 12
+  },
+  "open_fact": {
+    "defect_mold_heating.damages_claimed": 1,
+    "defect_mold_heating.deposit_intended": 1,
+    "defect_mold_heating.landlord_unaware": 2,
+    "defect_mold_heating.rent_deposited": 2,
+    "lease_termination_dispute.arrears_termination": 2,
+    "lease_termination_dispute.asserted_claims": 2,
+    "rent_increase_dispute.graduated_rent": 2,
+    "rent_increase_dispute.increase_applied": 2
+  },
+  "open_files_per_level": {
+    "0": 0,
+    "10": 2,
+    "25": 4,
+    "50": 8
+  },
+  "per_level": {
+    "0": 15,
+    "10": 15,
+    "25": 15,
+    "50": 15
+  },
+  "stops": {
+    "defect_mold_heating.(none)": 15,
+    "defect_mold_heating.stop_1": 1,
+    "lease_termination_dispute.(none)": 17,
+    "lease_termination_dispute.stop_1": 2,
+    "rent_increase_dispute.(none)": 18,
+    "rent_increase_dispute.(pending: stop_1)": 2,
+    "rent_increase_dispute.stop_1": 5
+  },
+  "supplied": {
+    "insufficient": 31,
+    "sufficient": 28
+  },
+  "types": {
+    "defect_mold_heating": 16,
+    "lease_termination_dispute": 19,
+    "rent_increase_dispute": 25
+  }
+}

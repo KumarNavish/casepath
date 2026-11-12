@@ -1,0 +1,105 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "missing": null,
+      "optional": true,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "missing": "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_false",
+    "lock_change": "stated_true",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "stated_false",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_7f7ad7ab95d0",
+  "index": 7,
+  "language": "en",
+  "level": 25,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8100,
+      "monthly": 2390,
+      "small": 2280
+    },
+    "canton": "ZH",
+    "claimant": "Ruth Gerber",
+    "date_main_event": "2026-01-31",
+    "date_written": "2026-02-12",
+    "earlier_dates": [
+      "2025-05-05",
+      "2025-08-07",
+      "2025-12-02"
+    ],
+    "other_party_organisation": "Erlenhof Holdings Ltd",
+    "other_party_person": "Maya Morgan",
+    "place": "Wädenswil",
+    "street": "Bahnhofstrasse 137",
+    "third_person": "Paul Baumann",
+    "time_spans": [],
+    "topic_order_seed": 2111530629
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

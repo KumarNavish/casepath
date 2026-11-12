@@ -1,0 +1,97 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": "duration (limited or indefinite)",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "stated_false",
+    "asserted_claims": "not_mentioned",
+    "extension_requested": "not_mentioned",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_060ca05c5691",
+  "index": 11,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5650,
+      "monthly": 1040,
+      "small": 945
+    },
+    "canton": "TG",
+    "claimant": "Karin Baumann",
+    "date_main_event": "2026-03-16",
+    "date_written": "2026-05-30",
+    "earlier_dates": [
+      "2022-11-30",
+      "2023-09-13",
+      "2025-09-04"
+    ],
+    "other_party_organisation": "Talgrund Genossenschaft",
+    "other_party_person": "Heinz Bucher",
+    "place": "Frauenfeld",
+    "street": "Hauptstrasse 23",
+    "third_person": "Martina Turner",
+    "time_spans": [],
+    "topic_order_seed": 339047296
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

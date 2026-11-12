@@ -1,0 +1,102 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "deposit_intended",
+      "constraint": "no deposit intended or begun, or that question open: rent cannot be stated as already deposited",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "not_mentioned",
+    "defect_present": "stated_true",
+    "deposit_intended": "not_mentioned",
+    "landlord_unaware": "not_mentioned",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "open"
+  },
+  "file_id": "ten_6c5828c1c68b",
+  "index": 2,
+  "language": "en",
+  "level": 50,
+  "open_facts": [
+    "rent_deposited"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10800,
+      "monthly": 2230,
+      "small": 1920
+    },
+    "canton": "ZG",
+    "claimant": "Chris Zimmermann",
+    "date_main_event": "2026-05-22",
+    "date_written": "2026-06-08",
+    "earlier_dates": [
+      "2022-05-23",
+      "2023-09-24",
+      "2024-09-04"
+    ],
+    "other_party_organisation": "Birkenrain Management Ltd",
+    "other_party_person": "Chris Ellis",
+    "place": "Baar",
+    "street": "Mattenweg 133",
+    "third_person": "Clara Bachmann",
+    "time_spans": [],
+    "topic_order_seed": 762311120
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

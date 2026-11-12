@@ -175,6 +175,18 @@ class Regime:
             out.append({"id": s.get("id") or f"stop_{i + 1}", "when": s["when"]})
         return out
 
+    def single_fact_stops(self, tid):
+        """Fact -> value such that some stop fires on that one fact's value (with the defining event true):
+        the stop's condition has exactly one leaf besides the defining event, outside any `not`."""
+        ev = self.defining_event(tid)
+        out = {}
+        for s in self.types[tid]["stops"]:
+            plain, negated = _leaves(s["when"])
+            rest = [c for c in plain if c.get("fact") != ev]
+            if len(rest) == 1 and not negated and "is" in rest[0]:
+                out[rest[0]["fact"]] = rest[0]["is"]
+        return out
+
     def catalogue(self):
         """Every document id in the regime with its title (first type that lists it)."""
         cat = {}
@@ -182,6 +194,23 @@ class Regime:
             for d in t["documents"]:
                 cat.setdefault(d["id"], d["title"])
         return cat
+
+
+def _leaves(c, neg=False):
+    """(leaves outside a `not`, leaves inside one) of a condition."""
+    if not isinstance(c, dict):
+        return [], []
+    if "all" in c or "any" in c:
+        a, b = [], []
+        for x in c.get("all", []) + c.get("any", []):
+            p, q = _leaves(x, neg)
+            a += p
+            b += q
+        return a, b
+    if "not" in c:
+        p, q = _leaves(c["not"], not neg)
+        return p, q
+    return ([], [c]) if neg else ([c], [])
 
 
 # ----------------------------------------------------------------- rules-based evaluation (model-free, product-free)
@@ -228,11 +257,11 @@ def rules_outcome(regime, tid, values, supplied=None):
         v = dict(values)
         v.update(zip(unknown, combo))
         fired = [s["id"] for s in stops if cond_eval(s["when"], v) is True]
-        if fired:
-            steps, docs = set(), set()
-        else:
-            steps = {s["id"] for s in t["steps"] if cond_eval(s["reached_when"], v) is True}
-            docs = {d["id"] for d in t["documents"] if d["step"] in steps and cond_eval(d["needed_when"], v) is True}
+        # A stop ends the process after the steps its `reached_when` conditions still reach: rules.json encodes
+        # every stop in the conditions of the steps after it (a step before a stop, such as the one that collects
+        # the documents needed to decide the stop, stays reached). So steps are read from reached_when alone.
+        steps = {s["id"] for s in t["steps"] if cond_eval(s["reached_when"], v) is True}
+        docs = {d["id"] for d in t["documents"] if d["step"] in steps and cond_eval(d["needed_when"], v) is True}
         comps.append((combo, frozenset(fired), steps, docs))
 
     def changed_by(pred):
@@ -248,7 +277,9 @@ def rules_outcome(regime, tid, values, supplied=None):
 
     res = {"unresolved": unknown, "documents": {}}
     any_stop = [bool(c[1]) for c in comps]
-    if all(any_stop):
+    if all(any_stop) and len({c[1] for c in comps}) == 1:
+        # stopped by the same stop(s) under every completion; if the stop that ends it depends on an open answer,
+        # it is "pending", as the product's evaluator reports it
         fired = set().union(*(c[1] for c in comps))
         res["stop"] = {"state": "stopped", "stops": sorted(fired)}
     elif any(any_stop):
@@ -261,21 +292,22 @@ def rules_outcome(regime, tid, values, supplied=None):
         need = [did in c[3] for c in comps]
         opt = regime.optional(tid, did)
         sup = supplied.get(did)
+        base = {"always": all(need), "some": any(need)}
         if opt:
             if any(need) and sup is not None:
                 st = "present_sufficient" if sup else "present_insufficient"
             else:
                 st = "not_needed"
-            res["documents"][did] = {"state": st, "optional": True, "request": False}
+            res["documents"][did] = {"state": st, "optional": True, "request": False, **base}
             continue
         if all(need):
             st = "request" if sup is None else "present_sufficient" if sup else "present_insufficient"
-            res["documents"][did] = {"state": st, "request": st in ("request", "present_insufficient")}
+            res["documents"][did] = {"state": st, "request": st in ("request", "present_insufficient"), **base}
         elif any(need):
-            res["documents"][did] = {"state": "hold", "request": False,
+            res["documents"][did] = {"state": "hold", "request": False, **base,
                                      "waits_for": changed_by(lambda fired, s, dd, x=did: x in dd)}
         else:
-            res["documents"][did] = {"state": "not_needed", "request": False}
+            res["documents"][did] = {"state": "not_needed", "request": False, **base}
     return res
 
 

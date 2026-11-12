@@ -1,0 +1,94 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "stated_false",
+    "imminent_danger": "stated_true",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_875040108b5b",
+  "index": 13,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8550,
+      "monthly": 1220,
+      "small": 1170
+    },
+    "canton": "BE",
+    "claimant": "Reto Wyss",
+    "date_main_event": "2026-04-01",
+    "date_written": "2026-05-18",
+    "earlier_dates": [
+      "2023-07-12",
+      "2024-05-14",
+      "2024-06-29"
+    ],
+    "other_party_organisation": "Weidgrund Immobilien AG",
+    "other_party_person": "Urs Gisler",
+    "place": "Burgdorf",
+    "street": "Feldstrasse 80",
+    "third_person": "Simon Moser",
+    "time_spans": [],
+    "topic_order_seed": 1349737096
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

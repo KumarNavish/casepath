@@ -1,0 +1,101 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": true,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "stated_false",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_false",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_1dfba8facf5e",
+  "index": 2,
+  "language": "de",
+  "level": 25,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8450,
+      "monthly": 2690,
+      "small": 845
+    },
+    "canton": "AG",
+    "claimant": "Verena Näf",
+    "date_main_event": "2026-01-01",
+    "date_written": "2026-02-24",
+    "earlier_dates": [
+      "2022-01-07",
+      "2024-02-04",
+      "2024-05-05"
+    ],
+    "other_party_organisation": "Sonnbühl Dienste GmbH",
+    "other_party_person": "Lukas Hofer",
+    "place": "Baden",
+    "street": "Sonnenweg 44",
+    "third_person": "Urs Weber",
+    "time_spans": [],
+    "topic_order_seed": 1277005592
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

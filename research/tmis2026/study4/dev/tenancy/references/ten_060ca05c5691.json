@@ -1,0 +1,88 @@
+{
+  "deferral": null,
+  "design_sha256": "bda1b2b78998c12c2d87b2ac8bd4d463ef896feadfc29d9f94bccf0badd73e3a",
+  "documents": {
+    "claims_and_reasons": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    },
+    "payment_demand": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "request": false,
+      "state": "present_sufficient",
+      "supplied": "sufficient"
+    },
+    "spouse_service": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "request": true,
+      "state": "request"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+    "workflow_sha256": {
+      "defect_mold_heating": "13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb",
+      "lease_termination_dispute": "a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd",
+      "rent_increase_dispute": "5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "arrears_termination": false,
+    "asserted_claims": false,
+    "dispute_family": "lease_termination_dispute",
+    "extension_requested": false,
+    "family_residence": false,
+    "notice_received": true
+  },
+  "file_id": "ten_060ca05c5691",
+  "level": 10,
+  "outcome": "closed",
+  "path": [
+    "lt_intake",
+    "lt_form",
+    "lt_family_gate",
+    "lt_arrears_gate",
+    "lt_good_faith",
+    "lt_extension",
+    "lt_end"
+  ],
+  "presumed": {
+    "asserted_claims": false,
+    "extension_requested": false,
+    "family_residence": false
+  },
+  "regime": "tenancy",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "none",
+      "stops": []
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "state": "none"
+  },
+  "type": "lease_termination_dispute",
+  "unresolved": [],
+  "waiting_for": []
+}

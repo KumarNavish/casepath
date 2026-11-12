@@ -1,0 +1,119 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": "start date of employment",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "missing": "reasons stated by the employer",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "stated_false",
+    "employee_representative": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "stated_false",
+    "objection_submitted": "stated_false",
+    "reasons_requested": "stated_true",
+    "retaliation_for_claims": "stated_false"
+  },
+  "file_id": "dis_f5520e9336bd",
+  "index": 6,
+  "language": "en",
+  "level": 25,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 4350,
+      "monthly": 3210,
+      "small": 1560
+    },
+    "canton": "BE",
+    "claimant": "Ben Odermatt",
+    "date_main_event": "2026-04-22",
+    "date_written": "2026-05-29",
+    "earlier_dates": [
+      "2022-09-29",
+      "2023-01-25",
+      "2023-05-16"
+    ],
+    "other_party_organisation": "Rebhalde Management Ltd",
+    "other_party_person": "Nina Vogel",
+    "place": "Burgdorf",
+    "street": "Mühleweg 7",
+    "third_person": "Nina Carter",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-08-13",
+        "date_if_span_not_run": "2026-03-18",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-08-13",
+        "date_if_span_not_run": "2026-03-18",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 856644284
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

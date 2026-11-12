@@ -1,0 +1,157 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": true,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_false",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "not_mentioned",
+    "pregnancy_or_birth": "stated_false",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_fea630e08ab3",
+  "index": 12,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3250,
+      "monthly": 1930,
+      "small": 1145
+    },
+    "canton": "AG",
+    "claimant": "Patrick Näf",
+    "date_main_event": "2026-05-02",
+    "date_written": "2026-06-14",
+    "earlier_dates": [
+      "2022-04-30",
+      "2023-03-09",
+      "2024-11-26"
+    ],
+    "other_party_organisation": "Kirschbaum Immobilien AG",
+    "other_party_person": "Oliver Lüthi",
+    "place": "Baden",
+    "street": "Talstrasse 10",
+    "third_person": "Jonas Schmid",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-04-26",
+        "date_if_span_not_run": "2026-06-02",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-01-20",
+        "date_if_span_not_run": "2026-05-09",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-08-29",
+        "date_if_span_not_run": "2026-04-03",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-05-26",
+        "date_if_span_not_run": "2026-06-10",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-04-29",
+        "date_if_span_not_run": "2026-06-03",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2025-12-16",
+        "date_if_span_not_run": "2026-04-30",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-06-02",
+        "date_if_span_not_run": "2026-06-11",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-26",
+        "date_if_span_not_run": "2026-06-02",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-09",
+        "date_if_span_not_run": "2026-05-21",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-20",
+        "date_if_span_not_run": "2026-05-09",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1173867584
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "stated_true",
+    "notice_period_varied": "not_mentioned",
+    "other_earnings": "stated_true",
+    "reasons_requested": "stated_false"
+  },
+  "file_id": "dis_1f3d840408c2",
+  "index": 1,
+  "language": "de",
+  "level": 25,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2950,
+      "monthly": 1780,
+      "small": 1630
+    },
+    "canton": "BS",
+    "claimant": "Andrea Brunner",
+    "date_main_event": "2026-07-12",
+    "date_written": "2026-09-10",
+    "earlier_dates": [
+      "2023-09-26",
+      "2025-11-28",
+      "2026-01-28"
+    ],
+    "other_party_organisation": "Lindenmatt Immobilien AG",
+    "other_party_person": "Fabian Tanner",
+    "place": "Basel",
+    "street": "Bergstrasse 25",
+    "third_person": "Ursula Suter",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-08-29",
+        "date_if_span_not_run": "2026-09-07",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-07-23",
+        "date_if_span_not_run": "2026-08-29",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-05",
+        "date_if_span_not_run": "2026-08-17",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-18",
+        "date_if_span_not_run": "2026-08-05",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1490561331
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

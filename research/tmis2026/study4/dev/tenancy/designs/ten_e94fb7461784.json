@@ -1,0 +1,100 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "defect_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "notice_oral_only",
+      "constraint": "a landlord who does not know of the defect cannot have learned of it orally or in writing",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "stated_false",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "stated_true",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "stated_true"
+  },
+  "file_id": "ten_e94fb7461784",
+  "index": 2,
+  "language": "de",
+  "level": 0,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3500,
+      "monthly": 1190,
+      "small": 2070
+    },
+    "canton": "TG",
+    "claimant": "Esther Schmid",
+    "date_main_event": "2026-04-23",
+    "date_written": "2026-05-03",
+    "earlier_dates": [
+      "2023-09-10",
+      "2025-08-15",
+      "2025-08-17"
+    ],
+    "other_party_organisation": "Feldegg Immobilien AG",
+    "other_party_person": "Ursula Brunner",
+    "place": "Frauenfeld",
+    "street": "Sonnenweg 89",
+    "third_person": "Tamara Zimmermann",
+    "time_spans": [],
+    "topic_order_seed": 348368584
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

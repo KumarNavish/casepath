@@ -1,0 +1,125 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "missing": "agreed end date, if fixed-term",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_false",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "other_earnings": "stated_true",
+    "reasons_requested": "stated_true"
+  },
+  "file_id": "dis_925dc8cee367",
+  "index": 1,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 12000,
+      "monthly": 1320,
+      "small": 1105
+    },
+    "canton": "ZH",
+    "claimant": "Stefan Morgan",
+    "date_main_event": "2026-01-20",
+    "date_written": "2026-02-22",
+    "earlier_dates": [
+      "2023-09-04",
+      "2025-02-18",
+      "2025-05-11"
+    ],
+    "other_party_organisation": "Kirschbaum Betriebs AG",
+    "other_party_person": "Daniel Egli",
+    "place": "Uster",
+    "street": "Gartenstrasse 38",
+    "third_person": "Andrea Meier",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-02-10",
+        "date_if_span_not_run": "2026-02-19",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-04",
+        "date_if_span_not_run": "2026-02-10",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-11-17",
+        "date_if_span_not_run": "2026-01-29",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-09-30",
+        "date_if_span_not_run": "2026-01-17",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 256790219
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

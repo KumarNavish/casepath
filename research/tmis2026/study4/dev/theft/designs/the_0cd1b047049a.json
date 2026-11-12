@@ -1,0 +1,96 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_true",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "stated_true",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_0cd1b047049a",
+  "index": 11,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10800,
+      "monthly": 1130,
+      "small": 2065
+    },
+    "canton": "GL",
+    "claimant": "Tom Kaufmann",
+    "date_main_event": "2026-05-17",
+    "date_written": "2026-05-28",
+    "earlier_dates": [
+      "2023-06-12",
+      "2023-12-05",
+      "2025-09-05"
+    ],
+    "other_party_organisation": "Rebhalde Property Ltd",
+    "other_party_person": "Alice Gisler",
+    "place": "Glarus",
+    "street": "Wiesenstrasse 66",
+    "third_person": "Owen Walsh",
+    "time_spans": [],
+    "topic_order_seed": 1464844500
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": "its value",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "stated_true",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "not_mentioned",
+    "lock_change": "open",
+    "measures_pending": "not_mentioned",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_314b305efe2d",
+  "index": 4,
+  "language": "de",
+  "level": 50,
+  "open_facts": [
+    "lock_change"
+  ],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6400,
+      "monthly": 2860,
+      "small": 1690
+    },
+    "canton": "LU",
+    "claimant": "Reto Wälti",
+    "date_main_event": "2026-08-24",
+    "date_written": "2026-09-07",
+    "earlier_dates": [
+      "2023-04-10",
+      "2023-08-11",
+      "2025-02-14"
+    ],
+    "other_party_organisation": "Birkenrain Betriebs AG",
+    "other_party_person": "Monika Schmid",
+    "place": "Luzern",
+    "street": "Sonnenweg 33",
+    "third_person": "Oliver Müller",
+    "time_spans": [],
+    "topic_order_seed": 400947645
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

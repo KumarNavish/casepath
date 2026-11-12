@@ -1,0 +1,85 @@
+{
+  "deferral": null,
+  "design_sha256": "03885a130b0315ae27044c2c71da3f3595d6952d4ba05d382e32b7e04628d9e3",
+  "documents": {
+    "employment_contract": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "request": false,
+      "state": "not_needed"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "workflow_sha256": {
+      "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+      "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+      "wrongful_termination": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "dismissed_immediately": false,
+    "dispute_family": "immediate_dismissal",
+    "fixed_term": false,
+    "incapacity_cause": false,
+    "notice_period_varied": false,
+    "other_earnings": false,
+    "reasons_requested": false
+  },
+  "file_id": "dis_ff1e9056d2c3",
+  "level": 0,
+  "outcome": "c_stop_no_immediate_dismissal",
+  "path": [
+    "c_intake",
+    "c_stop_no_immediate_dismissal"
+  ],
+  "presumed": {
+    "incapacity_cause": false,
+    "notice_period_varied": false
+  },
+  "regime": "dismissal",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "stopped",
+      "stops": [
+        "c_stop_no_immediate_dismissal"
+      ]
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "outcome": "c_stop_no_immediate_dismissal",
+    "state": "stopped",
+    "step": "c_stop_no_immediate_dismissal"
+  },
+  "type": "immediate_dismissal",
+  "unresolved": [],
+  "waiting_for": []
+}

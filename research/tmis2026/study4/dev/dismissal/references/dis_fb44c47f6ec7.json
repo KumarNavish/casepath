@@ -1,0 +1,115 @@
+{
+  "deferral": {
+    "completions": 4,
+    "mode": "exact",
+    "open_facts": [
+      "action_in_time",
+      "objection_submitted"
+    ]
+  },
+  "design_sha256": "de645d1910913d305d5030ba24294294ac1599b96685a211ed019fcfeeafbc57",
+  "documents": {
+    "claims_correspondence": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    },
+    "court_filing": {
+      "request": false,
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    },
+    "representative_mandate": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    },
+    "termination_letter": {
+      "request": true,
+      "state": "request"
+    },
+    "written_objection": {
+      "request": false,
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "request": true,
+      "state": "request"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "workflow_sha256": {
+      "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+      "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+      "wrongful_termination": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "agreed_to_continue": false,
+    "dispute_family": "wrongful_termination",
+    "employee_representative": false,
+    "employer_gave_notice": true,
+    "more_than_180_days": false,
+    "notice_period_ended": false,
+    "reasons_requested": true,
+    "retaliation_for_claims": true
+  },
+  "file_id": "dis_fb44c47f6ec7",
+  "level": 50,
+  "outcome": "assessed",
+  "path": [
+    "b_intake",
+    "b_objection_check",
+    "b_continuation_check",
+    "b_limit_check",
+    "b_grounds",
+    "b_gate_retaliation",
+    "b_retaliation",
+    "b_gate_representative",
+    "b_compensation",
+    "b_close"
+  ],
+  "presumed": {
+    "agreed_to_continue": false
+  },
+  "regime": "dismissal",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "none",
+      "stops": []
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "state": "none"
+  },
+  "type": "wrongful_termination",
+  "unresolved": [
+    "action_in_time",
+    "objection_submitted"
+  ],
+  "waiting_for": [
+    "action_in_time",
+    "objection_submitted"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": "agreed notice periods and termination dates",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "stated_true",
+    "asserted_claims": "open",
+    "extension_requested": "stated_true",
+    "family_residence": "not_mentioned",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_094dc11f4ef9",
+  "index": 5,
+  "language": "de",
+  "level": 50,
+  "open_facts": [
+    "asserted_claims"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 2700,
+      "monthly": 3010,
+      "small": 1790
+    },
+    "canton": "ZG",
+    "claimant": "Monika Schneider",
+    "date_main_event": "2026-04-04",
+    "date_written": "2026-05-27",
+    "earlier_dates": [
+      "2023-07-21",
+      "2023-08-26",
+      "2023-08-27"
+    ],
+    "other_party_organisation": "Seematt Verwaltungs GmbH",
+    "other_party_person": "Simon Bieri",
+    "place": "Baar",
+    "street": "Gartenstrasse 86",
+    "third_person": "Andrea Müller",
+    "time_spans": [],
+    "topic_order_seed": 432932348
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

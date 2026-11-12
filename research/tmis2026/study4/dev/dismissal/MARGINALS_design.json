@@ -1,0 +1,318 @@
+{
+  "constraint_adjustments": 5,
+  "denied_per_level": {
+    "0": 2,
+    "10": 2,
+    "25": 2,
+    "50": 2
+  },
+  "documents": {
+    "immediate_dismissal.employment_contract": {
+      "not_needed": 2,
+      "present_insufficient": 4,
+      "present_sufficient": 5,
+      "request": 11
+    },
+    "immediate_dismissal.incapacity_proof": {
+      "hold": 1,
+      "not_needed": 15,
+      "present_sufficient": 1,
+      "request": 5
+    },
+    "immediate_dismissal.notice_period_terms": {
+      "hold": 2,
+      "not_needed": 18,
+      "present_sufficient": 1,
+      "request": 1
+    },
+    "immediate_dismissal.other_earnings_evidence": {
+      "hold": 3,
+      "not_needed": 11,
+      "present_insufficient": 2,
+      "present_sufficient": 1,
+      "request": 5
+    },
+    "immediate_dismissal.salary_evidence": {
+      "not_needed": 2,
+      "present_insufficient": 6,
+      "present_sufficient": 3,
+      "request": 11
+    },
+    "immediate_dismissal.termination_letter": {
+      "not_needed": 2,
+      "present_insufficient": 4,
+      "present_sufficient": 2,
+      "request": 14
+    },
+    "immediate_dismissal.written_reasons": {
+      "not_needed": 18,
+      "present_insufficient": 1,
+      "request": 3
+    },
+    "protected_period_notice.employment_contract": {
+      "not_needed": 4,
+      "present_insufficient": 4,
+      "present_sufficient": 3,
+      "request": 11
+    },
+    "protected_period_notice.incapacity_proof": {
+      "hold": 1,
+      "not_needed": 17,
+      "request": 4
+    },
+    "protected_period_notice.notice_period_terms": {
+      "hold": 1,
+      "not_needed": 20,
+      "present_insufficient": 1
+    },
+    "protected_period_notice.pregnancy_certificate": {
+      "hold": 1,
+      "not_needed": 13,
+      "present_insufficient": 2,
+      "present_sufficient": 2,
+      "request": 4
+    },
+    "protected_period_notice.probation_terms": {
+      "not_needed": 14,
+      "present_insufficient": 4,
+      "present_sufficient": 1,
+      "request": 3
+    },
+    "protected_period_notice.service_confirmation": {
+      "hold": 1,
+      "not_needed": 16,
+      "present_insufficient": 2,
+      "present_sufficient": 2,
+      "request": 1
+    },
+    "protected_period_notice.termination_letter": {
+      "not_needed": 4,
+      "present_insufficient": 3,
+      "present_sufficient": 1,
+      "request": 14
+    },
+    "wrongful_termination.claims_correspondence": {
+      "hold": 3,
+      "not_needed": 11,
+      "present_insufficient": 2
+    },
+    "wrongful_termination.court_filing": {
+      "hold": 12,
+      "not_needed": 4
+    },
+    "wrongful_termination.employment_contract": {
+      "not_needed": 2,
+      "present_insufficient": 5,
+      "present_sufficient": 1,
+      "request": 8
+    },
+    "wrongful_termination.representative_mandate": {
+      "hold": 4,
+      "not_needed": 10,
+      "present_sufficient": 1,
+      "request": 1
+    },
+    "wrongful_termination.salary_evidence": {
+      "hold": 8,
+      "not_needed": 3,
+      "present_insufficient": 1,
+      "present_sufficient": 1,
+      "request": 3
+    },
+    "wrongful_termination.termination_letter": {
+      "not_needed": 2,
+      "present_insufficient": 1,
+      "present_sufficient": 3,
+      "request": 10
+    },
+    "wrongful_termination.written_objection": {
+      "hold": 9,
+      "not_needed": 4,
+      "present_sufficient": 2,
+      "request": 1
+    },
+    "wrongful_termination.written_reasons": {
+      "hold": 3,
+      "not_needed": 11,
+      "present_insufficient": 1,
+      "request": 1
+    }
+  },
+  "facts": {
+    "immediate_dismissal.dismissed_immediately": {
+      "stated_false": 2,
+      "stated_true": 20
+    },
+    "immediate_dismissal.fixed_term": {
+      "open": 2,
+      "stated_false": 7,
+      "stated_true": 13
+    },
+    "immediate_dismissal.incapacity_cause": {
+      "not_mentioned": 13,
+      "open": 1,
+      "stated_false": 2,
+      "stated_true": 6
+    },
+    "immediate_dismissal.notice_period_varied": {
+      "not_mentioned": 11,
+      "open": 1,
+      "stated_false": 3,
+      "stated_true": 7
+    },
+    "immediate_dismissal.other_earnings": {
+      "not_mentioned": 10,
+      "open": 3,
+      "stated_false": 1,
+      "stated_true": 8
+    },
+    "immediate_dismissal.reasons_requested": {
+      "not_mentioned": 11,
+      "stated_false": 7,
+      "stated_true": 4
+    },
+    "protected_period_notice.compulsory_service": {
+      "not_mentioned": 13,
+      "open": 1,
+      "stated_false": 2,
+      "stated_true": 6
+    },
+    "protected_period_notice.employer_gave_notice": {
+      "stated_false": 4,
+      "stated_true": 18
+    },
+    "protected_period_notice.incapacity_illness_accident": {
+      "not_mentioned": 10,
+      "open": 1,
+      "stated_false": 5,
+      "stated_true": 6
+    },
+    "protected_period_notice.notice_before_protected_period": {
+      "open": 1,
+      "stated_false": 16,
+      "stated_true": 5
+    },
+    "protected_period_notice.notice_during_probation": {
+      "not_mentioned": 14,
+      "stated_false": 6,
+      "stated_true": 2
+    },
+    "protected_period_notice.notice_period_varied": {
+      "not_mentioned": 6,
+      "stated_false": 5,
+      "stated_true": 11
+    },
+    "protected_period_notice.pregnancy_or_birth": {
+      "not_mentioned": 9,
+      "open": 1,
+      "stated_false": 4,
+      "stated_true": 8
+    },
+    "protected_period_notice.probation_varied": {
+      "not_mentioned": 9,
+      "stated_false": 5,
+      "stated_true": 8
+    },
+    "wrongful_termination.action_in_time": {
+      "not_mentioned": 10,
+      "stated_false": 2,
+      "stated_true": 4
+    },
+    "wrongful_termination.agreed_to_continue": {
+      "not_mentioned": 11,
+      "open": 1,
+      "stated_false": 4
+    },
+    "wrongful_termination.employee_representative": {
+      "not_mentioned": 5,
+      "stated_false": 5,
+      "stated_true": 6
+    },
+    "wrongful_termination.employer_gave_notice": {
+      "stated_false": 2,
+      "stated_true": 14
+    },
+    "wrongful_termination.more_than_180_days": {
+      "stated_false": 11,
+      "stated_true": 5
+    },
+    "wrongful_termination.notice_period_ended": {
+      "stated_false": 8,
+      "stated_true": 8
+    },
+    "wrongful_termination.objection_submitted": {
+      "not_mentioned": 8,
+      "open": 2,
+      "stated_false": 3,
+      "stated_true": 3
+    },
+    "wrongful_termination.reasons_requested": {
+      "not_mentioned": 8,
+      "stated_false": 2,
+      "stated_true": 6
+    },
+    "wrongful_termination.retaliation_for_claims": {
+      "not_mentioned": 5,
+      "stated_false": 6,
+      "stated_true": 5
+    }
+  },
+  "files": 60,
+  "languages": {
+    "de": 32,
+    "en": 28
+  },
+  "noise": {
+    "False": 48,
+    "True": 12
+  },
+  "open_fact": {
+    "immediate_dismissal.fixed_term": 2,
+    "immediate_dismissal.incapacity_cause": 1,
+    "immediate_dismissal.notice_period_varied": 1,
+    "immediate_dismissal.other_earnings": 3,
+    "protected_period_notice.compulsory_service": 1,
+    "protected_period_notice.incapacity_illness_accident": 1,
+    "protected_period_notice.notice_before_protected_period": 1,
+    "protected_period_notice.pregnancy_or_birth": 1,
+    "wrongful_termination.agreed_to_continue": 1,
+    "wrongful_termination.objection_submitted": 2
+  },
+  "open_files_per_level": {
+    "0": 0,
+    "10": 2,
+    "25": 4,
+    "50": 8
+  },
+  "per_level": {
+    "0": 15,
+    "10": 15,
+    "25": 15,
+    "50": 15
+  },
+  "stops": {
+    "immediate_dismissal.(none)": 20,
+    "immediate_dismissal.c_stop_no_immediate_dismissal": 2,
+    "protected_period_notice.(none)": 16,
+    "protected_period_notice.a_stop_no_notice": 4,
+    "protected_period_notice.a_stop_probation": 2,
+    "wrongful_termination.(none)": 5,
+    "wrongful_termination.(pending: b_stop_continued)": 1,
+    "wrongful_termination.(pending: b_stop_no_objection)": 5,
+    "wrongful_termination.(pending: b_stop_no_objection,b_stop_time_limit)": 2,
+    "wrongful_termination.(pending: b_stop_time_limit)": 1,
+    "wrongful_termination.b_stop_continued": 0,
+    "wrongful_termination.b_stop_no_notice": 2,
+    "wrongful_termination.b_stop_no_objection": 0,
+    "wrongful_termination.b_stop_time_limit": 0
+  },
+  "supplied": {
+    "insufficient": 43,
+    "sufficient": 30
+  },
+  "types": {
+    "immediate_dismissal": 22,
+    "protected_period_notice": 22,
+    "wrongful_termination": 16
+  }
+}

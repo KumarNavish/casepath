@@ -1,0 +1,85 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": "termination dates",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "stated_true",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_false"
+  },
+  "file_id": "ten_9ef3562d0d18",
+  "index": 8,
+  "language": "de",
+  "level": 0,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 12000,
+      "monthly": 2490,
+      "small": 1105
+    },
+    "canton": "SG",
+    "claimant": "Lea Lehmann",
+    "date_main_event": "2026-03-26",
+    "date_written": "2026-04-28",
+    "earlier_dates": [
+      "2023-05-27",
+      "2023-09-10",
+      "2025-08-13"
+    ],
+    "other_party_organisation": "Sonnbühl Verwaltungs GmbH",
+    "other_party_person": "Oliver Reid",
+    "place": "Wil",
+    "street": "Rosenweg 127",
+    "third_person": "Jonas Zimmermann",
+    "time_spans": [],
+    "topic_order_seed": 689584863
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

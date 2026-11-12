@@ -1,0 +1,159 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "missing": "pregnancy confirmed and its dates, or the date of birth",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "stated_true",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_25e20aeec77d",
+  "index": 3,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5400,
+      "monthly": 2170,
+      "small": 410
+    },
+    "canton": "ZH",
+    "claimant": "Ben Bieri",
+    "date_main_event": "2026-06-10",
+    "date_written": "2026-07-08",
+    "earlier_dates": [
+      "2025-06-04",
+      "2026-05-10",
+      "2026-05-20"
+    ],
+    "other_party_organisation": "Hagenbuch Management Ltd",
+    "other_party_person": "Mark Schneider",
+    "place": "Winterthur",
+    "street": "Birkenweg 123",
+    "third_person": "Olivia Egli",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-05-20",
+        "date_if_span_not_run": "2026-06-26",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-02-13",
+        "date_if_span_not_run": "2026-06-02",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-09-22",
+        "date_if_span_not_run": "2026-04-27",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-06-19",
+        "date_if_span_not_run": "2026-07-04",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-05-23",
+        "date_if_span_not_run": "2026-06-27",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-01-09",
+        "date_if_span_not_run": "2026-05-24",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-06-26",
+        "date_if_span_not_run": "2026-07-05",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-05-20",
+        "date_if_span_not_run": "2026-06-26",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-02",
+        "date_if_span_not_run": "2026-06-14",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-13",
+        "date_if_span_not_run": "2026-06-02",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1605043886
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

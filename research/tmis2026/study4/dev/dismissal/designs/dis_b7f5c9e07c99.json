@@ -1,0 +1,123 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": "addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "other_earnings_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "dismissed_immediately",
+  "denied_event": false,
+  "facts": {
+    "dismissed_immediately": "stated_true",
+    "fixed_term": "stated_true",
+    "incapacity_cause": "not_mentioned",
+    "notice_period_varied": "not_mentioned",
+    "other_earnings": "not_mentioned",
+    "reasons_requested": "stated_false"
+  },
+  "file_id": "dis_b7f5c9e07c99",
+  "index": 7,
+  "language": "en",
+  "level": 0,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 6750,
+      "monthly": 2860,
+      "small": 1110
+    },
+    "canton": "SH",
+    "claimant": "Ben Kaufmann",
+    "date_main_event": "2026-04-16",
+    "date_written": "2026-05-09",
+    "earlier_dates": [
+      "2022-08-27",
+      "2022-11-06",
+      "2023-06-26"
+    ],
+    "other_party_organisation": "Feldegg Services Ltd",
+    "other_party_person": "Jack Turner",
+    "place": "Schaffhausen",
+    "street": "Birkenweg 75",
+    "third_person": "Laura Odermatt",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-04-27",
+        "date_if_span_not_run": "2026-05-06",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-21",
+        "date_if_span_not_run": "2026-04-27",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-02-01",
+        "date_if_span_not_run": "2026-04-15",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-15",
+        "date_if_span_not_run": "2026-04-03",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1801501762
+  },
+  "type": "immediate_dismissal",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

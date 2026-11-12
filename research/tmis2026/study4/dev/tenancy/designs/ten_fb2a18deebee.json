@@ -1,0 +1,87 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": "how it was delivered (registered-mail tracking, envelope or acknowledgement)",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_true",
+    "graduated_rent": "open",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "stated_true"
+  },
+  "file_id": "ten_fb2a18deebee",
+  "index": 3,
+  "language": "en",
+  "level": 50,
+  "open_facts": [
+    "graduated_rent"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8500,
+      "monthly": 3270,
+      "small": 1265
+    },
+    "canton": "SH",
+    "claimant": "Laura Fankhauser",
+    "date_main_event": "2026-01-15",
+    "date_written": "2026-03-19",
+    "earlier_dates": [
+      "2022-02-09",
+      "2022-05-28",
+      "2023-02-02"
+    ],
+    "other_party_organisation": "Lindenmatt Management Ltd",
+    "other_party_person": "Leo Widmer",
+    "place": "Schaffhausen",
+    "street": "Mühleweg 34",
+    "third_person": "Chris Bucher",
+    "time_spans": [],
+    "topic_order_seed": 1254858073
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "stated_false",
+    "imminent_danger": "not_mentioned",
+    "measures_pending": "stated_true",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "not_mentioned"
+  },
+  "file_id": "the_003fbcb4d365",
+  "index": 5,
+  "language": "de",
+  "level": 50,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10900,
+      "monthly": 2230,
+      "small": 510
+    },
+    "canton": "ZH",
+    "claimant": "Marco Gerber",
+    "date_main_event": "2025-12-12",
+    "date_written": "2026-02-20",
+    "earlier_dates": [
+      "2023-04-20",
+      "2024-06-06",
+      "2025-06-29"
+    ],
+    "other_party_organisation": "Bachtel Genossenschaft",
+    "other_party_person": "Karin Tanner",
+    "place": "Wädenswil",
+    "street": "Mühleweg 2",
+    "third_person": "Petra Palmer",
+    "time_spans": [],
+    "topic_order_seed": 1355000667
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

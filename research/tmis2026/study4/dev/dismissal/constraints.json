@@ -1,0 +1,13 @@
+{
+  "about": "Logical dependencies between dismissal facts that rules.json does not encode but a coherent file must respect (the employment relationship ends when the notice period ends). Read by generator/design.py; each adjustment is logged in the design (constraint_adjustments).",
+  "constraints": [
+    {"note": "if the notice period has not ended (or that is open), more than 180 days since the end of employment cannot be stated",
+     "if": {"fact": "notice_period_ended", "in": ["stated_false", "open"]},
+     "then": {"fact": "more_than_180_days", "in": ["stated_false"], "set": "stated_false"},
+     "reset_if": "stated_true"},
+    {"note": "if the notice period has not ended (or that is open), a claim made pending within 180 days of the end of employment cannot be stated either way",
+     "if": {"fact": "notice_period_ended", "in": ["stated_false", "open"]},
+     "then": {"fact": "action_in_time", "in": ["not_mentioned"], "set": "not_mentioned"},
+     "reset_if": "stated_true"}
+  ]
+}

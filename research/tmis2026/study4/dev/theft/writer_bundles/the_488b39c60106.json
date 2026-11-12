@@ -1,0 +1,102 @@
+{
+  "attachments": [],
+  "file_id": "the_488b39c60106",
+  "language": "German (Swiss Standard German: write ss, never the sharp s)",
+  "length_words": [
+    150,
+    400
+  ],
+  "output": {
+    "format": "see WRITER_TASK.md: {file_id, language, text, attachments: [{label, text}]}",
+    "path": "written/the_488b39c60106.json"
+  },
+  "questions": [
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q1",
+      "question": "Does the file state that household contents at the insured location (the Versicherungsort of the policy) were stolen or damaged by a burglary, a robbery or a simple theft (including vandalism), even if nothing was taken?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q2",
+      "note": "Do not draw e-bikes as bicycles; a file that states an e-bike makes this fact open (the form names only Herren-/Damenfahrrad and Kinderfahrrad).",
+      "question": "Is a bicycle among the stolen or damaged items?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q3",
+      "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q4",
+      "question": "Was the theft a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery), and so not a simple theft?"
+    },
+    {
+      "designed_answer": "not mentioned",
+      "instruction": "Do not touch this topic at all: no sentence, aside or attachment content that would let a reader answer this question yes, no or open, and no statement that it is not the case (style sheet, message item 7).",
+      "label": "Q5",
+      "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?"
+    },
+    {
+      "designed_answer": "not mentioned",
+      "instruction": "Do not touch this topic at all: no sentence, aside or attachment content that would let a reader answer this question yes, no or open, and no statement that it is not the case (style sheet, message item 7).",
+      "label": "Q6",
+      "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q7",
+      "question": "Does the claim include costs, caused by the theft, of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?"
+    },
+    {
+      "designed_answer": "yes",
+      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "label": "Q8",
+      "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?"
+    },
+    {
+      "designed_answer": "no",
+      "instruction": "Make it clear that the answer to this question is no: say so once, or tell something that unmistakably excludes it (style sheet, message item 8).",
+      "label": "Q9",
+      "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?"
+    }
+  ],
+  "schema": "study4.writer-bundle/1",
+  "story": {
+    "amounts_chf": {
+      "large": 8350,
+      "monthly": 2170,
+      "small": 325
+    },
+    "canton": "BE",
+    "claimant": "Nicole Zimmermann",
+    "date_main_event": "2026-04-17",
+    "date_written": "2026-05-15",
+    "earlier_dates": [
+      "2024-02-01",
+      "2025-04-28",
+      "2025-11-01"
+    ],
+    "other_party_organisation": "Feldegg Immobilien AG",
+    "other_party_person": "Verena Walsh",
+    "place": "Biel/Bienne",
+    "street": "Dorfstrasse 139",
+    "third_person": "Lea Hofer"
+  },
+  "style_sheet": "# Style sheet for the writing session\n\nEvery file is a message a claimant sends to the organisation that handles the claim (an e-mail or a web-form\nmessage), plus the short documents attached to it. Follow this sheet for every file.\n\n## The message\n\n1. **Voice.** A lay claimant writing about their own situation, in the first person, as people write when they\n   are worried or annoyed: concrete events, dates, names, amounts, what they want to happen. Not a lawyer, not a\n   clerk, not a form.\n2. **Length.** 150 to 400 words for the message body (attachments not counted). Vary the length across files.\n3. **Language.** The language the bundle names. German means Swiss Standard German (write \"ss\", never \"ß\"; Swiss\n   usage such as \"Vermieterin\", \"Hauswart\", \"Lohn\"). English means plain international English.\n4. **Words.** No legal terms a lay person would not use. Never quote or name an article, paragraph, section or\n   statute, and never use a term that appears in a question only because the question is precise (for example\n   \"designated by the canton\", \"registered partnership\", \"non-voluntary legal obligation\") unless an ordinary\n   person in this situation would say it. Say what happened, not what it is called in law.\n5. **No mirroring.** No headings, bullet lists or paragraph breaks that follow the questions. One paragraph may\n   carry several topics; one topic may be spread over two paragraphs. Never number the topics.\n6. **Order.** Bring up the topics in the order the bundle lists under `topics_in_order` (it is shuffled per\n   file). Greeting and closing are free.\n7. **Absence.** No sentence says that something is not the case unless the bundle's designed answer for that\n   question is \"no\". A question marked \"not mentioned\" is not touched at all: not denied, not hinted at, not\n   answered by an attachment, not raised as a worry.\n8. **Questions marked \"no\".** Say it in the claimant's words, once, plainly enough that a careful reader answers\n   \"no\" without guessing (\"He never wrote to me about it, I only told him on the phone\" is a clear no to \"Did the\n   landlord learn of it in writing?\").\n9. **Questions marked \"yes\".** Make it clear; it may be plain (\"I paid the October rent into the deposit account\")\n   or follow unmistakably from what is told (\"the letter says the rent goes up because the mortgage rate rose\").\n   Do not rely on a hint a careful reader could read two ways.\n10. **Open questions.** The claimant raises the matter and leaves it unsettled. Vary how (never the same phrase in\n    two files):\n    - not knowing: \"I'm not sure whether the letter ever reached my wife separately.\" / \"Ob die Hausverwaltung\n      davon weiss, kann ich nicht sagen.\"\n    - undecided: \"I haven't decided yet whether to ask for more time in the flat.\" / \"Ich überlege noch, ob ich\n      Schadenersatz verlange.\"\n    - disputed: \"She says she sent it in March; I never got anything.\" / \"Er behauptet, ich hätte das selbst\n      verursacht, das stimmt so nicht, aber geklärt ist es nicht.\"\n    - pending: \"The caretaker said someone would find out; I've heard nothing since.\"\n    What is **not** open: a plain yes or no said with hesitation (\"I think I told him in writing, yes, the e-mail\n    of 3 May\" is a yes); a matter the claimant asks the reader to decide when the facts themselves are stated (the\n    facts decide); silence (that is \"not mentioned\").\n11. **Dates and amounts.** Use the story seed's names, places, dates and amounts; invent nothing that contradicts\n    them. Where a question depends on a time span, the bundle gives dates on both sides of the span: use the one\n    that makes the designed answer true. Dates must make every designed answer true and none of the\n    \"not mentioned\" questions answerable.\n12. **Attachments in the message.** The claimant may say that they attach a document the bundle lists. Never\n    mention a document that is not attached, never promise one, never list what the organisation might need.\n13. **No meta-text.** No word about questions, designs, tests, benchmarks or rules. No placeholders.\n\n## The attachments\n\n1. Each attachment is a short synthetic document (60 to 200 words, plain text) written in the voice of its author:\n   a contract excerpt, a letter, a receipt, a notice, a form, a record. Use the story seed's names, dates and\n   amounts; give it a date and a sender where a real one would have them.\n2. It shows every item listed under `must_show`, except the item named under `leave_out` (if any), which it\n   leaves out entirely without remarking on the gap. Items under `show_only_if_it_applies` appear only where the\n   story makes them apply and nothing under `must_not_show` forbids them.\n3. It contains nothing listed under `must_not_show`: in particular it never answers a question marked \"not\n   mentioned\", never settles an open question, never contradicts a designed answer.\n4. Language: the file's language, unless an English-speaking claimant in Switzerland would plausibly receive a\n   German document (then German is allowed for that attachment).\n",
+  "topics_in_order": [
+    "Q7",
+    "Q1",
+    "Q2",
+    "Q4",
+    "Q8",
+    "Q9",
+    "Q3"
+  ]
+}

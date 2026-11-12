@@ -1,0 +1,117 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_objection",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "stated_true",
+    "agreed_to_continue": "not_mentioned",
+    "employee_representative": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_true",
+    "notice_period_ended": "stated_true",
+    "objection_submitted": "not_mentioned",
+    "reasons_requested": "stated_false",
+    "retaliation_for_claims": "stated_true"
+  },
+  "file_id": "dis_250393de2a03",
+  "index": 5,
+  "language": "de",
+  "level": 50,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5450,
+      "monthly": 2150,
+      "small": 765
+    },
+    "canton": "AG",
+    "claimant": "Lea Müller",
+    "date_main_event": "2026-02-17",
+    "date_written": "2026-04-24",
+    "earlier_dates": [
+      "2022-04-09",
+      "2024-01-14",
+      "2024-06-04"
+    ],
+    "other_party_organisation": "Ahornweid Handels AG",
+    "other_party_person": "Karin Lüthi",
+    "place": "Wohlen",
+    "street": "Brunnenrain 49",
+    "third_person": "Tamara Steiner",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-07-09",
+        "date_if_span_not_run": "2026-02-11",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-07-09",
+        "date_if_span_not_run": "2026-02-11",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 26923108
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

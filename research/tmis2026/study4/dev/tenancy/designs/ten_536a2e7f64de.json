@@ -1,0 +1,87 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "rent_increase_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "proof_of_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "cost_breakdown",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "increase_applied",
+  "denied_event": false,
+  "facts": {
+    "cost_or_services_reason": "stated_false",
+    "graduated_rent": "stated_true",
+    "increase_applied": "stated_true",
+    "index_clause": "stated_false",
+    "termination_with_increase": "not_mentioned"
+  },
+  "file_id": "ten_536a2e7f64de",
+  "index": 10,
+  "language": "en",
+  "level": 25,
+  "open_facts": [],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 10800,
+      "monthly": 1400,
+      "small": 320
+    },
+    "canton": "BE",
+    "claimant": "Rachel Egli",
+    "date_main_event": "2026-01-27",
+    "date_written": "2026-03-29",
+    "earlier_dates": [
+      "2021-12-20",
+      "2024-10-25",
+      "2024-11-07"
+    ],
+    "other_party_organisation": "Kirschbaum Holdings Ltd",
+    "other_party_person": "David Widmer",
+    "place": "Burgdorf",
+    "street": "Hauptstrasse 107",
+    "third_person": "Grace Frei",
+    "time_spans": [],
+    "topic_order_seed": 1823317008
+  },
+  "type": "rent_increase_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

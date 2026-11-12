@@ -1,0 +1,100 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "stolen_items_list",
+      "missing": "its value",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "original_vouchers",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_away",
+  "denied_event": false,
+  "facts": {
+    "away_cover_missing": "stated_false",
+    "bicycle": "not_mentioned",
+    "imminent_danger": "stated_false",
+    "measures_pending": "not_mentioned",
+    "theft_away": "stated_true",
+    "traces_changed": "stated_true",
+    "vouchers_unobtainable": "stated_false"
+  },
+  "file_id": "the_d37fc3c54b4b",
+  "index": 2,
+  "language": "de",
+  "level": 10,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3400,
+      "monthly": 2300,
+      "small": 560
+    },
+    "canton": "AG",
+    "claimant": "Nadine Morgan",
+    "date_main_event": "2026-03-13",
+    "date_written": "2026-04-29",
+    "earlier_dates": [
+      "2022-03-23",
+      "2024-11-11",
+      "2024-12-12"
+    ],
+    "other_party_organisation": "Seematt Verwaltungs GmbH",
+    "other_party_person": "Karin Rüegg",
+    "place": "Wohlen",
+    "street": "Lindenweg 43",
+    "third_person": "Marco Ellis",
+    "time_spans": [],
+    "topic_order_seed": 1763063377
+  },
+  "type": "simple_theft_away",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "attachments": [
+    {
+      "document": "notification_record",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "insurance_policy",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "police_report",
+      "optional": true,
+      "supplied": false
+    },
+    {
+      "document": "police_consent",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "stolen_items_list",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "original_vouchers",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "bicycle_voucher",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "lock_change_invoice",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "theft_at_home",
+  "denied_event": false,
+  "facts": {
+    "bicycle": "stated_true",
+    "burglary_or_robbery": "stated_false",
+    "household_perpetrator": "not_mentioned",
+    "imminent_danger": "stated_true",
+    "lock_change": "not_mentioned",
+    "measures_pending": "stated_false",
+    "theft_at_home": "stated_true",
+    "traces_changed": "not_mentioned",
+    "vouchers_unobtainable": "stated_true"
+  },
+  "file_id": "the_efac75d20bd0",
+  "index": 1,
+  "language": "en",
+  "level": 0,
+  "open_facts": [],
+  "regime": "theft",
+  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5150,
+      "monthly": 1940,
+      "small": 2020
+    },
+    "canton": "ZH",
+    "claimant": "Henry Hughes",
+    "date_main_event": "2026-03-03",
+    "date_written": "2026-05-01",
+    "earlier_dates": [
+      "2024-03-02",
+      "2025-08-24",
+      "2025-10-17"
+    ],
+    "other_party_organisation": "Weidgrund Property Ltd",
+    "other_party_person": "Paul Gisler",
+    "place": "Winterthur",
+    "street": "Gartenstrasse 118",
+    "third_person": "Peter Foster",
+    "time_spans": [],
+    "topic_order_seed": 173554844
+  },
+  "type": "theft_at_home",
+  "types_drawn_from": [
+    "theft_at_home",
+    "simple_theft_away"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

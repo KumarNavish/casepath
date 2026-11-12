@@ -1,0 +1,161 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": "addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "not_mentioned",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "stated_true",
+    "pregnancy_or_birth": "stated_false",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_1bf62841defb",
+  "index": 6,
+  "language": "en",
+  "level": 50,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8450,
+      "monthly": 1670,
+      "small": 2240
+    },
+    "canton": "SZ",
+    "claimant": "Owen Vogel",
+    "date_main_event": "2026-06-05",
+    "date_written": "2026-08-04",
+    "earlier_dates": [
+      "2024-12-02",
+      "2025-04-15",
+      "2025-05-02"
+    ],
+    "other_party_organisation": "Sonnbühl Management Ltd",
+    "other_party_person": "Tom Tanner",
+    "place": "Schwyz",
+    "street": "Wiesenstrasse 27",
+    "third_person": "Hannah Morgan",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-06-16",
+        "date_if_span_not_run": "2026-07-23",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-03-12",
+        "date_if_span_not_run": "2026-06-29",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-10-19",
+        "date_if_span_not_run": "2026-05-24",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-07-16",
+        "date_if_span_not_run": "2026-07-31",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-06-19",
+        "date_if_span_not_run": "2026-07-24",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-02-05",
+        "date_if_span_not_run": "2026-06-20",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-07-23",
+        "date_if_span_not_run": "2026-08-01",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-16",
+        "date_if_span_not_run": "2026-07-23",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-29",
+        "date_if_span_not_run": "2026-07-11",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-12",
+        "date_if_span_not_run": "2026-06-29",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 305953089
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

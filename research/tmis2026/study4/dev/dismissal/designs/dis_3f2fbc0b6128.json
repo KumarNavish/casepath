@@ -1,0 +1,159 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "stated_false",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_true",
+    "notice_before_protected_period": "stated_false",
+    "notice_during_probation": "not_mentioned",
+    "notice_period_varied": "stated_false",
+    "pregnancy_or_birth": "open",
+    "probation_varied": "stated_true"
+  },
+  "file_id": "dis_3f2fbc0b6128",
+  "index": 14,
+  "language": "de",
+  "level": 50,
+  "open_facts": [
+    "pregnancy_or_birth"
+  ],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 8150,
+      "monthly": 3190,
+      "small": 1230
+    },
+    "canton": "LU",
+    "claimant": "Daniel Carter",
+    "date_main_event": "2026-07-16",
+    "date_written": "2026-07-30",
+    "earlier_dates": [
+      "2023-05-07",
+      "2024-10-28",
+      "2026-01-06"
+    ],
+    "other_party_organisation": "Sonnbühl Verwaltungs GmbH",
+    "other_party_person": "Fabian Bachmann",
+    "place": "Emmen",
+    "street": "Bahnhofstrasse 43",
+    "third_person": "Martina Bucher",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-06-11",
+        "date_if_span_not_run": "2026-07-18",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-03-07",
+        "date_if_span_not_run": "2026-06-24",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-10-14",
+        "date_if_span_not_run": "2026-05-19",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-07-11",
+        "date_if_span_not_run": "2026-07-26",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-06-14",
+        "date_if_span_not_run": "2026-07-19",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-01-31",
+        "date_if_span_not_run": "2026-06-15",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-07-18",
+        "date_if_span_not_run": "2026-07-27",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-11",
+        "date_if_span_not_run": "2026-07-18",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-04-24",
+        "date_if_span_not_run": "2026-07-06",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-07",
+        "date_if_span_not_run": "2026-06-24",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1491211530
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

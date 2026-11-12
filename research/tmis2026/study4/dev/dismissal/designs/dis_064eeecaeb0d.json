@@ -1,0 +1,159 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_true",
+    "notice_before_protected_period": "stated_true",
+    "notice_during_probation": "stated_true",
+    "notice_period_varied": "not_mentioned",
+    "pregnancy_or_birth": "not_mentioned",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_064eeecaeb0d",
+  "index": 8,
+  "language": "en",
+  "level": 10,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7300,
+      "monthly": 2090,
+      "small": 945
+    },
+    "canton": "VD",
+    "claimant": "Jack Meier",
+    "date_main_event": "2026-02-07",
+    "date_written": "2026-03-10",
+    "earlier_dates": [
+      "2022-01-12",
+      "2023-10-14",
+      "2024-02-08"
+    ],
+    "other_party_organisation": "Ahornweid Management Ltd",
+    "other_party_person": "Clara Hofer",
+    "place": "Lausanne",
+    "street": "Gartenstrasse 68",
+    "third_person": "Owen Lüthi",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-01-20",
+        "date_if_span_not_run": "2026-02-26",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-10-16",
+        "date_if_span_not_run": "2026-02-02",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-05-25",
+        "date_if_span_not_run": "2025-12-28",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-02-19",
+        "date_if_span_not_run": "2026-03-06",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-01-23",
+        "date_if_span_not_run": "2026-02-27",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2025-09-11",
+        "date_if_span_not_run": "2026-01-24",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-02-26",
+        "date_if_span_not_run": "2026-03-07",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-01-20",
+        "date_if_span_not_run": "2026-02-26",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-12-03",
+        "date_if_span_not_run": "2026-02-14",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2025-10-16",
+        "date_if_span_not_run": "2026-02-02",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 1876933664
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

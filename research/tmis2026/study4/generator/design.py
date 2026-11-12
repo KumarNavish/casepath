@@ -27,6 +27,7 @@ DEFAULTS = {
     "p_branch_false": 0.20,             # ... stated false ...
     "p_branch_not_mentioned": 0.45,     # ... or not mentioned
     "p_always_stated_true": 0.50,       # an always_stated fact: stated true, else stated false
+    "stop_lean_factor": 0.50,           # a fact whose one value alone fires a stop: that stated value's weight x this
     "denied_branch": "false_or_not_mentioned",  # branch facts in a denied-event file (see README)
     "p_supply": 0.35,                   # a mandatory document needed under the design is supplied
     "p_supply_optional": 0.30,          # an optional document whose need holds under the design is supplied
@@ -75,31 +76,48 @@ def draw_story(rng, lang, regime, tid, facts_state):
     return story
 
 
+def _match(cond, states):
+    if "all" in cond:
+        return all(_match(c, states) for c in cond["all"])
+    if cond["fact"] not in states:
+        return False
+    return states[cond["fact"]] in (cond.get("in") or [cond["state"]])
+
+
+def _if_facts(cond):
+    return [x for c in cond["all"] for x in _if_facts(c)] if "all" in cond else [cond["fact"]]
+
+
 def apply_constraints(regime, tid, states, protected, constraints, log):
-    """Constraints (optional data file, see README): {"if": {"fact", "state"}, "then": {"fact", "in": [...],
-    "set": state}}. If the `then` fact is protected (defining event, open fact), the `if` fact is reset instead."""
+    """Constraints (optional data file, see README): {"if": {"fact", "state" | "in"} or {"all": [...]},
+    "then": {"fact", "in": [...], "set": state}, "note"}. When the `if` holds and the `then` fact's state is not
+    in `in`, the `then` fact is set to `set`; if the `then` fact is protected (defining event, open fact), the
+    single `if` fact is reset to `reset_if` (default not_mentioned; stated_false for an always_stated fact)."""
     facts = set(regime.facts(tid))
     always = regime.always_stated(tid)
     for _ in range(20):
         changed = False
         for c in constraints:
-            a, b = c["if"]["fact"], c["then"]["fact"]
-            if a not in facts or b not in facts or states[a] != c["if"]["state"] or states[b] in c["then"]["in"]:
+            b = c["then"]["fact"]
+            if b not in facts or any(f not in facts for f in _if_facts(c["if"])):
                 continue
+            if not _match(c["if"], states) or states[b] in c["then"]["in"]:
+                continue
+            ifs = _if_facts(c["if"])
             if b not in protected:
                 new = c["then"]["set"]
-                if new == "not_mentioned" and b in always:
-                    new = "stated_false"
-                log.append({"constraint": c.get("note", ""), "changed": b, "from": states[b], "to": new})
-                states[b] = new
-            elif a not in protected:
+                target = b
+            elif len(ifs) == 1 and ifs[0] not in protected:
                 new = c.get("reset_if", "not_mentioned")
-                if new == "not_mentioned" and a in always:
-                    new = "stated_false"
-                log.append({"constraint": c.get("note", ""), "changed": a, "from": states[a], "to": new})
-                states[a] = new
+                target = ifs[0]
             else:
-                raise SystemExit(f"constraint {c} cannot be met: both facts are protected in {tid}")
+                raise SystemExit(f"constraint {c} cannot be met: its facts are protected in {tid}")
+            if new == "not_mentioned" and target in always:
+                new = "stated_false"
+            if new == "open":
+                raise SystemExit("a constraint may not set a fact open")
+            log.append({"constraint": c.get("note", ""), "changed": target, "from": states[target], "to": new})
+            states[target] = new
             changed = True
         if not changed:
             return
@@ -115,6 +133,8 @@ def draw_file(regime, P, rng, role, constraints):
     states = {}
     open_fact = rng.choice(facts) if role == "open" else None
     pf = [P["p_branch_true"], P["p_branch_false"], P["p_branch_not_mentioned"]]
+    lean = regime.single_fact_stops(tid)
+    k = P["stop_lean_factor"]
     for f in facts:
         if f == open_fact:
             states[f] = "open"
@@ -126,9 +146,15 @@ def draw_file(regime, P, rng, role, constraints):
             else:
                 states[f] = rng.choices(["stated_false", "not_mentioned"], weights=pf[1:])[0]
         elif f in always:
-            states[f] = "stated_true" if rng.random() < P["p_always_stated_true"] else "stated_false"
+            pt, pfa = P["p_always_stated_true"], 1 - P["p_always_stated_true"]
+            if f in lean:
+                pt, pfa = (pt * k, pfa) if lean[f] else (pt, pfa * k)
+            states[f] = "stated_true" if rng.random() < pt / (pt + pfa) else "stated_false"
         else:
-            states[f] = rng.choices(["stated_true", "stated_false", "not_mentioned"], weights=pf)[0]
+            w = list(pf)
+            if f in lean:
+                w[0 if lean[f] else 1] *= k
+            states[f] = rng.choices(["stated_true", "stated_false", "not_mentioned"], weights=w)[0]
     log = []
     apply_constraints(regime, tid, states, {ev} | ({open_fact} if open_fact else set()), constraints, log)
     assert all(states[f] != "not_mentioned" for f in always), "always_stated fact left unmentioned"

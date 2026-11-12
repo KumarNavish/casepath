@@ -1,0 +1,108 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "defect_record",
+      "missing": "how the use of the dwelling is affected",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "knowledge_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "damage_evidence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_deadline_notice",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "deposit_receipt",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "deposit_intended",
+      "constraint": "rent already paid into deposit implies the tenant has begun to pay on deposit",
+      "from": "not_mentioned",
+      "to": "stated_true"
+    },
+    {
+      "changed": "notice_oral_only",
+      "constraint": "a landlord who does not know of the defect cannot have learned of it orally or in writing",
+      "from": "stated_true",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "defect_present",
+  "denied_event": false,
+  "facts": {
+    "damages_claimed": "stated_false",
+    "defect_present": "stated_true",
+    "deposit_intended": "stated_true",
+    "landlord_unaware": "open",
+    "notice_oral_only": "not_mentioned",
+    "rent_deposited": "stated_true"
+  },
+  "file_id": "ten_0d082e78c345",
+  "index": 11,
+  "language": "de",
+  "level": 50,
+  "open_facts": [
+    "landlord_unaware"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 5850,
+      "monthly": 2850,
+      "small": 910
+    },
+    "canton": "VD",
+    "claimant": "Urs Schmid",
+    "date_main_event": "2026-06-05",
+    "date_written": "2026-08-03",
+    "earlier_dates": [
+      "2022-08-29",
+      "2024-03-02",
+      "2025-04-11"
+    ],
+    "other_party_organisation": "Weidgrund Verwaltungs GmbH",
+    "other_party_person": "Lukas Gerber",
+    "place": "Lausanne",
+    "street": "Mattenweg 1",
+    "third_person": "Rahel Widmer",
+    "time_spans": [],
+    "topic_order_seed": 1064023785
+  },
+  "type": "defect_mold_heating",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "employment_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "probation_terms",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "incapacity_proof",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "service_confirmation",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "pregnancy_certificate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "notice_period_terms",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "compulsory_service": "not_mentioned",
+    "employer_gave_notice": "stated_true",
+    "incapacity_illness_accident": "stated_true",
+    "notice_before_protected_period": "stated_true",
+    "notice_during_probation": "stated_true",
+    "notice_period_varied": "stated_false",
+    "pregnancy_or_birth": "not_mentioned",
+    "probation_varied": "not_mentioned"
+  },
+  "file_id": "dis_c50430dbdfa1",
+  "index": 1,
+  "language": "de",
+  "level": 0,
+  "open_facts": [],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7550,
+      "monthly": 2680,
+      "small": 2355
+    },
+    "canton": "FR",
+    "claimant": "Nadine Brunner",
+    "date_main_event": "2026-07-12",
+    "date_written": "2026-08-12",
+    "earlier_dates": [
+      "2022-12-14",
+      "2025-10-13",
+      "2025-10-30"
+    ],
+    "other_party_organisation": "Sonnbühl Immobilien AG",
+    "other_party_person": "Lea Meier",
+    "place": "Fribourg",
+    "street": "Rosenweg 86",
+    "third_person": "Petra Palmer",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2026-06-24",
+        "date_if_span_not_run": "2026-07-31",
+        "days": 30,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-03-20",
+        "date_if_span_not_run": "2026-07-07",
+        "days": 90,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2025-10-27",
+        "date_if_span_not_run": "2026-06-01",
+        "days": 180,
+        "fact": "incapacity_illness_accident"
+      },
+      {
+        "date_if_span_has_run": "2026-07-24",
+        "date_if_span_not_run": "2026-08-08",
+        "days": 11,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-06-27",
+        "date_if_span_not_run": "2026-08-01",
+        "days": 28,
+        "fact": "compulsory_service"
+      },
+      {
+        "date_if_span_has_run": "2026-02-13",
+        "date_if_span_not_run": "2026-06-28",
+        "days": 112,
+        "fact": "pregnancy_or_birth"
+      },
+      {
+        "date_if_span_has_run": "2026-07-31",
+        "date_if_span_not_run": "2026-08-09",
+        "days": 7,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-06-24",
+        "date_if_span_not_run": "2026-07-31",
+        "days": 30,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-05-07",
+        "date_if_span_not_run": "2026-07-19",
+        "days": 60,
+        "fact": "notice_period_varied"
+      },
+      {
+        "date_if_span_has_run": "2026-03-20",
+        "date_if_span_not_run": "2026-07-07",
+        "days": 90,
+        "fact": "notice_period_varied"
+      }
+    ],
+    "topic_order_seed": 11670092
+  },
+  "type": "protected_period_notice",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

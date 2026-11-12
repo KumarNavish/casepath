@@ -1,0 +1,118 @@
+{
+  "deferral": {
+    "completions": 4,
+    "mode": "exact",
+    "open_facts": [
+      "action_in_time",
+      "agreed_to_continue"
+    ]
+  },
+  "design_sha256": "a701f431eecdcc6557723db4ef8ae459df1758894c803f058ddb989148f88c92",
+  "documents": {
+    "claims_correspondence": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "request": false,
+      "state": "hold",
+      "waits_for": [
+        "action_in_time",
+        "agreed_to_continue"
+      ]
+    },
+    "employment_contract": {
+      "request": true,
+      "state": "present_insufficient",
+      "supplied": "insufficient"
+    },
+    "representative_mandate": {
+      "request": false,
+      "state": "hold",
+      "waits_for": [
+        "agreed_to_continue"
+      ]
+    },
+    "salary_evidence": {
+      "request": false,
+      "state": "hold",
+      "waits_for": [
+        "agreed_to_continue"
+      ]
+    },
+    "termination_letter": {
+      "request": false,
+      "state": "present_sufficient",
+      "supplied": "sufficient"
+    },
+    "written_objection": {
+      "request": false,
+      "state": "present_sufficient",
+      "supplied": "sufficient"
+    },
+    "written_reasons": {
+      "request": false,
+      "state": "not_needed"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "workflow_sha256": {
+      "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+      "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+      "wrongful_termination": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "dispute_family": "wrongful_termination",
+    "employee_representative": true,
+    "employer_gave_notice": true,
+    "more_than_180_days": false,
+    "notice_period_ended": false,
+    "objection_submitted": true,
+    "reasons_requested": false,
+    "retaliation_for_claims": false
+  },
+  "file_id": "dis_188837a70acc",
+  "level": 25,
+  "outcome": null,
+  "path": [
+    "b_intake",
+    "b_objection_check",
+    "b_continuation_check"
+  ],
+  "presumed": {},
+  "regime": "dismissal",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "pending",
+      "stops": [
+        "b_stop_continued"
+      ],
+      "waits_for": [
+        "agreed_to_continue"
+      ]
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "state": "pending",
+    "steps": [
+      "b_stop_continued"
+    ]
+  },
+  "type": "wrongful_termination",
+  "unresolved": [
+    "action_in_time",
+    "agreed_to_continue"
+  ],
+  "waiting_for": [
+    "action_in_time",
+    "agreed_to_continue"
+  ]
+}

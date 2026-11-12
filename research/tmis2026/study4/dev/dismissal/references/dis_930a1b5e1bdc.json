@@ -1,0 +1,88 @@
+{
+  "deferral": null,
+  "design_sha256": "4ac553c6ede684b411d180be5b899e6017b61d446659bb98d4ea8bbee33db7de",
+  "documents": {
+    "employment_contract": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "request": false,
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "request": false,
+      "state": "not_needed"
+    }
+  },
+  "evaluator": {
+    "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
+    "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "workflow_sha256": {
+      "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+      "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+      "wrongful_termination": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+    },
+    "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
+  },
+  "facts_given": {
+    "compulsory_service": false,
+    "dispute_family": "protected_period_notice",
+    "employer_gave_notice": false,
+    "incapacity_illness_accident": false,
+    "notice_before_protected_period": false,
+    "notice_during_probation": false,
+    "notice_period_varied": false,
+    "pregnancy_or_birth": false,
+    "probation_varied": false
+  },
+  "file_id": "dis_930a1b5e1bdc",
+  "level": 25,
+  "outcome": "a_stop_no_notice",
+  "path": [
+    "a_intake",
+    "a_stop_no_notice"
+  ],
+  "presumed": {
+    "compulsory_service": false,
+    "pregnancy_or_birth": false,
+    "probation_varied": false
+  },
+  "regime": "dismissal",
+  "rules_check": {
+    "agrees": true,
+    "differences": [],
+    "rules_stops": {
+      "state": "stopped",
+      "stops": [
+        "a_stop_no_notice"
+      ]
+    }
+  },
+  "schema": "study4.reference/1",
+  "stop": {
+    "outcome": "a_stop_no_notice",
+    "state": "stopped",
+    "step": "a_stop_no_notice"
+  },
+  "type": "protected_period_notice",
+  "unresolved": [],
+  "waiting_for": []
+}

@@ -1,0 +1,130 @@
+{
+  "attachments": [
+    {
+      "document": "termination_letter",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "employment_contract",
+      "missing": "parties",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "written_objection",
+      "missing": null,
+      "optional": false,
+      "sufficient": true,
+      "supplied": true
+    },
+    {
+      "document": "court_filing",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "written_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_correspondence",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "representative_mandate",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "salary_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [
+    {
+      "changed": "action_in_time",
+      "constraint": "if the notice period has not ended (or that is open), a claim made pending within 180 days of the end of employment cannot be stated either way",
+      "from": "stated_true",
+      "to": "not_mentioned"
+    }
+  ],
+  "defining_event": "employer_gave_notice",
+  "denied_event": false,
+  "facts": {
+    "action_in_time": "not_mentioned",
+    "agreed_to_continue": "open",
+    "employee_representative": "stated_true",
+    "employer_gave_notice": "stated_true",
+    "more_than_180_days": "stated_false",
+    "notice_period_ended": "stated_false",
+    "objection_submitted": "stated_true",
+    "reasons_requested": "stated_false",
+    "retaliation_for_claims": "stated_false"
+  },
+  "file_id": "dis_188837a70acc",
+  "index": 10,
+  "language": "de",
+  "level": 25,
+  "open_facts": [
+    "agreed_to_continue"
+  ],
+  "regime": "dismissal",
+  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_version": "2026-11-12.5",
+  "scan_noise": true,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 3900,
+      "monthly": 1760,
+      "small": 170
+    },
+    "canton": "SO",
+    "claimant": "Karin Kuhn",
+    "date_main_event": "2026-03-08",
+    "date_written": "2026-05-17",
+    "earlier_dates": [
+      "2023-01-17",
+      "2023-04-14",
+      "2025-10-19"
+    ],
+    "other_party_organisation": "Erlenhof Verwaltungs GmbH",
+    "other_party_person": "Verena Huber",
+    "place": "Olten",
+    "street": "Sonnenweg 76",
+    "third_person": "Livia Steiner",
+    "time_spans": [
+      {
+        "date_if_span_has_run": "2025-08-01",
+        "date_if_span_not_run": "2026-03-06",
+        "days": 180,
+        "fact": "more_than_180_days"
+      },
+      {
+        "date_if_span_has_run": "2025-08-01",
+        "date_if_span_not_run": "2026-03-06",
+        "days": 180,
+        "fact": "action_in_time"
+      }
+    ],
+    "topic_order_seed": 664405759
+  },
+  "type": "wrongful_termination",
+  "types_drawn_from": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}

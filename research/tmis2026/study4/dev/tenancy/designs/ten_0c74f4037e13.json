@@ -1,0 +1,97 @@
+{
+  "attachments": [
+    {
+      "document": "lease_contract",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "termination_notice",
+      "missing": "sender and addressee",
+      "optional": false,
+      "sufficient": false,
+      "supplied": true
+    },
+    {
+      "document": "proof_of_receipt",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "spouse_service",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "payment_demand",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "claims_and_reasons",
+      "optional": false,
+      "supplied": false
+    },
+    {
+      "document": "hardship_evidence",
+      "optional": false,
+      "supplied": false
+    }
+  ],
+  "constraint_adjustments": [],
+  "defining_event": "notice_received",
+  "denied_event": false,
+  "facts": {
+    "arrears_termination": "open",
+    "asserted_claims": "stated_true",
+    "extension_requested": "stated_true",
+    "family_residence": "stated_true",
+    "notice_received": "stated_true"
+  },
+  "file_id": "ten_0c74f4037e13",
+  "index": 8,
+  "language": "en",
+  "level": 50,
+  "open_facts": [
+    "arrears_termination"
+  ],
+  "regime": "tenancy",
+  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_version": "2026-11-12",
+  "scan_noise": false,
+  "schema": "study4.design/1",
+  "seed": 20261112,
+  "story": {
+    "amounts_chf": {
+      "large": 7350,
+      "monthly": 1460,
+      "small": 1365
+    },
+    "canton": "SG",
+    "claimant": "David Kaufmann",
+    "date_main_event": "2026-05-03",
+    "date_written": "2026-06-23",
+    "earlier_dates": [
+      "2023-02-14",
+      "2023-04-06",
+      "2026-01-15"
+    ],
+    "other_party_organisation": "Sonnbühl Property Ltd",
+    "other_party_person": "Kate Egli",
+    "place": "Rapperswil-Jona",
+    "street": "Talstrasse 58",
+    "third_person": "Isla Baumann",
+    "time_spans": [],
+    "topic_order_seed": 963664471
+  },
+  "type": "lease_termination_dispute",
+  "types_drawn_from": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+  ],
+  "words": [
+    150,
+    400
+  ]
+}
