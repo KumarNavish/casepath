@@ -26,13 +26,14 @@
     "sender and addressee",
     "date",
     "termination date",
+    "given in writing",
     "whether the form approved by the canton is used"
    ],
    "source_refs": [
     "sr220-en#art-266l-p2"
    ],
-   "title": "Landlord's notice of termination or written threat of termination",
-   "why": "The landlord's notice must be given on a form approved by the canton (and in writing, art. 266l(1)); only the notice itself shows whether it was."
+   "title": "Landlord's notice of termination",
+   "why": "The landlord's notice must be given on a form approved by the canton (and in writing, art. 266l para. 1); only the notice itself shows whether it was."
   },
   {
    "id": "proof_of_receipt",
@@ -59,31 +60,31 @@
    "source_refs": [
     "sr220-en#art-266n"
    ],
-   "title": "Copy of the notice served separately on the spouse or registered partner",
-   "why": "Separate service on the spouse or registered partner is required (a notice that does not conform is void, art. 266o); the copy addressed to the spouse ordinarily proves whether it was made."
+   "title": "Proof of separate service on the spouse or registered partner (the spouse's own copy with envelope or tracking), or the spouse's statement that no separate copy was received",
+   "why": "Separate service on the spouse or registered partner is required (a notice that does not conform is void, art. 266o); the spouse's own copy ordinarily proves it was made, and the spouse's statement records that it was not."
   },
   {
    "id": "payment_demand",
-   "legal_basis": "SR 220 Art. 257d para. 1",
+   "legal_basis": "SR 220 Art. 257d para. 2",
    "must_show": [
     "amount in arrears",
-    "time limit set",
+    "time limit set and date it was received",
     "warning that the lease will be terminated",
-    "date of receipt"
+    "payments made within the time limit (bank or postal records)"
    ],
    "source_refs": [
-    "sr220-en#art-257d-p1"
+    "sr220-en#art-257d-p2"
    ],
-   "title": "Landlord's written payment time limit with warning of termination",
-   "why": "A termination for arrears requires a prior time limit of at least 30 days for a dwelling with a warning of termination; the German text requires it in writing ('schriftlich', missing from the English), so the landlord's letter itself shows the time limit and the warning."
+   "title": "Landlord's written payment time limit with warning of termination, and the tenant's record of payments made within it",
+   "why": "Termination is open to the landlord only after non-payment within the time limit; the landlord's written time limit shows the limit and the warning, and the tenant's payment records show whether payment was made within it."
   },
   {
-   "id": "prior_claims_correspondence",
+   "id": "claims_and_reasons",
    "legal_basis": "SR 220 Art. 271a para. 1 let. a",
    "must_show": [
-    "claim asserted (for example a repair demand or a rent challenge)",
-    "date",
-    "addressee"
+    "claims the tenant asserted (for example a repair demand or a rent challenge), with dates",
+    "the reasons the landlord gave for the notice (on the notice, or given on request)",
+    "conciliation or court documents on those claims, if any"
    ],
    "required_when": {
     "fact": "asserted_claims",
@@ -92,8 +93,8 @@
    "source_refs": [
     "sr220-en#art-271a-p1-a"
    ],
-   "title": "Tenant's earlier correspondence asserting claims under the lease",
-   "why": "The notice may be challenged where it was given because the tenant asserted claims; the tenant's dated letters show which claims were asserted and when, relative to the notice."
+   "title": "Correspondence on the tenant's claims and the landlord's reasons for the notice",
+   "why": "The notice may be challenged where it was given because the tenant asserted claims; the tenant's dated letters show which claims were asserted and when, and the landlord's stated reasons (which must be given on request, art. 271 para. 2) show the ground he relies on."
   },
   {
    "id": "hardship_evidence",
@@ -103,11 +104,15 @@
     "financial circumstances",
     "personal or health circumstances"
    ],
+   "required_when": {
+    "fact": "extension_requested",
+    "is": true
+   },
    "source_refs": [
     "sr220-en#art-272-p2-c"
    ],
    "title": "Evidence of the tenant's personal, family and financial circumstances",
-   "why": "In weighing an extension the authority has particular regard to the parties' personal, family and financial circumstances; documents of the tenant's circumstances ordinarily prove them."
+   "why": "In weighing an extension the authority has particular regard to the parties' personal, family and financial circumstances; documents of the tenant's circumstances ordinarily prove them. They are requested where the tenant seeks an extension; an ex officio examination (art. 273 para. 5) does not by itself call for them."
   }
  ],
  "example": false,
@@ -127,7 +132,7 @@
   },
   {
    "id": "notice_received",
-   "question": "Has the tenant received a notice from the landlord terminating the lease of the dwelling?",
+   "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?",
    "source_refs": [
     "sr220-en#art-273-p1"
    ],
@@ -137,7 +142,7 @@
    "id": "family_residence",
    "question": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?",
    "source_refs": [
-    "sr220-en#art-266n"
+    "sr220-en#art-266m-p1"
    ],
    "type": "boolean"
   },
@@ -256,7 +261,7 @@
      }
     },
     {
-     "label": "no notice received",
+     "label": "no notice given",
      "to": "lt_stop",
      "when": {
       "fact": "notice_received",
@@ -268,7 +273,7 @@
    "source_refs": [
     "sr220-en#art-273-p1"
    ],
-   "title": "Was a notice of termination received?"
+   "title": "Was a notice of termination given and received?"
   },
   {
    "id": "lt_stop",
@@ -320,7 +325,7 @@
    ],
    "role": "system",
    "source_refs": [
-    "sr220-en#art-266n"
+    "sr220-en#art-266m-p1"
    ],
    "title": "Is the dwelling the family home of spouses or registered partners?"
   },
@@ -382,44 +387,28 @@
    "source_refs": [
     "sr220-en#art-257d-p1"
    ],
-   "title": "Check the payment time limit that preceded the notice"
+   "title": "Check the payment time limit that preceded the notice and the payments made within it"
   },
   {
    "documents": [
-    "prior_claims_correspondence"
+    "claims_and_reasons"
    ],
    "id": "lt_good_faith",
    "next": [
     {
-     "label": "extension sought, notice not for arrears",
+     "label": "notice not for arrears: extension can be at issue",
      "to": "lt_extension",
      "when": {
-      "all": [
-       {
-        "fact": "extension_requested",
-        "is": true
-       },
-       {
-        "fact": "arrears_termination",
-        "is": false
-       }
-      ]
+      "fact": "arrears_termination",
+      "is": false
      }
     },
     {
-     "label": "no extension to assess",
+     "label": "notice for arrears: no extension",
      "to": "lt_end",
      "when": {
-      "any": [
-       {
-        "fact": "extension_requested",
-        "is": false
-       },
-       {
-        "fact": "arrears_termination",
-        "is": true
-       }
-      ]
+      "fact": "arrears_termination",
+      "is": true
      }
     }
    ],

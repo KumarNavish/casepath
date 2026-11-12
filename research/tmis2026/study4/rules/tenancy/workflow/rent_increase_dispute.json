@@ -26,26 +26,28 @@
     "old and new rent",
     "date from which the increase applies",
     "reasons given",
-    "whether the form approved by the canton is used"
+    "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)",
+    "any threat of termination in it or in the covering letter",
+    "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"
    ],
    "source_refs": [
     "sr220-en#art-269d-p2-a–b"
    ],
-   "title": "Landlord's rent increase notice",
-   "why": "An increase is void without the prescribed form or without reasons; only the notice itself shows the form used and the reasons given."
+   "title": "Landlord's rent increase notice (with any covering letter)",
+   "why": "An increase is void without the prescribed form or without reasons; only the notice itself shows the form used and the reasons given, and where no notice exists its absence is the point to establish."
   },
   {
    "id": "proof_of_receipt",
-   "legal_basis": "SR 220 Art. 269d para. 1",
+   "legal_basis": "SR 220 Art. 270b para. 1",
    "must_show": [
     "date of receipt",
     "how it was delivered (registered-mail tracking, envelope or acknowledgement)"
    ],
    "source_refs": [
-    "sr220-en#art-269d-p1"
+    "sr220-en#art-270b-p1"
    ],
    "title": "Proof of the date the notice was received",
-   "why": "The notice must reach the tenant at least ten days before the notice period begins; proof of the date of receipt shows whether it did (and fixes the start of the 30-day challenge period, art. 270b(1))."
+   "why": "The challenge runs 30 days from receiving the notice (German: from its being communicated); proof of the date of receipt is needed to check that period, and it also shows when the notice was given relative to the ten-day rule of art. 269d para. 1."
   },
   {
    "id": "cost_breakdown",
@@ -53,7 +55,8 @@
    "must_show": [
     "costs or works relied on",
     "amounts",
-    "share passed on to the rent"
+    "share passed on to the rent",
+    "supporting invoices or statements"
    ],
    "required_when": {
     "fact": "cost_or_services_reason",
@@ -62,8 +65,8 @@
    "source_refs": [
     "sr220-en#art-269a-b"
    ],
-   "title": "Landlord's breakdown of the cost increases or additional services relied on",
-   "why": "A rent justified by cost increases or additional services is in general not unfair; the landlord's breakdown of those costs or works ordinarily shows whether the increase is so justified."
+   "title": "Landlord's breakdown of the cost increases or additional services, with the supporting invoices, interest notices or cost statements",
+   "why": "A rent justified by cost increases or additional services is in general not unfair; the underlying invoices, interest notices or cost statements, with the landlord's breakdown, ordinarily show whether the increase is so justified."
   },
   {
    "id": "termination_notice",
@@ -71,14 +74,14 @@
    "must_show": [
     "sender and addressee",
     "date",
-    "termination or threat stated",
+    "termination date",
     "connection to the rent increase"
    ],
    "source_refs": [
     "sr220-en#art-269d-p2-c"
    ],
-   "title": "Landlord's notice of termination or written threat of termination",
-   "why": "The increase is void if accompanied by a notice or a threat of termination; the notice or the letter containing the threat shows whether it accompanied the increase."
+   "title": "Landlord's notice of termination",
+   "why": "The increase is void if accompanied by a notice of termination; the notice shows whether it accompanied the increase."
   }
  ],
  "example": false,
@@ -87,7 +90,7 @@
    "id": "dispute_family",
    "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, heating), a termination of the lease by the landlord, or a rent increase?",
    "source_refs": [
-    "sr220-en#art-270b-p1"
+    "sr220-en#art-269d-p2-a"
    ],
    "type": "enum",
    "values": [
@@ -97,10 +100,10 @@
    ]
   },
   {
-   "id": "increase_notified",
-   "question": "Does the claim state that the landlord has communicated to the tenant an increase of the rent of the dwelling (whether or not on an official form)?",
+   "id": "increase_applied",
+   "question": "Does the claim state that the landlord has announced, demanded or charged a higher rent for the dwelling, by a notice, a letter, an invoice or otherwise (whether or not on an official form)?",
    "source_refs": [
-    "sr220-en#art-270b-p1"
+    "sr220-en#art-269d-p2-a"
    ],
    "type": "boolean"
   },
@@ -121,6 +124,7 @@
    "type": "boolean"
   },
   {
+   "always_stated": true,
    "id": "cost_or_services_reason",
    "question": "Does the increase notice give, as its reason, higher costs for the landlord (for example higher mortgage interest or operating costs) or additional services or works by the landlord (for example a renovation)?",
    "source_refs": [
@@ -129,8 +133,8 @@
    "type": "boolean"
   },
   {
-   "id": "termination_threat",
-   "question": "Does the claim state that, together with the rent increase, the landlord gave notice of termination or threatened to terminate the lease?",
+   "id": "termination_with_increase",
+   "question": "Does the claim state that, together with the rent increase, the landlord gave notice of termination?",
    "source_refs": [
     "sr220-en#art-269d-p2-c"
    ],
@@ -144,7 +148,7 @@
    "source_refs": [
     "benchmark-convention#intake-convention"
    ],
-   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (increase_notified) and any always-stated fact carry no presumption."
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (increase_applied) and any always-stated fact carry no presumption."
   }
  ],
  "open_questions": [],
@@ -152,7 +156,7 @@
   {
    "id": "closed",
    "source_refs": [
-    "sr220-en#art-270b-p1"
+    "sr220-en#art-269d-p2-a"
    ],
    "title": "Document requests complete"
   },
@@ -181,7 +185,7 @@
   },
   {
    "applies": "unstated",
-   "fact": "termination_threat",
+   "fact": "termination_with_increase",
    "source_ref": "benchmark-convention#intake-convention",
    "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
@@ -212,27 +216,27 @@
    "id": "ri_intake",
    "next": [
     {
-     "label": "increase communicated",
+     "label": "increase applied or announced",
      "to": "ri_form",
      "when": {
-      "fact": "increase_notified",
+      "fact": "increase_applied",
       "is": true
      }
     },
     {
-     "label": "no increase communicated",
+     "label": "no increase",
      "to": "ri_stop",
      "when": {
-      "fact": "increase_notified",
+      "fact": "increase_applied",
       "is": false
      }
     }
    ],
    "role": "system",
    "source_refs": [
-    "sr220-en#art-270b-p1"
+    "sr220-en#art-269d-p2-a"
    ],
-   "title": "Was a rent increase communicated?"
+   "title": "Was a rent increase announced, demanded or charged?"
   },
   {
    "id": "ri_stop",
@@ -260,7 +264,7 @@
    "source_refs": [
     "sr220-en#art-269d-p1"
    ],
-   "title": "Check the form, reasons and timing of the increase notice"
+   "title": "Check the form, reasons and timing of the increase"
   },
   {
    "id": "ri_basis_gate",
@@ -363,18 +367,18 @@
    "id": "ri_threat_gate",
    "next": [
     {
-     "label": "termination notice or threat",
+     "label": "notice of termination with the increase",
      "to": "ri_threat",
      "when": {
-      "fact": "termination_threat",
+      "fact": "termination_with_increase",
       "is": true
      }
     },
     {
-     "label": "no termination notice or threat",
+     "label": "no notice of termination with it",
      "to": "ri_end",
      "when": {
-      "fact": "termination_threat",
+      "fact": "termination_with_increase",
       "is": false
      }
     }
@@ -383,7 +387,7 @@
    "source_refs": [
     "sr220-en#art-269d-p2-c"
    ],
-   "title": "Was the increase accompanied by a notice or threat of termination?"
+   "title": "Was a notice of termination given with the increase?"
   },
   {
    "documents": [
@@ -400,14 +404,14 @@
    "source_refs": [
     "sr220-en#art-269d-p2-c"
    ],
-   "title": "Check whether the increase was accompanied by a notice or threat of termination"
+   "title": "Check the notice of termination given with the increase"
   },
   {
    "id": "ri_end",
    "outcome": "closed",
    "role": "system",
    "source_refs": [
-    "sr220-en#art-270b-p1"
+    "sr220-en#art-269d-p2-a"
    ],
    "title": "Document requests complete"
   }

@@ -105,6 +105,12 @@ def check_rule(where, rule, counts):
         if rule["passage_de"].get("source_id") != "sr220-de":
             err(f"{where}: passage_de source must be sr220-de")
         check_passage(where + " [de]", "sr220-de", rule["locator"], rule["passage_de"]["passage"])
+    for a in rule.get("also", []):
+        if a.get("source_id") != "sr220-en":
+            err(f"{where}: also-passage source must be sr220-en")
+        check_passage(where + f" [also {a['locator']}]", "sr220-en", a["locator"], a["passage"])
+        if "passage_de" in a:
+            check_passage(where + f" [also {a['locator']} de]", "sr220-de", a["locator"], a["passage_de"]["passage"])
 
 
 def facts_in(c):
@@ -162,6 +168,10 @@ def main():
             for k in ("question", "not_this"):
                 if not f.get(k):
                     err(f"{tid}.{f['id']}: missing {k}")
+            for text in (f["question"], f["not_this"]):
+                for art in re.findall(r"\barts?\. (\d+[a-z]?)", text):
+                    if f"Art. {art}" not in BLOCKS["sr220-en"]:
+                        err(f"{tid}.{f['id']}: question or not_this cites art. {art}, which is not in the snapshot")
             if f["question"] not in rule_text:
                 err(f"{tid}.{f['id']}: question missing from rule_text.md")
             check_rule(f"{tid} fact {f['id']}", f["rule"], basis)

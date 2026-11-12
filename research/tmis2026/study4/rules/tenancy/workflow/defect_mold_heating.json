@@ -33,18 +33,22 @@
    "why": "The tenant's rights arise where a defect arises or the agreed use is disturbed; dated photographs or an inspection report ordinarily prove that the defect exists, where it is and since when."
   },
   {
-   "id": "defect_notification",
-   "legal_basis": "SR 220 Art. 259d",
+   "id": "knowledge_proof",
+   "legal_basis": "SR 220 Art. 259b",
    "must_show": [
-    "defect reported",
-    "addressee",
-    "date sent or received"
+    "how and when the landlord learned of the defect",
+    "the defect reported",
+    "who was informed"
    ],
+   "required_when": {
+    "fact": "notice_oral_only",
+    "is": false
+   },
    "source_refs": [
-    "sr220-en#art-259d"
+    "sr220-en#art-259b"
    ],
-   "title": "Tenant's notice of the defect to the landlord",
-   "why": "A reduction runs from the time the landlord became aware of the defect; the tenant's dated notice to the landlord ordinarily proves when that was."
+   "title": "Proof of when the landlord learned of the defect (tenant's dated notice, landlord's or manager's acknowledgement, or inspection record)",
+   "why": "The remedies depend on the landlord being aware of the defect, and a reduction runs from the time he became aware (art. 259d); a dated written notice, a written acknowledgement or an inspection record ordinarily proves when that was. Where the claim states that the landlord was told only orally, no such record exists and none is requested."
   },
   {
    "id": "damage_evidence",
@@ -80,8 +84,8 @@
    "legal_basis": "SR 220 Art. 259h para. 1",
    "must_show": [
     "amount deposited",
-    "date of the first deposit",
-    "rent period it covers"
+    "due date of the first deposited rent",
+    "date the claims were brought before the conciliation authority (or that they have not yet been)"
    ],
    "required_when": {
     "fact": "rent_deposited",
@@ -90,8 +94,8 @@
    "source_refs": [
     "sr220-en#art-259h-p1"
    ],
-   "title": "Receipt of the deposit office for the deposited rent",
-   "why": "The 30-day period runs from the due date of the first deposited rent; the deposit office's receipt ordinarily shows which rent was first deposited and when."
+   "title": "Receipt of the deposit office for the deposited rent and the tenant's application to the conciliation authority",
+   "why": "The deposited rent passes to the landlord unless claims are brought before the conciliation authority within 30 days of the due date of the first deposited rent; the deposit office's receipt shows that due date and the application shows whether and when the claims were brought."
   }
  ],
  "example": false,
@@ -111,15 +115,23 @@
   },
   {
    "id": "defect_present",
-   "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant caused the defect or must remedy it as minor cleaning or repairs?",
+   "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant alone caused the defect or must remedy it at his own expense?",
    "source_refs": [
     "sr220-en#art-259a-p1"
    ],
    "type": "boolean"
   },
   {
-   "id": "landlord_not_informed",
-   "question": "Does the claim state that the tenant has not yet informed the landlord of the defect?",
+   "id": "landlord_unaware",
+   "question": "Does the claim state that the landlord does not yet know of the defect (the tenant has not reported it and the landlord has not learned of it in another way)?",
+   "source_refs": [
+    "sr220-en#art-257g-p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "notice_oral_only",
+   "question": "Does the claim state that the landlord learned of the defect only orally, so that no written notice, written acknowledgement or inspection record of it exists?",
    "source_refs": [
     "sr220-en#art-257g-p1"
    ],
@@ -180,7 +192,14 @@
  "presumptions": [
   {
    "applies": "unstated",
-   "fact": "landlord_not_informed",
+   "fact": "landlord_unaware",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "notice_oral_only",
    "source_ref": "benchmark-convention#intake-convention",
    "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
    "value": false
@@ -285,31 +304,31 @@
    "id": "dh_notice_gate",
    "next": [
     {
-     "label": "landlord not yet informed",
+     "label": "landlord does not yet know",
      "to": "dh_damage_gate",
      "when": {
-      "fact": "landlord_not_informed",
+      "fact": "landlord_unaware",
       "is": true
      }
     },
     {
-     "label": "landlord informed",
+     "label": "landlord knows",
      "to": "dh_notice",
      "when": {
-      "fact": "landlord_not_informed",
+      "fact": "landlord_unaware",
       "is": false
      }
     }
    ],
    "role": "system",
    "source_refs": [
-    "sr220-en#art-257g-p1"
+    "sr220-en#art-257g-p2"
    ],
-   "title": "Is it stated that the landlord has not been informed?"
+   "title": "Is it stated that the landlord does not yet know of the defect?"
   },
   {
    "documents": [
-    "defect_notification"
+    "knowledge_proof"
    ],
    "id": "dh_notice",
    "next": [
@@ -322,7 +341,7 @@
    "source_refs": [
     "sr220-en#art-259b"
    ],
-   "title": "Establish when the landlord learned of the defect"
+   "title": "Establish how and when the landlord learned of the defect"
   },
   {
    "id": "dh_damage_gate",
@@ -409,7 +428,7 @@
    "source_refs": [
     "sr220-en#art-259g-p1"
    ],
-   "title": "Check the preconditions for paying rent on deposit"
+   "title": "Check the preconditions and the time limit of the rent deposit"
   },
   {
    "id": "dh_end",
