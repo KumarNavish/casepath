@@ -32,6 +32,8 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 - Scripted only: Anhalten (stop before the next turn, keep brief, facts, documents, usage); Weiter (continue, finished steps skipped, same result as straight through); Verwerfen (back to the last finished result); a case worker's answer during a run or a pause, honoured from the next turn and never overwritten; anderer Prozess while paused or from the run line (Anhalten, choose, Weiter); the chosen process announced before any agent reads. A continued run carries the paused run's usage and is counted once, outside the timing profile.
 - First real check, when tokens are allowed: one gate run with Anhalten after the reading, then Weiter.
 
+**Action tests start from the handler's decisions.** Stages after "Deckung" and "Vorgehen" are reached only through the handler's own decisions (handler_only facts the agents never set). A test of A5, A8/A9, A10, A11 or A12 therefore sets those decisions on the cut first, as set_fact edits, as the handler had decided by then; the test then measures the next action from there.
+
 **Named in the scores.**
 - D8: 1 extra from the all-of rule ("Sämtliche Korrespondenz"), accepted: Protekta asked for it in 6 of 7 letters.
 - D6: the round-1 run judged five undated photos from one moment "unbrauchbar" (the need asks for photos over the whole period); the baseline run had them "vorhanden". Judged against the need, round 1 is right and the baseline status is the one wrong document status; Protekta did not ask for photos in D6, so the letter asks one document more than Protekta did.
