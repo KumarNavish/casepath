@@ -165,7 +165,8 @@ def shared_facts():
          "rule": rule(Q("Ziff. 8 lit. f", TRACES), "states", context=[Q("Ziff. 8, Einleitung")])},
         {"id": "bicycle",
          "question": "Is a bicycle among the stolen or damaged items?",
-         "not_this": "A motor scooter or motorcycle; bicycle parts or accessories alone.",
+         "not_this": "A motor scooter or motorcycle; bicycle parts or accessories alone. A stated e-bike leaves the fact open: the form's word 'Fahrrad' does not decide it.",
+         "generator_note": "Do not draw e-bikes as bicycles; a file that states an e-bike makes this fact open (the form names only Herren-/Damenfahrrad and Kinderfahrrad).",
          "rule": rule(Q("Abschnitt 3.9", source="css-form"), "states")},
         {"id": "vouchers_unobtainable",
          "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
@@ -369,8 +370,8 @@ OPTIONAL_READING = ("mandatory: false (workflow 'optional: true') marks a docume
                     "but CSS makes that request in its own claim form, so they are requested at intake (mandatory: true).")
 TYPE_NOTES = {"theft_at_home": ["The police step (Ziff. 8 lit. f, 'Bei Diebstahl') is also reached when the file reports only vandalism or damage with nothing taken: the text does not say whether 'bei Diebstahl' covers that case, and the rule set does not narrow it."],
               "simple_theft_away": []}
-OUTSIDE = ("A burglary or robbery away from the insured location (for example a holiday flat or hotel room "
-           "broken into, or a robbery on a trip). Ziff. 26 lit. b covers it, if at all, under the basic cover during travel; "
+OUTSIDE = ("A burglary or robbery away from the insured location (for example a hotel room or rented holiday flat broken into "
+           "during a trip, or a robbery on a trip). Ziff. 26 lit. b covers it, if at all, under the basic cover during travel; "
            "neither type applies, and routing answers 'other'. A theft from a vehicle broken into away from home is a simple "
            "theft away (a vehicle is not a container), so it belongs to type 2.")
 
@@ -690,7 +691,7 @@ def workflow(t):
     sources.append({"id": "benchmark-convention", "kind": "process_guidance", "intended_kind": "benchmark_convention",
                     "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"})
     return {"format": "casepath.workflow/1", "id": t["id"], "version": VERSION, "title": f"Household insurance theft claim: {t['title']}",
-            "status": "draft", "example": False, "applies_when": {"fact": "claim_type", "is": t["id"]},
+            "status": "reviewed", "example": False, "applies_when": {"fact": "claim_type", "is": t["id"]},
             "sources": sources, "facts": facts, "start": t["steps"][0]["id"], "steps": steps, "documents": docs,
             "outcomes": outcomes, "presumptions": presumptions, "open_questions": [],
             "notes": [{"text": "Generated from rules.json by tools/build.py; every fact, step, document and stop cites a verbatim passage of a public source (RULES.md).", "source_refs": ["css-avb#Ziff. 23.3 Abs. 1, S. 7"]}]}

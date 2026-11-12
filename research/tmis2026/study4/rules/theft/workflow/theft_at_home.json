@@ -3,7 +3,7 @@
  "id": "theft_at_home",
  "version": "2026-11-12",
  "title": "Household insurance theft claim: Theft at the insured location (CSS AVB Ziff. 23.3)",
- "status": "draft",
+ "status": "reviewed",
  "example": false,
  "applies_when": {
   "fact": "claim_type",
@@ -102,7 +102,7 @@
   {
    "id": "bicycle",
    "type": "boolean",
-   "question": "Is a bicycle among the stolen or damaged items? (Not this: A motor scooter or motorcycle; bicycle parts or accessories alone.)",
+   "question": "Is a bicycle among the stolen or damaged items? (Not this: A motor scooter or motorcycle; bicycle parts or accessories alone. A stated e-bike leaves the fact open: the form's word 'Fahrrad' does not decide it.)",
    "source_refs": [
     "css-form#Abschnitt 3.9, S. 3"
    ]

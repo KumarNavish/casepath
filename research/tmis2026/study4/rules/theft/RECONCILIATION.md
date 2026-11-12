@@ -63,3 +63,7 @@ Types 2. Facts 16: theft_at_home 9, simple_theft_away 7. Steps 16. Documents 15 
 None of the 24 verdict items. One optional note was not taken:
 
 - **`bicycle`, whether an e-bike counts.** The fact's passage is the form heading "Fahrrad (bitte Originalkaufbelege beilegen)". The form offers only "Herren- /Damenfahrrad" and "Kinderfahrrad" and names no e-bike. Ziff. 18 lit. g ("Fahrräder und E-Bikes …") defines insured items, not the form's request. The question therefore keeps the form's word "bicycle" and does not decide e-bikes either way.
+
+## Closing
+
+Reader's second look of 2026-11-12 (appended to `CITATION_CHECK.md`): all 24 points resolved, both readers agree. Applied with it: note C (the example in `outside_both_types` is now "a hotel room or rented holiday flat broken into during a trip") and the e-bike recommendation (`bicycle.not_this`: a stated e-bike leaves the fact open; `generator_note`: do not draw e-bikes as bicycles). Workflows set to status "reviewed"; `tools/check.py`: ALL CHECKS PASSED. SHA-256: `rules.json` 1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0; `rule_text.md` 1d1b4f545e4c4eb450a3f34d4b6f69df89c27e3fc8aa7a81ff276f55100a4063; `workflow/theft_at_home.json` 89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b; `workflow/simple_theft_away.json` 7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e.
