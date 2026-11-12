@@ -1,0 +1,40 @@
+design 2194e41d9132a79a; parity on study4/rules/tenancy/workflow: workflows ['defect_mold_heating.json', 'lease_termination_dispute.json', 'rent_increase_dispute.json']; settings {'readings': 3, 'open_rule': 'any', 'run_scope': 'checklist', 'model_reasoning': True}; problems none
+clean/tenancy/gpt-6.1-terra: 59 files, 2 stored, 57 to do; spent 1.7518 USD
+  ten_094dc11f4ef9 completed family lease_termination_dispute req 4 hold 1  spent 1.8751
+  ten_0c74f4037e13 completed family lease_termination_dispute req 5 hold 2  spent 1.8751
+  ten_0d082e78c345 completed family defect_mold_heating req 4 hold 1  spent 1.9036
+  ten_270f84d8acff completed family defect_mold_heating req 4 hold 0  spent 1.9197
+  ten_2dff5fa7a980 completed family rent_increase_dispute req 3 hold 0  spent 1.9278
+  ten_429b182434cf completed family None req 0 hold 0  spent 1.9413
+  ten_404e03b3e37f completed family defect_mold_heating req 2 hold 1  spent 1.9488
+  ten_2249a3b45704 completed family defect_mold_heating req 3 hold 1  spent 1.9649
+  ten_580485dac025 completed family None req 0 hold 0  spent 1.9722
+  ten_49dab8d40787 completed family rent_increase_dispute req 2 hold 0  spent 2.0256
+  ten_58961449957f completed family lease_termination_dispute req 0 hold 0  spent 2.0646
+  ten_5aecbb73131b failed family None req 0 hold 0 FAILED schema_mismatch: The model answer did not match its schema: $.facts: array length outside bounds (2 items; allowed 0 to 1)  spent 2.0744
+  ten_536a2e7f64de completed family rent_increase_dispute req 2 hold 0  spent 2.1030
+  ten_5822f6df0cb7 completed family lease_termination_dispute req 5 hold 0  spent 2.1765
+  ten_62956adff3f7 completed family rent_increase_dispute req 3 hold 0  spent 2.1986
+  ten_65213c168ab3 completed family lease_termination_dispute req 5 hold 0  spent 2.2030
+  ten_6806063b9fd7 completed family rent_increase_dispute req 3 hold 1  spent 2.2319
+  ten_650fe62e2c09 completed family lease_termination_dispute req 4 hold 0  spent 2.2397
+  ten_68f29695fb98 completed family defect_mold_heating req 3 hold 0  spent 2.2596
+  ten_6d6fcb65d5b6 completed family defect_mold_heating req 3 hold 0  spent 2.3303
+  ten_76d8d9821402 completed family rent_increase_dispute req 0 hold 0  spent 2.3652
+  ten_68cb7ef0004f completed family lease_termination_dispute req 4 hold 0  spent 2.3668
+  ten_776e0e61986b completed family None req 0 hold 0  spent 2.3668
+  ten_73e9202b8898 completed family rent_increase_dispute req 4 hold 0  spent 2.4014
+  ten_8572ddc89110 completed family None req 0 hold 0  spent 2.4084
+  ten_7bdc8d77b443 completed family lease_termination_dispute req 4 hold 0  spent 2.4563
+  ten_857d108a2bbc completed family lease_termination_dispute req 2 hold 1  spent 2.5000
+  ten_81c7af7dbe95 completed family lease_termination_dispute req 5 hold 0  spent 2.5528
+  ten_8c54d4a61b0a completed family None req 0 hold 0  spent 2.5573
+  ten_886637ed61d4 completed family lease_termination_dispute req 6 hold 0  spent 2.6089
+  ten_8c1d86a176c0 completed family defect_mold_heating req 3 hold 0  spent 2.6395
+  ten_99fa2131c25f completed family rent_increase_dispute req 3 hold 0  spent 2.6793
+  ten_96f9b0ab4078 completed family rent_increase_dispute req 4 hold 0  spent 2.6793
+  ten_99a09ab93688 completed family defect_mold_heating req 3 hold 1  spent 2.6952
+  ten_9cee49140df5 completed family defect_mold_heating req 3 hold 0  spent 2.7633
+  ten_9ef3562d0d18 completed family rent_increase_dispute req 3 hold 0  spent 2.7861
+  ten_9f1d7f1e9554 completed family lease_termination_dispute req 4 hold 0  spent 2.7947
+DONE {"start": "2026-11-12T14:55:46Z", "end": "2026-11-12T15:09:10Z", "arm": "clean", "regime": "tenancy", "model": "gpt-6.1-terra", "files_requested": 59, "new": 37, "stored": 39, "spent_before": 1.751795, "spent_after": 2.794694, "stopped": "stop-usd reached", "failed_new": ["ten_5aecbb73131b"], "design_sha256": "2194e41d9132a79a09c0077fecd16f10cba91e220bd199c3a75c0c1c4e06182b", "args": {"arm": "clean", "regime": "tenancy", "model": "gpt-6.1-terra", "files": null, "first_per_type": false, "workers": 3, "stop_usd": 2.75, "check_only": false}}

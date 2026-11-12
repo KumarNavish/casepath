@@ -1,0 +1,639 @@
+{
+ "arm_fallback": "If the budget does not allow three arms on every regime: clean and blunt everywhere, subtle on tenancy only.",
+ "arms": {
+  "blunt": "every drawn condition's question replaced by its blunt widening; nothing else changed",
+  "clean": "the reviewed workflows study4/rules/<regime>/workflow/*.json, unchanged",
+  "subtle": "only the conditions drawn for a subtle widening replaced by it; every other question as reviewed"
+ },
+ "budget": {
+  "cap_usd": 3.5,
+  "frontier_arm": "one clean-arm run of tenancy on gpt-6.1-terra only if the total after both arms on all regimes stays under USD 2.00; stop if it would pass USD 3.20",
+  "stop_launching_usd": 3.2
+ },
+ "cache_note": "Requests go through the caching transport keyed by (url, body, run index); store ids are deterministic per (file, run). A request identical across arms (the routing call; every call of a type whose workflow an arm leaves unchanged) is answered from the cache, so such files have the same readings in both arms.",
+ "detection": "A planted condition is detected in an arm when it is flagged in that arm and was not flagged in the clean arm. False alarm: an untouched condition (branch condition not widened in that arm, defining events reported separately) that is flagged; counted in the clean arm and in each widened arm.",
+ "files": {
+  "dismissal": {
+   "ids": [
+    "dis_05af0871cd70",
+    "dis_064eeecaeb0d",
+    "dis_07997bac9677",
+    "dis_0ddd28b452d1",
+    "dis_0f89215979d2",
+    "dis_14b7db92a192",
+    "dis_166a056aad58",
+    "dis_188837a70acc",
+    "dis_1a145eb920db",
+    "dis_1bf62841defb",
+    "dis_1f3d840408c2",
+    "dis_250393de2a03",
+    "dis_25e20aeec77d",
+    "dis_32d79153a27f",
+    "dis_373612fa5345",
+    "dis_3a4e06ed3132",
+    "dis_3f2fbc0b6128",
+    "dis_408b774aa7db",
+    "dis_41ea262e9131",
+    "dis_45aed10bfb69",
+    "dis_465be22068ef",
+    "dis_4c827570a0b2",
+    "dis_4d5e1451544b",
+    "dis_4ee0866843c9",
+    "dis_5215d587db4b",
+    "dis_5adf4d2aec3c",
+    "dis_5fa2acf39bac",
+    "dis_60632f5d2a1c",
+    "dis_739543d032db",
+    "dis_7c10c74bd747",
+    "dis_7e42a5b5bd9f",
+    "dis_827bbd04ddc9",
+    "dis_82d1908071ae",
+    "dis_837cc4abb499",
+    "dis_894859471634",
+    "dis_8adfce6b0c8d",
+    "dis_9260317f805d",
+    "dis_930a1b5e1bdc",
+    "dis_9991ef82e6f4",
+    "dis_aa3d765b074e",
+    "dis_ac405c63effe",
+    "dis_b7f5c9e07c99",
+    "dis_bf38c7dfb616",
+    "dis_c50430dbdfa1",
+    "dis_c5e1bd4a1483",
+    "dis_d3bae3094a5d",
+    "dis_d4c7e372c087",
+    "dis_dd12420e6a78",
+    "dis_dd5c84a7084d",
+    "dis_e1b3af99deab",
+    "dis_f3d056a01f6d",
+    "dis_f5520e9336bd",
+    "dis_f8a12a35738c",
+    "dis_fa096cda3412",
+    "dis_fb44c47f6ec7",
+    "dis_fcbd44dfcef3",
+    "dis_fea630e08ab3",
+    "dis_ff1e9056d2c3"
+   ],
+   "manifest_sha256": "be3d9121a01ec6e6a5f592f55388e328d2581185ac44355a387cffb610ba4394",
+   "n": 58
+  },
+  "tenancy": {
+   "ids": [
+    "ten_00bf58d82a2b",
+    "ten_060ca05c5691",
+    "ten_094dc11f4ef9",
+    "ten_0c74f4037e13",
+    "ten_0d082e78c345",
+    "ten_2249a3b45704",
+    "ten_270f84d8acff",
+    "ten_2dff5fa7a980",
+    "ten_404e03b3e37f",
+    "ten_429b182434cf",
+    "ten_49dab8d40787",
+    "ten_536a2e7f64de",
+    "ten_580485dac025",
+    "ten_5822f6df0cb7",
+    "ten_58961449957f",
+    "ten_5aecbb73131b",
+    "ten_62956adff3f7",
+    "ten_650fe62e2c09",
+    "ten_65213c168ab3",
+    "ten_6806063b9fd7",
+    "ten_68cb7ef0004f",
+    "ten_68f29695fb98",
+    "ten_6d6fcb65d5b6",
+    "ten_73e9202b8898",
+    "ten_76d8d9821402",
+    "ten_776e0e61986b",
+    "ten_7bdc8d77b443",
+    "ten_81c7af7dbe95",
+    "ten_8572ddc89110",
+    "ten_857d108a2bbc",
+    "ten_886637ed61d4",
+    "ten_8c1d86a176c0",
+    "ten_8c54d4a61b0a",
+    "ten_96f9b0ab4078",
+    "ten_99a09ab93688",
+    "ten_99fa2131c25f",
+    "ten_9cee49140df5",
+    "ten_9ef3562d0d18",
+    "ten_9f1d7f1e9554",
+    "ten_a743587360f3",
+    "ten_aba30f049af3",
+    "ten_b2a5ace905ae",
+    "ten_b4d4cb05336f",
+    "ten_ba90f9b8b195",
+    "ten_c1e4987669e8",
+    "ten_c2a72cbf1698",
+    "ten_c4ccb65aff87",
+    "ten_c934efc0b1bc",
+    "ten_c95735ae0bf4",
+    "ten_cf02cc821948",
+    "ten_db552dbb3c23",
+    "ten_e4858b3af131",
+    "ten_e6d795ab2a91",
+    "ten_e94fb7461784",
+    "ten_ed10120c904e",
+    "ten_eec676341229",
+    "ten_efa24ba18ce3",
+    "ten_f1871d924ee4",
+    "ten_fb2a18deebee"
+   ],
+   "manifest_sha256": "fb4d99258f97fb8508220245453d7352d3b1afd6c8c0c018f4b562749a3ba7f7",
+   "n": 59
+  },
+  "theft": {
+   "ids": [
+    "the_003fbcb4d365",
+    "the_06baabbe2a0d",
+    "the_0aad75365ee3",
+    "the_0cd1b047049a",
+    "the_0d6569d32db1",
+    "the_1024620d6055",
+    "the_12e3d532c09d",
+    "the_12ee892d56f4",
+    "the_1487759fc403",
+    "the_1595e412e131",
+    "the_1dfba8facf5e",
+    "the_2412f755f636",
+    "the_248aa95805a8",
+    "the_2774fb90433e",
+    "the_27cd334c5026",
+    "the_281214c010bb",
+    "the_314b305efe2d",
+    "the_32a656cb56cf",
+    "the_38afd648a68a",
+    "the_488b39c60106",
+    "the_493f21bd27be",
+    "the_4c02d7c9601d",
+    "the_506c9909edc4",
+    "the_57501c7d1230",
+    "the_5ee356013cfc",
+    "the_656f9aad39e5",
+    "the_6634ab23ee99",
+    "the_685edf55333b",
+    "the_7d2b6a2bdce4",
+    "the_7f7ad7ab95d0",
+    "the_819379d12c03",
+    "the_86b4e22a87e7",
+    "the_86e739ec9184",
+    "the_875040108b5b",
+    "the_8a719e0bd89a",
+    "the_91cf197b270e",
+    "the_9355c558630a",
+    "the_93929f818110",
+    "the_9b58c5abd02f",
+    "the_a529fff2269d",
+    "the_a86e098e517e",
+    "the_b05370369093",
+    "the_b68c834f7972",
+    "the_bd8ee148bc3a",
+    "the_c0b61a3ae7cb",
+    "the_c3a5e8c74185",
+    "the_c50e0bd7b054",
+    "the_c7620535798b",
+    "the_c8b40fd1824d",
+    "the_cd857962dd2a",
+    "the_d37fc3c54b4b",
+    "the_d70abf016562",
+    "the_d76f5df60f83",
+    "the_d9579f891719",
+    "the_dd72ec4e53dd",
+    "the_e0b1e1d56fb2",
+    "the_eb579978f91b",
+    "the_efac75d20bd0",
+    "the_fefc066e8269"
+   ],
+   "manifest_sha256": "ac0754e6d5454753d3660f2c9dbf161f0b2e26118f4b975d88916c0a773c6435",
+   "n": 59
+  }
+ },
+ "inputs": "message = final/<id>/text.txt (the degraded text for files flagged scan_noise, as the file exists in the set); attachments = final/<id>/attachments/<doc>.txt (not *.clean.txt), uploaded as attachment_<n>.txt in sorted document-id order (neutral names; the set's file names are document ids); case title 'Tenancy claim' / 'Theft claim' / 'Employment claim' (Study 3 used the first two)",
+ "label": "DEVELOPMENT, post hoc, not a result",
+ "lint_rule": "For each condition (fact) of a type, over the files of that type in which the recorded state of that fact (design.json `facts`; for files flagged kept_as_read these are the states as read) is \"stated false\" or \"not mentioned\": the share of files in which the product's readings admit the fact as true. Admitted true = the product's own admission: the fact's row in the run result has status \"established\" with value true (the product establishes a deciding fact only when all three readings give that value, each with a quotation located word for word in the files). Also reported: the share in which at least one reading answered true (from the stored reading responses). A condition is flagged when the admitted-true share is at least one half with at least five such files; with fewer than five files it is \"not assessable\". For calibration, the admitted-true share over files where the recorded state is \"stated true\" and over files where it is \"open\" is reported too. A file whose run failed or whose run did not read this type's facts (routed elsewhere, or no readings) is not counted in the denominator and is listed.",
+ "model": "gpt-6-luna",
+ "product": {
+  "commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
+  "worktree": "/home/user/work/casepath-sync-e"
+ },
+ "regimes": {
+  "dismissal": {
+   "changed_facts": {
+    "blunt": {
+     "immediate_dismissal": [
+      "incapacity_cause",
+      "fixed_term"
+     ],
+     "protected_period_notice": [
+      "notice_during_probation",
+      "compulsory_service",
+      "notice_period_varied"
+     ],
+     "wrongful_termination": [
+      "notice_period_ended",
+      "action_in_time",
+      "retaliation_for_claims"
+     ]
+    },
+    "subtle": {
+     "immediate_dismissal": [
+      "incapacity_cause"
+     ],
+     "protected_period_notice": [
+      "compulsory_service"
+     ],
+     "wrongful_termination": [
+      "notice_period_ended",
+      "retaliation_for_claims"
+     ]
+    }
+   },
+   "clean_workflows_sha256": {
+    "immediate_dismissal.json": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
+    "protected_period_notice.json": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
+    "wrongful_termination.json": "14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731"
+   },
+   "draw": {
+    "branch": {
+     "immediate_dismissal": [
+      "fixed_term",
+      "incapacity_cause",
+      "notice_period_varied",
+      "other_earnings",
+      "reasons_requested"
+     ],
+     "protected_period_notice": [
+      "compulsory_service",
+      "incapacity_illness_accident",
+      "notice_before_protected_period",
+      "notice_during_probation",
+      "notice_period_varied",
+      "pregnancy_or_birth",
+      "probation_varied"
+     ],
+     "wrongful_termination": [
+      "action_in_time",
+      "agreed_to_continue",
+      "employee_representative",
+      "more_than_180_days",
+      "notice_period_ended",
+      "objection_submitted",
+      "reasons_requested",
+      "retaliation_for_claims"
+     ]
+    },
+    "defining": {
+     "immediate_dismissal": "dismissed_immediately",
+     "protected_period_notice": "employer_gave_notice",
+     "wrongful_termination": "employer_gave_notice"
+    },
+    "drawn": {
+     "immediate_dismissal": [
+      "fixed_term",
+      "incapacity_cause"
+     ],
+     "protected_period_notice": [
+      "compulsory_service",
+      "notice_during_probation",
+      "notice_period_varied"
+     ],
+     "wrongful_termination": [
+      "action_in_time",
+      "notice_period_ended",
+      "retaliation_for_claims"
+     ]
+    },
+    "subtle": [
+     [
+      "immediate_dismissal",
+      "incapacity_cause"
+     ],
+     [
+      "protected_period_notice",
+      "compulsory_service"
+     ],
+     [
+      "wrongful_termination",
+      "notice_period_ended"
+     ],
+     [
+      "wrongful_termination",
+      "retaliation_for_claims"
+     ]
+    ]
+   },
+   "planted": {
+    "immediate_dismissal.fixed_term": {
+     "blunt": "Does the file state what kind of employment contract the employee had, or when the employment began?",
+     "original": "Was the employment relationship agreed for a fixed term, with an agreed end date, rather than for an unlimited period?"
+    },
+    "immediate_dismissal.incapacity_cause": {
+     "blunt": "Does the employer give a cause for the dismissal, or does the employee say why it happened?",
+     "original": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee say they were prevented from working through no fault of their own (for instance illness, accident or a non-voluntary legal obligation)?",
+     "subtle": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee give a reason for the absence?",
+     "subtle_dropped_qualifier": "'through no fault of their own' (any stated reason for the absence now counts)"
+    },
+    "protected_period_notice.compulsory_service": {
+     "blunt": "Was the employee absent from work, or unable to work, for some reason (for example illness, accident, service, pregnancy or leave) around the time of the notice?",
+     "original": "Was the employee performing Swiss compulsory military service, civil defence service or alternative civilian service on the day notice was given or while the notice period was running, or, for such a service lasting more than eleven days, did either of those fall within the four weeks before or after it?",
+     "subtle": "Was the employee performing Swiss compulsory military service, civil defence service or alternative civilian service at some time during the employment relationship?",
+     "subtle_dropped_qualifier": "the time window 'on the day notice was given or while the notice period was running (or within four weeks of a service over eleven days)'"
+    },
+    "protected_period_notice.notice_during_probation": {
+     "blunt": "Does the file state when the employment began, or how long the employee had worked there when notice was given?",
+     "original": "Was the notice given while the probation period was still running, counting any extension of the probation period under art. 335b para. 3 (a probation period interrupted by illness, accident or a non-voluntary legal obligation is extended accordingly)?"
+    },
+    "protected_period_notice.notice_period_varied": {
+     "blunt": "Does the file mention a notice period, an employment contract, or the date on which the employment is to end?",
+     "original": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?"
+    },
+    "wrongful_termination.action_in_time": {
+     "blunt": "Has the employee taken, or does the employee plan, any step against the notice (for example an objection, a letter, or legal advice)?",
+     "original": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?"
+    },
+    "wrongful_termination.notice_period_ended": {
+     "blunt": "Does the file state the date on which the notice was given, or the date on which the employment ends or ended?",
+     "original": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
+     "subtle": "Has the employee's last working day already passed?",
+     "subtle_dropped_qualifier": "'the notice period (from the notice to the end of the employment relationship)' (a release from work before the end now counts)"
+    },
+    "wrongful_termination.retaliation_for_claims": {
+     "blunt": "Does the employee say that the notice was unfair or given for a wrong reason?",
+     "original": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship?",
+     "subtle": "Was the notice given after the employee had asserted, in good faith, claims arising from the employment relationship?",
+     "subtle_dropped_qualifier": "'because' (a coincidence in time now counts)"
+    }
+   },
+   "widened_sha256": {
+    "blunt/immediate_dismissal.json": "d60df840b64399d9246acdf3afb93ae7b40c45204739107ed28e2bee0be0125a",
+    "blunt/protected_period_notice.json": "0c5aac10f20690094b7dec6a5bb65f71c34cc2a27d12c37b86a1cfb60f73351b",
+    "blunt/wrongful_termination.json": "fe50744dda32864ab35718a708fa6eafdf2bbba15899c45944346a25fc6e7e8f",
+    "subtle/immediate_dismissal.json": "07b15082f24442c24f05a76c708c6c2ffae4d83933f811722362d51a5e04cbec",
+    "subtle/protected_period_notice.json": "b143d6f1a08e7e6ff226a595e1395b7094fa6d7c3b3f0240c06fed6575ea2175",
+    "subtle/wrongful_termination.json": "2b462696de5f083edae4d67e837f32575916d1874b6e382f9e253045d2784c67"
+   }
+  },
+  "tenancy": {
+   "changed_facts": {
+    "blunt": {
+     "defect_mold_heating": [
+      "deposit_intended",
+      "rent_deposited"
+     ],
+     "lease_termination_dispute": [
+      "family_residence",
+      "extension_requested"
+     ],
+     "rent_increase_dispute": [
+      "graduated_rent",
+      "index_clause"
+     ]
+    },
+    "subtle": {
+     "defect_mold_heating": [
+      "deposit_intended",
+      "rent_deposited"
+     ],
+     "lease_termination_dispute": [
+      "family_residence"
+     ],
+     "rent_increase_dispute": []
+    }
+   },
+   "clean_workflows_sha256": {
+    "defect_mold_heating.json": "13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb",
+    "lease_termination_dispute.json": "a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd",
+    "rent_increase_dispute.json": "5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0"
+   },
+   "draw": {
+    "branch": {
+     "defect_mold_heating": [
+      "damages_claimed",
+      "deposit_intended",
+      "landlord_unaware",
+      "notice_oral_only",
+      "rent_deposited"
+     ],
+     "lease_termination_dispute": [
+      "arrears_termination",
+      "asserted_claims",
+      "extension_requested",
+      "family_residence"
+     ],
+     "rent_increase_dispute": [
+      "cost_or_services_reason",
+      "graduated_rent",
+      "index_clause",
+      "termination_with_increase"
+     ]
+    },
+    "defining": {
+     "defect_mold_heating": "defect_present",
+     "lease_termination_dispute": "notice_received",
+     "rent_increase_dispute": "increase_applied"
+    },
+    "drawn": {
+     "defect_mold_heating": [
+      "deposit_intended",
+      "rent_deposited"
+     ],
+     "lease_termination_dispute": [
+      "extension_requested",
+      "family_residence"
+     ],
+     "rent_increase_dispute": [
+      "graduated_rent",
+      "index_clause"
+     ]
+    },
+    "subtle": [
+     [
+      "defect_mold_heating",
+      "deposit_intended"
+     ],
+     [
+      "defect_mold_heating",
+      "rent_deposited"
+     ],
+     [
+      "lease_termination_dispute",
+      "family_residence"
+     ]
+    ]
+   },
+   "planted": {
+    "defect_mold_heating.deposit_intended": {
+     "blunt": "Does the claim state that the tenant wants the defect remedied, or is considering steps to make the landlord remedy it?",
+     "original": "Does the claim state that the tenant intends to pay the rent on deposit with the office designated by the canton instead of to the landlord, or has begun to do so?",
+     "subtle": "Does the claim state that the tenant intends to stop paying the rent to the landlord, or has begun to do so?",
+     "subtle_dropped_qualifier": "'on deposit with the office designated by the canton' (withholding the rent now counts)"
+    },
+    "defect_mold_heating.rent_deposited": {
+     "blunt": "Does the claim state that the tenant has already done something about the defect (for example reported it, complained about it, or taken a step concerning the rent)?",
+     "original": "Does the claim state that at least one rent payment has already been paid into deposit with the office designated by the canton?",
+     "subtle": "Does the claim state that at least one rent payment is paid, or is to be paid, into deposit with the office designated by the canton?",
+     "subtle_dropped_qualifier": "'already' (a planned deposit now counts)"
+    },
+    "lease_termination_dispute.extension_requested": {
+     "blunt": "Does the tenant want to stay in the dwelling, or need time before moving out?",
+     "original": "Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?"
+    },
+    "lease_termination_dispute.family_residence": {
+     "blunt": "Does the claim state that the tenant lives in the rented dwelling?",
+     "original": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?",
+     "subtle": "Does the claim state that the tenant lives in the rented dwelling with a partner or family members, so that it serves as their family home?",
+     "subtle_dropped_qualifier": "'married or in a registered partnership' (a cohabiting partner now counts)"
+    },
+    "rent_increase_dispute.graduated_rent": {
+     "blunt": "Does the claim state by how much, or to what amount, the rent is to rise?",
+     "original": "Does the claim state that the increase is a step fixed in advance in the lease, by which the rent rises periodically by fixed amounts (graduated rent)?"
+    },
+    "rent_increase_dispute.index_clause": {
+     "blunt": "Does the increase notice or the claim give a reason or a basis for the increase?",
+     "original": "Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the Swiss consumer price index)?"
+    }
+   },
+   "widened_sha256": {
+    "blunt/defect_mold_heating.json": "35127395eea42e30fbc6754fa1c4d4833642dca6a0e5f2d747e20e4da90bfd03",
+    "blunt/lease_termination_dispute.json": "a138fa7f23db76141758298c2a95b0e4600d3aee8741beb8ef054647b957ac0a",
+    "blunt/rent_increase_dispute.json": "df8726532718bcfff44307df07d37448f14bb0e40e9fcbc1ca4a21303beabae0",
+    "subtle/defect_mold_heating.json": "118eb1fdcb4b1f64c4ea0b650481e4f5e154f1827bab25cb4a263666d4fcd91e",
+    "subtle/lease_termination_dispute.json": "e20b285a0d308e6e29bbf3f86d8b8516fc7f4e276c842c7b2b6470a2298b1c95",
+    "subtle/rent_increase_dispute.json": "5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0"
+   }
+  },
+  "theft": {
+   "changed_facts": {
+    "blunt": {
+     "simple_theft_away": [
+      "traces_changed",
+      "bicycle"
+     ],
+     "theft_at_home": [
+      "burglary_or_robbery",
+      "measures_pending",
+      "imminent_danger"
+     ]
+    },
+    "subtle": {
+     "simple_theft_away": [
+      "traces_changed",
+      "bicycle"
+     ],
+     "theft_at_home": [
+      "imminent_danger"
+     ]
+    }
+   },
+   "clean_workflows_sha256": {
+    "simple_theft_away.json": "7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e",
+    "theft_at_home.json": "89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b"
+   },
+   "draw": {
+    "branch": {
+     "simple_theft_away": [
+      "away_cover_missing",
+      "bicycle",
+      "imminent_danger",
+      "measures_pending",
+      "traces_changed",
+      "vouchers_unobtainable"
+     ],
+     "theft_at_home": [
+      "bicycle",
+      "burglary_or_robbery",
+      "household_perpetrator",
+      "imminent_danger",
+      "lock_change",
+      "measures_pending",
+      "traces_changed",
+      "vouchers_unobtainable"
+     ]
+    },
+    "defining": {
+     "simple_theft_away": "theft_away",
+     "theft_at_home": "theft_at_home"
+    },
+    "drawn": {
+     "simple_theft_away": [
+      "bicycle",
+      "traces_changed"
+     ],
+     "theft_at_home": [
+      "burglary_or_robbery",
+      "imminent_danger",
+      "measures_pending"
+     ]
+    },
+    "subtle": [
+     [
+      "simple_theft_away",
+      "bicycle"
+     ],
+     [
+      "simple_theft_away",
+      "traces_changed"
+     ],
+     [
+      "theft_at_home",
+      "imminent_danger"
+     ]
+    ]
+   },
+   "planted": {
+    "simple_theft_away.bicycle": {
+     "blunt": "Is something the policyholder had with them or used outside the home (for example a bag, a phone, a bicycle or sports equipment) among the stolen or damaged items?",
+     "original": "Is a bicycle among the stolen or damaged items? (Not this: A motor scooter or motorcycle; bicycle parts or accessories alone. A stated e-bike leaves the fact open: the form's word 'Fahrrad' does not decide it.)",
+     "subtle": "Is a bicycle, an e-bike, or a part or accessory of a bicycle among the stolen or damaged items? (Not this: A motor scooter or motorcycle.)",
+     "subtle_dropped_qualifier": "'bicycle parts or accessories alone' are not a bicycle, and the e-bike rule (parts, accessories and e-bikes now count)"
+    },
+    "simple_theft_away.traces_changed": {
+     "blunt": "Does the file describe the place or the items after the theft, or what was done there afterwards?",
+     "original": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning? (Not this: Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.)",
+     "subtle": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, for example by repair or cleaning? (Not this: Traces that exist and are left as they were, or were only photographed.)",
+     "subtle_dropped_qualifier": "'by the policyholder or on their behalf' (traces changed by the thief or by others now count)"
+    },
+    "theft_at_home.burglary_or_robbery": {
+     "blunt": "Does the file describe how the thief got at the stolen or damaged items?",
+     "original": "Was the theft a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery), and so not a simple theft? (Not this: A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.)"
+    },
+    "theft_at_home.imminent_danger": {
+     "blunt": "Does the file state that the policyholder did something soon after discovering the theft (for example called the police, secured the home, or informed the insurer)?",
+     "original": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)? (Not this: The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.)",
+     "subtle": "Does the file state that measures to reduce the loss were taken without waiting for the insurer's instruction?",
+     "subtle_dropped_qualifier": "'because of imminent danger (Gefahr im Verzug)' (acting quickly for any reason now counts)"
+    },
+    "theft_at_home.measures_pending": {
+     "blunt": "Does the file state that something still has to be done or settled after the theft (for example repairs, replacements, or the claim itself)?",
+     "original": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)? (Not this: Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.)"
+    }
+   },
+   "widened_sha256": {
+    "blunt/simple_theft_away.json": "cd55cc2e3dd072a49ef122d91e4d7a8d1b87b18ff8a51b3463e4fbfef3ec36d1",
+    "blunt/theft_at_home.json": "792121fa3a27eca7934ddaabbfa58ba5fd432e68c625117dd8b5bc080b465b18",
+    "subtle/simple_theft_away.json": "7ed610cc3a0a373ab18713353cab18603a8a7f6790f96171f17ba5c32b93737b",
+    "subtle/theft_at_home.json": "5f4c1dd976a6c5bcf70daf30618df26609ed0da32d00548707ae9ff8382af744"
+   }
+  }
+ },
+ "run_index": 0,
+ "runs_per_file": 1,
+ "schema": "study4.lint-design/1",
+ "scoring_clean_arm": "Clean arm only, against each file's final/<id>/reference.json. Product checklist = harness/product/run_product.to_plan `plan` (conservative view, as Study 3's scorer): requests = needs with required \"yes\" and status missing or unusable (workflow needs and needs the process builder added), holds = needs with required \"depends\". Per document of the routed type's catalogue, one error at most, decided by the reference state: reference hold -> product not holding it is a missed hold; reference request (state request, or present_insufficient, i.e. reference `request` true) -> product holding it is a hold where the file settles the fact, product neither requesting nor holding it is a missed request; reference not_needed or present_sufficient -> product requesting it is a request that should not be made, holding it a hold where the file settles the fact. A need the process builder added (not in the catalogue) counts as a request that should not be made when requested, as a hold where the file settles the fact when held. Supplied documents: present_sufficient means no request is due (the product's unusable/missing for it is a request that should not be made); present_insufficient means a request is due (the product's present for it is a missed request). Optional documents (mandatory false): the reference's `request` field decides as for any document (the reference never requests an unsupplied optional document). Errors per file = the sum of the four kinds. A failed run is scored as an empty plan; a run routed to no workflow (deferred) or to the wrong type is scored with the plan it produced (deferred = empty) and listed as a routing failure. Splits: share level (0, 10, 25, 50), denied-event files, open-fact files, others; overall. No baseline is run; no comparison is made.",
+ "scripts_sha256": {
+  "design.py": "65f5f174acad67a42f7ded8a8a6a42ebaac1981064fe98361f9ef1286d8167be",
+  "lint_case.py": "3f3264ada5b750b0135fc9472dc2c74924de8f05adc34764e642abf595c65a9f",
+  "run.py": "7aa1555da34751a696e5555202eb0f6aded22769229fe6371e8e61f09c88272a"
+ },
+ "seed": 20261112,
+ "settings": {
+  "CASEPATH_MODEL_REASONING": "true",
+  "CASEPATH_RUN_SCOPE": "checklist",
+  "required_parity_settings": {
+   "open_rule": "any",
+   "readings": 3,
+   "run_scope": "checklist"
+  }
+ },
+ "written_utc": "2026-11-12T13:48:38Z"
+}

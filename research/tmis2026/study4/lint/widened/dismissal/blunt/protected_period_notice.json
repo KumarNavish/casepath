@@ -1,0 +1,621 @@
+{
+ "format": "casepath.workflow/1",
+ "id": "protected_period_notice",
+ "version": "2026-11-12",
+ "title": "Notice of termination by the employer during a protected period (CO art. 336c)",
+ "status": "reviewed",
+ "example": false,
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "protected_period_notice"
+ },
+ "sources": [
+  {
+   "id": "co-sr220",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "intended_kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
+  }
+ ],
+ "facts": [
+  {
+   "id": "dispute_family",
+   "type": "enum",
+   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
+   "values": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+   ],
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "employer_gave_notice",
+   "type": "boolean",
+   "question": "Did the employer give the employee notice of termination of the employment relationship?",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  },
+  {
+   "id": "notice_during_probation",
+   "type": "boolean",
+   "question": "Does the file state when the employment began, or how long the employee had worked there when notice was given?",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  },
+  {
+   "id": "probation_varied",
+   "type": "boolean",
+   "question": "Does the file say that a written individual agreement, a standard employment contract or a collective employment contract set a probation period other than the first month of employment?",
+   "source_refs": [
+    "co-sr220#art_335b_para_2"
+   ]
+  },
+  {
+   "id": "incapacity_illness_accident",
+   "type": "boolean",
+   "question": "Was the employee, through no fault of their own, wholly or partly prevented from working by illness or accident on the day notice was given or at some time while the notice period was running, and was the incapacity at that point still within its protected length: up to 30 days in the first year of service, 90 days in the second to fifth years, 180 days from the sixth year?",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_b_para_2"
+   ]
+  },
+  {
+   "id": "compulsory_service",
+   "type": "boolean",
+   "question": "Was the employee absent from work, or unable to work, for some reason (for example illness, accident, service, pregnancy or leave) around the time of the notice?",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_a_para_2"
+   ]
+  },
+  {
+   "id": "pregnancy_or_birth",
+   "type": "boolean",
+   "question": "Was the employee pregnant, or within sixteen weeks after giving birth, on the day notice was given or while the notice period was running?",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_c_para_2"
+   ]
+  },
+  {
+   "id": "notice_before_protected_period",
+   "type": "boolean",
+   "question": "Where a protected period (illness or accident, compulsory service, pregnancy or birth, as above) is raised: was the notice given before that period began, with the notice period not yet expired when it began?",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ]
+  },
+  {
+   "id": "notice_period_varied",
+   "type": "boolean",
+   "question": "Does the file mention a notice period, an employment contract, or the date on which the employment is to end?",
+   "source_refs": [
+    "co-sr220#art_335c_para_2"
+   ]
+  }
+ ],
+ "documents": [
+  {
+   "id": "termination_letter",
+   "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
+   "must_show": [
+    "issuer",
+    "addressee",
+    "date of the notice",
+    "date the employee received it",
+    "stated end of employment"
+   ],
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "why": "CO art. 336c para. 2: Voidness turns on the day the notice was given compared with the protected period, and the same day decides whether notice fell in probation; the notice and its date of receipt are the ordinary record of that day (the cited text sets no written form, so a message or other record serves)."
+  },
+  {
+   "id": "employment_contract",
+   "title": "Employment contract or other record of the start of employment",
+   "must_show": [
+    "parties",
+    "start date of employment",
+    "probation clause, if any",
+    "notice-period clause, if any"
+   ],
+   "source_refs": [
+    "co-sr220#art_335b_para_1"
+   ],
+   "why": "CO art. 335b para. 1: The probation period runs from the start of employment, and the year of service sets the 30, 90 or 180 days of art. 336c para. 1 let. b; the contract or another record of the start date ordinarily shows it."
+  },
+  {
+   "id": "probation_terms",
+   "title": "Written probation clause (individual agreement, standard or collective contract)",
+   "must_show": [
+    "length of the probation period",
+    "the written instrument that sets it"
+   ],
+   "source_refs": [
+    "co-sr220#art_335b_para_2"
+   ],
+   "why": "CO art. 335b para. 2: A probation period other than the first month exists only under a written agreement or a standard or collective contract; that written clause proves its length and so whether notice came during it.",
+   "required_when": {
+    "fact": "probation_varied",
+    "is": true
+   }
+  },
+  {
+   "id": "incapacity_proof",
+   "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
+   "must_show": [
+    "medical certificate",
+    "cause (illness or accident)",
+    "full or partial incapacity",
+    "first and last day of incapacity",
+    "date issued"
+   ],
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_b"
+   ],
+   "why": "CO art. 336c para. 1 let. b: The bar applies only while the employee is prevented from working by illness or accident, for at most 30, 90 or 180 days; a medical certificate is the ordinary proof of the incapacity and its dates, which with the start date of employment fix that period."
+  },
+  {
+   "id": "service_confirmation",
+   "title": "Official confirmation of compulsory service",
+   "must_show": [
+    "kind of service (military, civil defence, alternative civilian)",
+    "first and last day of service"
+   ],
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_a"
+   ],
+   "why": "CO art. 336c para. 1 let. a: The bar depends on the kind of service, its dates and whether it lasted more than eleven days; the official service order or confirmation ordinarily shows all three."
+  },
+  {
+   "id": "pregnancy_certificate",
+   "title": "Medical confirmation of pregnancy or record of the birth",
+   "must_show": [
+    "pregnancy confirmed and its dates, or the date of birth"
+   ],
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_c"
+   ],
+   "why": "CO art. 336c para. 1 let. c: The bar runs during pregnancy and sixteen weeks after the birth; a medical confirmation of the pregnancy or the birth record ordinarily dates that period."
+  },
+  {
+   "id": "notice_period_terms",
+   "title": "Written notice-period clause (individual, standard or collective contract)",
+   "must_show": [
+    "notice period length",
+    "end-point of the notice (e.g. end of a month)",
+    "the written instrument that sets it (individual, standard or collective contract)"
+   ],
+   "source_refs": [
+    "co-sr220#art_335c_para_2"
+   ],
+   "why": "CO art. 335c para. 2: A notice period other than the statutory one exists only under a written contract; resuming and extending a suspended notice period (art. 336c para. 3) needs its length and end-point, which that clause ordinarily shows.",
+   "required_when": {
+    "fact": "notice_period_varied",
+    "is": true
+   }
+  }
+ ],
+ "start": "a_intake",
+ "steps": [
+  {
+   "id": "a_intake",
+   "title": "Establish whether the employer gave notice",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ],
+   "next": [
+    {
+     "to": "a_stop_no_notice",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": false
+     },
+     "label": "no notice by the employer"
+    },
+    {
+     "to": "a_probation",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": true
+     },
+     "label": "employer gave notice"
+    }
+   ]
+  },
+  {
+   "id": "a_probation",
+   "title": "Record the notice, the start of employment and the probation terms, and check that the probation period had expired when notice was given",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ],
+   "documents": [
+    "termination_letter",
+    "employment_contract",
+    "probation_terms"
+   ],
+   "next": [
+    {
+     "to": "a_stop_probation",
+     "when": {
+      "fact": "notice_during_probation",
+      "is": true
+     },
+     "label": "notice during probation"
+    },
+    {
+     "to": "a_gate_incapacity",
+     "when": {
+      "fact": "notice_during_probation",
+      "is": false
+     },
+     "label": "probation expired"
+    }
+   ]
+  },
+  {
+   "id": "a_incapacity",
+   "title": "Examine the illness or accident protected period",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_b"
+   ],
+   "documents": [
+    "incapacity_proof"
+   ],
+   "next": [
+    {
+     "to": "a_gate_service",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_service",
+   "title": "Examine the compulsory-service protected period",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_a"
+   ],
+   "documents": [
+    "service_confirmation"
+   ],
+   "next": [
+    {
+     "to": "a_gate_pregnancy",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_pregnancy",
+   "title": "Examine the pregnancy and maternity protected period",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_c"
+   ],
+   "documents": [
+    "pregnancy_certificate"
+   ],
+   "next": [
+    {
+     "to": "a_gate_any_period",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_suspension",
+   "title": "Compute the suspended and extended notice period",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "documents": [
+    "notice_period_terms"
+   ],
+   "next": [
+    {
+     "to": "a_assess",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_void",
+   "title": "Check whether the notice fell inside a protected period and is void",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_assess",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_assess",
+   "title": "Assess the effect of the notice (void, suspended or valid)",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_close",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "a_gate_incapacity",
+   "title": "Check branch: illness or accident",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_b_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_incapacity",
+     "when": {
+      "fact": "incapacity_illness_accident",
+      "is": true
+     },
+     "label": "incapacity_illness_accident"
+    },
+    {
+     "to": "a_gate_service",
+     "when": {
+      "fact": "incapacity_illness_accident",
+      "is": false
+     },
+     "label": "not incapacity_illness_accident"
+    }
+   ]
+  },
+  {
+   "id": "a_gate_service",
+   "title": "Check branch: compulsory service",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_a_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_service",
+     "when": {
+      "fact": "compulsory_service",
+      "is": true
+     },
+     "label": "compulsory_service"
+    },
+    {
+     "to": "a_gate_pregnancy",
+     "when": {
+      "fact": "compulsory_service",
+      "is": false
+     },
+     "label": "not compulsory_service"
+    }
+   ]
+  },
+  {
+   "id": "a_gate_pregnancy",
+   "title": "Check branch: pregnancy or birth",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_let_c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_pregnancy",
+     "when": {
+      "fact": "pregnancy_or_birth",
+      "is": true
+     },
+     "label": "pregnancy_or_birth"
+    },
+    {
+     "to": "a_gate_any_period",
+     "when": {
+      "fact": "pregnancy_or_birth",
+      "is": false
+     },
+     "label": "not pregnancy_or_birth"
+    }
+   ]
+  },
+  {
+   "id": "a_gate_any_period",
+   "title": "Check branch: a protected period of let. a, b or c is raised",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_gate_timing",
+     "when": {
+      "any": [
+       {
+        "fact": "incapacity_illness_accident",
+        "is": true
+       },
+       {
+        "fact": "compulsory_service",
+        "is": true
+       },
+       {
+        "fact": "pregnancy_or_birth",
+        "is": true
+       }
+      ]
+     },
+     "label": "protected period raised"
+    },
+    {
+     "to": "a_assess",
+     "when": {
+      "not": {
+       "any": [
+        {
+         "fact": "incapacity_illness_accident",
+         "is": true
+        },
+        {
+         "fact": "compulsory_service",
+         "is": true
+        },
+        {
+         "fact": "pregnancy_or_birth",
+         "is": true
+        }
+       ]
+      }
+     },
+     "label": "no protected period raised"
+    }
+   ]
+  },
+  {
+   "id": "a_gate_timing",
+   "title": "Check branch: notice before the protected period",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336c_para_2"
+   ],
+   "next": [
+    {
+     "to": "a_suspension",
+     "when": {
+      "fact": "notice_before_protected_period",
+      "is": true
+     },
+     "label": "notice_before_protected_period"
+    },
+    {
+     "to": "a_void",
+     "when": {
+      "fact": "notice_before_protected_period",
+      "is": false
+     },
+     "label": "not notice_before_protected_period"
+    }
+   ]
+  },
+  {
+   "id": "a_stop_no_notice",
+   "title": "Stop (CO art. 336c para. 1 (introduction))",
+   "role": "system",
+   "outcome": "a_stop_no_notice",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  },
+  {
+   "id": "a_stop_probation",
+   "title": "Stop (CO art. 336c para. 1 (introduction))",
+   "role": "system",
+   "outcome": "a_stop_probation",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  },
+  {
+   "id": "a_close",
+   "title": "Record the document state for assessment",
+   "role": "claim_handler",
+   "outcome": "assessed",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  }
+ ],
+ "outcomes": [
+  {
+   "id": "assessed",
+   "title": "Documents complete for assessment",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "a_stop_no_notice",
+   "title": "Process ends: The provision restrains only a termination by the employer",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  },
+  {
+   "id": "a_stop_probation",
+   "title": "Process ends: The bar applies only after the probation period, extended under art. 335b para. 3 where it was interrupted, has expired",
+   "source_refs": [
+    "co-sr220#art_336c_para_1_intro"
+   ]
+  }
+ ],
+ "presumptions": [
+  {
+   "fact": "notice_during_probation",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "probation_varied",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "incapacity_illness_accident",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "compulsory_service",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "pregnancy_or_birth",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "notice_period_varied",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  }
+ ],
+ "notes": [
+  {
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Always stated in the file, no presumption: notice_before_protected_period.",
+   "source_refs": [
+    "benchmark-convention#intake_convention"
+   ]
+  }
+ ],
+ "open_questions": []
+}

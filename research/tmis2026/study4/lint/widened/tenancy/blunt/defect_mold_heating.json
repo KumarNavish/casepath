@@ -1,0 +1,445 @@
+{
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "defect_mold_heating"
+ },
+ "documents": [
+  {
+   "id": "lease_contract",
+   "legal_basis": "SR 220 Art. 256 para. 1",
+   "must_show": [
+    "parties",
+    "rented dwelling",
+    "agreed use of the dwelling"
+   ],
+   "source_refs": [
+    "sr220-en#art-256-p1"
+   ],
+   "title": "Lease contract",
+   "why": "The landlord's duty is measured by the designated use; the lease records the rented dwelling and its agreed use."
+  },
+  {
+   "id": "defect_record",
+   "legal_basis": "SR 220 Art. 259a para. 1",
+   "must_show": [
+    "the defect and where it is",
+    "date observed",
+    "how the use of the dwelling is affected"
+   ],
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Record of the defect (dated photographs, inspection or expert report)",
+   "why": "The tenant's rights arise where a defect arises or the agreed use is disturbed; dated photographs or an inspection report ordinarily prove that the defect exists, where it is and since when."
+  },
+  {
+   "id": "knowledge_proof",
+   "legal_basis": "SR 220 Art. 259b",
+   "must_show": [
+    "how and when the landlord learned of the defect",
+    "the defect reported",
+    "who was informed"
+   ],
+   "required_when": {
+    "fact": "notice_oral_only",
+    "is": false
+   },
+   "source_refs": [
+    "sr220-en#art-259b"
+   ],
+   "title": "Proof of when the landlord learned of the defect (tenant's dated notice, landlord's or manager's acknowledgement, or inspection record)",
+   "why": "The remedies depend on the landlord being aware of the defect, and a reduction runs from the time he became aware (art. 259d); a dated written notice, a written acknowledgement or an inspection record ordinarily proves when that was. Where the claim states that the landlord was told only orally, no such record exists and none is requested."
+  },
+  {
+   "id": "damage_evidence",
+   "legal_basis": "SR 220 Art. 259e",
+   "must_show": [
+    "damaged items or costs",
+    "amount",
+    "connection to the defect"
+   ],
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Proof of the damage (invoices, receipts, photographs of damaged items)",
+   "why": "Liability covers damage the defect caused; invoices, receipts and photographs of damaged items ordinarily prove the damage and its amount."
+  },
+  {
+   "id": "deposit_deadline_notice",
+   "legal_basis": "SR 220 Art. 259g para. 1",
+   "must_show": [
+    "repair requested",
+    "time limit set",
+    "announcement that rent will be deposited",
+    "date and addressee"
+   ],
+   "source_refs": [
+    "sr220-en#art-259g-p1"
+   ],
+   "title": "Tenant's written time limit to the landlord and written announcement of the deposit",
+   "why": "The time limit (and the announcement of the deposit) must be in writing, so the tenant's letter itself is the proof that they were given and when."
+  },
+  {
+   "id": "deposit_receipt",
+   "legal_basis": "SR 220 Art. 259h para. 1",
+   "must_show": [
+    "amount deposited",
+    "due date of the first deposited rent",
+    "date the claims were brought before the conciliation authority (or that they have not yet been)"
+   ],
+   "required_when": {
+    "fact": "rent_deposited",
+    "is": true
+   },
+   "source_refs": [
+    "sr220-en#art-259h-p1"
+   ],
+   "title": "Receipt of the deposit office for the deposited rent and the tenant's application to the conciliation authority",
+   "why": "The deposited rent passes to the landlord unless claims are brought before the conciliation authority within 30 days of the due date of the first deposited rent; the deposit office's receipt shows that due date and the application shows whether and when the claims were brought."
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "dispute_family",
+   "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, heating), a termination of the lease by the landlord, or a rent increase?",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "type": "enum",
+   "values": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+   ]
+  },
+  {
+   "id": "defect_present",
+   "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant alone caused the defect or must remedy it at his own expense?",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "landlord_unaware",
+   "question": "Does the claim state that the landlord does not yet know of the defect (the tenant has not reported it and the landlord has not learned of it in another way)?",
+   "source_refs": [
+    "sr220-en#art-257g-p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "notice_oral_only",
+   "question": "Does the claim state that the landlord learned of the defect only orally, so that no written notice, written acknowledgement or inspection record of it exists?",
+   "source_refs": [
+    "sr220-en#art-257g-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "damages_claimed",
+   "question": "Does the tenant claim compensation from the landlord for damage the defect caused to the tenant (for example damaged furniture or clothing, or extra costs)?",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "deposit_intended",
+   "question": "Does the claim state that the tenant wants the defect remedied, or is considering steps to make the landlord remedy it?",
+   "source_refs": [
+    "sr220-en#art-259a-p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "rent_deposited",
+   "question": "Does the claim state that the tenant has already done something about the defect (for example reported it, complained about it, or taken a step concerning the rent)?",
+   "source_refs": [
+    "sr220-en#art-259h-p1"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "defect_mold_heating",
+ "notes": [
+  {
+   "source_refs": [
+    "benchmark-convention#intake-convention"
+   ],
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. The defining event (defect_present) and any always-stated fact carry no presumption."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Document requests complete"
+  },
+  {
+   "id": "stopped",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Process ended: the defining event is denied"
+  }
+ ],
+ "presumptions": [
+  {
+   "applies": "unstated",
+   "fact": "landlord_unaware",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "notice_oral_only",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "damages_claimed",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "deposit_intended",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  },
+  {
+   "applies": "unstated",
+   "fact": "rent_deposited",
+   "source_ref": "benchmark-convention#intake-convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+   "value": false
+  }
+ ],
+ "sources": [
+  {
+   "id": "sr220-en",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, consolidated version of 1 October 2026 (Fedlex); not authoritative"
+  },
+  {
+   "id": "sr220-de",
+   "kind": "knowledge",
+   "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
+  },
+  {
+   "id": "benchmark-convention",
+   "intended_kind": "benchmark_convention",
+   "kind": "process_guidance",
+   "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
+  }
+ ],
+ "start": "dh_intake",
+ "status": "reviewed",
+ "steps": [
+  {
+   "id": "dh_intake",
+   "next": [
+    {
+     "label": "defect stated",
+     "to": "dh_scope",
+     "when": {
+      "fact": "defect_present",
+      "is": true
+     }
+    },
+    {
+     "label": "no defect stated",
+     "to": "dh_stop",
+     "when": {
+      "fact": "defect_present",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Is a defect stated?"
+  },
+  {
+   "id": "dh_stop",
+   "outcome": "stopped",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Stop: the defining event is denied"
+  },
+  {
+   "documents": [
+    "lease_contract",
+    "defect_record"
+   ],
+   "id": "dh_scope",
+   "next": [
+    {
+     "to": "dh_notice_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-256-p1"
+   ],
+   "title": "Establish the defect and the agreed use of the dwelling"
+  },
+  {
+   "id": "dh_notice_gate",
+   "next": [
+    {
+     "label": "landlord does not yet know",
+     "to": "dh_damage_gate",
+     "when": {
+      "fact": "landlord_unaware",
+      "is": true
+     }
+    },
+    {
+     "label": "landlord knows",
+     "to": "dh_notice",
+     "when": {
+      "fact": "landlord_unaware",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-257g-p2"
+   ],
+   "title": "Is it stated that the landlord does not yet know of the defect?"
+  },
+  {
+   "documents": [
+    "knowledge_proof"
+   ],
+   "id": "dh_notice",
+   "next": [
+    {
+     "to": "dh_damage_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259b"
+   ],
+   "title": "Establish how and when the landlord learned of the defect"
+  },
+  {
+   "id": "dh_damage_gate",
+   "next": [
+    {
+     "label": "damages claimed",
+     "to": "dh_damage",
+     "when": {
+      "fact": "damages_claimed",
+      "is": true
+     }
+    },
+    {
+     "label": "no damages claimed",
+     "to": "dh_deposit_gate",
+     "when": {
+      "fact": "damages_claimed",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Are damages claimed?"
+  },
+  {
+   "documents": [
+    "damage_evidence"
+   ],
+   "id": "dh_damage",
+   "next": [
+    {
+     "to": "dh_deposit_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Establish the damage claimed"
+  },
+  {
+   "id": "dh_deposit_gate",
+   "next": [
+    {
+     "label": "deposit intended or made",
+     "to": "dh_deposit",
+     "when": {
+      "fact": "deposit_intended",
+      "is": true
+     }
+    },
+    {
+     "label": "no deposit",
+     "to": "dh_end",
+     "when": {
+      "fact": "deposit_intended",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p2"
+   ],
+   "title": "Is a rent deposit intended or made?"
+  },
+  {
+   "documents": [
+    "deposit_deadline_notice",
+    "deposit_receipt"
+   ],
+   "id": "dh_deposit",
+   "next": [
+    {
+     "to": "dh_end",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259g-p1"
+   ],
+   "title": "Check the preconditions and the time limit of the rent deposit"
+  },
+  {
+   "id": "dh_end",
+   "outcome": "closed",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Document requests complete"
+  }
+ ],
+ "title": "Defect of the rented dwelling (mould, damp, heating) (rules from SR 220)",
+ "version": "2026-11-12"
+}

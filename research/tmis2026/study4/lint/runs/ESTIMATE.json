@@ -1,0 +1,5 @@
+{"written_utc": "2026-11-12T13:55:00Z", "basis": "ledger rows of the first five files run (clean arm: ten_2dff5fa7a980, ten_0d082e78c345, ten_00bf58d82a2b, the_06baabbe2a0d, the_003fbcb4d365)",
+ "usd_first_five": 0.0319, "usd_per_file_first_five": 0.00638, "usd_per_file_first_eight": 0.00748,
+ "files": {"tenancy": 59, "theft": 59, "dismissal": 58, "total": 176},
+ "estimate_usd": {"clean_all": 1.12, "blunt_all": 1.12, "subtle_all_types_with_a_subtle_widening": 1.0, "three_arms_total": 3.25, "three_arms_total_at_first_eight_rate": 3.8},
+ "decision": "three arms everywhere exceed the USD 3.20 stop line: run clean and blunt on every regime and subtle on tenancy only (DESIGN.json arm_fallback); order clean (tenancy, theft, dismissal), then widened tenancy (blunt, subtle), dismissal blunt, theft blunt. Estimated total about USD 2.5; the frontier arm needs a total under USD 2.00 after both arms and is therefore not expected to run."}

@@ -1,0 +1,411 @@
+{
+ "format": "casepath.workflow/1",
+ "id": "immediate_dismissal",
+ "version": "2026-11-12",
+ "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+ "status": "reviewed",
+ "example": false,
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "immediate_dismissal"
+ },
+ "sources": [
+  {
+   "id": "co-sr220",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "intended_kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
+  }
+ ],
+ "facts": [
+  {
+   "id": "dispute_family",
+   "type": "enum",
+   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
+   "values": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+   ],
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "dismissed_immediately",
+   "type": "boolean",
+   "question": "Did the employer end the employment relationship with immediate effect, without a notice period?",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ]
+  },
+  {
+   "id": "reasons_requested",
+   "type": "boolean",
+   "question": "Did the employee ask the employer to state the reasons for the immediate dismissal in writing?",
+   "source_refs": [
+    "co-sr220#art_337_para_1"
+   ]
+  },
+  {
+   "id": "incapacity_cause",
+   "type": "boolean",
+   "question": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee give a reason for the absence?",
+   "source_refs": [
+    "co-sr220#art_337_para_3"
+   ]
+  },
+  {
+   "id": "fixed_term",
+   "type": "boolean",
+   "question": "Was the employment relationship agreed for a fixed term, with an agreed end date, rather than for an unlimited period?",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ]
+  },
+  {
+   "id": "notice_period_varied",
+   "type": "boolean",
+   "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+   "source_refs": [
+    "co-sr220#art_335c_para_2"
+   ]
+  },
+  {
+   "id": "other_earnings",
+   "type": "boolean",
+   "question": "Has the employee earned income from other work during the time the notice period or the agreed term would still have run?",
+   "source_refs": [
+    "co-sr220#art_337c_para_2"
+   ]
+  }
+ ],
+ "documents": [
+  {
+   "id": "termination_letter",
+   "title": "Letter or message dismissing with immediate effect",
+   "must_show": [
+    "issuer",
+    "addressee",
+    "date",
+    "that employment ends with immediate effect"
+   ],
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "why": "CO art. 337c para. 1: The entitlement arises from a dismissal with immediate effect; the dismissal letter or message is the ordinary record that it was immediate and of its date."
+  },
+  {
+   "id": "employment_contract",
+   "title": "Employment contract or other record of its terms",
+   "must_show": [
+    "parties",
+    "start date of employment",
+    "agreed end date, if fixed-term",
+    "probation clause, if any",
+    "notice-period clause, if any"
+   ],
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "why": "CO art. 337c para. 1: Damages run to the end of the required notice period or of the agreed term; the contract ordinarily shows the start date, any agreed end date, any probation clause and any notice clause."
+  },
+  {
+   "id": "salary_evidence",
+   "title": "Salary statements (pay slips)",
+   "must_show": [
+    "monthly salary",
+    "period covered"
+   ],
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "why": "CO art. 337c para. 1: Damages equal what the employee would have earned; pay slips are the ordinary proof of those earnings (and of the salary that caps compensation under para. 3)."
+  },
+  {
+   "id": "written_reasons",
+   "title": "Employer's written statement of reasons",
+   "must_show": [
+    "reasons stated by the employer",
+    "date"
+   ],
+   "source_refs": [
+    "co-sr220#art_337_para_1"
+   ],
+   "why": "CO art. 337 para. 1: Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the cause it relies on.",
+   "required_when": {
+    "fact": "reasons_requested",
+    "is": true
+   }
+  },
+  {
+   "id": "incapacity_proof",
+   "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
+   "must_show": [
+    "cause of the hindrance",
+    "first and last day",
+    "date issued"
+   ],
+   "source_refs": [
+    "co-sr220#art_337_para_3"
+   ],
+   "why": "CO art. 337 para. 3: Being prevented from working through no fault of one's own can never be good cause; a medical certificate, or the official order or summons for a legal obligation, is the ordinary proof of the hindrance and its dates.",
+   "required_when": {
+    "fact": "incapacity_cause",
+    "is": true
+   }
+  },
+  {
+   "id": "notice_period_terms",
+   "title": "Written notice-period clause (individual, standard or collective contract)",
+   "must_show": [
+    "notice period length",
+    "end-point of the notice (e.g. end of a month)",
+    "the written instrument that sets it (individual, standard or collective contract)"
+   ],
+   "source_refs": [
+    "co-sr220#art_335c_para_2"
+   ],
+   "why": "CO art. 335c para. 2: Damages run to the end of the required notice period; where a written contract varies the statutory periods, that clause is the ordinary proof of the period that applies.",
+   "required_when": {
+    "fact": "notice_period_varied",
+    "is": true
+   }
+  },
+  {
+   "id": "other_earnings_evidence",
+   "title": "Proof of earnings from other work since the dismissal",
+   "must_show": [
+    "employer or client",
+    "period",
+    "amounts earned"
+   ],
+   "source_refs": [
+    "co-sr220#art_337c_para_2"
+   ],
+   "why": "CO art. 337c para. 2: Damages are reduced by what the employee earned from other work; pay slips or contracts for that work are the ordinary proof of the amounts and period.",
+   "required_when": {
+    "fact": "other_earnings",
+    "is": true
+   }
+  }
+ ],
+ "start": "c_intake",
+ "steps": [
+  {
+   "id": "c_intake",
+   "title": "Establish whether the employer dismissed with immediate effect",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "next": [
+    {
+     "to": "c_stop_no_immediate_dismissal",
+     "when": {
+      "fact": "dismissed_immediately",
+      "is": false
+     },
+     "label": "no immediate dismissal"
+    },
+    {
+     "to": "c_dismissal",
+     "when": {
+      "fact": "dismissed_immediately",
+      "is": true
+     },
+     "label": "dismissed with immediate effect"
+    }
+   ]
+  },
+  {
+   "id": "c_dismissal",
+   "title": "Record the dismissal, the contract and the salary",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "documents": [
+    "termination_letter",
+    "employment_contract",
+    "salary_evidence"
+   ],
+   "next": [
+    {
+     "to": "c_cause",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "c_cause",
+   "title": "Establish the cause the employer relies on",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337_para_2"
+   ],
+   "documents": [
+    "written_reasons",
+    "incapacity_proof"
+   ],
+   "next": [
+    {
+     "to": "c_gate_fixed_term",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "c_fixed_term",
+   "title": "Measure damages to the agreed end of the fixed term",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "next": [
+    {
+     "to": "c_damages",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "c_notice_period",
+   "title": "Measure damages to the end of the required notice period",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "documents": [
+    "notice_period_terms"
+   ],
+   "next": [
+    {
+     "to": "c_damages",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "c_damages",
+   "title": "Assess damages and compensation",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_337c_para_3"
+   ],
+   "documents": [
+    "other_earnings_evidence"
+   ],
+   "next": [
+    {
+     "to": "c_close",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "c_gate_fixed_term",
+   "title": "Check branch: fixed-term relationship",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ],
+   "next": [
+    {
+     "to": "c_fixed_term",
+     "when": {
+      "fact": "fixed_term",
+      "is": true
+     },
+     "label": "fixed_term"
+    },
+    {
+     "to": "c_notice_period",
+     "when": {
+      "fact": "fixed_term",
+      "is": false
+     },
+     "label": "not fixed_term"
+    }
+   ]
+  },
+  {
+   "id": "c_stop_no_immediate_dismissal",
+   "title": "Stop (CO art. 337c para. 1)",
+   "role": "system",
+   "outcome": "c_stop_no_immediate_dismissal",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ]
+  },
+  {
+   "id": "c_close",
+   "title": "Record the document state for assessment",
+   "role": "claim_handler",
+   "outcome": "assessed",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  }
+ ],
+ "outcomes": [
+  {
+   "id": "assessed",
+   "title": "Documents complete for assessment",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "c_stop_no_immediate_dismissal",
+   "title": "Process ends: The entitlement arises only where the employer dismisses with immediate effect",
+   "source_refs": [
+    "co-sr220#art_337c_para_1"
+   ]
+  }
+ ],
+ "presumptions": [
+  {
+   "fact": "reasons_requested",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "incapacity_cause",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "notice_period_varied",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "other_earnings",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  }
+ ],
+ "notes": [
+  {
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Always stated in the file, no presumption: fixed_term.",
+   "source_refs": [
+    "benchmark-convention#intake_convention"
+   ]
+  }
+ ],
+ "open_questions": []
+}
