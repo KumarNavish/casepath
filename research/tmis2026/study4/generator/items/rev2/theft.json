@@ -1,0 +1,55 @@
+{
+  "about": "Generator-side notes on must_show items (not part of the rule set). conditional: whether the item applies in some files only; applies_when: a condition over designed fact states that makes a conditional item required (if it does not hold, the item does not apply and is left out); checkable_as: what a document must literally contain for the item to count as shown, passed to the writer and to the blind checker; observed: the round-1 blind-check mismatch that led to the entry; rule_set_wording: why the item's own wording is a problem, for the planner to raise with the rule set (absent where the wording is fine).",
+  "items": [
+    {
+      "document": "notification_record",
+      "item": "the date (day, month and year) on which the theft was notified to CSS",
+      "conditional": false,
+      "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+      "observed": "6 files designed missing, read sufficient (the_12ee892d56f4, the_1487759fc403, the_506c9909edc4, the_93929f818110, the_a86e098e517e, the_e0b1e1d56fb2)",
+      "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+    },
+    {
+      "document": "stolen_items_list",
+      "item": "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+      "conditional": false,
+      "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+      "observed": "6 files designed sufficient read missing, 6 files read missing it in addition to the designed item (the generator had treated the item as conditional because it begins with 'where')"
+    },
+    {
+      "document": "original_vouchers",
+      "item": "where and when the item was bought",
+      "conditional": false,
+      "checkable_as": "On each voucher, the shop or seller and the purchase date."
+    },
+    {
+      "document": "bicycle_voucher",
+      "item": "where and when it was bought",
+      "conditional": false,
+      "checkable_as": "On the voucher, the shop or seller and the purchase date."
+    },
+    {
+      "document": "bicycle_voucher",
+      "item": "the bicycle it is for (make, model or type)",
+      "conditional": false,
+      "checkable_as": "The voucher names the bicycle (make, model or type).",
+      "rule_set_wording": "The 'if' clause is a need condition (already in needed_when), not a content item."
+    },
+    {
+      "type": "simple_theft_away",
+      "document": "insurance_policy",
+      "item": "its sum insured",
+      "conditional": false,
+      "checkable_as": "An amount in CHF labelled as the sum insured for household contents (Versicherungssumme Hausrat).",
+      "observed": "the_d9579f891719: read missing in addition to the designed item"
+    },
+    {
+      "type": "simple_theft_away",
+      "document": "insurance_policy",
+      "item": "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
+      "conditional": false,
+      "checkable_as": "The list of covers names simple theft away from home (einfacher Diebstahl auswärts) either as included or as not included. A cover list that is silent about it does not show this item.",
+      "rule_set_wording": "'or its absence' lets a silent policy count as showing the item; better: 'whether the supplementary cover for simple theft away is listed as included or excluded'."
+    }
+  ]
+}

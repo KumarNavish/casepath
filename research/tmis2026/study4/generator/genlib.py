@@ -123,7 +123,8 @@ class Regime:
         if wp.exists():
             for row in read_json(wp)["items"]:
                 for tid in row["types"]:
-                    self.item_wording[(tid, row["document"], row["rev1"])] = row["now"]
+                    for old in row.get("earlier") or [row["rev1"]]:
+                        self.item_wording[(tid, row["document"], old)] = row["now"]
 
     # facts ------------------------------------------------------------------------------------
     def facts(self, tid):

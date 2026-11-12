@@ -602,22 +602,42 @@ MUST_SHOW_REV2 = [
 ]
 
 
-def must_show_wording(types, rows, regime):
-    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+# ---------------------------------------------------------------- revision 3 after the second look (2026-11-12)
+# The second reader's wording (CITATION_CHECK.md, "Second look, revisions 1 and 2"), agreed by the planner as worded.
+# Rows as in MUST_SHOW_REV2: types, document, wording of revision 2, wording now.
+MUST_SHOW_REV3 = []  # no must_show item changes in revision 3 (routing clause and item notes only)
+
+
+def must_show_wording(types, revisions, regime):
+    """Check the revision rows against the built types and return the wording record (MUST_SHOW_WORDING.json): one
+    row per current item that some revision reworded, with every earlier wording (`earlier`, oldest first; `rev1` the
+    wording before revision 2) and the wording now (None: removed)."""
+    rows = []
+    for rev, table in revisions:
+        for tids, did, old, new in table:
+            hit = [r for r in rows if r["document"] == did and r["now"] == old and set(tids) <= set(r["types"])]
+            if hit:
+                r = hit[0]
+                assert set(r["types"]) == set(tids), (did, old, "a revision splits a row by type")
+                r["earlier"].append(old)
+                r["now"] = new
+                r["revisions"].append(rev)
+            else:
+                rows.append({"types": list(tids), "document": did, "rev1": old, "earlier": [old], "now": new,
+                             "revisions": [rev]})
     by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
-    out = []
-    for tids, did, old, new in rows:
-        for tid in tids:
-            shows = by[(tid, did)]
-            assert old not in shows, (tid, did, old)
-            assert new is None or new in shows, (tid, did, new)
-        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
-    return {"regime": regime, "revision": 2, "date": "2026-11-12",
-            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
-                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
-                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
-                    "items by their rev1 wording; the generator maps them through this file.",
-            "items": out}
+    for r in rows:
+        for tid in r["types"]:
+            shows = by[(tid, r["document"])]
+            assert not set(r["earlier"]) & set(shows), (tid, r["document"], r["earlier"])
+            assert r["now"] is None or r["now"] in shows, (tid, r["document"], r["now"])
+    return {"regime": regime, "revisions": [rev for rev, _ in revisions], "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use; revision 3 after the "
+                    "second look; development). earlier: every earlier wording, oldest first (rev1: the wording before "
+                    "revision 2, rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item "
+                    "removed). Designs and blind-check records name items by the wording of their time; the generator "
+                    "maps them through this file.",
+            "items": rows}
 
 SOURCES = [
     {"id": "co-sr220-en", "title": "Swiss Code of Obligations (SR 220), consolidated version applicable from 2026-10-01, official English translation",
@@ -831,8 +851,8 @@ ROUTING_QUESTION = ("Which employment-termination dispute does the claim concern
                     "because of the probation period, an incapacity through illness or accident, compulsory service, "
                     "pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary "
                     "notice by the employer that the claim contests as abusive (given for an improper reason, such as "
-                    "retaliation for claims or an employee representative's mandate), or against which the employee objects "
-                    "or claims compensation (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, "
+                    "retaliation for claims or an employee representative's mandate), including the written objection to such a "
+                    "notice and the compensation claim for it (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, "
                     "without a notice period (CO arts. 337-337c).")
 
 
@@ -1056,7 +1076,11 @@ def rule_text(data):
            "## How to read steps and stops", "", data["reading_of_stops"], "",
            "## Convention of this benchmark (not law)", "",
            "The following rule is a convention of this benchmark, not of the law; no article states it:", "",
-           "> " + data["convention"]["text"], ""]
+           "> " + data["convention"]["text"], "",
+           "## Which dispute type applies (routing)", "",
+           "Routing question: " + ROUTING_QUESTION, "",
+           "Values: " + ", ".join(t["id"] for t in data["types"]) + ". The question carries its own limits; it has no "
+           "separate not_this line.", ""]
     out += translation_section(2)
     for n, t in enumerate(data["types"], 1):
         facts = {f["id"]: f for f in t["facts"]}
@@ -1102,7 +1126,7 @@ def main():
     (REGIME_DIR / "rules.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (REGIME_DIR / "RULES.md").write_text(rules_md(data), encoding="utf-8")
     (REGIME_DIR / "MUST_SHOW_WORDING.json").write_text(
-        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "dismissal"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        json.dumps(must_show_wording(TYPES, [(2, MUST_SHOW_REV2), (3, MUST_SHOW_REV3)], "dismissal"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     for t in TYPES:
         (REGIME_DIR / "workflow" / f"{t['id']}.json").write_text(
             json.dumps(workflow(t), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

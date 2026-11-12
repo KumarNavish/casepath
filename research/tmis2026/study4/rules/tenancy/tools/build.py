@@ -457,6 +457,12 @@ termination = {
     ],
 }
 
+# rent_increase_notice form item, revision 3 (second reader, R2-6): a graduated-rent step needs only writing
+# (art. 269d para. 5)
+RI_FORM_ITEM = ("a statement of the form used: the printed title of the form approved by the canton, or a sentence on the "
+                "notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, "
+                "a written notice suffices instead (art. 269d para. 5)")
+
 # ---------------------------------------------------------------- type 3: rent increase
 rent = {
     "id": "rent_increase_dispute",
@@ -559,10 +565,9 @@ rent = {
             "The increase can take effect only from the next termination date; the lease records the termination dates "
             "(and any graduated-rent or index clause, arts. 269b–269c).",
             de="Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen.")),
-        D("rent_increase_notice", "Landlord's rent increase notice (with any covering letter)", "ri_form", True,
+        D("rent_increase_notice", "Landlord's rent increase notice", "ri_form", True,
           ["old and new rent", "date from which the increase applies", "reasons given",
-           "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the "
-           "notice that it is or is not given on that form",
+           RI_FORM_ITEM,
            "Only if the file states that the landlord gave notice of termination together with the rent increase: the "
            "notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not "
            "apply.",
@@ -725,22 +730,46 @@ MUST_SHOW_REV2 = [
 ]
 
 
-def must_show_wording(types, rows, regime):
-    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+# ---------------------------------------------------------------- revision 3 after the second look (2026-11-12)
+# The second reader's wording (CITATION_CHECK.md, "Second look, revisions 1 and 2"), agreed by the planner as worded.
+# Rows as in MUST_SHOW_REV2: types, document, wording of revision 2, wording now.
+MUST_SHOW_REV3 = [
+    (("rent_increase_dispute",), "rent_increase_notice",
+     "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice "
+     "that it is or is not given on that form", RI_FORM_ITEM),
+]
+
+
+def must_show_wording(types, revisions, regime):
+    """Check the revision rows against the built types and return the wording record (MUST_SHOW_WORDING.json): one
+    row per current item that some revision reworded, with every earlier wording (`earlier`, oldest first; `rev1` the
+    wording before revision 2) and the wording now (None: removed)."""
+    rows = []
+    for rev, table in revisions:
+        for tids, did, old, new in table:
+            hit = [r for r in rows if r["document"] == did and r["now"] == old and set(tids) <= set(r["types"])]
+            if hit:
+                r = hit[0]
+                assert set(r["types"]) == set(tids), (did, old, "a revision splits a row by type")
+                r["earlier"].append(old)
+                r["now"] = new
+                r["revisions"].append(rev)
+            else:
+                rows.append({"types": list(tids), "document": did, "rev1": old, "earlier": [old], "now": new,
+                             "revisions": [rev]})
     by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
-    out = []
-    for tids, did, old, new in rows:
-        for tid in tids:
-            shows = by[(tid, did)]
-            assert old not in shows, (tid, did, old)
-            assert new is None or new in shows, (tid, did, new)
-        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
-    return {"regime": regime, "revision": 2, "date": "2026-11-12",
-            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
-                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
-                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
-                    "items by their rev1 wording; the generator maps them through this file.",
-            "items": out}
+    for r in rows:
+        for tid in r["types"]:
+            shows = by[(tid, r["document"])]
+            assert not set(r["earlier"]) & set(shows), (tid, r["document"], r["earlier"])
+            assert r["now"] is None or r["now"] in shows, (tid, r["document"], r["now"])
+    return {"regime": regime, "revisions": [rev for rev, _ in revisions], "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use; revision 3 after the "
+                    "second look; development). earlier: every earlier wording, oldest first (rev1: the wording before "
+                    "revision 2, rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item "
+                    "removed). Designs and blind-check records name items by the wording of their time; the generator "
+                    "maps them through this file.",
+            "items": rows}
 SOURCES = [
     {"id": EN, "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, "
                         "consolidated version of 1 October 2026 (Fedlex); not authoritative"},
@@ -960,7 +989,11 @@ def rule_text(doc):
          "## How to read steps and stops", "", doc["reading_of_stops"], "",
          "## Convention of this benchmark (not law)", "",
          "This is a convention of this benchmark, not a rule of law; it cites no legal text. " + doc["convention"]["text"],
-         "", "Under each question below, \"If not mentioned\" says how the convention applies to it.", ""]
+         "", "Under each question below, \"If not mentioned\" says how the convention applies to it.", "",
+         "## Which type applies (routing)", "",
+         "Routing question: " + ROUTING_QUESTION, "",
+         "Values: " + ", ".join(t["id"] for t in doc["types"]) + " (in the order of the question's three disputes). "
+         "The question carries its own limits; it has no separate not_this line.", ""]
     for n, t in enumerate(doc["types"], 1):
         num = {f["id"]: i for i, f in enumerate(t["facts"], 1)}
 
@@ -1013,7 +1046,7 @@ def main():
     (HERE / "RULES.md").write_text(rules_md(doc), encoding="utf-8")
     (HERE / "rule_text.md").write_text(rule_text(doc), encoding="utf-8")
     (HERE / "MUST_SHOW_WORDING.json").write_text(
-        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "tenancy"), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(must_show_wording(TYPES, [(2, MUST_SHOW_REV2), (3, MUST_SHOW_REV3)], "tenancy"), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "workflow").mkdir(exist_ok=True)
     for t in TYPES:
         (HERE / "workflow" / f"{t['id']}.json").write_text(

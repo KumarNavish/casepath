@@ -1,8 +1,11 @@
 {
  "regime": "tenancy",
- "revision": 2,
+ "revisions": [
+  2,
+  3
+ ],
  "date": "2026-11-12",
- "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item removed). Designs and blind-check records written before revision 2 name items by their rev1 wording; the generator maps them through this file.",
+ "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use; revision 3 after the second look; development). earlier: every earlier wording, oldest first (rev1: the wording before revision 2, rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item removed). Designs and blind-check records name items by the wording of their time; the generator maps them through this file.",
  "items": [
   {
    "types": [
@@ -10,7 +13,13 @@
    ],
    "document": "termination_notice",
    "rev1": "whether the form approved by the canton is used",
-   "now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+   "earlier": [
+    "whether the form approved by the canton is used"
+   ],
+   "now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -18,7 +27,13 @@
    ],
    "document": "spouse_service",
    "rev1": "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit",
-   "now": "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered partner. Otherwise this item does not apply."
+   "earlier": [
+    "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit"
+   ],
+   "now": "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered partner. Otherwise this item does not apply.",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -26,7 +41,13 @@
    ],
    "document": "claims_and_reasons",
    "rev1": "conciliation or court documents on those claims, if any",
-   "now": "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the conciliation or court documents on those claims. Otherwise this item does not apply."
+   "earlier": [
+    "conciliation or court documents on those claims, if any"
+   ],
+   "now": "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the conciliation or court documents on those claims. Otherwise this item does not apply.",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -34,7 +55,13 @@
    ],
    "document": "deposit_receipt",
    "rev1": "date the claims were brought before the conciliation authority (or that they have not yet been)",
-   "now": "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet been brought"
+   "earlier": [
+    "date the claims were brought before the conciliation authority (or that they have not yet been)"
+   ],
+   "now": "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet been brought",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -42,7 +69,13 @@
    ],
    "document": "lease_contract",
    "rev1": "any graduated-rent or index clause",
-   "now": "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply."
+   "earlier": [
+    "any graduated-rent or index clause"
+   ],
+   "now": "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply.",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -50,7 +83,15 @@
    ],
    "document": "rent_increase_notice",
    "rev1": "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)",
-   "now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+   "earlier": [
+    "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)",
+    "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+   ],
+   "now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+   "revisions": [
+    2,
+    3
+   ]
   },
   {
    "types": [
@@ -58,7 +99,13 @@
    ],
    "document": "rent_increase_notice",
    "rev1": "any threat of termination in it or in the covering letter",
-   "now": "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not apply."
+   "earlier": [
+    "any threat of termination in it or in the covering letter"
+   ],
+   "now": "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not apply.",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -66,7 +113,13 @@
    ],
    "document": "rent_increase_notice",
    "rev1": "for an index-linked increase: the old and new index values",
-   "now": "Only if the file states that the increase applies an index clause: the old and the new index value. Otherwise this item does not apply."
+   "earlier": [
+    "for an index-linked increase: the old and new index values"
+   ],
+   "now": "Only if the file states that the increase applies an index clause: the old and the new index value. Otherwise this item does not apply.",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -74,7 +127,13 @@
    ],
    "document": "rent_increase_notice",
    "rev1": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
-   "now": null
+   "earlier": [
+    "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"
+   ],
+   "now": null,
+   "revisions": [
+    2
+   ]
   }
  ]
 }

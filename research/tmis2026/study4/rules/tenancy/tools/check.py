@@ -321,6 +321,8 @@ def main():
               f"needs created by an unmentioned fact, each allowed by a cited rule naming its absence: {allow or 'none'}")
     for k in sorted(kind_note):
         print("note: " + k)
+    n_par = check_parity(HERE, err)
+    print(f"parity: {n_par} workflow wordings found in rule_text.md")
     n_ms, n_ms_cond = check_must_show(HERE, err)
     print(f"6c must_show: {n_ms} items, {n_ms_cond} conditional in the fixed form")
     if errors:
@@ -406,7 +408,9 @@ def wf_outcome(wf, path):
 MS_FORM = re.compile(r"^Only if the file states that (?P<cond>[^:]+): (?P<thing>.+)\. Otherwise this item does not apply\.$")
 MS_WHETHER = re.compile(r"\bwhether\b", re.I)
 MS_ABSENCE = re.compile(r"\bif any\b|\bits absence\b|\bthat absence\b|^any\b", re.I)
-MS_LOOSE_CONDITION = re.compile(r"\bif\b|^(where|when|for an?|for the)\b[^:]*:", re.I)
+# a condition outside the fixed form: a leading "if/where/when/for a ...:" clause or a trailing ", if ..." clause
+# (an "only if" inside an explanatory parenthesis, as in theft's list of covers, is not an item condition)
+MS_LOOSE_CONDITION = re.compile(r"^if\b|, if\b|^(where|when|for an?|for the)\b[^:]*:", re.I)
 
 
 def check_must_show(base, report):
@@ -437,6 +441,34 @@ def check_must_show(base, report):
                 if MS_LOOSE_CONDITION.search(body):
                     report(f"{where}: condition outside the fixed form: {item!r}")
     return n, n_cond
+
+
+# ------------------------------------------------------------------ parity of words (second look, 2026-11-12)
+def check_parity(base, report):
+    """Every design gets the same words: each workflow fact's wording (the routing fact included, with its values;
+    for a question that carries '(Not this: ...)', both parts) occurs in rule_text.md. Returns the number of texts
+    checked."""
+    def norm(x):
+        return " ".join(x.split())
+    text = norm((base / "rule_text.md").read_text(encoding="utf-8"))
+    n = 0
+    for wp in sorted((base / "workflow").glob("*.json")):
+        wf = json.loads(wp.read_text(encoding="utf-8"))
+        for f in wf["facts"]:
+            q = f["question"]
+            parts = [q]
+            if " (Not this: " in q and q.endswith(")"):
+                head, tail = q.split(" (Not this: ", 1)
+                parts = [head, tail[:-1]]
+            for part in parts:
+                n += 1
+                if norm(part) not in text:
+                    report(f"parity {wf['id']}.{f['id']}: workflow wording not in rule_text.md: {part[:90]!r}")
+            for v in f.get("values", []):
+                n += 1
+                if v not in text:
+                    report(f"parity {wf['id']}.{f['id']}: routing value {v!r} not in rule_text.md")
+    return n
 
 
 if __name__ == "__main__":

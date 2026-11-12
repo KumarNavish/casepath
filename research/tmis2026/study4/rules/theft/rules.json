@@ -603,7 +603,7 @@
      "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
-      "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+      "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
       "its value"
      ],
      "rule": {
@@ -1176,8 +1176,8 @@
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
-      "its sum insured",
+      "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+      "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
       "the insured location"
      ],
      "rule": {
@@ -1256,7 +1256,7 @@
      "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
-      "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+      "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
       "its value"
      ],
      "rule": {

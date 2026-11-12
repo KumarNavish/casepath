@@ -1,0 +1,167 @@
+{
+  "bundles_sha256": {},
+  "check": [
+    "the_0cd1b047049a",
+    "the_1024620d6055",
+    "the_2774fb90433e",
+    "the_7d2b6a2bdce4",
+    "the_819379d12c03",
+    "the_9355c558630a",
+    "the_c50e0bd7b054"
+  ],
+  "counts": {
+    "drop": 1,
+    "recheck": 7,
+    "rewrite": 0
+  },
+  "files": {
+    "the_0cd1b047049a": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_true",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "stated_true",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_0cd1b047049a.json"
+    },
+    "the_1024620d6055": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "rewritten",
+      "kept_round": 2,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "stated_false",
+        "measures_pending": "stated_true",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      },
+      "text": "written/the_1024620d6055.r2.json"
+    },
+    "the_2774fb90433e": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "rewritten",
+      "kept_round": 2,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "open",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_true"
+      },
+      "text": "written/the_2774fb90433e.r2.json"
+    },
+    "the_7d2b6a2bdce4": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_true",
+        "bicycle": "stated_true",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_7d2b6a2bdce4.json"
+    },
+    "the_819379d12c03": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "not_mentioned"
+      },
+      "text": "written/the_819379d12c03.json"
+    },
+    "the_9355c558630a": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "stated_true",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      },
+      "text": "written/the_9355c558630a.json"
+    },
+    "the_c50e0bd7b054": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "kept_as_read",
+      "kept_round": 1,
+      "reason": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "open",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "text": "written/the_c50e0bd7b054.json"
+    },
+    "the_d9579f891719": {
+      "decision": "drop",
+      "denied_event": false,
+      "evidence": {
+        "quote": null,
+        "read_as": "the policy is designed to miss only the list of covers, but the file states the cover is included and the policy shows no sum insured for it, so under ruling (b) it now misses two items",
+        "source": "script: no 'Ziff. 24.2' line and no sum for that cover in attachments/insurance_policy.clean.txt"
+      },
+      "kept": "rewritten",
+      "kept_round": 2,
+      "reason": "the text differs from its design and the file was already rewritten once",
+      "target_facts": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      },
+      "text": "written/the_d9579f891719.r2.json"
+    }
+  },
+  "item_notes_sha256": "bf96b1063d3358220a4bbb43bc8727c79aa24b93dd3af997ffd163ddb55163cc",
+  "regime": "theft",
+  "round": 4,
+  "rule": "A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is dropped. Files of the check set that are not rewritten are blind-checked again as they are.",
+  "schema": "study4.repair-plan/1",
+  "style_sha256": "837e714d17c77057e92422aa5b5d0032ffa62d9d84da56c257760bb03c055d2e",
+  "writer_bundle_sha256": "84a6e76f7cfd84917d2d414b38c71d91c96910ea273be8a043ff2341d3f49488"
+}

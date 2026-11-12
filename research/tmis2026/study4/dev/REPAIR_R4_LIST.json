@@ -1,0 +1,31 @@
+{
+ "label": "DEVELOPMENT. Files touched by revision 3 (second look), from lint/VERIFY_REV3.json and a script check of the attachment texts against the revised checkable_as; no judgment of the texts. rewrite: the script shows the text no longer agrees with its designed attachment state (dropped instead if already rewritten once); recheck: agreement needs a reading, so a blind reader decides. Excluded: theft/the_dd72ec4e53dd (its designed missing item no longer applies; the reference would change; for the planner).",
+ "rewrite": {
+  "theft": {
+   "the_d9579f891719": {
+    "read_as": "the policy is designed to miss only the list of covers, but the file states the cover is included and the policy shows no sum insured for it, so under ruling (b) it now misses two items",
+    "quote": null,
+    "source": "script: no 'Ziff. 24.2' line and no sum for that cover in attachments/insurance_policy.clean.txt"
+   }
+  }
+ },
+ "recheck": {
+  "theft": {
+   "the_0cd1b047049a": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_1024620d6055": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_2774fb90433e": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_7d2b6a2bdce4": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_819379d12c03": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_9355c558630a": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading",
+   "the_c50e0bd7b054": "revision 3: insurance_policy must show the complete list of covers (R2-2) and, where the cover is included, the sum agreed for it (ruling b; script: present where it applies); completeness of the list needs a reading"
+  },
+  "dismissal": {
+   "dis_188837a70acc": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+   "dis_408b774aa7db": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+   "dis_c5e1bd4a1483": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+   "dis_dd12420e6a78": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+   "dis_f5520e9336bd": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+   "dis_fb44c47f6ec7": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading"
+  }
+ }
+}

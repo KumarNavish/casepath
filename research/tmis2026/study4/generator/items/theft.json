@@ -11,10 +11,11 @@
     },
     {
       "document": "stolen_items_list",
-      "item": "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+      "item": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
       "conditional": false,
-      "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
-      "observed": "6 files designed sufficient read missing, 6 files read missing it in addition to the designed item (the generator had treated the item as conditional because it begins with 'where')"
+      "checkable_as": "For every listed item, the shop or seller and at least month and year of purchase, or, for an item that was not bought, how it was acquired (for example 'gift' or 'inherited', with the occasion) and when.",
+      "observed": "6 files designed sufficient read missing, 6 files read missing it in addition to the designed item (the generator had treated the item as conditional because it begins with 'where')",
+      "revision_3": "Revision 3 (second look, 2026-11-12): any way of acquiring an item that was not bought, as the second reader worded it (R2-3)."
     },
     {
       "document": "original_vouchers",
@@ -38,18 +39,24 @@
     {
       "type": "simple_theft_away",
       "document": "insurance_policy",
-      "item": "its sum insured",
-      "conditional": false,
-      "checkable_as": "An amount in CHF labelled as the sum insured for household contents (Versicherungssumme Hausrat).",
-      "observed": "the_d9579f891719: read missing in addition to the designed item"
+      "item": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+      "conditional": true,
+      "checkable_as": "An amount in CHF labelled as the sum insured for the supplementary insurance for simple theft away (Ziff. 24.2), not the sum insured for household contents.",
+      "observed": "the_d9579f891719: read missing in addition to the designed item",
+      "applies_when": {
+        "fact": "away_cover_missing",
+        "state": "stated_false"
+      },
+      "revision_3": "Revision 3 (second look, 2026-11-12): ruling (b): the sum agreed for the simple-theft-away cover, conditional on the file stating that the cover is included (away_cover_missing stated false)."
     },
     {
       "type": "simple_theft_away",
       "document": "insurance_policy",
-      "item": "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
+      "item": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
       "conditional": false,
-      "checkable_as": "The list of covers names simple theft away from home (einfacher Diebstahl auswärts) either as included or as not included. A cover list that is silent about it does not show this item.",
-      "rule_set_wording": "'or its absence' lets a silent policy count as showing the item; better: 'whether the supplementary cover for simple theft away is listed as included or excluded'."
+      "checkable_as": "The policy's complete list of the covers included (basic cover and every supplementary insurance taken out). Simple theft away from home (einfacher Diebstahl auswärts) is insured only if it is on that list; no 'not included' entry is required. An extract that shows only some covers, or no list of covers, does not show this item.",
+      "rule_set_wording": "'or its absence' lets a silent policy count as showing the item; better: 'whether the supplementary cover for simple theft away is listed as included or excluded'.",
+      "revision_3": "Revision 3 (second look, 2026-11-12): complete list of covers, as the second reader worded it (R2-2)."
     }
   ]
 }

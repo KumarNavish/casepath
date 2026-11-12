@@ -31,6 +31,15 @@ def run_design(regime, out, seed=20261112, extra=()):
     return D.main(["--regime", regime, "--out", str(out), "--seed", str(seed), "--quiet", *extra])
 
 
+# Stored development files whose designed missing item a later rule-set revision made inapplicable. Listed, not
+# changed: changing the designed attachment state would change the reference (dev/REPAIR_R4.md).
+KNOWN_STALE_MISSING = {
+    "theft/the_dd72ec4e53dd": "revision 3, ruling (b): the sum insured of the simple-theft-away cover applies only where "
+                              "the file states the cover is included; this file states it is not, and the item was the "
+                              "designed missing item of its policy",
+}
+
+
 def recorded_events(out, rnd, fid, state="not_mentioned"):
     """The routing and event answers a blind check records (BLIND_CHECK_TASK.md), all in one state."""
     inp = G.read_json(out / "blindcheck" / "in" / f"round{rnd}" / f"{fid}.json")
@@ -325,9 +334,10 @@ class GeneratorTest(unittest.TestCase):
                 continue
             for row in G.read_json(wp)["items"]:
                 for tid in row["types"]:
-                    self.assertEqual(reg.current_item(tid, row["document"], row["rev1"]), row["now"])
                     shows = reg.doc(tid, row["document"])["must_show"]
-                    self.assertNotIn(row["rev1"], shows)
+                    for old in row.get("earlier") or [row["rev1"]]:
+                        self.assertEqual(reg.current_item(tid, row["document"], old), row["now"])
+                        self.assertNotIn(old, shows)
                     if row["now"] is not None:
                         self.assertIn(row["now"], shows)
                         # a fixed-form item is conditional, and so is every item the notes call conditional
@@ -342,7 +352,7 @@ class GeneratorTest(unittest.TestCase):
                     continue
                 d = G.read_json(p)
                 for a in d["attachments"]:
-                    if a.get("supplied") and a.get("missing"):
+                    if a.get("supplied") and a.get("missing") and f"{r}/{d['file_id']}" not in KNOWN_STALE_MISSING:
                         now = reg.current_item(d["type"], a["document"], a["missing"])
                         req = notes.required_items(d["type"], a["document"], reg.doc(d["type"], a["document"])["must_show"],
                                                    d["facts"])

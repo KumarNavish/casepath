@@ -322,11 +322,11 @@ Changed items (4 rows (8 item instances: the contract's probation and notice-per
    - New: "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply."
    - Cited passage (the document's rule, basis evidence): CO art. 335b para. 1: "the probation period is considered to be the first month of an employment relationship" (German: "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses")
    - Condition: fact `probation_varied` ("Does the file say that a written individual agreement, a standard employment contract or a collective employment contract set a probation period other than the first month of employment?"), CO art. 335b para. 2: "Different terms may be envisaged by an individual written agreement, a standard employment contract or a collective employment contract; however, the probation period may not exceed three months." (German: "Durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag können abweichende Vereinbarungen getroffen werden; die Probezeit darf jedoch auf höchstens drei Monate verlängert werden.")
-   - Why: 'if any' lets an absence satisfy the item; the product read it as required in 7 files (dis_064eeecaeb0d and others). Now the fixed form with the generator's condition (probation_varied stated true). In wrongful_termination and immediate_dismissal the type has no such fact, so the condition never holds there, as in the generator.
+   - Why: 'if any' lets an absence satisfy the item; the product read it as required in 7 files (dis_064eeecaeb0d and others). Now the fixed form with the generator's condition (probation_varied stated true). In wrongful_termination and immediate_dismissal the type has no such fact, so the condition never holds there, as in the generator. [Corrected in revision 3: wrong; the wording turns on what the file states, which a file of those types may do; the item notes now leave the item to the story there.]
 2. **employment_contract** (protected_period_notice, wrongful_termination, immediate_dismissal)
    - Old: "notice-period clause, if any"
    - New: "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
-   - Cited passage (the document's rule, basis evidence): CO art. 335b para. 1: "the probation period is considered to be the first month of an employment relationship" (German: "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses")
+   - Cited passage (the document's rule, basis evidence; corrected in revision 3, the rule differs per type): protected_period_notice CO art. 335b para. 1: "the probation period is considered to be the first month of an employment relationship" (German: "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses"); wrongful_termination CO art. 335c para. 1: "The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month." (German: "Das Arbeitsverhältnis kann im ersten Dienstjahr mit einer Kündigungsfrist von einem Monat, im zweiten bis und mit dem neunten Dienstjahr mit einer Frist von zwei Monaten und nachher mit einer Frist von drei Monaten je auf das Ende eines Monats gekündigt werden."); immediate_dismissal CO art. 337c para. 1: "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration" (German: "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre")
    - Condition: fact `notice_period_varied` ("Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?"), CO art. 335c para. 2: "These notice periods may be varied by written individual, standard or collective employment contract" (German: "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden")
    - Why: As the probation clause; the generator's condition is notice_period_varied stated true (no such fact in wrongful_termination).
 3. **employment_contract** (immediate_dismissal)
@@ -362,3 +362,42 @@ State before revision 2 (`rev1/`, equal to the hashes after revision 1 above):
 - rev1/workflow/immediate_dismissal.json 2c691bbc6f9eeb875019e93a373cfdb4c8904263e55e1f9f070e7f9f23ec16c3
 - rev1/workflow/protected_period_notice.json 06e836f2bc66031ef6db2ced25bf05b7a817d1cef4c0eab25c0e2a0cbe5408a5
 - rev1/workflow/wrongful_termination.json ac190d8f2178b60c03d8c6a10bb3e32ca9bbd779cc52577f05508fa1724a8a9f
+
+## Revision 3 after the second look (development, 2026-11-12)
+
+DEVELOPMENT material. The second reader's "Second look, revisions 1 and 2" (end of `CITATION_CHECK.md`) is applied as
+the reader worded it; the planner accepted every disagreement and ruling. Edited in `tools/build.py` (table
+`MUST_SHOW_REV3`; `MUST_SHOW_WORDING.json` now lists every earlier wording of each item) and rebuilt. The state before
+is kept in `rev2/` (`rules.json`, `rule_text.md`, `MUST_SHOW_WORDING.json`, `workflow/`) and
+`generator/items/rev2/dismissal.json`.
+
+**Parity of words (all regimes).** `rule_text.md` now carries a section "Which dispute type applies (routing)" with the
+routing question exactly as the workflows give it, its values and, where it has one, its not_this text, generated by
+`build.py`. `tools/check.py` fails when any workflow fact's wording (the routing fact included, with its values, and
+both parts of a question that carries "(Not this: ...)") does not occur in `rule_text.md` (on `rev2/` it reports the
+routing question missing for tenancy and dismissal).
+
+Changes:
+
+1. **Routing question** (`dispute_family`), wrongful_termination clause (R1-1), agreed by the second reader as worded.
+   - Old: "... or against which the employee objects or claims compensation (CO arts. 336-336b)."
+   - New: "... including the written objection to such a notice and the compensation claim for it (CO arts. 336-336b)."
+   - Passage: CO art. 336b para. 1 (the objection of "a party seeking compensation pursuant to Articles 336 and 336a"). The routing question is now also in `rule_text.md` (parity).
+2. **Item notes (note i)**, agreed by the second reader as worded: `employment_contract` "Only if the file states that a written agreement or contract sets a probation period ...: the probation clause" in wrongful_termination and immediate_dismissal, and "... notice periods different from the statutory ones: the notice-period clause" in wrongful_termination: those types have no fact for the condition, so the generator now leaves the item to the story (conditional, shown where the file states such a clause; type-specific entries in `generator/items/dismissal.json`) instead of never applying it. No must_show wording changed. The revision-2 statement that the condition "never holds there" is marked as corrected above.
+3. **Listing slip (note ii)**, agreed by the second reader as worded: in the revision-2 list, the notice-period item's "document's rule" now names the rule per type (art. 335b para. 1 in protected_period_notice, art. 335c para. 1 in wrongful_termination, art. 337c para. 1 in immediate_dismissal); corrected in place above.
+
+**Checks.** `tools/check.py`: all checks passed (with the parity check). `generator/test_generator.py`: 19 tests OK.
+`lint/verify_rev3.py` (`lint/VERIFY_REV3.json`): every final reference and design keeps its manifest hash and is
+recomputed unchanged; clean-room agreement unchanged (436 of 436); rules and workflows equal `rev2/` outside the
+must_show wording and the named changes (routing question: immediate_dismissal.dispute_family, routing question: protected_period_notice.dispute_family, routing question: wrongful_termination.dispute_family).
+
+**Files touched.** No designed state changes (the two items were never a designed missing item in those types). Immediate dismissal: no message or contract of the seven files mentions a probation clause (script: no "Probezeit" or "probation"). Wrongful termination: no file mentions probation; six messages mention the notice period, so whether they state a written clause varying it needs a reading: those six are re-checked in repair round 4 (`dev/REPAIR_R4.md`).
+
+### Hashes after revision 3
+
+- rules.json cf853c508fc6000517b4bc2c9005bd9c263c3d916aa34aff0594af29875a69f3
+- rule_text.md 6f6bc92b45c5152757582dc5a34d433b64f464e6431c6ecee2addc4380328380
+- MUST_SHOW_WORDING.json 9c0effd81d92cf877b08b27aee119572ba57da8a56ae6969a6fddef2091de79d
+- workflow/immediate_dismissal.json fa5a15fa83d657f6a0e978cb99ce46d34687069fdcbcef1ab30defb86c6c6270
+- workflow/protected_period_notice.json 9ff4108e65756ccbb7da65ea14065968d815942e08b5672fe7d6bf5697d05e83
+- workflow/wrongful_termination.json f618a0441992a67db3be5595b312e8629180ff10d2bef57c3993ab46d3d3dde1

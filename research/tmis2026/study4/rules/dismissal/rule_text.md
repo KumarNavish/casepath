@@ -14,6 +14,12 @@ The following rule is a convention of this benchmark, not of the law; no article
 
 > A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.
 
+## Which dispute type applies (routing)
+
+Routing question: Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), including the written objection to such a notice and the compensation claim for it (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).
+
+Values: protected_period_notice, wrongful_termination, immediate_dismissal. The question carries its own limits; it has no separate not_this line.
+
 ## Where the translation was not followed
 
 The German text is authoritative. Where the English translation differs from it in legal meaning, the rules follow the German:

@@ -1,0 +1,833 @@
+{
+ "label": "DEVELOPMENT, not a result",
+ "regimes": {
+  "tenancy": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 354,
+     "same": 354
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 354,
+     "same": 354
+    }
+   ],
+   "rules_equal_outside_named_changes": true,
+   "workflows_equal_outside_named_changes": {
+    "defect_mold_heating": true,
+    "lease_termination_dispute": true,
+    "rent_increase_dispute": true
+   },
+   "named_changes": [
+    "title: rent_increase_dispute.rent_increase_notice"
+   ],
+   "attachments_touched_by_revised_items": [
+    {
+     "file": "ten_62956adff3f7",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 1,
+     "designed": "missing: date from which the increase applies",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_73e9202b8898",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 1,
+     "designed": "missing: date from which the increase applies",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_b4d4cb05336f",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_c95735ae0bf4",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 1,
+     "designed": "missing: old and new rent",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_db552dbb3c23",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 2,
+     "designed": "missing: a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_e4858b3af131",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 1,
+     "designed": "missing: reasons given",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "ten_efa24ba18ce3",
+     "type": "rent_increase_dispute",
+     "document": "rent_increase_notice",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    }
+   ],
+   "designed_missing_item_no_longer_applies": [],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "48ae10805115ca60e19826fbcd6df924f1e82b575756c85dbf736d1f5199310f",
+    "rule_text.md": "97fd79def5cccaf50d3c727eca36eaa961cb459b615fa86759446c60a783e7be",
+    "MUST_SHOW_WORDING.json": "a2989658d6f1a3fa759a24784b40ec418c715038d007d39cae09feafd08a25d2",
+    "workflow/defect_mold_heating.json": "4bfd015a354991c7cb77531a354c66ea6d79251b4ec991b7434065f3f12cfd1d",
+    "workflow/lease_termination_dispute.json": "9bdcaf5bfc0c3e2af96216a8dd2fb3a283d88eaee1c29a7023d53cfa2009101c",
+    "workflow/rent_increase_dispute.json": "a6c94599b27458a8ea8d3d45e84879aaefcf1c1954b68c14038c651684d4a63f"
+   }
+  },
+  "theft": {
+   "final_files": 59,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 450,
+     "same": 450
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 450,
+     "same": 450
+    }
+   ],
+   "rules_equal_outside_named_changes": true,
+   "workflows_equal_outside_named_changes": {
+    "theft_at_home": true,
+    "simple_theft_away": true
+   },
+   "named_changes": [],
+   "attachments_touched_by_revised_items": [
+    {
+     "file": "the_003fbcb4d365",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_0cd1b047049a",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_0cd1b047049a",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": false,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_1024620d6055",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_1024620d6055",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_1024620d6055",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_2774fb90433e",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_2774fb90433e",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_2774fb90433e",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_314b305efe2d",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_506c9909edc4",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_57501c7d1230",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 1,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_7d2b6a2bdce4",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_7d2b6a2bdce4",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": false,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_819379d12c03",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "missing: the insured location",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_819379d12c03",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "missing: the insured location",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_91cf197b270e",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 1,
+     "designed": "missing: each stolen or damaged item",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_9355c558630a",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_9355c558630a",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_9b58c5abd02f",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_a86e098e517e",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_c3a5e8c74185",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_c50e0bd7b054",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_c50e0bd7b054",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_c8b40fd1824d",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_cd857962dd2a",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: each stolen or damaged item",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_d37fc3c54b4b",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "missing: its value",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_d70abf016562",
+     "type": "theft_at_home",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_d9579f891719",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "missing: the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_d9579f891719",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 2,
+     "designed": "missing: the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_dd72ec4e53dd",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "missing: Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "item_now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_dd72ec4e53dd",
+     "type": "simple_theft_away",
+     "document": "insurance_policy",
+     "round": 1,
+     "designed": "missing: Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "item_now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": false,
+     "checkable_as_changed": true
+    },
+    {
+     "file": "the_eb579978f91b",
+     "type": "simple_theft_away",
+     "document": "stolen_items_list",
+     "round": 2,
+     "designed": "sufficient",
+     "item_now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+     "wording_changed": true,
+     "applies_before": true,
+     "applies_now": true,
+     "checkable_as_changed": true
+    }
+   ],
+   "designed_missing_item_no_longer_applies": [
+    {
+     "file": "the_dd72ec4e53dd",
+     "document": "insurance_policy",
+     "designed_missing": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "why": "the designed missing item no longer applies in this file: its designed state (insufficient) and the reference would change; not changed here"
+    }
+   ],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "07bcf54f05a6942e65cd3ffdf9eaaacaa98aca0e0d956268437b7137290850e2",
+    "rule_text.md": "1aba2d4ef87699bde5f931c3c4b76f15320f51df7ac3da6ee2b0f4e18deedf67",
+    "MUST_SHOW_WORDING.json": "339fff28a14aeb147fc746aa5c3c4d1b3e864de2d3b5aef15e4eba3b40ece4f5",
+    "workflow/theft_at_home.json": "846c298a63a2a5665af71e395f159089b1b63ca999eeb2a9258af4dd62e33464",
+    "workflow/simple_theft_away.json": "a185af6bacbb7867106beb9f2e94f02a709265138f291b7e580c5d00faf8a170"
+   }
+  },
+  "dismissal": {
+   "final_files": 58,
+   "hash_mismatch": [],
+   "final_recomputed_differences": [],
+   "cleanroom": [
+    {
+     "evaluator": "evaluator_a",
+     "documents": 436,
+     "same": 436
+    },
+    {
+     "evaluator": "evaluator_b",
+     "documents": 436,
+     "same": 436
+    }
+   ],
+   "rules_equal_outside_named_changes": true,
+   "workflows_equal_outside_named_changes": {
+    "protected_period_notice": true,
+    "wrongful_termination": true,
+    "immediate_dismissal": true
+   },
+   "named_changes": [
+    "routing question: immediate_dismissal.dispute_family",
+    "routing question: protected_period_notice.dispute_family",
+    "routing question: wrongful_termination.dispute_family"
+   ],
+   "attachments_touched_by_revised_items": [
+    {
+     "file": "dis_188837a70acc",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_188837a70acc",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_1a145eb920db",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_373612fa5345",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_408b774aa7db",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_45aed10bfb69",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_7c10c74bd747",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_ac405c63effe",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_b7f5c9e07c99",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_c5e1bd4a1483",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_c5e1bd4a1483",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_dd12420e6a78",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_dd12420e6a78",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: parties",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_f3d056a01f6d",
+     "type": "immediate_dismissal",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "sufficient",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: start date of employment",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_f5520e9336bd",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: start date of employment",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_fb44c47f6ec7",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: start date of employment",
+     "item_now": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    },
+    {
+     "file": "dis_fb44c47f6ec7",
+     "type": "wrongful_termination",
+     "document": "employment_contract",
+     "round": 1,
+     "designed": "missing: start date of employment",
+     "item_now": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+     "wording_changed": false,
+     "applies_before": false,
+     "applies_now": null,
+     "checkable_as_changed": false
+    }
+   ],
+   "designed_missing_item_no_longer_applies": [],
+   "ok": true,
+   "sha256_revised": {
+    "rules.json": "cf853c508fc6000517b4bc2c9005bd9c263c3d916aa34aff0594af29875a69f3",
+    "rule_text.md": "6f6bc92b45c5152757582dc5a34d433b64f464e6431c6ecee2addc4380328380",
+    "MUST_SHOW_WORDING.json": "9c0effd81d92cf877b08b27aee119572ba57da8a56ae6969a6fddef2091de79d",
+    "workflow/protected_period_notice.json": "9ff4108e65756ccbb7da65ea14065968d815942e08b5672fe7d6bf5697d05e83",
+    "workflow/wrongful_termination.json": "f618a0441992a67db3be5595b312e8629180ff10d2bef57c3993ab46d3d3dde1",
+    "workflow/immediate_dismissal.json": "fa5a15fa83d657f6a0e978cb99ce46d34687069fdcbcef1ab30defb86c6c6270"
+   }
+  }
+ },
+ "ok": true
+}

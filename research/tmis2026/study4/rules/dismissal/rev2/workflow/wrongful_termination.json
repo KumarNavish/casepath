@@ -1,0 +1,630 @@
+{
+ "format": "casepath.workflow/1",
+ "id": "wrongful_termination",
+ "version": "2026-11-12",
+ "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+ "status": "reviewed",
+ "example": false,
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "wrongful_termination"
+ },
+ "sources": [
+  {
+   "id": "co-sr220",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "cpc-sr272",
+   "kind": "knowledge",
+   "title": "Swiss Civil Procedure Code (SR 272), consolidated version of 2026-07-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "process_guidance",
+   "intended_kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
+  }
+ ],
+ "facts": [
+  {
+   "id": "dispute_family",
+   "type": "enum",
+   "question": "Which employment-termination dispute does the claim concern? protected_period_notice: an ordinary notice of termination by the employer where the claim concerns whether it is valid or when the employment ends, because of the probation period, an incapacity through illness or accident, compulsory service, pregnancy or birth, or the notice period (CO arts. 335b, 335c, 336c). wrongful_termination: an ordinary notice by the employer that the claim contests as abusive (given for an improper reason, such as retaliation for claims or an employee representative's mandate), or against which the employee objects or claims compensation (CO arts. 336-336b). immediate_dismissal: a dismissal with immediate effect, without a notice period (CO arts. 337-337c).",
+   "values": [
+    "protected_period_notice",
+    "wrongful_termination",
+    "immediate_dismissal"
+   ],
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "employer_gave_notice",
+   "type": "boolean",
+   "question": "Did the employer give the employee notice of termination of the employment relationship?",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "notice_period_ended",
+   "type": "boolean",
+   "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
+   "source_refs": [
+    "co-sr220#art_336b_para_1"
+   ]
+  },
+  {
+   "id": "objection_submitted",
+   "type": "boolean",
+   "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?",
+   "source_refs": [
+    "co-sr220#art_336b_para_1"
+   ]
+  },
+  {
+   "id": "agreed_to_continue",
+   "type": "boolean",
+   "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "more_than_180_days",
+   "type": "boolean",
+   "question": "Have more than 180 days passed since the employment relationship ended?",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "action_in_time",
+   "type": "boolean",
+   "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "reasons_requested",
+   "type": "boolean",
+   "question": "Did the employee ask the employer to state the reasons for the notice in writing?",
+   "source_refs": [
+    "co-sr220#art_335_para_2"
+   ]
+  },
+  {
+   "id": "retaliation_for_claims",
+   "type": "boolean",
+   "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
+   "source_refs": [
+    "co-sr220#art_336_para_1_let_d"
+   ]
+  },
+  {
+   "id": "employee_representative",
+   "type": "boolean",
+   "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?",
+   "source_refs": [
+    "co-sr220#art_336_para_2_let_b"
+   ]
+  }
+ ],
+ "documents": [
+  {
+   "id": "termination_letter",
+   "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
+   "must_show": [
+    "issuer",
+    "addressee",
+    "date of the notice",
+    "date the employee received it",
+    "stated end of employment"
+   ],
+   "source_refs": [
+    "co-sr220#art_336b_para_1"
+   ],
+   "why": "CO art. 336b para. 1: The objection must be lodged before the end of the notice period; the notice and its date of receipt ordinarily show when the period began and when the employment ends, which fixes that window and the start of the 180 days."
+  },
+  {
+   "id": "employment_contract",
+   "title": "Employment contract or other record of the start of employment",
+   "must_show": [
+    "parties",
+    "start date of employment",
+    "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+    "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+   ],
+   "source_refs": [
+    "co-sr220#art_335c_para_1"
+   ],
+   "why": "CO art. 335c para. 1: The end of the notice period, which closes the objection window, depends on the years of service and on any written variation; the contract ordinarily shows the start date and any such clause."
+  },
+  {
+   "id": "written_objection",
+   "title": "Copy of the written objection with proof of when the employer received it",
+   "must_show": [
+    "objection to the notice",
+    "addressed to the employer",
+    "date lodged or received",
+    "proof of sending or receipt"
+   ],
+   "source_refs": [
+    "co-sr220#art_336b_para_1"
+   ],
+   "why": "CO art. 336b para. 1: The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both.",
+   "required_when": {
+    "fact": "objection_submitted",
+    "is": true
+   }
+  },
+  {
+   "id": "court_filing",
+   "title": "Proof that the claim was made pending: the conciliation request or statement of claim, with the confirmation of receipt",
+   "must_show": [
+    "authority (conciliation authority or court)",
+    "compensation claim",
+    "filing date",
+    "confirmation of receipt"
+   ],
+   "source_refs": [
+    "cpc-sr272#art_62_para_1"
+   ],
+   "why": "CPC art. 62 para. 1: Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it (the link from the CO's \"anhängig gemacht\" to the CPC's \"Rechtshängigkeit\" is an inference across the two acts).",
+   "required_when": {
+    "fact": "action_in_time",
+    "is": true
+   }
+  },
+  {
+   "id": "written_reasons",
+   "title": "Employer's written statement of reasons",
+   "must_show": [
+    "reasons stated by the employer",
+    "date"
+   ],
+   "source_refs": [
+    "co-sr220#art_335_para_2"
+   ],
+   "why": "CO art. 335 para. 2: Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the reason on which art. 336 makes abuse depend.",
+   "required_when": {
+    "fact": "reasons_requested",
+    "is": true
+   }
+  },
+  {
+   "id": "claims_correspondence",
+   "title": "Correspondence in which the employee asserted claims before the notice",
+   "must_show": [
+    "claims asserted under the employment relationship",
+    "dates before the notice",
+    "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply."
+   ],
+   "source_refs": [
+    "co-sr220#art_336_para_1_let_d"
+   ],
+   "why": "CO art. 336 para. 1 let. d: This ground turns on claims asserted before the notice; the correspondence in which the employee raised them is the ordinary record of what was claimed and when."
+  },
+  {
+   "id": "representative_mandate",
+   "title": "Proof of election as employee representative",
+   "must_show": [
+    "body (staff council or body linked to the business)",
+    "election",
+    "term of the mandate covering the notice date"
+   ],
+   "source_refs": [
+    "co-sr220#art_336_para_2_let_b"
+   ],
+   "why": "CO art. 336 para. 2 let. b: The protection applies while the employee is an elected representative; the election record or mandate confirmation ordinarily shows the body and the term."
+  },
+  {
+   "id": "salary_evidence",
+   "title": "Salary statements (pay slips)",
+   "must_show": [
+    "monthly salary",
+    "period covered"
+   ],
+   "source_refs": [
+    "co-sr220#art_336a_para_2"
+   ],
+   "why": "CO art. 336a para. 2: Compensation is capped at six months' salary; pay slips are the ordinary proof of the salary that sets the cap."
+  }
+ ],
+ "start": "b_intake",
+ "steps": [
+  {
+   "id": "b_intake",
+   "title": "Establish whether the employer gave notice",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ],
+   "next": [
+    {
+     "to": "b_stop_no_notice",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": false
+     },
+     "label": "no notice by the employer"
+    },
+    {
+     "to": "b_objection_check",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": true
+     },
+     "label": "employer gave notice"
+    }
+   ]
+  },
+  {
+   "id": "b_objection_check",
+   "title": "Record the notice and the notice period, and check the written objection",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336b_para_1"
+   ],
+   "documents": [
+    "termination_letter",
+    "employment_contract",
+    "written_objection"
+   ],
+   "next": [
+    {
+     "to": "b_stop_no_objection",
+     "when": {
+      "all": [
+       {
+        "fact": "notice_period_ended",
+        "is": true
+       },
+       {
+        "fact": "objection_submitted",
+        "is": false
+       }
+      ]
+     },
+     "label": "notice period ended without a valid written objection"
+    },
+    {
+     "to": "b_continuation_check",
+     "when": {
+      "not": {
+       "all": [
+        {
+         "fact": "notice_period_ended",
+         "is": true
+        },
+        {
+         "fact": "objection_submitted",
+         "is": false
+        }
+       ]
+      }
+     },
+     "label": "objection made or still possible"
+    }
+   ]
+  },
+  {
+   "id": "b_continuation_check",
+   "title": "Check whether the parties agreed to continue the employment relationship",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ],
+   "next": [
+    {
+     "to": "b_stop_continued",
+     "when": {
+      "fact": "agreed_to_continue",
+      "is": true
+     },
+     "label": "parties agreed to continue"
+    },
+    {
+     "to": "b_limit_check",
+     "when": {
+      "fact": "agreed_to_continue",
+      "is": false
+     },
+     "label": "no agreement to continue"
+    }
+   ]
+  },
+  {
+   "id": "b_limit_check",
+   "title": "Check the 180-day time limit for making the claim pending",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ],
+   "documents": [
+    "court_filing"
+   ],
+   "next": [
+    {
+     "to": "b_stop_time_limit",
+     "when": {
+      "all": [
+       {
+        "fact": "more_than_180_days",
+        "is": true
+       },
+       {
+        "fact": "action_in_time",
+        "is": false
+       }
+      ]
+     },
+     "label": "180 days passed without the claim made pending"
+    },
+    {
+     "to": "b_grounds",
+     "when": {
+      "not": {
+       "all": [
+        {
+         "fact": "more_than_180_days",
+         "is": true
+        },
+        {
+         "fact": "action_in_time",
+         "is": false
+        }
+       ]
+      }
+     },
+     "label": "time limit kept or still running"
+    }
+   ]
+  },
+  {
+   "id": "b_grounds",
+   "title": "Establish the reason the employer gave for the notice",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336_para_1_intro"
+   ],
+   "documents": [
+    "written_reasons"
+   ],
+   "next": [
+    {
+     "to": "b_gate_retaliation",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "b_retaliation",
+   "title": "Examine the claimed retaliation for asserting claims",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336_para_1_let_d"
+   ],
+   "documents": [
+    "claims_correspondence"
+   ],
+   "next": [
+    {
+     "to": "b_gate_representative",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "b_representative",
+   "title": "Examine the protection of an elected employee representative (the employer must prove a justified reason, \"begründeter Anlass\")",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336_para_2_let_b"
+   ],
+   "documents": [
+    "representative_mandate"
+   ],
+   "next": [
+    {
+     "to": "b_compensation",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "b_compensation",
+   "title": "Assess the compensation claim",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336a_para_2"
+   ],
+   "documents": [
+    "salary_evidence"
+   ],
+   "next": [
+    {
+     "to": "b_close",
+     "when": true
+    }
+   ]
+  },
+  {
+   "id": "b_gate_retaliation",
+   "title": "Check branch: retaliation for asserting claims",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336_para_1_let_d"
+   ],
+   "next": [
+    {
+     "to": "b_retaliation",
+     "when": {
+      "fact": "retaliation_for_claims",
+      "is": true
+     },
+     "label": "retaliation_for_claims"
+    },
+    {
+     "to": "b_gate_representative",
+     "when": {
+      "fact": "retaliation_for_claims",
+      "is": false
+     },
+     "label": "not retaliation_for_claims"
+    }
+   ]
+  },
+  {
+   "id": "b_gate_representative",
+   "title": "Check branch: elected employee representative",
+   "role": "system",
+   "source_refs": [
+    "co-sr220#art_336_para_2_let_b"
+   ],
+   "next": [
+    {
+     "to": "b_representative",
+     "when": {
+      "fact": "employee_representative",
+      "is": true
+     },
+     "label": "employee_representative"
+    },
+    {
+     "to": "b_compensation",
+     "when": {
+      "fact": "employee_representative",
+      "is": false
+     },
+     "label": "not employee_representative"
+    }
+   ]
+  },
+  {
+   "id": "b_stop_no_notice",
+   "title": "Stop (CO art. 336b para. 2)",
+   "role": "system",
+   "outcome": "b_stop_no_notice",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_no_objection",
+   "title": "Stop (CO art. 336b para. 2)",
+   "role": "system",
+   "outcome": "b_stop_no_objection",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_continued",
+   "title": "Stop (CO art. 336b para. 2)",
+   "role": "system",
+   "outcome": "b_stop_continued",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_time_limit",
+   "title": "Stop (CO art. 336b para. 2)",
+   "role": "system",
+   "outcome": "b_stop_time_limit",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_close",
+   "title": "Record the document state for assessment",
+   "role": "claim_handler",
+   "outcome": "assessed",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  }
+ ],
+ "outcomes": [
+  {
+   "id": "assessed",
+   "title": "Documents complete for assessment",
+   "source_refs": [
+    "co-sr220#arts_335-337c"
+   ]
+  },
+  {
+   "id": "b_stop_no_notice",
+   "title": "Process ends: Only the party on whom notice was served may bring the compensation claim",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_no_objection",
+   "title": "Process ends: The party served may claim only where the objection has been validly (\"gültig\") made, which para. 1 requires in writing to the employer by the end of the notice period",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_continued",
+   "title": "Process ends: The party served may claim only where the parties cannot reach agreement on continuing the employment relationship",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_time_limit",
+   "title": "Process ends: The German text, which is authoritative, says the claim is forfeited (\"verwirkt\") unless an action is made pending (\"anhängig gemacht\") within 180 days",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ]
+  }
+ ],
+ "presumptions": [
+  {
+   "fact": "agreed_to_continue",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "reasons_requested",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "retaliation_for_claims",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "employee_representative",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  }
+ ],
+ "notes": [
+  {
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Unresolved when unmentioned, because false would end the process: action_in_time, objection_submitted. Always stated in the file, no presumption: notice_period_ended, more_than_180_days.",
+   "source_refs": [
+    "benchmark-convention#intake_convention"
+   ]
+  }
+ ],
+ "open_questions": []
+}

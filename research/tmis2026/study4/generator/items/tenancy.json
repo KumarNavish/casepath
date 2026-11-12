@@ -4,11 +4,12 @@
     {
       "type": "rent_increase_dispute",
       "document": "rent_increase_notice",
-      "item": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form",
+      "item": "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form; for an increase the file states is a graduated-rent step, a written notice suffices instead (art. 269d para. 5)",
       "conditional": false,
-      "checkable_as": "The notice itself says whether it is made on the official form approved by the canton: the printed title of that form, or an explicit sentence that the official form is used or enclosed, or that it is not. A plain letter that is silent about any form does not show this item.",
+      "checkable_as": "The notice itself says whether it is made on the official form approved by the canton: the printed title of that form, or an explicit sentence that the official form is used or enclosed, or that it is not. A plain letter that is silent about any form does not show this item. Exception: where the file states that the increase is a graduated-rent step, any written notice shows this item (art. 269d para. 5).",
       "observed": "ten_db552dbb3c23: designed missing, read sufficient",
-      "rule_set_wording": "A 'whether ...' item is shown by every document (silence reads as 'no'), so an insufficient copy cannot be told from a sufficient one; better: 'the official cantonal form, or a statement that it is not used'."
+      "rule_set_wording": "A 'whether ...' item is shown by every document (silence reads as 'no'), so an insufficient copy cannot be told from a sufficient one; better: 'the official cantonal form, or a statement that it is not used'.",
+      "revision_3": "Revision 3 (second look, 2026-11-12): graduated-rent exception added, as the second reader worded it (R2-6)."
     },
     {
       "type": "rent_increase_dispute",

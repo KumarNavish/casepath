@@ -304,7 +304,7 @@ def rewritten_before(out, entry, rnd):
     return False
 
 
-def repair_prepare(regime, out, rnd, listed=None, from_compare=None, check="listed", force=False):
+def repair_prepare(regime, out, rnd, listed=None, from_compare=None, check="listed", force=False, recheck=None):
     """Plan repair round `rnd`: which files are rewritten (never rewritten before), dropped (rewritten before) or
     re-checked as they are, with the target states (the final record's states) and the text each is read from; write
     the rewrite requests. `listed`: {file_id: evidence} (why the text differs from its design); `from_compare`: the
@@ -328,10 +328,14 @@ def repair_prepare(regime, out, rnd, listed=None, from_compare=None, check="list
     unknown = sorted(set(listed) - set(entries))
     if unknown:
         raise SystemExit(f"not in final/MANIFEST.json: {unknown}")
+    recheck = dict(recheck or {})
+    unknown = sorted(set(recheck) - set(entries))
+    if unknown:
+        raise SystemExit(f"not in final/MANIFEST.json: {unknown}")
     if check == "denied":
-        check_set = sorted(fid for fid, e in entries.items() if e["denied_event"])
+        check_set = sorted(set(fid for fid, e in entries.items() if e["denied_event"]) | set(recheck))
     else:
-        check_set = sorted(listed)
+        check_set = sorted(set(listed) | set(recheck))
     missing_from_check = sorted(set(listed) - set(check_set))
     if missing_from_check:
         raise SystemExit(f"listed files outside the check set: {missing_from_check}")
@@ -360,7 +364,7 @@ def repair_prepare(regime, out, rnd, listed=None, from_compare=None, check="list
                                 "answers_changed": [], "bundle": bundle, "previous": str(text)}
         else:
             row["decision"] = "recheck"
-            row["reason"] = "not found to differ; blind-checked again as it is"
+            row["reason"] = recheck.get(fid) or "not found to differ; blind-checked again as it is"
         files[fid] = row
     rdir.mkdir(parents=True, exist_ok=True)
     if (rdir / "bundles").exists():
@@ -765,7 +769,8 @@ def main(argv=None):
     ap.add_argument("--rules-dir")
     ap.add_argument("--out")
     ap.add_argument("--round", type=int, default=1, help="1, 2, or a repair round (3 and later)")
-    ap.add_argument("--list", help="repair-prepare: JSON {regime: {file_id: evidence}} of files whose text differs")
+    ap.add_argument("--list", help="repair-prepare: JSON {regime: {file_id: evidence}} of files whose text differs, or "
+                                   "{rewrite: {regime: {file_id: evidence}}, recheck: {regime: {file_id: why}}}")
     ap.add_argument("--from-compare", type=int, help="repair-prepare: the earlier repair round whose differing "
                                                       "re-checked files are to be rewritten")
     ap.add_argument("--check", choices=["listed", "denied"], default="listed",
@@ -783,8 +788,12 @@ def main(argv=None):
     elif a.step == "repair-prepare":
         if a.round < 3:
             raise SystemExit("repair rounds are 3 and later")
-        listed = G.read_json(a.list).get(a.regime, {}) if a.list else {}
-        repair_prepare(regime, out, a.round, listed, a.from_compare, a.check, a.force)
+        lst = G.read_json(a.list) if a.list else {}
+        if "rewrite" in lst or "recheck" in lst:  # {"rewrite": {regime: {id: evidence}}, "recheck": {regime: {id: why}}}
+            listed, recheck = lst.get("rewrite", {}).get(a.regime, {}), lst.get("recheck", {}).get(a.regime, {})
+        else:  # {regime: {id: evidence}}
+            listed, recheck = lst.get(a.regime, {}), {}
+        repair_prepare(regime, out, a.round, listed, a.from_compare, a.check, a.force, recheck)
     else:
         finalize(regime, out)
 

@@ -1,0 +1,139 @@
+{
+  "bundles_sha256": {},
+  "check": [
+    "dis_188837a70acc",
+    "dis_408b774aa7db",
+    "dis_c5e1bd4a1483",
+    "dis_dd12420e6a78",
+    "dis_f5520e9336bd",
+    "dis_fb44c47f6ec7"
+  ],
+  "counts": {
+    "drop": 0,
+    "recheck": 6,
+    "rewrite": 0
+  },
+  "files": {
+    "dis_188837a70acc": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "open",
+        "employee_representative": "stated_true",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "stated_false",
+        "objection_submitted": "stated_true",
+        "reasons_requested": "stated_false",
+        "retaliation_for_claims": "stated_false"
+      },
+      "text": "written/dis_188837a70acc.json"
+    },
+    "dis_408b774aa7db": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "stated_false",
+        "employee_representative": "stated_true",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "stated_false",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "stated_true"
+      },
+      "text": "written/dis_408b774aa7db.json"
+    },
+    "dis_c5e1bd4a1483": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_false",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_true",
+        "notice_period_ended": "stated_true",
+        "objection_submitted": "open",
+        "reasons_requested": "stated_true",
+        "retaliation_for_claims": "not_mentioned"
+      },
+      "text": "written/dis_c5e1bd4a1483.json"
+    },
+    "dis_dd12420e6a78": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_true",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_true",
+        "notice_period_ended": "stated_true",
+        "objection_submitted": "stated_true",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "stated_true"
+      },
+      "text": "written/dis_dd12420e6a78.json"
+    },
+    "dis_f5520e9336bd": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "stated_false",
+        "employee_representative": "not_mentioned",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "stated_false",
+        "objection_submitted": "stated_false",
+        "reasons_requested": "stated_true",
+        "retaliation_for_claims": "stated_false"
+      },
+      "text": "written/dis_f5520e9336bd.json"
+    },
+    "dis_fb44c47f6ec7": {
+      "decision": "recheck",
+      "denied_event": false,
+      "kept": "exact",
+      "kept_round": 1,
+      "reason": "revision 3, note (i): in wrongful_termination the notice-period item applies where the file states a written clause varying the statutory periods; the message mentions the notice period, so whether it states such a clause needs a reading",
+      "target_facts": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_false",
+        "employer_gave_notice": "stated_true",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "stated_false",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "stated_true",
+        "retaliation_for_claims": "stated_true"
+      },
+      "text": "written/dis_fb44c47f6ec7.json"
+    }
+  },
+  "item_notes_sha256": "227f5348d4bdd7247db408c39ef4dac271c4d57d78a63232c5e0ee582e8f873a",
+  "regime": "dismissal",
+  "round": 4,
+  "rule": "A text that differs from its design is rewritten once; a file already rewritten once (kept in round 2 or rewritten in an earlier repair round) is dropped and counted. A rewritten file that still differs is dropped. Files of the check set that are not rewritten are blind-checked again as they are.",
+  "schema": "study4.repair-plan/1",
+  "style_sha256": "837e714d17c77057e92422aa5b5d0032ffa62d9d84da56c257760bb03c055d2e",
+  "writer_bundle_sha256": "84a6e76f7cfd84917d2d414b38c71d91c96910ea273be8a043ff2341d3f49488"
+}

@@ -1,0 +1,1313 @@
+{
+ "regime": "tenancy",
+ "version": "2026-11-12",
+ "sources": [
+  {
+   "id": "sr220-en",
+   "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, consolidated version of 1 October 2026 (Fedlex); not authoritative",
+   "snapshot": "sources/sr220-en.txt"
+  },
+  {
+   "id": "sr220-de",
+   "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)",
+   "snapshot": "sources/sr220-de.txt"
+  }
+ ],
+ "convention": {
+  "id": "intake-convention",
+  "basis": "convention",
+  "text": "A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+  "source_id": "benchmark-convention",
+  "applies_to": "every branch fact of every type (value: false), except the defining event, a fact whose value false triggers a stop, and a fact marked always_stated",
+  "precedence": "a presumption a cited passage supports (under a type's presumptions) takes precedence; this rule set has none",
+  "source": {
+   "id": "benchmark-convention",
+   "kind": "benchmark_convention",
+   "title": "Intake convention of this benchmark (SPEC.md item 6a); a convention, not law; cites no passage"
+  }
+ },
+ "reading_of_stops": "Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.",
+ "types": [
+  {
+   "id": "defect_mold_heating",
+   "title": "Defect of the rented dwelling or disturbance of its use (for example mould, damp, heating)",
+   "defining_event": "defect_present",
+   "facts": [
+    {
+     "id": "defect_present",
+     "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant alone caused the defect or must remedy it at his own expense?",
+     "not_this": "A defect the claim itself attributes wholly to the tenant, or says he must remedy at his own expense, is no. A cause the claim calls shared or disputed is open, not no; a landlord's allegation that the tenant caused it, which the claim disputes, does not make this no.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259a para. 1",
+      "passage": "Where defects arise in the object which are not attributable to the tenant or lessee and which he is not obliged to remedy at his own expense, or where he is prevented from using the object as contractually agreed, he may require that the landlord or lessor:",
+      "basis": "states",
+      "inference": "The German text is authoritative: 'im vertragsgemässen Gebrauch der Sache gestört' (disturbed in the contractual use) is wider than the English 'prevented from using'; the question follows the German.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Entstehen an der Sache Mängel, die der Mieter weder zu verantworten noch auf eigene Kosten zu beseitigen hat, oder wird der Mieter im vertragsgemässen Gebrauch der Sache gestört, so kann er verlangen, dass der Vermieter:"
+      }
+     }
+    },
+    {
+     "id": "landlord_unaware",
+     "question": "Does the claim state that the landlord does not yet know of the defect (the tenant has not reported it and the landlord has not learned of it in another way)?",
+     "not_this": "A landlord who learned of the defect from the caretaker, the property manager or an inspection, although the tenant never wrote: that landlord knows, so the answer is no.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 257g para. 2",
+      "passage": "Failure to notify renders the tenant or lessee liable for any damage incurred by the landlord or lessor as a result.",
+      "basis": "follows",
+      "inference": "A failure to notify is what the landlord raises (para. 2 attaches liability to it); the tenant's remedies turn on the landlord being aware of the defect (art. 259b), so a landlord who does not yet know is the exceptional case that removes the proof of the landlord's knowledge.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Unterlässt der Mieter die Meldung, so haftet er für den Schaden, der dem Vermieter daraus entsteht."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 259b",
+        "passage": "Where the landlord is aware of a defect and fails to remedy it within a reasonable time, the tenant may:",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "notice_oral_only",
+     "question": "Does the claim state that the landlord learned of the defect only orally, so that no written notice, written acknowledgement or inspection record of it exists?",
+     "not_this": "A tenant who told the landlord by telephone and later confirmed it by letter, e-mail or text message: a written trace exists, so the answer is no.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 257g para. 1",
+      "passage": "On learning of defects which he himself is not obliged to remedy, the tenant or lessee must inform the landlord or lessor.",
+      "basis": "follows",
+      "inference": "The duty to inform prescribes no form (German: 'melden'), so the landlord may have been informed orally, and then no written proof of his knowledge can be produced.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden."
+      }
+     }
+    },
+    {
+     "id": "damages_claimed",
+     "question": "Does the tenant claim compensation from the landlord for damage the defect caused to the tenant (for example damaged furniture or clothing, or extra costs)?",
+     "not_this": "A reduction of the rent for the reduced use of the dwelling (art. 259d), which is not compensation for damage.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259e",
+      "passage": "Where the defect has caused damage to the tenant or lessee, the landlord or lessor is liable in damages unless he can prove that he was not at fault.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Hat der Mieter durch den Mangel Schaden erlitten, so muss ihm der Vermieter dafür Ersatz leisten, wenn er nicht beweist, dass ihn kein Verschulden trifft."
+      }
+     }
+    },
+    {
+     "id": "deposit_intended",
+     "question": "Does the claim state that the tenant intends to pay the rent on deposit with the office designated by the canton instead of to the landlord, or has begun to do so?",
+     "not_this": "Withholding or reducing the rent without paying it to a deposit office; the rental security paid at the start of the lease.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259a para. 2",
+      "passage": "In addition, a tenant of immovable property may pay rent on deposit rather than to the landlord.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter einer unbeweglichen Sache kann zudem den Mietzins hinterlegen."
+      }
+     }
+    },
+    {
+     "id": "rent_deposited",
+     "question": "Does the claim state that at least one rent payment has already been paid into deposit with the office designated by the canton?",
+     "not_this": "A deposit that is announced or planned but not yet made; the rental security paid at the start of the lease.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259h para. 1",
+      "passage": "The landlord becomes entitled to the rent paid on deposit if the tenant or lessee does not bring claims against him before the conciliation authority within 30 days of the due date for the first rent payment paid into deposit.",
+      "basis": "follows",
+      "inference": "Once rent has been deposited, claims must be brought before the conciliation authority within 30 days of the due date of the first deposited rent, so whether a deposit has been made decides whether that must be shown.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat."
+      }
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "dh_scope",
+     "title": "Establish the defect and the agreed use of the dwelling",
+     "reached_when": {
+      "fact": "defect_present",
+      "is": true
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 256 para. 1",
+      "passage": "The landlord or lessor is required to make the object available on the agreed date in a condition fit for its designated use and to maintain it in that condition.",
+      "basis": "follows",
+      "inference": "Whether the dwelling is defective is measured against its designated use, so the defect and the agreed use are established once a defect is stated.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Vermieter ist verpflichtet, die Sache zum vereinbarten Zeitpunkt in einem zum vorausgesetzten Gebrauch tauglichen Zustand zu übergeben und in demselben zu erhalten."
+      }
+     }
+    },
+    {
+     "id": "dh_notice",
+     "title": "Establish how and when the landlord learned of the defect",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "defect_present",
+        "is": true
+       },
+       {
+        "fact": "landlord_unaware",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259b",
+      "passage": "Where the landlord is aware of a defect and fails to remedy it within a reasonable time, the tenant may:",
+      "basis": "follows",
+      "inference": "The tenant's remedies under art. 259b depend on the landlord's knowledge, so when the landlord learned of the defect is established.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:"
+      }
+     }
+    },
+    {
+     "id": "dh_damage",
+     "title": "Establish the damage claimed",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "defect_present",
+        "is": true
+       },
+       {
+        "fact": "damages_claimed",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259e",
+      "passage": "Where the defect has caused damage to the tenant or lessee, the landlord or lessor is liable in damages unless he can prove that he was not at fault.",
+      "basis": "follows",
+      "inference": "The landlord is liable for damage the defect caused, so a claim for damages requires the damage to be established.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Hat der Mieter durch den Mangel Schaden erlitten, so muss ihm der Vermieter dafür Ersatz leisten, wenn er nicht beweist, dass ihn kein Verschulden trifft."
+      }
+     }
+    },
+    {
+     "id": "dh_deposit",
+     "title": "Check the preconditions and the time limit of the rent deposit",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "defect_present",
+        "is": true
+       },
+       {
+        "fact": "deposit_intended",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259g para. 1",
+      "passage": "He must notify the landlord in writing of his intention to pay rent on deposit.",
+      "basis": "follows",
+      "inference": "Paying rent on deposit is subject to written steps toward the landlord, so they are checked when a deposit is intended or made.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Er muss die Hinterlegung dem Vermieter schriftlich ankündigen."
+      }
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "lease_contract",
+     "title": "Lease contract",
+     "step": "dh_scope",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "rented dwelling",
+      "agreed use of the dwelling"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 256 para. 1",
+      "passage": "The landlord or lessor is required to make the object available on the agreed date in a condition fit for its designated use and to maintain it in that condition.",
+      "basis": "evidence",
+      "inference": "The landlord's duty is measured by the designated use; the lease records the rented dwelling and its agreed use.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Vermieter ist verpflichtet, die Sache zum vereinbarten Zeitpunkt in einem zum vorausgesetzten Gebrauch tauglichen Zustand zu übergeben und in demselben zu erhalten."
+      }
+     }
+    },
+    {
+     "id": "defect_record",
+     "title": "Record of the defect (dated photographs, inspection or expert report)",
+     "step": "dh_scope",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "the defect and where it is",
+      "date observed",
+      "how the use of the dwelling is affected"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259a para. 1",
+      "passage": "Where defects arise in the object which are not attributable to the tenant or lessee and which he is not obliged to remedy at his own expense, or where he is prevented from using the object as contractually agreed, he may require that the landlord or lessor:",
+      "basis": "evidence",
+      "inference": "The tenant's rights arise where a defect arises or the agreed use is disturbed; dated photographs or an inspection report ordinarily prove that the defect exists, where it is and since when.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Entstehen an der Sache Mängel, die der Mieter weder zu verantworten noch auf eigene Kosten zu beseitigen hat, oder wird der Mieter im vertragsgemässen Gebrauch der Sache gestört, so kann er verlangen, dass der Vermieter:"
+      }
+     }
+    },
+    {
+     "id": "knowledge_proof",
+     "title": "Proof of when the landlord learned of the defect (tenant's dated notice, landlord's or manager's acknowledgement, or inspection record)",
+     "step": "dh_notice",
+     "needed_when": {
+      "fact": "notice_oral_only",
+      "is": false
+     },
+     "mandatory": true,
+     "must_show": [
+      "how and when the landlord learned of the defect",
+      "the defect reported",
+      "who was informed"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259b",
+      "passage": "Where the landlord is aware of a defect and fails to remedy it within a reasonable time, the tenant may:",
+      "basis": "evidence",
+      "inference": "The remedies depend on the landlord being aware of the defect, and a reduction runs from the time he became aware (art. 259d); a dated written notice, a written acknowledgement or an inspection record ordinarily proves when that was. Where the claim states that the landlord was told only orally, no such record exists and none is requested.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:"
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 259d",
+        "passage": "Where the object is rendered unfit or less fit for its designated use, the tenant or lessee may require the landlord or lessor to reduce the rent proportionately from the time when the landlord or lessor became aware of the defect until the defect is remedied.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Wird die Tauglichkeit der Sache zum vorausgesetzten Gebrauch beeinträchtigt oder vermindert, so kann der Mieter vom Vermieter verlangen, dass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren hat, bis zur Behebung des Mangels entsprechend herabsetzt."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "damage_evidence",
+     "title": "Proof of the damage (invoices, receipts, photographs of damaged items)",
+     "step": "dh_damage",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "damaged items or costs",
+      "amount",
+      "connection to the defect"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259e",
+      "passage": "Where the defect has caused damage to the tenant or lessee, the landlord or lessor is liable in damages unless he can prove that he was not at fault.",
+      "basis": "evidence",
+      "inference": "Liability covers damage the defect caused; invoices, receipts and photographs of damaged items ordinarily prove the damage and its amount.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Hat der Mieter durch den Mangel Schaden erlitten, so muss ihm der Vermieter dafür Ersatz leisten, wenn er nicht beweist, dass ihn kein Verschulden trifft."
+      }
+     }
+    },
+    {
+     "id": "deposit_deadline_notice",
+     "title": "Tenant's written time limit to the landlord and written announcement of the deposit",
+     "step": "dh_deposit",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "repair requested",
+      "time limit set",
+      "announcement that rent will be deposited",
+      "date and addressee"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259g para. 1",
+      "passage": "A tenant of immovable property requesting that a defect be remedied must, in writing, set the landlord a reasonable time limit within which to comply with such request",
+      "basis": "evidence",
+      "inference": "The time limit (and the announcement of the deposit) must be in writing, so the tenant's letter itself is the proof that they were given and when.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen"
+      }
+     }
+    },
+    {
+     "id": "deposit_receipt",
+     "title": "Receipt of the deposit office for the deposited rent and the tenant's application to the conciliation authority",
+     "step": "dh_deposit",
+     "needed_when": {
+      "fact": "rent_deposited",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "amount deposited",
+      "due date of the first deposited rent",
+      "the date on which the claims were brought before the conciliation authority, or a sentence that they have not yet been brought"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259h para. 1",
+      "passage": "The landlord becomes entitled to the rent paid on deposit if the tenant or lessee does not bring claims against him before the conciliation authority within 30 days of the due date for the first rent payment paid into deposit.",
+      "basis": "evidence",
+      "inference": "The deposited rent passes to the landlord unless claims are brought before the conciliation authority within 30 days of the due date of the first deposited rent; the deposit office's receipt shows that due date and the application shows whether and when the claims were brought.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat."
+      }
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "when": {
+      "fact": "defect_present",
+      "is": false
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 259a para. 1",
+      "passage": "Where defects arise in the object which are not attributable to the tenant or lessee and which he is not obliged to remedy at his own expense, or where he is prevented from using the object as contractually agreed, he may require that the landlord or lessor:",
+      "basis": "follows",
+      "inference": "The tenant's rights in this type arise only where a defect not attributable to the tenant arises or the agreed use is disturbed; where the claim states neither, or attributes the defect wholly to the tenant, no such right is engaged and the process ends. A shared or disputed cause is open and does not stop.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Entstehen an der Sache Mängel, die der Mieter weder zu verantworten noch auf eigene Kosten zu beseitigen hat, oder wird der Mieter im vertragsgemässen Gebrauch der Sache gestört, so kann er verlangen, dass der Vermieter:"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "lease_termination_dispute",
+   "title": "Termination of the lease by the landlord",
+   "defining_event": "notice_received",
+   "facts": [
+    {
+     "id": "notice_received",
+     "question": "Has the landlord given the tenant notice terminating the lease of the dwelling, and has it reached the tenant?",
+     "not_this": "No: only a file stating that no notice of termination has been given at all (also a lease of limited duration that simply ends on its agreed date, a termination only announced or threatened, a notice given by the tenant). A notice the landlord says was sent and the tenant says never reached him is open, not no.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 273 para. 1",
+      "passage": "A party wishing to challenge termination must bring the matter before the conciliation authority within 30 days of receiving the notice of termination.",
+      "basis": "follows",
+      "inference": "The challenge and its 30-day period run from receipt of a notice of termination, so a received notice is the event that opens this type; disputed receipt leaves the event open.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen."
+      }
+     }
+    },
+    {
+     "id": "family_residence",
+     "question": "Does the claim state that the tenant is married or in a registered partnership and that the rented dwelling serves as the family home?",
+     "not_this": "A tenant living with a partner who is neither spouse nor registered partner; spouses who do not use the dwelling as their family home.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266m para. 1",
+      "passage": "Where the leased property serves as the family residence",
+      "basis": "follows",
+      "inference": "Arts. 266m and 266n stand under the marginal heading 'Family residence' (Wohnung der Familie); art. 266m para. 1 states the condition, para. 3 extends it to registered partners, and art. 266n requires the landlord's notice to be served separately on the spouse or registered partner. The condition therefore is a family home of spouses or registered partners.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Dient die gemietete Sache als Wohnung der Familie"
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 266m para. 3",
+        "passage": "The same provisions apply mutatis mutandis to registered partners.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Die gleiche Regelung gilt bei eingetragenen Partnerschaften sinngemäss."
+        }
+       },
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 266n",
+        "passage": "Notice of termination given by the landlord and any notification of a time limit for payment accompanied by a warning of termination in the event of non-payment (Art. 257d) must be served separately on the tenant and on his spouse or registered partner.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "arrears_termination",
+     "question": "Does the notice or the claim state that the landlord terminated because the tenant did not pay overdue rent or accessory charges within a time limit the landlord had set?",
+     "not_this": "Arrears that the claim mentions while the notice is given for another reason (for example the landlord's own use); a dispute about a rent increase.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 257d para. 2",
+      "passage": "In the event of non-payment within the time limit the landlord or lessor may terminate the contract with immediate effect or, for leases of residential and commercial premises, subject to at least 30 days’ notice ending on the last day of a calendar month.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Bezahlt der Mieter innert der gesetzten Frist nicht, so kann der Vermieter fristlos, bei Wohn- und Geschäftsräumen mit einer Frist von mindestens 30 Tagen auf Ende eines Monats kündigen."
+      }
+     }
+    },
+    {
+     "id": "asserted_claims",
+     "question": "Does the claim state that the landlord gave notice because the tenant had, in good faith, asserted claims under the lease (for example demanded repair of a defect or contested the rent)? The tenant's own account of the landlord's reason counts as stating it, also where the tenant gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
+     "not_this": "Claims the tenant asserted that the claim does not connect with the notice; a notice the claim attributes to another reason, such as the landlord's own use.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 271a para. 1 let. a",
+      "passage": "Notice of termination served by the landlord may be challenged in particular where it is given:\na. because the tenant is asserting claims arising under the lease in good faith;",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird:\na. weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;"
+      }
+     }
+    },
+    {
+     "id": "extension_requested",
+     "question": "Does the tenant seek an extension of the lease because having to leave by the end date would be a hardship for the tenant or the tenant's family?",
+     "not_this": "A tenant who only contests the validity of the notice and does not ask for more time; a request for more time that the claim does not base on hardship.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 272 para. 1",
+      "passage": "The tenant may request the extension of a fixed-term or open-ended lease where termination of the lease would cause a degree of hardship for him or his family that cannot be justified by the interests of the landlord.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre."
+      }
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "lt_form",
+     "title": "Check the form of the notice, the notice period and the challenge deadline",
+     "reached_when": {
+      "fact": "notice_received",
+      "is": true
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266o",
+      "passage": "Notice of termination is void if it does not conform to Articles 266l–266n.",
+      "basis": "follows",
+      "inference": "A received notice is void if it does not conform to arts. 266l–266n, so its form and service are checked first.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung ist nichtig, wenn sie den Artikeln 266l–266n nicht entspricht."
+      }
+     }
+    },
+    {
+     "id": "lt_family",
+     "title": "Check separate service on the spouse or registered partner",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "notice_received",
+        "is": true
+       },
+       {
+        "fact": "family_residence",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266n",
+      "passage": "Notice of termination given by the landlord and any notification of a time limit for payment accompanied by a warning of termination in the event of non-payment (Art. 257d) must be served separately on the tenant and on his spouse or registered partner.",
+      "basis": "follows",
+      "inference": "The passage states the duty of separate service; the family-home condition under which the step is reached comes from the marginal heading 'Family residence' and art. 266m para. 1 (see family_residence).",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 266m para. 1",
+        "passage": "Where the leased property serves as the family residence",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Dient die gemietete Sache als Wohnung der Familie"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "lt_arrears",
+     "title": "Check the payment time limit that preceded the notice and the payments made within it",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "notice_received",
+        "is": true
+       },
+       {
+        "fact": "arrears_termination",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 257d para. 1",
+      "passage": "Where, having accepted the property, the tenant or lessee is in arrears with payments of rent or accessory charges, the landlord or lessor may set a time limit for payment",
+      "basis": "follows",
+      "inference": "A termination for arrears presupposes a time limit for payment set beforehand (in writing: 'schriftlich' in the German, missing from the English), so that time limit is checked.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Ist der Mieter nach der Übernahme der Sache mit der Zahlung fälliger Mietzinse oder Nebenkosten im Rückstand, so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen"
+      }
+     }
+    },
+    {
+     "id": "lt_good_faith",
+     "title": "Check whether the notice can be challenged as contrary to good faith",
+     "reached_when": {
+      "fact": "notice_received",
+      "is": true
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 271 para. 1",
+      "passage": "Notice of termination may be challenged where it contravenes the principle of good faith.",
+      "basis": "follows",
+      "inference": "Any received notice can be challenged on this ground, so the step is reached whenever a notice was received; the documents it needs depend on the grounds the claim states.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung ist anfechtbar, wenn sie gegen den Grundsatz von Treu und Glauben verstösst."
+      }
+     }
+    },
+    {
+     "id": "lt_extension",
+     "title": "Assess an extension of the lease",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "notice_received",
+        "is": true
+       },
+       {
+        "fact": "arrears_termination",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 272a para. 1 let. a",
+      "passage": "No extension is granted where notice of termination is given:\na. because the tenant is in default on his payments (Art. 257d);",
+      "basis": "follows",
+      "inference": "An extension can be at issue after any received notice, whether the tenant requests it or the authority examines it ex officio after rejecting a challenge (art. 273 para. 5); this passage excludes it where notice was given for arrears.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Erstreckung ist ausgeschlossen bei Kündigungen:\na. wegen Zahlungsrückstand des Mieters (Art. 257d);"
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 273 para. 5",
+        "passage": "Where the competent authority rejects a request made by the tenant relating to challenging termination, it must examine ex officio whether the lease may be extended.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Weist die zuständige Behörde ein Begehren des Mieters betreffend Anfechtung der Kündigung ab, so prüft sie von Amtes wegen, ob das Mietverhältnis erstreckt werden kann."
+        }
+       }
+      ]
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "lease_contract",
+     "title": "Lease contract",
+     "step": "lt_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "rented dwelling",
+      "duration (limited or indefinite)",
+      "agreed notice periods and termination dates"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266a para. 1",
+      "passage": "The parties may give notice to terminate a lease of indefinite duration by observing the legally prescribed notice periods and termination dates, except where they have agreed a longer notice period or a different termination date.",
+      "basis": "evidence",
+      "inference": "Whether the notice respects the notice period and termination date depends on what the parties agreed; the lease records the duration and any agreed periods and dates.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Parteien können das unbefristete Mietverhältnis unter Einhaltung der gesetzlichen Fristen und Termine kündigen, sofern sie keine längere Frist oder keinen anderen Termin vereinbart haben."
+      }
+     }
+    },
+    {
+     "id": "termination_notice",
+     "title": "Landlord's notice of termination",
+     "step": "lt_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "sender and addressee",
+      "date",
+      "termination date",
+      "given in writing",
+      "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266l para. 2",
+      "passage": "The landlord must give notice of termination using a form approved by the canton which informs the tenant how he must proceed if he wishes to contest the termination or apply for an extension of the lease.",
+      "basis": "evidence",
+      "inference": "The landlord's notice must be given on a form approved by the canton (and in writing, art. 266l para. 1); only the notice itself shows whether it was.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Vermieter muss mit einem Formular kündigen, das vom Kanton genehmigt ist und das angibt, wie der Mieter vorzugehen hat, wenn er die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen will."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 266l para. 1",
+        "passage": "Notice to terminate leases of residential and commercial premises must be given in writing.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "proof_of_receipt",
+     "title": "Proof of the date the notice was received",
+     "step": "lt_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "date of receipt",
+      "how it was delivered (registered-mail tracking, envelope or acknowledgement)"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 273 para. 1",
+      "passage": "A party wishing to challenge termination must bring the matter before the conciliation authority within 30 days of receiving the notice of termination.",
+      "basis": "evidence",
+      "inference": "The challenge must be brought within 30 days of receiving the notice; proof of the date of receipt is needed to check that period.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen."
+      }
+     }
+    },
+    {
+     "id": "spouse_service",
+     "title": "Proof of separate service on the spouse or registered partner (the spouse's own copy with envelope or tracking), or the spouse's statement that no separate copy was received",
+     "step": "lt_family",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "addressed to the spouse or registered partner",
+      "served separately from the tenant's copy",
+      "date",
+      "Only if the file states that the landlord terminated because rent or accessory charges were not paid within a payment time limit (art. 257d): the copy of that payment time limit served separately on the spouse or registered partner. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 266n",
+      "passage": "Notice of termination given by the landlord and any notification of a time limit for payment accompanied by a warning of termination in the event of non-payment (Art. 257d) must be served separately on the tenant and on his spouse or registered partner.",
+      "basis": "evidence",
+      "inference": "Separate service on the spouse or registered partner is required (a notice that does not conform is void, art. 266o); the spouse's own copy ordinarily proves it was made, and the spouse's statement records that it was not.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+      }
+     }
+    },
+    {
+     "id": "payment_demand",
+     "title": "Landlord's written payment time limit with warning of termination, and the tenant's record of payments made within it",
+     "step": "lt_arrears",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "amount in arrears",
+      "time limit set and date it was received",
+      "warning that the lease will be terminated",
+      "payments made within the time limit (bank or postal records)"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 257d para. 2",
+      "passage": "In the event of non-payment within the time limit the landlord or lessor may terminate the contract with immediate effect or, for leases of residential and commercial premises, subject to at least 30 days’ notice ending on the last day of a calendar month.",
+      "basis": "evidence",
+      "inference": "Termination is open to the landlord only after non-payment within the time limit; the landlord's written time limit shows the limit and the warning, and the tenant's payment records show whether payment was made within it.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Bezahlt der Mieter innert der gesetzten Frist nicht, so kann der Vermieter fristlos, bei Wohn- und Geschäftsräumen mit einer Frist von mindestens 30 Tagen auf Ende eines Monats kündigen."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 257d para. 1",
+        "passage": "the landlord or lessor may set a time limit for payment and notify him that in the event of non-payment the landlord or lessor will terminate the lease on expiry of that time limit. The minimum time limit is ten days, and 30 days for leases of residential or commercial premises.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen und ihm androhen, dass bei unbenütztem Ablauf der Frist das Mietverhältnis gekündigt werde. Diese Frist beträgt mindestens zehn Tage, bei Wohn- und Geschäftsräumen mindestens 30 Tage."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "claims_and_reasons",
+     "title": "Correspondence on the tenant's claims and the landlord's reasons for the notice",
+     "step": "lt_good_faith",
+     "needed_when": {
+      "fact": "asserted_claims",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "claims the tenant asserted (for example a repair demand or a rent challenge), with dates",
+      "the reasons the landlord gave for the notice (on the notice, or given on request)",
+      "Only if the file states that the tenant's claims were brought before a conciliation authority or a court: the conciliation or court documents on those claims. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 271a para. 1 let. a",
+      "passage": "Notice of termination served by the landlord may be challenged in particular where it is given:\na. because the tenant is asserting claims arising under the lease in good faith;",
+      "basis": "evidence",
+      "inference": "The notice may be challenged where it was given because the tenant asserted claims; the tenant's dated letters show which claims were asserted and when, and the landlord's stated reasons (which must be given on request, art. 271 para. 2) show the ground he relies on.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird:\na. weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;"
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 271 para. 2",
+        "passage": "On request, reasons for giving notice must be stated.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Die Kündigung muss auf Verlangen begründet werden."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "hardship_evidence",
+     "title": "Evidence of the tenant's personal, family and financial circumstances",
+     "step": "lt_extension",
+     "needed_when": {
+      "fact": "extension_requested",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "household members",
+      "financial circumstances",
+      "personal or health circumstances"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 272 para. 2 let. c",
+      "passage": "c. the personal, family and financial circumstances of the parties, as well as their conduct;",
+      "basis": "evidence",
+      "inference": "In weighing an extension the authority has particular regard to the parties' personal, family and financial circumstances; documents of the tenant's circumstances ordinarily prove them. They are requested where the tenant seeks an extension. Not requesting them when the authority would examine an extension only ex officio (art. 273 para. 5) is this rule set's choice; that paragraph does not say so.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "c. die persönlichen, familiären und wirtschaftlichen Verhältnisse der Parteien und deren Verhalten;"
+      }
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "when": {
+      "fact": "notice_received",
+      "is": false
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 273 para. 1",
+      "passage": "A party wishing to challenge termination must bring the matter before the conciliation authority within 30 days of receiving the notice of termination.",
+      "basis": "follows",
+      "inference": "The challenge runs from receipt of a notice of termination; where the claim states that the landlord gave no notice of termination there is nothing to challenge and the process ends. A notice whose receipt is disputed is open and does not stop. Not covered: a lease of limited duration ending without notice, where an extension may be requested under art. 273 para. 2 let. b; that is outside this type.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "rent_increase_dispute",
+   "title": "Rent increase",
+   "defining_event": "increase_applied",
+   "facts": [
+    {
+     "id": "increase_applied",
+     "question": "Does the claim state that the landlord has announced, demanded or charged a higher rent for the dwelling, by a notice, a letter, an invoice or otherwise (whether or not on an official form)?",
+     "not_this": "A landlord's plan to raise the rent that has not been announced, demanded or charged; the initial rent agreed for a new lease; new accessory charges or reduced services without a higher rent.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 2 let. a",
+      "passage": "The rent increase is void where:\na. it is not communicated using the prescribed form;",
+      "basis": "follows",
+      "inference": "An increase not communicated on the prescribed form is void, so an increase the landlord applies or announces without a proper notice is still a rent-increase dispute; the type opens with any announced, demanded or charged increase.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter:\na. sie nicht mit dem vorgeschriebenen Formular mitteilt;"
+      }
+     }
+    },
+    {
+     "id": "graduated_rent",
+     "question": "Does the claim state that the increase is a step fixed in advance in the lease, by which the rent rises periodically by fixed amounts (graduated rent)?",
+     "not_this": "An increase under an index clause; an increase the lease does not fix in advance.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 270d",
+      "passage": "Without prejudice to the right to challenge the initial rent, the tenant may not challenge periodical rent increases.",
+      "basis": "follows",
+      "inference": "A periodical increase agreed under art. 269c cannot be challenged as unfair, so the documents for testing unfairness are not needed; the agreement's validity and the notice remain to be checked. This holds only for a valid agreement (art. 269c); the rule set does not route an invalid one back to the unfairness check.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann der Mieter gestaffelte Mietzinse nicht anfechten."
+      }
+     }
+    },
+    {
+     "id": "index_clause",
+     "question": "Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the Swiss consumer price index)?",
+     "not_this": "An increase the landlord justifies by general inflation or by cost increases without an index clause in the lease.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 270c",
+      "passage": "Without prejudice to the right to challenge the initial rent, a party may argue before the conciliation authority only that the rent increase or reduction requested by the other party is not justified by a corresponding change in the index.",
+      "basis": "follows",
+      "inference": "Under an index clause the only argument is whether the index changed correspondingly, so documents of cost increases are not needed.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann eine Partei vor der Schlichtungsbehörde nur geltend machen, dass die von der andern Partei verlangte Erhöhung oder Herabsetzung des Mietzinses durch keine entsprechende Änderung des Indexes gerechtfertigt sei."
+      }
+     }
+    },
+    {
+     "id": "cost_or_services_reason",
+     "question": "Does the increase notice give, as its reason, higher costs for the landlord (for example higher mortgage interest or operating costs) or additional services or works by the landlord (for example a renovation)?",
+     "not_this": "An increase justified only by rents customary in the locality (art. 269a let. a) or by inflation on the risk capital (art. 269a let. e).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269a let. b",
+      "passage": "b. they are justified by increases in costs or by additional services provided by the landlord;",
+      "basis": "follows",
+      "inference": "Where the notice relies on cost increases or additional services, whether the increase is justified by them bears on whether it is unfair (art. 269a: 'in general' not unfair, German 'in der Regel'). Always stated: an increase notice must give reasons (art. 269d para. 1), and cost reasons and other reasons (such as local customary rents, art. 269a let. a) are both ordinary, so neither is a default.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"
+      }
+     },
+     "always_stated": true
+    },
+    {
+     "id": "termination_with_increase",
+     "question": "Does the claim state that, together with the rent increase, the landlord gave notice of termination?",
+     "not_this": "A threat of termination without a notice of termination (it shows on the increase notice or its covering letter, which is requested anyway); a notice of termination given separately at another time.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 2 let. c",
+      "passage": "c. notice of the increase is accompanied by notice to terminate or a threat of termination.",
+      "basis": "follows",
+      "inference": "The passage voids an increase accompanied by a notice or a threat of termination; this fact covers the notice only, because only a notice is a separate document to request (a threat is read from the increase notice).",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "c. mit der Mitteilung die Kündigung androht oder ausspricht."
+      }
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "ri_form",
+     "title": "Check the form, reasons and timing of the increase",
+     "reached_when": {
+      "fact": "increase_applied",
+      "is": true
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 1",
+      "passage": "He must give notice of and reasons for the rent increase at least ten days before the beginning of the notice period for termination using a form approved by the canton.",
+      "basis": "follows",
+      "inference": "An increase must be notified with reasons, in time and on the approved form, so these are checked first; for a graduated-rent step, written form suffices instead of the form (art. 269d para. 5).",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 269d para. 5",
+        "passage": "In the case of a rent increase in accordance with an agreement under Article 269c, it is sufficient that notice be given in writing.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel 269c vorgesehen sind, genügt die schriftliche Form."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "ri_graduated",
+     "title": "Check the graduated-rent agreement",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "increase_applied",
+        "is": true
+       },
+       {
+        "fact": "graduated_rent",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269c",
+      "passage": "An agreement to increase the rent periodically by fixed amounts is valid only where:\na. the lease is contracted for at least three years;\nb. the rent is increased no more than once a year; and\nc. the amount by which it is increased is fixed in francs.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Vereinbarung, dass sich der Mietzins periodisch um einen bestimmten Betrag erhöht, ist nur gültig, wenn:\na. der Mietvertrag für mindestens drei Jahre abgeschlossen wird;\nb. der Mietzins höchstens einmal jährlich erhöht wird; und\nc. der Betrag der Erhöhung in Franken festgelegt wird."
+      }
+     }
+    },
+    {
+     "id": "ri_index",
+     "title": "Check the index clause",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "increase_applied",
+        "is": true
+       },
+       {
+        "fact": "graduated_rent",
+        "is": false
+       },
+       {
+        "fact": "index_clause",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269b",
+      "passage": "An agreement to link rent to an index is valid only where the lease is contracted for at least five years and the benchmark is the Swiss consumer prices index.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Vereinbarung, dass der Mietzins einem Index folgt, ist nur gültig, wenn der Mietvertrag für mindestens fünf Jahre abgeschlossen und als Index der Landesindex der Konsumentenpreise vorgesehen wird."
+      }
+     }
+    },
+    {
+     "id": "ri_reason",
+     "title": "Check whether the increase is justified by its stated reasons",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "increase_applied",
+        "is": true
+       },
+       {
+        "fact": "graduated_rent",
+        "is": false
+       },
+       {
+        "fact": "index_clause",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 270b para. 1",
+      "passage": "Within 30 days of receiving notice of a rent increase, the tenant may challenge it before the conciliation authority as unfair within the meaning of Articles 269 and 269a.",
+      "basis": "follows",
+      "inference": "An increase that is neither a graduated step (art. 270d) nor index-linked (art. 270c) can be challenged as unfair under arts. 269 and 269a, so its reasons are tested.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten."
+      }
+     }
+    },
+    {
+     "id": "ri_threat",
+     "title": "Check the notice of termination given with the increase",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "increase_applied",
+        "is": true
+       },
+       {
+        "fact": "termination_with_increase",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 2 let. c",
+      "passage": "c. notice of the increase is accompanied by notice to terminate or a threat of termination.",
+      "basis": "states",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "c. mit der Mitteilung die Kündigung androht oder ausspricht."
+      }
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "lease_contract",
+     "title": "Lease contract",
+     "step": "ri_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "rented dwelling",
+      "termination dates",
+      "Only if the file states that the increase is a graduated-rent step or applies an index clause: the lease clause that fixes the graduated steps or links the rent to an index. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 1",
+      "passage": "The landlord may at any time increase the rent with effect from the next termination date.",
+      "basis": "evidence",
+      "inference": "The increase can take effect only from the next termination date; the lease records the termination dates (and any graduated-rent or index clause, arts. 269b–269c).",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen."
+      }
+     }
+    },
+    {
+     "id": "rent_increase_notice",
+     "title": "Landlord's rent increase notice (with any covering letter)",
+     "step": "ri_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "old and new rent",
+      "date from which the increase applies",
+      "reasons given",
+      "a statement of the form used: the printed title of the form approved by the canton, or a sentence on the notice that it is or is not given on that form",
+      "Only if the file states that the landlord gave notice of termination together with the rent increase: the notice or threat of termination in the increase notice or its covering letter. Otherwise this item does not apply.",
+      "Only if the file states that the increase applies an index clause: the old and the new index value. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 2 let. a–b",
+      "passage": "The rent increase is void where:\na. it is not communicated using the prescribed form;\nb. no reasons are given;",
+      "basis": "evidence",
+      "inference": "An increase is void without the prescribed form or without reasons; only the notice itself shows the form used and the reasons given, and where no notice exists its absence is the point to establish.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter:\na. sie nicht mit dem vorgeschriebenen Formular mitteilt;\nb. sie nicht begründet;"
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 269d para. 5",
+        "passage": "In the case of a rent increase in accordance with an agreement under Article 269c, it is sufficient that notice be given in writing.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel 269c vorgesehen sind, genügt die schriftliche Form."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "proof_of_receipt",
+     "title": "Proof of the date the notice was received",
+     "step": "ri_form",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "date of receipt",
+      "how it was delivered (registered-mail tracking, envelope or acknowledgement)"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 270b para. 1",
+      "passage": "Within 30 days of receiving notice of a rent increase, the tenant may challenge it before the conciliation authority as unfair within the meaning of Articles 269 and 269a.",
+      "basis": "evidence",
+      "inference": "The challenge runs 30 days from receiving the notice (German: from its being communicated); proof of the date of receipt is needed to check that period, and it also shows when the notice was given relative to the ten-day rule of art. 269d para. 1.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten."
+      },
+      "also": [
+       {
+        "source_id": "sr220-en",
+        "locator": "Art. 269d para. 1",
+        "passage": "He must give notice of and reasons for the rent increase at least ten days before the beginning of the notice period for termination using a form approved by the canton.",
+        "passage_de": {
+         "source_id": "sr220-de",
+         "passage": "Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "cost_breakdown",
+     "title": "Landlord's breakdown of the cost increases or additional services, with the supporting invoices, interest notices or cost statements",
+     "step": "ri_reason",
+     "needed_when": {
+      "fact": "cost_or_services_reason",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "costs or works relied on",
+      "amounts",
+      "share passed on to the rent",
+      "supporting invoices or statements"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269a let. b",
+      "passage": "b. they are justified by increases in costs or by additional services provided by the landlord;",
+      "basis": "evidence",
+      "inference": "A rent justified by cost increases or additional services is in general not unfair; the underlying invoices, interest notices or cost statements, with the landlord's breakdown, ordinarily show whether the increase is so justified.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"
+      }
+     }
+    },
+    {
+     "id": "termination_notice",
+     "title": "Landlord's notice of termination",
+     "step": "ri_threat",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "sender and addressee",
+      "date",
+      "termination date",
+      "connection to the rent increase"
+     ],
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 269d para. 2 let. c",
+      "passage": "c. notice of the increase is accompanied by notice to terminate or a threat of termination.",
+      "basis": "evidence",
+      "inference": "The increase is void if accompanied by a notice of termination; the notice shows whether it accompanied the increase.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "c. mit der Mitteilung die Kündigung androht oder ausspricht."
+      }
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "when": {
+      "fact": "increase_applied",
+      "is": false
+     },
+     "rule": {
+      "source_id": "sr220-en",
+      "locator": "Art. 270b para. 1",
+      "passage": "Within 30 days of receiving notice of a rent increase, the tenant may challenge it before the conciliation authority as unfair within the meaning of Articles 269 and 269a.",
+      "basis": "follows",
+      "inference": "The tenant's challenge and the voidness rules attach to an increase; where the claim states that the landlord has neither announced nor demanded nor charged a higher rent there is nothing to challenge or check and the process ends.",
+      "passage_de": {
+       "source_id": "sr220-de",
+       "passage": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten."
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

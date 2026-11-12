@@ -244,7 +244,7 @@ def shared_documents(p, policy_step, policy_rule, policy_shows):
         {"id": "stolen_items_list", "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
          "step": f"{p}_loss", "needed_when": True, "mandatory": True,
          "must_show": ["each stolen or damaged item",
-                       "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+                       "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
                        "its value"],
          "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", INTAKE_REQUEST, context=FORM_ITEMS)},
         {"id": "original_vouchers", "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
@@ -356,7 +356,9 @@ away["documents"] = shared_documents(
     "a", "a_cover",
     rule(Q("Ziff. 24, Einleitung"), "evidence", "Supplementary covers apply only where they are listed in the policy; the policy is the document that shows whether the supplementary insurance for simple theft away was agreed, for which sum, and which location is insured (so that 'outside the insured location' can be checked).",
          context=[Q("Ziff. 24.2")]),
-    ["the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included", "its sum insured", "the insured location"])
+    ["the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+     "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+     "the insured location"])
 
 ROUTING = {
     "fact": "claim_type", "type": "enum", "values": ["theft_at_home", "simple_theft_away", "other"],
@@ -405,22 +407,51 @@ MUST_SHOW_REV2 = [
 ]
 
 
-def must_show_wording(types, rows, regime):
-    """Check the revision-2 rows against the built types and return the wording record (MUST_SHOW_WORDING.json)."""
+# ---------------------------------------------------------------- revision 3 after the second look (2026-11-12)
+# The second reader's wording (CITATION_CHECK.md, "Second look, revisions 1 and 2"), agreed by the planner as worded.
+# Rows as in MUST_SHOW_REV2: types, document, wording of revision 2, wording now.
+MUST_SHOW_REV3 = [
+    (("simple_theft_away",), "insurance_policy",
+     "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included",
+     "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)"),
+    (("simple_theft_away",), "insurance_policy", "its sum insured",
+     "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply."),
+    (("theft_at_home", "simple_theft_away"), "stolen_items_list",
+     "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when",
+     "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)"),
+]
+
+
+def must_show_wording(types, revisions, regime):
+    """Check the revision rows against the built types and return the wording record (MUST_SHOW_WORDING.json): one
+    row per current item that some revision reworded, with every earlier wording (`earlier`, oldest first; `rev1` the
+    wording before revision 2) and the wording now (None: removed)."""
+    rows = []
+    for rev, table in revisions:
+        for tids, did, old, new in table:
+            hit = [r for r in rows if r["document"] == did and r["now"] == old and set(tids) <= set(r["types"])]
+            if hit:
+                r = hit[0]
+                assert set(r["types"]) == set(tids), (did, old, "a revision splits a row by type")
+                r["earlier"].append(old)
+                r["now"] = new
+                r["revisions"].append(rev)
+            else:
+                rows.append({"types": list(tids), "document": did, "rev1": old, "earlier": [old], "now": new,
+                             "revisions": [rev]})
     by = {(t["id"], d["id"]): d["must_show"] for t in types for d in t["documents"]}
-    out = []
-    for tids, did, old, new in rows:
-        for tid in tids:
-            shows = by[(tid, did)]
-            assert old not in shows, (tid, did, old)
-            assert new is None or new in shows, (tid, did, new)
-        out.append({"types": list(tids), "document": did, "rev1": old, "now": new})
-    return {"regime": regime, "revision": 2, "date": "2026-11-12",
-            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the "
-                    "wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the "
-                    "workflows (null: item removed). Designs and blind-check records written before revision 2 name "
-                    "items by their rev1 wording; the generator maps them through this file.",
-            "items": out}
+    for r in rows:
+        for tid in r["types"]:
+            shows = by[(tid, r["document"])]
+            assert not set(r["earlier"]) & set(shows), (tid, r["document"], r["earlier"])
+            assert r["now"] is None or r["now"] in shows, (tid, r["document"], r["now"])
+    return {"regime": regime, "revisions": [rev for rev, _ in revisions], "date": "2026-11-12",
+            "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use; revision 3 after the "
+                    "second look; development). earlier: every earlier wording, oldest first (rev1: the wording before "
+                    "revision 2, rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item "
+                    "removed). Designs and blind-check records name items by the wording of their time; the generator "
+                    "maps them through this file.",
+            "items": rows}
 
 
 CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. "
@@ -652,7 +683,8 @@ def rule_text_md():
          "## Convention of this benchmark (not law)", "",
          "The following rule is a convention of this benchmark, not of the law; no article states it:", "", f"> {CONVENTION_TEXT}", "",
          "## Which claim type applies", "",
-         f"{ROUTING['question']} Not this: {ROUTING['not_this']} {cite_txt(ROUTING['rule'])}", "",
+         f"Routing question: {ROUTING['question']}", "", f"Values: {', '.join(ROUTING['values'])}.", "",
+         f"Not this: {ROUTING['not_this']}", "", cite_txt(ROUTING['rule']), "",
          f"Outside both types: {OUTSIDE}", "",
          "## Documents requested at intake and documents only on request", "", OPTIONAL_READING, ""]
     for n, t in enumerate(TYPES, 1):
@@ -751,7 +783,7 @@ def main():
     rules_md()
     rule_text_md()
     (ROOT / "MUST_SHOW_WORDING.json").write_text(
-        json.dumps(must_show_wording(TYPES, MUST_SHOW_REV2, "theft"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        json.dumps(must_show_wording(TYPES, [(2, MUST_SHOW_REV2), (3, MUST_SHOW_REV3)], "theft"), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (ROOT / "workflow").mkdir(exist_ok=True)
     for t in TYPES:
         (ROOT / "workflow" / f"{t['id']}.json").write_text(json.dumps(workflow(t), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

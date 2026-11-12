@@ -2,6 +2,30 @@
   "about": "Generator-side notes on must_show items (not part of the rule set). conditional: whether the item applies in some files only; applies_when: a condition over designed fact states that makes a conditional item required (if it does not hold, the item does not apply and is left out); checkable_as: what a document must literally contain for the item to count as shown, passed to the writer and to the blind checker; observed: the round-1 blind-check mismatch that led to the entry; rule_set_wording: why the item's own wording is a problem, for the planner to raise with the rule set (absent where the wording is fine).",
   "items": [
     {
+      "type": "wrongful_termination",
+      "document": "employment_contract",
+      "item": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+      "conditional": true,
+      "checkable_as": "A clause naming the length of the probation period.",
+      "revision_3": "Revision 3 (second look, 2026-11-12): note (i) of the second reader: wrongful_termination has no fact for this condition, so the item is left to the story (shown where the file states such a clause) instead of never applying."
+    },
+    {
+      "type": "immediate_dismissal",
+      "document": "employment_contract",
+      "item": "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+      "conditional": true,
+      "checkable_as": "A clause naming the length of the probation period.",
+      "revision_3": "Revision 3 (second look, 2026-11-12): note (i) of the second reader: immediate_dismissal has no fact for this condition, so the item is left to the story (shown where the file states such a clause) instead of never applying."
+    },
+    {
+      "type": "wrongful_termination",
+      "document": "employment_contract",
+      "item": "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply.",
+      "conditional": true,
+      "checkable_as": "A clause naming the notice period.",
+      "revision_3": "Revision 3 (second look, 2026-11-12): note (i) of the second reader: wrongful_termination has no fact for this condition, so the item is left to the story (shown where the file states such a clause) instead of never applying."
+    },
+    {
       "type": "immediate_dismissal",
       "document": "employment_contract",
       "item": "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply.",

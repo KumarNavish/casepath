@@ -1,8 +1,11 @@
 {
  "regime": "theft",
- "revision": 2,
+ "revisions": [
+  2,
+  3
+ ],
  "date": "2026-11-12",
- "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use, development). rev1: the wording the rule set had before (rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item removed). Designs and blind-check records written before revision 2 name items by their rev1 wording; the generator maps them through this file.",
+ "note": "must_show items reworded under SPEC.md item 6c (revision 2 after first use; revision 3 after the second look; development). earlier: every earlier wording, oldest first (rev1: the wording before revision 2, rules/<regime>/rev1/); now: the wording in rules.json and the workflows (null: item removed). Designs and blind-check records name items by the wording of their time; the generator maps them through this file.",
  "items": [
   {
    "types": [
@@ -11,7 +14,13 @@
    ],
    "document": "notification_record",
    "rev1": "that and when CSS was notified of the theft",
-   "now": "the date (day, month and year) on which the theft was notified to CSS"
+   "earlier": [
+    "that and when CSS was notified of the theft"
+   ],
+   "now": "the date (day, month and year) on which the theft was notified to CSS",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -19,7 +28,15 @@
    ],
    "document": "insurance_policy",
    "rev1": "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
-   "now": "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included"
+   "earlier": [
+    "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+    "the supplementary insurance for simple theft away (Ziff. 24.2), listed among the policy's covers as included or as not included"
+   ],
+   "now": "the complete list of the covers included in the policy (the supplementary insurance for simple theft away, Ziff. 24.2, is insured only if it is on that list)",
+   "revisions": [
+    2,
+    3
+   ]
   },
   {
    "types": [
@@ -28,7 +45,15 @@
    ],
    "document": "stolen_items_list",
    "rev1": "where and when it was bought",
-   "now": "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when"
+   "earlier": [
+    "where and when it was bought",
+    "for each item, where and when it was bought, or, for an item that was not bought, that it was a gift or inherited and when"
+   ],
+   "now": "for each item, where and when it was bought, or, for an item that was not bought, how and when it was acquired (for example as a gift or by inheritance)",
+   "revisions": [
+    2,
+    3
+   ]
   },
   {
    "types": [
@@ -37,7 +62,13 @@
    ],
    "document": "original_vouchers",
    "rev1": "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
-   "now": "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost"
+   "earlier": [
+    "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost"
+   ],
+   "now": "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
+   "revisions": [
+    2
+   ]
   },
   {
    "types": [
@@ -46,7 +77,27 @@
    ],
    "document": "bicycle_voucher",
    "rev1": "the bicycle, if its voucher can be obtained without considerable cost",
-   "now": "the bicycle it is for (make, model or type)"
+   "earlier": [
+    "the bicycle, if its voucher can be obtained without considerable cost"
+   ],
+   "now": "the bicycle it is for (make, model or type)",
+   "revisions": [
+    2
+   ]
+  },
+  {
+   "types": [
+    "simple_theft_away"
+   ],
+   "document": "insurance_policy",
+   "rev1": "its sum insured",
+   "earlier": [
+    "its sum insured"
+   ],
+   "now": "Only if the file states that the policy includes the supplementary insurance for simple theft away (Ziff. 24.2): the sum insured agreed for that cover. Otherwise this item does not apply.",
+   "revisions": [
+    3
+   ]
   }
  ]
 }

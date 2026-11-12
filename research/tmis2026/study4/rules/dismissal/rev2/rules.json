@@ -1,0 +1,2073 @@
+{
+ "regime": "dismissal",
+ "version": "2026-11-12.5",
+ "sources": [
+  {
+   "id": "co-sr220-en",
+   "title": "Swiss Code of Obligations (SR 220), consolidated version applicable from 2026-10-01, official English translation",
+   "publisher": "Swiss Federal Chancellery, Fedlex",
+   "language": "en",
+   "authoritative": false
+  },
+  {
+   "id": "co-sr220-de",
+   "title": "Obligationenrecht (SR 220), konsolidierte Fassung vom 1. Oktober 2026, deutscher Text",
+   "publisher": "Swiss Federal Chancellery, Fedlex",
+   "language": "de",
+   "authoritative": true
+  },
+  {
+   "id": "cpc-sr272-en",
+   "title": "Swiss Civil Procedure Code (SR 272), consolidated version applicable from 2026-07-01, official English translation",
+   "publisher": "Swiss Federal Chancellery, Fedlex",
+   "language": "en",
+   "authoritative": false
+  },
+  {
+   "id": "cpc-sr272-de",
+   "title": "Zivilprozessordnung (SR 272), konsolidierte Fassung vom 1. Juli 2026, deutscher Text",
+   "publisher": "Swiss Federal Chancellery, Fedlex",
+   "language": "de",
+   "authoritative": true
+  },
+  {
+   "id": "benchmark-convention",
+   "kind": "benchmark_convention",
+   "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a"
+  }
+ ],
+ "convention": {
+  "id": "intake_convention",
+  "text": "A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
+  "applies_to": "every fact of every type except the defining event, a fact whose value false triggers a stop, and a fact marked always_stated; a statutory presumption under the type's presumptions takes precedence",
+  "rule": {
+   "source_id": "benchmark-convention",
+   "locator": "SPEC.md item 6a",
+   "basis": "convention"
+  }
+ },
+ "reading_of_stops": "Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.",
+ "translation_notes": [
+  {
+   "locator": "CO art. 336b para. 2",
+   "en": "The claim prescribes if not brought before the courts",
+   "de": "eine Klage anhängig gemacht ... ist der Anspruch verwirkt",
+   "followed": "forfeited (\"verwirkt\"), which applies by itself, not \"prescribes\" (a time bar that must be pleaded); the claim must be made pending (\"anhängig gemacht\"), which under CPC art. 62 para. 1 happens when a conciliation request or an action is filed, read with CPC art. 62 para. 1 (an inference across the two acts: the CO says \"anhängig gemacht\", the CPC defines \"Rechtshängigkeit\"), not only \"brought before the courts\"",
+   "rules": "action_in_time, b_stop_time_limit, court_filing"
+  },
+  {
+   "locator": "CO art. 336 para. 2 let. b",
+   "en": "the employer cannot cite just cause",
+   "de": "der Arbeitgeber nicht beweisen kann, dass er einen begründeten Anlass zur Kündigung hatte",
+   "followed": "the employer must prove a justified reason (\"begründeter Anlass\"), a lower standard than the good cause (\"wichtiger Grund\") of art. 337",
+   "rules": "b_representative"
+  },
+  {
+   "locator": "CO art. 336 para. 1",
+   "en": "Notice of termination is unlawful",
+   "de": "Die Kündigung ... ist missbräuchlich",
+   "followed": "abusive (\"missbräuchlich\"): the notice stays effective and gives rise to compensation (arts. 336a, 336b), it is not void",
+   "rules": "b_grounds, type 2 summary"
+  },
+  {
+   "locator": "CO art. 336b para. 1",
+   "en": "submit his objection ... in writing to the party giving such notice",
+   "de": "beim Kündigenden schriftlich Einsprache erheben",
+   "followed": "the objection is lodged with the employer, not merely sent",
+   "rules": "objection_submitted, written_objection"
+  }
+ ],
+ "types": [
+  {
+   "id": "protected_period_notice",
+   "title": "Notice of termination by the employer: probation, protected periods and notice period (CO arts. 335b, 335c, 336c)",
+   "defining_event": "employer_gave_notice",
+   "facts": [
+    {
+     "id": "employer_gave_notice",
+     "question": "Did the employer give the employee notice of termination of the employment relationship?",
+     "not_this": "A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal with immediate effect (art. 337, a separate type).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "notice_during_probation",
+     "question": "Was the notice given while the probation period was still running, counting any extension of the probation period under art. 335b para. 3 (a probation period interrupted by illness, accident or a non-voluntary legal obligation is extended accordingly)?",
+     "not_this": "Notice given after the probation period, with any such extension, had expired.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "follows",
+      "inference": "The bar applies only after the probation period has expired, so notice given during it is outside the bar; art. 335b para. 3 says how long the probation period runs when it is interrupted.",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 335b para. 3",
+        "passage": "Where the period that would normally constitute the probation period is interrupted by illness, accident or performance of a non-voluntary legal obligation, the probation period is extended accordingly.",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "Bei einer effektiven Verkürzung der Probezeit infolge Krankheit, Unfall oder Erfüllung einer nicht freiwillig übernommenen gesetzlichen Pflicht erfolgt eine entsprechende Verlängerung der Probezeit."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "probation_varied",
+     "question": "Does the file say that a written individual agreement, a standard employment contract or a collective employment contract set a probation period other than the first month of employment?",
+     "not_this": "An oral arrangement about probation, or a remark only that the employee was still new.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335b para. 2",
+      "passage": "Different terms may be envisaged by an individual written agreement, a standard employment contract or a collective employment contract; however, the probation period may not exceed three months.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag können abweichende Vereinbarungen getroffen werden; die Probezeit darf jedoch auf höchstens drei Monate verlängert werden."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "incapacity_illness_accident",
+     "question": "Was the employee, through no fault of their own, wholly or partly prevented from working by illness or accident on the day notice was given or at some time while the notice period was running, and was the incapacity at that point still within its protected length: up to 30 days in the first year of service, 90 days in the second to fifth years, 180 days from the sixth year?",
+     "not_this": "Incapacity the employee caused through their own fault; days of incapacity beyond the 30, 90 or 180 days; incapacity that ended before notice was given or began only after the notice period had ended.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. b; para. 2",
+      "passage": "while the employee through no fault of his own is partially or entirely prevented from working by illness or accident for up to 30 days in the first year of service, 90 days in the second to fifth years of service and 180 days in the sixth and subsequent years of service",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer ohne eigenes Verschulden durch Krankheit oder durch Unfall ganz oder teilweise an der Arbeitsleistung verhindert ist, und zwar im ersten Dienstjahr während 30 Tagen, ab zweitem bis und mit fünftem Dienstjahr während 90 Tagen und ab sechstem Dienstjahr während 180 Tagen"
+      },
+      "basis": "states",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336c para. 2",
+        "passage": "where such notice was given prior to the commencement of a proscribed period but the notice period has not yet expired at that juncture, it is suspended and does not resume until the proscribed period has ended",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen und erst nach Beendigung der Sperrfrist fortgesetzt"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "compulsory_service",
+     "question": "Was the employee performing Swiss compulsory military service, civil defence service or alternative civilian service on the day notice was given or while the notice period was running, or, for such a service lasting more than eleven days, did either of those fall within the four weeks before or after it?",
+     "not_this": "Voluntary service, service in a foreign army, a service of eleven days or less that did not overlap the notice day or the notice period, or an overseas aid project (art. 336c para. 1 let. d, not covered here).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. a; para. 2",
+      "passage": "while the other party is performing Swiss compulsory military or civil defence service or Swiss alternative civilian service or, where such service lasts for more than eleven days, during the four weeks preceding or following it",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während die andere Partei schweizerischen obligatorischen Militär- oder Schutzdienst oder schweizerischen Zivildienst leistet, sowie, sofern die Dienstleistung mehr als elf Tage dauert, während vier Wochen vorher und nachher"
+      },
+      "basis": "states",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336c para. 2",
+        "passage": "where such notice was given prior to the commencement of a proscribed period but the notice period has not yet expired at that juncture, it is suspended and does not resume until the proscribed period has ended",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen und erst nach Beendigung der Sperrfrist fortgesetzt"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "pregnancy_or_birth",
+     "question": "Was the employee pregnant, or within sixteen weeks after giving birth, on the day notice was given or while the notice period was running?",
+     "not_this": "Pregnancy of the employee's partner; the further leave periods of art. 336c para. 1 let. cbis to cquinquies, which this rule set does not cover.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. c; para. 2",
+      "passage": "during the pregnancy of an employee and the sixteen weeks following birth",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Schwangerschaft und in den 16 Wochen nach der Niederkunft einer Arbeitnehmerin"
+      },
+      "basis": "states",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336c para. 2",
+        "passage": "where such notice was given prior to the commencement of a proscribed period but the notice period has not yet expired at that juncture, it is suspended and does not resume until the proscribed period has ended",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen und erst nach Beendigung der Sperrfrist fortgesetzt"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "notice_before_protected_period",
+     "question": "Where a protected period (illness or accident, compulsory service, pregnancy or birth, as above) is raised: was the notice given before that period began, with the notice period not yet expired when it began?",
+     "not_this": "Notice given on a day that already fell inside the protected period (that notice is void, not suspended). Not asked where no protected period is raised.",
+     "type": "boolean",
+     "always_stated": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 2",
+      "passage": "where such notice was given prior to the commencement of a proscribed period but the notice period has not yet expired at that juncture, it is suspended and does not resume until the proscribed period has ended",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen und erst nach Beendigung der Sperrfrist fortgesetzt"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "notice_period_varied",
+     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+     "not_this": "A notice period that only the termination letter states, with no written contract term behind it.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335c para. 2",
+      "passage": "These notice periods may be varied by written individual, standard or collective employment contract",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden"
+      },
+      "basis": "states"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "a_intake",
+     "title": "Establish whether the employer gave notice",
+     "reached_when": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "follows",
+      "inference": "The bar restrains a termination by the employer, so the process starts by establishing that notice."
+     }
+    },
+    {
+     "id": "a_probation",
+     "title": "Record the notice, the start of employment and the probation terms, and check that the probation period had expired when notice was given",
+     "reached_when": {
+      "fact": "employer_gave_notice",
+      "is": true
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "a_incapacity",
+     "title": "Examine the illness or accident protected period",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "fact": "notice_during_probation",
+          "is": false
+         }
+        ]
+       },
+       {
+        "fact": "incapacity_illness_accident",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. b",
+      "passage": "while the employee through no fault of his own is partially or entirely prevented from working by illness or accident for up to 30 days in the first year of service, 90 days in the second to fifth years of service and 180 days in the sixth and subsequent years of service",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer ohne eigenes Verschulden durch Krankheit oder durch Unfall ganz oder teilweise an der Arbeitsleistung verhindert ist, und zwar im ersten Dienstjahr während 30 Tagen, ab zweitem bis und mit fünftem Dienstjahr während 90 Tagen und ab sechstem Dienstjahr während 180 Tagen"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "a_service",
+     "title": "Examine the compulsory-service protected period",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "fact": "notice_during_probation",
+          "is": false
+         }
+        ]
+       },
+       {
+        "fact": "compulsory_service",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. a",
+      "passage": "while the other party is performing Swiss compulsory military or civil defence service or Swiss alternative civilian service or, where such service lasts for more than eleven days, during the four weeks preceding or following it",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während die andere Partei schweizerischen obligatorischen Militär- oder Schutzdienst oder schweizerischen Zivildienst leistet, sowie, sofern die Dienstleistung mehr als elf Tage dauert, während vier Wochen vorher und nachher"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "a_pregnancy",
+     "title": "Examine the pregnancy and maternity protected period",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "fact": "notice_during_probation",
+          "is": false
+         }
+        ]
+       },
+       {
+        "fact": "pregnancy_or_birth",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. c",
+      "passage": "during the pregnancy of an employee and the sixteen weeks following birth",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Schwangerschaft und in den 16 Wochen nach der Niederkunft einer Arbeitnehmerin"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "a_suspension",
+     "title": "Compute the suspended and extended notice period",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "fact": "notice_during_probation",
+          "is": false
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "fact": "incapacity_illness_accident",
+          "is": true
+         },
+         {
+          "fact": "compulsory_service",
+          "is": true
+         },
+         {
+          "fact": "pregnancy_or_birth",
+          "is": true
+         }
+        ]
+       },
+       {
+        "fact": "notice_before_protected_period",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 2",
+      "passage": "where such notice was given prior to the commencement of a proscribed period but the notice period has not yet expired at that juncture, it is suspended and does not resume until the proscribed period has ended",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen und erst nach Beendigung der Sperrfrist fortgesetzt"
+      },
+      "basis": "states",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336c para. 3",
+        "passage": "Where a specific end-point, such as the end of a month or working week, has been set for termination of the employment relationship and such end-point does not coincide with the expiry of the resumed notice period, the latter is extended until the next applicable end-point.",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "Gilt für die Beendigung des Arbeitsverhältnisses ein Endtermin, wie das Ende eines Monats oder einer Arbeitswoche, und fällt dieser nicht mit dem Ende der fortgesetzten Kündigungsfrist zusammen, so verlängert sich diese bis zum nächstfolgenden Endtermin."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "a_void",
+     "title": "Check whether the notice fell inside a protected period and is void",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "fact": "notice_during_probation",
+          "is": false
+         }
+        ]
+       },
+       {
+        "any": [
+         {
+          "fact": "incapacity_illness_accident",
+          "is": true
+         },
+         {
+          "fact": "compulsory_service",
+          "is": true
+         },
+         {
+          "fact": "pregnancy_or_birth",
+          "is": true
+         }
+        ]
+       },
+       {
+        "fact": "notice_before_protected_period",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 2",
+      "passage": "Any notice of termination given during the proscribed periods stipulated in paragraph 1 is void",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Die Kündigung, die während einer der in Absatz 1 festgesetzten Sperrfristen erklärt wird, ist nichtig"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "a_assess",
+     "title": "Assess the effect of the notice (void, suspended or valid)",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "fact": "notice_during_probation",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 2",
+      "passage": "Any notice of termination given during the proscribed periods stipulated in paragraph 1 is void",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Die Kündigung, die während einer der in Absatz 1 festgesetzten Sperrfristen erklärt wird, ist nichtig"
+      },
+      "basis": "follows",
+      "inference": "Paragraph 2 gives one of two effects (void or suspended) to notice and a protected period, so every branch ends in one assessment of that effect."
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "termination_letter",
+     "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
+     "step": "a_probation",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "issuer",
+      "addressee",
+      "date of the notice",
+      "date the employee received it",
+      "stated end of employment"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 2",
+      "passage": "Any notice of termination given during the proscribed periods stipulated in paragraph 1 is void",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Die Kündigung, die während einer der in Absatz 1 festgesetzten Sperrfristen erklärt wird, ist nichtig"
+      },
+      "basis": "evidence",
+      "inference": "Voidness turns on the day the notice was given compared with the protected period, and the same day decides whether notice fell in probation; the notice and its date of receipt are the ordinary record of that day (the cited text sets no written form, so a message or other record serves)."
+     }
+    },
+    {
+     "id": "employment_contract",
+     "title": "Employment contract or other record of the start of employment",
+     "step": "a_probation",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "start date of employment",
+      "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+      "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335b para. 1",
+      "passage": "the probation period is considered to be the first month of an employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "als Probezeit gilt der erste Monat eines Arbeitsverhältnisses"
+      },
+      "basis": "evidence",
+      "inference": "The probation period runs from the start of employment, and the year of service sets the 30, 90 or 180 days of art. 336c para. 1 let. b; the contract or another record of the start date ordinarily shows it."
+     }
+    },
+    {
+     "id": "probation_terms",
+     "title": "Written probation clause (individual agreement, standard or collective contract)",
+     "step": "a_probation",
+     "needed_when": {
+      "fact": "probation_varied",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "length of the probation period",
+      "the written instrument that sets it"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335b para. 2",
+      "passage": "Different terms may be envisaged by an individual written agreement, a standard employment contract or a collective employment contract; however, the probation period may not exceed three months.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag können abweichende Vereinbarungen getroffen werden; die Probezeit darf jedoch auf höchstens drei Monate verlängert werden."
+      },
+      "basis": "evidence",
+      "inference": "A probation period other than the first month exists only under a written agreement or a standard or collective contract; that written clause proves its length and so whether notice came during it."
+     }
+    },
+    {
+     "id": "incapacity_proof",
+     "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
+     "step": "a_incapacity",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "medical certificate",
+      "cause (illness or accident)",
+      "full or partial incapacity",
+      "first and last day of incapacity",
+      "date issued"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. b",
+      "passage": "while the employee through no fault of his own is partially or entirely prevented from working by illness or accident for up to 30 days in the first year of service, 90 days in the second to fifth years of service and 180 days in the sixth and subsequent years of service",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer ohne eigenes Verschulden durch Krankheit oder durch Unfall ganz oder teilweise an der Arbeitsleistung verhindert ist, und zwar im ersten Dienstjahr während 30 Tagen, ab zweitem bis und mit fünftem Dienstjahr während 90 Tagen und ab sechstem Dienstjahr während 180 Tagen"
+      },
+      "basis": "evidence",
+      "inference": "The bar applies only while the employee is prevented from working by illness or accident, for at most 30, 90 or 180 days; a medical certificate is the ordinary proof of the incapacity and its dates, which with the start date of employment fix that period."
+     }
+    },
+    {
+     "id": "service_confirmation",
+     "title": "Official confirmation of compulsory service",
+     "step": "a_service",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "kind of service (military, civil defence, alternative civilian)",
+      "first and last day of service"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. a",
+      "passage": "while the other party is performing Swiss compulsory military or civil defence service or Swiss alternative civilian service or, where such service lasts for more than eleven days, during the four weeks preceding or following it",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während die andere Partei schweizerischen obligatorischen Militär- oder Schutzdienst oder schweizerischen Zivildienst leistet, sowie, sofern die Dienstleistung mehr als elf Tage dauert, während vier Wochen vorher und nachher"
+      },
+      "basis": "evidence",
+      "inference": "The bar depends on the kind of service, its dates and whether it lasted more than eleven days; the official service order or confirmation ordinarily shows all three."
+     }
+    },
+    {
+     "id": "pregnancy_certificate",
+     "title": "Medical confirmation of pregnancy or record of the birth",
+     "step": "a_pregnancy",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "pregnancy confirmed and its dates, or the date of birth"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 let. c",
+      "passage": "during the pregnancy of an employee and the sixteen weeks following birth",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Schwangerschaft und in den 16 Wochen nach der Niederkunft einer Arbeitnehmerin"
+      },
+      "basis": "evidence",
+      "inference": "The bar runs during pregnancy and sixteen weeks after the birth; a medical confirmation of the pregnancy or the birth record ordinarily dates that period."
+     }
+    },
+    {
+     "id": "notice_period_terms",
+     "title": "Written notice-period clause (individual, standard or collective contract)",
+     "step": "a_suspension",
+     "needed_when": {
+      "fact": "notice_period_varied",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "notice period length",
+      "end-point of the notice (e.g. end of a month)",
+      "the written instrument that sets it (individual, standard or collective contract)"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335c para. 2",
+      "passage": "These notice periods may be varied by written individual, standard or collective employment contract",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden"
+      },
+      "basis": "evidence",
+      "inference": "A notice period other than the statutory one exists only under a written contract; resuming and extending a suspended notice period (art. 336c para. 3) needs its length and end-point, which that clause ordinarily shows.",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336c para. 3",
+        "passage": "Where a specific end-point, such as the end of a month or working week, has been set for termination of the employment relationship and such end-point does not coincide with the expiry of the resumed notice period, the latter is extended until the next applicable end-point.",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "Gilt für die Beendigung des Arbeitsverhältnisses ein Endtermin, wie das Ende eines Monats oder einer Arbeitswoche, und fällt dieser nicht mit dem Ende der fortgesetzten Kündigungsfrist zusammen, so verlängert sich diese bis zum nächstfolgenden Endtermin."
+        }
+       }
+      ]
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "id": "a_stop_no_notice",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": false
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "follows",
+      "inference": "The provision restrains only a termination by the employer; where the employer gave no notice there is nothing it can make void or suspend, so this process ends."
+     }
+    },
+    {
+     "id": "a_stop_probation",
+     "when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "fact": "notice_during_probation",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336c para. 1 (introduction)",
+      "passage": "After the probation period has expired, the employer may not terminate the employment relationship",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Nach Ablauf der Probezeit darf der Arbeitgeber das Arbeitsverhältnis nicht kündigen"
+      },
+      "basis": "follows",
+      "inference": "The bar applies only after the probation period, extended under art. 335b para. 3 where it was interrupted, has expired; notice given during it is outside the bar, so this process ends.",
+      "also": [
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 335b para. 3",
+        "passage": "Where the period that would normally constitute the probation period is interrupted by illness, accident or performance of a non-voluntary legal obligation, the probation period is extended accordingly.",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "Bei einer effektiven Verkürzung der Probezeit infolge Krankheit, Unfall oder Erfüllung einer nicht freiwillig übernommenen gesetzlichen Pflicht erfolgt eine entsprechende Verlängerung der Probezeit."
+        }
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "wrongful_termination",
+   "title": "Wrongful (abusive) notice of termination by the employer: objection and compensation claim (CO arts. 336-336b)",
+   "defining_event": "employer_gave_notice",
+   "facts": [
+    {
+     "id": "employer_gave_notice",
+     "question": "Did the employer give the employee notice of termination of the employment relationship?",
+     "not_this": "A resignation by the employee, a fixed-term relationship that ended by running out, or a dismissal with immediate effect (art. 337, a separate type).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "the party on whom notice was served may bring his claim for compensation",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen"
+      },
+      "basis": "follows",
+      "inference": "The claim belongs to the party on whom notice was served; in this employee-side regime that is the employee, so the notice is the employer's."
+     }
+    },
+    {
+     "id": "notice_period_ended",
+     "question": "Has the notice period (from the notice to the end of the employment relationship) already ended?",
+     "not_this": "The employee's last working day where they were released from work while the notice period was still running; the end date stated in the notice where a protected period has suspended the notice period (art. 336c para. 2) or untaken leave of the other parent has extended it (art. 335c para. 3): the period then ends later, and if the file raises either, the fact is open.",
+     "type": "boolean",
+     "always_stated": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 1",
+      "passage": "A party seeking compensation pursuant to Articles 336 and 336a must submit his objection to the notice of termination in writing to the party giving such notice not later than the end of the notice period.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "objection_submitted",
+     "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?",
+     "not_this": "An oral protest; an objection addressed to someone other than the employer; a written objection lodged only after the notice period had ended.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 1",
+      "passage": "A party seeking compensation pursuant to Articles 336 and 336a must submit his objection to the notice of termination in writing to the party giving such notice not later than the end of the notice period.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "agreed_to_continue",
+     "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?",
+     "not_this": "Talks about continuing that ended without agreement; an agreement only about a payment or about the end date.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "Where the objection has been properly submitted and the parties cannot reach agreement on the continuation of the employment relationship, the party on whom notice was served may bring his claim for compensation.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Ist die Einsprache gültig erfolgt und einigen sich die Parteien nicht über die Fortsetzung des Arbeitsverhältnisses, so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "more_than_180_days",
+     "question": "Have more than 180 days passed since the employment relationship ended?",
+     "not_this": "180 days counted from the notice or from the last day actually worked rather than from the end of the employment relationship; an end date that a protected period (art. 336c para. 2) or untaken leave of the other parent (art. 335c para. 3) has moved later: if the file raises either, the fact is open.",
+     "type": "boolean",
+     "always_stated": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "action_in_time",
+     "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?",
+     "not_this": "A demand letter to the employer; a claim made pending only after the 180 days.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "reasons_requested",
+     "question": "Did the employee ask the employer to state the reasons for the notice in writing?",
+     "not_this": "Reasons the employer gave without being asked, or a request made only orally to a colleague rather than to the employer.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335 para. 2",
+      "passage": "The party giving notice of termination must state his reasons in writing if the other party so requests.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Der Kündigende muss die Kündigung schriftlich begründen, wenn die andere Partei dies verlangt."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "retaliation_for_claims",
+     "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship? The employee's own account of the employer's reason counts as stating it, also where the employee gives it as a conviction or belief; it is open only where the claim itself says the reason is unknown, uncertain or one of several possibilities.",
+     "not_this": "Complaints that are not claims under the employment relationship, or a mere coincidence in time with no link to the notice.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 1 let. d",
+      "passage": "because the other party asserts claims under the employment relationship in good faith",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "weil die andere Partei nach Treu und Glauben Ansprüche aus dem Arbeitsverhältnis geltend macht"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "employee_representative",
+     "question": "Was the employee, when notice was given, an elected employee representative on the staff council of the business or on a body linked to the business?",
+     "not_this": "Trade-union membership or union activity without an elected mandate (art. 336 para. 2 let. a, not covered here); a representative whose mandate ended through a transfer of the employment relationship, whose protection continues (art. 336 para. 3, not covered here).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 2 let. b",
+      "passage": "while the employee is an elected employee representative on the staff council for the business or on a body linked to the business and the employer cannot cite just cause to terminate his employment",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer gewählter Arbeitnehmervertreter in einer betrieblichen oder in einer dem Unternehmen angeschlossenen Einrichtung ist, und der Arbeitgeber nicht beweisen kann, dass er einen begründeten Anlass zur Kündigung hatte"
+      },
+      "basis": "states"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "b_intake",
+     "title": "Establish whether the employer gave notice",
+     "reached_when": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "the party on whom notice was served may bring his claim for compensation",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen"
+      },
+      "basis": "follows",
+      "inference": "The compensation claim belongs to the party on whom notice was served, so the process starts by establishing that notice."
+     }
+    },
+    {
+     "id": "b_objection_check",
+     "title": "Record the notice and the notice period, and check the written objection",
+     "reached_when": {
+      "fact": "employer_gave_notice",
+      "is": true
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 1",
+      "passage": "A party seeking compensation pursuant to Articles 336 and 336a must submit his objection to the notice of termination in writing to the party giving such notice not later than the end of the notice period.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "b_continuation_check",
+     "title": "Check whether the parties agreed to continue the employment relationship",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "notice_period_ended",
+           "is": true
+          },
+          {
+           "fact": "objection_submitted",
+           "is": false
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "Where the objection has been properly submitted and the parties cannot reach agreement on the continuation of the employment relationship, the party on whom notice was served may bring his claim for compensation.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Ist die Einsprache gültig erfolgt und einigen sich die Parteien nicht über die Fortsetzung des Arbeitsverhältnisses, so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "b_limit_check",
+     "title": "Check the 180-day time limit for making the claim pending",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "notice_period_ended",
+           "is": true
+          },
+          {
+           "fact": "objection_submitted",
+           "is": false
+          }
+         ]
+        }
+       },
+       {
+        "fact": "agreed_to_continue",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt."
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "b_grounds",
+     "title": "Establish the reason the employer gave for the notice",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "notice_period_ended",
+           "is": true
+          },
+          {
+           "fact": "objection_submitted",
+           "is": false
+          }
+         ]
+        }
+       },
+       {
+        "fact": "agreed_to_continue",
+        "is": false
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "more_than_180_days",
+           "is": true
+          },
+          {
+           "fact": "action_in_time",
+           "is": false
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 1 (introduction)",
+      "passage": "Notice of termination is unlawful where given by one party:",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Die Kündigung eines Arbeitsverhältnisses ist missbräuchlich, wenn eine Partei sie ausspricht:"
+      },
+      "basis": "follows",
+      "inference": "Article 336 makes notice abusive (\"missbräuchlich\") by the reason for which it was given, so the employer's reason is established before the grounds are examined."
+     }
+    },
+    {
+     "id": "b_retaliation",
+     "title": "Examine the claimed retaliation for asserting claims",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "not": {
+           "all": [
+            {
+             "fact": "notice_period_ended",
+             "is": true
+            },
+            {
+             "fact": "objection_submitted",
+             "is": false
+            }
+           ]
+          }
+         },
+         {
+          "fact": "agreed_to_continue",
+          "is": false
+         },
+         {
+          "not": {
+           "all": [
+            {
+             "fact": "more_than_180_days",
+             "is": true
+            },
+            {
+             "fact": "action_in_time",
+             "is": false
+            }
+           ]
+          }
+         }
+        ]
+       },
+       {
+        "fact": "retaliation_for_claims",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 1 let. d",
+      "passage": "because the other party asserts claims under the employment relationship in good faith",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "weil die andere Partei nach Treu und Glauben Ansprüche aus dem Arbeitsverhältnis geltend macht"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "b_representative",
+     "title": "Examine the protection of an elected employee representative (the employer must prove a justified reason, \"begründeter Anlass\")",
+     "reached_when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "not": {
+           "all": [
+            {
+             "fact": "notice_period_ended",
+             "is": true
+            },
+            {
+             "fact": "objection_submitted",
+             "is": false
+            }
+           ]
+          }
+         },
+         {
+          "fact": "agreed_to_continue",
+          "is": false
+         },
+         {
+          "not": {
+           "all": [
+            {
+             "fact": "more_than_180_days",
+             "is": true
+            },
+            {
+             "fact": "action_in_time",
+             "is": false
+            }
+           ]
+          }
+         }
+        ]
+       },
+       {
+        "fact": "employee_representative",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 2 let. b",
+      "passage": "while the employee is an elected employee representative on the staff council for the business or on a body linked to the business and the employer cannot cite just cause to terminate his employment",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer gewählter Arbeitnehmervertreter in einer betrieblichen oder in einer dem Unternehmen angeschlossenen Einrichtung ist, und der Arbeitgeber nicht beweisen kann, dass er einen begründeten Anlass zur Kündigung hatte"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "b_compensation",
+     "title": "Assess the compensation claim",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "notice_period_ended",
+           "is": true
+          },
+          {
+           "fact": "objection_submitted",
+           "is": false
+          }
+         ]
+        }
+       },
+       {
+        "fact": "agreed_to_continue",
+        "is": false
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "more_than_180_days",
+           "is": true
+          },
+          {
+           "fact": "action_in_time",
+           "is": false
+          }
+         ]
+        }
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336a para. 2",
+      "passage": "though it must not exceed an amount equivalent to six months’ salary for the employee",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "darf aber den Betrag nicht übersteigen, der dem Lohn des Arbeitnehmers für sechs Monate entspricht"
+      },
+      "basis": "states"
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "termination_letter",
+     "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
+     "step": "b_objection_check",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "issuer",
+      "addressee",
+      "date of the notice",
+      "date the employee received it",
+      "stated end of employment"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 1",
+      "passage": "A party seeking compensation pursuant to Articles 336 and 336a must submit his objection to the notice of termination in writing to the party giving such notice not later than the end of the notice period.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
+      },
+      "basis": "evidence",
+      "inference": "The objection must be lodged before the end of the notice period; the notice and its date of receipt ordinarily show when the period began and when the employment ends, which fixes that window and the start of the 180 days."
+     }
+    },
+    {
+     "id": "employment_contract",
+     "title": "Employment contract or other record of the start of employment",
+     "step": "b_objection_check",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "start date of employment",
+      "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+      "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335c para. 1",
+      "passage": "The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Das Arbeitsverhältnis kann im ersten Dienstjahr mit einer Kündigungsfrist von einem Monat, im zweiten bis und mit dem neunten Dienstjahr mit einer Frist von zwei Monaten und nachher mit einer Frist von drei Monaten je auf das Ende eines Monats gekündigt werden."
+      },
+      "basis": "evidence",
+      "inference": "The end of the notice period, which closes the objection window, depends on the years of service and on any written variation; the contract ordinarily shows the start date and any such clause."
+     }
+    },
+    {
+     "id": "written_objection",
+     "title": "Copy of the written objection with proof of when the employer received it",
+     "step": "b_objection_check",
+     "needed_when": {
+      "fact": "objection_submitted",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "objection to the notice",
+      "addressed to the employer",
+      "date lodged or received",
+      "proof of sending or receipt"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 1",
+      "passage": "A party seeking compensation pursuant to Articles 336 and 336a must submit his objection to the notice of termination in writing to the party giving such notice not later than the end of the notice period.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben."
+      },
+      "basis": "evidence",
+      "inference": "The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both."
+     }
+    },
+    {
+     "id": "court_filing",
+     "title": "Proof that the claim was made pending: the conciliation request or statement of claim, with the confirmation of receipt",
+     "step": "b_limit_check",
+     "needed_when": {
+      "fact": "action_in_time",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "authority (conciliation authority or court)",
+      "compensation claim",
+      "filing date",
+      "confirmation of receipt"
+     ],
+     "rule": {
+      "source_id": "cpc-sr272-en",
+      "locator": "CPC art. 62 para. 1",
+      "passage": "A case becomes pending when an application for conciliation, an action, an application, or a joint request for divorce is filed.",
+      "passage_de": {
+       "source_id": "cpc-sr272-de",
+       "passage": "Die Einreichung eines Schlichtungsgesuches, einer Klage, eines Gesuches oder eines gemeinsamen Scheidungsbegehrens begründet Rechtshängigkeit."
+      },
+      "basis": "evidence",
+      "inference": "Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it (the link from the CO's \"anhängig gemacht\" to the CPC's \"Rechtshängigkeit\" is an inference across the two acts).",
+      "also": [
+       {
+        "source_id": "cpc-sr272-en",
+        "locator": "CPC art. 62 para. 2",
+        "passage": "Confirmation of receipt of such submissions shall be issued to the parties.",
+        "passage_de": {
+         "source_id": "cpc-sr272-de",
+         "passage": "Der Eingang dieser Eingaben wird den Parteien bestätigt."
+        }
+       },
+       {
+        "source_id": "co-sr220-en",
+        "locator": "CO art. 336b para. 2",
+        "passage": "The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+        "passage_de": {
+         "source_id": "co-sr220-de",
+         "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt."
+        }
+       }
+      ]
+     }
+    },
+    {
+     "id": "written_reasons",
+     "title": "Employer's written statement of reasons",
+     "step": "b_grounds",
+     "needed_when": {
+      "fact": "reasons_requested",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "reasons stated by the employer",
+      "date"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335 para. 2",
+      "passage": "The party giving notice of termination must state his reasons in writing if the other party so requests.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Der Kündigende muss die Kündigung schriftlich begründen, wenn die andere Partei dies verlangt."
+      },
+      "basis": "evidence",
+      "inference": "Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the reason on which art. 336 makes abuse depend."
+     }
+    },
+    {
+     "id": "claims_correspondence",
+     "title": "Correspondence in which the employee asserted claims before the notice",
+     "step": "b_retaliation",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "claims asserted under the employment relationship",
+      "dates before the notice",
+      "Only if the file states that the employer responded to those claims: the employer's response. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 1 let. d",
+      "passage": "because the other party asserts claims under the employment relationship in good faith",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "weil die andere Partei nach Treu und Glauben Ansprüche aus dem Arbeitsverhältnis geltend macht"
+      },
+      "basis": "evidence",
+      "inference": "This ground turns on claims asserted before the notice; the correspondence in which the employee raised them is the ordinary record of what was claimed and when."
+     }
+    },
+    {
+     "id": "representative_mandate",
+     "title": "Proof of election as employee representative",
+     "step": "b_representative",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "body (staff council or body linked to the business)",
+      "election",
+      "term of the mandate covering the notice date"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336 para. 2 let. b",
+      "passage": "while the employee is an elected employee representative on the staff council for the business or on a body linked to the business and the employer cannot cite just cause to terminate his employment",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "während der Arbeitnehmer gewählter Arbeitnehmervertreter in einer betrieblichen oder in einer dem Unternehmen angeschlossenen Einrichtung ist, und der Arbeitgeber nicht beweisen kann, dass er einen begründeten Anlass zur Kündigung hatte"
+      },
+      "basis": "evidence",
+      "inference": "The protection applies while the employee is an elected representative; the election record or mandate confirmation ordinarily shows the body and the term."
+     }
+    },
+    {
+     "id": "salary_evidence",
+     "title": "Salary statements (pay slips)",
+     "step": "b_compensation",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "monthly salary",
+      "period covered"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336a para. 2",
+      "passage": "though it must not exceed an amount equivalent to six months’ salary for the employee",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "darf aber den Betrag nicht übersteigen, der dem Lohn des Arbeitnehmers für sechs Monate entspricht"
+      },
+      "basis": "evidence",
+      "inference": "Compensation is capped at six months' salary; pay slips are the ordinary proof of the salary that sets the cap."
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "id": "b_stop_no_notice",
+     "when": {
+      "fact": "employer_gave_notice",
+      "is": false
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "the party on whom notice was served may bring his claim for compensation",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen"
+      },
+      "basis": "follows",
+      "inference": "Only the party on whom notice was served may bring the compensation claim; where the employer gave no notice there is no such claim, so this process ends."
+     }
+    },
+    {
+     "id": "b_stop_no_objection",
+     "when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "all": [
+         {
+          "fact": "notice_period_ended",
+          "is": true
+         },
+         {
+          "fact": "objection_submitted",
+          "is": false
+         }
+        ]
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "Where the objection has been properly submitted and the parties cannot reach agreement on the continuation of the employment relationship, the party on whom notice was served may bring his claim for compensation.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Ist die Einsprache gültig erfolgt und einigen sich die Parteien nicht über die Fortsetzung des Arbeitsverhältnisses, so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen."
+      },
+      "basis": "follows",
+      "inference": "The party served may claim only where the objection has been validly (\"gültig\") made, which para. 1 requires in writing to the employer by the end of the notice period; once that period has ended without it, the claim cannot be brought, so this process ends."
+     }
+    },
+    {
+     "id": "b_stop_continued",
+     "when": {
+      "all": [
+       {
+        "fact": "employer_gave_notice",
+        "is": true
+       },
+       {
+        "not": {
+         "all": [
+          {
+           "fact": "notice_period_ended",
+           "is": true
+          },
+          {
+           "fact": "objection_submitted",
+           "is": false
+          }
+         ]
+        }
+       },
+       {
+        "fact": "agreed_to_continue",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "Where the objection has been properly submitted and the parties cannot reach agreement on the continuation of the employment relationship, the party on whom notice was served may bring his claim for compensation.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Ist die Einsprache gültig erfolgt und einigen sich die Parteien nicht über die Fortsetzung des Arbeitsverhältnisses, so kann die Partei, der gekündigt worden ist, ihren Anspruch auf Entschädigung geltend machen."
+      },
+      "basis": "follows",
+      "inference": "The party served may claim only where the parties cannot reach agreement on continuing the employment relationship; where they agreed to continue it, there is no claim, so this process ends."
+     }
+    },
+    {
+     "id": "b_stop_time_limit",
+     "when": {
+      "all": [
+       {
+        "all": [
+         {
+          "fact": "employer_gave_notice",
+          "is": true
+         },
+         {
+          "not": {
+           "all": [
+            {
+             "fact": "notice_period_ended",
+             "is": true
+            },
+            {
+             "fact": "objection_submitted",
+             "is": false
+            }
+           ]
+          }
+         },
+         {
+          "fact": "agreed_to_continue",
+          "is": false
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "fact": "more_than_180_days",
+          "is": true
+         },
+         {
+          "fact": "action_in_time",
+          "is": false
+         }
+        ]
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 336b para. 2",
+      "passage": "The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt."
+      },
+      "basis": "states",
+      "inference": "The German text, which is authoritative, says the claim is forfeited (\"verwirkt\") unless an action is made pending (\"anhängig gemacht\") within 180 days; forfeiture applies by itself, unlike the English \"prescribes\", so the process ends."
+     }
+    }
+   ]
+  },
+  {
+   "id": "immediate_dismissal",
+   "title": "Dismissal with immediate effect by the employer (CO arts. 337, 337c)",
+   "defining_event": "dismissed_immediately",
+   "facts": [
+    {
+     "id": "dismissed_immediately",
+     "question": "Did the employer end the employment relationship with immediate effect, without a notice period?",
+     "not_this": "Ordinary notice with a notice period, however short, or release from work while a notice period runs.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "Where the employer dismisses the employee with immediate effect without good cause, the employee is entitled to damages",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Entlässt der Arbeitgeber den Arbeitnehmer fristlos ohne wichtigen Grund, so hat dieser Anspruch auf Ersatz"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "reasons_requested",
+     "question": "Did the employee ask the employer to state the reasons for the immediate dismissal in writing?",
+     "not_this": "Reasons the employer gave without being asked.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337 para. 1",
+      "passage": "the party doing so must give his reasons in writing at the other party’s request",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "er muss die fristlose Vertragsauflösung schriftlich begründen, wenn die andere Partei dies verlangt"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "incapacity_cause",
+     "question": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee say they were prevented from working through no fault of their own (for instance illness, accident or a non-voluntary legal obligation)?",
+     "not_this": "A dismissal for conduct at work, or an absence the employee does not say was without their fault.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337 para. 3",
+      "passage": "under no circumstances may the court hold that good cause is constituted by an employee being prevented from working through no fault of his own",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "darf aber in keinem Fall die unverschuldete Verhinderung des Arbeitnehmers an der Arbeitsleistung als wichtigen Grund anerkennen"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "fixed_term",
+     "question": "Was the employment relationship agreed for a fixed term, with an agreed end date, rather than for an unlimited period?",
+     "not_this": "An open-ended contract that only states a probation period or a notice period.",
+     "type": "boolean",
+     "always_stated": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "notice_period_varied",
+     "question": "Does the file say that a written individual employment contract, a standard employment contract or a collective employment contract sets notice periods different from the statutory ones (seven days during probation, art. 335b para. 1; one month in the first year of service, two months in the second to ninth years, three months thereafter)?",
+     "not_this": "A notice period that only the termination letter states, with no written contract term behind it.",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335c para. 2",
+      "passage": "These notice periods may be varied by written individual, standard or collective employment contract",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "other_earnings",
+     "question": "Has the employee earned income from other work during the time the notice period or the agreed term would still have run?",
+     "not_this": "Unemployment benefits; savings resulting from the termination and work intentionally forgone (also deductible under para. 2, not covered here).",
+     "type": "boolean",
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 2",
+      "passage": "Such damages are reduced by any amounts that the employee saved as a result of the termination of the employment relationship or that he earned by performing other work",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Der Arbeitnehmer muss sich daran anrechnen lassen, was er infolge der Beendigung des Arbeitsverhältnisses erspart hat und was er durch anderweitige Arbeit verdient"
+      },
+      "basis": "states"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "id": "c_intake",
+     "title": "Establish whether the employer dismissed with immediate effect",
+     "reached_when": true,
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "Where the employer dismisses the employee with immediate effect without good cause, the employee is entitled to damages",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Entlässt der Arbeitgeber den Arbeitnehmer fristlos ohne wichtigen Grund, so hat dieser Anspruch auf Ersatz"
+      },
+      "basis": "follows",
+      "inference": "The entitlement arises from an immediate dismissal by the employer, so the process starts by establishing it."
+     }
+    },
+    {
+     "id": "c_dismissal",
+     "title": "Record the dismissal, the contract and the salary",
+     "reached_when": {
+      "fact": "dismissed_immediately",
+      "is": true
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "follows",
+      "inference": "Damages are measured by the earnings up to the end of the notice period or the agreed term, so the dismissal date, the contract and the salary are recorded."
+     }
+    },
+    {
+     "id": "c_cause",
+     "title": "Establish the cause the employer relies on",
+     "reached_when": {
+      "fact": "dismissed_immediately",
+      "is": true
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337 para. 2",
+      "passage": "In particular, good cause is any circumstance which renders the continuation of the employment relationship in good faith unconscionable for the party giving notice.",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Als wichtiger Grund gilt namentlich jeder Umstand, bei dessen Vorhandensein dem Kündigenden nach Treu und Glauben die Fortsetzung des Arbeitsverhältnisses nicht mehr zugemutet werden darf."
+      },
+      "basis": "follows",
+      "inference": "Whether the dismissal was justified depends on the circumstance relied on, so that circumstance is established first."
+     }
+    },
+    {
+     "id": "c_fixed_term",
+     "title": "Measure damages to the agreed end of the fixed term",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "dismissed_immediately",
+        "is": true
+       },
+       {
+        "fact": "fixed_term",
+        "is": true
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "c_notice_period",
+     "title": "Measure damages to the end of the required notice period",
+     "reached_when": {
+      "all": [
+       {
+        "fact": "dismissed_immediately",
+        "is": true
+       },
+       {
+        "fact": "fixed_term",
+        "is": false
+       }
+      ]
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "states"
+     }
+    },
+    {
+     "id": "c_damages",
+     "title": "Assess damages and compensation",
+     "reached_when": {
+      "fact": "dismissed_immediately",
+      "is": true
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 3",
+      "passage": "compensation may not exceed the equivalent of six months’ salary for the employee",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "diese Entschädigung darf jedoch den Lohn des Arbeitnehmers für sechs Monate nicht übersteigen"
+      },
+      "basis": "states"
+     }
+    }
+   ],
+   "documents": [
+    {
+     "id": "termination_letter",
+     "title": "Letter or message dismissing with immediate effect",
+     "step": "c_dismissal",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "issuer",
+      "addressee",
+      "date",
+      "that employment ends with immediate effect"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "Where the employer dismisses the employee with immediate effect without good cause, the employee is entitled to damages",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Entlässt der Arbeitgeber den Arbeitnehmer fristlos ohne wichtigen Grund, so hat dieser Anspruch auf Ersatz"
+      },
+      "basis": "evidence",
+      "inference": "The entitlement arises from a dismissal with immediate effect; the dismissal letter or message is the ordinary record that it was immediate and of its date."
+     }
+    },
+    {
+     "id": "employment_contract",
+     "title": "Employment contract or other record of its terms",
+     "step": "c_dismissal",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "parties",
+      "start date of employment",
+      "Only if the file states that the employment was agreed for a fixed term: the agreed end date. Otherwise this item does not apply.",
+      "Only if the file states that a written agreement or contract sets a probation period other than the first month of employment: the probation clause. Otherwise this item does not apply.",
+      "Only if the file states that a written contract sets notice periods different from the statutory ones: the notice-period clause. Otherwise this item does not apply."
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "evidence",
+      "inference": "Damages run to the end of the required notice period or of the agreed term; the contract ordinarily shows the start date, any agreed end date, any probation clause and any notice clause."
+     }
+    },
+    {
+     "id": "salary_evidence",
+     "title": "Salary statements (pay slips)",
+     "step": "c_dismissal",
+     "needed_when": true,
+     "mandatory": true,
+     "must_show": [
+      "monthly salary",
+      "period covered"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "the employee is entitled to damages in the amount he would have earned had the employment relationship ended after the required notice period or on expiry of its agreed duration",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre"
+      },
+      "basis": "evidence",
+      "inference": "Damages equal what the employee would have earned; pay slips are the ordinary proof of those earnings (and of the salary that caps compensation under para. 3)."
+     }
+    },
+    {
+     "id": "written_reasons",
+     "title": "Employer's written statement of reasons",
+     "step": "c_cause",
+     "needed_when": {
+      "fact": "reasons_requested",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "reasons stated by the employer",
+      "date"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337 para. 1",
+      "passage": "the party doing so must give his reasons in writing at the other party’s request",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "er muss die fristlose Vertragsauflösung schriftlich begründen, wenn die andere Partei dies verlangt"
+      },
+      "basis": "evidence",
+      "inference": "Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the cause it relies on."
+     }
+    },
+    {
+     "id": "incapacity_proof",
+     "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
+     "step": "c_cause",
+     "needed_when": {
+      "fact": "incapacity_cause",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "cause of the hindrance",
+      "first and last day",
+      "date issued"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337 para. 3",
+      "passage": "under no circumstances may the court hold that good cause is constituted by an employee being prevented from working through no fault of his own",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "darf aber in keinem Fall die unverschuldete Verhinderung des Arbeitnehmers an der Arbeitsleistung als wichtigen Grund anerkennen"
+      },
+      "basis": "evidence",
+      "inference": "Being prevented from working through no fault of one's own can never be good cause; a medical certificate, or the official order or summons for a legal obligation, is the ordinary proof of the hindrance and its dates."
+     }
+    },
+    {
+     "id": "notice_period_terms",
+     "title": "Written notice-period clause (individual, standard or collective contract)",
+     "step": "c_notice_period",
+     "needed_when": {
+      "fact": "notice_period_varied",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "notice period length",
+      "end-point of the notice (e.g. end of a month)",
+      "the written instrument that sets it (individual, standard or collective contract)"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 335c para. 2",
+      "passage": "These notice periods may be varied by written individual, standard or collective employment contract",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Diese Fristen dürfen durch schriftliche Abrede, Normalarbeitsvertrag oder Gesamtarbeitsvertrag abgeändert werden"
+      },
+      "basis": "evidence",
+      "inference": "Damages run to the end of the required notice period; where a written contract varies the statutory periods, that clause is the ordinary proof of the period that applies."
+     }
+    },
+    {
+     "id": "other_earnings_evidence",
+     "title": "Proof of earnings from other work since the dismissal",
+     "step": "c_damages",
+     "needed_when": {
+      "fact": "other_earnings",
+      "is": true
+     },
+     "mandatory": true,
+     "must_show": [
+      "employer or client",
+      "period",
+      "amounts earned"
+     ],
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 2",
+      "passage": "Such damages are reduced by any amounts that the employee saved as a result of the termination of the employment relationship or that he earned by performing other work",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Der Arbeitnehmer muss sich daran anrechnen lassen, was er infolge der Beendigung des Arbeitsverhältnisses erspart hat und was er durch anderweitige Arbeit verdient"
+      },
+      "basis": "evidence",
+      "inference": "Damages are reduced by what the employee earned from other work; pay slips or contracts for that work are the ordinary proof of the amounts and period."
+     }
+    }
+   ],
+   "presumptions": [],
+   "stops": [
+    {
+     "id": "c_stop_no_immediate_dismissal",
+     "when": {
+      "fact": "dismissed_immediately",
+      "is": false
+     },
+     "rule": {
+      "source_id": "co-sr220-en",
+      "locator": "CO art. 337c para. 1",
+      "passage": "Where the employer dismisses the employee with immediate effect without good cause, the employee is entitled to damages",
+      "passage_de": {
+       "source_id": "co-sr220-de",
+       "passage": "Entlässt der Arbeitgeber den Arbeitnehmer fristlos ohne wichtigen Grund, so hat dieser Anspruch auf Ersatz"
+      },
+      "basis": "follows",
+      "inference": "The entitlement arises only where the employer dismisses with immediate effect; without such a dismissal this process has nothing to assess, so it ends."
+     }
+    }
+   ]
+  }
+ ]
+}
