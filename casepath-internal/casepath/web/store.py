@@ -204,6 +204,11 @@ class CaseStore:
                          for e in self._all("select * from run_events where run_id=? and seq>? order by seq", run_id, after)]
         return row
 
+    def recent_runs(self, limit=30):
+        """The latest completed runs of any case, newest first (for the stage times a run line expects)."""
+        rows = self._all("select id from runs where status='completed' order by created_at desc, rowid desc limit ?", limit)
+        return [self.get_run(r["id"]) for r in rows]
+
     def latest_run(self, case_id, status=None):
         sql = "select id from runs where case_id=?" + (" and status=?" if status else "") + " order by created_at desc, rowid desc limit 1"
         row = self._one(sql, *((case_id, status) if status else (case_id,)))

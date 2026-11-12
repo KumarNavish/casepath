@@ -339,6 +339,8 @@ class AppTests(unittest.TestCase):
         card, = page["cases"]
         self.assertEqual((card["accepted_unchanged"], card["sources_opened"], card["interventions"]), ({"document": 1}, 1, 0))
         self.assertTrue(card["case"].startswith("h_") and case["id"] not in json.dumps(page) and "Namen" not in json.dumps(page))
+        profile = client.get("/api/run-profile").json()
+        self.assertEqual((profile["runs"], set(profile["median_seconds"])), (1, {"lesen", "prozess", "fakten", "unterlagen", "pruefung"}))
         manifest = client.get("/api/manifest").json()
         self.assertEqual(manifest["format"], "casepath.parity/1")
         self.assertIn("source_tree_sha256", manifest)
@@ -354,6 +356,10 @@ class AppTests(unittest.TestCase):
         self.assertEqual((shown["run"]["id"], shown["items_sha256"]), (frozen["frozen_run_id"], frozen["items_sha256"]))
         self.assertTrue(client.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])
         self.assertEqual(client.post(f"/api/cases/{copy['id']}/runs").status_code, 409)  # never a run of its own
+        from unittest import mock
+        self.assertEqual(client.post(f"/api/cases/{copy['id']}/events", json={"kind": "session.started"}).status_code, 409)  # no fixed salt
+        mock.patch.dict("os.environ", {"CASEPATH_SCORECARD_SALT": "kept-inside"}).start()
+        self.addCleanup(mock.patch.stopall)
         self.assertEqual(client.post(f"/api/cases/{copy['id']}/events", json={"kind": "session.started"}).status_code, 201)
         client.put(f"/api/cases/{copy['id']}/workflow", json={"workflow_id": "example-defect"})
         client.post(f"/api/cases/{copy['id']}/edits", json={"op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"},

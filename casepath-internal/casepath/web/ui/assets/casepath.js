@@ -1143,8 +1143,9 @@ function judgementPoints(ev, r) {
   return pts.sort((a, b) => a.urgency - b.urgency);
 }
 const doneRows = () => (S.data.feedback || []).filter((f) => f.target.startsWith("point:") && f.verdict === "done");
-// The run as the handler sees it: five stages in their words, real elapsed time, the expected rest, and one sentence on
-// what is happening now. ponytail: expected seconds are fixed from the night's medians; learn them per case size later.
+// The run as the handler sees it: five stages in their words, real elapsed time, the expected rest (median of this
+// deployment's recent runs, /api/run-profile; the fixed numbers below only until runs exist), and one sentence on now.
+// ponytail: one median for all case sizes; bucket by page count when cases differ much.
 const RUN_STAGES = [
   { id: "lesen", de: "Lesen", en: "Reading", agents: ["reader"], expect: 20 },
   { id: "prozess", de: "Prozess", en: "Process", agents: ["router", "process_builder"], expect: 10 },
@@ -1162,7 +1163,9 @@ function runLine() {
     const open = mine.filter((e) => e.kind === "agent.start").length > mine.filter((e) => e.kind === "agent.end").length;
     return { start: at(mine[0]), end: open ? now : at(mine[mine.length - 1]), open };
   };
-  const rows = RUN_STAGES.map((stage) => ({ stage, span: span(stage) }));
+  const learned = (S.runProfile || {}).median_seconds || {};
+  if (!S.runProfile) api("/api/run-profile").then((p) => { S.runProfile = p; }).catch(() => { S.runProfile = {}; });
+  const rows = RUN_STAGES.map((stage) => ({ stage: { ...stage, expect: learned[stage.id] ?? stage.expect }, span: span(stage) }));
   const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
   const cells = rows.map(({ stage, span }) => `<span class="cp-chip ${span ? (span.open ? "wait" : "good") : ""}">${T(stage.en, stage.de)}${span ? ` · ${Math.round((span.end - span.start) / 1000)} s` : ""}</span>`).join(" ");
   const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead") || {};

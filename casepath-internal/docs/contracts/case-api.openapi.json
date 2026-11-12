@@ -1566,6 +1566,23 @@
     "summary": "Me"
    }
   },
+  "/api/run-profile": {
+   "get": {
+    "description": "Median seconds per stage over this deployment's recent completed runs: what a run line expects next.",
+    "operationId": "run_profile_api_run_profile_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Run Profile"
+   }
+  },
   "/api/runs/{run_id}": {
    "get": {
     "operationId": "get_run_api_runs__run_id__get",

@@ -141,6 +141,13 @@ Report the before/after table with the cases' sizes. A gain that appears only on
 - **A point answered during the run is taken at once:** the handler's value stands, the agents do not ask again, and what depends on it follows.
 - **Anhalten** stops the run and keeps what is established; **Weiter** continues from there.
 
+**Steering, design for the team loop (not built yet):**
+1. *Stop:* a per-run flag in the store, set by "Anhalten"; `run_agent` checks it before every model turn and `CaseTeam.run` before every delegation, then ends with status "paused", saving `work` (brief, facts, documents, verdicts, usage) as the run's result with `paused_at`.
+2. *Continue:* "Weiter" starts a run from the paused one: `CaseWork` is rebuilt from that result, finished delegations are skipped by a `done` list in the plan, and only the open step and those after it run.
+3. *A point answered during the run:* the handler's value is a `set_fact` edit; `work.facts` takes every edit at the start of each turn, `_record_fact` refuses to overwrite a fact set by hand, and the source checker skips it.
+4. *Anderer Prozess:* choosing another workflow during or after the run keeps the reading (brief, page texts, located quotes) and repeats only what depends on the process: the fact pass for facts the new workflow adds, the finder, the checker and the result.
+5. *Shown first:* routing emits `process.ready` within the first turn; the Übersicht shows the process with "anderer Prozess" beside it, and no answer means yes.
+
 **As little as possible asked of the handler.** A point appears under Braucht Ihr Urteil only if a person's answer would change the path, the letter or a deadline. Everything else CasePath settles and shows as settled, with its source. A typical case: three points or fewer.
 
 **Done when** a handler who has never seen CasePath opens a prepared case and, without a word of explanation, says what the case is, decides every point, changes one thing they disagree with, and closes it; and when, watching a run, they can say at any moment what is happening and stop or turn it.

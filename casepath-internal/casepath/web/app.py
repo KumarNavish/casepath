@@ -7,6 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
+from datetime import datetime
 import hashlib
 import os
 import secrets
@@ -517,6 +518,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.kind not in EVENT_KINDS or body.kind in SERVER_KINDS:
             raise HTTPException(422, "Unknown event kind, or one only the server writes.")
         study = (store.get_case(case_id).get("intake") or {}).get("study")
+        if body.kind == "session.started" and study and not os.environ.get("CASEPATH_SCORECARD_SALT"):
+            raise HTTPException(409, "Eine Studiensitzung braucht ein festes Pseudonym-Salz (CASEPATH_SCORECARD_SALT).")
         if body.kind == "session.started" and study and (reason := study_mismatch(case_id, study)):
             raise HTTPException(409, reason)  # a session starts only on the frozen run's exact item list
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
@@ -759,6 +762,22 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
 
     # Knowledge
+    STAGES = {"lesen": {"reader"}, "prozess": {"router", "process_builder"}, "fakten": {"claim_reader"},
+              "unterlagen": {"document_finder"}, "pruefung": {"source_checker", "result_checker"}}
+
+    @app.get("/api/run-profile")
+    def run_profile(who=Depends(user)):
+        """Median seconds per stage over this deployment's recent completed runs: what a run line expects next."""
+        spans = {stage: [] for stage in STAGES}
+        for run in store.recent_runs(30):
+            events = run.get("events") or []
+            for stage, agents in STAGES.items():
+                times = [datetime.fromisoformat(e["at"]) for e in events if e.get("agent") in agents and e.get("at")]
+                if times:
+                    spans[stage].append((max(times) - min(times)).total_seconds())
+        median = lambda xs: sorted(xs)[len(xs) // 2] if xs else None
+        return {"runs": len(store.recent_runs(30)), "median_seconds": {s: median(v) for s, v in spans.items()}}
+
     @app.get("/api/manifest")
     def running_manifest(who=Depends(user)):
         """What this running app is: code tree, workflows and Knowledge, each hashed by content."""
