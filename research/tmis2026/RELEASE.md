@@ -125,12 +125,17 @@ closed local port. Steps:
    `analysis/posthoc_numbers.tex` and `paper/results/numbers_posthoc.tex`, `analysis/test_posthoc.py` runs, and
    `analysis/test_study3_feedback.py` runs in full with the cache and without its one replay test (which reads the
    cache) otherwise.
-6. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (36), `analysis/test_study2.py`.
+6. Study 4, step 1 (the fair-baseline check, post hoc on Study 3's data): `study4/baseline_check/analyse.py` re-scores
+   the stored plans under `study4/baseline_check/runs/` and Study 3's stored plans with the registered scorers (no
+   model call, no response cache) into the temporary folder; `REPORT.json` is compared byte for byte. Then
+   `analysis/make_numbers_baseline_check.py` is regenerated from the stored `REPORT.json` and compared with
+   `paper/results/numbers_baseline_check.tex`, and `analysis/test_baseline_check.py` runs.
+7. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (36), `analysis/test_study2.py`.
    The development ledger `runs/product/ledger_dev_gpt-6-luna.jsonl` is append-only and grew after the registered
    and review analyses recorded its hash; the comparison of `study3_results_fresh2_confirm.json` and
    `study3_review.json` accepts a different recorded hash for a development ledger only if the stored hash is that of
    a line-ending prefix of the current file, and says so.
-7. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
+8. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
    `runs/responses_cache.tar.gz` unpacked. It re-runs 18 scripts and checks that every `analysis/*.json`
    evidence file and `paper/results/numbers.tex` come out byte for byte the same; regenerates
    `numbers_study3.tex` and `numbers_sharc.tex`; checks the structure of the included sections and that every

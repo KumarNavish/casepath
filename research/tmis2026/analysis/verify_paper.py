@@ -60,7 +60,8 @@ if not PAPER_ONLY:
 # 3. Study 3 and ShARC macros from their result files (no model calls).
 for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex"),
                      ("make_numbers_followup.py", "numbers_followup.tex"), ("make_numbers_study3_review.py", "numbers_study3_review.tex"),
-                     ("make_numbers_study3_feedback.py", "numbers_study3_feedback.tex")):
+                     ("make_numbers_study3_feedback.py", "numbers_study3_feedback.tex"),
+                     ("make_numbers_baseline_check.py", "numbers_baseline_check.tex")):
     target = PAPER / "results" / name
     saved = target.read_bytes()
     try:

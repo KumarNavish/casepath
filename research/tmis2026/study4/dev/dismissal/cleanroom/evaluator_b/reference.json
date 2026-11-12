@@ -1,0 +1,1581 @@
+{
+  "dis_05af0871cd70": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "not_needed"
+    },
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    },
+    "written_objection": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_064eeecaeb0d": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_07997bac9677": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "request"
+    },
+    "probation_terms": {
+      "state": "present_sufficient"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_0ddd28b452d1": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "request"
+    },
+    "probation_terms": {
+      "state": "present_insufficient"
+    },
+    "service_confirmation": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_0f89215979d2": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    }
+  },
+  "dis_14b7db92a192": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_166a056aad58": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "present_insufficient"
+    }
+  },
+  "dis_188837a70acc": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "agreed_to_continue",
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "representative_mandate": {
+      "state": "hold",
+      "waits_for": [
+        "agreed_to_continue"
+      ]
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "agreed_to_continue"
+      ]
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    },
+    "written_objection": {
+      "state": "present_sufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_1a145eb920db": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_1bf62841defb": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    }
+  },
+  "dis_1f3d840408c2": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "present_sufficient"
+    },
+    "salary_evidence": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_250393de2a03": {
+    "claims_correspondence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_25e20aeec77d": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "present_insufficient"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_32d79153a27f": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "request"
+    },
+    "probation_terms": {
+      "state": "present_insufficient"
+    },
+    "service_confirmation": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    }
+  },
+  "dis_373612fa5345": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_3a4e06ed3132": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "not_needed"
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_3f2fbc0b6128": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "hold",
+      "waits_for": [
+        "pregnancy_or_birth"
+      ]
+    },
+    "probation_terms": {
+      "state": "request"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_408b774aa7db": {
+    "claims_correspondence": {
+      "state": "present_insufficient"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "representative_mandate": {
+      "state": "present_sufficient"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_41ea262e9131": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "request"
+    }
+  },
+  "dis_45aed10bfb69": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_465be22068ef": {
+    "claims_correspondence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    }
+  },
+  "dis_4c827570a0b2": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    }
+  },
+  "dis_4d5e1451544b": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_4ee0866843c9": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    }
+  },
+  "dis_5215d587db4b": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "not_needed"
+    },
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    },
+    "written_objection": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_5adf4d2aec3c": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_5fa2acf39bac": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "present_insufficient"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_60632f5d2a1c": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "hold",
+      "waits_for": [
+        "incapacity_illness_accident"
+      ]
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "request"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_6093ca79060d": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "request"
+    },
+    "other_earnings_evidence": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_739543d032db": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "hold",
+      "waits_for": [
+        "notice_before_protected_period"
+      ]
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    }
+  },
+  "dis_7c10c74bd747": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_7e42a5b5bd9f": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_827bbd04ddc9": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_82d1908071ae": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "hold",
+      "waits_for": [
+        "fixed_term"
+      ]
+    },
+    "other_earnings_evidence": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_837cc4abb499": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "present_sufficient"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "other_earnings"
+      ]
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_894859471634": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_8adfce6b0c8d": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "other_earnings"
+      ]
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_925dc8cee367": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "present_sufficient"
+    },
+    "other_earnings_evidence": {
+      "state": "request"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    },
+    "written_reasons": {
+      "state": "request"
+    }
+  },
+  "dis_9260317f805d": {
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "present_insufficient"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "request"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    }
+  },
+  "dis_930a1b5e1bdc": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    }
+  },
+  "dis_9991ef82e6f4": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "present_insufficient"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_aa3d765b074e": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "present_sufficient"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_ac405c63effe": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "other_earnings"
+      ]
+    },
+    "salary_evidence": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "request"
+    }
+  },
+  "dis_b7f5c9e07c99": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_bf38c7dfb616": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "request"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_c50430dbdfa1": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_c5e1bd4a1483": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted",
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted",
+        "action_in_time"
+      ]
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted",
+        "action_in_time"
+      ]
+    }
+  },
+  "dis_d3bae3094a5d": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "present_insufficient"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "present_insufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_d4c7e372c087": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "present_sufficient"
+    },
+    "probation_terms": {
+      "state": "present_insufficient"
+    },
+    "service_confirmation": {
+      "state": "hold",
+      "waits_for": [
+        "compulsory_service"
+      ]
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_dd12420e6a78": {
+    "claims_correspondence": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "representative_mandate": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "termination_letter": {
+      "state": "present_sufficient"
+    },
+    "written_objection": {
+      "state": "present_sufficient"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_dd5c84a7084d": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "hold",
+      "waits_for": [
+        "incapacity_cause"
+      ]
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_e1b3af99deab": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_f3d056a01f6d": {
+    "employment_contract": {
+      "state": "present_sufficient"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_sufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_f5520e9336bd": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "request"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "present_insufficient"
+    }
+  },
+  "dis_f8a12a35738c": {
+    "claims_correspondence": {
+      "state": "not_needed"
+    },
+    "court_filing": {
+      "state": "not_needed"
+    },
+    "employment_contract": {
+      "state": "request"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_fa096cda3412": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "hold",
+      "waits_for": [
+        "fixed_term"
+      ]
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  },
+  "dis_fb44c47f6ec7": {
+    "claims_correspondence": {
+      "state": "present_insufficient"
+    },
+    "court_filing": {
+      "state": "hold",
+      "waits_for": [
+        "action_in_time"
+      ]
+    },
+    "employment_contract": {
+      "state": "present_insufficient"
+    },
+    "representative_mandate": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "present_insufficient"
+    },
+    "termination_letter": {
+      "state": "request"
+    },
+    "written_objection": {
+      "state": "hold",
+      "waits_for": [
+        "objection_submitted"
+      ]
+    },
+    "written_reasons": {
+      "state": "request"
+    }
+  },
+  "dis_fcbd44dfcef3": {
+    "employment_contract": {
+      "state": "request"
+    },
+    "incapacity_proof": {
+      "state": "request"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "present_insufficient"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "request"
+    }
+  },
+  "dis_fea630e08ab3": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "pregnancy_certificate": {
+      "state": "not_needed"
+    },
+    "probation_terms": {
+      "state": "not_needed"
+    },
+    "service_confirmation": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    }
+  },
+  "dis_ff1e9056d2c3": {
+    "employment_contract": {
+      "state": "not_needed"
+    },
+    "incapacity_proof": {
+      "state": "not_needed"
+    },
+    "notice_period_terms": {
+      "state": "not_needed"
+    },
+    "other_earnings_evidence": {
+      "state": "not_needed"
+    },
+    "salary_evidence": {
+      "state": "not_needed"
+    },
+    "termination_letter": {
+      "state": "not_needed"
+    },
+    "written_reasons": {
+      "state": "not_needed"
+    }
+  }
+}

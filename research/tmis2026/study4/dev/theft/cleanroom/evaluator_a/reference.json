@@ -1,0 +1,1511 @@
+{
+  "the_003fbcb4d365": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_06baabbe2a0d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "hold",
+      "waits_for": [
+        "lock_change"
+      ]
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_0aad75365ee3": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_0cd1b047049a": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_0d6569d32db1": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_1024620d6055": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "present_sufficient"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_12e3d532c09d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_12ee892d56f4": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "hold",
+      "waits_for": [
+        "traces_changed"
+      ]
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_1487759fc403": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_1595e412e131": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_1dfba8facf5e": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_2412f755f636": {
+    "bicycle_voucher": {
+      "state": "request"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_248aa95805a8": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_2774fb90433e": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_27cd334c5026": {
+    "bicycle_voucher": {
+      "state": "request"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_sufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_281214c010bb": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "lock_change_invoice": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_314b305efe2d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "hold",
+      "waits_for": [
+        "lock_change"
+      ]
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_32a656cb56cf": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "hold",
+      "waits_for": [
+        "theft_away"
+      ]
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_38afd648a68a": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_488b39c60106": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "present_insufficient"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_493f21bd27be": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_4c02d7c9601d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_506c9909edc4": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_57501c7d1230": {
+    "bicycle_voucher": {
+      "state": "request"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "hold",
+      "waits_for": [
+        "traces_changed"
+      ]
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_5ee356013cfc": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_656f9aad39e5": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_6634ab23ee99": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_683889ad3d85": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_insufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_685edf55333b": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_7d2b6a2bdce4": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_7f7ad7ab95d0": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_insufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_sufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_819379d12c03": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_86b4e22a87e7": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_86e739ec9184": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_875040108b5b": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_8a719e0bd89a": {
+    "bicycle_voucher": {
+      "state": "request"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_91cf197b270e": {
+    "bicycle_voucher": {
+      "state": "request"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_9355c558630a": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_93929f818110": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_9b58c5abd02f": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_a529fff2269d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_a86e098e517e": {
+    "bicycle_voucher": {
+      "state": "hold",
+      "waits_for": [
+        "bicycle"
+      ]
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_b05370369093": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_b68c834f7972": {
+    "bicycle_voucher": {
+      "state": "hold",
+      "waits_for": [
+        "vouchers_unobtainable"
+      ]
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "hold",
+      "waits_for": [
+        "vouchers_unobtainable"
+      ]
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_bd8ee148bc3a": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_c0b61a3ae7cb": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_c3a5e8c74185": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_c50e0bd7b054": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_c7620535798b": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_c8b40fd1824d": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_sufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_cd857962dd2a": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "request"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_insufficient"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_d37fc3c54b4b": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "present_sufficient"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_insufficient"
+    }
+  },
+  "the_d70abf016562": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_insufficient"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_d76f5df60f83": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "hold",
+      "waits_for": [
+        "theft_away"
+      ]
+    },
+    "notification_record": {
+      "state": "hold",
+      "waits_for": [
+        "theft_away"
+      ]
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "hold",
+      "waits_for": [
+        "theft_away"
+      ]
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "hold",
+      "waits_for": [
+        "theft_away"
+      ]
+    }
+  },
+  "the_d9579f891719": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "request"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_dd72ec4e53dd": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "notification_record": {
+      "state": "not_needed"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "not_needed"
+    }
+  },
+  "the_e0b1e1d56fb2": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "present_insufficient"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "present_insufficient"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_eb579978f91b": {
+    "bicycle_voucher": {
+      "state": "hold",
+      "waits_for": [
+        "bicycle"
+      ]
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "present_sufficient"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_sufficient"
+    },
+    "stolen_items_list": {
+      "state": "present_sufficient"
+    }
+  },
+  "the_efac75d20bd0": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "lock_change_invoice": {
+      "state": "not_needed"
+    },
+    "notification_record": {
+      "state": "request"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "not_needed"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  },
+  "the_fefc066e8269": {
+    "bicycle_voucher": {
+      "state": "not_needed"
+    },
+    "insurance_policy": {
+      "state": "request"
+    },
+    "notification_record": {
+      "state": "present_sufficient"
+    },
+    "original_vouchers": {
+      "state": "not_needed"
+    },
+    "police_consent": {
+      "state": "not_needed"
+    },
+    "police_report": {
+      "state": "present_sufficient"
+    },
+    "stolen_items_list": {
+      "state": "request"
+    }
+  }
+}

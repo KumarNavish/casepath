@@ -78,7 +78,7 @@ On theft, the single prompts' errors that coincide with the rule floor's errors 
 Table~\ref{tab:split} gives the split of the article's Section~\ref{M-sec:test-held} for every design, as means over claim-runs.
 
 \begin{table}[h]
-\caption{Added after review: Tenancy strict unsafe errors per claim on the \sthreeFOneClaimsS{} claims that state every fact (S) and the \sthreeFOneClaimsO{} claims with an open fact or a denied or open defining event (O), means over claim-runs, as in Figure~\ref{M-fig:share} of the article.}
+\caption{Added after review: Tenancy strict unsafe errors per claim on the \sthreeFOneClaimsS{} claims that state every fact (S) and the \sthreeFOneClaimsO{} claims with an open fact or a denied or open defining event (O), means over claim-runs, as in Figure~\ref{fig:share}.}
 \label{tab:split}
 \footnotesize
 \begin{tabular}{@{}l rr l rr@{}}
@@ -94,10 +94,23 @@ Rules in context, frontier & \sthreeFOneRicFrontierSStrictClaimRun & \sthreeFOne
 \end{tabular}
 \end{table}
 
+\subsection{The share of open-or-denied claims}
+\label{supp:share}
+
+This figure stood in Section~\ref{M-sec:test-held} of the previous version of the article. It is moved here because its comparators are the registered single prompts, which were not told the stop and hold rules. Figure~\ref{fig:share} draws each design's expected errors against the share of such claims, with the mix inside the second group held at the test's (\sthreeFOneClaimsODenied{} denied-event to \sthreeFOneClaimsOOpenFact{} open-fact claims). On the claims that state every fact, \casepath and the frontier prompt have the same mean, so \casepath's expected error is lower at any share above \sthreeFTwoStrictCrossCasePathRicFrontier. Counting unneeded holds as errors, it is lower above about \sthreeFTwoAllDevCrossCasePathRicFrontier. 
+
+\begin{figure}[h]
+\centering
+\fig{fig_share}{\linewidth}
+\Description{Straight lines of expected strict unsafe errors per claim against the share of claims with an open fact or a denied or open defining event, from zero to one. CasePath's line is nearly flat and low; the single-prompt lines rise steeply. Shaded bands around CasePath and the frontier single prompt; a vertical line at this test's share.}
+\caption{Added after the test: expected strict unsafe errors per claim against the share of claims with an open fact or a denied or open defining event. Each line runs from a design's mean on the claims that state every fact to its mean on the other claims, means over claim-runs (Table~\ref{tab:split}); the mix within the second group is held at the test's. Bands: 95\% family-bootstrap intervals for \casepath and the frontier single prompt. Vertical line: the test's share (\sthreeFTwoTestShare). The single prompts here were not told the stop and hold rules; a prompt that was told them (article, Section~\ref{M-sec:test-hold-prompt}) is not drawn.}
+\label{fig:share}
+\end{figure}
+
 \subsection{Open or stated: family means}
 \label{supp:f1-family}
 
-The article reports the split of the tenancy claims into those that state every fact (S) and those with an open fact or a denied or open defining event (O) as means over claim-runs. Table~\ref{tab:supp-f1-family} gives the same split as family means (a family's value is the mean over its claim-runs of the type; the type's value the mean over the families that have such claims), with the sign-flip tests over families that the article cites. With family means the crossover with the frontier prompt in Figure~\ref{M-fig:share} lies at \sthreeFTwoStrictCrossCasePathRicFrontierFamily{} (strict unsafe errors) and \sthreeFTwoAllDevCrossCasePathRicFrontierFamily{} (all deviations), against \sthreeFTwoStrictCrossCasePathRicFrontier{} and \sthreeFTwoAllDevCrossCasePathRicFrontier{} with claim-run means.
+The article reports the split of the tenancy claims into those that state every fact (S) and those with an open fact or a denied or open defining event (O) as means over claim-runs. Table~\ref{tab:supp-f1-family} gives the same split as family means (a family's value is the mean over its claim-runs of the type; the type's value the mean over the families that have such claims), with the sign-flip tests over families that the article cites. With family means the crossover with the frontier prompt in Figure~\ref{fig:share} lies at \sthreeFTwoStrictCrossCasePathRicFrontierFamily{} (strict unsafe errors) and \sthreeFTwoAllDevCrossCasePathRicFrontierFamily{} (all deviations), against \sthreeFTwoStrictCrossCasePathRicFrontier{} and \sthreeFTwoAllDevCrossCasePathRicFrontier{} with claim-run means.
 
 \begin{table}[h]
 \caption{Open or stated, family means (added after review): tenancy strict unsafe errors per claim, and \casepath minus the design with the exact sign-flip $p$ over families.}

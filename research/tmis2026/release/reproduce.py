@@ -222,6 +222,14 @@ def child(task, out):
         m = load(AN / "lint_followup.py", "lint_followup")
         tex = m.macros(json.loads((AN / "lint_followup.json").read_text()), json.loads((AN / "decomposition.json").read_text()))
         (out / "posthoc_numbers.tex").write_text(tex)
+    elif task == "baseline_check":
+        m = load_patched(TMIS / "study4" / "baseline_check" / "analyse.py", "baseline_check_analyse", out,
+                         ['(HERE / "REPORT.json").write_text'])
+        m.main()
+    elif task == "numbers_baseline_check":
+        exec_redirected(AN / "make_numbers_baseline_check.py",
+                        'OUT = TMIS / "paper" / "results" / "numbers_baseline_check.tex"',
+                        f"OUT = Path({str(out / 'numbers_baseline_check.tex')!r})")
     elif task == "dev_probe":
         sys.path.insert(0, str(TMIS / "dev_probe"))
         m = load(TMIS / "dev_probe" / "build.py", "dev_probe_build")
@@ -447,6 +455,25 @@ def feedback_steps(tmp):
                     [sys.executable, "-m", "unittest"] + names, cwd=AN)
 
 
+def baseline_check_steps(tmp):
+    """The fair-baseline check of Study 4, step 1 (post hoc, on Study 3's data): study4/baseline_check/analyse.py scores
+    the stored plans under study4/baseline_check/runs/ and Study 3's stored plans with the registered scorers. It makes
+    no model call and reads no response cache; it is re-run into the temporary folder and its REPORT.json compared byte
+    for byte. Then the macros are regenerated from the stored REPORT.json and compared, and their test runs."""
+    out = tmp / "baseline_check"
+    out.mkdir()
+    r = child_step("study 4 step 1: study4/baseline_check/analyse.py", "baseline_check", out)
+    if r.returncode == 0:
+        ok, why = same(out / "REPORT.json", TMIS / "study4" / "baseline_check" / "REPORT.json")
+        report("study 4 step 1: REPORT.json equals the stored file", "PASS" if ok else "FAIL", why)
+    r = child_step("study 4 step 1: analysis/make_numbers_baseline_check.py (from the stored REPORT.json)",
+                   "numbers_baseline_check", out)
+    if r.returncode == 0:
+        ok, why = same(out / "numbers_baseline_check.tex", TMIS / "paper" / "results" / "numbers_baseline_check.tex")
+        report("study 4 step 1: numbers_baseline_check.tex equals the stored file", "PASS" if ok else "FAIL", why)
+    script_step("tests: analysis/test_baseline_check.py", [sys.executable, "test_baseline_check.py"], cwd=AN)
+
+
 def test_steps():
     for t in ("test_study3.py", "test_study3_review.py", "test_study2.py"):
         script_step(f"tests: analysis/{t}", [sys.executable, t], cwd=AN)
@@ -549,6 +576,7 @@ def main():
             study3_steps(tmp)
             review_steps(tmp)
             feedback_steps(tmp)
+            baseline_check_steps(tmp)
             test_steps()
             study12_steps(tmp, a.skip_latex)
     finally:

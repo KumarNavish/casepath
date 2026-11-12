@@ -1,0 +1,1235 @@
+{
+  "ten_00bf58d82a2b": {
+    "claims_and_reasons": {
+      "state": "present_insufficient"
+    },
+    "hardship_evidence": {
+      "state": "present_insufficient"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_060ca05c5691": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_094dc11f4ef9": {
+    "claims_and_reasons": {
+      "state": "hold",
+      "waits_for": [
+        "asserted_claims"
+      ]
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "payment_demand": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_0c74f4037e13": {
+    "claims_and_reasons": {
+      "state": "request"
+    },
+    "hardship_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "arrears_termination"
+      ]
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "hold",
+      "waits_for": [
+        "arrears_termination"
+      ]
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_0d082e78c345": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "present_insufficient"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "present_sufficient"
+    },
+    "knowledge_proof": {
+      "state": "hold",
+      "waits_for": [
+        "landlord_unaware"
+      ]
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_2249a3b45704": {
+    "damage_evidence": {
+      "state": "hold",
+      "waits_for": [
+        "damages_claimed"
+      ]
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "present_insufficient"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_270f84d8acff": {
+    "damage_evidence": {
+      "state": "request"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_2dff5fa7a980": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_404e03b3e37f": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "hold",
+      "waits_for": [
+        "deposit_intended"
+      ]
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_429b182434cf": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "rent_increase_notice": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_49dab8d40787": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_536a2e7f64de": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_580485dac025": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "proof_of_receipt": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "rent_increase_notice": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_5822f6df0cb7": {
+    "claims_and_reasons": {
+      "state": "present_sufficient"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_58961449957f": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_5aecbb73131b": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_62956adff3f7": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "rent_increase_notice": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_650fe62e2c09": {
+    "claims_and_reasons": {
+      "state": "request"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_65213c168ab3": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_6806063b9fd7": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_68cb7ef0004f": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "payment_demand": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_68f29695fb98": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_6c5828c1c68b": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "present_sufficient"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_6d6fcb65d5b6": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "request"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_73e9202b8898": {
+    "cost_breakdown": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "rent_increase_notice": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_76d8d9821402": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "rent_increase_notice": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_776e0e61986b": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "not_needed"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    }
+  },
+  "ten_7bdc8d77b443": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_81c7af7dbe95": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_8572ddc89110": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "rent_increase_notice": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_857d108a2bbc": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "payment_demand": {
+      "state": "hold",
+      "waits_for": [
+        "arrears_termination"
+      ]
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_886637ed61d4": {
+    "claims_and_reasons": {
+      "state": "request"
+    },
+    "hardship_evidence": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_8c1d86a176c0": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "present_sufficient"
+    },
+    "deposit_receipt": {
+      "state": "request"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_8c54d4a61b0a": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "rent_increase_notice": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_96f9b0ab4078": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_99a09ab93688": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "present_sufficient"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "request"
+    },
+    "knowledge_proof": {
+      "state": "hold",
+      "waits_for": [
+        "landlord_unaware"
+      ]
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_99fa2131c25f": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_9cee49140df5": {
+    "damage_evidence": {
+      "state": "request"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_9ef3562d0d18": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_9f1d7f1e9554": {
+    "claims_and_reasons": {
+      "state": "request"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_a743587360f3": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_aba30f049af3": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "hold",
+      "waits_for": [
+        "rent_deposited"
+      ]
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_b2a5ace905ae": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_insufficient"
+    },
+    "payment_demand": {
+      "state": "present_insufficient"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_b4d4cb05336f": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "present_sufficient"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_ba90f9b8b195": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "proof_of_receipt": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "rent_increase_notice": {
+      "state": "hold",
+      "waits_for": [
+        "increase_applied"
+      ]
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_c1e4987669e8": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_c2a72cbf1698": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "not_needed"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_c4ccb65aff87": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "not_needed"
+    },
+    "knowledge_proof": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    }
+  },
+  "ten_c934efc0b1bc": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_sufficient"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_c95735ae0bf4": {
+    "cost_breakdown": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_cf02cc821948": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "request"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_db552dbb3c23": {
+    "cost_breakdown": {
+      "state": "request"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_e4858b3af131": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "present_insufficient"
+    },
+    "termination_notice": {
+      "state": "present_insufficient"
+    }
+  },
+  "ten_e6d795ab2a91": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_e94fb7461784": {
+    "damage_evidence": {
+      "state": "not_needed"
+    },
+    "defect_record": {
+      "state": "request"
+    },
+    "deposit_deadline_notice": {
+      "state": "request"
+    },
+    "deposit_receipt": {
+      "state": "present_sufficient"
+    },
+    "knowledge_proof": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_ed10120c904e": {
+    "claims_and_reasons": {
+      "state": "hold",
+      "waits_for": [
+        "asserted_claims"
+      ]
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "present_sufficient"
+    },
+    "payment_demand": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "spouse_service": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  },
+  "ten_eec676341229": {
+    "claims_and_reasons": {
+      "state": "not_needed"
+    },
+    "hardship_evidence": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "payment_demand": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "spouse_service": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "present_sufficient"
+    }
+  },
+  "ten_efa24ba18ce3": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "request"
+    },
+    "rent_increase_notice": {
+      "state": "present_sufficient"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_f1871d924ee4": {
+    "cost_breakdown": {
+      "state": "not_needed"
+    },
+    "lease_contract": {
+      "state": "not_needed"
+    },
+    "proof_of_receipt": {
+      "state": "not_needed"
+    },
+    "rent_increase_notice": {
+      "state": "not_needed"
+    },
+    "termination_notice": {
+      "state": "not_needed"
+    }
+  },
+  "ten_fb2a18deebee": {
+    "cost_breakdown": {
+      "state": "hold",
+      "waits_for": [
+        "graduated_rent"
+      ]
+    },
+    "lease_contract": {
+      "state": "request"
+    },
+    "proof_of_receipt": {
+      "state": "present_insufficient"
+    },
+    "rent_increase_notice": {
+      "state": "request"
+    },
+    "termination_notice": {
+      "state": "request"
+    }
+  }
+}
