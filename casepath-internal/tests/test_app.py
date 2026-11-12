@@ -479,6 +479,21 @@ class AppTests(unittest.TestCase):
         self.assertLess(decided, first_reading)
         self.assertEqual(run["events"][decided]["workflow"], "example-defect")
 
+    def test_speed_trials_are_named_with_every_run_in_the_manifest_the_profile_and_the_study_check(self):
+        trial = self.client(CASEPATH_SPEED_TRIALS="result_without_files")
+        case, file = self.new_case(trial, "Versuch")
+        run = self.run_with(trial, case["id"], ScriptedModel(team_script(file["id"])))
+        self.assertEqual(run["result"]["speed_trials"], ["result_without_files"])
+        self.assertEqual(trial.get("/api/manifest").json()["speed_trials"], ["result_without_files"])
+        self.assertEqual(trial.get("/api/run-profile").json()["runs"], 1)
+        plain = self.client()  # the same store, no trial: the trial's run is not mixed into its timing
+        self.assertEqual(plain.get("/api/run-profile").json()["runs"], 0)
+        self.assertEqual(plain.get("/api/manifest").json()["speed_trials"], [])
+        plain.post(f"/api/cases/{case['id']}/freeze")  # frozen without trials
+        copy = plain.post(f"/api/cases/{case['id']}/study-copy", json={"expert": "E1"}).json()
+        self.assertTrue(plain.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])
+        self.assertFalse(trial.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])  # a deployment with a trial the freeze did not name
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

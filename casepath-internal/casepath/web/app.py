@@ -433,6 +433,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             return "Die Prozessversion weicht vom eingefrorenen Lauf ab."
         if items_sha256(build_items(current, current["run"].get("result"), store.list_files(case_id))) != expected["items_sha256"]:
             return "Die Punkteliste weicht vom eingefrorenen Lauf ab."
+        if sorted(settings.speed_trials) != sorted(expected.get("speed_trials") or []):
+            return "Die Geschwindigkeitsversuche dieser Bereitstellung weichen vom eingefrorenen Stand ab."
         return None
 
     @app.post("/api/cases/{case_id}/freeze", status_code=201)
@@ -443,7 +445,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(409, "Nur ein vorbereiteter Fall (keine Studienkopie) kann eingefroren werden.")
         listed = build_items(current, current["run"].get("result"), store.list_files(case_id))
         return record(case_id, who, "study.frozen", frozen_run_id=current["run"]["id"], items_sha256=items_sha256(listed),
-                      workflow_version=(current.get("workflow") or {}).get("version"))
+                      workflow_version=(current.get("workflow") or {}).get("version"), speed_trials=sorted(settings.speed_trials))
 
     @app.post("/api/cases/{case_id}/study-copy", status_code=201)
     def study_copy(case_id: str, body: StudyCopyRequest, who=Depends(user)):
@@ -451,7 +453,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         frozen = frozen_of(case_id)
         if frozen is None:
             raise HTTPException(409, "Der Fall ist nicht eingefroren.")
-        expected = {k: frozen[k] for k in ("frozen_run_id", "items_sha256", "workflow_version")}
+        expected = {k: frozen.get(k) for k in ("frozen_run_id", "items_sha256", "workflow_version", "speed_trials")}
         if reason := study_mismatch(case_id, expected):
             raise HTTPException(409, reason)
         source = state(case_id)["case"]
@@ -805,7 +807,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def run_profile(pages: int | None = Query(None, ge=0, le=5000), who=Depends(user)):
         """Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);
         all recent runs when there are fewer than three of that size."""
-        runs = [r for r in store.recent_runs(60) if not (r.get("result") or {}).get("resumed_from")]  # a continued run times only its rest
+        trials = sorted(settings.speed_trials)  # a band never mixes runs made with different speed trials
+        runs = [r for r in store.recent_runs(60) if not (r.get("result") or {}).get("resumed_from")  # a continued run times only its rest
+                and sorted((r.get("result") or {}).get("speed_trials") or []) == trials]
         same = [r for r in runs if pages is not None and band(case_pages(r["case_id"])) == band(pages)]
         chosen = same if len(same) >= 3 else runs[:30]
         spans = {stage: [] for stage in STAGES}

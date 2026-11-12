@@ -1,5 +1,7 @@
 # The first look: the process owner handles one case
 
+**Before any study session:** set `CASEPATH_SCORECARD_SALT` (a fixed secret that keeps the pseudonyms stable) by filling `SALT` in the deploy notebook's cell before the deploy (the cell writes it into the app's environment; it is never in Git); without it a session refuses to start. Also deploy with no speed trial unless the frozen run names it.
+
 **Purpose.** Before five experts see CasePath, the person who drew Protekta's mould process handles one case in it, exactly as an expert will. What is alien to how Protekta works shows up as his changes and notes, and is put right before the freeze.
 
 **When and what.** Day 7, about forty minutes. One development dossier (D8) as it stood before Protekta's first request, after five minutes on the synthetic practice case. Never a study case (D2, D4, D7) or the reserve (D5).

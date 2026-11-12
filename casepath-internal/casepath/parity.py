@@ -81,6 +81,7 @@ def manifest(settings=None, catalogue_dir=None, knowledge=None, extra=None):
                                              "reading": model.reading_deployment, "endpoint_host": model.endpoint.split("/")[2]},
         "interface_language_default": "de",
         "settings_not_default": non_default_settings(settings),
+        "speed_trials": sorted(getattr(settings, "speed_trials", ()) or ()),  # what a model is asked differs with each trial
         **(extra or {}),
     }
 

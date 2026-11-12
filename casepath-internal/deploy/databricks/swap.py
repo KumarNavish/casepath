@@ -11,6 +11,7 @@ import shutil
 # The three deployment values are filled in here in the notebook only, never in Git (as in app.yaml).
 USERS, MODEL, VOLUME = "FILL-IN: pilot e-mail addresses", "FILL-IN: the gateway model's exact name", "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
 assert not any(v.startswith("FILL-IN") for v in (USERS, MODEL, VOLUME)), "fill in USERS, MODEL and VOLUME in this cell first"
+SALT = ""  # for a study only: a fixed secret typed here (never in Git); it keeps the pseudonyms stable across restarts
 confirm = dbutils.widgets.get("confirm").strip()  # noqa: F821  (Databricks provides dbutils)
 # An optional " agents=<agent>=<model>,…" sets CASEPATH_AGENT_MODELS for an experiment; without it every agent uses MODEL.
 match = re.fullmatch(r"deploy ([0-9a-f]{7,40}) (\d+) ([0-9a-f]{12})(?: agents=([a-z_]+=[A-Za-z0-9_.-]+(?:,[a-z_]+=[A-Za-z0-9_.-]+)*))?"
@@ -45,6 +46,7 @@ else:
     agents = match.group(4) or ""
     text = re.sub(r'(- name: CASEPATH_AGENT_MODELS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + agents + '"', text)
     text = re.sub(r'(- name: CASEPATH_SPEED_TRIALS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + (match.group(5) or "") + '"', text)
+    text = re.sub(r'(- name: CASEPATH_SCORECARD_SALT\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + SALT + '"', text)
     open(N + "/app.yaml", "w").write(text)
     shutil.rmtree(O, ignore_errors=True)
     shutil.copytree(D, O)

@@ -336,6 +336,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [], resume=(resume or {}).get("result"))
         result["usage"] = usage + result["usage"]
+        if options.get("speed_trials"):  # a run says which speed trials shaped it, so runs stay comparable
+            result["speed_trials"] = sorted(options["speed_trials"])
         if resume:  # the paused run's usage is carried in this one; sums count this run, never the paused one too
             result["resumed_from"] = resume["run"]
         if result.get("paused"):
