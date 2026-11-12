@@ -1,0 +1,391 @@
+{
+ "applies_when": {
+  "fact": "dispute_family",
+  "is": "defect_mold_heating"
+ },
+ "documents": [
+  {
+   "id": "lease_contract",
+   "legal_basis": "SR 220 Art. 256 para. 1",
+   "must_show": [
+    "parties",
+    "rented dwelling",
+    "agreed use of the dwelling"
+   ],
+   "source_refs": [
+    "sr220-en#art-256-p1"
+   ],
+   "title": "Lease contract",
+   "why": "The landlord's duty is measured by the designated use; the lease records the rented dwelling and its agreed use."
+  },
+  {
+   "id": "defect_record",
+   "legal_basis": "SR 220 Art. 259a para. 1",
+   "must_show": [
+    "the defect and where it is",
+    "date observed",
+    "how the use of the dwelling is affected"
+   ],
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Record of the defect (dated photographs, inspection or expert report)",
+   "why": "The tenant's rights arise where a defect arises or the agreed use is disturbed; dated photographs or an inspection report ordinarily prove that the defect exists, where it is and since when."
+  },
+  {
+   "id": "defect_notification",
+   "legal_basis": "SR 220 Art. 259d",
+   "must_show": [
+    "defect reported",
+    "addressee",
+    "date sent or received"
+   ],
+   "source_refs": [
+    "sr220-en#art-259d"
+   ],
+   "title": "Tenant's notice of the defect to the landlord",
+   "why": "A reduction runs from the time the landlord became aware of the defect; the tenant's dated notice to the landlord ordinarily proves when that was."
+  },
+  {
+   "id": "damage_evidence",
+   "legal_basis": "SR 220 Art. 259e",
+   "must_show": [
+    "damaged items or costs",
+    "amount",
+    "connection to the defect"
+   ],
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Proof of the damage (invoices, receipts, photographs of damaged items)",
+   "why": "Liability covers damage the defect caused; invoices, receipts and photographs of damaged items ordinarily prove the damage and its amount."
+  },
+  {
+   "id": "deposit_deadline_notice",
+   "legal_basis": "SR 220 Art. 259g para. 1",
+   "must_show": [
+    "repair requested",
+    "time limit set",
+    "announcement that rent will be deposited",
+    "date and addressee"
+   ],
+   "source_refs": [
+    "sr220-en#art-259g-p1"
+   ],
+   "title": "Tenant's written time limit to the landlord and written announcement of the deposit",
+   "why": "The time limit (and the announcement of the deposit) must be in writing, so the tenant's letter itself is the proof that they were given and when."
+  },
+  {
+   "id": "deposit_receipt",
+   "legal_basis": "SR 220 Art. 259h para. 1",
+   "must_show": [
+    "amount deposited",
+    "date of the first deposit",
+    "rent period it covers"
+   ],
+   "required_when": {
+    "fact": "rent_deposited",
+    "is": true
+   },
+   "source_refs": [
+    "sr220-en#art-259h-p1"
+   ],
+   "title": "Receipt of the deposit office for the deposited rent",
+   "why": "The 30-day period runs from the due date of the first deposited rent; the deposit office's receipt ordinarily shows which rent was first deposited and when."
+  }
+ ],
+ "example": false,
+ "facts": [
+  {
+   "id": "dispute_family",
+   "question": "Which tenancy dispute does the claim concern: a defect of the dwelling (mould, damp, heating), a termination of the lease by the landlord, or a rent increase?",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "type": "enum",
+   "values": [
+    "defect_mold_heating",
+    "lease_termination_dispute",
+    "rent_increase_dispute"
+   ]
+  },
+  {
+   "id": "defect_present",
+   "question": "Does the claim state that the rented dwelling has a defect (for example mould, damp, or heating that fails) or that the tenant is disturbed in using the dwelling as agreed, without the claim itself saying that the tenant caused the defect or must remedy it as minor cleaning or repairs?",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "landlord_informed",
+   "question": "Does the claim state that the tenant has already informed the landlord of the defect?",
+   "source_refs": [
+    "sr220-en#art-257g-p1"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "damages_claimed",
+   "question": "Does the tenant claim compensation from the landlord for damage the defect caused to the tenant (for example damaged furniture or clothing, or extra costs)?",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "deposit_intended",
+   "question": "Does the claim state that the tenant intends to pay the rent on deposit with the office designated by the canton instead of to the landlord, or has begun to do so?",
+   "source_refs": [
+    "sr220-en#art-259a-p2"
+   ],
+   "type": "boolean"
+  },
+  {
+   "id": "rent_deposited",
+   "question": "Does the claim state that at least one rent payment has already been paid into deposit with the office designated by the canton?",
+   "source_refs": [
+    "sr220-en#art-259h-p1"
+   ],
+   "type": "boolean"
+  }
+ ],
+ "format": "casepath.workflow/1",
+ "id": "defect_mold_heating",
+ "notes": [
+  {
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "text": "No presumption: a fact the claim does not state stays unresolved. No public text cited in this rule set supports presuming an unstated fact absent or a defining event present."
+  }
+ ],
+ "open_questions": [],
+ "outcomes": [
+  {
+   "id": "closed",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Document requests complete"
+  },
+  {
+   "id": "stopped",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Process ended: the defining event is denied"
+  }
+ ],
+ "presumptions": [],
+ "sources": [
+  {
+   "id": "sr220-en",
+   "kind": "knowledge",
+   "title": "Swiss Code of Obligations (SR 220), Title Eight: Leases, official English translation, consolidated version of 1 October 2026 (Fedlex); not authoritative"
+  },
+  {
+   "id": "sr220-de",
+   "kind": "knowledge",
+   "title": "Obligationenrecht (SR 220), Achter Titel: Die Miete, authoritative German text, consolidated version of 1 October 2026 (Fedlex)"
+  }
+ ],
+ "start": "dh_intake",
+ "status": "draft",
+ "steps": [
+  {
+   "id": "dh_intake",
+   "next": [
+    {
+     "label": "defect stated",
+     "to": "dh_scope",
+     "when": {
+      "fact": "defect_present",
+      "is": true
+     }
+    },
+    {
+     "label": "no defect stated",
+     "to": "dh_stop",
+     "when": {
+      "fact": "defect_present",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Is a defect stated?"
+  },
+  {
+   "id": "dh_stop",
+   "outcome": "stopped",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Stop: the defining event is denied"
+  },
+  {
+   "documents": [
+    "lease_contract",
+    "defect_record"
+   ],
+   "id": "dh_scope",
+   "next": [
+    {
+     "to": "dh_notice_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-256-p1"
+   ],
+   "title": "Establish the defect and the agreed use of the dwelling"
+  },
+  {
+   "id": "dh_notice_gate",
+   "next": [
+    {
+     "label": "landlord informed",
+     "to": "dh_notice",
+     "when": {
+      "fact": "landlord_informed",
+      "is": true
+     }
+    },
+    {
+     "label": "landlord not yet informed",
+     "to": "dh_damage_gate",
+     "when": {
+      "fact": "landlord_informed",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-257g-p1"
+   ],
+   "title": "Has the landlord been informed?"
+  },
+  {
+   "documents": [
+    "defect_notification"
+   ],
+   "id": "dh_notice",
+   "next": [
+    {
+     "to": "dh_damage_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259b"
+   ],
+   "title": "Establish when the landlord learned of the defect"
+  },
+  {
+   "id": "dh_damage_gate",
+   "next": [
+    {
+     "label": "damages claimed",
+     "to": "dh_damage",
+     "when": {
+      "fact": "damages_claimed",
+      "is": true
+     }
+    },
+    {
+     "label": "no damages claimed",
+     "to": "dh_deposit_gate",
+     "when": {
+      "fact": "damages_claimed",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Are damages claimed?"
+  },
+  {
+   "documents": [
+    "damage_evidence"
+   ],
+   "id": "dh_damage",
+   "next": [
+    {
+     "to": "dh_deposit_gate",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259e"
+   ],
+   "title": "Establish the damage claimed"
+  },
+  {
+   "id": "dh_deposit_gate",
+   "next": [
+    {
+     "label": "deposit intended or made",
+     "to": "dh_deposit",
+     "when": {
+      "fact": "deposit_intended",
+      "is": true
+     }
+    },
+    {
+     "label": "no deposit",
+     "to": "dh_end",
+     "when": {
+      "fact": "deposit_intended",
+      "is": false
+     }
+    }
+   ],
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p2"
+   ],
+   "title": "Is a rent deposit intended or made?"
+  },
+  {
+   "documents": [
+    "deposit_deadline_notice",
+    "deposit_receipt"
+   ],
+   "id": "dh_deposit",
+   "next": [
+    {
+     "to": "dh_end",
+     "when": true
+    }
+   ],
+   "role": "claim_handler",
+   "source_refs": [
+    "sr220-en#art-259g-p1"
+   ],
+   "title": "Check the preconditions for paying rent on deposit"
+  },
+  {
+   "id": "dh_end",
+   "outcome": "closed",
+   "role": "system",
+   "source_refs": [
+    "sr220-en#art-259a-p1"
+   ],
+   "title": "Document requests complete"
+  }
+ ],
+ "title": "Defect of the rented dwelling (mould, damp, heating) (rules from SR 220)",
+ "version": "2026-11-12"
+}

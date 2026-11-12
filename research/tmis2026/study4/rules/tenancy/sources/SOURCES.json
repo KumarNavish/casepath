@@ -1,0 +1,62 @@
+{
+ "regime": "tenancy",
+ "note": "Development material for Study 4 (step 2a). Public sources only. The German text of SR 220 is authoritative; the English translation published on Fedlex has no legal force (English is not an official language of the Confederation). Where a rule relies on an exact term or the English is ambiguous, the German passage is quoted beside it in rules.json.",
+ "retrieval": "curl with a generic browser User-Agent; the Fedlex page (https://www.fedlex.admin.ch/eli/cc/27/317_321_377/en) is a script-rendered shell, so the filestore URLs of the consolidated manifestations were found through the public SPARQL endpoint https://fedlex.data.admin.ch/sparqlendpoint (jolux:isMemberOf / dateApplicability / isRealizedBy / isEmbodiedBy / isExemplifiedBy); raw responses are kept in sources/raw/. Parsing: tools/extract.py run with python3 -I.",
+ "sources": [
+  {
+   "id": "sr220-en",
+   "title": "Federal Act of 30 March 1911 on the Amendment of the Swiss Civil Code (Part Five: The Code of Obligations), SR 220, Title Eight (Leases), official English translation",
+   "publisher": "Swiss Federal Chancellery (Fedlex)",
+   "consolidated_version": "2026-10-01",
+   "eli": "https://fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/en",
+   "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/en/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-en-xml.xml",
+   "retrieved": "2026-11-12T11:40Z",
+   "raw_file": "sources/raw/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-en-xml.xml",
+   "raw_sha256": "ea7035d1c8eb49c4842ba1a6606f2329c68a4be793d1b56b32b6c524b98decc2",
+   "cross_check": {
+    "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/en/html/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-en-html.html",
+    "sha256": "3634630e9fc719ce6a2d8b5e08273099d89da6ae585a09a41b0b566bce8a2333"
+   },
+   "snapshot": "sources/sr220-en.txt",
+   "sha256": "c87dea54e9719f273fab2d71c8f4c071eca188984f587acea863b2e43260e3b2",
+   "authoritative": false,
+   "licence": "Official federal enactments are not protected by copyright (Swiss Copyright Act, art. 5 para. 1 let. a); translations published by the Federal Chancellery are for information only and have no legal force."
+  },
+  {
+   "id": "sr220-de",
+   "title": "Bundesgesetz vom 30. März 1911 betreffend die Ergänzung des Schweizerischen Zivilgesetzbuches (Fünfter Teil: Obligationenrecht), SR 220, Achter Titel (Die Miete)",
+   "publisher": "Schweizerische Bundeskanzlei (Fedlex)",
+   "consolidated_version": "2026-10-01",
+   "eli": "https://fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/de",
+   "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-de-xml-4.xml",
+   "retrieved": "2026-11-12T11:40Z",
+   "raw_file": "sources/raw/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-de-xml-4.xml",
+   "raw_sha256": "b5aab27bc6d2e5a569e84b23b5396d3507ce6dc665270f1c48ffb86d1ec12d94",
+   "cross_check": {
+    "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/de/html/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-de-html-4.html",
+    "sha256": "9d1245fd6dd3d9db05b6a847f403070da150f4e6c7ba139762c8a8547a7623bf"
+   },
+   "snapshot": "sources/sr220-de.txt",
+   "sha256": "fbf9a8794d9259c4294257688187f3dda08ebad2a359b9664ba0864c780bcbf0",
+   "authoritative": true,
+   "licence": "Official federal enactments are not protected by copyright (Swiss Copyright Act, art. 5 para. 1 let. a)."
+  }
+ ],
+ "considered_not_cited": [
+  {
+   "id": "sr210-art8",
+   "title": "Swiss Civil Code (SR 210), art. 8 (burden of proof), consolidated version 2026-07-01",
+   "urls": [
+    "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/233_245_233/20260701/en/xml/fedlex-data-admin-ch-eli-cc-24-233_245_233-20260701-en-xml.xml",
+    "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/233_245_233/20260701/de/xml/fedlex-data-admin-ch-eli-cc-24-233_245_233-20260701-de-xml-2.xml"
+   ],
+   "raw_sha256": {
+    "en": "fde4a640fa5bbb324eade027b0ee7a016d9b700829353a024f7b11483154aede",
+    "de": "d0fe55605574de9403685c13836afb0db4212a4b88deb458cf2fe798c45bb694"
+   },
+   "retrieved": "2026-11-12T11:40Z",
+   "reason": "Fetched to test whether it grounds a presumption. Its text ('Unless the law provides otherwise, the burden of proving the existence of an alleged fact shall rest on the person who derives rights from that fact.') allocates proof of alleged facts; it says nothing about the value of a fact no one alleges, so it supports neither presuming an unmentioned fact absent nor presuming a defining event present. Not cited; no snapshot stored."
+  }
+ ],
+ "consolidated_version_note": "A later consolidated version of SR 220 dated 2027-07-01 exists on Fedlex (German, French, Italian only); it is not yet applicable on 2026-11-12 and was not used."
+}

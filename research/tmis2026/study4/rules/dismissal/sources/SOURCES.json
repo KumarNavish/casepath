@@ -1,0 +1,56 @@
+{
+ "regime": "dismissal",
+ "note": "Public sources only. The German text of Swiss federal law is authoritative (with French and Italian); the English text on Fedlex is an unofficial translation with no legal force. Where the two differ, the German passage decides; rules quote it beside the English in passage_de. Raw downloads are kept unmodified in raw/ and were parsed with python3 -I by tools/extract.py; snapshots hold only the cited articles, footnotes omitted.",
+ "sources": [
+  {
+   "id": "co-sr220-en",
+   "title": "Federal Act of 30 March 1911 on the Amendment of the Swiss Civil Code (Part Five: The Code of Obligations), SR 220; Title Ten, cited articles 335, 335b, 335c, 336, 336a, 336b, 336c, 337, 337c",
+   "publisher": "Swiss Federal Chancellery (Fedlex)",
+   "language": "en",
+   "authoritative": false,
+   "consolidated_version": "2026-10-01",
+   "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/en/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-en-xml.xml",
+   "landing_page": "https://www.fedlex.admin.ch/eli/cc/27/317_321_377/en",
+   "located_via": "SPARQL query to https://fedlex.data.admin.ch/sparqlendpoint for the manifestations of the consolidations of https://fedlex.data.admin.ch/eli/cc/27/317_321_377 (latest jolux:dateApplicability 2026-10-01)",
+   "retrieved": "2026-11-12T11:40:14Z",
+   "raw_file": "co_20261001_en.xml",
+   "raw_sha256": "ea7035d1c8eb49c4842ba1a6606f2329c68a4be793d1b56b32b6c524b98decc2",
+   "snapshot": "co-sr220-en.txt",
+   "sha256": "5d9fb3904ff7892b8efece6819822dbe536729457188279e78ddb8b2eca51c0c",
+   "licence": "Official federal legislation; not protected by copyright (Swiss Copyright Act art. 5 para. 1 let. a). The English translation is provided for information and has no legal force."
+  },
+  {
+   "id": "co-sr220-de",
+   "title": "Bundesgesetz vom 30. März 1911 betreffend die Ergänzung des Schweizerischen Zivilgesetzbuches (Fünfter Teil: Obligationenrecht), SR 220; Zehnter Titel, zitierte Artikel 335, 335b, 335c, 336, 336a, 336b, 336c, 337, 337c",
+   "publisher": "Swiss Federal Chancellery (Fedlex)",
+   "language": "de",
+   "authoritative": true,
+   "consolidated_version": "2026-10-01",
+   "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-de-xml.xml",
+   "landing_page": "https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de",
+   "located_via": "same SPARQL query as co-sr220-en",
+   "retrieved": "2026-11-12T11:40:14Z",
+   "raw_file": "co_20261001_de.xml",
+   "raw_sha256": "8804b5c82fc036d014f441a917b5f0433573970029b69ca9c09c8a9c46bd5d1b",
+   "snapshot": "co-sr220-de.txt",
+   "sha256": "11c98202ae70e515a3d0ee7266447f7e26ab5a76170bf2e405df1900e9140f92",
+   "licence": "Official federal legislation; not protected by copyright (Swiss Copyright Act art. 5 para. 1 let. a). Authoritative language version."
+  }
+ ],
+ "consulted_not_cited": [
+  {
+   "id": "cc-sr210",
+   "title": "Swiss Civil Code (SR 210), consolidated version applicable from 2026-07-01, English and German, consulted for art. 8 (burden of proof)",
+   "urls": [
+    "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/233_245_233/20260701/en/xml/fedlex-data-admin-ch-eli-cc-24-233_245_233-20260701-en-xml.xml",
+    "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/233_245_233/20260701/de/xml/fedlex-data-admin-ch-eli-cc-24-233_245_233-20260701-de-xml-2.xml"
+   ],
+   "retrieved": "2026-11-12T11:40Z",
+   "raw_files": {
+    "cc_20260701_en.xml": "fde4a640fa5bbb324eade027b0ee7a016d9b700829353a024f7b11483154aede",
+    "cc_20260701_de.xml": "d0fe55605574de9403685c13836afb0db4212a4b88deb458cf2fe798c45bb694"
+   },
+   "why_not_cited": "Art. 8 allocates the burden of proving an alleged fact (\"einer behaupteten Tatsache\"). It says nothing about a fact the file does not mention, so it does not support presuming an unmentioned fact absent or present. No rule uses it, and no snapshot is stored. (A 2027-01-01 consolidation exists but is not yet applicable.)"
+  }
+ ]
+}
