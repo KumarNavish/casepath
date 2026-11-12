@@ -1,0 +1,30 @@
+\section{Protocol of the deployment study}
+\label{app:protocol}
+
+This protocol is version 1.0-rc, to be frozen on 20 November 2026 as version 1.0. No part of the study has run, and this article reports no result of it. The full text, with every record field, is \texttt{research/\allowbreak{}tmis2026/\allowbreak{}expert\_study/\allowbreak{}PREREGISTRATION\_\allowbreak{}DRAFT.md} in the repository \cite{casepath2026repo}; the compact version written before the change of 12 November 2026 is in the Supplement, Section~\ref{S-app:protocol-compact}.
+%% AUTHORS: ethics statement for the deployment study (approving body, reference, consent procedure), as the venue requires.
+
+\paragraph{Questions}
+The primary endpoint (Q1) asks how far \casepath agrees with what the insurer did next, at every decision point of four sealed files, compared with a single prompt; it needs no expert time. Secondary endpoints ask what five of the insurer's claims experts do with the same items (Q2), what work with \casepath looks like (Q3), whether \casepath improves from corrections on a case whose corrections it has not seen (Q4), and why experts change things (Q5).
+
+\paragraph{Cases and decision points}
+Eleven closed tenancy-defect (mould) files of the insurer: four sealed (D2, D4, D5, D7) and seven for development. The handler workflow was written by the product's builders from the seven development files and the law. A \emph{decision point} is the state of a file immediately before a recorded outgoing action of the insurer, such as a letter or e-mail; every such action makes one. For each, a \emph{cut copy} holds only the documents that precede the action. All runs at a decision point use its cut copy, and nobody in a session sees anything dated after it.
+
+\paragraph{Where the reference comes from}
+There is no gold label. \emph{Practice} (P) is what the insurer did in the action: the documents it requested, the kind of action and the follow-up period. Two transcriptions map P to a frozen catalogue: T1 by the product builder's automated labeller, and T2 by a session that did not build the product and sees neither T1 nor any output. The study lead, an author and one of the product's builders, not a claims expert, settles their disagreements against the file before any run on a sealed cut copy. P is practice, not proof of correctness.
+
+\paragraph{Measures of the primary endpoint}
+Per decision point, for \casepath at the frozen commit and for a single-prompt comparator given the same handler workflow and catalogues: (a) routing to the handler workflow; (b) of the documents in P, the number \casepath requests now, its further requests not in P, and the share of its requests that are in P; (c) the same kind of next action as the insurer's; (d) the follow-up period against the insurer's; (e) descriptively, how many deciding facts were stated, open or not addressed, and how the system treated each. Counts carry exact binomial intervals, per file and pooled. No hypothesis test is run on this endpoint: with four files as clusters, no test has useful power.
+
+\paragraph{Prediction rule}
+At the freeze, the builders' counts on the seven development files are recorded. For measures (a) to (d), the exact two-sided 80\% interval of each development proportion is applied to the sealed denominator. A pooled sealed count below its lower bound is reported as ``below the development result'', one above its upper bound as ``above'', and the rest as ``consistent''. The protocol predicts lower agreement on the sealed files than in development, because the development counts are in sample and come mostly from the first request of each file.
+%% AUTHORS: the development counts behind the predictions come from the insurer's files; cite them only with the insurer's approval.
+
+\paragraph{Secondary endpoint}
+Each expert works through three sealed files in the product, cut before the insurer's first request for documents, and leaves, changes or annotates each item. The only pre-stated test is a one-sided sign test over the five experts, whose smallest attainable $p$ is $1/32$.
+
+\paragraph{Order after the freeze}
+(1) The product, the handler workflow and its catalogue are frozen and hashed. (2) The decision points are found, and the cut copies made and checked for leaks. (3) T1 and T2 transcribe P, each without the other's record or any output. (4) The study lead settles their disagreements; P is hashed. (5) The runs are made on the cut copies. (6) The archival results are computed and an archival hash is recorded. (7) No expert session starts before that hash exists. Nobody who can change the product reads a sealed file after its first decision point before the product's freeze hash exists.
+
+\paragraph{Stated limits}
+Four files of one insurer and one process family bound every inference. The sealed files were among the files the product was developed on. The handler workflow was written by the product's builders, not by the insurer's process owner, and may copy the habits of seven files. The product's seed Knowledge was built from the insurer's request letters on the development files, so agreement with practice is partly agreement with what the product learned from it. P rests on one automated labeller and one independent transcription, settled by an author. Decision points within a file are not independent, so pooled intervals are too narrow. The interface the experts use is a later version than the tested commit's. An expert may have handled a study file before. Only counts, statuses and relative times leave the insurer; files and texts stay with it.

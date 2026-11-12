@@ -1,0 +1,53 @@
+\section{Deviations and irregularities of Study 3}
+\label{app:deviations}
+
+
+Each item below is stated in one line; the Supplement, Section~\ref{S-app:dev-study3}, gives every item in full. The plan (\texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY3.md}) was committed before any design ran on \texttt{fresh2/}, and the analysis was run once on the stored outputs. Studies~1 and~2 are covered in the Supplement, Section~\ref{S-supp:deviations}.
+
+\paragraph{The run}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item The run needed \sthreeRunInvocations{} invocations of the driver; \sthreeRunNotComplete{} stopped early, each resumed from the response cache with product, model, data and analysis unchanged.
+\item The first was interrupted by the operator to add parallel workers; its log line (``interrupted during the checks'', with a wrong spend) is wrong and is corrected by a dated note.
+\item The second was killed by the session's time limit on background commands; the wrapper's interrupt had no effect.
+\item The third ended when the container was restarted; disk, cache and worktree were unchanged.
+\item The fourth was stopped, as planned, by the wrapper before the time limit; the fifth completed the run.
+\item Workers rose from \sthreeRunWorkersFirst{} to \sthreeRunWorkersLater{} after the first invocation, and the main spending cap was lowered at each resumption to what remained of USD~\sthreeRunCapOne; the plan says settings stay unchanged.
+\item The ledgers record USD~\sthreeSpendTotal{} for the run (\sthreeSpendLuna{} cost-efficient, \sthreeSpendTerra{} frontier model).
+\item \sthreeRunFailedOutputs{} comparator outputs failed and were scored as empty checklists, as planned: \sthreeRunFailedReact{} from ReAct, none from a product design; a post-hoc analysis leaves ReAct's failures out.
+\item No model snapshot, temperature or seed is recorded; the provider's defaults applied.
+\end{itemize}
+
+\paragraph{Before the run}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item The run started before the product's owners confirmed the merge of the tested commit; at the time of writing they have not confirmed it.
+\item The test texts were written by an AI agent session with read access to the product's prompts and development results (Appendix~\ref{app:genai}).
+\item The probe claims were written knowing the test set's design but not its texts; the plan's ``writer that had not seen \texttt{fresh2/}'' holds for the texts only.
+\item The hypotheses were reordered 38 minutes before the freeze, on development evidence (Section~\ref{sec:test-hypotheses}).
+\item The open rule overruled a criterion on wrong holds that the directing author had set earlier.
+\item Two comparator texts changed during Study~2's development; Model executes rules and ReAct were written during the product's development and run on development data before the freeze.
+\end{itemize}
+
+\paragraph{Departures from the plan's text}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item Calls per case differ from the plan's design table (\casepath \sthreePlanCallsCasePath{} planned, \sthreeCasePathTenCalls{} and \sthreeCasePathThCalls{} measured).
+\item Self-consistency costs less than \casepath, checklist only, on theft, so no design is matched in cost as the plan assumed.
+\item The full product and checklist only share cached responses, so their contrast is not between independent runs.
+\item The Core's runs share readings and are not independent.
+\item Cost per case joins each call to the ledger by its cache key; some agent costs could not be attributed.
+\item The subsets were selected from the reference; their counts equal the plan's.
+\item Subset rows beside H2 and H3 are family-mean contrasts, marked descriptive.
+\item \sthreeSecondaryVsCasePath{} secondary contrasts are not listed in the plan.
+\item H5's non-inferiority $p$ is reported outside the procedure.
+\item The plan fixes the number of resamples; the specification fixes the seed.
+\item Two-valued with unresolved taken as false equals \casepath on theft, because theft scores requests only.
+\end{itemize}
+
+\paragraph{After the results}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item Thirteen analyses were added after a first referee report and claims audit, and further checks after an outside review; none is registered or changes a status (Supplement, Sections~\ref{S-sec:test-review} and~\ref{S-supp:checks}).
+\item From the end of the test, the theft stories of \texttt{fresh2/} are development data; the diagnosis and the lint used them.
+\item The lint's mutation test made the only new model calls (USD~\spostMutSpendUSD).
+\item One clean-room evaluator listed a scratch directory after delivering its hashed reference and saw other file names; by its report it opened none.
+\item Changes for speed live on a separate branch, not the tested commit.
+\end{itemize}
+%% AUTHORS: update the state of the product (merge of 6a72159c, the offered branch and the owners' check) here and in Section 6.1 before submission.

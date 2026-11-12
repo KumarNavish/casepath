@@ -28,6 +28,8 @@
 \input{results/numbers_study3}
 \input{results/numbers_study3_review}
 \input{results/numbers_followup}
+\input{results/numbers_study3_feedback}
+\input{results/numbers_posthoc}
 
 %% \pendingref{text}: a work discussed in the text whose bibliography entry is not yet verified.
 \newcommand{\pendingref}[1]{[#1; reference pending]}
@@ -77,7 +79,7 @@
 \input{sections/s4_casepath}
 \input{sections/s5_history}
 \input{sections/s6_test}
-%% Section 7 (sections/s7_experts.tex, the expert study) is no longer input: brief D3. It returns with results.
+%% Section 7 (sections/s7_experts.tex) is not input: the deployment study has no result yet (Appendix B).
 \input{sections/s8_discussion}
 \input{sections/s9_conclusion}
 
@@ -94,12 +96,10 @@
 
 \appendix
 \input{sections/app_a_proofs}
-%% Appendices B and C (Studies 1 and 2 in full) moved to the supplement (supplement.tex): brief D4.
-\input{sections/app_d_deviations}
-\input{sections/app_e_data}
-\input{sections/app_f_robustness}
-\input{sections/app_g_repro}
-\input{sections/app_h_prompts}
-\input{sections/app_i_protocol}
+\input{sections/app_b_protocol}
+\input{sections/app_c_deviations}
+\input{sections/app_d_repro}
+%% Studies 1 and 2, the data, robustness tables, prompts, the full deviations and release text, and the full tables of the
+%% checks added after review are in the supplement (supplement.tex).
 
 \end{document}

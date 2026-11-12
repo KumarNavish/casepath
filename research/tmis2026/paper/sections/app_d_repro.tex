@@ -1,0 +1,18 @@
+\section{Reproducibility and use of generative AI}
+\label{app:repro}
+\label{app:release}
+\label{app:genai}
+
+\paragraph{Release}
+The repository \cite{casepath2026repo} holds the tested product at commit 6a72159c, whose parity command prints the source-tree hash \texttt{03048020\ldots}; the research workflows; the synthetic data of all three studies; the harness, the analysis scripts and every stored checklist, ledger and run log; and the frozen plans. The Study~3 response cache (about 23,000 files) is offered as a separate archive. At the tested commit the source names the insurer's subsidiary as the default organisation, so the public release is either a scrubbed commit with its own parity hash or the tested commit with the insurer's approval. The insurer's workflows, Knowledge and files are not released. Supplement, Section~\ref{S-app:release} gives the details and the licences.
+%% AUTHORS: location (DOI or URL) of the response-cache archive.
+%% AUTHORS: which release it is (scrubbed commit with its parity hash, or the tested commit with the insurer's approval).
+%% AUTHORS: licences of fresh/, dev_probe/, fresh2/, rule_review/ and runs/.
+
+\paragraph{Reproducing without model calls}
+One command, \texttt{reproduce.sh}, re-checks the stored results from a clone: data manifests, the parity hash, the claims of Appendix~\ref{app:proofs}, Study~3's registered analysis and the analyses added after the first review, with their number macros, byte for byte. The checks added after the outside review (Sections~\ref{sec:test-cells} to~\ref{sec:test-lint}) are not yet a step of that command; \texttt{analysis/\allowbreak{}verify\_paper.py} regenerates their macros from the stored result files. Neither re-checks the model runs, whose stored outputs are their inputs. A re-run with model calls needs the reader's own model endpoint, and its answers may differ.
+
+\paragraph{Generative AI}
+The two evaluated models are the objects of study. An AI agent session wrote the test texts, and sessions of another model of the same family checked them blind. AI editor sessions reviewed the theft rules and the lint's flags; AI sessions wrote the clean-room references. No jurist and no person checked these sessions' work. AI coding and writing assistants helped implement the harness and the product changes, run the analyses and draft the text, under the authors' direction; the authors are responsible for all of it.
+%% AUTHORS: record the rule editors' model and sessions in rule_review/ (no record there says they were AI sessions; the statement rests on the authors' record).
+%% AUTHORS: name the AI coding and writing assistant(s) and version(s), as the venue requires.

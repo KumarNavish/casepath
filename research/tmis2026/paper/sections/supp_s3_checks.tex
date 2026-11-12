@@ -1,0 +1,266 @@
+\section{Checks added after the outside review}
+\label{supp:checks}
+
+The analyses below were made after an outside review of the results (scripts \texttt{study3\_\allowbreak{}feedback.py}, \texttt{decomposition.py} and \texttt{lint\_\allowbreak{}followup.py} in \texttt{analysis/}). None is registered, all were decided after the results were known, and none changes a hypothesis's status. The article's Sections~\ref{M-sec:test-cells} to~\ref{M-sec:test-lint} report their findings; this section gives the full tables. No model call was made except the lint's mutation test.
+
+\subsection{Error decomposition by subset}
+\label{supp:decomposition}
+
+Table~\ref{tab:supp-decomp} splits \casepath's tenancy errors by stage and subset, as in Table~\ref{M-tab:cells} of the article; Table~\ref{tab:supp-kinds} gives the single prompts' errors by kind, since they have no observable stage. Per claim-run, over all claim-runs of the subset.
+
+\begin{table}[h]
+\caption{\casepath's tenancy errors per claim-run by stage and subset (added after review). Cost-efficient: the full product, three runs; frontier: checklist only, one run. Rule error is zero by construction on tenancy.}
+\label{tab:supp-decomp}
+\footnotesize
+\begin{tabular}{@{}l l l rrrrr r@{}}
+\toprule
+Model & Measure & Subset & Routing & Document & Reading & Hold & Other & Measured \\
+\midrule
+Cost-efficient & strict unsafe & all & \spostDecTenLunaStrictAllRouting & \spostDecTenLunaStrictAllDoc & \spostDecTenLunaStrictAllReading & \spostDecTenLunaStrictAllHold & \spostDecTenLunaStrictAllProductSteps & \spostDecTenLunaStrictAllMeasured \\
+ &  & ordinary & \spostDecTenLunaStrictOrdinaryRouting & \spostDecTenLunaStrictOrdinaryDoc & \spostDecTenLunaStrictOrdinaryReading & \spostDecTenLunaStrictOrdinaryHold & \spostDecTenLunaStrictOrdinaryProductSteps & \spostDecTenLunaStrictOrdinaryMeasured \\
+ &  & denied event & \spostDecTenLunaStrictDeniedRouting & \spostDecTenLunaStrictDeniedDoc & \spostDecTenLunaStrictDeniedReading & \spostDecTenLunaStrictDeniedHold & \spostDecTenLunaStrictDeniedProductSteps & \spostDecTenLunaStrictDeniedMeasured \\
+ &  & open event & \spostDecTenLunaStrictOpenEventRouting & \spostDecTenLunaStrictOpenEventDoc & \spostDecTenLunaStrictOpenEventReading & \spostDecTenLunaStrictOpenEventHold & \spostDecTenLunaStrictOpenEventProductSteps & \spostDecTenLunaStrictOpenEventMeasured \\
+ & all deviations & all & \spostDecTenLunaAllDevAllRouting & \spostDecTenLunaAllDevAllDoc & \spostDecTenLunaAllDevAllReading & \spostDecTenLunaAllDevAllHold & \spostDecTenLunaAllDevAllProductSteps & \spostDecTenLunaAllDevAllMeasured \\
+ &  & ordinary & \spostDecTenLunaAllDevOrdinaryRouting & \spostDecTenLunaAllDevOrdinaryDoc & \spostDecTenLunaAllDevOrdinaryReading & \spostDecTenLunaAllDevOrdinaryHold & \spostDecTenLunaAllDevOrdinaryProductSteps & \spostDecTenLunaAllDevOrdinaryMeasured \\
+ &  & denied event & \spostDecTenLunaAllDevDeniedRouting & \spostDecTenLunaAllDevDeniedDoc & \spostDecTenLunaAllDevDeniedReading & \spostDecTenLunaAllDevDeniedHold & \spostDecTenLunaAllDevDeniedProductSteps & \spostDecTenLunaAllDevDeniedMeasured \\
+ &  & open event & \spostDecTenLunaAllDevOpenEventRouting & \spostDecTenLunaAllDevOpenEventDoc & \spostDecTenLunaAllDevOpenEventReading & \spostDecTenLunaAllDevOpenEventHold & \spostDecTenLunaAllDevOpenEventProductSteps & \spostDecTenLunaAllDevOpenEventMeasured \\
+Frontier & strict unsafe & all & \spostDecTenTerraStrictAllRouting & \spostDecTenTerraStrictAllDoc & \spostDecTenTerraStrictAllReading & \spostDecTenTerraStrictAllHold & \spostDecTenTerraStrictAllProductSteps & \spostDecTenTerraStrictAllMeasured \\
+ &  & ordinary & \spostDecTenTerraStrictOrdinaryRouting & \spostDecTenTerraStrictOrdinaryDoc & \spostDecTenTerraStrictOrdinaryReading & \spostDecTenTerraStrictOrdinaryHold & \spostDecTenTerraStrictOrdinaryProductSteps & \spostDecTenTerraStrictOrdinaryMeasured \\
+ &  & denied event & \spostDecTenTerraStrictDeniedRouting & \spostDecTenTerraStrictDeniedDoc & \spostDecTenTerraStrictDeniedReading & \spostDecTenTerraStrictDeniedHold & \spostDecTenTerraStrictDeniedProductSteps & \spostDecTenTerraStrictDeniedMeasured \\
+ &  & open event & \spostDecTenTerraStrictOpenEventRouting & \spostDecTenTerraStrictOpenEventDoc & \spostDecTenTerraStrictOpenEventReading & \spostDecTenTerraStrictOpenEventHold & \spostDecTenTerraStrictOpenEventProductSteps & \spostDecTenTerraStrictOpenEventMeasured \\
+ & all deviations & all & \spostDecTenTerraAllDevAllRouting & \spostDecTenTerraAllDevAllDoc & \spostDecTenTerraAllDevAllReading & \spostDecTenTerraAllDevAllHold & \spostDecTenTerraAllDevAllProductSteps & \spostDecTenTerraAllDevAllMeasured \\
+ &  & ordinary & \spostDecTenTerraAllDevOrdinaryRouting & \spostDecTenTerraAllDevOrdinaryDoc & \spostDecTenTerraAllDevOrdinaryReading & \spostDecTenTerraAllDevOrdinaryHold & \spostDecTenTerraAllDevOrdinaryProductSteps & \spostDecTenTerraAllDevOrdinaryMeasured \\
+ &  & denied event & \spostDecTenTerraAllDevDeniedRouting & \spostDecTenTerraAllDevDeniedDoc & \spostDecTenTerraAllDevDeniedReading & \spostDecTenTerraAllDevDeniedHold & \spostDecTenTerraAllDevDeniedProductSteps & \spostDecTenTerraAllDevDeniedMeasured \\
+ &  & open event & \spostDecTenTerraAllDevOpenEventRouting & \spostDecTenTerraAllDevOpenEventDoc & \spostDecTenTerraAllDevOpenEventReading & \spostDecTenTerraAllDevOpenEventHold & \spostDecTenTerraAllDevOpenEventProductSteps & \spostDecTenTerraAllDevOpenEventMeasured \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Single-prompt designs' tenancy errors by kind, per claim-run, by subset (added after review). Unnecessary: requested though not needed; premature: requested though the need depends on an open fact; held req.: held though needed now.}
+\label{tab:supp-kinds}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l l rrrrrrr@{}}
+\toprule
+Design & Subset & Unnec. & Missed & Prem. & Silent & Held req. & Unneeded & Strict \\
+\midrule
+Rules in context & all & \spostKindTenRicAllUnnecessary & \spostKindTenRicAllMissed & \spostKindTenRicAllPremature & \spostKindTenRicAllSilentSkip & \spostKindTenRicAllHeldReq & \spostKindTenRicAllSpurHold & \spostKindTenRicAllStrict \\
+ & ordinary & \spostKindTenRicOrdinaryUnnecessary & \spostKindTenRicOrdinaryMissed & \spostKindTenRicOrdinaryPremature & \spostKindTenRicOrdinarySilentSkip & \spostKindTenRicOrdinaryHeldReq & \spostKindTenRicOrdinarySpurHold & \spostKindTenRicOrdinaryStrict \\
+ & denied event & \spostKindTenRicDeniedUnnecessary & \spostKindTenRicDeniedMissed & \spostKindTenRicDeniedPremature & \spostKindTenRicDeniedSilentSkip & \spostKindTenRicDeniedHeldReq & \spostKindTenRicDeniedSpurHold & \spostKindTenRicDeniedStrict \\
+ & open event & \spostKindTenRicOpenEventUnnecessary & \spostKindTenRicOpenEventMissed & \spostKindTenRicOpenEventPremature & \spostKindTenRicOpenEventSilentSkip & \spostKindTenRicOpenEventHeldReq & \spostKindTenRicOpenEventSpurHold & \spostKindTenRicOpenEventStrict \\
+Rules in context, frontier & all & \spostKindTenRicFrontierAllUnnecessary & \spostKindTenRicFrontierAllMissed & \spostKindTenRicFrontierAllPremature & \spostKindTenRicFrontierAllSilentSkip & \spostKindTenRicFrontierAllHeldReq & \spostKindTenRicFrontierAllSpurHold & \spostKindTenRicFrontierAllStrict \\
+ & ordinary & \spostKindTenRicFrontierOrdinaryUnnecessary & \spostKindTenRicFrontierOrdinaryMissed & \spostKindTenRicFrontierOrdinaryPremature & \spostKindTenRicFrontierOrdinarySilentSkip & \spostKindTenRicFrontierOrdinaryHeldReq & \spostKindTenRicFrontierOrdinarySpurHold & \spostKindTenRicFrontierOrdinaryStrict \\
+ & denied event & \spostKindTenRicFrontierDeniedUnnecessary & \spostKindTenRicFrontierDeniedMissed & \spostKindTenRicFrontierDeniedPremature & \spostKindTenRicFrontierDeniedSilentSkip & \spostKindTenRicFrontierDeniedHeldReq & \spostKindTenRicFrontierDeniedSpurHold & \spostKindTenRicFrontierDeniedStrict \\
+ & open event & \spostKindTenRicFrontierOpenEventUnnecessary & \spostKindTenRicFrontierOpenEventMissed & \spostKindTenRicFrontierOpenEventPremature & \spostKindTenRicFrontierOpenEventSilentSkip & \spostKindTenRicFrontierOpenEventHeldReq & \spostKindTenRicFrontierOpenEventSpurHold & \spostKindTenRicFrontierOpenEventStrict \\
+Self-consistency & all & \spostKindTenSelfConsAllUnnecessary & \spostKindTenSelfConsAllMissed & \spostKindTenSelfConsAllPremature & \spostKindTenSelfConsAllSilentSkip & \spostKindTenSelfConsAllHeldReq & \spostKindTenSelfConsAllSpurHold & \spostKindTenSelfConsAllStrict \\
+ & ordinary & \spostKindTenSelfConsOrdinaryUnnecessary & \spostKindTenSelfConsOrdinaryMissed & \spostKindTenSelfConsOrdinaryPremature & \spostKindTenSelfConsOrdinarySilentSkip & \spostKindTenSelfConsOrdinaryHeldReq & \spostKindTenSelfConsOrdinarySpurHold & \spostKindTenSelfConsOrdinaryStrict \\
+ & denied event & \spostKindTenSelfConsDeniedUnnecessary & \spostKindTenSelfConsDeniedMissed & \spostKindTenSelfConsDeniedPremature & \spostKindTenSelfConsDeniedSilentSkip & \spostKindTenSelfConsDeniedHeldReq & \spostKindTenSelfConsDeniedSpurHold & \spostKindTenSelfConsDeniedStrict \\
+ & open event & \spostKindTenSelfConsOpenEventUnnecessary & \spostKindTenSelfConsOpenEventMissed & \spostKindTenSelfConsOpenEventPremature & \spostKindTenSelfConsOpenEventSilentSkip & \spostKindTenSelfConsOpenEventHeldReq & \spostKindTenSelfConsOpenEventSpurHold & \spostKindTenSelfConsOpenEventStrict \\
+Model executes rules & all & \spostKindTenMerAllUnnecessary & \spostKindTenMerAllMissed & \spostKindTenMerAllPremature & \spostKindTenMerAllSilentSkip & \spostKindTenMerAllHeldReq & \spostKindTenMerAllSpurHold & \spostKindTenMerAllStrict \\
+ & ordinary & \spostKindTenMerOrdinaryUnnecessary & \spostKindTenMerOrdinaryMissed & \spostKindTenMerOrdinaryPremature & \spostKindTenMerOrdinarySilentSkip & \spostKindTenMerOrdinaryHeldReq & \spostKindTenMerOrdinarySpurHold & \spostKindTenMerOrdinaryStrict \\
+ & denied event & \spostKindTenMerDeniedUnnecessary & \spostKindTenMerDeniedMissed & \spostKindTenMerDeniedPremature & \spostKindTenMerDeniedSilentSkip & \spostKindTenMerDeniedHeldReq & \spostKindTenMerDeniedSpurHold & \spostKindTenMerDeniedStrict \\
+ & open event & \spostKindTenMerOpenEventUnnecessary & \spostKindTenMerOpenEventMissed & \spostKindTenMerOpenEventPremature & \spostKindTenMerOpenEventSilentSkip & \spostKindTenMerOpenEventHeldReq & \spostKindTenMerOpenEventSpurHold & \spostKindTenMerOpenEventStrict \\
+ReAct & all & \spostKindTenReactAllUnnecessary & \spostKindTenReactAllMissed & \spostKindTenReactAllPremature & \spostKindTenReactAllSilentSkip & \spostKindTenReactAllHeldReq & \spostKindTenReactAllSpurHold & \spostKindTenReactAllStrict \\
+ & ordinary & \spostKindTenReactOrdinaryUnnecessary & \spostKindTenReactOrdinaryMissed & \spostKindTenReactOrdinaryPremature & \spostKindTenReactOrdinarySilentSkip & \spostKindTenReactOrdinaryHeldReq & \spostKindTenReactOrdinarySpurHold & \spostKindTenReactOrdinaryStrict \\
+ & denied event & \spostKindTenReactDeniedUnnecessary & \spostKindTenReactDeniedMissed & \spostKindTenReactDeniedPremature & \spostKindTenReactDeniedSilentSkip & \spostKindTenReactDeniedHeldReq & \spostKindTenReactDeniedSpurHold & \spostKindTenReactDeniedStrict \\
+ & open event & \spostKindTenReactOpenEventUnnecessary & \spostKindTenReactOpenEventMissed & \spostKindTenReactOpenEventPremature & \spostKindTenReactOpenEventSilentSkip & \spostKindTenReactOpenEventHeldReq & \spostKindTenReactOpenEventSpurHold & \spostKindTenReactOpenEventStrict \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On theft, the single prompts' errors that coincide with the rule floor's errors on the same pair (same document, direction and kind) were \spostDecThRicSameAsFloor{} per pair for Rules in context, \spostDecThRicFrontierSameAsFloor{} on the frontier model and \spostDecThRicOrigFrontierSameAsFloor{} for the frontier prompt with the original rules; the rest were \spostDecThRicOther, \spostDecThRicFrontierOther{} and \spostDecThRicOrigFrontierOther.
+
+\subsection{Order of the hypotheses and Holm's correction}
+
+With H5's $p$ from an exact one-sided sign-flip non-inferiority test instead of the registered bootstrap, the outcomes are the same: under Holm's correction H1 (adjusted $p=\sthreeFThreeExactHolmHOneAdjP$), H2 (\sthreeFThreeExactHolmHTwoAdjP), H3 (\sthreeFThreeExactHolmHThreeAdjP) and H5 (\sthreeFThreeExactHolmHFiveAdjP) would pass and H4 (\sthreeFThreeExactHolmHFourAdjP) would not. The first draft's non-inferiority form of H3, against the frontier prompt with margin 0.10, gives a difference of \sthreeFThreeFirstDraftNIDiff{} ($p\ \sthreeFThreeFirstDraftNIP$), but in that draft's order it would not have been tested.
+
+\subsection{Budget}
+
+\begin{table}[h]
+\caption{Errors and cost per case-run for \casepath, checklist only, with its first $k$ readings, and for Self-consistency with $m$ samples, recomputed from stored outputs (added after review). Tenancy: strict unsafe errors per claim; theft: errors per pair. USD per case-run.}
+\label{tab:supp-budget}
+\footnotesize
+\begin{tabular}{@{}l rr rr@{}}
+\toprule
+& \multicolumn{2}{c}{Tenancy} & \multicolumn{2}{c}{Theft} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-5}
+Setting & Errors & USD & Errors & USD \\
+\midrule
+\casepath, $k=1$ & \sthreeFFourTenKOneErrors & \sthreeFFourTenKOneCost & \sthreeFFourThKOneErrors & \sthreeFFourThKOneCost \\
+\casepath, $k=2$ & \sthreeFFourTenKTwoErrors & \sthreeFFourTenKTwoCost & \sthreeFFourThKTwoErrors & \sthreeFFourThKTwoCost \\
+\casepath, $k=3$ & \sthreeFFourTenKThreeErrors & \sthreeFFourTenKThreeCost & \sthreeFFourThKThreeErrors & \sthreeFFourThKThreeCost \\
+Self-consistency, $m=1$ & \sthreeFFourTenMOneErrors & \sthreeFFourTenMOneCost & \sthreeFFourThMOneErrors & \sthreeFFourThMOneCost \\
+Self-consistency, $m=3$ & \sthreeFFourTenMThreeErrors & \sthreeFFourTenMThreeCost & \sthreeFFourThMThreeErrors & \sthreeFFourThMThreeCost \\
+Self-consistency, $m=5$ & \sthreeFFourTenMFiveErrors & \sthreeFFourTenMFiveCost & \sthreeFFourThMFiveErrors & \sthreeFFourThMFiveCost \\
+Self-consistency, $m=7$ & \sthreeFFourTenMSevenErrors & \sthreeFFourTenMSevenCost & \sthreeFFourThMSevenErrors & \sthreeFFourThMSevenCost \\
+Self-consistency, $m=9$ & \sthreeFFourTenMNineErrors & \sthreeFFourTenMNineCost & \sthreeFFourThMNineErrors & \sthreeFFourThMNineCost \\
+Self-consistency, $m=11$ & \sthreeFFourTenMElevenErrors & \sthreeFFourTenMElevenCost & \sthreeFFourThMElevenErrors & \sthreeFFourThMElevenCost \\
+Self-consistency, $m=13$ & \sthreeFFourTenMThirteenErrors & \sthreeFFourTenMThirteenCost & \sthreeFFourThMThirteenErrors & \sthreeFFourThMThirteenCost \\
+Self-consistency, $m=15$ & \sthreeFFourTenMFifteenErrors & \sthreeFFourTenMFifteenCost & \sthreeFFourThMFifteenErrors & \sthreeFFourThMFifteenCost \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At the checklist-only budget the full product's difference from Self-consistency was \sthreeFFourTenBudgetChecklistFullProductDiff{} on tenancy ($p=\sthreeFFourTenBudgetChecklistFullProductP$) and \sthreeFFourThBudgetChecklistFullProductDiff{} on theft ($p=\sthreeFFourThBudgetChecklistFullProductP$). With $k=1$, 2, 3 readings on tenancy, unneeded holds per claim were \sthreeFFourTenKOneSpurHold, \sthreeFFourTenKTwoSpurHold{} and \sthreeFFourTenKThreeSpurHold; theft unresolved-fact pairs left unchanged were \sthreeFFourThKOneUnchanged, \sthreeFFourThKTwoUnchanged{} and \sthreeFFourThKThreeUnchanged.
+
+\subsection{Readings of the rule text}
+\label{supp:readings}
+
+Table~\ref{tab:supp-reading-design} scores every design's stored tenancy checklists against references written under each reading of the rule text, with the product's workflow unchanged (F5). Table~\ref{tab:supp-reading-contrast} gives every registered tenancy contrast under each reading. The clean-room references of both evaluators equal the registered reference on every document decision, so their rows equal the registered row. The alternative references were written by evaluator~B to an instruction after the clean-room comparison; they are not independent evidence.
+
+\begin{table}[h]
+\caption{Reading $\times$ design (F5, added after review): strict unsafe errors per claim, family means, overall and by registered subset; last column all deviations overall. The product's workflow is unchanged. RiC: Rules in context. A1: a denied defining event does not stop the process; A2: an open defining event is presumed to have occurred; A3: optional documents are requested; A4: a family-home condition excludes arrears.}
+\label{tab:supp-reading-design}
+\scriptsize
+\renewcommand{\arraystretch}{0.92}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l l rrrr r@{}}
+\toprule
+Reading & Design & All & Ordinary & Denied & Open event & All dev. \\
+\midrule
+Registered & \casepath & \sthreeFFiveRegCasePathStrictAll & \sthreeFFiveRegCasePathStrictOrdinary & \sthreeFFiveRegCasePathStrictDenied & \sthreeFFiveRegCasePathStrictOpenEvent & \sthreeFFiveRegCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveRegChecklistStrictAll & \sthreeFFiveRegChecklistStrictOrdinary & \sthreeFFiveRegChecklistStrictDenied & \sthreeFFiveRegChecklistStrictOpenEvent & \sthreeFFiveRegChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveRegFrontierChecklistStrictAll & \sthreeFFiveRegFrontierChecklistStrictOrdinary & \sthreeFFiveRegFrontierChecklistStrictDenied & \sthreeFFiveRegFrontierChecklistStrictOpenEvent & \sthreeFFiveRegFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveRegRicStrictAll & \sthreeFFiveRegRicStrictOrdinary & \sthreeFFiveRegRicStrictDenied & \sthreeFFiveRegRicStrictOpenEvent & \sthreeFFiveRegRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveRegRicFrontierStrictAll & \sthreeFFiveRegRicFrontierStrictOrdinary & \sthreeFFiveRegRicFrontierStrictDenied & \sthreeFFiveRegRicFrontierStrictOpenEvent & \sthreeFFiveRegRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveRegSelfConsStrictAll & \sthreeFFiveRegSelfConsStrictOrdinary & \sthreeFFiveRegSelfConsStrictDenied & \sthreeFFiveRegSelfConsStrictOpenEvent & \sthreeFFiveRegSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveRegMerStrictAll & \sthreeFFiveRegMerStrictOrdinary & \sthreeFFiveRegMerStrictDenied & \sthreeFFiveRegMerStrictOpenEvent & \sthreeFFiveRegMerAllDevAll \\
+ & ReAct & \sthreeFFiveRegReactStrictAll & \sthreeFFiveRegReactStrictOrdinary & \sthreeFFiveRegReactStrictDenied & \sthreeFFiveRegReactStrictOpenEvent & \sthreeFFiveRegReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveRegTwoValFalseStrictAll & \sthreeFFiveRegTwoValFalseStrictOrdinary & \sthreeFFiveRegTwoValFalseStrictDenied & \sthreeFFiveRegTwoValFalseStrictOpenEvent & \sthreeFFiveRegTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveRegTwoValTrueStrictAll & \sthreeFFiveRegTwoValTrueStrictOrdinary & \sthreeFFiveRegTwoValTrueStrictDenied & \sthreeFFiveRegTwoValTrueStrictOpenEvent & \sthreeFFiveRegTwoValTrueAllDevAll \\
+\midrule
+A1 & \casepath & \sthreeFFiveAOneCasePathStrictAll & \sthreeFFiveAOneCasePathStrictOrdinary & \sthreeFFiveAOneCasePathStrictDenied & \sthreeFFiveAOneCasePathStrictOpenEvent & \sthreeFFiveAOneCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveAOneChecklistStrictAll & \sthreeFFiveAOneChecklistStrictOrdinary & \sthreeFFiveAOneChecklistStrictDenied & \sthreeFFiveAOneChecklistStrictOpenEvent & \sthreeFFiveAOneChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveAOneFrontierChecklistStrictAll & \sthreeFFiveAOneFrontierChecklistStrictOrdinary & \sthreeFFiveAOneFrontierChecklistStrictDenied & \sthreeFFiveAOneFrontierChecklistStrictOpenEvent & \sthreeFFiveAOneFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveAOneRicStrictAll & \sthreeFFiveAOneRicStrictOrdinary & \sthreeFFiveAOneRicStrictDenied & \sthreeFFiveAOneRicStrictOpenEvent & \sthreeFFiveAOneRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveAOneRicFrontierStrictAll & \sthreeFFiveAOneRicFrontierStrictOrdinary & \sthreeFFiveAOneRicFrontierStrictDenied & \sthreeFFiveAOneRicFrontierStrictOpenEvent & \sthreeFFiveAOneRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveAOneSelfConsStrictAll & \sthreeFFiveAOneSelfConsStrictOrdinary & \sthreeFFiveAOneSelfConsStrictDenied & \sthreeFFiveAOneSelfConsStrictOpenEvent & \sthreeFFiveAOneSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveAOneMerStrictAll & \sthreeFFiveAOneMerStrictOrdinary & \sthreeFFiveAOneMerStrictDenied & \sthreeFFiveAOneMerStrictOpenEvent & \sthreeFFiveAOneMerAllDevAll \\
+ & ReAct & \sthreeFFiveAOneReactStrictAll & \sthreeFFiveAOneReactStrictOrdinary & \sthreeFFiveAOneReactStrictDenied & \sthreeFFiveAOneReactStrictOpenEvent & \sthreeFFiveAOneReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveAOneTwoValFalseStrictAll & \sthreeFFiveAOneTwoValFalseStrictOrdinary & \sthreeFFiveAOneTwoValFalseStrictDenied & \sthreeFFiveAOneTwoValFalseStrictOpenEvent & \sthreeFFiveAOneTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveAOneTwoValTrueStrictAll & \sthreeFFiveAOneTwoValTrueStrictOrdinary & \sthreeFFiveAOneTwoValTrueStrictDenied & \sthreeFFiveAOneTwoValTrueStrictOpenEvent & \sthreeFFiveAOneTwoValTrueAllDevAll \\
+\midrule
+A2 & \casepath & \sthreeFFiveATwoCasePathStrictAll & \sthreeFFiveATwoCasePathStrictOrdinary & \sthreeFFiveATwoCasePathStrictDenied & \sthreeFFiveATwoCasePathStrictOpenEvent & \sthreeFFiveATwoCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveATwoChecklistStrictAll & \sthreeFFiveATwoChecklistStrictOrdinary & \sthreeFFiveATwoChecklistStrictDenied & \sthreeFFiveATwoChecklistStrictOpenEvent & \sthreeFFiveATwoChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveATwoFrontierChecklistStrictAll & \sthreeFFiveATwoFrontierChecklistStrictOrdinary & \sthreeFFiveATwoFrontierChecklistStrictDenied & \sthreeFFiveATwoFrontierChecklistStrictOpenEvent & \sthreeFFiveATwoFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveATwoRicStrictAll & \sthreeFFiveATwoRicStrictOrdinary & \sthreeFFiveATwoRicStrictDenied & \sthreeFFiveATwoRicStrictOpenEvent & \sthreeFFiveATwoRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveATwoRicFrontierStrictAll & \sthreeFFiveATwoRicFrontierStrictOrdinary & \sthreeFFiveATwoRicFrontierStrictDenied & \sthreeFFiveATwoRicFrontierStrictOpenEvent & \sthreeFFiveATwoRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveATwoSelfConsStrictAll & \sthreeFFiveATwoSelfConsStrictOrdinary & \sthreeFFiveATwoSelfConsStrictDenied & \sthreeFFiveATwoSelfConsStrictOpenEvent & \sthreeFFiveATwoSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveATwoMerStrictAll & \sthreeFFiveATwoMerStrictOrdinary & \sthreeFFiveATwoMerStrictDenied & \sthreeFFiveATwoMerStrictOpenEvent & \sthreeFFiveATwoMerAllDevAll \\
+ & ReAct & \sthreeFFiveATwoReactStrictAll & \sthreeFFiveATwoReactStrictOrdinary & \sthreeFFiveATwoReactStrictDenied & \sthreeFFiveATwoReactStrictOpenEvent & \sthreeFFiveATwoReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveATwoTwoValFalseStrictAll & \sthreeFFiveATwoTwoValFalseStrictOrdinary & \sthreeFFiveATwoTwoValFalseStrictDenied & \sthreeFFiveATwoTwoValFalseStrictOpenEvent & \sthreeFFiveATwoTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveATwoTwoValTrueStrictAll & \sthreeFFiveATwoTwoValTrueStrictOrdinary & \sthreeFFiveATwoTwoValTrueStrictDenied & \sthreeFFiveATwoTwoValTrueStrictOpenEvent & \sthreeFFiveATwoTwoValTrueAllDevAll \\
+\midrule
+A3 & \casepath & \sthreeFFiveAThreeCasePathStrictAll & \sthreeFFiveAThreeCasePathStrictOrdinary & \sthreeFFiveAThreeCasePathStrictDenied & \sthreeFFiveAThreeCasePathStrictOpenEvent & \sthreeFFiveAThreeCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveAThreeChecklistStrictAll & \sthreeFFiveAThreeChecklistStrictOrdinary & \sthreeFFiveAThreeChecklistStrictDenied & \sthreeFFiveAThreeChecklistStrictOpenEvent & \sthreeFFiveAThreeChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveAThreeFrontierChecklistStrictAll & \sthreeFFiveAThreeFrontierChecklistStrictOrdinary & \sthreeFFiveAThreeFrontierChecklistStrictDenied & \sthreeFFiveAThreeFrontierChecklistStrictOpenEvent & \sthreeFFiveAThreeFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveAThreeRicStrictAll & \sthreeFFiveAThreeRicStrictOrdinary & \sthreeFFiveAThreeRicStrictDenied & \sthreeFFiveAThreeRicStrictOpenEvent & \sthreeFFiveAThreeRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveAThreeRicFrontierStrictAll & \sthreeFFiveAThreeRicFrontierStrictOrdinary & \sthreeFFiveAThreeRicFrontierStrictDenied & \sthreeFFiveAThreeRicFrontierStrictOpenEvent & \sthreeFFiveAThreeRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveAThreeSelfConsStrictAll & \sthreeFFiveAThreeSelfConsStrictOrdinary & \sthreeFFiveAThreeSelfConsStrictDenied & \sthreeFFiveAThreeSelfConsStrictOpenEvent & \sthreeFFiveAThreeSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveAThreeMerStrictAll & \sthreeFFiveAThreeMerStrictOrdinary & \sthreeFFiveAThreeMerStrictDenied & \sthreeFFiveAThreeMerStrictOpenEvent & \sthreeFFiveAThreeMerAllDevAll \\
+ & ReAct & \sthreeFFiveAThreeReactStrictAll & \sthreeFFiveAThreeReactStrictOrdinary & \sthreeFFiveAThreeReactStrictDenied & \sthreeFFiveAThreeReactStrictOpenEvent & \sthreeFFiveAThreeReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveAThreeTwoValFalseStrictAll & \sthreeFFiveAThreeTwoValFalseStrictOrdinary & \sthreeFFiveAThreeTwoValFalseStrictDenied & \sthreeFFiveAThreeTwoValFalseStrictOpenEvent & \sthreeFFiveAThreeTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveAThreeTwoValTrueStrictAll & \sthreeFFiveAThreeTwoValTrueStrictOrdinary & \sthreeFFiveAThreeTwoValTrueStrictDenied & \sthreeFFiveAThreeTwoValTrueStrictOpenEvent & \sthreeFFiveAThreeTwoValTrueAllDevAll \\
+\midrule
+A4 & \casepath & \sthreeFFiveAFourCasePathStrictAll & \sthreeFFiveAFourCasePathStrictOrdinary & \sthreeFFiveAFourCasePathStrictDenied & \sthreeFFiveAFourCasePathStrictOpenEvent & \sthreeFFiveAFourCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveAFourChecklistStrictAll & \sthreeFFiveAFourChecklistStrictOrdinary & \sthreeFFiveAFourChecklistStrictDenied & \sthreeFFiveAFourChecklistStrictOpenEvent & \sthreeFFiveAFourChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveAFourFrontierChecklistStrictAll & \sthreeFFiveAFourFrontierChecklistStrictOrdinary & \sthreeFFiveAFourFrontierChecklistStrictDenied & \sthreeFFiveAFourFrontierChecklistStrictOpenEvent & \sthreeFFiveAFourFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveAFourRicStrictAll & \sthreeFFiveAFourRicStrictOrdinary & \sthreeFFiveAFourRicStrictDenied & \sthreeFFiveAFourRicStrictOpenEvent & \sthreeFFiveAFourRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveAFourRicFrontierStrictAll & \sthreeFFiveAFourRicFrontierStrictOrdinary & \sthreeFFiveAFourRicFrontierStrictDenied & \sthreeFFiveAFourRicFrontierStrictOpenEvent & \sthreeFFiveAFourRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveAFourSelfConsStrictAll & \sthreeFFiveAFourSelfConsStrictOrdinary & \sthreeFFiveAFourSelfConsStrictDenied & \sthreeFFiveAFourSelfConsStrictOpenEvent & \sthreeFFiveAFourSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveAFourMerStrictAll & \sthreeFFiveAFourMerStrictOrdinary & \sthreeFFiveAFourMerStrictDenied & \sthreeFFiveAFourMerStrictOpenEvent & \sthreeFFiveAFourMerAllDevAll \\
+ & ReAct & \sthreeFFiveAFourReactStrictAll & \sthreeFFiveAFourReactStrictOrdinary & \sthreeFFiveAFourReactStrictDenied & \sthreeFFiveAFourReactStrictOpenEvent & \sthreeFFiveAFourReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveAFourTwoValFalseStrictAll & \sthreeFFiveAFourTwoValFalseStrictOrdinary & \sthreeFFiveAFourTwoValFalseStrictDenied & \sthreeFFiveAFourTwoValFalseStrictOpenEvent & \sthreeFFiveAFourTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveAFourTwoValTrueStrictAll & \sthreeFFiveAFourTwoValTrueStrictOrdinary & \sthreeFFiveAFourTwoValTrueStrictDenied & \sthreeFFiveAFourTwoValTrueStrictOpenEvent & \sthreeFFiveAFourTwoValTrueAllDevAll \\
+\midrule
+All four & \casepath & \sthreeFFiveAAllCasePathStrictAll & \sthreeFFiveAAllCasePathStrictOrdinary & \sthreeFFiveAAllCasePathStrictDenied & \sthreeFFiveAAllCasePathStrictOpenEvent & \sthreeFFiveAAllCasePathAllDevAll \\
+ & Checklist only & \sthreeFFiveAAllChecklistStrictAll & \sthreeFFiveAAllChecklistStrictOrdinary & \sthreeFFiveAAllChecklistStrictDenied & \sthreeFFiveAAllChecklistStrictOpenEvent & \sthreeFFiveAAllChecklistAllDevAll \\
+ & Checklist only, frontier & \sthreeFFiveAAllFrontierChecklistStrictAll & \sthreeFFiveAAllFrontierChecklistStrictOrdinary & \sthreeFFiveAAllFrontierChecklistStrictDenied & \sthreeFFiveAAllFrontierChecklistStrictOpenEvent & \sthreeFFiveAAllFrontierChecklistAllDevAll \\
+ & RiC & \sthreeFFiveAAllRicStrictAll & \sthreeFFiveAAllRicStrictOrdinary & \sthreeFFiveAAllRicStrictDenied & \sthreeFFiveAAllRicStrictOpenEvent & \sthreeFFiveAAllRicAllDevAll \\
+ & RiC, frontier & \sthreeFFiveAAllRicFrontierStrictAll & \sthreeFFiveAAllRicFrontierStrictOrdinary & \sthreeFFiveAAllRicFrontierStrictDenied & \sthreeFFiveAAllRicFrontierStrictOpenEvent & \sthreeFFiveAAllRicFrontierAllDevAll \\
+ & Self-consistency & \sthreeFFiveAAllSelfConsStrictAll & \sthreeFFiveAAllSelfConsStrictOrdinary & \sthreeFFiveAAllSelfConsStrictDenied & \sthreeFFiveAAllSelfConsStrictOpenEvent & \sthreeFFiveAAllSelfConsAllDevAll \\
+ & Model exec.\ rules & \sthreeFFiveAAllMerStrictAll & \sthreeFFiveAAllMerStrictOrdinary & \sthreeFFiveAAllMerStrictDenied & \sthreeFFiveAAllMerStrictOpenEvent & \sthreeFFiveAAllMerAllDevAll \\
+ & ReAct & \sthreeFFiveAAllReactStrictAll & \sthreeFFiveAAllReactStrictOrdinary & \sthreeFFiveAAllReactStrictDenied & \sthreeFFiveAAllReactStrictOpenEvent & \sthreeFFiveAAllReactAllDevAll \\
+ & Two-valued, false & \sthreeFFiveAAllTwoValFalseStrictAll & \sthreeFFiveAAllTwoValFalseStrictOrdinary & \sthreeFFiveAAllTwoValFalseStrictDenied & \sthreeFFiveAAllTwoValFalseStrictOpenEvent & \sthreeFFiveAAllTwoValFalseAllDevAll \\
+ & Two-valued, true & \sthreeFFiveAAllTwoValTrueStrictAll & \sthreeFFiveAAllTwoValTrueStrictOrdinary & \sthreeFFiveAAllTwoValTrueStrictDenied & \sthreeFFiveAAllTwoValTrueStrictOpenEvent & \sthreeFFiveAAllTwoValTrueAllDevAll \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Reading $\times$ contrast (F5, product's workflow unchanged, and F5b, workflow amended to the reading; added after review). \casepath minus comparator, family clusters, exact sign-flip $p$. H2, S2a--S2c: strict unsafe errors against Rules in context, Self-consistency, Model executes rules, ReAct; H3: against Rules in context on the frontier model; S2d--S2f, S3a, S3b: all deviations against Self-consistency, Model executes rules, ReAct, Rules in context and the frontier prompt. F5b was computed for H2, H3 and S2a--S2c only.}
+\label{tab:supp-reading-contrast}
+\scriptsize
+\renewcommand{\arraystretch}{0.92}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}l l rrr rr@{}}
+\toprule
+& & \multicolumn{3}{c}{F5: unchanged workflow} & \multicolumn{2}{c}{F5b: matched workflow} \\
+\cmidrule(lr){3-5}\cmidrule(l){6-7}
+Reading & Contrast & Difference & $p$ & Verdict & Difference & $p$ \\
+\midrule
+A1 & H2 & \sthreeFFiveAOneHTwoDiff & \sthreeFFiveAOneHTwoP & \sthreeFFiveAOneHTwoVerdict & \sthreeFFiveBAOneHTwoDiff & \sthreeFFiveBAOneHTwoP \\
+ & H3 & \sthreeFFiveAOneHThreeDiff & \sthreeFFiveAOneHThreeP & \sthreeFFiveAOneHThreeVerdict & \sthreeFFiveBAOneHThreeDiff & \sthreeFFiveBAOneHThreeP \\
+ & S2a & \sthreeFFiveAOneSTwoADiff & \sthreeFFiveAOneSTwoAP & \sthreeFFiveAOneSTwoAVerdict & \sthreeFFiveBAOneSTwoADiff & \sthreeFFiveBAOneSTwoAP \\
+ & S2b & \sthreeFFiveAOneSTwoBDiff & \sthreeFFiveAOneSTwoBP & \sthreeFFiveAOneSTwoBVerdict & \sthreeFFiveBAOneSTwoBDiff & \sthreeFFiveBAOneSTwoBP \\
+ & S2c & \sthreeFFiveAOneSTwoCDiff & \sthreeFFiveAOneSTwoCP & \sthreeFFiveAOneSTwoCVerdict & \sthreeFFiveBAOneSTwoCDiff & \sthreeFFiveBAOneSTwoCP \\
+ & S2d & \sthreeFFiveAOneSTwoDDiff & \sthreeFFiveAOneSTwoDP & \sthreeFFiveAOneSTwoDVerdict & -- & -- \\
+ & S2e & \sthreeFFiveAOneSTwoEDiff & \sthreeFFiveAOneSTwoEP & \sthreeFFiveAOneSTwoEVerdict & -- & -- \\
+ & S2f & \sthreeFFiveAOneSTwoFDiff & \sthreeFFiveAOneSTwoFP & \sthreeFFiveAOneSTwoFVerdict & -- & -- \\
+ & S3a & \sthreeFFiveAOneSThreeADiff & \sthreeFFiveAOneSThreeAP & \sthreeFFiveAOneSThreeAVerdict & -- & -- \\
+ & S3b & \sthreeFFiveAOneSThreeBDiff & \sthreeFFiveAOneSThreeBP & \sthreeFFiveAOneSThreeBVerdict & -- & -- \\
+\midrule
+A2 & H2 & \sthreeFFiveATwoHTwoDiff & \sthreeFFiveATwoHTwoP & \sthreeFFiveATwoHTwoVerdict & \sthreeFFiveBATwoHTwoDiff & \sthreeFFiveBATwoHTwoP \\
+ & H3 & \sthreeFFiveATwoHThreeDiff & \sthreeFFiveATwoHThreeP & \sthreeFFiveATwoHThreeVerdict & \sthreeFFiveBATwoHThreeDiff & \sthreeFFiveBATwoHThreeP \\
+ & S2a & \sthreeFFiveATwoSTwoADiff & \sthreeFFiveATwoSTwoAP & \sthreeFFiveATwoSTwoAVerdict & \sthreeFFiveBATwoSTwoADiff & \sthreeFFiveBATwoSTwoAP \\
+ & S2b & \sthreeFFiveATwoSTwoBDiff & \sthreeFFiveATwoSTwoBP & \sthreeFFiveATwoSTwoBVerdict & \sthreeFFiveBATwoSTwoBDiff & \sthreeFFiveBATwoSTwoBP \\
+ & S2c & \sthreeFFiveATwoSTwoCDiff & \sthreeFFiveATwoSTwoCP & \sthreeFFiveATwoSTwoCVerdict & \sthreeFFiveBATwoSTwoCDiff & \sthreeFFiveBATwoSTwoCP \\
+ & S2d & \sthreeFFiveATwoSTwoDDiff & \sthreeFFiveATwoSTwoDP & \sthreeFFiveATwoSTwoDVerdict & -- & -- \\
+ & S2e & \sthreeFFiveATwoSTwoEDiff & \sthreeFFiveATwoSTwoEP & \sthreeFFiveATwoSTwoEVerdict & -- & -- \\
+ & S2f & \sthreeFFiveATwoSTwoFDiff & \sthreeFFiveATwoSTwoFP & \sthreeFFiveATwoSTwoFVerdict & -- & -- \\
+ & S3a & \sthreeFFiveATwoSThreeADiff & \sthreeFFiveATwoSThreeAP & \sthreeFFiveATwoSThreeAVerdict & -- & -- \\
+ & S3b & \sthreeFFiveATwoSThreeBDiff & \sthreeFFiveATwoSThreeBP & \sthreeFFiveATwoSThreeBVerdict & -- & -- \\
+\midrule
+A3 & H2 & \sthreeFFiveAThreeHTwoDiff & \sthreeFFiveAThreeHTwoP & \sthreeFFiveAThreeHTwoVerdict & \sthreeFFiveBAThreeHTwoDiff & \sthreeFFiveBAThreeHTwoP \\
+ & H3 & \sthreeFFiveAThreeHThreeDiff & \sthreeFFiveAThreeHThreeP & \sthreeFFiveAThreeHThreeVerdict & \sthreeFFiveBAThreeHThreeDiff & \sthreeFFiveBAThreeHThreeP \\
+ & S2a & \sthreeFFiveAThreeSTwoADiff & \sthreeFFiveAThreeSTwoAP & \sthreeFFiveAThreeSTwoAVerdict & \sthreeFFiveBAThreeSTwoADiff & \sthreeFFiveBAThreeSTwoAP \\
+ & S2b & \sthreeFFiveAThreeSTwoBDiff & \sthreeFFiveAThreeSTwoBP & \sthreeFFiveAThreeSTwoBVerdict & \sthreeFFiveBAThreeSTwoBDiff & \sthreeFFiveBAThreeSTwoBP \\
+ & S2c & \sthreeFFiveAThreeSTwoCDiff & \sthreeFFiveAThreeSTwoCP & \sthreeFFiveAThreeSTwoCVerdict & \sthreeFFiveBAThreeSTwoCDiff & \sthreeFFiveBAThreeSTwoCP \\
+ & S2d & \sthreeFFiveAThreeSTwoDDiff & \sthreeFFiveAThreeSTwoDP & \sthreeFFiveAThreeSTwoDVerdict & -- & -- \\
+ & S2e & \sthreeFFiveAThreeSTwoEDiff & \sthreeFFiveAThreeSTwoEP & \sthreeFFiveAThreeSTwoEVerdict & -- & -- \\
+ & S2f & \sthreeFFiveAThreeSTwoFDiff & \sthreeFFiveAThreeSTwoFP & \sthreeFFiveAThreeSTwoFVerdict & -- & -- \\
+ & S3a & \sthreeFFiveAThreeSThreeADiff & \sthreeFFiveAThreeSThreeAP & \sthreeFFiveAThreeSThreeAVerdict & -- & -- \\
+ & S3b & \sthreeFFiveAThreeSThreeBDiff & \sthreeFFiveAThreeSThreeBP & \sthreeFFiveAThreeSThreeBVerdict & -- & -- \\
+\midrule
+A4 & H2 & \sthreeFFiveAFourHTwoDiff & \sthreeFFiveAFourHTwoP & \sthreeFFiveAFourHTwoVerdict & \sthreeFFiveBAFourHTwoDiff & \sthreeFFiveBAFourHTwoP \\
+ & H3 & \sthreeFFiveAFourHThreeDiff & \sthreeFFiveAFourHThreeP & \sthreeFFiveAFourHThreeVerdict & \sthreeFFiveBAFourHThreeDiff & \sthreeFFiveBAFourHThreeP \\
+ & S2a & \sthreeFFiveAFourSTwoADiff & \sthreeFFiveAFourSTwoAP & \sthreeFFiveAFourSTwoAVerdict & \sthreeFFiveBAFourSTwoADiff & \sthreeFFiveBAFourSTwoAP \\
+ & S2b & \sthreeFFiveAFourSTwoBDiff & \sthreeFFiveAFourSTwoBP & \sthreeFFiveAFourSTwoBVerdict & \sthreeFFiveBAFourSTwoBDiff & \sthreeFFiveBAFourSTwoBP \\
+ & S2c & \sthreeFFiveAFourSTwoCDiff & \sthreeFFiveAFourSTwoCP & \sthreeFFiveAFourSTwoCVerdict & \sthreeFFiveBAFourSTwoCDiff & \sthreeFFiveBAFourSTwoCP \\
+ & S2d & \sthreeFFiveAFourSTwoDDiff & \sthreeFFiveAFourSTwoDP & \sthreeFFiveAFourSTwoDVerdict & -- & -- \\
+ & S2e & \sthreeFFiveAFourSTwoEDiff & \sthreeFFiveAFourSTwoEP & \sthreeFFiveAFourSTwoEVerdict & -- & -- \\
+ & S2f & \sthreeFFiveAFourSTwoFDiff & \sthreeFFiveAFourSTwoFP & \sthreeFFiveAFourSTwoFVerdict & -- & -- \\
+ & S3a & \sthreeFFiveAFourSThreeADiff & \sthreeFFiveAFourSThreeAP & \sthreeFFiveAFourSThreeAVerdict & -- & -- \\
+ & S3b & \sthreeFFiveAFourSThreeBDiff & \sthreeFFiveAFourSThreeBP & \sthreeFFiveAFourSThreeBVerdict & -- & -- \\
+\midrule
+A1--A4 together & H2 & \sthreeFFiveAAllHTwoDiff & \sthreeFFiveAAllHTwoP & \sthreeFFiveAAllHTwoVerdict & \sthreeFFiveBAAllHTwoDiff & \sthreeFFiveBAAllHTwoP \\
+ & H3 & \sthreeFFiveAAllHThreeDiff & \sthreeFFiveAAllHThreeP & \sthreeFFiveAAllHThreeVerdict & \sthreeFFiveBAAllHThreeDiff & \sthreeFFiveBAAllHThreeP \\
+ & S2a & \sthreeFFiveAAllSTwoADiff & \sthreeFFiveAAllSTwoAP & \sthreeFFiveAAllSTwoAVerdict & \sthreeFFiveBAAllSTwoADiff & \sthreeFFiveBAAllSTwoAP \\
+ & S2b & \sthreeFFiveAAllSTwoBDiff & \sthreeFFiveAAllSTwoBP & \sthreeFFiveAAllSTwoBVerdict & \sthreeFFiveBAAllSTwoBDiff & \sthreeFFiveBAAllSTwoBP \\
+ & S2c & \sthreeFFiveAAllSTwoCDiff & \sthreeFFiveAAllSTwoCP & \sthreeFFiveAAllSTwoCVerdict & \sthreeFFiveBAAllSTwoCDiff & \sthreeFFiveBAAllSTwoCP \\
+ & S2d & \sthreeFFiveAAllSTwoDDiff & \sthreeFFiveAAllSTwoDP & \sthreeFFiveAAllSTwoDVerdict & -- & -- \\
+ & S2e & \sthreeFFiveAAllSTwoEDiff & \sthreeFFiveAAllSTwoEP & \sthreeFFiveAAllSTwoEVerdict & -- & -- \\
+ & S2f & \sthreeFFiveAAllSTwoFDiff & \sthreeFFiveAAllSTwoFP & \sthreeFFiveAAllSTwoFVerdict & -- & -- \\
+ & S3a & \sthreeFFiveAAllSThreeADiff & \sthreeFFiveAAllSThreeAP & \sthreeFFiveAAllSThreeAVerdict & -- & -- \\
+ & S3b & \sthreeFFiveAAllSThreeBDiff & \sthreeFFiveAAllSThreeBP & \sthreeFFiveAAllSThreeBVerdict & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The lint}
+\label{supp:lint}
+
+The lint's flags on theft, the mutation test on tenancy and the variant in which the flagged conditions that both blind editors made unconditional are taken as true are reported in \texttt{analysis/\allowbreak{}lint\_\allowbreak{}followup.md}. Taking those conditions as true gives the same errors as treating every flag as open: \spostHeldTerraFlagCaseTypeErrors{} (in sample) and \spostHeldTerraDevFlagCaseTypeErrors{} (out of sample) on the frontier model, \spostHeldLunaFlagCaseTypeErrors{} on the cost-efficient model. The development flags were \spostDevFlagsTerraN{} for the frontier model, from \spostDevFlagsTerraOffRuns{} development texts at an earlier commit whose reading requests were checked to be identical, against \spostInSampleFlagsTerraN{} in sample; for the cost-efficient model the in-sample lint had already pooled the development runs (\spostDevFlagsLunaN{} flags either way). Paired differences against the frontier prompts: tested product $\spostPairedTestedRicFrontierDiff$ and $\spostPairedTestedRicOrigFrontierDiff$; flags in sample $\spostPairedFlagOpenRicFrontierDiff$ and $\spostPairedFlagOpenRicOrigFrontierDiff$; out of sample $\spostPairedDevFlagOpenRicFrontierDiff$ and $\spostPairedDevFlagOpenRicOrigFrontierDiff$ errors per pair (reviewed and original rules).
+

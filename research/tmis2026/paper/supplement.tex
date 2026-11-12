@@ -24,6 +24,9 @@
 \input{results/numbers_sharc}
 \input{results/numbers_study3}
 \input{results/numbers_study3_review}
+\input{results/numbers_followup}
+\input{results/numbers_study3_feedback}
+\input{results/numbers_posthoc}
 
 \newcommand{\pendingref}[1]{[#1; reference pending]}
 \newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{%
@@ -36,7 +39,7 @@
 
 \begin{document}
 
-\title{Supplement: Studies 1 and 2}
+\title{Supplement}
 \subtitle{to ``CasePath: Agents That Read, Rules That Decide''}
 
 \author{Navish Kumar}
@@ -52,7 +55,7 @@
 
 \maketitle
 
-This supplement accompanies the article ``CasePath: Agents That Read, Rules That Decide''. It reports the two pre-registered studies that preceded the article's confirmatory test (Study~3): Study~1 (Section~\ref{app:study1}) and Study~2 (Section~\ref{app:study2}), as written at the time with the least editing, then their deviations from plan (Section~\ref{supp:deviations}), their robustness analyses (Section~\ref{supp:robustness}), their data (Section~\ref{supp:data}), the unplanned ShARC pilot (Section~\ref{supp:sharc}), and the instructions of the product's agents that the article's Appendix~\ref{M-app:workflows} does not quote (Section~\ref{supp:agent-prompts}). Neither study confirmed its primary hypotheses; Section~\ref{M-sec:history} of the article states what the design took from them. The guidance written after Study~1 (Table~\ref{tab:guidance}) is superseded by Study~2 and by the confirmatory test. In this supplement, \casepath and ``CasePath'' in figure legends mean the configuration of the study at hand, not the product tested in Study~3. Section, figure and table numbers here carry the prefix S; references without it point into the article.
+This supplement accompanies the article ``CasePath: Agents That Read, Rules That Decide''. It holds the material the article shortens or leaves out. Sections~\ref{app:study1} to~\ref{supp:agent-prompts} report the two pre-registered studies that preceded the article's confirmatory test (Study~3), as written at the time, with their deviations, robustness analyses and data, the unplanned ShARC pilot and the instructions of the product's agents. Neither study confirmed its primary hypotheses; Section~\ref{M-sec:history} of the article states what the design took from them. The guidance written after Study~1 (Table~\ref{tab:guidance}) is superseded by Study~2 and by the confirmatory test. Sections~\ref{supp:pipeline} to~\ref{app:protocol-compact} cover Study~3 and the product: the pipeline in detail, the data, the full deviations and irregularities, the robustness analyses and the analyses added after the first review, the results moved from the article's Section~6, the full tables of the checks added after the outside review, prompts and workflows, reproducibility and release, and the earlier compact protocol of the deployment study. In Sections~\ref{app:study1} to~\ref{supp:agent-prompts}, \casepath and ``CasePath'' in figure legends mean the configuration of the study at hand, not the product tested in Study~3. Section, figure and table numbers here carry the prefix S; references without it point into the article.
 
 \input{sections/app_b_study1}
 \input{sections/app_c_study2}
@@ -70,10 +73,10 @@ STUB: \texttt{sections/supp\_f\_robustness12.tex} (the Study~1 and Study~2 parts
 \section{Data of Studies 1 and 2}
 \label{supp:data}
 
-Two synthetic data sets were used before Study~3: the data of Study~1 and \texttt{fresh/} (Study~2). Table~\ref{tab:supp-datasets} gives their counts. Paths are relative to the repository \cite{casepath2026repo}; \texttt{fresh/} is under \texttt{research/\allowbreak{}tmis2026/}. Each folder's \texttt{README.md} and \texttt{MANIFEST.json} are the authority for every count given here. Appendix~\ref{M-app:genai} of the article states which generative models wrote which texts.
+Two synthetic data sets were used before Study~3: the data of Study~1 and \texttt{fresh/} (Study~2). Table~\ref{tab:supp-datasets} gives their counts. Paths are relative to the repository \cite{casepath2026repo}; \texttt{fresh/} is under \texttt{research/\allowbreak{}tmis2026/}. Each folder's \texttt{README.md} and \texttt{MANIFEST.json} are the authority for every count given here. Section~\ref{app:genai} states which generative models wrote which texts.
 
 \begin{table}[h]
-\caption{The data sets of Studies 1 and 2. ``Open facts'': facts a text raises and leaves open. Counts from each folder's README and manifest; Study~1's unresolved-fact pairs from Section~\ref{app:study1}. The data of Study~3 are in Appendix~\ref{M-app:datasets} of the article.}
+\caption{The data sets of Studies 1 and 2. ``Open facts'': facts a text raises and leaves open. Counts from each folder's README and manifest; Study~1's unresolved-fact pairs from Section~\ref{app:study1}. The data of Study~3 are in Section~\ref{app:datasets}.}
 \label{tab:supp-datasets}
 \footnotesize
 \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.13\linewidth}@{}}
@@ -121,7 +124,7 @@ After Study~2 we ran an unplanned pilot on ShARC \cite{saeidi2018sharc}, in whic
 \section{Instructions of the product's other agents}
 \label{supp:agent-prompts}
 
-These excerpts complete the article's Appendix~\ref{M-app:workflows}, which quotes the reading form. They are quoted from commit 6a72159c of the package (paths below \texttt{casepath-internal/\allowbreak{}casepath/}); \texttt{[...]} marks text left out, and nothing is added.
+These excerpts complete Section~\ref{app:workflows}, which quotes the reading form. They are quoted from commit 6a72159c of the package (paths below \texttt{casepath-internal/\allowbreak{}casepath/}); \texttt{[...]} marks text left out, and nothing is added.
 
 The router has its own instructions. The claim reader, the process builder, the document finder and the result checker receive a common preamble followed by their own instructions; the second judgment and the source checker are single requests with their own instructions. Each excerpt names its file and lines at the commit.
 
@@ -197,6 +200,23 @@ kind: [...] and what CasePath should learn for later cases of this family: [...]
 The evaluated checklist is the authority on documents: in the summary, the answer and the open points, call a document
 missing only if the checklist lists it as missing, and say which ones it lists. [...]
 \end{lstlisting}
+
+\input{sections/supp_pipeline}
+\input{sections/app_e_data}
+\input{sections/app_d_deviations}
+\input{sections/app_f_robustness}
+\input{sections/supp_s3_body}
+\input{sections/supp_s3_checks}
+\input{sections/app_h_prompts}
+\input{sections/app_g_repro}
+
+\section{Compact protocol of the deployment study, version of 11 November 2026}
+\label{supp:protocol-old}
+The text below is the compact protocol that the previous version of the article printed. On 12 November 2026 the protocol changed: an archival comparison with what the insurer did next, at every decision point of four sealed files, became the primary endpoint, and the expert sessions became the secondary endpoint. The article's Appendix~\ref{M-app:protocol} and the protocol file supersede this text wherever they differ; it is kept because it states the earlier design and its limits.
+\begingroup
+\renewcommand{\section}[1]{\subsection*{#1}}
+\input{sections/app_i_protocol}
+\endgroup
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
