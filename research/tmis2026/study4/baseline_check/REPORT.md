@@ -5,7 +5,7 @@ on. Not a registered result.** All numbers are in `REPORT.json`, produced by
 `analyse.py` with Study 3's registered scorers. Prompts and schemas were
 hashed before any call on these data (`prompts/SHA256SUMS.json`,
 2026-11-12T11:44:19Z). Spend from the ledgers: USD 4.45 (cap 5.00). No output
-failed on these data (1,116 outputs).
+failed on these data (1,120 outputs).
 
 ## Designs
 
@@ -30,7 +30,7 @@ or a denied or open defining event.
 | CasePath, checklist only, cost-efficient | 0.34 / 0.73 | 0.21 / 0.34 | 0.32 / 0.61 | 0.72 / 1.78 | 0.00 / 0.00 | 0.55 |
 | CasePath, checklist only, frontier (one run) | 0.30 / 0.70 | 0.05 / 0.05 | 0.61 / 0.65 | 0.29 / 1.79 | 0.67 / 0.78 | 0.83 |
 | A, cost-efficient | 0.35 / 0.89 | 0.41 / 0.73 | 0.48 / 1.25 | 0.21 / 1.10 | 0.11 / 0.11 | 1.68 |
-| A, frontier | 0.19 / 0.58 | 0.17 / 0.68 | 0.48 / 1.26 | 0.00 / 0.00 | 0.00 / 0.00 | 1.18 |
+| A, frontier | 0.19 / 0.58 | 0.18 / 0.68 | 0.48 / 1.26 | 0.00 / 0.00 | 0.00 / 0.00 | 1.18 |
 | B, frontier | 0.19 / 0.54 | 0.12 / 0.40 | 0.57 / 1.30 | 0.00 / 0.25 | 0.00 / 0.00 | 1.24 |
 | Rules in context (Study 3), cost-efficient / frontier | 2.14 / 1.86 strict | 0.39 / 0.19 strict | 0.51 / 0.45 strict | 5.68 / 4.43 strict | 4.63 / 6.07 strict | 1.74 / 0.95 |
 
