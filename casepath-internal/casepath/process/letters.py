@@ -7,7 +7,13 @@ A form with no draft says why ("kein Entwurf: …").
 import re
 from datetime import date
 
+import json
+from pathlib import Path
+
 from .clock import as_of, parse_date
+
+# Protekta's forms, from the handler's workflow seed: the letters of any workflow that brings none of its own.
+SEED_FORMS = json.loads((Path(__file__).with_name("workflow_seed") / "mietmangel-handler.json").read_text())["forms"]
 
 
 def _day(value):
@@ -39,7 +45,35 @@ def asked(items, events, kind):
     return out
 
 
-def context(case, items, events, follow_up, files=(), today=None):
+def request_list(items, events, evaluation, process):
+    """The first request's document lines, as the handler sees them: a whole names its parts ("insbesondere …"), a
+    conditional need says its condition ("falls …"), a document the file mentions but lacks says so."""
+    lines = line_state(events)
+    by_key = {i["key"]: i for i in items if i["kind"] == "document"}
+    ev_docs = (evaluation or {}).get("documents") or []
+    ticked = lambda key, default: lines.get(f"document:{key}", default)
+    ask = [d for d in ev_docs if (by_key.get(d["document"]) or {}).get("ask") == "now" and d.get("status") != "present" and ticked(d["document"], True)]
+    ask += [d for d in ev_docs if (by_key.get(d["document"]) or {}).get("ask") == "later" and ticked(d["document"], False)]
+    ask += [d for d in ev_docs if (by_key.get(d["document"]) or {}).get("ask") == "proposed" and ticked(d["document"], False)]
+    ask += [{"document": i["key"], "title": f"{i['label']['de']} ({i['reason']})"} for i in items
+            if i["kind"] == "document" and i["key"].startswith("mention-") and lines.get(i["item_id"], i.get("ask") != "proposed")]
+    includes = {d["id"]: d.get("includes") or [] for d in (process or {}).get("documents") or []}
+    part_of = lambda key: any(key in includes.get(w["document"], []) for w in ask)
+    parts = lambda w: [d for d in ask if d["document"] in includes.get(w["document"], [])]
+    out = []
+    for d in ask:
+        if part_of(d["document"]):
+            continue
+        line = f"– {d['title']}"
+        if parts(d):
+            line += ", insbesondere " + ", ".join(x["title"] for x in parts(d))
+        if d.get("required") == "depends" and d.get("questions"):
+            line += " (falls " + " / ".join(q["question"].rstrip("?") for q in d["questions"]) + ")"
+        out.append(line)
+    return out
+
+
+def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
     label = lambda i: (i.get("label") or {}).get("de") or i.get("value") or i["key"]
     facts = {i["key"]: i for i in items if i["kind"] == "fact"}
     docs = asked(items, events, "document")
@@ -49,14 +83,22 @@ def context(case, items, events, follow_up, files=(), today=None):
     summary = next((i["value"] for i in items if i["kind"] == "summary" and i.get("value")), None)
     ref = re.search(r"\d{4}\.\d{4}\.\d{4}", f"{case.get('title', '')} {case.get('intake', '')}")
     sent = [d for d in (parse_date((facts.get(f"handlung_a{n}") or {}).get("value")) for n in (1, 4, 5, 6, 7)) if d]
+    lines = line_state(events)
+    questions = [i for i in items if i["kind"] == "letter_question" and lines.get(i["item_id"], i.get("ask") != "proposed")]
+    hints = [i for i in items if i["kind"] == "hint" and lines.get(i["item_id"], i.get("stated_as") != "put_to_handler")]
+    listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
     return {
         "referenz": ref.group(0) if ref else case.get("id", "")[-8:].upper(),
+        "referenz_kopf": f"Unsere Referenz: {ref.group(0)}\n\n" if ref else "",
+        "registrierung": (f"Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz {ref.group(0)} provisorisch "
+                          "registriert; bitte geben Sie diese bei jeder Mitteilung an.") if ref
+                         else "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.",
         "anrede": "Sehr geehrte Damen und Herren",  # the name and form of address are the handler's to add
-        "liste": "\n".join(f"– {label(i)}" for i in docs) or "– (keine weiteren Unterlagen)",
-        "fragen": "\n".join(["Weiter bitten wir Sie um die Beantwortung folgender Fragen:"] + [f"– {i['value']}" for i in asked(items, events, "letter_question")])
-                  if asked(items, events, "letter_question") else "",
+        "liste": "\n".join(listed),
+        "fragen": "\n".join(["Weiter bitten wir Sie um die Beantwortung folgender Fragen:"] + [f"– {i['value']}" for i in questions]) if questions else "",
         "fragen_oder_offen": "\n".join(f"– {i['value']}" for i in asked(items, events, "letter_question")) or "\n".join(f"– {label(i)}" for i in missing) or "– (offener Punkt)",
-        "hinweise": "\n\n".join(i["value"] for i in asked(items, events, "hint")),
+        "hinweise": "\n".join(["Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:"]
+                              + [f"{i['value']}" + (f" ({i['legal_basis']})" if i.get("legal_basis") else "") for i in hints]) if hints else "",
         "frist": _day((follow_up or {}).get("due")) or "…",
         "anliegen": summary or "Ihr Anliegen betreffend den Mangel an der Mietsache.",
         "empfehlung": "uns die noch fehlenden Unterlagen zuzustellen, damit wir das weitere Vorgehen festlegen können." if missing
@@ -79,6 +121,8 @@ def render(kind, forms, ctx):
         return None, "für diese Handlung ist kein Formular hinterlegt"
     if form.get("none"):
         return None, form["none"]
+    if kind == "A1" and not ctx.get("liste"):
+        return "", None  # nothing to ask for: no first request
     frame = forms.get("_frame") or {"head": [], "tail": []}
     fill = lambda text: text.format(**ctx)
     body = [fill(p) for p in form["parts"]]

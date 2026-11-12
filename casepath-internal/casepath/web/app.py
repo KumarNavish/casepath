@@ -422,11 +422,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
         events, files = store.list_case_events(case_id), store.list_files(case_id)
-        forms = (current.get("process") or {}).get("forms") or (catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
+        forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
+                 or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
-            text, none = letters.render(action.get("action"), forms, letters.context(current["case"], listed, events, clock, files))
-            draft = {"kind": action.get("action"), "title": (forms.get(action.get("action")) or {}).get("title"), "text": text, "none": none}
+            kind = "A1" if action.get("action") == "request" else action.get("action")
+            text, none = letters.render(kind, forms, letters.context(current["case"], listed, events, clock, files,
+                                                                                    evaluation=current["evaluation"], process=current["process"]))
+            draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none}
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
         changes = None

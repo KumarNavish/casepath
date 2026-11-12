@@ -914,10 +914,11 @@
    "title": "Unterlagen und Angaben anfordern",
    "to": "Kundschaft",
    "parts": [
-    "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.",
+    "{registrierung}",
     "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.",
     "{fragen}",
     "{hinweise}",
+    "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.",
     "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."
    ]
   },
@@ -1003,9 +1004,7 @@
   },
   "_frame": {
    "head": [
-    "Unsere Referenz: {referenz}",
-    "",
-    "{anrede}",
+    "{referenz_kopf}{anrede}",
     ""
    ],
    "tail": [
