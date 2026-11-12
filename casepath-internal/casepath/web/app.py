@@ -92,6 +92,11 @@ class EventRequest(BaseModel):
     fields: dict = Field(default_factory=dict)
 
 
+class ActionChoice(BaseModel):
+    kind: str = Field(pattern=r"^A\d{1,2}$")
+    reason_code: Literal["1", "2", "3", "4", "5", "6"]
+
+
 class StudyCopyRequest(BaseModel):
     expert: str = Field(min_length=1, max_length=40, pattern=r"^[A-Za-z0-9_-]+$")  # a pseudonym, never a name
 
@@ -420,10 +425,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         completed = current["run"]
         listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id))  # everything the case's screens and exports assert
         action = next((i for i in listed if i["kind"] == "next_action"), None)
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
-        events, files = store.list_case_events(case_id), store.list_files(case_id)
         forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
                  or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
+        options = letters.action_options(current.get("process") or {}, current.get("evaluation"), forms) if current.get("process") else []
+        picked = letters.chosen_action(store.list_case_events(case_id))
+        if action and picked and picked != action.get("action"):  # "andere Handlung": the handler's pick governs the draft and the date
+            option = next((o for o in options if o["kind"] == picked), {"title": picked, "next_in_days": action.get("next_in_days")})
+            action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
+                          next_in_days=option["next_in_days"], chosen_by_handler=True)
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
+        events, files = store.list_case_events(case_id), store.list_files(case_id)
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
             kind = "A1" if action.get("action") == "request" else action.get("action")
@@ -438,7 +449,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
             before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id)
             changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
-        return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft,
+        return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "new_files": new_files, "changes": changes,
                 "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
@@ -540,6 +551,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         store.add_file(case["id"], row["name"], row["media_type"], row["kind"], data,
                        {**cut.cut_extraction(row["extraction"], keep), "cut_of": {"case": case_id, "file": row["id"], "as_of": body.as_of}}, who)
         return case
+
+    @app.post("/api/cases/{case_id}/action", status_code=201)
+    def choose_action(case_id: str, body: ActionChoice, who=Depends(user)):
+        """'Andere Handlung': the handler picks another action kind with a one-tap reason; the draft and the date follow."""
+        current = state(case_id)
+        options = letters.action_options(current.get("process") or {}, current.get("evaluation"),
+                                         (catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms") or letters.SEED_FORMS)
+        if body.kind not in {o["kind"] for o in options}:
+            raise HTTPException(422, "Diese Handlung gehört nicht zur aktuellen oder einer benachbarten Stufe.")
+        return record(case_id, who, "item.corrected", item_id="next_action:0", chosen=body.kind, reason=body.reason_code)
 
     @app.post("/api/cases/{case_id}/events", status_code=201)
     def add_event(case_id: str, body: EventRequest, who=Depends(user)):

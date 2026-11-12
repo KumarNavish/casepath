@@ -1,6 +1,33 @@
 {
  "components": {
   "schemas": {
+   "ActionChoice": {
+    "properties": {
+     "kind": {
+      "pattern": "^A\\d{1,2}$",
+      "title": "Kind",
+      "type": "string"
+     },
+     "reason_code": {
+      "enum": [
+       "1",
+       "2",
+       "3",
+       "4",
+       "5",
+       "6"
+      ],
+      "title": "Reason Code",
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind",
+     "reason_code"
+    ],
+    "title": "ActionChoice",
+    "type": "object"
+   },
    "Body_upload_api_cases__case_id__files_post": {
     "properties": {
      "file": {
@@ -580,6 +607,54 @@
      }
     },
     "summary": "Get Case"
+   }
+  },
+  "/api/cases/{case_id}/action": {
+   "post": {
+    "description": "'Andere Handlung': the handler picks another action kind with a one-tap reason; the draft and the date follow.",
+    "operationId": "choose_action_api_cases__case_id__action_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ActionChoice"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Choose Action"
    }
   },
   "/api/cases/{case_id}/cut": {

@@ -534,6 +534,36 @@ class AppTests(unittest.TestCase):
         self.assertEqual(set(after["changes"]), {"added", "changed", "removed"})
         self.assertTrue(after["changes"]["changed"] or after["changes"]["added"])  # the customer message is now found
 
+    def test_andere_handlung_changes_the_draft_and_the_date_and_is_logged_with_its_reason(self):
+        from tests.test_handler_workflow import intake
+        catalogue = Path(self.directory.name) / "catalogue"
+        catalogue.mkdir()
+        (catalogue / "osm-mold.json").write_text(json.dumps(intake()))
+        client = self.client(CASEPATH_WORKFLOW_CATALOGUE=str(catalogue))
+        case = client.post("/api/cases", json={"title": "Andere Handlung"}).json()
+        client.post(f"/api/cases/{case['id']}/files", files={"file": ("message.eml", EMAIL, "message/rfc822")})
+        store = client.app.state.store
+        run = store.create_run(case["id"], "dev")
+        fact = lambda f, v: {"fact": f, "status": "established", "verdict": "accepted", "value": v, "citations": []}
+        store.update_run(run["id"], status="completed", workflow_id="mietmangel-handler", finished_at="2026-11-12T10:00:00+00:00",
+                         result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel")], "documents": [],
+                                 "brief": {"request": "Schimmel im Bad.", "parties": [], "timeline": []}})
+        before = client.get(f"/api/cases/{case['id']}").json()
+        kinds = {o["kind"]: o for o in before["action_options"]}
+        self.assertEqual(before["draft"]["kind"], "A1")
+        self.assertTrue({"A1", "A5", "A6"} <= set(kinds))  # this stage, its follow-up and the next stage
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/action", json={"kind": "A10", "reason_code": "1"}).status_code, 422)  # not near
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/action", json={"kind": "A5", "reason_code": "5"}).status_code, 201)
+        after = client.get(f"/api/cases/{case['id']}").json()
+        self.assertEqual(after["draft"]["kind"], "A5")
+        self.assertIn("Grundsätzlich hat die Mieterschaft", after["draft"]["text"])
+        self.assertNotEqual(after["follow_up"]["due"], before["follow_up"]["due"])  # A5's own days, not A1's
+        log = client.get(f"/api/cases/{case['id']}/events").json()["events"]
+        self.assertEqual((log[-1]["kind"], log[-1]["item_id"], log[-1]["chosen"], log[-1]["reason"]), ("item.corrected", "next_action:0", "A5", "5"))
+        if "A2" in kinds:  # a kind without a draft says why
+            client.post(f"/api/cases/{case['id']}/action", json={"kind": "A2", "reason_code": "1"})
+            self.assertTrue(client.get(f"/api/cases/{case['id']}").json()["draft"]["none"])
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

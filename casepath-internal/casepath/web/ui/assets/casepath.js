@@ -323,6 +323,17 @@ function bindRail() {
     prepareNew.disabled = true;
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" }).then(() => loadCase()).catch((error) => { S.message = error.message; renderCase(); });
   });
+  const otherAction = $("#other-action");  // "andere Handlung": pick a kind, then one reason; the draft and the date follow
+  if (otherAction) otherAction.addEventListener("change", () => {
+    const o = (S.data.action_options || []).find((x) => x.kind === otherAction.value);
+    if (o) { S.pickAction = o; renderCase(); }
+  });
+  for (const b of document.querySelectorAll("[data-action-reason]")) b.addEventListener("click", async () => {
+    const kind = S.pickAction.kind; S.pickAction = null;
+    await api(`/api/cases/${S.route.id}/action`, { method: "POST", body: JSON.stringify({ kind, reason_code: b.dataset.actionReason }) })
+      .catch((error) => { S.message = error.message; });
+    await loadCase();
+  });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
     continueRun.disabled = true;
@@ -1373,6 +1384,12 @@ function preparedView(ev, draft) {
       ? T("Stopped: what is established so far", "Angehalten: was bisher feststeht")
       : isClosed ? `${T("Closed", "Erledigt")}: ${esc(T(act.label.en, act.label.de))}`
       : `${T("Prepared", "Vorbereitet")}: ${esc(T(act.label.en, act.label.de))}`}</h2>
+    ${!paused && !isClosed && (S.data.action_options || []).length > 1 ? (S.pickAction
+      ? `<p class="cp-reasons" style="margin:0 0 10px"><span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because:`, `Stattdessen: ${esc(S.pickAction.title)}, weil:`)}</span>
+          ${["1", "2", "5", "6"].map((code) => `<button class="cp-chip" data-action-reason="${code}">${esc(T(REASONS_EN[code], REASONS[code]))}</button>`).join("")}</p>`
+      : `<p style="margin:0 0 10px"><select id="other-action" class="cp-button cp-quiet" aria-label="${T("another action", "andere Handlung")}">
+          <option value="">${T("another action…", "andere Handlung…")}</option>
+          ${S.data.action_options.filter((o) => o.kind !== act.action).map((o) => `<option value="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</option>`).join("")}</select></p>`) : ""}
     ${paused ? `<p class="cp-muted" style="margin:0 0 10px">${T("The preparation was stopped. Documents and checks may be incomplete; the next step is not proposed yet.", "Die Vorbereitung wurde angehalten. Unterlagen und Prüfung können unvollständig sein; ein nächster Schritt wird noch nicht vorgeschlagen.")}</p>` : ""}
     ${isClosed ? "" : `<p class="cp-muted" style="margin:0 0 10px">${T("Because", "Weil")}: ${esc(reason)}.${stage.title ? ` <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("Stage", "Stufe")}: ${esc(stage.title)}</a>` : ""}</p>`}
     ${draft ? `<pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>` : ""}

@@ -174,3 +174,30 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None):
 
 def _value(v):
     return {True: "ja", False: "nein"}.get(v, v)
+
+
+def action_options(graph, evaluation, forms):
+    """The action kinds of the current stage and its neighbours (the steps it comes from and leads to): what a handler
+    may pick instead of the prepared action, each with its days until the follow-up and whether it has a draft."""
+    steps = {s["id"]: s for s in graph.get("steps", [])}
+    here = ((evaluation or {}).get("current") or {}).get("step") or ((evaluation or {}).get("path") or [{}])[-1].get("step")
+    near = [here] + [e["to"] for e in (steps.get(here) or {}).get("next", [])] + [s["id"] for s in steps.values()
+                                                                                  if any(e["to"] == here for e in s.get("next", []))]
+    out = {}
+    for sid in near:
+        action = (steps.get(sid) or {}).get("action") or {}
+        for kind, days in [(action.get("kind"), action.get("next_in_days")), (action.get("follow_up"), None)] + \
+                          [(v.get("kind"), v.get("next_in_days")) for v in action.get("instead", [])]:
+            if kind and kind not in out:
+                form = (forms or {}).get(kind) or {}
+                out[kind] = {"kind": kind, "title": form.get("title") or kind, "next_in_days": days, "has_draft": bool(form) and not form.get("none")}
+    for rule in graph.get("clock", []):  # a follow-up's days come from the clock when no stage names them
+        if rule["then"] in out and out[rule["then"]]["next_in_days"] is None:
+            out[rule["then"]]["next_in_days"] = rule.get("deadline_days")
+    return list(out.values())
+
+
+def chosen_action(events):
+    """The kind a handler picked instead of the prepared action ("andere Handlung"), latest first; None when none."""
+    picks = [e for e in events or () if e.get("kind") == "item.corrected" and e.get("item_id") == "next_action:0" and e.get("chosen")]
+    return picks[-1]["chosen"] if picks else None
