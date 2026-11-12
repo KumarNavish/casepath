@@ -153,5 +153,6 @@ exactly (tested).
   saying whether anyone broke in.
 - The writer bundle contains the questions and must_show items verbatim; some name article numbers (dismissal) or
   conditions ("Ziff."). The tests allow these strings and nothing else of the rule text.
-- Seed-specific marginals: at seed 20261112 two of dismissal type 2's combined stops are never reached
-  (`b_stop_continued`, expected 3.7 in 60 files; `b_stop_time_limit`, expected 0.2). See `MARGINALS_*.json`.
+- Seed-specific marginals: at seed 20261112 dismissal type 2's three combined stops are never reached, only
+  pending (expected per 60 files: `b_stop_no_objection` 1.7, `b_stop_continued` 3.7, `b_stop_time_limit` 0.2; the
+  dependency file removes only the incoherent route to the last). See `MARGINALS_*.json`.
