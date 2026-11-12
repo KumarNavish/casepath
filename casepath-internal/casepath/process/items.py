@@ -128,6 +128,10 @@ def build_items(state, result, files=None):
             else:
                 ask = None
             note = (found.get(row["document"]) or {}).get("note")
+            disputed = found.get(row["document"]) or {}
+            if ask == "now" and disputed.get("verdict") == "rejected" and disputed.get("status") in {"absent", "unusable"}:
+                # The source checker says the negative finding is not shown: asking for it may ask for what is in the file.
+                ask, note = "proposed", "Die Prüfung widerspricht dem Befund «fehlt/unbrauchbar»"
             add("document", row["document"], value=row["status"], stated_as="put_to_handler" if row["required"] == "depends" else "established",
                 verdict=(found.get(row["document"]) or {}).get("verdict"), evidence=_evidence(row.get("citations")),
                 node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
