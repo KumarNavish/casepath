@@ -292,9 +292,21 @@ def f3(study, res3, review):
         out["procedures"][variant] = proc
         out["p"][variant] = {k: v[0] for k, v in tt.items()}
     sc = next(x for x in h4 if x["b"] == "self_consistency")
+    # Per-cluster differences (CasePath minus Self-consistency) from the same cluster values the registered contrast uses;
+    # run_contrast on them must reproduce the registered p.
+    ca, cb = study.clusters("casepath", "theft", "errors"), study.clusters("self_consistency", "theft", "errors")
+    rc = s3.run_contrast(ca, cb, "H4|self_consistency|recomputed", False, "signflip")
+    assert abs(rc["p"] - sc["p"]) < 1e-12, (rc["p"], sc["p"])
+    d = {k: ca[k] - cb[k] for k in sorted(ca)}
     out["h4_self_consistency"] = {"test": "exact two-sided sign-flip over the nine changed-fact clusters",
                                   "smallest_p": sc["min_p"], "p": sc["p"], "clusters": sc["clusters"],
-                                  "nonzero_clusters": sc["nonzero_clusters"], "could_have_passed": sc["min_p"] < ALPHA}
+                                  "nonzero_clusters": sc["nonzero_clusters"], "could_have_passed": sc["min_p"] < ALPHA,
+                                  "cluster_differences": d,
+                                  "clusters_fewer_casepath": sum(v < -1e-12 for v in d.values()),
+                                  "clusters_more_casepath": sum(v > 1e-12 for v in d.values()),
+                                  "clusters_equal": sum(abs(v) <= 1e-12 for v in d.values()),
+                                  "largest_against_casepath": max(d.values()),
+                                  "largest_for_casepath": min(d.values())}
     out["first_draft_h3_ni"] = {"margin": 0.10, "a_value": ni_old["a_value"], "b_value": ni_old["b_value"], "diff": ni_old["diff"],
                                 "diff_ci": ni_old["diff_ci"], "p": ni_old["p"],
                                 "definition": "first draft (STUDY3_DESIGN.md at 71eaa9eb): CasePath's strict unsafe errors per claim "
@@ -1005,7 +1017,9 @@ def markdown(res):
     f = x["first_draft_h3_ni"]
     md += [f"H4, Self-consistency contrast: {h['test']}; smallest p it could return {pv(h['smallest_p'])} (registered output); "
            f"p returned {pv(h['p'])} ({h['nonzero_clusters']} of {h['clusters']} clusters non-zero). The hypothesis could have "
-           f"passed: {'yes' if h['could_have_passed'] else 'no'}.", "",
+           f"passed: {'yes' if h['could_have_passed'] else 'no'}. CasePath had fewer errors in {h['clusters_fewer_casepath']} clusters "
+           f"and more in {h['clusters_more_casepath']} (equal in {h['clusters_equal']}); largest difference against CasePath "
+           f"{fmt(h['largest_against_casepath'])}, largest in its favour {fmt(h['largest_for_casepath'])}.", "",
            f"First draft's tenancy hypothesis: {f['definition']}. CasePath {fmt(f['a_value'])}, frontier {fmt(f['b_value'])}, "
            f"difference {fmt(f['diff'])} [{fmt(f['diff_ci'][0])}, {fmt(f['diff_ci'][1])}], p {pv(f['p'])}.", ""]
     # F4

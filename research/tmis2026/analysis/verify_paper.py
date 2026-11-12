@@ -76,10 +76,20 @@ for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_nu
 src, target = HERE / "posthoc_numbers.tex", PAPER / "results" / "numbers_posthoc.tex"
 saved_src = src.read_bytes()
 saved = target.read_bytes() if target.exists() else None
-r = subprocess.run([sys.executable, "lint_followup.py"], cwd=HERE, env={**os.environ, "TMIS_BUDGET_USD": "0"},
-                   capture_output=True, text=True)
+cache = HERE.parent / "runs" / "product" / "cache"
+if cache.is_dir() and any(cache.glob("*.json")):
+    # lint_followup.py re-reads the readings from the product's response cache (no model call).
+    r = subprocess.run([sys.executable, "lint_followup.py"], cwd=HERE, env={**os.environ, "TMIS_BUDGET_USD": "0"},
+                       capture_output=True, text=True)
+    how = "lint_followup.py re-run"
+else:
+    # Without the cache archive: only the macro writer, applied to the stored lint_followup.json and decomposition.json.
+    r = subprocess.run([sys.executable, "-c", "import json, lint_followup as L; from pathlib import Path; "
+                        "Path('posthoc_numbers.tex').write_text(L.macros(json.loads(Path('lint_followup.json').read_text()), "
+                        "json.loads(Path('decomposition.json').read_text())))"], cwd=HERE, capture_output=True, text=True)
+    how = "macros from the stored JSON; cache absent"
 same_src = r.returncode == 0 and src.read_bytes() == saved_src
-step("posthoc_numbers.tex reproduces byte for byte", same_src, r.stderr[-300:] if r.returncode else "")
+step(f"posthoc_numbers.tex reproduces byte for byte ({how})", same_src, r.stderr[-300:] if r.returncode else "")
 if not same_src:
     src.write_bytes(saved_src)
 step("numbers_posthoc.tex is the copy of posthoc_numbers.tex", saved == src.read_bytes())

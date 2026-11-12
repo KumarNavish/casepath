@@ -202,7 +202,7 @@ p values: H1-H3 the registered exact sign-flip p; H4 the largest of its three re
 | H5 | not tested | not tested | not tested | confirmed (adjusted p 0.0234) |
 | H3-NI (first draft) | not in this order | not in this order | not tested | not in this procedure |
 
-H4, Self-consistency contrast: exact two-sided sign-flip over the nine changed-fact clusters; smallest p it could return 0.0039 (registered output); p returned 0.0625 (9 of 9 clusters non-zero). The hypothesis could have passed: yes.
+H4, Self-consistency contrast: exact two-sided sign-flip over the nine changed-fact clusters; smallest p it could return 0.0039 (registered output); p returned 0.0625 (9 of 9 clusters non-zero). The hypothesis could have passed: yes. CasePath had fewer errors in 7 clusters and more in 2 (equal in 0); largest difference against CasePath 1.000, largest in its favour -1.750.
 
 First draft's tenancy hypothesis: first draft (STUDY3_DESIGN.md at 71eaa9eb): CasePath's strict unsafe errors per claim not higher than Rules in context, frontier, by 0.10 or more; paired cluster bootstrap over the 24 families, p = share of resamples reaching the margin. CasePath 0.312, frontier 1.865, difference -1.552 [-2.451, -0.753], p < 0.0001.
 

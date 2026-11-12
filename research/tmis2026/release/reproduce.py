@@ -105,6 +105,23 @@ def exec_redirected(path, line, new_line):
     exec(code, {"__name__": "__main__", "__file__": str(path)})
 
 
+def load_patched(path, name, out, writes):
+    """Load a script as a module with each of its output lines `(HERE / "x").write_text` pointed to the folder `out`.
+    Fails if a line is not there exactly once. Inputs are still read from the analysis folder."""
+    src = Path(path).read_text()
+    for w in writes:
+        if src.count(w) != 1:
+            raise SystemExit(f"{Path(path).name}: the output line was not found exactly once: {w}")
+        src = src.replace(w, w.replace("(HERE / ", "(_REPRODUCE_OUT / "))
+    mod = importlib.util.module_from_spec(importlib.util.spec_from_loader(name, loader=None))
+    mod.__file__ = str(path)
+    mod._REPRODUCE_OUT = Path(out)
+    sys.modules[name] = mod
+    sys.path.insert(0, str(Path(path).parent))
+    exec(compile(src, str(path), "exec"), mod.__dict__)
+    return mod
+
+
 def child(task, out):
     out = Path(out)
     sys.path.insert(0, str(AN))
@@ -134,6 +151,28 @@ def child(task, out):
         exec_redirected(AN / "make_numbers_study3_review.py",
                         'OUT = TMIS / "paper" / "results" / "numbers_study3_review.tex"',
                         f"OUT = Path({str(out / 'numbers_study3_review.tex')!r})")
+    elif task == "feedback":
+        m = load(AN / "study3_feedback.py", "study3_feedback")
+        m.OUT = out / "study3_feedback"
+        m.main([])
+    elif task == "numbers_study3_feedback":
+        exec_redirected(AN / "make_numbers_study3_feedback.py",
+                        'OUT = TMIS / "paper" / "results" / "numbers_study3_feedback.tex"',
+                        f"OUT = Path({str(out / 'numbers_study3_feedback.tex')!r})")
+    elif task == "decomposition":
+        m = load_patched(AN / "decomposition.py", "decomposition", out,
+                         ['(HERE / "decomposition.json").write_text', '(HERE / "decomposition.md").write_text'])
+        m.main(None)
+    elif task == "lint_followup":
+        m = load_patched(AN / "lint_followup.py", "lint_followup", out,
+                         ['(HERE / "lint_followup.json").write_text', '(HERE / "lint_followup.md").write_text',
+                          '(HERE / "posthoc_numbers.tex").write_text'])
+        m.main()
+    elif task == "posthoc_macros":
+        # Model-free and cache-free: the macro writer of lint_followup.py applied to the stored JSON files.
+        m = load(AN / "lint_followup.py", "lint_followup")
+        tex = m.macros(json.loads((AN / "lint_followup.json").read_text()), json.loads((AN / "decomposition.json").read_text()))
+        (out / "posthoc_numbers.tex").write_text(tex)
     elif task == "dev_probe":
         sys.path.insert(0, str(TMIS / "dev_probe"))
         m = load(TMIS / "dev_probe" / "build.py", "dev_probe_build")
@@ -295,6 +334,61 @@ def review_steps(tmp):
         report("study 3 review figure: fig_families.pdf written", "PASS" if ok else "FAIL")
 
 
+PRODUCT_CACHE = TMIS / "runs" / "product" / "cache"
+
+
+def cache_present():
+    return PRODUCT_CACHE.is_dir() and any(PRODUCT_CACHE.glob("*.json"))
+
+
+def feedback_steps(tmp):
+    """The checks added after the outside review (study3_feedback.py, decomposition.py, lint_followup.py). All three read
+    the product's response cache (runs/product/cache, ignored by git); none makes a model call (the lint's mutation arm was
+    run once in development and is read from its stored runs and ledger). With the cache archive in place they are re-run
+    into the temporary folder and compared byte for byte; without it they are skipped, and only the model-free and
+    cache-free parts are re-checked: the macros regenerated from the stored JSON files, and the tests that need no cache."""
+    out = tmp / "feedback"
+    out.mkdir()
+    paper = TMIS / "paper" / "results"
+    if cache_present():
+        for task, label, files in (("feedback", "analysis/study3_feedback.py", ["study3_feedback.json", "study3_feedback.md"]),
+                                   ("decomposition", "analysis/decomposition.py", ["decomposition.json", "decomposition.md"]),
+                                   ("lint_followup", "analysis/lint_followup.py",
+                                    ["lint_followup.json", "lint_followup.md", "posthoc_numbers.tex"])):
+            r = child_step(f"study 3 feedback: {label} (cache present)", task, out)
+            if r.returncode == 0:
+                for f in files:
+                    ok, why = same(out / f, AN / f)
+                    report(f"study 3 feedback: {f} equals the stored file", "PASS" if ok else "FAIL", why)
+    else:
+        msg = ("runs/product/cache is not present (not in git; offered as a separate archive); the readings "
+               "these scripts recompute were not re-checked")
+        for label in ("analysis/study3_feedback.py", "analysis/decomposition.py", "analysis/lint_followup.py"):
+            report(f"study 3 feedback: {label} re-run", "SKIP", msg)
+    r = child_step("study 3 feedback: analysis/make_numbers_study3_feedback.py (from the stored JSON)", "numbers_study3_feedback", out)
+    if r.returncode == 0:
+        ok, why = same(out / "numbers_study3_feedback.tex", paper / "numbers_study3_feedback.tex")
+        report("study 3 feedback: numbers_study3_feedback.tex equals the stored file", "PASS" if ok else "FAIL", why)
+    r = child_step("study 3 feedback: post-hoc macros from the stored lint_followup.json and decomposition.json",
+                   "posthoc_macros", out)
+    if r.returncode == 0:
+        for target in (AN / "posthoc_numbers.tex", paper / "numbers_posthoc.tex"):
+            ok, why = same(out / "posthoc_numbers.tex", target)
+            report(f"study 3 feedback: {target.relative_to(TMIS)} equals the regenerated macros", "PASS" if ok else "FAIL", why)
+    script_step("tests: analysis/test_posthoc.py", [sys.executable, "test_posthoc.py"], cwd=AN)
+    if cache_present():
+        script_step("tests: analysis/test_study3_feedback.py", [sys.executable, "test_study3_feedback.py"], cwd=AN)
+    else:
+        names = [f"test_study3_feedback.{c}" for c in ("ClaimType", "Lines", "Orders", "Readings", "Votes", "AltReference",
+                                                       "Amendments")]
+        names += [f"test_study3_feedback.F5Hook.{t}" for t in ("test_registered_reference_reproduces_stored_numbers",
+                                                              "test_h4_self_consistency_cluster_counts",
+                                                              "test_perturbed_copy_moves_the_numbers",
+                                                              "test_one_document_changed_by_hand")]
+        script_step("tests: analysis/test_study3_feedback.py without the replay test, which reads the cache",
+                    [sys.executable, "-m", "unittest"] + names, cwd=AN)
+
+
 def test_steps():
     for t in ("test_study3.py", "test_study3_review.py", "test_study2.py"):
         script_step(f"tests: analysis/{t}", [sys.executable, t], cwd=AN)
@@ -396,6 +490,7 @@ def main():
             product_step(tmp)
             study3_steps(tmp)
             review_steps(tmp)
+            feedback_steps(tmp)
             test_steps()
             study12_steps(tmp, a.skip_latex)
     finally:

@@ -2020,8 +2020,24 @@
    "p": 0.0
   },
   "h4_self_consistency": {
+   "cluster_differences": {
+    "PR_bicycle_claimed": -0.625,
+    "PR_declined": -1.6666666666666667,
+    "PR_expert_procedure_requested": 0.125,
+    "PR_goods_recovered": -0.75,
+    "PR_nachfrist_set": -0.8750000000000001,
+    "PR_repair_over_500": -1.75,
+    "PR_scheduled_valuable_1000": -0.5833333333333333,
+    "PR_sim_card_stolen": -0.5,
+    "PR_third_party_causer": 1.0
+   },
    "clusters": 9,
+   "clusters_equal": 0,
+   "clusters_fewer_casepath": 7,
+   "clusters_more_casepath": 2,
    "could_have_passed": true,
+   "largest_against_casepath": 1.0,
+   "largest_for_casepath": -1.75,
    "nonzero_clusters": 9,
    "p": 0.0625,
    "smallest_p": 0.00390625,

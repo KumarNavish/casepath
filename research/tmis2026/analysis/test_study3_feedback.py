@@ -251,6 +251,25 @@ class F5Hook(unittest.TestCase):
         self.assertAlmostEqual(r["by_design"]["casepath"]["strict_unsafe|all claims"],
                                self.res3["designs"]["casepath"]["regimes"]["tenancy"]["measures"]["strict_unsafe_per_claim"])
 
+    def test_h4_self_consistency_cluster_counts(self):
+        """The per-cluster counts of the H4 Self-consistency contrast agree with the registered result and with the stored
+        post-hoc count by changed fact; their sign pattern reproduces the registered sign-flip p."""
+        self.study.load("casepath", "theft")
+        self.study.load("self_consistency", "theft")
+        ca = self.study.clusters("casepath", "theft", "errors")
+        cb = self.study.clusters("self_consistency", "theft", "errors")
+        d = [ca[k] - cb[k] for k in sorted(ca)]
+        sc = next(t for h in self.res3["hypotheses"] if h["id"] == "H4" for t in h["tests"] if t["b"] == "self_consistency")
+        self.assertEqual(len(d), sc["clusters"])
+        self.assertAlmostEqual(F.s3.signflip_p(d), sc["p"])
+        fewer, more = sum(x < -1e-12 for x in d), sum(x > 1e-12 for x in d)
+        stored = json.loads((HERE / "study3_feedback.json").read_text())["F3"]["h4_self_consistency"]
+        self.assertEqual((fewer, more), (stored["clusters_fewer_casepath"], stored["clusters_more_casepath"]))
+        post = json.loads((HERE / "study3_posthoc.json").read_text())
+        h41 = post["h4_self_consistency_by_fact"]
+        self.assertEqual((fewer, more), (h41["favouring_casepath"], h41["favouring_self_consistency"]))
+        self.assertGreater(more, 0)  # so the claim "fewer in all nine clusters" is false
+
     def test_perturbed_copy_moves_the_numbers(self):
         alt = F.perturbed(self.study)
         self.assertEqual(alt, F.perturbed(self.study))  # seeded
