@@ -15,7 +15,7 @@ a question, or already present.
 
 ## What was done
 
-1. **Paper** for ACM TMIS: 59 pages plus a 27-page supplement. Design-science
+1. **Paper** for ACM TMIS: 31 pages plus a 69-page supplement (rewritten on 12 November; was 59 and 27). Design-science
    framing, three contributions: the decision rule with proofs and scope; the
    artefact with four design principles; a pre-registered evaluation.
 2. **Product fixes**: 63 commits on a branch of the product (two independent
@@ -131,3 +131,9 @@ should wait, against 35 to 48% for single prompts.
 
 Details: `analysis/study3_feedback.md`, `analysis/decomposition.md`,
 `analysis/lint_followup.md`, `cleanroom/README.md`, `REWRITE_BRIEF.md`.
+- Third independent referee round on the rewritten paper: major revision,
+  then, on the revision, minor revision with every item since closed
+  (`analysis/review/REFEREE_REVIEW_ROUND3.md`, `REFEREE_ROUND3_CHECK.md`).
+  The paper now leads with the registered tenancy result (0.31 against 2.14
+  and 1.86), claims "holds" for tenancy only, and gives cost as 20 to 42
+  times the same-model prompt.

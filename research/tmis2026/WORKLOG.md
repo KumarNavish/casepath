@@ -473,5 +473,16 @@ registered development analysis. Disagreements between two transcriptions are
 settled before any sealed run. Requirements and questions for the product's
 builders: `expert_study/REQUEST_TO_PRODUCT_20261112.md`.
 
-**Paper.** Rewrite brief v4 (`REWRITE_BRIEF.md`); abstract rewritten; rewrite and
-figures in progress.
+**Paper.** Rewritten to brief v4 (`REWRITE_BRIEF.md`): main paper 31 pages (was
+59), supplement 69. A third independent referee read it (major revision: 10 major,
+23 minor concerns, among them a false sentence on the failed hypothesis, a headline
+built on a post hoc split, theft "holding" that the measure cannot show, cost
+understated, the lint oversold). All were accepted (`FIX_BRIEF_ROUND3.md`). The
+referee's check of the revision: minor revision, 64 of 71 items closed, 7 partly,
+and ten small new items, all closed since. The paper now leads with the registered
+tenancy result, claims "holds" for tenancy only, states cost as 20 to 42 times the
+same-model prompt, and names the one interpretive choice (a denied defining event
+ends the process) that carries about two thirds of the tenancy lead. `reproduce.sh`
+covers the new analyses (83 steps, about ten minutes, no model calls).
+Deliverables refreshed: both PDFs, the Overleaf ZIP (55 files, test-built), the
+review checklist and the evidence-and-requirements document.
