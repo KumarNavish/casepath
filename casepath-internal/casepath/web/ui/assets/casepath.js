@@ -1164,7 +1164,11 @@ function runLine() {
     return { start: at(mine[0]), end: open ? now : at(mine[mine.length - 1]), open };
   };
   const learned = (S.runProfile || {}).median_seconds || {};
-  if (!S.runProfile) api("/api/run-profile").then((p) => { S.runProfile = p; }).catch(() => { S.runProfile = {}; });
+  const pages = (S.data.files || []).reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 1), 0);
+  if (!S.runProfile || S.runProfile.forCase !== S.data.case.id) {
+    S.runProfile = { forCase: S.data.case.id };
+    api(`/api/run-profile?pages=${pages}`).then((p) => { S.runProfile = { ...p, forCase: S.data.case.id }; }).catch(() => {});
+  }
   const rows = RUN_STAGES.map((stage) => ({ stage: { ...stage, expect: learned[stage.id] ?? stage.expect }, span: span(stage) }));
   const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
   const cells = rows.map(({ stage, span }) => `<span class="cp-chip ${span ? (span.open ? "wait" : "good") : ""}">${T(stage.en, stage.de)}${span ? ` · ${Math.round((span.end - span.start) / 1000)} s` : ""}</span>`).join(" ");

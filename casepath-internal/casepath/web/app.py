@@ -765,18 +765,29 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     STAGES = {"lesen": {"reader"}, "prozess": {"router", "process_builder"}, "fakten": {"claim_reader"},
               "unterlagen": {"document_finder"}, "pruefung": {"source_checker", "result_checker"}}
 
+    def case_pages(case_id):
+        return sum(len((f.get("extraction") or {}).get("kept_pages") or ()) or int((f.get("extraction") or {}).get("pages") or 1)
+                   for f in store.list_files(case_id))
+
+    band = lambda pages: "klein" if pages <= 10 else "mittel" if pages <= 30 else "gross"  # case size, in pages read
+
     @app.get("/api/run-profile")
-    def run_profile(who=Depends(user)):
-        """Median seconds per stage over this deployment's recent completed runs: what a run line expects next."""
+    def run_profile(pages: int | None = Query(None, ge=0, le=5000), who=Depends(user)):
+        """Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);
+        all recent runs when there are fewer than three of that size."""
+        runs = store.recent_runs(60)
+        same = [r for r in runs if pages is not None and band(case_pages(r["case_id"])) == band(pages)]
+        chosen = same if len(same) >= 3 else runs[:30]
         spans = {stage: [] for stage in STAGES}
-        for run in store.recent_runs(30):
+        for run in chosen:
             events = run.get("events") or []
             for stage, agents in STAGES.items():
                 times = [datetime.fromisoformat(e["at"]) for e in events if e.get("agent") in agents and e.get("at")]
                 if times:
                     spans[stage].append((max(times) - min(times)).total_seconds())
         median = lambda xs: sorted(xs)[len(xs) // 2] if xs else None
-        return {"runs": len(store.recent_runs(30)), "median_seconds": {s: median(v) for s, v in spans.items()}}
+        return {"runs": len(chosen), "band": band(pages) if pages is not None and chosen is same else "alle",
+                "median_seconds": {s: median(v) for s, v in spans.items()}}
 
     @app.get("/api/manifest")
     def running_manifest(who=Depends(user)):

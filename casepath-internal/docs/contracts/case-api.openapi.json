@@ -1568,8 +1568,28 @@
   },
   "/api/run-profile": {
    "get": {
-    "description": "Median seconds per stage over this deployment's recent completed runs: what a run line expects next.",
+    "description": "Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);\nall recent runs when there are fewer than three of that size.",
     "operationId": "run_profile_api_run_profile_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "pages",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "maximum": 5000,
+         "minimum": 0,
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Pages"
+      }
+     }
+    ],
     "responses": {
      "200": {
       "content": {
@@ -1578,6 +1598,16 @@
        }
       },
       "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
      }
     },
     "summary": "Run Profile"
