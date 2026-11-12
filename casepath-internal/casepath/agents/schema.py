@@ -101,19 +101,26 @@ def choice(values):
     return {"type": "string", "enum": list(values)}
 
 
-def fit_to_schema(value, schema):
+def fit_to_schema(value, schema, path="$", changes=None):
     """A report as the schema allows it: extra keys dropped, missing keys empty, texts and lists cut to their limits.
 
     Used for an agent's final report only, where a rejected report costs a whole rewritten turn; enums, patterns and
     types are still checked by validate_result afterwards.
     """
+    changes = [] if changes is None else changes  # every change made: (path, what, original, kept); nothing is cut silently
     types = _types(schema)
     if isinstance(value, dict) and "object" in types:
         props = schema.get("properties", {})
-        return {k: fit_to_schema(value.get(k, _empty(props[k])), props[k]) for k in props}
+        changes += [(f"{path}.{k}", "dropped", 1, 0) for k in value if k not in props]
+        changes += [(f"{path}.{k}", "filled", 0, 0) for k in props if k not in value]
+        return {k: fit_to_schema(value.get(k, _empty(props[k])), props[k], f"{path}.{k}", changes) for k in props}
     if isinstance(value, list) and "array" in types:
-        return [fit_to_schema(v, schema["items"]) for v in value[:schema.get("maxItems", len(value))]]
-    if isinstance(value, str) and "string" in types and "maxLength" in schema:
+        keep = schema.get("maxItems", len(value))
+        if len(value) > keep:
+            changes.append((path, "items cut", len(value), keep))
+        return [fit_to_schema(v, schema["items"], f"{path}[{i}]", changes) for i, v in enumerate(value[:keep])]
+    if isinstance(value, str) and "string" in types and len(value) > schema.get("maxLength", len(value)):
+        changes.append((path, "text cut", len(value), schema["maxLength"]))
         return value[:schema["maxLength"]]
     return value
 

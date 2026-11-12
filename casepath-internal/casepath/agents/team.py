@@ -622,7 +622,11 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
             else:
                 try:
                     if call["name"] == "report":  # a rejected report costs a whole rewritten turn: fit what can be fitted
-                        call["arguments"] = fit_to_schema(call["arguments"], definition["parameters"])
+                        changes = []
+                        call["arguments"] = fit_to_schema(call["arguments"], definition["parameters"], changes=changes)
+                        if changes:
+                            work.emit(agent, "report.fitted", changes=[{"field": p, "change": c, "original": o, "kept": k} for p, c, o, k in changes])
+                            work.fitted = getattr(work, "fitted", []) + [p for p, c, _, _ in changes if c in {"text cut", "items cut"}]
                     validate_result(call["arguments"], definition["parameters"])
                 except ValueError as error:
                     result = {"error": f"arguments do not match the tool: {error}"}
@@ -916,6 +920,7 @@ def finalize(work):
                 for k, p in work.presumptions().items()],
             "documents": list(work.documents.values()), "evaluation": evaluation,
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
+            "fitted": getattr(work, "fitted", []),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
             "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],

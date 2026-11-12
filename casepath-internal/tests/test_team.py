@@ -397,6 +397,10 @@ class FitReportTests(unittest.TestCase):
     def test_a_report_with_a_missing_field_and_an_overlong_text_is_fitted_not_rejected(self):
         from casepath.agents.schema import arr, fit_to_schema, obj, text, validate_result
         schema = obj(summary=text(10, minLength=1), points=arr(text(5), maxItems=2), reply=obj(needed={"type": "boolean"}, subject=text(20)))
-        fitted = fit_to_schema({"summary": "a long summary", "points": ["abcdefg", "b", "c"], "extra": 1}, schema)
+        changes = []
+        fitted = fit_to_schema({"summary": "a long summary", "points": ["abcdefg", "b", "c"], "extra": 1}, schema, changes=changes)
         validate_result(fitted, schema)
+        self.assertEqual({(p, c) for p, c, _, _ in changes}, {("$.extra", "dropped"), ("$.reply", "filled"), ("$.summary", "text cut"),
+                                                              ("$.points", "items cut"), ("$.points[0]", "text cut"),
+                                                              ("$.reply.needed", "filled"), ("$.reply.subject", "filled")})
         self.assertEqual(fitted, {"summary": "a long sum", "points": ["abcde", "b"], "reply": {"needed": False, "subject": ""}})

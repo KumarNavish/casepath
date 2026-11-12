@@ -225,12 +225,14 @@ def build_items(state, result, files=None):
     for i, event in enumerate(brief.get("timeline") or []):
         add("timeline", str(i), value=f"{event.get('date') or ''} {event.get('event') or ''}".strip(), stated_as="established",
             verdict=None, evidence=_evidence(event.get("citations")), node=None, origin="claim_reader", chain=False, label=None)
+    cut = set(result.get("fitted") or [])  # what fitting the report shortened: the screen says so ("gekürzt")
     for i, point in enumerate(result.get("open_points") or []):
         add("open_point", str(i), value=point if isinstance(point, str) else json.dumps(point, ensure_ascii=False), stated_as="put_to_handler",
-            verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None)
+            verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None,
+            **({"trimmed": True} if f"$.open_points[{i}]" in cut or (i == len(result["open_points"]) - 1 and "$.open_points" in cut) else {}))
     if result.get("answer"):
         add("answer", "0", value=result["answer"], stated_as="established", verdict=None, evidence=[], node=None, origin="result_checker",
-            chain=False, label=None)
+            chain=False, label=None, **({"trimmed": True} if "$.answer" in cut else {}))
     if brief.get("request") or result.get("summary"):
         add("summary", "0", value=brief.get("request") or result.get("summary"), stated_as="established", verdict=None, evidence=[],
             node=None, origin="claim_reader", chain=False, label=None)

@@ -967,6 +967,9 @@ function documentsView() {
     }).join("")}</tbody></table>`;
 }
 
+// A text the report fitting shortened says so: nothing is cut silently.
+const trimmed = (kind, key) => ((item(kind, key) || {}).trimmed ? ` <span class="cp-chip wait">${T("shortened", "gekürzt")}</span>` : "");
+
 function resultView() {
   const r = result();
   if (!r || !r.answer) return `<p class="cp-empty">${T("Where the case stands in its process, its document checklist, what CasePath proposes to learn and a draft appear here after the case is prepared.", "Stand im Prozess, Dokumenten-Checkliste, Lernvorschläge und ein Entwurf erscheinen hier, sobald der Fall vorbereitet ist.")}</p>`;
@@ -994,9 +997,9 @@ function resultView() {
   const report = `<p><a class="cp-button" href="/api/cases/${esc(S.route.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report as .docx", "Fallbericht als .docx")}</a>
     <span class="cp-muted">${T("Everything above with its sources, for the case file.", "Alles hier mit den Fundstellen, für das Dossier.")}</span></p>`;
   return `${ratedRun() ? feedbackLine() : ""}${report}${position}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
-    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
+    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
     ${learning}
-    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}</h2><p class="cp-answer">${esc(r.answer)}${rate("answer")}</p><p>${esc(r.summary)}</p>
+    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}</h2><p class="cp-answer">${esc(r.answer)}${trimmed("answer", "0")}${rate("answer")}</p><p>${esc(r.summary)}</p>
     ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
       <div class="clauses">${r.reply.clauses.map((c, i) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}${rate(`reply:${i}`)}</p>
         <small class="cp-muted">${c.supported ? (c.kind === "formal" ? "" : (c.kind === "request" ? T("Asks for: ", "Fragt nach: ") : T("Rests on: ", "Beruht auf: ")) + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; "))
