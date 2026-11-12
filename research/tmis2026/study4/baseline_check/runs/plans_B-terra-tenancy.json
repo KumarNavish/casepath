@@ -5755,5 +5755,770 @@
    ]
   },
   "usage_cost": 0.0082627
+ },
+ "B|f2cl_6d6b6dc27953028c|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [
+    "defect_notification"
+   ],
+   "family": "defect_mold_heating",
+   "holds": [],
+   "questions": [
+    "Is there any immediate health or safety risk, and has your wife obtained medical advice or confirmation?",
+    "When did the defects begin, and which rooms and radiators are affected?",
+    "When and how did the landlord receive the July notice, and what response, repair proposals or access arrangements followed?",
+    "Has a specific written repair deadline been communicated to the landlord? If so, when and how was it delivered?"
+   ],
+   "requests": [
+    "dated_photos",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_8e18cda6343afb44",
+       "quote": "Meine Frau ist seit einigen Wochen öfter krank, Husten und Müdigkeit."
+      },
+      {
+       "artifact_id": "f2msg_8e18cda6343afb44",
+       "quote": "Ob das mit der Wohnung zusammenhängt, wissen wir nicht, das ist nicht abgeklärt."
+      }
+     ],
+     "flag": "health_effects",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_8e18cda6343afb44",
+       "quote": "In der Ecke des Kinderzimmers ist die Wand feucht, und es haben sich schwarze Schimmelflecken gebildet."
+      }
+     ],
+     "flag": "mold",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_8e18cda6343afb44",
+       "quote": "Zudem bleiben zwei der vier Heizkörper kalt, auch wenn man sie voll aufdreht; die Heizung funktioniert in diesen Räumen nicht."
+      }
+     ],
+     "flag": "heating",
+     "verdict": "true"
+    },
+    {
+     "citations": [],
+     "flag": "specialist_needed",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_8e18cda6343afb44",
+       "quote": "Ich habe entschieden, den Mietzins ab dem 1. November bei der Schlichtungsbehörde zu hinterlegen, bis die Mängel behoben sind."
+      }
+     ],
+     "flag": "deposit_considered",
+     "verdict": "true"
+    }
+   ],
+   "family": "defect_mold_heating",
+   "plan": [
+    {
+     "because": "The supplied contract identifies the parties and some terms but does not identify the rented property. Request the complete contract.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The dated original identifies the reported defects and the landlord addressee.",
+     "decision": "on_file",
+     "document_type": "defect_notification"
+    },
+    {
+     "because": "The notice does not establish whether or when the landlord received it.",
+     "decision": "request",
+     "document_type": "proof_of_notification"
+    },
+    {
+     "because": "Dated photographs can document the visible defects and affected locations.",
+     "decision": "request",
+     "document_type": "dated_photos"
+    },
+    {
+     "because": "The landlord's response, proposed work and access arrangements are not documented.",
+     "decision": "request",
+     "document_type": "landlord_response_history"
+    },
+    {
+     "because": "Mould and dampness are reported; dated observations can document conditions.",
+     "decision": "request",
+     "document_type": "humidity_temperature_log"
+    },
+    {
+     "because": "A heating fault is reported; request any inspection or service findings.",
+     "decision": "request",
+     "document_type": "heating_service_report"
+    },
+    {
+     "because": "Health effects are reported, although their cause is unknown. Request any medical confirmation without assuming causation.",
+     "decision": "request",
+     "document_type": "medical_confirmation"
+    },
+    {
+     "because": "The need for a specialist is unmentioned and is presumed absent for planning under the silence policy; causation remains open.",
+     "decision": "not_needed",
+     "document_type": "technical_inspection"
+    },
+    {
+     "because": "A rent deposit is contemplated. The supplied notice asks for prompt repair but gives no specific deadline.",
+     "decision": "request",
+     "document_type": "written_repair_deadline"
+    },
+    {
+     "because": "This document is optional under the process.",
+     "decision": "not_needed",
+     "document_type": "caretaker_correspondence"
+    }
+   ],
+   "questions": [
+    "Is there any immediate health or safety risk, and has your wife obtained medical advice or confirmation?",
+    "When did the defects begin, and which rooms and radiators are affected?",
+    "When and how did the landlord receive the July notice, and what response, repair proposals or access arrangements followed?",
+    "Has a specific written repair deadline been communicated to the landlord? If so, when and how was it delivered?"
+   ],
+   "supplied_documents": [
+    {
+     "artifact_id": "f2att_6b8b77d12d83f28e",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "f2att_6b8b77d12d83f28e",
+       "quote": "Mieter: Simon Lehmann"
+      },
+      {
+       "artifact_id": "f2att_6b8b77d12d83f28e",
+       "quote": "Nettomietzins: CHF 1540.– pro Monat"
+      }
+     ],
+     "document_type": "lease_contract"
+    },
+    {
+     "artifact_id": "f2att_91bfe08cffedb560",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "f2att_91bfe08cffedb560",
+       "quote": "Uster, 11. Juli 2026"
+      },
+      {
+       "artifact_id": "f2att_91bfe08cffedb560",
+       "quote": "Ich melde folgende Mängel: In der Ecke des Kinderzimmers ist die Wand feucht, und es haben sich schwarze Schimmelflecken gebildet. Ausserdem bleiben zwei der vier Heizkörper kalt, auch wenn sie voll aufgedreht sind."
+      }
+     ],
+     "document_type": "defect_notification"
+    },
+    {
+     "artifact_id": "f2att_91bfe08cffedb560",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "f2att_91bfe08cffedb560",
+       "quote": "Ich bitte um rasche Behebung."
+      }
+     ],
+     "document_type": "written_repair_deadline"
+    }
+   ]
+  },
+  "usage_cost": 0.00871395
+ },
+ "B|f2cl_737d9eeb4a66c9c2|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [
+    "lease_contract"
+   ],
+   "family": "defect_mold_heating",
+   "holds": [],
+   "questions": [
+    "When and how did you notify the landlord, and what responses or access arrangements followed?",
+    "Have you sent the landlord a written repair deadline? If so, when and how was it delivered?",
+    "Have you sought medical advice for the sleep disruption or exhaustion, and is there an immediate health or safety concern?"
+   ],
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "landlord_response_history",
+    "medical_confirmation",
+    "proof_of_notification",
+    "written_repair_deadline"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_bad4d7226c744918",
+       "quote": "I'm up every two hours and completely wiped out at work"
+      }
+     ],
+     "flag": "health_effects",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_bad4d7226c744918",
+       "quote": "no damp or anything like that btw, the flat is dry, it's just the shutters"
+      }
+     ],
+     "flag": "mold",
+     "verdict": "false"
+    },
+    {
+     "citations": [],
+     "flag": "heating",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_bad4d7226c744918",
+       "quote": "no need for any expert, just someone with the parts"
+      }
+     ],
+     "flag": "specialist_needed",
+     "verdict": "false"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_bad4d7226c744918",
+       "quote": "a friend told me I could stop paying the rent to them and pay it into some official account instead until they fix it. if they don't do anything by end of month that's what I'll do"
+      }
+     ],
+     "flag": "deposit_considered",
+     "verdict": "true"
+    }
+   ],
+   "family": "defect_mold_heating",
+   "plan": [
+    {
+     "because": "The supplied contract identifies the parties, property and tenancy terms.",
+     "decision": "on_file",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "Obtain the report identifying the defects and when they were reported.",
+     "decision": "request",
+     "document_type": "defect_notification"
+    },
+    {
+     "because": "Establish whether and when the landlord received the defect report.",
+     "decision": "request",
+     "document_type": "proof_of_notification"
+    },
+    {
+     "because": "Obtain dated photographs showing the affected shutters and rooms.",
+     "decision": "request",
+     "document_type": "dated_photos"
+    },
+    {
+     "because": "Obtain the landlord's responses, proposed work and access arrangements.",
+     "decision": "request",
+     "document_type": "landlord_response_history"
+    },
+    {
+     "because": "Mould or damp is denied.",
+     "decision": "not_needed",
+     "document_type": "humidity_temperature_log"
+    },
+    {
+     "because": "Heating is not mentioned and is presumed absent for the evidence plan.",
+     "decision": "not_needed",
+     "document_type": "heating_service_report"
+    },
+    {
+     "because": "Sleep disruption and exhaustion are reported; request any medical confirmation of findings and limits of attributed cause.",
+     "decision": "request",
+     "document_type": "medical_confirmation"
+    },
+    {
+     "because": "The customer reports that an expert is not needed; the cause remains open unless supported.",
+     "decision": "not_needed",
+     "document_type": "technical_inspection"
+    },
+    {
+     "because": "An official rent deposit is contemplated. Request any written deadline sent to the landlord. Do not stop or redirect rent payments before the safeguards have been assessed.",
+     "decision": "request",
+     "document_type": "written_repair_deadline"
+    },
+    {
+     "because": "This is optional under the process.",
+     "decision": "not_needed",
+     "document_type": "caretaker_correspondence"
+    }
+   ],
+   "questions": [
+    "When and how did you notify the landlord, and what responses or access arrangements followed?",
+    "Have you sent the landlord a written repair deadline? If so, when and how was it delivered?",
+    "Have you sought medical advice for the sleep disruption or exhaustion, and is there an immediate health or safety concern?"
+   ],
+   "supplied_documents": [
+    {
+     "artifact_id": "f2att_22074e74e3843f8b",
+     "assessment": "sufficient",
+     "citations": [
+      {
+       "artifact_id": "f2att_22074e74e3843f8b",
+       "quote": "Vermieterin: Domicil Plus Immobilien AG, Solothurnstrasse 17, 2540 Grenchen"
+      },
+      {
+       "artifact_id": "f2att_22074e74e3843f8b",
+       "quote": "Mieter: Felix Volkov"
+      },
+      {
+       "artifact_id": "f2att_22074e74e3843f8b",
+       "quote": "Mietobjekt: 2.5-Zimmer-Wohnung, Erdgeschoss rechts, Schulhausstrasse 82, 2540 Grenchen"
+      },
+      {
+       "artifact_id": "f2att_22074e74e3843f8b",
+       "quote": "Nettomietzins: CHF 1920.– monatlich"
+      }
+     ],
+     "document_type": "lease_contract"
+    }
+   ]
+  },
+  "usage_cost": 0.0071827
+ },
+ "B|f2cl_73f3fe3323a28288|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "rent_increase_notice",
+    "stated_calculation"
+   ],
+   "questions": [
+    "Please provide the complete letter and envelope, and tell us the exact date you received it. Has any other rent-increase notice or official form arrived? The letter and receipt date should be reviewed promptly to assess any possible deadline."
+   ],
+   "requests": []
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_9e02968d112b9f49",
+       "quote": "Ich weiss nicht, ob das schon eine richtige Mitteilung einer Mietzinserhöhung ist oder bloss eine Vorankündigung, und ob die Erhöhung damit überhaupt schon erfolgt ist."
+      }
+     ],
+     "flag": "claim_received",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_9e02968d112b9f49",
+       "quote": "Am Referenzzinssatz kann es nicht liegen: Herr Probst hat mir am Telefon selbst gesagt, mit dem Zins habe das nichts zu tun."
+      }
+     ],
+     "flag": "reference_rate",
+     "verdict": "false"
+    },
+    {
+     "citations": [],
+     "flag": "renovation",
+     "verdict": "unresolved"
+    }
+   ],
+   "family": "rent_increase_dispute",
+   "plan": [
+    {
+     "because": "Applicability depends on the unresolved notification question.",
+     "decision": "hold",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The reported letter has not been supplied; applicability depends on the unresolved notification question.",
+     "decision": "hold",
+     "document_type": "rent_increase_notice"
+    },
+    {
+     "because": "Applicability depends on the unresolved notification question; the delivery date is also needed for any deadline assessment.",
+     "decision": "hold",
+     "document_type": "proof_of_receipt"
+    },
+    {
+     "because": "Applicability depends on the unresolved notification question.",
+     "decision": "hold",
+     "document_type": "current_rent_evidence"
+    },
+    {
+     "because": "Applicability depends on the unresolved notification question.",
+     "decision": "hold",
+     "document_type": "prior_rent_adjustment"
+    },
+    {
+     "because": "Applicability depends on the unresolved notification question.",
+     "decision": "hold",
+     "document_type": "stated_calculation"
+    },
+    {
+     "because": "The customer reports that the landlord excluded the reference rate as the reason.",
+     "decision": "not_needed",
+     "document_type": "reference_rate_basis"
+    },
+    {
+     "because": "Renovation is unmentioned and presumed absent for planning under the silence policy.",
+     "decision": "not_needed",
+     "document_type": "renovation_cost_breakdown"
+    },
+    {
+     "because": "This document type is optional.",
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence"
+    }
+   ],
+   "questions": [
+    "Please provide the complete letter and envelope, and tell us the exact date you received it. Has any other rent-increase notice or official form arrived? The letter and receipt date should be reviewed promptly to assess any possible deadline."
+   ],
+   "supplied_documents": []
+  },
+  "usage_cost": 0.0046927
+ },
+ "B|f2cl_753a10b9d25479c6|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "defect_mold_heating",
+   "holds": [],
+   "questions": [
+    "Is anyone currently at immediate health or safety risk? Seek urgent medical or emergency assistance if needed.",
+    "When did the faults begin, and on which dates and to whom were the three reports made?",
+    "Are there existing photos, measurements, service reports or records of the landlord's response and access arrangements?",
+    "Has a written repair deadline been sent to the landlord, and has any rent already been deposited?"
+   ],
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "medical_confirmation",
+    "proof_of_notification",
+    "technical_inspection",
+    "written_repair_deadline"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_394817971242dd2c",
+       "quote": "our five-year-old's doctor thinks is behind the cough she has had for weeks."
+      }
+     ],
+     "flag": "health_effects",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_394817971242dd2c",
+       "quote": "there is condensation running down the walls and mould on the window frames"
+      }
+     ],
+     "flag": "mold",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_394817971242dd2c",
+       "quote": "the boiler cuts out at night and the bedrooms are cold in the morning."
+      }
+     ],
+     "flag": "heating",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_394817971242dd2c",
+       "quote": "I think someone who actually knows about heating systems needs to look at why the boiler fails"
+      }
+     ],
+     "flag": "specialist_needed",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_394817971242dd2c",
+       "quote": "I intend to do that from December if nothing changes."
+      }
+     ],
+     "flag": "deposit_considered",
+     "verdict": "true"
+    }
+   ],
+   "family": "defect_mold_heating",
+   "plan": [
+    {
+     "because": "Health effects are reported; obtain findings and any limits on attributed cause. Prioritise immediate health and safety needs.",
+     "decision": "request",
+     "document_type": "medical_confirmation"
+    },
+    {
+     "because": "The supplied lease identifies the parties and some terms but does not identify the rented property; request the complete contract.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The reported telephone notices do not establish their full contents and dates. Request any records or written confirmations.",
+     "decision": "request",
+     "document_type": "defect_notification"
+    },
+    {
+     "because": "The dates and receipt of the reported defect notices need evidence.",
+     "decision": "request",
+     "document_type": "proof_of_notification"
+    },
+    {
+     "because": "Obtain dated evidence of the affected locations and visible condition.",
+     "decision": "request",
+     "document_type": "dated_photos"
+    },
+    {
+     "because": "Mould and condensation are reported; dated moisture and temperature observations are relevant.",
+     "decision": "request",
+     "document_type": "humidity_temperature_log"
+    },
+    {
+     "because": "A heating fault is reported; request any service findings and inspection date.",
+     "decision": "request",
+     "document_type": "heating_service_report"
+    },
+    {
+     "because": "Document the landlord's responses, proposed work and access arrangements.",
+     "decision": "request",
+     "document_type": "landlord_response_history"
+    },
+    {
+     "because": "A specialist inspection is considered necessary; obtain any technical findings while keeping the cause open.",
+     "decision": "request",
+     "document_type": "technical_inspection"
+    },
+    {
+     "because": "The customer intends to consider official rent deposit; request any communicated repair deadline and its contents.",
+     "decision": "request",
+     "document_type": "written_repair_deadline"
+    },
+    {
+     "because": "This document is optional under the process.",
+     "decision": "not_needed",
+     "document_type": "caretaker_correspondence"
+    }
+   ],
+   "questions": [
+    "Is anyone currently at immediate health or safety risk? Seek urgent medical or emergency assistance if needed.",
+    "When did the faults begin, and on which dates and to whom were the three reports made?",
+    "Are there existing photos, measurements, service reports or records of the landlord's response and access arrangements?",
+    "Has a written repair deadline been sent to the landlord, and has any rent already been deposited?"
+   ],
+   "supplied_documents": [
+    {
+     "artifact_id": "f2att_5a537615d4e32ec0",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "f2att_5a537615d4e32ec0",
+       "quote": "LEASE AGREEMENT FOR A FLAT"
+      },
+      {
+       "artifact_id": "f2att_5a537615d4e32ec0",
+       "quote": "Landlord: Verwaltung Emme & Söhne, Bernstrasse 41, 3400 Burgdorf"
+      },
+      {
+       "artifact_id": "f2att_5a537615d4e32ec0",
+       "quote": "Tenant: Eleanor Kowalczyk"
+      }
+     ],
+     "document_type": "lease_contract"
+    }
+   ]
+  },
+  "usage_cost": 0.00697895
+ },
+ "B|f2cl_775d7303508bb928|0": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "defect_mold_heating",
+   "holds": [],
+   "questions": [
+    "When did the mould and heating problems begin, and is there any immediate health or safety risk?",
+    "When and how were the defects reported to the landlord, and what repair deadline, if any, was communicated?",
+    "Have wall and ventilation measurements or another technical inspection already been carried out?",
+    "Has any rent already been deposited, or is this only planned? Which November is intended?"
+   ],
+   "requests": [
+    "dated_photos",
+    "defect_notification",
+    "heating_service_report",
+    "humidity_temperature_log",
+    "landlord_response_history",
+    "lease_contract",
+    "proof_of_notification",
+    "technical_inspection",
+    "written_repair_deadline"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [],
+     "flag": "health_effects",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_cbfa9e6fe0b7fa1c",
+       "quote": "grey-green mould all over the bathroom ceiling and the hallway smells musty"
+      }
+     ],
+     "flag": "mold",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_cbfa9e6fe0b7fa1c",
+       "quote": "the boiler cuts out at night, bedrooms are cold every morning, heating basically doesn't work at night"
+      }
+     ],
+     "flag": "heating",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_cbfa9e6fe0b7fa1c",
+       "quote": "the plumber literally said \"you need someone who can measure the walls and the ventilation, that's not my job\""
+      }
+     ],
+     "flag": "specialist_needed",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "f2msg_cbfa9e6fe0b7fa1c",
+       "quote": "I'm going to pay my rent into the official deposit account from November. I've had enough. how do I do that correctly?"
+      }
+     ],
+     "flag": "deposit_considered",
+     "verdict": "true"
+    }
+   ],
+   "family": "defect_mold_heating",
+   "plan": [
+    {
+     "because": "Required to establish the tenancy and agreed terms.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "Required to establish what was reported to the landlord and when.",
+     "decision": "request",
+     "document_type": "defect_notification"
+    },
+    {
+     "because": "Required to establish landlord receipt of the defect report.",
+     "decision": "request",
+     "document_type": "proof_of_notification"
+    },
+    {
+     "because": "Required objective evidence of the defect, location and date.",
+     "decision": "request",
+     "document_type": "dated_photos"
+    },
+    {
+     "because": "The reported visits need supporting records of responses, proposed work and access.",
+     "decision": "request",
+     "document_type": "landlord_response_history"
+    },
+    {
+     "because": "The mould branch is active; request dated observations at the affected locations.",
+     "decision": "request",
+     "document_type": "humidity_temperature_log"
+    },
+    {
+     "because": "The heating branch is active; request the inspection and service findings.",
+     "decision": "request",
+     "document_type": "heating_service_report"
+    },
+    {
+     "because": "Health effects are unmentioned and presumed absent for planning under the silence policy.",
+     "decision": "not_needed",
+     "document_type": "medical_confirmation"
+    },
+    {
+     "because": "A specialist measurement was reported as needed; request any existing technical findings without assuming the cause.",
+     "decision": "request",
+     "document_type": "technical_inspection"
+    },
+    {
+     "because": "The customer is considering an official rent deposit; the communicated deadline and notice contents are needed to assess safeguards.",
+     "decision": "request",
+     "document_type": "written_repair_deadline"
+    },
+    {
+     "because": "Optional under the process.",
+     "decision": "not_needed",
+     "document_type": "caretaker_correspondence"
+    }
+   ],
+   "questions": [
+    "When did the mould and heating problems begin, and is there any immediate health or safety risk?",
+    "When and how were the defects reported to the landlord, and what repair deadline, if any, was communicated?",
+    "Have wall and ventilation measurements or another technical inspection already been carried out?",
+    "Has any rent already been deposited, or is this only planned? Which November is intended?"
+   ],
+   "supplied_documents": []
+  },
+  "usage_cost": 0.0054902
  }
 }
