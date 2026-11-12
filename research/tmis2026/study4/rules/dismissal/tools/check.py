@@ -14,7 +14,8 @@
    one, otherwise the convention with value false), none on the defining event, on a fact whose false ends the
    process, or on an always_stated fact; over every assignment with each branch fact true, false or unmentioned
    (defining event true): no stop is reached through an unmentioned fact and no document need is created by
-   one; with one fact raised and left open no presumption fills it;
+   one; with one fact raised and left open no presumption fills it; an open gate or stop fact produces a request
+   for the documents that settle it (GATE_DOCS); every rule and every `also` passage carries its German text;
 8. size limits of SPEC.md step 2a item 5; prints the counts.
 Exit status 1 on any failure.
 """
@@ -78,11 +79,27 @@ def paragraph_text(lines, para, letter):
     return "\n".join(block)
 
 
+PREFIX = {"CO": "co-sr220", "CPC": "cpc-sr272"}
+
+
 def parse_locator(loc):
-    m = re.match(r"^CO art\. (\d+[a-z]*)(?: para\. (\d+))?(?: let\. ([a-z]+))?(?: \(introduction\))?$", loc)
+    """'CO art. 336c para. 1 let. b; para. 2' -> ('co-sr220', '336c', '1', 'b', ['2']); None when not parsed."""
+    m = re.match(r"^(CO|CPC) art\. (\d+[a-z]*)(?: para\. (\d+))?(?: let\. ([a-z]+))?(?: \(introduction\))?((?:; para\. \d+)*)$", loc)
     if not m:
         return None
-    return m.groups()
+    extra = re.findall(r"para\. (\d+)", m.group(5) or "")
+    return PREFIX[m.group(1)], m.group(2), m.group(3), m.group(4), extra
+
+
+GATE_DOCS = [
+    ("protected_period_notice", "notice_during_probation", {"employer_gave_notice": True},
+     ["termination_letter", "employment_contract"]),
+    ("wrongful_termination", "objection_submitted", {"employer_gave_notice": True, "notice_period_ended": True},
+     ["termination_letter", "employment_contract", "written_objection"]),
+    ("wrongful_termination", "action_in_time",
+     {"employer_gave_notice": True, "notice_period_ended": False, "objection_submitted": True, "agreed_to_continue": False,
+      "more_than_180_days": True}, ["court_filing"]),
+]
 
 
 def stop_on_false(product, t):
@@ -110,11 +127,41 @@ def all_rules(data):
 
 def main():
     data = json.loads((REGIME / "rules.json").read_text(encoding="utf-8"))
-    snaps = {sid: (REGIME / "sources" / f"{sid}.txt").read_text(encoding="utf-8") for sid in ("co-sr220-en", "co-sr220-de")}
+    meta = json.loads((REGIME / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
+    snaps = {x["id"]: (REGIME / "sources" / x["snapshot"]).read_text(encoding="utf-8") for x in meta["sources"]}
     arts = {sid: articles(txt) for sid, txt in snaps.items()}
     cited = {sid: set() for sid in snaps}
     by_basis = {}
     n_rules = 0
+
+    def check_passage(where, item, lang_sid, passage, locator):
+        loc = parse_locator(locator)
+        if loc is None:
+            fail(f"{where}: locator not parsed: {locator}")
+            return
+        prefix, art, para, letter, extra = loc
+        if not lang_sid.startswith(prefix + "-"):
+            fail(f"{where}: locator {locator} names another act than source {lang_sid}")
+        if lang_sid not in snaps:
+            fail(f"{where}: unknown source {lang_sid}")
+            return
+        if passage not in snaps[lang_sid]:
+            fail(f"{where}: passage not verbatim in {lang_sid}: {passage[:60]}")
+        if len(passage.split()) > 60:
+            fail(f"{where}: passage over 60 words")
+        if art not in arts[lang_sid]:
+            fail(f"{where}: article {art} not in {lang_sid}")
+            return
+        cited[lang_sid].add(art)
+        scope = paragraph_text(arts[lang_sid][art], para, letter)
+        if scope is None:
+            fail(f"{where}: {locator} not found in {lang_sid}")
+        elif passage not in scope:
+            fail(f"{where}: passage not inside {locator} in {lang_sid}")
+        for x in extra:
+            if paragraph_text(arts[lang_sid][art], x, None) is None:
+                fail(f"{where}: para. {x} of art. {art} not found in {lang_sid}")
+
     for tid, kind, iid, rule in all_rules(data):
         n_rules += 1
         by_basis[rule["basis"]] = by_basis.get(rule["basis"], 0) + 1
@@ -123,28 +170,12 @@ def main():
             fail(f"{where}: basis {rule['basis']}")
         if rule["basis"] in {"follows", "evidence"} and not rule.get("inference"):
             fail(f"{where}: {rule['basis']} without inference")
-        loc = parse_locator(rule["locator"])
-        if loc is None:
-            fail(f"{where}: locator not parsed: {rule['locator']}")
-            continue
-        art, para, letter = loc
-        passages = [(rule["source_id"], rule["passage"])]
-        if "passage_de" in rule:
-            passages.append((rule["passage_de"]["source_id"], rule["passage_de"]["passage"]))
-        for sid, passage in passages:
-            if passage not in snaps[sid]:
-                fail(f"{where}: passage not verbatim in {sid}: {passage[:60]}")
-            if len(passage.split()) > 60:
-                fail(f"{where}: passage over 60 words")
-            if art not in arts[sid]:
-                fail(f"{where}: article {art} not in {sid}")
-                continue
-            cited[sid].add(art)
-            scope = paragraph_text(arts[sid][art], para, letter)
-            if scope is None:
-                fail(f"{where}: {rule['locator']} not found in {sid}")
-            elif passage not in scope:
-                fail(f"{where}: passage not inside {rule['locator']} in {sid}")
+        for item in [rule] + rule.get("also", []):
+            if "passage_de" not in item:
+                fail(f"{where}: {item['locator']} has no German passage")
+            else:
+                check_passage(where, item, item["passage_de"]["source_id"], item["passage_de"]["passage"], item["locator"])
+            check_passage(where, item, item["source_id"], item["passage"], item["locator"])
     for sid in snaps:
         unused = set(arts[sid]) - cited[sid]
         if unused:
@@ -197,7 +228,6 @@ def main():
             fail(f"{tid}/{kind}/{iid}: convention basis outside the top-level convention entry")
 
     # sources
-    meta = json.loads((REGIME / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
     for s in meta["sources"]:
         path = REGIME / "sources" / s["snapshot"]
         if hashlib.sha256(path.read_bytes()).hexdigest() != s["sha256"]:
@@ -313,9 +343,13 @@ def main():
                     facts[f] = applied[f]["value"]
             ev = product.evaluate(wf, facts)
             if ev["outcome"] and ev["outcome"]["id"] in stop_ids:
-                stop = next(x for x in t["stops"] if x["id"] == ev["outcome"]["id"])
-                if product.evaluate_condition(stop["when"], {**stated}) is not True:
-                    fail(f"{t['id']}: stop {stop['id']} reached through unmentioned facts {unmentioned} under {stated}")
+                # silence must not be what ends the process: under every answer to the unmentioned facts, some stop holds
+                silent_stop = any(
+                    not any(product.evaluate_condition(x["when"], {**stated, **dict(zip(unmentioned, completion))}) is True
+                            for x in t["stops"])
+                    for completion in itertools.product([True, False], repeat=len(unmentioned)))
+                if silent_stop:
+                    fail(f"{t['id']}: stop {ev['outcome']['id']} reached through unmentioned facts {unmentioned} under {stated}")
                     break
             yes = {d["document"] for d in ev["documents"] if d["required"] == "yes"}
             ordinary = {**stated, "dispute_family": t["id"]}
@@ -333,6 +367,15 @@ def main():
             recorded[f] = {"status": "unknown", "readings": [None], "open_readings": [True], "citations": ["quoted doubt"]}
             if f in product.presumed(wf, recorded):
                 fail(f"{t['id']}: a presumption fills {f} although the file raises it and leaves it open")
+        # reconciliation decision 4: an open gate or stop fact produces a request ("yes") for the documents that settle it
+        for tid, open_fact, stated, want in GATE_DOCS:
+            if tid != t["id"]:
+                continue
+            ev = product.evaluate(wf, {**stated, open_fact: None, "dispute_family": t["id"]})
+            got = {d["document"]: d["required"] for d in ev["documents"]}
+            for doc in want:
+                if got.get(doc) != "yes":
+                    fail(f"{t['id']}: with {open_fact} open, {doc} is {got.get(doc)!r}, not requested")
         # size limits per type
         n_facts = len(t["facts"])
         if not 5 <= n_facts <= 10:

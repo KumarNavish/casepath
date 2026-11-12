@@ -39,38 +39,99 @@
  "convention": {
   "id": "intake_convention",
   "text": "A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.",
-  "applies_to": "every branch fact (value false, applies unstated) except the defining event, a fact whose value false triggers a stop (none in this set) and a fact marked always_stated; a presumption a passage supports would take precedence (this rule set has none)",
+  "applies_to": "every branch fact (value false, applies unstated) except the defining event, a fact whose value false triggers a stop (none besides the defining events) and a fact marked always_stated; a presumption a passage supports would take precedence (this rule set has none)",
   "rule": {
    "source_id": "benchmark-convention",
    "locator": "SPEC.md item 6a",
    "basis": "convention"
   }
  },
+ "routing": {
+  "fact": "claim_type",
+  "type": "enum",
+  "values": [
+   "theft_at_home",
+   "simple_theft_away",
+   "other"
+  ],
+  "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)?",
+  "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.",
+  "rule": {
+   "source_id": "css-avb",
+   "locator": "Ziff. 23.3 Abs. 1, S. 7",
+   "passage": "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
+   "basis": "states",
+   "context": [
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 24.2, S. 8",
+     "passage": "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert."
+    },
+    {
+     "source_id": "css-avb",
+     "locator": "Ziff. 26 lit. b, S. 10",
+     "passage": "Auswärts auf der ganzen Welt für Hausrat, der sich während einer Reise, ohne dass sich dabei der gewöhnliche Aufenthaltsort des Versicherungsnehmers in der Schweiz ändert, vorübergehend an beliebigen anderen Orten befindet, im Rahmen der freiwilligen Hausratsversicherung bis CHF 50 000 für Schäden aus Feuer, Elementarschaden, Erdbeben und vulkanischen Eruptionen, Diebstahl (ohne einfachen Diebstahl) und Wasser"
+    }
+   ]
+  }
+ },
+ "reading_of_optional": "mandatory: false (workflow 'optional: true') marks a document the contract makes due only on CSS's request where no CSS document makes that request at intake: the police report ('kann durch die CSS einverlangt werden'; the claim form asks only for the report's particulars). At intake the handler does not request it; a reference evaluator marks it 'not needed' unless the file contains it, in which case it is assessed as present and sufficient or insufficient. Its absence is never a gap. The valued list and the original vouchers are also due 'auf Verlangen', but CSS makes that request in its own claim form, so they are requested at intake (mandatory: true).",
+ "outside_both_types": "A burglary or robbery away from the insured location (for example a holiday flat or hotel room broken into, or a robbery on a trip). Ziff. 26 lit. b covers it, if at all, under the basic cover during travel; neither type applies, and routing answers 'other'. A theft from a vehicle broken into away from home is a simple theft away (a vehicle is not a container), so it belongs to type 2.",
  "types": [
   {
    "id": "theft_at_home",
    "title": "Theft at the insured location (CSS AVB Ziff. 23.3)",
    "defining_event": "theft_at_home",
+   "notes": [
+    "The police step (Ziff. 8 lit. f, 'Bei Diebstahl') is also reached when the file reports only vandalism or damage with nothing taken: the text does not say whether 'bei Diebstahl' covers that case, and the rule set does not narrow it."
+   ],
    "facts": [
     {
      "id": "theft_at_home",
      "question": "Does the file state that household contents at the insured location (the Versicherungsort of the policy) were stolen or damaged by a burglary, a robbery or a simple theft (including vandalism), even if nothing was taken?",
-     "not_this": "Items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2).",
+     "not_this": "Items merely missing where no trace, witness or circumstance points to a theft (that is open, not true); items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2, or outside both types).",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 23.3 Abs. 1, S. 7",
-      "passage": "Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
-      "basis": "states"
+      "passage": "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3, Ausschlüsse, zweiter Strich, S. 7",
+        "passage": "Schäden durch Verlieren, Verlegen oder infolge von Veruntreuung."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. a, S. 7",
+        "passage": "Einbruchdiebstahl ist Diebstahl durch Täter, die gewaltsam in ein Gebäude oder in den Raum eines Gebäudes eindringen und/oder darin ein Behältnis aufbrechen sowie Diebstahl durch Aufschliessen mit den richtigen Schlüsseln oder Codes, sofern sich der Täter diese durch Einbruchdiebstahl oder Beraubung angeeignet hat."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. a, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch das Aufbrechen eines Fahrzeuges. Fahrzeuge sind keine Behältnisse."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. b, S. 7",
+        "passage": "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. b, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch Taschen- und Trickdiebstahl."
+       }
+      ]
      },
      "type": "boolean"
     },
     {
      "id": "household_perpetrator",
-     "question": "Does the file state that the theft or damage was caused by a person who lives in the same household as the policyholder?",
-     "not_this": "A guest, neighbour, tradesman or cleaner, or a former household member who no longer lives there; a suspicion the file raises but does not settle is open, not true.",
+     "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time?",
+     "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true.",
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3, Ausschlüsse, S. 7",
+      "locator": "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7",
       "passage": "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.",
       "basis": "states"
      },
@@ -78,8 +139,8 @@
     },
     {
      "id": "burglary_or_robbery",
-     "question": "Was the theft a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death), and so not a simple theft?",
-     "not_this": "A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft.",
+     "question": "Was the theft a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery), and so not a simple theft?",
+     "not_this": "A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.",
      "always_stated": true,
      "rule": {
       "source_id": "css-avb",
@@ -94,8 +155,18 @@
        },
        {
         "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. a, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch das Aufbrechen eines Fahrzeuges. Fahrzeuge sind keine Behältnisse."
+       },
+       {
+        "source_id": "css-avb",
         "locator": "Ziff. 23.3 lit. b, S. 7",
         "passage": "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. b, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch Taschen- und Trickdiebstahl."
        }
       ]
      },
@@ -103,25 +174,39 @@
     },
     {
      "id": "lock_change",
-     "question": "Does the claim include costs of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?",
-     "not_this": "Emergency doors, glazing or locks put in after the event; the repair of a damaged door or window.",
+     "question": "Does the claim include costs, caused by the theft, of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?",
+     "not_this": "A lock change made for another reason; emergency doors, glazing or locks put in after the event; the repair of a damaged door or window.",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 20 lit. d, S. 5",
       "passage": "Mitversichert sind die effektiven Kosten für das Ändern oder Ersetzen von Schlüsseln, Magnetkarten oder von Schlössern an dem in der Police bezeichneten Standort und an den vom Versicherungsnehmer gemieteten Banksafes und dazugehörenden Schlüsseln.",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 20, Einleitung, S. 4",
+        "passage": "Für die nachstehenden Kosten (Vermögensschäden), die durch ein versichertes Schadenereignis infolge von Feuer, Elementarereignissen, Erdbeben und vulkanischen Eruptionen, Wasser oder Diebstahl am versicherten Standort entstehen, beträgt die Deckung im Rahmen der freiwilligen Hausratversicherung gesamthaft 20% der Versicherungssumme der freiwilligen Hausrat-Grundversicherung, mindestens CHF 10 000."
+       }
+      ]
      },
      "type": "boolean"
     },
     {
      "id": "traces_changed",
-     "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, for example by repair or cleaning?",
-     "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene.",
+     "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?",
+     "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 8, Einleitung zu lit. f-h, S. 3",
+        "passage": "Bei Diebstahl hat der Versicherungsnehmer ferner:"
+       }
+      ]
      },
      "type": "boolean"
     },
@@ -139,25 +224,37 @@
     },
     {
      "id": "vouchers_unobtainable",
-     "question": "Does the file state that the original purchase vouchers for the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
-     "not_this": "The vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
+     "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
+     "not_this": "Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
       "passage": "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat;",
       "basis": "follows",
-      "inference": "The contract may require only vouchers whose procurement is possible without considerable cost; a voucher that cannot be obtained, or only at considerable cost, is outside what the contract may require."
+      "inference": "The contract may require only vouchers whose procurement is possible without considerable cost; where no voucher can be obtained without considerable cost, none may be required. The limit applies voucher by voucher, so where only some are unobtainable the document is still needed for the others (see original_vouchers, must_show)."
      },
      "type": "boolean"
     },
     {
-     "id": "instruction_due",
-     "question": "Does the file state that measures to reduce the loss are or were to be taken after the theft, and that there was no imminent danger (Gefahr im Verzug) requiring them before the insurer could be asked?",
-     "not_this": "Measures that had to be taken at once because of imminent danger; the notification of the claim itself; steps to find the thief or recover the items.",
+     "id": "measures_pending",
+     "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
+     "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38a Abs. 1",
       "passage": "Der Anspruchsberechtigte ist verpflichtet, nach Eintritt des befürchteten Ereignisses tunlichst für Minderung des Schadens zu sorgen. Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
+      "basis": "states"
+     },
+     "type": "boolean"
+    },
+    {
+     "id": "imminent_danger",
+     "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?",
+     "not_this": "The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.",
+     "rule": {
+      "source_id": "vvg",
+      "locator": "VVG Art. 38a Abs. 1 Satz 2",
+      "passage": "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
       "basis": "states"
      },
      "type": "boolean"
@@ -171,7 +268,7 @@
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 23.3 Abs. 1, S. 7",
-      "passage": "Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
+      "passage": "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
       "basis": "states"
      }
     },
@@ -184,14 +281,14 @@
      },
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3, Ausschlüsse, S. 7",
+      "locator": "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7",
       "passage": "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.",
       "basis": "states"
      }
     },
     {
      "id": "h_notify",
-     "title": "Record the claim notification and the policy",
+     "title": "Record the claim notification",
      "reached_when": {
       "all": [
        {
@@ -208,7 +305,14 @@
       "source_id": "vvg",
       "locator": "VVG Art. 38 Abs. 1",
       "passage": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 8 lit. a, S. 3",
+        "passage": "die CSS umgehend zu benachrichtigen;"
+       }
+      ]
      }
     },
     {
@@ -236,6 +340,21 @@
         "source_id": "css-avb",
         "locator": "Ziff. 8, Einleitung zu lit. f-h, S. 3",
         "passage": "Bei Diebstahl hat der Versicherungsnehmer ferner:"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Überschrift, S. 3",
+        "passage": "Polizeimeldung"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4.1, Anzeigedatum, S. 3",
+        "passage": "Anzeigedatum"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Polizeiposten, S. 3",
+        "passage": "Polizeiposten"
        }
       ]
      }
@@ -302,8 +421,12 @@
         "is": false
        },
        {
-        "fact": "instruction_due",
+        "fact": "measures_pending",
         "is": true
+       },
+       {
+        "fact": "imminent_danger",
+        "is": false
        }
       ]
      },
@@ -346,21 +469,20 @@
    ],
    "documents": [
     {
-     "id": "claim_form",
-     "title": "Claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', completed and signed",
+     "id": "notification_record",
+     "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
      "step": "h_notify",
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "that and when CSS was notified of the theft",
-      "the signature under the declaration that all questions were answered truthfully and completely"
+      "that and when CSS was notified of the theft"
      ],
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38 Abs. 1",
       "passage": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
       "basis": "evidence",
-      "inference": "The passage makes notifying the insurer a duty; the insurer's own claim form, completed and signed, is the document that ordinarily records that and when the insurer was notified.",
+      "inference": "The passage makes notifying the insurer a duty; CSS requires no form for it (oral notice suffices, Ziff. 4; its form offers online notification), so any record of the notification, the claim form or CSS's own record of an online, written or oral notice, ordinarily shows that and when the insurer was notified.",
       "context": [
        {
         "source_id": "css-avb",
@@ -368,9 +490,14 @@
         "passage": "die CSS umgehend zu benachrichtigen;"
        },
        {
+        "source_id": "css-avb",
+        "locator": "Ziff. 4, S. 2",
+        "passage": "Wird bei einer Mitteilung kein Formerfordernis angeführt, kann diese auch mündlich erfolgen."
+       },
+       {
         "source_id": "css-form",
-        "locator": "Abschnitt 6, Unterschrift, S. 4",
-        "passage": "Die unterzeichnende Person erklärt, alle Fragen auf allen Seiten wahrheitsgetreu und vollständig beantwortet zu haben."
+        "locator": "Seite 1, Einleitung, S. 1",
+        "passage": "Alternativ können Sie uns den Schaden auch online unter css.ch/schaden melden."
        }
       ]
      }
@@ -400,19 +527,37 @@
      "needed_when": true,
      "mandatory": false,
      "must_show": [
-      "that the theft was reported to the police",
+      "that the theft was reported to the police and when",
+      "the police station",
       "that an official investigation was requested"
      ],
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Überschrift, S. 3",
+        "passage": "Polizeimeldung"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4.1, Anzeigedatum, S. 3",
+        "passage": "Anzeigedatum"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Polizeiposten, S. 3",
+        "passage": "Polizeiposten"
+       }
+      ]
      }
     },
     {
      "id": "police_consent",
-     "title": "The police's consent to removing or altering the traces (a written confirmation, or the entry in the police report recording it)",
+     "title": "The police's consent to removing or altering the traces (the police report recording it, or a written confirmation by the police)",
      "step": "h_traces",
      "needed_when": true,
      "mandatory": true,
@@ -425,29 +570,43 @@
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
       "basis": "evidence",
-      "inference": "The passage makes the police's consent the condition for removing or altering traces; once traces have been or are to be removed or altered, the police's written confirmation of that consent is the document that ordinarily shows the condition was met."
+      "inference": "The passage makes the police's consent the condition for removing or altering traces; the police report, the document the same clause names and CSS may request, or a written confirmation by the police is the document that can show the consent. Either one satisfies this need."
      }
     },
     {
      "id": "stolen_items_list",
-     "title": "List of the stolen or damaged items with their values (Verzeichnis mit Wertangaben)",
+     "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
      "step": "h_loss",
      "needed_when": true,
-     "mandatory": false,
+     "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
+      "where and when it was bought",
       "its value"
      ],
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. c, S. 3",
       "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
-      "basis": "states"
+      "basis": "follows",
+      "inference": "The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them.",
+      "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7 Gegenstände, S. 2",
+        "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7, Spalten, S. 2",
+        "passage": "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste"
+       }
+      ]
      }
     },
     {
      "id": "original_vouchers",
-     "title": "Original purchase vouchers for the stolen or damaged items (Originalkaufbelege)",
+     "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
      "step": "h_loss",
      "needed_when": {
       "fact": "vouchers_unobtainable",
@@ -455,16 +614,27 @@
      },
      "mandatory": true,
      "must_show": [
-      "the item",
-      "where and when it was bought",
+      "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+      "where and when the item was bought",
       "the price paid"
      ],
      "rule": {
-      "source_id": "css-form",
-      "locator": "Abschnitt 3.7 Gegenstände, S. 2",
-      "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)",
-      "basis": "states",
+      "source_id": "css-avb",
+      "locator": "Ziff. 8 lit. c, S. 3",
+      "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
+      "basis": "follows",
+      "inference": "The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them. The limit of VVG Art. 39 Abs. 2 Ziff. 1 applies voucher by voucher.",
       "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7 Gegenstände, S. 2",
+        "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7, Spalten, S. 2",
+        "passage": "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste"
+       },
        {
         "source_id": "vvg",
         "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
@@ -491,16 +661,22 @@
      },
      "mandatory": true,
      "must_show": [
-      "the bicycle",
+      "the bicycle, if its voucher can be obtained without considerable cost",
       "where and when it was bought",
       "the price paid"
      ],
      "rule": {
-      "source_id": "css-form",
-      "locator": "Abschnitt 3.9, S. 3",
-      "passage": "Fahrrad (bitte Originalkaufbelege beilegen)",
-      "basis": "states",
+      "source_id": "css-avb",
+      "locator": "Ziff. 8 lit. c, S. 3",
+      "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
+      "basis": "follows",
+      "inference": "As for original_vouchers: the contract makes original vouchers due on CSS's request, and CSS's claim form asks for the bicycle's voucher in its own section ('Fahrrad (bitte Originalkaufbelege beilegen)').",
       "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.9, S. 3",
+        "passage": "Fahrrad (bitte Originalkaufbelege beilegen)"
+       },
        {
         "source_id": "vvg",
         "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
@@ -563,7 +739,7 @@
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 23.3 Abs. 1, S. 7",
-      "passage": "Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
+      "passage": "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.",
       "basis": "follows",
       "inference": "The clause covers damage by these events at the insured location; where the file states that no such event occurred, the steps of this claim type do not apply."
      }
@@ -585,7 +761,7 @@
      },
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3, Ausschlüsse, S. 7",
+      "locator": "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7",
       "passage": "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.",
       "basis": "states"
      }
@@ -596,11 +772,12 @@
    "id": "simple_theft_away",
    "title": "Simple theft away from the insured location (CSS AVB Ziff. 24.2)",
    "defining_event": "theft_away",
+   "notes": [],
    "facts": [
     {
      "id": "theft_away",
-     "question": "Does the file state that household contents were stolen outside the insured location, in a theft that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death)?",
-     "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); items lost, left behind or misplaced.",
+     "question": "Does the file state that household contents were stolen or damaged by a theft outside the insured location that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery)?",
+     "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); a burglary or robbery away from home (outside both types); items lost, left behind or misplaced. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 24.2, S. 8",
@@ -614,8 +791,18 @@
        },
        {
         "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. a, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch das Aufbrechen eines Fahrzeuges. Fahrzeuge sind keine Behältnisse."
+       },
+       {
+        "source_id": "css-avb",
         "locator": "Ziff. 23.3 lit. b, S. 7",
         "passage": "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod."
+       },
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. b, Ausschluss, S. 7",
+        "passage": "Schäden, verursacht durch Taschen- und Trickdiebstahl."
        }
       ]
      },
@@ -623,25 +810,40 @@
     },
     {
      "id": "away_cover_missing",
-     "question": "Does the file state that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?",
-     "not_this": "Another supplementary cover being missing; the claimant being unsure whether the cover exists (that is open).",
+     "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?",
+     "not_this": "Another supplementary cover being missing. The claimant's narrative will rarely settle this; the policy does (insurance_policy).",
+     "always_stated": true,
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3 lit. c, S. 7",
-      "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.",
-      "basis": "states"
+      "locator": "Ziff. 24, Einleitung, S. 8",
+      "passage": "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:",
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. c, S. 7",
+        "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen."
+       }
+      ]
      },
      "type": "boolean"
     },
     {
      "id": "traces_changed",
-     "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, for example by repair or cleaning?",
-     "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene.",
+     "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?",
+     "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.",
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 8, Einleitung zu lit. f-h, S. 3",
+        "passage": "Bei Diebstahl hat der Versicherungsnehmer ferner:"
+       }
+      ]
      },
      "type": "boolean"
     },
@@ -659,25 +861,37 @@
     },
     {
      "id": "vouchers_unobtainable",
-     "question": "Does the file state that the original purchase vouchers for the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
-     "not_this": "The vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
+     "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
+     "not_this": "Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
       "passage": "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat;",
       "basis": "follows",
-      "inference": "The contract may require only vouchers whose procurement is possible without considerable cost; a voucher that cannot be obtained, or only at considerable cost, is outside what the contract may require."
+      "inference": "The contract may require only vouchers whose procurement is possible without considerable cost; where no voucher can be obtained without considerable cost, none may be required. The limit applies voucher by voucher, so where only some are unobtainable the document is still needed for the others (see original_vouchers, must_show)."
      },
      "type": "boolean"
     },
     {
-     "id": "instruction_due",
-     "question": "Does the file state that measures to reduce the loss are or were to be taken after the theft, and that there was no imminent danger (Gefahr im Verzug) requiring them before the insurer could be asked?",
-     "not_this": "Measures that had to be taken at once because of imminent danger; the notification of the claim itself; steps to find the thief or recover the items.",
+     "id": "measures_pending",
+     "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
+     "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38a Abs. 1",
       "passage": "Der Anspruchsberechtigte ist verpflichtet, nach Eintritt des befürchteten Ereignisses tunlichst für Minderung des Schadens zu sorgen. Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
+      "basis": "states"
+     },
+     "type": "boolean"
+    },
+    {
+     "id": "imminent_danger",
+     "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?",
+     "not_this": "The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.",
+     "rule": {
+      "source_id": "vvg",
+      "locator": "VVG Art. 38a Abs. 1 Satz 2",
+      "passage": "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
       "basis": "states"
      },
      "type": "boolean"
@@ -697,21 +911,28 @@
     },
     {
      "id": "a_cover",
-     "title": "Check that the policy includes the supplementary insurance for simple theft away",
+     "title": "Check in the policy that it includes the supplementary insurance for simple theft away",
      "reached_when": {
       "fact": "theft_away",
       "is": true
      },
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3 lit. c, S. 7",
-      "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.",
-      "basis": "states"
+      "locator": "Ziff. 24, Einleitung, S. 8",
+      "passage": "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:",
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. c, S. 7",
+        "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen."
+       }
+      ]
      }
     },
     {
      "id": "a_notify",
-     "title": "Record the claim notification and the policy",
+     "title": "Record the claim notification",
      "reached_when": {
       "all": [
        {
@@ -728,7 +949,14 @@
       "source_id": "vvg",
       "locator": "VVG Art. 38 Abs. 1",
       "passage": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 8 lit. a, S. 3",
+        "passage": "die CSS umgehend zu benachrichtigen;"
+       }
+      ]
      }
     },
     {
@@ -756,6 +984,21 @@
         "source_id": "css-avb",
         "locator": "Ziff. 8, Einleitung zu lit. f-h, S. 3",
         "passage": "Bei Diebstahl hat der Versicherungsnehmer ferner:"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Überschrift, S. 3",
+        "passage": "Polizeimeldung"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4.1, Anzeigedatum, S. 3",
+        "passage": "Anzeigedatum"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Polizeiposten, S. 3",
+        "passage": "Polizeiposten"
        }
       ]
      }
@@ -822,8 +1065,12 @@
         "is": false
        },
        {
-        "fact": "instruction_due",
+        "fact": "measures_pending",
         "is": true
+       },
+       {
+        "fact": "imminent_danger",
+        "is": false
        }
       ]
      },
@@ -866,21 +1113,20 @@
    ],
    "documents": [
     {
-     "id": "claim_form",
-     "title": "Claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', completed and signed",
+     "id": "notification_record",
+     "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
      "step": "a_notify",
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "that and when CSS was notified of the theft",
-      "the signature under the declaration that all questions were answered truthfully and completely"
+      "that and when CSS was notified of the theft"
      ],
      "rule": {
       "source_id": "vvg",
       "locator": "VVG Art. 38 Abs. 1",
       "passage": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
       "basis": "evidence",
-      "inference": "The passage makes notifying the insurer a duty; the insurer's own claim form, completed and signed, is the document that ordinarily records that and when the insurer was notified.",
+      "inference": "The passage makes notifying the insurer a duty; CSS requires no form for it (oral notice suffices, Ziff. 4; its form offers online notification), so any record of the notification, the claim form or CSS's own record of an online, written or oral notice, ordinarily shows that and when the insurer was notified.",
       "context": [
        {
         "source_id": "css-avb",
@@ -888,9 +1134,14 @@
         "passage": "die CSS umgehend zu benachrichtigen;"
        },
        {
+        "source_id": "css-avb",
+        "locator": "Ziff. 4, S. 2",
+        "passage": "Wird bei einer Mitteilung kein Formerfordernis angeführt, kann diese auch mündlich erfolgen."
+       },
+       {
         "source_id": "css-form",
-        "locator": "Abschnitt 6, Unterschrift, S. 4",
-        "passage": "Die unterzeichnende Person erklärt, alle Fragen auf allen Seiten wahrheitsgetreu und vollständig beantwortet zu haben."
+        "locator": "Seite 1, Einleitung, S. 1",
+        "passage": "Alternativ können Sie uns den Schaden auch online unter css.ch/schaden melden."
        }
       ]
      }
@@ -898,19 +1149,27 @@
     {
      "id": "insurance_policy",
      "title": "The insurance policy (Police)",
-     "step": "a_notify",
+     "step": "a_cover",
      "needed_when": true,
      "mandatory": true,
      "must_show": [
-      "the supplementary insurance for simple theft away (Ziff. 24.2)",
-      "its sum insured"
+      "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+      "its sum insured",
+      "the insured location"
      ],
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 24.2, S. 8",
-      "passage": "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.",
+      "locator": "Ziff. 24, Einleitung, S. 8",
+      "passage": "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:",
       "basis": "evidence",
-      "inference": "The clause covers the damage up to the sum insured agreed in the policy; the policy is the document that shows whether the supplementary cover was agreed and for which sum."
+      "inference": "Supplementary covers apply only where they are listed in the policy; the policy is the document that shows whether the supplementary insurance for simple theft away was agreed, for which sum, and which location is insured (so that 'outside the insured location' can be checked).",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 24.2, S. 8",
+        "passage": "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert."
+       }
+      ]
      }
     },
     {
@@ -920,19 +1179,37 @@
      "needed_when": true,
      "mandatory": false,
      "must_show": [
-      "that the theft was reported to the police",
+      "that the theft was reported to the police and when",
+      "the police station",
       "that an official investigation was requested"
      ],
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden",
-      "basis": "states"
+      "basis": "states",
+      "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Überschrift, S. 3",
+        "passage": "Polizeimeldung"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4.1, Anzeigedatum, S. 3",
+        "passage": "Anzeigedatum"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 4, Polizeiposten, S. 3",
+        "passage": "Polizeiposten"
+       }
+      ]
      }
     },
     {
      "id": "police_consent",
-     "title": "The police's consent to removing or altering the traces (a written confirmation, or the entry in the police report recording it)",
+     "title": "The police's consent to removing or altering the traces (the police report recording it, or a written confirmation by the police)",
      "step": "a_traces",
      "needed_when": true,
      "mandatory": true,
@@ -945,29 +1222,43 @@
       "locator": "Ziff. 8 lit. f, S. 3",
       "passage": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
       "basis": "evidence",
-      "inference": "The passage makes the police's consent the condition for removing or altering traces; once traces have been or are to be removed or altered, the police's written confirmation of that consent is the document that ordinarily shows the condition was met."
+      "inference": "The passage makes the police's consent the condition for removing or altering traces; the police report, the document the same clause names and CSS may request, or a written confirmation by the police is the document that can show the consent. Either one satisfies this need."
      }
     },
     {
      "id": "stolen_items_list",
-     "title": "List of the stolen or damaged items with their values (Verzeichnis mit Wertangaben)",
+     "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
      "step": "a_loss",
      "needed_when": true,
-     "mandatory": false,
+     "mandatory": true,
      "must_show": [
       "each stolen or damaged item",
+      "where and when it was bought",
       "its value"
      ],
      "rule": {
       "source_id": "css-avb",
       "locator": "Ziff. 8 lit. c, S. 3",
       "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
-      "basis": "states"
+      "basis": "follows",
+      "inference": "The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them.",
+      "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7 Gegenstände, S. 2",
+        "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7, Spalten, S. 2",
+        "passage": "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste"
+       }
+      ]
      }
     },
     {
      "id": "original_vouchers",
-     "title": "Original purchase vouchers for the stolen or damaged items (Originalkaufbelege)",
+     "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
      "step": "a_loss",
      "needed_when": {
       "fact": "vouchers_unobtainable",
@@ -975,16 +1266,27 @@
      },
      "mandatory": true,
      "must_show": [
-      "the item",
-      "where and when it was bought",
+      "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+      "where and when the item was bought",
       "the price paid"
      ],
      "rule": {
-      "source_id": "css-form",
-      "locator": "Abschnitt 3.7 Gegenstände, S. 2",
-      "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)",
-      "basis": "states",
+      "source_id": "css-avb",
+      "locator": "Ziff. 8 lit. c, S. 3",
+      "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
+      "basis": "follows",
+      "inference": "The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them. The limit of VVG Art. 39 Abs. 2 Ziff. 1 applies voucher by voucher.",
       "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7 Gegenstände, S. 2",
+        "passage": "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)"
+       },
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.7, Spalten, S. 2",
+        "passage": "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste"
+       },
        {
         "source_id": "vvg",
         "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
@@ -1011,16 +1313,22 @@
      },
      "mandatory": true,
      "must_show": [
-      "the bicycle",
+      "the bicycle, if its voucher can be obtained without considerable cost",
       "where and when it was bought",
       "the price paid"
      ],
      "rule": {
-      "source_id": "css-form",
-      "locator": "Abschnitt 3.9, S. 3",
-      "passage": "Fahrrad (bitte Originalkaufbelege beilegen)",
-      "basis": "states",
+      "source_id": "css-avb",
+      "locator": "Ziff. 8 lit. c, S. 3",
+      "passage": "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;",
+      "basis": "follows",
+      "inference": "As for original_vouchers: the contract makes original vouchers due on CSS's request, and CSS's claim form asks for the bicycle's voucher in its own section ('Fahrrad (bitte Originalkaufbelege beilegen)').",
       "context": [
+       {
+        "source_id": "css-form",
+        "locator": "Abschnitt 3.9, S. 3",
+        "passage": "Fahrrad (bitte Originalkaufbelege beilegen)"
+       },
        {
         "source_id": "vvg",
         "locator": "VVG Art. 39 Abs. 2 Ziff. 1",
@@ -1064,10 +1372,17 @@
      },
      "rule": {
       "source_id": "css-avb",
-      "locator": "Ziff. 23.3 lit. c, S. 7",
-      "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.",
+      "locator": "Ziff. 24, Einleitung, S. 8",
+      "passage": "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:",
       "basis": "follows",
-      "inference": "Cover for simple theft away requires a separate supplementary insurance; where the policy does not include it, there is no cover for the event and the process for this claim type ends."
+      "inference": "Supplementary covers apply only where they are listed in the policy, and simple theft away needs such a separate supplementary insurance (Ziff. 23.3 lit. c); where the policy does not include it, there is no cover for the event and the process for this claim type ends.",
+      "context": [
+       {
+        "source_id": "css-avb",
+        "locator": "Ziff. 23.3 lit. c, S. 7",
+        "passage": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen."
+       }
+      ]
      }
     }
    ]

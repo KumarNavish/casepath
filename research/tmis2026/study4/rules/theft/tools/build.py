@@ -72,26 +72,37 @@ CONSIDERED = [
 # ------------------------------------------------------------------------------------- insurers' quoted passages
 # (source id, locator, text, Study 1 passage id or None for a passage added from the same public document)
 QUOTES = [
+    ("css-avb", "Ziff. 4, S. 2", "Wird bei einer Mitteilung kein Formerfordernis angeführt, kann diese auch mündlich erfolgen.", None),
     ("css-avb", "Ziff. 8 lit. a, S. 3", "die CSS umgehend zu benachrichtigen;", "theft-source-0107"),
-    ("css-avb", "Ziff. 8 lit. c, S. 3", "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;", "theft-source-0134"),
+    ("css-avb", "Ziff. 8 lit. c, S. 3", "die für die Begründung des Entschädigungsanspruchs und des Umfangs der Entschädigungspflicht nötigen Angaben zu machen und auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;", "theft-source-0134, extended to the whole of lit. c"),
     ("css-avb", "Ziff. 8 lit. d, S. 3", "während und nach dem Schadenereignis nach Möglichkeit für die Erhaltung und Rettung der versicherten Sachen und für die Minderung des Schadens zu sorgen und dabei die Anordnungen der CSS zu befolgen;", "theft-source-0170"),
     ("css-avb", "Ziff. 8, Einleitung zu lit. f-h, S. 3", "Bei Diebstahl hat der Versicherungsnehmer ferner:", "theft-source-0028"),
     ("css-avb", "Ziff. 8 lit. f, S. 3", "die Polizeibehörde umgehend zu benachrichtigen, eine amtliche Untersuchung zu beantragen und ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern. Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden;", "theft-source-0043"),
     ("css-avb", "Ziff. 15, S. 3", "Sofern die CSS aus diesem Vertrag Leistungen erbracht hat, für welche der Versicherungsnehmer gegenüber Dritten Ansprüche geltend machen könnte, hat der Versicherungsnehmer diese Ansprüche bis zur Höhe der erbrachten Leistungen an die CSS abzutreten.", "theft-source-0055"),
+    ("css-avb", "Ziff. 20, Einleitung, S. 4", "Für die nachstehenden Kosten (Vermögensschäden), die durch ein versichertes Schadenereignis infolge von Feuer, Elementarereignissen, Erdbeben und vulkanischen Eruptionen, Wasser oder Diebstahl am versicherten Standort entstehen, beträgt die Deckung im Rahmen der freiwilligen Hausratversicherung gesamthaft 20% der Versicherungssumme der freiwilligen Hausrat-Grundversicherung, mindestens CHF 10 000.", None),
     ("css-avb", "Ziff. 20 lit. d, S. 5", "Mitversichert sind die effektiven Kosten für das Ändern oder Ersetzen von Schlüsseln, Magnetkarten oder von Schlössern an dem in der Police bezeichneten Standort und an den vom Versicherungsnehmer gemieteten Banksafes und dazugehörenden Schlüsseln.", None),
     ("css-avb", "Ziff. 20 lit. d, Ausschluss, S. 5", "Kosten bei einfachem Diebstahl (zu Hause oder auswärts).", "theft-source-0062"),
     ("css-avb", "Ziff. 23, Einleitung, S. 5", "Die CSS versichert die nachfolgend beschriebenen Gefahren und Schäden, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:", "theft-source-0160"),
     ("css-avb", "Ziff. 23.3 Abs. 1, S. 7", "Versichert sind durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort.", "theft-source-0025"),
-    ("css-avb", "Ziff. 23.3, Ausschlüsse, S. 7", "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.", "theft-source-0014"),
+    ("css-avb", "Ziff. 23.3, Ausschlüsse, erster Strich, S. 7", "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.", "theft-source-0014"),
+    ("css-avb", "Ziff. 23.3, Ausschlüsse, zweiter Strich, S. 7", "Schäden durch Verlieren, Verlegen oder infolge von Veruntreuung.", None),
     ("css-avb", "Ziff. 23.3 lit. a, S. 7", "Einbruchdiebstahl ist Diebstahl durch Täter, die gewaltsam in ein Gebäude oder in den Raum eines Gebäudes eindringen und/oder darin ein Behältnis aufbrechen sowie Diebstahl durch Aufschliessen mit den richtigen Schlüsseln oder Codes, sofern sich der Täter diese durch Einbruchdiebstahl oder Beraubung angeeignet hat.", "theft-source-0022"),
+    ("css-avb", "Ziff. 23.3 lit. a, Ausschluss, S. 7", "Schäden, verursacht durch das Aufbrechen eines Fahrzeuges. Fahrzeuge sind keine Behältnisse.", None),
     ("css-avb", "Ziff. 23.3 lit. b, S. 7", "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod.", "theft-source-0138"),
+    ("css-avb", "Ziff. 23.3 lit. b, Ausschluss, S. 7", "Schäden, verursacht durch Taschen- und Trickdiebstahl.", None),
     ("css-avb", "Ziff. 23.3 lit. c, S. 7", "Einfacher Diebstahl am Versicherungsort ist Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt. Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.", "theft-source-0054 + theft-source-0024"),
+    ("css-avb", "Ziff. 24, Einleitung, S. 8", "Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:", None),
     ("css-avb", "Ziff. 24.2, S. 8", "Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.", "theft-source-0162"),
+    ("css-avb", "Ziff. 26 lit. b, S. 10", "Auswärts auf der ganzen Welt für Hausrat, der sich während einer Reise, ohne dass sich dabei der gewöhnliche Aufenthaltsort des Versicherungsnehmers in der Schweiz ändert, vorübergehend an beliebigen anderen Orten befindet, im Rahmen der freiwilligen Hausratsversicherung bis CHF 50 000 für Schäden aus Feuer, Elementarschaden, Erdbeben und vulkanischen Eruptionen, Diebstahl (ohne einfachen Diebstahl) und Wasser", "theft-source-0153, extended"),
     ("css-avb", "Ziff. 29 lit. a, S. 11", "Der Versicherungsnehmer muss die Schadenhöhe beweisen.", "theft-source-0140"),
+    ("css-form", "Seite 1, Einleitung, S. 1", "Alternativ können Sie uns den Schaden auch online unter css.ch/schaden melden.", None),
     ("css-form", "Abschnitt 3.5, S. 2", "Wer hat den Schaden verursacht?", "theft-source-0114"),
     ("css-form", "Abschnitt 3.7 Gegenstände, S. 2", "Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)", "theft-source-0176"),
+    ("css-form", "Abschnitt 3.7, Spalten, S. 2", "Gegenstand Gekauft bei Kaufdatum Ersatzwert /Reparaturkosten Gemäss separater Liste", None),
     ("css-form", "Abschnitt 3.9, S. 3", "Fahrrad (bitte Originalkaufbelege beilegen)", "theft-source-0071"),
-    ("css-form", "Abschnitt 6, Unterschrift, S. 4", "Die unterzeichnende Person erklärt, alle Fragen auf allen Seiten wahrheitsgetreu und vollständig beantwortet zu haben.", "theft-source-0035"),
+    ("css-form", "Abschnitt 4, Überschrift, S. 3", "Polizeimeldung", None),
+    ("css-form", "Abschnitt 4.1, Anzeigedatum, S. 3", "Anzeigedatum", None),
+    ("css-form", "Abschnitt 4, Polizeiposten, S. 3", "Polizeiposten", None),
 ]
 
 
@@ -123,42 +134,53 @@ V38A = V("VVG Art. 38a Abs. 1", "Der Anspruchsberechtigte ist verpflichtet, nach
 V38A2 = V("VVG Art. 38a Abs. 1 Satz 2", "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.")
 V39 = V("VVG Art. 39 Abs. 2 Ziff. 1", "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat;")
 
-EVENT_HOME = "Schäden am Hausrat, auch wenn dabei nichts entwendet wurde, durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus) am Versicherungsort."
 POLICE = "die Polizeibehörde umgehend zu benachrichtigen, eine amtliche Untersuchung zu beantragen"
 TRACES = "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern"
 REPORT = "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden"
 SIMPLE = "Einfacher Diebstahl am Versicherungsort ist Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt."
 AWAY_COVER = "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen."
-DEFS = [Q("Ziff. 23.3 lit. a"), Q("Ziff. 23.3 lit. b")]
+ON_REQUEST = "auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;"
+DEFS = [Q("Ziff. 23.3 lit. a, S."), Q("Ziff. 23.3 lit. a, Ausschluss"), Q("Ziff. 23.3 lit. b, S."), Q("Ziff. 23.3 lit. b, Ausschluss")]
+FORM_ITEMS = [Q("Abschnitt 3.7 Gegenstände", source="css-form"), Q("Abschnitt 3.7, Spalten", source="css-form")]
+FORM_POLICE = [Q("Abschnitt 4, Überschrift", source="css-form"), Q("Abschnitt 4.1", source="css-form"), Q("Abschnitt 4, Polizeiposten", source="css-form")]
 BURGLARY_WORDS = ("a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or "
-                  "unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery) or a robbery "
-                  "(theft under threat or use of violence against the policyholder or a member of the household, or while they "
-                  "could not resist because of unconsciousness, accident or death)")
+                  "unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not "
+                  "a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the "
+                  "household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick "
+                  "theft are not robbery)")
+NOT_BURGLARY = ("Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is "
+                "not a robbery: both are simple thefts.")
+INTAKE_REQUEST = ("The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is "
+                  "the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every "
+                  "stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a "
+                  "separate list. At intake the handler therefore requests them.")
+
 
 # ------------------------------------------------------------------------------------------- facts shared by types
 def shared_facts():
     return [
         {"id": "traces_changed",
-         "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, for example by repair or cleaning?",
-         "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene.",
-         "rule": rule(Q("Ziff. 8 lit. f", TRACES), "states")},
+         "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning?",
+         "not_this": "Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.",
+         "rule": rule(Q("Ziff. 8 lit. f", TRACES), "states", context=[Q("Ziff. 8, Einleitung")])},
         {"id": "bicycle",
          "question": "Is a bicycle among the stolen or damaged items?",
          "not_this": "A motor scooter or motorcycle; bicycle parts or accessories alone.",
          "rule": rule(Q("Abschnitt 3.9", source="css-form"), "states")},
         {"id": "vouchers_unobtainable",
-         "question": "Does the file state that the original purchase vouchers for the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
-         "not_this": "The vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
+         "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)?",
+         "not_this": "Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.",
          "rule": rule(V39, "follows",
-                      "The contract may require only vouchers whose procurement is possible without considerable cost; a voucher that cannot be obtained, or only at considerable cost, is outside what the contract may require.")},
-        {"id": "instruction_due",
-         "question": "Does the file state that measures to reduce the loss are or were to be taken after the theft, and that there was no imminent danger (Gefahr im Verzug) requiring them before the insurer could be asked?",
-         "not_this": "Measures that had to be taken at once because of imminent danger; the notification of the claim itself; steps to find the thief or recover the items.",
+                      "The contract may require only vouchers whose procurement is possible without considerable cost; where no voucher can be obtained without considerable cost, none may be required. The limit applies voucher by voucher, so where only some are unobtainable the document is still needed for the others (see original_vouchers, must_show).")},
+        {"id": "measures_pending",
+         "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)?",
+         "not_this": "Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.",
          "rule": rule(V38A, "states")},
+        {"id": "imminent_danger",
+         "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?",
+         "not_this": "The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.",
+         "rule": rule(V38A2, "states")},
     ]
-
-
-for_fact = {"bool": "boolean"}
 
 
 def T(fact, value=True):
@@ -166,63 +188,71 @@ def T(fact, value=True):
 
 
 def ALL(*conds):
-    conds = [c for c in conds if c is not True]
-    return conds[0] if len(conds) == 1 else {"all": list(conds)}
+    out = []
+    for c in conds:
+        if c is True:
+            continue
+        out += c["all"] if isinstance(c, dict) and "all" in c else [c]
+    return out[0] if len(out) == 1 else {"all": out}
+
+
+INSTRUCTION = ALL(T("measures_pending"), T("imminent_danger", False))
 
 
 def tail_steps(p, base):
     """Steps after the gate(s): notification, police, traces, instruction, loss. `base` = condition to reach them."""
     return [
-        {"id": f"{p}_notify", "title": "Record the claim notification and the policy", "reached_when": base,
-         "rule": rule(V38, "states"), "next": [(f"{p}_police", True, None)]},
+        {"id": f"{p}_notify", "title": "Record the claim notification", "reached_when": base,
+         "rule": rule(V38, "states", context=[Q("Ziff. 8 lit. a")]), "next": [(f"{p}_police", True, None)]},
         {"id": f"{p}_police", "title": "Check that the police were notified and an official investigation requested", "reached_when": base,
-         "rule": rule(Q("Ziff. 8 lit. f", POLICE), "states", context=[Q("Ziff. 8, Einleitung")]),
+         "rule": rule(Q("Ziff. 8 lit. f", POLICE), "states", context=[Q("Ziff. 8, Einleitung")] + FORM_POLICE),
          "next": [(f"{p}_traces", T("traces_changed"), "traces removed or altered"),
                   (f"{p}_instruction_check", T("traces_changed", False), "traces untouched")]},
         {"id": f"{p}_traces", "title": "Check the police's consent to removing or altering the traces",
-         "reached_when": ALL(*base["all"], T("traces_changed")) if isinstance(base, dict) and "all" in base else ALL(base, T("traces_changed")),
+         "reached_when": ALL(base, T("traces_changed")),
          "rule": rule(Q("Ziff. 8 lit. f", TRACES), "states"), "next": [(f"{p}_instruction_check", True, None)]},
         {"id": f"{p}_instruction_check", "title": "Check whether the insurer's instruction on loss-reduction measures is to be obtained", "reached_when": base,
          "rule": rule(V38A2, "states"),
-         "next": [(f"{p}_instruction", T("instruction_due"), "measures to be taken, no imminent danger"),
-                  (f"{p}_loss", T("instruction_due", False), "no instruction needed")]},
+         "next": [(f"{p}_instruction", INSTRUCTION, "measures pending, no imminent danger"),
+                  (f"{p}_loss", {"any": [T("measures_pending", False), T("imminent_danger")]}, "no instruction to obtain")]},
         {"id": f"{p}_instruction", "title": "Obtain and follow the insurer's instruction on the measures to be taken",
-         "reached_when": ALL(*base["all"], T("instruction_due")) if isinstance(base, dict) and "all" in base else ALL(base, T("instruction_due")),
+         "reached_when": ALL(base, INSTRUCTION),
          "rule": rule(V38A2, "states", context=[Q("Ziff. 8 lit. d")]), "next": [(f"{p}_loss", True, None)]},
         {"id": f"{p}_loss", "title": "Establish the stolen or damaged items and their value", "reached_when": base,
          "rule": rule(Q("Ziff. 29 lit. a"), "states"), "next": []},
     ]
 
 
-def shared_documents(p, policy_rule, policy_shows):
+def shared_documents(p, policy_step, policy_rule, policy_shows):
     return [
-        {"id": "claim_form", "title": "Claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', completed and signed",
+        {"id": "notification_record", "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
          "step": f"{p}_notify", "needed_when": True, "mandatory": True,
-         "must_show": ["that and when CSS was notified of the theft", "the signature under the declaration that all questions were answered truthfully and completely"],
-         "rule": rule(V38, "evidence", "The passage makes notifying the insurer a duty; the insurer's own claim form, completed and signed, is the document that ordinarily records that and when the insurer was notified.",
-                      context=[Q("Ziff. 8 lit. a"), Q("Abschnitt 6", source="css-form")])},
-        {"id": "insurance_policy", "title": "The insurance policy (Police)", "step": f"{p}_notify", "needed_when": True, "mandatory": True,
+         "must_show": ["that and when CSS was notified of the theft"],
+         "rule": rule(V38, "evidence", "The passage makes notifying the insurer a duty; CSS requires no form for it (oral notice suffices, Ziff. 4; its form offers online notification), so any record of the notification, the claim form or CSS's own record of an online, written or oral notice, ordinarily shows that and when the insurer was notified.",
+                      context=[Q("Ziff. 8 lit. a"), Q("Ziff. 4"), Q("Seite 1", source="css-form")])},
+        {"id": "insurance_policy", "title": "The insurance policy (Police)", "step": policy_step, "needed_when": True, "mandatory": True,
          "must_show": policy_shows, "rule": policy_rule},
         {"id": "police_report", "title": "Police report on the theft (Polizeirapport)", "step": f"{p}_police", "needed_when": True, "mandatory": False,
-         "must_show": ["that the theft was reported to the police", "that an official investigation was requested"],
-         "rule": rule(Q("Ziff. 8 lit. f", REPORT), "states")},
-        {"id": "police_consent", "title": "The police's consent to removing or altering the traces (a written confirmation, or the entry in the police report recording it)",
+         "must_show": ["that the theft was reported to the police and when", "the police station", "that an official investigation was requested"],
+         "rule": rule(Q("Ziff. 8 lit. f", REPORT), "states", context=FORM_POLICE)},
+        {"id": "police_consent", "title": "The police's consent to removing or altering the traces (the police report recording it, or a written confirmation by the police)",
          "step": f"{p}_traces", "needed_when": True, "mandatory": True,
          "must_show": ["that the police consented", "which traces the consent covered"],
          "rule": rule(Q("Ziff. 8 lit. f", TRACES), "evidence",
-                      "The passage makes the police's consent the condition for removing or altering traces; once traces have been or are to be removed or altered, the police's written confirmation of that consent is the document that ordinarily shows the condition was met.")},
-        {"id": "stolen_items_list", "title": "List of the stolen or damaged items with their values (Verzeichnis mit Wertangaben)",
-         "step": f"{p}_loss", "needed_when": True, "mandatory": False,
-         "must_show": ["each stolen or damaged item", "its value"],
-         "rule": rule(Q("Ziff. 8 lit. c"), "states")},
-        {"id": "original_vouchers", "title": "Original purchase vouchers for the stolen or damaged items (Originalkaufbelege)",
+                      "The passage makes the police's consent the condition for removing or altering traces; the police report, the document the same clause names and CSS may request, or a written confirmation by the police is the document that can show the consent. Either one satisfies this need.")},
+        {"id": "stolen_items_list", "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
+         "step": f"{p}_loss", "needed_when": True, "mandatory": True,
+         "must_show": ["each stolen or damaged item", "where and when it was bought", "its value"],
+         "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", INTAKE_REQUEST, context=FORM_ITEMS)},
+        {"id": "original_vouchers", "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
          "step": f"{p}_loss", "needed_when": T("vouchers_unobtainable", False), "mandatory": True,
-         "must_show": ["the item", "where and when it was bought", "the price paid"],
-         "rule": rule(Q("Abschnitt 3.7", source="css-form"), "states", context=[V39])},
+         "must_show": ["the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost", "where and when the item was bought", "the price paid"],
+         "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", INTAKE_REQUEST + " The limit of VVG Art. 39 Abs. 2 Ziff. 1 applies voucher by voucher.", context=FORM_ITEMS + [V39])},
         {"id": "bicycle_voucher", "title": "Original purchase voucher for the bicycle",
          "step": f"{p}_loss", "needed_when": ALL(T("bicycle"), T("vouchers_unobtainable", False)), "mandatory": True,
-         "must_show": ["the bicycle", "where and when it was bought", "the price paid"],
-         "rule": rule(Q("Abschnitt 3.9", source="css-form"), "states", context=[V39])},
+         "must_show": ["the bicycle, if its voucher can be obtained without considerable cost", "where and when it was bought", "the price paid"],
+         "rule": rule(Q("Ziff. 8 lit. c", ON_REQUEST), "follows", "As for original_vouchers: the contract makes original vouchers due on CSS's request, and CSS's claim form asks for the bicycle's voucher in its own section ('Fahrrad (bitte Originalkaufbelege beilegen)').",
+                      context=[Q("Abschnitt 3.9", source="css-form"), V39])},
     ]
 
 
@@ -235,29 +265,29 @@ home = {
     "facts": [
         {"id": "theft_at_home",
          "question": "Does the file state that household contents at the insured location (the Versicherungsort of the policy) were stolen or damaged by a burglary, a robbery or a simple theft (including vandalism), even if nothing was taken?",
-         "not_this": "Items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2).",
-         "rule": rule(Q("Ziff. 23.3 Abs. 1", EVENT_HOME), "states")},
+         "not_this": "Items merely missing where no trace, witness or circumstance points to a theft (that is open, not true); items lost, misplaced or misappropriated; a theft away from the insured location (the other claim type, Ziff. 24.2, or outside both types).",
+         "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 23.3, Ausschlüsse, zweiter")] + DEFS)},
         {"id": "household_perpetrator",
-         "question": "Does the file state that the theft or damage was caused by a person who lives in the same household as the policyholder?",
-         "not_this": "A guest, neighbour, tradesman or cleaner, or a former household member who no longer lives there; a suspicion the file raises but does not settle is open, not true.",
-         "rule": rule(Q("Ziff. 23.3, Ausschlüsse"), "states")},
+         "question": "Does the file state that the theft or damage was caused by a person who lived in the same household as the policyholder at the time?",
+         "not_this": "A guest, neighbour, tradesman or cleaner, or a person who had moved out of the household before the theft; a suspicion the file raises but does not settle is open, not true.",
+         "rule": rule(Q("Ziff. 23.3, Ausschlüsse, erster"), "states")},
         {"id": "burglary_or_robbery",
          "question": f"Was the theft {BURGLARY_WORDS}, and so not a simple theft?",
-         "not_this": "A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft.",
+         "not_this": "A theft through a door or window left open or unlocked, without force and without violence against a person: that is a simple theft. " + NOT_BURGLARY,
          "always_stated": True,
          "rule": rule(Q("Ziff. 23.3 lit. c", SIMPLE), "states", context=DEFS)},
         {"id": "lock_change",
-         "question": "Does the claim include costs of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?",
-         "not_this": "Emergency doors, glazing or locks put in after the event; the repair of a damaged door or window.",
-         "rule": rule(Q("Ziff. 20 lit. d,"), "states")},
+         "question": "Does the claim include costs, caused by the theft, of changing or replacing keys, magnetic cards or locks at the location named in the policy, or at a bank safe the policyholder rents?",
+         "not_this": "A lock change made for another reason; emergency doors, glazing or locks put in after the event; the repair of a damaged door or window.",
+         "rule": rule(Q("Ziff. 20 lit. d, S."), "states", context=[Q("Ziff. 20, Einleitung")])},
         *shared_facts(),
     ],
     "steps": [
         {"id": "h_event", "title": "Check that the reported event is a theft at the insured location", "reached_when": True,
-         "rule": rule(Q("Ziff. 23.3 Abs. 1", EVENT_HOME), "states"),
+         "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states"),
          "next": [("h_exclusion", T("theft_at_home"), "theft at the insured location"), ("h_stop_no_event", T("theft_at_home", False), "no such event")]},
         {"id": "h_exclusion", "title": "Check the exclusion of damage caused by household members", "reached_when": T("theft_at_home"),
-         "rule": rule(Q("Ziff. 23.3, Ausschlüsse"), "states"),
+         "rule": rule(Q("Ziff. 23.3, Ausschlüsse, erster"), "states"),
          "next": [("h_stop_excluded", T("household_perpetrator"), "caused by a household member"), ("h_notify", T("household_perpetrator", False), "not excluded")]},
         *tail_steps("h", HOME_BASE),
     ],
@@ -265,19 +295,19 @@ home = {
     "presumptions": [],
     "stops": [
         {"id": "h_stop_no_event", "title": "Not a theft at the insured location: this claim type does not apply", "when": T("theft_at_home", False),
-         "rule": rule(Q("Ziff. 23.3 Abs. 1", EVENT_HOME), "follows", "The clause covers damage by these events at the insured location; where the file states that no such event occurred, the steps of this claim type do not apply.")},
+         "rule": rule(Q("Ziff. 23.3 Abs. 1"), "follows", "The clause covers damage by these events at the insured location; where the file states that no such event occurred, the steps of this claim type do not apply.")},
         {"id": "h_stop_excluded", "title": "Excluded: caused by a person living in the policyholder's household", "when": ALL(T("theft_at_home"), T("household_perpetrator")),
-         "rule": rule(Q("Ziff. 23.3, Ausschlüsse"), "states")},
+         "rule": rule(Q("Ziff. 23.3, Ausschlüsse, erster"), "states")},
     ],
 }
 home["documents"] = shared_documents(
-    "h",
+    "h", "h_notify",
     rule(Q("Ziff. 23, Einleitung"), "evidence", "The clause makes cover depend on the peril being listed in the policy; the policy is the document that shows whether theft is listed and which location is insured."),
     ["theft (Ziff. 23.3) among the insured perils", "the insured location"]) + [
     {"id": "lock_change_invoice", "title": "Invoice for changing or replacing the keys, magnetic cards or locks",
      "step": "h_loss", "needed_when": ALL(T("lock_change"), T("burglary_or_robbery")), "mandatory": True,
      "must_show": ["the effective cost", "which keys, cards or locks were changed, and where"],
-     "rule": rule(Q("Ziff. 20 lit. d,"), "evidence",
+     "rule": rule(Q("Ziff. 20 lit. d, S."), "evidence",
                   "The clause covers the effective cost of the change, and the claimant must prove the amount (Ziff. 29 lit. a); the invoice of the locksmith or supplier is the document that ordinarily shows that cost. Costs after a simple theft are excluded (Ziff. 20 lit. d, Ausschluss), so the invoice is needed only after a burglary or robbery.",
                   context=[Q("Ziff. 20 lit. d, Ausschluss"), Q("Ziff. 29 lit. a")])},
 ]
@@ -290,22 +320,23 @@ away = {
     "defining_event": "theft_away",
     "facts": [
         {"id": "theft_away",
-         "question": f"Does the file state that household contents were stolen outside the insured location, in a theft that was neither {BURGLARY_WORDS}?",
-         "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); items lost, left behind or misplaced.",
+         "question": f"Does the file state that household contents were stolen or damaged by a theft outside the insured location that was neither {BURGLARY_WORDS}?",
+         "not_this": "A theft at the insured location (the other claim type, Ziff. 23.3); a burglary or robbery away from home (outside both types); items lost, left behind or misplaced. " + NOT_BURGLARY,
          "rule": rule(Q("Ziff. 24.2"), "states", context=DEFS)},
         {"id": "away_cover_missing",
-         "question": "Does the file state that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?",
-         "not_this": "Another supplementary cover being missing; the claimant being unsure whether the cover exists (that is open).",
-         "rule": rule(Q("Ziff. 23.3 lit. c", AWAY_COVER), "states")},
+         "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?",
+         "not_this": "Another supplementary cover being missing. The claimant's narrative will rarely settle this; the policy does (insurance_policy).",
+         "always_stated": True,
+         "rule": rule(Q("Ziff. 24, Einleitung"), "states", context=[Q("Ziff. 23.3 lit. c", AWAY_COVER)])},
         *shared_facts(),
     ],
     "steps": [
         {"id": "a_event", "title": "Check that the reported event is a simple theft away from the insured location", "reached_when": True,
          "rule": rule(Q("Ziff. 24.2"), "states"),
          "next": [("a_cover", T("theft_away"), "simple theft away"), ("a_stop_no_event", T("theft_away", False), "no such event")]},
-        {"id": "a_cover", "title": "Check that the policy includes the supplementary insurance for simple theft away", "reached_when": T("theft_away"),
-         "rule": rule(Q("Ziff. 23.3 lit. c", AWAY_COVER), "states"),
-         "next": [("a_stop_no_cover", T("away_cover_missing"), "no supplementary cover"), ("a_notify", T("away_cover_missing", False), "cover not stated missing")]},
+        {"id": "a_cover", "title": "Check in the policy that it includes the supplementary insurance for simple theft away", "reached_when": T("theft_away"),
+         "rule": rule(Q("Ziff. 24, Einleitung"), "states", context=[Q("Ziff. 23.3 lit. c", AWAY_COVER)]),
+         "next": [("a_stop_no_cover", T("away_cover_missing"), "no supplementary cover"), ("a_notify", T("away_cover_missing", False), "cover included")]},
         *tail_steps("a", AWAY_BASE),
     ],
     "documents": [],
@@ -314,13 +345,34 @@ away = {
         {"id": "a_stop_no_event", "title": "Not a simple theft away from the insured location: this claim type does not apply", "when": T("theft_away", False),
          "rule": rule(Q("Ziff. 24.2"), "follows", "The clause covers damage by this kind of theft outside the insured location; where the file states that no such theft occurred, the steps of this claim type do not apply.")},
         {"id": "a_stop_no_cover", "title": "No cover: the supplementary insurance for simple theft away was not taken out", "when": ALL(T("theft_away"), T("away_cover_missing")),
-         "rule": rule(Q("Ziff. 23.3 lit. c", AWAY_COVER), "follows", "Cover for simple theft away requires a separate supplementary insurance; where the policy does not include it, there is no cover for the event and the process for this claim type ends.")},
+         "rule": rule(Q("Ziff. 24, Einleitung"), "follows", "Supplementary covers apply only where they are listed in the policy, and simple theft away needs such a separate supplementary insurance (Ziff. 23.3 lit. c); where the policy does not include it, there is no cover for the event and the process for this claim type ends.",
+                      context=[Q("Ziff. 23.3 lit. c", AWAY_COVER)])},
     ],
 }
 away["documents"] = shared_documents(
-    "a",
-    rule(Q("Ziff. 24.2"), "evidence", "The clause covers the damage up to the sum insured agreed in the policy; the policy is the document that shows whether the supplementary cover was agreed and for which sum."),
-    ["the supplementary insurance for simple theft away (Ziff. 24.2)", "its sum insured"])
+    "a", "a_cover",
+    rule(Q("Ziff. 24, Einleitung"), "evidence", "Supplementary covers apply only where they are listed in the policy; the policy is the document that shows whether the supplementary insurance for simple theft away was agreed, for which sum, and which location is insured (so that 'outside the insured location' can be checked).",
+         context=[Q("Ziff. 24.2")]),
+    ["the supplementary insurance for simple theft away (Ziff. 24.2), or its absence", "its sum insured", "the insured location"])
+
+ROUTING = {
+    "fact": "claim_type", "type": "enum", "values": ["theft_at_home", "simple_theft_away", "other"],
+    "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)?",
+    "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.",
+    "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 24.2"), Q("Ziff. 26 lit. b")]),
+}
+OPTIONAL_READING = ("mandatory: false (workflow 'optional: true') marks a document the contract makes due only on CSS's request where no "
+                    "CSS document makes that request at intake: the police report ('kann durch die CSS einverlangt werden'; the claim "
+                    "form asks only for the report's particulars). At intake the handler does not request it; a reference evaluator "
+                    "marks it 'not needed' unless the file contains it, in which case it is assessed as present and sufficient or "
+                    "insufficient. Its absence is never a gap. The valued list and the original vouchers are also due 'auf Verlangen', "
+                    "but CSS makes that request in its own claim form, so they are requested at intake (mandatory: true).")
+TYPE_NOTES = {"theft_at_home": ["The police step (Ziff. 8 lit. f, 'Bei Diebstahl') is also reached when the file reports only vandalism or damage with nothing taken: the text does not say whether 'bei Diebstahl' covers that case, and the rule set does not narrow it."],
+              "simple_theft_away": []}
+OUTSIDE = ("A burglary or robbery away from the insured location (for example a holiday flat or hotel room "
+           "broken into, or a robbery on a trip). Ziff. 26 lit. b covers it, if at all, under the basic cover during travel; "
+           "neither type applies, and routing answers 'other'. A theft from a vehicle broken into away from home is a simple "
+           "theft away (a vehicle is not a container), so it belongs to type 2.")
 
 TYPES = [home, away]
 
@@ -329,7 +381,7 @@ CONVENTION_TEXT = ("A fact that the file does not mention is taken as not allege
                    "The defining event is never presumed: if the file does not mention it, it is unresolved. "
                    "A fact that the file raises and leaves unsettled is open.")
 CONVENTION = {"id": "intake_convention", "text": CONVENTION_TEXT,
-              "applies_to": "every branch fact (value false, applies unstated) except the defining event, a fact whose value false triggers a stop (none in this set) and a fact marked always_stated; a presumption a passage supports would take precedence (this rule set has none)",
+              "applies_to": "every branch fact (value false, applies unstated) except the defining event, a fact whose value false triggers a stop (none besides the defining events) and a fact marked always_stated; a presumption a passage supports would take precedence (this rule set has none)",
               "rule": {"source_id": "benchmark-convention", "locator": "SPEC.md item 6a", "basis": "convention"}}
 
 # --------------------------------------------------------------------------------------- settled points, left out
@@ -341,14 +393,17 @@ SETTLED = [
     ("Consents (old rule 003, D26/D27)",
      "Settled from the words for the police's consent: Ziff. 8 lit. f requires it for any removal or alteration of traces and states no exception, so the mitigation and public-interest exceptions of other clauses are not read into it (document police_consent). The insurer's consent to changes of damaged items (VVG Art. 38b) and the 'help services' arm (Simpego only) are left out: the insurer's consent is the insurer's own act, not a document a claimant supplies; CSS Ziff. 8 lit. e forbids such changes without naming any consent; and the Simpego text is another insurer's."),
     ("Insurer's instruction (old rule 004.a, D25)",
-     "Settled from the words of VVG Art. 38a Abs. 1: the duty is to obtain the insurer's instruction \"über die zu ergreifenden Massnahmen\", \"wenn nicht Gefahr im Verzug liegt\". It concerns measures to reduce the loss that are to be taken, and does not arise from the notification itself; it does not arise under imminent danger. The rule is a step (h_instruction / a_instruction) reached when instruction_due is true. No document is attached: the instruction is the insurer's own, not a document the claimant supplies (the old D25 is not used)."),
-    ("Police report on every theft (old rules 002, 049)",
-     "Settled: CSS Ziff. 8 lit. f makes notifying the police a duty on every theft but says the report \"kann durch die CSS einverlangt werden\": the report is a document CSS may call for (mandatory: false), not one due unasked."),
-    ("Original vouchers (old rule 014)",
-     "Settled: the CSS claim form asks under \"Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)\" and \"Fahrrad (bitte Originalkaufbelege beilegen)\", a request in CSS's own form, so the vouchers are mandatory once the form is used; VVG Art. 39 Abs. 2 Ziff. 1 limits what the contract may require to vouchers obtainable without considerable cost (fact vouchers_unobtainable). The valued list itself stays 'auf Verlangen' (Ziff. 8 lit. c, mandatory: false)."),
+     "Settled from the words of VVG Art. 38a Abs. 1: the duty is to obtain the insurer's instruction \"über die zu ergreifenden Massnahmen\", \"wenn nicht Gefahr im Verzug liegt\". It concerns measures to reduce the loss that are still to be taken, does not arise from the notification itself, and lapses under imminent danger. Two facts carry it: measures_pending (true = measures still to be taken) and imminent_danger (true = the exception a claimant would raise; unmentioned = none). The step h_instruction / a_instruction is reached when measures are pending and no danger is raised. No document is attached: the instruction is the insurer's own (the old D25 is not used)."),
+    ("Police report (old rules 002, 049)",
+     "Settled: CSS Ziff. 8 lit. f makes notifying the police a duty on every theft but says the report \"kann durch die CSS einverlangt werden\", and no CSS document requests it at intake (the claim form asks only for the report's particulars in section 4: Polizeimeldung, Anzeigedatum, Polizeiposten). So the handler does not request it at intake (mandatory: false; see the reading of optional documents)."),
+    ("Notification record (old rules 001, 047)",
+     "The duty in VVG Art. 38 Abs. 1 is to notify; CSS requires no form (Ziff. 4: \"Wird bei einer Mitteilung kein Formerfordernis angeführt, kann diese auch mündlich erfolgen.\") and its form offers online notification. The document is therefore any record of the notification (notification_record), with no signature item."),
+    ("Valued list and original vouchers (old rules 013, 014)",
+     "Both rest on the same contract clause, Ziff. 8 lit. c (\"auf Verlangen, ein Verzeichnis ... mit Wertangaben zu erstellen und Originalbelege beizubringen\"), the clause VVG Art. 39 Abs. 2 Ziff. 1 refers to, and are treated alike. The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form for every stolen or damaged item (section 3.7, with its columns, 'bitte Originalkaufbelege beilegen', or a separate list). At intake both are therefore requested (mandatory: true). The cost limit of Art. 39 applies voucher by voucher: original_vouchers must show the vouchers that can be obtained without considerable cost, and the whole need falls away only when the file states that none can."),
 ]
 LEFT_OUT = [
-    ("Insurer's consent to changing damaged items (VVG Art. 38b; CSS Ziff. 8 lit. e)", "the consent is the insurer's own act, not a claimant document; CSS names no consent; it would need a ninth fact for type 1."),
+    ("Insurer's consent to changing damaged items (VVG Art. 38b; CSS Ziff. 8 lit. e)", "the consent is the insurer's own act, not a claimant document; CSS names no consent."),
+    ("The claim form's signature and declaration", "not required by the notification duty (VVG Art. 38 Abs. 1; CSS Ziff. 4 allows oral notice)."),
     ("Recovered items: notify CSS (Ziff. 8 lit. h), repay compensation (Ziff. 29 lit. e)", "a step without a document that changes nothing in the intake checklist; repayment arises only after payment."),
     ("Measures to find the thief (Ziff. 8 lit. g)", "a duty \"nach Anleitung der Polizei oder der CSS\" with no document."),
     ("Third-party claims (Ziff. 15)", "applies only after CSS has paid (see the settled points)."),
@@ -365,11 +420,11 @@ LEFT_OUT = [
 # K kept (rewritten, narrowed to the passage); B dropped: broader than its passage; P dropped: no passage supports the
 # document or condition it demands; S dropped: another insurer's contract; O dropped: outside the intake or the size.
 OLD = {
-    "001": ("K", "claim_form (notification), VVG Art. 38 Abs. 1"),
+    "001": ("K", "notification_record, VVG Art. 38 Abs. 1"),
     "002": ("K", "police step; police_report only on request, as Ziff. 8 lit. f says"),
     "003": ("K", "narrowed to traces removed or altered (traces_changed, police_consent); damaged-items and help-services arms dropped"),
     "004": ("B", "applies identification and recovery measures and the insurer's instruction (D25) to every event; Ziff. 8 lit. g names no document"),
-    "004.a": ("K", "instruction step (instruction_due), without the D25 document"),
+    "004.a": ("K", "instruction step (measures_pending, imminent_danger), without the D25 document"),
     "005": ("K", "defining event; the proof clause no longer drives any document"),
     "006": ("K", "classification: burglary_or_robbery, theft_away"),
     "007": ("K", "type simple_theft_away and its cover stop"),
@@ -378,8 +433,8 @@ OLD = {
     "010": ("P", "demands D14 (causer section) on every claim; the passage is a question on the form and names no document"),
     "011": ("B", "demands proof documents on every claim from burden-of-proof sentences that name none"),
     "012": ("O", "information on request (VVG Art. 39 Abs. 1): no document"),
-    "013": ("K", "stolen_items_list, on request"),
-    "014": ("K", "original_vouchers with the VVG Art. 39 limit"),
+    "013": ("K", "stolen_items_list, requested through CSS's claim form"),
+    "014": ("K", "original_vouchers, requested through CSS's claim form, with the VVG Art. 39 limit per voucher"),
     "015": ("K", "bicycle_voucher; Generali's photo and estimate (another insurer) dropped"),
     "016": ("S", "Generali valuables insurance"),
     "017": ("S", "Generali / Simpego bodily injury"),
@@ -396,7 +451,7 @@ OLD = {
     "040": ("O", "recovered items: no document"), "041": ("O", "repayment after payment"),
     "042": ("B", "third party: reads on every theft by an unidentified thief; Ziff. 15 applies only after payment"),
     "043": ("S", "SVV"), "044": ("O", "limitation"), "045": ("O", "after payment"),
-    "046": ("O", "payment details (form fields)"), "047": ("K", "declaration on the claim form (must_show of claim_form)"),
+    "046": ("O", "payment details (form fields)"), "047": ("B", "requires the signed declaration of the claim form; the notification duty needs no form (Ziff. 4 allows oral notice)"),
     "048": ("O", "limitation"), "049": ("K", "police_report on request"), "050": ("K", "exclusion used in the lock-change rule"),
     "051": ("S", "AXA"), "052": ("S", "Generali"), "053": ("S", "SVV"),
     "054": ("K", "household-member exclusion (stop)"),
@@ -429,7 +484,7 @@ def strip(item):
 def rules_json():
     types = []
     for t in TYPES:
-        types.append({"id": t["id"], "title": t["title"], "defining_event": t["defining_event"],
+        types.append({"id": t["id"], "title": t["title"], "defining_event": t["defining_event"], "notes": TYPE_NOTES[t["id"]],
                       "facts": [dict(f, type="boolean") for f in t["facts"]],
                       "steps": [strip(s) for s in t["steps"]],
                       "documents": t["documents"], "presumptions": t["presumptions"], "stops": t["stops"]})
@@ -437,7 +492,8 @@ def rules_json():
             "scope": "Claims under a CSS household-contents policy (AVB Ausgabe 02.2024) for theft of household contents; the Insurance Contract Act (VVG) as in force since 1 January 2024.",
             "sources": [{k: s[k] for k in ("id", "title", "publisher", "version", "url", "language", "authoritative")} for s in SOURCES]
             + [{"id": "benchmark-convention", "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a", "kind": "benchmark_convention"}],
-            "convention": CONVENTION, "types": types}
+            "convention": CONVENTION, "routing": ROUTING, "reading_of_optional": OPTIONAL_READING,
+            "outside_both_types": OUTSIDE, "types": types}
 
 
 def snapshots():
@@ -500,9 +556,13 @@ def rules_md():
         L.append(f"| {s['id']} | {esc(s['publisher'])}: {esc(s['title'])} | {esc(s['version'])} | {s['url']} | {esc(s['public_today'])} |")
     L += ["", "Considered and not used: " + "; ".join(f"{c['title']} ({c['status']})" for c in CONSIDERED), "",
           "## Convention of this benchmark (not law)", "", f"> {CONVENTION_TEXT}", "",
-          "Rule `intake_convention`, basis `convention`, source `benchmark-convention` (SPEC.md items 6a, 6b). No passage supports a presumption in this rule set, so `presumptions` is empty in both types. The workflows encode the convention as an 'unstated' presumption (value false) on every branch fact except the defining event and `burglary_or_robbery` (marked `always_stated`: within a theft at home, burglary or robbery and simple theft are both ordinary). No fact's value false triggers a stop; the two stops on a branch fact (household member, missing supplementary cover) are reached only when the fact is true. Polarity (6b): every branch fact is worded so that true is the circumstance a party would raise.", ""]
+          "Rule `intake_convention`, basis `convention`, source `benchmark-convention` (SPEC.md items 6a, 6b). No passage supports a presumption in this rule set, so `presumptions` is empty in both types. The workflows encode the convention as an 'unstated' presumption (value false) on every branch fact except the defining events and the two facts marked `always_stated`: `burglary_or_robbery` (within a theft at home, burglary or robbery and simple theft are both ordinary) and `away_cover_missing` (the supplementary cover is an option, 'sofern ... gewünscht und in der Police aufgeführt', Ziff. 24 Einleitung; the policy settles it). No fact's value false triggers a stop besides the defining events; the two stops on a branch fact (household member, missing supplementary cover) are reached only when the fact is true. Polarity (6b): every branch fact is worded so that true is the circumstance a party would raise; `imminent_danger` is the exception a claimant raises against the instruction duty.", "",
+          "## Routing, scope and the reading of optional documents", "",
+          "| kind | id | clause | basis | citation and verbatim passage |", "|---|---|---|---|---|",
+          f"| routing fact | {ROUTING['fact']} | {esc(ROUTING['question'])} Values: {', '.join(ROUTING['values'])}.<br>*not this:* {esc(ROUTING['not_this'])} | {ROUTING['rule']['basis']} | {esc(cite_md(ROUTING['rule']))} |", "",
+          f"Outside both types: {OUTSIDE}", "", f"Reading of optional documents: {OPTIONAL_READING}", ""]
     for t in TYPES:
-        L += [f"## Type `{t['id']}`: {t['title']}", "", f"Defining event: `{t['defining_event']}`.", "",
+        L += [f"## Type `{t['id']}`: {t['title']}", "", f"Defining event: `{t['defining_event']}`.", ""] + [f"Note: {n}" for n in TYPE_NOTES[t['id']]] + ["",
               "| kind | id | clause | basis | citation and verbatim passage | inference |", "|---|---|---|---|---|---|"]
         for f in t["facts"]:
             L.append(f"| fact | {f['id']} | {esc(f['question'])}<br>*not this:* {esc(f['not_this'])} | {f['rule']['basis']} | {esc(cite_md(f['rule']))} | {esc(f['rule'].get('inference', ''))} |")
@@ -529,25 +589,42 @@ def rules_md():
     (ROOT / "RULES.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
+def cite_txt(r):
+    out = f"Source: {r['source_id']} {r['locator']}: «{r['passage']}»"
+    for c in r.get("context", []):
+        out += f"; with {c['source_id']} {c['locator']}: «{c['passage']}»"
+    if r.get("inference"):
+        out += f" ({r['basis']}: {r['inference']})"
+    return out
+
+
 def rule_text_md():
     L = ["# Theft claims under CSS household-contents insurance: rules", "",
-         "These rules apply to claims for theft of household contents under a CSS household-contents policy (AVB Ausgabe 02.2024) and the Swiss Insurance Contract Act (VVG). Each rule quotes the passage it rests on. A fact is answered true, false, open (the file raises it and leaves it unsettled) or not stated.", "",
+         "These rules apply to claims for theft of household contents under a CSS household-contents policy (AVB Ausgabe 02.2024) and the Swiss Insurance Contract Act (VVG). Each rule quotes the passage it rests on. A fact is answered true, false, open (the file raises it and leaves it unsettled) or not stated. The handler is the insurer (CSS).", "",
          "## Convention of this benchmark (not law)", "",
-         "The following rule is a convention of this benchmark, not of the law; no article states it:", "", f"> {CONVENTION_TEXT}", ""]
+         "The following rule is a convention of this benchmark, not of the law; no article states it:", "", f"> {CONVENTION_TEXT}", "",
+         "## Which claim type applies", "",
+         f"{ROUTING['question']} Not this: {ROUTING['not_this']} {cite_txt(ROUTING['rule'])}", "",
+         f"Outside both types: {OUTSIDE}", "",
+         "## Documents requested at intake and documents only on request", "", OPTIONAL_READING, ""]
     for n, t in enumerate(TYPES, 1):
-        L += [f"## Type {n}: {t['title']}", "", f"Defining event: {next(f['question'] for f in t['facts'] if f['id'] == t['defining_event'])}", "", "### Facts", ""]
+        steps = {s["id"]: s for s in t["steps"]}
+        L += [f"## Type {n}: {t['title']}", "", f"Defining event: {t['defining_event']}.", ""]
+        L += [f"Note: {x}" for x in TYPE_NOTES[t["id"]]] + ([""] if TYPE_NOTES[t["id"]] else [])
+        L += ["### Facts", ""]
         for f in t["facts"]:
-            L.append(f"- **{f['id']}**" + (" (always stated or open in a file)" if f.get("always_stated") else "") + f": {f['question']} Not this: {f['not_this']} Source: {f['rule']['source_id']} {f['rule']['locator']}: «{f['rule']['passage']}»")
+            L.append(f"- **{f['id']}**" + (" (always stated or open in a file; no presumption)" if f.get("always_stated") else "") + f": {f['question']} Not this: {f['not_this']} {cite_txt(f['rule'])}")
         L += ["", "### Stops", ""]
         for s in t["stops"]:
-            L.append(f"- {s['title']}: when {cond_md(s['when'])}. Source: {s['rule']['locator']}: «{s['rule']['passage']}»" + (f" ({s['rule']['inference']})" if s['rule'].get('inference') else ""))
+            L.append(f"- {s['title']}: when {cond_md(s['when'])}. {cite_txt(s['rule'])}")
         L += ["", "### Steps, in order", ""]
         for s in t["steps"]:
-            L.append(f"- **{s['title']}** ({s['id']}), reached when {cond_md(s['reached_when'])}. Source: {s['rule']['locator']}: «{s['rule']['passage']}»")
+            L.append(f"- **{s['title']}** ({s['id']}), reached when {cond_md(s['reached_when'])}. {cite_txt(s['rule'])}")
         L += ["", "### Documents", ""]
         for d in t["documents"]:
-            due = "mandatory" if d["mandatory"] else "only if CSS asks for it (not mandatory)"
-            L.append(f"- **{d['title']}** ({d['id']}): step {d['step']}; needed when {cond_md(d['needed_when'])}; {due}; must show: {'; '.join(d['must_show'])}. Source: {d['rule']['locator']}: «{d['rule']['passage']}»" + (f" ({d['rule']['inference']})" if d['rule'].get('inference') else ""))
+            due = "mandatory" if d["mandatory"] else "not requested at intake; only if CSS asks for it later (optional)"
+            when = cond_md({"all": [steps[d["step"]]["reached_when"], d["needed_when"]]} if d["needed_when"] is not True else steps[d["step"]]["reached_when"])
+            L.append(f"- **{d['title']}** ({d['id']}): step {d['step']}; needed when {when}; {due}; must show: {'; '.join(d['must_show'])}. {cite_txt(d['rule'])}")
         L.append("")
     (ROOT / "rule_text.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
@@ -580,9 +657,8 @@ def refs(r):
 
 def workflow(t):
     fact_ids = [f["id"] for f in t["facts"]]
-    facts = [{"id": "claim_type", "type": "enum", "values": [x["id"] for x in TYPES] + ["other"],
-              "question": "Which theft claim is this: theft at the insured location (theft_at_home), simple theft away from it (simple_theft_away), or something else (other)?",
-              "source_refs": ["css-avb#Ziff. 23.3 Abs. 1, S. 7", "css-avb#Ziff. 24.2, S. 8"]}]
+    facts = [{"id": "claim_type", "type": "enum", "values": ROUTING["values"],
+              "question": f"{ROUTING['question']} (Not this: {ROUTING['not_this']})", "source_refs": refs(ROUTING["rule"])}]
     facts += [{"id": f["id"], "type": "boolean", "question": f"{f['question']} (Not this: {f['not_this']})", "source_refs": refs(f["rule"])} for f in t["facts"]]
     steps = []
     for s in t["steps"]:

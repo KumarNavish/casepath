@@ -41,36 +41,41 @@
     "simple_theft_away",
     "other"
    ],
-   "question": "Which theft claim is this: theft at the insured location (theft_at_home), simple theft away from it (simple_theft_away), or something else (other)?",
+   "question": "Which claim is this: theft or theft-related damage at the insured location (theft_at_home), a simple theft away from it (simple_theft_away), or anything else (other)? (Not this: A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.)",
    "source_refs": [
     "css-avb#Ziff. 23.3 Abs. 1, S. 7",
-    "css-avb#Ziff. 24.2, S. 8"
+    "css-avb#Ziff. 24.2, S. 8",
+    "css-avb#Ziff. 26 lit. b, S. 10"
    ]
   },
   {
    "id": "theft_away",
    "type": "boolean",
-   "question": "Does the file state that household contents were stolen outside the insured location, in a theft that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death)? (Not this: A theft at the insured location (the other claim type, Ziff. 23.3); items lost, left behind or misplaced.)",
+   "question": "Does the file state that household contents were stolen or damaged by a theft outside the insured location that was neither a burglary (the thief forcibly entered the building or a room of it, or broke open a container in it, or unlocked it with the correct keys or codes that the thief had obtained by burglary or robbery; a vehicle is not a container) or a robbery (theft under threat or use of violence against the policyholder or a member of the household, or while they could not resist because of unconsciousness, accident or death; pickpocketing and trick theft are not robbery)? (Not this: A theft at the insured location (the other claim type, Ziff. 23.3); a burglary or robbery away from home (outside both types); items lost, left behind or misplaced. Breaking into a vehicle is not a burglary (a vehicle is not a container), and pickpocketing or trick theft is not a robbery: both are simple thefts.)",
    "source_refs": [
     "css-avb#Ziff. 24.2, S. 8",
     "css-avb#Ziff. 23.3 lit. a, S. 7",
-    "css-avb#Ziff. 23.3 lit. b, S. 7"
+    "css-avb#Ziff. 23.3 lit. a, Ausschluss, S. 7",
+    "css-avb#Ziff. 23.3 lit. b, S. 7",
+    "css-avb#Ziff. 23.3 lit. b, Ausschluss, S. 7"
    ]
   },
   {
    "id": "away_cover_missing",
    "type": "boolean",
-   "question": "Does the file state that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)? (Not this: Another supplementary cover being missing; the claimant being unsure whether the cover exists (that is open).)",
+   "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)? (Not this: Another supplementary cover being missing. The claimant's narrative will rarely settle this; the policy does (insurance_policy).)",
    "source_refs": [
+    "css-avb#Ziff. 24, Einleitung, S. 8",
     "css-avb#Ziff. 23.3 lit. c, S. 7"
    ]
   },
   {
    "id": "traces_changed",
    "type": "boolean",
-   "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, for example by repair or cleaning? (Not this: Traces that exist and are left as they were, or were only photographed; the police examining the scene.)",
+   "question": "Does the file state that traces of the theft (for example pry marks, a broken lock, window or container) have been removed or altered, or are to be removed or altered, by the policyholder or on their behalf, for example by repair or cleaning? (Not this: Traces that exist and are left as they were, or were only photographed; the police examining the scene; traces changed by the thief or by events outside the policyholder's control.)",
    "source_refs": [
-    "css-avb#Ziff. 8 lit. f, S. 3"
+    "css-avb#Ziff. 8 lit. f, S. 3",
+    "css-avb#Ziff. 8, Einleitung zu lit. f-h, S. 3"
    ]
   },
   {
@@ -84,17 +89,25 @@
   {
    "id": "vouchers_unobtainable",
    "type": "boolean",
-   "question": "Does the file state that the original purchase vouchers for the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)? (Not this: The vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.)",
+   "question": "Does the file state that the original purchase vouchers for all of the stolen or damaged items cannot be obtained, or only at considerable cost (not even as a duplicate from the seller)? (Not this: Only some vouchers cannot be obtained (then the others are still needed); the vouchers have not been attached yet or not been looked for; finding them is merely inconvenient.)",
    "source_refs": [
     "vvg#VVG Art. 39 Abs. 2 Ziff. 1"
    ]
   },
   {
-   "id": "instruction_due",
+   "id": "measures_pending",
    "type": "boolean",
-   "question": "Does the file state that measures to reduce the loss are or were to be taken after the theft, and that there was no imminent danger (Gefahr im Verzug) requiring them before the insurer could be asked? (Not this: Measures that had to be taken at once because of imminent danger; the notification of the claim itself; steps to find the thief or recover the items.)",
+   "question": "Does the file state that measures to reduce the loss are still to be taken (not yet carried out)? (Not this: Measures already carried out; the notification of the claim itself; steps to find the thief or recover the items.)",
    "source_refs": [
     "vvg#VVG Art. 38a Abs. 1"
+   ]
+  },
+  {
+   "id": "imminent_danger",
+   "type": "boolean",
+   "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)? (Not this: The claimant simply acted quickly or found it convenient, without a danger of further loss before the insurer could be asked.)",
+   "source_refs": [
+    "vvg#VVG Art. 38a Abs. 1 Satz 2"
    ]
   }
  ],
@@ -128,10 +141,14 @@
   },
   {
    "id": "a_cover",
-   "title": "Check that the policy includes the supplementary insurance for simple theft away",
+   "title": "Check in the policy that it includes the supplementary insurance for simple theft away",
    "role": "claim_handler",
    "source_refs": [
+    "css-avb#Ziff. 24, Einleitung, S. 8",
     "css-avb#Ziff. 23.3 lit. c, S. 7"
+   ],
+   "documents": [
+    "insurance_policy"
    ],
    "next": [
     {
@@ -148,20 +165,20 @@
       "fact": "away_cover_missing",
       "is": false
      },
-     "label": "cover not stated missing"
+     "label": "cover included"
     }
    ]
   },
   {
    "id": "a_notify",
-   "title": "Record the claim notification and the policy",
+   "title": "Record the claim notification",
    "role": "claim_handler",
    "source_refs": [
-    "vvg#VVG Art. 38 Abs. 1"
+    "vvg#VVG Art. 38 Abs. 1",
+    "css-avb#Ziff. 8 lit. a, S. 3"
    ],
    "documents": [
-    "claim_form",
-    "insurance_policy"
+    "notification_record"
    ],
    "next": [
     {
@@ -176,7 +193,10 @@
    "role": "claim_handler",
    "source_refs": [
     "css-avb#Ziff. 8 lit. f, S. 3",
-    "css-avb#Ziff. 8, Einleitung zu lit. f-h, S. 3"
+    "css-avb#Ziff. 8, Einleitung zu lit. f-h, S. 3",
+    "css-form#Abschnitt 4, Überschrift, S. 3",
+    "css-form#Abschnitt 4.1, Anzeigedatum, S. 3",
+    "css-form#Abschnitt 4, Polizeiposten, S. 3"
    ],
    "documents": [
     "police_report"
@@ -228,18 +248,34 @@
     {
      "to": "a_instruction",
      "when": {
-      "fact": "instruction_due",
-      "is": true
+      "all": [
+       {
+        "fact": "measures_pending",
+        "is": true
+       },
+       {
+        "fact": "imminent_danger",
+        "is": false
+       }
+      ]
      },
-     "label": "measures to be taken, no imminent danger"
+     "label": "measures pending, no imminent danger"
     },
     {
      "to": "a_loss",
      "when": {
-      "fact": "instruction_due",
-      "is": false
+      "any": [
+       {
+        "fact": "measures_pending",
+        "is": false
+       },
+       {
+        "fact": "imminent_danger",
+        "is": true
+       }
+      ]
      },
-     "label": "no instruction needed"
+     "label": "no instruction to obtain"
     }
    ]
   },
@@ -286,6 +322,7 @@
    "title": "No cover: the supplementary insurance for simple theft away was not taken out",
    "role": "claim_handler",
    "source_refs": [
+    "css-avb#Ziff. 24, Einleitung, S. 8",
     "css-avb#Ziff. 23.3 lit. c, S. 7"
    ],
    "outcome": "a_stop_no_cover"
@@ -293,47 +330,53 @@
  ],
  "documents": [
   {
-   "id": "claim_form",
-   "title": "Claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', completed and signed",
+   "id": "notification_record",
+   "title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
    "must_show": [
-    "that and when CSS was notified of the theft",
-    "the signature under the declaration that all questions were answered truthfully and completely"
+    "that and when CSS was notified of the theft"
    ],
    "source_refs": [
     "vvg#VVG Art. 38 Abs. 1",
     "css-avb#Ziff. 8 lit. a, S. 3",
-    "css-form#Abschnitt 6, Unterschrift, S. 4"
+    "css-avb#Ziff. 4, S. 2",
+    "css-form#Seite 1, Einleitung, S. 1"
    ],
-   "why": "evidence: vvg VVG Art. 38 Abs. 1: «Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.» The passage makes notifying the insurer a duty; the insurer's own claim form, completed and signed, is the document that ordinarily records that and when the insurer was notified."
+   "why": "evidence: vvg VVG Art. 38 Abs. 1: «Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.» The passage makes notifying the insurer a duty; CSS requires no form for it (oral notice suffices, Ziff. 4; its form offers online notification), so any record of the notification, the claim form or CSS's own record of an online, written or oral notice, ordinarily shows that and when the insurer was notified."
   },
   {
    "id": "insurance_policy",
    "title": "The insurance policy (Police)",
    "must_show": [
-    "the supplementary insurance for simple theft away (Ziff. 24.2)",
-    "its sum insured"
+    "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+    "its sum insured",
+    "the insured location"
    ],
    "source_refs": [
+    "css-avb#Ziff. 24, Einleitung, S. 8",
     "css-avb#Ziff. 24.2, S. 8"
    ],
-   "why": "evidence: css-avb Ziff. 24.2, S. 8: «Schäden am Hausrat durch Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet, sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.» The clause covers the damage up to the sum insured agreed in the policy; the policy is the document that shows whether the supplementary cover was agreed and for which sum."
+   "why": "evidence: css-avb Ziff. 24, Einleitung, S. 8: «Die CSS versichert die nachfolgend beschriebenen Gefahren, sofern diese vom Versicherungsnehmer gewünscht und in der Police aufgeführt worden sind:» Supplementary covers apply only where they are listed in the policy; the policy is the document that shows whether the supplementary insurance for simple theft away was agreed, for which sum, and which location is insured (so that 'outside the insured location' can be checked)."
   },
   {
    "id": "police_report",
    "title": "Police report on the theft (Polizeirapport)",
    "must_show": [
-    "that the theft was reported to the police",
+    "that the theft was reported to the police and when",
+    "the police station",
     "that an official investigation was requested"
    ],
    "source_refs": [
-    "css-avb#Ziff. 8 lit. f, S. 3"
+    "css-avb#Ziff. 8 lit. f, S. 3",
+    "css-form#Abschnitt 4, Überschrift, S. 3",
+    "css-form#Abschnitt 4.1, Anzeigedatum, S. 3",
+    "css-form#Abschnitt 4, Polizeiposten, S. 3"
    ],
    "why": "states: css-avb Ziff. 8 lit. f, S. 3: «Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden»",
    "optional": true
   },
   {
    "id": "police_consent",
-   "title": "The police's consent to removing or altering the traces (a written confirmation, or the entry in the police report recording it)",
+   "title": "The police's consent to removing or altering the traces (the police report recording it, or a written confirmation by the police)",
    "must_show": [
     "that the police consented",
     "which traces the consent covered"
@@ -341,34 +384,38 @@
    "source_refs": [
     "css-avb#Ziff. 8 lit. f, S. 3"
    ],
-   "why": "evidence: css-avb Ziff. 8 lit. f, S. 3: «ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern» The passage makes the police's consent the condition for removing or altering traces; once traces have been or are to be removed or altered, the police's written confirmation of that consent is the document that ordinarily shows the condition was met."
+   "why": "evidence: css-avb Ziff. 8 lit. f, S. 3: «ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern» The passage makes the police's consent the condition for removing or altering traces; the police report, the document the same clause names and CSS may request, or a written confirmation by the police is the document that can show the consent. Either one satisfies this need."
   },
   {
    "id": "stolen_items_list",
-   "title": "List of the stolen or damaged items with their values (Verzeichnis mit Wertangaben)",
+   "title": "List of the stolen or damaged items with their values (the claim form's table in section 3.7, or a separate list)",
    "must_show": [
     "each stolen or damaged item",
+    "where and when it was bought",
     "its value"
    ],
    "source_refs": [
-    "css-avb#Ziff. 8 lit. c, S. 3"
+    "css-avb#Ziff. 8 lit. c, S. 3",
+    "css-form#Abschnitt 3.7 Gegenstände, S. 2",
+    "css-form#Abschnitt 3.7, Spalten, S. 2"
    ],
-   "why": "states: css-avb Ziff. 8 lit. c, S. 3: «auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;»",
-   "optional": true
+   "why": "follows: css-avb Ziff. 8 lit. c, S. 3: «auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;» The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them."
   },
   {
    "id": "original_vouchers",
-   "title": "Original purchase vouchers for the stolen or damaged items (Originalkaufbelege)",
+   "title": "Original purchase vouchers for the stolen or damaged items (Originalbelege)",
    "must_show": [
-    "the item",
-    "where and when it was bought",
+    "the original voucher for each stolen or damaged item whose voucher can be obtained without considerable cost",
+    "where and when the item was bought",
     "the price paid"
    ],
    "source_refs": [
+    "css-avb#Ziff. 8 lit. c, S. 3",
     "css-form#Abschnitt 3.7 Gegenstände, S. 2",
+    "css-form#Abschnitt 3.7, Spalten, S. 2",
     "vvg#VVG Art. 39 Abs. 2 Ziff. 1"
    ],
-   "why": "states: css-form Abschnitt 3.7 Gegenstände, S. 2: «Beschädigte oder gestohlene Sachen (bitte Originalkaufbelege beilegen)»",
+   "why": "follows: css-avb Ziff. 8 lit. c, S. 3: «auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;» The contract makes the valued list and the original vouchers due on CSS's request ('auf Verlangen'). The handler is the insurer, so the request is the act being decided; CSS makes it in its own claim form, which asks for every stolen or damaged item with where and when it was bought and its value, 'bitte Originalkaufbelege beilegen', or a separate list. At intake the handler therefore requests them. The limit of VVG Art. 39 Abs. 2 Ziff. 1 applies voucher by voucher.",
    "required_when": {
     "fact": "vouchers_unobtainable",
     "is": false
@@ -378,15 +425,16 @@
    "id": "bicycle_voucher",
    "title": "Original purchase voucher for the bicycle",
    "must_show": [
-    "the bicycle",
+    "the bicycle, if its voucher can be obtained without considerable cost",
     "where and when it was bought",
     "the price paid"
    ],
    "source_refs": [
+    "css-avb#Ziff. 8 lit. c, S. 3",
     "css-form#Abschnitt 3.9, S. 3",
     "vvg#VVG Art. 39 Abs. 2 Ziff. 1"
    ],
-   "why": "states: css-form Abschnitt 3.9, S. 3: «Fahrrad (bitte Originalkaufbelege beilegen)»",
+   "why": "follows: css-avb Ziff. 8 lit. c, S. 3: «auf Verlangen, ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen und Originalbelege beizubringen;» As for original_vouchers: the contract makes original vouchers due on CSS's request, and CSS's claim form asks for the bicycle's voucher in its own section ('Fahrrad (bitte Originalkaufbelege beilegen)').",
    "required_when": {
     "all": [
      {
@@ -420,18 +468,12 @@
    "id": "a_stop_no_cover",
    "title": "No cover: the supplementary insurance for simple theft away was not taken out",
    "source_refs": [
+    "css-avb#Ziff. 24, Einleitung, S. 8",
     "css-avb#Ziff. 23.3 lit. c, S. 7"
    ]
   }
  ],
  "presumptions": [
-  {
-   "fact": "away_cover_missing",
-   "value": false,
-   "applies": "unstated",
-   "source_ref": "benchmark-convention#intake_convention",
-   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
-  },
   {
    "fact": "traces_changed",
    "value": false,
@@ -454,7 +496,14 @@
    "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
-   "fact": "instruction_due",
+   "fact": "measures_pending",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
+  {
+   "fact": "imminent_danger",
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",

@@ -162,3 +162,79 @@ Mostly yes. Every passage is verbatim and correctly located, so the `states` rul
 - The `not_this` references to articles outside the snapshot (259, 257e, 266, 270).
 - The weight of "in der Regel / in particular" in art. 269a.
 - Completeness, because it requires reading each cited article in full against the workflow, which the rule set does not invite. The German-drift checks also require reading German.
+
+---
+
+## Second look (2026-11-12)
+
+Read: `RECONCILIATION.md`, the rebuilt `rules.json`, `rule_text.md`, the snapshots (now with art. 266m), and `workflow/*.json`. `RULES.md` was not read line by line; it is generated from the same data.
+
+What ran:
+
+- `python3 -I -B tools/check.py`: exit 0, "all checks passed". It reports 52 rules: convention 1, evidence 18, follows 24, states 9.
+- New snapshot hashes equal SOURCES.json. Art. 266m in both snapshots matches the stored raw XML (EN and DE).
+- The scratch verbatim/locator script now also covers the `also` passages: 124 of 124 passages are found in the named article, paragraph and letter, each at most 60 words.
+- The string comparison of `rules.json` with `rule_text.md` finds no difference. Every question, `not_this`, title, must_show, step, document and stop inference appears verbatim, and the convention appears verbatim.
+- The workflow presumptions are on branch facts only:
+  - landlord_unaware, notice_oral_only, damages_claimed, deposit_intended, rent_deposited;
+  - family_residence, arrears_termination, asserted_claims, extension_requested;
+  - graduated_rent, index_clause, termination_with_increase.
+
+  None is on a defining event, a stop-on-false fact or cost_or_services_reason, which now carries `always_stated: true` in the workflow.
+
+### 1. The 18 earlier points
+
+| # | rule (earlier verdict) | status | note |
+|---|---|---|---|
+| 1 | defect_present (C) | resolved | Uses "alone" and "at his own expense". A shared or disputed cause is open. The art. 259 import is gone. |
+| 2 | landlord_not_informed (D), now landlord_unaware | resolved | The fact asks about knowledge, not notification. Locator art. 257g para. 2, with art. 259b as `also`. |
+| 3 | dh_notice (C) | resolved | Reached on landlord_unaware = no. The inference no longer restates the convention. |
+| 4 | defect_notification (C), now knowledge_proof | resolved | Other proofs are admitted. Art. 259b is the locator, with art. 259d as `also`. The oral-only case is handled by notice_oral_only. |
+| 5 | notice_received (C) | resolved | Disputed receipt is open, not no. |
+| 6 | family_residence (C) | resolved | Stronger than proposed: the condition now has its own verbatim passage (art. 266m para. 1). |
+| 7 | lt_family (C) | resolved | Basis `follows`; art. 266m para. 1 as `also`. |
+| 8 | lt_extension (C) | resolved | Reached without a request; art. 273 para. 5 as `also`. One inference sentence in hardship_evidence still overreaches (see the list at the end). |
+| 9 | termination_notice, termination type (C) | resolved | The threat is gone from the title and "given in writing" is added. On "signed", see part 3. |
+| 10 | spouse_service (C) | resolved | Title admits the spouse's statement of non-receipt. |
+| 11 | stop, termination (C) | resolved | Stops only where no notice was given at all. |
+| 12 | increase_notified (C), now increase_applied | resolved | Covers an increase announced, demanded or charged. |
+| 13 | cost_or_services_reason (C) | resolved | "bears on … 'in general'"; the workflow marker is present. |
+| 14 | ri_form (C) | resolved | The art. 269d para. 5 exception is in the inference and as `also`. |
+| 15 | rent_increase_notice (C) | resolved | The para. 5 exception is in must_show. |
+| 16 | proof_of_receipt, rent type (C) | resolved | Locator art. 270b para. 1. |
+| 17 | cost_breakdown (C) | resolved | Supporting invoices and statements are now required. |
+| 18 | stop, rent type (C) | resolved | Narrowed to "neither announced nor demanded nor charged". Optional: add art. 269d para. 2 let. a as `also`, since the inference now invokes "the voidness rules" without citing them. Not blocking. |
+
+Resolved 18, not resolved 0.
+
+### 2. Rules not seen before (nine tests)
+
+| rule id | kind | basis | verdict | reason | proposed wording |
+|---|---|---|---|---|---|
+| landlord_unaware | fact | follows | A | Test 3: in a file where the caretaker saw the mould and the tenant never wrote, the answer is no, as it should be. Polarity: true is what the landlord raises, and para. 2 attaches the consequence, so it is right. The inference uses two passages, and both are declared (`also` art. 259b). | none |
+| knowledge_proof | document | evidence | A | Arts. 259b and 259d make the landlord's awareness the condition. The document now admits every ordinary proof of that awareness. | none |
+| notice_oral_only | fact | follows | A | Art. 257g para. 1 ("must inform", "melden") prescribes no form. Within the same snapshot, arts. 259g para. 1, 266l para. 1 and 257d para. 1 (DE) say "in writing" or "schriftlich" where the law wants it, so reading 257g as form-free is one valid step. Polarity: an oral-only notice is the exception the tenant raises to excuse a missing record, and a written trace is the ordinary case. "Unmentioned means requested" is therefore right: the need is created by art. 259b (landlord aware), and this fact only removes it. Two limits are noted, not blocking: (a) the question also counts an inspection record, which the tenant often cannot know about, so a "yes" needs the claim to say plainly that nothing was put in writing; (b) a stated deposit (art. 259g) implies a written time limit, which is itself a written trace, so the two facts can contradict each other. | none |
+| increase_applied | fact (defining) | follows | A | Art. 269d para. 2 let. a voids an increase not communicated on the form, so an increase charged without notice is still the dispute. One step. Test 3: a landlord's private plan that was never announced is "no"; an increase invoiced without notice is "yes". | none |
+| termination_with_increase | fact | follows | A | It is narrower than art. 269d para. 2 let. c (notice only, no threat), which SPEC item 4 allows. A threat is still caught by rent_increase_notice must_show ("any threat of termination in it or in the covering letter"). Basis `follows` is correct. Polarity: true is what the tenant raises. | none |
+| deposit_receipt (merged with the conciliation filing) | document | evidence | A | Art. 259h para. 1 alone covers every must_show item: the due date of the first deposited rent, and claims "before the conciliation authority within 30 days". One passage is enough. | none |
+| claims_and_reasons (merged) | document | evidence | A | The tenant's claims and the conciliation or court documents rest on art. 271a para. 1 let. a. The landlord's reasons need art. 271 para. 2, which is carried as `also`, so a second passage is needed and is present. Note: the landlord's reasons are requested only when asserted_claims is yes; that is narrower than art. 271 para. 2 and allowed. | none |
+| payment_demand (merged with proof of payment) | document | evidence | C | The locator moved to art. 257d para. 2. That paragraph covers "payments made within the time limit", but must_show also asks for "time limit set and date it was received" and "warning that the lease will be terminated". Those conditions (and the 30-day minimum and "schriftlich") are in para. 1, which now sits only on the step, so the document no longer rests on a passage covering everything it must show. | Add `also`: Art. 257d para. 1 ("the landlord or lessor may set a time limit for payment and notify him that in the event of non-payment the landlord or lessor will terminate the lease on expiry of that time limit. The minimum time limit is ten days, and 30 days for leases of residential or commercial premises." / DE with "schriftlich"). |
+| family_residence on art. 266m para. 1 | fact | follows | A | The condition now has a verbatim passage. The passage belongs to art. 266m (notice by the tenant); carrying it over to art. 266n rests on the shared heading "Family residence", which stands in both snapshots above both articles. That step is valid, and a lay reader can now see it. Para. 3 (registered partners) is correctly added. | none |
+| stop, termination (narrowed) | stop | follows | A | It stops only where the claim says no notice was given at all; disputed receipt is open. This is sound on art. 273 para. 1. | none |
+| stop, defect (narrowed) | stop | follows | A | "Alone" and "at his own expense" track art. 259a para. 1. A shared or disputed cause is open. Sound. | none |
+| hardship_evidence (rewritten inference) | document | evidence | C | The added sentence "an ex officio examination (art. 273 para. 5) does not by itself call for them" is not in the cited text. Art. 273 para. 5 says only that the authority examines an extension; whether that examination needs these documents is a design choice of this rule set, and the sentence presents it as law. | "They are requested where the tenant seeks an extension; this rule set does not request them for an ex officio examination under art. 273 para. 5 alone (a choice of this rule set, not of the text)." |
+
+### 3. The five points the writer did not accept
+
+1. **"signed" on the notice of termination.** I agree to leave it out. Art. 266l para. 1 says only "in writing"; a signature requirement would come from general rules on written form that the set does not cite. The set says nothing wrong without it.
+2. **Settlement documents (art. 271a para. 2).** I agree. The paragraph serves only let. e (three-year protection), which is not modelled, and nothing in the set denies it. The conciliation or court documents now in claims_and_reasons partly cover it anyway.
+3. **Index values (art. 270c).** I agree to leave out a separate document; the set says nothing wrong, because index_clause states only that cost documents are not needed. Non-blocking suggestion at no slot cost: add "the index values used (old and new)" to rent_increase_notice must_show.
+4. **The landlord's offer of equivalent premises (art. 272a para. 2).** I agree. It is "as a general rule", a landlord's defence, and nothing in the set contradicts it. Note: the reason given in RECONCILIATION.md speaks of "what the insurer requests", which is a slip (this regime has no insurer); it is not in the rule set.
+5. **Routing back when a graduated or index clause is invalid.** I agree to leave it out as a known limit. The graduated_rent inference ("A periodical increase agreed under art. 269c cannot be challenged") is correct only for a valid agreement, and the question does not test validity, so for an invalid clause the set under-requests. Non-blocking: the inference should say "a valid agreement under art. 269c (checked at ri_graduated); if it is invalid, this rule set does not route back to the unfairness documents."
+
+### 4. Still not agreed
+
+- **payment_demand.** It needs art. 257d para. 1 as an `also` passage: the time limit, warning and writing it must show are not in para. 2.
+- **hardship_evidence (inference).** "An ex officio examination … does not by itself call for them" states a design choice as if it were law; reword as proposed above.
+
+Neither change alters the workflow, the documents or any condition. The set is ready to be marked reviewed once these two wording changes are made and `check.py` passes again.

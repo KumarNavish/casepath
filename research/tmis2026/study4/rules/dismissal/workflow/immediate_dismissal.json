@@ -26,7 +26,7 @@
   {
    "id": "dispute_family",
    "type": "enum",
-   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, wrongful (abusive) notice, or dismissal with immediate effect?",
+   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
    "values": [
     "protected_period_notice",
     "wrongful_termination",
@@ -55,7 +55,7 @@
   {
    "id": "incapacity_cause",
    "type": "boolean",
-   "question": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee say the absence was due to illness or accident through no fault of their own?",
+   "question": "Does the employer give as the cause of the dismissal the employee's absence from work, and does the employee say they were prevented from working through no fault of their own (for instance illness, accident or a non-voluntary legal obligation)?",
    "source_refs": [
     "co-sr220#art_337_para_3"
    ]
@@ -107,12 +107,13 @@
     "parties",
     "start date of employment",
     "agreed end date, if fixed-term",
+    "probation clause, if any",
     "notice-period clause, if any"
    ],
    "source_refs": [
     "co-sr220#art_337c_para_1"
    ],
-   "why": "CO art. 337c para. 1: Damages run to the end of the required notice period or of the agreed term; the contract ordinarily shows the start date, any agreed end date and any notice clause."
+   "why": "CO art. 337c para. 1: Damages run to the end of the required notice period or of the agreed term; the contract ordinarily shows the start date, any agreed end date, any probation clause and any notice clause."
   },
   {
    "id": "salary_evidence",
@@ -143,18 +144,17 @@
    }
   },
   {
-   "id": "medical_certificate",
-   "title": "Medical certificate of incapacity for work",
+   "id": "incapacity_proof",
+   "title": "Proof of the hindrance from working (medical certificate, or official order or summons for a non-voluntary legal obligation)",
    "must_show": [
-    "cause (illness or accident)",
-    "full or partial incapacity",
-    "first and last day of incapacity",
+    "cause of the hindrance",
+    "first and last day",
     "date issued"
    ],
    "source_refs": [
     "co-sr220#art_337_para_3"
    ],
-   "why": "CO art. 337 para. 3: Being prevented from working through no fault of one's own can never be good cause; a medical certificate is the ordinary proof that an absence was due to illness or accident and of its dates.",
+   "why": "CO art. 337 para. 3: Being prevented from working through no fault of one's own can never be good cause; a medical certificate, or the official order or summons for a legal obligation, is the ordinary proof of the hindrance and its dates.",
    "required_when": {
     "fact": "incapacity_cause",
     "is": true
@@ -251,7 +251,7 @@
    ],
    "documents": [
     "written_reasons",
-    "medical_certificate"
+    "incapacity_proof"
    ],
    "next": [
     {
@@ -385,18 +385,11 @@
    "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
-   "fact": "fixed_term",
+   "fact": "notice_period_varied",
    "value": false,
    "applies": "unstated",
    "source_ref": "benchmark-convention#intake_convention",
    "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
-  },
-  {
-   "fact": "notice_period_varied",
-   "value": false,
-   "applies": "unstated",
-   "source_ref": "co-sr220#art_335c_para_1",
-   "text": "CO art. 335c para. 1: “The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.” Paragraph 1 fixes the notice periods by law and paragraph 2 lets them differ only by a written individual, standard or collective contract, so where the file states no such written term the statutory periods apply."
   },
   {
    "fact": "other_earnings",
@@ -408,7 +401,7 @@
  ],
  "notes": [
   {
-   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts. No presumption:  (false would end the process); always stated: .",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Always stated in the file, no presumption: fixed_term.",
    "source_refs": [
     "benchmark-convention#intake_convention"
    ]

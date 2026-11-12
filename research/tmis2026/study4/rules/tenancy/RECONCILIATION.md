@@ -41,7 +41,7 @@ Count: 16 accepted (items 2 and 4 with an addition), 1 changed differently (6), 
 | C6 | art. 257d para. 2: payment within the time limit | **added by merging**: `payment_demand` became "Landlord's written payment time limit with warning of termination, and the tenant's record of payments made within it". The locator moved from art. 257d para. 1 to para. 2 (para. 1 stays on the step, with the "schriftlich" note) | para. 2: "In the event of non-payment within the time limit …" |
 | C5 | art. 271a para. 2: settlement documents | **not added** | it serves art. 271a para. 1 let. e (three-year protection after proceedings), which this rule set does not model. That fact was dropped for size in the first version |
 | C7 | art. 270c: index values | **not added** | no slot left within 14; the lease's index clause and the increase notice usually state the index values. Candidate if a document is freed |
-| C8 | art. 272a para. 2: offer of equivalent premises | **not added** | the landlord's defence; it does not change what the insurer requests from the tenant before assessment, and there is no slot |
+| C8 | art. 272a para. 2: offer of equivalent premises | **not added** | the landlord's defence; an offer would come from the landlord, so it does not change which documents the handler requests from the tenant before assessment, and there is no slot |
 | C9 | invalid graduated or index clause (arts. 269b/269c) should route back to the unfairness check | **not done** | it would need a fact on the clause's validity, which is assessed from the lease after the documents arrive. Noted as a known limit |
 | — | `not_this` lines citing articles outside the snapshot (259, 257e, 266, 270) (decision 5) | dropped those citations, kept the words; `check.py` now fails on any article cited in a question or `not_this` that is not in the snapshot | coordinator decision 5 |
 
@@ -65,3 +65,5 @@ New or rewritten rules the reader has not yet checked:
 - the merged documents `deposit_receipt`, `claims_and_reasons` and `payment_demand`
 - `increase_applied` (now on art. 269d para. 2 let. a)
 - `family_residence` (now on art. 266m para. 1)
+
+Reader's second look of 2026-11-12: both readers agree on every rule. After that look, four further edits were made: art. 257d para. 1 cited as a further passage on payment_demand; the hardship_evidence inference reworded; index values and the valid-agreement note added; workflows marked reviewed. Hashes after these edits: rules.json 3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5; rule_text.md 6ab770facf648e08e3453f0f7a1fe653f12928eed1c3c283547bff20d775631a; workflow/defect_mold_heating.json 13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb; workflow/lease_termination_dispute.json a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd; workflow/rent_increase_dispute.json 5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0.

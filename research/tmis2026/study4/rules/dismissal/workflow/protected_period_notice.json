@@ -26,7 +26,7 @@
   {
    "id": "dispute_family",
    "type": "enum",
-   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, wrongful (abusive) notice, or dismissal with immediate effect?",
+   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
    "values": [
     "protected_period_notice",
     "wrongful_termination",
@@ -47,7 +47,7 @@
   {
    "id": "notice_during_probation",
    "type": "boolean",
-   "question": "Was the notice given while the probation period was still running?",
+   "question": "Was the notice given while the probation period was still running, counting any extension of the probation period under art. 335b para. 3 (a probation period interrupted by illness, accident or a non-voluntary legal obligation is extended accordingly)?",
    "source_refs": [
     "co-sr220#art_336c_para_1_intro"
    ]
@@ -63,9 +63,9 @@
   {
    "id": "incapacity_illness_accident",
    "type": "boolean",
-   "question": "Was the employee, through no fault of their own, wholly or partly prevented from working by illness or accident on the day notice was given or while the notice period was still running?",
+   "question": "Was the employee, through no fault of their own, wholly or partly prevented from working by illness or accident on the day notice was given or at some time while the notice period was running, and was the incapacity at that point still within its protected length: up to 30 days in the first year of service, 90 days in the second to fifth years, 180 days from the sixth year?",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_b"
+    "co-sr220#art_336c_para_1_let_b_para_2"
    ]
   },
   {
@@ -73,7 +73,7 @@
    "type": "boolean",
    "question": "Was the employee performing Swiss compulsory military service, civil defence service or alternative civilian service on the day notice was given or while the notice period was running, or, for such a service lasting more than eleven days, did either of those fall within the four weeks before or after it?",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_a"
+    "co-sr220#art_336c_para_1_let_a_para_2"
    ]
   },
   {
@@ -81,13 +81,13 @@
    "type": "boolean",
    "question": "Was the employee pregnant, or within sixteen weeks after giving birth, on the day notice was given or while the notice period was running?",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_c"
+    "co-sr220#art_336c_para_1_let_c_para_2"
    ]
   },
   {
    "id": "notice_before_protected_period",
    "type": "boolean",
-   "question": "Was the notice given before the protected period began, with the notice period not yet expired when it began?",
+   "question": "Where a protected period (illness or accident, compulsory service, pregnancy or birth, as above) is raised: was the notice given before that period began, with the notice period not yet expired when it began?",
    "source_refs": [
     "co-sr220#art_336c_para_2"
    ]
@@ -104,7 +104,7 @@
  "documents": [
   {
    "id": "termination_letter",
-   "title": "Notice of termination",
+   "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
    "must_show": [
     "issuer",
     "addressee",
@@ -115,7 +115,7 @@
    "source_refs": [
     "co-sr220#art_336c_para_2"
    ],
-   "why": "CO art. 336c para. 2: Voidness turns on the day the notice was given compared with the protected period; the notice and its date of receipt are the ordinary record of that day."
+   "why": "CO art. 336c para. 2: Voidness turns on the day the notice was given compared with the protected period, and the same day decides whether notice fell in probation; the notice and its date of receipt are the ordinary record of that day (the cited text sets no written form, so a message or other record serves)."
   },
   {
    "id": "employment_contract",
@@ -129,7 +129,7 @@
    "source_refs": [
     "co-sr220#art_335b_para_1"
    ],
-   "why": "CO art. 335b para. 1: The probation period, and with it the start of the protection, runs from the start of employment; the contract or another record of the start date ordinarily shows it."
+   "why": "CO art. 335b para. 1: The probation period runs from the start of employment, and the year of service sets the 30, 90 or 180 days of art. 336c para. 1 let. b; the contract or another record of the start date ordinarily shows it."
   },
   {
    "id": "probation_terms",
@@ -141,14 +141,14 @@
    "source_refs": [
     "co-sr220#art_335b_para_2"
    ],
-   "why": "CO art. 335b para. 2: A probation period other than the first month exists only under a written agreement or a standard or collective contract; that written clause proves its length and so whether notice came after it.",
+   "why": "CO art. 335b para. 2: A probation period other than the first month exists only under a written agreement or a standard or collective contract; that written clause proves its length and so whether notice came during it.",
    "required_when": {
     "fact": "probation_varied",
     "is": true
    }
   },
   {
-   "id": "medical_certificate",
+   "id": "incapacity_proof",
    "title": "Medical certificate of incapacity for work",
    "must_show": [
     "cause (illness or accident)",
@@ -159,7 +159,7 @@
    "source_refs": [
     "co-sr220#art_336c_para_1_let_b"
    ],
-   "why": "CO art. 336c para. 1 let. b: The bar applies only while the employee is prevented from working by illness or accident; a medical certificate is the ordinary proof of that incapacity and its dates, to compare with the notice."
+   "why": "CO art. 336c para. 1 let. b: The bar applies only while the employee is prevented from working by illness or accident, for at most 30, 90 or 180 days; a medical certificate is the ordinary proof of the incapacity and its dates, which with the start date of employment fix that period."
   },
   {
    "id": "service_confirmation",
@@ -193,9 +193,9 @@
     "the written instrument that sets it (individual, standard or collective contract)"
    ],
    "source_refs": [
-    "co-sr220#art_336c_para_3"
+    "co-sr220#art_335c_para_2"
    ],
-   "why": "CO art. 336c para. 3: Resuming and extending a suspended notice period needs its length and end-point; where a written contract varies the statutory periods, that clause is the ordinary proof of them.",
+   "why": "CO art. 335c para. 2: A notice period other than the statutory one exists only under a written contract; resuming and extending a suspended notice period (art. 336c para. 3) needs its length and end-point, which that clause ordinarily shows.",
    "required_when": {
     "fact": "notice_period_varied",
     "is": true
@@ -232,10 +232,15 @@
   },
   {
    "id": "a_probation",
-   "title": "Check that the probation period had expired when notice was given",
+   "title": "Record the notice, the start of employment and the probation terms, and check that the probation period had expired when notice was given",
    "role": "claim_handler",
    "source_refs": [
     "co-sr220#art_336c_para_1_intro"
+   ],
+   "documents": [
+    "termination_letter",
+    "employment_contract",
+    "probation_terms"
    ],
    "next": [
     {
@@ -247,31 +252,12 @@
      "label": "notice during probation"
     },
     {
-     "to": "a_notice",
+     "to": "a_gate_incapacity",
      "when": {
       "fact": "notice_during_probation",
       "is": false
      },
      "label": "probation expired"
-    }
-   ]
-  },
-  {
-   "id": "a_notice",
-   "title": "Record the notice, the start of employment and the probation terms",
-   "role": "claim_handler",
-   "source_refs": [
-    "co-sr220#art_336c_para_2"
-   ],
-   "documents": [
-    "termination_letter",
-    "employment_contract",
-    "probation_terms"
-   ],
-   "next": [
-    {
-     "to": "a_gate_incapacity",
-     "when": true
     }
    ]
   },
@@ -283,7 +269,7 @@
     "co-sr220#art_336c_para_1_let_b"
    ],
    "documents": [
-    "medical_certificate"
+    "incapacity_proof"
    ],
    "next": [
     {
@@ -376,7 +362,7 @@
    "title": "Check branch: illness or accident",
    "role": "system",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_b"
+    "co-sr220#art_336c_para_1_let_b_para_2"
    ],
    "next": [
     {
@@ -402,7 +388,7 @@
    "title": "Check branch: compulsory service",
    "role": "system",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_a"
+    "co-sr220#art_336c_para_1_let_a_para_2"
    ],
    "next": [
     {
@@ -428,7 +414,7 @@
    "title": "Check branch: pregnancy or birth",
    "role": "system",
    "source_refs": [
-    "co-sr220#art_336c_para_1_let_c"
+    "co-sr220#art_336c_para_1_let_c_para_2"
    ],
    "next": [
     {
@@ -572,7 +558,7 @@
   },
   {
    "id": "a_stop_probation",
-   "title": "Process ends: The bar applies only after the probation period has expired",
+   "title": "Process ends: The bar applies only after the probation period, extended under art. 335b para. 3 where it was interrupted, has expired",
    "source_refs": [
     "co-sr220#art_336c_para_1_intro"
    ]
@@ -590,8 +576,8 @@
    "fact": "probation_varied",
    "value": false,
    "applies": "unstated",
-   "source_ref": "co-sr220#art_335b_para_1",
-   "text": "CO art. 335b para. 1: “the probation period is considered to be the first month of an employment relationship” The statute deems the probation period to be the first month and paragraph 2 allows other terms only in writing, so where the file states no such written term the first month applies."
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   },
   {
    "fact": "incapacity_illness_accident",
@@ -618,13 +604,13 @@
    "fact": "notice_period_varied",
    "value": false,
    "applies": "unstated",
-   "source_ref": "co-sr220#art_335c_para_1",
-   "text": "CO art. 335c para. 1: “The employment relationship may be terminated at one month’s notice during the first year of service, at two months’ notice in the second to ninth years of service and at three months’ notice thereafter, all such notice to expire at the end of a calendar month.” Paragraph 1 fixes the notice periods by law and paragraph 2 lets them differ only by a written individual, standard or collective contract, so where the file states no such written term the statutory periods apply."
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
   }
  ],
  "notes": [
   {
-   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts. No presumption:  (false would end the process); always stated: notice_before_protected_period.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Always stated in the file, no presumption: notice_before_protected_period.",
    "source_refs": [
     "benchmark-convention#intake_convention"
    ]

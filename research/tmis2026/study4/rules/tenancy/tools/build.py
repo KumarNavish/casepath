@@ -409,7 +409,14 @@ termination = {
           R("Art. 257d para. 2", P257D2, "evidence",
             "Termination is open to the landlord only after non-payment within the time limit; the landlord's written "
             "time limit shows the limit and the warning, and the tenant's payment records show whether payment was made "
-            "within it.", de=P257D2_DE)),
+            "within it.", de=P257D2_DE,
+            also=[A("Art. 257d para. 1",
+                    "the landlord or lessor may set a time limit for payment and notify him that in the event of "
+                    "non-payment the landlord or lessor will terminate the lease on expiry of that time limit. The minimum "
+                    "time limit is ten days, and 30 days for leases of residential or commercial premises.",
+                    "so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen und ihm androhen, dass bei unbenütztem "
+                    "Ablauf der Frist das Mietverhältnis gekündigt werde. Diese Frist beträgt mindestens zehn Tage, bei "
+                    "Wohn- und Geschäftsräumen mindestens 30 Tage.")])),
         D("claims_and_reasons", "Correspondence on the tenant's claims and the landlord's reasons for the notice",
           "lt_good_faith", is_("asserted_claims"),
           ["claims the tenant asserted (for example a repair demand or a rent challenge), with dates",
@@ -427,7 +434,8 @@ termination = {
             "c. the personal, family and financial circumstances of the parties, as well as their conduct;", "evidence",
             "In weighing an extension the authority has particular regard to the parties' personal, family and financial "
             "circumstances; documents of the tenant's circumstances ordinarily prove them. They are requested where the "
-            "tenant seeks an extension; an ex officio examination (art. 273 para. 5) does not by itself call for them.",
+            "tenant seeks an extension. Not requesting them when the authority would examine an extension only ex officio "
+            "(art. 273 para. 5) is this rule set's choice; that paragraph does not say so.",
             de="c. die persönlichen, familiären und wirtschaftlichen Verhältnisse der Parteien und deren Verhalten;")),
     ],
     "presumptions": [],
@@ -464,7 +472,8 @@ rent = {
           R("Art. 270d", "Without prejudice to the right to challenge the initial rent, the tenant may not challenge "
             "periodical rent increases.", "follows",
             "A periodical increase agreed under art. 269c cannot be challenged as unfair, so the documents for testing "
-            "unfairness are not needed; the agreement's validity and the notice remain to be checked.",
+            "unfairness are not needed; the agreement's validity and the notice remain to be checked. This holds only for "
+            "a valid agreement (art. 269c); the rule set does not route an invalid one back to the unfairness check.",
             de="Unter Vorbehalt der Anfechtung des Anfangsmietzinses kann der Mieter gestaffelte Mietzinse nicht anfechten.")),
         F("index_clause",
           "Does the claim state that the increase applies a clause of the lease linking the rent to an index (such as the "
@@ -546,6 +555,7 @@ rent = {
            "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: "
            "art. 269d para. 5)",
            "any threat of termination in it or in the covering letter",
+           "for an index-linked increase: the old and new index values",
            "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)"],
           R("Art. 269d para. 2 let. a–b",
             "The rent increase is void where:\na. it is not communicated using the prescribed form;\nb. no reasons are "
@@ -756,7 +766,7 @@ def workflow(t):
         "id": t["id"],
         "version": VERSION,
         "title": t["title"] + " (rules from SR 220)",
-        "status": "draft",
+        "status": "reviewed",
         "example": False,
         "applies_when": {"fact": "dispute_family", "is": t["id"]},
         "sources": [{"id": s["id"], "kind": "knowledge", "title": s["title"]} for s in SOURCES]

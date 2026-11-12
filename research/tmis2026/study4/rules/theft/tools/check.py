@@ -81,6 +81,17 @@ def main():
         fail("convention rule missing or without basis 'convention'")
     by_basis = {}
     catalogue = set()
+    routing = data.get("routing")
+    if not routing:
+        fail("routing fact missing from rules.json")
+    else:
+        for c in [routing["rule"]] + routing["rule"].get("context", []):
+            if c["source_id"] not in snaps or c["passage"] not in snaps[c["source_id"]]:
+                fail(f"routing: passage not verbatim in {c['source_id']} snapshot: {c['passage'][:60]}")
+            if len(c["passage"].split()) > 60:
+                fail("routing: passage over 60 words")
+        if set(routing["values"]) != {t["id"] for t in data["types"]} | {"other"}:
+            fail("routing values differ from the types plus 'other'")
     for t in data["types"]:
         facts = {f["id"] for f in t["facts"]}
         steps = {s["id"] for s in t["steps"]}
@@ -131,6 +142,12 @@ def main():
         except product.CatalogueError as e:
             print(f"note: {path.name} validates with kind process_guidance; with benchmark_convention the frozen validator says: {e}")
         fact_ids = [f["id"] for f in t["facts"]]
+        used = product._used_facts(wf)
+        if len(used) > product.MAX_OPEN_FACTS:
+            print(f"note: {t['id']} uses {len(used)} facts; the product defers exactly only while at most {product.MAX_OPEN_FACTS} are open")
+        wf_route = next((f for f in wf["facts"] if f["id"] == "claim_type"), None)
+        if not wf_route or routing and wf_route["values"] != routing["values"]:
+            fail(f"{path.name}: routing fact differs from rules.json")
         wf_facts = {f["id"] for f in wf["facts"]} - {"claim_type"}
         if wf_facts != set(fact_ids):
             fail(f"{path.name}: facts differ from rules.json")

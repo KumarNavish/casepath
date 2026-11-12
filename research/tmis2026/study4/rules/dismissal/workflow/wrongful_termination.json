@@ -16,6 +16,11 @@
    "title": "Swiss Code of Obligations (SR 220), consolidated version of 2026-10-01 (Fedlex); English translation, German text authoritative"
   },
   {
+   "id": "cpc-sr272",
+   "kind": "knowledge",
+   "title": "Swiss Civil Procedure Code (SR 272), consolidated version of 2026-07-01 (Fedlex); English translation, German text authoritative"
+  },
+  {
    "id": "benchmark-convention",
    "kind": "process_guidance",
    "intended_kind": "benchmark_convention",
@@ -26,7 +31,7 @@
   {
    "id": "dispute_family",
    "type": "enum",
-   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, wrongful (abusive) notice, or dismissal with immediate effect?",
+   "question": "Which employment-termination dispute does the claim concern: notice during a protected period, abusive notice, or dismissal with immediate effect?",
    "values": [
     "protected_period_notice",
     "wrongful_termination",
@@ -55,9 +60,17 @@
   {
    "id": "objection_submitted",
    "type": "boolean",
-   "question": "Did the employee send the employer a written objection to the notice before the notice period ended?",
+   "question": "Did the employee lodge a written objection to the notice with the employer (German: \"beim Kündigenden schriftlich Einsprache erheben\") no later than the end of the notice period?",
    "source_refs": [
     "co-sr220#art_336b_para_1"
+   ]
+  },
+  {
+   "id": "agreed_to_continue",
+   "type": "boolean",
+   "question": "Did the employee and the employer agree, after the notice, that the employment relationship would continue?",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
    ]
   },
   {
@@ -71,7 +84,7 @@
   {
    "id": "action_in_time",
    "type": "boolean",
-   "question": "Did the employee bring the compensation claim before a court within 180 days of the end of the employment relationship?",
+   "question": "Did the employee make the compensation claim pending (German: \"Klage anhängig gemacht\") within 180 days of the end of the employment relationship?",
    "source_refs": [
     "co-sr220#art_336b_para_2"
    ]
@@ -87,7 +100,7 @@
   {
    "id": "retaliation_for_claims",
    "type": "boolean",
-   "question": "Does the employee say the notice was given because they had asserted, in good faith, claims arising from the employment relationship?",
+   "question": "Was the notice given because the employee had asserted, in good faith, claims arising from the employment relationship?",
    "source_refs": [
     "co-sr220#art_336_para_1_let_d"
    ]
@@ -104,17 +117,18 @@
  "documents": [
   {
    "id": "termination_letter",
-   "title": "Notice of termination",
+   "title": "Notice of termination (letter, message or other record of the notice and its receipt)",
    "must_show": [
     "issuer",
     "addressee",
     "date of the notice",
+    "date the employee received it",
     "stated end of employment"
    ],
    "source_refs": [
     "co-sr220#art_336b_para_1"
    ],
-   "why": "CO art. 336b para. 1: The objection must be made before the end of the notice period; the notice ordinarily shows when it was given and when the employment ends, which fixes that window and the start of the 180 days."
+   "why": "CO art. 336b para. 1: The objection must be lodged before the end of the notice period; the notice and its date of receipt ordinarily show when the period began and when the employment ends, which fixes that window and the start of the 180 days."
   },
   {
    "id": "employment_contract",
@@ -122,6 +136,7 @@
    "must_show": [
     "parties",
     "start date of employment",
+    "probation clause, if any",
     "notice-period clause, if any"
    ],
    "source_refs": [
@@ -131,37 +146,54 @@
   },
   {
    "id": "written_objection",
-   "title": "Copy of the written objection with proof of when it was sent",
+   "title": "Copy of the written objection with proof of when the employer received it",
    "must_show": [
     "objection to the notice",
     "addressed to the employer",
-    "date sent or received",
+    "date lodged or received",
     "proof of sending or receipt"
    ],
    "source_refs": [
     "co-sr220#art_336b_para_1"
    ],
-   "why": "CO art. 336b para. 1: The claim requires a written objection to the employer before the notice period ends; a copy of the objection with proof of its date is the ordinary proof of both.",
+   "why": "CO art. 336b para. 1: The claim requires a written objection lodged with the employer before the notice period ends; a copy with proof of its date is the ordinary proof of both, and once the period has ended it decides the claim, so it is requested then even where the file leaves the objection open.",
    "required_when": {
-    "fact": "objection_submitted",
-    "is": true
+    "any": [
+     {
+      "fact": "objection_submitted",
+      "is": true
+     },
+     {
+      "fact": "notice_period_ended",
+      "is": true
+     }
+    ]
    }
   },
   {
    "id": "court_filing",
-   "title": "Copy of the court claim with its filing date",
+   "title": "Proof that the claim was made pending: the conciliation request or statement of claim, with the confirmation of receipt",
    "must_show": [
-    "court",
+    "authority (conciliation authority or court)",
     "compensation claim",
-    "filing date"
+    "filing date",
+    "confirmation of receipt"
    ],
    "source_refs": [
-    "co-sr220#art_336b_para_2"
+    "cpc-sr272#art_62_para_1"
    ],
-   "why": "CO art. 336b para. 2: The claim is lost unless brought before a court within 180 days of the end of employment; the filed claim with its filing date is the ordinary proof that it was brought in time.",
+   "why": "CPC art. 62 para. 1: Art. 336b para. 2 (German) requires the action to be made pending (\"anhängig gemacht\") within 180 days; under CPC art. 62 para. 1 a case becomes pending when an application for conciliation or an action is filed, and para. 2 provides a confirmation of receipt, so that submission with its date proves it; once the 180 days have passed it decides the claim, so it is requested then even where the file leaves the filing open.",
    "required_when": {
-    "fact": "action_in_time",
-    "is": true
+    "any": [
+     {
+      "fact": "action_in_time",
+      "is": true
+     },
+     {
+      "fact": "more_than_180_days",
+      "is": true
+     }
+    ]
    }
   },
   {
@@ -174,7 +206,7 @@
    "source_refs": [
     "co-sr220#art_335_para_2"
    ],
-   "why": "CO art. 335 para. 2: Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the reason on which art. 336 makes wrongfulness depend.",
+   "why": "CO art. 335 para. 2: Where the employee asked, the employer must give its reasons in writing; that statement is the ordinary record of the reason on which art. 336 makes abuse depend.",
    "required_when": {
     "fact": "reasons_requested",
     "is": true
@@ -249,10 +281,15 @@
   },
   {
    "id": "b_objection_check",
-   "title": "Check whether the objection window has closed without a written objection",
+   "title": "Record the notice and the notice period, and check the written objection",
    "role": "claim_handler",
    "source_refs": [
     "co-sr220#art_336b_para_1"
+   ],
+   "documents": [
+    "termination_letter",
+    "employment_contract",
+    "written_objection"
    ],
    "next": [
     {
@@ -269,10 +306,10 @@
        }
       ]
      },
-     "label": "notice period ended without a written objection"
+     "label": "notice period ended without a valid written objection"
     },
     {
-     "to": "b_limit_check",
+     "to": "b_continuation_check",
      "when": {
       "not": {
        "all": [
@@ -292,11 +329,40 @@
    ]
   },
   {
-   "id": "b_limit_check",
-   "title": "Check the 180-day time limit for the court claim",
+   "id": "b_continuation_check",
+   "title": "Check whether the parties agreed to continue the employment relationship",
    "role": "claim_handler",
    "source_refs": [
     "co-sr220#art_336b_para_2"
+   ],
+   "next": [
+    {
+     "to": "b_stop_continued",
+     "when": {
+      "fact": "agreed_to_continue",
+      "is": true
+     },
+     "label": "parties agreed to continue"
+    },
+    {
+     "to": "b_limit_check",
+     "when": {
+      "fact": "agreed_to_continue",
+      "is": false
+     },
+     "label": "no agreement to continue"
+    }
+   ]
+  },
+  {
+   "id": "b_limit_check",
+   "title": "Check the 180-day time limit for making the claim pending",
+   "role": "claim_handler",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
+   ],
+   "documents": [
+    "court_filing"
    ],
    "next": [
     {
@@ -313,10 +379,10 @@
        }
       ]
      },
-     "label": "180 days passed without a court claim"
+     "label": "180 days passed without the claim made pending"
     },
     {
-     "to": "b_notice",
+     "to": "b_grounds",
      "when": {
       "not": {
        "all": [
@@ -332,26 +398,6 @@
       }
      },
      "label": "time limit kept or still running"
-    }
-   ]
-  },
-  {
-   "id": "b_notice",
-   "title": "Record the notice, the notice period, the objection and any court claim",
-   "role": "claim_handler",
-   "source_refs": [
-    "co-sr220#art_336b_para_1"
-   ],
-   "documents": [
-    "termination_letter",
-    "employment_contract",
-    "written_objection",
-    "court_filing"
-   ],
-   "next": [
-    {
-     "to": "b_grounds",
-     "when": true
     }
    ]
   },
@@ -391,7 +437,7 @@
   },
   {
    "id": "b_representative",
-   "title": "Examine the protection of an elected employee representative",
+   "title": "Examine the protection of an elected employee representative (the employer must prove a justified reason, \"begründeter Anlass\")",
    "role": "claim_handler",
    "source_refs": [
     "co-sr220#art_336_para_2_let_b"
@@ -486,11 +532,20 @@
   },
   {
    "id": "b_stop_no_objection",
-   "title": "Stop (CO art. 336b para. 1)",
+   "title": "Stop (CO art. 336b para. 2)",
    "role": "system",
    "outcome": "b_stop_no_objection",
    "source_refs": [
-    "co-sr220#art_336b_para_1"
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_continued",
+   "title": "Stop (CO art. 336b para. 2)",
+   "role": "system",
+   "outcome": "b_stop_continued",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
    ]
   },
   {
@@ -529,20 +584,34 @@
   },
   {
    "id": "b_stop_no_objection",
-   "title": "Process ends: Compensation under arts. 336 and 336a requires a written objection before the notice period ends",
+   "title": "Process ends: The party served may claim only where the objection has been validly (\"gültig\") made, which para. 1 requires in writing to the employer by the end of the notice period",
    "source_refs": [
-    "co-sr220#art_336b_para_1"
+    "co-sr220#art_336b_para_2"
+   ]
+  },
+  {
+   "id": "b_stop_continued",
+   "title": "Process ends: The party served may claim only where the parties cannot reach agreement on continuing the employment relationship",
+   "source_refs": [
+    "co-sr220#art_336b_para_2"
    ]
   },
   {
    "id": "b_stop_time_limit",
-   "title": "Process ends: The claim prescribes if not brought before the courts within 180 days of the end of the employment relationship.",
+   "title": "Process ends: The German text, which is authoritative, says the claim is forfeited (\"verwirkt\") unless an action is made pending (\"anhängig gemacht\") within 180 days",
    "source_refs": [
     "co-sr220#art_336b_para_2"
    ]
   }
  ],
  "presumptions": [
+  {
+   "fact": "agreed_to_continue",
+   "value": false,
+   "applies": "unstated",
+   "source_ref": "benchmark-convention#intake_convention",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open."
+  },
   {
    "fact": "reasons_requested",
    "value": false,
@@ -567,7 +636,7 @@
  ],
  "notes": [
   {
-   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Statutory defaults under presumptions (CO arts. 335b para. 1 and 335c para. 1) take precedence for their facts. No presumption: action_in_time, objection_submitted (false would end the process); always stated: notice_period_ended, more_than_180_days.",
+   "text": "Convention of this benchmark (not law): A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open. Unresolved when unmentioned, because false would end the process: action_in_time, objection_submitted. Always stated in the file, no presumption: notice_period_ended, more_than_180_days.",
    "source_refs": [
     "benchmark-convention#intake_convention"
    ]
