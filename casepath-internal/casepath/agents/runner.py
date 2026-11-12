@@ -20,8 +20,10 @@ def case_files(store, case_id):
     return core.case_files(store.list_files(case_id, with_text=True))
 
 
-def case_state(store, catalogue, case_id):
-    """The case's current process and evaluation, from the latest completed run plus later edits."""
+def case_state(store, catalogue, case_id, knowledge=None):
+    """The case's current process and evaluation, from the latest completed run plus later edits.
+
+    knowledge: a Knowledge version to apply instead of the store's active items (for a model-free replay)."""
     case = store.get_case(case_id)
     run = store.latest_run(case_id, "completed")
     result = (run or {}).get("result") or {}
@@ -33,7 +35,10 @@ def case_state(store, catalogue, case_id):
         workflow = catalogue.get(run["workflow_id"], run.get("workflow_version")) or catalogue.get(run["workflow_id"])
     if workflow is None:
         return {"case": case, "workflow": None, "process": None, "evaluation": None, "run": run}
-    knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
+    if knowledge is None:
+        knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
+    else:
+        knowledge = [k for k in knowledge if workflow["id"] in (k["family"] if isinstance(k["family"], list) else [k["family"]])]
     state = core.evaluate(workflow, knowledge, store.list_edits(case_id), result, case_id)
     ran = (run or {}).get("workflow_version")
     versions = {"run_version": ran, "governing_version": workflow["version"]} if ran and ran != workflow["version"] else {}

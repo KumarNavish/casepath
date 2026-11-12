@@ -299,6 +299,21 @@ class AppTests(unittest.TestCase):
         self.assertIn(b"Seite 3", client.get(f"/api/files/{cut_file['id']}/original?pages=3").content)  # original numbering
         self.assertEqual(client.get(f"/api/files/{cut_file['id']}/original?pages=1").status_code, 422)
 
+    def test_replay_shows_what_a_knowledge_proposal_would_change_on_stored_runs_without_a_model(self):
+        from casepath.quality.replay import replay
+        client = self.client()
+        case, file = self.new_case(client, "Replay")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        store, catalogue = client.app.state.store, client.app.state.catalogue
+        unchanged, = replay(store, catalogue, (), {case["id"]})
+        self.assertEqual(unchanged["changed"], {})
+        proposal = [{"id": "kn_test", "family": "example-defect", "kind": "document_need", "status": "proposed", "version": 1,
+                     "origin": {}, "applies_when": None, "content": {"title": "Wohnungsabnahmeprotokoll", "why": "Zeigt den Zustand."}}]
+        row, = replay(store, catalogue, proposal, {case["id"]})
+        self.assertIn("k-kn_test", row["after"]["needs"])
+        self.assertNotIn("k-kn_test", row["before"]["needs"])
+        self.assertTrue(row["changed"])
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

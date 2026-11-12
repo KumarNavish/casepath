@@ -21,6 +21,7 @@ DELEGATED = {
     "scorecard": ("quality.scorecard", "main", "content-free scorecard of a case store"),
     "synthetic": ("quality.synthetic", "main", "make and judge synthetic cases inside Mobiliar"),
     "example": ("quality.examples", "main", "add the made-up example case to a case store"),
+    "replay": ("quality.replay", "main", "apply a Knowledge version to the stored runs, without a model, and show what changes"),
     "drawio": ("process.drawio", "main", "turn a draw.io process diagram into a draft workflow"),
     "mining": ("process.mining", "main", "reconstruct each real case's course and the pattern across cases"),
     "job": ("agents.core", "main", "run one agent job from JSON, as a queue worker would"),
