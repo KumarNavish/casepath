@@ -99,3 +99,27 @@ def text(max_length=2000, **extra):
 
 def choice(values):
     return {"type": "string", "enum": list(values)}
+
+
+def fit_to_schema(value, schema):
+    """A report as the schema allows it: extra keys dropped, missing keys empty, texts and lists cut to their limits.
+
+    Used for an agent's final report only, where a rejected report costs a whole rewritten turn; enums, patterns and
+    types are still checked by validate_result afterwards.
+    """
+    types = _types(schema)
+    if isinstance(value, dict) and "object" in types:
+        props = schema.get("properties", {})
+        return {k: fit_to_schema(value.get(k, _empty(props[k])), props[k]) for k in props}
+    if isinstance(value, list) and "array" in types:
+        return [fit_to_schema(v, schema["items"]) for v in value[:schema.get("maxItems", len(value))]]
+    if isinstance(value, str) and "string" in types and "maxLength" in schema:
+        return value[:schema["maxLength"]]
+    return value
+
+
+def _empty(schema):
+    types = _types(schema)
+    if "null" in types:
+        return None
+    return {"string": "", "array": [], "object": {}, "boolean": False, "integer": 0, "number": 0}.get(types[0])

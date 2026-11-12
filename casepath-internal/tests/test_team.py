@@ -391,3 +391,12 @@ class AgentModelTests(unittest.TestCase):
                    "CASEPATH_AZURE_OPENAI_DEPLOYMENT": "big", "CASEPATH_AGENT_MODELS": "claim_reader=small, document_finder = small"}
             self.assertEqual(dict(load_settings(env).model.agent_deployments), {"claim_reader": "small", "document_finder": "small"})
             self.assertEqual(load_settings({**env, "CASEPATH_AGENT_MODELS": ""}).model.agent_deployments, ())
+
+
+class FitReportTests(unittest.TestCase):
+    def test_a_report_with_a_missing_field_and_an_overlong_text_is_fitted_not_rejected(self):
+        from casepath.agents.schema import arr, fit_to_schema, obj, text, validate_result
+        schema = obj(summary=text(10, minLength=1), points=arr(text(5), maxItems=2), reply=obj(needed={"type": "boolean"}, subject=text(20)))
+        fitted = fit_to_schema({"summary": "a long summary", "points": ["abcdefg", "b", "c"], "extra": 1}, schema)
+        validate_result(fitted, schema)
+        self.assertEqual(fitted, {"summary": "a long sum", "points": ["abcde", "b"], "reply": {"needed": False, "subject": ""}})
