@@ -9,7 +9,8 @@ exists; SOURCES.json hashes match the snapshots; each workflow passes the
 product's own `validate_workflow` (read-only import from the tested worktree)
 and reaches exactly the steps, documents and stops that rules.json states,
 under every assignment of the type's facts; rule_text.md carries every
-question and document title. Prints the counts.
+question and document title; the paragraph 'How to read steps and stops' is
+the fixed words and identical in rules.json and rule_text.md. Prints the counts.
 """
 import hashlib
 import itertools
@@ -117,6 +118,28 @@ def facts_in(c):
     return W.condition_facts(c) if c is not True else set()
 
 
+# The general paragraph on reading steps and stops: the same words in all three regimes (tenancy, theft, dismissal).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
+
+def check_stops_reading(rules, rule_text, report):
+    """The paragraph 'How to read steps and stops': fixed words, present and identical in rules.json and rule_text.md,
+    once, in the general part (before the convention section)."""
+    if rules.get("reading_of_stops") != STOPS_READING:
+        report("rules.json: reading_of_stops missing or not the fixed words")
+    block = "## How to read steps and stops\n\n" + STOPS_READING + "\n\n"
+    conv = rule_text.find("## Convention of this benchmark (not law)")
+    if rule_text.count("## How to read steps and stops") != 1 or block not in rule_text \
+            or not 0 <= rule_text.find(block) < conv:
+        report("rule_text.md: 'How to read steps and stops' missing, repeated, not the fixed words, or not in the "
+               "general part")
+    if rules.get("reading_of_stops", "") not in rule_text:
+        report("rule_text.md and rules.json: reading_of_stops differs")
+
+
 def main():
     rules = json.loads((HERE / "rules.json").read_text(encoding="utf-8"))
     basis = Counter()
@@ -142,6 +165,7 @@ def main():
         basis["convention"] += 1
     if "## Convention of this benchmark (not law)" not in rule_text or FIXED not in rule_text:
         err("rule_text.md lacks the convention section or its fixed words")
+    check_stops_reading(rules, rule_text, err)
     for t in rules["types"]:
         for p in t["presumptions"]:
             if p["rule"].get("basis") == "convention":

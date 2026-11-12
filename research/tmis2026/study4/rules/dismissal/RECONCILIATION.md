@@ -177,3 +177,11 @@ Closing line: reader's second look of 2026-11-12 recorded in `CITATION_CHECK.md`
 - workflow/protected_period_notice.json a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276
 - workflow/wrongful_termination.json 14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731
 - workflow/immediate_dismissal.json 5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63
+
+Clarification after review (2026-11-12): one general paragraph on reading steps and stops added to rule_text.md and rules.json; no rule changed. New SHA-256 (workflows byte-identical to before the clarification):
+
+- rules.json 2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1
+- rule_text.md 174b57f06ee1d5498c54bb670e100a7117da49e246460a8dbf9f0f92528a83a3
+- workflow/immediate_dismissal.json 5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63
+- workflow/protected_period_notice.json a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276
+- workflow/wrongful_termination.json 14b701c961ea33a810d5b5140755330515c53b932f994f9e3586292ef95e3731

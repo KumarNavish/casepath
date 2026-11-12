@@ -979,6 +979,13 @@ def art(locator):
     return locator.replace("CO ", "").replace(" (introduction)", ", introduction")
 
 
+# How to read steps and stops: one general paragraph, the same words in all three regimes (rule_text.md and rules.json).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
+
 def rule_text(data):
     out = ["# Rules: end of an employment relationship in Switzerland (dismissal)", "",
            "These rules say which documents a legal-protection insurer requests before it assesses an employee's dispute "
@@ -990,6 +997,7 @@ def rule_text(data):
            "presumptions and stops. A step is taken when its condition holds. A document is needed when its step is taken "
            "and its own condition holds; every needed document is mandatory. When a stop applies, the process ends and no "
            "further step of that type is taken. A presumption fills a fact the file does not mention.", "",
+           "## How to read steps and stops", "", data["reading_of_stops"], "",
            "## Convention of this benchmark (not law)", "",
            "The following rule is a convention of this benchmark, not of the law; no article states it:", "",
            "> " + data["convention"]["text"], ""]
@@ -1032,7 +1040,7 @@ def rule_text(data):
 
 
 def main():
-    data = {"regime": "dismissal", "version": VERSION, "sources": SOURCES + [CONVENTION_SOURCE], "convention": CONVENTION,
+    data = {"regime": "dismissal", "version": VERSION, "sources": SOURCES + [CONVENTION_SOURCE], "convention": CONVENTION, "reading_of_stops": STOPS_READING,
             "translation_notes": TRANSLATION_NOTES, "types": TYPES}
     (REGIME_DIR / "rule_text.md").write_text(rule_text(data), encoding="utf-8")
     (REGIME_DIR / "rules.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

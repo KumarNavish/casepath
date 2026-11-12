@@ -4,6 +4,10 @@ These rules say which documents a legal-protection insurer requests before it as
 
 There are three dispute types. Each type has a defining event, conditions to decide, steps, documents, presumptions and stops. A step is taken when its condition holds. A document is needed when its step is taken and its own condition holds; every needed document is mandatory. When a stop applies, the process ends and no further step of that type is taken. A presumption fills a fact the file does not mention.
 
+## How to read steps and stops
+
+Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.
+
 ## Convention of this benchmark (not law)
 
 The following rule is a convention of this benchmark, not of the law; no article states it:

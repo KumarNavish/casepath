@@ -2,6 +2,10 @@
 
 These rules apply to claims for theft of household contents under a CSS household-contents policy (AVB Ausgabe 02.2024) and the Swiss Insurance Contract Act (VVG). Each rule quotes the passage it rests on. A fact is answered true, false, open (the file raises it and leaves it unsettled) or not stated. The handler is the insurer (CSS).
 
+## How to read steps and stops
+
+Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.
+
 ## Convention of this benchmark (not law)
 
 The following rule is a convention of this benchmark, not of the law; no article states it:

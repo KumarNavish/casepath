@@ -681,6 +681,12 @@ SOURCES = [
 ]
 
 
+# How to read steps and stops: one general paragraph, the same words in all three regimes (rule_text.md and rules.json).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
 # The intake convention of SPEC.md item 6a: one rule, basis "convention", fixed words, no passage.
 CONVENTION_TEXT = ("A fact that the file does not mention is taken as not alleged, and the rules are applied as if it "
                    "were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact "
@@ -873,6 +879,7 @@ def rule_text(doc):
          "answer.",
          "- If the claim states that the type's defining event did not happen, the process ends and no document is "
          "requested.", "",
+         "## How to read steps and stops", "", doc["reading_of_stops"], "",
          "## Convention of this benchmark (not law)", "",
          "This is a convention of this benchmark, not a rule of law; it cites no legal text. " + doc["convention"]["text"],
          "", "Under each question below, \"If not mentioned\" says how the convention applies to it.", ""]
@@ -922,6 +929,7 @@ def main():
     doc = {"regime": "tenancy", "version": VERSION,
            "sources": [{"id": s["id"], "title": s["title"], "snapshot": f"sources/{s['id']}.txt"} for s in SOURCES],
            "convention": {**CONVENTION, "source": CONVENTION_SOURCE},
+           "reading_of_stops": STOPS_READING,
            "types": TYPES}
     (HERE / "rules.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (HERE / "RULES.md").write_text(rules_md(doc), encoding="utf-8")

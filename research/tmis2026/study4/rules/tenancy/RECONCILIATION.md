@@ -67,3 +67,11 @@ New or rewritten rules the reader has not yet checked:
 - `family_residence` (now on art. 266m para. 1)
 
 Reader's second look of 2026-11-12: both readers agree on every rule. After that look, four further edits were made: art. 257d para. 1 cited as a further passage on payment_demand; the hardship_evidence inference reworded; index values and the valid-agreement note added; workflows marked reviewed. Hashes after these edits: rules.json 3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5; rule_text.md 6ab770facf648e08e3453f0f7a1fe653f12928eed1c3c283547bff20d775631a; workflow/defect_mold_heating.json 13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb; workflow/lease_termination_dispute.json a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd; workflow/rent_increase_dispute.json 5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0.
+
+Clarification after review (2026-11-12): one general paragraph on reading steps and stops added to rule_text.md and rules.json; no rule changed. New SHA-256 (workflows byte-identical to before the clarification):
+
+- rules.json 5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3
+- rule_text.md e644e52675f7e35a1c415f6e219d191de91feb6166f7855a73af313cce501e65
+- workflow/defect_mold_heating.json 13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb
+- workflow/lease_termination_dispute.json a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd
+- workflow/rent_increase_dispute.json 5a99506e4029587fa82a180200ffea2c17d5f8e798c5fb94dc345a2f49ee6ac0

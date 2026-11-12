@@ -76,6 +76,7 @@
   }
  },
  "reading_of_optional": "mandatory: false (workflow 'optional: true') marks a document the contract makes due only on CSS's request where no CSS document makes that request at intake: the police report ('kann durch die CSS einverlangt werden'; the claim form asks only for the report's particulars). At intake the handler does not request it; a reference evaluator marks it 'not needed' unless the file contains it, in which case it is assessed as present and sufficient or insufficient. Its absence is never a gap. The valued list and the original vouchers are also due 'auf Verlangen', but CSS makes that request in its own claim form, so they are requested at intake (mandatory: true).",
+ "reading_of_stops": "Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.",
  "outside_both_types": "A burglary or robbery away from the insured location (for example a hotel room or rented holiday flat broken into during a trip, or a robbery on a trip). Ziff. 26 lit. b covers it, if at all, under the basic cover during travel; neither type applies, and routing answers 'other'. A theft from a vehicle broken into away from home is a simple theft away (a vehicle is not a container), so it belongs to type 2.",
  "types": [
   {

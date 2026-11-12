@@ -14,7 +14,8 @@
    source, except the defining event, a fact whose value false triggers a stop, and an always_stated fact, which carry
    none; walking every assignment in which each branch fact is true, false or unmentioned (defining event stated true):
    no stop is reached through an unmentioned fact, and no document need is created by a fact being unmentioned;
-7. size per SPEC.md item 5.
+7. size per SPEC.md item 5;
+8. the paragraph 'How to read steps and stops' is the fixed words and identical in rules.json and rule_text.md.
 Prints counts of types, facts, steps, documents, presumptions, stops and rules by basis.
 """
 import hashlib
@@ -64,9 +65,32 @@ def stop_on_false(t):
     return found
 
 
+# The general paragraph on reading steps and stops: the same words in all three regimes (tenancy, theft, dismissal).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
+
+def check_stops_reading(rules, rule_text, report):
+    """The paragraph 'How to read steps and stops': fixed words, present and identical in rules.json and rule_text.md,
+    once, in the general part (before the convention section)."""
+    if rules.get("reading_of_stops") != STOPS_READING:
+        report("rules.json: reading_of_stops missing or not the fixed words")
+    block = "## How to read steps and stops\n\n" + STOPS_READING + "\n\n"
+    conv = rule_text.find("## Convention of this benchmark (not law)")
+    if rule_text.count("## How to read steps and stops") != 1 or block not in rule_text \
+            or not 0 <= rule_text.find(block) < conv:
+        report("rule_text.md: 'How to read steps and stops' missing, repeated, not the fixed words, or not in the "
+               "general part")
+    if rules.get("reading_of_stops", "") not in rule_text:
+        report("rule_text.md and rules.json: reading_of_stops differs")
+
+
 def main():
     product = load_product()
     data = json.loads((ROOT / "rules.json").read_text(encoding="utf-8"))
+    check_stops_reading(data, (ROOT / "rule_text.md").read_text(encoding="utf-8"), fail)
     sources = json.loads((ROOT / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
     snaps = {}
     for s in sources["sources"]:

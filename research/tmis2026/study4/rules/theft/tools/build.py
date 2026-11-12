@@ -362,6 +362,12 @@ ROUTING = {
     "not_this": "A burglary or robbery away from the insured location (covered, if at all, by the basic cover during travel, Ziff. 26 lit. b) and any other peril: other. Neither type applies to them.",
     "rule": rule(Q("Ziff. 23.3 Abs. 1"), "states", context=[Q("Ziff. 24.2"), Q("Ziff. 26 lit. b")]),
 }
+# How to read steps and stops: one general paragraph, the same words in all three regimes (rule_text.md and rules.json).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
 OPTIONAL_READING = ("mandatory: false (workflow 'optional: true') marks a document the contract makes due only on CSS's request where no "
                     "CSS document makes that request at intake: the police report ('kann durch die CSS einverlangt werden'; the claim "
                     "form asks only for the report's particulars). At intake the handler does not request it; a reference evaluator "
@@ -493,7 +499,7 @@ def rules_json():
             "scope": "Claims under a CSS household-contents policy (AVB Ausgabe 02.2024) for theft of household contents; the Insurance Contract Act (VVG) as in force since 1 January 2024.",
             "sources": [{k: s[k] for k in ("id", "title", "publisher", "version", "url", "language", "authoritative")} for s in SOURCES]
             + [{"id": "benchmark-convention", "title": "Convention of this benchmark (not law): Study 4 SPEC.md item 6a", "kind": "benchmark_convention"}],
-            "convention": CONVENTION, "routing": ROUTING, "reading_of_optional": OPTIONAL_READING,
+            "convention": CONVENTION, "routing": ROUTING, "reading_of_optional": OPTIONAL_READING, "reading_of_stops": STOPS_READING,
             "outside_both_types": OUTSIDE, "types": types}
 
 
@@ -602,6 +608,7 @@ def cite_txt(r):
 def rule_text_md():
     L = ["# Theft claims under CSS household-contents insurance: rules", "",
          "These rules apply to claims for theft of household contents under a CSS household-contents policy (AVB Ausgabe 02.2024) and the Swiss Insurance Contract Act (VVG). Each rule quotes the passage it rests on. A fact is answered true, false, open (the file raises it and leaves it unsettled) or not stated. The handler is the insurer (CSS).", "",
+         "## How to read steps and stops", "", STOPS_READING, "",
          "## Convention of this benchmark (not law)", "",
          "The following rule is a convention of this benchmark, not of the law; no article states it:", "", f"> {CONVENTION_TEXT}", "",
          "## Which claim type applies", "",

@@ -17,7 +17,8 @@
    one; with one fact raised and left open no presumption fills it; with a gate or stop fact open, the documents
    that settle it and do not depend on the claimant's own knowledge (contract, notice, probation terms) are requested
    (GATE_DOCS), while a document whose need is the claimant's own fact (objection, filing) is held behind the question; every rule and every `also` passage carries its German text;
-8. size limits of SPEC.md step 2a item 5; prints the counts.
+8. size limits of SPEC.md step 2a item 5; prints the counts;
+9. the paragraph 'How to read steps and stops' is the fixed words and identical in rules.json and rule_text.md.
 Exit status 1 on any failure.
 """
 import hashlib
@@ -128,6 +129,28 @@ def all_rules(data):
                 yield t["id"], kind, item.get("id") or item.get("fact"), item["rule"]
 
 
+# The general paragraph on reading steps and stops: the same words in all three regimes (tenancy, theft, dismissal).
+STOPS_READING = ("Steps are taken in the order given. A document belongs to a step and is decided when that step is "
+                 "reached. A stop ends the process at its step: no later step is reached, and no document of a later "
+                 "step is requested or left waiting. Documents of steps reached before the stop keep the state they had; "
+                 "a document requested there remains requested.")
+
+
+def check_stops_reading(rules, rule_text, report):
+    """The paragraph 'How to read steps and stops': fixed words, present and identical in rules.json and rule_text.md,
+    once, in the general part (before the convention section)."""
+    if rules.get("reading_of_stops") != STOPS_READING:
+        report("rules.json: reading_of_stops missing or not the fixed words")
+    block = "## How to read steps and stops\n\n" + STOPS_READING + "\n\n"
+    conv = rule_text.find("## Convention of this benchmark (not law)")
+    if rule_text.count("## How to read steps and stops") != 1 or block not in rule_text \
+            or not 0 <= rule_text.find(block) < conv:
+        report("rule_text.md: 'How to read steps and stops' missing, repeated, not the fixed words, or not in the "
+               "general part")
+    if rules.get("reading_of_stops", "") not in rule_text:
+        report("rule_text.md and rules.json: reading_of_stops differs")
+
+
 def main():
     data = json.loads((REGIME / "rules.json").read_text(encoding="utf-8"))
     meta = json.loads((REGIME / "sources" / "SOURCES.json").read_text(encoding="utf-8"))
@@ -223,6 +246,7 @@ def main():
         fail("convention text is not the exact wording of SPEC.md item 6a")
     if "## Convention of this benchmark (not law)" not in rule_text or conv.get("text", "") not in rule_text:
         fail("rule_text.md: convention section or exact wording missing")
+    check_stops_reading(data, rule_text, fail)
     conv_src = conv.get("rule", {}).get("source_id")
     if not any(x["id"] == conv_src and x.get("kind") == "benchmark_convention" for x in data["sources"]):
         fail("rules.json: convention source entry of kind benchmark_convention missing")
