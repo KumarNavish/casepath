@@ -15,7 +15,8 @@ script calls a model or the network. Standard library only (Python 3.11+).
 | 3 writer bundles | `writer_bundle.py` | designs, `rules.json` (questions, notes, catalogue), `STYLE.md` | `writer_bundles/<id>.json`, `KEYS.json` (operator only), `MANIFEST.json` |
 | 3 writing | a writing session, `WRITER_TASK.md` | one bundle | `written/<id>.json` |
 | 4 blind check | `assemble.py blind-in`, then a blind-check session, `BLIND_CHECK_TASK.md` | text, attachments, questions | `blindcheck/in/`, `blindcheck/out/` |
-| 4 compare / rewrite | `assemble.py compare` | blind-check output, design, keys | `blindcheck/compare_round<k>.json`, `rewrite/<id>.json` |
+| 4 compare | `assemble.py compare` | blind-check output, design (or round-2 target), keys | `blindcheck/compare_round<k>.json` |
+| 4 classify / rewrite | `assemble.py classify` (round 1; uses the product's evaluator) | compare output, blind quotes, designs, references, dependency rules, item notes | `blindcheck/classify_round1.json`, `blindcheck/CLASSIFY.md`, `rewrite/<id>.json` (files to rewrite only) |
 | 5-7 finalise | `assemble.py finalize` (uses `noise.py`) | all of the above | `final/<id>/`, `final/MANIFEST.json` |
 
 ```
@@ -26,7 +27,10 @@ python3 -I -B generator/cleanroom_bundle.py --regime tenancy
 python3 -I -B generator/writer_bundle.py --regime tenancy
 # ... writing session, then:
 python3 -I -B generator/assemble.py blind-in --regime tenancy --round 1
-# ... blind-check session, then compare, rewrite once, blind-in/compare round 2, finalize
+# ... blind-check session, then:
+python3 -I -B generator/assemble.py compare --regime tenancy --round 1
+python3 -I -B generator/assemble.py classify --regime tenancy
+# ... writing session on rewrite/<id>.json, then blind-in / blind check / compare --round 2, then finalize
 python3 -I -B generator/test_generator.py                       # tests (temporary folders only)
 ```
 
@@ -51,19 +55,40 @@ Only the types listed under `types` are drawn. An out-of-scope case a rule set d
 `outside_both_types`, routing answer `other`) is **not generated**: routing to "other" is not tested by these
 files.
 
-`constraints.json` (optional, in the output folder) states logical dependencies between facts that the rule set
-does not encode but a coherent file must respect, as data: `{"if": {"fact", "state" | "in"} | {"all": [...]},
-"then": {"fact", "in": [...], "set": state}, "reset_if"?: state}`. When the `if` holds and the `then` fact's state
-is not allowed, the `then` fact is set to `set`; if that fact is protected (the defining event or the open fact),
-the `if` fact is reset to `reset_if` (default not mentioned; stated false for an `always_stated` fact). A second kind,
-`{"kind": "stated_only_if", "fact", "if": {...} | {"any": [...]} | {"all": [...]}}`, leaves the fact not mentioned
-in files where the `if` does not hold: an explicit, data-stated instance of the reachability rule above, for a
-fact whose question itself limits when it is asked. Every adjustment is logged in the design
-(`constraint_adjustments`). Files exist for tenancy (deposit intended/made;
-landlord unaware vs. learned orally; increase open vs. a stated cost reason) and dismissal (employment cannot have
-ended more than 180 days ago, nor a claim be pending after it, while the notice period has not ended; and
-`notice_before_protected_period` is stated only when at least one of the three protected-period facts is stated
-true or open, because its question is "not asked where no protected period is raised").
+### Dependency rules (`constraints.json`, optional, in the output folder)
+
+Logical dependencies between facts, and between attachments and facts, that the rule set does not encode but a
+coherent file must respect, as data. **Principle (from the round-1 blind check, 2026-11-12): a designed "not
+mentioned" is not allowed where a stated answer or a required attachment item implies an answer; the design takes
+the implied state.** Kinds:
+
+| kind | form | effect |
+|---|---|---|
+| (none) | `{"if": cond, "then": {"fact", "in": [...], "set": state}, "reset_if"?}` | when `if` holds and the `then` fact's state is not in `in`, it is set to `set`; if that fact is protected (defining event, open fact), the single `if` fact is reset to `reset_if` (default not mentioned; stated false for an always-stated fact) |
+| `stated_only_if` | `{"fact", "if"}` | the fact is not mentioned unless `if` holds |
+| `stated_if` | `{"fact", "if", "set": state or "drawn", "set_default"?}` | when `if` holds, the fact may not be "not mentioned": it takes its drawn value (or `set_default`, default stated false), also where the reachability rule would leave it unmentioned |
+| `attachment_implies` | `{"document", "item"?, "fact", "implies": [states], "set": state or "drawn"}` | a supplied attachment that shows the item (or, without `item`, the document itself) answers the fact: a not-mentioned fact takes `set`; if the fact is protected (open fact, defining event) or stated otherwise, the attachment is not supplied (it would settle or contradict it); logged as `attachment_withdrawn` |
+| `claimant_sex` | `{"if": cond, "sex": "female" or "male"}` | fixes the claimant's sex; the first name is then drawn from that sex's list (`lexicon.SEX`); otherwise 50/50 |
+
+`cond` is a condition over designed states: `{"fact", "state" | "in"}`, `{"all": [...]}`, `{"any": [...]}`,
+`{"not": ...}`. Order in `design.py`: fact rules, then the reachability rule for always-stated facts (a fact a rule
+has set is left alone), fact rules again; attachments are drawn; attachment rules; fact rules once more; a supplied
+attachment that is no longer definitely needed is withdrawn. Every adjustment is logged in the design
+(`constraint_adjustments`). The files: tenancy (deposit intended / made; landlord unaware / learned orally; a
+knowledge proof answers both; an increase notice's reasons answer the cost question; the landlord's reasons answer
+the arrears question), theft (attached vouchers answer the vouchers question; a bicycle voucher answers both
+bicycle questions), dismissal (notice period vs. 180 days and claim pending; the protected-period order question is
+stated exactly when a protected period is stated or open; no notice answers the 180-day question; the contract's
+start date answers the probation question; a pregnancy makes the claimant female).
+
+### Item notes (`generator/items/<regime>.json`, generator data, not part of the rule set)
+
+Per must_show item (matched by type or "*", document, exact item text): `conditional` (overrides the wording
+heuristic), `applies_when` (a condition over designed states; when it holds a conditional item must be shown and
+can be the missing item, when it does not the item is left out), `checkable_as` (what a document must literally
+contain for the item to count as shown; passed into the writer bundle and the blind-check input), `observed` (the
+round-1 mismatch behind the entry) and `rule_set_wording` (why the item's own wording is a problem, for the
+planner). The missing item of an insufficient attachment is drawn only from items that must be shown in that file.
 
 ## Parameters (`design.py`; every one is a command-line option)
 
@@ -124,11 +149,28 @@ the language and the attachments to write; it holds no fact or document ids, no 
 the documents' titles and must_show items and any `generator_note`, no workflow, no reference, no product code and
 no prompt of any design (checked by the tests).
 
-The **blind-check session** sees only a text, its attachments (with each document's title and must_show list) and
-the questions, and states each fact as stated true / stated false / open / not mentioned and each attachment as
-sufficient or which item is missing (`BLIND_CHECK_TASK.md`). `assemble.py compare` requires an exact match on every
-fact and attachment (and the designed length); a differing file is rewritten once; a file that still differs is
-dropped and counted in the final manifest.
+The **blind-check session** sees only a text, its attachments (with each document's title, must_show list and the
+`checkable_as` notes) and the questions, and states each fact as stated true / stated false / open / not mentioned
+and each attachment as sufficient or which item is missing (`BLIND_CHECK_TASK.md`). `assemble.py compare` checks
+for an exact match on every fact and attachment (and the designed length).
+
+### Blind check, classification and the keep rule (the pipeline's rule from 2026-11-12)
+
+`assemble.py classify` (after round 1) classifies every differing file: (a) the engine reference recomputed from the
+states as read (questions as read, attachments' sufficiency as read) against the design's reference:
+reference-equivalent or not, with the documents and stop that change; (b) per question difference, the dependency
+rules whose antecedent holds in the design and which imply the read state (the implying answer or attachment item
+is named, with the blind quote); (c) per attachment difference, the must_show items at issue with their item notes.
+
+**Keep rule.** A file is kept without rewrite if it is exact, or if every difference is a designed "not mentioned"
+read as "stated false" **and** the file is reference-equivalent; its recorded fact states then become the states as
+read (`facts`), the designed ones are kept beside them (`facts_designed`), and it is flagged `kept_as_read`, with the
+reference recomputed from the states as read. Every other differing file gets the one rewrite. Its round-2 target is
+the designed states, except where a dependency rule makes a designed "not mentioned" impossible and an implied state
+(the one read, else the rule's) leaves the reference unchanged: then the target takes it (`target_revisions`), the
+rewrite request says so (`answers_changed`), and the final record is flagged `revised_by_implication`. The rewrite
+request carries the file's bundle rebuilt with the current item notes. A file that still differs after round 2 is
+dropped and counted.
 
 Both sessions must be of a model family that is **not evaluated** in the study. If an evaluated model wrote the
 texts, its own phrasing habits would be what it later reads, which would favour that model; if it did the blind
@@ -147,7 +189,13 @@ exactly (tested).
 ## Known limits
 
 - Fact dependencies the rule set does not encode need a `constraints.json`; without one the generator can draw
-  incoherent combinations.
+  incoherent combinations. The rules are found by reading blind-check mismatches, so a dependency no file has
+  exposed yet is not covered.
+- Until 2026-11-12 the wording heuristic marked any item beginning with "where" as conditional, so theft's "where
+  and when it was bought" was never required in round 1 (12 stolen-items lists differed); the round-1 writer
+  bundles in `dev/` carry that error, the rewrite bundles do not.
+- `design.py` and `writer_bundle.py` refuse to overwrite designs or bundles in a folder that already holds written
+  files (`--force` to override).
 - The reachability rule leaves theft's `burglary_or_robbery` unmentioned in every at-home file where no lock change
   is stated true or open (its only use is the lock-change invoice): the writer must tell a theft at home without
   saying whether anyone broke in.

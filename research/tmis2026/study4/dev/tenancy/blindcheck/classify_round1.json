@@ -1,0 +1,1106 @@
+{
+  "constraints_sha256": "c70d79307852451ed3eecc611c14d7403967595a159e66fdb3ce970646939e08",
+  "counts": {
+    "compared": 60,
+    "differing": 12,
+    "exact": 48,
+    "kept_as_read": 9,
+    "reference_equivalent": 9,
+    "rewrite": 3
+  },
+  "files": {
+    "ten_2249a3b45704": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "open",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_false",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "landlord_unaware",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+              "rule": "a written proof of how and when the landlord learned of the defect shows that he knows (round 1: ten_2249a3b45704, ten_6c5828c1c68b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "Datum der Meldung: 4. August 2026\nÜbermittlung: per E-Mail, mit sechs Fotos im Anhang",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment knowledge_proof, item 'how and when the landlord learned of the defect'"
+        },
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+              "rule": "a written notice, acknowledgement or inspection record exists, so the landlord did not learn only orally (round 1: ten_2249a3b45704, ten_6c5828c1c68b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q6",
+          "quote": "Übermittlung: per E-Mail, mit sechs Fotos im Anhang",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment knowledge_proof, item 'how and when the landlord learned of the defect'"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "hold",
+            "waits_for": [
+              "damages_claimed"
+            ]
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "knowledge_proof": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": false,
+          "notice_oral_only": false,
+          "rent_deposited": false
+        },
+        "presumed": {},
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "damages_claimed"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_270f84d8acff": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "stated_true",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_false",
+        "landlord_unaware": "not_mentioned",
+        "notice_oral_only": "not_mentioned",
+        "rent_deposited": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "rent_deposited",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): deposit_intended no",
+              "rule": "no deposit intended (rent paid as usual) or still undecided: no rent has been deposited (round 1: ten_270f84d8acff, ten_404e03b3e37f)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "Die Miete von CHF 2150 läuft für mich wie gewohnt weiter.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): deposit_intended no"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": true,
+            "state": "request"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "knowledge_proof": {
+            "request": true,
+            "state": "request"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": true,
+          "defect_present": true,
+          "deposit_intended": false,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": false,
+          "notice_oral_only": false,
+          "rent_deposited": false
+        },
+        "presumed": {
+          "landlord_unaware": false,
+          "notice_oral_only": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_404e03b3e37f": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "not_mentioned",
+        "defect_present": "stated_true",
+        "deposit_intended": "open",
+        "landlord_unaware": "stated_false",
+        "notice_oral_only": "stated_true",
+        "rent_deposited": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "landlord_unaware",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): notice_oral_only yes",
+              "rule": "a landlord who learned of the defect orally (or whether only orally is open) knows of it (round 1: ten_404e03b3e37f, ten_6d6fcb65d5b6)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "I phoned Ms Tara Palmer at Bachtel and told her exactly what was going on.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): notice_oral_only yes"
+        },
+        {
+          "designed": "not_mentioned",
+          "fact": "rent_deposited",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): deposit_intended open",
+              "rule": "no deposit intended (rent paid as usual) or still undecided: no rent has been deposited (round 1: ten_270f84d8acff, ten_404e03b3e37f)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "I keep going back and forth on that.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): deposit_intended open"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": false,
+            "state": "hold",
+            "waits_for": [
+              "deposit_intended"
+            ]
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": false,
+          "notice_oral_only": true,
+          "rent_deposited": false
+        },
+        "presumed": {
+          "damages_claimed": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "deposit_intended"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_6c5828c1c68b": {
+      "attachments": [],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "landlord_unaware",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+              "rule": "a written proof of how and when the landlord learned of the defect shows that he knows (round 1: ten_2249a3b45704, ten_6c5828c1c68b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "I'm attaching a screenshot of the message I sent about the problem described below, so you have the date.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment knowledge_proof, item 'how and when the landlord learned of the defect'"
+        },
+        {
+          "designed": "not_mentioned",
+          "fact": "deposit_intended",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true"
+              ],
+              "implying": "designed answer(s): rent_deposited open",
+              "rule": "unclear whether a rent payment went into deposit: the tenant has at least begun to arrange paying on deposit (round 1: ten_6c5828c1c68b read the deposit intention as open)",
+              "sets": "stated_true"
+            }
+          ],
+          "label": "Q3",
+          "quote": "that may well mean she paid it into the official deposit account rather than to Birkenrain.",
+          "read_as": "open",
+          "verdict": "raised by designed answer(s): rent_deposited open, read open because the text leaves it unsettled"
+        },
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+              "rule": "a written notice, acknowledgement or inspection record exists, so the landlord did not learn only orally (round 1: ten_2249a3b45704, ten_6c5828c1c68b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q4",
+          "quote": "I'm attaching a screenshot of the message I sent about the problem described below",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment knowledge_proof, item 'how and when the landlord learned of the defect'"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": "hold",
+          "as_read_waits_for": [
+            "deposit_intended"
+          ],
+          "design": "not_needed",
+          "design_waits_for": null,
+          "document": "deposit_deadline_notice"
+        },
+        {
+          "as_read": "hold",
+          "as_read_waits_for": [
+            "deposit_intended",
+            "rent_deposited"
+          ],
+          "design": "not_needed",
+          "design_waits_for": null,
+          "document": "deposit_receipt"
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "lease_contract": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": false,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": false,
+          "notice_oral_only": false
+        },
+        "presumed": {
+          "damages_claimed": false,
+          "deposit_intended": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "rent_deposited"
+        ]
+      },
+      "target_revisions": [
+        {
+          "because": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+          "fact": "landlord_unaware",
+          "from": "not_mentioned",
+          "label": "Q1",
+          "to": "stated_false"
+        },
+        {
+          "because": "implied state would change the reference; designed state kept, the rewrite may not be able to meet it",
+          "fact": "deposit_intended",
+          "from": "not_mentioned",
+          "label": "Q3",
+          "to": null
+        },
+        {
+          "because": "attachment knowledge_proof, item 'how and when the landlord learned of the defect'",
+          "fact": "notice_oral_only",
+          "from": "not_mentioned",
+          "label": "Q4",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "damages_claimed": "not_mentioned",
+        "defect_present": "stated_true",
+        "deposit_intended": "not_mentioned",
+        "landlord_unaware": "stated_false",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "open"
+      }
+    },
+    "ten_6d6fcb65d5b6": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "not_mentioned",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_false",
+        "notice_oral_only": "stated_true",
+        "rent_deposited": "stated_true"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "landlord_unaware",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): notice_oral_only yes",
+              "rule": "a landlord who learned of the defect orally (or whether only orally is open) knows of it (round 1: ten_404e03b3e37f, ten_6d6fcb65d5b6)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "Herr Fabian Näf von der Weidgrund weiss Bescheid, aber nur, weil ich es ihm gesagt habe.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): notice_oral_only yes"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_receipt": {
+            "request": true,
+            "state": "request"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": false,
+          "notice_oral_only": true,
+          "rent_deposited": true
+        },
+        "presumed": {
+          "damages_claimed": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_8c1d86a176c0": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "stated_false",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_true",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "stated_true"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): landlord_unaware yes",
+              "rule": "a landlord who does not know of the defect has not learned of it orally: the oral-only question is answered no (round 1: ten_8c1d86a176c0, ten_aba30f049af3, ten_cf02cc821948, ten_e94fb7461784)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "Angerufen oder sonst Bescheid gegeben habe ich niemandem dort",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): landlord_unaware yes"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "deposit_receipt": {
+            "request": true,
+            "state": "request"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": true,
+          "notice_oral_only": false,
+          "rent_deposited": true
+        },
+        "presumed": {},
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_aba30f049af3": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "stated_false",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_true",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "open"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): landlord_unaware yes",
+              "rule": "a landlord who does not know of the defect has not learned of it orally: the oral-only question is answered no (round 1: ten_8c1d86a176c0, ten_aba30f049af3, ten_cf02cc821948, ten_e94fb7461784)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q3",
+          "quote": "I haven't written to them, I haven't called Mr Victor Schneider, and nobody from Lindenmatt has been to the building since spring",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): landlord_unaware yes"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "hold",
+            "waits_for": [
+              "rent_deposited"
+            ]
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": true,
+          "notice_oral_only": false
+        },
+        "presumed": {},
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "rent_deposited"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_b4d4cb05336f": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "cost_or_services_reason": "stated_false",
+        "graduated_rent": "not_mentioned",
+        "increase_applied": "stated_true",
+        "index_clause": "stated_true",
+        "termination_with_increase": "stated_true"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "cost_or_services_reason",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "attachment rent_increase_notice, item 'reasons given'",
+              "rule": "the notice's stated reasons answer whether costs or services are the reason (round 1: ten_b4d4cb05336f, ten_efa24ba18ce3)",
+              "sets": "stated_true"
+            }
+          ],
+          "label": "Q2",
+          "quote": "Begründung: Anpassung gemäss Indexklausel des Mietvertrages.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment rent_increase_notice, item 'reasons given'"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "cost_breakdown": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "request"
+          },
+          "proof_of_receipt": {
+            "request": true,
+            "state": "request"
+          },
+          "rent_increase_notice": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "termination_notice": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "cost_or_services_reason": false,
+          "dispute_family": "rent_increase_dispute",
+          "graduated_rent": false,
+          "increase_applied": true,
+          "index_clause": true,
+          "termination_with_increase": true
+        },
+        "presumed": {
+          "graduated_rent": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_cf02cc821948": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "not_mentioned",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_true",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "stated_true"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): landlord_unaware yes",
+              "rule": "a landlord who does not know of the defect has not learned of it orally: the oral-only question is answered no (round 1: ten_8c1d86a176c0, ten_aba30f049af3, ten_cf02cc821948, ten_e94fb7461784)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q2",
+          "quote": "I haven't told Ms Isla Foster or anyone else there",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): landlord_unaware yes"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_receipt": {
+            "request": true,
+            "state": "request"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": true,
+          "notice_oral_only": false,
+          "rent_deposited": true
+        },
+        "presumed": {
+          "damages_claimed": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_db552dbb3c23": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)"
+            ],
+            "state": "insufficient"
+          },
+          "document": "rent_increase_notice",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The notice itself says whether it is made on the official form approved by the canton: the printed title of that form, or an explicit sentence that the official form is used or enclosed, or that it is not. A plain letter that is silent about any form does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)",
+              "read": "shown",
+              "rule_set_wording": "A 'whether ...' item is shown by every document (silence reads as 'no'), so an insufficient copy cannot be told from a sufficient one; better: 'the official cantonal form, or a statement that it is not used'."
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "rent_increase_notice"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "cost_or_services_reason": "stated_true",
+        "graduated_rent": "not_mentioned",
+        "increase_applied": "stated_true",
+        "index_clause": "stated_false",
+        "termination_with_increase": "not_mentioned"
+      }
+    },
+    "ten_e94fb7461784": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "damages_claimed": "stated_false",
+        "defect_present": "stated_true",
+        "deposit_intended": "stated_true",
+        "landlord_unaware": "stated_true",
+        "notice_oral_only": "stated_false",
+        "rent_deposited": "stated_true"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_oral_only",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): landlord_unaware yes",
+              "rule": "a landlord who does not know of the defect has not learned of it orally: the oral-only question is answered no (round 1: ten_8c1d86a176c0, ten_aba30f049af3, ten_cf02cc821948, ten_e94fb7461784)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "Ich habe Frau Ursula Brunner weder angerufen noch geschrieben",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): landlord_unaware yes"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "damage_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "defect_record": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_deadline_notice": {
+            "request": true,
+            "state": "request"
+          },
+          "deposit_receipt": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "knowledge_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          }
+        },
+        "facts_given": {
+          "damages_claimed": false,
+          "defect_present": true,
+          "deposit_intended": true,
+          "dispute_family": "defect_mold_heating",
+          "landlord_unaware": true,
+          "notice_oral_only": false,
+          "rent_deposited": true
+        },
+        "presumed": {},
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "ten_efa24ba18ce3": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "rent_increase_notice",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "Two index values, old and new, with the index named (for example 'consumer price index 104.2 -> 106.9').",
+              "checkable_from_document": false,
+              "conditional": true,
+              "designed": "shown",
+              "item": "for an index-linked increase: the old and new index values",
+              "read": "missing",
+              "rule_set_wording": "The condition is part of the item; it belongs in needed_when-style data, not in the content list."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "for an index-linked increase: the old and new index values"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "cost_or_services_reason",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "attachment rent_increase_notice, item 'reasons given'",
+              "rule": "the notice's stated reasons answer whether costs or services are the reason (round 1: ten_b4d4cb05336f, ten_efa24ba18ce3)",
+              "sets": "stated_true"
+            }
+          ],
+          "label": "Q1",
+          "quote": "Reason: Adjustment of the rent in accordance with the provisions of the lease agreement of 24 December 2022.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment rent_increase_notice, item 'reasons given'"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "rent_increase_notice"
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "cost_breakdown": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "lease_contract": {
+            "request": true,
+            "state": "request"
+          },
+          "proof_of_receipt": {
+            "request": true,
+            "state": "request"
+          },
+          "rent_increase_notice": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "termination_notice": {
+            "request": false,
+            "state": "not_needed"
+          }
+        },
+        "facts_given": {
+          "cost_or_services_reason": false,
+          "dispute_family": "rent_increase_dispute",
+          "increase_applied": true,
+          "index_clause": true,
+          "termination_with_increase": false
+        },
+        "presumed": {
+          "termination_with_increase": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "graduated_rent"
+        ]
+      },
+      "target_revisions": [
+        {
+          "because": "attachment rent_increase_notice, item 'reasons given'",
+          "fact": "cost_or_services_reason",
+          "from": "not_mentioned",
+          "label": "Q1",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "cost_or_services_reason": "stated_false",
+        "graduated_rent": "open",
+        "increase_applied": "stated_true",
+        "index_clause": "stated_true",
+        "termination_with_increase": "not_mentioned"
+      }
+    }
+  },
+  "item_notes_sha256": "22bb1d6c8dd88f526f1970e8a508022c09083c246b9f10d6a59cccd91037b8e8",
+  "regime": "tenancy",
+  "rule": "kept without rewrite if exact, or if every difference is a designed 'not mentioned' read as 'stated false' and the engine reference from the states as read equals the design's reference; every other differing file gets one rewrite",
+  "schema": "study4.classify/1"
+}

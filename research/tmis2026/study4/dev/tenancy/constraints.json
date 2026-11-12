@@ -1,20 +1,158 @@
 {
-  "about": "Logical dependencies between tenancy facts that rules.json does not encode but a coherent file must respect. Read by generator/design.py; each adjustment is logged in the design (constraint_adjustments). Data, not code: a reader's own rule set supplies its own file or none.",
+  "about": "Dependency rules between tenancy facts and attachments that rules.json does not encode but a coherent file must respect. Read by generator/design.py (kinds in README, 'Dependency rules'); each adjustment is logged in the design. Revised 2026-11-12 after the round-1 blind check: a 'not mentioned' answer is not allowed where a stated answer or an attached document implies an answer.",
   "constraints": [
-    {"note": "rent already paid into deposit implies the tenant has begun to pay on deposit",
-     "if": {"fact": "rent_deposited", "state": "stated_true"},
-     "then": {"fact": "deposit_intended", "in": ["stated_true"], "set": "stated_true"}},
-    {"note": "no deposit intended or begun, or that question open: rent cannot be stated as already deposited",
-     "if": {"fact": "deposit_intended", "in": ["stated_false", "open"]},
-     "then": {"fact": "rent_deposited", "in": ["stated_false", "not_mentioned"], "set": "not_mentioned"}},
-    {"note": "a landlord who does not know of the defect cannot have learned of it orally or in writing",
-     "if": {"fact": "landlord_unaware", "in": ["stated_true", "open"]},
-     "then": {"fact": "notice_oral_only", "in": ["not_mentioned"], "set": "not_mentioned"}},
-    {"note": "a landlord who learned of the defect (orally or in writing) is not unaware of it",
-     "if": {"fact": "notice_oral_only", "in": ["stated_true", "stated_false", "open"]},
-     "then": {"fact": "landlord_unaware", "in": ["stated_false", "not_mentioned"], "set": "not_mentioned"}},
-    {"note": "with the increase open, an increase notice giving cost reasons cannot be stated to exist",
-     "if": {"fact": "increase_applied", "state": "open"},
-     "then": {"fact": "cost_or_services_reason", "in": ["stated_false"], "set": "stated_false"}}
+    {
+      "note": "rent already paid into deposit implies the tenant has begun to pay on deposit",
+      "if": {
+        "fact": "rent_deposited",
+        "state": "stated_true"
+      },
+      "then": {
+        "fact": "deposit_intended",
+        "in": [
+          "stated_true"
+        ],
+        "set": "stated_true"
+      }
+    },
+    {
+      "note": "no deposit intended (rent paid as usual) or still undecided: no rent has been deposited (round 1: ten_270f84d8acff, ten_404e03b3e37f)",
+      "if": {
+        "fact": "deposit_intended",
+        "in": [
+          "stated_false",
+          "open"
+        ]
+      },
+      "then": {
+        "fact": "rent_deposited",
+        "in": [
+          "stated_false"
+        ],
+        "set": "stated_false"
+      },
+      "reset_if": "stated_true"
+    },
+    {
+      "note": "unclear whether a rent payment went into deposit: the tenant has at least begun to arrange paying on deposit (round 1: ten_6c5828c1c68b read the deposit intention as open)",
+      "if": {
+        "fact": "rent_deposited",
+        "state": "open"
+      },
+      "then": {
+        "fact": "deposit_intended",
+        "in": [
+          "stated_true"
+        ],
+        "set": "stated_true"
+      }
+    },
+    {
+      "note": "a landlord who does not know of the defect has not learned of it orally: the oral-only question is answered no (round 1: ten_8c1d86a176c0, ten_aba30f049af3, ten_cf02cc821948, ten_e94fb7461784)",
+      "if": {
+        "fact": "landlord_unaware",
+        "state": "stated_true"
+      },
+      "then": {
+        "fact": "notice_oral_only",
+        "in": [
+          "stated_false"
+        ],
+        "set": "stated_false"
+      },
+      "reset_if": "stated_false"
+    },
+    {
+      "note": "whether the landlord knows is open: how he learned of it cannot be stated",
+      "if": {
+        "fact": "landlord_unaware",
+        "state": "open"
+      },
+      "then": {
+        "fact": "notice_oral_only",
+        "in": [
+          "not_mentioned"
+        ],
+        "set": "not_mentioned"
+      }
+    },
+    {
+      "note": "a landlord who learned of the defect orally (or whether only orally is open) knows of it (round 1: ten_404e03b3e37f, ten_6d6fcb65d5b6)",
+      "if": {
+        "fact": "notice_oral_only",
+        "in": [
+          "stated_true",
+          "open"
+        ]
+      },
+      "then": {
+        "fact": "landlord_unaware",
+        "in": [
+          "stated_false"
+        ],
+        "set": "stated_false"
+      },
+      "reset_if": "not_mentioned"
+    },
+    {
+      "note": "with the increase open, an increase notice giving cost reasons cannot be stated to exist",
+      "if": {
+        "fact": "increase_applied",
+        "state": "open"
+      },
+      "then": {
+        "fact": "cost_or_services_reason",
+        "in": [
+          "stated_false"
+        ],
+        "set": "stated_false"
+      }
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "knowledge_proof",
+      "item": "how and when the landlord learned of the defect",
+      "fact": "landlord_unaware",
+      "implies": [
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "a written proof of how and when the landlord learned of the defect shows that he knows (round 1: ten_2249a3b45704, ten_6c5828c1c68b)"
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "knowledge_proof",
+      "item": "how and when the landlord learned of the defect",
+      "fact": "notice_oral_only",
+      "implies": [
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "a written notice, acknowledgement or inspection record exists, so the landlord did not learn only orally (round 1: ten_2249a3b45704, ten_6c5828c1c68b)"
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "rent_increase_notice",
+      "item": "reasons given",
+      "fact": "cost_or_services_reason",
+      "implies": [
+        "stated_true",
+        "stated_false"
+      ],
+      "set": "drawn",
+      "note": "the notice's stated reasons answer whether costs or services are the reason (round 1: ten_b4d4cb05336f, ten_efa24ba18ce3)"
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "claims_and_reasons",
+      "item": "the reasons the landlord gave for the notice (on the notice, or given on request)",
+      "fact": "arrears_termination",
+      "implies": [
+        "stated_true",
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "precaution, not observed in round 1: the landlord's stated reasons answer whether the notice was for arrears"
+    }
   ]
 }

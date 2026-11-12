@@ -47,7 +47,11 @@ def labels(design):
     return q, att
 
 
-def build_one(regime, design, style_text):
+def build_one(regime, design, style_text, notes=None, facts=None):
+    """`facts` overrides the design's fact states (a rewrite target); `notes` are the item notes."""
+    notes = notes or G.ItemNotes(regime.name)
+    if facts is not None:
+        design = dict(design, facts=facts)
     tid = design["type"]
     qmap, amap = labels(design)
     inv = {f: lab for lab, f in qmap.items()}
@@ -77,12 +81,16 @@ def build_one(regime, design, style_text):
     for lab, did in amap.items():
         d = regime.doc(tid, did)
         a = by_doc[did]
-        must = [i for i in d["must_show"] if not G.conditional_item(i)]
-        cond = [i for i in d["must_show"] if G.conditional_item(i)]
+        states = design["facts"]
+        applies = {i: notes.applies(tid, did, i, states) for i in d["must_show"]}
+        glosses = [{"item": i, "checkable_as": notes.gloss(tid, did, i)} for i in d["must_show"]
+                   if notes.gloss(tid, did, i) and applies[i] is not False]
         attachments.append({
             "label": lab, "document_title": d["title"],
-            "must_show": [i for i in must if i != a.get("missing")],
-            "show_only_if_it_applies": cond,
+            "must_show": [i for i in d["must_show"] if applies[i] is True and i != a.get("missing")],
+            "show_only_if_it_applies": [i for i in d["must_show"] if applies[i] is None],
+            "does_not_apply_leave_out": [i for i in d["must_show"] if applies[i] is False],
+            "checkable_as": glosses,
             "leave_out": a.get("missing"),
             "must_not_show": ([f"anything that would answer {x}" for x in not_touch] +
                               [f"anything that would settle {x}" for x in open_l] +
@@ -107,18 +115,22 @@ def build_one(regime, design, style_text):
     }, {"questions": qmap, "attachments": amap}
 
 
-def build(regime_name, rules_dir=None, out=None):
+def build(regime_name, rules_dir=None, out=None, force=False):
     regime = G.Regime(regime_name, rules_dir)
     out = Path(out) if out else G.DEV / regime_name
     designs = [G.read_json(p) for p in sorted((out / "designs").glob("*.json")) if p.name != "MANIFEST.json"]
     style = (G.GEN / "STYLE.md").read_text(encoding="utf-8")
+    notes = G.ItemNotes(regime_name)
     b = out / "writer_bundles"
+    if (out / "written").exists() and any((out / "written").iterdir()) and not force:
+        raise SystemExit(f"{out} already holds written files; refusing to rebuild the bundles they were written "
+                         "from (use --force or another --out)")
     if b.exists():
         shutil.rmtree(b)
     b.mkdir(parents=True)
     keys, files = {}, []
     for d in designs:
-        bundle, key = build_one(regime, d, style)
+        bundle, key = build_one(regime, d, style, notes)
         h = G.write_json(b / f"{d['file_id']}.json", bundle)
         keys[d["file_id"]] = key
         files.append({"file_id": d["file_id"], "sha256": h})
@@ -127,6 +139,7 @@ def build(regime_name, rules_dir=None, out=None):
     G.write_json(b / "MANIFEST.json", {"regime": regime_name, "style_sha256": G.sha256_file(G.GEN / "STYLE.md"),
                                        "writer_task_sha256": G.sha256_file(G.GEN / "WRITER_TASK.md"),
                                        "builder_sha256": G.sha256_file(Path(__file__)), "files": files,
+                                       "item_notes_sha256": notes.sha256,
                                        "keys_sha256": G.sha256_file(b / "KEYS.json")})
     return b
 
@@ -136,8 +149,9 @@ def main(argv=None):
     ap.add_argument("--regime", required=True)
     ap.add_argument("--rules-dir")
     ap.add_argument("--out")
+    ap.add_argument("--force", action="store_true")
     a = ap.parse_args(argv)
-    b = build(a.regime, a.rules_dir, a.out)
+    b = build(a.regime, a.rules_dir, a.out, a.force)
     print(f"writer bundles written to {b}")
 
 

@@ -334,13 +334,86 @@ def fact_step_reachable(regime, tid, values, fact):
 
 
 # ----------------------------------------------------------------- must_show items
-CONDITIONAL_ITEM = re.compile(r"^(any|where|if|for an?|for the|when)\b|\bif any\b|\(or that", re.I)
+# Default reading of a must_show item's wording, used only where items/<regime>.json says nothing: "any ...",
+# "..., if any", "if ...", and a leading "where/for/when ...:" clause ending in a colon mark an item that applies in
+# some files only. (Before 2026-11-12 a bare leading "where" also counted, which wrongly made theft's "where and
+# when it was bought" conditional.)
+CONDITIONAL_ITEM = re.compile(r"^any\b|\bif any\b|^if\b|^(where|for an?|for the|when)\b[^:]*:", re.I)
 
 
 def conditional_item(item):
-    """A must_show item that applies only in some files ("any ... clause", "where ...", "if ...", "..., if any").
-    Such an item is never drawn as the missing item of an insufficient attachment."""
+    """Regex default only; use ItemNotes.conditional for a regime with an item file."""
     return bool(CONDITIONAL_ITEM.search(item.strip()))
+
+
+# ----------------------------------------------------------------- designed-state conditions (data files)
+def state_match(cond, states):
+    """A condition over designed states: {"fact", "state" | "in"} | {"all": [...]} | {"any": [...]}.
+    A fact the type does not have never matches."""
+    if cond is True:
+        return True
+    if "all" in cond:
+        return all(state_match(c, states) for c in cond["all"])
+    if "any" in cond:
+        return any(state_match(c, states) for c in cond["any"])
+    if "not" in cond:
+        return not state_match(cond["not"], states)
+    if cond["fact"] not in states:
+        return False
+    return states[cond["fact"]] in (cond.get("in") or [cond["state"]])
+
+
+def state_facts(cond):
+    if cond is True:
+        return []
+    for k in ("all", "any"):
+        if k in cond:
+            return [x for c in cond[k] for x in state_facts(c)]
+    if "not" in cond:
+        return state_facts(cond["not"])
+    return [cond["fact"]]
+
+
+class ItemNotes:
+    """Generator-side notes on must_show items (items/<regime>.json; not part of the rule set):
+    whether an item is conditional, when it applies (a condition over designed states), and `checkable_as`, what a
+    document must literally contain for the item to count as shown. Entries match by type ("*" for any), document
+    and the item's exact text."""
+
+    def __init__(self, regime_name, path=None):
+        p = Path(path) if path else GEN / "items" / f"{regime_name}.json"
+        self.path = p if p.exists() else None
+        self.entries = read_json(p)["items"] if p.exists() else []
+        self.sha256 = sha256_file(p) if p.exists() else None
+
+    def get(self, tid, did, item):
+        for e in self.entries:
+            if e["document"] == did and e["item"] == item and e.get("type", "*") in ("*", tid):
+                return e
+        return {}
+
+    def conditional(self, tid, did, item):
+        e = self.get(tid, did, item)
+        return e["conditional"] if "conditional" in e else conditional_item(item)
+
+    def applies(self, tid, did, item, states):
+        """True: the item must be shown in this file; False: it does not apply (leave it out); None: conditional,
+        left to the story ("show only if it applies")."""
+        if not self.conditional(tid, did, item):
+            return True
+        e = self.get(tid, did, item)
+        if "applies_when" in e:
+            return state_match(e["applies_when"], states)
+        return None
+
+    def required_items(self, tid, did, must_show, states):
+        return [i for i in must_show if self.applies(tid, did, i, states) is True]
+
+    def gloss(self, tid, did, item):
+        return self.get(tid, did, item).get("checkable_as")
+
+
+# ----------------------------------------------------------------- must_show items (legacy name kept above)
 
 
 # ----------------------------------------------------------------- durations in questions (date consistency)

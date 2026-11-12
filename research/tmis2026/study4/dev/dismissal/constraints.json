@@ -1,5 +1,5 @@
 {
-  "about": "Logical dependencies between dismissal facts that rules.json does not encode but a coherent file must respect (the employment relationship ends when the notice period ends). Also one stated_only_if rule. Read by generator/design.py; each adjustment is logged in the design (constraint_adjustments).",
+  "about": "Dependency rules between dismissal facts and attachments that rules.json does not encode but a coherent file must respect (the employment relationship ends when the notice period ends; dates and protected periods answer related questions). Read by generator/design.py (kinds in README, 'Dependency rules'); each adjustment is logged in the design. Extended 2026-11-12 after the round-1 blind check.",
   "constraints": [
     {
       "note": "if the notice period has not ended (or that is open), more than 180 days since the end of employment cannot be stated",
@@ -66,6 +66,76 @@
           }
         ]
       }
+    },
+    {
+      "kind": "stated_if",
+      "fact": "notice_before_protected_period",
+      "if": {
+        "any": [
+          {
+            "fact": "incapacity_illness_accident",
+            "in": [
+              "stated_true",
+              "open"
+            ]
+          },
+          {
+            "fact": "compulsory_service",
+            "in": [
+              "stated_true",
+              "open"
+            ]
+          },
+          {
+            "fact": "pregnancy_or_birth",
+            "in": [
+              "stated_true",
+              "open"
+            ]
+          }
+        ]
+      },
+      "set": "drawn",
+      "note": "a protected period that is stated or open places it relative to the notice, so the order question is raised and must be answered, also where a probation stop makes its step unreachable (round 1: dis_064eeecaeb0d, dis_c50430dbdfa1)"
+    },
+    {
+      "note": "no notice given (employment continues): more than 180 days since the end of employment is answered no (round 1: dis_05af0871cd70, dis_5215d587db4b)",
+      "if": {
+        "fact": "employer_gave_notice",
+        "state": "stated_false"
+      },
+      "then": {
+        "fact": "more_than_180_days",
+        "in": [
+          "stated_false"
+        ],
+        "set": "stated_false"
+      }
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "employment_contract",
+      "item": "start date of employment",
+      "fact": "notice_during_probation",
+      "implies": [
+        "stated_true",
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "with the start date on the contract and the notice date in the file, whether notice fell in the probation period can be computed (round 1: dis_14b7db92a192, dis_7e42a5b5bd9f, dis_bf38c7dfb616; writer notes also on dis_1bf62841defb, dis_60632f5d2a1c)"
+    },
+    {
+      "kind": "claimant_sex",
+      "if": {
+        "fact": "pregnancy_or_birth",
+        "in": [
+          "stated_true",
+          "stated_false",
+          "open"
+        ]
+      },
+      "sex": "female",
+      "note": "a pregnancy or birth is the employee's own (round 1 writer notes: dis_07997bac9677, dis_25e20aeec77d, dis_60632f5d2a1c, dis_3f2fbc0b6128)"
     }
   ]
 }

@@ -31,3 +31,27 @@ PLACES = [("Aarau", "AG"), ("Baden", "AG"), ("Wohlen", "AG"), ("Bern", "BE"), ("
 STREETS = ["Bahnhofstrasse", "Lindenweg", "Gartenstrasse", "Kirchgasse", "Schulhausstrasse", "Birkenweg",
            "Feldstrasse", "Mattenweg", "Rosenweg", "Dorfstrasse", "Hauptstrasse", "Seestrasse", "Bergstrasse",
            "Sonnenweg", "Wiesenstrasse", "Ahornweg", "Brunnenrain", "Mühleweg", "Talstrasse", "Hofackerstrasse"]
+
+# Sex marking of the first names, for a claimant whose design fixes it (a dependency rule of kind
+# "claimant_sex", e.g. a pregnancy). "n": usable for either (not used for a fixed sex).
+SEX = {
+    "Andrea": "f", "Beat": "m", "Claudia": "f", "Daniel": "m", "Esther": "f", "Fabian": "m", "Gabriela": "f",
+    "Heinz": "m", "Irene": "f", "Jonas": "m", "Karin": "f", "Lukas": "m", "Monika": "f", "Nicole": "f",
+    "Oliver": "m", "Petra": "f", "Reto": "m", "Sabine": "f", "Thomas": "m", "Ursula": "f", "Verena": "f",
+    "Walter": "m", "Yvonne": "f", "Simon": "m", "Martina": "f", "Stefan": "m", "Corinne": "f", "Marco": "m",
+    "Lea": "f", "Adrian": "m", "Nadine": "f", "Patrick": "m", "Rahel": "f", "Samuel": "m", "Tamara": "f",
+    "Urs": "m", "Livia": "f", "Dominik": "m", "Seraina": "f", "Matthias": "m",
+    "Alice": "f", "Ben": "m", "Clara": "f", "David": "m", "Emma": "f", "Felix": "m", "Grace": "f", "Henry": "m",
+    "Isla": "f", "Jack": "m", "Kate": "f", "Liam": "m", "Maya": "f", "Noah": "m", "Olivia": "f", "Paul": "m",
+    "Rachel": "f", "Sam": "n", "Tara": "f", "Victor": "m", "Laura": "f", "Mark": "m", "Nina": "f", "Owen": "m",
+    "Ruth": "f", "Sophie": "f", "Tom": "m", "Anna": "f", "Chris": "n", "Eva": "f", "Hannah": "f", "Ian": "m",
+    "Julia": "f", "Leo": "m", "Megan": "f", "Peter": "m",
+}
+assert set(SEX) == set(FIRST_DE) | set(FIRST_EN)
+
+
+def first_names(lang, sex):
+    """First names for the claimant: the language's list restricted to the sex ("female"/"male")."""
+    base = FIRST_DE if lang == "de" else FIRST_EN
+    want = {"female": "f", "male": "m"}[sex]
+    return [n for n in base if SEX[n] == want]

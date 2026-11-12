@@ -55,7 +55,8 @@ message), plus the short documents attached to it. Follow this sheet for every f
    amounts; give it a date and a sender where a real one would have them.
 2. It shows every item listed under `must_show`, except the item named under `leave_out` (if any), which it
    leaves out entirely without remarking on the gap. Items under `show_only_if_it_applies` appear only where the
-   story makes them apply and nothing under `must_not_show` forbids them.
+   story makes them apply and nothing under `must_not_show` forbids them; items under `does_not_apply_leave_out`
+   do not appear. Where `checkable_as` describes an item, write literally what it says.
 3. It contains nothing listed under `must_not_show`: in particular it never answers a question marked "not
    mentioned", never settles an open question, never contradicts a designed answer.
 4. Language: the file's language, unless an English-speaking claimant in Switzerland would plausibly receive a

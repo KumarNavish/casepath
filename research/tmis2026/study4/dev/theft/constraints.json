@@ -1,0 +1,35 @@
+{
+  "about": "Dependency rules between theft facts and attachments that rules.json does not encode. Read by generator/design.py (kinds in README, 'Dependency rules'). Added 2026-11-12 after the round-1 blind check.",
+  "constraints": [
+    {
+      "kind": "attachment_implies",
+      "document": "original_vouchers",
+      "fact": "vouchers_unobtainable",
+      "implies": [
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "attached original vouchers show that vouchers can be obtained (round 1: the_0d6569d32db1, the_281214c010bb, the_c50e0bd7b054, the_d70abf016562; writer note also on the_7f7ad7ab95d0)"
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "bicycle_voucher",
+      "fact": "vouchers_unobtainable",
+      "implies": [
+        "stated_false"
+      ],
+      "set": "stated_false",
+      "note": "an attached bicycle voucher shows that vouchers can be obtained (same reasoning; not observed)"
+    },
+    {
+      "kind": "attachment_implies",
+      "document": "bicycle_voucher",
+      "fact": "bicycle",
+      "implies": [
+        "stated_true"
+      ],
+      "set": "stated_true",
+      "note": "an attached bicycle voucher shows that a bicycle was stolen (not observed)"
+    }
+  ]
+}

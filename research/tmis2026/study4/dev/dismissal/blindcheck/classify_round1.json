@@ -1,0 +1,899 @@
+{
+  "constraints_sha256": "cfa7633849474b02e6c70e9ff614e7bb3c28a364690cfd40e1e905f62f8b137b",
+  "counts": {
+    "compared": 60,
+    "differing": 9,
+    "exact": 51,
+    "kept_as_read": 2,
+    "reference_equivalent": 4,
+    "rewrite": 7
+  },
+  "files": {
+    "dis_05af0871cd70": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "action_in_time": "not_mentioned",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "not_mentioned",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "not_mentioned"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "more_than_180_days",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): employer_gave_notice no",
+              "rule": "no notice given (employment continues): more than 180 days since the end of employment is answered no (round 1: dis_05af0871cd70, dis_5215d587db4b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "I work part-time in the office of Steinbruch Trading Ltd in Kreuzlingen",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): employer_gave_notice no"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "claims_correspondence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "court_filing": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "employment_contract": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "representative_mandate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "salary_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "written_objection": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "written_reasons": {
+            "request": false,
+            "state": "not_needed"
+          }
+        },
+        "facts_given": {
+          "agreed_to_continue": false,
+          "dispute_family": "wrongful_termination",
+          "employee_representative": false,
+          "employer_gave_notice": false,
+          "more_than_180_days": false,
+          "reasons_requested": false,
+          "retaliation_for_claims": false
+        },
+        "presumed": {
+          "agreed_to_continue": false,
+          "employee_representative": false,
+          "reasons_requested": false,
+          "retaliation_for_claims": false
+        },
+        "stop": {
+          "outcome": "b_stop_no_notice",
+          "state": "stopped",
+          "step": "b_stop_no_notice"
+        },
+        "unresolved": [
+          "action_in_time",
+          "notice_period_ended",
+          "objection_submitted"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "dis_064eeecaeb0d": {
+      "attachments": [],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_before_protected_period",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "designed answer(s): incapacity_illness_accident yes, compulsory_service yes",
+              "rule": "a protected period that is stated or open places it relative to the notice, so the order question is raised and must be answered, also where a probation stop makes its step unreachable (round 1: dis_064eeecaeb0d, dis_c50430dbdfa1)",
+              "sets": "stated_true"
+            }
+          ],
+          "label": "Q2",
+          "quote": "that service overlapped with my notice period",
+          "read_as": "open",
+          "verdict": "raised by designed answer(s): incapacity_illness_accident yes, compulsory_service yes, read open because the text leaves it unsettled"
+        }
+      ],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "reference_target": {
+        "documents": {
+          "employment_contract": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "incapacity_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notice_period_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "pregnancy_certificate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "probation_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "service_confirmation": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "compulsory_service": true,
+          "dispute_family": "protected_period_notice",
+          "employer_gave_notice": true,
+          "incapacity_illness_accident": true,
+          "notice_before_protected_period": true,
+          "notice_during_probation": true,
+          "notice_period_varied": false,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "presumed": {
+          "notice_period_varied": false,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "stop": {
+          "outcome": "a_stop_probation",
+          "state": "stopped",
+          "step": "a_stop_probation"
+        },
+        "unresolved": []
+      },
+      "target_revisions": [
+        {
+          "because": "designed answer(s): incapacity_illness_accident yes, compulsory_service yes",
+          "fact": "notice_before_protected_period",
+          "from": "not_mentioned",
+          "label": "Q2",
+          "to": "stated_true"
+        }
+      ],
+      "target_round2": {
+        "compulsory_service": "stated_true",
+        "employer_gave_notice": "stated_true",
+        "incapacity_illness_accident": "stated_true",
+        "notice_before_protected_period": "stated_true",
+        "notice_during_probation": "stated_true",
+        "notice_period_varied": "not_mentioned",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "not_mentioned"
+      }
+    },
+    "dis_14b7db92a192": {
+      "attachments": [],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_during_probation",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "attachment employment_contract, item 'start date of employment'",
+              "rule": "with the start date on the contract and the notice date in the file, whether notice fell in the probation period can be computed (round 1: dis_14b7db92a192, dis_7e42a5b5bd9f, dis_bf38c7dfb616; writer notes also on dis_1bf62841defb, dis_60632f5d2a1c)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q5",
+          "quote": "Im April hat mir Frau Monika Marti, die Geschäftsführerin, die Kündigung schriftlich übergeben.",
+          "read_as": "open",
+          "verdict": "raised by attachment employment_contract, item 'start date of employment', read open because the text leaves it unsettled"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": {
+            "state": "pending",
+            "steps": [
+              "a_stop_probation"
+            ]
+          },
+          "design": {
+            "state": "none"
+          },
+          "stop": true
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "employment_contract": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "incapacity_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notice_period_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "pregnancy_certificate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "probation_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "service_confirmation": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "compulsory_service": false,
+          "dispute_family": "protected_period_notice",
+          "employer_gave_notice": true,
+          "incapacity_illness_accident": false,
+          "notice_during_probation": false,
+          "notice_period_varied": true,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "presumed": {
+          "compulsory_service": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "notice_before_protected_period"
+        ]
+      },
+      "target_revisions": [
+        {
+          "because": "attachment employment_contract, item 'start date of employment'",
+          "fact": "notice_during_probation",
+          "from": "not_mentioned",
+          "label": "Q5",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_true",
+        "incapacity_illness_accident": "stated_false",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "stated_false",
+        "notice_period_varied": "stated_true",
+        "pregnancy_or_birth": "stated_false",
+        "probation_varied": "stated_false"
+      }
+    },
+    "dis_5215d587db4b": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "action_in_time": "stated_false",
+        "agreed_to_continue": "not_mentioned",
+        "employee_representative": "stated_false",
+        "employer_gave_notice": "stated_false",
+        "more_than_180_days": "stated_false",
+        "notice_period_ended": "not_mentioned",
+        "objection_submitted": "not_mentioned",
+        "reasons_requested": "not_mentioned",
+        "retaliation_for_claims": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "more_than_180_days",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "designed answer(s): employer_gave_notice no",
+              "rule": "no notice given (employment continues): more than 180 days since the end of employment is answered no (round 1: dis_05af0871cd70, dis_5215d587db4b)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "I'm a technician with Erlenhof in Biel/Bienne.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from designed answer(s): employer_gave_notice no"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "claims_correspondence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "court_filing": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "employment_contract": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "representative_mandate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "salary_evidence": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "written_objection": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "written_reasons": {
+            "request": false,
+            "state": "not_needed"
+          }
+        },
+        "facts_given": {
+          "action_in_time": false,
+          "agreed_to_continue": false,
+          "dispute_family": "wrongful_termination",
+          "employee_representative": false,
+          "employer_gave_notice": false,
+          "more_than_180_days": false,
+          "reasons_requested": false,
+          "retaliation_for_claims": false
+        },
+        "presumed": {
+          "agreed_to_continue": false,
+          "reasons_requested": false
+        },
+        "stop": {
+          "outcome": "b_stop_no_notice",
+          "state": "stopped",
+          "step": "b_stop_no_notice"
+        },
+        "unresolved": [
+          "notice_period_ended",
+          "objection_submitted"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "dis_6093ca79060d": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "agreed end date, if fixed-term"
+            ],
+            "state": "insufficient"
+          },
+          "document": "employment_contract",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": false,
+              "checkable_as": "An end date of the employment agreed in the contract.",
+              "checkable_from_document": false,
+              "conditional": true,
+              "designed": "missing",
+              "item": "agreed end date, if fixed-term",
+              "read": "shown",
+              "rule_set_wording": "The condition is part of the item; it belongs in a condition, not in the content list."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "employment_contract"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "dismissed_immediately": "stated_true",
+        "fixed_term": "stated_false",
+        "incapacity_cause": "stated_true",
+        "notice_period_varied": "stated_true",
+        "other_earnings": "stated_true",
+        "reasons_requested": "not_mentioned"
+      }
+    },
+    "dis_7e42a5b5bd9f": {
+      "attachments": [],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_during_probation",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "attachment employment_contract, item 'start date of employment'",
+              "rule": "with the start date on the contract and the notice date in the file, whether notice fell in the probation period can be computed (round 1: dis_14b7db92a192, dis_7e42a5b5bd9f, dis_bf38c7dfb616; writer notes also on dis_1bf62841defb, dis_60632f5d2a1c)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q6",
+          "quote": "At the beginning of May I slipped a disc lifting crates in the storeroom. My doctor signed me off completely and I'm still on sick leave now.",
+          "read_as": "stated_true",
+          "verdict": "implied: the read state follows from attachment employment_contract, item 'start date of employment'"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": "not_needed",
+          "as_read_waits_for": null,
+          "design": "request",
+          "design_waits_for": null,
+          "document": "incapacity_proof"
+        },
+        {
+          "as_read": {
+            "outcome": "a_stop_probation",
+            "state": "stopped",
+            "step": "a_stop_probation"
+          },
+          "design": {
+            "state": "none"
+          },
+          "stop": true
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "employment_contract": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "incapacity_proof": {
+            "request": true,
+            "state": "request"
+          },
+          "notice_period_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "pregnancy_certificate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "probation_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "service_confirmation": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "compulsory_service": false,
+          "dispute_family": "protected_period_notice",
+          "employer_gave_notice": true,
+          "incapacity_illness_accident": true,
+          "notice_before_protected_period": false,
+          "notice_during_probation": false,
+          "notice_period_varied": false,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "presumed": {
+          "compulsory_service": false,
+          "notice_period_varied": false,
+          "pregnancy_or_birth": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "target_revisions": [
+        {
+          "because": "attachment employment_contract, item 'start date of employment'",
+          "fact": "notice_during_probation",
+          "from": "not_mentioned",
+          "label": "Q6",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_true",
+        "incapacity_illness_accident": "stated_true",
+        "notice_before_protected_period": "stated_false",
+        "notice_during_probation": "stated_false",
+        "notice_period_varied": "not_mentioned",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "stated_false"
+      }
+    },
+    "dis_925dc8cee367": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "agreed end date, if fixed-term"
+            ],
+            "state": "insufficient"
+          },
+          "document": "employment_contract",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": false,
+              "checkable_as": "An end date of the employment agreed in the contract.",
+              "checkable_from_document": false,
+              "conditional": true,
+              "designed": "missing",
+              "item": "agreed end date, if fixed-term",
+              "read": "shown",
+              "rule_set_wording": "The condition is part of the item; it belongs in a condition, not in the content list."
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "employment_contract"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "dismissed_immediately": "stated_true",
+        "fixed_term": "stated_false",
+        "incapacity_cause": "not_mentioned",
+        "notice_period_varied": "stated_true",
+        "other_earnings": "stated_true",
+        "reasons_requested": "stated_true"
+      }
+    },
+    "dis_bf38c7dfb616": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "employment_contract",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "A clause naming the length of the probation period.",
+              "checkable_from_document": true,
+              "conditional": true,
+              "designed": "shown",
+              "item": "probation clause, if any",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "probation clause, if any"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_during_probation",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "attachment employment_contract, item 'start date of employment'",
+              "rule": "with the start date on the contract and the notice date in the file, whether notice fell in the probation period can be computed (round 1: dis_14b7db92a192, dis_7e42a5b5bd9f, dis_bf38c7dfb616; writer notes also on dis_1bf62841defb, dis_60632f5d2a1c)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q1",
+          "quote": "The trial period is the part that confuses me.",
+          "read_as": "open",
+          "verdict": "raised by attachment employment_contract, item 'start date of employment', read open because the text leaves it unsettled"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "employment_contract"
+        },
+        {
+          "as_read": {
+            "state": "pending",
+            "steps": [
+              "a_stop_probation"
+            ]
+          },
+          "design": {
+            "state": "none"
+          },
+          "stop": true
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "employment_contract": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "incapacity_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notice_period_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "pregnancy_certificate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "probation_terms": {
+            "request": true,
+            "state": "request"
+          },
+          "service_confirmation": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "compulsory_service": false,
+          "dispute_family": "protected_period_notice",
+          "employer_gave_notice": true,
+          "incapacity_illness_accident": false,
+          "notice_during_probation": false,
+          "notice_period_varied": true,
+          "pregnancy_or_birth": false,
+          "probation_varied": true
+        },
+        "presumed": {
+          "compulsory_service": false,
+          "incapacity_illness_accident": false,
+          "pregnancy_or_birth": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "notice_before_protected_period"
+        ]
+      },
+      "target_revisions": [
+        {
+          "because": "attachment employment_contract, item 'start date of employment'",
+          "fact": "notice_during_probation",
+          "from": "not_mentioned",
+          "label": "Q1",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_true",
+        "incapacity_illness_accident": "not_mentioned",
+        "notice_before_protected_period": "not_mentioned",
+        "notice_during_probation": "stated_false",
+        "notice_period_varied": "stated_true",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "stated_true"
+      }
+    },
+    "dis_c50430dbdfa1": {
+      "attachments": [],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "notice_before_protected_period",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_true",
+                "stated_false"
+              ],
+              "implying": "designed answer(s): incapacity_illness_accident yes",
+              "rule": "a protected period that is stated or open places it relative to the notice, so the order question is raised and must be answered, also where a probation stop makes its step unreachable (round 1: dis_064eeecaeb0d, dis_c50430dbdfa1)",
+              "sets": "stated_true"
+            }
+          ],
+          "label": "Q8",
+          "quote": "Die Krankheit und die Kündigungsfrist haben sich überschnitten",
+          "read_as": "open",
+          "verdict": "raised by designed answer(s): incapacity_illness_accident yes, read open because the text leaves it unsettled"
+        }
+      ],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "reference_target": {
+        "documents": {
+          "employment_contract": {
+            "request": true,
+            "state": "request"
+          },
+          "incapacity_proof": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notice_period_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "pregnancy_certificate": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "probation_terms": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "service_confirmation": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "termination_letter": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "compulsory_service": false,
+          "dispute_family": "protected_period_notice",
+          "employer_gave_notice": true,
+          "incapacity_illness_accident": true,
+          "notice_before_protected_period": true,
+          "notice_during_probation": true,
+          "notice_period_varied": false,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "presumed": {
+          "compulsory_service": false,
+          "pregnancy_or_birth": false,
+          "probation_varied": false
+        },
+        "stop": {
+          "outcome": "a_stop_probation",
+          "state": "stopped",
+          "step": "a_stop_probation"
+        },
+        "unresolved": []
+      },
+      "target_revisions": [
+        {
+          "because": "designed answer(s): incapacity_illness_accident yes",
+          "fact": "notice_before_protected_period",
+          "from": "not_mentioned",
+          "label": "Q8",
+          "to": "stated_true"
+        }
+      ],
+      "target_round2": {
+        "compulsory_service": "not_mentioned",
+        "employer_gave_notice": "stated_true",
+        "incapacity_illness_accident": "stated_true",
+        "notice_before_protected_period": "stated_true",
+        "notice_during_probation": "stated_true",
+        "notice_period_varied": "stated_false",
+        "pregnancy_or_birth": "not_mentioned",
+        "probation_varied": "not_mentioned"
+      }
+    }
+  },
+  "item_notes_sha256": "50db0e714816b6332e79fba2ba8559647e53a796fe0095ed125697513dac36da",
+  "regime": "dismissal",
+  "rule": "kept without rewrite if exact, or if every difference is a designed 'not mentioned' read as 'stated false' and the engine reference from the states as read equals the design's reference; every other differing file gets one rewrite",
+  "schema": "study4.classify/1"
+}

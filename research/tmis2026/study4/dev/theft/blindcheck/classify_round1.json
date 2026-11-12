@@ -1,0 +1,1372 @@
+{
+  "constraints_sha256": "6eaaea3b60a89a3e3fb7fa878d46763a1a40c7c9f3baea3beaa6c9117ca7bb9c",
+  "counts": {
+    "compared": 60,
+    "differing": 21,
+    "exact": 39,
+    "kept_as_read": 3,
+    "reference_equivalent": 9,
+    "rewrite": 18
+  },
+  "files": {
+    "the_003fbcb4d365": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "stated_true",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "not_mentioned"
+      }
+    },
+    "the_0d6569d32db1": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "stated_true",
+        "lock_change": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "vouchers_unobtainable",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment original_vouchers (the document itself)",
+              "rule": "attached original vouchers show that vouchers can be obtained (round 1: the_0d6569d32db1, the_281214c010bb, the_c50e0bd7b054, the_d70abf016562; writer note also on the_7f7ad7ab95d0)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q9",
+          "quote": "the original receipts for the laptop and the camera with the prices I paid.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment original_vouchers (the document itself)"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "bicycle_voucher": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "insurance_policy": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "lock_change_invoice": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notification_record": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "original_vouchers": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "police_consent": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "police_report": {
+            "optional": true,
+            "request": false,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "stolen_items_list": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "bicycle": false,
+          "claim_type": "theft_at_home",
+          "household_perpetrator": false,
+          "imminent_danger": true,
+          "lock_change": false,
+          "measures_pending": false,
+          "theft_at_home": true,
+          "traces_changed": false,
+          "vouchers_unobtainable": false
+        },
+        "presumed": {
+          "bicycle": false,
+          "measures_pending": false,
+          "traces_changed": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "burglary_or_robbery"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "the_1024620d6055": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "its value"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A3",
+          "read_as": {
+            "missing": [
+              "where and when it was bought",
+              "its value"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "stated_false",
+        "measures_pending": "stated_true",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_12ee892d56f4": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "stated_true",
+        "theft_away": "stated_true",
+        "traces_changed": "open",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_1487759fc403": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "stated_false",
+        "measures_pending": "stated_false",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_2774fb90433e": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "its value"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A3",
+          "read_as": {
+            "missing": [
+              "where and when it was bought",
+              "its value"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "open",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_281214c010bb": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "stated_true",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "open",
+        "lock_change": "stated_true",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "vouchers_unobtainable",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment original_vouchers (the document itself)",
+              "rule": "attached original vouchers show that vouchers can be obtained (round 1: the_0d6569d32db1, the_281214c010bb, the_c50e0bd7b054, the_d70abf016562; writer note also on the_7f7ad7ab95d0)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q4",
+          "quote": "Ich lege die Kaufbelege für die Uhr und den Laptop bei",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment original_vouchers (the document itself)"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "bicycle_voucher": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "insurance_policy": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "lock_change_invoice": {
+            "request": true,
+            "state": "request"
+          },
+          "notification_record": {
+            "request": true,
+            "state": "request"
+          },
+          "original_vouchers": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "police_consent": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "police_report": {
+            "optional": true,
+            "request": false,
+            "state": "not_needed"
+          },
+          "stolen_items_list": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "bicycle": false,
+          "burglary_or_robbery": true,
+          "claim_type": "theft_at_home",
+          "household_perpetrator": false,
+          "lock_change": true,
+          "measures_pending": false,
+          "theft_at_home": true,
+          "traces_changed": false,
+          "vouchers_unobtainable": false
+        },
+        "presumed": {
+          "bicycle": false,
+          "measures_pending": false,
+          "traces_changed": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "imminent_danger"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "the_314b305efe2d": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "its value"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "where and when it was bought",
+              "its value"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "stated_true",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "open",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_506c9909edc4": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_683889ad3d85": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "stated_false",
+        "burglary_or_robbery": "stated_false",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "stated_true",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_93929f818110": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_9b58c5abd02f": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "stated_true",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "stated_false",
+        "lock_change": "stated_true",
+        "measures_pending": "stated_true",
+        "theft_at_home": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_a86e098e517e": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        },
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "its value"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "missing": [
+              "where and when it was bought",
+              "its value"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "open",
+        "imminent_danger": "stated_true",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      }
+    },
+    "the_c3a5e8c74185": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "stated_false",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_c50e0bd7b054": {
+      "attachments": [],
+      "decision": "kept_as_read",
+      "facts_as_read": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "open",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "stated_false"
+      },
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "vouchers_unobtainable",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment original_vouchers (the document itself)",
+              "rule": "attached original vouchers show that vouchers can be obtained (round 1: the_0d6569d32db1, the_281214c010bb, the_c50e0bd7b054, the_d70abf016562; writer note also on the_7f7ad7ab95d0)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q2",
+          "quote": "die Kaufbelege für den Laptop, das Tablet und die Kamera",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment original_vouchers (the document itself)"
+        }
+      ],
+      "reference_as_read": {
+        "documents": {
+          "bicycle_voucher": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "insurance_policy": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "notification_record": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "original_vouchers": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          },
+          "police_consent": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "police_report": {
+            "optional": true,
+            "request": false,
+            "state": "not_needed"
+          },
+          "stolen_items_list": {
+            "request": true,
+            "state": "request"
+          }
+        },
+        "facts_given": {
+          "away_cover_missing": false,
+          "bicycle": false,
+          "claim_type": "simple_theft_away",
+          "measures_pending": false,
+          "theft_away": true,
+          "traces_changed": false,
+          "vouchers_unobtainable": false
+        },
+        "presumed": {
+          "bicycle": false,
+          "measures_pending": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": [
+          "imminent_danger"
+        ]
+      },
+      "reference_changes": [],
+      "reference_equivalent": true
+    },
+    "the_cd857962dd2a": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "each stolen or damaged item"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A3",
+          "read_as": {
+            "missing": [
+              "each stolen or damaged item",
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "stated_false",
+        "measures_pending": "stated_false",
+        "theft_at_home": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "not_mentioned"
+      }
+    },
+    "the_d37fc3c54b4b": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "its value"
+            ],
+            "state": "insufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "missing": [
+              "where and when it was bought",
+              "its value"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "stated_false",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_d70abf016562": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [
+        {
+          "designed": "not_mentioned",
+          "fact": "vouchers_unobtainable",
+          "implied_by": [
+            {
+              "implied": [
+                "stated_false"
+              ],
+              "implying": "attachment original_vouchers (the document itself)",
+              "rule": "attached original vouchers show that vouchers can be obtained (round 1: the_0d6569d32db1, the_281214c010bb, the_c50e0bd7b054, the_d70abf016562; writer note also on the_7f7ad7ab95d0)",
+              "sets": "stated_false"
+            }
+          ],
+          "label": "Q4",
+          "quote": "the purchase receipts for the handbag, the phone and the laptop.",
+          "read_as": "stated_false",
+          "verdict": "implied: the read state follows from attachment original_vouchers (the document itself)"
+        }
+      ],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "reference_target": {
+        "documents": {
+          "bicycle_voucher": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "insurance_policy": {
+            "request": true,
+            "state": "request"
+          },
+          "lock_change_invoice": {
+            "request": false,
+            "state": "not_needed"
+          },
+          "notification_record": {
+            "request": true,
+            "state": "request"
+          },
+          "original_vouchers": {
+            "request": true,
+            "state": "present_insufficient",
+            "supplied": "insufficient"
+          },
+          "police_consent": {
+            "request": true,
+            "state": "request"
+          },
+          "police_report": {
+            "optional": true,
+            "request": false,
+            "state": "not_needed"
+          },
+          "stolen_items_list": {
+            "request": false,
+            "state": "present_sufficient",
+            "supplied": "sufficient"
+          }
+        },
+        "facts_given": {
+          "bicycle": false,
+          "burglary_or_robbery": false,
+          "claim_type": "theft_at_home",
+          "household_perpetrator": false,
+          "imminent_danger": false,
+          "lock_change": true,
+          "measures_pending": false,
+          "theft_at_home": true,
+          "traces_changed": true,
+          "vouchers_unobtainable": false
+        },
+        "presumed": {
+          "bicycle": false,
+          "household_perpetrator": false,
+          "imminent_danger": false,
+          "measures_pending": false
+        },
+        "stop": {
+          "state": "none"
+        },
+        "unresolved": []
+      },
+      "target_revisions": [
+        {
+          "because": "attachment original_vouchers (the document itself)",
+          "fact": "vouchers_unobtainable",
+          "from": "not_mentioned",
+          "label": "Q4",
+          "to": "stated_false"
+        }
+      ],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "stated_false",
+        "household_perpetrator": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "lock_change": "stated_true",
+        "measures_pending": "not_mentioned",
+        "theft_at_home": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_d9579f891719": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence"
+            ],
+            "state": "insufficient"
+          },
+          "document": "insurance_policy",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "An amount in CHF labelled as the sum insured for household contents (Versicherungssumme Hausrat).",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "its sum insured",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "missing": [
+              "the supplementary insurance for simple theft away (Ziff. 24.2), or its absence",
+              "its sum insured"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [],
+      "reference_equivalent": true,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "not_mentioned",
+        "measures_pending": "not_mentioned",
+        "theft_away": "stated_true",
+        "traces_changed": "stated_true",
+        "vouchers_unobtainable": "stated_true"
+      }
+    },
+    "the_e0b1e1d56fb2": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "missing": [
+              "that and when CSS was notified of the theft"
+            ],
+            "state": "insufficient"
+          },
+          "document": "notification_record",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "The calendar date (day, month, year) on which the insurer was notified, and that the insurer is the addressee. A record that mentions the notification without its date does not show this item.",
+              "checkable_from_document": false,
+              "conditional": false,
+              "designed": "missing",
+              "item": "that and when CSS was notified of the theft",
+              "read": "shown",
+              "rule_set_wording": "The document's only item: a notification record that lacks it is not a notification record, so an insufficient copy is hard to write and to recognise; split into 'the date of notification' and 'the channel or addressee'."
+            }
+          ],
+          "label": "A1",
+          "read_as": {
+            "state": "sufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_sufficient",
+          "as_read_waits_for": null,
+          "design": "present_insufficient",
+          "design_waits_for": null,
+          "document": "notification_record"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "stated_false",
+        "household_perpetrator": "stated_false",
+        "imminent_danger": "stated_true",
+        "lock_change": "stated_true",
+        "measures_pending": "stated_true",
+        "theft_at_home": "stated_true",
+        "traces_changed": "stated_false",
+        "vouchers_unobtainable": "stated_false"
+      }
+    },
+    "the_eb579978f91b": {
+      "attachments": [
+        {
+          "blind_reason": null,
+          "designed": {
+            "state": "sufficient"
+          },
+          "document": "stolen_items_list",
+          "items_at_issue": [
+            {
+              "applies_in_this_file": true,
+              "checkable_as": "For every listed item, the shop or seller (or 'gift' or 'inherited', with the occasion) and at least month and year of purchase.",
+              "checkable_from_document": true,
+              "conditional": false,
+              "designed": "shown",
+              "item": "where and when it was bought",
+              "read": "missing",
+              "rule_set_wording": null
+            }
+          ],
+          "label": "A2",
+          "read_as": {
+            "missing": [
+              "where and when it was bought"
+            ],
+            "state": "insufficient"
+          }
+        }
+      ],
+      "decision": "rewrite",
+      "other": [],
+      "questions": [],
+      "reference_changes": [
+        {
+          "as_read": "present_insufficient",
+          "as_read_waits_for": null,
+          "design": "present_sufficient",
+          "design_waits_for": null,
+          "document": "stolen_items_list"
+        }
+      ],
+      "reference_equivalent": false,
+      "target_revisions": [],
+      "target_round2": {
+        "away_cover_missing": "stated_false",
+        "bicycle": "open",
+        "imminent_danger": "stated_true",
+        "measures_pending": "stated_false",
+        "theft_away": "stated_true",
+        "traces_changed": "not_mentioned",
+        "vouchers_unobtainable": "stated_false"
+      }
+    }
+  },
+  "item_notes_sha256": "6775545b07b8e8319d2844f3a7c8e58e1e848b0e52d5290d8adcb297e8fa2495",
+  "regime": "theft",
+  "rule": "kept without rewrite if exact, or if every difference is a designed 'not mentioned' read as 'stated false' and the engine reference from the states as read equals the design's reference; every other differing file gets one rewrite",
+  "schema": "study4.classify/1"
+}

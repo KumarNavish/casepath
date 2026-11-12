@@ -1,0 +1,91 @@
+{
+  "about": "Generator-side notes on must_show items (not part of the rule set). conditional: whether the item applies in some files only; applies_when: a condition over designed fact states that makes a conditional item required (if it does not hold, the item does not apply and is left out); checkable_as: what a document must literally contain for the item to count as shown, passed to the writer and to the blind checker; observed: the round-1 blind-check mismatch that led to the entry; rule_set_wording: why the item's own wording is a problem, for the planner to raise with the rule set (absent where the wording is fine).",
+  "items": [
+    {
+      "type": "rent_increase_dispute",
+      "document": "rent_increase_notice",
+      "item": "whether the form approved by the canton is used (for a graduated-rent step, whether it is in writing: art. 269d para. 5)",
+      "conditional": false,
+      "checkable_as": "The notice itself says whether it is made on the official form approved by the canton: the printed title of that form, or an explicit sentence that the official form is used or enclosed, or that it is not. A plain letter that is silent about any form does not show this item.",
+      "observed": "ten_db552dbb3c23: designed missing, read sufficient",
+      "rule_set_wording": "A 'whether ...' item is shown by every document (silence reads as 'no'), so an insufficient copy cannot be told from a sufficient one; better: 'the official cantonal form, or a statement that it is not used'."
+    },
+    {
+      "type": "rent_increase_dispute",
+      "document": "rent_increase_notice",
+      "item": "for an index-linked increase: the old and new index values",
+      "conditional": true,
+      "applies_when": {
+        "fact": "index_clause",
+        "state": "stated_true"
+      },
+      "checkable_as": "Two index values, old and new, with the index named (for example 'consumer price index 104.2 -> 106.9').",
+      "observed": "ten_efa24ba18ce3: designed sufficient (item treated as optional), read missing because the file states an index clause",
+      "rule_set_wording": "The condition is part of the item; it belongs in needed_when-style data, not in the content list."
+    },
+    {
+      "type": "rent_increase_dispute",
+      "document": "rent_increase_notice",
+      "item": "any threat of termination in it or in the covering letter",
+      "conditional": true,
+      "applies_when": {
+        "fact": "termination_with_increase",
+        "state": "stated_true"
+      },
+      "checkable_as": "The threat or notice of termination, in the notice or its covering letter."
+    },
+    {
+      "type": "rent_increase_dispute",
+      "document": "rent_increase_notice",
+      "item": "if the landlord gave no notice at all, that absence is itself the finding (art. 269d para. 2 let. a)",
+      "conditional": true,
+      "applies_when": {
+        "fact": "increase_applied",
+        "state": "stated_false"
+      },
+      "rule_set_wording": "Not a content item of a document: an absent notice cannot show its own absence."
+    },
+    {
+      "type": "rent_increase_dispute",
+      "document": "lease_contract",
+      "item": "any graduated-rent or index clause",
+      "conditional": true,
+      "applies_when": {
+        "any": [
+          {
+            "fact": "graduated_rent",
+            "state": "stated_true"
+          },
+          {
+            "fact": "index_clause",
+            "state": "stated_true"
+          }
+        ]
+      },
+      "checkable_as": "The clause that fixes the graduated steps or links the rent to an index."
+    },
+    {
+      "type": "lease_termination_dispute",
+      "document": "spouse_service",
+      "item": "where the notice followed a payment time limit (art. 257d): the separately served copy of that time limit",
+      "conditional": true,
+      "applies_when": {
+        "fact": "arrears_termination",
+        "state": "stated_true"
+      }
+    },
+    {
+      "type": "defect_mold_heating",
+      "document": "deposit_receipt",
+      "item": "date the claims were brought before the conciliation authority (or that they have not yet been)",
+      "conditional": false,
+      "checkable_as": "A date on which the claims were filed with the conciliation authority, or an explicit statement that they have not yet been filed."
+    },
+    {
+      "type": "lease_termination_dispute",
+      "document": "claims_and_reasons",
+      "item": "conciliation or court documents on those claims, if any",
+      "conditional": true
+    }
+  ]
+}

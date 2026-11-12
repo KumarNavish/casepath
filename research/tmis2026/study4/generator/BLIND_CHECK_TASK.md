@@ -16,7 +16,8 @@ session's output), no rule text, no program. Do not call any other model or serv
 ```
 {"file_id": "...",
  "text": "<the claimant's message>",
- "attachments": [{"label": "A1", "document_title": "...", "must_show": ["...", ...], "text": "..."}],
+ "attachments": [{"label": "A1", "document_title": "...", "must_show": ["...", ...],
+                  "checkable_as": [{"item": "...", "checkable_as": "..."}], "text": "..."}],
  "questions": [{"label": "Q1", "question": "..."}]}
 ```
 
@@ -37,7 +38,9 @@ from what usually happens; silence is `not_mentioned`, never `stated_false`.
 
 For every attachment: `sufficient` if it shows every item of its `must_show` list (an item worded as applying
 only in some cases, such as "any ... clause", "where ...", "if any", counts only if it applies to this file);
-otherwise `insufficient`, naming each missing item by copying its text exactly from `must_show`.
+otherwise `insufficient`, naming each missing item by copying its text exactly from `must_show`. Where
+`checkable_as` describes an item, the item counts as shown only if the document contains literally what it says.
+You may add `"reason"` (one sentence) to an insufficient attachment.
 
 Quote, for every state other than `not_mentioned`, the shortest passage (at most 30 words, verbatim, from the
 message or an attachment) on which you rely.
@@ -49,7 +52,7 @@ One UTF-8 JSON file, `blindcheck/out/round<k>/<file_id>.json`:
 ```
 {"file_id": "<file_id>",
  "facts": {"Q1": {"state": "stated_true" | "stated_false" | "open" | "not_mentioned", "quote": "<verbatim or empty>"}},
- "attachments": {"A1": {"state": "sufficient"} | {"state": "insufficient", "missing": ["<item copied from must_show>"]}}}
+ "attachments": {"A1": {"state": "sufficient"} | {"state": "insufficient", "missing": ["<item copied from must_show>"], "reason": "<optional>"}}}
 ```
 
 Every question label and every attachment label of the input appears exactly once.

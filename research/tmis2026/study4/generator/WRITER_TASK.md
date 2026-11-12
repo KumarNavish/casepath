@@ -24,11 +24,14 @@ anything up. Do not call any other model or service.
    topic and is never touched).
 3. Use the `story`: names (claimant, the other party as a person and as an organisation, a third person), place,
    street, dates (`date_written` is the date of the message, `date_main_event` the date of the central event,
-   `earlier_dates` for anything before), amounts in CHF. Assign roles as the questions require (the other party is
+   `earlier_dates` for anything before), amounts in CHF. Where `claimant_sex` is given, the claimant is a woman
+   ("female") or a man ("male"); write accordingly. Assign roles as the questions require (the other party is
    whoever the claimant is in dispute with or claims from); invent no further named person or organisation.
 4. Write each attachment in `attachments`: show every `must_show` item, leave out `leave_out` entirely (if it is
    not null), show `show_only_if_it_applies` items only where the story makes them apply and nothing in
-   `must_not_show` forbids them, and include nothing in `must_not_show`.
+   `must_not_show` forbids them, leave out every item under `does_not_apply_leave_out`, and include nothing in
+   `must_not_show`. Where `checkable_as` describes an item, the document must contain literally what it says for
+   the item to count as shown (and, for the `leave_out` item, must not contain it).
 5. Check before you finish: word count within range; every question gets its designed answer and nothing more;
    no sentence states that something is not the case unless the designed answer is "no"; no legal term or article
    number in the message; no label (Q1, A1) and no word about questions, designs or rules in the text.
@@ -50,7 +53,10 @@ as a JSON string (newlines as `\n`).
 
 ## Rewrite round
 
-A rewrite request lists the questions and attachments on which a blind reader's reading differed from the design
-(`designed` and `read_as`). Rewrite the whole file once so that each listed item gets its designed answer, keeping
-everything else as it was where possible, and write `written/<file_id>.r2.json` with `"round": 2`. Only one
-rewrite is made; a file that still differs is dropped.
+A rewrite request (`rewrite/<file_id>.json`) lists the questions and attachments on which a blind reader's reading
+differed from the design (`designed` and `read_as`) and carries the file's `bundle` as it now stands: work from
+that bundle, not from the round-1 one. Where `answers_changed` lists a question, another answer or an attachment
+of the file already answers it, so the bundle's designed answer for it has changed from "not mentioned" to the
+answer named; give it that answer. Rewrite the whole file once so that every question and attachment gets its
+designed answer, keeping everything else as it was where possible, and write `written/<file_id>.r2.json` with
+`"round": 2`. Only one rewrite is made; a file that still differs is dropped.

@@ -73,13 +73,14 @@ class GeneratorTest(unittest.TestCase):
             reg = G.Regime(r)
             for d in designs(self.out[r]):
                 listed = {x["fact"] for x in d["always_stated_not_mentioned"]}
+                ruled = {x.get("changed") for x in d["constraint_adjustments"]}
                 vals = G.resolve(reg, d["type"], d["facts"])
                 for f in reg.always_stated(d["type"]):
                     if d["facts"][f] == "not_mentioned":
                         # only where no step that uses it can be reached
                         self.assertIn(f, listed, (r, d["file_id"], f))
                         self.assertFalse(G.fact_step_reachable(reg, d["type"], vals, f), (r, d["file_id"], f))
-                    elif f not in d["open_facts"]:
+                    elif f not in d["open_facts"] and f not in ruled:
                         self.assertTrue(G.fact_step_reachable(reg, d["type"], vals, f), (r, d["file_id"], f))
                 ev = d["facts"][reg.defining_event(d["type"])]
                 if d["denied_event"]:
@@ -146,7 +147,7 @@ class GeneratorTest(unittest.TestCase):
     def test_writer_bundle_has_no_forbidden_content(self):
         for r in REGIMES:
             reg = G.Regime(r)
-            WB.build(r, out=self.out[r])
+            WB.build(r, out=self.out[r], force=True)
             C.build(r, out=self.out[r])
             all_ids = {d["file_id"] for d in designs(self.out[r])}
             passages = []
@@ -172,6 +173,8 @@ class GeneratorTest(unittest.TestCase):
                 t = reg.types[G.read_json(self.out[r] / "designs" / p.name)["type"]]
                 allowed = [f["question"] for f in t["facts"]] + [f.get("generator_note", "") for f in t["facts"]]
                 allowed += [d["title"] for d in t["documents"]] + [i for d in t["documents"] for i in d["must_show"]]
+                notes = G.ItemNotes(r)
+                allowed += [e.get("checkable_as", "") for e in notes.entries]
                 allowed.append(b["style_sheet"])
                 text = G.canon({k: v for k, v in b.items()})
                 for s in sorted(allowed, key=len, reverse=True):
@@ -195,6 +198,115 @@ class GeneratorTest(unittest.TestCase):
             for word in ("reference", "level", "story", "missing", "scan_noise", "needed_when", "reached_when"):
                 self.assertNotIn(f'"{word}"', dj)
 
+    # ---------------------------------------------------------------- dependency rules and item notes
+    def _rules(self, r):
+        p = G.DEV / r / "constraints.json"
+        return G.read_json(p)["constraints"] if p.exists() else []
+
+    def test_rule_if_then_holds(self):
+        for r in REGIMES:
+            for d in designs(self.out[r]):
+                prot = {G.Regime(r).defining_event(d["type"])} | set(d["open_facts"])
+                for c in self._rules(r):
+                    if c.get("kind") is None and c["then"]["fact"] in d["facts"] and \
+                            all(f in d["facts"] for f in G.state_facts(c["if"])) and G.state_match(c["if"], d["facts"]):
+                        if c["then"]["fact"] not in prot:
+                            self.assertIn(d["facts"][c["then"]["fact"]], c["then"]["in"], (r, d["file_id"], c["note"]))
+
+    def test_rule_stated_if_and_stated_only_if(self):
+        n = 0
+        for r in REGIMES:
+            for d in designs(self.out[r]):
+                for c in self._rules(r):
+                    if c.get("kind") not in ("stated_if", "stated_only_if") or c["fact"] not in d["facts"] \
+                            or c["fact"] in d["open_facts"]:
+                        continue
+                    if not all(f in d["facts"] for f in G.state_facts(c["if"])):
+                        continue
+                    holds = G.state_match(c["if"], d["facts"])
+                    st = d["facts"][c["fact"]]
+                    if c["kind"] == "stated_if" and holds:
+                        self.assertNotEqual(st, "not_mentioned", (r, d["file_id"]))
+                        n += 1
+                    if c["kind"] == "stated_only_if" and not holds:
+                        self.assertEqual(st, "not_mentioned", (r, d["file_id"]))
+        if "dismissal" in REGIMES:
+            self.assertGreater(n, 0)
+
+    def test_rule_attachment_implies(self):
+        for r in REGIMES:
+            reg = G.Regime(r)
+            for d in designs(self.out[r]):
+                for c in self._rules(r):
+                    if c.get("kind") != "attachment_implies" or c["fact"] not in d["facts"]:
+                        continue
+                    for a in d["attachments"]:
+                        if a["supplied"] and a["document"] == c["document"] and a.get("missing") != c.get("item"):
+                            self.assertIn(d["facts"][c["fact"]], c["implies"], (r, d["file_id"], c["note"]))
+        # a protected (open) fact keeps its state and the attachment is withdrawn
+        reg = G.Regime(REGIMES[0])
+        tid = reg.type_ids[0]
+        did = reg.documents(tid)[0]["id"]
+        f = reg.facts(tid)[-1]
+        states = {x: "not_mentioned" for x in reg.facts(tid)}
+        states[f] = "open"
+        att = [{"document": did, "supplied": True, "sufficient": True, "missing": None, "optional": False}]
+        rule = {"kind": "attachment_implies", "document": did, "fact": f, "implies": ["stated_false"], "set": "stated_false"}
+        log = []
+        D.apply_attachment_rules(reg, tid, states, {f}, [rule], att, log, G.ItemNotes(reg.name), {})
+        self.assertEqual(states[f], "open")
+        self.assertFalse(att[0]["supplied"])
+        self.assertTrue(att[0]["withdrawn"])
+        # a not-mentioned fact takes the implied state
+        states[f] = "not_mentioned"
+        att = [{"document": did, "supplied": True, "sufficient": True, "missing": None, "optional": False}]
+        D.apply_attachment_rules(reg, tid, states, set(), [rule], att, log, G.ItemNotes(reg.name), {})
+        self.assertEqual(states[f], "stated_false")
+        self.assertTrue(att[0]["supplied"])
+
+    def test_rule_claimant_sex(self):
+        import lexicon as LX
+        n = 0
+        for r in REGIMES:
+            for d in designs(self.out[r]):
+                for c in self._rules(r):
+                    if c.get("kind") == "claimant_sex" and all(f in d["facts"] for f in G.state_facts(c["if"])) \
+                            and G.state_match(c["if"], d["facts"]):
+                        first = d["story"]["claimant"].split()[0]
+                        self.assertEqual(d["story"]["claimant_sex"], c["sex"])
+                        self.assertEqual(LX.SEX[first], c["sex"][0], (r, d["file_id"], first))
+                        n += 1
+        rng = random.Random(3)
+        self.assertEqual(D.claimant_sex([{"kind": "claimant_sex", "if": {"fact": "x", "state": "stated_true"},
+                                          "sex": "female"}], {"x": "stated_true"}, rng)[0], "female")
+
+    def test_item_notes(self):
+        self.assertFalse(G.conditional_item("where and when it was bought"))
+        self.assertTrue(G.conditional_item("conciliation or court documents on those claims, if any"))
+        self.assertTrue(G.conditional_item("for an index-linked increase: the old and new index values"))
+        for r in REGIMES:
+            reg, notes = G.Regime(r), G.ItemNotes(r)
+            for d in designs(self.out[r]):
+                for a in d["attachments"]:
+                    if a.get("supplied") and a.get("missing"):
+                        req = notes.required_items(d["type"], a["document"], reg.doc(d["type"], a["document"])["must_show"], d["facts"])
+                        self.assertIn(a["missing"], req, (r, d["file_id"]))
+            # every note names an existing item, and glosses reach the writer bundle
+            items = {(t["id"], doc["id"], i) for t in reg.rules["types"] for doc in t["documents"] for i in doc["must_show"]}
+            for e in notes.entries:
+                self.assertTrue(any(x[1:] == (e["document"], e["item"]) and e.get("type", "*") in ("*", x[0])
+                                    for x in items), (r, e["item"]))
+            style = (G.GEN / "STYLE.md").read_text(encoding="utf-8")
+            for d in designs(self.out[r]):
+                b, _ = WB.build_one(reg, d, style, notes)
+                for a, att in zip([x for x in d["attachments"] if x["supplied"]], b["attachments"]):
+                    for i in reg.doc(d["type"], a["document"])["must_show"]:
+                        g = notes.gloss(d["type"], a["document"], i)
+                        if g and notes.applies(d["type"], a["document"], i, d["facts"]) is not False:
+                            self.assertIn({"item": i, "checkable_as": g}, att["checkable_as"])
+                        if notes.applies(d["type"], a["document"], i, d["facts"]) is False:
+                            self.assertIn(i, att["does_not_apply_leave_out"])
+
     def test_noise_reversible_and_bounded(self):
         rng = random.Random(1)
         words = ["Kündigung", "Vermieterin", "Wohnung", "Mietzinserhöhung", "Lohn", "formell", "Olten", "2026", "10",
@@ -209,15 +321,28 @@ class GeneratorTest(unittest.TestCase):
         self.assertNotEqual(deg, "ä" * 50)
         self.assertEqual(N.restore(deg, rec), "ä" * 50 + " " + "m" * 200 + " Olten 0 1 l rn " * 30)
 
+    @unittest.skipUnless(PRODUCT.exists(), "product worktree not available")
     def test_assemble_noise_only_on_flagged_and_drop_rule(self):
         r = REGIMES[0]
         out = self.out[r]
-        WB.build(r, out=out)
+        WB.build(r, out=out, force=True)
+        R.main(["--regime", r, "--out", str(out), "--quiet"])
         reg = G.Regime(r)
         keys = G.read_json(out / "writer_bundles" / "KEYS.json")["keys"]
         ds = {d["file_id"]: d for d in designs(out)}
         fids = sorted(ds)
         bad_once, bad_twice = fids[0], fids[1]
+        # a file whose only difference is a designed "not mentioned" (presumed false) read as "stated false"
+        pres = {}
+        as_read = None
+        for fid in fids[2:]:
+            d = ds[fid]
+            pres = reg.presumptions(d["type"])
+            cand = [f for f, st in d["facts"].items() if st == "not_mentioned" and pres.get(f) is False]
+            if cand:
+                as_read, as_read_fact = fid, cand[0]
+                break
+        self.assertIsNotNone(as_read)
         for fid, d in ds.items():
             key = keys[fid]
             text = ("Grüezi, ich schreibe wegen meiner Wohnung in Olten; der Brief kam am 10. Mai. " * 13).strip()
@@ -237,10 +362,20 @@ class GeneratorTest(unittest.TestCase):
             if fid in (bad_once, bad_twice):
                 q = next(iter(key["questions"]))
                 b["facts"][q]["state"] = "open" if d["facts"][key["questions"][q]] != "open" else "not_mentioned"
+            if fid == as_read:
+                lab = next(l for l, f in key["questions"].items() if f == as_read_fact)
+                b["facts"][lab]["state"] = "stated_false"
             G.write_json(out / "blindcheck" / "out" / "round1" / f"{fid}.json", b)
         res = A.compare(reg, out, 1)
         self.assertFalse(res[bad_once]["matches"])
+        self.assertFalse(res[as_read]["matches"])
+        summary, cl = A.classify(reg, out)
+        self.assertEqual(cl[as_read]["decision"], "kept_as_read")
+        self.assertTrue(cl[as_read]["reference_equivalent"])
+        self.assertEqual(cl[bad_once]["decision"], "rewrite")
         self.assertTrue((out / "rewrite" / f"{bad_once}.json").exists())
+        self.assertFalse((out / "rewrite" / f"{as_read}.json").exists())
+        self.assertIn("bundle", G.read_json(out / "rewrite" / f"{bad_once}.json"))
         for fid in (bad_once, bad_twice):
             w = G.read_json(out / "written" / f"{fid}.json")
             w["round"] = 2
@@ -255,6 +390,10 @@ class GeneratorTest(unittest.TestCase):
         A.compare(reg, out, 2)
         entries, dropped = A.finalize(reg, out)
         self.assertEqual([x["file_id"] for x in dropped], [bad_twice])
+        kept = G.read_json(out / "final" / as_read / "design.json")
+        self.assertTrue(kept["kept_as_read"])
+        self.assertEqual(kept["facts"][as_read_fact], "stated_false")
+        self.assertEqual(kept["facts_designed"][as_read_fact], "not_mentioned")
         self.assertIn(bad_once, {e["file_id"] for e in entries if e["round"] == 2})
         for e in entries:
             fdir = out / "final" / e["file_id"]

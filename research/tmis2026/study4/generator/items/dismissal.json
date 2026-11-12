@@ -1,0 +1,50 @@
+{
+  "about": "Generator-side notes on must_show items (not part of the rule set). conditional: whether the item applies in some files only; applies_when: a condition over designed fact states that makes a conditional item required (if it does not hold, the item does not apply and is left out); checkable_as: what a document must literally contain for the item to count as shown, passed to the writer and to the blind checker; observed: the round-1 blind-check mismatch that led to the entry; rule_set_wording: why the item's own wording is a problem, for the planner to raise with the rule set (absent where the wording is fine).",
+  "items": [
+    {
+      "type": "immediate_dismissal",
+      "document": "employment_contract",
+      "item": "agreed end date, if fixed-term",
+      "conditional": true,
+      "applies_when": {
+        "fact": "fixed_term",
+        "state": "stated_true"
+      },
+      "checkable_as": "An end date of the employment agreed in the contract.",
+      "observed": "dis_6093ca79060d, dis_925dc8cee367: drawn as the missing item in files where the contract is not fixed-term, so its absence could not be seen",
+      "rule_set_wording": "The condition is part of the item; it belongs in a condition, not in the content list."
+    },
+    {
+      "document": "employment_contract",
+      "item": "probation clause, if any",
+      "conditional": true,
+      "applies_when": {
+        "fact": "probation_varied",
+        "state": "stated_true"
+      },
+      "checkable_as": "A clause naming the length of the probation period.",
+      "observed": "dis_bf38c7dfb616: designed sufficient (item treated as optional), read missing because the file states a probation term set by contract"
+    },
+    {
+      "document": "employment_contract",
+      "item": "notice-period clause, if any",
+      "conditional": true,
+      "applies_when": {
+        "fact": "notice_period_varied",
+        "state": "stated_true"
+      },
+      "checkable_as": "A clause naming the notice period."
+    },
+    {
+      "document": "employment_contract",
+      "item": "start date of employment",
+      "conditional": false,
+      "checkable_as": "The date on which employment began."
+    },
+    {
+      "document": "claims_correspondence",
+      "item": "employer's response, if any",
+      "conditional": true
+    }
+  ]
+}
