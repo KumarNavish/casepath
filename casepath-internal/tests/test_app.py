@@ -507,11 +507,32 @@ class AppTests(unittest.TestCase):
         fact = lambda f, v: {"fact": f, "status": "established", "verdict": "accepted", "value": v, "citations": []}
         store.update_run(run["id"], status="completed", workflow_id="mietmangel-handler", workflow_version=None, finished_at="2026-11-12T10:00:00+00:00",
                          result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja")], "documents": [],
-                                 "brief": {"request": "Schimmel im Bad.", "parties": [], "timeline": []}})
+                                 "brief": {"request": "Schimmel im Bad.", "parties": [], "timeline": []},
+                                 "deadlines": [{"fact": "frist_vermieter", "date": "2024-01-15", "question": "Frist der Vermieterschaft"}]})
         shown = client.get(f"/api/cases/{case['id']}").json()
         self.assertEqual(shown["draft"]["kind"], "A1")
         self.assertIn("Um die Versicherungsdeckung prüfen", shown["draft"]["text"])
         self.assertTrue(shown["file_note"].startswith("Eingegangen: message.eml."))
+        row = next(r for r in client.get("/api/cases").json()["cases"] if r["id"] == case["id"])
+        self.assertEqual((row["next_date"], row["next_date_kind"]), ("2024-01-15", "frist"))  # a stored deadline before the follow-up comes first
+
+    def test_a_new_file_is_announced_and_a_second_preparation_shows_what_changed(self):
+        client = self.client()
+        case, file = self.new_case(client, "Ankunft")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        self.assertEqual(client.get(f"/api/cases/{case['id']}").json()["new_files"], [])
+        time.sleep(1.1)  # stored times are to the second
+        client.post(f"/api/cases/{case['id']}/files", files={"file": ("notice.eml", b"Subject: Notice\n\nI told the landlord.", "message/rfc822")})
+        shown = client.get(f"/api/cases/{case['id']}").json()
+        self.assertEqual(shown["new_files"], ["notice.eml"])
+        self.assertIsNone(shown["changes"])  # one preparation so far: nothing to compare
+        second = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"], finder_calls=[
+            finder(file["id"], "customer_message", "Subject: Schimmel im Bad")])))
+        self.assertEqual(second["status"], "completed")
+        after = client.get(f"/api/cases/{case['id']}").json()
+        self.assertEqual(after["new_files"], [])
+        self.assertEqual(set(after["changes"]), {"added", "changed", "removed"})
+        self.assertTrue(after["changes"]["changed"] or after["changes"]["added"])  # the customer message is now found
 
 
 class RoutingTests(unittest.TestCase):

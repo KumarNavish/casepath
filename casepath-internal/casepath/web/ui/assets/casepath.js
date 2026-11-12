@@ -116,11 +116,12 @@ async function renderCases() {
   S.workflows = workflows.workflows;
   const titles = Object.fromEntries(S.workflows.map((w) => [w.id, w.title]));
   const today = new Date().toISOString().slice(0, 10);
-  const ordered = [...cases.cases].sort((a, b) => (a.follow_up || "9999") < (b.follow_up || "9999") ? -1 : (a.follow_up || "9999") > (b.follow_up || "9999") ? 1 : 0);
+  const next = (c) => c.next_date || c.follow_up || "9999";  // one next date per case: the follow-up or a deadline, whichever first
+  const ordered = [...cases.cases].sort((a, b) => (next(a) < next(b) ? -1 : next(a) > next(b) ? 1 : 0));
   const rows = ordered.map((c) => `<tr><td><a href="#/case/${esc(c.id)}/overview">${esc(c.title)}</a>
       ${c.next_action ? `<br><small class="cp-muted">${esc(T(c.next_action.label.en, c.next_action.label.de))}</small>` : ""}
       ${c.intake && c.intake.synthetic ? ` <span class="cp-chip">${T("synthetic", "synthetisch")}</span>` : ""}</td>
-      <td>${esc(titles[c.workflow_id || c.run_workflow_id] || c.workflow_id || c.run_workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${c.follow_up ? `<span class="cp-chip ${c.follow_up <= today ? "bad" : ""}">${dateText(c.follow_up)}</span>` : "—"}</td></tr>`).join("");
+      <td>${esc(titles[c.workflow_id || c.run_workflow_id] || c.workflow_id || c.run_workflow_id || "—")}</td><td>${c.file_count}</td><td>${statusChip(c.run_status)}</td><td>${(c.next_date || c.follow_up) ? `<span class="cp-chip ${(c.next_date || c.follow_up) <= today ? "bad" : ""}">${dateText(c.next_date || c.follow_up)}</span>${c.next_date_kind === "frist" ? ` <span class="cp-muted">${T("deadline", "Frist")}</span>` : ""}` : "—"}</td></tr>`).join("");
   const catalogue = S.workflows.map((w) => `<tr><td>${esc(w.title)}</td><td><span class="cp-chip ${w.status === "reviewed" ? "good" : "wait"}">${esc(word(w.status))}</span></td>
       <td>${T(`${w.steps} steps · ${w.documents} document needs`, `${w.steps} Schritte · ${w.documents} Dokumente`)}</td><td>${w.open_questions ? T(`${w.open_questions} open questions`, `${w.open_questions} offene Fragen`) : "—"}</td>
       <td class="cp-muted">${w.sources.map((s) => esc(s.title)).join("; ")}</td></tr>`).join("");
@@ -129,7 +130,7 @@ async function renderCases() {
       "CasePath erkennt aus den Akten den Prozess jedes Falls, führt seine Dokumenten-Checkliste (nötig, vorhanden, fehlend) und baut Wissen auf, das mit jedem Fall wächst. Neues Wissen wird erst nach Freigabe durch einen Menschen wiederverwendet.")}</p>
     <form class="cp-form" id="new-case"><input name="title" placeholder="${T("New case: a short title", "Neuer Fall: kurzer Titel")}" aria-label="${T("New case title", "Titel des neuen Falls")}" required maxlength="300">
       <button class="cp-button primary">${icon("plus")}${T("Create case", "Fall anlegen")}</button></form>
-    ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Follow-up", "Wiedervorlage")}</th></tr></thead><tbody>${rows}</tbody></table>`
+    ${rows ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Process", "Prozess")}</th><th>${T("Sources", "Quellen")}</th><th>${T("Last run", "Letzte Vorbereitung")}</th><th>${T("Next date", "Nächste Wiedervorlage")}</th></tr></thead><tbody>${rows}</tbody></table>`
            : `<p class="cp-empty">${T("No cases yet. Create one, then add its documents.", "Noch keine Fälle. Legen Sie einen an und fügen Sie dann seine Dokumente hinzu.")}</p>`}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       <p class="cp-muted">${T("Files placed in the shared folder", "Dateien im gemeinsamen Ordner")} <code>${esc(imports.folder)}</code>. ${T("Each file becomes one case.", "Jede Datei wird zu einem Fall.")}</p>
@@ -316,6 +317,11 @@ function bindRail() {
   if (copyNote) copyNote.addEventListener("click", () => {
     if (navigator.clipboard) navigator.clipboard.writeText(S.data.file_note);
     caseEvent("filenote.copied", null, { chars: S.data.file_note.length }).catch(() => {});
+  });
+  const prepareNew = $("#prepare-new");  // a person asks: the run is not started automatically (it spends tokens)
+  if (prepareNew) prepareNew.addEventListener("click", async () => {
+    prepareNew.disabled = true;
+    await api(`/api/cases/${S.route.id}/runs`, { method: "POST" }).then(() => loadCase()).catch((error) => { S.message = error.message; renderCase(); });
   });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
@@ -1281,7 +1287,14 @@ function overviewView() {
   const setKeys = new Set((S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").map((e) => e.args.fact));
   const readKeys = Object.values(recorded("fact")).filter((f) => f.status !== "unknown").map((f) => f.fact);
   const checked = `${new Set([...readKeys, ...setKeys]).size} ${T("facts", "Fakten")}${setByYou ? T(` (${setByYou} set by you)`, ` (${setByYou} von Ihnen gesetzt)`) : ""}, ${ev ? ev.documents.length : 0} ${T("documents", "Dokumente")}, ${(r.deadlines || []).length} ${T("deadlines", "Fristen")}`;
-  return `${runLine()}<div class="cp-overview"><div>
+  const arrived = !running() && (S.data.new_files || []).length ? `<section class="cp-card" style="padding:12px 18px;margin-bottom:14px">
+      <b>${T(`New: ${S.data.new_files.length} file(s)`, `Neu eingegangen: ${S.data.new_files.length} Datei(en)`)}</b> <span class="cp-muted">${esc(S.data.new_files.join(", "))}</span>
+      <button class="cp-button primary" id="prepare-new">${T("Prepare again", "Neu vorbereiten")}</button></section>` : "";
+  const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length;
+  const changed = !running() && any ? `<details class="cp-card" style="padding:12px 18px;margin-bottom:14px" open><summary><b>${T("What changed", "Was sich geändert hat")}</b> <span class="cp-muted">· ${any}</span></summary>
+      ${[["added", T("new", "neu")], ["changed", T("changed", "geändert")], ["removed", T("no longer", "nicht mehr")]].filter(([k]) => (ch[k] || []).length)
+        .map(([k, w]) => `<p style="margin:6px 0"><span class="cp-muted">${w}:</span> ${(ch[k] || []).map(esc).join(" · ")}</p>`).join("")}</details>` : "";
+  return `${runLine()}${arrived}${changed}<div class="cp-overview"><div>
     ${preparedView(ev, draft)}
     <section class="cp-card" style="padding:18px 22px;margin-top:18px"><h2 class="cp-section" style="margin-top:0">${T("The case", "Der Fall")}</h2>
       <dl class="cp-doc-head cp-casefacts">

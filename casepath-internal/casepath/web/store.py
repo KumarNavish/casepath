@@ -209,6 +209,11 @@ class CaseStore:
         rows = self._all("select id from runs where status='completed' order by created_at desc, rowid desc limit ?", limit)
         return [self.get_run(r["id"]) for r in rows]
 
+    def completed_runs(self, case_id, limit=2):
+        """The case's latest completed runs, newest first (for what changed between two preparations)."""
+        rows = self._all("select id from runs where case_id=? and status='completed' order by created_at desc, rowid desc limit ?", case_id, limit)
+        return [self.get_run(r["id"]) for r in rows]
+
     def latest_run(self, case_id, status=None):
         sql = "select id from runs where case_id=?" + (" and status=?" if status else "") + " order by created_at desc, rowid desc limit 1"
         row = self._one(sql, *((case_id, status) if status else (case_id,)))

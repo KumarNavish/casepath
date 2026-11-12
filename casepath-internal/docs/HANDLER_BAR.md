@@ -32,6 +32,30 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 - Scripted only: Anhalten (stop before the next turn, keep brief, facts, documents, usage); Weiter (continue, finished steps skipped, same result as straight through); Verwerfen (back to the last finished result); a case worker's answer during a run or a pause, honoured from the next turn and never overwritten; anderer Prozess while paused or from the run line (Anhalten, choose, Weiter); the chosen process announced before any agent reads. A continued run carries the paused run's usage and is counted once, outside the timing profile.
 - First real check, when tokens are allowed: one gate run with Anhalten after the reading, then Weiter.
 
+**Audit against HANDLER_WORK** (2026-11-12; "yes" only with a named test or check; scripted means never run against the real model).
+
+| Point / action | Built | Proof | Missing |
+|---|---|---|---|
+| 1 Centre is the prepared action | partly | `test_a_case_on_the_handler_workflow_carries_its_draft_and_its_file_note` (draft served); handler's-eye pass (browser, element counts) | an automated browser test of the layout |
+| 2 Reasons as a chain | partly | `test_edits_change_the_checklist_and_can_be_undone` (a change propagates); "Weil:" line and per-line reasons on screen | a browser test that each line opens its source or rule; the chain drawn as one path |
+| 3 Feedback is finishing the work | partly | `test_case_worker_feedback_is_kept_per_item_and_only_counted_in_the_scorecard`; local walk 8/8 gestures logged; `deploy/preview/check_add_document.mjs` (2 actions) | "pick another action" (no action chooser yet) |
+| 4 A case has a next date | yes | `python -m casepath.process.clock` self-test; `test_a_case_on_the_handler_workflow_carries_its_draft_and_its_file_note` (next date: deadline before follow-up); A6/A7 letters use the same date (`test_every_action_kind_renders_its_form_with_every_part_and_no_empty_placeholder`) | — |
+| 5 Arrival | partly | `test_a_new_file_is_announced_and_a_second_preparation_shows_what_changed` | the run starts only when a person asks (deliberately: it spends tokens); a re-run reads all files, not only the new ones |
+| 6 The file note writes itself | yes | `test_the_file_note_is_the_same_paragraph_every_time` (text pinned); `test_a_document_the_handler_unticked_is_neither_asked_nor_awaited` | — |
+| A0 Receipt | no | — | Protekta's online form sends it; not CasePath's |
+| A1 First request | yes | form: `test_every_action_kind_renders_…`; stage: `test_the_stage_follows_what_was_done_what_arrived_and_the_handlers_cover_decision`; live: 20/22 named on the seven cuts | the screen still writes A1 in the browser (same parts); one server letter for all kinds |
+| A2 Phone note | partly | read as evidence: D3 decision point, scored model-free (pass); A6 after a call: `test_the_stage_follows_…` | kein Entwurf: the note is written by the handler ("Telefonnotiz erfassen") |
+| A3 Upload link | no | — | kein Entwurf: the link comes from Protekta's upload system |
+| A4 Question back | partly | form: `test_every_action_kind_renders_…` | no stage or rule proposes A4 yet |
+| A5 Assessment | partly | form: `test_every_action_kind_renders_…`; stage "beurteilen" carries A5 | decision-point test (D11, planned, needs tokens) |
+| A6 Pending with a deadline | yes | form and date: `test_every_action_kind_renders_…`; `test_the_stage_follows_…` (after a call); live: D3 decision point, date = Protekta's | — |
+| A7 Status inquiry | yes | form: `test_every_action_kind_renders_…`; clock: `test_the_stage_follows_…` (silence after A5); live: D11 decision point, kind and reason, date = Protekta's after the as_of fix | — |
+| A8 Letter to the other side | partly | form (draft to the customer first in its addressee line): `test_every_action_kind_renders_…`; stage "gegenpartei" | decision-point test (D6, planned) |
+| A9 Negotiation | no | — | kein Entwurf: the stance is the handler's; no tracking of offers |
+| A10 Mandate | partly | form: `test_every_action_kind_renders_…`; stage "mandat" | decision-point test (D9, planned) |
+| A11 Payment | partly | stage "abwicklung" carries A11 | kein Entwurf: amount and date come from the payment system; decision-point tests (D1, planned) |
+| A12 Closing | partly | form: `test_every_action_kind_renders_…`; clock: A7 then 14 days → A12 (`casepath.process.clock` self-test covers the rule's shape) | decision-point test (D9, planned) |
+
 **Action tests start from the handler's decisions.** Stages after "Deckung" and "Vorgehen" are reached only through the handler's own decisions (handler_only facts the agents never set). A test of A5, A8/A9, A10, A11 or A12 therefore sets those decisions on the cut first, as set_fact edits, as the handler had decided by then; the test then measures the next action from there.
 
 **Named in the scores.**

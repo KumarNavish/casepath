@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 import hashlib
 import os
+import re
 import secrets
 import html
 import json
@@ -27,8 +28,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import follow_up
+from ..agents import core
 from ..process import letters
-from ..process.items import build_items, items_sha256
+from ..process.items import build_items, item_changes, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
@@ -396,6 +398,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
+                    # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
+                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
+                    dates = [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
+                    row["next_date"] = min(dates) if dates else None
+                    row["next_date_kind"] = None if not dates else "frist" if deadlines and row["next_date"] == deadlines[0] else "wiedervorlage"
                 except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
                     row["follow_up"] = None
         return {"cases": rows}
@@ -420,7 +427,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
             text, none = letters.render(action.get("action"), forms, letters.context(current["case"], listed, events, clock, files))
             draft = {"kind": action.get("action"), "title": (forms.get(action.get("action")) or {}).get("title"), "text": text, "none": none}
+        # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
+        new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
+        changes = None
+        done = store.completed_runs(case_id, 2)
+        if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
+            workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
+            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id)
+            changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft,
+                "new_files": new_files, "changes": changes,
                 "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": current["case"], "files": store.list_files(case_id),

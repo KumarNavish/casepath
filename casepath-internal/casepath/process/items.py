@@ -263,3 +263,14 @@ HASHED = ("item_id", "kind", "key", "value", "stated_as", "status", "required", 
 def items_sha256(items):
     rows = sorted([[i.get(k) for k in HASHED] for i in items], key=lambda r: r[0])
     return hashlib.sha256(json.dumps(rows, ensure_ascii=False, separators=(",", ":"), default=str).encode()).hexdigest()
+
+
+def item_changes(before, after):
+    """What a new preparation changed, item by item: added, changed (value, status or ask) and removed. Labels only."""
+    key = lambda i: (i.get("value"), i.get("status"), i.get("ask"))
+    label = lambda i: (i.get("label") or {}).get("de") or str(i.get("value") or i["key"])
+    old, new = {i["item_id"]: i for i in before}, {i["item_id"]: i for i in after}
+    shown = {"document", "fact", "next_action", "letter_question", "hint", "deadline"}
+    return {"added": [label(new[k]) for k in new if k not in old and new[k]["kind"] in shown],
+            "changed": [label(new[k]) for k in new if k in old and new[k]["kind"] in shown and key(new[k]) != key(old[k])],
+            "removed": [label(old[k]) for k in old if k not in new and old[k]["kind"] in shown]}
