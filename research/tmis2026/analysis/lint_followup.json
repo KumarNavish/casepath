@@ -1,0 +1,1428 @@
+{
+ "label": "POST HOC: not part of ANALYSIS_PLAN_STUDY3.md",
+ "note": "POST HOC follow-up of the rule lint (analysis/rule_lint.py). Not part of ANALYSIS_PLAN_STUDY3.md.\n\n    python3 lint_followup.py            # writes lint_followup.json and lint_followup.md (no model calls)\n    python3 lint_followup.py --design   # only prints the mutation design (seed, draw, texts); used before the paid run\n\nPart 2. \"A flagged condition is treated as open\": theft results from the stored readings of Study 3 (fresh2; gpt-6-luna\nfull product, 3 runs; gpt-6.1-terra checklist only, 1 run) and the product's evaluator at 6a72159c, with each model's\nown lint flags (analysis/rule_lint.json; note: the lint was computed on the same off texts, so this is in-sample):\n  (a) every flagged condition is unresolved;\n  (b) flagged conditions that both blind editors made unconditional (rule_review/lint/final/RECONCILIATION.md: rules 001,\n      002, 005, 006, 026, 044, 057, 061) are true, the other flagged conditions unresolved.\nAlso the lint on the tenancy workflows from the stored readings of Study 3 (ordinary claims: request set not empty, no\nopen fact): the false-alarm baseline for Part 3.\nPart 3. Mutation test of the lint on the tenancy workflows (design fixed below, before any run; the run itself is made by\nthe scratch driver and read back from its results file).\n",
+ "flags": {
+  "gpt-6-luna": [
+   "g001",
+   "g002",
+   "g004",
+   "g005",
+   "g006",
+   "g008",
+   "g014",
+   "g026",
+   "g044",
+   "g057",
+   "g073",
+   "g094"
+  ],
+  "gpt-6.1-terra": [
+   "g001",
+   "g002",
+   "g003",
+   "g004",
+   "g005",
+   "g006",
+   "g008",
+   "g014",
+   "g026",
+   "g042_rev_92ab8925",
+   "g044",
+   "g057",
+   "g061",
+   "g073"
+  ]
+ },
+ "part2_theft": {
+  "gpt-6-luna": {
+   "tested": {
+    "summary": {
+     "pairs": 216,
+     "wrong": 0.324,
+     "missed": 0.255,
+     "errors": 0.579,
+     "unres_unchanged": 0.944,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.875,
+     "PR_bicycle_claimed": 0.167,
+     "PR_sim_card_stolen": 1.167,
+     "PR_third_party_causer": 1.792,
+     "PR_expert_procedure_requested": 0.792,
+     "PR_repair_over_500": 0.083,
+     "PR_nachfrist_set": 0.167,
+     "PR_goods_recovered": 0.083,
+     "PR_declined": 0.083
+    },
+    "forced": {},
+    "forced_need_bearing": [],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D07",
+     "D14",
+     "D17",
+     "D25"
+    ],
+    "off_held_in_every_run": [
+     "D10",
+     "D16",
+     "D18",
+     "D22",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 24,
+     "D03": 24,
+     "D04": 24,
+     "D05": 24,
+     "D07": 24,
+     "D14": 24,
+     "D17": 24,
+     "D25": 24,
+     "D26": 5,
+     "D27": 5
+    },
+    "off_held_counts": {
+     "D10": 24,
+     "D15": 17,
+     "D16": 24,
+     "D18": 24,
+     "D20": 14,
+     "D21": 5,
+     "D22": 24,
+     "D23": 6,
+     "D26": 19,
+     "D27": 19,
+     "D28": 24,
+     "D29": 24,
+     "D32": 5,
+     "D33": 3
+    },
+    "off_runs": 24,
+    "off_open_need_bearing_facts_per_run": 11.875,
+    "off_questions_from_forced_facts": {},
+    "decomposition": {
+     "rule": 0.333,
+     "reading": 0.088,
+     "hold": 0.157,
+     "measured": 0.579,
+     "interaction": 0.0
+    }
+   },
+   "a": {
+    "summary": {
+     "pairs": 216,
+     "wrong": 0.319,
+     "missed": 0.255,
+     "errors": 0.574,
+     "unres_unchanged": 0.951,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.792,
+     "PR_bicycle_claimed": 0.167,
+     "PR_sim_card_stolen": 1.167,
+     "PR_third_party_causer": 1.792,
+     "PR_expert_procedure_requested": 0.792,
+     "PR_repair_over_500": 0.125,
+     "PR_nachfrist_set": 0.167,
+     "PR_goods_recovered": 0.083,
+     "PR_declined": 0.083
+    },
+    "forced": {
+     "g001": null,
+     "g002": null,
+     "g004": null,
+     "g005": null,
+     "g006": null,
+     "g008": null,
+     "g014": null,
+     "g026": null,
+     "g044": null,
+     "g057": null,
+     "g073": null,
+     "g094": null
+    },
+    "forced_need_bearing": [
+     "g002",
+     "g004",
+     "g005",
+     "g006"
+    ],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D14",
+     "D17"
+    ],
+    "off_held_in_every_run": [
+     "D07",
+     "D10",
+     "D16",
+     "D18",
+     "D22",
+     "D25",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 24,
+     "D03": 24,
+     "D04": 24,
+     "D05": 24,
+     "D14": 24,
+     "D17": 24,
+     "D26": 5,
+     "D27": 5
+    },
+    "off_held_counts": {
+     "D07": 24,
+     "D10": 24,
+     "D15": 17,
+     "D16": 24,
+     "D18": 24,
+     "D20": 14,
+     "D21": 5,
+     "D22": 24,
+     "D23": 6,
+     "D25": 24,
+     "D26": 19,
+     "D27": 19,
+     "D28": 24,
+     "D29": 24,
+     "D32": 5,
+     "D33": 3
+    },
+    "off_runs": 24,
+    "off_open_need_bearing_facts_per_run": 15.875,
+    "off_questions_from_forced_facts": {
+     "g002": 24,
+     "g004": 24,
+     "g005": 24,
+     "g006": 24
+    },
+    "decomposition": {
+     "rule": 0.333,
+     "reading": 0.093,
+     "hold": 0.148,
+     "measured": 0.574,
+     "interaction": 0.0
+    }
+   },
+   "b": {
+    "summary": {
+     "pairs": 216,
+     "wrong": 0.319,
+     "missed": 0.255,
+     "errors": 0.574,
+     "unres_unchanged": 0.951,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.792,
+     "PR_bicycle_claimed": 0.167,
+     "PR_sim_card_stolen": 1.167,
+     "PR_third_party_causer": 1.792,
+     "PR_expert_procedure_requested": 0.792,
+     "PR_repair_over_500": 0.125,
+     "PR_nachfrist_set": 0.167,
+     "PR_goods_recovered": 0.083,
+     "PR_declined": 0.083
+    },
+    "forced": {
+     "g001": true,
+     "g002": true,
+     "g004": null,
+     "g005": true,
+     "g006": true,
+     "g008": null,
+     "g014": null,
+     "g026": true,
+     "g044": true,
+     "g057": true,
+     "g073": null,
+     "g094": null
+    },
+    "forced_need_bearing": [
+     "g002",
+     "g004",
+     "g005",
+     "g006"
+    ],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D07",
+     "D14",
+     "D17"
+    ],
+    "off_held_in_every_run": [
+     "D10",
+     "D16",
+     "D18",
+     "D22",
+     "D25",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 24,
+     "D03": 24,
+     "D04": 24,
+     "D05": 24,
+     "D07": 24,
+     "D14": 24,
+     "D17": 24,
+     "D26": 5,
+     "D27": 5
+    },
+    "off_held_counts": {
+     "D10": 24,
+     "D15": 17,
+     "D16": 24,
+     "D18": 24,
+     "D20": 14,
+     "D21": 5,
+     "D22": 24,
+     "D23": 6,
+     "D25": 24,
+     "D26": 19,
+     "D27": 19,
+     "D28": 24,
+     "D29": 24,
+     "D32": 5,
+     "D33": 3
+    },
+    "off_runs": 24,
+    "off_open_need_bearing_facts_per_run": 12.875,
+    "off_questions_from_forced_facts": {
+     "g002": 0,
+     "g004": 24,
+     "g005": 0,
+     "g006": 0
+    },
+    "decomposition": {
+     "rule": 0.333,
+     "reading": 0.093,
+     "hold": 0.148,
+     "measured": 0.574,
+     "interaction": 0.0
+    }
+   }
+  },
+  "gpt-6.1-terra": {
+   "tested": {
+    "summary": {
+     "pairs": 72,
+     "wrong": 0.417,
+     "missed": 0.417,
+     "errors": 0.833,
+     "unres_unchanged": 0.75,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.875,
+     "PR_bicycle_claimed": 0.625,
+     "PR_sim_card_stolen": 1.25,
+     "PR_third_party_causer": 2.375,
+     "PR_expert_procedure_requested": 1.25,
+     "PR_repair_over_500": 0.875,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.25,
+     "PR_declined": 0.0
+    },
+    "forced": {},
+    "forced_need_bearing": [],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D07",
+     "D14",
+     "D15",
+     "D17",
+     "D25"
+    ],
+    "off_held_in_every_run": [
+     "D10",
+     "D16",
+     "D18",
+     "D20",
+     "D21",
+     "D22",
+     "D23",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 8,
+     "D03": 8,
+     "D04": 8,
+     "D05": 8,
+     "D07": 8,
+     "D14": 8,
+     "D15": 8,
+     "D17": 8,
+     "D25": 8,
+     "D26": 3,
+     "D27": 3
+    },
+    "off_held_counts": {
+     "D10": 8,
+     "D16": 8,
+     "D18": 8,
+     "D20": 8,
+     "D21": 8,
+     "D22": 8,
+     "D23": 8,
+     "D26": 5,
+     "D27": 5,
+     "D28": 8,
+     "D29": 8
+    },
+    "off_runs": 8,
+    "off_open_need_bearing_facts_per_run": 13.625,
+    "off_questions_from_forced_facts": {},
+    "decomposition": {
+     "rule": 0.333,
+     "reading": 0.25,
+     "hold": 0.25,
+     "measured": 0.833,
+     "interaction": 0.0
+    }
+   },
+   "a": {
+    "summary": {
+     "pairs": 72,
+     "wrong": 0.111,
+     "missed": 0.417,
+     "errors": 0.528,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.75,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 2.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "forced": {
+     "g001": null,
+     "g002": null,
+     "g003": null,
+     "g004": null,
+     "g005": null,
+     "g006": null,
+     "g008": null,
+     "g014": null,
+     "g026": null,
+     "g042_rev_92ab8925": null,
+     "g044": null,
+     "g057": null,
+     "g061": null,
+     "g073": null
+    },
+    "forced_need_bearing": [
+     "g002",
+     "g003",
+     "g004",
+     "g005",
+     "g006",
+     "g042_rev_92ab8925"
+    ],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D14",
+     "D17"
+    ],
+    "off_held_in_every_run": [
+     "D07",
+     "D10",
+     "D15",
+     "D16",
+     "D18",
+     "D20",
+     "D21",
+     "D22",
+     "D23",
+     "D25",
+     "D26",
+     "D27",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 8,
+     "D03": 8,
+     "D04": 8,
+     "D05": 8,
+     "D14": 8,
+     "D17": 8
+    },
+    "off_held_counts": {
+     "D07": 8,
+     "D10": 8,
+     "D15": 8,
+     "D16": 8,
+     "D18": 8,
+     "D20": 8,
+     "D21": 8,
+     "D22": 8,
+     "D23": 8,
+     "D25": 8,
+     "D26": 8,
+     "D27": 8,
+     "D28": 8,
+     "D29": 8
+    },
+    "off_runs": 8,
+    "off_open_need_bearing_facts_per_run": 19.0,
+    "off_questions_from_forced_facts": {
+     "g002": 8,
+     "g003": 8,
+     "g004": 8,
+     "g005": 8,
+     "g006": 8,
+     "g042_rev_92ab8925": 8
+    },
+    "decomposition": {
+     "rule": 0.444,
+     "reading": 0.083,
+     "hold": 0.0,
+     "measured": 0.528,
+     "interaction": 0.0
+    }
+   },
+   "b": {
+    "summary": {
+     "pairs": 72,
+     "wrong": 0.111,
+     "missed": 0.417,
+     "errors": 0.528,
+     "unres_unchanged": 1.0,
+     "unres_premature": 0.0,
+     "unres_held": 0.833
+    },
+    "by_fact": {
+     "PR_scheduled_valuable_1000": 0.75,
+     "PR_bicycle_claimed": 0.0,
+     "PR_sim_card_stolen": 1.0,
+     "PR_third_party_causer": 2.0,
+     "PR_expert_procedure_requested": 1.0,
+     "PR_repair_over_500": 0.0,
+     "PR_nachfrist_set": 0.0,
+     "PR_goods_recovered": 0.0,
+     "PR_declined": 0.0
+    },
+    "forced": {
+     "g001": true,
+     "g002": true,
+     "g003": null,
+     "g004": null,
+     "g005": true,
+     "g006": true,
+     "g008": null,
+     "g014": null,
+     "g026": true,
+     "g042_rev_92ab8925": null,
+     "g044": true,
+     "g057": true,
+     "g061": true,
+     "g073": null
+    },
+    "forced_need_bearing": [
+     "g002",
+     "g003",
+     "g004",
+     "g005",
+     "g006",
+     "g042_rev_92ab8925"
+    ],
+    "off_requested_in_every_run": [
+     "D01",
+     "D03",
+     "D04",
+     "D05",
+     "D07",
+     "D14",
+     "D17"
+    ],
+    "off_held_in_every_run": [
+     "D10",
+     "D15",
+     "D16",
+     "D18",
+     "D20",
+     "D21",
+     "D22",
+     "D23",
+     "D25",
+     "D26",
+     "D27",
+     "D28",
+     "D29"
+    ],
+    "off_requested_counts": {
+     "D01": 8,
+     "D03": 8,
+     "D04": 8,
+     "D05": 8,
+     "D07": 8,
+     "D14": 8,
+     "D17": 8
+    },
+    "off_held_counts": {
+     "D10": 8,
+     "D15": 8,
+     "D16": 8,
+     "D18": 8,
+     "D20": 8,
+     "D21": 8,
+     "D22": 8,
+     "D23": 8,
+     "D25": 8,
+     "D26": 8,
+     "D27": 8,
+     "D28": 8,
+     "D29": 8
+    },
+    "off_runs": 8,
+    "off_open_need_bearing_facts_per_run": 16.0,
+    "off_questions_from_forced_facts": {
+     "g002": 0,
+     "g003": 8,
+     "g004": 8,
+     "g005": 0,
+     "g006": 0,
+     "g042_rev_92ab8925": 8
+    },
+    "decomposition": {
+     "rule": 0.444,
+     "reading": 0.083,
+     "hold": 0.0,
+     "measured": 0.528,
+     "interaction": 0.0
+    }
+   }
+  }
+ },
+ "tenancy_lint_stored": {
+  "gpt-6-luna": {
+   "defect_mold_heating": {
+    "health_effects": {
+     "runs": 97,
+     "admitted_true": 67,
+     "some_reading_true": 67,
+     "quotes": [
+      "I've had more attacks this summer than in the last 5 years together",
+      "I have asthma and I've had more attacks this summer than in the last 5 years together",
+      "Her cough started in May and has never fully gone"
+     ],
+     "flagged": true
+    },
+    "mold": {
+     "runs": 97,
+     "admitted_true": 66,
+     "some_reading_true": 66,
+     "quotes": [
+      "die Fensterrahmen schimmlig sind",
+      "die Fensterrahmen schimmlig sind.",
+      "Im Bad wächst an der Decke grau-grüner Schimmel"
+     ],
+     "flagged": true
+    },
+    "heating": {
+     "runs": 97,
+     "admitted_true": 72,
+     "some_reading_true": 73,
+     "quotes": [
+      "Seit August stellt der Heizkessel jede Nacht ab.",
+      "Der Heizkessel stellt jede Nacht ab",
+      "Der Heizkessel stellt jede Nacht ab, sodass die Schlafzimmer am Morgen kalt sind."
+     ],
+     "flagged": true
+    },
+    "specialist_needed": {
+     "runs": 97,
+     "admitted_true": 40,
+     "some_reading_true": 49,
+     "quotes": [
+      "Darum braucht es jetzt einen unabhängigen Heizungsexperten, der die Ursache feststellt.",
+      "Darum braucht es jetzt einen unabhängigen Heizungsexperten",
+      "ein Heizungsfachmann die Ursache abklären"
+     ],
+     "flagged": false
+    },
+    "deposit_considered": {
+     "runs": 97,
+     "admitted_true": 63,
+     "some_reading_true": 63,
+     "quotes": [
+      "Wenn die Pilatus den Kessel nicht reparieren lässt, zahle ich den Mietzins künftig auf die Hinterlegungsstelle ein.",
+      "zahle ich den Mietzins künftig auf die Hinterlegungsstelle ein.",
+      "zahle ich den Mietzins künftig auf die Hinterlegungsstelle ein"
+     ],
+     "flagged": true
+    }
+   },
+   "lease_termination_dispute": {
+    "termination_received": {
+     "runs": 21,
+     "admitted_true": 15,
+     "some_reading_true": 21,
+     "quotes": [
+      "liegt seit letzter Woche auf meinem Küchentisch",
+      "I received a written notice of termination",
+      "On 12 August I received a written notice of termination"
+     ],
+     "flagged": true
+    },
+    "family_home": {
+     "runs": 21,
+     "admitted_true": 8,
+     "some_reading_true": 11,
+     "quotes": [
+      "our family",
+      "our 5.5-room flat",
+      "our 5.5-room flat at Allmendstrasse 61 in Kriens"
+     ],
+     "flagged": false
+    },
+    "arrears": {
+     "runs": 21,
+     "admitted_true": 21,
+     "some_reading_true": 21,
+     "quotes": [
+      "Als Grund wird angegeben, dass ich mit der Miete im Rückstand bin.",
+      "Das stimmt: Mir fehlen zwei Monatsmieten, CHF 2740",
+      "The notice refers to the CHF 6570 we owe, three months that we were unable to pay"
+     ],
+     "flagged": true
+    },
+    "retaliation_screen": {
+     "runs": 21,
+     "admitted_true": 20,
+     "some_reading_true": 21,
+     "quotes": [
+      "Ich bin aber überzeugt, dass die Kündigung in Wahrheit eine Retourkutsche ist.",
+      "What strikes me is the timing: only last month I was the one who collected signatures from all the tenants about the dangerous balcony railings and sent them to the management and the town.",
+      "What strikes me is the timing"
+     ],
+     "flagged": true
+    },
+    "extension_relevant": {
+     "runs": 21,
+     "admitted_true": 14,
+     "some_reading_true": 15,
+     "quotes": [
+      "We will definitely need an extension if the termination is upheld.",
+      "We will definitely need an extension",
+      "wir haben keine Ahnung, wie wir mit einem Neugeborenen bis nächsten Herbst eine bezahlbare Wohnung in der Region finden sollen."
+     ],
+     "flagged": true
+    }
+   }
+  },
+  "gpt-6.1-terra": {
+   "defect_mold_heating": {
+    "health_effects": {
+     "runs": 33,
+     "admitted_true": 23,
+     "some_reading_true": 23,
+     "quotes": [
+      "I have asthma and I've had more attacks this summer than in the last 5 years together, the mould in the bedroom doesn't help",
+      "Her cough started in May and has never fully gone; it is worst after her bath in the evening",
+      "Bathroom mould and our daughter's cough"
+     ],
+     "flagged": true
+    },
+    "mold": {
+     "runs": 33,
+     "admitted_true": 22,
+     "some_reading_true": 22,
+     "quotes": [
+      "an den Wänden Kondenswasser herunterläuft und die Fensterrahmen schimmlig sind",
+      "Im Bad wächst an der Decke grau-grüner Schimmel",
+      "Im Kinderzimmer ist die Ecke zur Aussenwand hin seit Monaten nass"
+     ],
+     "flagged": true
+    },
+    "heating": {
+     "runs": 33,
+     "admitted_true": 24,
+     "some_reading_true": 24,
+     "quotes": [
+      "Seit August stellt der Heizkessel jede Nacht ab.",
+      "die Heizung seit Ende September alle paar Tage ausfällt",
+      "Die Heizung funktioniert also nicht richtig."
+     ],
+     "flagged": true
+    },
+    "specialist_needed": {
+     "runs": 33,
+     "admitted_true": 17,
+     "some_reading_true": 17,
+     "quotes": [
+      "Darum braucht es jetzt einen unabhängigen Heizungsexperten, der die Ursache feststellt.",
+      "Laut Frau Ammann muss deshalb ein Heizungsfachmann die Ursache abklären",
+      "ohne dass ein Fachmann das untersucht, wird sich die Verwaltung nie bewegen."
+     ],
+     "flagged": true
+    },
+    "deposit_considered": {
+     "runs": 33,
+     "admitted_true": 21,
+     "some_reading_true": 21,
+     "quotes": [
+      "Wenn die Pilatus den Kessel nicht reparieren lässt, zahle ich den Mietzins künftig auf die Hinterlegungsstelle ein.",
+      "Die Nummer der Hinterlegungsstelle in St. Gallen habe ich mir schon notiert, und den nächsten Mietzins habe ich vorerst nicht überwiesen.",
+      "Ich habe vor, den Mietzins ab dem nächsten Monat nicht mehr der Vermieterin zu zahlen, sondern bei der Hinterlegungsstelle des Kantons zu hinterlegen"
+     ],
+     "flagged": true
+    }
+   },
+   "lease_termination_dispute": {
+    "termination_received": {
+     "runs": 7,
+     "admitted_true": 5,
+     "some_reading_true": 5,
+     "quotes": [
+      "Das Formular der Wohnwerk Thur mit dem Datum 31. Januar 2027 liegt seit letzter Woche auf meinem Küchentisch",
+      "Wohnwerk Thur's termination notice is attached",
+      "On 12 August I received a written notice of termination"
+     ],
+     "flagged": true
+    },
+    "family_home": {
+     "runs": 7,
+     "admitted_true": 3,
+     "some_reading_true": 3,
+     "quotes": [
+      "My wife and I are married and this flat is our family home",
+      "this flat is our family home",
+      "Funny that our family is the first one to go."
+     ],
+     "flagged": false
+    },
+    "arrears": {
+     "runs": 7,
+     "admitted_true": 7,
+     "some_reading_true": 7,
+     "quotes": [
+      "Als Grund wird angegeben, dass ich mit der Miete im Rückstand bin.",
+      "Ground for termination: rent arrears",
+      "The notice refers to the CHF 6570 we owe, three months that we were unable to pay after my business closed."
+     ],
+     "flagged": true
+    },
+    "retaliation_screen": {
+     "runs": 7,
+     "admitted_true": 7,
+     "some_reading_true": 7,
+     "quotes": [
+      "Ich bin aber überzeugt, dass die Kündigung in Wahrheit eine Retourkutsche ist.",
+      "The termination came three weeks later. That is retaliation and nothing else.",
+      "That is retaliation and nothing else."
+     ],
+     "flagged": true
+    },
+    "extension_relevant": {
+     "runs": 7,
+     "admitted_true": 5,
+     "some_reading_true": 5,
+     "quotes": [
+      "With a baby, finding something affordable in the area before the end of January is not realistic.",
+      "finding something affordable in the area before the end of January is not realistic",
+      "We will definitely need an extension if the termination is upheld."
+     ],
+     "flagged": true
+    }
+   }
+  }
+ },
+ "part3": {
+  "design": {
+   "seed": 20261112,
+   "drawn": {
+    "defect_mold_heating": [
+     "health_effects",
+     "specialist_needed"
+    ],
+    "lease_termination_dispute": [
+     "family_home",
+     "retaliation_screen"
+    ],
+    "rent_increase_dispute": [
+     "reference_rate",
+     "renovation"
+    ]
+   },
+   "mutated_questions": {
+    "defect_mold_heating": {
+     "health_effects": "Does the claim describe effects of the defect on the tenant's use or comfort of the flat?",
+     "specialist_needed": "Does the defect need to be examined or repaired by someone?"
+    },
+    "lease_termination_dispute": {
+     "family_home": "Does the tenant live in the flat?",
+     "retaliation_screen": "Is the tenant contesting or objecting to the termination?"
+    },
+    "rent_increase_dispute": {
+     "reference_rate": "Does the notice or the claim state a reason or basis for the increase?",
+     "renovation": "Does the claim mention the flat, the building or its condition?"
+    }
+   },
+   "all_written_mutations": {
+    "defect_mold_heating": {
+     "health_effects": "Does the claim describe effects of the defect on the tenant's use or comfort of the flat?",
+     "mold": "Does the defect concern the condition of the flat's rooms, walls, windows or fittings?",
+     "heating": "Does the defect affect the comfort of living in the flat?",
+     "specialist_needed": "Does the defect need to be examined or repaired by someone?",
+     "deposit_considered": "Is the tenant considering any step to make the landlord remedy the defect?"
+    },
+    "lease_termination_dispute": {
+     "family_home": "Does the tenant live in the flat?",
+     "arrears": "Does the claim mention the rent or payments under the lease?",
+     "retaliation_screen": "Is the tenant contesting or objecting to the termination?",
+     "extension_relevant": "Does the tenant want to stay in the flat or need time to move out?"
+    },
+    "rent_increase_dispute": {
+     "reference_rate": "Does the notice or the claim state a reason or basis for the increase?",
+     "renovation": "Does the claim mention the flat, the building or its condition?"
+    }
+   },
+   "defining_events_excluded": {
+    "lease_termination_dispute": "termination_received",
+    "rent_increase_dispute": "claim_received"
+   },
+   "ordinary_claims": "fresh/ (request set not empty, no open fact) of each dispute type; rent increase has only 3 there and none in fresh2, so the 3 control claims of dev_probe (defining event stated or implied) are added",
+   "readings": "product at 6a72159c, checklist only, gpt-6-luna, one run per claim (run index 0), three readings",
+   "sha256": "f3fe234fa8f7d9b61c72c609fa212f23bd954a7e86c81ad456ef8d4117c537ea"
+  },
+  "arms": {
+   "baseline": {
+    "statuses": {
+     "completed": 57
+    },
+    "lint": {
+     "lease_termination_dispute": {
+      "termination_received": {
+       "runs": 24,
+       "admitted_true": 18,
+       "some_reading_true": 19,
+       "quotes": [
+        "The landlord is ending the tenancy because of unpaid rent.",
+        "I am writing to ask for your help contesting the termination of my lease",
+        "Kurz danach kam die Kündigung."
+       ],
+       "flagged": true
+      },
+      "family_home": {
+       "runs": 24,
+       "admitted_true": 18,
+       "some_reading_true": 18,
+       "quotes": [
+        "The flat is our family home: my husband lives there with me.",
+        "The flat is our family home",
+        "Es handelt sich um unsere Familienwohnung."
+       ],
+       "flagged": true
+      },
+      "arrears": {
+       "runs": 24,
+       "admitted_true": 12,
+       "some_reading_true": 12,
+       "quotes": [
+        "The landlord is ending the tenancy because of unpaid rent.",
+        "The landlord is ending the lease because of rent arrears.",
+        "Als Grund gibt der Vermieter Zahlungsrückstände beim Mietzins an."
+       ],
+       "flagged": true
+      },
+      "retaliation_screen": {
+       "runs": 24,
+       "admitted_true": 11,
+       "some_reading_true": 12,
+       "quotes": [
+        "I believe it is retaliation.",
+        "Ich bin überzeugt, dass diese Kündigung eine Vergeltung ist.",
+        "Ich bin jedoch überzeugt, dass sie eine Reaktion darauf ist, dass ich mich vor Kurzem auf meine Mieterrechte berufen habe"
+       ],
+       "flagged": false
+      },
+      "extension_relevant": {
+       "runs": 24,
+       "admitted_true": 9,
+       "some_reading_true": 9,
+       "quotes": [
+        "Ich möchte daher eine Erstreckung des Mietverhältnisses prüfen lassen.",
+        "I would therefore like to request an extension of the tenancy",
+        "Ich beantrage deshalb eine Erstreckung des Mietverhältnisses."
+       ],
+       "flagged": false
+      }
+     },
+     "rent_increase_dispute": {
+      "claim_received": {
+       "runs": 6,
+       "admitted_true": 4,
+       "some_reading_true": 5,
+       "quotes": [
+        "The landlord justifies the increase with two reasons.",
+        "Ich habe die schriftliche Mitteilung über die Erhöhung erhalten.",
+        "On 28 October I received a letter"
+       ],
+       "flagged": true
+      },
+      "reference_rate": {
+       "runs": 6,
+       "admitted_true": 5,
+       "some_reading_true": 5,
+       "quotes": [
+        "mit der Erhöhung des hypothekarischen Referenzzinssatzes",
+        "Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes.",
+        "the mortgage reference interest rate has risen, and the landlord presents this as the basis for a higher rent"
+       ],
+       "flagged": true
+      },
+      "renovation": {
+       "runs": 6,
+       "admitted_true": 5,
+       "some_reading_true": 5,
+       "quotes": [
+        "Renovationsarbeiten beziehungsweise wertvermehrende Investitionen",
+        "Zum andern verweist sie auf Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude.",
+        "the landlord points to renovation and value-enhancing investment work carried out on the building"
+       ],
+       "flagged": true
+      }
+     },
+     "defect_mold_heating": {
+      "health_effects": {
+       "runs": 26,
+       "admitted_true": 11,
+       "some_reading_true": 11,
+       "quotes": [
+        "A member of my household has had repeated colds and bronchitis, which I attribute to the cold flat.",
+        "Eine Person in meinem Haushalt leidet seit einiger Zeit unter Atembeschwerden.",
+        "Mein Sohn hatte deswegen immer wieder Erkältungen und zweimal eine Bronchitis."
+       ],
+       "flagged": false
+      },
+      "mold": {
+       "runs": 26,
+       "admitted_true": 15,
+       "some_reading_true": 15,
+       "quotes": [
+        "Im Schlafzimmer hat sich an der Wand schwarzer Schimmel ausgebreitet",
+        "Im Kinderzimmer sind Schimmelflecken und feuchte Stellen an der Wand sichtbar.",
+        "In the children's room there are mould stains and damp patches on the walls"
+       ],
+       "flagged": true
+      },
+      "heating": {
+       "runs": 26,
+       "admitted_true": 15,
+       "some_reading_true": 15,
+       "quotes": [
+        "The heating does not work properly.",
+        "The heating in the flat does not work properly.",
+        "Zudem bleiben die Heizkörper im Wohnzimmer und in den Schlafzimmern kalt"
+       ],
+       "flagged": true
+      },
+      "specialist_needed": {
+       "runs": 26,
+       "admitted_true": 2,
+       "some_reading_true": 2,
+       "quotes": [
+        "A technical expert inspection by a building or heating specialist is needed to establish the cause.",
+        "Deshalb braucht es meiner Meinung nach eine unabhängige Begutachtung durch einen Fachmann für Gebäudetechnik oder Heizungsbau."
+       ],
+       "flagged": false
+      },
+      "deposit_considered": {
+       "runs": 26,
+       "admitted_true": 9,
+       "some_reading_true": 9,
+       "quotes": [
+        "Er gibt an, dass er den Mietzins auf ein Mietzinshinterlegungskonto einzahlen (hinterlegen) will",
+        "Ich bin mir aber noch nicht sicher, ob dies in meinem Fall der richtige Schritt ist, und möchte das vorher mit Ihnen besprechen.",
+        "beabsichtige ich, den Mietzins bei der zuständigen Behörde zu hinterlegen (Hinterlegung)."
+       ],
+       "flagged": false
+      }
+     }
+    }
+   },
+   "mutated": {
+    "statuses": {
+     "completed": 57
+    },
+    "lint": {
+     "lease_termination_dispute": {
+      "termination_received": {
+       "runs": 24,
+       "admitted_true": 16,
+       "some_reading_true": 21,
+       "quotes": [
+        "The landlord is ending the tenancy because of unpaid rent.",
+        "The landlord is ending the tenancy",
+        "mein Vermieter, Herr Peter Ammann, das Mietverhältnis für meine 3.5-Zimmer-Wohnung an der Sonnenbergstrasse 7 in Bern gekündigt hat"
+       ],
+       "flagged": true
+      },
+      "family_home": {
+       "runs": 24,
+       "admitted_true": 19,
+       "some_reading_true": 21,
+       "quotes": [
+        "my husband lives there with me",
+        "The flat is our family home",
+        "The flat is our family home."
+       ],
+       "flagged": true
+      },
+      "arrears": {
+       "runs": 24,
+       "admitted_true": 12,
+       "some_reading_true": 12,
+       "quotes": [
+        "The landlord is ending the tenancy because of unpaid rent.",
+        "The landlord is ending the lease because of rent arrears.",
+        "Die Kündigung ist also aus ihrer Sicht wegen unbezahlter Miete ausgesprochen worden."
+       ],
+       "flagged": true
+      },
+      "retaliation_screen": {
+       "runs": 24,
+       "admitted_true": 22,
+       "some_reading_true": 24,
+       "quotes": [
+        "I dispute that the termination is justified on this basis",
+        "I dispute that the termination is justified on this basis, and I believe it is retaliation.",
+        "Ich möchte die Kündigung anfechten"
+       ],
+       "flagged": true
+      },
+      "extension_relevant": {
+       "runs": 24,
+       "admitted_true": 9,
+       "some_reading_true": 9,
+       "quotes": [
+        "I would therefore like to request an extension of the tenancy",
+        "Ich möchte daher eine Erstreckung des Mietverhältnisses prüfen lassen.",
+        "I would like to ask for an extension of the tenancy."
+       ],
+       "flagged": false
+      }
+     },
+     "defect_mold_heating": {
+      "health_effects": {
+       "runs": 26,
+       "admitted_true": 18,
+       "some_reading_true": 20,
+       "quotes": [
+        "Several rooms stay cold, radiators fail, and the flat cools down to about 16 degrees.",
+        "A member of my household has had repeated colds and bronchitis, which I attribute to the cold flat.",
+        "die Räume bleiben kalt"
+       ],
+       "flagged": true
+      },
+      "mold": {
+       "runs": 26,
+       "admitted_true": 15,
+       "some_reading_true": 15,
+       "quotes": [
+        "Im Kinderzimmer sind Schimmelflecken und feuchte Stellen an der Wand sichtbar.",
+        "Im Kinderzimmer zeigen sich seit einiger Zeit Schimmelflecken und feuchte Stellen an der Wand.",
+        "Im Schlafzimmer hat sich an der Wand schwarzer Schimmel ausgebreitet"
+       ],
+       "flagged": true
+      },
+      "heating": {
+       "runs": 26,
+       "admitted_true": 15,
+       "some_reading_true": 15,
+       "quotes": [
+        "The heating does not work properly.",
+        "Zudem bleiben die Heizkörper im Wohnzimmer und in den Schlafzimmern kalt",
+        "die Heizung funktioniert nach seinen Angaben nicht richtig."
+       ],
+       "flagged": true
+      },
+      "specialist_needed": {
+       "runs": 26,
+       "admitted_true": 12,
+       "some_reading_true": 20,
+       "quotes": [
+        "A technical expert inspection by a building or heating specialist is needed to establish the cause.",
+        "I would like your support in getting the landlord to repair the heating within a reasonable time.",
+        "Ich habe Herrn Ammann den Mangel bereits mitgeteilt und ihn gebeten, ihn zu beheben."
+       ],
+       "flagged": true
+      },
+      "deposit_considered": {
+       "runs": 26,
+       "admitted_true": 8,
+       "some_reading_true": 9,
+       "quotes": [
+        "Er gibt an, dass er den Mietzins auf ein Mietzinshinterlegungskonto einzahlen (hinterlegen) will",
+        "dass er den Mietzins auf ein Mietzinshinterlegungskonto einzahlen (hinterlegen) will",
+        "Ich bin mir aber noch nicht sicher, ob dies in meinem Fall der richtige Schritt ist"
+       ],
+       "flagged": false
+      }
+     },
+     "rent_increase_dispute": {
+      "claim_received": {
+       "runs": 6,
+       "admitted_true": 5,
+       "some_reading_true": 6,
+       "quotes": [
+        "Ich bin mit der Erhöhung nicht einverstanden und möchte sie prüfen lassen.",
+        "Die Vermieterin begründet die Erhöhung",
+        "I am writing to ask for your help in contesting a rent increase"
+       ],
+       "flagged": true
+      },
+      "reference_rate": {
+       "runs": 6,
+       "admitted_true": 6,
+       "some_reading_true": 6,
+       "quotes": [
+        "Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes.",
+        "mit der Erhöhung des hypothekarischen Referenzzinssatzes",
+        "the mortgage reference interest rate has risen, and the landlord presents this as the basis for a higher rent"
+       ],
+       "flagged": true
+      },
+      "renovation": {
+       "runs": 6,
+       "admitted_true": 5,
+       "some_reading_true": 6,
+       "quotes": [
+        "Zum andern verweist sie auf Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude.",
+        "Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude",
+        "renovation and value-enhancing investment work carried out on the building"
+       ],
+       "flagged": true
+      }
+     }
+    }
+   }
+  },
+  "detection": {
+   "defect_mold_heating": {
+    "planted": [
+     "health_effects",
+     "specialist_needed"
+    ],
+    "planted_flagged": [
+     "health_effects",
+     "specialist_needed"
+    ],
+    "planted_already_flagged_unmutated": [],
+    "planted_newly_flagged": [
+     "health_effects",
+     "specialist_needed"
+    ],
+    "unmutated_branch": [
+     "mold",
+     "heating",
+     "deposit_considered"
+    ],
+    "unmutated_flagged_in_mutated_run": [
+     "mold",
+     "heating"
+    ],
+    "unmutated_flagged_in_baseline_run": [
+     "mold",
+     "heating"
+    ],
+    "defining_event": null,
+    "defining_event_flagged": null,
+    "runs": 26
+   },
+   "lease_termination_dispute": {
+    "planted": [
+     "family_home",
+     "retaliation_screen"
+    ],
+    "planted_flagged": [
+     "family_home",
+     "retaliation_screen"
+    ],
+    "planted_already_flagged_unmutated": [
+     "family_home"
+    ],
+    "planted_newly_flagged": [
+     "retaliation_screen"
+    ],
+    "unmutated_branch": [
+     "arrears",
+     "extension_relevant"
+    ],
+    "unmutated_flagged_in_mutated_run": [
+     "arrears"
+    ],
+    "unmutated_flagged_in_baseline_run": [
+     "arrears"
+    ],
+    "defining_event": "termination_received",
+    "defining_event_flagged": {
+     "baseline": true,
+     "mutated": true
+    },
+    "runs": 24
+   },
+   "rent_increase_dispute": {
+    "planted": [
+     "reference_rate",
+     "renovation"
+    ],
+    "planted_flagged": [
+     "reference_rate",
+     "renovation"
+    ],
+    "planted_already_flagged_unmutated": [
+     "reference_rate",
+     "renovation"
+    ],
+    "planted_newly_flagged": [],
+    "unmutated_branch": [],
+    "unmutated_flagged_in_mutated_run": [],
+    "unmutated_flagged_in_baseline_run": [],
+    "defining_event": "claim_received",
+    "defining_event_flagged": {
+     "baseline": true,
+     "mutated": true
+    },
+    "runs": 6
+   }
+  },
+  "totals": {
+   "planted": 6,
+   "planted_flagged": 6,
+   "planted_already_flagged_unmutated": 3,
+   "planted_newly_flagged": 3,
+   "unmutated": 5,
+   "unmutated_flagged_mutated_run": 3,
+   "unmutated_flagged_baseline_run": 3
+  },
+  "spend_usd": {
+   "baseline": 0,
+   "mutated": 0.1533
+  }
+ },
+ "criterion2_theft": {
+  "gpt-6.1-terra": {
+   "flagged": [
+    "g003",
+    "g036",
+    "g050",
+    "g053",
+    "g061",
+    "g092",
+    "g094"
+   ],
+   "counts": {
+    "g074": {
+     "runs": 8,
+     "no_agreed_value": 0,
+     "addressed": 8
+    },
+    "g016": {
+     "runs": 8,
+     "no_agreed_value": 8,
+     "addressed": 0
+    },
+    "g022": {
+     "runs": 8,
+     "no_agreed_value": 8,
+     "addressed": 2
+    },
+    "g020_rev_b4712e29": {
+     "runs": 8,
+     "no_agreed_value": 8,
+     "addressed": 1
+    },
+    "g042_rev_92ab8925": {
+     "runs": 8,
+     "no_agreed_value": 0,
+     "addressed": 8
+    },
+    "g003": {
+     "runs": 8,
+     "no_agreed_value": 5,
+     "addressed": 6
+    }
+   }
+  },
+  "gpt-6-luna": {
+   "flagged": [
+    "g009",
+    "g024",
+    "g036",
+    "g042_rev_92ab8925",
+    "g054",
+    "g070",
+    "g073"
+   ],
+   "counts": {
+    "g074": {
+     "runs": 50,
+     "no_agreed_value": 0,
+     "addressed": 50
+    },
+    "g016": {
+     "runs": 50,
+     "no_agreed_value": 50,
+     "addressed": 2
+    },
+    "g022": {
+     "runs": 50,
+     "no_agreed_value": 0,
+     "addressed": 50
+    },
+    "g020_rev_b4712e29": {
+     "runs": 50,
+     "no_agreed_value": 17,
+     "addressed": 50
+    },
+    "g042_rev_92ab8925": {
+     "runs": 50,
+     "no_agreed_value": 36,
+     "addressed": 50
+    },
+    "g003": {
+     "runs": 50,
+     "no_agreed_value": 42,
+     "addressed": 21
+    }
+   }
+  }
+ }
+}

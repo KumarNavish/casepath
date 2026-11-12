@@ -409,10 +409,12 @@ def combine_k(rd, k, fid):
     return {"status": "unknown", "value": None, "open_readings": opens}
 
 
-def plan_with_k(entry, k, W, wf, readings):
+def plan_with_k(entry, k, W, wf, readings, amend=frozenset()):
     """The checklist the product's evaluator gives when a value needs the agreement of the first k readings: routing
     facts and document findings as stored, presumptions by the product's own rule (workflows.presumed and the routing
-    presumption), exact deferral (workflows.evaluate, checked=True)."""
+    presumption), exact deferral (workflows.evaluate, checked=True). A fact the stored run's source checker rejected
+    is not admitted. `amend` (F5b) applies fact-level readings of the rule text (A1, A2; see amend_facts); the
+    workflow-level readings (A3, A4) are applied to `wf` by the caller (amend_workflow)."""
     defs = {f["id"]: f for f in wf["facts"]}
     stored = entry["product_extra"]["facts"]
     rec, facts = {}, {}
@@ -424,7 +426,7 @@ def plan_with_k(entry, k, W, wf, readings):
             continue
         row = combine_k(readings, k, f)
         rec[f] = row
-        if row["status"] == "established" and row.get("agreed"):
+        if row["status"] == "established" and row.get("agreed") and s.get("verdict") != "rejected":
             facts[f] = row["value"]
     for f, item in W.presumed(wf, {f: {**r, "citations": []} for f, r in rec.items()}).items():
         if facts.get(f) is None:
@@ -432,12 +434,75 @@ def plan_with_k(entry, k, W, wf, readings):
     for f, s in stored.items():
         if s.get("status") == "presumed" and s.get("by") == "routing" and W.open_without_raise(rec.get(f), s["value"]):
             facts.setdefault(f, s["value"])
+    if amend:
+        facts = amend_facts(facts, rec, wf, amend, W)
     findings = {d: {"status": j["status"], "verdict": "accepted"} for d, j in (entry["product_extra"].get("document_judgments") or {}).items()
                 if j["status"] in {"present", "unusable"} and j.get("verdict") == "accepted"}
     ev = W.evaluate(wf, facts, findings, checked=True)
     return {"family": wf["id"], "deferred": False,
             "requests": sorted(r["document"] for r in ev["documents"] if r["required"] == "yes" and r["status"] in {"missing", "unusable"}),
             "holds": sorted(r["document"] for r in ev["documents"] if r["required"] == "depends")}
+
+
+# ======================================================================= F5b: the product with a workflow amended to a reading
+DEFINING = {"lease_termination_dispute": "termination_received", "rent_increase_dispute": "claim_received"}
+READING_FILES = {"A1": "cleanroom/evaluator_b/reference_alt_A1.json", "A2": "cleanroom/evaluator_b/reference_alt_A2.json",
+                 "A3": "cleanroom/evaluator_b/reference_alt_A3.json", "A4": "cleanroom/evaluator_b/reference_alt_A4.json",
+                 "all": "cleanroom/evaluator_b/reference_alt_all.json"}
+READING_SETS = {"A1": {"A1"}, "A2": {"A2"}, "A3": {"A3"}, "A4": {"A4"}, "all": {"A1", "A2", "A3", "A4"}}
+AMENDMENTS = {
+    "A1": ("a denied defining event does not stop the process: where the defining-event fact (termination_received, "
+           "claim_received) is admitted false, the evaluator is given it as true (as if the event had occurred). A fact "
+           "left open keeps the gate open (held), as in the A1 reference. Not done at workflow level: a gate that passes "
+           "on true or false would also stop holding an open event, which the A1 reference does not do."),
+    "A2": ("an open defining event is presumed to have occurred: the routed presumption (true) also applies when the "
+           "readings raise the event and leave it open; it still does not apply when a reading found a value other than "
+           "true, or when the readings conflict (workflows.reading_gave_value; status 'conflicting')."),
+    "A3": ("optional documents are requested like mandatory ones: the 'optional' mark is removed from the workflow's "
+           "optional documents (defect: caretaker_correspondence; termination and rent: landlord_correspondence); the "
+           "evaluator then requests them where their step is reached and holds them where it depends on an open fact."),
+    "A4": ("the family-home branch needs family_home and not arrears: in lease_termination_dispute the edge "
+           "lt_type__gate_family_home -> lt_family becomes {all: [family_home is true, arrears is false]} and the edge "
+           "-> lt_abuse becomes {any: [family_home is false, arrears is true]}; spouse_notice_copy's own condition "
+           "(family_home) is left as it is, since its step is now reached only through the amended edge.")}
+
+
+def amend_workflow(wf, amend):
+    """A deep copy of the workflow amended to the readings A3 and A4 (see AMENDMENTS); validated by the product's own
+    workflows.validate_workflow by the caller. Returns the workflow unchanged (a copy) for other readings."""
+    import copy
+    w = copy.deepcopy(wf)
+    if "A3" in amend:
+        for d in w["documents"]:
+            d.pop("optional", None)
+    if "A4" in amend and w["id"] == "lease_termination_dispute":
+        gate = next(st for st in w["steps"] if st["id"] == "lt_type__gate_family_home")
+        changed = 0
+        for e in gate["next"]:
+            if e["to"] == "lt_family" and e.get("when") == {"fact": "family_home", "is": True}:
+                e["when"] = {"all": [{"fact": "family_home", "is": True}, {"fact": "arrears", "is": False}]}
+                changed += 1
+            elif e["to"] == "lt_abuse" and e.get("when") == {"fact": "family_home", "is": False}:
+                e["when"] = {"any": [{"fact": "family_home", "is": False}, {"fact": "arrears", "is": True}]}
+                changed += 1
+        if changed != 2:
+            raise AssertionError("A4: the family-home gate is not as expected; not amended")
+    return w
+
+
+def amend_facts(facts, rec, wf, amend, W):
+    """Fact-level readings A1 and A2 (see AMENDMENTS) on the facts given to the evaluator."""
+    ev = DEFINING.get(wf["id"])
+    if ev is None:
+        return facts
+    out = dict(facts)
+    if "A1" in amend and out.get(ev) is False:
+        out[ev] = True
+    if "A2" in amend and out.get(ev) is None:
+        row = rec.get(ev)
+        if row is None or (row.get("status") == "unknown" and not W.reading_gave_value(row, True)):
+            out[ev] = True
+    return out
 
 
 def case_files(study, regime, case):
@@ -494,6 +559,46 @@ def f4_readings(study, cache):
         res["_plans"] = plans
         out[regime] = res
     return out
+
+
+def replay_tenancy(study, design, cache, amend=frozenset(), k=3):
+    """F5b: every stored tenancy case-run of a product design replayed from its stored readings (first k), with the
+    workflow and facts amended to `amend`. Routing, document findings and failed runs as stored (a failed or unrouted
+    run keeps its stored plan). Returns ({case: [plan per run]}, counts)."""
+    EV = evidence_module()
+    W, cat = study.evaluator("tenancy", SPEC["product_evaluator"]["tenancy"])
+    wfs = {}
+    plans, cnt = {}, Counter()
+    for c in study.cases["tenancy"]:
+        ev = EV.Evidence(case_files(study, "tenancy", c))
+        locate = lambda q: any(ev.locate(fid, q) for fid in ev.files)
+        plans[c] = []
+        for r, e in enumerate(study.entries[(design, "tenancy")][c]):
+            fam = ((e or {}).get("plan") or {}).get("family")
+            if e is None or not fam or (e.get("plan") or {}).get("deferred"):
+                plans[c].append(study.plans[(design, "tenancy")][c][r])
+                cnt["stored plan kept (failed, handed over or not routed)"] += 1
+                continue
+            if fam not in wfs:
+                wfs[fam] = amend_workflow(cat.get(fam), amend)
+                W.validate_workflow(wfs[fam])
+            wf = wfs[fam]
+            keys = [x for x in dict.fromkeys(e.get("keys") or []) if cache.reading(x) is not None]
+            groups = split_readings([cache.reading(x) for x in keys], len(wf["facts"]))
+            if len(groups) < k:
+                plans[c].append(study.plans[(design, "tenancy")][c][r])
+                cnt[f"fewer than {k} readings in the cache: stored plan kept"] += 1
+                continue
+            defs = {f["id"]: f for f in wf["facts"]}
+            rd = [one_reading(g, defs, locate) for g, _ in groups]
+            p = plan_with_k(e, k, W, wf, rd, amend)
+            p["requests"] = sorted(set(p["requests"]) | set((e.get("plan") or {}).get("added_requests", [])))
+            p["holds"] = sorted(set(p["holds"]) | set((e.get("plan") or {}).get("added_holds", [])))
+            plans[c].append(p)
+            cnt["replayed"] += 1
+            if not amend:
+                cnt["replay reproduces the stored scored checklist"] += R.same_checklist(p, e.get("plan"))
+    return plans, dict(cnt)
 
 
 def score_plans(study, regime, plans, name):

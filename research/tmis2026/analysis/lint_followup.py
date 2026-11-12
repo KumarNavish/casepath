@@ -333,6 +333,8 @@ def part3():
         b = out["arms"]["baseline"]["lint"].get(fam, {})
         other = [c for c in MUTATIONS[fam] if c not in planted]
         det[fam] = {"planted": planted, "planted_flagged": [c for c in planted if m.get(c, {}).get("flagged")],
+                    "planted_already_flagged_unmutated": [c for c in planted if b.get(c, {}).get("flagged")],
+                    "planted_newly_flagged": [c for c in planted if m.get(c, {}).get("flagged") and not b.get(c, {}).get("flagged")],
                     "unmutated_branch": other, "unmutated_flagged_in_mutated_run": [c for c in other if m.get(c, {}).get("flagged")],
                     "unmutated_flagged_in_baseline_run": [c for c in other if b.get(c, {}).get("flagged")],
                     "defining_event": DEFINING.get(fam), "defining_event_flagged": {arm: out["arms"][arm]["lint"].get(fam, {}).get(DEFINING.get(fam), {}).get("flagged")
@@ -340,6 +342,8 @@ def part3():
                     "runs": m.get(planted[0], {}).get("runs") if planted else None}
     out["detection"] = det
     out["totals"] = {"planted": sum(len(v["planted"]) for v in det.values()), "planted_flagged": sum(len(v["planted_flagged"]) for v in det.values()),
+                     "planted_already_flagged_unmutated": sum(len(v["planted_already_flagged_unmutated"]) for v in det.values()),
+                     "planted_newly_flagged": sum(len(v["planted_newly_flagged"]) for v in det.values()),
                      "unmutated": sum(len(v["unmutated_branch"]) for v in det.values()),
                      "unmutated_flagged_mutated_run": sum(len(v["unmutated_flagged_in_mutated_run"]) for v in det.values()),
                      "unmutated_flagged_baseline_run": sum(len(v["unmutated_flagged_in_baseline_run"]) for v in det.values())}
@@ -445,13 +449,15 @@ def markdown(o):
         for wf, qs in p3["design"]["mutated_questions"].items():
             for c, q in qs.items():
                 L.append(f"- {wf} / `{c}`: \"{q}\"")
-        L += ["", f"Totals: planted {p3['totals']['planted']}, flagged {p3['totals']['planted_flagged']}; unmutated branch conditions "
+        L += ["", f"Totals: planted {p3['totals']['planted']}, flagged {p3['totals']['planted_flagged']} (of these, already flagged with the "
+              f"original wording in the baseline run: {p3['totals']['planted_already_flagged_unmutated']}; flagged only after mutation: "
+              f"{p3['totals']['planted_newly_flagged']} of {p3['totals']['planted'] - p3['totals']['planted_already_flagged_unmutated']}); unmutated branch conditions "
               f"{p3['totals']['unmutated']}, flagged in the mutated run {p3['totals']['unmutated_flagged_mutated_run']}, in the baseline run "
               f"{p3['totals']['unmutated_flagged_baseline_run']}. Spend USD {json.dumps(p3['spend_usd'])}.", "",
-              "| Workflow | Planted | Planted flagged | Unmutated | Unmutated flagged (mutated run) | Unmutated flagged (baseline run) | Defining event flagged (baseline, mutated) |",
-              "|---|---|---|---|---|---|---|"]
+              "| Workflow | Planted | Planted flagged | Planted, already flagged unmutated | Unmutated | Unmutated flagged (mutated run) | Unmutated flagged (baseline run) | Defining event flagged (baseline, mutated) |",
+              "|---|---|---|---|---|---|---|---|"]
         for fam, x in p3["detection"].items():
-            L.append(f"| {fam} | {', '.join(x['planted'])} | {', '.join(x['planted_flagged']) or '–'} | {', '.join(x['unmutated_branch'])} | "
+            L.append(f"| {fam} | {', '.join(x['planted'])} | {', '.join(x['planted_flagged']) or '–'} | {', '.join(x['planted_already_flagged_unmutated']) or '–'} | {', '.join(x['unmutated_branch'])} | "
                      f"{', '.join(x['unmutated_flagged_in_mutated_run']) or '–'} | {', '.join(x['unmutated_flagged_in_baseline_run']) or '–'} | {json.dumps(x['defining_event_flagged'])} |")
         L += ["", "| Arm | Workflow | Condition | Runs | Admitted true | Some reading true | Flagged | Quotations |", "|---|---|---|---|---|---|---|---|"]
         for arm, a in p3["arms"].items():
@@ -459,6 +465,12 @@ def markdown(o):
                 for c, s in st.items():
                     L.append(f"| {arm} | {fam} | {c} | {s['runs']} | {s['admitted_true']} | {s['some_reading_true']} | {'yes' if s['flagged'] else 'no'} | "
                              + "; ".join(f"\"{q[:90]}\"" for q in s["quotes"][:2]) + " |")
+    if p3:
+        L += ["", "What this test can and cannot show: one model (gpt-6-luna), one run per claim, three workflows with 11 branch conditions, "
+              "57 claims (rent increase: 6), mutations written by the same analyst who knows the lint, and 'ordinary' claims that are "
+              "designed test claims with several true branch flags each. It shows that a condition widened to the general circumstance "
+              "is read true more often and crosses the threshold; it cannot show detection of subtler, realistic over-breadth, it cannot "
+              "estimate a false-alarm rate on a real population of ordinary cases, and it does not test a second model.", ""]
     c2 = o.get("criterion2_theft") or {}
     L += ["", "## A second criterion for under-specified conditions (theft, stored readings, no new calls)", "",
           "'No agreed value in at least half of the off-text runs although at least one reading answers true, false or open in at least "
