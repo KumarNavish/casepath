@@ -288,6 +288,21 @@ function segmentRows(file) {
 }
 
 function bindRail() {
+  const other = $("#other-process");
+  if (other) other.addEventListener("change", async () => {  // "anderer Prozess" during a run: Anhalten, choose, Weiter in one gesture
+    const id = other.value, runId = S.data.run.id;
+    if (!id) return;
+    other.disabled = true;
+    await api(`/api/runs/${runId}/stop`, { method: "POST" }).catch(() => {});
+    for (let i = 0; i < 120; i += 1) {  // the run ends before its next model turn
+      const r = await api(`/api/runs/${runId}`);
+      if (r.status !== "queued" && r.status !== "running") break;
+      await new Promise((res) => setTimeout(res, 1000));
+    }
+    await api(`/api/cases/${S.route.id}/workflow`, { method: "PUT", body: JSON.stringify({ workflow_id: id }) });
+    await api(`/api/runs/${runId}/continue`, { method: "POST" }).catch(() => {});
+    renderCase();
+  });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
     continueRun.disabled = true;
@@ -1176,7 +1191,7 @@ function runLine() {
   const at = (e) => Date.parse(e.at || "") || Date.now();
   const t0 = at(S.events[0]), now = Date.now();
   const span = (stage) => {
-    const mine = S.events.filter((e) => stage.agents.includes(e.agent));
+    const mine = S.events.filter((e) => stage.agents.includes(e.agent) || (stage.id === "prozess" && e.kind === "routing.decided"));
     if (!mine.length) return null;
     const open = mine.filter((e) => e.kind === "agent.start").length > mine.filter((e) => e.kind === "agent.end").length;
     return { start: at(mine[0]), end: open ? now : at(mine[mine.length - 1]), open };
@@ -1194,7 +1209,12 @@ function runLine() {
   const doing = { reader: T("reads", "liest"), claim_reader: T("reads", "liest"), document_finder: T("looks for documents in", "sucht Unterlagen in"),
     source_checker: T("checks the sources in", "prüft die Belege in"), result_checker: T("checks the result against", "prüft das Ergebnis an") }[last.agent] || T("works on", "arbeitet an");
   const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : "";
-  return `<section class="cp-card" style="padding:12px 18px;margin-bottom:14px" aria-live="polite"><div>${cells}</div>
+  const routed = S.events.find((e) => e.kind === "routing.decided");
+  const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
+  const chosen = routed ? `<p style="margin:0 0 8px">${T("Process", "Prozess")}: <b>${esc(routed.title)}</b>
+      ${others.length ? `<select id="other-process" class="cp-button cp-quiet" aria-label="${T("another process", "anderer Prozess")}"><option value="">${T("another process…", "anderer Prozess…")}</option>
+        ${others.map((w) => `<option value="${esc(w.id)}">${esc(w.title)}</option>`).join("")}</select>` : ""}</p>` : "";
+  return `<section class="cp-card" style="padding:12px 18px;margin-bottom:14px" aria-live="polite">${chosen}<div>${cells}</div>
     <p class="cp-muted" style="margin:8px 0 0">${T("Now", "Jetzt")}: CasePath ${doing} ${where || T("the case", "dem Fall")} · ${Math.round((now - t0) / 1000)} s ${T("so far", "bisher")}, ${T("about", "etwa")} ${Math.max(5, Math.round(left / 5) * 5)} s ${T("to go", "noch")}</p></section>`;
 }
 
@@ -1552,7 +1572,9 @@ async function renderCase() {
   let main;
   const liveView = running();  // during a run every tab shows the work live; the working agent's tab pulses
   const live = liveView ? liveState() : null;
-  if (liveView) {
+  if (liveView && tab === "overview") {  // a run is the Übersicht filling in (section U): the run line on top, the case below
+    main = `${overviewView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
+  } else if (liveView) {
     main = `${live ? liveSpine(live) : spine()}<div class="cp-live"><div>${await sourceCard(S.file)}${factCards()}</div>${livePanel(live)}</div>`;
   } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${esc(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
   else if (tab === "claim_reader") main = claimView(await sourceCard(S.file));

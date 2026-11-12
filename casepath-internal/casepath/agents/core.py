@@ -326,6 +326,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
                 raise TeamError("resume_workflow_missing", "The paused run's workflow is no longer in the catalogue.")
         else:
             decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
+        if workflow:  # shown at once, before any agent reads the case, with "anderer Prozess" beside it
+            on_event({"agent": "lead", "kind": "routing.decided", "workflow": workflow["id"], "title": workflow["title"], "version": workflow["version"]})
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)

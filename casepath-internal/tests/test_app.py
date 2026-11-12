@@ -467,6 +467,16 @@ class AppTests(unittest.TestCase):
         self.assertEqual(store.get_run(again["id"])["status"], "discarded")  # kept, never deleted
         self.assertTrue(shown["process"] and finished["id"])
 
+    def test_the_chosen_process_is_announced_before_any_agent_reads_the_case(self):
+        client = self.client()
+        case, file = self.new_case(client, "Prozess zuerst")
+        run = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        kinds = [(e["kind"], e.get("agent")) for e in run["events"]]
+        decided = kinds.index(("routing.decided", "lead"))
+        first_reading = next(i for i, k in enumerate(kinds) if k == ("agent.start", "claim_reader"))
+        self.assertLess(decided, first_reading)
+        self.assertEqual(run["events"][decided]["workflow"], "example-defect")
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):
