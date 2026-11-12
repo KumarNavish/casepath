@@ -1,23 +1,13 @@
 \section{CasePath}
 \label{sec:casepath}
 
-\casepath prepares a legal-protection claim from its files. It routes the claim to a workflow, reads the facts the workflow asks about, and returns a checklist, a brief and a reply draft for a case handler. The artefact of this article is the tested commit, \texttt{6a72159c} (source-tree hash \texttt{03048020\ldots}).
+The artefact is the core of \casepath at commit \texttt{6a72159c} (source-tree hash \texttt{03048020\ldots}): readings with quotations, admission by agreement, document judgments, and code that executes the workflow with exact deferral. It takes a claim's files and a workflow and returns a checklist that marks each document as requested, held with a question, present or not needed.
 %% AUTHORS: DOI of the archived tested commit (6a72159c, source-tree hash 030480203f7d...), once deposited.
 
-\subsection{The core and the rest}
+\subsection{The core}
 \label{sec:pipeline}
 
-The claims of this article concern the \emph{core}: several readings with exact quotation, admission by agreement, and code that executes the workflow with exact deferral (Figure~\ref{fig:pipeline}). A \emph{router}, a model agent, picks the workflow from routing facts it must quote; code selects the workflow those facts satisfy. Three \emph{readings}, each a separate model request, answer every condition of the workflow, and Table~\ref{tab:admission} decides what is admitted. If the admitted values contradict the chosen workflow, code routes once more; a second contradiction hands the claim to a person. A \emph{document finder} matches each document need to a file and quotes it, and a \emph{second judgment}, one independent model call, must confirm the file and quote each item the need lists; otherwise the document stays requested. Evaluation is code: exact deferral over the admitted facts, the presumptions and the accepted documents.
-
-The rest of the product is outside the claims. A \emph{claim reader} writes a brief, a \emph{process builder} may suggest up to six further needs, a \emph{source checker} reviews quoted passages, and a \emph{result checker} writes the open points and a reply draft. None of them can change a deciding fact once the readings are in. In Study~3, no need added by an agent entered a scored checklist, and dropping these agents produced no detectable difference in errors (Section~\ref{sec:test-cells}). Two further parts matter for deployment but not for the test. The Knowledge store keeps what an organisation learns from corrections, and nothing reaches another case until a person activates it; the test started every run with an empty store. The parity command prints a hash over the product's source files, so two deployments can show that they run identical code. Supplement, Section~\ref{S-supp:pipeline} describes every step and what it may change.
-
-\begin{figure}[t]
-\centering
-\fig{fig_pipeline}{\linewidth}
-\Description{Flow diagram of the CasePath pipeline: router, claim reader, process builder, three readings, code checks, presumptions, document finder, second judgment, source checker, result checker and evaluation.}
-\caption{The \casepath pipeline in the order a claim passes through it. Model readings and agents (thin boxes) propose values; code checks (thick boxes) reject a value whose quotation is not found or on which the readings differ; code alone decides the workflow, the presumptions and the checklist (tinted boxes), and below the dashed line no agent can change a deciding fact. Whether a document is present is decided by two model calls, the document finder and the second judgment, not by code. Drawn from the product's step names at commit 6a72159c.}
-\label{fig:pipeline}
-\end{figure}
+The core runs four steps in a fixed order. A \emph{routing} step answers the routing facts with quotations from the files; code selects the workflow whose condition the admitted values satisfy and hands the claim to a person when none or several apply. Three \emph{readings}, each a separate model request, then answer every condition of the workflow with a value and a quotation, and code admits values as Table~\ref{tab:admission} prescribes. If an admitted value contradicts the chosen workflow, code routes once more; a second contradiction hands the claim to a person. Two \emph{document judgments} decide whether each needed document is in the files: a first model call names the file and quotes each item the need lists, and a second, independent call must confirm the same file and items, or the document stays requested. Last, code evaluates the workflow by exact deferral over the admitted facts, the presumptions and the confirmed documents (Section~\ref{sec:exact}). No model can change a deciding fact after the readings, and no document becomes present without both judgments. For a claim of one file, the tested core (Section~\ref{sec:configuration}) skips the document judgments and counts the needs as missing.
 
 \subsection{Workflows}
 \label{sec:format}
@@ -31,5 +21,3 @@ A workflow is a data file in the format \texttt{casepath.workflow/\allowbreak{}1
  "steps": [{"id": "dh_intake", "next": [{"to": "dh_safety", "when": {"fact": "health_effects", "is": true}, ...}, {"to": "dh_scope", "when": {"fact": "health_effects", "is": false}, ...}], ...}, ...],
  "presumptions": [{"fact": "health_effects", "applies": "unstated", "value": false, "source_ref": "policy-defect_mold_heating-v1#...clause-silence", ...}, ...], ...}
 \end{lstlisting}
-
-Because code executes faulty rules exactly as written, the rules need their own review; Section~\ref{sec:test-lint} reports a diagnostic we propose for this.

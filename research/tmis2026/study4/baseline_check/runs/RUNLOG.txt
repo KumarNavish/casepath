@@ -1,0 +1,24 @@
+2026-11-12T11:45:02Z start format-check; ledger total 0.0000 USD; estimate full 3.466 USD
+2026-11-12T11:45:30Z   FAILED A|luna|tenancy|fcl_09bf4c849ef1ee44: invalid JSON content
+2026-11-12T11:45:30Z format-check A/luna: ('complete', 6, 6); ledger total 0.0091 USD
+2026-11-12T11:45:55Z format-check A/terra: ('complete', 6, 6); ledger total 0.0739 USD
+2026-11-12T11:46:25Z format-check B/terra: ('complete', 6, 6); ledger total 0.1638 USD
+2026-11-12T11:46:25Z   A|luna|tenancy|fcl_020f2bacedc162a9: PARSED req 6 hold 2
+2026-11-12T11:46:25Z   A|luna|tenancy|fcl_09252315095aa169: PARSED req 9 hold 0
+2026-11-12T11:46:25Z   A|luna|tenancy|fcl_09bf4c849ef1ee44: FAILED invalid JSON content
+2026-11-12T11:46:25Z   A|luna|theft|s4-off: PARSED req 7 hold 2
+2026-11-12T11:46:25Z   A|luna|theft|s4-on-PR_scheduled_valuable_1000: PARSED req 9 hold 0
+2026-11-12T11:46:25Z   A|luna|theft|s4-unres-PR_scheduled_valuable_1000: PARSED req 8 hold 2
+2026-11-12T11:46:25Z   A|terra|tenancy|fcl_020f2bacedc162a9: PARSED req 6 hold 2
+2026-11-12T11:46:25Z   A|terra|tenancy|fcl_09252315095aa169: PARSED req 9 hold 0
+2026-11-12T11:46:25Z   A|terra|tenancy|fcl_09bf4c849ef1ee44: PARSED req 8 hold 0
+2026-11-12T11:46:25Z   A|terra|theft|s4-off: PARSED req 8 hold 0
+2026-11-12T11:46:25Z   A|terra|theft|s4-on-PR_scheduled_valuable_1000: PARSED req 10 hold 7
+2026-11-12T11:46:25Z   A|terra|theft|s4-unres-PR_scheduled_valuable_1000: PARSED req 10 hold 1
+2026-11-12T11:46:25Z   B|terra|tenancy|fcl_020f2bacedc162a9: PARSED req 6 hold 2
+2026-11-12T11:46:25Z   B|terra|tenancy|fcl_09252315095aa169: PARSED req 9 hold 0
+2026-11-12T11:46:25Z   B|terra|tenancy|fcl_09bf4c849ef1ee44: PARSED req 8 hold 0
+2026-11-12T11:46:25Z   B|terra|theft|s4-off: PARSED req 8 hold 12
+2026-11-12T11:46:25Z   B|terra|theft|s4-on-PR_scheduled_valuable_1000: PARSED req 11 hold 9
+2026-11-12T11:46:25Z   B|terra|theft|s4-unres-PR_scheduled_valuable_1000: PARSED req 8 hold 12
+2026-11-12T11:46:45Z start full; ledger total 0.1638 USD; estimate full 3.466 USD

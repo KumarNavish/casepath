@@ -15,7 +15,7 @@ This section describes what a fresh clone of the repository \cite{casepath2026re
 \item[The data] The synthetic data of all three studies, each folder with its README and its manifest or verification script: \texttt{data/\allowbreak{}casepath-tenancy-claims/} and \texttt{data/\allowbreak{}casepath-theft-pairs/} at the repository root (Study~1), \texttt{fresh/} (Study~2), \texttt{dev\_probe/} and \texttt{fresh2/} (Study~3), with the scripts that built them and the records of the blind checks.
 \item[Harness, analysis and stored outputs] The harness of all three studies (\texttt{harness/}), the analysis scripts (\texttt{analysis/}), and the stored outputs: every checklist of every design and run, the ledgers that record each model call with its tokens and cost, and Study~3's run manifest and run log (\texttt{runs/\allowbreak{}study3/\allowbreak{}confirm/}). Study~1's response cache is included as an archive (\texttt{runs/\allowbreak{}responses\_cache.tar.gz}). The other response caches are not in the repository, because git ignores them; Study~3's cache alone holds about 23,000 files (730\,MB). It is offered as a separate archive.
 %% AUTHORS: give the location (DOI or URL) of the response-cache archive here, or delete the sentence above if it is not offered.
-\item[The frozen plans] \texttt{ANALYSIS\_PLAN.md} (Study~1, frozen at commit 46a503b6), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY2.md} (b86ab9d5), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY3.md} with \texttt{analysis/\allowbreak{}study3\_spec.json} (fd35e438), and the expert-study protocol, version 1.0-rc, with its record fields (\texttt{expert\_study/}).
+\item[The frozen plans] \texttt{ANALYSIS\_PLAN.md} (Study~1, frozen at commit 46a503b6), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY2.md} (b86ab9d5), \texttt{ANALYSIS\_\allowbreak{}PLAN\_\allowbreak{}STUDY3.md} with \texttt{analysis/\allowbreak{}study3\_spec.json} (fd35e438).
 \end{description}\par}
 The repository's code is released under Apache~2.0. The Study~1 data are released under CC~BY~4.0; quoted legal passages, policy terms and form templates keep their own terms, as each folder's README states.
 %% AUTHORS: state the licence of fresh/, dev_probe/ and fresh2/ (and of rule_review/ and runs/), or that the root licence covers them; no licence is stated in those folders yet (RELEASE.md, section 5).
@@ -40,7 +40,7 @@ The ledgers record each model call of Study~3 with its cost: USD~\sthreeSpendTot
 \subsection{What is not released, and why}
 \label{app:release-not}
 
-The insurer's process catalogue, its Knowledge and its case files are not released: they belong to the insurer, and the case files are real claims. The expert study's records will leave the insurer only as the protocol's pseudonymous export, which holds identifiers, statuses, counts, relative times and randomised labels, and no case content (Appendix~\ref{M-app:protocol}). Its content export, with item texts, notes and the passages behind the insurer's requests, stays with the insurer. Model credentials are not stored anywhere in the repository.
+The insurer's process catalogue and its Knowledge are not released: they belong to the insurer. Model credentials are not stored anywhere in the repository.
 
 \subsection{Use of generative AI}
 \label{app:genai}

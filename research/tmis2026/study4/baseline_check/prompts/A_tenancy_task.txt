@@ -1,0 +1,40 @@
+TASK: Decide the evidence plan for this claim at intake by following the admitted rules.
+
+1. Family. Choose the family whose rule pack fits the dispute; use unsupported for another domain.
+
+2. Conditions. For each condition flag of that family (condition_catalog), establish from the sources whether it is
+   true, false or open:
+   - true or false: the claim states it (cite it).
+   - open: the claim raises it but leaves it unsettled (tentative language, "I do not know", "not yet checked",
+     contradictory sources). An open condition stays open; never decide it yourself.
+   - never mentioned at all: apply the family's silence policy exactly as stated (silence_policy,
+     presumed_when_unmentioned): a branch fact the claim never mentions is presumed absent (false); the dispute's
+     defining event (termination dispute: a termination notice was received; rent dispute: a rent-increase
+     notification was received) is presumed to have occurred (true). The silence policy never applies to a fact the
+     claim raises, even if it raises it only vaguely.
+
+3. Decision for EVERY document type in the family's process_catalog, exactly once. A document is needed when a
+   process step that requires it is reached and its own condition (if any) is true. Decide one of:
+   - request: the rules need it now on the facts the file states (including presumed facts), and no sufficient
+     supplied original establishes it. A document whose need does not depend on any open condition (it is needed
+     whichever way the open conditions turn out) is requested now, even when some other condition is open.
+   - hold: whether the rules need it depends on a condition the file raises and leaves open: it is needed if that
+     condition turns out one way and not needed if it turns out the other. Do not request it. In its reason, write
+     the question to ask the claimant; add that question to the questions list.
+   - not_needed: the rules do not need it on the stated facts: its own condition is false (stated false, or never
+     mentioned and presumed absent), no step that requires it is reached, or it is optional.
+   - on_file: it is needed and a supplied original sufficiently establishes it (its substantive contents, not a title
+     or a mention in the customer's message).
+
+4. The defining event. In the termination and rent-increase processes every step that requires a document is reached
+   only after the dispute's defining event has occurred (the process passes from intake to the next step only when a
+   termination notice was received, or a rent-increase notification was received). Therefore:
+   - If the file denies the defining event (it states that no such notice or notification has been received), the
+     process stops at intake: request nothing and hold nothing; every document is not_needed.
+   - If the file raises the defining event but leaves open whether it happened, every document of the process depends
+     on it: hold each document that would be needed if the event occurred (ask whether it occurred); request nothing.
+   - If the file never mentions it, it is presumed to have occurred (silence policy) and the process continues.
+   The defect, mould and heating process has no such defining event; its steps are reached as its transitions say.
+
+5. Give a short reason for each document and exact citations where a case fact matters. List the clarification
+   questions: one for each open condition on which a held document depends.

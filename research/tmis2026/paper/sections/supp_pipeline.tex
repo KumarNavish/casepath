@@ -1,10 +1,18 @@
 \section{The pipeline in detail}
 \label{supp:pipeline}
 
-This section keeps the description of the product that the article's Section~\ref{M-sec:casepath} shortens: the full pipeline text, what each step may change, Knowledge, the interface and the parity command, as of commit 6a72159c.
+This section describes the full product at commit 6a72159c, which ran in the registered tests: every step, what it may change, Knowledge, the interface and the parity command. The article's artefact is its core (Section~\ref{M-sec:casepath}); the brief, the process builder, the source checker's check of facts and the result checker with its reply draft are not part of it, and none of them can change a scored checklist.
+
+\begin{figure}[h]
+\centering
+\fig{fig_pipeline}{\linewidth}
+\Description{Flow diagram of the CasePath pipeline: router, claim reader, process builder, three readings, code checks, presumptions, document finder, second judgment, source checker, result checker and evaluation.}
+\caption{The \casepath pipeline in the order a claim passes through it. Model readings and agents (thin boxes) propose values; code checks (thick boxes) reject a value whose quotation is not found or on which the readings differ; code alone decides the workflow, the presumptions and the checklist (tinted boxes), and below the dashed line no agent can change a deciding fact. Whether a document is present is decided by two model calls, the document finder and the second judgment, not by code. Drawn from the product's step names at commit 6a72159c.}
+\label{fig:pipeline}
+\end{figure}
 
 \subsection{The steps}
-A claim passes through a fixed sequence of steps (Figure~\ref{M-fig:pipeline} of the article); each agent is a separate model conversation with its own instructions and tools. First, the \emph{router} reads each of the first twelve files, whole up to 12,000 characters and otherwise its beginning and end; a routing value counts only with a quotation found in a file. Code selects the workflow whose condition the values satisfy, or the only workflow whose condition they leave open, whose routing facts then count as presumed. Several candidates go to a person; a fallback workflow is used only when no workflow can apply.
+A claim passes through a fixed sequence of steps (Figure~\ref{fig:pipeline}); each agent is a separate model conversation with its own instructions and tools. First, the \emph{router} reads each of the first twelve files, whole up to 12,000 characters and otherwise its beginning and end; a routing value counts only with a quotation found in a file. Code selects the workflow whose condition the values satisfy, or the only workflow whose condition they leave open, whose routing facts then count as presumed. Several candidates go to a person; a fallback workflow is used only when no workflow can apply.
 
 Two agents run before the readings. The \emph{claim reader} writes a brief: the request, the parties and a dated timeline, each entry kept only with a quotation found in the file. The \emph{process builder} may add up to six document needs, questions or steps, each resting on a statute article, a quotation or a Knowledge item, and suggestions only unless that item is active.
 

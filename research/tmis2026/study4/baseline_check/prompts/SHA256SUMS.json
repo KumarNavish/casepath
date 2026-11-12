@@ -1,0 +1,35 @@
+{
+ "files": {
+  "designs.py": "d756d49a4e7e6f4d7f4460328af77425cd887b57e6aa2c303d4741eb9a0d967a",
+  "prompts/A_tenancy_task.txt": "67b1c9731adb5a85207c51980eb3c4d0084904eaa1fa92d39eb4b68c43ab1275",
+  "prompts/A_theft_task.txt": "7af2d96eeb4563e0cdba1b1d49ba2f5582294643cadcc618b6fa588409d4775c",
+  "prompts/rendered/A_tenancy_schema.txt": "5bee91f9cf016af83af4134fdfea80f32ea28772010467a6b465f73e2e2b4438",
+  "prompts/rendered/A_tenancy_system.txt": "717d40186f535718dff033b83a35431a6a235345f3430ac56a0b25d4a5e6cdf9",
+  "prompts/rendered/A_theft_schema.txt": "3b340761df1cc11781e59d2e948ac46dd5f2e359f5eab67db3ca6cb7de593e3a",
+  "prompts/rendered/A_theft_system.txt": "5eb89989deda4564b28e29d257285dc4c4642e86fa36a66900ff312cc4b052e2",
+  "prompts/rendered/B_tenancy_schema.txt": "bf23a443dfac4c1bfbbb4bcdcda027109dd2b2ef634b4c2943238614fa5db61a",
+  "prompts/rendered/B_tenancy_system.txt": "174ab16b07300402bd0782554855ec3c245bce615b913ae7e2278a297d259060",
+  "prompts/rendered/B_theft_schema.txt": "7571a77f8ed13c7b65956955817f0b95e2a78562d3893f180a89fd42eb6d8874",
+  "prompts/rendered/B_theft_system.txt": "675d09f8e2873007a9f085f2551bf4935159aa85d04f9ed515ea7859d0e88d40"
+ },
+ "fresh_equals_fresh2": {
+  "A_tenancy_schema": true,
+  "A_tenancy_system": true,
+  "A_theft_schema": true,
+  "A_theft_system": true,
+  "B_tenancy_schema": true,
+  "B_tenancy_system": true,
+  "B_theft_schema": true,
+  "B_theft_system": true
+ },
+ "note": "A = Rules in context's system with the task replaced (tenancy check: system_v2(A task) with the A task swapped back for B1V2_TASK equals Rules in context's system). B = Study 3's Model executes rules, unchanged; both stored tasks already state the hold rule, nothing added. Users = the case only.",
+ "ric_systems_fresh": {
+  "tenancy": "b018b15d1686953fb1015816af195a24f22f104f381fb7ba87cf4498acba111f",
+  "theft": "4ad0d3047804498cbf8b34d61e07cade0179e79dd07d809e7c9400a6c757dd33"
+ },
+ "ric_systems_fresh2": {
+  "tenancy": "b018b15d1686953fb1015816af195a24f22f104f381fb7ba87cf4498acba111f",
+  "theft": "4ad0d3047804498cbf8b34d61e07cade0179e79dd07d809e7c9400a6c757dd33"
+ },
+ "written_utc": "2026-11-12T11:44:19Z"
+}

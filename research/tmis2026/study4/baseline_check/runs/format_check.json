@@ -1,0 +1,3656 @@
+{
+ "A|luna|tenancy|fcl_020f2bacedc162a9": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "Is the termination based on rent arrears?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Gerne stelle ich Ihnen die Kündigung und die Mietverträge zur Verfügung."
+      }
+     ],
+     "decision": "request",
+     "document_type": "lease_contract",
+     "reason": "Needed to establish the tenancy terms; the claimant offers to provide it, but it is not included."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich wende mich an Sie, weil ich von der Verwaltung Rhein & Partner eine schriftliche Kündigung meines Mietvertrags für die Wohnung an der Bahnhofstrasse 46 in Olten erhalten habe."
+      },
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Die Kündigung liegt mir im Original vor."
+      }
+     ],
+     "decision": "request",
+     "document_type": "termination_notice",
+     "reason": "Needed to review the notice’s issuer, addressee, termination date, grounds and form contents. The claimant reports receiving it, but the notice itself is not supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich wende mich an Sie, weil ich von der Verwaltung Rhein & Partner eine schriftliche Kündigung meines Mietvertrags für die Wohnung an der Bahnhofstrasse 46 in Olten erhalten habe."
+      }
+     ],
+     "decision": "request",
+     "document_type": "proof_of_receipt",
+     "reason": "Needed to establish the recipient and evidenced delivery date for deadline assessment. The reported receipt does not establish a delivery date."
+    },
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "notice_period_evidence",
+     "reason": "Needed to establish the agreed notice period and relevant termination dates; no such evidence is supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Eine Begründung enthält das Schreiben nicht im Detail."
+      },
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Mündlich hat die Verwaltung erwähnt, dass es in der Vergangenheit zu verspäteten Mietzahlungen gekommen sei."
+      }
+     ],
+     "decision": "request",
+     "document_type": "stated_reason",
+     "reason": "Needed to establish the stated termination ground and its factual basis. The notice reportedly lacks detail, and the oral mention does not establish the notice’s actual stated ground."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich wohne dort zusammen mit meiner Ehefrau, die ebenfalls im Mietverhältnis lebt und die Wohnung als unsere gemeinsame Familienwohnung nutzt."
+      }
+     ],
+     "decision": "request",
+     "document_type": "spouse_notice_copy",
+     "reason": "The claimant reports that the tenancy is the family home and that their wife is also a tenant; request the separate spouse notice and service evidence."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ob die Kündigung tatsächlich auf Mietzinsrückstände gestützt wird, weiss ich nicht."
+      }
+     ],
+     "decision": "hold",
+     "document_type": "payment_deadline_letter",
+     "reason": "Needed if the termination is based on arrears, but that ground remains unresolved. Ask: Is the termination based on rent arrears, and, if so, can you provide the cure notice with its cure period and termination warning?"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ob die Kündigung tatsächlich auf Mietzinsrückstände gestützt wird, weiss ich nicht."
+      }
+     ],
+     "decision": "hold",
+     "document_type": "rent_ledger_payment_evidence",
+     "reason": "Needed if the termination is based on arrears, but that ground remains unresolved. Ask: Is the termination based on rent arrears, and, if so, can you provide the rent ledger and payment evidence?"
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "prior_rights_correspondence",
+     "reason": "Retaliation or a prior assertion of tenancy rights is not mentioned; under the silence policy this branch is presumed absent."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "housing_search_log",
+     "reason": "Extension relevance or housing-search hardship is not mentioned; under the silence policy this branch is presumed absent."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence",
+     "reason": "Optional evidence; no step currently requires it."
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "questions": [
+    "Is the termination based on rent arrears?"
+   ]
+  },
+  "usage_cost": 0.000674115
+ },
+ "A|luna|tenancy|fcl_09252315095aa169": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "the 3.5-room flat at Rosenstrasse 38 in Baden."
+      }
+     ],
+     "decision": "request",
+     "document_type": "lease_contract",
+     "reason": "Required for the formal review; no lease contract was supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "help contesting the termination of my lease"
+      }
+     ],
+     "decision": "request",
+     "document_type": "termination_notice",
+     "reason": "The customer reports a termination dispute, but the message is not the termination notice itself; request the original to review its contents."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "help contesting the termination of my lease"
+      }
+     ],
+     "decision": "request",
+     "document_type": "proof_of_receipt",
+     "reason": "Required to establish receipt and dates for deadline assessment; no proof of receipt was supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "help contesting the termination of my lease"
+      }
+     ],
+     "decision": "request",
+     "document_type": "notice_period_evidence",
+     "reason": "Required to assess the relevant termination dates; no notice-period evidence was supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The landlord is ending the tenancy because of unpaid rent. He states that the arrears amount to about CHF 5,280."
+      }
+     ],
+     "decision": "request",
+     "document_type": "stated_reason",
+     "reason": "The customer reports an arrears ground and disputes its justification; request the landlord's stated reason and factual basis."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The flat is our family home: my husband lives there with me."
+      }
+     ],
+     "decision": "request",
+     "document_type": "spouse_notice_copy",
+     "reason": "The customer says this is the family home and her husband lives there; request the separate spouse notice and its service evidence."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The landlord is ending the tenancy because of unpaid rent. He states that the arrears amount to about CHF 5,280."
+      }
+     ],
+     "decision": "request",
+     "document_type": "payment_deadline_letter",
+     "reason": "The reported arrears make the arrears branch active; request the cure notice and termination warning."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "He states that the arrears amount to about CHF 5,280. I dispute that the termination is justified on this basis"
+      }
+     ],
+     "decision": "request",
+     "document_type": "rent_ledger_payment_evidence",
+     "reason": "The reported arrears make the arrears branch active; request evidence of amounts due, payments, and balance."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "I believe it is retaliation."
+      },
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "Earlier this year I complained in writing about defects in the flat, including damp in the bathroom and a faulty heating valve, and I also challenged the rent increase."
+      }
+     ],
+     "decision": "request",
+     "document_type": "prior_rights_correspondence",
+     "reason": "The customer alleges retaliation and reports earlier written complaints and a rent-increase challenge; request the correspondence and chronology."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "housing_search_log",
+     "reason": "Extension relevance is not mentioned, so the silence policy presumes this branch fact absent."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence",
+     "reason": "This correspondence is optional in the process; no stated fact makes it necessary at intake."
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "questions": []
+  },
+  "usage_cost": 0.000590615
+ },
+ "A|luna|tenancy|fcl_09bf4c849ef1ee44": {
+  "cached": false,
+  "error": "invalid JSON content",
+  "plan": null,
+  "raw": null,
+  "usage_cost": 0.0027048
+ },
+ "A|luna|theft|s4-off": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Police consent to the removal or alteration of the Tatspuren"
+   ],
+   "questions": [
+    "Were crime-scene traces at the garden door removed or altered, or is any such change contemplated before the loss is determined?",
+    "Have the damaged insured items been changed, disposed of, or used for assistance before the loss is determined, or is any such change contemplated?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "hold",
+     "document": "D26"
+    },
+    {
+     "decision": "hold",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Were crime-scene traces at the garden door removed or altered, or is any such change contemplated before the loss is determined?",
+    "Have the damaged insured items been changed, disposed of, or used for assistance before the loss is determined, or is any such change contemplated?"
+   ]
+  },
+  "usage_cost": 0.0032363
+ },
+ "A|luna|theft|s4-on-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "request",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D26"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": []
+  },
+  "usage_cost": 0.000956025
+ },
+ "A|luna|theft|s4-unres-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)"
+   ],
+   "questions": [
+    "Is the claim seeking coverage for the watch under valuables insurance or a separate scheduled-item cover, and is the watch listed in the policy schedule? If so, can you provide its receipt or expert valuation?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "hold",
+     "document": "D09"
+    },
+    {
+     "decision": "hold",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D26"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Is the claim seeking coverage for the watch under valuables insurance or a separate scheduled-item cover, and is the watch listed in the policy schedule? If so, can you provide its receipt or expert valuation?"
+   ]
+  },
+  "usage_cost": 0.000927275
+ },
+ "A|terra|tenancy|fcl_020f2bacedc162a9": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "Is the termination based on rent arrears?",
+    "On what date was the termination notice delivered, and is there evidence of delivery?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Gerne stelle ich Ihnen die Kündigung und die Mietverträge zur Verfügung."
+      }
+     ],
+     "decision": "request",
+     "document_type": "lease_contract",
+     "reason": "The lease is needed to verify the parties, property and tenancy terms; it has not been supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Die Kündigung liegt mir im Original vor."
+      }
+     ],
+     "decision": "request",
+     "document_type": "termination_notice",
+     "reason": "Receipt is reported, but the original notice has not been supplied for review of its contents and form."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Können Sie mir sagen, welche Fristen ich beachten muss und wie ich vorgehen soll?"
+      }
+     ],
+     "decision": "request",
+     "document_type": "proof_of_receipt",
+     "reason": "Evidence of recipient and delivery date is needed urgently to assess the challenge deadline. The report of receipt does not establish the delivery date."
+    },
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "notice_period_evidence",
+     "reason": "The agreed notice period and relevant termination dates are needed to assess timing; they are not supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Eine Begründung enthält das Schreiben nicht im Detail."
+      }
+     ],
+     "decision": "request",
+     "document_type": "stated_reason",
+     "reason": "Obtain any written or other evidence of the landlord's stated ground and its factual basis. The customer reports that the notice does not explain it in detail."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich wohne dort zusammen mit meiner Ehefrau, die ebenfalls im Mietverhältnis lebt und die Wohnung als unsere gemeinsame Familienwohnung nutzt."
+      }
+     ],
+     "decision": "request",
+     "document_type": "spouse_notice_copy",
+     "reason": "A family home is reported. Request any separately addressed spouse notice and its service evidence."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ob die Kündigung tatsächlich auf Mietzinsrückstände gestützt wird, weiss ich nicht."
+      }
+     ],
+     "decision": "hold",
+     "document_type": "payment_deadline_letter",
+     "reason": "An arrears ground is raised but unresolved. Ask: Is the termination based on rent arrears?"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich habe bisher nicht geprüft, welche Zahlungen die Verwaltung als ausstehend betrachtet, und ich kann dazu noch nichts Verbindliches sagen."
+      }
+     ],
+     "decision": "hold",
+     "document_type": "rent_ledger_payment_evidence",
+     "reason": "Whether arrears evidence is needed remains unresolved. Ask: Is the termination based on rent arrears?"
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "prior_rights_correspondence",
+     "reason": "A possible retaliation connection is not mentioned and is presumed absent under the silence policy."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "housing_search_log",
+     "reason": "Extension relevance is not mentioned and is presumed absent under the silence policy."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence",
+     "reason": "This is optional under the process catalog."
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "questions": [
+    "Is the termination based on rent arrears?",
+    "On what date was the termination notice delivered, and is there evidence of delivery?"
+   ]
+  },
+  "usage_cost": 0.0060952
+ },
+ "A|terra|tenancy|fcl_09252315095aa169": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "When and by whom was the termination notice received? Please provide any delivery evidence promptly so the challenge deadline can be assessed."
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "Dear Claims Team, I am writing to ask for your help contesting the termination of my lease for the 3.5-room flat at Rosenstrasse 38 in Baden."
+      }
+     ],
+     "decision": "request",
+     "document_type": "lease_contract",
+     "reason": "Needed to verify the parties, property and tenancy terms; no original is supplied."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The landlord is ending the tenancy because of unpaid rent."
+      }
+     ],
+     "decision": "request",
+     "document_type": "termination_notice",
+     "reason": "The customer reports a termination dispute, but the original notice and its contents are not supplied. Receipt is presumed for routing because the report does not address receipt."
+    },
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "proof_of_receipt",
+     "reason": "Needed urgently to establish the recipient and delivery date for the deadline assessment."
+    },
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "notice_period_evidence",
+     "reason": "Needed to check the agreed notice period and relevant termination dates."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "He states that the arrears amount to about CHF 5,280."
+      }
+     ],
+     "decision": "request",
+     "document_type": "stated_reason",
+     "reason": "Obtain the landlord's stated ground and its factual basis; the customer reports arrears but does not supply the landlord's original statement."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The flat is our family home: my husband lives there with me."
+      }
+     ],
+     "decision": "request",
+     "document_type": "spouse_notice_copy",
+     "reason": "The reported family home makes separate spouse notice and service evidence relevant."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The landlord is ending the tenancy because of unpaid rent."
+      }
+     ],
+     "decision": "request",
+     "document_type": "payment_deadline_letter",
+     "reason": "The reported arrears ground activates the cure-period and termination-warning review."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "He states that the arrears amount to about CHF 5,280."
+      }
+     ],
+     "decision": "request",
+     "document_type": "rent_ledger_payment_evidence",
+     "reason": "Needed to check amounts due, payments and any outstanding balance against the disputed arrears."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "Earlier this year I complained in writing about defects in the flat, including damp in the bathroom and a faulty heating valve, and I also challenged the rent increase."
+      },
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "I dispute that the termination is justified on this basis, and I believe it is retaliation."
+      }
+     ],
+     "decision": "request",
+     "document_type": "prior_rights_correspondence",
+     "reason": "The customer alleges retaliation following written defect complaints and a rent-increase challenge."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "housing_search_log",
+     "reason": "Extension or housing hardship is not mentioned, so the extension branch is presumed inactive for this plan."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence",
+     "reason": "This is optional; the specific mandatory evidence is requested separately."
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "questions": [
+    "When and by whom was the termination notice received? Please provide any delivery evidence promptly so the challenge deadline can be assessed."
+   ]
+  },
+  "usage_cost": 0.013588
+ },
+ "A|terra|tenancy|fcl_09bf4c849ef1ee44": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "lease_contract",
+     "reason": "Needed to verify the parties, property and agreed tenancy terms."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Ich wende mich an Sie wegen einer geplanten Mietzinserhöhung für meine 2-Zimmer-Wohnung an der Kirchgasse 20 in Frauenfeld."
+      }
+     ],
+     "decision": "request",
+     "document_type": "rent_increase_notice",
+     "reason": "Receipt of a notification is not mentioned and is presumed for routing. The customer reports a planned increase, but the original notice is needed to check its contents and form."
+    },
+    {
+     "citations": [],
+     "decision": "request",
+     "document_type": "proof_of_receipt",
+     "reason": "Needed to establish the recipient and delivery date and assess the challenge deadline."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Damals wurde der Mietzins auf CHF 1400 festgelegt."
+      }
+     ],
+     "decision": "request",
+     "document_type": "current_rent_evidence",
+     "reason": "The customer reports a 2021 rent, but current agreed rent and its components need to be established."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fatt_f78fc98657910400",
+       "quote": "Bisheriger Mietzins: CHF 1400 pro Monat netto, zuzüglich Nebenkosten-Akonto."
+      }
+     ],
+     "decision": "request",
+     "document_type": "prior_rent_adjustment",
+     "reason": "The supplied copy gives a date and an amount labelled as the previous rent, but does not establish the adjustment calculation basis or clearly state the new amount."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes."
+      }
+     ],
+     "decision": "request",
+     "document_type": "stated_calculation",
+     "reason": "The customer reports the reasons, but the original calculation and its inputs are needed."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes."
+      }
+     ],
+     "decision": "request",
+     "document_type": "reference_rate_basis",
+     "reason": "The reference rate is reported as a reason; the old and proposed bases and relevant dates are needed."
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Zum andern verweist sie auf Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude."
+      }
+     ],
+     "decision": "request",
+     "document_type": "renovation_cost_breakdown",
+     "reason": "Renovations are reported as a reason. Their costs and claimed allocation are needed; whether they were value-adding remains unresolved."
+    },
+    {
+     "citations": [],
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence",
+     "reason": "Optional under the applicable process."
+    }
+   ],
+   "family": "rent_increase_dispute",
+   "questions": []
+  },
+  "usage_cost": 0.0057052
+ },
+ "A|terra|theft|s4-off": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [],
+   "questions": [],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D26"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": []
+  },
+  "usage_cost": 0.004141
+ },
+ "A|terra|theft|s4-on-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Release of the treating doctor from professional confidentiality"
+   ],
+   "questions": [
+    "Is there another insurance policy covering the same items, risks and period?",
+    "Has a benefit claim been assigned, or is an assignment to a third party intended?",
+    "Have the parties jointly appointed an expert to determine the loss?",
+    "Have crime-scene traces been altered or removed, or is this planned?",
+    "Have damaged items been altered or disposed of before assessment, or is this planned?",
+    "Was anyone injured in connection with the event?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "request",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "request",
+     "document": "D15"
+    },
+    {
+     "decision": "hold",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "hold",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "hold",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "hold",
+     "document": "D26"
+    },
+    {
+     "decision": "hold",
+     "document": "D27"
+    },
+    {
+     "decision": "hold",
+     "document": "D28"
+    },
+    {
+     "decision": "hold",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Is there another insurance policy covering the same items, risks and period?",
+    "Has a benefit claim been assigned, or is an assignment to a third party intended?",
+    "Have the parties jointly appointed an expert to determine the loss?",
+    "Have crime-scene traces been altered or removed, or is this planned?",
+    "Have damaged items been altered or disposed of before assessment, or is this planned?",
+    "Was anyone injured in connection with the event?"
+   ]
+  },
+  "usage_cost": 0.0073485
+ },
+ "A|terra|theft|s4-unres-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Receipt for the scheduled valuable (Quittung / Rechnung)"
+   ],
+   "questions": [
+    "Is the watch separately listed in the policy as a valuable or individual object, and if so, is its insured value at least CHF 1,000? Does the claim involve separate valuables insurance?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "documents": [
+    {
+     "decision": "request",
+     "document": "D01"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D02"
+    },
+    {
+     "decision": "request",
+     "document": "D03"
+    },
+    {
+     "decision": "request",
+     "document": "D04"
+    },
+    {
+     "decision": "request",
+     "document": "D05"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D06"
+    },
+    {
+     "decision": "request",
+     "document": "D07"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D08"
+    },
+    {
+     "decision": "hold",
+     "document": "D09"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D10"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D11"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D12"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D13"
+    },
+    {
+     "decision": "request",
+     "document": "D14"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D15"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D16"
+    },
+    {
+     "decision": "request",
+     "document": "D17"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D18"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D19"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D20"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D21"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D22"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D23"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D24"
+    },
+    {
+     "decision": "request",
+     "document": "D25"
+    },
+    {
+     "decision": "request",
+     "document": "D26"
+    },
+    {
+     "decision": "request",
+     "document": "D27"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D28"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D29"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D30"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D31"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D32"
+    },
+    {
+     "decision": "not_needed",
+     "document": "D33"
+    }
+   ],
+   "questions": [
+    "Is the watch separately listed in the policy as a valuable or individual object, and if so, is its insured value at least CHF 1,000? Does the claim involve separate valuables insurance?"
+   ]
+  },
+  "usage_cost": 0.027978
+ },
+ "B|terra|tenancy|fcl_020f2bacedc162a9": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [
+    "payment_deadline_letter",
+    "rent_ledger_payment_evidence"
+   ],
+   "questions": [
+    "On what date and how did you receive the termination notice? Please provide the notice and any envelope or delivery record promptly so the challenge deadline can be assessed.",
+    "Did your wife receive a separately addressed notice? If so, when and how?",
+    "Has the landlord stated that the termination is based on rent arrears, and did you receive a payment deadline with a termination warning?"
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "proof_of_receipt",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "ich von der Verwaltung Rhein & Partner eine schriftliche Kündigung meines Mietvertrags für die Wohnung an der Bahnhofstrasse 46 in Olten erhalten habe."
+      }
+     ],
+     "flag": "termination_received",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ich wohne dort zusammen mit meiner Ehefrau, die ebenfalls im Mietverhältnis lebt und die Wohnung als unsere gemeinsame Familienwohnung nutzt."
+      }
+     ],
+     "flag": "family_home",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_e74170563fd2ba96",
+       "quote": "Ob die Kündigung tatsächlich auf Mietzinsrückstände gestützt wird, weiss ich nicht."
+      }
+     ],
+     "flag": "arrears",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [],
+     "flag": "retaliation_screen",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [],
+     "flag": "extension_relevant",
+     "verdict": "unresolved"
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "plan": [
+    {
+     "because": "Required to review the parties, property and tenancy terms; no original was supplied.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The customer reports receiving it, but the original is needed to examine its contents and form.",
+     "decision": "request",
+     "document_type": "termination_notice"
+    },
+    {
+     "because": "The delivery date and recipient are needed urgently for the deadline assessment.",
+     "decision": "request",
+     "document_type": "proof_of_receipt"
+    },
+    {
+     "because": "The agreed notice period and relevant termination dates need verification.",
+     "decision": "request",
+     "document_type": "notice_period_evidence"
+    },
+    {
+     "because": "The reported oral explanation does not establish the landlord's stated ground or factual basis.",
+     "decision": "request",
+     "document_type": "stated_reason"
+    },
+    {
+     "because": "The reported family home makes separate spouse service relevant; request the notice and service evidence if available.",
+     "decision": "request",
+     "document_type": "spouse_notice_copy"
+    },
+    {
+     "because": "The customer raises but cannot confirm an arrears-based termination.",
+     "decision": "hold",
+     "document_type": "payment_deadline_letter"
+    },
+    {
+     "because": "The arrears branch is unresolved pending clarification of the termination ground.",
+     "decision": "hold",
+     "document_type": "rent_ledger_payment_evidence"
+    },
+    {
+     "because": "Retaliation is unmentioned and presumed absent for planning under the silence policy.",
+     "decision": "not_needed",
+     "document_type": "prior_rights_correspondence"
+    },
+    {
+     "because": "Extension relevance is unmentioned and presumed absent for planning under the silence policy.",
+     "decision": "not_needed",
+     "document_type": "housing_search_log"
+    },
+    {
+     "because": "This document type is optional under the process.",
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence"
+    }
+   ],
+   "questions": [
+    "On what date and how did you receive the termination notice? Please provide the notice and any envelope or delivery record promptly so the challenge deadline can be assessed.",
+    "Did your wife receive a separately addressed notice? If so, when and how?",
+    "Has the landlord stated that the termination is based on rent arrears, and did you receive a payment deadline with a termination warning?"
+   ],
+   "supplied_documents": []
+  },
+  "usage_cost": 0.0055702
+ },
+ "B|terra|tenancy|fcl_09252315095aa169": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "lease_termination_dispute",
+   "holds": [],
+   "questions": [
+    "Did you receive a termination notice? If so, on what date and how was it delivered? Please provide the notice and delivery evidence urgently so the challenge deadline can be assessed.",
+    "Did your husband receive a separate notice? If so, please provide it and any delivery evidence.",
+    "Please provide the requested lease, arrears warning, rent and payment records, and your earlier written complaints and rent-increase challenge.",
+    "Please confirm the stated termination date and provide any separate written explanation of the landlord's reason."
+   ],
+   "requests": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "prior_rights_correspondence",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "spouse_notice_copy",
+    "stated_reason",
+    "termination_notice"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "I am writing to ask for your help contesting the termination of my lease for the 3.5-room flat at Rosenstrasse 38 in Baden."
+      }
+     ],
+     "flag": "termination_received",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The flat is our family home: my husband lives there with me."
+      }
+     ],
+     "flag": "family_home",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "The landlord is ending the tenancy because of unpaid rent. He states that the arrears amount to about CHF 5,280."
+      }
+     ],
+     "flag": "arrears",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "I dispute that the termination is justified on this basis, and I believe it is retaliation."
+      },
+      {
+       "artifact_id": "fmsg_b628a8bf543ee08f",
+       "quote": "Earlier this year I complained in writing about defects in the flat, including damp in the bathroom and a faulty heating valve, and I also challenged the rent increase."
+      }
+     ],
+     "flag": "retaliation_screen",
+     "verdict": "true"
+    },
+    {
+     "citations": [],
+     "flag": "extension_relevant",
+     "verdict": "unresolved"
+    }
+   ],
+   "family": "lease_termination_dispute",
+   "plan": [
+    {
+     "because": "Needed to verify the parties, property and tenancy terms.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The customer reports a termination, but the original notice and its form contents are missing. Receipt is presumed for routing under the silence policy.",
+     "decision": "request",
+     "document_type": "termination_notice"
+    },
+    {
+     "because": "The recipient and delivery date are needed urgently to assess the challenge deadline.",
+     "decision": "request",
+     "document_type": "proof_of_receipt"
+    },
+    {
+     "because": "Needed to verify the agreed notice period and relevant termination dates.",
+     "decision": "request",
+     "document_type": "notice_period_evidence"
+    },
+    {
+     "because": "The reported arrears reason needs the landlord's original stated ground and factual basis.",
+     "decision": "request",
+     "document_type": "stated_reason"
+    },
+    {
+     "because": "The customer reports that the flat is the family home; separate spouse notice and service need checking.",
+     "decision": "request",
+     "document_type": "spouse_notice_copy"
+    },
+    {
+     "because": "Arrears are reported as the termination ground; the cure period and warning need verification.",
+     "decision": "request",
+     "document_type": "payment_deadline_letter"
+    },
+    {
+     "because": "Needed to assess the claimed arrears, payments and balance.",
+     "decision": "request",
+     "document_type": "rent_ledger_payment_evidence"
+    },
+    {
+     "because": "The customer alleges retaliation after written defect complaints and a rent-increase challenge.",
+     "decision": "request",
+     "document_type": "prior_rights_correspondence"
+    },
+    {
+     "because": "Extension is not mentioned and is presumed absent for planning under the silence policy.",
+     "decision": "not_needed",
+     "document_type": "housing_search_log"
+    },
+    {
+     "because": "This is optional in the admitted process.",
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence"
+    }
+   ],
+   "questions": [
+    "Did you receive a termination notice? If so, on what date and how was it delivered? Please provide the notice and delivery evidence urgently so the challenge deadline can be assessed.",
+    "Did your husband receive a separate notice? If so, please provide it and any delivery evidence.",
+    "Please provide the requested lease, arrears warning, rent and payment records, and your earlier written complaints and rent-increase challenge.",
+    "Please confirm the stated termination date and provide any separate written explanation of the landlord's reason."
+   ],
+   "supplied_documents": []
+  },
+  "usage_cost": 0.014438
+ },
+ "B|terra|tenancy|fcl_09bf4c849ef1ee44": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "deferred": false,
+   "established": [],
+   "family": "rent_increase_dispute",
+   "holds": [],
+   "questions": [
+    "Have you received an official rent-increase notice? If so, when and by whom was it received? Please preserve the notice and envelope or delivery evidence urgently.",
+    "What is the current net rent and what additional charges are agreed? Can you provide the complete 2021 adjustment and its calculation?"
+   ],
+   "requests": [
+    "current_rent_evidence",
+    "lease_contract",
+    "prior_rent_adjustment",
+    "proof_of_receipt",
+    "reference_rate_basis",
+    "renovation_cost_breakdown",
+    "rent_increase_notice",
+    "stated_calculation"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Ich wende mich an Sie wegen einer geplanten Mietzinserhöhung für meine 2-Zimmer-Wohnung an der Kirchgasse 20 in Frauenfeld."
+      }
+     ],
+     "flag": "claim_received",
+     "verdict": "unresolved"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Die Vermieterin begründet die Erhöhung zum einen mit der Erhöhung des hypothekarischen Referenzzinssatzes."
+      }
+     ],
+     "flag": "reference_rate",
+     "verdict": "true"
+    },
+    {
+     "citations": [
+      {
+       "artifact_id": "fmsg_46f0f285186a986e",
+       "quote": "Zum andern verweist sie auf Renovationsarbeiten beziehungsweise wertvermehrende Investitionen am Gebäude."
+      }
+     ],
+     "flag": "renovation",
+     "verdict": "true"
+    }
+   ],
+   "family": "rent_increase_dispute",
+   "plan": [
+    {
+     "because": "Needed to verify the parties, property and agreed tenancy terms.",
+     "decision": "request",
+     "document_type": "lease_contract"
+    },
+    {
+     "because": "The customer describes a planned increase, but the original notice and its amount, effective date, addressee and form contents are missing.",
+     "decision": "request",
+     "document_type": "rent_increase_notice"
+    },
+    {
+     "because": "The recipient and delivery date are needed urgently to assess the challenge deadline.",
+     "decision": "request",
+     "document_type": "proof_of_receipt"
+    },
+    {
+     "because": "The current agreed rent and its components are not established by the supplied prior adjustment.",
+     "decision": "request",
+     "document_type": "current_rent_evidence"
+    },
+    {
+     "because": "The supplied copy gives a date and describes CHF 1400 as the previous rent, but does not state the new amount or calculation basis.",
+     "decision": "request",
+     "document_type": "prior_rent_adjustment"
+    },
+    {
+     "because": "The reported reasons do not supply the landlord's calculation inputs.",
+     "decision": "request",
+     "document_type": "stated_calculation"
+    },
+    {
+     "because": "A reference-rate reason is reported; the old and proposed bases and relevant dates are needed.",
+     "decision": "request",
+     "document_type": "reference_rate_basis"
+    },
+    {
+     "because": "Renovation is a reported reason; the works, costs and claimed allocation to rent are needed.",
+     "decision": "request",
+     "document_type": "renovation_cost_breakdown"
+    },
+    {
+     "because": "Optional under the process.",
+     "decision": "not_needed",
+     "document_type": "landlord_correspondence"
+    }
+   ],
+   "questions": [
+    "Have you received an official rent-increase notice? If so, when and by whom was it received? Please preserve the notice and envelope or delivery evidence urgently.",
+    "What is the current net rent and what additional charges are agreed? Can you provide the complete 2021 adjustment and its calculation?"
+   ],
+   "supplied_documents": [
+    {
+     "artifact_id": "fatt_f78fc98657910400",
+     "assessment": "insufficient",
+     "citations": [
+      {
+       "artifact_id": "fatt_f78fc98657910400",
+       "quote": "Datum der Anpassung: 1. Oktober 2021."
+      },
+      {
+       "artifact_id": "fatt_f78fc98657910400",
+       "quote": "Bisheriger Mietzins: CHF 1400 pro Monat netto, zuzüglich Nebenkosten-Akonto."
+      }
+     ],
+     "document_type": "prior_rent_adjustment"
+    }
+   ]
+  },
+  "usage_cost": 0.0057902
+ },
+ "B|terra|theft|s4-off": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "questions": [
+    "Were crime-scene traces or damaged items altered before assessment, and was consent obtained?",
+    "Does valuables insurance cover the claimed items? If so, is a receipt or expert valuation available?",
+    "Was anyone injured or treated by a doctor?",
+    "Is there other insurance for the same items, risks and period?",
+    "Has a joint expert or formal expert procedure been selected, or have expert findings been made?",
+    "Has CSS paid benefits, or is there a third-party claim or recourse to preserve?",
+    "Is an assignment of the insurance benefit to a third party sought or asserted?",
+    "What loss-mitigation instructions, if any, did the insurer give, and what measures were taken?",
+    "When was the theft reported to police, was an official investigation requested, and what is its status?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "guard_id": "overlay_guard_001",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_002",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_003",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_004",
+     "quote": "returned from a weekend away on 14 June 2026",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_005",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_006",
+     "quote": "stolen items",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_007",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_008",
+     "quote": "returned from a weekend away on 14 June 2026 to a forced garden door",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_009",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_012",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_013",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_014",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_015",
+     "quote": "No bicycle or e-bike is among the stolen items.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_016",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_017",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_019",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_020.rev-b4712e29",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_021",
+     "quote": "Neither party has requested the formal expert determination procedure.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_022",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_023",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_024",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_025",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_026",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_027",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_028",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_029",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_030.rev-659606b1",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_031",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_032",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_033",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_034",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_035",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_036",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_037",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_038",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_039",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_040",
+     "quote": "None of the stolen items has been recovered and no news of them has been received.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_041",
+     "quote": "None of the stolen items has been recovered",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_042.rev-92ab8925",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_043",
+     "quote": "The insurer has not declined the claim for indemnity.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_044",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_045",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_048",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_049",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_050",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_051",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_052",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_053",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_054",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_055",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_056",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_057",
+     "quote": "stolen items",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_058",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_059",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_060",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_061",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_063",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_064",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_065",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_066",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_067",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_068.rev-3767fc15",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_070",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_071",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_072",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_073",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_074",
+     "quote": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_075",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_076",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_077",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_078",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_079",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_080",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_081",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_082",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_083",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_084",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_085",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_086",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_087",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_088",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_090",
+     "quote": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_091",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_092",
+     "quote": "The insurer has not declined the claim for indemnity.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_093",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_094",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_096",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_097",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_098",
+     "quote": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+     "verdict": "false"
+    }
+   ],
+   "holds": [
+    "D09",
+    "D10",
+    "D15",
+    "D16",
+    "D18",
+    "D21",
+    "D22",
+    "D23",
+    "D26",
+    "D27",
+    "D28",
+    "D29"
+   ],
+   "questions": [
+    "Were crime-scene traces or damaged items altered before assessment, and was consent obtained?",
+    "Does valuables insurance cover the claimed items? If so, is a receipt or expert valuation available?",
+    "Was anyone injured or treated by a doctor?",
+    "Is there other insurance for the same items, risks and period?",
+    "Has a joint expert or formal expert procedure been selected, or have expert findings been made?",
+    "Has CSS paid benefits, or is there a third-party claim or recourse to preserve?",
+    "Is an assignment of the insurance benefit to a third party sought or asserted?",
+    "What loss-mitigation instructions, if any, did the insurer give, and what measures were taken?",
+    "When was the theft reported to police, was an official investigation requested, and what is its status?"
+   ],
+   "requests": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25"
+   ]
+  },
+  "usage_cost": 0.0134007
+ },
+ "B|terra|theft|s4-on-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "questions": [
+    "Was anyone injured?",
+    "Is there other insurance covering the same items, risks and period?",
+    "Was a joint expert or formal expert procedure selected by agreement, and have experts made findings?",
+    "Has any identifiable third-party claim arisen, or has CSS paid benefits for which recourse is possible?",
+    "Is an assignment of the insurance benefit to a third party contemplated or asserted?",
+    "Has the insurer set any deadline for claim handling or requested information?",
+    "Were crime-scene traces or damaged items altered, and if so was consent given or was the alteration necessary?",
+    "What instructions did the insurer give about mitigation or recovery, and were they followed?",
+    "Can you provide the watch receipt, or alternatively an expert valuation?",
+    "When and where was the theft discovered and reported, how was entry gained, and was an official investigation requested?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "guard_id": "overlay_guard_001",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_002",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_003",
+     "quote": "a forced garden door",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_004",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_005",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_006",
+     "quote": "A stolen watch",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_007",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_008",
+     "quote": "returned from a weekend away",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_009",
+     "quote": "insured value of CHF 4,000",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_012",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_013",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_014",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_015",
+     "quote": "No bicycle or e-bike is among the stolen items",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_016",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_017",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_019",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_020.rev-b4712e29",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_021",
+     "quote": "Neither party has requested the formal expert determination procedure",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_022",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_023",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_024",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_025",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_026",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_027",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_028",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_029",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_030.rev-659606b1",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_031",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_032",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_033",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_034",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_035",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_036",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_037",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_038",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_039",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_040",
+     "quote": "None of the stolen items has been recovered and no news of them has been received",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_041",
+     "quote": "None of the stolen items has been recovered and no news of them has been received",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_042.rev-92ab8925",
+     "quote": "apart from the unidentified thief",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_043",
+     "quote": "The insurer has not declined the claim for indemnity",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_044",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_045",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_048",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_049",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_050",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_051",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_052",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_053",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_054",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_055",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_056",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_057",
+     "quote": "A stolen watch",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_058",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_059",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_060",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_061",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_063",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_064",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_065",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_066",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_067",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_068.rev-3767fc15",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_070",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_071",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_072",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_073",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_074",
+     "quote": "separately scheduled in the policy with an insured value of CHF 4,000",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_075",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_076",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_077",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_078",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_079",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_080",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_081",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_082",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_083",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_084",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_085",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_086",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_087",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_088",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_090",
+     "quote": "No repair costing more than CHF 500 is contemplated for the damaged insured items",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_091",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_092",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_093",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_094",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_096",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_097",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_098",
+     "quote": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning",
+     "verdict": "false"
+    }
+   ],
+   "holds": [
+    "D15",
+    "D16",
+    "D18",
+    "D20",
+    "D21",
+    "D22",
+    "D23",
+    "D28",
+    "D29"
+   ],
+   "questions": [
+    "Was anyone injured?",
+    "Is there other insurance covering the same items, risks and period?",
+    "Was a joint expert or formal expert procedure selected by agreement, and have experts made findings?",
+    "Has any identifiable third-party claim arisen, or has CSS paid benefits for which recourse is possible?",
+    "Is an assignment of the insurance benefit to a third party contemplated or asserted?",
+    "Has the insurer set any deadline for claim handling or requested information?",
+    "Were crime-scene traces or damaged items altered, and if so was consent given or was the alteration necessary?",
+    "What instructions did the insurer give about mitigation or recovery, and were they followed?",
+    "Can you provide the watch receipt, or alternatively an expert valuation?",
+    "When and where was the theft discovered and reported, how was entry gained, and was an official investigation requested?"
+   ],
+   "requests": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D09",
+    "D14",
+    "D17",
+    "D25",
+    "D26",
+    "D27"
+   ]
+  },
+  "usage_cost": 0.0131282
+ },
+ "B|terra|theft|s4-unres-PR_scheduled_valuable_1000": {
+  "cached": false,
+  "error": null,
+  "plan": {
+   "holds": [
+    "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's consent to alteration of the damaged items before the loss is determined",
+    "Insurer's written consent to an assignment of the benefit claim to a third party",
+    "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+    "Medical certificate (Arztzeugnis / aerztliche Bescheinigung) where a person was injured",
+    "Police consent to the removal or alteration of the Tatspuren",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Release of the treating doctor from professional confidentiality",
+    "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+   ],
+   "questions": [
+    "Is the watch separately scheduled, what is its insured value, and is this a valuables-insurance claim? If relevant, can a receipt or expert valuation be supplied?",
+    "Has the same interest been insured against the same risks for the same period with another insurer?",
+    "Has a joint expert or formal expert procedure been selected, and have experts made findings?",
+    "Were crime-scene traces present or changed, or were damaged items altered before assessment? If so, was consent given?",
+    "Was anyone injured?",
+    "Has CSS paid benefits for a claim against a third party, or did a third party cause or increase the loss?",
+    "Is an assignment of the insurance benefit to a third party sought or asserted?",
+    "What instructions, if any, did the insurer give about mitigation and recovery, and were they followed?",
+    "When was the loss discovered and reported, was an official investigation requested, and what evidence or witnesses establish the circumstances?",
+    "How was entry gained, and were any items recovered or any information about them received?"
+   ],
+   "requests": [
+    "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+    "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+    "Payment instruction with payee name and address, IBAN and name of the financial institution",
+    "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+    "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+    "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+   ]
+  },
+  "raw": {
+   "conditions": [
+    {
+     "guard_id": "overlay_guard_001",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_002",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_003",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_004",
+     "quote": "returned from a weekend away on 14 June 2026 to a forced garden door",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_005",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_006",
+     "quote": "A stolen watch",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_007",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_008",
+     "quote": "returned from a weekend away on 14 June 2026 to a forced garden door",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_009",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_012",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_013",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_014",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_015",
+     "quote": "No bicycle or e-bike is among the stolen items.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_016",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_017",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_019",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_020.rev-b4712e29",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_021",
+     "quote": "Neither party has requested the formal expert determination procedure.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_022",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_023",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_024",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_025",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_026",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_027",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_028",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_029",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_030.rev-659606b1",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_031",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_032",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_033",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_034",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_035",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_036",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_037",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_038",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_039",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_040",
+     "quote": "None of the stolen items has been recovered and no news of them has been received.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_041",
+     "quote": "None of the stolen items has been recovered and no news of them has been received.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_042.rev-92ab8925",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_043",
+     "quote": "The insurer has not declined the claim for indemnity.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_044",
+     "quote": "police and insurer were informed",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_045",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_048",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_049",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_050",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_051",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_052",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_053",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_054",
+     "quote": "Jewellery and binoculars are missing",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_055",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_056",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_057",
+     "quote": "A stolen watch",
+     "verdict": "true"
+    },
+    {
+     "guard_id": "overlay_guard_058",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_059",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_060",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_061",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_063",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_064",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_065",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_066",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_067",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_068.rev-3767fc15",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_070",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_071",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_072",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_073",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_074",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_075",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_076",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_077",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_078",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_079",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_080",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_081",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_082",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_083",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_084",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_085",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_086",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_087",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_088",
+     "quote": "no loss from SIM-card misuse is claimed",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_090",
+     "quote": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_091",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_092",
+     "quote": "The insurer has not declined the claim for indemnity.",
+     "verdict": "false"
+    },
+    {
+     "guard_id": "overlay_guard_093",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_094",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_096",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_097",
+     "quote": "",
+     "verdict": "unresolved"
+    },
+    {
+     "guard_id": "overlay_guard_098",
+     "quote": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+     "verdict": "false"
+    }
+   ],
+   "holds": [
+    "D09",
+    "D10",
+    "D15",
+    "D16",
+    "D18",
+    "D21",
+    "D22",
+    "D23",
+    "D26",
+    "D27",
+    "D28",
+    "D29"
+   ],
+   "questions": [
+    "Is the watch separately scheduled, what is its insured value, and is this a valuables-insurance claim? If relevant, can a receipt or expert valuation be supplied?",
+    "Has the same interest been insured against the same risks for the same period with another insurer?",
+    "Has a joint expert or formal expert procedure been selected, and have experts made findings?",
+    "Were crime-scene traces present or changed, or were damaged items altered before assessment? If so, was consent given?",
+    "Was anyone injured?",
+    "Has CSS paid benefits for a claim against a third party, or did a third party cause or increase the loss?",
+    "Is an assignment of the insurance benefit to a third party sought or asserted?",
+    "What instructions, if any, did the insurer give about mitigation and recovery, and were they followed?",
+    "When was the loss discovered and reported, was an official investigation requested, and what evidence or witnesses establish the circumstances?",
+    "How was entry gained, and were any items recovered or any information about them received?"
+   ],
+   "requests": [
+    "D01",
+    "D03",
+    "D04",
+    "D05",
+    "D07",
+    "D14",
+    "D17",
+    "D25"
+   ]
+  },
+  "usage_cost": 0.0375055
+ }
+}

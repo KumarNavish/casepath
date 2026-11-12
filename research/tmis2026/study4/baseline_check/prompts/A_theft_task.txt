@@ -1,0 +1,22 @@
+TASK: Write the document checklist for this claim now, with an explicit decision for EVERY catalogue document.
+
+1. Conditions. For each rule condition the case bears on, establish from the case whether it is true, false or open:
+   - true or false: the case states it.
+   - open: the case raises it but leaves it unsettled (tentative language, "not sure", "still checking",
+     contradictory statements). An open condition stays open; never decide it yourself.
+   - never mentioned at all: these rules contain no presumption for unmentioned facts, so the case-reading policy above
+     applies to them as written.
+
+2. Decision for EVERY catalogue document, exactly once (use the catalogue IDs):
+   - request: the rules need it now on the facts the case states: a rule that always applies, or whose condition is
+     true, needs it through the route chosen for that rule's evidence item (request one sufficient route where
+     alternatives exist).
+   - hold: it would be needed only through rules whose conditions the case raises and leaves open: needed if such a
+     condition turns out true, not needed if it turns out false. Do not request it; ask about that condition first.
+   - not_needed: no rule that applies on the stated facts needs it (its rules' conditions are false, or it lies only
+     on a route you did not choose).
+   A document needed by an applicable rule is requested even if some other open condition would also need it.
+
+3. If the case denies the event that defines the claim (that a theft took place), request nothing and hold nothing.
+
+4. questions = what to ask: one question for each open condition on which a held document depends.
