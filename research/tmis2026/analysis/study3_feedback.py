@@ -947,9 +947,12 @@ def main(argv=None):
         path = TMIS / rel
         if path.exists():
             items.append((label, load_alt(path)))
+            study.inputs.hashes[rel] = s3.sha256(path)  # recorded with the other inputs: the files may still change
         else:
             absent.append(rel)
     items += [(str(p), load_alt(p)) for p in a.alt_reference]
+    for p in a.alt_reference:
+        study.inputs.hashes[str(p)] = s3.sha256(p)
     f5 = []
     for name, alt in items:
         r = rescore(study, alt, name)
