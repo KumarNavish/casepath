@@ -378,6 +378,25 @@ class AppTests(unittest.TestCase):
         run = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
         self.assertEqual(client.post(f"/api/runs/{run['id']}/stop").status_code, 409)
 
+    def test_a_paused_run_shows_what_it_established_never_an_empty_case(self):
+        client = self.client()
+        case, file = self.new_case(client, "Angehalten")
+        store = client.app.state.store
+        run = store.create_run(case["id"], "dev")
+        partial = {"paused": True, "brief": {"request": "Schimmel im Bad", "parties": [], "timeline": [], "summary": "", "not_enclosed": []},
+                   "facts": [{"fact": "landlord_notified", "status": "established", "value": True, "verdict": "accepted",
+                              "citations": [{"file": file["id"], "quote": "informiert"}]}], "documents": [], "usage": [], "events": []}
+        store.update_run(run["id"], status="paused", result=partial, workflow_id="example-defect", workflow_version="2026-01-01")
+        shown = client.get(f"/api/cases/{case['id']}")
+        self.assertEqual(shown.status_code, 200)
+        body = shown.json()
+        self.assertIsNotNone(body["process"])  # never "noch kein Prozess"
+        self.assertEqual(body["run"]["status"], "paused")
+        facts = {i["key"]: i for i in body["items"] if i["kind"] == "fact"}
+        self.assertEqual(facts["landlord_notified"]["value"], True)
+        self.assertTrue(body["items_sha256"])  # built from what exists
+        self.assertFalse([i for i in body["items"] if i["kind"] == "answer"])  # no assessment yet
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

@@ -26,7 +26,11 @@ def case_state(store, catalogue, case_id, knowledge=None):
     knowledge: a Knowledge version to apply instead of the store's active items (for a model-free replay)."""
     case = store.get_case(case_id)
     study = (case.get("intake") or {}).get("study")  # a study copy shows its source's frozen run, never one of its own
-    run = store.get_run(study["frozen_run_id"]) if study else store.latest_run(case_id, "completed")
+    if study:
+        run = store.get_run(study["frozen_run_id"])
+    else:  # a run stopped by a person shows what it established until a later run completes
+        done, paused = store.latest_run(case_id, "completed"), store.latest_run(case_id, "paused")
+        run = paused if paused and (not done or paused["created_at"] > done["created_at"]) else done
     result = (run or {}).get("result") or {}
     workflow = None
     # A run names the workflow version it used; when that version is no longer shipped, the latest one of the same workflow governs.
@@ -103,6 +107,8 @@ class RunService:
             self.store.update_run(run_id, status="failed", error=f"{error.reason}: {error}", finished_at=now())
         except Exception as error:  # Every failure ends the run with a stated reason.
             self.store.update_run(run_id, status="failed", error=f"internal: {type(error).__name__}: {error}", finished_at=now())
+        finally:
+            self._stops.discard(run_id)  # a stop pressed too late for this run must not linger
 
     def save(self, run_id, case_id, outcome):
         """Persist an agent outcome: readings, routing, result, Knowledge statistics and proposals."""
@@ -111,7 +117,6 @@ class RunService:
         if outcome["status"] == "paused":  # stopped by a person: the partial result is kept for "Weiter"
             self.store.update_run(run_id, status="paused", result=outcome["result"], finished_at=now(),
                                   **({"workflow_id": outcome["workflow"]["id"], "workflow_version": outcome["workflow"]["version"]} if outcome.get("workflow") else {}))
-            self._stops.discard(run_id)
             return
         if outcome["status"] != "completed":
             self.store.update_run(run_id, status="failed", error=outcome["error"], finished_at=now())
