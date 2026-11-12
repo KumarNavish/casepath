@@ -6,7 +6,19 @@ Code locations are relative to `casepath-internal/casepath/` at product commit `
 so a later analysis knows which shape it reads. That field is **new** everywhere except where noted.
 
 Times: inside the insurer, absolute UTC times are kept (`at`). Every export replaces them with `t`, seconds since the
-session's start (or, for runs, since the study's first frozen run).
+session's start (or, for runs, since the study's first frozen run). Dates in a dossier are exported only as whole-day
+offsets from the dossier's first document.
+
+**Change (2026-11-12).** The pre-registration's primary endpoint is now the archival comparison at every decision point
+of the four sealed dossiers D2, D4, D5, D7 (pre-registration 3.1, 9.2). Added: the decision-point record (1b), P per
+decision point with two transcriptions and their agreement (5), the archival-result record (5a), the replay record for
+the leave-one-dossier-out analysis (5b). Changed: the run record (1: role `archival`, `dp_index`), the cut copy record
+(1a: one row per decision point; the optional second point is removed), the status-source hash (now the archival hash,
+5), the exports (7) and the measures table (9).
+
+**Dossier labels.** In the pseudonymous export the study cases are A, B, C (after the lot), the reserve D5 is `R`, and
+development dossiers keep their labels D1, D3, D6, D8, D9, D10, D11. Inside, the dossier labels D1–D11 are used
+throughout.
 
 ## 1. Frozen run record (`casepath.study.frozen-run/1`)
 
@@ -14,10 +26,11 @@ session's start (or, for runs, since the study's first frozen run).
 |---|---|---|
 | `schema` | record shape | new |
 | `frozen_run_id` | id of the stored run shown to all experts | exists as `runs.id` (`web/store.py`, table `runs`) |
-| `source_case` | the study case (A, B, C after the lot; internal id inside) | new |
+| `source_case` | the sealed dossier (A, B, C after the lot, `R` for D5; internal id inside) | new |
+| `dp_index` | the decision point the run belongs to (section 1b) | new |
 | `cut_sha256` | hash of the cut copy the run used (section 1a) | new |
-| `role` | `frozen`, `variation`, `comparator` | new |
-| `repeat` | 1 for the frozen run, 2–5 for variation runs, 1–3 for comparator runs | partial: `repeat` in benchmark results (`quality/evaluate.py:409`) |
+| `role` | `archival` (the one CasePath run at a decision point that is not an expert decision point), `frozen` (the archival run at an expert decision point, shown to the experts), `variation`, `comparator` | new |
+| `repeat` | 1 for the archival and the frozen run, 2–5 for variation runs, 1 for the primary comparator run and 2–3 for the optional ones at expert decision points | partial: `repeat` in benchmark results (`quality/evaluate.py:409`) |
 | `files_sha256` | hash of the case's files | exists (`web/store.py`, `runs.files_sha256`) |
 | `workflow_id`, `workflow_version` | routed process | exists (`runs`) |
 | `result_sha256` | SHA-256 of the canonical JSON of `runs.result` | new |
@@ -29,22 +42,42 @@ session's start (or, for runs, since the study's first frozen run).
 
 ## 1a. Cut copy record (`casepath.study.cut/1`)
 
-One row per study case (and per second decision point, if one is made). Columns "Pseudonymous" and "Content" say which
-export carries the field (section 7).
+One row per decision point of each of the four sealed dossiers (and, for the development analysis, of each development
+dossier). The optional second decision point of earlier versions is removed (2026-11-12). Columns "Pseudonymous" and
+"Content" say which export carries the field (section 7).
 
 | Field | Meaning | Pseudonymous | Content | Status |
 |---|---|---|---|---|
 | `schema` | record shape | yes | yes | new |
-| `source_case` | A, B, C in the pseudonymous export; dossier label (D2, D4, D7; D5 if the reserve is used) in the content export | label | dossier label | new |
-| `reserve_used` | whether D5 replaced a study case, and the listed reason (`inclusion_failed`, `cut_impossible`, `leak_unremovable`) | yes | yes | new |
+| `source_case` | A, B, C, `R` in the pseudonymous export; dossier label (D2, D4, D5, D7) in the content export | label | dossier label | new |
+| `dp_index` | the decision point (section 1b) | yes | yes | new |
+| `reserve_used` | expert sessions only: whether D5 replaced a study case, and the listed reason (`inclusion_failed`, `cut_impossible`, `leak_unremovable`) | yes | yes | new |
 | `cut_id` | id of the cut copy; `h_` + 12 hex in the pseudonymous export | hashed | yes | new |
-| `point` | `first` or `second` (the optional system-only point) | yes | yes | new |
-| `decision_point` | in the pseudonymous export a label (`DP1`, `DP2`) and an offset in whole days from the case's first document; in the content export the calendar date | label and offset | date | new |
-| `rule_applied` | `first_outgoing_request`, `first_outgoing_action` (no request in the case) or `second_outgoing_action`; plus, content export only, which action and why it is the first | code | code and text | new |
 | `cut_sha256` | SHA-256 of the cut copy | yes | yes | new |
 | `included_documents` | number of included documents (pseudonymous); list of documents or page ranges with dates (content) | count | list | new |
+| `same_day_left_out` | documents of the action's day left out because their order relative to the action cannot be told: count (pseudonymous); list (content) | count | list | new |
 | `leak_check` | checked by the study lead, done (bool), leaks found before the run (count) | yes | yes, with descriptions | new |
-| `routes_to_common_workflow` | inclusion criterion, from routing alone | yes | yes | new |
+| `routes_to_common_workflow` | expert decision points only: the inclusion criterion, from routing alone | yes | yes | new |
+
+## 1b. Decision-point record (`casepath.study.decision-point/1`)
+
+One row per decision point: the state of a dossier's file immediately before a recorded outgoing action of the insurer
+(pre-registration 3.1). Made after the product's freeze hash exists and before any run on the cut copy.
+
+| Field | Meaning | Pseudonymous | Content | Status |
+|---|---|---|---|---|
+| `schema` | record shape | yes | yes | new |
+| `source_case` | the dossier (labels as in 1a) | label | dossier label | new |
+| `dp_index` | 1, 2, ... in the order of the file (`DP1`, `DP2`, ...) | yes | yes | new |
+| `cut_sha256` | SHA-256 of the cut copy of this decision point (section 1a) | yes | yes | new |
+| `action_offset_days` | the action's date as a whole-day offset from the dossier's first document; never a calendar date | yes | yes | new |
+| `action_date` | the calendar date of the action | no | yes | new |
+| `merged_actions` | number of same-day outgoing actions merged into this decision point (1 if none) | yes | yes | new |
+| `expert_point` | true for the decision point used in the expert sessions (before the first outgoing request; DP1 if there is none) | yes | yes | new |
+| `rule_applied` | `outgoing_action`; for the expert point also `first_outgoing_request` or `first_outgoing_action`; plus, content export only, which action and why | code | code and text | new |
+| `transcribable` | whether P can be stated from the file; if false, `exclusion_reason` (code; text in content) and the point is excluded for every system | yes | yes, with text | new |
+| `decision_points_in_dossier` | total number of decision points of the dossier, set once all are found | yes | yes | new |
+| `sha256` | hash of this record | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
 
