@@ -417,6 +417,29 @@ class AppTests(unittest.TestCase):
         self.assertEqual(done["result"]["brief"]["request"], "Check the mould defect.")
         self.assertEqual(client.post(f"/api/runs/{paused['id']}/continue").status_code, 409)  # only the latest paused run
 
+    def test_anderer_prozess_while_paused_keeps_the_reading_and_redoes_what_depends_on_the_process(self):
+        catalogue = Path(self.directory.name) / "catalogue"
+        catalogue.mkdir()
+        base = json.loads((FIXTURES / "example-defect.json").read_text())
+        (catalogue / "example-defect.json").write_text(json.dumps(base))
+        (catalogue / "example-other.json").write_text(json.dumps({**base, "id": "example-other", "title": "Other process"}))
+        client = self.client(CASEPATH_WORKFLOW_CATALOGUE=str(catalogue))
+        case, file = self.new_case(client, "Anderer Prozess")
+        store = client.app.state.store
+        paused = store.create_run(case["id"], "dev")
+        store.update_run(paused["id"], status="paused", workflow_id="example-defect", workflow_version="2026-01-01",
+                         result={"paused": True, "brief": {"request": "Check the mould defect.", "parties": [], "timeline": [], "summary": "Read.",
+                                                           "not_enclosed": []},
+                                 "facts": [{"fact": "landlord_notified", "status": "established", "value": True, "verdict": "accepted", "citations": []}],
+                                 "documents": [], "usage": [], "events": [], "done": ["0:claim_reader", "1:process_builder"]})
+        client.put(f"/api/cases/{case['id']}/workflow", json={"workflow_id": "example-other"})
+        rest = team_script(file["id"])[2:]  # the brief stays; the process and everything after it are done again
+        client.app.state.runs.model_factory = lambda: ScriptedModel(rest)
+        done = self.wait(client, client.post(f"/api/runs/{paused['id']}/continue").json()["id"])
+        self.assertEqual(done["status"], "completed", done.get("error"))
+        self.assertEqual(done["workflow_id"], "example-other")
+        self.assertEqual(done["result"]["brief"]["request"], "Check the mould defect.")
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

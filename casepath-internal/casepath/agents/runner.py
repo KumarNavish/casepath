@@ -74,8 +74,16 @@ class RunService:
     def resume(self, paused, user, token=None):
         """'Weiter': a new run that continues a paused one from what it established."""
         run = self.store.create_run(paused["case_id"], user)
-        job = {**self.job(paused["case_id"]), "resume": {"run": paused["id"], "result": paused["result"],
-                                                         "workflow_id": paused["workflow_id"], "workflow_version": paused.get("workflow_version")}}
+        case = self.store.get_case(paused["case_id"])
+        chosen = case.get("workflow_id")  # "anderer Prozess": a workflow chosen while paused governs the continued run
+        changed = bool(chosen) and chosen != paused["workflow_id"]
+        result = paused["result"]
+        if changed:  # the reading stays; what depended on the old process is done again
+            result = {**result, "facts": [], "documents": [], "done": [d for d in result.get("done") or [] if d == "0:claim_reader"]}
+        job = {**self.job(paused["case_id"]), "resume": {
+            "run": paused["id"], "result": result, "changed": changed,
+            "workflow_id": chosen if changed else paused["workflow_id"],
+            "workflow_version": case.get("workflow_version") if changed else paused.get("workflow_version")}}
         self._pool.submit(self._execute, run["id"], paused["case_id"], token, job)
         return run
 
