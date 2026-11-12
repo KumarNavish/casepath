@@ -72,6 +72,12 @@ counts only.
    count to say how common the case type is that carries the synthetic
    result. A count per file, no content.
 
+7. The paper calls D1 to D11 "eleven closed dossiers of an internal
+   hackathon", as the protocol draft does. A referee asks whether they are
+   real, unaltered claim files of the insurer. Say which wording is true
+   (real and unaltered; real with names removed; or constructed), so the
+   paper says exactly that.
+
 ## Two corrections to your reading of the paper
 
 - The frontier theft cell is printed in the paper (0.83 against 0.67 to
