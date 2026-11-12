@@ -1,0 +1,479 @@
+"""POST HOC follow-up of the rule lint (analysis/rule_lint.py). Not part of ANALYSIS_PLAN_STUDY3.md.
+
+    python3 lint_followup.py            # writes lint_followup.json and lint_followup.md (no model calls)
+    python3 lint_followup.py --design   # only prints the mutation design (seed, draw, texts); used before the paid run
+
+Part 2. "A flagged condition is treated as open": theft results from the stored readings of Study 3 (fresh2; gpt-6-luna
+full product, 3 runs; gpt-6.1-terra checklist only, 1 run) and the product's evaluator at 6a72159c, with each model's
+own lint flags (analysis/rule_lint.json; note: the lint was computed on the same off texts, so this is in-sample):
+  (a) every flagged condition is unresolved;
+  (b) flagged conditions that both blind editors made unconditional (rule_review/lint/final/RECONCILIATION.md: rules 001,
+      002, 005, 006, 026, 044, 057, 061) are true, the other flagged conditions unresolved.
+Also the lint on the tenancy workflows from the stored readings of Study 3 (ordinary claims: request set not empty, no
+open fact): the false-alarm baseline for Part 3.
+Part 3. Mutation test of the lint on the tenancy workflows (design fixed below, before any run; the run itself is made by
+the scratch driver and read back from its results file).
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import random
+import re
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+TMIS = HERE.parent
+sys.path.insert(0, str(HERE))
+import decomposition as DC  # noqa: E402
+import theft_diagnosis as TD  # noqa: E402
+
+s3, s2, common = TD.s3, TD.s2, TD.common
+CACHE = TMIS / "runs" / "product" / "cache"
+TEN_WF = TMIS / "harness/product/workflows/fresh-serial-sync"
+SCRATCH = Path("/tmp/claude-0/-home-user-casepath/ef865128-25b1-5a5b-af7f-a334bf6c5b16/scratchpad")
+CASE_TYPE_RULES = ("001", "002", "005", "006", "026", "044", "057", "061")  # both editors: condition removed
+
+# ------------------------------------------------------------------------------------------------ Part 3 design (fixed)
+SEED = 20261112
+DEFINING = {"lease_termination_dispute": "termination_received", "rent_increase_dispute": "claim_received"}
+# An over-broad version of EVERY branch condition, written before the draw, so that no text is chosen after it. Each is
+# meant to hold in an ordinary claim of its workflow although the original would not.
+MUTATIONS = {
+    "defect_mold_heating": {
+        "health_effects": "Does the claim describe effects of the defect on the tenant's use or comfort of the flat?",
+        "mold": "Does the defect concern the condition of the flat's rooms, walls, windows or fittings?",
+        "heating": "Does the defect affect the comfort of living in the flat?",
+        "specialist_needed": "Does the defect need to be examined or repaired by someone?",
+        "deposit_considered": "Is the tenant considering any step to make the landlord remedy the defect?",
+    },
+    "lease_termination_dispute": {
+        "family_home": "Does the tenant live in the flat?",
+        "arrears": "Does the claim mention the rent or payments under the lease?",
+        "retaliation_screen": "Is the tenant contesting or objecting to the termination?",
+        "extension_relevant": "Does the tenant want to stay in the flat or need time to move out?",
+    },
+    "rent_increase_dispute": {
+        "reference_rate": "Does the notice or the claim state a reason or basis for the increase?",
+        "renovation": "Does the claim mention the flat, the building or its condition?",
+    },
+}
+
+
+def draw():
+    """Seeded draw: about a third of each workflow's branch conditions (rounded up), at least two."""
+    rng = random.Random(SEED)
+    out = {}
+    for wf in sorted(MUTATIONS):
+        conds = sorted(MUTATIONS[wf])
+        k = max(2, -(-len(conds) // 3))
+        out[wf] = sorted(rng.sample(conds, min(k, len(conds))))
+    return out
+
+
+def design_record():
+    d = draw()
+    rec = {"seed": SEED, "drawn": d, "mutated_questions": {wf: {c: MUTATIONS[wf][c] for c in cs} for wf, cs in d.items()},
+           "all_written_mutations": MUTATIONS, "defining_events_excluded": DEFINING,
+           "ordinary_claims": "fresh/ (request set not empty, no open fact) of each dispute type; rent increase has only 3 there and none in "
+                              "fresh2, so the 3 control claims of dev_probe (defining event stated or implied) are added",
+           "readings": "product at 6a72159c, checklist only, gpt-6-luna, one run per claim (run index 0), three readings"}
+    rec["sha256"] = hashlib.sha256(json.dumps(rec, sort_keys=True).encode()).hexdigest()
+    return rec
+
+
+def mutated_workflows(outdir):
+    d = draw()
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    for f in sorted(TEN_WF.glob("*.json")):
+        wf = json.loads(f.read_text())
+        for fact in wf["facts"]:
+            if fact["id"] in d.get(wf["id"], []):
+                fact["question"] = MUTATIONS[wf["id"]][fact["id"]]
+        (outdir / f.name).write_text(json.dumps(wf, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
+    return outdir
+
+
+# ------------------------------------------------------------------------------------------------ readings (generic)
+def norm(s):
+    return re.sub(r"\s+", " ", s or "").strip().lower()
+
+
+def readings(entry, fact_ids):
+    """[(cache keys, {fact: (verdict, quote)})] for the reading calls of a stored entry: a conditions answer covering most of the
+    workflow's facts starts a reading; a short one right after it is its requote retry."""
+    out, seen = [], set()
+    for k in (entry or {}).get("keys") or []:
+        if k in seen:
+            continue
+        seen.add(k)
+        p = CACHE / f"{k}.json"
+        if not p.exists():
+            continue
+        try:
+            content = json.loads(json.loads(json.loads(p.read_text())["body"])["choices"][0]["message"]["content"])
+        except Exception:  # noqa: BLE001
+            continue
+        rows = content.get("conditions") if isinstance(content, dict) else None
+        if not rows or not all(r.get("id") in fact_ids for r in rows):
+            continue
+        ans = {}
+        for r in rows:
+            ans.setdefault(r["id"], (r.get("verdict"), r.get("quote") or ""))
+        if len(ans) >= 0.8 * len(fact_ids) or not out:
+            out.append([k, ans])
+        else:
+            out[-1][0] += "+" + k
+            out[-1][1].update(ans)
+    return [(k, a) for k, a in out]
+
+
+def lint_counts(units, cond_ids):
+    """units: [(reading keys tuple, readings, text)] of ordinary-case runs; identical reading responses count once."""
+    seen = set()
+    stat = {c: {"runs": 0, "admitted_true": 0, "some_reading_true": 0, "quotes": []} for c in cond_ids}
+    for keys, rds, text in units:
+        if keys in seen or len(rds) != 3:
+            continue
+        seen.add(keys)
+        t = norm(text)
+        for c in cond_ids:
+            s = stat[c]
+            s["runs"] += 1
+            vs = [a.get(c) for _, a in rds]
+            if all(v and v[0] == "true" and v[1] and norm(v[1]) in t for v in vs):
+                s["admitted_true"] += 1
+            if any(v and v[0] == "true" for v in vs):
+                s["some_reading_true"] += 1
+                for v in vs:
+                    if v and v[0] == "true" and v[1] and v[1] not in s["quotes"] and len(s["quotes"]) < 3:
+                        s["quotes"].append(v[1])
+    for c, s in stat.items():
+        n = s["runs"]
+        s["flagged"] = bool(n) and (s["admitted_true"] >= n / 2 or s["some_reading_true"] >= 0.75 * n)
+    return stat
+
+
+def claim_text(D, cid):
+    import pilot  # noqa: E402
+    text, atts = pilot.inputs(D, cid)
+    return text + "\n" + "\n".join(a["bytes"].decode("utf-8", "replace") for a in atts)
+
+
+def ordinary(ref):
+    req = ref.get("request_set")
+    if req is None:
+        req = [d for d, s in ref["document_states"].items() if s in ("required_now", "supplied_insufficient")]
+    return bool(req) and ref.get("open_fact") is None
+
+
+def tenancy_lint_stored():
+    """The lint on the three tenancy workflows from the stored readings of Study 3 (fresh2), ordinary claims only."""
+    sys.path.insert(0, str(TMIS / "harness" / "product"))
+    D = common.data("tenancy", "fresh2")
+    wfs = {json.loads(f.read_text())["id"]: json.loads(f.read_text()) for f in sorted(TEN_WF.glob("*.json"))}
+    sources = {"gpt-6-luna": ["plans_tenancy_casepath.json", "plans_tenancy_casepath_checklist.json"],
+               "gpt-6.1-terra": ["plans_tenancy_casepath_checklist_frontier.json"]}
+    out = {}
+    for model, files in sources.items():
+        units = defaultdict(list)
+        for fn in files:
+            st = json.loads((TMIS / "runs/study3/confirm" / fn).read_text())
+            for k, e in st.items():
+                cid = k.split("|")[1]
+                ref = D.reference(cid)
+                if not ordinary(ref):
+                    continue
+                wf = wfs[ref["family"]]
+                ids = {f["id"] for f in wf["facts"]}
+                rds = readings(e, ids)
+                units[ref["family"]].append((tuple(k_ for k_, _ in rds), rds, claim_text(D, cid)))
+        out[model] = {fam: lint_counts(u, [f["id"] for f in wfs[fam]["facts"] if f["type"] == "boolean"]) for fam, u in units.items()}
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ Part 2: theft
+def flags():
+    rl = json.loads((HERE / "rule_lint.json").read_text())
+    return {m: set(v) for m, v in rl["flagged"].items()}
+
+
+def case_type_ids(wf_facts):
+    return {f for f in wf_facts if TD.stem(f) in {"g" + r for r in CASE_TYPE_RULES}}
+
+
+def theft_variant(design, model, variant):
+    st, Dm = DC.study()
+    W = TD.evaluator()
+    wf = json.loads((TMIS / "harness/product/workflows/theft-reviewed/household_theft.json").read_text())
+    fu = TD.used_facts(wf)
+    allf = [f["id"] for f in wf["facts"] if f["id"] != "claim_type"]
+    fl = flags()[model]
+    ex = TD.Exec(W, wf)
+    st.load(design, "theft")
+    ent = st.entries[(design, "theft")]
+    runs = st.runs(design, "theft")
+    T = Dm["theft"].texts()
+    forced = {}
+    if variant == "a":
+        forced = {f: None for f in fl}
+    elif variant == "b":
+        ct_ = case_type_ids(fl)
+        forced = {f: (True if f in ct_ else None) for f in fl}
+
+    def facts_of(e):
+        a = TD.admitted(e, fu)
+        a.update({f: v for f, v in forced.items() if f in a})
+        return a
+    plans = {t: [ex(facts_of(ent[t][r])) for r in range(runs)] for t in T}
+    pairs = st.pairs
+    on, un = TD.score(pairs, plans, runs)
+    res = {"summary": {k: TD.r3(v) for k, v in TD.summ(on, un).items()}, "by_fact": {k: TD.r3(v) for k, v in TD.by_fact(on).items()},
+           "forced": {f: v for f, v in sorted(forced.items())}, "forced_need_bearing": sorted(f for f in forced if f in fu)}
+    offs = [plans[t][r] for t in T if T[t]["kind"] == "off" for r in range(runs)]
+    res["off_requested_in_every_run"] = sorted(TD.IDS[d] for d in set.intersection(*[set(p["requests"]) for p in offs]))
+    res["off_held_in_every_run"] = sorted(TD.IDS[d] for d in set.intersection(*[set(p["holds"]) for p in offs]))
+    res["off_requested_counts"] = dict(sorted(Counter(TD.IDS[d] for p in offs for d in p["requests"]).items()))
+    res["off_held_counts"] = dict(sorted(Counter(TD.IDS[d] for p in offs for d in p["holds"]).items()))
+    res["off_runs"] = len(offs)
+    # questions a handler would get in an off text: the open facts some document depends on
+    qs = Counter()
+    for t in T:
+        if T[t]["kind"] != "off":
+            continue
+        for r in range(runs):
+            a = facts_of(ent[t][r])
+            for f in fu:
+                if a[f] is None:
+                    qs[f] += 1
+    res["off_open_need_bearing_facts_per_run"] = TD.r3(sum(qs.values()) / len(offs))
+    res["off_questions_from_forced_facts"] = {f: qs[f] for f in sorted(forced) if f in fu}
+    # decomposition (rule / reading / hold) with the variant applied to designed and admitted facts alike
+    rows = []
+    for p in [p for p in pairs if p["kind"] == "on"]:
+        Po = TD.designed(T[p["off"]], fu)
+        Pv = TD.designed(T[p["variant"]], fu)
+        for f, v in forced.items():
+            if f in Po:
+                Po[f] = v
+                Pv[f] = v
+        Gc = set(TD.gset(p["condition"], fu))
+        for r in range(runs):
+            Ao, Av = facts_of(ent[p["off"]][r]), facts_of(ent[p["variant"]][r])
+
+            def cls(A, P, changed):
+                rd, hd = set(), set()
+                for f in fu:
+                    a, d = A[f], P[f]
+                    if a is not None and d is not None and a != d:
+                        rd.add(f)
+                    elif changed and f in Gc and d is True and a is None:
+                        rd.add(f)
+                    elif (a is None) != (d is None):
+                        hd.add(f)
+                return rd, hd
+            ro, ho = cls(Ao, Po, False)
+            rv, hv = cls(Av, Pv, True)
+
+            def E(fix):
+                o = {f: (Po[f] if (f in ro and "reading" in fix) or (f in ho and "hold" in fix) else Ao[f]) for f in fu}
+                v = {f: (Pv[f] if (f in rv and "reading" in fix) or (f in hv and "hold" in fix) else Av[f]) for f in fu}
+                return TD.pair_err(ex, p, o, v)[0]
+            m0 = E(())
+            m1 = E(("reading",))
+            m2 = E(("reading", "hold"))
+            rows.append({"measured": m0, "reading": m0 - m1, "hold": m1 - m2, "rule": m2,
+                         "interaction": (m0 - m2) - (m0 - m1) - (m0 - E(("hold",)))})
+    n = len(rows)
+    res["decomposition"] = {k: TD.r3(sum(r[k] for r in rows) / n) for k in ("rule", "reading", "hold", "measured", "interaction")}
+    return res
+
+
+# ------------------------------------------------------------------------------------------------ Part 3 analysis
+def part3():
+    f = SCRATCH / "mutation_results.json"
+    if not f.exists():
+        return None
+    raw = json.loads(f.read_text())
+    sys.path.insert(0, str(TMIS / "harness" / "product"))
+    sys.path.insert(0, str(TMIS / "dev_probe"))
+    import tenancy_probe as TP  # noqa: E402
+    Df = common.data("tenancy", "fresh")
+    d = draw()
+    out = {"design": design_record(), "arms": {}}
+    for arm in ("baseline", "mutated"):
+        wfdir = TEN_WF if arm == "baseline" else SCRATCH / "wf_mutated"
+        wfs = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(Path(wfdir).glob("*.json"))}
+        units = defaultdict(list)
+        statuses = Counter()
+        for job, e in raw.items():
+            a, regime, cid = job.split("|")
+            if a != arm:
+                continue
+            statuses[e.get("status")] += 1
+            D = Df if regime == "tenancy-fresh" else TP
+            fam = D.reference(cid)["family"]
+            ids = {x["id"] for x in wfs[fam]["facts"]}
+            rds = readings(e, ids)
+            units[fam].append((tuple(k for k, _ in rds), rds, claim_text(D, cid)))
+        out["arms"][arm] = {"statuses": dict(statuses),
+                            "lint": {fam: lint_counts(u, [x["id"] for x in wfs[fam]["facts"] if x["type"] == "boolean"]) for fam, u in units.items()}}
+    det = {}
+    for fam, planted in d.items():
+        m = out["arms"]["mutated"]["lint"].get(fam, {})
+        b = out["arms"]["baseline"]["lint"].get(fam, {})
+        other = [c for c in MUTATIONS[fam] if c not in planted]
+        det[fam] = {"planted": planted, "planted_flagged": [c for c in planted if m.get(c, {}).get("flagged")],
+                    "unmutated_branch": other, "unmutated_flagged_in_mutated_run": [c for c in other if m.get(c, {}).get("flagged")],
+                    "unmutated_flagged_in_baseline_run": [c for c in other if b.get(c, {}).get("flagged")],
+                    "defining_event": DEFINING.get(fam), "defining_event_flagged": {arm: out["arms"][arm]["lint"].get(fam, {}).get(DEFINING.get(fam), {}).get("flagged")
+                                                                                  for arm in ("baseline", "mutated")} if fam in DEFINING else None,
+                    "runs": m.get(planted[0], {}).get("runs") if planted else None}
+    out["detection"] = det
+    out["totals"] = {"planted": sum(len(v["planted"]) for v in det.values()), "planted_flagged": sum(len(v["planted_flagged"]) for v in det.values()),
+                     "unmutated": sum(len(v["unmutated_branch"]) for v in det.values()),
+                     "unmutated_flagged_mutated_run": sum(len(v["unmutated_flagged_in_mutated_run"]) for v in det.values()),
+                     "unmutated_flagged_baseline_run": sum(len(v["unmutated_flagged_in_baseline_run"]) for v in det.values())}
+    ledger = TMIS / "runs/product/ledger_dev_gpt-6-luna.jsonl"
+    rows = [json.loads(l) for l in ledger.read_text().splitlines() if l.strip()]
+    out["spend_usd"] = {a: round(sum(r["usd"] or 0 for r in rows if r.get("arm") == f"lint-mutation-{a}"), 4) for a in ("baseline", "mutated")}
+    return out
+
+
+def criterion2_theft():
+    """Second criterion, measured on stored theft readings: 'unresolved in most ordinary cases although the claim addresses the
+    matter' = no agreed value (all three readings the same value with a quotation found) in at least half of the off-text runs,
+    while at least one reading answers true, false or open in at least half of them."""
+    rl = json.loads((HERE / "rule_lint.json").read_text())
+    import rule_lint as RL  # noqa: E402
+    T = RL.texts()
+    wf = json.loads(RL.WORKFLOW.read_text())
+    facts = [f["id"] for f in wf["facts"] if f["id"] != "claim_type"]
+    out = {}
+    for model, label, path, runs, manifest in RL.SOURCES:
+        if manifest:
+            m = json.loads((TMIS / manifest).read_text())
+            if m.get("source_tree_sha256") != RL.TESTED_TREE:
+                continue
+        stored = json.loads((TMIS / path).read_text())
+        o = out.setdefault(model, {"seen": set(), "stat": {c: {"runs": 0, "no_agreed_value": 0, "addressed": 0} for c in facts}})
+        for k, e in stored.items():
+            _, t, r = k.split("|")
+            if T[t]["kind"] != "off":
+                continue
+            rds = RL.readings(e, len(wf["facts"]))
+            keys = tuple(x for x, _ in rds)
+            if len(rds) != 3 or keys in o["seen"]:
+                continue
+            o["seen"].add(keys)
+            for c in facts:
+                s = o["stat"][c]
+                s["runs"] += 1
+                if RL.value(rds, c, T[t]["text"]) == "open":
+                    s["no_agreed_value"] += 1
+                if any(a.get(c) and a[c][0] in ("true", "false", "open") for _, a in rds):
+                    s["addressed"] += 1
+    res = {}
+    for model, o in out.items():
+        st = o["stat"]
+        fl = {c: s for c, s in st.items() if s["runs"] and s["no_agreed_value"] >= s["runs"] / 2 and s["addressed"] >= s["runs"] / 2}
+        res[model] = {"flagged": sorted(fl), "counts": {c: st[c] for c in ("g074", "g016", "g022", "g020_rev_b4712e29", "g042_rev_92ab8925", "g003")}}
+    return res
+
+
+# ------------------------------------------------------------------------------------------------ main
+def main():
+    out = {"label": "POST HOC: not part of ANALYSIS_PLAN_STUDY3.md", "note": __doc__}
+    fl = flags()
+    out["flags"] = {m: sorted(v) for m, v in fl.items()}
+    p2 = {}
+    for design, model in (("casepath", "gpt-6-luna"), ("casepath_frontier_checklist", "gpt-6.1-terra")):
+        p2[model] = {v: theft_variant(design, model, v) for v in ("tested", "a", "b")}
+    out["part2_theft"] = p2
+    out["tenancy_lint_stored"] = tenancy_lint_stored()
+    out["part3"] = part3()
+    out["criterion2_theft"] = criterion2_theft()
+    (HERE / "lint_followup.json").write_text(json.dumps(out, indent=1, ensure_ascii=False, default=str) + "\n")
+    (HERE / "lint_followup.md").write_text(markdown(out))
+    return out
+
+
+def f3(x):
+    return "–" if x is None else f"{x:.3f}"
+
+
+def markdown(o):
+    L = ["# Lint follow-up (POST HOC)", "", "**Post hoc, not part of the pre-registered plan.** Generated by `analysis/lint_followup.py`.", "",
+         "## Part 2. A flagged condition is treated as open (theft, stored readings, no model calls)", "",
+         "Each model's own flags (`analysis/rule_lint.json`). The lint was computed on the same off texts, so these results are "
+         "in-sample. (a) every flagged condition unresolved; (b) the flagged conditions both blind editors made unconditional (rules "
+         + ", ".join(CASE_TYPE_RULES) + ") true, the other flagged conditions unresolved. Single prompts (stored, same data): "
+         "gpt-6.1-terra 0.949 (reviewed rules) and 0.671 (original rules); gpt-6-luna 1.736 and 1.468.", ""]
+    for model, v in o["part2_theft"].items():
+        L += [f"**{model}** (flags: {', '.join(o['flags'][model])})", "",
+              "| Variant | Wrong + missed per pair | Unresolved unchanged | Rule | Reading | Hold | Interaction | Requested in every off run | Held in every off run | Open document-deciding facts per off run |",
+              "|---|---|---|---|---|---|---|---|---|---|"]
+        for var, r in v.items():
+            dd = r["decomposition"]
+            L.append(f"| {var} | {f3(r['summary']['errors'])} | {f3(r['summary']['unres_unchanged'])} | {f3(dd['rule'])} | {f3(dd['reading'])} | "
+                     f"{f3(dd['hold'])} | {f3(dd['interaction'])} | {', '.join(r['off_requested_in_every_run'])} | {', '.join(r['off_held_in_every_run']) or '–'} | "
+                     f"{f3(r['off_open_need_bearing_facts_per_run'])} |")
+        L += ["", "By changed fact:", "", "| Variant | " + " | ".join(TD.SHORT[c] for c in TD.COND) + " |", "|---|" + "---|" * len(TD.COND)]
+        for var, r in v.items():
+            L.append(f"| {var} | " + " | ".join(f3(r["by_fact"].get(c)) for c in TD.COND) + " |")
+        L += ["", "Questions a handler would get in the off texts from the forced-open facts that decide a document (off runs in which the "
+              "fact is open): " + "; ".join(f"{var}: " + json.dumps(r["off_questions_from_forced_facts"]) for var, r in v.items() if var != "tested"), ""]
+    L += ["## Tenancy lint baseline (stored readings, ordinary claims of Study 3)", "",
+          "| Model | Workflow | Condition | Ordinary runs | Admitted true | Some reading true | Flagged |", "|---|---|---|---|---|---|---|"]
+    for model, v in o["tenancy_lint_stored"].items():
+        for fam, st in v.items():
+            for c, s in st.items():
+                L.append(f"| {model} | {fam} | {c} | {s['runs']} | {s['admitted_true']} | {s['some_reading_true']} | {'yes' if s['flagged'] else 'no'} |")
+    p3 = o.get("part3")
+    if p3:
+        L += ["", "## Part 3. Mutation test of the lint (tenancy, gpt-6-luna, one run per claim)", "",
+              f"Design fixed before the run (seed {p3['design']['seed']}, record sha256 {p3['design']['sha256'][:16]}); mutated questions:", ""]
+        for wf, qs in p3["design"]["mutated_questions"].items():
+            for c, q in qs.items():
+                L.append(f"- {wf} / `{c}`: \"{q}\"")
+        L += ["", f"Totals: planted {p3['totals']['planted']}, flagged {p3['totals']['planted_flagged']}; unmutated branch conditions "
+              f"{p3['totals']['unmutated']}, flagged in the mutated run {p3['totals']['unmutated_flagged_mutated_run']}, in the baseline run "
+              f"{p3['totals']['unmutated_flagged_baseline_run']}. Spend USD {json.dumps(p3['spend_usd'])}.", "",
+              "| Workflow | Planted | Planted flagged | Unmutated | Unmutated flagged (mutated run) | Unmutated flagged (baseline run) | Defining event flagged (baseline, mutated) |",
+              "|---|---|---|---|---|---|---|"]
+        for fam, x in p3["detection"].items():
+            L.append(f"| {fam} | {', '.join(x['planted'])} | {', '.join(x['planted_flagged']) or '–'} | {', '.join(x['unmutated_branch'])} | "
+                     f"{', '.join(x['unmutated_flagged_in_mutated_run']) or '–'} | {', '.join(x['unmutated_flagged_in_baseline_run']) or '–'} | {json.dumps(x['defining_event_flagged'])} |")
+        L += ["", "| Arm | Workflow | Condition | Runs | Admitted true | Some reading true | Flagged | Quotations |", "|---|---|---|---|---|---|---|---|"]
+        for arm, a in p3["arms"].items():
+            for fam, st in a["lint"].items():
+                for c, s in st.items():
+                    L.append(f"| {arm} | {fam} | {c} | {s['runs']} | {s['admitted_true']} | {s['some_reading_true']} | {'yes' if s['flagged'] else 'no'} | "
+                             + "; ".join(f"\"{q[:90]}\"" for q in s["quotes"][:2]) + " |")
+    c2 = o.get("criterion2_theft") or {}
+    L += ["", "## A second criterion for under-specified conditions (theft, stored readings, no new calls)", "",
+          "'No agreed value in at least half of the off-text runs although at least one reading answers true, false or open in at least "
+          "half of them.'", ""]
+    for model, v in c2.items():
+        L.append(f"- {model}: flagged {len(v['flagged'])}: {', '.join(v['flagged'])}; counts " + json.dumps(v["counts"]))
+    return "\n".join(L) + "\n"
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--design", action="store_true")
+    ap.add_argument("--write-mutated", default=None)
+    a = ap.parse_args()
+    if a.design:
+        print(json.dumps(design_record(), indent=1, ensure_ascii=False))
+    elif a.write_mutated:
+        print(mutated_workflows(a.write_mutated))
+    else:
+        o = main()
+        for m, v in o["part2_theft"].items():
+            for var, r in v.items():
+                print(m, var, r["summary"]["errors"], r["summary"]["unres_unchanged"], r["decomposition"], r["off_requested_in_every_run"], r["off_held_in_every_run"])
