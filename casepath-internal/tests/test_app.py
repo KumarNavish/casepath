@@ -377,6 +377,8 @@ class AppTests(unittest.TestCase):
         case, file = self.new_case(client, "Anhalten")
         run = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
         self.assertEqual(client.post(f"/api/runs/{run['id']}/stop").status_code, 409)
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "note.added", "text": "x"}).status_code, 422)  # extras go in "fields"
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "note.added", "fields": {"text": "x"}}).status_code, 201)
 
     def test_a_paused_run_shows_what_it_established_never_an_empty_case(self):
         client = self.client()

@@ -23,7 +23,7 @@ from fastapi import Depends, Query, FastAPI, File, HTTPException, Request, Uploa
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import follow_up
@@ -83,6 +83,7 @@ SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved"
 
 
 class EventRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # extras belong in "fields"; a stray top-level key is refused, not dropped
     kind: str = Field(min_length=3, max_length=40)
     item_id: str | None = Field(None, max_length=120, pattern=r"^[a-z_]+:[A-Za-z0-9_.:-]{1,100}$")
     fields: dict = Field(default_factory=dict)

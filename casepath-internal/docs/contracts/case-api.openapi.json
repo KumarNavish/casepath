@@ -114,6 +114,7 @@
     "type": "object"
    },
    "EventRequest": {
+    "additionalProperties": false,
     "properties": {
      "fields": {
       "additionalProperties": true,

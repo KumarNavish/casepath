@@ -57,6 +57,10 @@ class HandlerWorkflowTests(unittest.TestCase):
         mentioned = {"facts": bare, "brief": {"not_enclosed": [{"title": "Bericht der Fachperson", "mentioned": "E-Mail vom 12.06.2023",
                                                                  "citations": []}]}}
         line = {i["item_id"]: i for i in build_items(state2, mentioned)}["document:mention-0"]
+        mine = [{"id": "ed_1", "op": "add_document", "args": {"title": "Wohnungsabnahmeprotokoll", "why": "Steht nicht in den Akten", "step": "klaeren"}}]
+        added = core.evaluate(wf, [], mine, {"facts": bare, "documents": []}, "c")
+        row = next(i for i in build_items(added, {"facts": bare}) if i["kind"] == "document" and i["label"]["de"] == "Wohnungsabnahmeprotokoll")
+        self.assertEqual(row["ask"], "now")  # the handler's own addition is ticked at once; only the agents' guesses are offered
         rejected = {"document": "mietvertrag", "status": "unusable", "verdict": "rejected", "files": ["f"], "citations": [], "note": "x"}
         disputed = core.evaluate(wf, [], [], {"facts": bare, "documents": [rejected]}, "c")
         row = {i["item_id"]: i for i in build_items(disputed, {"facts": bare, "documents": [rejected]})}["document:mietvertrag"]

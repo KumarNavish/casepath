@@ -303,6 +303,15 @@ function bindRail() {
     await api(`/api/runs/${runId}/continue`, { method: "POST" }).catch(() => {});
     renderCase();
   });
+  const addDoc = $("#add-doc");  // the handler asks for one more document: type it, Enter, one reason; ticked at once
+  if (addDoc) addDoc.addEventListener("keydown", (e) => { if (e.key === "Enter" && addDoc.value.trim()) { S.addDoc = addDoc.value.trim(); renderCase(); } });
+  for (const b of document.querySelectorAll("[data-add-doc-reason]")) b.addEventListener("click", async () => {
+    const title = S.addDoc, code = b.dataset.addDocReason; S.addDoc = null;
+    const step = (S.data.evaluation && S.data.evaluation.current && S.data.evaluation.current.step) || undefined;
+    await api(`/api/cases/${S.route.id}/edits`, { method: "POST", body: JSON.stringify({ op: "add_document", args: { title, why: REASONS[code], ...(step ? { step } : {}) },
+      reason: "", reason_code: code, recheck: false }) }).catch((error) => { S.message = error.message; });
+    await loadCase();
+  });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
     continueRun.disabled = true;
@@ -1389,6 +1398,9 @@ function preparedView(ev, draft) {
     ${draft ? `<pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>` : ""}
     ${all.length ? `<p class="cp-muted" style="margin:12px 0 4px">${T("The letter's list: untick what is not needed, tick what an offer should add.", "Liste des Briefs: Nicht Nötiges abwählen, Angebotenes anwählen.")}</p>
       <ul class="cp-checklist">${all.filter(on).map((i) => line(i, textOf(i))).join("")}${all.filter((i) => !on(i)).map((i) => line(i, textOf(i))).join("")}</ul>` : ""}
+      ${S.addDoc ? `<p class="cp-reasons"><span class="cp-muted">${T(`Add “${esc(S.addDoc)}” because:`, `«${esc(S.addDoc)}» verlangen, weil:`)}</span>
+          ${["2", "4", "5"].map((code) => `<button class="cp-chip" data-add-doc-reason="${code}">${esc(T(REASONS_EN[code], REASONS[code]))}</button>`).join("")}</p>`
+        : `<p><input id="add-doc" class="cp-input" maxlength="200" placeholder="${T("Add a document … (Enter)", "Unterlage hinzufügen … (Enter)")}" aria-label="${T("Add a document", "Unterlage hinzufügen")}"></p>`}
     ${draft ? `<p><button class="cp-button primary" id="copy-draft">${T("Copy letter", "Brief kopieren")}</button> <span class="cp-muted">${T("Draft · not sent — a person decides", "Entwurf · nicht versendet – ein Mensch entscheidet")}</span></p>` : ""}
     <p class="cp-tools">${followUpLine()}${followUpLine() ? " · " : ""}<button class="cp-link" id="phone-note">${T("Record phone note", "Telefonnotiz erfassen")}</button> · <button class="cp-link" data-note="case:0">${T("Note", "Anmerkung")}</button></p>
   </section>`;

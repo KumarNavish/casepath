@@ -119,9 +119,9 @@ def build_items(state, result, files=None):
                 ask = "proposed"  # practice is split: a mention of the missing document ticks it as its own line
             elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
                 ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
-            elif graph.get("action_by_stage") and d.get("edit") and not d.get("knowledge"):
+            elif graph.get("action_by_stage") and str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"):  # an agent's guess
                 ask = "proposed"  # the process builder's own addition: offered in the checklist, unticked, for the handler to tick
-            elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (d.get("edit") and not d.get("knowledge"))):
+            elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"))):
                 ask = "now"  # in the handler's workflow a need whose condition nobody has established waits: it is asked later
             elif row["required"] == "depends":
                 ask = "later"
