@@ -338,6 +338,22 @@
     "title": "StatusChange",
     "type": "object"
    },
+   "StudyCopyRequest": {
+    "properties": {
+     "expert": {
+      "maxLength": 40,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Expert",
+      "type": "string"
+     }
+    },
+    "required": [
+     "expert"
+    ],
+    "title": "StudyCopyRequest",
+    "type": "object"
+   },
    "ValidationError": {
     "properties": {
      "ctx": {
@@ -790,6 +806,44 @@
     "summary": "Upload"
    }
   },
+  "/api/cases/{case_id}/freeze": {
+   "post": {
+    "description": "Fix the case's latest completed run for a study: every expert's copy will show exactly this run.",
+    "operationId": "freeze_api_cases__case_id__freeze_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Freeze"
+   }
+  },
   "/api/cases/{case_id}/own-answer": {
    "post": {
     "description": "The own answer before CasePath's result: stored, hashed and frozen with the reveal, once per person and case.",
@@ -921,6 +975,92 @@
      }
     },
     "summary": "Start Run"
+   }
+  },
+  "/api/cases/{case_id}/study-check": {
+   "get": {
+    "description": "A session starts only if this is still true; the screen refuses to start otherwise.",
+    "operationId": "study_check_api_cases__case_id__study_check_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Study Check"
+   }
+  },
+  "/api/cases/{case_id}/study-copy": {
+   "post": {
+    "description": "One expert's own copy of a frozen case: the same files, the frozen run, no run of its own.",
+    "operationId": "study_copy_api_cases__case_id__study_copy_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StudyCopyRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Study Copy"
    }
   },
   "/api/cases/{case_id}/workflow": {
@@ -1555,6 +1695,56 @@
      }
     },
     "summary": "Feedback"
+   }
+  },
+  "/api/study/plan": {
+   "get": {
+    "description": "One expert's session: the practice case, then the frozen study cases in an order rotated by the expert's position,\nthe own answer first on the first of them (FEEDBACK_DESIGN, review point 5). Built, not used until the study opens.",
+    "operationId": "study_plan_api_study_plan_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "expert",
+      "required": true,
+      "schema": {
+       "pattern": "^[A-Za-z0-9_-]{1,40}$",
+       "title": "Expert",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "position",
+      "required": true,
+      "schema": {
+       "maximum": 20,
+       "minimum": 0,
+       "title": "Position",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Study Plan"
    }
   },
   "/api/workflows": {

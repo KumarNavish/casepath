@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
 
-from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import Depends, Query, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
@@ -77,7 +77,7 @@ class OwnAnswer(BaseModel):
     action_other: str = Field("", max_length=500)
 
 
-SERVER_KINDS = {"unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
+SERVER_KINDS = {"study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
                 "item.confirmed", "correction.undone", "point.settled"}  # written by the server only
 
 
@@ -85,6 +85,10 @@ class EventRequest(BaseModel):
     kind: str = Field(min_length=3, max_length=40)
     item_id: str | None = Field(None, max_length=120, pattern=r"^[a-z_]+:[A-Za-z0-9_.:-]{1,100}$")
     fields: dict = Field(default_factory=dict)
+
+
+class StudyCopyRequest(BaseModel):
+    expert: str = Field(min_length=1, max_length=40, pattern=r"^[A-Za-z0-9_-]+$")  # a pseudonym, never a name
 
 
 class CutRequest(BaseModel):
@@ -409,10 +413,73 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
-                "case": current["case"], "files": store.list_files(case_id), "run": store.latest_run(case_id),
+                "case": current["case"], "files": store.list_files(case_id),
+                "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
                 "feedback": store.list_feedback(completed["id"]) if completed else []}
+
+    def frozen_of(case_id):
+        return next((e for e in reversed(store.list_case_events(case_id)) if e["kind"] == "study.frozen"), None)
+
+    def study_mismatch(case_id, expected):
+        """Why a study copy must not start, or None: its item list or workflow version differs from the frozen run's."""
+        current = state(case_id)
+        if not current["run"] or current["run"]["id"] != expected["frozen_run_id"]:
+            return "Der eingefrorene Lauf fehlt."
+        if (current.get("workflow") or {}).get("version") != expected["workflow_version"]:
+            return "Die Prozessversion weicht vom eingefrorenen Lauf ab."
+        if items_sha256(build_items(current, current["run"].get("result"), store.list_files(case_id))) != expected["items_sha256"]:
+            return "Die Punkteliste weicht vom eingefrorenen Lauf ab."
+        return None
+
+    @app.post("/api/cases/{case_id}/freeze", status_code=201)
+    def freeze(case_id: str, who=Depends(user)):
+        """Fix the case's latest completed run for a study: every expert's copy will show exactly this run."""
+        current = state(case_id)
+        if not current["run"] or (current["case"].get("intake") or {}).get("study"):
+            raise HTTPException(409, "Nur ein vorbereiteter Fall (keine Studienkopie) kann eingefroren werden.")
+        listed = build_items(current, current["run"].get("result"), store.list_files(case_id))
+        return record(case_id, who, "study.frozen", frozen_run_id=current["run"]["id"], items_sha256=items_sha256(listed),
+                      workflow_version=(current.get("workflow") or {}).get("version"))
+
+    @app.post("/api/cases/{case_id}/study-copy", status_code=201)
+    def study_copy(case_id: str, body: StudyCopyRequest, who=Depends(user)):
+        """One expert's own copy of a frozen case: the same files, the frozen run, no run of its own."""
+        frozen = frozen_of(case_id)
+        if frozen is None:
+            raise HTTPException(409, "Der Fall ist nicht eingefroren.")
+        expected = {k: frozen[k] for k in ("frozen_run_id", "items_sha256", "workflow_version")}
+        if reason := study_mismatch(case_id, expected):
+            raise HTTPException(409, reason)
+        source = state(case_id)["case"]
+        copy = store.create_case(f"{source['title']} · Studie {body.expert}"[:300],
+                                 {**(source.get("intake") or {}), "study": {"source_case": case_id, "expert": body.expert, **expected}}, who)
+        for f in store.list_files(case_id, with_text=True):
+            data, row = store.file_bytes(f["id"])
+            store.add_file(copy["id"], row["name"], row["media_type"], row["kind"], data, f["extraction"], who)
+        record(case_id, who, "study.copied", copy=copy["id"], expert=body.expert)
+        return copy
+
+    @app.get("/api/study/plan")
+    def study_plan(expert: str = Query(..., pattern=r"^[A-Za-z0-9_-]{1,40}$"), position: int = Query(..., ge=0, le=20), who=Depends(user)):
+        """One expert's session: the practice case, then the frozen study cases in an order rotated by the expert's position,
+        the own answer first on the first of them (FEEDBACK_DESIGN, review point 5). Built, not used until the study opens."""
+        practice = os.environ.get("CASEPATH_STUDY_PRACTICE_CASE")
+        frozen = [c["id"] for c in store.list_cases() if not (c.get("intake") or {}).get("study") and frozen_of(c["id"])]
+        order = frozen[position % len(frozen):] + frozen[:position % len(frozen)] if frozen else []
+        steps = ([{"case": practice, "kind": "practice"}] if practice else []) + [
+            {"case": cid, "kind": "study", "own_answer_first": i == 0} for i, cid in enumerate(order)]
+        return {"expert": expert, "position": position, "steps": steps, "ready": bool(practice) and len(order) == 3}
+
+    @app.get("/api/cases/{case_id}/study-check")
+    def study_check(case_id: str, who=Depends(user)):
+        """A session starts only if this is still true; the screen refuses to start otherwise."""
+        study = (found(store.get_case, case_id).get("intake") or {}).get("study")
+        if not study:
+            return {"ok": True, "study": False}
+        reason = study_mismatch(case_id, study)
+        return {"ok": reason is None, "study": True, "reason": reason}
 
     @app.delete("/api/cases/{case_id}")
     def delete_case(case_id: str, who=Depends(user)):
@@ -449,6 +516,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         found(store.get_case, case_id)
         if body.kind not in EVENT_KINDS or body.kind in SERVER_KINDS:
             raise HTTPException(422, "Unknown event kind, or one only the server writes.")
+        study = (store.get_case(case_id).get("intake") or {}).get("study")
+        if body.kind == "session.started" and study and (reason := study_mismatch(case_id, study)):
+            raise HTTPException(409, reason)  # a session starts only on the frozen run's exact item list
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
         if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
@@ -567,6 +637,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.post("/api/cases/{case_id}/runs", status_code=202)
     def start_run(case_id: str, request: Request, who=Depends(user)):
+        if (found(store.get_case, case_id).get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie wird nicht neu vorbereitet: sie zeigt den eingefrorenen Lauf.")
         try:
             return runs.start(case_id, who, model_token(request))
         except NotFound:
@@ -669,7 +741,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                    before=change["current_step"]["before"], after=change["current_step"]["after"])
         recheck = None
         added = [d["document"] for d in change["documents_added"]]
-        if body.recheck and added and before["run"] is not None:
+        if body.recheck and added and before["run"] is not None and not (before["case"].get("intake") or {}).get("study"):  # no model call in a study copy
             try:
                 recheck = runs.recheck(case_id, added, who, model_token(request))
             except Conflict:

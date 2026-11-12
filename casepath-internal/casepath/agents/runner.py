@@ -25,7 +25,8 @@ def case_state(store, catalogue, case_id, knowledge=None):
 
     knowledge: a Knowledge version to apply instead of the store's active items (for a model-free replay)."""
     case = store.get_case(case_id)
-    run = store.latest_run(case_id, "completed")
+    study = (case.get("intake") or {}).get("study")  # a study copy shows its source's frozen run, never one of its own
+    run = store.get_run(study["frozen_run_id"]) if study else store.latest_run(case_id, "completed")
     result = (run or {}).get("result") or {}
     workflow = None
     # A run names the workflow version it used; when that version is no longer shipped, the latest one of the same workflow governs.

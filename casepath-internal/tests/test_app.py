@@ -343,6 +343,28 @@ class AppTests(unittest.TestCase):
         self.assertEqual(manifest["format"], "casepath.parity/1")
         self.assertIn("source_tree_sha256", manifest)
 
+    def test_a_study_copy_shows_the_frozen_run_and_refuses_to_start_when_its_items_differ(self):
+        client = self.client()
+        case, file = self.new_case(client, "Studienfall")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        self.assertEqual(client.post(f"/api/cases/{case['id']}/study-copy", json={"expert": "E1"}).status_code, 409)  # not frozen yet
+        frozen = client.post(f"/api/cases/{case['id']}/freeze").json()
+        copy = client.post(f"/api/cases/{case['id']}/study-copy", json={"expert": "E1"}).json()
+        shown = client.get(f"/api/cases/{copy['id']}").json()
+        self.assertEqual((shown["run"]["id"], shown["items_sha256"]), (frozen["frozen_run_id"], frozen["items_sha256"]))
+        self.assertTrue(client.get(f"/api/cases/{copy['id']}/study-check").json()["ok"])
+        self.assertEqual(client.post(f"/api/cases/{copy['id']}/runs").status_code, 409)  # never a run of its own
+        self.assertEqual(client.post(f"/api/cases/{copy['id']}/events", json={"kind": "session.started"}).status_code, 201)
+        client.put(f"/api/cases/{copy['id']}/workflow", json={"workflow_id": "example-defect"})
+        client.post(f"/api/cases/{copy['id']}/edits", json={"op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"},
+                                                         "reason": "", "reason_code": "1", "recheck": False})
+        check = client.get(f"/api/cases/{copy['id']}/study-check").json()
+        self.assertFalse(check["ok"])  # the copy's items moved away from the frozen run
+        self.assertEqual(client.post(f"/api/cases/{copy['id']}/events", json={"kind": "session.started"}).status_code, 409)
+        plan = client.get("/api/study/plan", params={"expert": "E2", "position": 1}).json()
+        self.assertEqual([(s["case"], s["own_answer_first"]) for s in plan["steps"]], [(case["id"], True)])  # one frozen case here
+        self.assertFalse(plan["ready"])  # no practice case and not three cases: the study cannot open
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

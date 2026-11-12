@@ -73,7 +73,10 @@ def manifest(settings=None, catalogue_dir=None, knowledge=None, extra=None):
         "source_tree_sha256": tree, "source_files": count,
         "git": git_commit(),
         "workflows": workflows,
-        "knowledge": {k["id"]: {"version": k.get("version"), "status": k.get("status"), "sha256": _digest(k)} for k in knowledge or []},
+        # By content fields only, so use statistics and history do not change it (study review point 7).
+        "knowledge": {k["id"]: {"version": k.get("version"), "status": k.get("status"),
+                                "sha256": _digest({f: k.get(f) for f in ("kind", "family", "content", "applies_when", "status", "version")})}
+                      for k in knowledge or []},
         "model": None if model is None else {"provider": model.provider, "name": model.deployment, "api": model.api,
                                              "reading": model.reading_deployment, "endpoint_host": model.endpoint.split("/")[2]},
         "interface_language_default": "de",
