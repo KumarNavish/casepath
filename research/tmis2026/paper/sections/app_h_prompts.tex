@@ -2,7 +2,7 @@
 \label{app:workflows}
 \label{app:prompts}
 
-This appendix gives the texts that define each design of Study~3. The product's texts are quoted from commit 6a72159c of the package (paths below \texttt{casepath-internal/\allowbreak{}casepath/}); the baselines' texts from the harness under \texttt{research/\allowbreak{}tmis2026/\allowbreak{}harness/}, unchanged since repository commit a062edd8, which the run manifest of Study~3 records. Quotations keep the source's line breaks where they fit; \texttt{[...]} marks text left out, and nothing is added. The instructions of the product's other agents are in the Supplement (Section~\ref{S-supp:agent-prompts}), and the instructions of Study~1 in Supplement, Section~\ref{S-app:prompts}.
+This section gives the texts that define each design of Study~3. The product's texts are quoted from commit 6a72159c of the package (paths below \texttt{casepath-internal/\allowbreak{}casepath/}); the baselines' texts from the harness under \texttt{research/\allowbreak{}tmis2026/\allowbreak{}harness/}, unchanged since repository commit a062edd8, which the run manifest of Study~3 records. Quotations keep the source's line breaks where they fit; \texttt{[...]} marks text left out, and nothing is added. The instructions of the product's other agents are in the Supplement (Section~\ref{supp:agent-prompts}), and the instructions of Study~1 in Supplement, Section~\ref{app:prompts}.
 
 \subsection{The product's reading form}
 \label{app:reading-form}
@@ -119,7 +119,7 @@ holds = documents whose requirement depends on a still-unresolved fact (ask firs
 All baselines of Study~3 run on the cost-efficient model unless the design names the frontier model, and every output is constrained by a JSON schema released with the harness.
 
 \paragraph{Rules in context}
-For tenancy (\texttt{v2/\allowbreak{}tenancy\_v2.py}, function \texttt{run\_b1v2}), the system message is Study~1's case-reading policy, two added sentences, the rules as JSON headed ``ADMITTED RULES (identical for every claim):'', with the silence clause of each template, and Study~1's task of Rules in context with one added sentence; the user message is ``CLAIM SOURCES:'' and the claim's files as JSON. The policy and the task are in Appendix~\ref{app:baseline-s1}; the additions follow. For theft (\texttt{v2/\allowbreak{}theft\_v2.py}, lines 70--72), the system message is Study~1's theft policy, the 197 source passages, the catalogue, the reviewed rules and Study~1's theft task (Appendix~\ref{app:baseline-s1}); the rules carry the headings quoted below. The frontier design sends the same messages to the frontier model.
+For tenancy (\texttt{v2/\allowbreak{}tenancy\_v2.py}, function \texttt{run\_b1v2}), the system message is Study~1's case-reading policy, two added sentences, the rules as JSON headed ``ADMITTED RULES (identical for every claim):'', with the silence clause of each template, and Study~1's task of Rules in context with one added sentence; the user message is ``CLAIM SOURCES:'' and the claim's files as JSON. The policy and the task are in Section~\ref{app:baseline-s1}; the additions follow. For theft (\texttt{v2/\allowbreak{}theft\_v2.py}, lines 70--72), the system message is Study~1's theft policy, the 197 source passages, the catalogue, the reviewed rules and Study~1's theft task (Section~\ref{app:baseline-s1}); the rules carry the headings quoted below. The frontier design sends the same messages to the frontier model.
 
 \needspace{10\baselineskip}
 \begin{lstlisting}[title={\textbf{Rules in context, tenancy: added to the policy} (\texttt{v2/tenancy\_v2.py}, lines 42--45, verbatim)}]
@@ -145,7 +145,7 @@ Routes that confirm a condition once it holds:
 Self-consistency sends the messages of Rules in context five times per run. A document is requested when more than half of the five answers request it; otherwise it is held when more than half request or hold it (\texttt{analysis/\allowbreak{}study3.py}, function \texttt{majority}).
 
 \paragraph{Model executes rules}
-For tenancy (\texttt{product/\allowbreak{}baselines.py}, lines 90--104), the system message is that of Rules in context with Study~1's task of Model executes rules (Appendix~\ref{app:baseline-s1}), in which two passages are replaced. Step~4's first sentence about strong three-valued logic becomes the first passage below, and the decision rule is preceded by the second. For theft (\texttt{product/\allowbreak{}baselines\_theft.py}, lines 69--74), the system message is that of Rules in context with the task below in place of the theft task.
+For tenancy (\texttt{product/\allowbreak{}baselines.py}, lines 90--104), the system message is that of Rules in context with Study~1's task of Model executes rules (Section~\ref{app:baseline-s1}), in which two passages are replaced. Step~4's first sentence about strong three-valued logic becomes the first passage below, and the decision rule is preceded by the second. For theft (\texttt{product/\allowbreak{}baselines\_theft.py}, lines 69--74), the system message is that of Rules in context with the task below in place of the theft task.
 
 \needspace{10\baselineskip}
 \begin{lstlisting}[title={\textbf{Model executes rules, tenancy: the two replacing passages} (\texttt{product/baselines.py}, lines 97--98 and 101--102, verbatim)}]

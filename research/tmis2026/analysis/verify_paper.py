@@ -5,8 +5,10 @@
    number macros; they must equal the saved files and paper/results/numbers.tex
    byte for byte.
 2. Every citation key resolves to references.bib.
-3. The Study 3 and ShARC macros regenerate from their result files byte for byte
-   (make_numbers_study3.py, make_numbers_sharc.py, make_numbers_followup.py; the saved files are restored afterwards).
+3. The Study 3, ShARC, review, feedback and post-hoc macros regenerate from their result files byte for byte
+   (make_numbers_study3.py, make_numbers_sharc.py, make_numbers_followup.py, make_numbers_study3_review.py,
+   make_numbers_study3_feedback.py; lint_followup.py writes analysis/posthoc_numbers.tex, copied to
+   paper/results/numbers_posthoc.tex; the saved files are restored afterwards).
 4. Structure of the included sections: no removed figure in the body, no "expert review" wording,
    model names in Sections 1-9 only once, in Section 6.
 5. The paper (main.tex, and supplement.tex when present, built main, supplement, main) compiles from a
@@ -56,7 +58,9 @@ if not PAPER_ONLY:
          "" if before == after else f"{sum(a != b for a, b in zip(before.splitlines(), after.splitlines()))} lines differ")
 
 # 3. Study 3 and ShARC macros from their result files (no model calls).
-for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex"), ("make_numbers_followup.py", "numbers_followup.tex")):
+for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_numbers_sharc.py", "numbers_sharc.tex"),
+                     ("make_numbers_followup.py", "numbers_followup.tex"), ("make_numbers_study3_review.py", "numbers_study3_review.tex"),
+                     ("make_numbers_study3_feedback.py", "numbers_study3_feedback.tex")):
     target = PAPER / "results" / name
     saved = target.read_bytes()
     try:
@@ -66,6 +70,20 @@ for script, name in (("make_numbers_study3.py", "numbers_study3.tex"), ("make_nu
         step(f"{name} reproduces byte for byte", same, r.stderr[-300:] if r.returncode else "")
     finally:
         target.write_bytes(saved)
+
+# Post-hoc decomposition and lint macros: lint_followup.py writes analysis/posthoc_numbers.tex from the stored runs and
+# decomposition.json (no model calls); the paper reads a copy, paper/results/numbers_posthoc.tex, made here.
+src, target = HERE / "posthoc_numbers.tex", PAPER / "results" / "numbers_posthoc.tex"
+saved_src = src.read_bytes()
+saved = target.read_bytes() if target.exists() else None
+r = subprocess.run([sys.executable, "lint_followup.py"], cwd=HERE, env={**os.environ, "TMIS_BUDGET_USD": "0"},
+                   capture_output=True, text=True)
+same_src = r.returncode == 0 and src.read_bytes() == saved_src
+step("posthoc_numbers.tex reproduces byte for byte", same_src, r.stderr[-300:] if r.returncode else "")
+if not same_src:
+    src.write_bytes(saved_src)
+step("numbers_posthoc.tex is the copy of posthoc_numbers.tex", saved == src.read_bytes())
+target.write_bytes(src.read_bytes())
 
 # 4. Structure of the sections that main.tex includes.
 main = (PAPER / "main.tex").read_text()

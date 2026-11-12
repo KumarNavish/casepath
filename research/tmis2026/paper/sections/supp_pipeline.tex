@@ -1,0 +1,53 @@
+\section{The pipeline in detail}
+\label{supp:pipeline}
+
+This section keeps the description of the product that the article's Section~\ref{M-sec:casepath} shortens: the full pipeline text, what each step may change, Knowledge, the interface and the parity command, as of commit 6a72159c.
+
+\subsection{The steps}
+A claim passes through a fixed sequence of steps (Figure~\ref{M-fig:pipeline} of the article); each agent is a separate model conversation with its own instructions and tools. First, the \emph{router} reads each of the first twelve files, whole up to 12,000 characters and otherwise its beginning and end; a routing value counts only with a quotation found in a file. Code selects the workflow whose condition the values satisfy, or the only workflow whose condition they leave open, whose routing facts then count as presumed. Several candidates go to a person; a fallback workflow is used only when no workflow can apply.
+
+Two agents run before the readings. The \emph{claim reader} writes a brief: the request, the parties and a dated timeline, each entry kept only with a quotation found in the file. The \emph{process builder} may add up to six document needs, questions or steps, each resting on a statute article, a quotation or a Knowledge item, and suggestions only unless that item is active.
+
+The readings follow (Section~\ref{M-sec:admission}). The claim reader makes the first and the source checker the others, each a separate request that answers every condition of the workflow; Table~\ref{M-tab:admission} decides what is admitted. If the readings admit a routing fact that contradicts the chosen workflow's condition, code routes once more on the admitted value and runs the workflow it selects; a second contradiction, or no single workflow, hands the claim to a person.
+
+The \emph{document finder} matches each need to a file and quotes it. A file that only mentions a document does not meet the need; a document counts as present only if the file named for it shows every item the need lists. A \emph{second judgment}, one independent model call, must name the same file and quote each item; otherwise the document is unusable and stays requested. The \emph{source checker} sees each fact and document with its quoted passages only and accepts or rejects it; its doubt about a fact every reading agrees on becomes a flag for the case handler, not a change. Rejected items are tried once more. The \emph{result checker} writes a summary, the open points, a reply draft whose statements name the findings they rest on, and proposals for Knowledge. Evaluation is code: exact deferral (Section~\ref{M-sec:exact}) over the admitted facts, the presumptions and the accepted documents.
+
+Table~\ref{tab:agents} states what each step reads and may change, as the code enforces it; once the readings are in, the tool that records a fact refuses any deciding or routing fact. In a claim over 40,000 characters the claim reader records the facts with its tools, and the further readings see keyword passages instead of the full text.
+
+\begin{table}[h]
+\caption{What each step of the pipeline reads and may change, at commit 6a72159c. ``Code'' marks steps without a model.}
+\label{tab:agents}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Agent or step & Reads & May change & May never change \\
+\midrule
+Router & the routing questions; each of the first twelve files, whole up to 12,000 characters, else its beginning and end & routing-fact values, each with a quotation found in a file & which workflow applies (code selects it); a workflow a case handler chose \\
+Claim reader (brief) & the files & the brief; a timeline entry only with a quotation found & a deciding fact once the readings are in \\
+Process builder & the case's process, its Knowledge, the files & adds up to six needs, questions or steps, each with a basis; suggestions unless the basis is active Knowledge & the workflow's own needs and steps; any fact \\
+Readings 1--3 & the full text of the files (up to 40,000 characters); the conditions & one answer per condition: true, false, open or not stated, with a quotation & a value alone: it counts only as Table~\ref{M-tab:admission} admits it \\
+Presumptions (code) & the workflow's presumptions; every reading's answer & an unstated fact, set to its presumed value & a fact a reading gives another value; a fact a reading answers open with words found, unless a reading gives the presumed value \\
+Document finder & the files; the case's process & each need's status (present, unusable, mentioned only, absent), quoting the file named for it & facts; the process \\
+Second judgment & each need found present, its items, the files & a present document to unusable & nothing becomes present by it \\
+Source checker & each item's claim and quoted passages, without the other agents' reasoning & accepts or rejects facts and documents; present to unusable when an item is not shown & a deciding fact all readings agree on (only flagged) \\
+Result checker & the process, the evaluated checklist, the findings, the files & summary, answer, open points, reply draft, Knowledge proposals & facts, documents, the checklist \\
+Evaluation (code) & the case's process; admitted facts; presumptions; accepted documents & the checklist: \request, \hold with a question, \onfile, \skipd & --- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Knowledge}
+\label{sec:knowledge}
+
+Knowledge holds what an organisation learns from cases, per workflow; the test did not exercise it, and every run started from an empty store. A case handler's change marked ``Use for similar cases'', or a result checker's proposal, becomes a candidate that reaches no other case until a person activates it. A learned item can add a need, a question, a step or a note, but cannot remove a need or set a fact's value; an item contradicted more often than confirmed is marked for review.
+
+\subsection{The interface}
+\label{sec:interface}
+
+The interface shows each case in an overview and one view per agent; every fact and document links to its quotation (Figure~\ref{M-fig:hero}), and a case handler can change the case's process only with a reason.
+
+\subsection{Parity}
+\label{sec:parity}
+
+The same package runs inside the insurer and outside it; only workflows, Knowledge, case files and configuration may differ. The command \texttt{python -m casepath parity} prints a SHA-256 hash over every source file of the package, with hashes of the workflows and Knowledge items, the model and the run settings. Equal source hashes prove that two deployments run identical code, and say nothing about the model, workflows or data.
+

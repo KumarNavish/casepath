@@ -9,8 +9,10 @@ the line's end; 95% family-bootstrap bands for CasePath and the frontier single 
 own share; a second marker at REAL_SHARE when it is set (the share observed in real files; default None, not drawn).
 
 fig_budget (F4): errors against cost per case (log axis), tenancy and theft. CasePath, checklist only, with the first
-k = 1, 2, 3 readings (one line), Self-consistency with m = 1 ... 15 samples (one line), Rules in context and the
-frontier single prompt as single points (hollow = frontier model, as fig_s6). Points labelled with k or m.
+k = 1, 2, 3 readings (one line), Self-consistency with m = 1 ... 15 samples (one line; m = 1 is the mean of single
+samples from the 15 stored ones), Rules in context as registered (its own runs; a hollow diamond under the line's dots, because its value is
+not the m = 1 value) and the frontier single prompt (one open circle). Only m = 1, 5, 15 and k = 1, 2, 3 are labelled;
+label offsets are set by hand (BUDGET_NUDGE) and were checked for collisions with marks, lines and other labels.
 
 Themed by figtheme.py, like fig_s6.py; direct labels, no legend box. Values come from study3_feedback.json only.
 """
@@ -73,19 +75,31 @@ def fig_share():
         col = CP if d == "casepath" else OTHER
         ax.plot([0, 1], [s_, o_], color=col, lw=th.THICK, solid_capstyle="round", zorder=3,
                 ls=(0, (3, 1.6)) if d == "ric_frontier" else "-")
-    # labels at the right end, spaced so that none overlaps
+    # labels at the right end: spread symmetrically about their ends until none overlaps, each on a short (elbow) leader
+    # from the line's end (labels start right of the elbow, so no leader crosses a label)
     order = sorted(ends, key=lambda d: ends[d][1])
-    min_gap = 0.075 * top_y
-    placed = []
+    min_gap = 0.085 * top_y
+    pos = {d: ends[d][1] for d in order}
+    for _ in range(200):
+        moved = False
+        for lo_d, hi_d in zip(order, order[1:]):
+            gap_ = pos[hi_d] - pos[lo_d]
+            if gap_ < min_gap - 1e-9:
+                push = (min_gap - gap_) / 2
+                pos[lo_d] -= push
+                pos[hi_d] += push
+                moved = True
+        if not moved:
+            break
+    x_end, x_elbow, x_text = 1.0, 1.03, 1.06
     for d in order:
-        yy = ends[d][1]
-        if placed and yy - placed[-1] < min_gap:
-            yy = placed[-1] + min_gap
-        placed.append(yy)
-        ax.annotate(LABELS[d], (1, ends[d][1]), xytext=(1.02, yy), textcoords="data", ha="left", va="center",
-                    fontsize=th.NOTE, color=CP if d == "casepath" else th.INK, fontweight=th.BOLD if d == "casepath" else "normal",
-                    annotation_clip=False,
-                    arrowprops=dict(arrowstyle="-", color=LIGHT, lw=th.THIN, shrinkA=0, shrinkB=0) if abs(yy - ends[d][1]) > 1e-9 else None)
+        y_end, yy = ends[d][1], pos[d]
+        ax.plot([x_end + 0.006, x_elbow, x_text - 0.008], [y_end, yy, yy], color=LIGHT, lw=th.THIN, clip_on=False,
+                solid_capstyle="butt", zorder=2)
+        ax.text(x_text, yy, LABELS[d], ha="left", va="center", fontsize=th.NOTE, clip_on=False,
+                color=CP if d == "casepath" else th.INK, fontweight=th.BOLD if d == "casepath" else "normal")
+    ax.tick_params(axis="x", pad=4)
+    ax.tick_params(axis="y", pad=4)
     for q, lab in ((q_test, f"this test ({100 * q_test:.0f}%)"), (REAL_SHARE, "real files" if REAL_SHARE is None else f"real files ({100 * REAL_SHARE:.0f}%)")):
         if q is None:
             continue
@@ -94,7 +108,26 @@ def fig_share():
     th.save(fig, FIG / "fig_share.pdf", PREVIEW)
 
 
+# fig_budget label placement, by hand and checked for collisions: (dx, dy, ha, va) in points from the point
+M_SHOWN = ("1", "5", "15")
+BUDGET_NUDGE = {"m": {"1": (0, -5, "center", "top"), "5": (2, 5, "left", "bottom"), "15": (0, 5, "center", "bottom")},
+                "k": {"1": (0, 5, "center", "bottom"), "2": (-3, -4, "right", "top"), "3": (6, 0, "left", "center")},
+                "ric": (0, 6, "center", "bottom"), "ric_frontier": (0, -7, "center", "top")}
+BUDGET_NUDGE_THEFT = {"m": {"1": (0, 5, "center", "bottom")}, "ric": (0, -6, "center", "top"),
+                      "ric_frontier": (4, -6, "left", "top")}
+
+
+def _nudge(regime, *path):
+    over = BUDGET_NUDGE_THEFT if regime == "theft" else {}
+    v_over, v = over, BUDGET_NUDGE
+    for p in path:
+        v = v[p]
+        v_over = v_over.get(p, {}) if isinstance(v_over, dict) else {}
+    return v_over if isinstance(v_over, tuple) else v
+
+
 def fig_budget():
+    """Errors against cost per case (log axis): readings k = 1, 2, 3 against self-consistency m = 1 ... 15."""
     import matplotlib.pyplot as plt
     from matplotlib.ticker import FixedLocator, NullLocator
     th.setup()
@@ -106,6 +139,7 @@ def fig_budget():
     ph, gapv, bottom = 1.55, 0.62, 0.46
     panels = (("tenancy", "Tenancy", "strict unsafe errors per claim", "strict_unsafe_per_claim", "USD per claim"),
               ("theft", "Theft", "wrong + missed changes per pair", "errors_per_pair", "USD per text"))
+    note = dict(fontsize=th.NOTE, color=th.INK)
     for i, (regime, title, ylab, key, xlab) in enumerate(panels):
         y0 = bottom + (1 - i) * (ph + gapv)
         ax = fig.add_axes([left / th.WIDTH, y0 / H, (th.WIDTH - left - right) / th.WIDTH, ph / H])
@@ -117,7 +151,7 @@ def fig_budget():
         ax.xaxis.set_major_locator(FixedLocator(ticks))
         ax.xaxis.set_minor_locator(NullLocator())
         ax.set_xticklabels([f"{t:g}" for t in ticks])
-        ax.tick_params(length=2.5, pad=2)
+        ax.tick_params(length=2.5, pad=3)
         ax.set_ylabel(ylab, labelpad=3)
         ax.set_xlabel(xlab + " (log scale)", labelpad=3)
         ks = f4["readings"][regime]["by_k"]
@@ -126,30 +160,38 @@ def fig_budget():
         ymax = max([v[key] for v in ks.values()] + [v[key] for v in ms.values()] + [pts[d]["errors"] for d in ("ric", "ric_frontier")])
         ax.set_ylim(0, 0.5 * (int(ymax / 0.5) + 1))
         ax.text(0.0004, ax.get_ylim()[1] * 1.04, title, fontsize=th.TITLE, fontweight=th.BOLD, ha="left", va="bottom")
-        xs = [ms[m]["cost_per_case_run"] for m in sorted(ms, key=int)]
-        ys = [ms[m][key] for m in sorted(ms, key=int)]
+
+        def label(s_, xy, nd, **kw):
+            dx, dy, ha, va = nd
+            ax.annotate(s_, xy, xytext=(dx, dy), textcoords="offset points", ha=ha, va=va, **{**note, **kw})
+
+        # Self-consistency: m = 1 ... 15 samples of the single prompt, majority vote; m = 1 is the mean of single samples
+        m_sorted = sorted(ms, key=int)
+        xs = [ms[m]["cost_per_case_run"] for m in m_sorted]
+        ys = [ms[m][key] for m in m_sorted]
         ax.plot(xs, ys, color=OTHER, lw=th.THICK, zorder=2)
         ax.scatter(xs, ys, s=14, color=OTHER, zorder=3)
-        for j, (m, x, yv) in enumerate(zip(sorted(ms, key=int), xs, ys)):
-            up = j % 2 == 0  # alternate above and below so that neighbouring labels do not touch
-            ax.annotate(f"m={m}", (x, yv), xytext=(0, 5 if up else -5), textcoords="offset points", ha="center",
-                        va="bottom" if up else "top", fontsize=th.NOTE, color=th.INK)
-        ax.annotate("Self-consistency", (xs[-1], ys[-1]), xytext=(6, -2), textcoords="offset points", ha="left", va="top",
-                    fontsize=th.NOTE, color=th.INK)
-        xk = [ks[k]["cost_per_case_run"] for k in sorted(ks, key=int)]
-        yk = [ks[k][key] for k in sorted(ks, key=int)]
+        for m, x, yv in zip(m_sorted, xs, ys):
+            if m in M_SHOWN:
+                label(f"m = {m}", (x, yv), _nudge(regime, "m", m))
+        label("Self-consistency", (xs[-1], ys[-1]), (7, 0, "left", "center"))
+        # Rules in context as registered (its own three runs): a hollow diamond under the dots, since it is not the m = 1 point
+        x, yv = pts["ric"]["cost_per_case_run"], pts["ric"]["errors"]
+        ax.scatter([x], [yv], s=26, marker="D", facecolors="white", edgecolors=OTHER, linewidths=th.THICK * 0.85, zorder=2.5)
+        label("Rules in context", (x, yv), _nudge(regime, "ric"))
+        # the frontier single prompt: one open circle
+        x, yv = pts["ric_frontier"]["cost_per_case_run"], pts["ric_frontier"]["errors"]
+        ax.scatter([x], [yv], s=30, marker="o", facecolors="white", edgecolors=OTHER, linewidths=th.THICK, zorder=4)
+        label("Rules in context, frontier model", (x, yv), _nudge(regime, "ric_frontier"))
+        # CasePath, checklist only, with the first k readings
+        k_sorted = sorted(ks, key=int)
+        xk = [ks[k]["cost_per_case_run"] for k in k_sorted]
+        yk = [ks[k][key] for k in k_sorted]
         ax.plot(xk, yk, color=CP, lw=th.THICK, zorder=4)
         ax.scatter(xk, yk, s=20, color=CP, zorder=5)
-        for k, x, yv in zip(sorted(ks, key=int), xk, yk):
-            last = str(k) == str(max(ks, key=int))
-            ax.annotate(f"k={k}", (x, yv), xytext=(6, 0) if last else (0, -6), textcoords="offset points",
-                        ha="left" if last else "center", va="center" if last else "top", fontsize=th.NOTE, color=CP)
-        ax.annotate("CasePath, checklist only", (xk[0], yk[0]), xytext=(-6, 0), textcoords="offset points", ha="right", va="center",
-                    fontsize=th.NOTE, color=CP, fontweight=th.BOLD)
-        for d, lab, hollow in (("ric", "Rules in context", False), ("ric_frontier", "Rules in context, frontier", True)):
-            x, yv = pts[d]["cost_per_case_run"], pts[d]["errors"]
-            ax.scatter([x], [yv], s=30, marker="o", facecolors="white" if hollow else OTHER, edgecolors=OTHER, linewidths=th.THICK, zorder=4)
-            ax.annotate(lab, (x, yv), xytext=(5, -7), textcoords="offset points", ha="left", va="top", fontsize=th.NOTE, color=th.INK)
+        for k, x, yv in zip(k_sorted, xk, yk):
+            label(f"k = {k}", (x, yv), _nudge(regime, "k", k), color=CP)
+        label("CasePath, checklist only", (xk[0], yk[0]), (-7, 0, "right", "center"), color=CP, fontweight=th.BOLD)
     th.save(fig, FIG / "fig_budget.pdf", PREVIEW)
 
 

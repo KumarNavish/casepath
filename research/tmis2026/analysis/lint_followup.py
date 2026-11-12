@@ -505,6 +505,13 @@ def macros(lf, dc):
             M[f"spostDecTh{MOD[d]}{PART[k]}"] = _num(v["all"][k])
     SG = {"ric": "Ric", "ric_frontier": "RicFrontier", "ric_original": "RicOrig", "ric_original_frontier": "RicOrigFrontier",
           "self_consistency": "SelfCons", "model_executes_rules": "Mer", "react": "React"}
+    KIND = {"unnecessary": "Unnecessary", "missed": "Missed", "handed": "Handed", "premature": "Premature",
+            "silent_skip": "SilentSkip", "held_req": "HeldReq", "spurious_hold": "SpurHold", "strict_unsafe": "Strict",
+            "all_dev": "AllDev"}
+    for d, v in dc["tenancy_single"].items():
+        for sub, s_ in v.items():
+            for k, w in KIND.items():
+                M[f"spostKindTen{SG[d]}{SUBW[sub]}{w}"] = _num(s_[k])
     for d, v in dc["theft_single"].items():
         M[f"spostDecTh{SG[d]}SameAsFloor"] = _num(v["same_as_rule_floor"])
         M[f"spostDecTh{SG[d]}Other"] = _num(v["other"])
