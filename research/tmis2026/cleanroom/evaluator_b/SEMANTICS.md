@@ -88,3 +88,23 @@ flag is active. Needed under every combination: requested (`required_now`, or `s
 - **A8. Conflict in the text, noted.** The silence clause names defining events only for termination and rent
   disputes, but it is copied into the defect rule as well. The defect dispute has no defining event, so all of its
   facts are branch facts. Affects the 52 defect claims, with no alternative applicable.
+
+## Alternative readings (reference_alt_*.json)
+
+`python3 evaluate.py` also writes these files. `reference.json` is unchanged (sha256 2350c0ea…db294). Each file
+keeps the main semantics except for the readings named, and the counts compare it with `reference.json`.
+
+- `reference_alt_A1.json`: a denied defining event (`termination_received`, `claim_received`) is treated as if it
+  had occurred, so the process does not stop. 159 entries differ (not_needed → required_now) across 24 claims.
+- `reference_alt_A2.json`: a defining event that is raised and left open is presumed to have occurred. 63 entries
+  differ (held → required_now) across 9 claims.
+- `reference_alt_A3.json`: an optional document is requested like a mandatory one when its step is reached, and
+  held when reaching that step depends on an open fact. 72 entries differ across 72 claims: 63 not_needed →
+  required_now and 9 not_needed → held.
+- `reference_alt_A4.json`: "family-home ordinary termination" requires `family_home` and not `arrears`. 5 entries
+  differ across 5 claims: 3 required_now → not_needed and 2 held → not_needed.
+- `reference_alt_all.json`: A1 to A4 together. 322 entries differ across all 96 claims: 255 not_needed →
+  required_now, 62 held → required_now, 3 required_now → not_needed and 2 held → not_needed. The total is not the
+  sum of the four files (299) because the readings interact. Under A1 and A2, the optional documents of the
+  24 + 9 claims are reached as well. Under A2, one `spouse_notice_copy` that is held → required_now on its own
+  goes to not_needed under A4 instead.

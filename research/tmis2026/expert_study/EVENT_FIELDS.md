@@ -77,6 +77,7 @@ One row per decision point: the state of a dossier's file immediately before a r
 | `rule_applied` | `outgoing_action`; for the expert point also `first_outgoing_request` or `first_outgoing_action`; plus, content export only, which action and why | code | code and text | new |
 | `transcribable` | whether P can be stated from the file; if false, `exclusion_reason` (code; text in content) and the point is excluded for every system | yes | yes, with text | new |
 | `decision_points_in_dossier` | total number of decision points of the dossier, set once all are found | yes | yes | new |
+| `made_at` | after the product's freeze hash exists (relative time in exports) | yes | yes | new |
 | `sha256` | hash of this record | yes | yes | new |
 
 ## 2. Item record (`casepath.study.item/1`)
@@ -183,14 +184,64 @@ Sources are kept apart; no record merges them into one label. C is derived from 
 
 | Record | Fields | Pseudonymous | Content | Status |
 |---|---|---|---|---|
-| **P** (per study case) | `source_case`, `as_of` (`DP1`; `DP2` if a second point is made), `requested` (catalogue ids of the documents and information in the insurer's first outgoing request), `next_action` (action kind), with `action` (catalogue kind A1–A12 of the frozen catalogue, or `other` when the action in the file fits no entry; `other` counts as disagreement for every system), `next_in_days` and `follow_up` (where the file shows them, else null), `step` (step id, where the mapping names one; kept, but P no longer settles the step), `passage` (verbatim text with page) | ids, kinds, days | plus `passage` | new |
-| **P-later** (per study case) | `source_case`, `requested_later` (catalogue ids, each with a day offset from the decision point), `passage` | ids, offsets | plus `passage` and dates | new |
-| P and P-later, provenance | `made_by` (`automated_labeller`), `made_at` (after the product's freeze hash exists, before any run on the cut copy), `sha256`; `owner_check` (the study lead's check, after the frozen and variation runs): checked (bool), result (`agrees`, `corrected`), `checked_at`; a correction is logged with its reason and both versions are kept | yes | plus what was corrected and why | new |
+| **P** (per sealed dossier and decision point) | `source_case`, `dp_index` (section 1b); `transcriptions`: two, `t1` (by `automated_labeller`) and `t2` (by `independent_session`: a session that did not build the product and sees neither `t1` nor any CasePath or comparator output), each with `requested` (catalogue ids of the documents and information the insurer requested in the action), `action` (catalogue kind A1–A12 of the frozen catalogue, or `other` when the action in the file fits no entry; `other` counts as disagreement for every system), `next_in_days` and `follow_up` (where the file shows them, else null), `days_to_next_action` (whole days to the insurer's next recorded outgoing action; null at the last decision point), `fact_states` (per deciding fact of the handler process: `fact` id and `state` = `stated`, `open` or `not_addressed`; pre-registration 4.6), `step` (step id, where the mapping names one; kept, but P does not settle the step), `passage` (verbatim text with page), `made_at`, `sha256`; `agreement` (t1 against t2, before settlement, per measure: documents agreeing / documents in either, action kind equal (bool), `next_in_days` equal (bool or null), `days_to_next_action` equal (bool or null), fact states agreeing / facts); `settlements` (one per disagreement: field, the two values, the settled value, `reason` code, `settled_at`; made by the study lead before any run output of the sealed dossiers is opened; both versions kept); `settled` (the fields above as settled), with its `sha256` | ids, kinds, days, agreement counts, settlement codes | plus `passage` and settlement reasons in words | new |
+| **P-later** (per study case, expert decision point) | `source_case`, `requested_later` (catalogue ids, each with the `dp_index` and day offset of the later decision point where the insurer requested it), derived from the settled P records of the later decision points | ids, offsets | plus dates | new |
+| P, provenance | `t1.made_by` (`automated_labeller`), `t2.made_by` (`independent_session`, with the SHA-256 of its instructions), both `made_at` after the product's freeze hash exists and before any run on the cut copy; `settled_by` (`study_lead`), `settled_at` (before any run output of the sealed dossiers is opened) | yes | yes | new |
 | **O** | derived from `own_answer.saved` (last before `own_answer.frozen`) | yes | yes | new |
 | **A** (per item of every frozen run, and of the comparator) | `item_id`, `label`, `made_at`, `label_set_sha256` (recorded before the first session) | yes | yes | new |
 | Prior handling | `expert` (pseudonym inside, label outside), `source_case`, `prior_handling` (bool), `basis` (`file_metadata`), set by the automated labeller | flag | flag and basis | new |
-| Status-source hash | `sha256` over P, P-later, the study lead's check and A; `recorded_at` (by day 13) | yes | yes | new |
+| Archival hash (replaces the status-source hash, 2026-11-12) | `sha256` over the decision-point and cut records (1a, 1b), both transcriptions and the settled P, P-later, the run hashes, A and the archival results (5a); `recorded_at` (after the freeze; no session before it exists) | yes | yes | new |
 | Benchmark truth for synthetic cases | `truth.facts`, `truth.documents`, `next_actions` | | | exists for synthetic suites only (`quality/evaluate.py:220`, `score`) |
+
+## 5a. Archival-result record (`casepath.study.archival/1`)
+
+One row per system and decision point of the four sealed dossiers (pre-registration 9.2). Computed mechanically from
+the run's item list and the settled P. Counts and ids only; no content in either export.
+
+| Field | Meaning | Status |
+|---|---|---|
+| `schema` | record shape | new |
+| `source_case`, `dp_index`, `cut_sha256` | the decision point | new |
+| `system` | `casepath` or `comparator` | new |
+| `run_id`, `role`, `repeat`, `result_sha256` | the run scored (section 1); at expert decision points the frozen run, and the variation runs as separate rows with `repeat` 2–5 | new |
+| `run_failed` | true if the run failed; it then counts as not agreeing on (a)–(d) | new |
+| `routing_right` | (a): routed to the handler process (bool); null for the comparator, which is given the handler process | new |
+| `p_documents` | (b): number of documents in the settled P | new |
+| `p_documents_named` | (b): of those, the number the system names to request now (CasePath: document items with `ask = now`) | new |
+| `requested_now` | (b): number of documents the system requests now | new |
+| `extras` | (b): `requested_now` not in P | new |
+| `extras_requested_later` | (b), descriptive: of the extras, the number the insurer requested at a later decision point | new |
+| `action_kind`, `action_same` | (c): the system's action kind (A1–A12 or none) and whether it equals P's (P's `other` and no action count as not) | new |
+| `next_in_days`, `next_in_days_equal`, `next_in_days_diff` | (d): the system's value; equal to P's where the file shows it (bool, else null); otherwise the signed difference from P's `days_to_next_action` (null where neither exists) | new |
+| `follow_up_same` | (d), descriptive: the same as P's, where the file shows it (bool, else null) | new |
+| `facts` | (e): for the deciding facts of the steps the system reached, a count per cell of state (`stated`, `open`, `not_addressed`) by treatment (`admitted`, `presumed`, `held_with_question`, `none`) | new |
+| `leak_flag` | set if a leak found after the run affects this decision point | new |
+| `excluded` | true if the decision point is excluded for every system (not transcribable, cut impossible), with the code | new |
+| `parity_sha` | source-tree hash of the run | new |
+
+Fact treatment for CasePath is mapped from the item field `stated_as`: `established` = admitted, `presumed` = presumed,
+`put_to_handler` = held with a question, anything else = none. The mapping is to be confirmed by the product's builders
+before the freeze (pre-registration 16, item 6).
+
+## 5b. Replay record (`casepath.study.replay/1`)
+
+One row per fold, development dossier, decision point and arm of the leave-one-dossier-out analysis (pre-registration
+9.7). Development evidence; never pooled with 5a.
+
+| Field | Meaning | Status |
+|---|---|---|
+| `schema` | record shape | new |
+| `fold` | the held-out development dossier (D1, D3, D6, D8, D9, D10, D11) | new |
+| `dp_index`, `cut_sha256` | the decision point of the held-out dossier | new |
+| `arm` | `law_only` or `law_plus_practice`; `knowledge_only` marks a run without a law-only variant (both arms on the frozen handler process) | new |
+| `process_sha256` | hash of the process variant used (the law-only variant, or the frozen handler process) | new |
+| `knowledge_set_sha256`, `knowledge_items` | hash of the Knowledge set (empty for `law_only`) and the number of items in it | new |
+| `knowledge_items_left_out` | number of items left out because they came wholly or partly from the held-out dossier (needs each item's source dossiers) | new |
+| `stored_run_id` | the stored run the replay used | new |
+| `replay_applies` | whether the builders confirm the replay applies at this decision point; if false, the point is listed and left out of both arms | new |
+| `p_documents`, `p_documents_named`, `requested_now`, `extras`, `action_same`, `next_in_days_equal`, `next_in_days_diff` | measures (b)–(d), as in 5a, against the development label | new |
+| `reference` | `development_label` (one automated labeller who also builds the product) | new |
+| `replay_command`, `output_sha256` | the replay command's identity at the frozen commit and the hash of its output | new; output format to be given by the product's builders |
 
 ## 6. Formative-session record (`casepath.study.formative/1`)
 
@@ -203,8 +254,8 @@ content: texts. All **new**.
 
 | Export | Holds | Leaves the insurer |
 |---|---|---|
-| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, decision points as labels and day offsets, cut hashes, leak flags as booleans, status-source ids and hashes, note lengths, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, counts, ratios, hashes. No item value, quote, note text, passage, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
-| **Content** (`casepath.study.content/1`) | the pseudonymous export plus decision-point dates and the rule's application in words, included-document lists, leak descriptions, the verbatim passages behind P and P-later, item values and texts, before/after values, note texts, free-text additions, absolute times | no |
+| **Pseudonymous** (`casepath.study.export/1`) | all records above with relative times, decision points as indexes and day offsets, cut hashes, transcription agreement and settlement codes, archival-result and replay counts, leak flags as booleans, status-source ids and hashes, note lengths, randomised expert labels E1–E5, hashed case-copy and file ids (`h_` + 12 hex, salted, as `quality/scorecard.py` `hashed`), source-case labels A/B/C, item ids, kinds, keys that are catalogue ids, statuses, reason codes, counts, ratios, hashes. No item value, quote, note text, passage, free text or name. Passes the scorecard guard (`quality/scorecard.py`, `guard`) extended with the study's enums. | yes |
+| **Content** (`casepath.study.content/1`) | the pseudonymous export plus decision-point dates and the rule's application in words, included-document lists, leak descriptions, the verbatim passages behind both transcriptions of P and P-later, settlement reasons in words, item values and texts, before/after values, note texts, free-text additions, absolute times | no |
 
 ## 8. Fields kept beyond what the pre-registered analyses need
 
@@ -218,9 +269,9 @@ Kept so that a later, separate paper loses nothing.
 | Every letter-draft change ratio at each copy, not only the last | pseudonymous |
 | The own answer, saved states before the freeze at the reveal | catalogue ids and kinds: pseudonymous |
 | Every note with its place and length | place and length: pseudonymous; text: content |
-| Every status source separately (P, P-later, O, A), never merged | pseudonymous; passages: content |
+| Every status source separately (P, P-later, O, A), never merged; both transcriptions of P and every settlement | pseudonymous; passages and reasons in words: content |
 | The parity manifest per session and per run | pseudonymous |
-| Variation and comparator runs, with their item lists | ids, statuses, hashes: pseudonymous; values: content |
+| Archival, variation and comparator runs, with their item lists | ids, statuses, hashes: pseudonymous; values: content |
 | Agent run events (`run_events`) of the frozen runs | kinds and counts: pseudonymous; full: content |
 
 ## 9. Measures and the fields they use
@@ -228,17 +279,22 @@ Kept so that a later, separate paper loses nothing.
 | Measure (pre-registration section) | Fields |
 |---|---|
 | Final fate (9.1) | `item.corrected`, `item.dismissed`, `correction.undone`, `item.propagated.change = vanished`, `source.opened`, `item.confirmed`, `item.exposed.from_t/to_t`, `case.attested`; item `item_id` |
-| Settled / unsettled (4.3) | item `kind`; P, P-later, O (the step: O only) |
-| Q1 agreement with practice (9.2) | item list (`kind = document`; `kind = next_action` with `action`, and `next_in_days`, `follow_up` reported descriptively), `system`, `role`; P (`requested`, `action`, `next_in_days`, `follow_up`), P-later; O for the secondary measures. The step is not part of Q1 |
+| Settled / unsettled (4.3) | item `kind`; settled P at the expert decision point, P-later, O (the step: O only) |
+| Q1, primary: archival agreement with practice (9.2), (a)–(e), per dossier and pooled | archival-result record (5a): `routing_right`; `p_documents`, `p_documents_named`, `requested_now`, `extras`, `extras_requested_later`; `action_same`; `next_in_days_equal`, `next_in_days_diff`, `follow_up_same`; `facts`; by `system`, `source_case`, `dp_index`; `excluded`, `run_failed`, `leak_flag`. Built from the run's item list (`kind = document` with `ask`; `kind = next_action` with `action`, `next_in_days`, `follow_up`; fact items with `stated_as` on the reached steps; routing from `workflow_id`) and the settled P (`requested`, `action`, `next_in_days`, `follow_up`, `days_to_next_action`, `fact_states`). Range over variation runs at expert decision points: 5a rows with `role = variation`. The step is not part of Q1 |
+| Q1 predictions (9.2) | development counts and their 80% intervals (freeze record); pooled counts and denominators from 5a; number of sealed decision points from 1b |
+| Agreement of the two transcriptions (9.2, 10) | P `agreement` and `settlements` (5) |
+| Deciding facts at each decision point (4.6) | P `fact_states` (both transcriptions and settled); the handler process's deciding facts |
+| Development analysis, leave-one-dossier-out replay (9.7) | replay record (5b); development labels at every decision point of the development dossiers; Knowledge items' source dossiers |
 | Q2 step (9.3) | final fate of `kind = step` items; `own_answer.saved.step` (O) on the first case, final state at `case.closed` |
 | Q2 expert agreement, consensus-changed (9.3) | final fate per `expert` and `item_id`; item `kind` |
 | Q2 reliance on document requests, sign test (9.3) | final fate of document items; `item.added` (`what = document`, `catalogue_id`); P, P-later |
-| Q2 first case: change after the reveal, RAIR and RSR (9.3) | `own_answer.saved` (last before `own_answer.frozen`), final state at `case.closed`, item list; P |
+| Q2 first case: change after the reveal, RAIR and RSR; CasePath and comparator against O (9.3) | `own_answer.saved` (last before `own_answer.frozen`), final state at `case.closed`, item list; settled P at the expert decision point; comparator item list |
 | Q2 checking behaviour (9.3) | final fate; settled status; item `kind` |
 | Unsettled items beside C and A (9.3) | final fate of the other four experts; A |
 | Q3 work (9.4) | `case.opened`, `case.closed` (`form`), `idle.*`, `active_seconds`; counts of `item.corrected` / `dismissed` / `added`, `note.added`; `letter.copied.change_ratio`; own-answer time from `case.opened` to `own_answer.frozen` |
 | Q4 proposals, gate, held-out agreement (9.5) | `item.added` (`what`, `catalogue_id`, `reason`, `node`), `source_case`, `expert`; frozen runs' `result`; Knowledge item fields (`process/knowledge.py`, `new_item`); replay output; P; development reference scores |
 | Q5 reasons, reason agreement, notes (9.6) | `reason` on corrections, dismissals, additions, by item kind; `note.added` (`where`, `item_id`) |
 | Run-to-run variation (9.6) | item lists of `role = frozen` and `variation` runs, by `kind:key` |
-| Decision point, cut, leaks (3.1, 4.4) | cut record; item `leak_flag` |
-| Exclusions (11) | `case.closed.capped`, `cap.reached`, `technical.failure`, `prior_handling`, `withdrawn` |
+| Decision points, cuts, leaks (3.1, 4.4) | decision-point record (1b); cut record (1a); item and archival-result `leak_flag` |
+| Exclusions (11) | decision-point `transcribable`, `exclusion_reason`; archival-result `excluded`, `run_failed`; `case.closed.capped`, `cap.reached`, `technical.failure`, `prior_handling`, `withdrawn` |
+| Order at the freeze, no session before the archival hash (4.3, 13) | `made_at` of 1b, both transcriptions, runs and settlements; archival hash `recorded_at`; `session.started` |

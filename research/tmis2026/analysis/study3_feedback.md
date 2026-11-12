@@ -262,55 +262,245 @@ Budget of the checklist only (USD 0.00490): Self-consistency with m = 7 (USD 0.0
 
 Budget of the full product (USD 0.02999): not reached by 15 samples (USD 0.01053); no contrast.
 
-## F5. Re-scoring against an alternative tenancy reference
+## F5. Re-scoring against other tenancy references (sensitivity to the reading of the rule text)
 
-This shows the hook that scores every design against another tenancy reference, checked here with the registered reference and a perturbed copy.
+This scores every design against the clean-room references and against references written under the readings of the rule text that the evaluators rejected, and shows whether the tenancy result holds, shrinks or reverses. Post hoc; sensitivity to the reading of the rule text.
 
 python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state (required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} as the stored references; every claim and every document of the registered reference must be present. Subsets, families and everything else stay the registered reference's; every design's stored plans are rescored with study2.ten_row, and the registered tenancy contrasts (H2, H3, S2a-S2f, S3a, S3b) are recomputed with study3's own contrast. The registered reference itself reproduces every stored number (checked).
 
-**secondary|S3b.** Agreement with the registered reference: all 1024 of 1024 (100.0%); ordinary 693 of 693 (100.0%); denied_event 240 of 240 (100.0%); open_event 91 of 91 (100.0%).
-
-| Registered state | required_now | held | not_needed | supplied_sufficient | supplied_insufficient |
+| Reference | Same state as registered (of 1,024) | ordinary | denied event | open event | Identical |
 |---|---|---|---|---|---|
-| held | 0 | 86 | 0 | 0 | 0 |
-| not_needed | 0 | 0 | 432 | 0 | 0 |
-| required_now | 455 | 0 | 0 | 0 | 0 |
-| supplied_insufficient | 0 | 0 | 0 | 0 | 26 |
-| supplied_sufficient | 0 | 0 | 0 | 25 | 0 |
+| registered reference (check) | 1024 | 693 | 240 | 91 | yes |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | 925 | 617 | 221 | 87 | no |
+| clean room: registered reference as given to the comparison | 1024 | 693 | 240 | 91 | yes |
+| clean room: evaluator A | 1024 | 693 | 240 | 91 | yes |
+| clean room: evaluator B | 1024 | 693 | 240 | 91 | yes |
+| reading A1: a denied defining event does not stop the process | 865 | 693 | 81 | 91 | no |
+| reading A2: an open defining event is presumed to have occurred | 961 | 693 | 240 | 28 | no |
+| reading A3: optional documents are requested | 952 | 630 | 240 | 82 | no |
+| reading A4: a family-home condition excludes arrears | 1019 | 689 | 240 | 90 | no |
+| readings A1-A4 together | 702 | 626 | 57 | 19 | no |
 
-| Contrast | Measure | Comparator | registered: diff [interval] p | this reference: diff [interval] p |
-|---|---|---|---|---|
-| H2 | strict_unsafe | Rules in context | -1.826 [-2.719, -0.989] 0.0002 | -1.826 [-2.719, -0.989] 0.0002 |
-| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.444, -0.767] 0.0008 | -1.552 [-2.444, -0.767] 0.0008 |
-| S2a | strict_unsafe | Self-consistency | -1.788 [-2.750, -0.913] 0.0002 | -1.788 [-2.750, -0.913] 0.0002 |
-| S2b | strict_unsafe | Model executes rules | -0.517 [-0.906, -0.208] 0.0007 | -0.517 [-0.906, -0.208] 0.0007 |
-| S2c | strict_unsafe | ReAct | -1.524 [-2.069, -1.056] < 0.0001 | -1.524 [-2.069, -1.056] < 0.0001 |
-| S2d | all_deviations | Self-consistency | -1.583 [-2.493, -0.743] 0.0013 | -1.583 [-2.493, -0.743] 0.0013 |
-| S2e | all_deviations | Model executes rules | -0.764 [-1.337, -0.281] 0.0047 | -0.764 [-1.337, -0.281] 0.0047 |
-| S2f | all_deviations | ReAct | -1.274 [-1.844, -0.778] < 0.0001 | -1.274 [-1.844, -0.778] < 0.0001 |
-| S3a | all_deviations | Rules in context | -1.601 [-2.469, -0.788] 0.0010 | -1.601 [-2.469, -0.788] 0.0010 |
-| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.267, -0.576] 0.0023 | -1.358 [-2.267, -0.576] 0.0023 |
+**Reading x design: strict unsafe errors per claim** (family means; overall, then the three registered subsets, membership fixed by the registered reference; last column all deviations per claim overall).
 
-**secondary|S3b.** Agreement with the registered reference: all 925 of 1024 (90.3%); ordinary 617 of 693 (89.0%); denied_event 221 of 240 (92.1%); open_event 87 of 91 (95.6%).
+| Reference | Design | Strict: all | ordinary | denied event | open event | All deviations: all |
+|---|---|---|---|---|---|---|
+| registered reference (check) | CasePath | 0.312 | 0.203 | 0.611 | 0.259 | 0.729 |
+| registered reference (check) | CasePath, checklist only | 0.344 | 0.245 | 0.722 | 0.000 | 0.733 |
+| registered reference (check) | Rules in context | 2.139 | 0.438 | 5.681 | 4.630 | 2.330 |
+| registered reference (check) | Rules in context, frontier | 1.865 | 0.281 | 4.431 | 6.074 | 2.087 |
+| registered reference (check) | Self-consistency | 2.101 | 0.378 | 5.917 | 3.963 | 2.312 |
+| registered reference (check) | Model executes rules | 0.830 | 0.373 | 1.944 | 1.037 | 1.493 |
+| registered reference (check) | ReAct | 1.837 | 1.094 | 3.000 | 3.889 | 2.003 |
+| registered reference (check) | Two-valued, unresolved = false | 1.274 | 0.708 | 0.611 | 7.000 | 1.274 |
+| registered reference (check) | Two-valued, unresolved = true | 1.507 | 0.615 | 1.778 | 7.000 | 1.507 |
+| registered reference (check) | CasePath on the frontier model, checklist only (one run) | 0.302 | 0.255 | 0.292 | 0.667 | 0.698 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | CasePath | 0.979 | 0.995 | 1.222 | 0.259 | 1.444 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | CasePath, checklist only | 1.003 | 1.026 | 1.333 | 0.000 | 1.438 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Rules in context | 2.705 | 1.198 | 5.972 | 4.630 | 2.910 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Rules in context, frontier | 2.451 | 1.047 | 4.792 | 6.074 | 2.681 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Self-consistency | 2.649 | 1.134 | 6.153 | 3.963 | 2.865 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Model executes rules | 1.385 | 1.082 | 2.347 | 1.000 | 2.062 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | ReAct | 2.365 | 1.745 | 3.444 | 3.852 | 2.542 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Two-valued, unresolved = false | 1.899 | 1.495 | 1.236 | 6.556 | 1.899 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | Two-valued, unresolved = true | 2.167 | 1.396 | 2.389 | 7.000 | 2.167 |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | CasePath on the frontier model, checklist only (one run) | 0.969 | 1.057 | 0.875 | 0.667 | 1.396 |
+| clean room: registered reference as given to the comparison | CasePath | 0.312 | 0.203 | 0.611 | 0.259 | 0.729 |
+| clean room: registered reference as given to the comparison | CasePath, checklist only | 0.344 | 0.245 | 0.722 | 0.000 | 0.733 |
+| clean room: registered reference as given to the comparison | Rules in context | 2.139 | 0.438 | 5.681 | 4.630 | 2.330 |
+| clean room: registered reference as given to the comparison | Rules in context, frontier | 1.865 | 0.281 | 4.431 | 6.074 | 2.087 |
+| clean room: registered reference as given to the comparison | Self-consistency | 2.101 | 0.378 | 5.917 | 3.963 | 2.312 |
+| clean room: registered reference as given to the comparison | Model executes rules | 0.830 | 0.373 | 1.944 | 1.037 | 1.493 |
+| clean room: registered reference as given to the comparison | ReAct | 1.837 | 1.094 | 3.000 | 3.889 | 2.003 |
+| clean room: registered reference as given to the comparison | Two-valued, unresolved = false | 1.274 | 0.708 | 0.611 | 7.000 | 1.274 |
+| clean room: registered reference as given to the comparison | Two-valued, unresolved = true | 1.507 | 0.615 | 1.778 | 7.000 | 1.507 |
+| clean room: registered reference as given to the comparison | CasePath on the frontier model, checklist only (one run) | 0.302 | 0.255 | 0.292 | 0.667 | 0.698 |
+| clean room: evaluator A | CasePath | 0.312 | 0.203 | 0.611 | 0.259 | 0.729 |
+| clean room: evaluator A | CasePath, checklist only | 0.344 | 0.245 | 0.722 | 0.000 | 0.733 |
+| clean room: evaluator A | Rules in context | 2.139 | 0.438 | 5.681 | 4.630 | 2.330 |
+| clean room: evaluator A | Rules in context, frontier | 1.865 | 0.281 | 4.431 | 6.074 | 2.087 |
+| clean room: evaluator A | Self-consistency | 2.101 | 0.378 | 5.917 | 3.963 | 2.312 |
+| clean room: evaluator A | Model executes rules | 0.830 | 0.373 | 1.944 | 1.037 | 1.493 |
+| clean room: evaluator A | ReAct | 1.837 | 1.094 | 3.000 | 3.889 | 2.003 |
+| clean room: evaluator A | Two-valued, unresolved = false | 1.274 | 0.708 | 0.611 | 7.000 | 1.274 |
+| clean room: evaluator A | Two-valued, unresolved = true | 1.507 | 0.615 | 1.778 | 7.000 | 1.507 |
+| clean room: evaluator A | CasePath on the frontier model, checklist only (one run) | 0.302 | 0.255 | 0.292 | 0.667 | 0.698 |
+| clean room: evaluator B | CasePath | 0.312 | 0.203 | 0.611 | 0.259 | 0.729 |
+| clean room: evaluator B | CasePath, checklist only | 0.344 | 0.245 | 0.722 | 0.000 | 0.733 |
+| clean room: evaluator B | Rules in context | 2.139 | 0.438 | 5.681 | 4.630 | 2.330 |
+| clean room: evaluator B | Rules in context, frontier | 1.865 | 0.281 | 4.431 | 6.074 | 2.087 |
+| clean room: evaluator B | Self-consistency | 2.101 | 0.378 | 5.917 | 3.963 | 2.312 |
+| clean room: evaluator B | Model executes rules | 0.830 | 0.373 | 1.944 | 1.037 | 1.493 |
+| clean room: evaluator B | ReAct | 1.837 | 1.094 | 3.000 | 3.889 | 2.003 |
+| clean room: evaluator B | Two-valued, unresolved = false | 1.274 | 0.708 | 0.611 | 7.000 | 1.274 |
+| clean room: evaluator B | Two-valued, unresolved = true | 1.507 | 0.615 | 1.778 | 7.000 | 1.507 |
+| clean room: evaluator B | CasePath on the frontier model, checklist only (one run) | 0.302 | 0.255 | 0.292 | 0.667 | 0.698 |
+| reading A1: a denied defining event does not stop the process | CasePath | 1.372 | 0.203 | 4.847 | 0.259 | 1.788 |
+| reading A1: a denied defining event does not stop the process | CasePath, checklist only | 1.375 | 0.245 | 4.847 | 0.000 | 1.764 |
+| reading A1: a denied defining event does not stop the process | Rules in context | 0.823 | 0.438 | 0.417 | 4.630 | 1.014 |
+| reading A1: a denied defining event does not stop the process | Rules in context, frontier | 1.160 | 0.281 | 1.611 | 6.074 | 1.382 |
+| reading A1: a denied defining event does not stop the process | Self-consistency | 0.635 | 0.378 | 0.056 | 3.963 | 0.847 |
+| reading A1: a denied defining event does not stop the process | Model executes rules | 1.007 | 0.373 | 2.653 | 1.037 | 1.670 |
+| reading A1: a denied defining event does not stop the process | ReAct | 1.944 | 1.094 | 3.431 | 3.889 | 2.111 |
+| reading A1: a denied defining event does not stop the process | Two-valued, unresolved = false | 2.625 | 0.708 | 6.014 | 7.000 | 2.625 |
+| reading A1: a denied defining event does not stop the process | Two-valued, unresolved = true | 2.274 | 0.615 | 4.847 | 7.000 | 2.274 |
+| reading A1: a denied defining event does not stop the process | CasePath on the frontier model, checklist only (one run) | 1.438 | 0.255 | 4.833 | 0.667 | 1.833 |
+| reading A2: an open defining event is presumed to have occurred | CasePath | 0.288 | 0.203 | 0.611 | 0.000 | 1.337 |
+| reading A2: an open defining event is presumed to have occurred | CasePath, checklist only | 0.344 | 0.245 | 0.722 | 0.000 | 1.389 |
+| reading A2: an open defining event is presumed to have occurred | Rules in context | 1.719 | 0.438 | 5.681 | 0.148 | 2.132 |
+| reading A2: an open defining event is presumed to have occurred | Rules in context, frontier | 1.295 | 0.281 | 4.431 | 0.000 | 1.604 |
+| reading A2: an open defining event is presumed to have occurred | Self-consistency | 1.729 | 0.378 | 5.917 | 0.000 | 2.226 |
+| reading A2: an open defining event is presumed to have occurred | Model executes rules | 0.740 | 0.373 | 1.944 | 0.074 | 1.962 |
+| reading A2: an open defining event is presumed to have occurred | ReAct | 1.517 | 1.094 | 3.000 | 0.481 | 1.976 |
+| reading A2: an open defining event is presumed to have occurred | Two-valued, unresolved = false | 1.250 | 0.708 | 0.611 | 6.741 | 1.250 |
+| reading A2: an open defining event is presumed to have occurred | Two-valued, unresolved = true | 0.851 | 0.615 | 1.778 | 0.000 | 0.851 |
+| reading A2: an open defining event is presumed to have occurred | CasePath on the frontier model, checklist only (one run) | 0.240 | 0.255 | 0.292 | 0.000 | 1.229 |
+| reading A3: optional documents are requested | CasePath | 1.062 | 1.203 | 0.611 | 1.259 | 1.479 |
+| reading A3: optional documents are requested | CasePath, checklist only | 1.094 | 1.245 | 0.722 | 1.000 | 1.483 |
+| reading A3: optional documents are requested | Rules in context | 2.882 | 1.427 | 5.681 | 5.630 | 3.073 |
+| reading A3: optional documents are requested | Rules in context, frontier | 2.615 | 1.281 | 4.431 | 7.074 | 2.837 |
+| reading A3: optional documents are requested | Self-consistency | 2.851 | 1.378 | 5.917 | 4.963 | 3.062 |
+| reading A3: optional documents are requested | Model executes rules | 1.580 | 1.373 | 1.944 | 2.037 | 2.243 |
+| reading A3: optional documents are requested | ReAct | 2.566 | 2.062 | 3.000 | 4.889 | 2.733 |
+| reading A3: optional documents are requested | Two-valued, unresolved = false | 2.024 | 1.708 | 0.611 | 8.000 | 2.024 |
+| reading A3: optional documents are requested | Two-valued, unresolved = true | 2.257 | 1.615 | 1.778 | 8.000 | 2.257 |
+| reading A3: optional documents are requested | CasePath on the frontier model, checklist only (one run) | 1.052 | 1.255 | 0.292 | 1.667 | 1.448 |
+| reading A4: a family-home condition excludes arrears | CasePath | 0.344 | 0.266 | 0.611 | 0.259 | 0.781 |
+| reading A4: a family-home condition excludes arrears | CasePath, checklist only | 0.375 | 0.307 | 0.722 | 0.000 | 0.785 |
+| reading A4: a family-home condition excludes arrears | Rules in context | 2.170 | 0.500 | 5.681 | 4.630 | 2.372 |
+| reading A4: a family-home condition excludes arrears | Rules in context, frontier | 1.896 | 0.344 | 4.431 | 6.074 | 2.128 |
+| reading A4: a family-home condition excludes arrears | Self-consistency | 2.132 | 0.441 | 5.917 | 3.963 | 2.354 |
+| reading A4: a family-home condition excludes arrears | Model executes rules | 0.844 | 0.401 | 1.944 | 1.037 | 1.528 |
+| reading A4: a family-home condition excludes arrears | ReAct | 1.865 | 1.151 | 3.000 | 3.889 | 2.038 |
+| reading A4: a family-home condition excludes arrears | Two-valued, unresolved = false | 1.285 | 0.755 | 0.611 | 6.889 | 1.285 |
+| reading A4: a family-home condition excludes arrears | Two-valued, unresolved = true | 1.538 | 0.677 | 1.778 | 7.000 | 1.538 |
+| reading A4: a family-home condition excludes arrears | CasePath on the frontier model, checklist only (one run) | 0.333 | 0.318 | 0.292 | 0.667 | 0.750 |
+| readings A1-A4 together | CasePath | 2.378 | 1.266 | 5.847 | 1.000 | 3.438 |
+| readings A1-A4 together | CasePath, checklist only | 2.406 | 1.307 | 5.847 | 1.000 | 3.462 |
+| readings A1-A4 together | Rules in context | 1.438 | 1.490 | 1.417 | 1.259 | 1.861 |
+| readings A1-A4 together | Rules in context, frontier | 1.632 | 1.344 | 2.611 | 1.111 | 1.951 |
+| readings A1-A4 together | Self-consistency | 1.306 | 1.441 | 1.056 | 1.111 | 1.812 |
+| readings A1-A4 together | Model executes rules | 1.924 | 1.401 | 3.625 | 1.074 | 3.156 |
+| readings A1-A4 together | ReAct | 2.642 | 2.120 | 4.431 | 1.593 | 3.108 |
+| readings A1-A4 together | Two-valued, unresolved = false | 3.611 | 1.755 | 7.014 | 7.630 | 3.611 |
+| readings A1-A4 together | Two-valued, unresolved = true | 2.660 | 1.677 | 5.847 | 1.111 | 2.660 |
+| readings A1-A4 together | CasePath on the frontier model, checklist only (one run) | 2.406 | 1.318 | 5.833 | 1.000 | 3.406 |
 
-| Registered state | required_now | held | not_needed | supplied_sufficient | supplied_insufficient |
-|---|---|---|---|---|---|
-| held | 1 | 81 | 2 | 2 | 0 |
-| not_needed | 7 | 16 | 396 | 8 | 5 |
-| required_now | 404 | 10 | 14 | 9 | 18 |
-| supplied_insufficient | 0 | 0 | 2 | 1 | 23 |
-| supplied_sufficient | 0 | 2 | 0 | 21 | 2 |
+**Reading x contrast** (CasePath minus comparator, family clusters, 95% cluster-bootstrap interval with the registered resamples, exact sign-flip p; verdict against the registered reference).
 
-| Contrast | Measure | Comparator | registered: diff [interval] p | this reference: diff [interval] p |
-|---|---|---|---|---|
-| H2 | strict_unsafe | Rules in context | -1.826 [-2.719, -0.989] 0.0002 | -1.726 [-2.580, -0.927] 0.0002 |
-| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.444, -0.767] 0.0008 | -1.472 [-2.330, -0.719] 0.0010 |
-| S2a | strict_unsafe | Self-consistency | -1.788 [-2.750, -0.913] 0.0002 | -1.670 [-2.587, -0.847] 0.0003 |
-| S2b | strict_unsafe | Model executes rules | -0.517 [-0.906, -0.208] 0.0007 | -0.406 [-0.799, -0.097] 0.0095 |
-| S2c | strict_unsafe | ReAct | -1.524 [-2.069, -1.056] < 0.0001 | -1.385 [-1.920, -0.927] < 0.0001 |
-| S2d | all_deviations | Self-consistency | -1.583 [-2.493, -0.743] 0.0013 | -1.420 [-2.247, -0.656] 0.0019 |
-| S2e | all_deviations | Model executes rules | -0.764 [-1.337, -0.281] 0.0047 | -0.618 [-1.135, -0.180] 0.0147 |
-| S2f | all_deviations | ReAct | -1.274 [-1.844, -0.778] < 0.0001 | -1.097 [-1.632, -0.635] < 0.0001 |
-| S3a | all_deviations | Rules in context | -1.601 [-2.469, -0.788] 0.0010 | -1.465 [-2.274, -0.712] 0.0014 |
-| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.267, -0.576] 0.0023 | -1.236 [-2.094, -0.507] 0.0030 |
+| Reference | Contrast | Measure | Comparator | Difference | 95% interval | p | Against the registered result |
+|---|---|---|---|---|---|---|---|
+| registered reference (check) | H2 | strict_unsafe | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds |
+| registered reference (check) | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| registered reference (check) | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| registered reference (check) | S2b | strict_unsafe | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds |
+| registered reference (check) | S2c | strict_unsafe | ReAct | -1.524 | [-2.069, -1.056] | < 0.0001 | holds |
+| registered reference (check) | S2d | all_deviations | Self-consistency | -1.583 | [-2.493, -0.743] | 0.0013 | holds |
+| registered reference (check) | S2e | all_deviations | Model executes rules | -0.764 | [-1.337, -0.281] | 0.0047 | holds |
+| registered reference (check) | S2f | all_deviations | ReAct | -1.274 | [-1.844, -0.778] | < 0.0001 | holds |
+| registered reference (check) | S3a | all_deviations | Rules in context | -1.601 | [-2.469, -0.788] | 0.0010 | holds |
+| registered reference (check) | S3b | all_deviations | Rules in context, frontier | -1.358 | [-2.267, -0.576] | 0.0023 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | H2 | strict_unsafe | Rules in context | -1.726 | [-2.580, -0.927] | 0.0002 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | H3 | strict_unsafe | Rules in context, frontier | -1.472 | [-2.330, -0.719] | 0.0010 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2a | strict_unsafe | Self-consistency | -1.670 | [-2.587, -0.847] | 0.0003 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2b | strict_unsafe | Model executes rules | -0.406 | [-0.799, -0.097] | 0.0095 | holds, shrinks |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2c | strict_unsafe | ReAct | -1.385 | [-1.920, -0.927] | < 0.0001 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2d | all_deviations | Self-consistency | -1.420 | [-2.247, -0.656] | 0.0019 | holds, shrinks |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2e | all_deviations | Model executes rules | -0.618 | [-1.135, -0.180] | 0.0147 | holds, shrinks |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S2f | all_deviations | ReAct | -1.097 | [-1.632, -0.635] | < 0.0001 | holds, shrinks |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S3a | all_deviations | Rules in context | -1.465 | [-2.274, -0.712] | 0.0014 | holds |
+| perturbed copy of the registered reference (10% of documents moved, seeded; check) | S3b | all_deviations | Rules in context, frontier | -1.236 | [-2.094, -0.507] | 0.0030 | holds |
+| clean room: registered reference as given to the comparison | H2 | strict_unsafe | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds |
+| clean room: registered reference as given to the comparison | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| clean room: registered reference as given to the comparison | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| clean room: registered reference as given to the comparison | S2b | strict_unsafe | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds |
+| clean room: registered reference as given to the comparison | S2c | strict_unsafe | ReAct | -1.524 | [-2.069, -1.056] | < 0.0001 | holds |
+| clean room: registered reference as given to the comparison | S2d | all_deviations | Self-consistency | -1.583 | [-2.493, -0.743] | 0.0013 | holds |
+| clean room: registered reference as given to the comparison | S2e | all_deviations | Model executes rules | -0.764 | [-1.337, -0.281] | 0.0047 | holds |
+| clean room: registered reference as given to the comparison | S2f | all_deviations | ReAct | -1.274 | [-1.844, -0.778] | < 0.0001 | holds |
+| clean room: registered reference as given to the comparison | S3a | all_deviations | Rules in context | -1.601 | [-2.469, -0.788] | 0.0010 | holds |
+| clean room: registered reference as given to the comparison | S3b | all_deviations | Rules in context, frontier | -1.358 | [-2.267, -0.576] | 0.0023 | holds |
+| clean room: evaluator A | H2 | strict_unsafe | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds |
+| clean room: evaluator A | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| clean room: evaluator A | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| clean room: evaluator A | S2b | strict_unsafe | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds |
+| clean room: evaluator A | S2c | strict_unsafe | ReAct | -1.524 | [-2.069, -1.056] | < 0.0001 | holds |
+| clean room: evaluator A | S2d | all_deviations | Self-consistency | -1.583 | [-2.493, -0.743] | 0.0013 | holds |
+| clean room: evaluator A | S2e | all_deviations | Model executes rules | -0.764 | [-1.337, -0.281] | 0.0047 | holds |
+| clean room: evaluator A | S2f | all_deviations | ReAct | -1.274 | [-1.844, -0.778] | < 0.0001 | holds |
+| clean room: evaluator A | S3a | all_deviations | Rules in context | -1.601 | [-2.469, -0.788] | 0.0010 | holds |
+| clean room: evaluator A | S3b | all_deviations | Rules in context, frontier | -1.358 | [-2.267, -0.576] | 0.0023 | holds |
+| clean room: evaluator B | H2 | strict_unsafe | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds |
+| clean room: evaluator B | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| clean room: evaluator B | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| clean room: evaluator B | S2b | strict_unsafe | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds |
+| clean room: evaluator B | S2c | strict_unsafe | ReAct | -1.524 | [-2.069, -1.056] | < 0.0001 | holds |
+| clean room: evaluator B | S2d | all_deviations | Self-consistency | -1.583 | [-2.493, -0.743] | 0.0013 | holds |
+| clean room: evaluator B | S2e | all_deviations | Model executes rules | -0.764 | [-1.337, -0.281] | 0.0047 | holds |
+| clean room: evaluator B | S2f | all_deviations | ReAct | -1.274 | [-1.844, -0.778] | < 0.0001 | holds |
+| clean room: evaluator B | S3a | all_deviations | Rules in context | -1.601 | [-2.469, -0.788] | 0.0010 | holds |
+| clean room: evaluator B | S3b | all_deviations | Rules in context, frontier | -1.358 | [-2.267, -0.576] | 0.0023 | holds |
+| reading A1: a denied defining event does not stop the process | H2 | strict_unsafe | Rules in context | 0.549 | [-0.097, 1.247] | 0.1348 | reverses (not significant) |
+| reading A1: a denied defining event does not stop the process | H3 | strict_unsafe | Rules in context, frontier | 0.212 | [-0.347, 0.833] | 0.5134 | reverses (not significant) |
+| reading A1: a denied defining event does not stop the process | S2a | strict_unsafe | Self-consistency | 0.736 | [0.052, 1.479] | 0.0588 | reverses (not significant) |
+| reading A1: a denied defining event does not stop the process | S2b | strict_unsafe | Model executes rules | 0.365 | [-0.090, 0.896] | 0.1782 | reverses (not significant) |
+| reading A1: a denied defining event does not stop the process | S2c | strict_unsafe | ReAct | -0.573 | [-1.142, -0.021] | 0.0627 | same sign, not significant |
+| reading A1: a denied defining event does not stop the process | S2d | all_deviations | Self-consistency | 0.941 | [0.285, 1.653] | 0.0144 | reverses (p < 0.05) |
+| reading A1: a denied defining event does not stop the process | S2e | all_deviations | Model executes rules | 0.118 | [-0.215, 0.514] | 0.5937 | reverses (not significant) |
+| reading A1: a denied defining event does not stop the process | S2f | all_deviations | ReAct | -0.323 | [-0.885, 0.281] | 0.3058 | same sign, not significant |
+| reading A1: a denied defining event does not stop the process | S3a | all_deviations | Rules in context | 0.774 | [0.118, 1.441] | 0.0350 | reverses (p < 0.05) |
+| reading A1: a denied defining event does not stop the process | S3b | all_deviations | Rules in context, frontier | 0.406 | [-0.118, 1.000] | 0.1877 | reverses (not significant) |
+| reading A2: an open defining event is presumed to have occurred | H2 | strict_unsafe | Rules in context | -1.431 | [-2.163, -0.750] | 0.0002 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | H3 | strict_unsafe | Rules in context, frontier | -1.007 | [-1.701, -0.417] | 0.0020 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2a | strict_unsafe | Self-consistency | -1.441 | [-2.236, -0.719] | 0.0004 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2b | strict_unsafe | Model executes rules | -0.451 | [-0.812, -0.170] | 0.0012 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2c | strict_unsafe | ReAct | -1.229 | [-1.701, -0.816] | < 0.0001 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2d | all_deviations | Self-consistency | -0.889 | [-1.594, -0.240] | 0.0190 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2e | all_deviations | Model executes rules | -0.625 | [-1.136, -0.170] | 0.0177 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S2f | all_deviations | ReAct | -0.639 | [-1.156, -0.059] | 0.0391 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S3a | all_deviations | Rules in context | -0.795 | [-1.444, -0.201] | 0.0216 | holds, shrinks |
+| reading A2: an open defining event is presumed to have occurred | S3b | all_deviations | Rules in context, frontier | -0.267 | [-0.910, 0.306] | 0.4201 | same sign, not significant |
+| reading A3: optional documents are requested | H2 | strict_unsafe | Rules in context | -1.819 | [-2.712, -0.979] | 0.0002 | holds |
+| reading A3: optional documents are requested | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| reading A3: optional documents are requested | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| reading A3: optional documents are requested | S2b | strict_unsafe | Model executes rules | -0.517 | [-0.906, -0.208] | 0.0007 | holds |
+| reading A3: optional documents are requested | S2c | strict_unsafe | ReAct | -1.503 | [-2.049, -1.035] | < 0.0001 | holds |
+| reading A3: optional documents are requested | S2d | all_deviations | Self-consistency | -1.583 | [-2.493, -0.743] | 0.0013 | holds |
+| reading A3: optional documents are requested | S2e | all_deviations | Model executes rules | -0.764 | [-1.337, -0.281] | 0.0047 | holds |
+| reading A3: optional documents are requested | S2f | all_deviations | ReAct | -1.253 | [-1.823, -0.757] | < 0.0001 | holds |
+| reading A3: optional documents are requested | S3a | all_deviations | Rules in context | -1.594 | [-2.462, -0.781] | 0.0011 | holds |
+| reading A3: optional documents are requested | S3b | all_deviations | Rules in context, frontier | -1.358 | [-2.267, -0.576] | 0.0023 | holds |
+| reading A4: a family-home condition excludes arrears | H2 | strict_unsafe | Rules in context | -1.826 | [-2.719, -0.989] | 0.0002 | holds |
+| reading A4: a family-home condition excludes arrears | H3 | strict_unsafe | Rules in context, frontier | -1.552 | [-2.444, -0.767] | 0.0008 | holds |
+| reading A4: a family-home condition excludes arrears | S2a | strict_unsafe | Self-consistency | -1.788 | [-2.750, -0.913] | 0.0002 | holds |
+| reading A4: a family-home condition excludes arrears | S2b | strict_unsafe | Model executes rules | -0.500 | [-0.892, -0.188] | 0.0018 | holds |
+| reading A4: a family-home condition excludes arrears | S2c | strict_unsafe | ReAct | -1.521 | [-2.066, -1.052] | < 0.0001 | holds |
+| reading A4: a family-home condition excludes arrears | S2d | all_deviations | Self-consistency | -1.573 | [-2.479, -0.736] | 0.0013 | holds |
+| reading A4: a family-home condition excludes arrears | S2e | all_deviations | Model executes rules | -0.747 | [-1.319, -0.264] | 0.0061 | holds |
+| reading A4: a family-home condition excludes arrears | S2f | all_deviations | ReAct | -1.257 | [-1.826, -0.764] | < 0.0001 | holds |
+| reading A4: a family-home condition excludes arrears | S3a | all_deviations | Rules in context | -1.590 | [-2.458, -0.781] | 0.0010 | holds |
+| reading A4: a family-home condition excludes arrears | S3b | all_deviations | Rules in context, frontier | -1.347 | [-2.264, -0.569] | 0.0023 | holds |
+| readings A1-A4 together | H2 | strict_unsafe | Rules in context | 0.941 | [0.240, 1.726] | 0.0234 | reverses (p < 0.05) |
+| readings A1-A4 together | H3 | strict_unsafe | Rules in context, frontier | 0.747 | [0.142, 1.465] | 0.0472 | reverses (p < 0.05) |
+| readings A1-A4 together | S2a | strict_unsafe | Self-consistency | 1.073 | [0.319, 1.913] | 0.0159 | reverses (p < 0.05) |
+| readings A1-A4 together | S2b | strict_unsafe | Model executes rules | 0.455 | [-0.024, 1.021] | 0.1134 | reverses (not significant) |
+| readings A1-A4 together | S2c | strict_unsafe | ReAct | -0.264 | [-0.785, 0.292] | 0.3666 | same sign, not significant |
+| readings A1-A4 together | S2d | all_deviations | Self-consistency | 1.625 | [0.712, 2.628] | 0.0030 | reverses (p < 0.05) |
+| readings A1-A4 together | S2e | all_deviations | Model executes rules | 0.281 | [-0.080, 0.708] | 0.2213 | reverses (not significant) |
+| readings A1-A4 together | S2f | all_deviations | ReAct | 0.330 | [-0.372, 1.066] | 0.3972 | reverses (not significant) |
+| readings A1-A4 together | S3a | all_deviations | Rules in context | 1.576 | [0.694, 2.517] | 0.0036 | reverses (p < 0.05) |
+| readings A1-A4 together | S3b | all_deviations | Rules in context, frontier | 1.486 | [0.688, 2.406] | 0.0020 | reverses (p < 0.05) |
+
+**In words.**
+
+- registered reference (check): H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- perturbed copy of the registered reference (10% of documents moved, seeded; check): H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, shrinks, S2c holds, S2d holds, shrinks, S2e holds, shrinks, S2f holds, shrinks, S3a holds, S3b holds.
+- clean room: registered reference as given to the comparison: H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- clean room: evaluator A: H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- clean room: evaluator B: H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- reading A1: a denied defining event does not stop the process: H2 reverses (not significant); H3 reverses (not significant); same-model secondary contrasts: S2a reverses (not significant), S2b reverses (not significant), S2c same sign, not significant, S2d reverses (p < 0.05), S2e reverses (not significant), S2f same sign, not significant, S3a reverses (p < 0.05), S3b reverses (not significant).
+- reading A2: an open defining event is presumed to have occurred: H2 holds, shrinks; H3 holds, shrinks; same-model secondary contrasts: S2a holds, shrinks, S2b holds, shrinks, S2c holds, shrinks, S2d holds, shrinks, S2e holds, shrinks, S2f holds, shrinks, S3a holds, shrinks, S3b same sign, not significant.
+- reading A3: optional documents are requested: H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- reading A4: a family-home condition excludes arrears: H2 holds; H3 holds; same-model secondary contrasts: S2a holds, S2b holds, S2c holds, S2d holds, S2e holds, S2f holds, S3a holds, S3b holds.
+- readings A1-A4 together: H2 reverses (p < 0.05); H3 reverses (p < 0.05); same-model secondary contrasts: S2a reverses (p < 0.05), S2b reverses (not significant), S2c same sign, not significant, S2d reverses (p < 0.05), S2e reverses (not significant), S2f reverses (not significant), S3a reverses (p < 0.05), S3b reverses (p < 0.05).
 

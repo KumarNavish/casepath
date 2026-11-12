@@ -632,15 +632,58 @@ def rescore(study, alt, name="alternative"):
                 per_subset[k][1] += s == a[d]
     contrasts = []
     for cid, measure, b in F5_CONTRASTS:
-        name = f"primary|{cid}|{b}" if cid.startswith("H") else f"secondary|{cid}"  # the registered names: same resamples
-        c_reg = study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, name)
-        c_alt = alt_study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, name)
+        cname = f"primary|{cid}|{b}" if cid.startswith("H") else f"secondary|{cid}"  # the registered names: same resamples
+        c_reg = study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, cname)
+        c_alt = alt_study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, cname)
         contrasts.append({"id": cid, "measure": measure, "b": b,
                           "registered": {k: c_reg[k] for k in ("a_value", "b_value", "diff", "diff_ci", "p", "clusters", "nonzero_clusters")},
                           "alternative": {k: c_alt[k] for k in ("a_value", "b_value", "diff", "diff_ci", "p", "clusters", "nonzero_clusters")}})
+    for c in contrasts:
+        c["verdict"] = verdict(c["registered"], c["alternative"])
     return {"name": name, "agreement_by_state": {s: dict(v) for s, v in sorted(agree.items())},
             "agreement_by_subset": {k: {"documents": n, "same_state": m, "share": m / n} for k, (n, m) in per_subset.items()},
-            "contrasts": contrasts}
+            "identical_to_registered": all(m == n for n, m in per_subset.values()),
+            "by_design": design_scores(alt_study), "contrasts": contrasts}
+
+
+def design_scores(st):
+    """Strict unsafe errors and all deviations per claim for every tenancy design: overall (mean over the 24 families)
+    and on each registered subset (family means over the families with claims in it, as the paper's subset rows)."""
+    out = {}
+    for d in SPEC["designs"]:
+        if "tenancy" not in d["regimes"]:
+            continue
+        row = {}
+        for sub in (None,) + R.SUBSETS:
+            for m in ("strict_unsafe", "all_deviations"):
+                cl = st.clusters(d["key"], "tenancy", m, sub)
+                row[f"{m}|{sub or 'all claims'}"] = mean(cl.values())
+        out[d["key"]] = row
+    return out
+
+
+def verdict(reg, alt):
+    """How a contrast fares under another reference, in words: 'reverses' when the sign flips, 'not significant' when
+    p >= alpha, 'holds' when the difference keeps at least 90% of its registered size, otherwise 'holds, shrinks'
+    (or 'holds, grows' when it is more than 10% larger)."""
+    if alt["diff"] * reg["diff"] < 0:
+        return "reverses" + (" (p < 0.05)" if alt["p"] < ALPHA else " (not significant)")
+    if alt["p"] >= ALPHA:
+        return "same sign, not significant"
+    r = abs(alt["diff"]) / abs(reg["diff"]) if reg["diff"] else float("inf")
+    return "holds" if 0.9 <= r <= 1.1 else ("holds, shrinks" if r < 0.9 else "holds, grows")
+
+
+CLEANROOM = [
+    ("clean room: registered reference as given to the comparison", "cleanroom/registered_reference.json"),
+    ("clean room: evaluator A", "cleanroom/evaluator_a/reference.json"),
+    ("clean room: evaluator B", "cleanroom/evaluator_b/reference.json"),
+    ("reading A1: a denied defining event does not stop the process", "cleanroom/evaluator_b/reference_alt_A1.json"),
+    ("reading A2: an open defining event is presumed to have occurred", "cleanroom/evaluator_b/reference_alt_A2.json"),
+    ("reading A3: optional documents are requested", "cleanroom/evaluator_b/reference_alt_A3.json"),
+    ("reading A4: a family-home condition excludes arrears", "cleanroom/evaluator_b/reference_alt_A4.json"),
+    ("readings A1-A4 together", "cleanroom/evaluator_b/reference_alt_all.json"),
+]
 
 
 def load_alt(path):
@@ -794,18 +837,40 @@ def markdown(res):
                                                 f"p {pv(v['contrast_full_product']['p'])}" if "contrast_full_product" in v else "") + ". Descriptive.", ""]
     # F5
     x = res["F5"]
-    md += ["## F5. Re-scoring against an alternative tenancy reference", "",
-           "This shows the hook that scores every design against another tenancy reference, checked here with the registered "
-           "reference and a perturbed copy.", "", x["usage"], ""]
-    for item in x["results"]:
-        md += [f"**{item['name']}.** Agreement with the registered reference: " + "; ".join(
-            f"{k} {v['same_state']} of {v['documents']} ({pct(v['share'])})" for k, v in item["agreement_by_subset"].items()) + ".", ""]
-        md += [table(["Registered state"] + list(STATES), [[s] + [v.get(t, 0) for t in STATES] for s, v in item["agreement_by_state"].items()]), ""]
-        md += [table(["Contrast", "Measure", "Comparator", "registered: diff [interval] p", "this reference: diff [interval] p"],
-                     [[c["id"], c["measure"], L[c["b"]],
-                       f"{fmt(c['registered']['diff'])} [{fmt(c['registered']['diff_ci'][0])}, {fmt(c['registered']['diff_ci'][1])}] {pv(c['registered']['p'])}",
-                       f"{fmt(c['alternative']['diff'])} [{fmt(c['alternative']['diff_ci'][0])}, {fmt(c['alternative']['diff_ci'][1])}] {pv(c['alternative']['p'])}"]
-                      for c in item["contrasts"]]), ""]
+    md += ["## F5. Re-scoring against other tenancy references (sensitivity to the reading of the rule text)", "",
+           "This scores every design against the clean-room references and against references written under the readings of "
+           "the rule text that the evaluators rejected, and shows whether the tenancy result holds, shrinks or reverses. "
+           "Post hoc; sensitivity to the reading of the rule text.", "", x["usage"], ""]
+    if x["absent_files"]:
+        md += ["Files not present when this ran (not scored): " + ", ".join(f"`{f}`" for f in x["absent_files"]) + ".", ""]
+    md += [table(["Reference", "Same state as registered (of 1,024)", "ordinary", "denied event", "open event", "Identical"],
+                 [[i["name"], i["agreement_by_subset"]["all"]["same_state"], i["agreement_by_subset"]["ordinary"]["same_state"],
+                   i["agreement_by_subset"]["denied_event"]["same_state"], i["agreement_by_subset"]["open_event"]["same_state"],
+                   "yes" if i["identical_to_registered"] else "no"] for i in x["results"]]), ""]
+    keys = ["strict_unsafe|all claims", "strict_unsafe|ordinary", "strict_unsafe|denied_event", "strict_unsafe|open_event",
+            "all_deviations|all claims"]
+    md += ["**Reading x design: strict unsafe errors per claim** (family means; overall, then the three registered subsets, "
+           "membership fixed by the registered reference; last column all deviations per claim overall).", ""]
+    rows = []
+    for i in x["results"]:
+        for d, v in i["by_design"].items():
+            rows.append([i["name"], L[d]] + [fmt(v[k]) for k in keys])
+    md += [table(["Reference", "Design", "Strict: all", "ordinary", "denied event", "open event", "All deviations: all"], rows), ""]
+    md += ["**Reading x contrast** (CasePath minus comparator, family clusters, 95% cluster-bootstrap interval with the "
+           "registered resamples, exact sign-flip p; verdict against the registered reference).", ""]
+    rows = []
+    for i in x["results"]:
+        for c in i["contrasts"]:
+            al = c["alternative"]
+            rows.append([i["name"], c["id"], c["measure"], L[c["b"]], fmt(al["diff"]),
+                         f"[{fmt(al['diff_ci'][0])}, {fmt(al['diff_ci'][1])}]", pv(al["p"]), c["verdict"]])
+    md += [table(["Reference", "Contrast", "Measure", "Comparator", "Difference", "95% interval", "p", "Against the registered result"], rows), ""]
+    md += ["**In words.**", ""]
+    for i in x["results"]:
+        v = {c["id"]: c["verdict"] for c in i["contrasts"]}
+        md.append(f"- {i['name']}: H2 {v['H2']}; H3 {v['H3']}; same-model secondary contrasts: "
+                  + ", ".join(f"{k} {v[k]}" for k in ("S2a", "S2b", "S2c", "S2d", "S2e", "S2f", "S3a", "S3b")) + ".")
+    md += [""]
     return "\n".join(md)
 
 
@@ -877,6 +942,13 @@ def main(argv=None):
     # F5: registered reference (must reproduce), a perturbed copy, and any given files
     items = [("registered reference (check)", {c: study.D["tenancy"].reference(c)["document_states"] for c in study.cases["tenancy"]}),
              ("perturbed copy of the registered reference (10% of documents moved, seeded; check)", perturbed(study))]
+    absent = []
+    for label, rel in CLEANROOM:
+        path = TMIS / rel
+        if path.exists():
+            items.append((label, load_alt(path)))
+        else:
+            absent.append(rel)
     items += [(str(p), load_alt(p)) for p in a.alt_reference]
     f5 = []
     for name, alt in items:
@@ -887,7 +959,7 @@ def main(argv=None):
     for c in f5[0]["contrasts"]:
         for k in ("a_value", "b_value", "diff", "p", "diff_ci"):
             assert c["registered"][k] == c["alternative"][k] == stored[c["id"]][k], ("registered reference does not reproduce", c["id"], k)
-    res["F5"] = {"results": f5, "usage": (
+    res["F5"] = {"results": f5, "absent_files": absent, "usage": (
         "python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state "
         "(required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} "
         "as the stored references; every claim and every document of the registered reference must be present. Subsets, "

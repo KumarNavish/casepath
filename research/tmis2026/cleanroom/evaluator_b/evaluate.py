@@ -4,6 +4,8 @@
 Usage: python3 evaluate.py [rules.json] [claims.json] [reference.json]
 Defaults: ../bundle/rules.json ../bundle/claims.json ./reference.json
 (relative to the current directory). Standard library only; deterministic.
+Also writes reference_alt_A1/A2/A3/A4/all.json next to reference.json (the
+rejected readings of ambiguities A1-A4, see SEMANTICS.md).
 
 See SEMANTICS.md for the reading of the rule text that this program applies.
 """
@@ -70,12 +72,38 @@ PROCEDURAL = {
 DOC_COND_RE = re.compile(r"^scenario flag '([a-z_]+)' is active$")
 
 
-def fact_truth(dispute_type, fact, state):
+# Alternative readings of the ambiguities in SEMANTICS.md. The main reference
+# uses none of them; each alternative file switches on the named ones.
+ALT_NONE = frozenset()
+ALTERNATIVES = [
+    ("reference_alt_A1.json", frozenset({"A1"})),
+    ("reference_alt_A2.json", frozenset({"A2"})),
+    ("reference_alt_A3.json", frozenset({"A3"})),
+    ("reference_alt_A4.json", frozenset({"A4"})),
+    ("reference_alt_all.json", frozenset({"A1", "A2", "A3", "A4"})),
+]
+
+
+def guards_for(alts):
+    guards = dict(FACT_GUARDS)
+    if "A4" in alts:
+        # A4: "ordinary" excludes an arrears termination.
+        guards["family-home ordinary termination"] = [("family_home", True),
+                                                      ("arrears", False)]
+    return guards
+
+
+def fact_truth(dispute_type, fact, state, alts=ALT_NONE):
     """Return True/False for a decided fact, None for an open one."""
+    is_defining = DEFINING_EVENT.get(dispute_type) == fact
     if state == "stated_true":
         return True
     if state == "denied":
-        return False
+        # A1: a denied defining event does not stop the process.
+        return is_defining and "A1" in alts
+    if state == "raised_and_left_open" and is_defining and "A2" in alts:
+        # A2: an open defining event is presumed to have occurred.
+        return True
     if state == "not_mentioned":
         # "a branch fact that the claim never mentions is presumed absent;
         #  the dispute's defining event ... is presumed to have occurred"
@@ -89,7 +117,7 @@ def guard_holds(literals, assignment):
     return all(assignment[f] == v for f, v in literals)
 
 
-def reachable_nodes(proc, assignment):
+def reachable_nodes(proc, assignment, guards=FACT_GUARDS):
     nodes = proc["nodes"]
     targets = {t["target_node_id"] for t in proc["transitions"]}
     starts = [n["node_id"] for n in nodes if n["node_id"] not in targets]
@@ -104,12 +132,12 @@ def reachable_nodes(proc, assignment):
         src = stack.pop()
         edges = sorted(by_source.get(src, []), key=lambda e: e["edge_id"])
         guarded_taken = any(
-            guard_holds(FACT_GUARDS[e["condition"]], assignment)
-            for e in edges if e["condition"] in FACT_GUARDS)
+            guard_holds(guards[e["condition"]], assignment)
+            for e in edges if e["condition"] in guards)
         for e in edges:
             c = e["condition"]
-            if c in FACT_GUARDS:
-                take = guard_holds(FACT_GUARDS[c], assignment)
+            if c in guards:
+                take = guard_holds(guards[c], assignment)
             elif c in ELSE_GUARDS:
                 take = not guarded_taken
             elif c in PROCEDURAL:
@@ -122,13 +150,16 @@ def reachable_nodes(proc, assignment):
     return seen
 
 
-def doc_needed(doc, reach, assignment):
+def doc_needed(doc, reach, assignment, alts=ALT_NONE):
     """Is the document needed (to be requested) under one complete assignment?"""
-    if doc["requirement_class"] == "optional":
+    if doc["requirement_class"] == "optional" and "A3" not in alts:
         # Optional documents are never requested (SEMANTICS.md case 6).
         return False
     if not any(n in reach for n in doc["required_at_node_ids"]):
         return False
+    if doc["requirement_class"] == "optional":
+        # A3: requested like a mandatory document when its step is reached.
+        return True
     if doc["requirement_class"] == "mandatory":
         return True
     m = DOC_COND_RE.match(doc["condition"] or "")
@@ -137,21 +168,22 @@ def doc_needed(doc, reach, assignment):
     return assignment[m.group(1)] is True
 
 
-def evaluate_claim(dt, claim):
+def evaluate_claim(dt, claim, alts=ALT_NONE):
     proc = dt["process_catalog"]
     catalog = dt["condition_catalog"]
+    guards = guards_for(alts)
     if sorted(claim["facts"]) != sorted(catalog):
         raise ValueError("facts of %s do not match catalogue" % claim["claim_id"])
-    base = {f: fact_truth(dt["dispute_type"], f, claim["facts"][f]) for f in catalog}
+    base = {f: fact_truth(dt["dispute_type"], f, claim["facts"][f], alts) for f in catalog}
     open_facts = sorted(f for f in catalog if base[f] is None)
     # Enumerate every answer to every open question.
     outcomes = {d["document_type"]: set() for d in proc["documents"]}
     for values in itertools.product([False, True], repeat=len(open_facts)):
         assignment = dict(base)
         assignment.update(zip(open_facts, values))
-        reach = reachable_nodes(proc, assignment)
+        reach = reachable_nodes(proc, assignment, guards)
         for d in proc["documents"]:
-            outcomes[d["document_type"]].add(doc_needed(d, reach, assignment))
+            outcomes[d["document_type"]].add(doc_needed(d, reach, assignment, alts))
     supplied = {}
     for a in claim["attachments"]:
         if a["document_type"] not in outcomes:
@@ -181,12 +213,16 @@ def main(argv):
     with open(claims_path, encoding="utf-8") as f:
         claims = json.load(f)
     by_type = {d["dispute_type"]: d for d in rules["dispute_types"]}
-    out = {}
-    for claim in claims["claims"]:
-        out[claim["claim_id"]] = evaluate_claim(by_type[claim["dispute_type"]], claim)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2, sort_keys=True)
-        f.write("\n")
+    out_dir = os.path.dirname(os.path.abspath(out_path))
+    runs = [(out_path, ALT_NONE)] + [(os.path.join(out_dir, name), alts)
+                                     for name, alts in ALTERNATIVES]
+    for path, alts in runs:
+        out = {}
+        for claim in claims["claims"]:
+            out[claim["claim_id"]] = evaluate_claim(by_type[claim["dispute_type"]], claim, alts)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2, sort_keys=True)
+            f.write("\n")
 
 
 if __name__ == "__main__":
