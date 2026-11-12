@@ -39,9 +39,9 @@ every baseline that uses the same model.
 | Model | Regime | CasePath | Best same-model baseline | Status |
 |---|---|---|---|---|
 | Cost-efficient | Tenancy | 0.31 | 0.83 | all tests significant |
-| Cost-efficient | Theft | 0.58 | 1.21 (self-consistency) | wins on the mean; p = 0.0625, so that hypothesis failed |
+| Cost-efficient | Theft | 0.58 | 1.21 (self-consistency) | lowest mean; exact sign-flip test over nine clusters gave p = 0.0625, so that hypothesis failed |
 | Frontier | Tenancy | 0.30 | 1.86 | one run, descriptive |
-| Frontier | Theft | 0.83 | 0.67 to 0.95 | **not shown** |
+| Frontier | Theft | 0.83 | 0.67 to 0.95 | **no advantage** (the cell is printed in the paper) |
 
 Registered hypotheses: three confirmed (theft and tenancy against the same
 model; tenancy against the frontier single prompt), the fourth failed, the
@@ -108,3 +108,26 @@ should wait, against 35 to 48% for single prompts.
    paper, given few remaining credits and no model stronger than the frontier
    one?
 5. Which sections are still too long or unclear for a first-time reader?
+
+## Added on 2026-11-12, after outside feedback (all post hoc)
+
+- Two blind evaluators reproduced the tenancy references exactly (1,024 of
+  1,024). With the workflow amended to each of four rejected readings of the
+  rule text, the lead holds under every one; with the workflow unchanged it
+  reverses under one of them.
+- The tenancy lead sits in the 56 claims with an open fact or a denied or open
+  defining event (0.34 against 2.1 to 2.3); on the other 40 there is no
+  advantage over the frontier prompt (0.22 against 0.19).
+- Self-consistency does not improve with more samples (1 to 15); at a matched
+  budget CasePath leads on tenancy (p 0.0006) and on theft (p 0.13).
+- Under Holm's correction four of five hypotheses would pass.
+- Frontier theft: 0.83 = rule 0.33 + reading 0.25 + hold 0.25. Treating
+  lint-flagged conditions as open gives 0.53 in-sample and 0.78 with flags from
+  development data: the remedy does not survive out of sample.
+- The lint finds planted over-broad conditions (three of three new) and has no
+  usable false-alarm rate on designed data.
+- The deployment protocol now has an archival comparison on four sealed real
+  files as primary endpoint.
+
+Details: `analysis/study3_feedback.md`, `analysis/decomposition.md`,
+`analysis/lint_followup.md`, `cleanroom/README.md`, `REWRITE_BRIEF.md`.

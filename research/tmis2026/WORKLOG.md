@@ -416,3 +416,62 @@ on three points (`rule_review/lint/final/RECONCILIATION.md`).
 **Paper.** Reframed around the same-model claim as a two-by-two (holds in three
 cells, not shown on theft with the frontier model); new subsection "After the
 test"; abstract rewritten. Main paper 59 pages, supplement 27; all checks pass.
+
+## 2026-11-12: outside feedback (eight points) and the analyses made in answer
+
+An outside review of the status asked for a different headline ("holds", not
+"wins"), all four cells with an error decomposition, real-file evidence that
+needs no experts, an answer to the circularity objection, open repair of the
+statistics, the lint as a tested contribution, budget-matched comparisons, the
+tested commit as the artefact, and a cut to about 35 pages. All analyses below
+are post hoc and labelled so; the registered results are unchanged. Model spend:
+USD 0.15 (lint mutation test, cost-efficient model).
+
+**Clean room.** Two blind AI evaluator sessions each wrote an evaluator from the
+rule text and the designed facts only. Their references are byte-identical and
+equal the registered reference on 1,024 of 1,024 document decisions. One
+evaluator later listed a scratch directory and saw file names (recorded in
+`cleanroom/README.md`); its reference had been delivered and hashed before.
+
+**Readings of the rule text (F5, F5b).** Scored against references written under
+four rejected readings, with the product's workflow unchanged, the tenancy result
+reverses under "a denied event does not stop the process" (not significantly) and
+under all four together (significantly). With the workflow amended to each
+reading and the checklist recomputed from the stored readings, the lead holds
+under every reading (smaller under two). The baselines were not re-run.
+
+**Where the lead sits (F1, F2).** 56 claims with an open fact or a denied or open
+defining event: 0.34 against 2.1 to 2.3 for the single prompts on either model.
+40 claims with everything stated: 0.22 against 0.19 for the frontier prompt.
+CasePath is below every single prompt above a share of about 2% of such claims
+(7% counting unneeded holds).
+
+**Order and Holm (F3).** Under Holm's correction four of five hypotheses would
+pass; the self-consistency one fails under every procedure. Under the order
+before the late change the third would not have been tested.
+
+**Budget (F4).** Self-consistency with 1 to 15 samples stays at 2.1 on tenancy and
+levels off near 1.0 on theft. At a matched budget CasePath has 0.34 (p 0.0006)
+and 0.55 (p 0.13). More readings lower strict errors and raise unneeded holds.
+
+**Decomposition.** Every cell of the product splits exactly into rule, routing,
+document judgment, reading and hold. Theft on the frontier model: 0.83 = rule
+0.33 + reading 0.25 + hold 0.25.
+
+**Lint.** Mutation test: six planted over-broad conditions flagged, three of them
+newly; three of five untouched conditions also flagged; on the designed tenancy
+claims the lint flags most conditions, so it has no usable false-alarm rate.
+"A flagged condition is treated as open": frontier theft 0.83 → 0.53 with the
+model's own flags (in-sample), 0.83 → 0.78 with flags from development runs. The
+remedy does not survive out of sample. Decision: no paid run for this cell; nine
+clusters could not confirm a difference of this size.
+
+**Deployment study.** The pre-registration draft now has the archival comparison
+with what the insurer did next, at every decision point of four sealed files, as
+primary endpoint; the experts are secondary; a leave-one-dossier-out replay is a
+registered development analysis. Disagreements between two transcriptions are
+settled before any sealed run. Requirements and questions for the product's
+builders: `expert_study/REQUEST_TO_PRODUCT_20261112.md`.
+
+**Paper.** Rewrite brief v4 (`REWRITE_BRIEF.md`); abstract rewritten; rewrite and
+figures in progress.
