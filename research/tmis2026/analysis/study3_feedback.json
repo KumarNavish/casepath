@@ -7057,6 +7057,1701 @@
   ],
   "usage": "python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state (required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} as the stored references; every claim and every document of the registered reference must be present. Subsets, families and everything else stay the registered reference's; every design's stored plans are rescored with study2.ten_row, and the registered tenancy contrasts (H2, H3, S2a-S2f, S3a, S3b) are recomputed with study3's own contrast. The registered reference itself reproduces every stored number (checked)."
  },
+ "F5b": {
+  "amendments": {
+   "A1": "a denied defining event does not stop the process: where the defining-event fact (termination_received, claim_received) is admitted false, the evaluator is given it as true (as if the event had occurred). A fact left open keeps the gate open (held), as in the A1 reference. Not done at workflow level: a gate that passes on true or false would also stop holding an open event, which the A1 reference does not do.",
+   "A2": "an open defining event is presumed to have occurred: the routed presumption (true) also applies when the readings raise the event and leave it open; it still does not apply when a reading found a value other than true, or when the readings conflict (workflows.reading_gave_value; status 'conflicting').",
+   "A3": "optional documents are requested like mandatory ones: the 'optional' mark is removed from the workflow's optional documents (defect: caretaker_correspondence; termination and rent: landlord_correspondence); the evaluator then requests them where their step is reached and holds them where it depends on an open fact.",
+   "A4": "the family-home branch needs family_home and not arrears: in lease_termination_dispute the edge lt_type__gate_family_home -> lt_family becomes {all: [family_home is true, arrears is false]} and the edge -> lt_abuse becomes {any: [family_home is false, arrears is true]}; spouse_notice_copy's own condition (family_home) is left as it is, since its step is now reached only through the amended edge."
+  },
+  "checks": {
+   "casepath": {
+    "replay reproduces the stored scored checklist": 285,
+    "replayed": 286,
+    "stored plan kept (failed, handed over or not routed)": 2
+   },
+   "casepath_checklist": {
+    "replay reproduces the stored scored checklist": 285,
+    "replayed": 286,
+    "stored plan kept (failed, handed over or not routed)": 2
+   },
+   "casepath_frontier_checklist": {
+    "replay reproduces the stored scored checklist": 95,
+    "replayed": 96
+   },
+   "empty amendment leaves every workflow unchanged": true
+  },
+  "method": "Each product design's stored tenancy case-runs are replayed from their stored readings (k = 3, the first three readings in the response cache, admitted with the product's own quotation check), with routing and document findings as stored, by the product's evaluator at the tested commit, with the workflow (A3, A4) or the facts given to the evaluator (A1, A2) amended to the reading; needs added by an agent are kept as stored (none entered a checklist). Unamended, the replay reproduces the stored scored checklist in 285 of 286 evaluated case-runs of the full product and of checklist only, and in 95 of 96 of the frontier one-run row; the two failed case-runs keep their stored (empty) plans. Routing is kept as stored: every denied-event claim-run was routed to its dispute's workflow in the stored runs, so no claim changes routing under a reading. Each replay is scored against the reference written under the same reading (cleanroom/evaluator_b/reference_alt_*.json); subset membership is the registered reference's. The baselines are not re-run: their stored plans are scored against the same alternative reference. Their prompts carried the registered rule text, so wherever they ignored the registered stop (and requested documents on a denied event) the alternative reference favours them. Contrasts: CasePath (matched workflow, full product) minus each baseline over the 24 families, 95% cluster bootstrap with the registered resamples, exact sign-flip p; post hoc and descriptive.",
+  "readings": {
+   "A1": {
+    "amendment": [
+     "A1"
+    ],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 1.670138888888889,
+      "all_dev|denied_event": 4.777777777777778,
+      "all_dev|open_event": 1.0370370370370372,
+      "all_dev|ordinary": 0.5868055555555556,
+      "strict_unsafe|all claims": 1.0069444444444444,
+      "strict_unsafe|denied_event": 2.6527777777777777,
+      "strict_unsafe|open_event": 1.0370370370370372,
+      "strict_unsafe|ordinary": 0.3732638888888889
+     },
+     "react": {
+      "all_dev|all claims": 2.111111111111111,
+      "all_dev|denied_event": 3.6666666666666665,
+      "all_dev|open_event": 3.888888888888889,
+      "all_dev|ordinary": 1.2569444444444444,
+      "strict_unsafe|all claims": 1.9444444444444444,
+      "strict_unsafe|denied_event": 3.4305555555555554,
+      "strict_unsafe|open_event": 3.888888888888889,
+      "strict_unsafe|ordinary": 1.09375
+     },
+     "ric": {
+      "all_dev|all claims": 1.0138888888888888,
+      "all_dev|denied_event": 0.9722222222222222,
+      "all_dev|open_event": 4.62962962962963,
+      "all_dev|ordinary": 0.5208333333333334,
+      "strict_unsafe|all claims": 0.8229166666666666,
+      "strict_unsafe|denied_event": 0.41666666666666663,
+      "strict_unsafe|open_event": 4.62962962962963,
+      "strict_unsafe|ordinary": 0.4375
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 1.3819444444444444,
+      "all_dev|denied_event": 2.236111111111111,
+      "all_dev|open_event": 6.111111111111111,
+      "all_dev|ordinary": 0.375,
+      "strict_unsafe|all claims": 1.159722222222222,
+      "strict_unsafe|denied_event": 1.6111111111111112,
+      "strict_unsafe|open_event": 6.0740740740740735,
+      "strict_unsafe|ordinary": 0.28125
+     },
+     "self_consistency": {
+      "all_dev|all claims": 0.8472222222222222,
+      "all_dev|denied_event": 0.7222222222222222,
+      "all_dev|open_event": 3.962962962962963,
+      "all_dev|ordinary": 0.4461805555555556,
+      "strict_unsafe|all claims": 0.6354166666666666,
+      "strict_unsafe|denied_event": 0.05555555555555555,
+      "strict_unsafe|open_event": 3.962962962962963,
+      "strict_unsafe|ordinary": 0.3784722222222222
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {
+       "lease_termination_dispute": 36,
+       "rent_increase_dispute": 18
+      },
+      "by_subset": {
+       "denied_event": 54
+      }
+     },
+     "casepath_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 36,
+       "rent_increase_dispute": 18
+      },
+      "by_subset": {
+       "denied_event": 54
+      }
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 12,
+       "rent_increase_dispute": 6
+      },
+      "by_subset": {
+       "denied_event": 18
+      }
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.16319444444444445,
+      "b": "ric",
+      "b_value": 0.8229166666666666,
+      "checklist_only": {
+       "a_value": 0.16666666666666666,
+       "b_value": 0.8229166666666666,
+       "clusters": 24,
+       "diff": -0.65625,
+       "diff_ci": [
+        -1.0,
+        -0.3368055555555556
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 0.0005140304565429688
+      },
+      "clusters": 24,
+      "diff": -0.6597222222222222,
+      "diff_ci": [
+       -0.9895833333333334,
+       -0.3611111111111111
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 0.0001811981201171875,
+      "verdict": "holds, shrinks"
+     },
+     "H3": {
+      "a_value": 0.16319444444444445,
+      "b": "ric_frontier",
+      "b_value": 1.159722222222222,
+      "checklist_only": {
+       "a_value": 0.16666666666666666,
+       "b_value": 1.159722222222222,
+       "clusters": 24,
+       "diff": -0.9930555555555555,
+       "diff_ci": [
+        -1.684114583333333,
+        -0.4236111111111111
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 22,
+       "p": 0.001918792724609375
+      },
+      "clusters": 24,
+      "diff": -0.9965277777777778,
+      "diff_ci": [
+       -1.684114583333333,
+       -0.4305555555555556
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.001354217529296875,
+      "verdict": "holds, shrinks"
+     },
+     "S2a": {
+      "a_value": 0.16319444444444445,
+      "b": "self_consistency",
+      "b_value": 0.6354166666666666,
+      "checklist_only": {
+       "a_value": 0.16666666666666666,
+       "b_value": 0.6354166666666666,
+       "clusters": 24,
+       "diff": -0.46875,
+       "diff_ci": [
+        -0.7430555555555555,
+        -0.21180555555555558
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0017156600952148438
+      },
+      "clusters": 24,
+      "diff": -0.47222222222222227,
+      "diff_ci": [
+       -0.7256944444444445,
+       -0.23958333333333334
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.0005159378051757812,
+      "verdict": "holds, shrinks"
+     },
+     "S2b": {
+      "a_value": 0.16319444444444445,
+      "b": "model_executes_rules",
+      "b_value": 1.0069444444444444,
+      "checklist_only": {
+       "a_value": 0.16666666666666666,
+       "b_value": 1.0069444444444444,
+       "clusters": 24,
+       "diff": -0.8402777777777778,
+       "diff_ci": [
+        -1.4444444444444444,
+        -0.3229166666666667
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 22,
+       "p": 0.0014986991882324219
+      },
+      "clusters": 24,
+      "diff": -0.84375,
+      "diff_ci": [
+       -1.4305555555555556,
+       -0.3506944444444444
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.000331878662109375,
+      "verdict": "holds, grows"
+     },
+     "S2c": {
+      "a_value": 0.16319444444444445,
+      "b": "react",
+      "b_value": 1.9444444444444444,
+      "checklist_only": {
+       "a_value": 0.16666666666666666,
+       "b_value": 1.9444444444444444,
+       "clusters": 24,
+       "diff": -1.7777777777777777,
+       "diff_ci": [
+        -2.423611111111111,
+        -1.1944444444444444
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 9.5367431640625e-07
+      },
+      "clusters": 24,
+      "diff": -1.78125,
+      "diff_ci": [
+       -2.413194444444444,
+       -1.21875
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 3.5762786865234375e-07,
+      "verdict": "holds, grows"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.607638888888889,
+      "all_dev|all claims, registered workflow (F5)": 1.7916666666666667,
+      "all_dev|denied_event": 1.277777777777778,
+      "all_dev|open_event": 0.2592592592592593,
+      "all_dev|ordinary": 0.4010416666666667,
+      "strict_unsafe|all claims": 0.16319444444444445,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.3715277777777777,
+      "strict_unsafe|denied_event": 0.013888888888888888,
+      "strict_unsafe|open_event": 0.2592592592592593,
+      "strict_unsafe|ordinary": 0.203125
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.5833333333333334,
+      "all_dev|all claims, registered workflow (F5)": 1.767361111111111,
+      "all_dev|denied_event": 1.1666666666666667,
+      "all_dev|open_event": 0.0,
+      "all_dev|ordinary": 0.4392361111111111,
+      "strict_unsafe|all claims": 0.16666666666666666,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.375,
+      "strict_unsafe|denied_event": 0.013888888888888888,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.24479166666666666
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.6770833333333334,
+      "all_dev|all claims, registered workflow (F5)": 1.84375,
+      "all_dev|denied_event": 1.6666666666666665,
+      "all_dev|open_event": 0.7777777777777778,
+      "all_dev|ordinary": 0.2864583333333333,
+      "strict_unsafe|all claims": 0.23958333333333334,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.4375,
+      "strict_unsafe|denied_event": 0.041666666666666664,
+      "strict_unsafe|open_event": 0.6666666666666666,
+      "strict_unsafe|ordinary": 0.2552083333333333
+     }
+    }
+   },
+   "A2": {
+    "amendment": [
+     "A2"
+    ],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 1.9618055555555556,
+      "all_dev|denied_event": 4.069444444444445,
+      "all_dev|open_event": 6.037037037037037,
+      "all_dev|ordinary": 0.5868055555555556,
+      "strict_unsafe|all claims": 0.7395833333333334,
+      "strict_unsafe|denied_event": 1.9444444444444444,
+      "strict_unsafe|open_event": 0.07407407407407407,
+      "strict_unsafe|ordinary": 0.3732638888888889
+     },
+     "react": {
+      "all_dev|all claims": 1.9756944444444444,
+      "all_dev|denied_event": 3.236111111111111,
+      "all_dev|open_event": 3.592592592592593,
+      "all_dev|ordinary": 1.2569444444444444,
+      "strict_unsafe|all claims": 1.5173611111111114,
+      "strict_unsafe|denied_event": 3.0,
+      "strict_unsafe|open_event": 0.48148148148148145,
+      "strict_unsafe|ordinary": 1.09375
+     },
+     "ric": {
+      "all_dev|all claims": 2.131944444444444,
+      "all_dev|denied_event": 6.236111111111111,
+      "all_dev|open_event": 2.5185185185185186,
+      "all_dev|ordinary": 0.5208333333333334,
+      "strict_unsafe|all claims": 1.71875,
+      "strict_unsafe|denied_event": 5.680555555555555,
+      "strict_unsafe|open_event": 0.14814814814814814,
+      "strict_unsafe|ordinary": 0.4375
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 1.6041666666666667,
+      "all_dev|denied_event": 5.055555555555555,
+      "all_dev|open_event": 0.9629629629629629,
+      "all_dev|ordinary": 0.375,
+      "strict_unsafe|all claims": 1.2951388888888888,
+      "strict_unsafe|denied_event": 4.430555555555555,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.28125
+     },
+     "self_consistency": {
+      "all_dev|all claims": 2.225694444444444,
+      "all_dev|denied_event": 6.583333333333333,
+      "all_dev|open_event": 3.0370370370370368,
+      "all_dev|ordinary": 0.4461805555555556,
+      "strict_unsafe|all claims": 1.7291666666666667,
+      "strict_unsafe|denied_event": 5.916666666666667,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.3784722222222222
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {
+       "lease_termination_dispute": 16,
+       "rent_increase_dispute": 11
+      },
+      "by_subset": {
+       "open_event": 26,
+       "ordinary": 1
+      }
+     },
+     "casepath_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 16,
+       "rent_increase_dispute": 12
+      },
+      "by_subset": {
+       "open_event": 27,
+       "ordinary": 1
+      }
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 5,
+       "rent_increase_dispute": 3
+      },
+      "by_subset": {
+       "open_event": 8
+      }
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.2881944444444445,
+      "b": "ric",
+      "b_value": 1.71875,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.71875,
+       "clusters": 24,
+       "diff": -1.375,
+       "diff_ci": [
+        -2.100694444444444,
+        -0.7048611111111112
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 0.0004963874816894531
+      },
+      "clusters": 24,
+      "diff": -1.4305555555555556,
+      "diff_ci": [
+       -2.1631944444444446,
+       -0.75
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 0.00017833709716796875,
+      "verdict": "holds, shrinks"
+     },
+     "H3": {
+      "a_value": 0.2881944444444445,
+      "b": "ric_frontier",
+      "b_value": 1.2951388888888888,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.2951388888888888,
+       "clusters": 24,
+       "diff": -0.9513888888888888,
+       "diff_ci": [
+        -1.6493055555555556,
+        -0.3506944444444445
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0045146942138671875
+      },
+      "clusters": 24,
+      "diff": -1.0069444444444444,
+      "diff_ci": [
+       -1.7014756944444445,
+       -0.4166666666666667
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 20,
+      "p": 0.00196075439453125,
+      "verdict": "holds, shrinks"
+     },
+     "S2a": {
+      "a_value": 0.2881944444444445,
+      "b": "self_consistency",
+      "b_value": 1.7291666666666667,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.7291666666666667,
+       "clusters": 24,
+       "diff": -1.3854166666666667,
+       "diff_ci": [
+        -2.1770833333333335,
+        -0.6666666666666666
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0009431838989257812
+      },
+      "clusters": 24,
+      "diff": -1.4409722222222223,
+      "diff_ci": [
+       -2.236197916666667,
+       -0.71875
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.00037384033203125,
+      "verdict": "holds, shrinks"
+     },
+     "S2b": {
+      "a_value": 0.2881944444444445,
+      "b": "model_executes_rules",
+      "b_value": 0.7395833333333334,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 0.7395833333333334,
+       "clusters": 24,
+       "diff": -0.3958333333333333,
+       "diff_ci": [
+        -0.71875,
+        -0.125
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.005980491638183594
+      },
+      "clusters": 24,
+      "diff": -0.4513888888888889,
+      "diff_ci": [
+       -0.8125,
+       -0.17013888888888887
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 20,
+      "p": 0.0011844635009765625,
+      "verdict": "holds, shrinks"
+     },
+     "S2c": {
+      "a_value": 0.2881944444444445,
+      "b": "react",
+      "b_value": 1.5173611111111114,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.5173611111111114,
+       "clusters": 24,
+       "diff": -1.1736111111111112,
+       "diff_ci": [
+        -1.6284722222222223,
+        -0.7673611111111112
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 22,
+       "p": 4.291534423828125e-06
+      },
+      "clusters": 24,
+      "diff": -1.2291666666666667,
+      "diff_ci": [
+       -1.701388888888889,
+       -0.8159722222222223
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 1.430511474609375e-06,
+      "verdict": "holds, shrinks"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.7013888888888888,
+      "all_dev|all claims, registered workflow (F5)": 1.3402777777777777,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.14814814814814814,
+      "all_dev|ordinary": 0.36979166666666663,
+      "strict_unsafe|all claims": 0.2881944444444445,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.2881944444444445,
+      "strict_unsafe|denied_event": 0.6111111111111112,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.203125
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.7291666666666666,
+      "all_dev|all claims, registered workflow (F5)": 1.392361111111111,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.14814814814814814,
+      "all_dev|ordinary": 0.4079861111111111,
+      "strict_unsafe|all claims": 0.34375,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.34375,
+      "strict_unsafe|denied_event": 0.7222222222222222,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.24479166666666666
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.65625,
+      "all_dev|all claims, registered workflow (F5)": 1.2395833333333333,
+      "all_dev|denied_event": 1.7916666666666667,
+      "all_dev|open_event": 0.2222222222222222,
+      "all_dev|ordinary": 0.2864583333333333,
+      "strict_unsafe|all claims": 0.23958333333333334,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.23958333333333334,
+      "strict_unsafe|denied_event": 0.2916666666666667,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.2552083333333333
+     }
+    }
+   },
+   "A3": {
+    "amendment": [
+     "A3"
+    ],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 2.243055555555556,
+      "all_dev|denied_event": 4.069444444444445,
+      "all_dev|open_event": 2.0370370370370368,
+      "all_dev|ordinary": 1.5868055555555556,
+      "strict_unsafe|all claims": 1.579861111111111,
+      "strict_unsafe|denied_event": 1.9444444444444444,
+      "strict_unsafe|open_event": 2.0370370370370368,
+      "strict_unsafe|ordinary": 1.3732638888888888
+     },
+     "react": {
+      "all_dev|all claims": 2.732638888888889,
+      "all_dev|denied_event": 3.236111111111111,
+      "all_dev|open_event": 4.888888888888889,
+      "all_dev|ordinary": 2.2256944444444446,
+      "strict_unsafe|all claims": 2.5659722222222223,
+      "strict_unsafe|denied_event": 3.0,
+      "strict_unsafe|open_event": 4.888888888888889,
+      "strict_unsafe|ordinary": 2.0625
+     },
+     "ric": {
+      "all_dev|all claims": 3.0729166666666665,
+      "all_dev|denied_event": 6.236111111111111,
+      "all_dev|open_event": 5.62962962962963,
+      "all_dev|ordinary": 1.5104166666666667,
+      "strict_unsafe|all claims": 2.8819444444444446,
+      "strict_unsafe|denied_event": 5.680555555555555,
+      "strict_unsafe|open_event": 5.62962962962963,
+      "strict_unsafe|ordinary": 1.4270833333333333
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 2.8368055555555554,
+      "all_dev|denied_event": 5.055555555555555,
+      "all_dev|open_event": 7.111111111111111,
+      "all_dev|ordinary": 1.375,
+      "strict_unsafe|all claims": 2.6145833333333335,
+      "strict_unsafe|denied_event": 4.430555555555555,
+      "strict_unsafe|open_event": 7.0740740740740735,
+      "strict_unsafe|ordinary": 1.28125
+     },
+     "self_consistency": {
+      "all_dev|all claims": 3.0625,
+      "all_dev|denied_event": 6.583333333333333,
+      "all_dev|open_event": 4.962962962962963,
+      "all_dev|ordinary": 1.4461805555555556,
+      "strict_unsafe|all claims": 2.8506944444444446,
+      "strict_unsafe|denied_event": 5.916666666666667,
+      "strict_unsafe|open_event": 4.962962962962963,
+      "strict_unsafe|ordinary": 1.3784722222222223
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {
+       "defect_mold_heating": 154,
+       "lease_termination_dispute": 48,
+       "rent_increase_dispute": 30
+      },
+      "by_subset": {
+       "denied_event": 18,
+       "open_event": 27,
+       "ordinary": 187
+      }
+     },
+     "casepath_checklist": {
+      "by_dispute": {
+       "defect_mold_heating": 154,
+       "lease_termination_dispute": 47,
+       "rent_increase_dispute": 30
+      },
+      "by_subset": {
+       "denied_event": 18,
+       "open_event": 27,
+       "ordinary": 186
+      }
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {
+       "defect_mold_heating": 52,
+       "lease_termination_dispute": 15,
+       "rent_increase_dispute": 10
+      },
+      "by_subset": {
+       "denied_event": 6,
+       "open_event": 9,
+       "ordinary": 62
+      }
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.34375,
+      "b": "ric",
+      "b_value": 2.8819444444444446,
+      "checklist_only": {
+       "a_value": 0.37847222222222227,
+       "b_value": 2.8819444444444446,
+       "clusters": 24,
+       "diff": -2.5034722222222223,
+       "diff_ci": [
+        -3.263888888888889,
+        -1.7847222222222223
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -2.538194444444444,
+      "diff_ci": [
+       -3.2881944444444446,
+       -1.8368055555555556
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     },
+     "H3": {
+      "a_value": 0.34375,
+      "b": "ric_frontier",
+      "b_value": 2.6145833333333335,
+      "checklist_only": {
+       "a_value": 0.37847222222222227,
+       "b_value": 2.6145833333333335,
+       "clusters": 24,
+       "diff": -2.236111111111111,
+       "diff_ci": [
+        -3.020920138888889,
+        -1.548611111111111
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -2.2708333333333335,
+      "diff_ci": [
+       -3.03125,
+       -1.607638888888889
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 23,
+      "p": 2.384185791015625e-07,
+      "verdict": "holds, grows"
+     },
+     "S2a": {
+      "a_value": 0.34375,
+      "b": "self_consistency",
+      "b_value": 2.8506944444444446,
+      "checklist_only": {
+       "a_value": 0.37847222222222227,
+       "b_value": 2.8506944444444446,
+       "clusters": 24,
+       "diff": -2.4722222222222223,
+       "diff_ci": [
+        -3.309027777777778,
+        -1.71875
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -2.506944444444444,
+      "diff_ci": [
+       -3.323003472222222,
+       -1.767361111111111
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     },
+     "S2b": {
+      "a_value": 0.34375,
+      "b": "model_executes_rules",
+      "b_value": 1.579861111111111,
+      "checklist_only": {
+       "a_value": 0.37847222222222227,
+       "b_value": 1.579861111111111,
+       "clusters": 24,
+       "diff": -1.2013888888888888,
+       "diff_ci": [
+        -1.517361111111111,
+        -0.9375
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -1.2361111111111112,
+      "diff_ci": [
+       -1.5416666666666667,
+       -0.9791666666666666
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     },
+     "S2c": {
+      "a_value": 0.34375,
+      "b": "react",
+      "b_value": 2.5659722222222223,
+      "checklist_only": {
+       "a_value": 0.37847222222222227,
+       "b_value": 2.5659722222222223,
+       "clusters": 24,
+       "diff": -2.1875,
+       "diff_ci": [
+        -2.6770833333333335,
+        -1.7534722222222223
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 1.1920928955078125e-07
+      },
+      "clusters": 24,
+      "diff": -2.2222222222222223,
+      "diff_ci": [
+       -2.6945312500000003,
+       -1.8089409722222234
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.8090277777777778,
+      "all_dev|all claims, registered workflow (F5)": 1.482638888888889,
+      "all_dev|denied_event": 2.0277777777777777,
+      "all_dev|open_event": 0.2962962962962963,
+      "all_dev|ordinary": 0.4166666666666667,
+      "strict_unsafe|all claims": 0.34375,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.0625,
+      "strict_unsafe|denied_event": 0.6944444444444444,
+      "strict_unsafe|open_event": 0.2962962962962963,
+      "strict_unsafe|ordinary": 0.21354166666666666
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.8125,
+      "all_dev|all claims, registered workflow (F5)": 1.486111111111111,
+      "all_dev|denied_event": 2.0277777777777777,
+      "all_dev|open_event": 0.0,
+      "all_dev|ordinary": 0.4600694444444444,
+      "strict_unsafe|all claims": 0.37847222222222227,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.09375,
+      "strict_unsafe|denied_event": 0.8194444444444444,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.2604166666666667
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.7916666666666666,
+      "all_dev|all claims, registered workflow (F5)": 1.4583333333333333,
+      "all_dev|denied_event": 2.0416666666666665,
+      "all_dev|open_event": 0.8888888888888888,
+      "all_dev|ordinary": 0.3020833333333333,
+      "strict_unsafe|all claims": 0.3333333333333333,
+      "strict_unsafe|all claims, registered workflow (F5)": 1.0520833333333333,
+      "strict_unsafe|denied_event": 0.3333333333333333,
+      "strict_unsafe|open_event": 0.7777777777777778,
+      "strict_unsafe|ordinary": 0.2708333333333333
+     }
+    }
+   },
+   "A4": {
+    "amendment": [
+     "A4"
+    ],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 1.5277777777777777,
+      "all_dev|denied_event": 4.069444444444445,
+      "all_dev|open_event": 1.1481481481481481,
+      "all_dev|ordinary": 0.6302083333333334,
+      "strict_unsafe|all claims": 0.84375,
+      "strict_unsafe|denied_event": 1.9444444444444444,
+      "strict_unsafe|open_event": 1.0370370370370372,
+      "strict_unsafe|ordinary": 0.4010416666666667
+     },
+     "react": {
+      "all_dev|all claims": 2.038194444444444,
+      "all_dev|denied_event": 3.236111111111111,
+      "all_dev|open_event": 3.888888888888889,
+      "all_dev|ordinary": 1.3246527777777777,
+      "strict_unsafe|all claims": 1.8645833333333333,
+      "strict_unsafe|denied_event": 3.0,
+      "strict_unsafe|open_event": 3.888888888888889,
+      "strict_unsafe|ordinary": 1.1510416666666667
+     },
+     "ric": {
+      "all_dev|all claims": 2.3715277777777777,
+      "all_dev|denied_event": 6.236111111111111,
+      "all_dev|open_event": 4.62962962962963,
+      "all_dev|ordinary": 0.5989583333333334,
+      "strict_unsafe|all claims": 2.170138888888889,
+      "strict_unsafe|denied_event": 5.680555555555555,
+      "strict_unsafe|open_event": 4.62962962962963,
+      "strict_unsafe|ordinary": 0.5
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 2.1284722222222223,
+      "all_dev|denied_event": 5.055555555555555,
+      "all_dev|open_event": 6.111111111111111,
+      "all_dev|ordinary": 0.453125,
+      "strict_unsafe|all claims": 1.8958333333333333,
+      "strict_unsafe|denied_event": 4.430555555555555,
+      "strict_unsafe|open_event": 6.0740740740740735,
+      "strict_unsafe|ordinary": 0.34375
+     },
+     "self_consistency": {
+      "all_dev|all claims": 2.3541666666666665,
+      "all_dev|denied_event": 6.583333333333333,
+      "all_dev|open_event": 3.962962962962963,
+      "all_dev|ordinary": 0.5243055555555556,
+      "strict_unsafe|all claims": 2.131944444444444,
+      "strict_unsafe|denied_event": 5.916666666666667,
+      "strict_unsafe|open_event": 3.962962962962963,
+      "strict_unsafe|ordinary": 0.4409722222222222
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {
+       "lease_termination_dispute": 14
+      },
+      "by_subset": {
+       "open_event": 1,
+       "ordinary": 13
+      }
+     },
+     "casepath_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 15
+      },
+      "by_subset": {
+       "open_event": 1,
+       "ordinary": 14
+      }
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {
+       "lease_termination_dispute": 5
+      },
+      "by_subset": {
+       "open_event": 1,
+       "ordinary": 4
+      }
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.3055555555555555,
+      "b": "ric",
+      "b_value": 2.170138888888889,
+      "checklist_only": {
+       "a_value": 0.3368055555555556,
+       "b_value": 2.170138888888889,
+       "clusters": 24,
+       "diff": -1.8333333333333333,
+       "diff_ci": [
+        -2.732725694444445,
+        -0.9791666666666666
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 0.0003287792205810547
+      },
+      "clusters": 24,
+      "diff": -1.8645833333333333,
+      "diff_ci": [
+       -2.7569444444444446,
+       -1.0208333333333333
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 0.00012493133544921875,
+      "verdict": "holds"
+     },
+     "H3": {
+      "a_value": 0.3055555555555555,
+      "b": "ric_frontier",
+      "b_value": 1.8958333333333333,
+      "checklist_only": {
+       "a_value": 0.3368055555555556,
+       "b_value": 1.8958333333333333,
+       "clusters": 24,
+       "diff": -1.5590277777777777,
+       "diff_ci": [
+        -2.4652777777777777,
+        -0.75
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0013570785522460938
+      },
+      "clusters": 24,
+      "diff": -1.5902777777777777,
+      "diff_ci": [
+       -2.4827256944444445,
+       -0.7986111111111112
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 20,
+      "p": 0.00066375732421875,
+      "verdict": "holds"
+     },
+     "S2a": {
+      "a_value": 0.3055555555555555,
+      "b": "self_consistency",
+      "b_value": 2.131944444444444,
+      "checklist_only": {
+       "a_value": 0.3368055555555556,
+       "b_value": 2.131944444444444,
+       "clusters": 24,
+       "diff": -1.795138888888889,
+       "diff_ci": [
+        -2.78125,
+        -0.9131944444444445
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 22,
+       "p": 0.0004715919494628906
+      },
+      "clusters": 24,
+      "diff": -1.826388888888889,
+      "diff_ci": [
+       -2.7916666666666665,
+       -0.9513888888888888
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 0.000186920166015625,
+      "verdict": "holds"
+     },
+     "S2b": {
+      "a_value": 0.3055555555555555,
+      "b": "model_executes_rules",
+      "b_value": 0.84375,
+      "checklist_only": {
+       "a_value": 0.3368055555555556,
+       "b_value": 0.84375,
+       "clusters": 24,
+       "diff": -0.5069444444444444,
+       "diff_ci": [
+        -0.9027777777777777,
+        -0.1875
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0021915435791015625
+      },
+      "clusters": 24,
+      "diff": -0.5381944444444444,
+      "diff_ci": [
+       -0.923611111111111,
+       -0.22916666666666666
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 20,
+      "p": 0.000453948974609375,
+      "verdict": "holds"
+     },
+     "S2c": {
+      "a_value": 0.3055555555555555,
+      "b": "react",
+      "b_value": 1.8645833333333333,
+      "checklist_only": {
+       "a_value": 0.3368055555555556,
+       "b_value": 1.8645833333333333,
+       "clusters": 24,
+       "diff": -1.5277777777777777,
+       "diff_ci": [
+        -2.0972222222222223,
+        -1.027777777777778
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 1.0728836059570312e-06
+      },
+      "clusters": 24,
+      "diff": -1.5590277777777777,
+      "diff_ci": [
+       -2.118055555555556,
+       -1.065972222222222
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 3.5762786865234375e-07,
+      "verdict": "holds"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.7361111111111112,
+      "all_dev|all claims, registered workflow (F5)": 0.7847222222222222,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.3333333333333333,
+      "all_dev|ordinary": 0.3958333333333333,
+      "strict_unsafe|all claims": 0.3055555555555555,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.34375,
+      "strict_unsafe|denied_event": 0.6111111111111112,
+      "strict_unsafe|open_event": 0.2592592592592593,
+      "strict_unsafe|ordinary": 0.19270833333333331
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.7361111111111112,
+      "all_dev|all claims, registered workflow (F5)": 0.7881944444444445,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.07407407407407407,
+      "all_dev|ordinary": 0.4288194444444444,
+      "strict_unsafe|all claims": 0.3368055555555556,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.375,
+      "strict_unsafe|denied_event": 0.7222222222222222,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.234375
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.7083333333333334,
+      "all_dev|all claims, registered workflow (F5)": 0.7604166666666666,
+      "all_dev|denied_event": 1.7916666666666667,
+      "all_dev|open_event": 0.7777777777777778,
+      "all_dev|ordinary": 0.2864583333333333,
+      "strict_unsafe|all claims": 0.2916666666666667,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.3333333333333333,
+      "strict_unsafe|denied_event": 0.2916666666666667,
+      "strict_unsafe|open_event": 0.6666666666666666,
+      "strict_unsafe|ordinary": 0.23958333333333334
+     }
+    }
+   },
+   "all": {
+    "amendment": [
+     "A1",
+     "A2",
+     "A3",
+     "A4"
+    ],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 3.15625,
+      "all_dev|denied_event": 5.75,
+      "all_dev|open_event": 7.037037037037037,
+      "all_dev|ordinary": 1.6302083333333333,
+      "strict_unsafe|all claims": 1.923611111111111,
+      "strict_unsafe|denied_event": 3.625,
+      "strict_unsafe|open_event": 1.074074074074074,
+      "strict_unsafe|ordinary": 1.4010416666666667
+     },
+     "react": {
+      "all_dev|all claims": 3.107638888888889,
+      "all_dev|denied_event": 4.666666666666667,
+      "all_dev|open_event": 4.703703703703704,
+      "all_dev|ordinary": 2.2934027777777777,
+      "strict_unsafe|all claims": 2.642361111111111,
+      "strict_unsafe|denied_event": 4.430555555555555,
+      "strict_unsafe|open_event": 1.5925925925925926,
+      "strict_unsafe|ordinary": 2.1197916666666665
+     },
+     "ric": {
+      "all_dev|all claims": 1.861111111111111,
+      "all_dev|denied_event": 1.9722222222222223,
+      "all_dev|open_event": 3.6296296296296293,
+      "all_dev|ordinary": 1.5885416666666667,
+      "strict_unsafe|all claims": 1.4375,
+      "strict_unsafe|denied_event": 1.4166666666666667,
+      "strict_unsafe|open_event": 1.2592592592592593,
+      "strict_unsafe|ordinary": 1.4895833333333333
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 1.951388888888889,
+      "all_dev|denied_event": 3.236111111111111,
+      "all_dev|open_event": 2.0740740740740744,
+      "all_dev|ordinary": 1.453125,
+      "strict_unsafe|all claims": 1.6319444444444444,
+      "strict_unsafe|denied_event": 2.611111111111111,
+      "strict_unsafe|open_event": 1.1111111111111112,
+      "strict_unsafe|ordinary": 1.34375
+     },
+     "self_consistency": {
+      "all_dev|all claims": 1.8125,
+      "all_dev|denied_event": 1.722222222222222,
+      "all_dev|open_event": 4.148148148148149,
+      "all_dev|ordinary": 1.5243055555555556,
+      "strict_unsafe|all claims": 1.3055555555555556,
+      "strict_unsafe|denied_event": 1.0555555555555556,
+      "strict_unsafe|open_event": 1.1111111111111112,
+      "strict_unsafe|ordinary": 1.4409722222222223
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {
+       "defect_mold_heating": 154,
+       "lease_termination_dispute": 84,
+       "rent_increase_dispute": 48
+      },
+      "by_subset": {
+       "denied_event": 72,
+       "open_event": 27,
+       "ordinary": 187
+      }
+     },
+     "casepath_checklist": {
+      "by_dispute": {
+       "defect_mold_heating": 154,
+       "lease_termination_dispute": 83,
+       "rent_increase_dispute": 48
+      },
+      "by_subset": {
+       "denied_event": 72,
+       "open_event": 27,
+       "ordinary": 186
+      }
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {
+       "defect_mold_heating": 52,
+       "lease_termination_dispute": 27,
+       "rent_increase_dispute": 16
+      },
+      "by_subset": {
+       "denied_event": 24,
+       "open_event": 9,
+       "ordinary": 62
+      }
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.1388888888888889,
+      "b": "ric",
+      "b_value": 1.4375,
+      "checklist_only": {
+       "a_value": 0.17013888888888887,
+       "b_value": 1.4375,
+       "clusters": 24,
+       "diff": -1.2673611111111112,
+       "diff_ci": [
+        -1.4583333333333333,
+        -1.0763888888888888
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -1.2986111111111112,
+      "diff_ci": [
+       -1.4791666666666667,
+       -1.125
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, shrinks"
+     },
+     "H3": {
+      "a_value": 0.1388888888888889,
+      "b": "ric_frontier",
+      "b_value": 1.6319444444444444,
+      "checklist_only": {
+       "a_value": 0.17013888888888887,
+       "b_value": 1.6319444444444444,
+       "clusters": 24,
+       "diff": -1.4618055555555556,
+       "diff_ci": [
+        -1.954861111111111,
+        -1.0763888888888888
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -1.4930555555555556,
+      "diff_ci": [
+       -1.982638888888889,
+       -1.121527777777778
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 23,
+      "p": 2.384185791015625e-07,
+      "verdict": "holds"
+     },
+     "S2a": {
+      "a_value": 0.1388888888888889,
+      "b": "self_consistency",
+      "b_value": 1.3055555555555556,
+      "checklist_only": {
+       "a_value": 0.17013888888888887,
+       "b_value": 1.3055555555555556,
+       "clusters": 24,
+       "diff": -1.1354166666666667,
+       "diff_ci": [
+        -1.3055555555555556,
+        -0.96875
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -1.1666666666666667,
+      "diff_ci": [
+       -1.3263888888888888,
+       -1.0173611111111112
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, shrinks"
+     },
+     "S2b": {
+      "a_value": 0.1388888888888889,
+      "b": "model_executes_rules",
+      "b_value": 1.923611111111111,
+      "checklist_only": {
+       "a_value": 0.17013888888888887,
+       "b_value": 1.923611111111111,
+       "clusters": 24,
+       "diff": -1.7534722222222223,
+       "diff_ci": [
+        -2.3264756944444445,
+        -1.277777777777778
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 2.384185791015625e-07
+      },
+      "clusters": 24,
+      "diff": -1.7847222222222223,
+      "diff_ci": [
+       -2.3472222222222223,
+       -1.3194444444444444
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     },
+     "S2c": {
+      "a_value": 0.1388888888888889,
+      "b": "react",
+      "b_value": 2.642361111111111,
+      "checklist_only": {
+       "a_value": 0.17013888888888887,
+       "b_value": 2.642361111111111,
+       "clusters": 24,
+       "diff": -2.4722222222222223,
+       "diff_ci": [
+        -2.9895833333333335,
+        -2.006944444444444
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 1.1920928955078125e-07
+      },
+      "clusters": 24,
+      "diff": -2.5034722222222223,
+      "diff_ci": [
+       -3.0104166666666665,
+       -2.055555555555556
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 1.1920928955078125e-07,
+      "verdict": "holds, grows"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.6284722222222222,
+      "all_dev|all claims, registered workflow (F5)": 3.440972222222222,
+      "all_dev|denied_event": 1.4444444444444444,
+      "all_dev|open_event": 0.2222222222222222,
+      "all_dev|ordinary": 0.375,
+      "strict_unsafe|all claims": 0.1388888888888889,
+      "strict_unsafe|all claims, registered workflow (F5)": 2.3784722222222223,
+      "strict_unsafe|denied_event": 0.013888888888888888,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.203125
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.625,
+      "all_dev|all claims, registered workflow (F5)": 3.465277777777778,
+      "all_dev|denied_event": 1.3194444444444444,
+      "all_dev|open_event": 0.2222222222222222,
+      "all_dev|ordinary": 0.4131944444444444,
+      "strict_unsafe|all claims": 0.17013888888888887,
+      "strict_unsafe|all claims, registered workflow (F5)": 2.40625,
+      "strict_unsafe|denied_event": 0.013888888888888888,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.25
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.6875,
+      "all_dev|all claims, registered workflow (F5)": 3.4166666666666665,
+      "all_dev|denied_event": 1.875,
+      "all_dev|open_event": 0.2222222222222222,
+      "all_dev|ordinary": 0.3020833333333333,
+      "strict_unsafe|all claims": 0.17708333333333334,
+      "strict_unsafe|all claims, registered workflow (F5)": 2.40625,
+      "strict_unsafe|denied_event": 0.041666666666666664,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.2552083333333333
+     }
+    }
+   },
+   "registered": {
+    "amendment": [],
+    "baselines": {
+     "model_executes_rules": {
+      "all_dev|all claims": 1.4930555555555556,
+      "all_dev|denied_event": 4.069444444444445,
+      "all_dev|open_event": 1.0370370370370372,
+      "all_dev|ordinary": 0.5868055555555556,
+      "strict_unsafe|all claims": 0.8298611111111112,
+      "strict_unsafe|denied_event": 1.9444444444444444,
+      "strict_unsafe|open_event": 1.0370370370370372,
+      "strict_unsafe|ordinary": 0.3732638888888889
+     },
+     "react": {
+      "all_dev|all claims": 2.0034722222222223,
+      "all_dev|denied_event": 3.236111111111111,
+      "all_dev|open_event": 3.888888888888889,
+      "all_dev|ordinary": 1.2569444444444444,
+      "strict_unsafe|all claims": 1.8368055555555556,
+      "strict_unsafe|denied_event": 3.0,
+      "strict_unsafe|open_event": 3.888888888888889,
+      "strict_unsafe|ordinary": 1.09375
+     },
+     "ric": {
+      "all_dev|all claims": 2.329861111111111,
+      "all_dev|denied_event": 6.236111111111111,
+      "all_dev|open_event": 4.62962962962963,
+      "all_dev|ordinary": 0.5208333333333334,
+      "strict_unsafe|all claims": 2.138888888888889,
+      "strict_unsafe|denied_event": 5.680555555555555,
+      "strict_unsafe|open_event": 4.62962962962963,
+      "strict_unsafe|ordinary": 0.4375
+     },
+     "ric_frontier": {
+      "all_dev|all claims": 2.086805555555556,
+      "all_dev|denied_event": 5.055555555555555,
+      "all_dev|open_event": 6.111111111111111,
+      "all_dev|ordinary": 0.375,
+      "strict_unsafe|all claims": 1.8645833333333333,
+      "strict_unsafe|denied_event": 4.430555555555555,
+      "strict_unsafe|open_event": 6.0740740740740735,
+      "strict_unsafe|ordinary": 0.28125
+     },
+     "self_consistency": {
+      "all_dev|all claims": 2.3125,
+      "all_dev|denied_event": 6.583333333333333,
+      "all_dev|open_event": 3.962962962962963,
+      "all_dev|ordinary": 0.4461805555555556,
+      "strict_unsafe|all claims": 2.100694444444444,
+      "strict_unsafe|denied_event": 5.916666666666667,
+      "strict_unsafe|open_event": 3.962962962962963,
+      "strict_unsafe|ordinary": 0.3784722222222222
+     }
+    },
+    "changed_by_amendment": {
+     "casepath": {
+      "by_dispute": {},
+      "by_subset": {}
+     },
+     "casepath_checklist": {
+      "by_dispute": {},
+      "by_subset": {}
+     },
+     "casepath_frontier_checklist": {
+      "by_dispute": {},
+      "by_subset": {}
+     }
+    },
+    "contrasts": {
+     "H2": {
+      "a_value": 0.3125,
+      "b": "ric",
+      "b_value": 2.138888888888889,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 2.138888888888889,
+       "clusters": 24,
+       "diff": -1.795138888888889,
+       "diff_ci": [
+        -2.701388888888889,
+        -0.9479166666666666
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 23,
+       "p": 0.0003829002380371094
+      },
+      "clusters": 24,
+      "diff": -1.826388888888889,
+      "diff_ci": [
+       -2.71875,
+       -0.9894965277777791
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 22,
+      "p": 0.0001506805419921875,
+      "registered_diff": -1.826388888888889,
+      "verdict": "holds"
+     },
+     "H3": {
+      "a_value": 0.3125,
+      "b": "ric_frontier",
+      "b_value": 1.8645833333333333,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.8645833333333333,
+       "clusters": 24,
+       "diff": -1.5208333333333333,
+       "diff_ci": [
+        -2.430555555555556,
+        -0.71875
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 22,
+       "p": 0.0015063285827636719
+      },
+      "clusters": 24,
+      "diff": -1.5520833333333333,
+      "diff_ci": [
+       -2.444444444444444,
+       -0.7673611111111112
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.0007991790771484375,
+      "registered_diff": -1.5520833333333333,
+      "verdict": "holds"
+     },
+     "S2a": {
+      "a_value": 0.3125,
+      "b": "self_consistency",
+      "b_value": 2.100694444444444,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 2.100694444444444,
+       "clusters": 24,
+       "diff": -1.7569444444444444,
+       "diff_ci": [
+        -2.736111111111111,
+        -0.8749131944444457
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0005502700805664062
+      },
+      "clusters": 24,
+      "diff": -1.7881944444444444,
+      "diff_ci": [
+       -2.7500868055555556,
+       -0.9131944444444445
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 21,
+      "p": 0.000232696533203125,
+      "registered_diff": -1.7881944444444444,
+      "verdict": "holds"
+     },
+     "S2b": {
+      "a_value": 0.3125,
+      "b": "model_executes_rules",
+      "b_value": 0.8298611111111112,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 0.8298611111111112,
+       "clusters": 24,
+       "diff": -0.4861111111111111,
+       "diff_ci": [
+        -0.8854166666666666,
+        -0.17013888888888887
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 21,
+       "p": 0.0035076141357421875
+      },
+      "clusters": 24,
+      "diff": -0.517361111111111,
+      "diff_ci": [
+       -0.90625,
+       -0.20833333333333337
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 20,
+      "p": 0.0007152557373046875,
+      "registered_diff": -0.517361111111111,
+      "verdict": "holds"
+     },
+     "S2c": {
+      "a_value": 0.3125,
+      "b": "react",
+      "b_value": 1.8368055555555556,
+      "checklist_only": {
+       "a_value": 0.34375,
+       "b_value": 1.8368055555555556,
+       "clusters": 24,
+       "diff": -1.4930555555555556,
+       "diff_ci": [
+        -2.045138888888889,
+        -1.0104166666666667
+       ],
+       "favours": "a",
+       "min_p": 1.1920928955078125e-07,
+       "nonzero_clusters": 24,
+       "p": 1.0728836059570312e-06
+      },
+      "clusters": 24,
+      "diff": -1.5243055555555556,
+      "diff_ci": [
+       -2.069444444444444,
+       -1.0555555555555556
+      ],
+      "favours": "a",
+      "min_p": 1.1920928955078125e-07,
+      "nonzero_clusters": 24,
+      "p": 3.5762786865234375e-07,
+      "registered_diff": -1.5243055555555556,
+      "verdict": "holds"
+     }
+    },
+    "designs": {
+     "casepath": {
+      "all_dev|all claims": 0.7326388888888888,
+      "all_dev|all claims, registered workflow (F5)": 0.7326388888888888,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.2592592592592593,
+      "all_dev|ordinary": 0.4010416666666667,
+      "strict_unsafe|all claims": 0.3125,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.3125,
+      "strict_unsafe|denied_event": 0.6111111111111112,
+      "strict_unsafe|open_event": 0.2592592592592593,
+      "strict_unsafe|ordinary": 0.203125
+     },
+     "casepath_checklist": {
+      "all_dev|all claims": 0.7361111111111112,
+      "all_dev|all claims, registered workflow (F5)": 0.7361111111111112,
+      "all_dev|denied_event": 1.777777777777778,
+      "all_dev|open_event": 0.0,
+      "all_dev|ordinary": 0.4392361111111111,
+      "strict_unsafe|all claims": 0.34375,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.34375,
+      "strict_unsafe|denied_event": 0.7222222222222222,
+      "strict_unsafe|open_event": 0.0,
+      "strict_unsafe|ordinary": 0.24479166666666666
+     },
+     "casepath_frontier_checklist": {
+      "all_dev|all claims": 0.7083333333333334,
+      "all_dev|all claims, registered workflow (F5)": 0.7083333333333334,
+      "all_dev|denied_event": 1.7916666666666667,
+      "all_dev|open_event": 0.7777777777777778,
+      "all_dev|ordinary": 0.2864583333333333,
+      "strict_unsafe|all claims": 0.3020833333333333,
+      "strict_unsafe|all claims, registered workflow (F5)": 0.3020833333333333,
+      "strict_unsafe|denied_event": 0.2916666666666667,
+      "strict_unsafe|open_event": 0.6666666666666666,
+      "strict_unsafe|ordinary": 0.2552083333333333
+     }
+    }
+   }
+  }
+ },
  "data": "fresh2",
  "inputs": {
   "cleanroom/evaluator_a/reference.json": "2350c0ea9b0ec4b162bca1849414c949e572aefdd59d869bb0f9a28ce33db294",
@@ -7067,7 +8762,7 @@
   "cleanroom/evaluator_b/reference_alt_A4.json": "693874cdaed85fe202e18e68e0991e752a398ac71056ee4d2040ca8af0c79ee0",
   "cleanroom/evaluator_b/reference_alt_all.json": "4062cfc93a4c0688ea2bf6464b32887cbdabc6d111dac8c67dd2f9266b759b4e",
   "cleanroom/registered_reference.json": "2350c0ea9b0ec4b162bca1849414c949e572aefdd59d869bb0f9a28ce33db294",
-  "runs/product/ledger_dev_gpt-6-luna.jsonl": "08a1a1c14125f4eb8ab41eb9cf1b8efda3111634726db5ba8845859974da3754",
+  "runs/product/ledger_dev_gpt-6-luna.jsonl": "f1f2fb8a68ca066ece07fc32922edb4802ee1f52f1f28d9595770505603ad050",
   "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
   "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
   "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",

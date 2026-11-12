@@ -601,6 +601,113 @@ def replay_tenancy(study, design, cache, amend=frozenset(), k=3):
     return plans, dict(cnt)
 
 
+F5B_DESIGNS = ("casepath", "casepath_checklist", "casepath_frontier_checklist")
+F5B_BASELINES = ("ric", "ric_frontier", "self_consistency", "model_executes_rules", "react")
+F5B_CONTRASTS = [("H2", "ric"), ("H3", "ric_frontier"), ("S2a", "self_consistency"), ("S2b", "model_executes_rules"), ("S2c", "react")]
+
+
+def rows_against(D_ten, cases, plans, cluster_of):
+    rows = []
+    for c in cases:
+        ref = D_ten.reference(c)
+        for i, p in enumerate(plans[c]):
+            row = R.scored(ref, p)
+            row.update(case=c, run=i, cluster=cluster_of(c))
+            rows.append(row)
+    return rows
+
+
+def family_mean(rows, field, keep=lambda r: True):
+    g = defaultdict(list)
+    for r in rows:
+        if keep(r):
+            g[r["cluster"]].append(r[field])
+    return mean(mean(v) for v in g.values()), {k: mean(v) for k, v in g.items()}
+
+
+def f5b(study, cache, res3):
+    D = study.D["tenancy"]
+    cases = study.cases["tenancy"]
+    fam_of = {c: D.reference(c)["family_id"] for c in cases}
+    sub_of = {c: next(s for s in R.SUBSETS if study.in_subset(c, s)) for c in cases}
+    base_plans = {d: replay_tenancy(study, d, cache)[0] for d in F5B_DESIGNS}
+    out = {"amendments": AMENDMENTS, "readings": {}, "checks": {}}
+    for d in F5B_DESIGNS:
+        _, cnt = replay_tenancy(study, d, cache)
+        out["checks"][d] = cnt
+    W, cat = study.evaluator("tenancy", SPEC["product_evaluator"]["tenancy"])
+    out["checks"]["empty amendment leaves every workflow unchanged"] = all(
+        amend_workflow(cat.get(f), frozenset()) == cat.get(f) for f in ("defect_mold_heating", "lease_termination_dispute", "rent_increase_dispute"))
+    assert out["checks"]["empty amendment leaves every workflow unchanged"]
+    hyp = {h["id"]: h["tests"][0] for h in res3["hypotheses"]}
+    sec = {c["id"]: c["result"] for c in res3["secondary"]["contrasts"]}
+    readings = [("registered", None)] + [(k, v) for k, v in READING_FILES.items()]
+    for name, rel in readings:
+        if rel is not None and not (TMIS / rel).exists():
+            out["readings"][name] = {"status": f"file absent: {rel}"}
+            continue
+        amend = frozenset(READING_SETS.get(name, ()))
+        if rel is None:
+            Dalt = D
+        else:
+            Dalt = AltTenancy(D, load_alt(TMIS / rel))
+            study.inputs.hashes[rel] = s3.sha256(TMIS / rel)
+        alt_study = s3.Study(SPEC, DATA, LABEL, {"tenancy": Dalt, "theft": study.D["theft"]}, inputs=study.inputs,
+                             evaluator_loader=study.evaluator_loader)
+        res = {"amendment": sorted(amend), "designs": {}, "baselines": {}, "contrasts": {}, "changed_by_amendment": {}}
+        cp_clusters = {}
+        for d in F5B_DESIGNS:
+            plans = replay_tenancy(study, d, cache, amend)[0] if amend else base_plans[d]
+            changed = Counter(sub_of[c] for c in cases for a, b in zip(plans[c], base_plans[d][c]) if not R.same_checklist(a, b))
+            fams_changed = Counter(D.reference(c)["family"] for c in cases for a, b in zip(plans[c], base_plans[d][c])
+                                   if not R.same_checklist(a, b))
+            res["changed_by_amendment"][d] = {"by_subset": dict(changed), "by_dispute": dict(fams_changed)}
+            rows = rows_against(Dalt, cases, plans, fam_of.get)
+            unmatched = rows_against(Dalt, cases, base_plans[d], fam_of.get)
+            row = {}
+            for field in ("strict_unsafe", "all_dev"):
+                v, cl = family_mean(rows, field)
+                row[f"{field}|all claims"] = v
+                if field == "strict_unsafe":
+                    cp_clusters[d] = cl
+                row[f"{field}|all claims, registered workflow (F5)"] = family_mean(unmatched, field)[0]
+                for sub in R.SUBSETS:
+                    row[f"{field}|{sub}"] = family_mean(rows, field, lambda r: sub_of[r["case"]] == sub)[0]
+            res["designs"][d] = row
+        for b in F5B_BASELINES:
+            res["baselines"][b] = {f"{field}|{sub}": mean(alt_study.clusters(b, "tenancy", m, None if sub == "all claims" else sub).values())
+                                   for field, m in (("strict_unsafe", "strict_unsafe"), ("all_dev", "all_deviations"))
+                                   for sub in ("all claims",) + R.SUBSETS}
+        for cid, b in F5B_CONTRASTS:
+            fb = alt_study.clusters(b, "tenancy", "strict_unsafe")
+            cname = f"primary|{cid}|{b}" if cid.startswith("H") else f"secondary|{cid}"
+            c = contrast(cp_clusters["casepath"], fb, cname)
+            regc = hyp[cid] if cid.startswith("H") else sec[cid]
+            res["contrasts"][cid] = {"b": b, **c, "verdict": verdict(regc, c),
+                                     "checklist_only": contrast(cp_clusters["casepath_checklist"], fb, cname)}
+        if rel is None:
+            for cid, c in res["contrasts"].items():
+                regc = hyp[cid] if cid.startswith("H") else sec[cid]
+                res["contrasts"][cid]["registered_diff"] = regc["diff"]
+        out["readings"][name] = res
+    out["method"] = (
+        "Each product design's stored tenancy case-runs are replayed from their stored readings (k = 3, the first three "
+        "readings in the response cache, admitted with the product's own quotation check), with routing and document "
+        "findings as stored, by the product's evaluator at the tested commit, with the workflow (A3, A4) or the facts "
+        "given to the evaluator (A1, A2) amended to the reading; needs added by an agent are kept as stored (none entered "
+        "a checklist). Unamended, the replay reproduces the stored scored checklist in 285 of 286 evaluated case-runs of "
+        "the full product and of checklist only, and in 95 of 96 of the frontier one-run row; the two failed case-runs "
+        "keep their stored (empty) plans. Routing is kept as stored: every denied-event claim-run was routed to its "
+        "dispute's workflow in the stored runs, so no claim changes routing under a reading. Each replay is scored "
+        "against the reference written under the same reading (cleanroom/evaluator_b/reference_alt_*.json); subset "
+        "membership is the registered reference's. The baselines are not re-run: their stored plans are scored against "
+        "the same alternative reference. Their prompts carried the registered rule text, so wherever they ignored the "
+        "registered stop (and requested documents on a denied event) the alternative reference favours them. "
+        "Contrasts: CasePath (matched workflow, full product) minus each baseline over the 24 families, 95% cluster "
+        "bootstrap with the registered resamples, exact sign-flip p; post hoc and descriptive.")
+    return out
+
+
 def score_plans(study, regime, plans, name):
     """Registered measures of a design given as {case: [plan per run]} (any number of runs)."""
     if regime == "tenancy":
@@ -1067,6 +1174,7 @@ def main(argv=None):
     for c in f5[0]["contrasts"]:
         for k in ("a_value", "b_value", "diff", "p", "diff_ci"):
             assert c["registered"][k] == c["alternative"][k] == stored[c["id"]][k], ("registered reference does not reproduce", c["id"], k)
+    res["F5b"] = f5b(study, cache, res3)
     res["F5"] = {"results": f5, "absent_files": absent, "usage": (
         "python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state "
         "(required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} "
