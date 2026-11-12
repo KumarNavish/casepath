@@ -1,0 +1,74 @@
+{
+  "file_id": "dis_fb44c47f6ec7",
+  "facts": {
+    "Q1": {
+      "state": "stated_true",
+      "quote": "I wrote to Eva Vogel, the head of Ahornweid Trading Ltd in Basel, and asked her to give me the reasons for the notice in writing."
+    },
+    "Q2": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q3": {
+      "state": "stated_true",
+      "quote": "Ms Vogel called me into her office and gave me a letter ending my employment."
+    },
+    "Q4": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q5": {
+      "state": "stated_false",
+      "quote": "so my job hasn't actually ended yet, let alone half a year ago."
+    },
+    "Q6": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q7": {
+      "state": "stated_true",
+      "quote": "Why do I think I was let go? Because I asked for what I'm due."
+    },
+    "Q8": {
+      "state": "stated_false",
+      "quote": "I'm not on any staff committee or workers' body at the company."
+    },
+    "Q9": {
+      "state": "stated_false",
+      "quote": "My notice period hasn't run out yet: it ends on 31 July"
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "insufficient",
+      "missing": [
+        "start date of employment"
+      ],
+      "reason": "The attached first page does not give the start date."
+    },
+    "A2": {
+      "state": "insufficient",
+      "missing": [
+        "dates before the notice"
+      ],
+      "reason": "The e-mails carry no dates."
+    },
+    "A3": {
+      "state": "insufficient",
+      "missing": [
+        "monthly salary"
+      ],
+      "reason": "The pay slip shows no salary amount."
+    }
+  },
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Why do I think I was let go? Because I asked for what I'm due."
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "My notice period hasn't run out yet: it ends on 31 July"
+    }
+  }
+}

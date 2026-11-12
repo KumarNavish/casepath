@@ -1,0 +1,89 @@
+{
+  "the_0cd1b047049a": {
+    "blind_sha256": "86f0e01d3507dd7cebd76fa68674c9b374bff367f5dbc473e1e3593f0de81d89",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "the passenger window was smashed and the rucksack was gone"
+    },
+    "written_sha256": "34f8549b9f5998596e78c1b318d8afa9dd7690a835db4f2918240adb79db47ce"
+  },
+  "the_1024620d6055": {
+    "blind_sha256": "b1bdd012b305b4d2fa04aeb0046a3b3996ac44d55581d1ab22259d14b389acb0",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "am Openair auf der Allmend in Luzern"
+    },
+    "written_sha256": "e98288f56cba7292f9dc8318f8b2a38d7d113981a1a7a548af39833b3a11fbdb"
+  },
+  "the_2774fb90433e": {
+    "blind_sha256": "d490c0f9149dae3fdfb0d5e95400cdff6bd82c8a04a30349c75e118ae39b62ce",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "When I got off in Lausanne the bag was open and my wallet, phone, watch and sunglasses were gone."
+    },
+    "written_sha256": "dc5866a6d09b69bc08b0fe12d95eb0cdb5f6ed112d5ed8f971de9b3b42bdc519"
+  },
+  "the_7d2b6a2bdce4": {
+    "blind_sha256": "70a1dfc20a1373265d5173b57f3f6e4e2a1c3bb0af23e6bd6d52a997dbd27e12",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "locked the bike at the stand outside the main library"
+    },
+    "written_sha256": "e762fde9700900f3e65082b4f06d7ee6676ec7bd39c19c0b49f48d327c1bc5bf"
+  },
+  "the_819379d12c03": {
+    "blind_sha256": "aa09aace57af4b97cebf9f6929961efa226ec4ef4e8ed6ecb4a1150a5d0113ce",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "the rear side window was smashed in and the bag had gone"
+    },
+    "written_sha256": "b03735545b68b88dc225bb1365bd3b0bf396a46da6a0653af5b92a1976380134"
+  },
+  "the_9355c558630a": {
+    "blind_sha256": "f829753f38ae015951bb63624eaed775f4bb4b14e29233b31ce0ef7190ec8996",
+    "matches": true,
+    "mismatches": [],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "standen wir auf einem Campingplatz bei Locarno"
+    },
+    "written_sha256": "ea338a7c71e5e2ac552faed77fc5d77dc52106414518c7d5cf94964c3ed76a51"
+  },
+  "the_c50e0bd7b054": {
+    "blind_sha256": "1e6c6e272ab701333cd172855b2dc704c737c0c95a5dbcf21498c6453a5d696f",
+    "matches": false,
+    "mismatches": [
+      {
+        "designed": {
+          "state": "sufficient"
+        },
+        "document": "original_vouchers",
+        "kind": "attachment",
+        "label": "A3",
+        "read_as": {
+          "missing": [
+            "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
+            "where and when the item was bought"
+          ],
+          "reason": "There is no voucher for the leather jacket, and the vouchers name only a town, not the shop or seller.",
+          "state": "insufficient"
+        }
+      }
+    ],
+    "routing_read": {
+      "answer": "simple_theft_away",
+      "quote": "war die hintere Seitenscheibe eingeschlagen und meine Arbeitstasche vom Rücksitz verschwunden"
+    },
+    "written_sha256": "1b906b6d2c6e1b31083257974865b513c3c77311a0eeae53b22008f97c5e9fe8"
+  }
+}

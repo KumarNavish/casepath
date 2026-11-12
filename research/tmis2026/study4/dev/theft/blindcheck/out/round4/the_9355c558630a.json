@@ -1,0 +1,55 @@
+{
+  "file_id": "the_9355c558630a",
+  "facts": {
+    "Q1": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q2": {
+      "state": "stated_true",
+      "quote": "Ich habe beim Händler in Konstanz nachgefragt, der kann mir für so alte Käufe nichts mehr ausdrucken."
+    },
+    "Q3": {
+      "state": "stated_false",
+      "quote": "Ziff. 24.2 Einfacher Diebstahl auswärts – eingeschlossen ab 07.05.2026"
+    },
+    "Q4": {
+      "state": "stated_false",
+      "quote": "Die Diebe haben sie nicht mitgenommen, gestohlen wurde nur, was im Wohnmobil war."
+    },
+    "Q5": {
+      "state": "stated_true",
+      "quote": "die habe ich bis heute nicht sperren lassen"
+    },
+    "Q6": {
+      "state": "stated_true",
+      "quote": "Das aufgebrochene Türschloss hat unsere Garage in Herisau Anfang Juli ersetzt"
+    },
+    "Q7": {
+      "state": "stated_true",
+      "quote": "war das Türschloss aufgebrochen und drinnen alles durchwühlt"
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "insufficient",
+      "missing": [
+        "that the theft was reported to the police and when"
+      ],
+      "reason": "The report gives no date on which the theft was reported."
+    }
+  },
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "standen wir auf einem Campingplatz bei Locarno"
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "Am 24. Juni 2026 standen wir auf einem Campingplatz bei Locarno"
+    }
+  }
+}

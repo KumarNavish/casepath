@@ -1,0 +1,66 @@
+{
+  "file_id": "dis_188837a70acc",
+  "facts": {
+    "Q1": {
+      "state": "stated_false",
+      "quote": "Ich habe sie danach nicht gebeten, mir die Gründe schriftlich mitzuteilen."
+    },
+    "Q2": {
+      "state": "stated_false",
+      "quote": "Mit Forderungen von meiner Seite hat diese Kündigung nichts zu tun."
+    },
+    "Q3": {
+      "state": "open",
+      "quote": "Wer recht hat, ist bis heute nicht geklärt."
+    },
+    "Q4": {
+      "state": "stated_true",
+      "quote": "Ich habe gegen meine Kündigung schriftlich Einsprache gemacht, rechtzeitig und mit eingeschriebenem Brief an die Firma."
+    },
+    "Q5": {
+      "state": "stated_false",
+      "quote": "Die Kündigungsfrist läuft noch bis Ende Mai"
+    },
+    "Q6": {
+      "state": "stated_false",
+      "quote": "mein Arbeitsverhältnis ist noch nicht zu Ende."
+    },
+    "Q7": {
+      "state": "stated_true",
+      "quote": "Im Oktober 2025 haben mich meine Kolleginnen und Kollegen in die Personalkommission gewählt, und ich war bei der Kündigung immer noch dort Mitglied."
+    },
+    "Q8": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q9": {
+      "state": "stated_true",
+      "quote": "Am 8. März 2026 hat mir Frau Verena Huber, die Geschäftsführerin, die Kündigung gegeben."
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "insufficient",
+      "missing": [
+        "parties"
+      ],
+      "reason": "The contract extract does not name the parties."
+    },
+    "A3": {
+      "state": "sufficient"
+    }
+  },
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Ich habe gegen meine Kündigung schriftlich Einsprache gemacht"
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "unter Einhaltung der Kündigungsfrist auf den 31. Mai 2026"
+    }
+  }
+}

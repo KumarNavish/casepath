@@ -1,0 +1,66 @@
+{
+  "file_id": "dis_dd12420e6a78",
+  "facts": {
+    "Q1": {
+      "state": "stated_true",
+      "quote": "Am 15. April 2025, also lange vor dem Ende der Frist, habe ich der Firma eingeschrieben geschrieben, dass ich mit der Kündigung nicht einverstanden bin"
+    },
+    "Q2": {
+      "state": "stated_true",
+      "quote": "Als die Kündigung kam, war ich immer noch gewähltes Mitglied."
+    },
+    "Q3": {
+      "state": "stated_true",
+      "quote": "Meine Kündigungsfrist bei der Rebhalde Verwaltungs GmbH in Zürich ist Ende Mai 2025 abgelaufen"
+    },
+    "Q4": {
+      "state": "stated_true",
+      "quote": "er habe mich wegen meiner \"ewigen Forderungen\" entlassen"
+    },
+    "Q5": {
+      "state": "stated_true",
+      "quote": "Mein letzter Arbeitstag war der 30. Mai 2025, das ist inzwischen über neun Monate her."
+    },
+    "Q6": {
+      "state": "stated_true",
+      "quote": "Die Kündigung hat mir Herr Heinz Lüthi, der Geschäftsführer, im März 2025 eingeschrieben geschickt, auf Ende Mai."
+    },
+    "Q7": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q8": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q9": {
+      "state": "not_mentioned",
+      "quote": ""
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "insufficient",
+      "missing": [
+        "parties"
+      ],
+      "reason": "The contract extract does not name the parties."
+    },
+    "A3": {
+      "state": "sufficient"
+    }
+  },
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "er habe mich wegen meiner \"ewigen Forderungen\" entlassen"
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "unter Einhaltung der Kündigungsfrist auf den 31. Mai 2025"
+    }
+  }
+}

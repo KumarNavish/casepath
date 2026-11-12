@@ -1,0 +1,66 @@
+{
+  "file_id": "dis_408b774aa7db",
+  "facts": {
+    "Q1": {
+      "state": "stated_true",
+      "quote": "Ich bin von meinen Kolleginnen und Kollegen in die Personalkommission der Firma gewählt worden und war das auch an dem Tag, als die Kündigung kam."
+    },
+    "Q2": {
+      "state": "stated_false",
+      "quote": "Mein Arbeitsverhältnis ist also noch nicht zu Ende"
+    },
+    "Q3": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q4": {
+      "state": "stated_false",
+      "quote": "Nach der Kündigung haben Frau Livia Keller und ich nichts darüber abgemacht, dass ich doch bleiben kann."
+    },
+    "Q5": {
+      "state": "stated_false",
+      "quote": "Die Kündigungsfrist läuft noch"
+    },
+    "Q6": {
+      "state": "stated_true",
+      "quote": "Die Kündigung selbst hat mir Frau Keller am 29. September 2026 im Büro übergeben"
+    },
+    "Q7": {
+      "state": "stated_true",
+      "quote": "Ich bin überzeugt, dass ich die Kündigung bekommen habe, weil ich meinen Lohn eingefordert habe."
+    },
+    "Q8": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q9": {
+      "state": "not_mentioned",
+      "quote": ""
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "insufficient",
+      "missing": [
+        "claims asserted under the employment relationship"
+      ],
+      "reason": "The correspondence only refers to an earlier letter and does not itself state any claim."
+    },
+    "A3": {
+      "state": "sufficient"
+    }
+  },
+  "routing": {
+    "answer": "wrongful_termination",
+    "quote": "Ich bin überzeugt, dass ich die Kündigung bekommen habe, weil ich meinen Lohn eingefordert habe."
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "Die Kündigungsfrist läuft noch"
+    }
+  }
+}

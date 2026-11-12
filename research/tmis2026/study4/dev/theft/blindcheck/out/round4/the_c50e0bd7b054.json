@@ -1,0 +1,59 @@
+{
+  "file_id": "the_c50e0bd7b054",
+  "facts": {
+    "Q1": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q2": {
+      "state": "stated_false",
+      "quote": "die Kaufbelege für den Laptop, das Tablet und die Kamera"
+    },
+    "Q3": {
+      "state": "not_mentioned",
+      "quote": ""
+    },
+    "Q4": {
+      "state": "stated_true",
+      "quote": "war die hintere Seitenscheibe eingeschlagen und meine Arbeitstasche vom Rücksitz verschwunden"
+    },
+    "Q5": {
+      "state": "stated_false",
+      "quote": "Ich habe nichts reparieren und nichts putzen lassen."
+    },
+    "Q6": {
+      "state": "open",
+      "quote": "Ich sehe das anders, aber geklärt ist es zwischen uns nicht."
+    },
+    "Q7": {
+      "state": "stated_false",
+      "quote": "Ziff. 24.2 Einfacher Diebstahl auswärts – eingeschlossen seit 01.12.2024"
+    }
+  },
+  "attachments": {
+    "A1": {
+      "state": "sufficient"
+    },
+    "A2": {
+      "state": "sufficient"
+    },
+    "A3": {
+      "state": "insufficient",
+      "missing": [
+        "an original purchase voucher for each stolen or damaged item, except an item for which the file states that its voucher cannot be obtained without considerable cost",
+        "where and when the item was bought"
+      ],
+      "reason": "There is no voucher for the leather jacket, and the vouchers name only a town, not the shop or seller."
+    }
+  },
+  "routing": {
+    "answer": "simple_theft_away",
+    "quote": "war die hintere Seitenscheibe eingeschlagen und meine Arbeitstasche vom Rücksitz verschwunden"
+  },
+  "events": {
+    "E1": {
+      "state": "stated_false",
+      "quote": "Ich hatte mein Auto am Nachmittag in einer Seitenstrasse beim Bahnhof abgestellt"
+    }
+  }
+}
