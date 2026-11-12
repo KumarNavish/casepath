@@ -78,6 +78,14 @@ class LintFollowup(unittest.TestCase):
         self.assertLessEqual(t["planted_flagged"], t["planted"])
 
 
+class Shares(unittest.TestCase):
+    def test_denied_reading_share(self):
+        st = DC["tenancy_product"]["casepath"]["strict_unsafe"]
+        share = st["denied_event"]["reading"] * st["denied_event"]["claim_runs"] / (st["all"]["measured"] * st["all"]["claim_runs"])
+        self.assertTrue(0.4 < share < 0.6)
+        self.assertIn("\\newcommand{\\spostDecTenLunaDeniedReadingSharePct}{%d}" % round(100 * share), TEX)
+
+
 class Macros(unittest.TestCase):
     def test_names_letters_only_unique_and_values_numeric(self):
         rows = re.findall(r"\\newcommand\{\\([^}]*)\}\{([^}]*)\}", TEX)

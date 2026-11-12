@@ -270,6 +270,19 @@ class F5Hook(unittest.TestCase):
         self.assertEqual((fewer, more), (h41["favouring_casepath"], h41["favouring_self_consistency"]))
         self.assertGreater(more, 0)  # so the claim "fewer in all nine clusters" is false
 
+    def test_lead_shares(self):
+        """The denied-event share of the lead and the share the A1 amended replay removes, recomputed from the stored F5b."""
+        f = json.loads((HERE / "study3_feedback.json").read_text())
+        reg, a1 = f["F5b"]["readings"]["registered"], f["F5b"]["readings"]["A1"]
+        tex = (HERE.parent / "paper" / "results" / "numbers_study3_feedback.tex").read_text()
+        for b, bn, cid in (("ric", "Ric", "H2"), ("ric_frontier", "RicFrontier", "H3")):
+            sub = reg["designs"]["casepath"]["strict_unsafe|denied_event"] - reg["baselines"][b]["strict_unsafe|denied_event"]
+            share = 24 / 96 * sub / reg["contrasts"][cid]["diff"]
+            removed = 1 - a1["contrasts"][cid]["diff"] / reg["contrasts"][cid]["diff"]
+            self.assertTrue(0.5 < share < 0.75 and 0.3 < removed < 0.7, (bn, share, removed))
+            self.assertIn("\\newcommand{\\sthreeFLeadDeniedShare%s}{%d\\%%}" % (bn, round(100 * share)), tex)
+            self.assertIn("\\newcommand{\\sthreeFLeadAOneRemoved%s}{%d\\%%}" % (bn, round(100 * removed)), tex)
+
     def test_perturbed_copy_moves_the_numbers(self):
         alt = F.perturbed(self.study)
         self.assertEqual(alt, F.perturbed(self.study))  # seeded

@@ -500,6 +500,11 @@ def macros(lf, dc):
             for sub, s_ in v[m].items():
                 for k, w in PART.items():
                     M[f"spostDecTen{MOD[d]}{MEASW[m]}{SUBW[sub]}{w}"] = _num(s_[k])
+    for d, v in dc["tenancy_product"].items():
+        # Share of the strict unsafe errors over all claim-runs caused by readings on the denied-event claims (percent).
+        st = v["strict_unsafe"]
+        share = st["denied_event"]["reading"] * st["denied_event"]["claim_runs"] / (st["all"]["measured"] * st["all"]["claim_runs"])
+        M[f"spostDecTen{MOD[d]}DeniedReadingSharePct"] = _num(100 * share, 0)
     for d, v in dc["theft_product"].items():
         for k in ("rule", "reading", "hold", "measured", "product_steps", "interaction"):
             M[f"spostDecTh{MOD[d]}{PART[k]}"] = _num(v["all"][k])

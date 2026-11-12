@@ -266,6 +266,17 @@ for rk, v in get(res, "F5b", "readings").items():
         cn = {"H2": "HTwo", "H3": "HThree", "S2a": "STwoA", "S2b": "STwoB", "S2c": "STwoC"}[cid]
         contrast(f"{pre}{cn}", c)
         m(f"{pre}{cn}Verdict", get(c, "verdict"))
+# Share of the registered tenancy lead carried by the denied-event claims (claim weight times the subset difference,
+# over the overall difference), and the share of the lead the A1 amended replay removes.
+reg5b = get(res, "F5b", "readings", "registered")
+a15b = get(res, "F5b", "readings", "A1")
+n_denied = get(res, "F1", "tenancy", "composition", "O: defining event denied")
+n_all = get(res, "F1", "tenancy", "counts", "O") + get(res, "F1", "tenancy", "counts", "S")
+for b, bn, cid in (("ric", "Ric", "H2"), ("ric_frontier", "RicFrontier", "H3")):
+    sub = get(reg5b, "designs", "casepath", "strict_unsafe|denied_event") - get(reg5b, "baselines", b, "strict_unsafe|denied_event")
+    tot = get(reg5b, "contrasts", cid, "diff")
+    m(f"sthreeFLeadDeniedShare{bn}", pct(n_denied / n_all * sub / tot))
+    m(f"sthreeFLeadAOneRemoved{bn}", pct(1 - get(a15b, "contrasts", cid, "diff") / tot))
 for d, cnt in get(res, "F5b", "checks").items():
     if isinstance(cnt, dict):
         m(f"sthreeFFiveBReproduces{DESIGNS[d]}", get(cnt, "replay reproduces the stored scored checklist"))
