@@ -15,7 +15,7 @@ import sys
 from ..web.store import CaseStore
 
 SAFE = re.compile(r"^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$")
-STATUSES = {"completed", "failed", "interrupted", "paused", "queued", "running", "selected", "fallback", "ambiguous",
+STATUSES = {"completed", "discarded", "failed", "interrupted", "paused", "queued", "running", "selected", "fallback", "ambiguous",
             "needs_facts", "unmapped", "present", "unusable", "missing", "unchecked", "established", "unknown",
             "conflicting", "accepted", "rejected", "yes", "depends", "draft", "reviewed", "suggested", "applied",
             "contradicted", "not_checked", "correct", "wrong"}

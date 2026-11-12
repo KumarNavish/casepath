@@ -416,6 +416,10 @@ class AppTests(unittest.TestCase):
         self.assertEqual(done["routing"]["status"], "resumed")
         self.assertEqual(done["result"]["brief"]["request"], "Check the mould defect.")
         self.assertEqual(client.post(f"/api/runs/{paused['id']}/continue").status_code, 409)  # only the latest paused run
+        self.assertEqual(done["result"]["resumed_from"], paused["id"])
+        card, = client.get("/api/auswertung").json()["cases"]
+        self.assertEqual(card["tokens_noncached"], sum(u.get("input_tokens", 0) for u in done["result"]["usage"]))  # counted once
+        self.assertEqual(client.get("/api/run-profile").json()["runs"], 0)  # neither the paused nor the continued run times a stage
 
     def test_anderer_prozess_while_paused_keeps_the_reading_and_redoes_what_depends_on_the_process(self):
         catalogue = Path(self.directory.name) / "catalogue"
@@ -439,6 +443,29 @@ class AppTests(unittest.TestCase):
         self.assertEqual(done["status"], "completed", done.get("error"))
         self.assertEqual(done["workflow_id"], "example-other")
         self.assertEqual(done["result"]["brief"]["request"], "Check the mould defect.")
+
+    def test_verwerfen_brings_back_the_last_finished_result_or_an_unprepared_case(self):
+        client = self.client()
+        store = client.app.state.store
+        partial = {"paused": True, "brief": None, "facts": [], "documents": [], "usage": [], "events": [], "done": []}
+        fresh, _ = self.new_case(client, "Nie fertig")
+        stopped = store.create_run(fresh["id"], "dev")
+        store.update_run(stopped["id"], status="paused", workflow_id="example-defect", workflow_version="2026-01-01", result=partial)
+        self.assertEqual(client.post(f"/api/runs/{stopped['id']}/discard").json()["status"], "discarded")
+        bare = client.get(f"/api/cases/{fresh['id']}").json()
+        self.assertEqual(bare["run"]["status"], "discarded")
+        self.assertFalse([i for i in bare["items"] if i["kind"] == "fact" and i.get("value") is not None])  # not yet prepared: nothing read
+        case, file = self.new_case(client, "Fertig, dann angehalten")
+        finished = self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        again = store.create_run(case["id"], "dev")
+        store.update_run(again["id"], status="paused", workflow_id="example-defect", workflow_version="2026-01-01", result=partial)
+        self.assertEqual(client.get(f"/api/cases/{case['id']}").json()["run"]["id"], again["id"])
+        client.post(f"/api/runs/{again['id']}/discard")
+        shown = client.get(f"/api/cases/{case['id']}").json()
+        self.assertEqual(shown["run"]["status"], "discarded")  # the latest run, set aside
+        self.assertEqual(client.get(f"/api/cases/{case['id']}/events").json()["events"][-1]["kind"], "run.discarded")
+        self.assertEqual(store.get_run(again["id"])["status"], "discarded")  # kept, never deleted
+        self.assertTrue(shown["process"] and finished["id"])
 
 
 class RoutingTests(unittest.TestCase):

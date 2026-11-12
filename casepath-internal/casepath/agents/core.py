@@ -298,7 +298,7 @@ def _outcome(**fields):
             "extractions": {}, "knowledge_outcomes": [], "knowledge_proposals": [], **fields}
 
 
-def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, should_stop=None):
+def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, should_stop=None, edits_now=None):
     """Run the job; ``on_extraction(file_id, extraction)`` lets the caller save each file's reading as soon as it is done."""
     check_job(job)
     options = job.get("options") or {}
@@ -329,10 +329,12 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)
-        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), should_stop=should_stop)
+        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), should_stop=should_stop, edits_now=edits_now)
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [], resume=(resume or {}).get("result"))
         result["usage"] = usage + result["usage"]
+        if resume:  # the paused run's usage is carried in this one; sums count this run, never the paused one too
+            result["resumed_from"] = resume["run"]
         if result.get("paused"):
             return _outcome(status="paused", routing=decision, workflow=workflows.ref(workflow), result=result, extractions=storage.extractions)
         outcomes, proposals = lessons(workflow, job["case"]["id"], result)

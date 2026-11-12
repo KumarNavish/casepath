@@ -195,6 +195,14 @@ class CaseWork:
         self.rebuild()
 
 
+    def refresh_edits(self):
+        if not getattr(self, "edits_now", None):
+            return
+        with TOOL_LOCK:
+            self.employee_edits = list(self.edits_now())
+            for fact in self.set_by_hand():
+                self.facts.pop(fact, None)  # the agents' reading of an answered fact no longer counts
+
     def set_by_hand(self):
         """Facts a case worker set in this case (a set_fact edit): no agent records or re-reads them."""
         return {e["args"].get("fact") for e in self.employee_edits if e.get("op") == "set_fact"}
@@ -302,7 +310,8 @@ class CaseWork:
     def evaluate(self, checked=True):
         missing_checked = checked or bool(self.documents)
         asked, partial = casegraph.whole_findings(self.graph, self.findings())  # a need for all of something stays asked
-        facts = casegraph.derive_facts(self.graph, self.accepted_facts(), asked,
+        answered = {k: v for k, (v, _) in casegraph.fact_overrides(self.graph, self.employee_edits).items()}  # the case worker's answers
+        facts = casegraph.derive_facts(self.graph, {**self.accepted_facts(), **answered}, asked,
                                        lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked))
         return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
@@ -607,6 +616,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
     for number in range(max_turns):
         if getattr(work, "should_stop", lambda: False)():
             raise TeamStopped()
+        work.refresh_edits()  # an answer the case worker gives while the agents work counts from this turn on
         last = number == max_turns - 1
         choice_ = {"type": "function", "name": "report"} if last else "required"
         try:
@@ -781,9 +791,10 @@ def confirm_facts(model, work, effort="medium"):
 
 
 class CaseTeam:
-    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None):
+    def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None, edits_now=None):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
         self.should_stop = should_stop or (lambda: False)  # checked before every model turn and every delegation
+        self.edits_now = edits_now  # the case's edits as they are now (answers given during the run)
 
     def model_for(self, agent):
         """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
@@ -824,7 +835,7 @@ class CaseTeam:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
                                            "citations": row["citations"], "verdict": None, "by": "routing"}
         state = {"delegations": 0, "done": list((resume or {}).get("done") or [])}
-        work.should_stop = self.should_stop
+        work.should_stop, work.edits_now = self.should_stop, self.edits_now
         try:
             return self._run(work, state)
         except TeamStopped:

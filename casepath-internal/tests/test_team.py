@@ -455,3 +455,17 @@ class ContinueTests(unittest.TestCase):
         self.assertNotIn("landlord_notified", [f["fact"] for f in resumed["facts"]])  # the reader's "ja" was refused
         refused = [e for e in resumed["events"] if e.get("tool") == "record_fact"]
         self.assertTrue(refused)
+
+
+    def test_an_answer_given_while_the_agents_work_counts_from_the_next_turn(self):
+        fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
+        turns = {"n": 0}
+        answer = [{"id": "e1", "op": "set_fact", "args": {"fact": "landlord_notified", "value": "nein"}}]
+
+        def edits_now():  # the case worker answers after the agents' second turn
+            turns["n"] += 1
+            return answer if turns["n"] > 2 else []
+        result = CaseTeam(ScriptedModel(standard_script(finder_calls=[], result_fields=fields)), edits_now=edits_now).run(
+            case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertNotIn("landlord_notified", [f["fact"] for f in result["facts"]])  # the reader's later "ja" was refused
+        self.assertEqual(result["evaluation"]["outcome"]["id"], "advice")  # the handler's "nein" decides the path

@@ -78,7 +78,7 @@ class OwnAnswer(BaseModel):
     action_other: str = Field("", max_length=500)
 
 
-SERVER_KINDS = {"study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
+SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
                 "item.confirmed", "correction.undone", "point.settled"}  # written by the server only
 
 
@@ -649,6 +649,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         except Conflict as error:
             raise HTTPException(409, str(error)) from None
 
+    @app.post("/api/runs/{run_id}/discard")
+    def discard_run(run_id: str, who=Depends(user)):
+        """'Verwerfen': a paused run is set aside (kept in the store and the log, never deleted); the case shows its last
+        completed result again, or is not yet prepared."""
+        run = found(store.get_run, run_id)
+        if run["status"] != "paused":
+            raise HTTPException(409, "Nur ein angehaltener Lauf kann verworfen werden.")
+        store.update_run(run_id, status="discarded")
+        record(run["case_id"], who, "run.discarded", run=run_id)
+        return {"id": run_id, "status": "discarded"}
+
     @app.post("/api/runs/{run_id}/continue", status_code=202)
     def continue_run(run_id: str, request: Request, who=Depends(user)):
         """'Weiter': continue a paused run from what it established; finished steps are not done again."""
@@ -793,7 +804,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def run_profile(pages: int | None = Query(None, ge=0, le=5000), who=Depends(user)):
         """Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);
         all recent runs when there are fewer than three of that size."""
-        runs = store.recent_runs(60)
+        runs = [r for r in store.recent_runs(60) if not (r.get("result") or {}).get("resumed_from")]  # a continued run times only its rest
         same = [r for r in runs if pages is not None and band(case_pages(r["case_id"])) == band(pages)]
         chosen = same if len(same) >= 3 else runs[:30]
         spans = {stage: [] for stage in STAGES}

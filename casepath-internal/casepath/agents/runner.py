@@ -117,7 +117,7 @@ class RunService:
             outcome = core.prepare(job or self.job(case_id), self._model(run_id, token), core.StoreBlobs(self.store),
                                    on_event=lambda e: self._event(run_id, e),
                                    on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction),
-                                   should_stop=lambda: run_id in self._stops)
+                                   should_stop=lambda: run_id in self._stops, edits_now=lambda: self.store.list_edits(case_id))
             self.save(run_id, case_id, outcome)
         except ModelError as error:
             self.store.update_run(run_id, status="failed", error=f"{error.reason}: {error}", finished_at=now())
