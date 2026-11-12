@@ -159,9 +159,14 @@ def lint_counts(units, cond_ids):
 
 
 def claim_text(D, cid):
-    import pilot  # noqa: E402
-    text, atts = pilot.inputs(D, cid)
-    return text + "\n" + "\n".join(a["bytes"].decode("utf-8", "replace") for a in atts)
+    """The claim's files as the product received them (harness/product/pilot.py::inputs, inlined: that module imports the HTTP
+    transport): message subject and body, and the attachments' text."""
+    import base64
+    packet = D.intake(cid)
+    msg = packet["customer_message"]
+    text = (f"Subject: {msg.get('subject', '')}\n\n" if msg.get("subject") else "") + msg["body"]
+    atts = [base64.b64decode(a["content_base64"]).decode("utf-8", "replace") for a in packet.get("attachments", [])]
+    return text + "\n" + "\n".join(atts)
 
 
 def ordinary(ref):

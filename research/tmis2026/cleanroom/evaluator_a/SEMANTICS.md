@@ -49,7 +49,7 @@ step. Needed under every combination -> `required_now`; under none -> `not_neede
 - **A1. Defining event raised and left open.** Options: (a) held behind the question (third silence clause); (b)
   presumed to have occurred, reading the middle clause "is presumed to have occurred" as unconditional. Chose (a):
   the clause is a *silence* policy and the presumption is about what the claim does not say; an explicitly open
-  fact is "unresolved". Affects 9 claims (5 termination, 4 rent); 82 document entries become `held` (all
+  fact is "unresolved". Affects 9 claims (5 termination, 4 rent); 63 document entries become `held` (all
   mandatory documents and any conditional ones whose flag is true or open).
 - **A2. Defining event denied.** The text does not say. Options: (a) gating transition false, nothing downstream
   reached, all `not_needed`; (b) `optional_path: false` means the step sequence runs regardless, so documents are

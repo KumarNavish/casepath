@@ -632,8 +632,9 @@ def rescore(study, alt, name="alternative"):
                 per_subset[k][1] += s == a[d]
     contrasts = []
     for cid, measure, b in F5_CONTRASTS:
-        c_reg = study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, f"F5|{cid}")
-        c_alt = alt_study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, f"F5|{cid}")
+        name = f"primary|{cid}|{b}" if cid.startswith("H") else f"secondary|{cid}"  # the registered names: same resamples
+        c_reg = study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, name)
+        c_alt = alt_study.contrast_of("tenancy", measure, "casepath", b, "signflip", None, name)
         contrasts.append({"id": cid, "measure": measure, "b": b,
                           "registered": {k: c_reg[k] for k in ("a_value", "b_value", "diff", "diff_ci", "p", "clusters", "nonzero_clusters")},
                           "alternative": {k: c_alt[k] for k in ("a_value", "b_value", "diff", "diff_ci", "p", "clusters", "nonzero_clusters")}})
@@ -720,7 +721,7 @@ def markdown(res):
                                          [[L[d], fmt(v["claim_run"][0]), fmt(v["claim_run"][1]), fmt(v["family"][0]), fmt(v["family"][1]),
                                            fmt(y["at_test_share"][d])] for d, v in y["means"].items()]), ""]
         md += [table(["Lines", "Crossover share (claim-run means)", "(family means)"],
-                     [[k.replace(k.split(" vs ")[0], L[k.split(" vs ")[0]]).replace(k.split(" vs ")[1], L[k.split(" vs ")[1]]),
+                     [[" vs ".join(L[x] for x in k.split(" vs ")),
                        "no crossover in 0–1" if v["claim_run"] is None else fmt(v["claim_run"]),
                        "no crossover in 0–1" if v["family"] is None else fmt(v["family"])] for k, v in y["crossovers"].items()]), ""]
     # F3
@@ -881,9 +882,11 @@ def main(argv=None):
     for name, alt in items:
         r = rescore(study, alt, name)
         f5.append(r)
+    stored = {**{h["id"]: h["tests"][0] for h in res3["hypotheses"] if h["regime"] == "tenancy"},
+              **{c["id"]: c["result"] for c in res3["secondary"]["contrasts"]}}
     for c in f5[0]["contrasts"]:
-        for k in ("a_value", "b_value", "diff", "p"):
-            assert abs(c["registered"][k] - c["alternative"][k]) < 1e-12, ("registered reference does not reproduce", c["id"], k)
+        for k in ("a_value", "b_value", "diff", "p", "diff_ci"):
+            assert c["registered"][k] == c["alternative"][k] == stored[c["id"]][k], ("registered reference does not reproduce", c["id"], k)
     res["F5"] = {"results": f5, "usage": (
         "python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state "
         "(required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} "

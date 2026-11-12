@@ -144,7 +144,7 @@ The test's own share of type O: 0.583.
 | CasePath vs Rules in context, frontier | 0.000 | 0.017 |
 | CasePath vs Self-consistency | no crossover in 0–1 | no crossover in 0–1 |
 | CasePath vs Model executes rules | no crossover in 0–1 | no crossover in 0–1 |
-| Rules in context vs Rules in context_frontier | no crossover in 0–1 | no crossover in 0–1 |
+| Rules in context vs Rules in context, frontier | no crossover in 0–1 | no crossover in 0–1 |
 | Rules in context vs Self-consistency | no crossover in 0–1 | no crossover in 0–1 |
 | Rules in context vs Model executes rules | no crossover in 0–1 | no crossover in 0–1 |
 | Rules in context, frontier vs Self-consistency | no crossover in 0–1 | no crossover in 0–1 |
@@ -167,7 +167,7 @@ The test's own share of type O: 0.583.
 | CasePath vs Rules in context, frontier | 0.037 | 0.072 |
 | CasePath vs Self-consistency | no crossover in 0–1 | no crossover in 0–1 |
 | CasePath vs Model executes rules | no crossover in 0–1 | no crossover in 0–1 |
-| Rules in context vs Rules in context_frontier | no crossover in 0–1 | no crossover in 0–1 |
+| Rules in context vs Rules in context, frontier | no crossover in 0–1 | no crossover in 0–1 |
 | Rules in context vs Self-consistency | 0.737 | no crossover in 0–1 |
 | Rules in context vs Model executes rules | 0.028 | 0.058 |
 | Rules in context, frontier vs Self-consistency | no crossover in 0–1 | no crossover in 0–1 |
@@ -268,7 +268,7 @@ This shows the hook that scores every design against another tenancy reference, 
 
 python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file maps claim id -> document id -> state (required_now, held, not_needed, supplied_sufficient, supplied_insufficient), or claim id -> {document_states: ...} as the stored references; every claim and every document of the registered reference must be present. Subsets, families and everything else stay the registered reference's; every design's stored plans are rescored with study2.ten_row, and the registered tenancy contrasts (H2, H3, S2a-S2f, S3a, S3b) are recomputed with study3's own contrast. The registered reference itself reproduces every stored number (checked).
 
-**registered reference (check).** Agreement with the registered reference: all 1024 of 1024 (100.0%); ordinary 693 of 693 (100.0%); denied_event 240 of 240 (100.0%); open_event 91 of 91 (100.0%).
+**secondary|S3b.** Agreement with the registered reference: all 1024 of 1024 (100.0%); ordinary 693 of 693 (100.0%); denied_event 240 of 240 (100.0%); open_event 91 of 91 (100.0%).
 
 | Registered state | required_now | held | not_needed | supplied_sufficient | supplied_insufficient |
 |---|---|---|---|---|---|
@@ -280,18 +280,18 @@ python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file map
 
 | Contrast | Measure | Comparator | registered: diff [interval] p | this reference: diff [interval] p |
 |---|---|---|---|---|
-| H2 | strict_unsafe | Rules in context | -1.826 [-2.733, -0.976] 0.0002 | -1.826 [-2.733, -0.976] 0.0002 |
-| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.472, -0.760] 0.0008 | -1.552 [-2.472, -0.760] 0.0008 |
-| S2a | strict_unsafe | Self-consistency | -1.788 [-2.740, -0.927] 0.0002 | -1.788 [-2.740, -0.927] 0.0002 |
-| S2b | strict_unsafe | Model executes rules | -0.517 [-0.903, -0.208] 0.0007 | -0.517 [-0.903, -0.208] 0.0007 |
-| S2c | strict_unsafe | ReAct | -1.524 [-2.080, -1.062] < 0.0001 | -1.524 [-2.080, -1.062] < 0.0001 |
-| S2d | all_deviations | Self-consistency | -1.583 [-2.503, -0.746] 0.0013 | -1.583 [-2.503, -0.746] 0.0013 |
-| S2e | all_deviations | Model executes rules | -0.764 [-1.347, -0.267] 0.0047 | -0.764 [-1.347, -0.267] 0.0047 |
-| S2f | all_deviations | ReAct | -1.274 [-1.840, -0.774] < 0.0001 | -1.274 [-1.840, -0.774] < 0.0001 |
-| S3a | all_deviations | Rules in context | -1.601 [-2.490, -0.795] 0.0010 | -1.601 [-2.490, -0.795] 0.0010 |
-| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.236, -0.566] 0.0023 | -1.358 [-2.236, -0.566] 0.0023 |
+| H2 | strict_unsafe | Rules in context | -1.826 [-2.719, -0.989] 0.0002 | -1.826 [-2.719, -0.989] 0.0002 |
+| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.444, -0.767] 0.0008 | -1.552 [-2.444, -0.767] 0.0008 |
+| S2a | strict_unsafe | Self-consistency | -1.788 [-2.750, -0.913] 0.0002 | -1.788 [-2.750, -0.913] 0.0002 |
+| S2b | strict_unsafe | Model executes rules | -0.517 [-0.906, -0.208] 0.0007 | -0.517 [-0.906, -0.208] 0.0007 |
+| S2c | strict_unsafe | ReAct | -1.524 [-2.069, -1.056] < 0.0001 | -1.524 [-2.069, -1.056] < 0.0001 |
+| S2d | all_deviations | Self-consistency | -1.583 [-2.493, -0.743] 0.0013 | -1.583 [-2.493, -0.743] 0.0013 |
+| S2e | all_deviations | Model executes rules | -0.764 [-1.337, -0.281] 0.0047 | -0.764 [-1.337, -0.281] 0.0047 |
+| S2f | all_deviations | ReAct | -1.274 [-1.844, -0.778] < 0.0001 | -1.274 [-1.844, -0.778] < 0.0001 |
+| S3a | all_deviations | Rules in context | -1.601 [-2.469, -0.788] 0.0010 | -1.601 [-2.469, -0.788] 0.0010 |
+| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.267, -0.576] 0.0023 | -1.358 [-2.267, -0.576] 0.0023 |
 
-**perturbed copy of the registered reference (10% of documents moved, seeded; check).** Agreement with the registered reference: all 925 of 1024 (90.3%); ordinary 617 of 693 (89.0%); denied_event 221 of 240 (92.1%); open_event 87 of 91 (95.6%).
+**secondary|S3b.** Agreement with the registered reference: all 925 of 1024 (90.3%); ordinary 617 of 693 (89.0%); denied_event 221 of 240 (92.1%); open_event 87 of 91 (95.6%).
 
 | Registered state | required_now | held | not_needed | supplied_sufficient | supplied_insufficient |
 |---|---|---|---|---|---|
@@ -303,14 +303,14 @@ python3 analysis/study3_feedback.py --alt-reference A.json B.json: each file map
 
 | Contrast | Measure | Comparator | registered: diff [interval] p | this reference: diff [interval] p |
 |---|---|---|---|---|
-| H2 | strict_unsafe | Rules in context | -1.826 [-2.733, -0.976] 0.0002 | -1.726 [-2.601, -0.917] 0.0002 |
-| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.472, -0.760] 0.0008 | -1.472 [-2.351, -0.715] 0.0010 |
-| S2a | strict_unsafe | Self-consistency | -1.788 [-2.740, -0.927] 0.0002 | -1.670 [-2.580, -0.861] 0.0003 |
-| S2b | strict_unsafe | Model executes rules | -0.517 [-0.903, -0.208] 0.0007 | -0.406 [-0.792, -0.101] 0.0095 |
-| S2c | strict_unsafe | ReAct | -1.524 [-2.080, -1.062] < 0.0001 | -1.385 [-1.934, -0.927] < 0.0001 |
-| S2d | all_deviations | Self-consistency | -1.583 [-2.503, -0.746] 0.0013 | -1.420 [-2.243, -0.660] 0.0019 |
-| S2e | all_deviations | Model executes rules | -0.764 [-1.347, -0.267] 0.0047 | -0.618 [-1.153, -0.167] 0.0147 |
-| S2f | all_deviations | ReAct | -1.274 [-1.840, -0.774] < 0.0001 | -1.097 [-1.625, -0.632] < 0.0001 |
-| S3a | all_deviations | Rules in context | -1.601 [-2.490, -0.795] 0.0010 | -1.465 [-2.278, -0.722] 0.0014 |
-| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.236, -0.566] 0.0023 | -1.236 [-2.063, -0.493] 0.0030 |
+| H2 | strict_unsafe | Rules in context | -1.826 [-2.719, -0.989] 0.0002 | -1.726 [-2.580, -0.927] 0.0002 |
+| H3 | strict_unsafe | Rules in context, frontier | -1.552 [-2.444, -0.767] 0.0008 | -1.472 [-2.330, -0.719] 0.0010 |
+| S2a | strict_unsafe | Self-consistency | -1.788 [-2.750, -0.913] 0.0002 | -1.670 [-2.587, -0.847] 0.0003 |
+| S2b | strict_unsafe | Model executes rules | -0.517 [-0.906, -0.208] 0.0007 | -0.406 [-0.799, -0.097] 0.0095 |
+| S2c | strict_unsafe | ReAct | -1.524 [-2.069, -1.056] < 0.0001 | -1.385 [-1.920, -0.927] < 0.0001 |
+| S2d | all_deviations | Self-consistency | -1.583 [-2.493, -0.743] 0.0013 | -1.420 [-2.247, -0.656] 0.0019 |
+| S2e | all_deviations | Model executes rules | -0.764 [-1.337, -0.281] 0.0047 | -0.618 [-1.135, -0.180] 0.0147 |
+| S2f | all_deviations | ReAct | -1.274 [-1.844, -0.778] < 0.0001 | -1.097 [-1.632, -0.635] < 0.0001 |
+| S3a | all_deviations | Rules in context | -1.601 [-2.469, -0.788] 0.0010 | -1.465 [-2.274, -0.712] 0.0014 |
+| S3b | all_deviations | Rules in context, frontier | -1.358 [-2.267, -0.576] 0.0023 | -1.236 [-2.094, -0.507] 0.0030 |
 
