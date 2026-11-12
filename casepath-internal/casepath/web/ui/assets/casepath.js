@@ -334,6 +334,9 @@ function bindRail() {
       .catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  for (const b of document.querySelectorAll("[data-scroll-item]")) b.addEventListener("click", () => {
+    const target = document.querySelector(`[data-item="${b.dataset.scrollItem}"]`); if (target) target.scrollIntoView({ block: "center", behavior: "smooth" }); });
+  for (const a of document.querySelectorAll("[data-step-link]")) a.addEventListener("click", () => { if (a.dataset.stepLink) S.step = a.dataset.stepLink; });
   const continueRun = $("#continue-run");
   if (continueRun) continueRun.addEventListener("click", async () => {  // continue from what the stopped run established
     continueRun.disabled = true;
@@ -1371,13 +1374,21 @@ function preparedView(ev, draft) {
     if (i.kind === "letter_question") return T("only the customer can say", "nur die Kundschaft weiss es");
     return "";
   };
-  const line = (i, text) => `<li class="${on(i) ? "" : "cp-offered"}"><label><input type="checkbox" data-line="${esc(i.item_id)}" ${on(i) ? "checked" : ""}> ${esc(text)}</label>${whyOf(i) ? ` <span class="cp-why">${esc(whyOf(i))}</span>` : ""}</li>`;
+  // Each line opens where it comes from in one click: the page and sentence that show it, otherwise the rule of its step.
+  const sourceOf = (i) => { const c = (i.evidence || []).find((e) => e.file);
+    return c ? `<button class="cp-source-chip" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote || "")}">${T("source", "Quelle")}</button>`
+      : `<a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder" data-step-link="${esc(i.node || "")}">${T("rule", "Regel")}</a>`; };
+  const line = (i, text) => `<li class="${on(i) ? "" : "cp-offered"}"><label><input type="checkbox" data-line="${esc(i.item_id)}" ${on(i) ? "checked" : ""}> ${esc(text)}</label>${whyOf(i) ? ` <span class="cp-why">${esc(whyOf(i))}</span>` : ""} ${sourceOf(i)}</li>`;
   const textOf = (i) => i.kind === "hint" ? `${T("Hint", "Hinweis")}: ${clip(i.value, 140)}` : i.kind === "letter_question" ? `${T("Question", "Frage")}: ${i.value}` : i.label.de;
   const all = docs.concat(qs);
   const missing = docs.filter((d) => d.ask === "now").length;
   const cover = (S.data.evaluation && S.data.evaluation.waiting_for || []).some((w) => w.fact === "deckung");
-  const reason = [act.reason || "", T("claim received", "Schadenmeldung eingegangen"), missing ? T(`documents incomplete (${missing} missing)`, `Unterlagen unvollständig (${missing} fehlen)`) : "",
-    cover ? T("cover open", "Deckung offen") : ""].filter(Boolean).join(", ");
+  // Each "weil" fact opens its source: the claim's file, the document list, the open decision.
+  const claimFile = (S.data.files || [])[0];
+  const reason = [act.reason ? esc(act.reason) : "",
+    claimFile ? `<button class="cp-link" data-cite-file="${esc(claimFile.id)}" data-page="">${T("claim received", "Schadenmeldung eingegangen")}</button>` : T("claim received", "Schadenmeldung eingegangen"),
+    missing ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`documents incomplete (${missing} missing)`, `Unterlagen unvollständig (${missing} fehlen)`)}</a>` : "",
+    cover ? `<button class="cp-link" data-scroll-item="fact:deckung">${T("cover open", "Deckung offen")}</button>` : ""].filter(Boolean).join(", ");
   const stage = (S.data.process.steps || []).find((x) => x.id === (ev && ev.current && ev.current.step)) || {};
   const paused = S.data.run && S.data.run.status === "paused", isClosed = closed();
   return `<section class="cp-card cp-prepared" style="padding:18px 22px"><h2 class="cp-section" style="margin-top:0">${paused
@@ -1391,7 +1402,7 @@ function preparedView(ev, draft) {
           <option value="">${T("another action…", "andere Handlung…")}</option>
           ${S.data.action_options.filter((o) => o.kind !== act.action).map((o) => `<option value="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</option>`).join("")}</select></p>`) : ""}
     ${paused ? `<p class="cp-muted" style="margin:0 0 10px">${T("The preparation was stopped. Documents and checks may be incomplete; the next step is not proposed yet.", "Die Vorbereitung wurde angehalten. Unterlagen und Prüfung können unvollständig sein; ein nächster Schritt wird noch nicht vorgeschlagen.")}</p>` : ""}
-    ${isClosed ? "" : `<p class="cp-muted" style="margin:0 0 10px">${T("Because", "Weil")}: ${esc(reason)}.${stage.title ? ` <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("Stage", "Stufe")}: ${esc(stage.title)}</a>` : ""}</p>`}
+    ${isClosed ? "" : `<p class="cp-muted" style="margin:0 0 10px">${T("Because", "Weil")}: ${reason}.${stage.title ? ` <a class="cp-link" href="#/case/${esc(S.route.id)}/process_builder">${T("Stage", "Stufe")}: ${esc(stage.title)}</a>` : ""}</p>`}
     ${draft ? `<pre data-item="letter:0" class="cp-reply" contenteditable="true" spellcheck="true" style="white-space:pre-wrap;padding:14px 16px;font:inherit">${esc(S.letterText || draft)}</pre>` : ""}
     ${all.length ? `<p class="cp-muted" style="margin:12px 0 4px">${T("The letter's list: untick what is not needed, tick what an offer should add.", "Liste des Briefs: Nicht Nötiges abwählen, Angebotenes anwählen.")}</p>
       <ul class="cp-checklist">${all.filter(on).map((i) => line(i, textOf(i))).join("")}${all.filter((i) => !on(i)).map((i) => line(i, textOf(i))).join("")}</ul>` : ""}
