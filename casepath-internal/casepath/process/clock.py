@@ -59,6 +59,9 @@ def reference_day(files, today=None):
     cut = [f for f in files if "cut_of" in (f.get("extraction") or {})]
     if not cut:
         return today or date.today()
+    looked = [d for f in cut if (d := parse_date((f["extraction"].get("cut_of") or {}).get("as_of")))]
+    if looked:  # the day the case is looked at: an action proposed then counts from then
+        return max(looked)
     days = [d for f in cut for s in (f["extraction"].get("segments") or []) if (d := parse_date(s.get("date")))]
     return max(days) if days else (today or date.today())
 
@@ -82,6 +85,7 @@ if __name__ == "__main__":
     cut = [{"extraction": {"cut_of": {}, "segments": [{"date": "14.08.2024"}, {"date": "Mi. 28.08.2024 0"}, {"date": ""}]}}]
     assert reference_day(cut) == date(2024, 8, 28)
     assert follow_up(21, cut, [])["due"] == "2024-09-18"
+    assert follow_up(7, [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}], [])["due"] == "2025-02-14"
     assert follow_up(21, cut, [{"kind": "followup.set", "date": "2024-09-30", "expert": "x"}])["due"] == "2024-09-30"
     rules = [{"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7}]
     looked = [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}]
