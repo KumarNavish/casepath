@@ -11,9 +11,11 @@ Three findings decide the order of the steps.
 
 1. **Under honest scoring of holds, today's artefact does not lead the
    frontier prompt outside denied and open defining events.** Counting an
-   unneeded hold as an error, CasePath is slightly behind the frontier prompt
-   on files that state every fact (+0.09 errors per claim) and has no lead on
-   files with only an open branch fact. Study 3's tenancy lead sat in the 33
+   unneeded hold as an error, CasePath on the cost-efficient model is 0.09
+   errors per claim behind the frontier prompt on files that state every
+   fact. On the frontier model itself it is level with that prompt on files
+   with only an open branch fact (0.65 against 0.64). Study 3's tenancy lead
+   sat in the 33
    claims whose defining event is denied or open. A sweep over the share of
    files with an open fact, without that case type built in, removes most of
    it. The frontier cells have to be won in the design cycle; they are not won
