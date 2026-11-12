@@ -55,10 +55,15 @@ files.
 does not encode but a coherent file must respect, as data: `{"if": {"fact", "state" | "in"} | {"all": [...]},
 "then": {"fact", "in": [...], "set": state}, "reset_if"?: state}`. When the `if` holds and the `then` fact's state
 is not allowed, the `then` fact is set to `set`; if that fact is protected (the defining event or the open fact),
-the `if` fact is reset to `reset_if` (default not mentioned; stated false for an `always_stated` fact). Every
-adjustment is logged in the design (`constraint_adjustments`). Files exist for tenancy (deposit intended/made;
+the `if` fact is reset to `reset_if` (default not mentioned; stated false for an `always_stated` fact). A second kind,
+`{"kind": "stated_only_if", "fact", "if": {...} | {"any": [...]} | {"all": [...]}}`, leaves the fact not mentioned
+in files where the `if` does not hold: an explicit, data-stated instance of the reachability rule above, for a
+fact whose question itself limits when it is asked. Every adjustment is logged in the design
+(`constraint_adjustments`). Files exist for tenancy (deposit intended/made;
 landlord unaware vs. learned orally; increase open vs. a stated cost reason) and dismissal (employment cannot have
-ended more than 180 days ago, nor a claim be pending after it, while the notice period has not ended).
+ended more than 180 days ago, nor a claim be pending after it, while the notice period has not ended; and
+`notice_before_protected_period` is stated only when at least one of the three protected-period facts is stated
+true or open, because its question is "not asked where no protected period is raised").
 
 ## Parameters (`design.py`; every one is a command-line option)
 
@@ -71,8 +76,9 @@ ended more than 180 days ago, nor a claim be pending after it, while the notice 
 | `denied_share` | 0.10 | Defining event stated false in round(0.1 x 15) = 2 files of every level (13.3%), flagged `denied_event`. Denied files are disjoint from open-fact files. |
 | `p_branch_true / false / not_mentioned` | 0.35 / 0.20 / 0.45 | State of a non-open branch fact. Not mentioned is the commonest, as in real intake and as the intake convention is meant to be exercised; true is more frequent than false because true is the circumstance a party raises (SPEC 6b) and is what makes the conditional documents needed; false is kept at a fifth so that explicit denials are tested. With these values every document of every type is needed (requested, held or present) in some files: see the marginals. |
 | `p_always_stated_true` | 0.50 | An `always_stated` fact has two ordinary alternatives, so both are equally likely. |
-| `stop_lean_factor` | 0.50 | For a fact whose one value alone fires a stop (theft's household perpetrator and missing away cover, dismissal's notice during probation), that value's weight is halved, so that such stops are reached in some files without emptying a quarter of the files. Tenancy has none (its only stops are on the defining event). |
-| `denied_branch` | false or not mentioned | In a denied-event file the branch facts usually presuppose the event (damage from a defect that does not exist), so they are stated false or not mentioned (in the ratio 0.20 : 0.45) and an `always_stated` fact is stated false. The reference is the stop whatever they are. |
+| `stop_lean_factor` | 0.25 | For a fact whose one value alone fires a stop (theft's household perpetrator and missing away cover, dismissal's notice during probation), that value's weight is multiplied by 0.25. A file that stops at once carries no checklist to score, and the sealed set should not spend a fifth of its files there; the denied-event files already contribute a fixed 10% of stopped files at every level. With 0.25 such stops are still reached at a few percent of files each (per-file probabilities in the final report of 2026-11-12). Tenancy has none (its only stops are on the defining event). No coverage rule forces a stop to appear: at the sealed set's size chance evens out. |
+| `always_stated_where_reachable` | true | **An always-stated fact is stated only in files where its step can be reached; elsewhere it is not mentioned.** A step "uses" a fact when the fact appears in a step's `reached_when`, in the `needed_when` of a document on a step not ruled out, or in a stop's `when`; the fact is stated (as drawn) when at least one such use is not false given the file's other designed states (unresolved facts count as possibly true), and left not mentioned otherwise. Such a fact has no presumption, so it is unresolved, and since nothing that uses it can be reached it changes no document's state: `reference.py` confirms this per file with the product's evaluator (`unreached_always_stated_check`). Denied-event files fall under it too. Logged per design in `always_stated_not_mentioned` with the drawn value. |
+| `denied_branch` | false or not mentioned | In a denied-event file the branch facts usually presuppose the event (damage from a defect that does not exist), so they are stated false or not mentioned (in the ratio 0.20 : 0.45); an `always_stated` fact is drawn as usual and then, its steps being unreachable, left not mentioned. The reference is the stop whatever they are. |
 | `p_supply` | 0.35 | A mandatory document the design definitely needs is attached. |
 | `p_supply_optional` | 0.30 | An optional document whose need definitely holds is attached (theft's police report). |
 | `p_sufficient` | 0.50 | An attached document shows every `must_show` item; otherwise exactly one item, drawn uniformly over the items that apply in every file, is missing (conditional items such as "any ... clause", "where ...", "if any" are never the missing item). Half and half, as in Study 3 (25 / 26). |
@@ -103,9 +109,12 @@ the facts it waits for; `yes` -> `request` / `present_sufficient` / `present_ins
 again** (`request: true`), as the product's next actions (`obtain` for `unusable`) and the earlier study's scorer
 (`supplied_insufficient` counted with `required_now`) treat it. Each reference is recomputed from `rules.json`
 alone (`genlib.rules_outcome`, exact deferral over the unresolved facts) and differences are listed; on all three
-regimes there are none. In that recomputation a stop does not erase the steps before it: `rules.json` encodes each
-stop in the `reached_when` of the steps after it, and the steps before a stop (which collect what is needed to
-decide it) stay reached, as the workflow walks them.
+regimes there are none. The recomputation follows the rule text's "How to read steps and stops" (`reading_of_stops`):
+steps are taken in order, a stop ends the process at its step, no later step is reached and no later document is
+requested or held, and documents of steps reached before the stop keep their state. `rules.json` writes each stop
+into the `reached_when` of every later step, so reading steps from `reached_when` gives exactly that; the test
+`test_rules_recomputation_follows_engine_walk` checks it against the product's in-order walk under every
+assignment of every type's facts.
 
 ## The writing session and the blind check, and why another model family
 
@@ -138,12 +147,11 @@ exactly (tested).
 ## Known limits
 
 - Fact dependencies the rule set does not encode need a `constraints.json`; without one the generator can draw
-  incoherent combinations. Dismissal's `notice_before_protected_period` is `always_stated` but, by its own
-  question, "not asked where no protected period is raised"; the generator still states it (mostly false) in files
-  that raise no protected period. This is for the rule set to decide (a fourth state "not applicable" is not part
-  of the design).
+  incoherent combinations.
+- The reachability rule leaves theft's `burglary_or_robbery` unmentioned in every at-home file where no lock change
+  is stated true or open (its only use is the lock-change invoice): the writer must tell a theft at home without
+  saying whether anyone broke in.
 - The writer bundle contains the questions and must_show items verbatim; some name article numbers (dismissal) or
   conditions ("Ziff."). The tests allow these strings and nothing else of the rule text.
-- Seed-specific marginals: at seed 20261112 theft draws the household-perpetrator exclusion in 11 of 30 at-home
-  files (expected about 6), and in dismissal type 2 the three compound stops are only pending, never reached
-  (16 files of that type). See the final report and `MARGINALS_*.json`.
+- Seed-specific marginals: at seed 20261112 two of dismissal type 2's combined stops are never reached
+  (`b_stop_continued`, expected 3.7 in 60 files; `b_stop_time_limit`, expected 0.2). See `MARGINALS_*.json`.

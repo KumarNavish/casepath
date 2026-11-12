@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "away_cover_missing"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
@@ -40,21 +46,22 @@
   "defining_event": "theft_away",
   "denied_event": true,
   "facts": {
-    "away_cover_missing": "stated_false",
+    "away_cover_missing": "not_mentioned",
     "bicycle": "not_mentioned",
     "imminent_danger": "not_mentioned",
     "measures_pending": "not_mentioned",
     "theft_away": "stated_false",
-    "traces_changed": "stated_false",
+    "traces_changed": "not_mentioned",
     "vouchers_unobtainable": "not_mentioned"
   },
   "file_id": "the_c7620535798b",
   "index": 13,
   "language": "en",
   "level": 50,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",
@@ -65,20 +72,20 @@
       "monthly": 2220,
       "small": 305
     },
-    "canton": "SH",
-    "claimant": "Alice Gisler",
-    "date_main_event": "2026-01-29",
-    "date_written": "2026-03-27",
+    "canton": "BE",
+    "claimant": "Alice Morgan",
+    "date_main_event": "2026-07-01",
+    "date_written": "2026-08-24",
     "earlier_dates": [
-      "2023-01-09",
-      "2023-07-27",
-      "2023-11-30"
+      "2023-01-17",
+      "2023-06-11",
+      "2023-12-27"
     ],
     "other_party_organisation": "Steinbruch Holdings Ltd",
-    "other_party_person": "Liam Morgan",
-    "place": "Schaffhausen",
+    "other_party_person": "Liam Turner",
+    "place": "Burgdorf",
     "street": "Birkenweg 59",
-    "third_person": "Julia Turner",
+    "third_person": "Julia Foster",
     "time_spans": [],
     "topic_order_seed": 1576602922
   },

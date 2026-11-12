@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "not_mentioned",
+      "fact": "notice_before_protected_period"
+    }
+  ],
   "attachments": [
     {
       "document": "termination_letter",
@@ -40,14 +46,21 @@
       "supplied": false
     }
   ],
-  "constraint_adjustments": [],
+  "constraint_adjustments": [
+    {
+      "changed": "notice_before_protected_period",
+      "constraint": "notice_before_protected_period is asked only where a protected period is raised: stated only when at least one of the three protected-period facts is stated true or open, otherwise not mentioned (an instance of the general rule: an always-stated fact is stated only where its step can be reached)",
+      "from": "stated_false",
+      "to": "not_mentioned"
+    }
+  ],
   "defining_event": "employer_gave_notice",
   "denied_event": false,
   "facts": {
     "compulsory_service": "not_mentioned",
     "employer_gave_notice": "stated_true",
     "incapacity_illness_accident": "not_mentioned",
-    "notice_before_protected_period": "stated_false",
+    "notice_before_protected_period": "not_mentioned",
     "notice_during_probation": "not_mentioned",
     "notice_period_varied": "stated_true",
     "pregnancy_or_birth": "stated_false",
@@ -57,9 +70,10 @@
   "index": 6,
   "language": "en",
   "level": 50,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "dismissal",
-  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
   "rules_version": "2026-11-12.5",
   "scan_noise": true,
   "schema": "study4.design/1",

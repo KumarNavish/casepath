@@ -311,6 +311,28 @@ def rules_outcome(regime, tid, values, supplied=None):
     return res
 
 
+def fact_step_reachable(regime, tid, values, fact):
+    """Whether a step that uses `fact` can still be reached in a file, with `fact` itself unresolved: a step whose
+    `reached_when` names it and is not false; a document whose `needed_when` names it, on a step not ruled out,
+    and not false; or a stop whose `when` names it and is not false. Other facts take `values` (None:
+    unresolved)."""
+    v = dict(values)
+    v[fact] = None
+    t = regime.types[tid]
+    step_cond = {s["id"]: s["reached_when"] for s in t["steps"]}
+    for s in t["steps"]:
+        if fact in cond_facts(s["reached_when"]) and cond_eval(s["reached_when"], v) is not False:
+            return True
+    for d in t["documents"]:
+        if fact in cond_facts(d["needed_when"]) and cond_eval(step_cond[d["step"]], v) is not False \
+                and cond_eval(d["needed_when"], v) is not False:
+            return True
+    for s in t["stops"]:
+        if fact in cond_facts(s["when"]) and cond_eval(s["when"], v) is not False:
+            return True
+    return False
+
+
 # ----------------------------------------------------------------- must_show items
 CONDITIONAL_ITEM = re.compile(r"^(any|where|if|for an?|for the|when)\b|\bif any\b|\(or that", re.I)
 

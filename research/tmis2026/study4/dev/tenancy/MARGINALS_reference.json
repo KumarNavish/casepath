@@ -1,4 +1,7 @@
 {
+  "always_stated_not_mentioned": {
+    "rent_increase_dispute.cost_or_services_reason": 15
+  },
   "denied": {
     "False": 52,
     "True": 8
@@ -114,6 +117,11 @@
       "request": 4
     }
   },
+  "files_without_request": {
+    "defect_mold_heating": 1,
+    "lease_termination_dispute": 2,
+    "rent_increase_dispute": 7
+  },
   "holds_per_file": {
     "0": 48,
     "1": 9,
@@ -148,5 +156,6 @@
     "rent_increase_dispute.none": 18,
     "rent_increase_dispute.pending:ri_stop": 2,
     "rent_increase_dispute.stopped:ri_stop": 5
-  }
+  },
+  "unreached_always_stated_changes": []
 }

@@ -1,40 +1,42 @@
 {
   "deferral": null,
-  "design_sha256": "7bc3b62121012ba4f22f77f4d22ab3328e8d60ca89659d502d5b08fde1403163",
+  "design_sha256": "f088d82f21ca60af5eadce125c895bf4ded631d6a4667268cdebb1e41428ee14",
   "documents": {
     "bicycle_voucher": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "insurance_policy": {
       "request": true,
       "state": "request"
     },
     "notification_record": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "original_vouchers": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "police_consent": {
       "request": false,
       "state": "not_needed"
     },
     "police_report": {
+      "optional": true,
       "request": false,
-      "state": "not_needed"
+      "state": "present_sufficient",
+      "supplied": "sufficient"
     },
     "stolen_items_list": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     }
   },
   "evaluator": {
     "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
     "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
-    "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+    "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
     "workflow_sha256": {
       "simple_theft_away": "7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e",
       "theft_at_home": "89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b"
@@ -42,7 +44,7 @@
     "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
   },
   "facts_given": {
-    "away_cover_missing": true,
+    "away_cover_missing": false,
     "bicycle": true,
     "claim_type": "simple_theft_away",
     "imminent_danger": false,
@@ -53,11 +55,15 @@
   },
   "file_id": "the_27cd334c5026",
   "level": 0,
-  "outcome": "a_stop_no_cover",
+  "outcome": "intake_complete",
   "path": [
     "a_event",
     "a_cover",
-    "a_stop_no_cover"
+    "a_notify",
+    "a_police",
+    "a_instruction_check",
+    "a_instruction",
+    "a_loss"
   ],
   "presumed": {
     "imminent_danger": false,
@@ -69,17 +75,13 @@
     "agrees": true,
     "differences": [],
     "rules_stops": {
-      "state": "stopped",
-      "stops": [
-        "a_stop_no_cover"
-      ]
+      "state": "none",
+      "stops": []
     }
   },
   "schema": "study4.reference/1",
   "stop": {
-    "outcome": "a_stop_no_cover",
-    "state": "stopped",
-    "step": "a_stop_no_cover"
+    "state": "none"
   },
   "type": "simple_theft_away",
   "unresolved": [],

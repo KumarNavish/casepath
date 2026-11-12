@@ -27,7 +27,8 @@ DEFAULTS = {
     "p_branch_false": 0.20,             # ... stated false ...
     "p_branch_not_mentioned": 0.45,     # ... or not mentioned
     "p_always_stated_true": 0.50,       # an always_stated fact: stated true, else stated false
-    "stop_lean_factor": 0.50,           # a fact whose one value alone fires a stop: that stated value's weight x this
+    "stop_lean_factor": 0.25,           # a fact whose one value alone fires a stop: that stated value's weight x this
+    "always_stated_where_reachable": True,  # an always_stated fact is stated only where a step using it can be reached
     "denied_branch": "false_or_not_mentioned",  # branch facts in a denied-event file (see README)
     "p_supply": 0.35,                   # a mandatory document needed under the design is supplied
     "p_supply_optional": 0.30,          # an optional document whose need holds under the design is supplied
@@ -79,13 +80,18 @@ def draw_story(rng, lang, regime, tid, facts_state):
 def _match(cond, states):
     if "all" in cond:
         return all(_match(c, states) for c in cond["all"])
+    if "any" in cond:
+        return any(_match(c, states) for c in cond["any"])
     if cond["fact"] not in states:
         return False
     return states[cond["fact"]] in (cond.get("in") or [cond["state"]])
 
 
 def _if_facts(cond):
-    return [x for c in cond["all"] for x in _if_facts(c)] if "all" in cond else [cond["fact"]]
+    for k in ("all", "any"):
+        if k in cond:
+            return [x for c in cond[k] for x in _if_facts(c)]
+    return [cond["fact"]]
 
 
 def apply_constraints(regime, tid, states, protected, constraints, log):
@@ -98,6 +104,15 @@ def apply_constraints(regime, tid, states, protected, constraints, log):
     for _ in range(20):
         changed = False
         for c in constraints:
+            if c.get("kind") == "stated_only_if":
+                f = c["fact"]
+                if f not in facts or f in protected or any(x not in facts for x in _if_facts(c["if"])):
+                    continue
+                if states[f] != "not_mentioned" and not _match(c["if"], states):
+                    log.append({"constraint": c.get("note", ""), "changed": f, "from": states[f], "to": "not_mentioned"})
+                    states[f] = "not_mentioned"
+                    changed = True
+                continue
             b = c["then"]["fact"]
             if b not in facts or any(f not in facts for f in _if_facts(c["if"])):
                 continue
@@ -140,11 +155,8 @@ def draw_file(regime, P, rng, role, constraints):
             states[f] = "open"
         elif f == ev:
             states[f] = "stated_false" if role == "denied" else "stated_true"
-        elif role == "denied":
-            if f in always:
-                states[f] = "stated_false"
-            else:
-                states[f] = rng.choices(["stated_false", "not_mentioned"], weights=pf[1:])[0]
+        elif role == "denied" and f not in always:
+            states[f] = rng.choices(["stated_false", "not_mentioned"], weights=pf[1:])[0]
         elif f in always:
             pt, pfa = P["p_always_stated_true"], 1 - P["p_always_stated_true"]
             if f in lean:
@@ -156,8 +168,29 @@ def draw_file(regime, P, rng, role, constraints):
                 w[0 if lean[f] else 1] *= k
             states[f] = rng.choices(["stated_true", "stated_false", "not_mentioned"], weights=w)[0]
     log = []
-    apply_constraints(regime, tid, states, {ev} | ({open_fact} if open_fact else set()), constraints, log)
-    assert all(states[f] != "not_mentioned" for f in always), "always_stated fact left unmentioned"
+    protected = {ev} | ({open_fact} if open_fact else set())
+    apply_constraints(regime, tid, states, protected, constraints, log)
+    # An always_stated fact is stated only in files where a step that uses it can be reached; elsewhere it is not
+    # mentioned (it has no presumption, so it is unresolved, and being unreachable it changes nothing).
+    unreachable, open_unreachable = [], False
+    if P["always_stated_where_reachable"]:
+        drawn = {f: states[f] for f in always}
+        for _ in range(10):
+            vals = G.resolve(regime, tid, states)
+            changed = False
+            for f in sorted(always):
+                reach = G.fact_step_reachable(regime, tid, vals, f)
+                if f in protected:
+                    open_unreachable = open_unreachable or (f == open_fact and not reach)
+                    continue
+                want = drawn[f] if reach else "not_mentioned"
+                if states[f] != want:
+                    states[f], changed = want, True
+            if not changed:
+                break
+        else:
+            raise SystemExit(f"{tid}: always_stated reachability does not settle")
+        unreachable = [{"fact": f, "drawn": drawn[f]} for f in sorted(always) if states[f] == "not_mentioned"]
     assert sum(s == "open" for s in states.values()) == (1 if role == "open" else 0)
 
     # attachments: only documents the design definitely needs (or, optional ones, whose need definitely holds)
@@ -182,7 +215,7 @@ def draw_file(regime, P, rng, role, constraints):
             else:
                 entry.update(sufficient=False, missing=rng.choice(items))
         attachments.append(entry)
-    return tid, states, open_fact, log, attachments
+    return tid, states, open_fact, log, attachments, unreachable, open_unreachable
 
 
 def main(argv=None):
@@ -237,7 +270,7 @@ def main(argv=None):
         for i in range(n):
             r = role.get(i, "plain")
             rng = random.Random(G.sub_seed(P["seed"], a.regime, "file", level, i))
-            tid, states, open_fact, log, att = draw_file(regime, P, rng, r, constraints)
+            tid, states, open_fact, log, att, unreach, open_unreach = draw_file(regime, P, rng, r, constraints)
             story = draw_story(rng, langs[i], regime, tid, states)
             fid = f"{a.regime[:3]}_{G.sub_seed(P['seed'], a.regime, 'id', level, i):016x}"[:16]
             design = {
@@ -250,6 +283,8 @@ def main(argv=None):
                 "open_facts": [open_fact] if open_fact else [],
                 "denied_event": r == "denied",
                 "constraint_adjustments": log,
+                "always_stated_not_mentioned": unreach,
+                "open_fact_step_unreachable": open_unreach,
                 "attachments": att,
                 "language": langs[i], "scan_noise": noise[i], "words": P["words"],
                 "story": story,

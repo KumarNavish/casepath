@@ -1,4 +1,5 @@
 {
+  "always_stated_not_mentioned": [],
   "attachments": [
     {
       "document": "notification_record",
@@ -37,8 +38,10 @@
     },
     {
       "document": "lock_change_invoice",
+      "missing": "the effective cost",
       "optional": false,
-      "supplied": false
+      "sufficient": false,
+      "supplied": true
     }
   ],
   "constraint_adjustments": [],
@@ -47,7 +50,7 @@
   "facts": {
     "bicycle": "stated_true",
     "burglary_or_robbery": "stated_true",
-    "household_perpetrator": "stated_true",
+    "household_perpetrator": "stated_false",
     "imminent_danger": "not_mentioned",
     "lock_change": "stated_true",
     "measures_pending": "stated_false",
@@ -59,9 +62,10 @@
   "index": 9,
   "language": "de",
   "level": 25,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": true,
   "schema": "study4.design/1",
@@ -72,20 +76,20 @@
       "monthly": 2170,
       "small": 325
     },
-    "canton": "BE",
-    "claimant": "Nicole Zimmermann",
-    "date_main_event": "2026-04-17",
-    "date_written": "2026-05-15",
+    "canton": "LU",
+    "claimant": "Verena Walsh",
+    "date_main_event": "2026-03-08",
+    "date_written": "2026-05-02",
     "earlier_dates": [
-      "2024-02-01",
-      "2025-04-28",
-      "2025-11-01"
+      "2022-11-29",
+      "2025-03-19",
+      "2025-09-22"
     ],
-    "other_party_organisation": "Feldegg Immobilien AG",
-    "other_party_person": "Verena Walsh",
-    "place": "Biel/Bienne",
+    "other_party_organisation": "Erlenhof Handels AG",
+    "other_party_person": "Stefan Hofer",
+    "place": "Luzern",
     "street": "Dorfstrasse 139",
-    "third_person": "Lea Hofer",
+    "third_person": "Lea Kaufmann",
     "time_spans": [],
     "topic_order_seed": 403726569
   },

@@ -1,6 +1,12 @@
 {
-  "deferral": null,
-  "design_sha256": "677487b34679bbedd140cf80c52fb5d97a542839b373fa44a2592e02f9cb9125",
+  "deferral": {
+    "completions": 2,
+    "mode": "exact",
+    "open_facts": [
+      "notice_before_protected_period"
+    ]
+  },
+  "design_sha256": "12ee8d1ad867330065762bea6f61d1360a634f10d22a33cbb21622ff88c8c290",
   "documents": {
     "employment_contract": {
       "request": false,
@@ -34,7 +40,7 @@
   "evaluator": {
     "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
     "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
-    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
     "workflow_sha256": {
       "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
       "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
@@ -47,7 +53,6 @@
     "dispute_family": "protected_period_notice",
     "employer_gave_notice": false,
     "incapacity_illness_accident": false,
-    "notice_before_protected_period": false,
     "notice_during_probation": false,
     "notice_period_varied": false,
     "pregnancy_or_birth": false,
@@ -85,6 +90,18 @@
     "step": "a_stop_no_notice"
   },
   "type": "protected_period_notice",
-  "unresolved": [],
+  "unreached_always_stated_check": {
+    "differences": [],
+    "facts": [
+      {
+        "drawn": "not_mentioned",
+        "fact": "notice_before_protected_period"
+      }
+    ],
+    "same": true
+  },
+  "unresolved": [
+    "notice_before_protected_period"
+  ],
   "waiting_for": []
 }

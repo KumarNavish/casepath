@@ -72,8 +72,15 @@ class GeneratorTest(unittest.TestCase):
         for r in REGIMES:
             reg = G.Regime(r)
             for d in designs(self.out[r]):
+                listed = {x["fact"] for x in d["always_stated_not_mentioned"]}
+                vals = G.resolve(reg, d["type"], d["facts"])
                 for f in reg.always_stated(d["type"]):
-                    self.assertNotEqual(d["facts"][f], "not_mentioned", (r, d["file_id"], f))
+                    if d["facts"][f] == "not_mentioned":
+                        # only where no step that uses it can be reached
+                        self.assertIn(f, listed, (r, d["file_id"], f))
+                        self.assertFalse(G.fact_step_reachable(reg, d["type"], vals, f), (r, d["file_id"], f))
+                    elif f not in d["open_facts"]:
+                        self.assertTrue(G.fact_step_reachable(reg, d["type"], vals, f), (r, d["file_id"], f))
                 ev = d["facts"][reg.defining_event(d["type"])]
                 if d["denied_event"]:
                     self.assertEqual(ev, "stated_false")
@@ -114,6 +121,27 @@ class GeneratorTest(unittest.TestCase):
             for p in (self.out[r] / "references").glob("*_*.json"):
                 ref = G.read_json(p)
                 self.assertTrue(set(e["state"] for e in ref["documents"].values()) <= set(G.REF_STATES))
+
+    @unittest.skipUnless(PRODUCT.exists(), "product worktree not available")
+    def test_rules_recomputation_follows_engine_walk(self):
+        """reading_of_stops: steps in order, a stop ends the process at its step, documents of earlier steps keep
+        their state. The rules-based recomputation must reach exactly the documents the product's in-order walk
+        reaches, under every assignment of every type's facts."""
+        import itertools
+        W = R.load_product(str(PRODUCT))
+        for r in REGIMES:
+            reg = G.Regime(r)
+            for tid in reg.type_ids:
+                reach = W._Reach(reg.workflows[tid])
+                rf, rv = reg.routing_fact(tid)
+                fs = reg.facts(tid)
+                for combo in itertools.product([True, False], repeat=len(fs)):
+                    v = dict(zip(fs, combo))
+                    o = G.rules_outcome(reg, tid, v)
+                    _, needs = reach.reach({**v, rf: rv})
+                    want = {d for d, n in needs.items() if n == "yes"}
+                    got = {d for d, e in o["documents"].items() if e["state"] == "request"}
+                    self.assertEqual(got, want, (r, tid, v))
 
     def test_writer_bundle_has_no_forbidden_content(self):
         for r in REGIMES:

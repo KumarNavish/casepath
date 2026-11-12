@@ -6,45 +6,52 @@
       "vouchers_unobtainable"
     ]
   },
-  "design_sha256": "7adac820300d5cda21203fc1dcad22fb61487975687b9beb8b0dcf7e0f590d0b",
+  "design_sha256": "23de7b113e73a4ed87cf3035e92137d410abc1f8d127a61ce0d71bc3e3f75536",
   "documents": {
     "bicycle_voucher": {
       "request": false,
-      "state": "not_needed"
+      "state": "hold",
+      "waits_for": [
+        "vouchers_unobtainable"
+      ]
     },
     "insurance_policy": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "lock_change_invoice": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "notification_record": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     },
     "original_vouchers": {
       "request": false,
-      "state": "not_needed"
+      "state": "hold",
+      "waits_for": [
+        "vouchers_unobtainable"
+      ]
     },
     "police_consent": {
       "request": false,
       "state": "not_needed"
     },
     "police_report": {
+      "optional": true,
       "request": false,
       "state": "not_needed"
     },
     "stolen_items_list": {
-      "request": false,
-      "state": "not_needed"
+      "request": true,
+      "state": "request"
     }
   },
   "evaluator": {
     "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
     "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
-    "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+    "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
     "workflow_sha256": {
       "simple_theft_away": "7cb0ac6471504aa09486bee74f21a0bc04c8f658bab0d6c39394694733023c5e",
       "theft_at_home": "89aa189b4be61787940925adc92dd71006451e832ba2a5c7d37258022481533b"
@@ -55,7 +62,7 @@
     "bicycle": true,
     "burglary_or_robbery": true,
     "claim_type": "theft_at_home",
-    "household_perpetrator": true,
+    "household_perpetrator": false,
     "imminent_danger": false,
     "lock_change": true,
     "measures_pending": false,
@@ -64,11 +71,14 @@
   },
   "file_id": "the_b68c834f7972",
   "level": 50,
-  "outcome": "h_stop_excluded",
+  "outcome": "intake_complete",
   "path": [
     "h_event",
     "h_exclusion",
-    "h_stop_excluded"
+    "h_notify",
+    "h_police",
+    "h_instruction_check",
+    "h_loss"
   ],
   "presumed": {
     "imminent_danger": false,
@@ -80,21 +90,19 @@
     "agrees": true,
     "differences": [],
     "rules_stops": {
-      "state": "stopped",
-      "stops": [
-        "h_stop_excluded"
-      ]
+      "state": "none",
+      "stops": []
     }
   },
   "schema": "study4.reference/1",
   "stop": {
-    "outcome": "h_stop_excluded",
-    "state": "stopped",
-    "step": "h_stop_excluded"
+    "state": "none"
   },
   "type": "theft_at_home",
   "unresolved": [
     "vouchers_unobtainable"
   ],
-  "waiting_for": []
+  "waiting_for": [
+    "vouchers_unobtainable"
+  ]
 }

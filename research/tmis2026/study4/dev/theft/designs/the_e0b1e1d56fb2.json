@@ -1,14 +1,19 @@
 {
+  "always_stated_not_mentioned": [],
   "attachments": [
     {
       "document": "notification_record",
+      "missing": "that and when CSS was notified of the theft",
       "optional": false,
-      "supplied": false
+      "sufficient": false,
+      "supplied": true
     },
     {
       "document": "insurance_policy",
+      "missing": "theft (Ziff. 23.3) among the insured perils",
       "optional": false,
-      "supplied": false
+      "sufficient": false,
+      "supplied": true
     },
     {
       "document": "police_report",
@@ -27,8 +32,10 @@
     },
     {
       "document": "original_vouchers",
+      "missing": null,
       "optional": false,
-      "supplied": false
+      "sufficient": true,
+      "supplied": true
     },
     {
       "document": "bicycle_voucher",
@@ -47,7 +54,7 @@
   "facts": {
     "bicycle": "not_mentioned",
     "burglary_or_robbery": "stated_false",
-    "household_perpetrator": "stated_true",
+    "household_perpetrator": "stated_false",
     "imminent_danger": "stated_true",
     "lock_change": "stated_true",
     "measures_pending": "stated_true",
@@ -59,9 +66,10 @@
   "index": 12,
   "language": "de",
   "level": 0,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",
@@ -72,18 +80,18 @@
       "monthly": 1730,
       "small": 975
     },
-    "canton": "BE",
+    "canton": "GL",
     "claimant": "Karin Bieri",
-    "date_main_event": "2026-05-09",
-    "date_written": "2026-07-06",
+    "date_main_event": "2026-08-06",
+    "date_written": "2026-08-31",
     "earlier_dates": [
-      "2022-07-01",
-      "2025-06-06",
-      "2025-06-30"
+      "2022-09-28",
+      "2025-09-27",
+      "2026-05-10"
     ],
     "other_party_organisation": "Kirschbaum Handels AG",
     "other_party_person": "Monika Tanner",
-    "place": "Thun",
+    "place": "Glarus",
     "street": "Seestrasse 106",
     "third_person": "Urs Rüegg",
     "time_spans": [],

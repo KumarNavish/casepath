@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "away_cover_missing"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
@@ -40,47 +46,48 @@
   "defining_event": "theft_away",
   "denied_event": true,
   "facts": {
-    "away_cover_missing": "stated_false",
+    "away_cover_missing": "not_mentioned",
     "bicycle": "not_mentioned",
-    "imminent_danger": "stated_false",
+    "imminent_danger": "not_mentioned",
     "measures_pending": "stated_false",
     "theft_away": "stated_false",
     "traces_changed": "not_mentioned",
-    "vouchers_unobtainable": "not_mentioned"
+    "vouchers_unobtainable": "stated_false"
   },
   "file_id": "the_86e739ec9184",
   "index": 4,
   "language": "de",
   "level": 0,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": true,
   "schema": "study4.design/1",
   "seed": 20261112,
   "story": {
     "amounts_chf": {
-      "large": 7250,
-      "monthly": 960,
-      "small": 605
+      "large": 2500,
+      "monthly": 1690,
+      "small": 1010
     },
-    "canton": "BL",
-    "claimant": "Simon Wyss",
-    "date_main_event": "2026-07-13",
-    "date_written": "2026-08-19",
+    "canton": "SG",
+    "claimant": "Marco Steiner",
+    "date_main_event": "2026-08-23",
+    "date_written": "2026-09-24",
     "earlier_dates": [
-      "2023-02-20",
-      "2023-11-25",
-      "2025-05-02"
+      "2023-07-19",
+      "2024-07-10",
+      "2026-05-31"
     ],
-    "other_party_organisation": "Sonnbühl Genossenschaft",
-    "other_party_person": "Marco Bieri",
-    "place": "Liestal",
-    "street": "Brunnenrain 25",
-    "third_person": "Marco Walsh",
+    "other_party_organisation": "Sonnbühl Verwaltungs GmbH",
+    "other_party_person": "Rahel Fankhauser",
+    "place": "St. Gallen",
+    "street": "Bergstrasse 108",
+    "third_person": "Monika Widmer",
     "time_spans": [],
-    "topic_order_seed": 1259705675
+    "topic_order_seed": 4483643
   },
   "type": "simple_theft_away",
   "types_drawn_from": [

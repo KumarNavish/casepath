@@ -1,4 +1,14 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "more_than_180_days"
+    },
+    {
+      "drawn": "stated_true",
+      "fact": "notice_period_ended"
+    }
+  ],
   "attachments": [
     {
       "document": "termination_letter",
@@ -45,12 +55,12 @@
   "defining_event": "employer_gave_notice",
   "denied_event": true,
   "facts": {
-    "action_in_time": "not_mentioned",
+    "action_in_time": "stated_false",
     "agreed_to_continue": "not_mentioned",
-    "employee_representative": "not_mentioned",
+    "employee_representative": "stated_false",
     "employer_gave_notice": "stated_false",
-    "more_than_180_days": "stated_false",
-    "notice_period_ended": "stated_false",
+    "more_than_180_days": "not_mentioned",
+    "notice_period_ended": "not_mentioned",
     "objection_submitted": "not_mentioned",
     "reasons_requested": "not_mentioned",
     "retaliation_for_claims": "stated_false"
@@ -59,48 +69,49 @@
   "index": 4,
   "language": "en",
   "level": 25,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "dismissal",
-  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
   "rules_version": "2026-11-12.5",
   "scan_noise": false,
   "schema": "study4.design/1",
   "seed": 20261112,
   "story": {
     "amounts_chf": {
-      "large": 2850,
-      "monthly": 1830,
-      "small": 295
+      "large": 4800,
+      "monthly": 3020,
+      "small": 1280
     },
-    "canton": "BL",
-    "claimant": "Julia Turner",
-    "date_main_event": "2026-08-02",
-    "date_written": "2026-08-29",
+    "canton": "BE",
+    "claimant": "Leo Lüthi",
+    "date_main_event": "2026-07-21",
+    "date_written": "2026-07-29",
     "earlier_dates": [
-      "2024-07-30",
-      "2026-01-16",
-      "2026-06-06"
+      "2023-09-05",
+      "2025-02-02",
+      "2026-01-07"
     ],
-    "other_party_organisation": "Kirschbaum Holdings Ltd",
-    "other_party_person": "Sam Lehmann",
-    "place": "Liestal",
-    "street": "Feldstrasse 41",
-    "third_person": "Leo Egli",
+    "other_party_organisation": "Erlenhof Services Ltd",
+    "other_party_person": "Noah Palmer",
+    "place": "Biel/Bienne",
+    "street": "Lindenweg 49",
+    "third_person": "Emma Wälti",
     "time_spans": [
       {
-        "date_if_span_has_run": "2025-11-13",
-        "date_if_span_not_run": "2026-06-18",
+        "date_if_span_has_run": "2025-10-13",
+        "date_if_span_not_run": "2026-05-18",
         "days": 180,
         "fact": "more_than_180_days"
       },
       {
-        "date_if_span_has_run": "2025-11-13",
-        "date_if_span_not_run": "2026-06-18",
+        "date_if_span_has_run": "2025-10-13",
+        "date_if_span_not_run": "2026-05-18",
         "days": 180,
         "fact": "action_in_time"
       }
     ],
-    "topic_order_seed": 1707460362
+    "topic_order_seed": 2117664285
   },
   "type": "wrongful_termination",
   "types_drawn_from": [

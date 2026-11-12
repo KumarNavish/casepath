@@ -123,6 +123,21 @@ def engine_reference(W, regime, design):
             "path": [p["step"] for p in ev["path"]]}
 
 
+def unreached_check(W, regime, design, ref):
+    """An always_stated fact left unmentioned because no step using it can be reached: confirm with the product's
+    evaluator that stating it as drawn changes no document's state and not the stop."""
+    alt = dict(design, facts=dict(design["facts"]))
+    for x in design["always_stated_not_mentioned"]:
+        alt["facts"][x["fact"]] = x["drawn"]
+    other = engine_reference(W, regime, alt)
+    diffs = [{"document": k, "not_mentioned": v["state"], "as_drawn": other["documents"][k]["state"]}
+             for k, v in ref["documents"].items()
+             if (v["state"], v.get("waits_for")) != (other["documents"][k]["state"], other["documents"][k].get("waits_for"))]
+    if ref["stop"] != other["stop"]:
+        diffs.append({"stop": True, "not_mentioned": ref["stop"], "as_drawn": other["stop"]})
+    return {"facts": design["always_stated_not_mentioned"], "same": not diffs, "differences": diffs}
+
+
 def rules_check(regime, design, ref):
     tid = design["type"]
     supplied = {a["document"]: a["sufficient"] for a in design["attachments"] if a["supplied"]}
@@ -166,6 +181,8 @@ def main(argv=None):
     for d in designs:
         ref = engine_reference(W, regime, d)
         ref["rules_check"] = rules_check(regime, d, ref)
+        if d.get("always_stated_not_mentioned"):
+            ref["unreached_always_stated_check"] = unreached_check(W, regime, d, ref)
         rec = {"schema": "study4.reference/1", "file_id": d["file_id"], "regime": a.regime, "type": d["type"],
                "level": d["level"], "design_sha256": G.sha256_bytes(G.canon(d).encode("utf-8")),
                "evaluator": evaluator, **ref}
@@ -185,6 +202,8 @@ def main(argv=None):
 
 def marginals(regime, refs):
     m = {"documents": defaultdict(Counter), "stops": Counter(), "rules_disagreements": [],
+         "always_stated_not_mentioned": Counter(), "unreached_always_stated_changes": [],
+         "files_without_request": Counter(),
          "requests_per_file": Counter(), "holds_per_file": Counter(), "denied": Counter(), "open_by_fact": Counter()}
     for d, r in refs:
         for did, e in r["documents"].items():
@@ -197,6 +216,14 @@ def marginals(regime, refs):
         m["denied"][str(d["denied_event"])] += 1
         for f in d["open_facts"]:
             m["open_by_fact"][f"{d['type']}.{f}"] += 1
+        u = r.get("unreached_always_stated_check")
+        if u:
+            for x in u["facts"]:
+                m["always_stated_not_mentioned"][f"{d['type']}.{x['fact']}"] += 1
+            if not u["same"]:
+                m["unreached_always_stated_changes"].append({"file_id": d["file_id"], **u})
+        if not sum(e["request"] for e in r["documents"].values()):
+            m["files_without_request"][d["type"]] += 1
         if not r["rules_check"]["agrees"]:
             m["rules_disagreements"].append({"file_id": d["file_id"], **r["rules_check"]})
     for tid in regime.type_ids:
@@ -212,6 +239,9 @@ def print_marginals(m):
     print("stops: " + ", ".join(f"{k} {v}" for k, v in m["stops"].items()))
     print("requests per file: " + str(dict(sorted(m["requests_per_file"].items(), key=lambda x: int(x[0])))))
     print("holds per file: " + str(dict(sorted(m["holds_per_file"].items(), key=lambda x: int(x[0])))))
+    print("always_stated facts left unmentioned (step unreachable): " + str(m["always_stated_not_mentioned"])
+          + f"; files where stating them as drawn would change a state: {len(m['unreached_always_stated_changes'])}")
+    print("files without any request: " + str(m["files_without_request"]))
     print(f"engine vs rules.json disagreements: {len(m['rules_disagreements'])}")
     for x in m["rules_disagreements"][:20]:
         print("  ", x["file_id"], x["differences"])

@@ -1,5 +1,5 @@
 {
-  "constraint_adjustments": 5,
+  "constraint_adjustments": 12,
   "denied_per_level": {
     "0": 2,
     "10": 2,
@@ -144,8 +144,9 @@
       "stated_true": 20
     },
     "immediate_dismissal.fixed_term": {
+      "not_mentioned": 2,
       "open": 2,
-      "stated_false": 7,
+      "stated_false": 5,
       "stated_true": 13
     },
     "immediate_dismissal.incapacity_cause": {
@@ -155,15 +156,15 @@
       "stated_true": 6
     },
     "immediate_dismissal.notice_period_varied": {
-      "not_mentioned": 11,
+      "not_mentioned": 10,
       "open": 1,
-      "stated_false": 3,
+      "stated_false": 4,
       "stated_true": 7
     },
     "immediate_dismissal.other_earnings": {
-      "not_mentioned": 10,
+      "not_mentioned": 9,
       "open": 3,
-      "stated_false": 1,
+      "stated_false": 2,
       "stated_true": 8
     },
     "immediate_dismissal.reasons_requested": {
@@ -188,18 +189,19 @@
       "stated_true": 6
     },
     "protected_period_notice.notice_before_protected_period": {
+      "not_mentioned": 9,
       "open": 1,
-      "stated_false": 16,
-      "stated_true": 5
+      "stated_false": 9,
+      "stated_true": 3
     },
     "protected_period_notice.notice_during_probation": {
-      "not_mentioned": 14,
-      "stated_false": 6,
+      "not_mentioned": 15,
+      "stated_false": 5,
       "stated_true": 2
     },
     "protected_period_notice.notice_period_varied": {
-      "not_mentioned": 6,
-      "stated_false": 5,
+      "not_mentioned": 5,
+      "stated_false": 6,
       "stated_true": 11
     },
     "protected_period_notice.pregnancy_or_birth": {
@@ -214,8 +216,8 @@
       "stated_true": 8
     },
     "wrongful_termination.action_in_time": {
-      "not_mentioned": 10,
-      "stated_false": 2,
+      "not_mentioned": 9,
+      "stated_false": 3,
       "stated_true": 4
     },
     "wrongful_termination.agreed_to_continue": {
@@ -224,8 +226,8 @@
       "stated_false": 4
     },
     "wrongful_termination.employee_representative": {
-      "not_mentioned": 5,
-      "stated_false": 5,
+      "not_mentioned": 4,
+      "stated_false": 6,
       "stated_true": 6
     },
     "wrongful_termination.employer_gave_notice": {
@@ -233,17 +235,19 @@
       "stated_true": 14
     },
     "wrongful_termination.more_than_180_days": {
-      "stated_false": 11,
+      "not_mentioned": 2,
+      "stated_false": 9,
       "stated_true": 5
     },
     "wrongful_termination.notice_period_ended": {
-      "stated_false": 8,
+      "not_mentioned": 2,
+      "stated_false": 6,
       "stated_true": 8
     },
     "wrongful_termination.objection_submitted": {
-      "not_mentioned": 8,
+      "not_mentioned": 9,
       "open": 2,
-      "stated_false": 3,
+      "stated_false": 2,
       "stated_true": 3
     },
     "wrongful_termination.reasons_requested": {

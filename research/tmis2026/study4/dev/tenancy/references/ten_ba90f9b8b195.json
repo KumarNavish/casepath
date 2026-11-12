@@ -1,12 +1,13 @@
 {
   "deferral": {
-    "completions": 2,
+    "completions": 4,
     "mode": "exact",
     "open_facts": [
+      "cost_or_services_reason",
       "increase_applied"
     ]
   },
-  "design_sha256": "76e9f69c650398b5ea5bde010cfc56527e9e217b71eda3c1c7b73d73bd86915a",
+  "design_sha256": "acfcc4ea7ac1f32c1a1a9f0754afe0239c15a404aa33d03c05162e6e9e064e59",
   "documents": {
     "cost_breakdown": {
       "request": false,
@@ -41,7 +42,7 @@
   "evaluator": {
     "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
     "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
-    "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+    "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
     "workflow_sha256": {
       "defect_mold_heating": "13f642d14588ae3608ace7f78e125a94327cf7617f947a37042a9a0ea3e5dddb",
       "lease_termination_dispute": "a8518ecb78d3d5343e791c222cef7590dd0edf68cb807387ae6e1b7da51f00dd",
@@ -50,7 +51,6 @@
     "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
   },
   "facts_given": {
-    "cost_or_services_reason": false,
     "dispute_family": "rent_increase_dispute",
     "graduated_rent": true,
     "index_clause": false,
@@ -88,7 +88,18 @@
     ]
   },
   "type": "rent_increase_dispute",
+  "unreached_always_stated_check": {
+    "differences": [],
+    "facts": [
+      {
+        "drawn": "stated_false",
+        "fact": "cost_or_services_reason"
+      }
+    ],
+    "same": true
+  },
   "unresolved": [
+    "cost_or_services_reason",
     "increase_applied"
   ],
   "waiting_for": [

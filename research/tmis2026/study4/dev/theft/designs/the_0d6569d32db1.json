@@ -1,19 +1,31 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "burglary_or_robbery"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
+      "missing": null,
       "optional": false,
-      "supplied": false
+      "sufficient": true,
+      "supplied": true
     },
     {
       "document": "insurance_policy",
+      "missing": "the insured location",
       "optional": false,
-      "supplied": false
+      "sufficient": false,
+      "supplied": true
     },
     {
       "document": "police_report",
+      "missing": "the police station",
       "optional": true,
-      "supplied": false
+      "sufficient": false,
+      "supplied": true
     },
     {
       "document": "police_consent",
@@ -27,8 +39,10 @@
     },
     {
       "document": "original_vouchers",
+      "missing": null,
       "optional": false,
-      "supplied": false
+      "sufficient": true,
+      "supplied": true
     },
     {
       "document": "bicycle_voucher",
@@ -46,8 +60,8 @@
   "denied_event": false,
   "facts": {
     "bicycle": "not_mentioned",
-    "burglary_or_robbery": "stated_false",
-    "household_perpetrator": "stated_true",
+    "burglary_or_robbery": "not_mentioned",
+    "household_perpetrator": "stated_false",
     "imminent_danger": "stated_true",
     "lock_change": "stated_false",
     "measures_pending": "not_mentioned",
@@ -59,35 +73,36 @@
   "index": 6,
   "language": "en",
   "level": 10,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",
   "seed": 20261112,
   "story": {
     "amounts_chf": {
-      "large": 8650,
-      "monthly": 2370,
-      "small": 890
+      "large": 7750,
+      "monthly": 3270,
+      "small": 1375
     },
-    "canton": "ZH",
-    "claimant": "Anna Lüthi",
-    "date_main_event": "2026-07-23",
-    "date_written": "2026-08-13",
+    "canton": "NW",
+    "claimant": "Tara Steiner",
+    "date_main_event": "2026-02-10",
+    "date_written": "2026-04-07",
     "earlier_dates": [
-      "2023-05-14",
-      "2024-04-11",
-      "2025-10-14"
+      "2022-11-25",
+      "2024-06-30",
+      "2025-03-09"
     ],
-    "other_party_organisation": "Moosacker Services Ltd",
-    "other_party_person": "Isla Graf",
-    "place": "Uster",
-    "street": "Rosenweg 52",
-    "third_person": "Ben Zimmermann",
+    "other_party_organisation": "Seematt Services Ltd",
+    "other_party_person": "Owen Gerber",
+    "place": "Stans",
+    "street": "Mühleweg 78",
+    "third_person": "Maya Wyss",
     "time_spans": [],
-    "topic_order_seed": 2143781268
+    "topic_order_seed": 53430889
   },
   "type": "theft_at_home",
   "types_drawn_from": [

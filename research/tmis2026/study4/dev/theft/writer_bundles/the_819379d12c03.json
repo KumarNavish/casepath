@@ -1,8 +1,26 @@
 {
   "attachments": [
     {
-      "document_title": "The insurance policy (Police)",
+      "document_title": "Record of the claim notification: the CSS form 'Schadenanzeige Hausrat / Gebäude', or CSS's record of an online, written or oral notification",
       "label": "A1",
+      "leave_out": null,
+      "must_not_show": [
+        "anything that would answer Q3",
+        "anything that would answer Q6",
+        "anything that contradicts the designed answer to Q1",
+        "anything that contradicts the designed answer to Q2",
+        "anything that contradicts the designed answer to Q4",
+        "anything that contradicts the designed answer to Q5",
+        "anything that contradicts the designed answer to Q7"
+      ],
+      "must_show": [
+        "that and when CSS was notified of the theft"
+      ],
+      "show_only_if_it_applies": []
+    },
+    {
+      "document_title": "The insurance policy (Police)",
+      "label": "A2",
       "leave_out": "the insured location",
       "must_not_show": [
         "anything that would answer Q3",
@@ -57,8 +75,8 @@
       "question": "Is a bicycle among the stolen or damaged items?"
     },
     {
-      "designed_answer": "yes",
-      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "designed_answer": "no",
+      "instruction": "Make it clear that the answer to this question is no: say so once, or tell something that unmistakably excludes it (style sheet, message item 8).",
       "label": "Q5",
       "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?"
     },
@@ -104,6 +122,7 @@
     "Q5",
     "Q7",
     "Q1",
+    "mention of attachment A2",
     "mention of attachment A1"
   ]
 }

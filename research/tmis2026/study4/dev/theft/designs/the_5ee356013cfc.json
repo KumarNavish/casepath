@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "away_cover_missing"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
@@ -40,10 +46,10 @@
   "defining_event": "theft_away",
   "denied_event": true,
   "facts": {
-    "away_cover_missing": "stated_false",
-    "bicycle": "not_mentioned",
-    "imminent_danger": "not_mentioned",
-    "measures_pending": "stated_false",
+    "away_cover_missing": "not_mentioned",
+    "bicycle": "stated_false",
+    "imminent_danger": "stated_false",
+    "measures_pending": "not_mentioned",
     "theft_away": "stated_false",
     "traces_changed": "not_mentioned",
     "vouchers_unobtainable": "stated_false"
@@ -52,35 +58,36 @@
   "index": 14,
   "language": "de",
   "level": 25,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",
   "seed": 20261112,
   "story": {
     "amounts_chf": {
-      "large": 3850,
-      "monthly": 2400,
-      "small": 1045
+      "large": 8150,
+      "monthly": 1240,
+      "small": 985
     },
-    "canton": "BL",
-    "claimant": "Esther Lüthi",
-    "date_main_event": "2026-08-14",
-    "date_written": "2026-10-11",
+    "canton": "AR",
+    "claimant": "Walter Bachmann",
+    "date_main_event": "2026-07-10",
+    "date_written": "2026-08-29",
     "earlier_dates": [
-      "2022-07-12",
-      "2023-05-01",
-      "2024-08-18"
+      "2023-03-27",
+      "2023-11-16",
+      "2024-11-27"
     ],
-    "other_party_organisation": "Steinbruch Dienste GmbH",
-    "other_party_person": "Sabine Tanner",
-    "place": "Allschwil",
-    "street": "Mattenweg 75",
-    "third_person": "Lukas Bachmann",
+    "other_party_organisation": "Erlenhof Immobilien AG",
+    "other_party_person": "Corinne Bucher",
+    "place": "Herisau",
+    "street": "Talstrasse 93",
+    "third_person": "Thomas Lüthi",
     "time_spans": [],
-    "topic_order_seed": 726698138
+    "topic_order_seed": 2062421405
   },
   "type": "simple_theft_away",
   "types_drawn_from": [

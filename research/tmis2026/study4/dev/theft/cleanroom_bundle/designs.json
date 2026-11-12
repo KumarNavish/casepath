@@ -44,7 +44,7 @@
       ],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
         "imminent_danger": "denied",
         "lock_change": "denied",
@@ -76,11 +76,28 @@
       "type": "simple_theft_away"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "sufficient",
+          "document": "notification_record"
+        },
+        {
+          "as_designed": "insufficient",
+          "document": "insurance_policy"
+        },
+        {
+          "as_designed": "insufficient",
+          "document": "police_report"
+        },
+        {
+          "as_designed": "sufficient",
+          "document": "original_vouchers"
+        }
+      ],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "denied",
-        "household_perpetrator": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "denied",
         "imminent_danger": "stated_true",
         "lock_change": "denied",
         "measures_pending": "not_mentioned",
@@ -160,7 +177,7 @@
       ],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
         "imminent_danger": "not_mentioned",
         "lock_change": "denied",
@@ -196,15 +213,15 @@
     {
       "attachments": [],
       "facts": {
-        "bicycle": "not_mentioned",
-        "burglary_or_robbery": "denied",
+        "bicycle": "denied",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
-        "imminent_danger": "not_mentioned",
-        "lock_change": "denied",
+        "imminent_danger": "denied",
+        "lock_change": "not_mentioned",
         "measures_pending": "not_mentioned",
         "theft_at_home": "denied",
         "traces_changed": "not_mentioned",
-        "vouchers_unobtainable": "denied"
+        "vouchers_unobtainable": "not_mentioned"
       },
       "file_id": "the_1dfba8facf5e",
       "type": "theft_at_home"
@@ -229,7 +246,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "stated_true",
         "imminent_danger": "not_mentioned",
         "lock_change": "not_mentioned",
@@ -269,9 +286,14 @@
       "type": "simple_theft_away"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "sufficient",
+          "document": "police_report"
+        }
+      ],
       "facts": {
-        "away_cover_missing": "stated_true",
+        "away_cover_missing": "denied",
         "bicycle": "stated_true",
         "imminent_danger": "not_mentioned",
         "measures_pending": "stated_true",
@@ -346,7 +368,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "stated_true",
         "imminent_danger": "denied",
         "lock_change": "raised_and_left_open",
@@ -359,11 +381,16 @@
       "type": "theft_at_home"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "insufficient",
+          "document": "lock_change_invoice"
+        }
+      ],
       "facts": {
         "bicycle": "stated_true",
         "burglary_or_robbery": "stated_true",
-        "household_perpetrator": "stated_true",
+        "household_perpetrator": "denied",
         "imminent_danger": "not_mentioned",
         "lock_change": "stated_true",
         "measures_pending": "denied",
@@ -399,7 +426,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "stated_true",
         "imminent_danger": "denied",
         "lock_change": "not_mentioned",
@@ -432,7 +459,7 @@
       ],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
         "imminent_danger": "not_mentioned",
         "lock_change": "not_mentioned",
@@ -457,7 +484,7 @@
       ],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
         "imminent_danger": "stated_true",
         "lock_change": "not_mentioned",
@@ -472,10 +499,10 @@
     {
       "attachments": [],
       "facts": {
-        "away_cover_missing": "denied",
-        "bicycle": "not_mentioned",
-        "imminent_danger": "not_mentioned",
-        "measures_pending": "denied",
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "denied",
+        "imminent_danger": "denied",
+        "measures_pending": "not_mentioned",
         "theft_away": "denied",
         "traces_changed": "not_mentioned",
         "vouchers_unobtainable": "denied"
@@ -487,7 +514,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "stated_true",
         "imminent_danger": "stated_true",
         "lock_change": "not_mentioned",
@@ -502,11 +529,11 @@
     {
       "attachments": [],
       "facts": {
-        "bicycle": "denied",
-        "burglary_or_robbery": "denied",
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "denied",
         "imminent_danger": "not_mentioned",
-        "lock_change": "not_mentioned",
+        "lock_change": "denied",
         "measures_pending": "not_mentioned",
         "theft_at_home": "denied",
         "traces_changed": "denied",
@@ -548,9 +575,9 @@
       "attachments": [],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "denied",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
-        "imminent_danger": "not_mentioned",
+        "imminent_danger": "denied",
         "lock_change": "not_mentioned",
         "measures_pending": "not_mentioned",
         "theft_at_home": "denied",
@@ -607,12 +634,16 @@
     {
       "attachments": [
         {
+          "as_designed": "sufficient",
+          "document": "notification_record"
+        },
+        {
           "as_designed": "insufficient",
           "document": "insurance_policy"
         }
       ],
       "facts": {
-        "away_cover_missing": "stated_true",
+        "away_cover_missing": "denied",
         "bicycle": "denied",
         "imminent_danger": "denied",
         "measures_pending": "not_mentioned",
@@ -626,15 +657,15 @@
     {
       "attachments": [],
       "facts": {
-        "bicycle": "denied",
-        "burglary_or_robbery": "denied",
+        "bicycle": "not_mentioned",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
-        "imminent_danger": "not_mentioned",
+        "imminent_danger": "denied",
         "lock_change": "not_mentioned",
-        "measures_pending": "denied",
+        "measures_pending": "not_mentioned",
         "theft_at_home": "denied",
-        "traces_changed": "not_mentioned",
-        "vouchers_unobtainable": "not_mentioned"
+        "traces_changed": "denied",
+        "vouchers_unobtainable": "denied"
       },
       "file_id": "the_86b4e22a87e7",
       "type": "theft_at_home"
@@ -642,13 +673,13 @@
     {
       "attachments": [],
       "facts": {
-        "away_cover_missing": "denied",
+        "away_cover_missing": "not_mentioned",
         "bicycle": "not_mentioned",
-        "imminent_danger": "denied",
+        "imminent_danger": "not_mentioned",
         "measures_pending": "denied",
         "theft_away": "denied",
         "traces_changed": "not_mentioned",
-        "vouchers_unobtainable": "not_mentioned"
+        "vouchers_unobtainable": "denied"
       },
       "file_id": "the_86e739ec9184",
       "type": "simple_theft_away"
@@ -743,11 +774,16 @@
       "type": "simple_theft_away"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "sufficient",
+          "document": "stolen_items_list"
+        }
+      ],
       "facts": {
         "bicycle": "not_mentioned",
         "burglary_or_robbery": "stated_true",
-        "household_perpetrator": "stated_true",
+        "household_perpetrator": "denied",
         "imminent_danger": "denied",
         "lock_change": "stated_true",
         "measures_pending": "stated_true",
@@ -761,12 +797,12 @@
     {
       "attachments": [],
       "facts": {
-        "away_cover_missing": "denied",
-        "bicycle": "denied",
-        "imminent_danger": "not_mentioned",
+        "away_cover_missing": "not_mentioned",
+        "bicycle": "not_mentioned",
+        "imminent_danger": "denied",
         "measures_pending": "not_mentioned",
         "theft_away": "denied",
-        "traces_changed": "not_mentioned",
+        "traces_changed": "denied",
         "vouchers_unobtainable": "not_mentioned"
       },
       "file_id": "the_a529fff2269d",
@@ -814,7 +850,7 @@
       "facts": {
         "bicycle": "stated_true",
         "burglary_or_robbery": "stated_true",
-        "household_perpetrator": "stated_true",
+        "household_perpetrator": "denied",
         "imminent_danger": "not_mentioned",
         "lock_change": "stated_true",
         "measures_pending": "not_mentioned",
@@ -829,7 +865,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "denied",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "stated_true",
         "imminent_danger": "not_mentioned",
         "lock_change": "not_mentioned",
@@ -908,23 +944,36 @@
     {
       "attachments": [],
       "facts": {
-        "away_cover_missing": "denied",
+        "away_cover_missing": "not_mentioned",
         "bicycle": "not_mentioned",
         "imminent_danger": "not_mentioned",
         "measures_pending": "not_mentioned",
         "theft_away": "denied",
-        "traces_changed": "denied",
+        "traces_changed": "not_mentioned",
         "vouchers_unobtainable": "not_mentioned"
       },
       "file_id": "the_c7620535798b",
       "type": "simple_theft_away"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "sufficient",
+          "document": "notification_record"
+        },
+        {
+          "as_designed": "sufficient",
+          "document": "insurance_policy"
+        },
+        {
+          "as_designed": "sufficient",
+          "document": "stolen_items_list"
+        }
+      ],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "denied",
-        "household_perpetrator": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
+        "household_perpetrator": "denied",
         "imminent_danger": "denied",
         "lock_change": "not_mentioned",
         "measures_pending": "not_mentioned",
@@ -952,7 +1001,7 @@
       ],
       "facts": {
         "bicycle": "not_mentioned",
-        "burglary_or_robbery": "stated_true",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "denied",
         "imminent_danger": "not_mentioned",
         "lock_change": "denied",
@@ -1019,7 +1068,7 @@
     {
       "attachments": [],
       "facts": {
-        "away_cover_missing": "stated_true",
+        "away_cover_missing": "denied",
         "bicycle": "denied",
         "imminent_danger": "denied",
         "measures_pending": "stated_true",
@@ -1069,11 +1118,24 @@
       "type": "simple_theft_away"
     },
     {
-      "attachments": [],
+      "attachments": [
+        {
+          "as_designed": "insufficient",
+          "document": "notification_record"
+        },
+        {
+          "as_designed": "insufficient",
+          "document": "insurance_policy"
+        },
+        {
+          "as_designed": "sufficient",
+          "document": "original_vouchers"
+        }
+      ],
       "facts": {
         "bicycle": "not_mentioned",
         "burglary_or_robbery": "denied",
-        "household_perpetrator": "stated_true",
+        "household_perpetrator": "denied",
         "imminent_danger": "stated_true",
         "lock_change": "stated_true",
         "measures_pending": "stated_true",
@@ -1115,7 +1177,7 @@
       "attachments": [],
       "facts": {
         "bicycle": "stated_true",
-        "burglary_or_robbery": "denied",
+        "burglary_or_robbery": "not_mentioned",
         "household_perpetrator": "not_mentioned",
         "imminent_danger": "stated_true",
         "lock_change": "not_mentioned",

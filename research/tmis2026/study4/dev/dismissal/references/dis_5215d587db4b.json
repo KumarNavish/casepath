@@ -1,13 +1,14 @@
 {
   "deferral": {
-    "completions": 4,
+    "completions": 8,
     "mode": "exact",
     "open_facts": [
-      "action_in_time",
+      "more_than_180_days",
+      "notice_period_ended",
       "objection_submitted"
     ]
   },
-  "design_sha256": "0c034f24b7f22779c34200953f8738db57a8ef1ed20558caddb2446af7c3922b",
+  "design_sha256": "8af3bd5741776d8cb5ec56366c57cd04b3e6a20426d54b2d944344fc48bf86c4",
   "documents": {
     "claims_correspondence": {
       "request": false,
@@ -45,7 +46,7 @@
   "evaluator": {
     "convention": "intake (SPEC 6a): unmentioned branch fact -> its presumption; open -> unresolved; denied defining event -> stop",
     "product_commit": "6a72159cdb35a01059d0549b1d437c0b3d5c20cb",
-    "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+    "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
     "workflow_sha256": {
       "immediate_dismissal": "5d1be3813ce84534f3328318efa4cbaffc2306cee4b82640d076a8812965be63",
       "protected_period_notice": "a772d1e0674b236c5cc6da0877319dbff83ebbfe24892dfa5f6f889f9046a276",
@@ -54,12 +55,11 @@
     "workflows_py_sha256": "502f2039cf1b5169ce95a34e6655c1f5c42adf9c04d51f8cdf0fde99163fcbfc"
   },
   "facts_given": {
+    "action_in_time": false,
     "agreed_to_continue": false,
     "dispute_family": "wrongful_termination",
     "employee_representative": false,
     "employer_gave_notice": false,
-    "more_than_180_days": false,
-    "notice_period_ended": false,
     "reasons_requested": false,
     "retaliation_for_claims": false
   },
@@ -72,7 +72,6 @@
   ],
   "presumed": {
     "agreed_to_continue": false,
-    "employee_representative": false,
     "reasons_requested": false
   },
   "regime": "dismissal",
@@ -93,8 +92,23 @@
     "step": "b_stop_no_notice"
   },
   "type": "wrongful_termination",
+  "unreached_always_stated_check": {
+    "differences": [],
+    "facts": [
+      {
+        "drawn": "stated_false",
+        "fact": "more_than_180_days"
+      },
+      {
+        "drawn": "stated_true",
+        "fact": "notice_period_ended"
+      }
+    ],
+    "same": true
+  },
   "unresolved": [
-    "action_in_time",
+    "more_than_180_days",
+    "notice_period_ended",
     "objection_submitted"
   ],
   "waiting_for": []

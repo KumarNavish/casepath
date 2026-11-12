@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": {
+    "immediate_dismissal.fixed_term": 2,
+    "protected_period_notice.notice_before_protected_period": 9,
+    "wrongful_termination.more_than_180_days": 2,
+    "wrongful_termination.notice_period_ended": 2
+  },
   "denied": {
     "False": 52,
     "True": 8
@@ -135,6 +141,11 @@
       "request": 1
     }
   },
+  "files_without_request": {
+    "immediate_dismissal": 2,
+    "protected_period_notice": 4,
+    "wrongful_termination": 2
+  },
   "holds_per_file": {
     "0": 36,
     "1": 14,
@@ -177,5 +188,6 @@
     "wrongful_termination.pending:b_stop_no_objection,b_stop_time_limit": 2,
     "wrongful_termination.pending:b_stop_time_limit": 1,
     "wrongful_termination.stopped:b_stop_no_notice": 2
-  }
+  },
+  "unreached_always_stated_changes": []
 }

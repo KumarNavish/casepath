@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "fixed_term"
+    }
+  ],
   "attachments": [
     {
       "document": "termination_letter",
@@ -41,9 +47,9 @@
   "denied_event": true,
   "facts": {
     "dismissed_immediately": "stated_false",
-    "fixed_term": "stated_false",
+    "fixed_term": "not_mentioned",
     "incapacity_cause": "not_mentioned",
-    "notice_period_varied": "not_mentioned",
+    "notice_period_varied": "stated_false",
     "other_earnings": "stated_false",
     "reasons_requested": "stated_false"
   },
@@ -51,9 +57,10 @@
   "index": 12,
   "language": "de",
   "level": 0,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "dismissal",
-  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
   "rules_version": "2026-11-12.5",
   "scan_noise": false,
   "schema": "study4.design/1",
@@ -64,42 +71,42 @@
       "monthly": 2060,
       "small": 1450
     },
-    "canton": "LU",
-    "claimant": "Dominik Bachmann",
-    "date_main_event": "2026-03-13",
-    "date_written": "2026-04-13",
+    "canton": "BS",
+    "claimant": "Samuel Egli",
+    "date_main_event": "2026-03-17",
+    "date_written": "2026-05-15",
     "earlier_dates": [
-      "2023-10-20",
-      "2024-06-03",
-      "2025-04-11"
+      "2022-11-12",
+      "2024-06-07",
+      "2025-04-15"
     ],
-    "other_party_organisation": "Feldegg Dienste GmbH",
-    "other_party_person": "Samuel Egli",
-    "place": "Luzern",
+    "other_party_organisation": "Ahornweid Handels AG",
+    "other_party_person": "Martina Hughes",
+    "place": "Basel",
     "street": "Schulhausstrasse 123",
-    "third_person": "Gabriela Hughes",
+    "third_person": "Gabriela Bachmann",
     "time_spans": [
       {
-        "date_if_span_has_run": "2026-04-01",
-        "date_if_span_not_run": "2026-04-10",
+        "date_if_span_has_run": "2026-05-03",
+        "date_if_span_not_run": "2026-05-12",
         "days": 7,
         "fact": "notice_period_varied"
       },
       {
-        "date_if_span_has_run": "2026-02-23",
-        "date_if_span_not_run": "2026-04-01",
+        "date_if_span_has_run": "2026-03-27",
+        "date_if_span_not_run": "2026-05-03",
         "days": 30,
         "fact": "notice_period_varied"
       },
       {
-        "date_if_span_has_run": "2026-01-06",
-        "date_if_span_not_run": "2026-03-20",
+        "date_if_span_has_run": "2026-02-07",
+        "date_if_span_not_run": "2026-04-21",
         "days": 60,
         "fact": "notice_period_varied"
       },
       {
-        "date_if_span_has_run": "2025-11-19",
-        "date_if_span_not_run": "2026-03-08",
+        "date_if_span_has_run": "2025-12-21",
+        "date_if_span_not_run": "2026-04-09",
         "days": 90,
         "fact": "notice_period_varied"
       }

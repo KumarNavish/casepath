@@ -1,4 +1,8 @@
 {
+  "always_stated_not_mentioned": {
+    "simple_theft_away.away_cover_missing": 4,
+    "theft_at_home.burglary_or_robbery": 17
+  },
   "denied": {
     "False": 52,
     "True": 8
@@ -6,8 +10,8 @@
   "documents": {
     "simple_theft_away.bicycle_voucher": {
       "hold": 2,
-      "not_needed": 26,
-      "request": 2
+      "not_needed": 25,
+      "request": 3
     },
     "simple_theft_away.insurance_policy": {
       "hold": 2,
@@ -17,80 +21,91 @@
       "request": 15
     },
     "simple_theft_away.notification_record": {
-      "not_needed": 12,
+      "hold": 1,
+      "not_needed": 9,
       "present_insufficient": 3,
-      "present_sufficient": 2,
-      "request": 13
+      "present_sufficient": 3,
+      "request": 14
     },
     "simple_theft_away.original_vouchers": {
-      "not_needed": 21,
+      "not_needed": 19,
       "present_sufficient": 4,
-      "request": 5
+      "request": 7
     },
     "simple_theft_away.police_consent": {
-      "hold": 1,
-      "not_needed": 24,
+      "hold": 2,
+      "not_needed": 23,
       "present_sufficient": 1,
       "request": 4
     },
     "simple_theft_away.police_report": {
-      "not_needed": 25,
+      "not_needed": 24,
       "present_insufficient": 2,
-      "present_sufficient": 3
+      "present_sufficient": 4
     },
     "simple_theft_away.stolen_items_list": {
-      "not_needed": 12,
+      "hold": 1,
+      "not_needed": 9,
       "present_insufficient": 5,
       "present_sufficient": 3,
-      "request": 10
+      "request": 12
     },
     "theft_at_home.bicycle_voucher": {
-      "not_needed": 28,
+      "hold": 1,
+      "not_needed": 27,
       "request": 2
     },
     "theft_at_home.insurance_policy": {
-      "not_needed": 15,
-      "present_insufficient": 1,
-      "present_sufficient": 3,
-      "request": 11
+      "not_needed": 9,
+      "present_insufficient": 3,
+      "present_sufficient": 4,
+      "request": 14
     },
     "theft_at_home.lock_change_invoice": {
       "hold": 2,
-      "not_needed": 26,
-      "request": 2
+      "not_needed": 23,
+      "present_insufficient": 1,
+      "request": 4
     },
     "theft_at_home.notification_record": {
-      "not_needed": 15,
-      "present_insufficient": 2,
-      "present_sufficient": 3,
-      "request": 10
+      "not_needed": 9,
+      "present_insufficient": 3,
+      "present_sufficient": 5,
+      "request": 13
     },
     "theft_at_home.original_vouchers": {
-      "not_needed": 20,
+      "hold": 1,
+      "not_needed": 16,
       "present_insufficient": 3,
-      "present_sufficient": 1,
-      "request": 6
+      "present_sufficient": 3,
+      "request": 7
     },
     "theft_at_home.police_consent": {
       "hold": 1,
-      "not_needed": 28,
-      "request": 1
+      "not_needed": 27,
+      "request": 2
     },
     "theft_at_home.police_report": {
-      "not_needed": 26,
-      "present_insufficient": 3,
+      "not_needed": 25,
+      "present_insufficient": 4,
       "present_sufficient": 1
     },
     "theft_at_home.stolen_items_list": {
-      "not_needed": 15,
+      "not_needed": 9,
       "present_insufficient": 3,
-      "present_sufficient": 3,
-      "request": 9
+      "present_sufficient": 5,
+      "request": 13
     }
   },
+  "files_without_request": {
+    "simple_theft_away": 8,
+    "theft_at_home": 9
+  },
   "holds_per_file": {
-    "0": 52,
-    "1": 8
+    "0": 51,
+    "1": 7,
+    "2": 1,
+    "4": 1
   },
   "open_by_fact": {
     "simple_theft_away.bicycle": 2,
@@ -104,21 +119,23 @@
     "theft_at_home.vouchers_unobtainable": 2
   },
   "requests_per_file": {
-    "0": 23,
-    "1": 5,
-    "2": 7,
-    "3": 12,
-    "4": 10,
-    "5": 3
+    "0": 17,
+    "1": 4,
+    "2": 8,
+    "3": 14,
+    "4": 13,
+    "5": 4
   },
   "rules_disagreements": [],
   "stops": {
-    "simple_theft_away.none": 18,
-    "simple_theft_away.pending:a_stop_no_cover,a_stop_no_event": 2,
-    "simple_theft_away.stopped:a_stop_no_cover": 6,
+    "simple_theft_away.none": 20,
+    "simple_theft_away.pending:a_stop_no_cover,a_stop_no_event": 1,
+    "simple_theft_away.pending:a_stop_no_event": 1,
+    "simple_theft_away.stopped:a_stop_no_cover": 4,
     "simple_theft_away.stopped:a_stop_no_event": 4,
-    "theft_at_home.none": 15,
-    "theft_at_home.stopped:h_stop_excluded": 11,
+    "theft_at_home.none": 21,
+    "theft_at_home.stopped:h_stop_excluded": 5,
     "theft_at_home.stopped:h_stop_no_event": 4
-  }
+  },
+  "unreached_always_stated_changes": []
 }

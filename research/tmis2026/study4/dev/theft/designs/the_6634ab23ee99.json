@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "burglary_or_robbery"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
@@ -45,11 +51,11 @@
   "defining_event": "theft_at_home",
   "denied_event": true,
   "facts": {
-    "bicycle": "stated_false",
-    "burglary_or_robbery": "stated_false",
+    "bicycle": "not_mentioned",
+    "burglary_or_robbery": "not_mentioned",
     "household_perpetrator": "stated_false",
     "imminent_danger": "not_mentioned",
-    "lock_change": "not_mentioned",
+    "lock_change": "stated_false",
     "measures_pending": "not_mentioned",
     "theft_at_home": "stated_false",
     "traces_changed": "stated_false",
@@ -59,9 +65,10 @@
   "index": 7,
   "language": "en",
   "level": 10,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": true,
   "schema": "study4.design/1",
@@ -72,7 +79,7 @@
       "monthly": 1770,
       "small": 150
     },
-    "canton": "LU",
+    "canton": "NE",
     "claimant": "Hannah Meier",
     "date_main_event": "2026-07-24",
     "date_written": "2026-09-08",
@@ -83,7 +90,7 @@
     ],
     "other_party_organisation": "Kirschbaum Management Ltd",
     "other_party_person": "Anna Bachmann",
-    "place": "Luzern",
+    "place": "Neuchâtel",
     "street": "Brunnenrain 5",
     "third_person": "Laura Widmer",
     "time_spans": [],

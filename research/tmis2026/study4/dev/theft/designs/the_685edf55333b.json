@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "burglary_or_robbery"
+    }
+  ],
   "attachments": [
     {
       "document": "notification_record",
@@ -46,9 +52,9 @@
   "denied_event": true,
   "facts": {
     "bicycle": "not_mentioned",
-    "burglary_or_robbery": "stated_false",
+    "burglary_or_robbery": "not_mentioned",
     "household_perpetrator": "not_mentioned",
-    "imminent_danger": "not_mentioned",
+    "imminent_danger": "stated_false",
     "lock_change": "not_mentioned",
     "measures_pending": "not_mentioned",
     "theft_at_home": "stated_false",
@@ -59,35 +65,36 @@
   "index": 10,
   "language": "en",
   "level": 0,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",
   "seed": 20261112,
   "story": {
     "amounts_chf": {
-      "large": 9900,
-      "monthly": 3290,
-      "small": 1195
+      "large": 3600,
+      "monthly": 1780,
+      "small": 745
     },
-    "canton": "GL",
-    "claimant": "David Hofer",
-    "date_main_event": "2026-08-01",
-    "date_written": "2026-10-05",
+    "canton": "GR",
+    "claimant": "Hannah Shaw",
+    "date_main_event": "2026-07-20",
+    "date_written": "2026-09-25",
     "earlier_dates": [
-      "2023-05-21",
-      "2023-09-14",
-      "2023-11-08"
+      "2023-05-09",
+      "2023-09-02",
+      "2025-07-16"
     ],
-    "other_party_organisation": "Bachtel Trading Ltd",
-    "other_party_person": "Hannah Shaw",
-    "place": "Glarus",
-    "street": "Talstrasse 86",
-    "third_person": "Olivia Steiner",
+    "other_party_organisation": "Rebhalde Cooperative",
+    "other_party_person": "Nina Steiner",
+    "place": "Chur",
+    "street": "Sonnenweg 95",
+    "third_person": "Mark Brunner",
     "time_spans": [],
-    "topic_order_seed": 789978983
+    "topic_order_seed": 215259042
   },
   "type": "theft_at_home",
   "types_drawn_from": [

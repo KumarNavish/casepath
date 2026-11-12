@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_false",
+      "fact": "cost_or_services_reason"
+    }
+  ],
   "attachments": [
     {
       "document": "lease_contract",
@@ -30,7 +36,7 @@
   "defining_event": "increase_applied",
   "denied_event": true,
   "facts": {
-    "cost_or_services_reason": "stated_false",
+    "cost_or_services_reason": "not_mentioned",
     "graduated_rent": "not_mentioned",
     "increase_applied": "stated_false",
     "index_clause": "not_mentioned",
@@ -40,9 +46,10 @@
   "index": 11,
   "language": "en",
   "level": 25,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "tenancy",
-  "rules_sha256": "3f5bb8564c799bb493a96b80d68905bdfa4cb8258f84412bc7911be0ad8470b5",
+  "rules_sha256": "5c0e05c04987acc02a88bd1e991fd55d72cc138560f3993c832dbaf893a247a3",
   "rules_version": "2026-11-12",
   "scan_noise": true,
   "schema": "study4.design/1",

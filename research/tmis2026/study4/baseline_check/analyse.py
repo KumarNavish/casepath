@@ -116,7 +116,7 @@ def contrast(study, rows_a, rows_b, key, field, cluster_key, name):
     ca = s2.by_cluster(rows_a, cluster_key, lambda rs: sum(float(r[field]) for r in rs) / len(rs))
     cb = s2.by_cluster(rows_b, cluster_key, lambda rs: sum(float(r[field]) for r in rs) / len(rs))
     c = s3.run_contrast(ca, cb, name, False, "signflip")
-    return {"cases": len(cases), "a": sum(va[c] for c in cases) / len(cases), "b": sum(vb[c] for c in cases) / len(cases),
+    return {"cases": len(cases), "a_value": sum(va[c] for c in cases) / len(cases), "b_value": sum(vb[c] for c in cases) / len(cases),
             "diff_case_mean": sum(d) / len(d), "nonzero_cases": nz, "p_cases": p, "p_cases_method": how,
             "a_lower_cases": sum(x < -1e-12 for x in d), "a_higher_cases": sum(x > 1e-12 for x in d),
             "clusters": c["clusters"], "diff_cluster_mean": c["diff"], "diff_cluster_ci95": c["diff_ci"], "p_clusters": c["p"],

@@ -1,5 +1,26 @@
 {
-  "attachments": [],
+  "attachments": [
+    {
+      "document_title": "Police report on the theft (Polizeirapport)",
+      "label": "A1",
+      "leave_out": null,
+      "must_not_show": [
+        "anything that would answer Q2",
+        "anything that would answer Q4",
+        "anything that would answer Q6",
+        "anything that contradicts the designed answer to Q1",
+        "anything that contradicts the designed answer to Q3",
+        "anything that contradicts the designed answer to Q5",
+        "anything that contradicts the designed answer to Q7"
+      ],
+      "must_show": [
+        "that the theft was reported to the police and when",
+        "the police station",
+        "that an official investigation was requested"
+      ],
+      "show_only_if_it_applies": []
+    }
+  ],
   "file_id": "the_27cd334c5026",
   "language": "German (Swiss Standard German: write ss, never the sharp s)",
   "length_words": [
@@ -24,8 +45,8 @@
       "question": "Does the file state that the measures could not wait for the insurer's instruction because of imminent danger (Gefahr im Verzug)?"
     },
     {
-      "designed_answer": "yes",
-      "instruction": "Make it clear, in the claimant's own words, that the answer to this question is yes. A careful reader must be able to answer yes without guessing (style sheet, message item 9).",
+      "designed_answer": "no",
+      "instruction": "Make it clear that the answer to this question is no: say so once, or tell something that unmistakably excludes it (style sheet, message item 8).",
       "label": "Q3",
       "question": "Does the policy, or the file, show that the policy does not include the separate supplementary insurance for simple theft away from home (einfacher Diebstahl auswärts)?"
     },
@@ -82,6 +103,7 @@
     "Q5",
     "Q1",
     "Q7",
-    "Q3"
+    "Q3",
+    "mention of attachment A1"
   ]
 }

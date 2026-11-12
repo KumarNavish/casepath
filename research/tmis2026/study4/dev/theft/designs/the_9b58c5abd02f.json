@@ -1,4 +1,5 @@
 {
+  "always_stated_not_mentioned": [],
   "attachments": [
     {
       "document": "notification_record",
@@ -22,8 +23,10 @@
     },
     {
       "document": "stolen_items_list",
+      "missing": null,
       "optional": false,
-      "supplied": false
+      "sufficient": true,
+      "supplied": true
     },
     {
       "document": "original_vouchers",
@@ -47,7 +50,7 @@
   "facts": {
     "bicycle": "not_mentioned",
     "burglary_or_robbery": "stated_true",
-    "household_perpetrator": "stated_true",
+    "household_perpetrator": "stated_false",
     "imminent_danger": "stated_false",
     "lock_change": "stated_true",
     "measures_pending": "stated_true",
@@ -59,9 +62,10 @@
   "index": 8,
   "language": "de",
   "level": 10,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "theft",
-  "rules_sha256": "1cb1102f7bb6129abb4473223cd7d13b6bb527614a27de2e4bb63f937d1c56a0",
+  "rules_sha256": "511737ee14dab965692c2880743bd476853882feb278c8bfe0a93e6192a5cb3b",
   "rules_version": "2026-11-12",
   "scan_noise": false,
   "schema": "study4.design/1",

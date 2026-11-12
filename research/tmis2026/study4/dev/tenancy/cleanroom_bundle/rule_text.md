@@ -8,6 +8,10 @@ How to apply them:
 - A step is reached when its condition holds; a document is requested when its step is reached and its own condition holds. A step or document whose condition depends on an unresolved or open answer waits for that answer.
 - If the claim states that the type's defining event did not happen, the process ends and no document is requested.
 
+## How to read steps and stops
+
+Steps are taken in the order given. A document belongs to a step and is decided when that step is reached. A stop ends the process at its step: no later step is reached, and no document of a later step is requested or left waiting. Documents of steps reached before the stop keep the state they had; a document requested there remains requested.
+
 ## Convention of this benchmark (not law)
 
 This is a convention of this benchmark, not a rule of law; it cites no legal text. A fact that the file does not mention is taken as not alleged, and the rules are applied as if it were absent. Silence never ends a process: where a fact's absence would end it, the unmentioned fact is unresolved. The defining event is never presumed: if the file does not mention it, it is unresolved. A fact that the file raises and leaves unsettled is open.

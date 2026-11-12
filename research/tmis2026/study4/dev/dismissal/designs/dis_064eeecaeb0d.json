@@ -1,4 +1,10 @@
 {
+  "always_stated_not_mentioned": [
+    {
+      "drawn": "stated_true",
+      "fact": "notice_before_protected_period"
+    }
+  ],
   "attachments": [
     {
       "document": "termination_letter",
@@ -45,7 +51,7 @@
     "compulsory_service": "stated_true",
     "employer_gave_notice": "stated_true",
     "incapacity_illness_accident": "stated_true",
-    "notice_before_protected_period": "stated_true",
+    "notice_before_protected_period": "not_mentioned",
     "notice_during_probation": "stated_true",
     "notice_period_varied": "not_mentioned",
     "pregnancy_or_birth": "not_mentioned",
@@ -55,9 +61,10 @@
   "index": 8,
   "language": "en",
   "level": 10,
+  "open_fact_step_unreachable": false,
   "open_facts": [],
   "regime": "dismissal",
-  "rules_sha256": "75bbd5f426a8cdb182b30259b585dbfef08ec0b825379838d48c766da586aef8",
+  "rules_sha256": "2338aff4ad096f614d0656432fb39523d0b839fc2b61bf90e67c9ce83a7989a1",
   "rules_version": "2026-11-12.5",
   "scan_noise": false,
   "schema": "study4.design/1",

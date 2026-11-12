@@ -59,17 +59,22 @@
       }
     },
     "the_0d6569d32db1": {
-      "attachments": {},
+      "attachments": {
+        "A1": "notification_record",
+        "A2": "insurance_policy",
+        "A3": "police_report",
+        "A4": "original_vouchers"
+      },
       "questions": {
-        "Q1": "traces_changed",
-        "Q2": "measures_pending",
+        "Q1": "theft_at_home",
+        "Q2": "lock_change",
         "Q3": "imminent_danger",
-        "Q4": "lock_change",
-        "Q5": "theft_at_home",
-        "Q6": "vouchers_unobtainable",
+        "Q4": "bicycle",
+        "Q5": "traces_changed",
+        "Q6": "household_perpetrator",
         "Q7": "burglary_or_robbery",
-        "Q8": "bicycle",
-        "Q9": "household_perpetrator"
+        "Q8": "measures_pending",
+        "Q9": "vouchers_unobtainable"
       }
     },
     "the_1024620d6055": {
@@ -149,15 +154,15 @@
     "the_1dfba8facf5e": {
       "attachments": {},
       "questions": {
-        "Q1": "traces_changed",
-        "Q2": "lock_change",
-        "Q3": "bicycle",
-        "Q4": "measures_pending",
-        "Q5": "vouchers_unobtainable",
-        "Q6": "household_perpetrator",
-        "Q7": "theft_at_home",
-        "Q8": "imminent_danger",
-        "Q9": "burglary_or_robbery"
+        "Q1": "vouchers_unobtainable",
+        "Q2": "theft_at_home",
+        "Q3": "measures_pending",
+        "Q4": "imminent_danger",
+        "Q5": "lock_change",
+        "Q6": "burglary_or_robbery",
+        "Q7": "traces_changed",
+        "Q8": "bicycle",
+        "Q9": "household_perpetrator"
       }
     },
     "the_2412f755f636": {
@@ -205,7 +210,9 @@
       }
     },
     "the_27cd334c5026": {
-      "attachments": {},
+      "attachments": {
+        "A1": "police_report"
+      },
       "questions": {
         "Q1": "measures_pending",
         "Q2": "imminent_danger",
@@ -276,7 +283,9 @@
       }
     },
     "the_488b39c60106": {
-      "attachments": {},
+      "attachments": {
+        "A1": "lock_change_invoice"
+      },
       "questions": {
         "Q1": "theft_at_home",
         "Q2": "bicycle",
@@ -358,13 +367,13 @@
     "the_5ee356013cfc": {
       "attachments": {},
       "questions": {
-        "Q1": "measures_pending",
-        "Q2": "vouchers_unobtainable",
-        "Q3": "theft_away",
+        "Q1": "vouchers_unobtainable",
+        "Q2": "theft_away",
+        "Q3": "measures_pending",
         "Q4": "traces_changed",
         "Q5": "imminent_danger",
-        "Q6": "away_cover_missing",
-        "Q7": "bicycle"
+        "Q6": "bicycle",
+        "Q7": "away_cover_missing"
       }
     },
     "the_656f9aad39e5": {
@@ -416,15 +425,15 @@
     "the_685edf55333b": {
       "attachments": {},
       "questions": {
-        "Q1": "bicycle",
-        "Q2": "measures_pending",
-        "Q3": "imminent_danger",
-        "Q4": "burglary_or_robbery",
-        "Q5": "traces_changed",
-        "Q6": "lock_change",
-        "Q7": "theft_at_home",
-        "Q8": "household_perpetrator",
-        "Q9": "vouchers_unobtainable"
+        "Q1": "theft_at_home",
+        "Q2": "household_perpetrator",
+        "Q3": "measures_pending",
+        "Q4": "traces_changed",
+        "Q5": "bicycle",
+        "Q6": "imminent_danger",
+        "Q7": "vouchers_unobtainable",
+        "Q8": "lock_change",
+        "Q9": "burglary_or_robbery"
       }
     },
     "the_7d2b6a2bdce4": {
@@ -460,7 +469,8 @@
     },
     "the_819379d12c03": {
       "attachments": {
-        "A1": "insurance_policy"
+        "A1": "notification_record",
+        "A2": "insurance_policy"
       },
       "questions": {
         "Q1": "traces_changed",
@@ -489,13 +499,13 @@
     "the_86e739ec9184": {
       "attachments": {},
       "questions": {
-        "Q1": "imminent_danger",
+        "Q1": "theft_away",
         "Q2": "measures_pending",
-        "Q3": "vouchers_unobtainable",
-        "Q4": "traces_changed",
-        "Q5": "away_cover_missing",
-        "Q6": "theft_away",
-        "Q7": "bicycle"
+        "Q3": "bicycle",
+        "Q4": "imminent_danger",
+        "Q5": "vouchers_unobtainable",
+        "Q6": "away_cover_missing",
+        "Q7": "traces_changed"
       }
     },
     "the_875040108b5b": {
@@ -566,7 +576,9 @@
       }
     },
     "the_9b58c5abd02f": {
-      "attachments": {},
+      "attachments": {
+        "A1": "stolen_items_list"
+      },
       "questions": {
         "Q1": "bicycle",
         "Q2": "burglary_or_robbery",
@@ -702,7 +714,11 @@
       }
     },
     "the_c8b40fd1824d": {
-      "attachments": {},
+      "attachments": {
+        "A1": "notification_record",
+        "A2": "insurance_policy",
+        "A3": "stolen_items_list"
+      },
       "questions": {
         "Q1": "lock_change",
         "Q2": "burglary_or_robbery",
@@ -807,7 +823,11 @@
       }
     },
     "the_e0b1e1d56fb2": {
-      "attachments": {},
+      "attachments": {
+        "A1": "notification_record",
+        "A2": "insurance_policy",
+        "A3": "original_vouchers"
+      },
       "questions": {
         "Q1": "lock_change",
         "Q2": "bicycle",
