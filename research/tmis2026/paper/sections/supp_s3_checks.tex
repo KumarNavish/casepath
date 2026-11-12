@@ -71,9 +71,36 @@ ReAct & all & \spostKindTenReactAllUnnecessary & \spostKindTenReactAllMissed & \
 
 On theft, the single prompts' errors that coincide with the rule floor's errors on the same pair (same document, direction and kind) were \spostDecThRicSameAsFloor{} per pair for Rules in context, \spostDecThRicFrontierSameAsFloor{} on the frontier model and \spostDecThRicOrigFrontierSameAsFloor{} for the frontier prompt with the original rules; the rest were \spostDecThRicOther, \spostDecThRicFrontierOther{} and \spostDecThRicOrigFrontierOther.
 
+
+\subsection{Open or stated: family means}
+\label{supp:f1-family}
+
+The article reports the split of the tenancy claims into those that state every fact (S) and those with an open fact or a denied or open defining event (O) as means over claim-runs. Table~\ref{tab:supp-f1-family} gives the same split as family means (a family's value is the mean over its claim-runs of the type; the type's value the mean over the families that have such claims), with the sign-flip tests over families that the article cites. With family means the crossover with the frontier prompt in Figure~\ref{M-fig:share} lies at \sthreeFTwoStrictCrossCasePathRicFrontierFamily{} (strict unsafe errors) and \sthreeFTwoAllDevCrossCasePathRicFrontierFamily{} (all deviations), against \sthreeFTwoStrictCrossCasePathRicFrontier{} and \sthreeFTwoAllDevCrossCasePathRicFrontier{} with claim-run means.
+
+\begin{table}[h]
+\caption{Open or stated, family means (added after review): tenancy strict unsafe errors per claim, and \casepath minus the design with the exact sign-flip $p$ over families.}
+\label{tab:supp-f1-family}
+\footnotesize
+\begin{tabular}{@{}l rr rr rr@{}}
+\toprule
+& \multicolumn{2}{c}{Family mean} & \multicolumn{2}{c}{S: difference} & \multicolumn{2}{c}{O: difference} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Design & S & O & diff. & $p$ & diff. & $p$ \\
+\midrule
+\casepath & \sthreeFOneCasePathSStrict & \sthreeFOneCasePathOStrict & & & & \\
+\casepath, checklist only & \sthreeFOneChecklistSStrict & \sthreeFOneChecklistOStrict & \sthreeFOneVsChecklistSStrictDiff & \sthreeFOneVsChecklistSStrictP & \sthreeFOneVsChecklistOStrictDiff & \sthreeFOneVsChecklistOStrictP \\
+Rules in context & \sthreeFOneRicSStrict & \sthreeFOneRicOStrict & \sthreeFOneVsRicSStrictDiff & \sthreeFOneVsRicSStrictP & \sthreeFOneVsRicOStrictDiff & \sthreeFOneVsRicOStrictP \\
+Rules in context, frontier & \sthreeFOneRicFrontierSStrict & \sthreeFOneRicFrontierOStrict & \sthreeFOneVsRicFrontierSStrictDiff & \sthreeFOneVsRicFrontierSStrictP & \sthreeFOneVsRicFrontierOStrictDiff & \sthreeFOneVsRicFrontierOStrictP \\
+Self-consistency & \sthreeFOneSelfConsSStrict & \sthreeFOneSelfConsOStrict & \sthreeFOneVsSelfConsSStrictDiff & \sthreeFOneVsSelfConsSStrictP & \sthreeFOneVsSelfConsOStrictDiff & \sthreeFOneVsSelfConsOStrictP \\
+Model executes rules & \sthreeFOneMerSStrict & \sthreeFOneMerOStrict & \sthreeFOneVsMerSStrictDiff & \sthreeFOneVsMerSStrictP & \sthreeFOneVsMerOStrictDiff & \sthreeFOneVsMerOStrictP \\
+ReAct & \sthreeFOneReactSStrict & \sthreeFOneReactOStrict & \sthreeFOneVsReactSStrictDiff & \sthreeFOneVsReactSStrictP & \sthreeFOneVsReactOStrictDiff & \sthreeFOneVsReactOStrictP \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Order of the hypotheses and Holm's correction}
 
-With H5's $p$ from an exact one-sided sign-flip non-inferiority test instead of the registered bootstrap, the outcomes are the same: under Holm's correction H1 (adjusted $p=\sthreeFThreeExactHolmHOneAdjP$), H2 (\sthreeFThreeExactHolmHTwoAdjP), H3 (\sthreeFThreeExactHolmHThreeAdjP) and H5 (\sthreeFThreeExactHolmHFiveAdjP) would pass and H4 (\sthreeFThreeExactHolmHFourAdjP) would not. The first draft's non-inferiority form of H3, against the frontier prompt with margin 0.10, gives a difference of \sthreeFThreeFirstDraftNIDiff{} ($p\ \sthreeFThreeFirstDraftNIP$), but in that draft's order it would not have been tested.
+The article's Table~\ref{M-tab:s3-hypotheses} computes Holm's correction with H5's $p$ from an exact one-sided sign-flip non-inferiority test. With the registered bootstrap non-inferiority share instead, which is not a calibrated $p$, the statuses are the same: H1 (adjusted \sthreeFThreeBootHolmHOneAdjP), H2 (\sthreeFThreeBootHolmHTwoAdjP), H3 (\sthreeFThreeBootHolmHThreeAdjP) and H5 (\sthreeFThreeBootHolmHFiveAdjP) would pass and H4 (\sthreeFThreeBootHolmHFourAdjP) would not. The first draft's non-inferiority form of H3, against the frontier prompt with margin 0.10, gives a difference of \sthreeFThreeFirstDraftNIDiff{} ($p\ \sthreeFThreeFirstDraftNIP$), but in that draft's order it would not have been tested.
 
 \subsection{Budget}
 
@@ -261,6 +288,24 @@ A1--A4 together & H2 & \sthreeFFiveAAllHTwoDiff & \sthreeFFiveAAllHTwoP & \sthre
 
 \subsection{The lint}
 \label{supp:lint}
+
+\begin{table}[h]
+\caption{Theft, ``a flagged condition is treated as open'', recomputed from the stored readings without model calls (added after review). In sample: flags from the same texts. Out of sample: flags from development runs only. Errors per pair; rule: the part the rules cause with every fact right; unchanged: unresolved-fact pairs left otherwise unchanged (percent, as in Table~\ref{M-tab:held} of the article); held: documents held in every ordinary text (a count); open: open facts that decide a document, per ordinary text, each a question to the claimant. $p$: exact sign-flip test over nine clusters against the frontier prompt with the reviewed rules (\sthreeSecSevenAB) and with the original rules (\sthreeRicOrigFrontierThErrors). The cost-efficient rows have no $p$ because no comparison was planned for them.}
+\label{tab:supp-lint}
+\footnotesize
+\begin{tabular}{@{}l l r r r r r r r@{}}
+\toprule
+Model & Flags & Errors & Rule & Unchanged & Held & Open & $p$ reviewed & $p$ original \\
+\midrule
+Frontier (one run) & none (tested) & \spostHeldTerraTestedErrors & \spostHeldTerraTestedRule & \spostHeldTerraTestedUnchangedPct & \spostHeldTerraTestedHeldEveryOff & \spostHeldTerraTestedOpenFacts & \spostPairedTestedRicFrontierP & \spostPairedTestedRicOrigFrontierP \\
+& in sample & \spostHeldTerraFlagOpenErrors & \spostHeldTerraFlagOpenRule & \spostHeldTerraFlagOpenUnchangedPct & \spostHeldTerraFlagOpenHeldEveryOff & \spostHeldTerraFlagOpenOpenFacts & \spostPairedFlagOpenRicFrontierP & \spostPairedFlagOpenRicOrigFrontierP \\
+& out of sample & \spostHeldTerraDevFlagOpenErrors & \spostHeldTerraDevFlagOpenRule & \spostHeldTerraDevFlagOpenUnchangedPct & \spostHeldTerraDevFlagOpenHeldEveryOff & \spostHeldTerraDevFlagOpenOpenFacts & \spostPairedDevFlagOpenRicFrontierP & \spostPairedDevFlagOpenRicOrigFrontierP \\
+Cost-efficient & none (tested) & \spostHeldLunaTestedErrors & \spostHeldLunaTestedRule & \spostHeldLunaTestedUnchangedPct & \spostHeldLunaTestedHeldEveryOff & \spostHeldLunaTestedOpenFacts & -- & -- \\
+& in sample & \spostHeldLunaFlagOpenErrors & \spostHeldLunaFlagOpenRule & \spostHeldLunaFlagOpenUnchangedPct & \spostHeldLunaFlagOpenHeldEveryOff & \spostHeldLunaFlagOpenOpenFacts & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 The lint's flags on theft, the mutation test on tenancy and the variant in which the flagged conditions that both blind editors made unconditional are taken as true are reported in \texttt{analysis/\allowbreak{}lint\_\allowbreak{}followup.md}. Taking those conditions as true gives the same errors as treating every flag as open: \spostHeldTerraFlagCaseTypeErrors{} (in sample) and \spostHeldTerraDevFlagCaseTypeErrors{} (out of sample) on the frontier model, \spostHeldLunaFlagCaseTypeErrors{} on the cost-efficient model. The development flags were \spostDevFlagsTerraN{} for the frontier model, from \spostDevFlagsTerraOffRuns{} development texts at an earlier commit whose reading requests were checked to be identical, against \spostInSampleFlagsTerraN{} in sample; for the cost-efficient model the in-sample lint had already pooled the development runs (\spostDevFlagsLunaN{} flags either way). Paired differences against the frontier prompts: tested product $\spostPairedTestedRicFrontierDiff$ and $\spostPairedTestedRicOrigFrontierDiff$; flags in sample $\spostPairedFlagOpenRicFrontierDiff$ and $\spostPairedFlagOpenRicOrigFrontierDiff$; out of sample $\spostPairedDevFlagOpenRicFrontierDiff$ and $\spostPairedDevFlagOpenRicOrigFrontierDiff$ errors per pair (reviewed and original rules).
 

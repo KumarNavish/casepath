@@ -206,6 +206,7 @@ check("g003" not in fl_luna and G42 not in fl_luna, "the lint flags g003 or g042
 m("fuLintOffRunsLuna", get(rl, "results", "gpt-6-luna", "g001", "off_runs"))
 m("fuLintOffRunsTerra", get(rl, "results", "gpt-6.1-terra", "g001", "off_runs"))
 m("fuLintGFortyTwoTerra", get(rl, "results", "gpt-6.1-terra", G42, "admitted_true"))
+m("fuLintGFortyTwoLuna", get(rl, "results", "gpt-6-luna", G42, "admitted_true"))
 
 # The review of the flags (four eyes): compare the starting rule file with the reconciled one.
 before = {r["rule_id"]: r for r in get(load("rule_review/final/reviewed_rules.json"), "rules")}

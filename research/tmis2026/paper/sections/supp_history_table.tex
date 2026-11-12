@@ -1,0 +1,20 @@
+\section{Root causes found in Study 1 and the changes they led to}
+\label{supp:history}
+
+This table stood in Section~\ref{M-sec:history} of the previous version of the article. It mixes evidence from Studies~1 and~2, from both models, and new and recomputed numbers, as its caption says.
+
+\begin{table}[h]
+\caption{Likely causes found in Study~1, the change each led to, and the evidence for the change. Counts are from Study~1 with the frontier model unless stated; Study~2 values are with the cost-efficient model. ``Recomputed'' marks evidence computed again from recorded readings, without new model calls. No row's evidence comes from a confirmatory test.}
+\label{tab:history}
+\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Cause in Study 1 & Change & Evidence \\
+\midrule
+Faulty rules: \ecWrongFaulty{} of \thTerraCPWrong{} wrong theft changes came from \rvImplicated{} of the \rvRules{} extracted rules. & A review of every rule against the passages it cites, after a repair without labels failed. & Study~2, new runs: \stThCPvTwoLunaErrors{} errors per theft pair with the label-free repair; recomputed: \stAblThOriginalPackErrors{} with the original rules ($p=\stAblThOriginalPackVsP$). The review itself was evaluated on development data only. \\
+Silence read as doubt: \jaUnresFalse{} of \jaUnres{} unresolved values concerned facts that were false in the scenario, which the claims leave unmentioned. & Presumptions with a source clause. & Study~2, recomputed: \stTenCPvTwoLunaHeldReq{} held needed documents per claim with presumptions, \stAblTenNoPresumptionHeldReq{} without. \\
+The checking call rejected \verRejCondTrue{} of \verCheckedCondTrue{} true values, all correct, and none of the \jaFlipped{} wrong ones. & A second reading that must agree; no checking call. & Study~2, recomputed by pairing each run's reading with another run's reading of the same text: errors per theft pair fell from \stAblThTwoReadingsVsB{} to \stAblThTwoReadingsVsA{} ($p=\stAblThTwoReadingsVsP$, the smallest attainable). \\
+Strong Kleene evaluation, the production engine's, held \tenTerraCPkHeld\% of needed tenancy documents. & Exact deferral, which Study~1 had evaluated as a variant, became the evaluation. & Study~1, on the same readings: exact deferral held \tenTerraExactCut\% (frontier) and \tenLunaExactCut\% (cost-efficient) fewer, with no unnecessary request added. \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -90,6 +90,8 @@ m("sthreeFTests", len(re.findall(r"^    def test_", (HERE / "test_study3_feedbac
 t = get(res, "F1", "tenancy")
 m("sthreeFOneClaimsS", get(t, "counts", "S"))
 m("sthreeFOneClaimsO", get(t, "counts", "O"))
+m("sthreeFOneClaimsODenied", get(t, "composition", "O: defining event denied"))
+m("sthreeFOneClaimsOOpenFact", get(t, "composition", "O: open fact"))
 for d, v in get(t, "by_design").items():
     for ty in ("S", "O"):
         pre = f"sthreeFOne{DESIGNS[d]}{ty}"
@@ -107,8 +109,10 @@ for d, v in get(th, "by_design").items():
     m(pre + "Errors", num(get(v, "S", "errors_per_pair")))
     m(pre + "Unchanged", pct(get(v, "O", "unchanged_share")))
     m(pre + "Premature", pct(get(v, "O", "premature_share")))
+    m(pre + "OpenHeld", pct(get(v, "O", "held_share")))
 for b, v in get(th, "contrasts").items():
     contrast(f"sthreeFOneThVs{DESIGNS[b]}Unchanged", get(v, "O unchanged share"))
+    contrast(f"sthreeFOneThVs{DESIGNS[b]}Errors", get(v, "S errors"))
 
 # F2
 f2 = get(res, "F2")
@@ -139,6 +143,8 @@ for variant, vn in (("H5 bootstrap p", "Boot"), ("H5 exact sign-flip p", "Exact"
 h4 = get(f3, "h4_self_consistency")
 m("sthreeFThreeSCMinP", p4(get(h4, "smallest_p")))
 m("sthreeFThreeSCP", p4(get(h4, "p")))
+m("sthreeFThreeSCPatterns", round(get(h4, "p") * 2 ** get(h4, "clusters")))
+m("sthreeFThreeSCAllPatterns", 2 ** get(h4, "clusters"))
 m("sthreeFThreeSCFewer", get(h4, "clusters_fewer_casepath"))
 m("sthreeFThreeSCMore", get(h4, "clusters_more_casepath"))
 m("sthreeFThreeSCLargestAgainst", num(get(h4, "largest_against_casepath")))
@@ -202,6 +208,46 @@ for lab, nm in READINGS.items():
                "S2f": "STwoF", "S3a": "SThreeA", "S3b": "SThreeB"}[c["id"]]
         contrast(f"sthreeFFive{nm}{cid}", get(c, "alternative"))
         m(f"sthreeFFive{nm}{cid}Verdict", get(c, "verdict"))
+
+for lab, nm in READINGS.items():
+    if lab in names:
+        cs = get(names[lab], "contrasts")
+        m(f"sthreeFFive{nm}ReverseSig", sum(c["verdict"] == "reverses (p < 0.05)" for c in cs))
+        m(f"sthreeFFive{nm}Contrasts", len(cs))
+
+# Read only: the registered results file, for cost ratios and failed outputs (presentation of registered numbers).
+REG = json.loads((HERE / "study3_results_fresh2_confirm.json").read_text())
+RN = {"tenancy": "Ten", "theft": "Th"}
+for d, v in get(REG, "designs").items():
+    if d not in DESIGNS:
+        continue
+    for reg, x in get(v, "regimes").items():
+        c = get(x, "cost", "cost_per_case_run")
+        same = get(REG, "designs", "ric", "regimes", reg, "cost", "cost_per_case_run")
+        front = get(REG, "designs", "ric_frontier", "regimes", reg, "cost", "cost_per_case_run")
+        if c > 0:
+            m(f"sthreeFCost{DESIGNS[d]}{RN[reg]}OverSame", num(c / same, 1))
+            m(f"sthreeFCost{DESIGNS[d]}{RN[reg]}OverFrontier", num(c / front, 1))
+            if d in ("casepath", "casepath_checklist"):
+                m(f"sthreeFCost{DESIGNS[d]}{RN[reg]}OverSameRound", num(c / same, 0))
+# Read only: R6 of the review analyses, the 24 tenancy families behind H2 and H3.
+FAM = get(json.loads((HERE / "study3_review.json").read_text()), "R6", "families")
+gating = [f for f in FAM if f["denied_event"] or f["open_event"]]
+other = [f for f in FAM if not (f["denied_event"] or f["open_event"])]
+m("sthreeFFamGating", len(gating))
+m("sthreeFFamGatingDisputes", len({f["family"] for f in gating}))
+m("sthreeFFamOther", len(other))
+m("sthreeFFamOtherDefect", sum(f["family"] == "defect_mold_heating" for f in other))
+m("sthreeFFamOtherTermination", sum(f["family"] == "lease_termination_dispute" for f in other))
+for key, kn in (("diff_ric", "Ric"), ("diff_ric_frontier", "RicFrontier")):
+    m(f"sthreeFFamOtherFavourCasePath{kn}", sum(f[key] < -1e-12 for f in other))
+    m(f"sthreeFFamOtherEqual{kn}", sum(abs(f[key]) <= 1e-12 for f in other))
+    m(f"sthreeFFamOtherFavour{kn}", sum(f[key] > 1e-12 for f in other))
+    m(f"sthreeFFamOtherMaxAbs{kn}", num(max(abs(f[key]) for f in other)))
+    m(f"sthreeFFamGatingFavourCasePath{kn}", sum(f[key] < -1e-12 for f in gating))
+    m(f"sthreeFFamGatingMinAbs{kn}", num(min(abs(f[key]) for f in gating)))
+failed = sum(get(x, "failed_outputs") or 0 for v in get(REG, "designs").values() for x in v["regimes"].values())
+m("sthreeFRunFailedDesignOutputs", failed)
 
 # F5b
 RB = {"registered": "Registered", "A1": "AOne", "A2": "ATwo", "A3": "AThree", "A4": "AFour", "all": "AAll"}

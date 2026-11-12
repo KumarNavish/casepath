@@ -114,8 +114,23 @@ closed local port. Steps:
    two lines are SKIP and say how many cache files are missing. Then `make_numbers_study3_review.py` is compared
    with `paper/results/numbers_study3_review.tex` (it reads the stored JSON), and `fig_review.py` builds
    `fig_families`.
-5. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (36), `analysis/test_study2.py`.
-6. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
+5. Study 3, checks added after the outside review (post hoc): `analysis/study3_feedback.py`,
+   `analysis/decomposition.py` and `analysis/lint_followup.py`. All three re-read the product's response cache
+   (`runs/product/cache/`); none makes a model call (the lint's mutation arm ran once in development, for USD 0.15,
+   and is read from its stored runs and ledger). With the cache in place each is re-run into the temporary folder and
+   its JSON, Markdown and (lint_followup) `posthoc_numbers.tex` are compared byte for byte; without it these three
+   lines are SKIP. Either way, `make_numbers_study3_feedback.py` is regenerated from the stored
+   `study3_feedback.json` and compared with `paper/results/numbers_study3_feedback.tex`, the post-hoc macros are
+   regenerated from the stored `lint_followup.json` and `decomposition.json` and compared with
+   `analysis/posthoc_numbers.tex` and `paper/results/numbers_posthoc.tex`, `analysis/test_posthoc.py` runs, and
+   `analysis/test_study3_feedback.py` runs in full with the cache and without its one replay test (which reads the
+   cache) otherwise.
+6. Tests: `analysis/test_study3.py` (43), `analysis/test_study3_review.py` (36), `analysis/test_study2.py`.
+   The development ledger `runs/product/ledger_dev_gpt-6-luna.jsonl` is append-only and grew after the registered
+   and review analyses recorded its hash; the comparison of `study3_results_fresh2_confirm.json` and
+   `study3_review.json` accepts a different recorded hash for a development ledger only if the stored hash is that of
+   a line-ending prefix of the current file, and says so.
+7. Studies 1 and 2 and the paper: `analysis/verify_paper.py` in a temporary copy of this folder with
    `runs/responses_cache.tar.gz` unpacked. It re-runs 18 scripts and checks that every `analysis/*.json`
    evidence file and `paper/results/numbers.tex` come out byte for byte the same; regenerates
    `numbers_study3.tex` and `numbers_sharc.tex`; checks the structure of the included sections and that every
@@ -136,8 +151,8 @@ into macros); and the Study 1 and 2 figures (built, not compared).
 
 Run time of the fresh-clone test: see section 8.
 
-**What needs the cache archive.** Only the two cache-dependent parts of the review analysis (step 4): the readings
-of R3 and the cost split of R7. To check them, put the product's response cache (79,404 files, 0.9 GB; not in the
+**What needs the cache archive.** The two cache-dependent parts of the review analysis (step 4), the readings
+of R3 and the cost split of R7, and the re-runs of the three post-hoc scripts of step 5. To check them, put the product's response cache (79,404 files, 0.9 GB; not in the
 repository) at `runs/product/cache/` and run `reproduce.sh` again; the two SKIP lines then become byte-for-byte
 comparisons. Every other step needs only the repository.
 
@@ -243,6 +258,11 @@ the review analysis (21,667 cache files missing). The Study 1–2 re-analysis an
 response cache in `runs/product/cache/`. Result: 61 steps passed, none skipped, none failed, in 11 min 27 s of wall
 time; the review analysis's JSON and Markdown both reproduced byte for byte, including R3 and R7. The run wrote
 nothing into the checkout (`git status`, ignored files included, was the same before and after).
+
+**Working repository, cache present, 2026-11-12.** After the post-hoc steps (step 5) and the ledger check were
+added: 83 steps passed, none skipped, none failed, in 597 s. The registered results and the review analysis compare
+equal except for the recorded hashes of the two development ledgers, which grew by appended rows after those
+analyses ran; the recorded versions are byte prefixes of the current files. Not repeated in a fresh clone.
 
 An earlier run in a virtual environment without the pypdf pin failed the Study 1–2 step: pypdf 7.0.0 extracts the
 Study 1 PDFs with different spacing, so the cached model responses were not found. That is why the pin is there.

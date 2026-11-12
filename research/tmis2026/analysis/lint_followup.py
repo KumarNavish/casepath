@@ -520,6 +520,7 @@ def macros(lf, dc):
         for var, r in v.items():
             M[f"spostHeld{MOD[m]}{VW[var]}Errors"] = _num(r["summary"]["errors"])
             M[f"spostHeld{MOD[m]}{VW[var]}Unchanged"] = _num(r["summary"]["unres_unchanged"])
+            M[f"spostHeld{MOD[m]}{VW[var]}UnchangedPct"] = _num(100 * r["summary"]["unres_unchanged"], 0)
             M[f"spostHeld{MOD[m]}{VW[var]}OpenFacts"] = _num(r["off_open_need_bearing_facts_per_run"], 2)
             M[f"spostHeld{MOD[m]}{VW[var]}HeldEveryOff"] = str(len(r["off_held_in_every_run"]))
             for k in ("rule", "reading", "hold"):

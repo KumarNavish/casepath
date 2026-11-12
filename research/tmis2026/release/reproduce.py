@@ -79,6 +79,55 @@ def sha256(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
+def prefix_hash_found(path, digest):
+    """True if `digest` is the SHA-256 of a prefix of the file that ends at a line break (an append-only ledger that
+    grew after an analysis recorded its hash)."""
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for line in f:
+            h.update(line)
+            if h.copy().hexdigest() == digest:
+                return True
+    return False
+
+
+def ledger_growth_only(new_inputs, old_inputs):
+    """The recorded input hashes differ only for development ledgers (runs/**/ledger_dev_*.jsonl) that have grown by
+    appended lines since the stored analysis ran: the stored hash is that of a line-ending prefix of the current file and
+    the new hash is the current file's. Returns (ok, list of such ledgers)."""
+    keys = sorted(k for k in set(new_inputs) | set(old_inputs) if new_inputs.get(k) != old_inputs.get(k))
+    grown = []
+    for k in keys:
+        f = TMIS / k
+        if not (k.startswith("runs/") and Path(k).name.startswith("ledger_dev_") and f.is_file()):
+            return False, keys
+        if new_inputs.get(k) != sha256(f) or not prefix_hash_found(f, old_inputs.get(k, "")):
+            return False, keys
+        grown.append(k)
+    return True, grown
+
+
+def same_json_but_ledgers(new_path, old_path, inputs_path):
+    """Compare two analysis JSON files; differences in the recorded hashes of development ledgers that only grew by
+    appended lines are accepted and named."""
+    ok, why = same(new_path, old_path)
+    if ok:
+        return True, ""
+    a, b = json.loads(Path(new_path).read_text()), json.loads(Path(old_path).read_text())
+    ia, ib = a, b
+    for k in inputs_path:
+        ia, ib = ia[k], ib[k]
+    good, grown = ledger_growth_only(ia, ib)
+    if not good:
+        return False, why
+    for k in grown:
+        ia[k] = ib[k]
+    if a != b:
+        return False, why
+    return True, ("equal except the recorded hash of " + ", ".join(grown) + ", which grew by appended development rows "
+                  "after the analysis ran (the recorded version is a byte prefix of the current file)")
+
+
 def script_step(name, cmd, cwd=TMIS, timeout=3600):
     r, s = run(cmd, cwd, timeout)
     report(name, "PASS" if r.returncode == 0 else "FAIL", "" if r.returncode == 0 else f"exit {r.returncode}: {tail(r)}", s)
@@ -247,7 +296,10 @@ def study3_steps(tmp):
                     [sys.executable, AN / "study3.py", "--data", "fresh2", "--label", "confirm", "--out", out / "s3"])
     if r.returncode == 0:
         for ext in (".json", ".md"):
-            ok, why = same(out / f"s3{ext}", AN / f"study3_results_fresh2_confirm{ext}")
+            if ext == ".json":
+                ok, why = same_json_but_ledgers(out / "s3.json", AN / "study3_results_fresh2_confirm.json", ["inputs", "files_read"])
+            else:
+                ok, why = same(out / f"s3{ext}", AN / f"study3_results_fresh2_confirm{ext}")
             report(f"study 3: results{ext} equal the stored file", "PASS" if ok else "FAIL", why)
     r = child_step("study 3: analysis/study3_posthoc.py", "posthoc", out)
     if r.returncode == 0:
@@ -306,6 +358,9 @@ def review_steps(tmp):
         for p in REVIEW_CACHE_PARTS:
             _pop(a, p)
             _pop(b, p)
+        lg_ok, grown = ledger_growth_only(a.get("inputs", {}), b.get("inputs", {}))
+        if lg_ok:
+            a["inputs"] = b["inputs"]
         diff = sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
         report("study 3 review: JSON equal without the cache-dependent parts", "FAIL" if diff else "PASS",
                f"differ: {', '.join(diff)}" if diff else f"{len(a)} top-level entries; R3 and R7 compared without "
@@ -315,7 +370,10 @@ def review_steps(tmp):
         report("study 3 review: .md equal outside sections R3 and R7", "FAIL" if mdiff else "PASS", ", ".join(mdiff)[:300])
         if missing == 0:
             for ext in (".json", ".md"):
-                ok, why = same(out / f"study3_review{ext}", AN / f"study3_review{ext}")
+                if ext == ".json":
+                    ok, why = same_json_but_ledgers(out / "study3_review.json", AN / "study3_review.json", ["inputs"])
+                else:
+                    ok, why = same(out / f"study3_review{ext}", AN / f"study3_review{ext}")
                 report(f"study 3 review: whole {ext} equals the stored file (cache present)", "PASS" if ok else "FAIL", why)
         else:
             msg = (f"{missing} response-cache files missing (runs/product/cache is not in git); the readings of R3 and "
