@@ -32,6 +32,7 @@ from ..parity import source_tree
 from ..read import cut
 from ..read.evidence import Evidence
 from ..read.pdfread import PdfError
+from ..quality.replay import replay
 
 SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
@@ -620,6 +621,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, f"This change cannot be applied: {error}") from None
         edit = store.add_edit(case_id, body.op, body.args, who, reason_text)
         learned = None
+        # "gilt generell so" (reason 4), or the same correction made in two other cases, becomes a proposal by itself;
+        # it is only proposed: a person activates it, after seeing its replayed effect on the stored cases.
+        repeated = len({e["case_id"] for e in store.similar_edits(body.op, body.args, case_id)}) >= 2
+        if not body.use_for_similar and (body.reason_code == "4" or repeated):
+            try:
+                item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
+                rows = replay(store, catalogue, [item])
+                item["replay"] = {"cases": len(rows), "changed": [{"case": r["case"], "changed": sorted(r["changed"])} for r in rows if r["changed"]],
+                                  "because": "gilt generell" if body.reason_code == "4" else "wiederholt"}
+                learned = store.save_knowledge(item)
+            except kb.KnowledgeError:
+                learned = None  # not every correction can be said in general terms; the case keeps its edit
         if body.use_for_similar:
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)

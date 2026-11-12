@@ -314,6 +314,20 @@ class AppTests(unittest.TestCase):
         self.assertNotIn("k-kn_test", row["before"]["needs"])
         self.assertTrue(row["changed"])
 
+    def test_a_correction_marked_generally_so_becomes_a_proposal_with_its_replayed_effect(self):
+        client = self.client()
+        case, file = self.new_case(client, "Generell")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        client.app.state.runs.model_factory = lambda: None
+        body = {"op": "add_document", "args": {"title": "Wohnungsabnahmeprotokoll", "why": "Zeigt den Zustand bei Einzug.", "step": "assess"},
+                "reason": "", "reason_code": "4", "recheck": False}
+        changed = client.post(f"/api/cases/{case['id']}/edits", json=body).json()
+        proposal = changed["knowledge"]
+        self.assertEqual(proposal["status"], "candidate")  # proposed, never active by itself
+        self.assertEqual((proposal["replay"]["because"], proposal["replay"]["cases"]), ("gilt generell", 1))
+        plain = client.post(f"/api/cases/{case['id']}/edits", json={**body, "reason_code": "3", "args": {**body["args"], "title": "Anderes"}}).json()
+        self.assertIsNone(plain["knowledge"])  # a correction for this case only stays in the case
+
 
 class RoutingTests(unittest.TestCase):
     def test_an_example_workflow_never_competes_with_real_ones(self):

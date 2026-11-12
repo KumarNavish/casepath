@@ -356,6 +356,12 @@ class CaseStore:
             self._db.execute("update cases set updated_at=? where id=?", (edit["at"], case_id))
         return edit
 
+    def similar_edits(self, op, args, case_id):
+        """Active edits in other cases with the same operation on the same target: a correction made again and again."""
+        key = {k: args.get(k) for k in ("fact", "document", "step", "value") if args.get(k) is not None}
+        rows = [json.loads(r["data"]) for r in self._all("select data from case_edits where status='active' and case_id<>?", case_id)]
+        return [r for r in rows if r["op"] == op and {k: r["args"].get(k) for k in key} == key]
+
     def list_edits(self, case_id, active_only=True):
         rows = [json.loads(r["data"]) | {"status": r["status"]} for r in
                 self._all("select data, status from case_edits where case_id=? order by created_at, rowid", case_id)]
