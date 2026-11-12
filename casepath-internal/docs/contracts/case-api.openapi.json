@@ -17,6 +17,18 @@
    },
    "CutRequest": {
     "properties": {
+     "as_of": {
+      "anyOf": [
+       {
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "As Of"
+     },
      "file": {
       "anyOf": [
        {
